@@ -52,9 +52,9 @@ class CsvIn extends Csv implements FileInterface
     protected array $extensions = array('csv', 'txt');
 
     /** @var array<string> */
-    private $_fields;
+    private array $fields;
     /** @var array<string> */
-    private array $_default_fields = array(
+    private array $default_fields = array(
         'nom_adh',
         'prenom_adh',
         'ddn_adh',
@@ -75,14 +75,14 @@ class CsvIn extends Csv implements FileInterface
         'info_adh'
     );
 
-    private bool $_dryrun = true;
+    private bool $dryrun = true;
 
     /** @var array<string,mixed>  */
-    private array $_members_fields;
+    private array $members_fields;
     /** @var array<string,mixed> */
-    private array $_members_fields_cats;
+    private array $members_fields_cats;
     /** @var array<string,bool> */
-    private array $_required;
+    private array $required;
     /** @var array<int, string> */
     private array $statuses;
     /** @var Title[]  */
@@ -90,7 +90,7 @@ class CsvIn extends Csv implements FileInterface
     /** @var array<string,string> */
     private array $langs;
     /** @var array<string,int> */
-    private $emails;
+    private array $emails;
     private Db $zdb;
     private Preferences $preferences;
     private History $history;
@@ -124,12 +124,12 @@ class CsvIn extends Csv implements FileInterface
     private function loadFields()
     {
         //at last, we got the defaults
-        $this->_fields = $this->_default_fields;
+        $this->fields = $this->default_fields;
 
         $model = new ImportModel();
         //we go with default fields if model cannot be loaded
         if ($model->load()) {
-            $this->_fields = $model->getFields();
+            $this->fields = $model->getFields();
         }
     }
 
@@ -140,7 +140,7 @@ class CsvIn extends Csv implements FileInterface
      */
     public function getDefaultFields()
     {
-        return $this->_default_fields;
+        return $this->default_fields;
     }
 
     /**
@@ -180,12 +180,12 @@ class CsvIn extends Csv implements FileInterface
         $this->preferences = $preferences;
         $this->history = $history;
         if ($dryrun === false) {
-            $this->_dryrun = false;
+            $this->dryrun = false;
         }
 
         $this->loadFields();
-        $this->_members_fields = $members_fields;
-        $this->_members_fields_cats = $members_fields_cats;
+        $this->members_fields = $members_fields;
+        $this->members_fields_cats = $members_fields_cats;
 
         if (!$this->check($filename)) {
             return self::INVALID_FILE;
@@ -223,21 +223,21 @@ class CsvIn extends Csv implements FileInterface
             return false;
         }
 
-        $cnt_fields = count($this->_fields);
+        $cnt_fields = count($this->fields);
 
         //check required fields
         $fc = new FieldsConfig(
             $this->zdb,
             Adherent::TABLE,
-            $this->_members_fields,
-            $this->_members_fields_cats
+            $this->members_fields,
+            $this->members_fields_cats
         );
         $config_required = $fc->getRequired();
-        $this->_required = array();
+        $this->required = array();
 
         foreach (array_keys($config_required) as $field) {
-            if (in_array($field, $this->_fields)) {
-                $this->_required[$field] = $field;
+            if (in_array($field, $this->fields)) {
+                $this->required[$field] = $field;
             }
         }
 
@@ -245,7 +245,7 @@ class CsvIn extends Csv implements FileInterface
         $dfields = [];
         $member->setDependencies(
             $this->preferences,
-            $this->_members_fields,
+            $this->members_fields,
             $this->history
         );
 
@@ -280,13 +280,13 @@ class CsvIn extends Csv implements FileInterface
 
                     //check required fields
                     if (
-                        in_array($this->_fields[$col], $this->_required)
+                        in_array($this->fields[$col], $this->required)
                         && empty($column)
                     ) {
                         $this->addError(
                             str_replace(
                                 array('%field', '%row'),
-                                array($this->_fields[$col], $row),
+                                array($this->fields[$col], $row),
                                 _T("Field %field is required, but missing in row %row")
                             )
                         );
@@ -295,7 +295,7 @@ class CsvIn extends Csv implements FileInterface
 
                     //check for statuses
                     //if missing, set default one; if not check it does exists
-                    if ($this->_fields[$col] == Status::PK) {
+                    if ($this->fields[$col] == Status::PK) {
                         if (empty($column)) {
                             $column = Status::DEFAULT_STATUS;
                         } else {
@@ -318,7 +318,7 @@ class CsvIn extends Csv implements FileInterface
                     }
 
                     //check for title
-                    if ($this->_fields[$col] == 'titre_adh' && !empty($column)) {
+                    if ($this->fields[$col] == 'titre_adh' && !empty($column)) {
                         if (!isset($this->titles)) {
                             //load existing titles
                             $titles = new Titles($this->zdb);
@@ -337,8 +337,8 @@ class CsvIn extends Csv implements FileInterface
                     }
 
                     //check for email unicity
-                    if ($this->_fields[$col] == 'email_adh' && !empty($column)) {
-                        if ($this->emails === null) {
+                    if ($this->fields[$col] == 'email_adh' && !empty($column)) {
+                        if (!isset($this->emails)) {
                             //load existing emails
                             $this->emails = Members::getEmails($this->zdb);
                         }
@@ -362,7 +362,7 @@ class CsvIn extends Csv implements FileInterface
                     }
 
                     //check for language
-                    if ($this->_fields[$col] == 'pref_lang') {
+                    if ($this->fields[$col] == 'pref_lang') {
                         if (!isset($this->langs)) {
                             //load existing titles
                             /** @var I18n $i18n */
@@ -386,16 +386,16 @@ class CsvIn extends Csv implements FileInterface
                     }
 
                     //passwords
-                    if ($this->_fields[$col] == 'mdp_adh' && !empty($column)) {
-                        $this->_fields['mdp_adh2'] = $column;
+                    if ($this->fields[$col] == 'mdp_adh' && !empty($column)) {
+                        $this->fields['mdp_adh2'] = $column;
                     }
 
-                    if (substr($this->_fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
+                    if (substr($this->fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
                         //dynamic field, keep to check later
-                        $dfields[$this->_fields[$col] . '_1'] = $column;
+                        $dfields[$this->fields[$col] . '_1'] = $column;
                     } else {
                         //standard field
-                        $member->validate($this->_fields[$col], $column, $this->_fields);
+                        $member->validate($this->fields[$col], $column, $this->fields);
                     }
                     $errors = $member->getErrors();
                     if (count($errors)) {
@@ -465,29 +465,29 @@ class CsvIn extends Csv implements FileInterface
                     $col = 0;
                     $values = array();
                     foreach ($data as $column) {
-                        if (substr($this->_fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
+                        if (substr($this->fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
                             //dynamic field, keep to check later
-                            $values[str_replace('dynfield_', 'info_field_', $this->_fields[$col] . '_1')] = $column;
+                            $values[str_replace('dynfield_', 'info_field_', $this->fields[$col] . '_1')] = $column;
                             $col++;
                             continue;
                         }
 
-                        $values[$this->_fields[$col]] = $column;
-                        if ($this->_fields[$col] === 'societe_adh') {
+                        $values[$this->fields[$col]] = $column;
+                        if ($this->fields[$col] === 'societe_adh') {
                             $values['is_company'] = true;
                         }
                         //check for booleans
                         if (
-                            ($this->_fields[$col] == 'bool_admin_adh'
-                            || $this->_fields[$col] == 'bool_exempt_adh'
-                            || $this->_fields[$col] == 'bool_display_info'
-                            || $this->_fields[$col] == 'activite_adh')
+                            ($this->fields[$col] == 'bool_admin_adh'
+                            || $this->fields[$col] == 'bool_exempt_adh'
+                            || $this->fields[$col] == 'bool_display_info'
+                            || $this->fields[$col] == 'activite_adh')
                             && ($column == null || trim($column) == '')
                         ) {
-                            $values[$this->_fields[$col]] = 0; //defaults to 0 as in Adherent
+                            $values[$this->fields[$col]] = 0; //defaults to 0 as in Adherent
                         }
 
-                        if ($this->_fields[$col] == Status::PK && empty(trim($column))) {
+                        if ($this->fields[$col] == Status::PK && empty(trim($column))) {
                             $values[Status::PK] = Status::DEFAULT_STATUS;
                         }
 
@@ -497,7 +497,7 @@ class CsvIn extends Csv implements FileInterface
                     $member = new Adherent($this->zdb);
                     $member->setDependencies(
                         $this->preferences,
-                        $this->_members_fields,
+                        $this->members_fields,
                         $this->history
                     );
                     //check for empty creation date
@@ -508,9 +508,9 @@ class CsvIn extends Csv implements FileInterface
                         $values['mdp_adh2'] = $values['mdp_adh'];
                     }
 
-                    $valid = $member->check($values, $this->_required, []);
+                    $valid = $member->check($values, $this->required, []);
                     if ($valid === true) {
-                        if ($this->_dryrun === false) {
+                        if ($this->dryrun === false) {
                             $store = $member->store();
                             if ($store !== true) {
                                 $this->addError(

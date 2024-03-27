@@ -373,7 +373,7 @@ abstract class Pagination
         } else {
             Analog::log(
                 '[' . get_class($this) .
-                '|Pagination] Unable to get proprety `' . $name . '`',
+                '|Pagination] Unable to get property `' . $name . '`',
                 Analog::WARNING
             );
         }
@@ -461,7 +461,7 @@ abstract class Pagination
             default:
                 Analog::log(
                     '[' . get_class($this) .
-                    '|Pagination] Unable to set proprety `' . $name . '`',
+                    '|Pagination] Unable to set property `' . $name . '`',
                     Analog::WARNING
                 );
                 break;

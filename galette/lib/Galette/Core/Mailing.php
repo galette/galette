@@ -41,7 +41,6 @@ use Laminas\Db\ResultSet\ResultSet;
  * @property-read string $alt_message
  * @property-read string $wrapped_message
  * @property-read PHPMailer\PHPMailer\PHPMailer $mail
- * @property-read PHPMailer\PHPMailer\PHPMailer $_mail
  * @property-read array $errors
  * @property-read array $recipients
  * @property-read array $unreachables
@@ -521,7 +520,6 @@ class Mailing extends GaletteMail
                 case 'html':
                     return $this->isHTML();
                 case 'mail':
-                case '_mail':
                     return $this->getPhpMailer();
                 case 'errors':
                     return $this->getErrors();
@@ -578,7 +576,6 @@ class Mailing extends GaletteMail
                 case 'wrapped_message':
                 case 'html':
                 case 'mail':
-                case '_mail':
                 case 'errors':
                 case 'recipients':
                 case 'tmp_path':

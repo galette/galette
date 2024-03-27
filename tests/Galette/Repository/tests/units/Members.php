@@ -796,7 +796,7 @@ class Members extends GaletteTestCase
 
         $this->assertInstanceOf(\Galette\Entity\Adherent::class, $adh);
         $this->assertTrue($adh->appearsInMembersList());
-        $this->assertNull($adh->_picture);
+        $this->assertNull($adh->picture);
 
         $list = $members->getPublicList(true);
         $this->assertCount(1, $list);

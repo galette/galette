@@ -178,7 +178,7 @@ class ImportModel
      */
     public function getFields(): ?array
     {
-        return $this->fields;
+        return $this->fields ?? null;
     }
 
     /**

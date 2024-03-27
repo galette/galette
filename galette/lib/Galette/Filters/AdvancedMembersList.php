@@ -35,45 +35,45 @@ use Galette\Repository\PaymentTypes;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property string $creation_date_begin
- * @property string $creation_date_end
- * @property string $modif_date_begin
- * @property string $modif_date_end
- * @property string $due_date_begin
- * @property string $due_date_end
- * @property string $birth_date_begin
- * @property string $birth_date_end
- * @property boolean $show_public_infos
+ * @property ?string $creation_date_begin
+ * @property ?string $creation_date_end
+ * @property ?string $modif_date_begin
+ * @property ?string $modif_date_end
+ * @property ?string $due_date_begin
+ * @property ?string $due_date_end
+ * @property ?string $birth_date_begin
+ * @property ?string $birth_date_end
+ * @property int $show_public_infos
  * @property array|integer $status
- * @property string $contrib_creation_date_begin
- * @property string $contrib_creation_date_end
- * @property string $contrib_begin_date_begin
- * @property string $contrib_begin_date_end
- * @property string $contrib_end_date_begin
- * @property string $contrib_end_date_end
+ * @property ?string $contrib_creation_date_begin
+ * @property ?string $contrib_creation_date_end
+ * @property ?string $contrib_begin_date_begin
+ * @property ?string $contrib_begin_date_end
+ * @property ?string $contrib_end_date_begin
+ * @property ?string $contrib_end_date_end
  * @property array $contributions_types
  * @property array $payments_types
- * @property integer $contrib_min_amount
- * @property integer $contrib_max_amount
+ * @property ?float $contrib_min_amount
+ * @property ?float $contrib_max_amount
  * @property array $contrib_dynamic
  * @property array $free_search
  * @property array $groups_search
  * @property integer $groups_search_log_op
  *
- * @property-read string $rcreation_date_begin
- * @property-read string $rcreation_date_end
- * @property-read string $rmodif_date_begin
- * @property-read string $rmodif_date_end
- * @property-read string $rdue_date_begin
- * @property-read string $rdue_date_end
- * @property-read string $rbirth_date_begin
- * @property-read string $rbirth_date_end
- * @property-read string $rcontrib_creation_date_begin
- * @property-read string $rcontrib_creation_date_end
- * @property-read string $rcontrib_begin_date_begin
- * @property-read string $rcontrib_begin_date_end
- * @property-read string $rcontrib_end_date_begin
- * @property-read string $rcontrib_end_date_end
+ * @property-read ?string $rcreation_date_begin
+ * @property-read ?string $rcreation_date_end
+ * @property-read ?string $rmodif_date_begin
+ * @property-read ?string $rmodif_date_end
+ * @property-read ?string $rdue_date_begin
+ * @property-read ?string $rdue_date_end
+ * @property-read ?string $rbirth_date_begin
+ * @property-read ?string $rbirth_date_end
+ * @property-read ?string $rcontrib_creation_date_begin
+ * @property-read ?string $rcontrib_creation_date_end
+ * @property-read ?string $rcontrib_begin_date_begin
+ * @property-read ?string $rcontrib_begin_date_end
+ * @property-read ?string $rcontrib_end_date_begin
+ * @property-read ?string $rcontrib_end_date_end
  * @property-read array $search_fields
  */
 
@@ -91,29 +91,29 @@ class AdvancedMembersList extends MembersList
     public const OP_BEFORE = 6;
     public const OP_AFTER = 7;
 
-    private ?string $_creation_date_begin = null;
-    private ?string $_creation_date_end = null;
-    private ?string $_modif_date_begin = null;
-    private ?string $_modif_date_end = null;
-    private ?string $_due_date_begin = null;
-    private ?string $_due_date_end = null;
-    private ?string $_birth_date_begin = null;
-    private ?string $_birth_date_end = null;
-    private int $_show_public_infos = Members::FILTER_DC_PUBINFOS;
+    private ?string $creation_date_begin = null;
+    private ?string $creation_date_end = null;
+    private ?string $modif_date_begin = null;
+    private ?string $modif_date_end = null;
+    private ?string $due_date_begin = null;
+    private ?string $due_date_end = null;
+    private ?string $birth_date_begin = null;
+    private ?string $birth_date_end = null;
+    private int $show_public_infos = Members::FILTER_DC_PUBINFOS;
     /** @var array<int> */
-    private array $_status = array();
-    private ?string $_contrib_creation_date_begin = null;
-    private ?string $_contrib_creation_date_end = null;
-    private ?string $_contrib_begin_date_begin = null;
-    private ?string $_contrib_begin_date_end = null;
-    private ?string $_contrib_end_date_begin = null;
-    private ?string $_contrib_end_date_end = null;
+    private array $status = array();
+    private ?string $contrib_creation_date_begin = null;
+    private ?string $contrib_creation_date_end = null;
+    private ?string $contrib_begin_date_begin = null;
+    private ?string $contrib_begin_date_end = null;
+    private ?string $contrib_end_date_begin = null;
+    private ?string $contrib_end_date_end = null;
     /** @var array<int> */
-    private array $_contributions_types = array();
+    private array $contributions_types = array();
     /** @var array<int> */
-    private array $_payments_types = array();
-    private ?int $_contrib_min_amount = null;
-    private ?int $_contrib_max_amount = null;
+    private array $payments_types = array();
+    private ?float $contrib_min_amount = null;
+    private ?float $contrib_max_amount = null;
 
     /** @var array<string> */
     protected array $advancedmemberslist_fields = array(
@@ -167,7 +167,7 @@ class AdvancedMembersList extends MembersList
      *
      * @var array<string,mixed>
      */
-    private array $_free_search = array(
+    private array $free_search = array(
         'empty' => array(
             'field'     => '',
             'search'    => '',
@@ -181,21 +181,21 @@ class AdvancedMembersList extends MembersList
      *
      * @var array<string,mixed>
      */
-    private array $_groups_search = array(
+    private array $groups_search = array(
         'empty' => array(
             'group'    => '',
         )
     );
 
     //defaults to 'OR' for group search
-    private int $_groups_search_log_op = self::OP_OR;
+    private int $groups_search_log_op = self::OP_OR;
 
     /**
      * an empty contributions dynamic field criteria to begin
      *
      * @var array<string,mixed>
      */
-    private array $_contrib_dynamic = array();
+    private array $contrib_dynamic = array();
 
     /**
      * Default constructor
@@ -223,17 +223,17 @@ class AdvancedMembersList extends MembersList
     public function withinContributions(): bool
     {
         if (
-            $this->_contrib_creation_date_begin != null
-            || $this->_contrib_creation_date_end != null
-            || $this->_contrib_begin_date_begin != null
-            || $this->_contrib_begin_date_end != null
-            || $this->_contrib_end_date_begin != null
-            || $this->_contrib_end_date_end != null
-            || $this->_contrib_min_amount != null
-            || $this->_contrib_max_amount != null
-            || count($this->_contrib_dynamic) > 0
-            || count($this->_contributions_types) > 0
-            || count($this->_payments_types) > 0
+            $this->contrib_creation_date_begin != null
+            || $this->contrib_creation_date_end != null
+            || $this->contrib_begin_date_begin != null
+            || $this->contrib_begin_date_end != null
+            || $this->contrib_end_date_begin != null
+            || $this->contrib_end_date_end != null
+            || $this->contrib_min_amount != null
+            || $this->contrib_max_amount != null
+            || count($this->contrib_dynamic) > 0
+            || count($this->contributions_types) > 0
+            || count($this->payments_types) > 0
         ) {
             return true;
         } else {
@@ -250,27 +250,27 @@ class AdvancedMembersList extends MembersList
     {
         parent::reinit();
 
-        $this->_creation_date_begin = null;
-        $this->_creation_date_end = null;
-        $this->_modif_date_begin = null;
-        $this->_modif_date_end = null;
-        $this->_due_date_begin = null;
-        $this->_due_date_end = null;
-        $this->_birth_date_begin = null;
-        $this->_birth_date_end = null;
-        $this->_show_public_infos = Members::FILTER_DC_PUBINFOS;
-        $this->_status = array();
+        $this->creation_date_begin = null;
+        $this->creation_date_end = null;
+        $this->modif_date_begin = null;
+        $this->modif_date_end = null;
+        $this->due_date_begin = null;
+        $this->due_date_end = null;
+        $this->birth_date_begin = null;
+        $this->birth_date_end = null;
+        $this->show_public_infos = Members::FILTER_DC_PUBINFOS;
+        $this->status = array();
 
-        $this->_contrib_creation_date_begin = null;
-        $this->_contrib_creation_date_end = null;
-        $this->_contrib_begin_date_begin = null;
-        $this->_contrib_begin_date_end = null;
-        $this->_contrib_end_date_begin = null;
-        $this->_contrib_begin_date_end = null;
-        $this->_contributions_types = array();
-        $this->_payments_types = array();
+        $this->contrib_creation_date_begin = null;
+        $this->contrib_creation_date_end = null;
+        $this->contrib_begin_date_begin = null;
+        $this->contrib_begin_date_end = null;
+        $this->contrib_end_date_begin = null;
+        $this->contrib_begin_date_end = null;
+        $this->contributions_types = array();
+        $this->payments_types = array();
 
-        $this->_free_search = array(
+        $this->free_search = array(
             'empty' => array(
                 'field'     => '',
                 'search'    => '',
@@ -279,15 +279,15 @@ class AdvancedMembersList extends MembersList
             )
         );
 
-        $this->_contrib_dynamic = array();
+        $this->contrib_dynamic = array();
 
-        $this->_groups_search = array(
+        $this->groups_search = array(
             'empty' => array(
                 'group'     => '',
             )
         );
 
-        $this->_groups_search_log_op = self::OP_OR;
+        $this->groups_search_log_op = self::OP_OR;
     }
 
     /**
@@ -315,7 +315,6 @@ class AdvancedMembersList extends MembersList
                 in_array($name, $this->advancedmemberslist_fields)
                 || in_array($name, $this->virtuals_advancedmemberslist_fields)
             ) {
-                $rname = '_' . $name;
                 switch ($name) {
                     case 'creation_date_begin':
                     case 'creation_date_end':
@@ -332,18 +331,18 @@ class AdvancedMembersList extends MembersList
                     case 'contrib_end_date_begin':
                     case 'contrib_end_date_end':
                         try {
-                            if ($this->$rname !== null) {
-                                $d = new \DateTime($this->$rname);
+                            if ($this->$name !== null) {
+                                $d = new \DateTime($this->$name);
                                 return $d->format(__("Y-m-d"));
                             }
                         } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
-                                'Bad date (' . $this->$rname . ') | ' .
+                                'Bad date (' . $this->$name . ') | ' .
                                 $e->getMessage(),
                                 Analog::INFO
                             );
-                            return $this->$rname;
+                            return $this->$name;
                         }
                         break;
                     case 'rcreation_date_begin':
@@ -360,8 +359,7 @@ class AdvancedMembersList extends MembersList
                     case 'rcontrib_begin_date_end':
                     case 'rcontrib_end_date_begin':
                     case 'rcontrib_end_date_end':
-                        //same as above, but raw format
-                        $rname = '_' . substr($name, 1);
+                        $rname = substr($name, 1);
                         return $this->$rname;
                     case 'search_fields':
                         $search_fields = array_merge($this->memberslist_fields, $this->advancedmemberslist_fields);
@@ -373,10 +371,10 @@ class AdvancedMembersList extends MembersList
                         unset($search_fields[$key]);
                         return $search_fields;
                 }
-                return $this->$rname;
+                return $this->$name;
             } else {
                 Analog::log(
-                    '[AdvancedMembersList] Unable to get proprety `' . $name . '`',
+                    '[AdvancedMembersList] Unable to get property `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -433,8 +431,6 @@ class AdvancedMembersList extends MembersList
                 Analog::DEBUG
             );
 
-            $prop = '_' . $name;
-
             switch ($name) {
                 case 'creation_date_begin':
                 case 'creation_date_end':
@@ -456,7 +452,7 @@ class AdvancedMembersList extends MembersList
                             if ($d === false) {
                                 throw new \Exception('Incorrect format');
                             }
-                            $this->$prop = $d->format('Y-m-d');
+                            $this->$name = $d->format('Y-m-d');
                         } catch (Throwable $e) {
                             Analog::log(
                                 'Incorrect date format for ' . $name .
@@ -469,7 +465,7 @@ class AdvancedMembersList extends MembersList
                 case 'contrib_min_amount':
                 case 'contrib_max_amount':
                     if (is_float($value)) {
-                        $this->$prop = $value;
+                        $this->$name = $value;
                     } else {
                         if ($value !== null) {
                             Analog::log(
@@ -482,7 +478,7 @@ class AdvancedMembersList extends MembersList
                     break;
                 case 'show_public_infos':
                     if (is_numeric($value)) {
-                        $this->$prop = $value;
+                        $this->$name = $value;
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for property `' . $name .
@@ -495,14 +491,14 @@ class AdvancedMembersList extends MembersList
                     if (!is_array($value)) {
                         $value = array($value);
                     }
-                    $this->_status = array();
+                    $this->status = array();
                     foreach ($value as $v) {
                         if (is_numeric($v)) {
                             //check status existence
                             $s = new Status($zdb);
                             $res = $s->get($v);
                             if ($res !== false) {
-                                $this->_status[] = $v;
+                                $this->status[] = $v;
                             } else {
                                 Analog::log(
                                     'Status #' . $v . ' does not exists!',
@@ -522,14 +518,14 @@ class AdvancedMembersList extends MembersList
                     if (!is_array($value)) {
                         $value = array($value);
                     }
-                    $this->_contributions_types = array();
+                    $this->contributions_types = array();
                     foreach ($value as $v) {
                         if (is_numeric($v)) {
                             //check type existence
                             $s = new ContributionsTypes($zdb);
                             $res = $s->get($v);
                             if ($res !== false) {
-                                $this->_contributions_types[] = $v;
+                                $this->contributions_types[] = $v;
                             } else {
                                 Analog::log(
                                     'Contribution type #' . $v . ' does not exists!',
@@ -550,7 +546,7 @@ class AdvancedMembersList extends MembersList
                     if (!is_array($value)) {
                         $value = array($value);
                     }
-                    $this->_payments_types = array();
+                    $this->payments_types = array();
                     $ptypes = new PaymentTypes(
                         $zdb,
                         $preferences,
@@ -561,7 +557,7 @@ class AdvancedMembersList extends MembersList
                     foreach ($value as $v) {
                         if (is_numeric($v)) {
                             if (isset($ptlist[$v])) {
-                                $this->_payments_types[] = $v;
+                                $this->payments_types[] = $v;
                             } else {
                                 Analog::log(
                                     'Payment type #' . $v . ' does not exists!',
@@ -578,8 +574,8 @@ class AdvancedMembersList extends MembersList
                     }
                     break;
                 case 'free_search':
-                    if (isset($this->_free_search['empty']) && !isset($value['empty'])) {
-                        unset($this->_free_search['empty']);
+                    if (isset($this->free_search['empty']) && !isset($value['empty'])) {
+                        unset($this->free_search['empty']);
                     }
 
                     if ($this->isValidFreeSearch($value)) {
@@ -614,7 +610,7 @@ class AdvancedMembersList extends MembersList
                                     break;
                             }
 
-                            $this->_free_search[$id] = $value;
+                            $this->free_search[$id] = $value;
                         } else {
                             Analog::log(
                                 '[AdvancedMembersList] bad construct for free filter',
@@ -625,7 +621,7 @@ class AdvancedMembersList extends MembersList
                     break;
                 case 'contrib_dynamic':
                     if (is_array($value)) {
-                        $this->_contrib_dynamic = $value;
+                        $this->contrib_dynamic = $value;
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for dynamic contribution fields filter should be an '
@@ -635,8 +631,8 @@ class AdvancedMembersList extends MembersList
                     }
                     break;
                 case 'groups_search':
-                    if (isset($this->_groups_search['empty'])) {
-                        unset($this->_groups_search['empty']);
+                    if (isset($this->groups_search['empty'])) {
+                        unset($this->groups_search['empty']);
                     }
                     if (is_array($value)) {
                         if (
@@ -645,7 +641,7 @@ class AdvancedMembersList extends MembersList
                         ) {
                             $id = $value['idx'];
                             unset($value['idx']);
-                            $this->_groups_search[$id] = $value;
+                            $this->groups_search[$id] = $value;
                         } else {
                             Analog::log(
                                 '[AdvancedMembersList] bad construct for group filter',
@@ -662,7 +658,7 @@ class AdvancedMembersList extends MembersList
                     break;
                 case 'groups_search_log_op':
                     if ($value == self::OP_AND || $value == self::OP_OR) {
-                        $this->_groups_search_log_op = $value;
+                        $this->groups_search_log_op = $value;
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for group filter logical operator should be '
@@ -683,11 +679,11 @@ class AdvancedMembersList extends MembersList
                             } else {
                                 $id = substr($name, 4, strlen($name));
                             }
-                            $this->_contrib_dynamic[$id] = $value;
+                            $this->contrib_dynamic[$id] = $value;
                         }
                     } else {
                         Analog::log(
-                            '[AdvancedMembersList] Unable to set proprety `' .
+                            '[AdvancedMembersList] Unable to set property `' .
                             $name . '`',
                             Analog::WARNING
                         );

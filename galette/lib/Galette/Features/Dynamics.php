@@ -21,6 +21,7 @@
 
 namespace Galette\Features;
 
+use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Repository\DynamicFieldsSet;
 use Throwable;
@@ -53,10 +54,11 @@ trait Dynamics
      */
     private function loadDynamicFields(): void
     {
-        if (!property_exists($this, 'login')) {
-            global $login;
-        } else {
+        /** @phpstan-ignore-next-line */
+        if (property_exists($this, 'login') && ($this->login ?? null) instanceof Login) {
             $login = $this->login;
+        } else {
+            global $login;
         }
         $this->dynamics = new DynamicFieldsHandle($this->zdb, $login, $this);
     }
@@ -183,7 +185,7 @@ trait Dynamics
                         }
                         //actual field value
                         if ($value !== null && trim($value) !== '') {
-                            $this->dynamics->setValue($this->id, $field_id, $val_index, $value);
+                            $this->dynamics->setValue($this->id ?? null, $field_id, $val_index, $value);
                         } else {
                             $this->dynamics->unsetValue($field_id, $val_index);
                         }

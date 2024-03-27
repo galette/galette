@@ -46,7 +46,7 @@ use Slim\Router;
 trait Dependencies
 {
     /** @var array<string, bool> */
-    protected array $_deps = array(
+    protected array $deps = array(
         'picture'   => true,
         'groups'    => true,
         'dues'      => true,
@@ -65,8 +65,8 @@ trait Dependencies
      */
     public function setDeps(array $deps): self
     {
-        $this->_deps = array_merge(
-            $this->_deps,
+        $this->deps = array_merge(
+            $this->deps,
             $deps
         );
         return $this;
@@ -79,8 +79,8 @@ trait Dependencies
      */
     public function disableAllDeps(): self
     {
-        $this->_deps = array_fill_keys(
-            array_keys($this->_deps),
+        $this->deps = array_fill_keys(
+            array_keys($this->deps),
             false
         );
         return $this;
@@ -93,7 +93,7 @@ trait Dependencies
      */
     public function enableAllDeps(): self
     {
-        foreach ($this->_deps as &$dep) {
+        foreach ($this->deps as &$dep) {
             $dep = true;
         }
         return $this;
@@ -108,13 +108,13 @@ trait Dependencies
      */
     public function enableDep(string $name): self
     {
-        if (!isset($this->_deps[$name])) {
+        if (!isset($this->deps[$name])) {
             Analog::log(
                 'dependency ' . $name . ' does not exists!',
                 Analog::WARNING
             );
         } else {
-            $this->_deps[$name] = true;
+            $this->deps[$name] = true;
         }
 
         return $this;
@@ -129,13 +129,13 @@ trait Dependencies
      */
     public function disableDep(string $name): self
     {
-        if (!isset($this->_deps[$name])) {
+        if (!isset($this->deps[$name])) {
             Analog::log(
                 'dependency ' . $name . ' does not exists!',
                 Analog::WARNING
             );
         } else {
-            $this->_deps[$name] = false;
+            $this->deps[$name] = false;
         }
 
         return $this;
@@ -150,6 +150,6 @@ trait Dependencies
      */
     protected function isDepEnabled(string $name): bool
     {
-        return $this->_deps[$name];
+        return $this->deps[$name];
     }
 }

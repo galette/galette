@@ -58,22 +58,22 @@ class PluginInstall extends Install
      */
     public function atPreviousStep(): void
     {
-        if ($this->_step > 0) {
+        if ($this->step > 0) {
             if (
-                $this->_step - 1 !== self::STEP_DB_INSTALL
-                && $this->_step !== self::STEP_END
+                $this->step - 1 !== self::STEP_DB_INSTALL
+                && $this->step !== self::STEP_END
             ) {
-                if ($this->_step === self::STEP_DB_INSTALL) {
-                    $this->_step = self::STEP_DB_CHECKS;
+                if ($this->step === self::STEP_DB_INSTALL) {
+                    $this->step = self::STEP_DB_CHECKS;
                 } else {
-                    if ($this->_step === self::STEP_DB_UPGRADE) {
+                    if ($this->step === self::STEP_DB_UPGRADE) {
                         $this->setInstalledVersion(null);
                     }
-                    $this->_step = $this->_step - 1;
+                    $this->step = $this->step - 1;
                 }
             } else {
                 $msg = null;
-                if ($this->_step === self::STEP_END) {
+                if ($this->step === self::STEP_END) {
                     $msg = 'Ok man, install is finished already!';
                 } else {
                     $msg = 'It is forbidden to rerun database install!';

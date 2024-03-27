@@ -33,12 +33,12 @@ use Slim\Views\Twig;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property string $filter_str
- * @property integer $field_filter
- * @property integer $membership_filter
- * @property integer $filter_account
- * @property integer $email_filter
- * @property integer $group_filter
+ * @property ?string $filter_str
+ * @property ?integer $field_filter
+ * @property ?integer $membership_filter
+ * @property ?integer $filter_account
+ * @property ?integer $email_filter
+ * @property ?integer $group_filter
  * @property array $selected
  * @property array $unreachable
  * @property string $query
@@ -47,17 +47,17 @@ use Slim\Views\Twig;
 class MembersList extends Pagination
 {
     //filters
-    private ?string $_filter_str = null;
-    private ?int $_field_filter = null;
-    private ?int $_membership_filter = null;
-    private ?int $_filter_account = null;
-    private ?int $_email_filter = null;
-    private ?int $_group_filter = null;
+    private ?string $filter_str = null;
+    private ?int $field_filter = null;
+    private ?int $membership_filter = null;
+    private ?int $filter_account = null;
+    private ?int $email_filter = null;
+    private ?int $group_filter = null;
 
     /** @var array<int> */
-    private array $_selected = [];
+    private array $selected = [];
     /** @var array<int> */
-    private array $_unreachable = [];
+    private array $unreachable = [];
 
     protected string $query = '';
 
@@ -102,13 +102,13 @@ class MembersList extends Pagination
         global $preferences;
 
         parent::reinit();
-        $this->_filter_str = null;
-        $this->_field_filter = null;
-        $this->_membership_filter = null;
-        $this->_filter_account = $preferences->pref_filter_account;
-        $this->_email_filter = Members::FILTER_DC_EMAIL;
-        $this->_group_filter = null;
-        $this->_selected = array();
+        $this->filter_str = null;
+        $this->field_filter = null;
+        $this->membership_filter = null;
+        $this->filter_account = $preferences->pref_filter_account;
+        $this->email_filter = Members::FILTER_DC_EMAIL;
+        $this->group_filter = null;
+        $this->selected = array();
     }
 
     /**
@@ -124,12 +124,7 @@ class MembersList extends Pagination
             return parent::__get($name);
         } else {
             if (in_array($name, $this->memberslist_fields)) {
-                if ($name === 'query') {
-                    return $this->$name;
-                } else {
-                    $name = '_' . $name;
-                    return $this->$name;
-                }
+                return $this->$name;
             } else {
                 Analog::log(
                     '[MembersList] Unable to get property `' . $name . '`',
@@ -180,7 +175,6 @@ class MembersList extends Pagination
                 case 'selected':
                 case 'unreachable':
                     if (is_array($value)) {
-                        $name = '_' . $name;
                         $this->$name = $value;
                     } elseif ($value !== null) {
                         Analog::log(
@@ -191,14 +185,12 @@ class MembersList extends Pagination
                     }
                     break;
                 case 'filter_str':
-                    $name = '_' . $name;
                     $this->$name = $value;
                     break;
                 case 'field_filter':
                 case 'membership_filter':
                 case 'filter_account':
                     if (is_numeric($value)) {
-                        $name = '_' . $name;
                         $this->$name = $value;
                     } elseif ($value !== null) {
                         Analog::log(
@@ -213,7 +205,7 @@ class MembersList extends Pagination
                         case Members::FILTER_DC_EMAIL:
                         case Members::FILTER_W_EMAIL:
                         case Members::FILTER_WO_EMAIL:
-                            $this->_email_filter = $value;
+                            $this->email_filter = $value;
                             break;
                         default:
                             Analog::log(
@@ -232,7 +224,7 @@ class MembersList extends Pagination
                         $g = new Group();
                         $res = $g->load($value);
                         if ($res === true) {
-                            $this->_group_filter = $value;
+                            $this->group_filter = $value;
                         } else {
                             Analog::log(
                                 'Group #' . $value . ' does not exists!',

@@ -41,7 +41,7 @@ use Galette\Features\EntityHelper;
  *
  * @property integer $id
  * @property string $date
- * @property integer $amount
+ * @property float $amount
  * @property ?string $description
  * @property ?integer $member
  * @property ?integer $payment_type
@@ -54,12 +54,12 @@ class Transaction
     public const TABLE = 'transactions';
     public const PK = 'trans_id';
 
-    private int $_id;
-    private string $_date;
-    private float $_amount;
-    private ?string $_description = null;
-    private ?int $_member = null;
-    private ?int $_payment_type = null;
+    private int $id;
+    private string $date;
+    private float $amount;
+    private ?string $description = null;
+    private ?int $member = null;
+    private ?int $payment_type = null;
 
     private Db $zdb;
     private Login $login;
@@ -85,7 +85,7 @@ class Transaction
         $this->setFields();
 
         if ($args === null || is_int($args)) {
-            $this->_date = date("Y-m-d");
+            $this->date = date("Y-m-d");
 
             if (is_int($args) && $args > 0) {
                 $this->load($args);
@@ -215,10 +215,10 @@ class Transaction
                 $this->zdb->connection->beginTransaction();
             }
 
-            //remove associated contributions if needeed
+            //remove associated contributions if needed
             if ($this->getDispatchedAmount() > 0) {
                 $c = new Contributions($this->zdb, $this->login);
-                $clist = $c->getListFromTransaction($this->_id);
+                $clist = $c->getListFromTransaction($this->id);
                 $cids = array();
                 foreach ($clist as $cid) {
                     $cids[] = $cid->id;
@@ -228,7 +228,7 @@ class Transaction
 
             //remove transaction itself
             $delete = $this->zdb->delete(self::TABLE);
-            $delete->where([self::PK => $this->_id]);
+            $delete->where([self::PK => $this->id]);
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
                 $this->dynamicsRemove(true);
@@ -252,7 +252,7 @@ class Transaction
             }
             Analog::log(
                 'An error occurred trying to remove transaction #' .
-                $this->_id . ' | ' . $e->getMessage(),
+                $this->id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -269,13 +269,13 @@ class Transaction
     private function loadFromRS(ArrayObject $r): void
     {
         $pk = self::PK;
-        $this->_id = $r->$pk;
-        $this->_date = $r->trans_date;
-        $this->_amount = $r->trans_amount;
-        $this->_description = $r->trans_desc;
+        $this->id = $r->$pk;
+        $this->date = $r->trans_date;
+        $this->amount = $r->trans_amount;
+        $this->description = $r->trans_desc;
         $adhpk = Adherent::PK;
-        $this->_member = (int)$r->$adhpk;
-        $this->_payment_type = $r->type_paiement_trans;
+        $this->member = (int)$r->$adhpk;
+        $this->payment_type = $r->type_paiement_trans;
 
         $this->loadDynamicFields();
     }
@@ -299,7 +299,7 @@ class Transaction
         foreach ($fields as $key) {
             //first, let's sanitize values
             $key = strtolower($key);
-            $prop = '_' . $this->fields[$key]['propname'];
+            $prop = $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
                 $value = trim($values[$key]);
@@ -317,18 +317,18 @@ class Transaction
                             $this->setDate($key, $value);
                             break;
                         case Adherent::PK:
-                            $this->_member = (int)$value;
+                            $this->member = (int)$value;
                             break;
                         case 'trans_amount':
                             $value = strtr($value, ',', '.');
-                            $this->_amount = (double)$value;
+                            $this->amount = (double)$value;
                             if (!is_numeric($value)) {
                                 $this->errors[] = _T("- The amount must be an integer!");
                             }
                             break;
                         case 'trans_desc':
                             /** TODO: retrieve field length from database and check that */
-                            $this->_description = strip_tags($value);
+                            $this->description = strip_tags($value);
                             if (mb_strlen($value) > 150) {
                                 $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
                             }
@@ -344,7 +344,7 @@ class Transaction
                             );
                             $ptlist = $ptypes->getList();
                             if (isset($ptlist[$value])) {
-                                $this->_payment_type = (int)$value;
+                                $this->payment_type = (int)$value;
                             } else {
                                 $this->errors[] = _T("- Unknown payment type");
                             }
@@ -357,7 +357,7 @@ class Transaction
         // missing required fields?
         foreach ($required as $key => $val) {
             if ($val === 1) {
-                $prop = '_' . $this->fields[$key]['propname'];
+                $prop = $this->fields[$key]['propname'];
                 if (!isset($disabled[$key]) && !isset($this->$prop)) {
                     $this->errors[] = str_replace(
                         '%field',
@@ -368,9 +368,9 @@ class Transaction
             }
         }
 
-        if (isset($this->_id)) {
+        if (isset($this->id)) {
             $dispatched = $this->getDispatchedAmount();
-            if ($dispatched > $this->_amount) {
+            if ($dispatched > $this->amount) {
                 $this->errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
             }
         }
@@ -412,25 +412,25 @@ class Transaction
             $fields = $this->getDbFields($this->zdb);
             /** FIXME: quote? */
             foreach ($fields as $field) {
-                $prop = '_' . $this->fields[$field]['propname'];
+                $prop = $this->fields[$field]['propname'];
                 if (isset($this->$prop)) {
                     $values[$field] = $this->$prop;
                 }
             }
 
-            if (!isset($this->_id) || $this->_id == '') {
+            if (!isset($this->id) || $this->id == '') {
                 //we're inserting a new transaction
                 unset($values[self::PK]);
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($values);
                 $add = $this->zdb->execute($insert);
                 if ($add->count() > 0) {
-                    $this->_id = $this->zdb->getLastGeneratedValue($this);
+                    $this->id = $this->zdb->getLastGeneratedValue($this);
 
                     // logging
                     $hist->add(
                         _T("Transaction added"),
-                        Adherent::getSName($this->zdb, $this->_member)
+                        Adherent::getSName($this->zdb, $this->member)
                     );
                     $event = 'transaction.add';
                 } else {
@@ -442,14 +442,14 @@ class Transaction
             } else {
                 //we're editing an existing transaction
                 $update = $this->zdb->update(self::TABLE);
-                $update->set($values)->where([self::PK => $this->_id]);
+                $update->set($values)->where([self::PK => $this->id]);
                 $edit = $this->zdb->execute($update);
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
                 if ($edit->count() > 0) {
                     $hist->add(
                         _T("Transaction updated"),
-                        Adherent::getSName($this->zdb, $this->_member)
+                        Adherent::getSName($this->zdb, $this->member)
                     );
                 }
                 $event = 'transaction.edit';
@@ -484,7 +484,7 @@ class Transaction
      */
     public function getDispatchedAmount(): float
     {
-        if (empty($this->_id)) {
+        if (empty($this->id)) {
             return (double)0;
         }
 
@@ -494,7 +494,7 @@ class Transaction
                 array(
                     'sum' => new Expression('SUM(montant_cotis)')
                 )
-            )->where([self::PK => $this->_id]);
+            )->where([self::PK => $this->id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -517,8 +517,8 @@ class Transaction
      */
     public function getMissingAmount(): float
     {
-        if (empty($this->_id)) {
-            return (double)$this->amount;
+        if (empty($this->id)) {
+            return $this->amount ?? 0;
         }
 
         try {
@@ -527,12 +527,12 @@ class Transaction
                 array(
                     'sum' => new Expression('SUM(montant_cotis)')
                 )
-            )->where([self::PK => $this->_id]);
+            )->where([self::PK => $this->id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $dispatched_amount = $result->sum;
-            return (double)$this->_amount - (double)$dispatched_amount;
+            return (double)$this->amount - (double)$dispatched_amount;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred retrieving missing amounts | ' .
@@ -550,7 +550,7 @@ class Transaction
      */
     public function getPaymentType(): string
     {
-        if ($this->_payment_type === null) {
+        if ($this->payment_type === null) {
             return '-';
         }
 
@@ -595,25 +595,24 @@ class Transaction
      */
     public function __get(string $name)
     {
-        $rname = '_' . $name;
-        if (!in_array($name, $this->forbidden_fields) && (property_exists($this, $rname) || property_exists($this, $name))) {
+        if (!in_array($name, $this->forbidden_fields) && property_exists($this, $name)) {
             switch ($name) {
                 case 'date':
-                    return $this->getDate($rname);
+                    return $this->getDate($name);
                 case 'id':
-                    if (isset($this->$rname) && $this->$rname !== null) {
-                        return (int)$this->$rname;
+                    if (isset($this->$name) && $this->$name !== null) {
+                        return (int)$this->$name;
                     }
                     return null;
                 case 'amount':
-                    if (isset($this->$rname)) {
-                        return (double)$this->$rname;
+                    if (isset($this->$name)) {
+                        return (double)$this->$name;
                     }
                     return null;
                 case 'fields':
                     return $this->fields;
                 default:
-                    return $this->$rname;
+                    return $this->$name;
             }
         } else {
             Analog::log(
@@ -667,7 +666,7 @@ class Transaction
         }
 
         //admin and staff users can edit, as well as member itself
-        if (!$this->id || $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
+        if (!isset($this->id) || $login->id == $this->member || $login->isAdmin() || $login->isStaff()) {
             return true;
         }
 
@@ -679,7 +678,7 @@ class Transaction
             ->load($this->login->id);
         if ($parent->hasChildren()) {
             foreach ($parent->children as $child) {
-                if ($child->id === $this->_member) {
+                if ($child->id === $this->member) {
                     return true;
                 }
             }

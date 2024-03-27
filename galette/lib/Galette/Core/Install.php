@@ -57,36 +57,36 @@ class Install
         '0.704' => '0.76'
     );
 
-    protected int $_step;
-    private ?string $_mode;
-    private ?string $_installed_version = null;
+    protected int $step;
+    private ?string $mode;
+    private ?string $installed_version = null;
 
-    private string $_db_type;
-    private string $_db_host;
-    private string $_db_port;
-    private string $_db_name;
-    private string $_db_user;
-    private ?string $_db_pass;
-    private ?string $_db_prefix = null;
+    private string $db_type;
+    private string $db_host;
+    private string $db_port;
+    private string $db_name;
+    private string $db_user;
+    private ?string $db_pass;
+    private ?string $db_prefix = null;
 
-    private bool $_db_connected;
+    private bool $db_connected;
     /** @var array<string, string> */
-    private array $_report;
+    private array $report;
 
-    private string $_admin_login;
-    private string $_admin_pass;
+    private string $admin_login;
+    private string $admin_pass;
 
-    private bool $_error;
+    private bool $error;
 
     /**
      * Main constructor
      */
     public function __construct()
     {
-        $this->_step = self::STEP_CHECK;
-        $this->_mode = null;
-        $this->_db_connected = false;
-        $this->_db_prefix = null;
+        $this->step = self::STEP_CHECK;
+        $this->mode = null;
+        $this->db_connected = false;
+        $this->db_prefix = null;
     }
 
     /**
@@ -97,7 +97,7 @@ class Install
     public function getStepTitle(): string
     {
         $step_title = null;
-        switch ($this->_step) {
+        switch ($this->step) {
             case self::STEP_CHECK:
                 $step_title = _T("Checks");
                 break;
@@ -153,11 +153,11 @@ class Install
     /**
      * Get current mode
      *
-     * @return string
+     * @return ?string
      */
     public function getMode(): ?string
     {
-        return $this->_mode;
+        return $this->mode;
     }
 
     /**
@@ -167,7 +167,7 @@ class Install
      */
     public function isInstall(): bool
     {
-        return $this->_mode === self::INSTALL;
+        return $this->mode === self::INSTALL;
     }
 
     /**
@@ -177,7 +177,7 @@ class Install
      */
     public function isUpgrade(): bool
     {
-        return $this->_mode === self::UPDATE;
+        return $this->mode === self::UPDATE;
     }
 
     /**
@@ -190,7 +190,7 @@ class Install
     public function setMode(string $mode): self
     {
         if ($mode === self::INSTALL || $mode === self::UPDATE) {
-            $this->_mode = $mode;
+            $this->mode = $mode;
         } else {
             throw new \UnexpectedValueException('Unknown mode "' . $mode . '"');
         }
@@ -205,22 +205,22 @@ class Install
      */
     public function atPreviousStep(): void
     {
-        if ($this->_step > 0) {
+        if ($this->step > 0) {
             if (
-                $this->_step - 1 !== self::STEP_DB_INSTALL
-                && $this->_step !== self::STEP_END
+                $this->step - 1 !== self::STEP_DB_INSTALL
+                && $this->step !== self::STEP_END
             ) {
-                if ($this->_step === self::STEP_DB_INSTALL) {
-                    $this->_step = self::STEP_DB_CHECKS;
+                if ($this->step === self::STEP_DB_INSTALL) {
+                    $this->step = self::STEP_DB_CHECKS;
                 } else {
-                    if ($this->_step === self::STEP_DB_UPGRADE) {
+                    if ($this->step === self::STEP_DB_UPGRADE) {
                         $this->setInstalledVersion(null);
                     }
-                    $this->_step = $this->_step - 1;
+                    $this->step = $this->step - 1;
                 }
             } else {
                 $msg = null;
-                if ($this->_step === self::STEP_END) {
+                if ($this->step === self::STEP_END) {
                     $msg = 'Ok man, install is finished already!';
                 } else {
                     $msg = 'It is forbidden to rerun database install!';
@@ -237,7 +237,7 @@ class Install
      */
     public function isCheckStep(): bool
     {
-        return $this->_step === self::STEP_CHECK;
+        return $this->step === self::STEP_CHECK;
     }
 
     /**
@@ -247,7 +247,7 @@ class Install
      */
     public function atTypeStep(): void
     {
-        $this->_step = self::STEP_TYPE;
+        $this->step = self::STEP_TYPE;
     }
 
     /**
@@ -257,7 +257,7 @@ class Install
      */
     public function isTypeStep(): bool
     {
-        return $this->_step === self::STEP_TYPE;
+        return $this->step === self::STEP_TYPE;
     }
 
     /**
@@ -267,7 +267,7 @@ class Install
      */
     public function atDbStep(): void
     {
-        $this->_step = self::STEP_DB;
+        $this->step = self::STEP_DB;
     }
 
     /**
@@ -277,7 +277,7 @@ class Install
      */
     public function isDbStep(): bool
     {
-        return $this->_step === self::STEP_DB;
+        return $this->step === self::STEP_DB;
     }
 
     /**
@@ -287,7 +287,7 @@ class Install
      */
     public function postCheckDb(): bool
     {
-        return $this->_step >= self::STEP_DB_CHECKS;
+        return $this->step >= self::STEP_DB_CHECKS;
     }
 
     /**
@@ -303,7 +303,7 @@ class Install
         switch ($type) {
             case Db::MYSQL:
             case Db::PGSQL:
-                $this->_db_type = $type;
+                $this->db_type = $type;
                 break;
             default:
                 $errs[] = _T("Database type unknown");
@@ -318,7 +318,7 @@ class Install
      */
     public function getDbType(): ?string
     {
-        return $this->_db_type ?? null;
+        return $this->db_type ?? null;
     }
 
     /**
@@ -334,11 +334,11 @@ class Install
      */
     public function setDsn(string $host, string $port, string $name, string $user, ?string $pass): void
     {
-        $this->_db_host = $host;
-        $this->_db_port = $port;
-        $this->_db_name = $name;
-        $this->_db_user = $user;
-        $this->_db_pass = $pass;
+        $this->db_host = $host;
+        $this->db_port = $port;
+        $this->db_name = $name;
+        $this->db_user = $user;
+        $this->db_pass = $pass;
     }
 
     /**
@@ -350,7 +350,7 @@ class Install
      */
     public function setTablesPrefix(string $prefix): self
     {
-        $this->_db_prefix = $prefix;
+        $this->db_prefix = $prefix;
         return $this;
     }
 
@@ -361,7 +361,7 @@ class Install
      */
     public function getDbHost(): ?string
     {
-        return $this->_db_host ?? null;
+        return $this->db_host ?? null;
     }
 
     /**
@@ -371,7 +371,7 @@ class Install
      */
     public function getDbPort(): ?string
     {
-        return $this->_db_port ?? null;
+        return $this->db_port ?? null;
     }
 
     /**
@@ -381,7 +381,7 @@ class Install
      */
     public function getDbName(): ?string
     {
-        return $this->_db_name ?? null;
+        return $this->db_name ?? null;
     }
 
     /**
@@ -391,7 +391,7 @@ class Install
      */
     public function getDbUser(): ?string
     {
-        return $this->_db_user ?? null;
+        return $this->db_user ?? null;
     }
 
     /**
@@ -401,7 +401,7 @@ class Install
      */
     public function getDbPass(): string
     {
-        return $this->_db_pass;
+        return $this->db_pass;
     }
 
     /**
@@ -411,7 +411,7 @@ class Install
      */
     public function getTablesPrefix(): ?string
     {
-        return $this->_db_prefix;
+        return $this->db_prefix;
     }
 
     /**
@@ -421,7 +421,7 @@ class Install
      */
     public function atDbCheckStep(): void
     {
-        $this->_step = self::STEP_DB_CHECKS;
+        $this->step = self::STEP_DB_CHECKS;
     }
 
     /**
@@ -431,7 +431,7 @@ class Install
      */
     public function isDbCheckStep(): bool
     {
-        return $this->_step === self::STEP_DB_CHECKS;
+        return $this->step === self::STEP_DB_CHECKS;
     }
 
     /**
@@ -444,12 +444,12 @@ class Install
     public function testDbConnexion(): bool
     {
         return Db::testConnectivity(
-            $this->_db_type,
-            $this->_db_user,
-            $this->_db_pass,
-            $this->_db_host,
-            $this->_db_port,
-            $this->_db_name
+            $this->db_type,
+            $this->db_user,
+            $this->db_pass,
+            $this->db_host,
+            $this->db_port,
+            $this->db_name
         );
     }
 
@@ -460,7 +460,7 @@ class Install
      */
     public function isDbConnected(): bool
     {
-        return $this->_db_connected;
+        return $this->db_connected;
     }
 
     /**
@@ -470,7 +470,7 @@ class Install
      */
     public function atVersionSelection(): void
     {
-        $this->_step = self::STEP_VERSION;
+        $this->step = self::STEP_VERSION;
     }
 
     /**
@@ -480,7 +480,7 @@ class Install
      */
     public function isVersionSelectionStep(): bool
     {
-        return $this->_step === self::STEP_VERSION;
+        return $this->step === self::STEP_VERSION;
     }
 
     /**
@@ -490,7 +490,7 @@ class Install
      */
     public function atDbInstallStep(): void
     {
-        $this->_step = self::STEP_DB_INSTALL;
+        $this->step = self::STEP_DB_INSTALL;
     }
 
     /**
@@ -500,7 +500,7 @@ class Install
      */
     public function isDbinstallStep(): bool
     {
-        return $this->_step === self::STEP_DB_INSTALL;
+        return $this->step === self::STEP_DB_INSTALL;
     }
 
     /**
@@ -510,7 +510,7 @@ class Install
      */
     public function atDbUpgradeStep(): void
     {
-        $this->_step = self::STEP_DB_UPGRADE;
+        $this->step = self::STEP_DB_UPGRADE;
     }
 
     /**
@@ -520,7 +520,7 @@ class Install
      */
     public function isDbUpgradeStep(): bool
     {
-        return $this->_step === self::STEP_DB_UPGRADE;
+        return $this->step === self::STEP_DB_UPGRADE;
     }
 
 
@@ -541,11 +541,11 @@ class Install
         if ($this->isUpgrade()) {
             $update_scripts = self::getUpdateScripts(
                 $path,
-                $this->_db_type,
-                $this->_installed_version
+                $this->db_type,
+                $this->installed_version
             );
         } else {
-            $update_scripts['current'] = $this->_db_type . '.sql';
+            $update_scripts['current'] = $this->db_type . '.sql';
         }
 
         return $update_scripts;
@@ -618,7 +618,7 @@ class Install
     {
         $fatal_error = false;
         $update_scripts = $this->getScripts($spath);
-        $this->_report = array();
+        $this->report = array();
         $scripts_path = ($spath ?? GALETTE_ROOT . '/install') . '/scripts/';
 
         foreach ($update_scripts as $key => $val) {
@@ -655,7 +655,7 @@ class Install
                     if ($updater instanceof \Galette\Updater\AbstractUpdater) {
                         $updater->run($zdb, $this);
                         $ret = $updater->getReport();
-                        $this->_report = array_merge($this->_report, $ret);
+                        $this->report = array_merge($this->report, $ret);
                     } else {
                         $fatal_error = true;
                         Analog::log(
@@ -670,7 +670,7 @@ class Install
                         _T("%version script has been successfully executed :)")
                     );
                     $ret['res'] = true;
-                    $this->_report[] = $ret;
+                    $this->report[] = $ret;
                 } catch (\RuntimeException $e) {
                     Analog::log(
                         $e->getMessage(),
@@ -682,7 +682,7 @@ class Install
                         _T("Unable to run %version update script :(")
                     );
                     $fatal_error = true;
-                    $this->_report[] = $ret;
+                    $this->report[] = $ret;
                 }
             }
 
@@ -712,7 +712,7 @@ class Install
         // load in the sql parser
         include_once GALETTE_ROOT . 'includes/sql_parse.php';
 
-        $sql_query = preg_replace('/galette_/', $this->_db_prefix, $sql_query);
+        $sql_query = preg_replace('/galette_/', $this->db_prefix, $sql_query);
         $sql_query = remove_remarks($sql_query);
 
         $sql_query = split_sql_file($sql_query, ';');
@@ -781,7 +781,7 @@ class Install
             }
         }
 
-        $this->_report = array_merge($this->_report, $queries_results);
+        $this->report = array_merge($this->report, $queries_results);
         return !$fatal_error;
     }
 
@@ -792,7 +792,7 @@ class Install
      */
     public function getDbInstallReport(): array
     {
-        return $this->_report;
+        return $this->report;
     }
 
     /**
@@ -802,7 +802,7 @@ class Install
      */
     public function reinitReport(): void
     {
-        $this->_report = array();
+        $this->report = array();
     }
 
     /**
@@ -812,7 +812,7 @@ class Install
      */
     public function atAdminStep(): void
     {
-        $this->_step = self::STEP_ADMIN;
+        $this->step = self::STEP_ADMIN;
     }
 
     /**
@@ -822,7 +822,7 @@ class Install
      */
     public function isAdminStep(): bool
     {
-        return $this->_step === self::STEP_ADMIN;
+        return $this->step === self::STEP_ADMIN;
     }
 
     /**
@@ -835,8 +835,8 @@ class Install
      */
     public function setAdminInfos(string $login, string $pass): void
     {
-        $this->_admin_login = $login;
-        $this->_admin_pass = password_hash($pass, PASSWORD_BCRYPT);
+        $this->admin_login = $login;
+        $this->admin_pass = password_hash($pass, PASSWORD_BCRYPT);
     }
 
     /**
@@ -846,7 +846,7 @@ class Install
      */
     public function getAdminLogin(): string
     {
-        return $this->_admin_login;
+        return $this->admin_login;
     }
 
     /**
@@ -856,7 +856,7 @@ class Install
      */
     public function getAdminPass(): string
     {
-        return $this->_admin_pass;
+        return $this->admin_pass;
     }
 
     /**
@@ -866,7 +866,7 @@ class Install
      */
     public function atTelemetryStep(): void
     {
-        $this->_step = self::STEP_TELEMETRY;
+        $this->step = self::STEP_TELEMETRY;
     }
 
     /**
@@ -876,7 +876,7 @@ class Install
      */
     public function isTelemetryStep(): bool
     {
-        return $this->_step === self::STEP_TELEMETRY;
+        return $this->step === self::STEP_TELEMETRY;
     }
 
     /**
@@ -886,7 +886,7 @@ class Install
      */
     public function atGaletteInitStep(): void
     {
-        $this->_step = self::STEP_GALETTE_INIT;
+        $this->step = self::STEP_GALETTE_INIT;
     }
 
     /**
@@ -896,7 +896,7 @@ class Install
      */
     public function isGaletteInitStep(): bool
     {
-        return $this->_step === self::STEP_GALETTE_INIT;
+        return $this->step === self::STEP_GALETTE_INIT;
     }
 
     /**
@@ -1057,26 +1057,26 @@ class Install
 
         if (
             isset($existing['db_type'])
-            && $existing['db_type'] == $this->_db_type
+            && $existing['db_type'] == $this->db_type
             && isset($existing['db_host'])
-            && $existing['db_host'] == $this->_db_host
+            && $existing['db_host'] == $this->db_host
             && isset($existing['db_port'])
-            && $existing['db_port'] == $this->_db_port
+            && $existing['db_port'] == $this->db_port
             && isset($existing['db_user'])
-            && $existing['db_user'] == $this->_db_user
+            && $existing['db_user'] == $this->db_user
             && isset($existing['pwd_db'])
-            && $existing['pwd_db'] == $this->_db_pass
+            && $existing['pwd_db'] == $this->db_pass
             && isset($existing['db_name'])
-            && $existing['db_name'] == $this->_db_name
+            && $existing['db_name'] == $this->db_name
             && isset($existing['prefix'])
-            && $existing['prefix'] == $this->_db_prefix
+            && $existing['prefix'] == $this->db_prefix
         ) {
             Analog::log(
                 'Config file is already up-to-date, nothing to do.',
                 Analog::INFO
             );
 
-            $this->_report[] = array(
+            $this->report[] = array(
                 'message'   => _T("Config file already exists and is up to date"),
                 'res'       => true
             );
@@ -1090,13 +1090,13 @@ class Install
             && $fd = @fopen($conffile, 'w')
         ) {
                 $data = "<?php
-define('TYPE_DB', '" . $this->_db_type . "');
-define('HOST_DB', '" . $this->_db_host . "');
-define('PORT_DB', '" . $this->_db_port . "');
-define('USER_DB', '" . $this->_db_user . "');
-define('PWD_DB', '" . $this->_db_pass . "');
-define('NAME_DB', '" . $this->_db_name . "');
-define('PREFIX_DB', '" . $this->_db_prefix . "');
+define('TYPE_DB', '" . $this->db_type . "');
+define('HOST_DB', '" . $this->db_host . "');
+define('PORT_DB', '" . $this->db_port . "');
+define('USER_DB', '" . $this->db_user . "');
+define('PWD_DB', '" . $this->db_pass . "');
+define('NAME_DB', '" . $this->db_name . "');
+define('PREFIX_DB', '" . $this->db_prefix . "');
 ";
             fwrite($fd, $data);
             fclose($fd);
@@ -1112,7 +1112,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $ret['error'] = $str;
             $error = true;
         }
-        $this->_report[] = $ret;
+        $this->report[] = $ret;
         return !$error;
     }
 
@@ -1151,7 +1151,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, $login);
 
-            $this->_error = false;
+            $this->error = false;
 
             //Install preferences
             $res = $preferences->installInit(
@@ -1185,7 +1185,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $res = $models->installInit(false);
             $this->proceedReport(_T("PDF models"), $res);
 
-            return !$this->_error;
+            return !$this->error;
         } elseif ($this->isUpgrade()) {
             $preferences = new Preferences($zdb);
             $preferences->store();
@@ -1221,11 +1221,11 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
 
         if ($res instanceof \Exception) {
             $ret['debug'] = $res->getMessage();
-            $this->_error = true;
+            $this->error = true;
         } else {
             $ret['res'] = true;
         }
-        $this->_report[] = $ret;
+        $this->report[] = $ret;
     }
     /**
      * Retrieve galette initialization report
@@ -1234,7 +1234,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      */
     public function getInitializationReport(): array
     {
-        return $this->_report;
+        return $this->report;
     }
 
     /**
@@ -1244,7 +1244,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      */
     public function atEndStep(): void
     {
-        $this->_step = self::STEP_END;
+        $this->step = self::STEP_END;
     }
 
     /**
@@ -1254,7 +1254,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      */
     public function isEndStep(): bool
     {
-        return $this->_step === self::STEP_END;
+        return $this->step === self::STEP_END;
     }
 
     /**
@@ -1266,7 +1266,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      */
     public function setInstalledVersion(?string $version): void
     {
-        $this->_installed_version = $version;
+        $this->installed_version = $version;
     }
 
     /**
@@ -1299,6 +1299,6 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      */
     public function isStepPassed($step): bool
     {
-        return $this->_step > $step;
+        return $this->step > $step;
     }
 }
