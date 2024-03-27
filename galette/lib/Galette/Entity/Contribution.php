@@ -97,6 +97,8 @@ class Contribution
     private ?Transaction $_transaction = null;
     private bool $_is_cotis;
     private ?int $_extension = null;
+    /** @var array<int, PaymentType> */
+    private array $ptypes_list;
 
     /** @var Db */
     private Db $zdb;
@@ -465,16 +467,8 @@ class Contribution
                         }
                         break;
                     case 'type_paiement_cotis':
-                        $ptypes = new PaymentTypes(
-                            $this->zdb,
-                            $preferences,
-                            $this->login
-                        );
-                        $ptlist = $ptypes->getList();
-                        if (isset($ptlist[$value])) {
+                        if ($value != '') {
                             $this->_payment_type = (int)$value;
-                        } else {
-                            $this->errors[] = _T("- Unknown payment type");
                         }
                         break;
                     case 'info_cotis':
@@ -1272,20 +1266,7 @@ class Contribution
                     }
                     break;
                 case 'payment_type':
-                    $ptypes = new PaymentTypes(
-                        $this->zdb,
-                        $preferences,
-                        $this->login
-                    );
-                    $list = $ptypes->getList();
-                    if (isset($list[$value])) {
-                        $this->_payment_type = $value;
-                    } else {
-                        Analog::log(
-                            'Unknown payment type ' . $value,
-                            Analog::WARNING
-                        );
-                    }
+                    $this->setPaymentType((int)$value);
                     break;
                 default:
                     Analog::log(
@@ -1403,26 +1384,19 @@ class Contribution
     /**
      * Set contribution type and determine if it is a contribution or a donation
      *
-     * @param int|null $type Type
+     * @param int $type Type
      *
      * @return self
      */
-    public function setContributionType(?int $type): self
+    public function setContributionType(int $type): self
     {
-        if (is_int($type)) {
-            //set type
-            $this->_type = new ContributionsTypes($this->zdb, $type);
-            //set is_cotis according to type
-            if ($this->_type->extension == 1) {
-                $this->_is_cotis = true;
-            } else {
-                $this->_is_cotis = false;
-            }
+        //set type
+        $this->_type = new ContributionsTypes($this->zdb, $type);
+        //set is_cotis according to type
+        if ($this->_type->extension == 1) {
+            $this->_is_cotis = true;
         } else {
-            Analog::log(
-                'Trying to set a type from an id that is not an integer.',
-                Analog::WARNING
-            );
+            $this->_is_cotis = false;
         }
 
         return $this;
@@ -1436,5 +1410,36 @@ class Contribution
     protected function getEventsPrefix(): string
     {
         return 'contribution';
+    }
+
+    /**
+     * Set (and check) payment type
+     *
+     * @param int $value Payment type to set
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function setPaymentType(int $value): void
+    {
+        global $preferences;
+
+        if (!isset($this->ptypes_list)) {
+            $ptypes = new PaymentTypes(
+                $this->zdb,
+                $preferences,
+                $this->login
+            );
+            $this->ptypes_list = $ptypes->getList();
+        }
+        if (isset($this->ptypes_list[$value])) {
+            $this->_payment_type = $value;
+        } else {
+            Analog::log(
+                'Unknown payment type ' . $value,
+                Analog::WARNING
+            );
+            $this->errors[] = _T("- Unknown payment type");
+        }
     }
 }
