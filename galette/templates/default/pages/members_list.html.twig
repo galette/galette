@@ -438,7 +438,7 @@
                     {{ _self.draw_actions(member, login) }}
                     </tr>
 {% else %}
-                    <tr><td colspan="{{ galette_list|length + 1 }}" class="emptylist">{{ _T('No member has been found') }}</td></tr>
+                    <tr><td colspan="{{ galette_list|length + 1 }}" class="emptylist">{{ _T('No member') }}</td></tr>
 {% endfor %}
 {% endblock %}
 
