@@ -166,7 +166,7 @@ jobs:
       - name: Upload code coverage (codecov)
         uses: codecov/codecov-action@v4
         env:
-          CODECOV_TOKEN=2d9dd954-bed8-4628-a267-28cd0108771b
+          CODECOV_TOKEN: 2d9dd954-bed8-4628-a267-28cd0108771b
         with:
           file: tests/clover.xml
         if: env.skip != 'true' && matrix.coverage == 'xdebug'
