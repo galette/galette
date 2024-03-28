@@ -567,6 +567,7 @@ class Db extends TestCase
             'galette_field_types',
             'galette_fields_categories',
             'galette_mailing_history',
+            'galette_payments_schedules',
             'galette_pdfmodels',
             'galette_preferences',
             'galette_searches',

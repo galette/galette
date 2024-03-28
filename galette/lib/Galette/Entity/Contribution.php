@@ -1395,6 +1395,30 @@ class Contribution
     }
 
     /**
+     * Does contribution have attached scheduled payment?
+     *
+     * @return bool
+     * @throws Throwable
+     */
+    public function hasSchedule(): bool
+    {
+        $schedule = new ScheduledPayment($this->zdb);
+        return $schedule->isContributionHandled($this->id);
+    }
+
+    /**
+     * Is schedule fully allocated
+     *
+     * @return bool
+     * @throws Throwable
+     */
+    public function isScheduleFullyAllocated(): bool
+    {
+        $schedule = new ScheduledPayment($this->zdb);
+        return $schedule->isFullyAllocated($this);
+    }
+
+    /**
      * Set (and check) payment type
      *
      * @param int $value Payment type to set
@@ -1415,7 +1439,11 @@ class Contribution
             $this->ptypes_list = $ptypes->getList();
         }
         if (isset($this->ptypes_list[$value])) {
-            $this->payment_type = $value;
+            if (isset($this->id) && $this->hasSchedule()) {
+                $this->errors[] = _T("Cannot change payment type if there is an attached scheduled payment");
+            } else {
+                $this->payment_type = $value;
+            }
         } else {
             Analog::log(
                 'Unknown payment type ' . $value,

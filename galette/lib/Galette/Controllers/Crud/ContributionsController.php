@@ -21,6 +21,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Entity\PaymentType;
 use Galette\Features\BatchList;
 use Analog\Analog;
 use Galette\Controllers\CrudController;
@@ -853,14 +854,23 @@ class ContributionsController extends CrudController
         if (count($error_detected) == 0) {
             $this->session->contribution = null;
             if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
-                //new contribution
+                //if part of a transaction, and transaction is not fully allocated, create a new contribution
                 $redirect_url = $this->routeparser->urlFor(
                     'addContribution',
                     [
-                        'type'      => $post['contrib_type'] ?? $type
+                        'type' => $post['contrib_type'] ?? $type
                     ]
                 ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
                 '&' . Adherent::PK . '=' . $contrib->member;
+            } elseif ($contrib->payment_type === PaymentType::SCHEDULED/* && !$contrib->isScheduleFullyAllocated() */) {
+                //if payment type is a payment schedule, and schedule is not fully allocated, create a new schedule entry
+                throw new \RuntimeException('Not implemented yet');
+                /*$redirect_url = $this->routeparser->urlFor(
+                        'schedulePayment',
+                        [
+                            Contribution::PK => $contrib->id
+                        ]
+                    );*/
             } else {
                 //contributions list for member
                 $redirect_url = $this->routeparser->urlFor(
