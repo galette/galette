@@ -1439,7 +1439,7 @@ class Contribution
             $this->ptypes_list = $ptypes->getList();
         }
         if (isset($this->ptypes_list[$value])) {
-            if ($this->id !== null && $this->hasSchedule()) {
+            if (isset($this->id) && $this->hasSchedule()) {
                 $this->errors[] = _T("Cannot change payment type if there is an attached scheduled payment");
             } else {
                 $this->payment_type = $value;
