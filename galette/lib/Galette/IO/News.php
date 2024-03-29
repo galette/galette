@@ -109,7 +109,7 @@ class News
      */
     protected function getCacheFilename(): string
     {
-        return GALETTE_CACHE_DIR . str_replace(
+        return /*GALETTE_CACHE_DIR . */str_replace(
             '%feed',
             md5($this->feed_url),
             $this->cache_filename

@@ -209,7 +209,7 @@ class Release
      */
     protected function getCacheFilename(): string
     {
-        return GALETTE_CACHE_DIR . $this->cache_filename;
+        return /*GALETTE_CACHE_DIR . */$this->cache_filename;
     }
 
     /**
