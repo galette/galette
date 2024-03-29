@@ -2191,7 +2191,7 @@ class Adherent
     {
         global $preferences;
 
-        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+        if (isset($this->id) && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
             return true;
         }
 
