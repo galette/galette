@@ -24,6 +24,32 @@
 {% set is_public = not login.isLogged() %}
 {% set list_type = 'cards' %}
 
+{% macro drawEntry(member, staff, time) %}
+    <div class="ui fluid card">
+        {% set mid = member.id %}
+        <div class="image">
+            <img
+                    src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
+                    width="{{ member.picture.getOptimalWidth() }}"
+                    height="{{ member.picture.getOptimalHeight() }}"
+                    alt="{{ member.sfullname }}{% if member.nickname != '' %} ({{ member.nickname|escape }}){% endif %}"
+            />
+        </div>
+        <div class="center aligned content">
+            <div class="header">{{ member.sfullname }}</div>
+            <a class="ui label">
+    {% if staff %}
+                <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
+    {% endif %}
+                {% if member.nickname != '' %}{{ member.nickname|escape }}{% endif %}
+    {% if staff %}
+                <div class="detail">{{ member.sstatus }}</div>
+    {% endif %}
+            </a>
+        </div>
+    </div>
+{% endmacro %}
+
 {% block infoline %}
     {% set infoline = {
         'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
@@ -47,27 +73,18 @@
 {% endblock %}
 
 {% block body %}
-    {% for member in members %}
-        <div class="ui fluid card">
-            {% set mid = member.id %}
-            <div class="image">
-                <img
-                    src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
-                    width="{{ member.picture.getOptimalWidth() }}"
-                    height="{{ member.picture.getOptimalHeight() }}"
-                    alt="{{ member.sfullname }}{% if member.nickname != '' %} ({{ member.nickname|escape }}){% endif %}"
-                    />
-            </div>
-            <div class="content">
-                <div class="center aligned header">{{ member.sfullname }}</div>
-                {% if member.nickname != '' %}<div class="center aligned meta">{{ member.nickname|escape }}</div>{% endif %}
-            </div>
-        </div>
+    {% if nb_members > 0 %}
+        {% for member in members.staff %}
+            {{ _self.drawEntry(member, true, time) }}
+        {% endfor %}
+        {% for member in members.members %}
+            {{ _self.drawEntry(member, false, time) }}
+        {% endfor %}
     {% else %}
         <div class="ui small message">
             <div class="content">
                 <em>{{ _T('No member') }}</em>
             </div>
         </div>
-    {% endfor %}
+    {% endif %}
 {% endblock %}

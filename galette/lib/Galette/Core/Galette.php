@@ -23,6 +23,7 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Entity\Document;
 use Galette\Util\Release;
 use RuntimeException;
 
@@ -509,7 +510,7 @@ class Galette
             ];
 
             //display documents menu if at least one document is present with current ACLs
-            $document = new \Galette\Entity\Document($zdb);
+            $document = new Document($zdb);
             $documents = $document->getList();
             if ($login->isSuperAdmin() || count($documents)) {
                 $menus['public']['items'][] = [
@@ -621,7 +622,7 @@ class Galette
         }
 
         //display documents menu if at least one document is present with current ACLs
-        $document = new \Galette\Entity\Document($zdb);
+        $document = new Document($zdb);
         $documents = $document->getList();
         if ($login->isSuperAdmin() || count($documents)) {
             $dashboards = array_merge(

@@ -789,20 +789,30 @@ class Members extends GaletteTestCase
         $members = new \Galette\Repository\Members();
 
         $list = $members->getPublicList(false);
-        $this->assertCount(2, $list);
         $this->assertSame(2, $members->getCount());
+        $this->assertArrayHasKey('staff', $list);
+        $this->assertArrayHasKey('members', $list);
 
-        $adh = $list[0];
+        $staff = $list['staff'];
+        $list_members = $list['members'];
+        $this->assertCount(1, $staff);
+        $this->assertCount(1, $list_members);
+
+        $adh = $list_members[0];
 
         $this->assertInstanceOf(\Galette\Entity\Adherent::class, $adh);
         $this->assertTrue($adh->appearsInMembersList());
         $this->assertNull($adh->picture);
 
         $list = $members->getPublicList(true);
-        $this->assertCount(1, $list);
         $this->assertSame(1, $members->getCount());
 
-        $adh = $list[0];
+        $staff = $list['staff'];
+        $list_members = $list['members'];
+        $this->assertCount(1, $staff);
+        $this->assertCount(0, $list_members);
+
+        $adh = $staff[0];
 
         $this->assertInstanceOf(\Galette\Entity\Adherent::class, $adh);
         $this->assertTrue($adh->appearsInMembersList());

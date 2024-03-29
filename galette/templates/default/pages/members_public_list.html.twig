@@ -24,6 +24,48 @@
 {% set no_action = true %}
 {% set is_public = not login.isLogged() %}
 
+{% macro drawEntry(member, staff) %}
+    {% set rclass = member.getRowClass() %}
+    <tr>
+        <td class="{{ rclass }} username_row" data-scope="row">
+            {% if member.isCompany() %}
+                <span>
+                        <i class="ui building outline icon tooltip" title="{{ _T('Is a company') }}" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T('Is a company') }}</span>
+                    </span>
+            {%  elseif member.isMan() %}
+                <span>
+                        <i class="ui male icon tooltip" title="{{ _T('Is a man') }}" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T('Is a man') }}</span>
+                    </span>
+            {%  elseif member.isWoman() %}
+                <span>
+                        <i class="ui female icon tooltip" title="{{ _T('Is a woman') }}" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T('Is a woman') }}</span>
+                    </span>
+            {% else %}
+                <i class="ui icon" aria-hidden="true"></i>
+            {% endif %}
+            {% if member.website != '' %}
+                <a href="{{ member.website }}">{{ member.sfullname }}</a>
+            {% else %}
+                {{ member.sfullname }}
+            {% endif %}
+            {% if staff %}
+                <a class="ui label">
+                    <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
+                    {{ member.sstatus }}
+                </a>
+            {% endif %}
+        </td>
+        <td class="{{ rclass }}" data-col-label="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
+        {% if login.isLogged() %}
+            <td class="{{ rclass }}" data-col-label="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
+        {% endif %}
+        <td class="{{ rclass }}" data-col-label="{{ _T('Information') }}">{{ member.others_infos }}</td>
+    </tr>
+{% endmacro %}
+
 {% set form = {
     'order': {
         'name': 'publicList',
@@ -75,45 +117,19 @@
 {% endblock %}
 
 {% block body %}
-    {% for member in members %}
-        {% set rclass = member.getRowClass() %}
-        <tr>
-            <td class="{{ rclass }} username_row" data-scope="row">
-                {% if member.isCompany() %}
-                    <span>
-                        <i class="ui building outline icon tooltip" title="{{ _T('Is a company') }}" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T('Is a company') }}</span>
-                    </span>
-                {%  elseif member.isMan() %}
-                    <span>
-                        <i class="ui male icon tooltip" title="{{ _T('Is a man') }}" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T('Is a man') }}</span>
-                    </span>
-                {%  elseif member.isWoman() %}
-                    <span>
-                        <i class="ui female icon tooltip" title="{{ _T('Is a woman') }}" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T('Is a woman') }}</span>
-                    </span>
-                {% else %}
-                    <i class="ui icon" aria-hidden="true"></i>
-                {% endif %}
-                {% if member.website != '' %}
-                    <a href="{{ member.website }}">{{ member.sfullname }}</a>
-                {% else %}
-                    {{ member.sfullname }}
-                {% endif %}
-            </td>
-            <td class="{{ rclass }}" data-col-label="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
-            {% if login.isLogged() %}
-                <td class="{{ rclass }}" data-col-label="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
-            {% endif %}
-            <td class="{{ rclass }}" data-col-label="{{ _T('Information') }}">{{ member.others_infos }}</td>
-        </tr>
+    {% if nb_members > 0 %}
+        {% for member in members.staff %}
+            {{ _self.drawEntry(member, true) }}
+        {% endfor %}
+
+        {% for member in members.members %}
+            {{ _self.drawEntry(member, false) }}
+        {% endfor %}
     {% else %}
         <tr>
             <td class="emptylist" colspan="4">
                 {{ _T('No member') }}
             </td>
         </tr>
-    {% endfor %}
+    {% endif %}
 {% endblock %}

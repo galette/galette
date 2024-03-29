@@ -103,7 +103,9 @@ class Members
     private MembersList|AdvancedMembersList $filters;
     private int $count = 0;
     /** @var array<string> */
-    private array $errors = array();
+    private array $errors = [];
+    /** @var string[] */
+    private array $extra_order = [];
 
     /**
      * Default constructor
@@ -442,13 +444,14 @@ class Members
      * @param boolean $with_photos get only members which have uploaded a
      *                             photo (for trombinoscope)
      *
-     * @return Adherent[]
+     * @return array<string, Adherent[]>
      */
     public function getPublicList(bool $with_photos)
     {
         global $zdb;
 
         try {
+            $this->extra_order = ['priorite_statut ASC'];
             $select = $this->buildSelect(
                 self::SHOW_PUBLIC_LIST,
                 null,
@@ -456,19 +459,37 @@ class Members
                 true
             );
 
+            $select->join(
+                array('status' => PREFIX_DB . Status::TABLE),
+                'a.' . Status::PK . '=status.' . Status::PK
+            );
+
             $this->filters->setLimits($select);
 
             $results = $zdb->execute($select);
-            $members = array();
             $deps = array(
                 'groups'    => false,
                 'dues'      => false,
                 'picture'   => $with_photos
             );
+
+            $status = new Status($zdb);
+            $status_list = $status->getCompleteList();
+
+            $staff = [];
+            $members = [];
             foreach ($results as $row) {
-                $members[] = new Adherent($zdb, $row, $deps);
+                $member = new Adherent($zdb, $row, $deps);
+                if ($status_list[$row->id_statut]['extra'] < self::NON_STAFF_MEMBERS) {
+                    $staff[] = $member;
+                } else {
+                    $members[] = $member;
+                }
             }
-            return $members;
+            return [
+                'staff'     => $staff,
+                'members'   => $members
+            ];
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot list members with public information (photos: '
@@ -881,7 +902,7 @@ class Members
      */
     private function buildOrderClause(Select $select, ?array $fields = null): Select
     {
-        $order = array();
+        $order = $this->extra_order;
 
         switch ($this->filters->orderby) {
             case self::ORDERBY_NICKNAME:
