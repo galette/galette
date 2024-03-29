@@ -23,11 +23,12 @@
 {% block content %}
 {% if members.list is defined %}
     <form action="{% if transaction.id %}{{ url_for("editTransaction", {"id": transaction.id}) }}{% else %}{{ url_for("addTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
-        <div class="ui top attached accordion-styled header">
-            {{ _T("Transaction details") }}
-        </div>
-        <div class="ui bottom attached accordion-styled segment">
-            <div class="active content field">
+        <div class="ui styled fluid accordion field">
+            <div class="active title">
+                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                {{ _T("Transaction details") }}
+            </div>
+            <div class="active content">
                 <div class="ui mobile reversed stackable grid">
                     <div class="{% if transaction.id %}five wide {% endif %}column">
                         <div class="field inline{% if required.trans_desc is defined and required.trans_desc == 1 %} required{% endif %}">
