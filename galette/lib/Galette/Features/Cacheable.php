@@ -113,7 +113,7 @@ trait Cacheable
     protected function makeCache(): void
     {
         $this->prepareForCache();
-        $cfile = $this->getCacheFilename();
+        $cfile = GALETTE_CACHE_DIR . $this->getCacheFilename();
         $cdir = dirname($cfile);
         if (!file_exists($cdir)) {
             mkdir($cdir, 0755, true);
@@ -143,7 +143,7 @@ trait Cacheable
      */
     protected function loadCache(): void
     {
-        $cfile = $this->getCacheFilename();
+        $cfile = GALETTE_CACHE_DIR . $this->getCacheFilename();
         $fcontents = file_get_contents($cfile);
 
         if (!$this->cacheLoaded($fcontents)) {

@@ -34,6 +34,7 @@ use Galette\IO\ExternalScript;
 use Galette\IO\PdfContribution;
 use Galette\Repository\PaymentTypes;
 use Galette\Features\Dynamics;
+use Galette\Core\CacheData;
 
 /**
  * Contribution class for galette
@@ -707,6 +708,8 @@ class Contribution
 
             $this->zdb->connection->commit();
             $this->_orig_amount = $this->_amount;
+
+            CacheData::notifyChange(self::TABLE, $this->_member);
 
             //send event at the end of process, once all has been stored
             if ($event !== null && $this->areEventsEnabled()) {

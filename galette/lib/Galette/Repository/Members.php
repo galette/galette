@@ -45,6 +45,7 @@ use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Core\Db;
 use ArrayObject;
+use Galette\Core\CacheData;
 
 /**
  * Members class for galette
@@ -240,11 +241,24 @@ class Members
             if ($as_members) {
                 $deps = array(
                     'picture'   => false,
-                    'groups'    => false
+                    'groups'    => false,
                 );
-                foreach ($rows as $row) {
+                /*foreach ($rows as $row) {
                     $members[] = new Adherent($zdb, $row, $deps);
-                }
+                }*/  
+                $start =  microtime(true);
+                //$members = CacheData::get($zdb->query_string, null, [Adherent::TABLE], function () use ($zdb, $rows, $deps){
+                    foreach ($rows as $row) {
+                        $members[] = CacheData::get(Adherent::class, $row->id_adh,  [Adherent::TABLE], function () use ($zdb, $row, $deps) 
+                        { 
+                            return new Adherent($zdb, $row, $deps); 
+                        });
+                    }
+                //    return $members;
+                //});
+
+                $time = microtime(true) - $start;
+                \Galette\Core\GaletteCacheArray::logTime("getMembersList()", $time);
             } else {
                 $members = $rows;
             }
