@@ -40,6 +40,7 @@ use Galette\Repository\Groups;
 use Galette\Core\Login;
 use Galette\Repository\Members;
 use Galette\Features\Dynamics;
+use Galette\Core\CacheData;
 
 /**
  * Member class for galette
@@ -790,12 +791,13 @@ class Adherent
         $ret = '';
         $never_contributed = false;
         $now = new DateTime();
+        
         // To count the days remaining, the next begin date is required.
-        if (!isset($this->_due_date)) {
-            $this->_due_date = $now->format('Y-m-d');
+        if ($this->_due_date === null) {
             $never_contributed = true;
         }
-        $due_date = new DateTime($this->_due_date);
+
+        $due_date = new DateTime($this->_due_date !== null ? $this->_due_date : $now->format('Y-m-d')); //$this->_due_date);
         $next_begin_date = clone $due_date;
         $next_begin_date->add(new \DateInterval('P1D'));
         $date_diff = $now->diff($next_begin_date);
@@ -876,39 +878,42 @@ class Adherent
      */
     public function getCountDonations(): int
     {
-        global $preferences; //$this->preferences n'est pas initialisée ? on retrouve la même ligne dans validate, canXXX()
+        return CacheData::get('Adherent::getCountDonations', $this->_id, [Contribution::TABLE], function () {
+        
+            global $preferences; //$this->preferences n'est pas initialisée ? on retrouve la même ligne dans validate, canXXX()
+        
+            $date_now = new \DateTime();
 
-        $date_now = new \DateTime();
+            if ($preferences->pref_beg_membership != '') { //adhésion classique de date à date + 1 an
+                list($j, $m) = explode('/', $preferences->pref_beg_membership);
+                $sdate = new \DateTime($date_now->format('Y') . '-' . $m . '-' . $j);
 
-        if ($preferences->pref_beg_membership != '') { //adhésion classique de date à date + 1 an
-            list($j, $m) = explode('/', $preferences->pref_beg_membership);
-            $sdate = new \DateTime($date_now->format('Y') . '-' . $m . '-' . $j);
+            } elseif ($preferences->pref_membership_ext != '') { //adhésion classique de date à date + N mois
+                $dext = new \DateInterval('P' . $preferences->pref_membership_ext . 'M');
+                $sdate = $date_now->sub($dext);   // now - X months
+            }
 
-        } elseif ($preferences->pref_membership_ext != '') { //adhésion classique de date à date + N mois
-            $dext = new \DateInterval('P' . $preferences->pref_membership_ext . 'M');
-            $sdate = $date_now->sub($dext);   // now - X months
-        }
+            //date_debut_cotis car l'adhérent peut demander un enregistrement de son don pour l'année suivante (en fin d'année)
+            $select = $this->zdb->select(Contribution::TABLE, 'c');
+            $select->columns(
+                array(
+                    'count' => new \Laminas\Db\Sql\Expression('COUNT(*)')
+                    )
+            )
+            ->join(
+                array(
+                    'ct' => PREFIX_DB . ContributionsTypes::TABLE),
+                'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
+                array()
+            )
+            ->where(['id_adh' => $this->_id])
+            ->where->greaterThanOrEqualTo('date_debut_cotis', $sdate->format('Y-m-d'))
+            ->where->equalTo('cotis_extension', 0); //uniquement les dons
 
-        //date_debut_cotis car l'adhérent peut demander un enregistrement de son don pour l'année suivante (en fin d'année)
-        $select = $this->zdb->select(Contribution::TABLE, 'c');
-        $select->columns(
-            array(
-                'count' => new \Laminas\Db\Sql\Expression('COUNT(*)')
-                )
-        )
-        ->join(
-            array(
-                'ct' => PREFIX_DB . ContributionsTypes::TABLE),
-            'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
-            array()
-        )
-        ->where(['id_adh' => $this->_id])
-        ->where->greaterThanOrEqualTo('date_debut_cotis', $sdate->format('Y-m-d'))
-        ->where->equalTo('cotis_extension', 0); //uniquement les dons
-
-        $results = $this->zdb->execute($select);
-        $result = $results->current();
-        return (int) $result->count;
+            $results = $this->zdb->execute($select);
+            $result = $results->current();
+            return (int) $result->count;
+        });
     }
 
     /**
@@ -1692,6 +1697,8 @@ class Adherent
             //dynamic fields
             $this->dynamicsStore();
             $this->storeSocials($this->id);
+
+            CacheData::notifyChange(self::TABLE, $this->id);
 
             //send event at the end of process, once all has been stored
             if ($event !== null && $this->areEventsEnabled()) {
