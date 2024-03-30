@@ -73,21 +73,13 @@ class GaletteCacheArray
     protected function getDataTocache(): string
     {
         $start = microtime(true);
-        if (1) {
-            $ret = serialize($this->memory);
+
+        if (function_exists('igbinary_serialize')) {
+            $ret = igbinary_serialize($this->memory);
         } else {
-            $val = var_export($this->memory, true);
-
-            $val = str_replace(["\n",",  '"," => "], ["",",'","=>"], $val);
-
-            // HHVM fails at __set_state, so just use object cast for now
-            $val = str_replace('stdClass::__set_state', '(object)', $val);
-            $time =  microtime(true) - $start;
-            //PB : Analog n'est plus instanciée à cet instant self::logTime('getDataTocache', $time);
-
-            //return '<?php $memory=' . $val . ';';
-            $ret = '$memory=' . $val . ';';
+            $ret = serialize($this->memory);
         }
+
         return $ret;
     }
 
@@ -102,12 +94,12 @@ class GaletteCacheArray
     {
         $start = microtime(true);
         try {
-            if(1) {
-                $this->memory = unserialize($contents);
+            if (function_exists('igbinary_serialize')) {
+                $this->memory = igbinary_unserialize($contents);
             } else {
-                eval($contents);
-                $this->memory = isset($memory) ? $memory : [];
+                $this->memory = unserialize($contents);
             }
+
         } catch (\Throwable $e) {
             $this->memory = [];
             return false;
