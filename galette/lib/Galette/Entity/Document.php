@@ -73,6 +73,7 @@ class Document implements FileInterface
     private ?string $comment = null;
     /** @var array<string> */
     private array $errors = [];
+    private bool $public_list = false;
 
     /**
      * Main constructor
@@ -129,12 +130,12 @@ class Document implements FileInterface
      *
      * @throws Throwable
      */
-    public static function getList(string $type = null): array
+    public function getList(string $type = null): array
     {
-        global $zdb, $login;
+        global $login;
 
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
 
             if ($type !== null) {
                 $select->where(['type' => $type]);
@@ -142,14 +143,15 @@ class Document implements FileInterface
 
             $select->order(self::PK);
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $documents = [];
             $access_level = $login->getAccessLevel();
 
             foreach ($results as $r) {
                 // skip entries according to access control
                 if (
-                    $r->visible == FieldsConfig::NOBODY ||
+                    $r->visible == FieldsConfig::NOBODY &&
+                    ($this->public_list === true || ($this->public_list === false && !$login->isAdmin())) ||
                     ($r->visible == FieldsConfig::ADMIN &&
                         $access_level < Authentication::ACCESS_ADMIN) ||
                     ($r->visible == FieldsConfig::STAFF &&
@@ -162,7 +164,7 @@ class Document implements FileInterface
                     continue;
                 }
 
-                $documents[$r->{self::PK}] = new Document($zdb, $r);
+                $documents[$r->{self::PK}] = new Document($this->zdb, $r);
             }
             return $documents;
         } catch (Throwable $e) {
@@ -184,6 +186,7 @@ class Document implements FileInterface
      */
     public function getTypedList(): array
     {
+        $this->public_list = true;
         $list = $this->getList();
         $sys_types = $this->getSystemTypes(false);
 

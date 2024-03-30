@@ -176,7 +176,7 @@ class Document extends GaletteTestCase
         $post = [
             'document_type' => 'An other document type',
             'comment' => '',
-            'visible' => \Galette\Entity\FieldsConfig::ADMIN
+            'visible' => \Galette\Entity\FieldsConfig::STAFF
         ];
 
         $this->assertTrue($document->store($post, $_FILES));
@@ -197,5 +197,112 @@ class Document extends GaletteTestCase
         $this->assertArrayHasKey('An other document type', $tlist);
         $this->assertCount(1, $tlist[\Galette\Entity\Document::STATUS]);
         $this->assertCount(1, $tlist['An other document type']);
+        $this->assertTrue($this->login->logOut());
+
+        //logged in regular member document
+        $document = $this->getDocumentInstance();
+        $_FILES['document_file'] = [
+            'error' => UPLOAD_ERR_OK,
+            'name'      => 'member.pdf',
+            'tmp_name'  => '/tmp/member.pdf',
+            'size'      => 4096
+        ];
+        $post = [
+            'document_type' => \Galette\Entity\Document::MINUTES,
+            'comment' => '',
+            'visible' => \Galette\Entity\FieldsConfig::USER_READ
+        ];
+        $this->assertTrue($document->store($post, $_FILES));
+
+        //inaccessible document
+        $document = $this->getDocumentInstance();
+        $_FILES['document_file'] = [
+            'error' => UPLOAD_ERR_OK,
+            'name'      => 'noaccess.pdf',
+            'tmp_name'  => '/tmp/noaccess.pdf',
+            'size'      => 4096
+        ];
+        $post = [
+            'document_type' => \Galette\Entity\Document::MINUTES,
+            'comment' => '',
+            'visible' => \Galette\Entity\FieldsConfig::NOBODY
+        ];
+        $this->assertTrue($document->store($post, $_FILES));
+
+        //test list - not authenticated
+        $list = $document->getList();
+        $this->assertCount(1, $list);
+
+        //test list - authenticated. noaccess doc should be present
+        $this->logSuperAdmin();
+        $list = $document->getList();
+        $this->assertCount(4, $list);
+
+        //test list by type (for public pages) - noaccess doc should not be present.
+        $tlist = $document->getTypedList();
+        $this->assertCount(3, $tlist);
+        $this->assertArrayHasKey(\Galette\Entity\Document::STATUS, $tlist);
+        $this->assertCount(1, $tlist[\Galette\Entity\Document::STATUS]);
+        $this->assertCount(1, $tlist['An other document type']);
+        $this->assertCount(1, $tlist[\Galette\Entity\Document::MINUTES]);
+        $this->login->logOut();
+
+        global $login;
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(true);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        //test list - authenticated, but not admin. noaccess doc should not be present
+        $list = $document->getList();
+        $this->assertCount(3, $list);
+
+        //test list by type (for public pages) - noaccess doc should not be present.
+        $tlist = $document->getTypedList();
+        $this->assertCount(3, $tlist);
+
+        //regular user
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(true);
+        $login->method('isStaff')->willReturn(false);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        //test list - authenticated, but not admin nor staff
+        $list = $document->getList();
+        $this->assertCount(2, $list);
+
+        //test list by type (for public pages)
+        $tlist = $document->getTypedList();
+        $this->assertCount(2, $tlist);
+
+        //non logged in user
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->getMock();
+
+        $login->method('isLogged')->willReturn(false);
+        $login->method('isStaff')->willReturn(false);
+        $login->method('isAdmin')->willReturn(false);
+        $login->method('isSuperAdmin')->willReturn(false);
+
+        //test list - authenticated, but not admin. noaccess doc should not be present
+        $this->logSuperAdmin();
+        $list = $document->getList();
+        $this->assertCount(1, $list);
+
+        //test list by type (for public pages) - noaccess doc should not be present.
+        $tlist = $document->getTypedList();
+        $this->assertCount(1, $tlist);
     }
 }
