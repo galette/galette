@@ -122,6 +122,7 @@ class GaletteCacheArray
 
     public static function logTime($fct, $time)
     {
+        if (!GALETTE_DEBUG) return;
         $time = round($time * 1000, 3);
         Analog::log(
             "Cache infos : $fct - Exec. time $time ms",
