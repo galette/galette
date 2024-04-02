@@ -709,7 +709,7 @@ class Contribution
             $this->zdb->connection->commit();
             $this->_orig_amount = $this->_amount;
 
-            CacheData::notifyChange(self::TABLE, $this->_member);
+            CacheData::notifyChange(Contribution::class, $this->_id);//$this->_member);
 
             //send event at the end of process, once all has been stored
             if ($event !== null && $this->areEventsEnabled()) {
