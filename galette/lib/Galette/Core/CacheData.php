@@ -26,20 +26,20 @@ class CacheData
     }
 
     /*
-    *   @param string $name : nom unique, par exemple self::class, MyClass::class, 'myquery'
-    *   @param integer $id : SQL primary key
-    *   @param array $dependencies : à partir de quoi la requete à été créée (jointures) [ self::class, Contribution::class, Constribution::TABLE]
+    *   @param string $name : nom unique, par exemple MyClass::class, 'myquery'
+    *   @param integer $id : primary key, ou null
+    *   @param array $dependencies : à partir de quoi la requete à été créée (jointures) [ MyClass::class => ID, MyClass::class (tous les objets de type Object) ], dépendence sur un objet ou une collection d'objets
     *   @param function $fctSource : valeur issue de la requete SQL
     *   @param function $fctFromCache : appelée si la valeur est issue du cache
     *
     *   @return mixed : retour de la requete ou du cache
     */
-    public static function get($name, ?int $id, ?array $dependencies = [], $fctSource, $fctFromCache = null): mixed
+    public static function get($name, ?int $id, ?array $dependencies, $fctSource, $fctFromCache = null): mixed
     {
         $start = microtime(true);
 
         if($dependencies == null || count($dependencies) < 1) {
-            $dependencies = [$name];
+            $dependencies = [$name => $id];
         }
 
         self::start();
@@ -47,19 +47,21 @@ class CacheData
 
         // Trying to get the value from the cache
         $data = self::$cache->get($cacheKey);
+        $bCached = $data !== null;
         if($data === null) {
             //This data is not available
             $data = $fctSource();
 
             //Tracking dependencies by class names
-            foreach($dependencies as $dep) {
-                $depKey = $id !== null ? "{$dep}#{$id}" : $dep;
-                if(!array_key_exists($dep, self::$objectDependencies)) {
-                    self::$objectDependencies[$depKey] = [$cacheKey];
-                } else {
-                    self::$objectDependencies[$depKey][] =  $cacheKey;
+            foreach($dependencies as $depName => $depId) {
+                //If ID is null, we add all objects in Object/*, otherwise Object/MyID
+                if (is_int($depName)) {
+                    $depName = $depId;
+                    $depId = null;
                 }
 
+                self::addDependency(self::getUName($depName, null), $cacheKey); //Object/*
+                self::addDependency(self::getUName($depName, $depId), $cacheKey); //Object/ID
             }
 
             self::$cache->set($cacheKey, $data);
@@ -70,76 +72,117 @@ class CacheData
 
         $time =  microtime(true) - $start;
 
-        GaletteCacheArray::logTime('CacheData::get() - '.$cacheKey, $time);
+        GaletteCacheArray::logTime("CacheData::get() - $cacheKey".($bCached ? ' (in cache)' : ''), $time);
 
         return $data;
     }
 
-
-
-    public static function notifyChange(string $dependency, int $id = -1): void
+    private static function addDependency($depKey, $cacheKey)
     {
-        self::start();
-        if (array_key_exists($dependency, self::$objectDependencies)) {
-            foreach(self::$objectDependencies[$dependency] as $cacheKey) {
-                self::$cache->delete($cacheKey);
+        if($depKey !== $cacheKey) {
+            if(!array_key_exists($depKey, self::$objectDependencies)) {
+                self::$objectDependencies[$depKey] = [$cacheKey];
+            } else {
+                if(!in_array($cacheKey, self::$objectDependencies[$depKey])) {
+                    self::$objectDependencies[$depKey][] =  $cacheKey;
+                }
             }
         }
-        $depKey = "{$dependency}#{$id}";
+    }
+
+
+    public static function notifyChange(string $dependency, ?int $id = null): int
+    {
+        self::start();
+        $ct = 0;
+        $depKey = self::getUName($dependency, $id);
         if (array_key_exists($depKey, self::$objectDependencies)) {
             foreach(self::$objectDependencies[$depKey] as $cacheKey) {
                 self::$cache->delete($cacheKey);
+                $ct++;
             }
         }
+        if($id !== null && self::$cache->has($depKey)) {
+            self::$cache->delete($depKey);
+            $ct++;
+        }
+        return  $ct;
     }
 
-    public static function invalidate(string $name, int $id = -1): void
+    //Clear all objects, a collection or an object
+    public static function invalidate(?string $name = null, ?int $id = null): void
     {
         self::start();
-        $cacheKey = self::getUName($name, $id) ;
-
-        self::$cache->delete($cacheKey);
+        if($name) {
+            $cacheKey = self::getUName($name, $id) ;
+            self::$cache->delete($cacheKey);
+        } else {
+            self::$cache->clear();
+            self::$objectDependencies = [];
+        }
     }
 
-    private static function getUName($name, ?int $id): string
+    private static function getUName($name, ?int $id = null): string
     {
-        $name = str_replace('\\', '/', $name);
-        $cacheKey =  $name;
-        if($id !== null) {
-            $cacheKey .= "#$id";
+        //Remove namespaces
+        if (($pos = strrpos($name, '\\')) !== false) {
+            $name = substr($name, $pos + 1);
         }
+
+        $cacheKey =  $name.'/'.($id !== null ? (int) $id : '*');
         return $cacheKey;
     }
 
 }
 
-
 function TestCache()
 {
+    assert_options(ASSERT_ACTIVE, true);
+    assert_options(ASSERT_EXCEPTION, true);
+
+    //Vide tout le cache
+    CacheData::invalidate();
+
     //Cas simple, récupérer un objet issu d'une table SQL par son id
     $data = CacheData::get(Contribution::class, 456, null, function () {
         //SELECT WHERE
-        return 4321;
+        return 100;
     });
 
     $cachedData = CacheData::get(Contribution::class, 456, null, function () {
-        assert(true);
+        assert(false);
         return 0;
     });
-    assert($data != $cachedData);
-
-    //Récupérer une donnée qui peut être issue d'une requete SQL complexe type JOIN
-    $data = CacheData::get('Adherent::functionCountContributions', 123, [Contribution::class, Adherent::class], function () {
-        return 4321;
-    });
-
-    $cachedData = CacheData::get('Adherent::functionCountContributions', 123, [Contribution::class, Adherent::class], function () {
-        assert(true);
-        return 0;
-    });
-    assert($data != $cachedData);
+    assert($data == $cachedData);
 
     //Notifier le cache qu'une donnée n'est plus valide après un SQL Insert
-    CacheData::notifyChange(Contribution::class);
-    CacheData::notifyChange(Contribution::class, 123);
+    assert(CacheData::notifyChange(Contribution::class, 456) == 1);
+
+    //
+    $data = CacheData::get(Contribution::class, 456, null, function () {
+        return 101;
+    });
+    assert($data == 101);
+
+
+    //Récupérer une donnée qui peut être issue d'une requete SQL complexe type JOIN
+    $data = CacheData::get('Adherent::functionCountContributions', 123, [Contribution::class/*sans ID => tous les objets contributions*/, Adherent::class => 1], function () {
+        return 103;
+    });
+    $data2 = CacheData::get('Adherent::functionCountContributions', 124, [Contribution::class/*sans ID => tous les objets contributions*/, Adherent::class => 1], function () {
+        return 104;
+    });
+
+    $cachedData = CacheData::get('Adherent::functionCountContributions', 123, [Contribution::class => '*', Adherent::class => 1], function () {
+        assert(false);
+        return 0;
+    });
+    assert($data == $cachedData);
+
+    //Notifier le cache qu'une donnée n'est plus valide après un SQL Insert
+    //Retire functionCountContributions/123 & 124 + Contribution/456
+    assert(CacheData::notifyChange(Contribution::class) == 3);
+
+
+    CacheData::invalidate();
 }

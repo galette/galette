@@ -22,11 +22,6 @@ class GaletteCacheArray
 
     public function __destruct()
     {
-        /*Pour gagner encore en rapidité, il faudrait sauver le cache une fois la reponse HTTP envoyée ?
-        if (function_exists('fastcgi_finish_request')) {
-            fastcgi_finish_request();
-        }
-        */
         $this->makeCache();
     }
 
@@ -57,7 +52,7 @@ class GaletteCacheArray
     // Method for checking the availability of key data
     public function has(string $key): bool
     {
-        return array_key_exists($key, self::$memory);
+        return array_key_exists($key, $this->memory);
     }
 
     public function clear()
@@ -69,7 +64,6 @@ class GaletteCacheArray
     {
     }
 
-    //voir https://github.com/shabeer-ali-m/php-super-cache/blob/master/src/SuperCache/SuperCache.php
     protected function getDataTocache(): string
     {
         $start = microtime(true);
@@ -116,11 +110,8 @@ class GaletteCacheArray
         return true;
     }
 
-
-
-
     /**
-     * Complete path to cache file
+     * Path to cache file
      *
      * @return string
      */
@@ -128,9 +119,6 @@ class GaletteCacheArray
     {
         return $this->cache_filename;
     }
-
-
-
 
     public static function logTime($fct, $time)
     {
