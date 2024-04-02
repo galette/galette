@@ -249,7 +249,7 @@ class Members
                 $start =  microtime(true);
                 //$members = CacheData::get($zdb->query_string, null, [Adherent::TABLE], function () use ($zdb, $rows, $deps){
                     foreach ($rows as $row) {
-                        $members[] = CacheData::get(Adherent::class, $row->id_adh,  [Adherent::TABLE], function () use ($zdb, $row, $deps) 
+                        $members[] = CacheData::get(Adherent::class, $row->id_adh, null, function () use ($zdb, $row, $deps) 
                         { 
                             return new Adherent($zdb, $row, $deps); 
                         });
