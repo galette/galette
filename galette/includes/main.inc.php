@@ -204,6 +204,11 @@ $app->add(TwigMiddleware::createFromContainer($app, Twig::class));
 
 $app->run();
 
+//Now close HTTP Response, cache is stored at the end by GaletteCacheArray::__destruct() 
+if (function_exists('fastcgi_finish_request')) {
+    fastcgi_finish_request();
+}
+
 if (isset($profiler)) {
     $profiler->stop();
 }
