@@ -95,7 +95,14 @@ class CacheData
     {
         self::start();
         $ct = 0;
-        $depKey = self::getUName($dependency, $id);
+        $depKey = self::getUName($dependency, $id); //Object/ID
+        if (array_key_exists($depKey, self::$objectDependencies)) {
+            foreach(self::$objectDependencies[$depKey] as $cacheKey) {
+                self::$cache->delete($cacheKey);
+                $ct++;
+            }
+        }
+        $depKey = self::getUName($dependency, null); //Object/*
         if (array_key_exists($depKey, self::$objectDependencies)) {
             foreach(self::$objectDependencies[$depKey] as $cacheKey) {
                 self::$cache->delete($cacheKey);
