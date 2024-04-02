@@ -878,7 +878,9 @@ class Adherent
      */
     public function getCountDonations(): int
     {
-        return CacheData::get('Adherent::getCountDonations', $this->_id, [Contribution::TABLE], function () {
+        return CacheData::get('Adherent::getCountDonations', $this->_id, 
+            [Adherent::class => $this->_id, Contribution::class],  /*signifie cette donnée est obsoléte en cas de modification sur cet adhérent ou n'importe quelle contributions */
+            function () {
         
             global $preferences; //$this->preferences n'est pas initialisée ? on retrouve la même ligne dans validate, canXXX()
         
@@ -1698,7 +1700,8 @@ class Adherent
             $this->dynamicsStore();
             $this->storeSocials($this->id);
 
-            CacheData::notifyChange(self::TABLE, $this->id);
+            //Toutes les données relatives à cet adhérent seront supprimées du cache
+            CacheData::notifyChange(self::class, $this->id);
 
             //send event at the end of process, once all has been stored
             if ($event !== null && $this->areEventsEnabled()) {
