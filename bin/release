@@ -6,7 +6,15 @@ from datetime import datetime
 from termcolor import colored
 from urllib.parse import urlparse
 
-galette_dl_repo = 'http://download.tuxfamily.org/galette/'
+#on tuxfamily
+#ssh_path = 'galette/galette-repository/'
+#ssh_host = 'ssh.tuxfamily.org'
+#galette_dl_repo = 'http://download.tuxfamily.org/galette/'
+#on ulysses
+ssh_path = '/var/www/galette.eu/download/'
+ssh_host = 'ulysses.fr'
+galette_dl_repo = 'https://galette.eu/download/'
+
 local_dl_repo = os.path.join(
     os.path.dirname(
         os.path.dirname(os.path.abspath(__file__))
@@ -304,16 +312,17 @@ def do_sign(archive):
     p1.communicate()
 
 def do_scp(archive):
-    global ssh_key
+    global ssh_key, ssh_host, ssh_path
 
-    path = 'galette/galette-repository/'
+    #path = 'galette/galette-repository/'
+    path = ssh_path
     if extra:
         path += 'dev/'
 
     if ssh_key:
-        scp_cmd = 'scp -i %s %s* ssh.tuxfamily.org:%s' % (ssh_key, archive, path)
+        scp_cmd = 'scp -i %s %s* %s:%s' % (ssh_key, archive, ssh_host, path)
     else:
-        scp_cmd = 'scp -r %s* ssh.tuxfamily.org:%s' % (archive, path)
+        scp_cmd = 'scp -r %s* %s:%s' % (archive, ssh_host, path)
     print(scp_cmd)
     p1 = subprocess.Popen(scp_cmd, shell=True)
     p1.communicate()
