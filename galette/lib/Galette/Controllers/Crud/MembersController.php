@@ -667,11 +667,11 @@ class MembersController extends CrudController
         $ct = new ContributionsTypes($this->zdb);
 
         //Payment types
-        $ptypes = new PaymentTypes(
-            $this->zdb,
+        $ptypes = new PaymentTypes();
+           /* $this->zdb,
             $this->preferences,
             $this->login
-        );
+        );*/
         $ptlist = $ptypes->getList();
 
         $filters->setViewCommonsFilters($this->preferences, $this->view);

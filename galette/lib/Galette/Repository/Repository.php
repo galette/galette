@@ -117,8 +117,7 @@ abstract class Repository
         }
 
         if (method_exists($this, 'checkUpdate')) {
-            $this->loadDefaults();
-            if (count($this->defaults)) {
+            if (count($this->loadDefaults())) {
                 $this->checkUpdate();
             } else {
                 Analog::log(
@@ -176,7 +175,9 @@ abstract class Repository
     //HM : TODO , pas clair, a approfondir
     protected function loadDefaults(): array
     {
-        return $this->defaults;
+        throw new \Exception("Error : you need to override loadDefaults()");
+        
+        //return $this->defaults;
     }
 
     /**

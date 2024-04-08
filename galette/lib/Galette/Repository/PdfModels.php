@@ -222,6 +222,6 @@ class PdfModels extends Repository
             //@phpstan-ignore-next-line
             $this->defaults = $pdfmodels_fields;
         }
-        return parent::loadDefaults();
+        return $this->defaults;
     }
 }

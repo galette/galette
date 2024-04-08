@@ -229,6 +229,6 @@ class PaymentTypes extends Repository
             $paytype = new PaymentType($this->zdb);
             $this->defaults = $paytype->getSystemTypes(false);
         }
-        return parent::loadDefaults();
+        return $this->defaults;
     }
 }

@@ -49,6 +49,7 @@ trait RepositoryTrait
      */
     public function installInit(bool $check_first = true): bool
     {
+        $defaults = $this->loadDefaults();
         try {
             $ent = $this->entity;
             //first of all, let's check if data seem to have already
@@ -69,7 +70,7 @@ trait RepositoryTrait
                     //if we got no values in table, let's proceed
                     $proceed = true;
                 } else {
-                    if ($count < count($this->loadDefaults())) {
+                    if ($count < count($defaults)) {
                         return $this->checkUpdate();
                     }
                     return false;
@@ -87,9 +88,9 @@ trait RepositoryTrait
 
                 $this->zdb->handleSequence(
                     $ent::TABLE,
-                    count($this->defaults)
+                    count($defaults)
                 );
-                $this->insert($ent::TABLE, $this->defaults);
+                $this->insert($ent::TABLE, $defaults);
 
                 $this->zdb->connection->commit();
                 return true;
@@ -100,5 +101,15 @@ trait RepositoryTrait
             }
             throw $e;
         }
+    }
+
+    /**
+     * Checks for missing payment types in the database
+     *
+     * @return boolean
+     */
+    protected function checkUpdate(): bool
+    {
+        return false;
     }
 }

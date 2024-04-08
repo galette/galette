@@ -497,7 +497,7 @@ class PdfController extends AbstractController
         }
 
 
-        $ms = new PdfModels($this->zdb, $this->preferences, $this->login);
+        $ms = new PdfModels();//$this->zdb, $this->preferences, $this->login);
         $models = $ms->getList();
 
         $model = null;
