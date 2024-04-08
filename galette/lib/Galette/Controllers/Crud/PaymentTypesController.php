@@ -34,7 +34,7 @@ use Analog\Analog;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class PaymentTypeController extends CrudController
+class PaymentTypesController extends CrudController
 {
     // CRUD - Create
 
@@ -80,11 +80,11 @@ class PaymentTypeController extends CrudController
      */
     public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
-        $ptypes = new PaymentTypes(
+        $ptypes = new PaymentTypes();/*
             $this->zdb,
             $this->preferences,
             $this->login
-        );
+        );*/
         $list = $ptypes->getList();
 
         // display page

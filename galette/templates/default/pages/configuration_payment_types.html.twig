@@ -21,7 +21,7 @@
 {% extends 'page.html.twig' %}
 
 {% block content %}
-        <form action="{{ url_for('paymentTypes') }}" method="post" enctype="multipart/form-data" class="ui form">
+        <form action="{{ url_for('addPaymentType') }}" method="post" enctype="multipart/form-data" class="ui form">
             <div class="ui basic fitted segment loader_selector">
                 <table class="listing ui celled striped table">
                     <thead>
