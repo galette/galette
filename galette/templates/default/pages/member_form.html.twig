@@ -216,11 +216,21 @@
             {% include "elements/js/choose_social.js.twig" %}
 
             $(function() {
-                $('#company_field.nocompany').addClass('displaynone');
-                $('#is_company').change(function(){
+                //$('#company_field.nocompany').addClass('displaynone');
+                /*$('#is_company').change(function(){
                     $('#company_field').toggleClass('displaynone');
-                });
+                });*/
+                {% if (member.legal_status == 0) %}  $('#company_field').addClass('displaynone'); {% endif %}
 
+                $('#legal_status').change(function(){
+                    $idx = $('#legal_status').prop('selectedIndex');
+                    if ($idx > 0) 
+                        $('#company_field').removeClass('displaynone');
+                    else
+                        $('#company_field').addClass('displaynone');
+                        
+                });
+                
 {% if not self_adh %}
                 {# Groups popup #}
                 $('#btngroups, #btnmanagedgroups').click(function(){

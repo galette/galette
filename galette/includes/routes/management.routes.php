@@ -29,6 +29,7 @@ use Galette\Controllers\CsvController;
 use Galette\Controllers\AdminToolsController;
 use Galette\Controllers\TextController;
 use Galette\DynamicFields\DynamicField;
+use Galette\Controllers\Crud\CrudHelper;
 
 //galette's dashboard
 $app->get(
@@ -207,7 +208,10 @@ $app->post(
     [PdfController::class, 'storeModels']
 )->setName('pdfModels')->add($authenticate);
 
-$app->get(
+CrudHelper::AddRoutesBasicEntityCRUD($app, Crud\TitlesController::class, $authenticate);
+CrudHelper::AddRoutesBasicEntityCRUD($app, Crud\LegalStatussController::class, $authenticate);
+
+/*$app->get(
     '/titles',
     [Crud\TitlesController::class, 'list']
 )->setName('titles')->add($authenticate);
@@ -236,6 +240,8 @@ $app->post(
     '/titles/edit/{id:\d+}',
     [Crud\TitlesController::class, 'doEdit']
 )->setname('editTitle')->add($authenticate);
+*/
+
 
 $app->get(
     '/texts[/{lang}/{ref}]',
@@ -403,6 +409,9 @@ $app->post(
     [AdminToolsController::class, 'process']
 )->setName('doAdminTools')->add($authenticate);
 
+CrudHelper::AddRoutesBasicEntityCRUD($app, Crud\PaymentTypesController::class, $authenticate);
+if(0)
+{
 $app->get(
     '/payment-types',
     [Crud\PaymentTypeController::class, 'list']
@@ -432,7 +441,7 @@ $app->post(
     '/payment-type/edit/{id:\d+}',
     [Crud\PaymentTypeController::class, 'doEdit']
 )->setname('editPaymentType')->add($authenticate);
-
+}
 $app->get(
     '/{form_name:adh|contrib|trans}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
     [Crud\DynamicFieldsController::class, 'getDynamicFile']

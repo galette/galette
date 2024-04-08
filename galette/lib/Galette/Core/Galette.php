@@ -421,6 +421,14 @@ class Galette
                                 ]
                             ],
                             [
+                                'label' => _T("Legal status"),
+                                'title' => _T("Manage legal status"),
+                                'route' => [
+                                    'name' => 'legalStatuss',
+                                    'aliases' => ['editLegalStatus']
+                                ]
+                            ],                            
+                            [
                                 'label' => _T("PDF models"),
                                 'title' => _T("Manage PDF models"),
                                 'route' => [

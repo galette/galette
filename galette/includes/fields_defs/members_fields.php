@@ -67,6 +67,14 @@ $members_fields = array(
         'position' => 5,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
+    'legal_status' => array(   // POURQUOI _adh +/- partout ?
+        'label'    => _T("Legal status:"),
+        'propname' => 'legal_status',
+        'required' => false,
+        'visible'  => FieldsConfig::NOBODY,//USER_WRITE,
+        'position' => 5000000, //TODO
+        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
+    ),
     'pseudo_adh' => array(
         'label'    => _T("Nickname:"),
         'propname' => 'nickname',
