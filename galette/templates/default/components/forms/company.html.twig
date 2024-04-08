@@ -18,11 +18,9 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 #}
-<div class="grouped fieldsX">
+<div class="grouped">
     <div class="field">
-{# {% if not member.isCompany() %}
-    {% set component_class = component_class ?? 'field' ~ ' nocompany' %}
-{% endif %} #}
+
 {% set component_class = '' %}
 {% if (member.legal_status == constant("Galette\\Entity\\LegalStatus::INDIVIDUAL")) %}
     {% set component_class = 'displaynone' %}
@@ -41,7 +39,7 @@
 }
 %}
     </div>
-<!-- Changer intitule par Company or organisation name   {{ entry.label}} -->
+<!-- TODO : Changer intitulé par Company or organisation name   {{ entry.label}} -->
     <div class="ten wide column">
 {% include "components/forms/text.html.twig" with {
         name: entry.field_id,
@@ -56,17 +54,6 @@
 %}
     </div>  
 </div>     
- <!--
-    <div class="field">
-{% include "components/forms/checkbox.html.twig" with {
-        name: "is_company",
-        id: "is_company",
-        value: "1",
-        label: _T("Is company?"),
-        title: _T("Is member a company?"),
-        tip: _T("Do you manage a non profit organization, or a company? If you do so, check the box, and then enter its name in the field that will appear."),
-        checked: member.isCompany(),
-    }
-%}-->
+
     
 
