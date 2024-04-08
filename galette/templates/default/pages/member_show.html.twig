@@ -171,9 +171,11 @@
                 {% if element.field_id == 'parent_id' %}
                     {continue}
                 {% endif %}
-
+<!--{{element.field_id }}; -->
                 {% if element.field_id == 'nom_adh' %}
                     {% set value = member.sfullname %}
+                {% elseif element.field_id == 'societe_adh' %}
+                    {% set value = member.legalstatus.long ~' '~ member.company_name %}
                 {% elseif element.field_id == 'pref_lang' %}
                     {% set value = pref_lang %}
                 {% elseif element.field_id == 'adresse_adh' %}

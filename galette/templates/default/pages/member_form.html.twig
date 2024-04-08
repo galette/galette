@@ -216,11 +216,7 @@
             {% include "elements/js/choose_social.js.twig" %}
 
             $(function() {
-                //$('#company_field.nocompany').addClass('displaynone');
-                /*$('#is_company').change(function(){
-                    $('#company_field').toggleClass('displaynone');
-                });*/
-                {% if (member.legal_status == 0) %}  $('#company_field').addClass('displaynone'); {% endif %}
+                {% if (member.id_legal_status  == constant("Galette\\Entity\\LegalStatus::INDIVIDUAL"))  %}  $('#company_field').addClass('displaynone'); {% endif %}
 
                 $('#legal_status').change(function(){
                     $idx = $('#legal_status').prop('selectedIndex');

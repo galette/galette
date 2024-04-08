@@ -30,4 +30,20 @@ class LegalStatus extends EntityFromDb
             $args
         );
     }
+
+    /**
+     * Remove current legal status
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return boolean
+     */
+    public function remove(): bool
+    {
+        $id = (int)$this->id;
+        if ($id === self::INDIVIDUAL) {
+            throw new \RuntimeException(_T("You cannot delete this item!"));
+        }
+        return parent::remove();
+    }
 }

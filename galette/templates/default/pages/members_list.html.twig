@@ -366,7 +366,7 @@
                             <i class="ui icon" aria-hidden="true"></i>
             {% endif %}
                         {% set mid = member.id %}
-                            <a href="{{ url_for("member", {"id": member.id}) }}">{{ member.sname }} {% if member.company_name %} ({{ member.scompanyname}}) {% endif %}</a>
+                            <a href="{{ url_for("member", {"id": member.id}) }}">{{ member.sname }}  {% if member.company_name %} ({{ member.legalstatus.short }} {{ member.company_name}}) {% endif %}</a>
                         </td>
         {% else %}
             {% set propname = column.propname %}

@@ -22,7 +22,7 @@
     <div class="field">
 
 {% set component_class = '' %}
-{% if (member.legal_status == constant("Galette\\Entity\\LegalStatus::INDIVIDUAL")) %}
+{% if (member.id_legal_status == constant("Galette\\Entity\\LegalStatus::INDIVIDUAL")) %}
     {% set component_class = 'displaynone' %}
 {% endif %}
 
@@ -31,8 +31,8 @@
     <div class="six wide column">
 {% include "components/forms/select.html.twig" with {
         id: 'legal_status',
-        name: 'legal_status',
-        value: member.legal_status,
+        name: 'id_legal_status',
+        value: member.id_legal_status,
         values: legalstatus_list,
         label: _T("Legal status :"),
         component_class: 'field',

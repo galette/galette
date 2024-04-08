@@ -51,7 +51,7 @@ use Galette\Entity\LegalStatus;
  * @property ?integer $id
  * @property integer|Title|null $title Either a title id or an instance of Title
  * @property string $stitle Title label
- * @property integer $legal_status
+ * @property integer $id_legal_status
  * @property string $company_name
  * @property string $name
  * @property ?string $surname
@@ -130,7 +130,7 @@ class Adherent
     private ?int $id;
     //Identity
     private Title|string|null $title = null;
-    private int $legal_status=LegalStatus::INDIVIDUAL;
+    private int $id_legal_status=LegalStatus::INDIVIDUAL;
     private ?string $company_name;
     private ?string $name;
     private ?string $surname;
@@ -358,8 +358,8 @@ class Adherent
         if ($r->titre_adh !== null) {
             $this->title = new Title((int)$r->titre_adh);
         }
-        $this->company_name = $r->societe_adh;
-        $this->legal_status = $r->legal_status;
+        $this->company_name = ucfirst($r->societe_adh);
+        $this->id_legal_status = $r->id_legal_status;
         $this->name = $r->nom_adh;
         $this->surname = $r->prenom_adh;
         $this->nickname = $r->pseudo_adh;
@@ -685,7 +685,7 @@ class Adherent
     public function isCompany(): bool
     {
         //return trim($this->company_name ?? '') != '';
-        return $this->legal_status != LegalStatus::INDIVIDUAL || trim($this->company_name ?? '') != '';
+        return $this->id_legal_status != LegalStatus::INDIVIDUAL || trim($this->company_name ?? '') != '';
     }
 
     /**
@@ -1153,7 +1153,7 @@ class Adherent
 
         //reset company name if needed
         //TODO :
-        if ($values['legal_status'] <= LegalStatus::INDIVIDUAL) {
+        if ($values['id_legal_status'] <= LegalStatus::INDIVIDUAL) {
         //if (!isset($values['is_company'])) {
             //unset($values['is_company']);
             $values['societe_adh'] = '';
@@ -1773,7 +1773,7 @@ class Adherent
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
             'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
-            'rbirthdate', 'sgender', 'contribstatus', 'scompanyname'
+            'rbirthdate', 'sgender', 'contribstatus', 'legalstatus'
         );
 
         $socials = array('website', 'msn', 'jabber', 'icq');
@@ -1823,9 +1823,8 @@ class Adherent
                     } else {
                         return null;
                     }
-                case 'scompanyname':
-                    $ls = new LegalStatus($this->zdb, $this->legal_status);
-                    return $ls->short != '' ? "{$ls->short} {$this->company_name}" : $this->company_name;
+                case 'legalstatus':
+                    return new LegalStatus($this->zdb, $this->id_legal_status);
                 case 'sstatus':
                     $status = new Status($this->zdb);
                     return $status->getLabel($this->status);
@@ -1929,7 +1928,7 @@ class Adherent
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
             'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
-            'rbirthdate', 'sgender', 'contribstatus', 'scompanyname'
+            'rbirthdate', 'sgender', 'contribstatus', 'legalstatus'
         );
 
         $socials = array('website', 'msn', 'jabber', 'icq');

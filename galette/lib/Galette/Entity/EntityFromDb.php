@@ -102,7 +102,7 @@ class EntityFromDb
     public function __toString(): string
     {
         if (array_key_exists('toString', $this->options)) {
-            return $this->values[$this->options['toString']];
+            return $this->{$this->options['toString']};
         }
         return "options[toString] not defined";
     }

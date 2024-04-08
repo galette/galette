@@ -67,7 +67,7 @@ $members_fields = array(
         'position' => 5,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
-    'legal_status' => array(   // POURQUOI _adh +/- partout ?
+    'id_legal_status' => array(   // POURQUOI _adh +/- partout ?
         'label'    => _T("Legal status:"),
         'propname' => 'legal_status',
         'required' => false,
