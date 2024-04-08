@@ -988,18 +988,7 @@ class MembersController extends CrudController
         //Titles
         $titles = new Titles($this->zdb);
         //LegalStatus
-        $legalStatus = new LegalStatuss();//$this->zdb, $this->preferences, $this->login);
-
-/*
-        $l = new LegalStatus($this->zdb);
-$l->load(1);
-$l->short='PP';
-$l->store();
-$legalStatus->installInit();
-$l = new LegalStatus($this->zdb);
-$l->short="a";
-$l->store();
-*/
+        $legalStatus = new LegalStatuss(); 
 
         //Groups
         $groups = new Groups($this->zdb, $this->login);
