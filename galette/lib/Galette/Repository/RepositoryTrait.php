@@ -101,10 +101,11 @@ trait RepositoryTrait
             }
             throw $e;
         }
+        return false;
     }
 
     /**
-     * Checks for missing payment types in the database
+     * Checks for missing entries in the database
      *
      * @return boolean
      */
