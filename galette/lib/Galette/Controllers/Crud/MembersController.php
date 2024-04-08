@@ -29,6 +29,8 @@ use Slim\Psr7\Response;
 use Galette\Core\GaletteMail;
 use Galette\Core\Gaptcha;
 use Galette\Entity\Adherent;
+use Galette\Repository\LegalStatuss;
+use Galette\Entity\LegalStatus;
 use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
 use Galette\Entity\DynamicFieldsHandle;
@@ -985,6 +987,19 @@ class MembersController extends CrudController
         $statuts = new Status($this->zdb);
         //Titles
         $titles = new Titles($this->zdb);
+        //LegalStatus
+        $legalStatus = new LegalStatuss();//$this->zdb, $this->preferences, $this->login);
+
+/*
+        $l = new LegalStatus($this->zdb);
+$l->load(1);
+$l->short='PP';
+$l->store();
+$legalStatus->installInit();
+$l = new LegalStatus($this->zdb);
+$l->short="a";
+$l->store();
+*/
 
         //Groups
         $groups = new Groups($this->zdb, $this->login);
@@ -1034,6 +1049,7 @@ class MembersController extends CrudController
                 'time'              => time(),
                 'titles_list'       => $titles->getList(),
                 'statuts'           => $statuts->getList(),
+                'legalstatus_list'  => $legalStatus->getList(),
                 'groups'            => $groups_list,
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens'],
