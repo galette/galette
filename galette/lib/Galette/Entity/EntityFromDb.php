@@ -29,17 +29,20 @@ class EntityFromDb
         $this->zdb = $zdb;
         $this->options = $options;
 
-        $this->TABLE= $tableDescription['table'];
+        $this->TABLE = $tableDescription['table'];
         $this->PK = $tableDescription['id'];
 
         $this->tableFields = $tableDescription;
         unset($this->tableFields['table']);
 
         //Rendre le code plus simple par la suite
-        $this->tableFieldsReversed=[];
-        foreach($this->tableFields as $k=>$v)
-        {
+        $this->tableFieldsReversed = [];
+        foreach ($this->tableFields as $k => $v) {
             $this->tableFieldsReversed[$v] = $k;
+        }
+
+        foreach ($this->tableFields as $f => $v) {
+            $this->$f = null;
         }
 
         if (is_int($args)) {
@@ -65,8 +68,9 @@ class EntityFromDb
             $results = $this->zdb->execute($select);
             $res = $results->current();
 
-            $this->loadFromRs($res);
-         } catch (Throwable $e) {
+            if ($res)
+                $this->loadFromRs($res);
+        } catch (Throwable $e) {
             Analog::log(
                 "Error when loading {$this->entity} (#$id) Message:\n" .
                 $e->getMessage(),
@@ -85,8 +89,8 @@ class EntityFromDb
      */
     private function loadFromRs(ArrayObject $rs): void
     {
-        foreach($rs as $f => $v) {
-            if($v === "NULL") {
+        foreach ($rs as $f => $v) {
+            if ($v === "NULL") {
                 $v = null;
             }
             $prop = $this->tableFieldsReversed[$f];
@@ -117,7 +121,7 @@ class EntityFromDb
     public function store(): bool
     {
         $data = [];
-        foreach($this->tableFields as $prop => $tableCol) {
+        foreach ($this->tableFields as $prop => $tableCol) {
             if (isset($this->$prop)) {
                 $data[$tableCol] = strip_tags($this->$prop);
             }
@@ -141,6 +145,7 @@ class EntityFromDb
             }
             return true;
         } catch (Throwable $e) {
+            $id = $this->$id ? $this->$id : 'new';
             Analog::log(
                 "Error when storing {$this->entity} (#$id) Message:\n" . $e->getMessage() .
                 "\n" . print_r($data, true),
@@ -190,10 +195,10 @@ class EntityFromDb
     {
         global $lang;
         if (array_key_exists($name, $this->values)) {
-            $value =  $this->values[$name];
+            $value = $this->values[$name];
             if (array_key_exists($name, $this->options)) {
                 $ex = explode(':', $name);
-                switch($ex[1]) {
+                switch ($ex[1]) {
                     case 'translate':
                         if (isset($lang) && isset($lang[$value])) {
                             $value = _T($value);
