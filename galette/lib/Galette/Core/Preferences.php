@@ -241,6 +241,10 @@ class Preferences
         'pref_card_bcol'    =>    '#53248C',
         'pref_card_hcol'    =>    '#248C53',
         'pref_bool_display_title'    =>    false,
+        'pref_card_hsize'    =>    84,
+        'pref_card_vsize'    =>    52,
+        'pref_card_rows'    =>    6,
+        'pref_card_cols'    =>    2,
         'pref_card_address'    =>    1,
         'pref_card_year'    =>    '',
         'pref_card_marges_v'    =>    15,
@@ -307,7 +311,9 @@ class Preferences
         'pref_card_marges_v',
         'pref_card_marges_h',
         'pref_card_hspace',
-        'pref_card_vspace'
+        'pref_card_vspace',
+        'pref_card_hsize',
+        'pref_card_vsize'
     );
 
     /**
@@ -704,6 +710,16 @@ class Preferences
                     $this->errors[] = _T("- The numbers and measures have to be integers!");
                 }
                 break;
+            case 'pref_card_vsize':
+                if (!is_numeric($value) || $value < 40 || $value > 55) {
+                    $this->errors[] = _T("- The card height have to be an integer between 40 and 55!");
+                }
+                break;
+            case 'pref_card_hsize':
+                if (!is_numeric($value) || $value < 70 || $value > 95) {
+                    $this->errors[] = _T("- The card width have to be an integer between 75 and 95!");
+                }
+                break;
             case 'pref_card_tcol':
             case 'pref_card_scol':
             case 'pref_card_bcol':
@@ -806,6 +822,14 @@ class Preferences
                         //Reset to default, should not be empty
                         $v = self::$defaults['pref_adhesion_form'];
                     }
+                    $value = $v;
+                }
+                if ($k === 'pref_card_cols') {
+                    $v = PdfMembersCards::getCols();
+                    $value = $v;
+                }
+                if ($k === 'pref_card_rows') {
+                    $v = PdfMembersCards::getRows();
                     $value = $v;
                 }
 
@@ -1153,41 +1177,6 @@ class Preferences
         }
 
         return null;
-    }
-
-    /**
-     * Check member cards sizes
-     * Always a A4/portrait
-     *
-     * @return array<string>
-     */
-    public function checkCardsSizes(): array
-    {
-        $warning_detected = [];
-        //check page width
-        $max = 210;
-        //margins
-        $size = $this->pref_card_marges_h * 2;
-        //cards
-        $size += PdfMembersCards::getWidth() * PdfMembersCards::getCols();
-        //spacing
-        $size += $this->pref_card_hspace * (PdfMembersCards::getCols() - 1);
-        if ($size > $max) {
-            $warning_detected[] = _T('Current cards configuration may exceed page width!');
-        }
-
-        $max = 297;
-        //margins
-        $size = $this->pref_card_marges_v * 2;
-        //cards
-        $size += PdfMembersCards::getHeight() * PdfMembersCards::getRows();
-        //spacing
-        $size += $this->pref_card_vspace * (PdfMembersCards::getRows() - 1);
-        if ($size > $max) {
-            $warning_detected[] = _T('Current cards configuration may exceed page height!');
-        }
-
-        return $warning_detected;
     }
 
     /**

@@ -657,7 +657,7 @@
             <div class="ui icon info visible message">
                 <i class="info circle blue icon" aria-hidden="true"></i>
                 <div class="content">
-                    {{ _T("Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)")|raw }}
+                    {{ _T("Each page contains %1$s columns and  %2$s rows.")|replace({"%1$s": pref.pref_card_cols, "%2$s": pref.pref_card_rows}) }}
                 </div>
             </div>
             <div class="ui stackable two column grid">
@@ -803,6 +803,20 @@
                         <label for="pref_card_hspace">{{ _T("Horizontal spacing:") }}</label>
                         <div class="ui right labeled input">
                             <input type="number" name="pref_card_hspace" id="pref_card_hspace" value="{{ pref.pref_card_hspace }}" maxlength="4"{% if required.pref_card_hspace is defined and required.pref_card_hspace == 1 %} required="required"{% endif %}/>
+                            <div class="ui basic label">mm</div>
+                        </div>
+                    </div>
+                    <div class="{% if required.pref_card_hsize is defined and required.pref_card_hsize == 1 %}required {% endif %}field">
+                        <label for="pref_card_hsize">{{ _T("Card width from 70 to 95mm:") }}</label>
+                        <div class="ui right labeled input">
+                            <input type="number" name="pref_card_hsize" id="pref_card_hsize" value="{{ pref.pref_card_hsize }}" maxlength="4"{% if required.pref_card_hsize is defined and required.pref_card_hsize == 1 %} required="required"{% endif %}/>
+                            <div class="ui basic label">mm</div>
+                        </div>
+                    </div>
+                    <div class="{% if required.pref_card_vsize is defined and required.pref_card_vsize == 1 %}required {% endif %}field">
+                        <label for="pref_card_vsize">{{ _T("Card height from 40 to 55mm:") }}</label>
+                        <div class="ui right labeled input">
+                            <input type="number" name="pref_card_vsize" id="pref_card_vsize" value="{{ pref.pref_card_vsize }}" maxlength="4"{% if required.pref_card_vsize is defined and required.pref_card_vsize == 1 %} required="required"{% endif %}/>
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>

@@ -122,11 +122,24 @@ class AuthController extends AbstractController
                 || $this->login->isAdmin()
                 || $this->login->isStaff()
             ) {
-                if (defined('NON_UTF_DBCONNECT')) {
-                    $this->flash->addMessage(
-                        'warning',
-                        'It appears you are using NON_UTF_DBCONNECT constant, that has been removed in current release.'
-                    );
+                $deprecated_constants = [
+                    'NON_UTF_DBCONNECT',
+                    'GALETTE_CARD_WIDTH',
+                    'GALETTE_CARD_HEIGHT',
+                    'GALETTE_CARD_COLS',
+                    'GALETTE_CARD_ROWS'
+                ];
+
+                foreach ($deprecated_constants as $deprecated_constant) {
+                    if (defined($deprecated_constant)) {
+                        $this->flash->addMessage(
+                            'warning',
+                            sprintf(
+                                'It appears you are using %1$s constant, that has been removed in current release.',
+                                $deprecated_constant
+                            )
+                        );
+                    }
                 }
 
                 try {

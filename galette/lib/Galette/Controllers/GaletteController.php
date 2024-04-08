@@ -258,7 +258,6 @@ class GaletteController extends AbstractController
     {
         $post = $request->getParsedBody();
         $error_detected = [];
-        $warning_detected = [];
 
         // Validation
         if (isset($post['valid']) && $post['valid'] == '1') {
@@ -271,7 +270,6 @@ class GaletteController extends AbstractController
                         _T("Preferences has been saved.")
                     );
                 }
-                $warning_detected = array_merge($warning_detected, $this->preferences->checkCardsSizes());
 
                 // picture upload
                 if (!Galette::isDemo() && isset($_FILES['logo'])) {
@@ -347,16 +345,6 @@ class GaletteController extends AbstractController
                     $this->flash->addMessage(
                         'error_detected',
                         $error
-                    );
-                }
-            }
-
-            if (count($warning_detected) > 0) {
-                //report warnings
-                foreach ($warning_detected as $warning) {
-                    $this->flash->addMessage(
-                        'warning_detected',
-                        $warning
                     );
                 }
             }
