@@ -18,11 +18,31 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 #}
-<div class="grouped fields">
+<div class="grouped fieldsX">
     <div class="field">
-{% if not member.isCompany() %}
+{# {% if not member.isCompany() %}
     {% set component_class = component_class ?? 'field' ~ ' nocompany' %}
+{% endif %} #}
+{% set component_class = '' %}
+{% if (member.legal_status == constant("Galette\\Entity\\LegalStatus::INDIVIDUAL")) %}
+    {% set component_class = 'displaynone' %}
 {% endif %}
+
+
+  <div class="ui grid">
+    <div class="six wide column">
+{% include "components/forms/select.html.twig" with {
+        id: 'legal_status',
+        name: 'legal_status',
+        value: member.legal_status,
+        values: legalstatus_list,
+        label: _T("Legal status :"),
+        component_class: 'field',
+}
+%}
+    </div>
+<!-- Changer intitule par Company or organisation name   {{ entry.label}} -->
+    <div class="ten wide column">
 {% include "components/forms/text.html.twig" with {
         name: entry.field_id,
         id: entry.field_id,
@@ -31,10 +51,12 @@
         disabled: entry.disabled,
         label: entry.label,
         component_id: "company_field",
-        component_class: component_class ?? 'field'
+        component_class: 'field '~component_class
     }
 %}
-    </div>
+    </div>  
+</div>     
+ <!--
     <div class="field">
 {% include "components/forms/checkbox.html.twig" with {
         name: "is_company",
@@ -45,6 +67,6 @@
         tip: _T("Do you manage a non profit organization, or a company? If you do so, check the box, and then enter its name in the field that will appear."),
         checked: member.isCompany(),
     }
-%}
-    </div>
-</div>
+%}-->
+    
+
