@@ -21,6 +21,7 @@
 
 namespace Galette\Repository;
 
+use DI\Attribute\Inject;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\Pagination;
@@ -28,17 +29,35 @@ use Galette\Core\Preferences;
 use Galette\Core\Login;
 use Laminas\Db\ResultSet\ResultSet;
 
+
 /**
  * Repositories
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 abstract class Repository
-{
-    protected Db $zdb;
-    protected Preferences $preferences;
+{    
+    /**
+    * @var Db
+    */
+   #[Inject]
+   public Db $zdb;
+
+   /**
+    * @var Login
+    */
+   #[Inject]
+   protected Login $login;
+
+   /**
+    * @var Preferences
+    */
+   #[Inject]
+   protected Preferences $preferences;
+    
+
     protected string $entity;
-    protected Login $login;
+    
     protected Pagination $filters;
     /** @var array<int|string,mixed> */
     protected array $defaults = [];
@@ -55,16 +74,19 @@ abstract class Repository
      * @param string      $prefix      Prefix (for plugins)
      */
     public function __construct(
-        Db $zdb,
+        /*Db $zdb,
         Preferences $preferences,
-        Login $login,
+        Login $login,*/
         ?string $entity = null,
         ?string $ns = null,
         string $prefix = ''
     ) {
+        //TODO : //DI ne fonctionne pas
+        global $zdb,$preferences,$login;
         $this->zdb = $zdb;
         $this->preferences = $preferences;
         $this->login = $login;
+
         $this->prefix = $prefix;
 
         if ($entity === null) {
@@ -151,6 +173,7 @@ abstract class Repository
      *
      * @return array<string,mixed>
      */
+    //HM : TODO , pas clair, a approfondir
     protected function loadDefaults(): array
     {
         return $this->defaults;
