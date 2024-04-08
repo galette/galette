@@ -358,7 +358,7 @@ class Adherent
         if ($r->titre_adh !== null) {
             $this->title = new Title((int)$r->titre_adh);
         }
-        $this->company_name = ucfirst($r->societe_adh);
+        $this->company_name = $r->societe_adh;
         $this->id_legal_status = $r->id_legal_status;
         $this->name = $r->nom_adh;
         $this->surname = $r->prenom_adh;
@@ -1152,10 +1152,7 @@ class Adherent
         $fields = self::getDbFields($this->zdb);
 
         //reset company name if needed
-        //TODO :
         if ($values['id_legal_status'] <= LegalStatus::INDIVIDUAL) {
-        //if (!isset($values['is_company'])) {
-            //unset($values['is_company']);
             $values['societe_adh'] = '';
         }
 
