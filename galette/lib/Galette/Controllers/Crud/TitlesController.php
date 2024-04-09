@@ -128,10 +128,11 @@ class TitlesController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'pages/configuration_title_form.html.twig',
+            'pages/configuration_textsshortlong_form.html.twig',
             [
                 'page_title'    => _T("Edit title"),
-                'title'         => $title,
+                'item'         => $title,
+                'entityName'    => 'Title',
                 'mode'         => $mode
             ]
         );
@@ -178,7 +179,7 @@ class TitlesController extends CrudController
         $title->short = $post['short_label'];
         $title->long = $post['long_label'];
         if ((isset($post['short_label']) && $post['short_label'] != '') && (isset($post['long_label']) && $post['long_label'] != '')) {
-            $res = $title->store($this->zdb);
+            $res = $title->store();//$this->zdb);
         } else {
             $res = false;
             $error_detected[] = _T("Missing required title's short or long form!");

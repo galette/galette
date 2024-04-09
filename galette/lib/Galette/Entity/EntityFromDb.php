@@ -26,6 +26,8 @@ class EntityFromDb
      */
     public function __construct($zdb, $tableDescription, $options, int|ArrayObject $args = null)
     {
+        $this->entity = basename(str_replace('\\', '/', get_class($this)));
+
         $this->zdb = $zdb;
         $this->options = $options;
 
@@ -123,7 +125,7 @@ class EntityFromDb
         $data = [];
         foreach ($this->tableFields as $prop => $tableCol) {
             if (isset($this->$prop)) {
-                $data[$tableCol] = strip_tags($this->$prop);
+                $data[$tableCol] = $this->$prop!==null ? strip_tags($this->$prop) : null;
             }
         }
 
@@ -246,6 +248,13 @@ class EntityFromDb
     public function __set(string $name, $value): void
     {
         if (in_array($name, $this->tableFieldsReversed)) {
+            if ($this->getOption("$name:noempty", $option) && $option === true && $value !== null && strlen(trim($value)) == 0) {
+                Analog::log(
+                    "$name cannot be empty",
+                    Analog::WARNING
+                );
+//                throw new \Exception($name . ' '. _T('cannot be empty'));
+            }
             $this->values[$name] = $value;
         } else {
             Analog::log(
@@ -253,5 +262,13 @@ class EntityFromDb
                 Analog::WARNING
             );
         }
+    }
+
+    private function getOption(string $name, ?string &$option): bool
+    {
+        if (!array_key_exists($name, $this->options))
+            return false;
+        $option = $this->options[$name];
+        return true;
     }
 }

@@ -57,6 +57,7 @@ abstract class Repository
     
 
     protected string $entity;
+    protected string $entityShortName;
     
     protected Pagination $filters;
     /** @var array<int|string,mixed> */
@@ -104,6 +105,7 @@ abstract class Repository
                 );
             }
         }
+        $this->entityShortName = $entity;
         if ($ns === null) {
             $ns = 'Galette\\Entity';
         }

@@ -13,6 +13,8 @@ use Analog\Analog;
 
 trait RepositoryTrait
 {
+    private $entityClassName;
+
     /**
      * Get list
      *
@@ -33,14 +35,35 @@ trait RepositoryTrait
             return $ret;
         } catch (Throwable $e) {
             Analog::log(
-                "Cannot list {$this->entity} | " . $e->getMessage(),
+                "Cannot list {$this->entityShortName}s | " . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
         }
     }
 
-    public function countAll()
+    /**
+     * Get a list of all entries
+     *
+     * @return array<int, mixed>
+     */
+    public static function getAll(): array
+    {
+        $ptypes = new self(); 
+        return $ptypes->getList();
+    }
+
+    public function load(int $id): null|\ArrayObject
+    {
+        $select = $this->zdb->select(constant($this->entity . '::TABLE'));
+        $select->limit(1)
+            ->where(array(constant($this->entity . '::PK') => $id));
+
+        $results = $this->zdb->execute($select);
+        $return = $results->current();
+    }
+
+    public function countAll(): int
     {
         $ent = $this->entity;
         $TABLE = constant($ent . '::TABLE');
@@ -103,6 +126,12 @@ trait RepositoryTrait
                 $this->multipleInsert($TABLE, $defaults);
 
                 $this->zdb->connection->commit();
+
+                Analog::log(
+                    "Default {$this->entityShortName}s were successfully stored into database.",
+                    Analog::INFO
+                );
+
                 return true;
             }
         } catch (Throwable $e) {
@@ -134,8 +163,7 @@ trait RepositoryTrait
      */
     private function multipleInsert(string $table, array $values): void
     {
-        foreach ($values as $row)
-        {
+        foreach ($values as $row) {
             $insert = $this->zdb->insert($table);
             $insert->values($row);
             $this->zdb->execute($insert);

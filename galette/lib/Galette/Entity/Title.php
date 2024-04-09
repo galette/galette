@@ -49,7 +49,7 @@ class Title extends EntityFromDb
 
                 //'short:validate' => function($value) { return ($value == null || trim($value) === '') ? $this->short : $value; },
                 'long:validate' => function ($value) { return ($value == null || trim($value) === '') ? $this->short : $value; },
-
+                'long:noempty' => true,
                 'tshort' => 'short:translate',
                 'tlong' => 'long:translate',
 

@@ -36,7 +36,7 @@
                     <tr>
                         <td data-scope="row">
                             <span class="visually-hidden">
-                                {{ _T("Add title") }}
+                                {{ _T("Add legal status") }}
                             </span>
                         </td>
                         <td class="left" data-col-label="{{ _T("Short form") }}">
@@ -61,39 +61,39 @@
                     </tr>
                 </tfoot>
                 <tbody>
-        {% for title in legalstatuss_list %}
+        {% for item in legalstatuss_list %}
                     <tr>
                         <td data-scope="row">
             {% if preferences.pref_show_id %}
-                            {{ title.id }}
+                            {{ item.id }}
             {% else %}
                             {{ loop.index }}
             {% endif %}
                             <span class="displaynone">
-                                <a href="{{ url_for('editTitle', {'id': title.id}) }}">
-                                    {{ _T("%s title")|replace({'%s': title.short|escape}) }}
+                                <a href="{{ url_for('editLegalStatus', {'id': item.id}) }}">
+                                    {{ _T("%s title")|replace({'%s': item.short|escape}) }}
                                 </a>
                             </span>
                         </td>
-                        <td class="left" data-col-label="{{ _T("Short form") }}">{{ title.short|escape }}</td>
-                        <td class="left" data-col-label="{{ _T("Long form") }}">{{ title.long|escape }}</td>
+                        <td class="left" data-col-label="{{ _T("Short form") }}">{{ item.short|escape }}</td>
+                        <td class="left" data-col-label="{{ _T("Long form") }}">{{ item.long|escape }}</td>
                         <td class="center actions_row">
                             <a
-                                href="{{ url_for('editTitle', {'id': title.id}) }}"
+                                href="{{ url_for('editLegalStatus', {'id': item.id}) }}"
                                 class="action single-edit"
                             >
                                 <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">{{ _T("Edit '%s' title")|replace({'%s': title.short|escape}) }}</span>
+                                <span class="ui special popup">{{ _T("Edit '%s' legal status")|replace({'%s': item.short|escape}) }}</span>
                             </a>
-            {% if title.id == 1 or title.id == 2 %}
+            {% if item.id == 1 or item.id == 2 %}
                             <i class="ui icon">&nbsp;</i>
             {% else %}
                             <a
-                                href="{{ url_for('removeTitle', {'id': title.id}) }}"
+                                href="{{ url_for('removeLegalStatus', {'id': item.id}) }}"
                                 class="delete "
                             >
                                 <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">{{ _T("Delete '%s' title")|replace({'%s': title.short|escape}) }}</span>
+                                <span class="ui special popup">{{ _T("Delete '%s' legal status")|replace({'%s': item.short|escape}) }}</span>
                             </a>
             {% endif %}
                         </td>
@@ -115,7 +115,7 @@
             " %}
             {% include "elements/js/modal_action.js.twig" with {
                 selector: ".single-edit",
-                modal_title_twig: _T("Edit title")|e("js"),
+                modal_title_twig: _T("Edit legal status")|e("js"),
                 modal_class: "mini",
                 modal_onapprove: modal_onapprove
             } %}

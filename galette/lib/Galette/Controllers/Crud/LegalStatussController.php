@@ -85,10 +85,10 @@ class LegalStatussController extends CrudController
         // display page
         $this->view->render(
             $response,
-            'pages/configuration_titles.html.twig',
+            'pages/configuration_legalstatuss.html.twig',
             [
                 'page_title'        => _T("Legal status management"),
-                'titles_list'       => $legalStatuss->getList()
+                'legalstatuss_list'       => $legalStatuss->getList()
             ]
         );
         return $response;
@@ -122,16 +122,17 @@ class LegalStatussController extends CrudController
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
-        $title = new Title($id);
+        $ls = new LegalStatus($this->zdb, $id);
         $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
 
         // display page
         $this->view->render(
             $response,
-            'pages/configuration_title_form.html.twig',
+            'pages/configuration_textsshortlong_form.html.twig',
             [
-                'page_title'    => _T("Edit title"),
-                'title'         => $title,
+                'page_title'    => _T("Edit legal status"),
+                'item'   => $ls,
+                'entityName'    => 'LegalStatus',
                 'mode'         => $mode
             ]
         );
@@ -174,11 +175,11 @@ class LegalStatussController extends CrudController
         $error_detected = [];
         $msg = null;
 
-        $title = new Title($id);
-        $title->short = $post['short_label'];
-        $title->long = $post['long_label'];
+        $ls = new LegalStatus($this->zdb, $id);
+        $ls->short = $post['short_label'];
+        $ls->long = $post['long_label'];
         if ((isset($post['short_label']) && $post['short_label'] != '') && (isset($post['long_label']) && $post['long_label'] != '')) {
-            $res = $title->store($this->zdb);
+            $res = $ls->store();//$this->zdb);
         } else {
             $res = false;
             $error_detected[] = _T("Missing required title's short or long form!");
@@ -189,29 +190,29 @@ class LegalStatussController extends CrudController
             if ($id === null) {
                 $error_detected[] = preg_replace(
                     '(%s)',
-                    $title->short !== null ? $title->short : '',
+                    $ls->short !== null ? $ls->short : '',
                     _T("Title '%s' has not been added!")
                 );
             } else {
                 $error_detected[] = preg_replace(
                     '(%s)',
-                    $title->short !== null ? $title->short : '',
+                    $ls->short !== null ? $ls->short : '',
                     _T("Title '%s' has not been modified!")
                 );
 
-                $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => (string)$id]);
+                $redirect_uri = $this->routeparser->urlFor('editLegalStatus', ['id' => (string)$id]);
             }
         } else {
             if ($id === null) {
                 $error_detected[] = preg_replace(
                     '(%s)',
-                    $title->short,
+                    $ls->short,
                     _T("Title '%s' has been successfully added.")
                 );
             } else {
                 $msg = preg_replace(
                     '(%s)',
-                    $title->short,
+                    $ls->short,
                     _T("Title '%s' has been successfully modified.")
                 );
             }
@@ -248,7 +249,7 @@ class LegalStatussController extends CrudController
      */
     public function redirectUri(array $args): string
     {
-        return $this->routeparser->urlFor('legalstatus');
+        return $this->routeparser->urlFor('legalStatuss');
     }
 
     /**
@@ -261,7 +262,7 @@ class LegalStatussController extends CrudController
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
-            'doRemoveTitle',
+            'doRemoveLegalStatus',
             ['id' => $args['id']]
         );
     }
@@ -275,10 +276,10 @@ class LegalStatussController extends CrudController
      */
     public function confirmRemoveTitle(array $args): string
     {
-        $title = new Title((int)$args['id']);
+        $ls = new LegalStatus($this->zdb, (int)$args['id']);
         return sprintf(
-            _T('Remove title %1$s'),
-            $title->short
+            _T('Remove LegalStatus %1$s'),
+            $ls->short
         );
     }
 
@@ -292,8 +293,8 @@ class LegalStatussController extends CrudController
      */
     protected function doDelete(array $args, array $post): bool
     {
-        $title = new Title((int)$args['id']);
-        return $title->remove($this->zdb);
+        $ls = new LegalStatus($this->zdb, (int)$args['id']);
+        return $ls->remove();//$this->zdb);
     }
 
     // /CRUD - Delete
