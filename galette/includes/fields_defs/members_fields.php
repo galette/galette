@@ -69,7 +69,7 @@ $members_fields = array(
     ),
     'id_legal_status' => array(   // POURQUOI _adh +/- partout ?
         'label'    => _T("Legal status:"),
-        'propname' => 'legal_status',
+        'propname' => 'id_legal_status',
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,//USER_WRITE,
         'position' => 5000000, //TODO

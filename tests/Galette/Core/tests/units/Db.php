@@ -534,6 +534,7 @@ class Db extends TestCase
             'galette_groups_members',
             'galette_transactions',
             'galette_titles',
+            'galette_legalstatus',
             'galette_types_cotisation',
             'galette_paymenttypes',
             'galette_database',

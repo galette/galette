@@ -80,11 +80,11 @@ class PaymentTypesController extends CrudController
      */
     public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
-        $ptypes = new PaymentTypes();/*
+        $ptypes = new PaymentTypes(
             $this->zdb,
             $this->preferences,
             $this->login
-        );*/
+        );
         $list = $ptypes->getList();
 
         // display page

@@ -80,7 +80,7 @@ class LegalStatussController extends CrudController
      */
     public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
-        $legalStatuss = new LegalStatuss();//$this->zdb);
+        $legalStatuss = new LegalStatuss($this->zdb, $this->preferences, $this->login);
 
         // display page
         $this->view->render(

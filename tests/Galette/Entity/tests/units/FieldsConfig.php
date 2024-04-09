@@ -76,6 +76,7 @@ class FieldsConfig extends TestCase
             'date_crea_adh',
             'date_modif_adh',
             'societe_adh',
+            'id_legal_status',
             'id_statut',
             'pref_lang',
             'sexe_adh',

@@ -1152,7 +1152,7 @@ class Adherent
         $fields = self::getDbFields($this->zdb);
 
         //reset company name if needed
-        if ($values['id_legal_status'] <= LegalStatus::INDIVIDUAL) {
+        if (isset($values['id_legal_status']) && $values['id_legal_status'] <= LegalStatus::INDIVIDUAL) {
             $values['societe_adh'] = '';
         }
 
@@ -1400,6 +1400,9 @@ class Adherent
                 } else {
                     $this->$prop = null;
                 }
+                break;
+            case 'id_legal_status':
+                if ($value !== '') $this->id_legal_status = intval($value);
                 break;
             case 'email_adh':
                 if (!GaletteMail::isValidEmail($value)) {

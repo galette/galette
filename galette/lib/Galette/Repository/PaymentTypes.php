@@ -43,7 +43,7 @@ class PaymentTypes extends Repository
      */
     public static function getAll(bool $schedulable = true): array
     {
-        //global $zdb, $preferences, $login;
+        global $zdb, $preferences, $login;
         $ptypes = new self($zdb, $preferences, $login);
         return $ptypes->getList($schedulable);
     }

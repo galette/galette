@@ -125,7 +125,7 @@ class Members extends GaletteTestCase
             );
 
             if (isset($test_member['societe_adh'])) {
-                $test_member['is_company'] = true;
+                $test_member['id_legal_status'] = 2;
             }
             $this->assertTrue($member->check($test_member, [], []));
             $this->assertTrue($member->store());

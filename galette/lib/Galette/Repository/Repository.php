@@ -36,29 +36,15 @@ use Laminas\Db\ResultSet\ResultSet;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 abstract class Repository
-{    
-    /**
-    * @var Db
-    */
-   #[Inject]
-   public Db $zdb;
+{
+    public Db $zdb;
+    protected ?Login $login;
+    protected ?Preferences $preferences;
 
-   /**
-    * @var Login
-    */
-   #[Inject]
-   protected Login $login;
-
-   /**
-    * @var Preferences
-    */
-   #[Inject]
-   protected Preferences $preferences;
-    
 
     protected string $entity;
     protected string $entityShortName;
-    
+
     protected Pagination $filters;
     /** @var array<int|string,mixed> */
     protected array $defaults = [];
@@ -75,15 +61,14 @@ abstract class Repository
      * @param string      $prefix      Prefix (for plugins)
      */
     public function __construct(
-        /*Db $zdb,
-        Preferences $preferences,
-        Login $login,*/
+        Db $zdb,
+        Preferences $preferences=null,
+        Login $login=null,
         ?string $entity = null,
         ?string $ns = null,
         string $prefix = ''
     ) {
-        //TODO : //DI ne fonctionne pas
-        global $zdb,$preferences,$login;
+        //TODO : //Utiliser DI ?
         $this->zdb = $zdb;
         $this->preferences = $preferences;
         $this->login = $login;
@@ -178,7 +163,6 @@ abstract class Repository
     protected function loadDefaults(): array
     {
         throw new \Exception("Error : you need to override loadDefaults()");
-        
         //return $this->defaults;
     }
 

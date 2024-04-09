@@ -24,7 +24,8 @@
         "id_statut": 9,
         "date_crea_adh": "2017-08-07",
         "pref_lang": "fr_FR",
-        "fingerprint": "FAKER335689"
+        "fingerprint": "FAKER335689",
+        "id_legal_status": 1
     },
     {
         "nom_adh": "Veule",
@@ -52,7 +53,8 @@
         "id_statut": 1,
         "date_crea_adh": "2017-08-07",
         "pref_lang": "de_DE",
-        "fingerprint": "FAKER335689"
+        "fingerprint": "FAKER335689",
+        "id_legal_status": 1
     },
     {
         "nom_adh": "Doe",
@@ -79,7 +81,8 @@
         "id_statut": 9,
         "date_crea_adh": "2017-08-07",
         "pref_lang": "fr_FR",
-        "fingerprint": "FAKER335689"
+        "fingerprint": "FAKER335689",
+        "id_legal_status": 1
     },
     {
         "nom_adh": "Smith",
@@ -106,7 +109,8 @@
         "id_statut": 5,
         "date_crea_adh": "2017-08-07",
         "pref_lang": "en_US",
-        "fingerprint": "FAKER335689"
+        "fingerprint": "FAKER335689",
+        "id_legal_status": 1
     },
     {
         "nom_adh": "Dupont",
@@ -133,7 +137,8 @@
         "id_statut": 5,
         "date_crea_adh": "2017-08-07",
         "pref_lang": "en_US",
-        "fingerprint": "FAKER335689"
+        "fingerprint": "FAKER335689",
+        "id_legal_status": 1
     },
     {
         "nom_adh": "Montmarc",
@@ -160,7 +165,8 @@
         "id_statut": 9,
         "date_crea_adh": "2017-08-07",
         "pref_lang": "en_US",
-        "fingerprint": "FAKER335689"
+        "fingerprint": "FAKER335689",
+        "id_legal_status": 1
     },
     {
         "nom_adh": "Satto",
@@ -187,7 +193,8 @@
         "id_statut": 4,
         "date_crea_adh": "2017-08-07",
         "pref_lang": "uk",
-        "fingerprint": "FAKER335689"
+        "fingerprint": "FAKER335689",
+        "id_legal_status": 1
     },
     {
         "nom_adh": "De Volder",
@@ -214,7 +221,8 @@
         "id_statut": 9,
         "date_crea_adh": "2017-08-07",
         "pref_lang": "ca",
-        "fingerprint": "FAKER335689"
+        "fingerprint": "FAKER335689",
+        "id_legal_status": 1
     },
     {
         "nom_adh": "Lecoq",
@@ -242,7 +250,8 @@
         "id_statut": 9,
         "date_crea_adh": "2017-08-07",
         "pref_lang": "uk",
-        "fingerprint": "FAKER335689"
+        "fingerprint": "FAKER335689",
+        "id_legal_status": 1
     },
     {
         "nom_adh": "Wockykowski",
@@ -269,6 +278,7 @@
         "id_statut": 6,
         "date_crea_adh": "2017-08-07",
         "pref_lang": "ca",
-        "fingerprint": "FAKER335689"
+        "fingerprint": "FAKER335689",
+        "id_legal_status": 1
     }
 ]
