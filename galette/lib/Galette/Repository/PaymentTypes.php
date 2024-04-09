@@ -68,7 +68,7 @@ class PaymentTypes extends Repository
             $types = array();
             $results = $this->zdb->execute($select);
             foreach ($results as $row) {
-                $types[$row->type_id] = new PaymentType(/*this->zdb, */$row);
+                $types[$row->type_id] = new PaymentType($this->zdb, $row);
             }
             return $types;
         } catch (Throwable $e) {
@@ -227,7 +227,7 @@ class PaymentTypes extends Repository
     protected function loadDefaults(): array
     {
         if (!count($this->defaults)) {
-            $paytype = new PaymentType();//$this->zdb);
+            $paytype = new PaymentType($this->zdb);
             $this->defaults = $paytype->getSystemTypes(false);
         }
         return $this->defaults;

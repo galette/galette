@@ -180,7 +180,7 @@ class PaymentTypesController extends CrudController
         $error_detected = [];
         $msg = null;
 
-        $ptype = new PaymentType(/*$this->zdb,*/ $id);
+        $ptype = new PaymentType($this->zdb, $id);
         $ptype->name = $post['name'];
         if (isset($post['name']) && $post['name'] != '') {
             $res = $ptype->store();
