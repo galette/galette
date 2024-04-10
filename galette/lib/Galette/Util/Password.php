@@ -226,7 +226,15 @@ class Password
     {
         $this->personal_infos = array_merge(
             $this->personal_infos,
-            array_map('mb_strtolower', array_values($infos))
+            array_map(
+                function ($info) {
+                    if ($info !== null) {
+                        return mb_strtolower($info);
+                    }
+                    return $info;
+                },
+                array_values($infos)
+            )
         );
         return $this->personal_infos;
     }
