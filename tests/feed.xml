@@ -22,7 +22,7 @@
 
 &lt;p&gt;All plugins needs to be updated as well, use the nightly archive available for each one, see &lt;a href="https://doc.galette.eu/en/develop/plugins/"&gt;plugins documentation&lt;/a&gt; ;-)&lt;/p&gt;
 
-&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/dev/galette-1.0.0-rc1-20230905-cd4d1429cd.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/1.0.0rc1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 1.0.0rc1" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;&lt;a href="https://galette.eu/download/dev/galette-1.0.0-rc1-20230905-cd4d1429cd.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/1.0.0rc1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 1.0.0rc1" /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><category term="rc"/><summary type="html">After months of work, I’m very pleased to announce Galette is on the road to the 1.0.0 release!</summary></entry><entry><title type="html">Galette new release (0.9.6.1)!</title><link href="https://galette.eu/site/post/2021/12/16/galette-0-9-6-1.html" rel="alternate" type="text/html" title="Galette new release (0.9.6.1)!"/><published>2021-12-16T05:50:00+01:00</published><updated>2021-12-16T05:50:00+01:00</updated><id>https://galette.eu/site/post/2021/12/16/galette-0-9-6-1</id><content type="html" xml:base="https://galette.eu/site/post/2021/12/16/galette-0-9-6-1.html">&lt;p&gt;A very big thank to everyone involved in this release :)&lt;/p&gt;
 
@@ -37,7 +37,7 @@
 
 &lt;p&gt;See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v0961"&gt;Galette 0.9.6.1 changelog&lt;/a&gt; for all details.&lt;/p&gt;
 
-&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.6.1.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.6.1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.6.1" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;&lt;a href="https://galette.eu/download/galette-0.9.6.1.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.6.1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.6.1" /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">A very big thank to everyone involved in this release :)</summary></entry><entry><title type="html">Galette new major release (0.9.6)!</title><link href="https://galette.eu/site/post/2021/11/29/galette-0-9-6.html" rel="alternate" type="text/html" title="Galette new major release (0.9.6)!"/><published>2021-11-29T18:11:57+01:00</published><updated>2021-11-29T18:11:57+01:00</updated><id>https://galette.eu/site/post/2021/11/29/galette-0-9-6</id><content type="html" xml:base="https://galette.eu/site/post/2021/11/29/galette-0-9-6.html">&lt;p&gt;This is a major release, which brings a few new features and bugfixes as usual, but this one also fix some security issues (CVE-2021-41262, CVE-2021-41261, CVE-2021-41260).&lt;/p&gt;
 
@@ -57,7 +57,7 @@
 
 &lt;p&gt;Unfortunately, some required background changes (CSRF checks) has made almost all plugins incompatible, and it is required to update them, see &lt;a href="https://doc.galette.eu/en/master/plugins/"&gt;plugins documentation&lt;/a&gt; ;-)&lt;/p&gt;
 
-&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.6.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.6-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.6" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;&lt;a href="https://galette.eu/download/galette-0.9.6.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.6-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.6" /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">This is a major release, which brings a few new features and bugfixes as usual, but this one also fix some security issues (CVE-2021-41262, CVE-2021-41261, CVE-2021-41260).</summary></entry><entry><title type="html">Galette new release (0.9.5.2)!</title><link href="https://galette.eu/site/post/2021/11/07/galette-0-9-5-2.html" rel="alternate" type="text/html" title="Galette new release (0.9.5.2)!"/><published>2021-11-07T06:50:00+01:00</published><updated>2021-11-07T06:50:00+01:00</updated><id>https://galette.eu/site/post/2021/11/07/galette-0-9-5-2</id><content type="html" xml:base="https://galette.eu/site/post/2021/11/07/galette-0-9-5-2.html">&lt;p&gt;This release brings a few bugfixes.&lt;/p&gt;
 
@@ -75,7 +75,7 @@
 
 &lt;p&gt;See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v0952"&gt;Galette 0.9.5.2 changelog&lt;/a&gt; for all details.&lt;/p&gt;
 
-&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.5.2.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.5.2-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.5.2" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;&lt;a href="https://galette.eu/download/galette-0.9.5.2.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.5.2-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.5.2" /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">This release brings a few bugfixes.</summary></entry><entry><title type="html">Galette new release (0.9.5.1)!</title><link href="https://galette.eu/site/post/2021/10/23/galette-0-9-5-1.html" rel="alternate" type="text/html" title="Galette new release (0.9.5.1)!"/><published>2021-10-23T07:30:00+02:00</published><updated>2021-10-23T07:30:00+02:00</updated><id>https://galette.eu/site/post/2021/10/23/galette-0-9-5-1</id><content type="html" xml:base="https://galette.eu/site/post/2021/10/23/galette-0-9-5-1.html">&lt;p&gt;Due to personal reasons, the previous major release has not been announced, but was available to download. Please see &lt;a href="/site/post/2021/07/23/galette-0-9-5.html"&gt;Galette 0.9.5 news&lt;/a&gt;.&lt;/p&gt;
 
@@ -100,7 +100,7 @@
 
 &lt;p&gt;See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v0951"&gt;Galette 0.9.5.1 changelog&lt;/a&gt; for all details.&lt;/p&gt;
 
-&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.5.1.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.5.1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.5.1" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;&lt;a href="https://galette.eu/download/galette-0.9.5.1.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.5.1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.5.1" /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">Due to personal reasons, the previous major release has not been announced, but was available to download. Please see Galette 0.9.5 news.</summary></entry><entry><title type="html">Galette new major release (0.9.5)!</title><link href="https://galette.eu/site/post/2021/07/23/galette-0-9-5.html" rel="alternate" type="text/html" title="Galette new major release (0.9.5)!"/><published>2021-07-23T09:00:00+02:00</published><updated>2021-07-23T09:00:00+02:00</updated><id>https://galette.eu/site/post/2021/07/23/galette-0-9-5</id><content type="html" xml:base="https://galette.eu/site/post/2021/07/23/galette-0-9-5.html">&lt;p&gt;A very big thanks as well to everyone involved in this release, especially:&lt;/p&gt;
 &lt;ul&gt;
@@ -121,7 +121,7 @@
 
 &lt;p&gt;Unfortunately, some required background changes (on dependency injection library) has made all plugins incompatible, and it is required to update them, see &lt;a href="https://doc.galette.eu/en/master/plugins/"&gt;plugins documentation&lt;/a&gt; ;-)&lt;/p&gt;
 
-&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.5.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.5-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.5" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;&lt;a href="https://galette.eu/download/galette-0.9.5.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.5-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.5" /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">A very big thanks as well to everyone involved in this release, especially: Weblate contributors, many translations have been done, community members who do tests during the development phases, many issues has been fixed, …</summary></entry><entry><title type="html">Galette new bugfixes release (0.9.4.2)</title><link href="https://galette.eu/site/post/2020/11/01/galette-0-9-4-2.html" rel="alternate" type="text/html" title="Galette new bugfixes release (0.9.4.2)"/><published>2020-11-01T11:07:03+01:00</published><updated>2020-11-01T11:07:03+01:00</updated><id>https://galette.eu/site/post/2020/11/01/galette-0-9-4-2</id><content type="html" xml:base="https://galette.eu/site/post/2020/11/01/galette-0-9-4-2.html">&lt;p&gt;A very big thank to everyone involved in this release :)&lt;/p&gt;
 
@@ -138,7 +138,7 @@
 
 &lt;p&gt;See &lt;a href="https://doc.galette.eu/en/master/changelog.html#v0942"&gt;Galette 0.9.4.2 changelog&lt;/a&gt; for all details.&lt;/p&gt;
 
-&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.4.2.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.4.2-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.4.2" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;&lt;a href="https://galette.eu/download/galette-0.9.4.2.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.4.2-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.4.2" /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">A very big thank to everyone involved in this release :)</summary></entry><entry><title type="html">Galette new bugfixes release (0.9.4.1)</title><link href="https://galette.eu/site/post/2020/10/18/galette-0-9-4-1.html" rel="alternate" type="text/html" title="Galette new bugfixes release (0.9.4.1)"/><published>2020-10-18T16:05:13+02:00</published><updated>2020-10-18T16:05:13+02:00</updated><id>https://galette.eu/site/post/2020/10/18/galette-0-9-4-1</id><content type="html" xml:base="https://galette.eu/site/post/2020/10/18/galette-0-9-4-1.html">&lt;p&gt;A very big thank to everyone involved in this release :)&lt;/p&gt;
 
@@ -155,7 +155,7 @@
 
 &lt;p&gt;Code cleaning has continued, new checks on code quality has been set up; and a few issues has also been fixed on release archive.&lt;/p&gt;
 
-&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.4.1.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.4.1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.4.1" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;&lt;a href="https://galette.eu/download/galette-0.9.4.1.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.4.1-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.4.1" /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">A very big thank to everyone involved in this release :)</summary></entry><entry><title type="html">Galette new major release (0.9.4) - Community sponsored!</title><link href="https://galette.eu/site/post/2020/07/04/galette-0-9-4.html" rel="alternate" type="text/html" title="Galette new major release (0.9.4) - Community sponsored!"/><published>2020-07-04T15:47:04+02:00</published><updated>2020-07-04T15:47:04+02:00</updated><id>https://galette.eu/site/post/2020/07/04/galette-0-9-4</id><content type="html" xml:base="https://galette.eu/site/post/2020/07/04/galette-0-9-4.html">&lt;p&gt;This release is dedicated to contributors of my new working station pool &lt;strong&gt;thank you very much&lt;/strong&gt;!&lt;/p&gt;
 
@@ -220,7 +220,7 @@
 
 &lt;p&gt;Most of the plugins have also been updated, please refer to &lt;a href="https://doc.galette.eu/en/master/plugins/"&gt;plugins documentation&lt;/a&gt; to know more ;-)&lt;/p&gt;
 
-&lt;p style="text-align: center;"&gt;&lt;a href="https://download.tuxfamily.org/galette/galette-0.9.4.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.4-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.4" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;&lt;a href="https://galette.eu/download/galette-0.9.4.tar.bz2"&gt;&lt;img src="https://img.shields.io/badge/0.9.4-Download_Galette-ffb619.svg?logo=php&amp;amp;logoColor=white&amp;amp;style=for-the-badge" alt="Download Galette 0.9.4" /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Hope you will enjoy this release; happy Galette!&lt;/p&gt;</content><author><name>Johan C.</name></author><category term="post"/><category term="release"/><summary type="html">This release is dedicated to contributors of my new working station pool thank you very much!</summary></entry><entry><title type="html">New website for Galette!</title><link href="https://galette.eu/site/post/2020/05/28/new-website.html" rel="alternate" type="text/html" title="New website for Galette!"/><published>2020-05-28T19:14:04+02:00</published><updated>2020-05-28T19:14:04+02:00</updated><id>https://galette.eu/site/post/2020/05/28/new-website</id><content type="html" xml:base="https://galette.eu/site/post/2020/05/28/new-website.html">&lt;p&gt;We are proud to announce the brand new Galette website!&lt;/p&gt;
 
