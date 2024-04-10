@@ -366,11 +366,11 @@ def do_cp(archive):
 
     path = galette_dl_repo
     if extra:
-        path += 'dev/'
+        path = os.path.join(path, 'dev')
 
     shutil.copyfile(
         archive,
-        path + archive
+        os.path.join(path, os.path.basename(archive))
     )
 
 
