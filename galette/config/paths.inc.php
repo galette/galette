@@ -119,5 +119,5 @@ if (!defined('GALETTE_TPL_THEME_DIR')) {
 }
 
 if (!defined('GALETTE_DOWNLOADS_URI')) {
-    define('GALETTE_DOWNLOADS_URI', 'https://download.tuxfamily.org/galette/');
+    define('GALETTE_DOWNLOADS_URI', 'https://galette.eu/download/');
 }
