@@ -1830,7 +1830,7 @@ class Adherent
                 case 'sname':
                     return $this->getNameWithCase($this->name, $this->surname);
                 case 'rbirthdate':
-                    return $this->birthdate;
+                    return $this->birthdate ?? null;
                 case 'sgender':
                     switch ($this->gender) {
                         case self::MAN:

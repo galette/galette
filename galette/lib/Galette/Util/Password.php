@@ -252,14 +252,16 @@ class Password
         ];
 
         //handle date formats
-        $bdate = \DateTime::createFromFormat('Y-m-d', $adh->rbirthdate);
-        if ($bdate !== false) {
-            $infos[] = $bdate->format('Y-m-d'); //standard format
-            //TRANS: see https://www.php.net/manual/datetime.format.php
-            $infos[] = $bdate->format(__('Y-m-d')); //localized format
-            $infos[] = $bdate->format('Ymd');
-            $infos[] = $bdate->format('dmY');
-            $infos[] = $bdate->format('Ydm');
+        if ($adh->rbirthdate !== null) {
+            $bdate = \DateTime::createFromFormat('Y-m-d', $adh->rbirthdate);
+            if ($bdate !== false) {
+                $infos[] = $bdate->format('Y-m-d'); //standard format
+                //TRANS: see https://www.php.net/manual/datetime.format.php
+                $infos[] = $bdate->format(__('Y-m-d')); //localized format
+                $infos[] = $bdate->format('Ymd');
+                $infos[] = $bdate->format('dmY');
+                $infos[] = $bdate->format('Ydm');
+            }
         }
 
         //some possible combinations
