@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 ssh_path = 'galette/galette-repository/'
 ssh_host = 'ssh.tuxfamily.org'
 galette_dl_repo = 'http://download.tuxfamily.org/galette/'
+is_local = False
 
 local_dl_repo = os.path.join(
     os.path.dirname(
@@ -195,6 +196,8 @@ def _do_build(ver):
     """
     Proceed build
     """
+    global is_local
+
     exists = False
     ascexists = False
     rel_name = get_rel_name(ver)
@@ -211,13 +214,16 @@ def _do_build(ver):
 
         url = galette_dl_repo + '/' + archive_name
         urlasc = '%s.asc' % url
-        parsed = urlparse(url)
-        ascparsed = urlparse(urlasc)
 
-        connection = http.client.HTTPConnection(parsed[1], 80)
-        connection.request('HEAD', parsed[2])
-        response = connection.getresponse()
-        exists = response.status == 200
+        if is_local:
+            exists = os.path.isfile(url)
+        else:
+            parsed = urlparse(url)
+
+            connection = http.client.HTTPConnection(parsed[1], 80)
+            connection.request('HEAD', parsed[2])
+            response = connection.getresponse()
+            exists = response.status == 200
 
         if not exists:
             # also check from local repo
@@ -225,10 +231,14 @@ def _do_build(ver):
             if exists:
                 local = True
 
-        connection = http.client.HTTPConnection(ascparsed[1], 80)
-        connection.request('HEAD', ascparsed[2])
-        response = connection.getresponse()
-        ascexists = response.status == 200
+        if is_local:
+            ascexists = os.path.isfile(urlasc)
+        else:
+            ascparsed = urlparse(urlasc)
+            connection = http.client.HTTPConnection(ascparsed[1], 80)
+            connection.request('HEAD', ascparsed[2])
+            response = connection.getresponse()
+            ascexists = response.status == 200
 
         if not ascexists:
             # also check from local repo
@@ -312,13 +322,27 @@ def _do_build(ver):
         )
 
         if upload:
-            do_scp(galette_archive)
+            do_upload(galette_archive)
 
 
 def do_sign(archive):
     sign_cmd = 'gpg --detach-sign --armor %s' % archive
     p1 = subprocess.Popen(sign_cmd, shell=True)
     p1.communicate()
+
+
+def do_upload(galette_archive):
+    """
+    proceed file upload
+    :param galette_archive:
+    :return:
+    """
+    global is_local
+
+    if is_local:
+        do_cp(galette_archive)
+    else:
+        do_scp(galette_archive)
 
 
 def do_scp(archive):
@@ -335,6 +359,19 @@ def do_scp(archive):
     print(scp_cmd)
     p1 = subprocess.Popen(scp_cmd, shell=True)
     p1.communicate()
+
+
+def do_cp(archive):
+    global galette_dl_repo
+
+    path = galette_dl_repo
+    if extra:
+        path += 'dev/'
+
+    shutil.copyfile(
+        archive,
+        path + archive
+    )
 
 
 def add_libs(rel_name, galette_archive):
@@ -530,7 +567,7 @@ def main():
     """
     Main method
     """
-    global verbose, tagrefs, force, extra, assume_yes, nightly, sign, ssh_key, repo, ssh_host, ssh_path, galette_dl_repo
+    global verbose, tagrefs, force, extra, assume_yes, nightly, sign, ssh_key, repo, ssh_host, ssh_path, galette_dl_repo, is_local
 
     parser = argparse.ArgumentParser(description='Release Galette')
     group = parser.add_mutually_exclusive_group()
@@ -574,6 +611,12 @@ def main():
         action="store_true"
     )
     parser.add_argument(
+        '-l',
+        '--local',
+        help='Use local copy (defined from galette_dl_repo) rather than SSH',
+        action='store_true'
+    )
+    parser.add_argument(
         '-k',
         '--ssh-key',
         help='SSH key to be used for uploading',
@@ -611,14 +654,21 @@ def main():
         )
     assume_yes = args.assume_yes
 
-    if args.ssh_key:
-        ssh_key = args.ssh_key
+    if args.local:
+        if not args.download_url:
+            print_err('download_url is mandatory for local builds!')
+            sys.exit(1)
+        is_local = args.local
 
-    if args.ssh_host:
-        ssh_host = args.ssh_host
+    else:
+        if args.ssh_key:
+            ssh_key = args.ssh_key
 
-    if args.ssh_path:
-        ssh_path = args.ssh_path
+        if args.ssh_host:
+            ssh_host = args.ssh_host
+
+        if args.ssh_path:
+            ssh_path = args.ssh_path
 
     if args.download_url:
         galette_dl_repo = args.download_url
