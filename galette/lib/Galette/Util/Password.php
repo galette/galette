@@ -229,7 +229,7 @@ class Password
             array_map(
                 function ($info) {
                     if ($info !== null) {
-                        return mb_strtolower($info);
+                        $info = mb_strtolower($info);
                     }
                     return $info;
                 },
