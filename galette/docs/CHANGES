@@ -20,6 +20,10 @@ Changes
 - Manage administrative documents
 - Allow plugins to provide their own fonts
 - Use decimal for all amounts, drop defaults
+- Rework PDF footer, fix pagination on attendance sheet
+- Fix color for staff members on member cards
+- Display first staff members on public lists
+- Identify sponsors in members list
 
 1.0.3 -> 1.0.4
 
