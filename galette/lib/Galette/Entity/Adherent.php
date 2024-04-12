@@ -1821,14 +1821,14 @@ class Adherent
                     return $status->getLabel($this->status);
                 case 'sfullname':
                     return $this->getNameWithCase(
-                        $this->name,
-                        $this->surname,
+                        $this->name ?? '',
+                        $this->surname ?? '',
                         ($this->title ?? false)
                     );
                 case 'saddress':
                     return $this->address;
                 case 'sname':
-                    return $this->getNameWithCase($this->name, $this->surname);
+                    return $this->getNameWithCase($this->name ?? '', $this->surname ?? '');
                 case 'rbirthdate':
                     return $this->birthdate ?? null;
                 case 'sgender':

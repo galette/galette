@@ -63,9 +63,6 @@ class PdfAdhesionForm extends Pdf
         $this->filename = $adh->id ?
             __("adherent_form") . '.' . $adh->id . '.pdf' : __("adherent_form") . '.pdf';
 
-        $this->Open();
-
-        $this->AddPage();
         if ($model !== null) {
             $this->PageHeader();
             $this->PageBody();
