@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-04-12 07:43+0200\n"
-"PO-Revision-Date: 2024-03-20 18:27+0000\n"
+"PO-Revision-Date: 2024-04-12 05:52+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -6784,18 +6784,14 @@ msgid "Admin"
 msgstr "Administrateur"
 
 #: ../../tempcache/pages/members_list.html.twig:906
-#, fuzzy
-#| msgid "Is a woman"
 msgid "Is a sponsor"
-msgstr "Est une femme"
+msgstr "Est un sponsor"
 
 #: ../../tempcache/pages/members_list.html.twig:1038
 #: ../../tempcache/pages/members_public_list.html.twig:167
 #: ../../tempcache/pages/members_public_gallery.html.twig:130
-#, fuzzy
-#| msgid "Non members"
 msgid "No member"
-msgstr "Non membres"
+msgstr "Aucun adhérent"
 
 #: ../../tempcache/pages/members_list.html.twig:1101
 msgid "Search title"
