@@ -15,7 +15,7 @@ Changes
 - Check if new Galette version is available
 - Improve member form display
 - Add new specific constant to enable debug mode
-- Option to disable sociel networks on member form/view
+- Option to disable social networks on member form/view
 - Factorize permissions on core and dynamic fields
 - Manage administrative documents
 - Allow plugins to provide their own fonts
