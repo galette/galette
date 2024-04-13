@@ -4,7 +4,7 @@ Changes
 1.0.4 -> 1.1.0
 
 - Add print logo variable in PDF models
-- No longer use unsafe serialization for datbaase storage
+- No longer use unsafe serialization for database storage
 - More explicit upgrade warning when already on latest release
 - Prevent instance indexation from search engines bots
 - Clear old cache at upgrade
