@@ -305,4 +305,38 @@ class Document extends GaletteTestCase
         $tlist = $document->getTypedList();
         $this->assertCount(1, $tlist);
     }
+
+    /**
+     * Test getTypes
+     *
+     * @return void
+     */
+    public function testGetTypes(): void
+    {
+        $document = new \Galette\Entity\Document($this->zdb);
+
+        //per default, retrieve ony system types
+        $list_types = $document->getSystemTypes();
+        $this->assertSame($list_types, $document->getTypes());
+
+        //create a new type
+        $document = $this->getDocumentInstance();
+        $_FILES['document_file'] = [
+            'error' => UPLOAD_ERR_OK,
+            'name'      => 'afile.pdf',
+            'tmp_name'  => '/tmp/afile.pdf',
+            'size'      => 4096
+        ];
+        $post = [
+            'document_type' => 'An other document type',
+            'comment' => '',
+            'visible' => \Galette\Entity\FieldsConfig::STAFF
+        ];
+
+        $this->assertTrue($document->store($post, $_FILES));
+
+        //check new type is present from getTypes() method
+        $list_types['An other document type'] = 'An other document type';
+        $this->assertSame($list_types, $document->getTypes());
+    }
 }

@@ -496,6 +496,29 @@ class Document implements FileInterface
     }
 
     /**
+     * Get all known types
+     *
+     * @return array<string,string>
+     *
+     * @throws Throwable
+     */
+    public function getTypes(): array
+    {
+        $types = $this->getSystemTypes();
+
+        $select = $this->zdb->select(self::TABLE);
+        $select->quantifier('DISTINCT');
+        $select->where->notIn('type', array_keys($this->getSystemTypes(false)));
+        $results = $this->zdb->execute($select);
+
+        foreach ($results as $r) {
+            $types[$r->type] = $r->type;
+        }
+
+        return $types;
+    }
+
+    /**
      * Handle files
      *
      * @param array<string,mixed> $files Files sent
