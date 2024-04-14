@@ -50,7 +50,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteGroups()
+    private function deleteGroups(): void
     {
         $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
         $delete->where('parent_group IS NOT NULL');
@@ -71,7 +71,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    public function testGroup()
+    public function testGroup(): void
     {
         global $zdb;
         $zdb = $this->zdb;
@@ -93,7 +93,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    public function testSingleGroup()
+    public function testSingleGroup(): void
     {
         global $zdb;
         $zdb = $this->zdb;
@@ -134,7 +134,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    public function testUnicity()
+    public function testUnicity(): void
     {
         global $zdb;
         $zdb = $this->zdb;
@@ -178,7 +178,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    public function testSubGroup()
+    public function testSubGroup(): void
     {
         global $zdb;
         $zdb = $this->zdb;
@@ -247,7 +247,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         global $zdb;
         $zdb = $this->zdb;

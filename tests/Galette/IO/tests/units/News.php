@@ -51,7 +51,7 @@ class News extends TestCase
      *
      * @return void
      */
-    public function testLoadNews()
+    public function testLoadNews(): void
     {
         //ensure allow_url_fopen is on
         ini_set('allow_url_fopen', true);
@@ -66,7 +66,7 @@ class News extends TestCase
      *
      * @return void
      */
-    public function testCacheNews()
+    public function testCacheNews(): void
     {
         //will use default lang to build RSS URL
         $file = GALETTE_CACHE_DIR . md5($this->local_url) . '.cache';
@@ -119,7 +119,7 @@ class News extends TestCase
      *
      * @return void
      */
-    public function testLoadNewsWExeption()
+    public function testLoadNewsWExeption(): void
     {
         $news = $this->getMockBuilder(\Galette\IO\News::class)
             ->setConstructorArgs(array($this->local_url, true))

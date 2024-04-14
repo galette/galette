@@ -24,7 +24,7 @@ use Slim\Psr7\Response;
 
 $app->group(
     '/plugins',
-    function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate) {
+    function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate): void {
         /** @var $container \DI\Container */
         $container = $app->getContainer();
         $modules = $container->get('plugins')->getModules();
@@ -77,7 +77,7 @@ $app->group(
             $app->group(
                 '/' . $module['route'],
                 //$module_id may be used in included _routes.php from plugin.
-                function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $authenticate, $container) {
+                function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $authenticate, $container): void {
                     //Plugin home: give information
                     $app->get(
                         '',

@@ -56,27 +56,15 @@ trait Replacements
     private array $dynamic_patterns = [];
     private ?PHPMailer $mail = null;
 
-    /**
-     * @var Db
-     */
     #[Inject("zdb")]
     protected Db $zdb;
 
-    /**
-     * @var Login
-     */
     #[Inject("login")]
     protected Login $login;
 
-    /**
-     * @var Preferences
-     */
     #[Inject("preferences")]
     protected Preferences $preferences;
 
-    /**
-     * @var RouteParser
-     */
     protected RouteParser $routeparser;
 
     /**

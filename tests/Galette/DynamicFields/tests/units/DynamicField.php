@@ -71,7 +71,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testLoadFieldType()
+    public function testLoadFieldType(): void
     {
         $this->assertFalse(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, 10));
 
@@ -154,7 +154,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetPermissionsList()
+    public function testGetPermissionsList(): void
     {
         $expected = [];
         foreach (self::permsProvider() as $perm) {
@@ -179,7 +179,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetPermissionName(int $perm, string $name)
+    public function testGetPermissionName(int $perm, string $name): void
     {
         $field_data = [
             'form_name'         => 'adh',
@@ -208,7 +208,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetFormsNames()
+    public function testGetFormsNames(): void
     {
         $expected = [];
         foreach ($this->formNamesProvider() as $form) {
@@ -250,7 +250,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetFormTitle(string $form, string $expected)
+    public function testGetFormTitle(string $form, string $expected): void
     {
         $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getFormTitle($form));
     }
@@ -260,7 +260,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetFixedValuesTableName()
+    public function testGetFixedValuesTableName(): void
     {
         $this->assertSame('field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10));
         $this->assertSame('field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10, false));
@@ -272,7 +272,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetValues()
+    public function testGetValues(): void
     {
         $field_data = [
             'form_name'         => 'adh',
@@ -310,7 +310,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testCheck()
+    public function testCheck(): void
     {
         $values = [
             'form_name'         => 'adh',
@@ -471,7 +471,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testMove()
+    public function testMove(): void
     {
         $field_data = [
             'form_name'         => 'adh',
@@ -562,7 +562,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $field_data = [
             'form_name'         => 'adh',
@@ -607,7 +607,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testInformation()
+    public function testInformation(): void
     {
         $field_data = [
             'form_name'         => 'adh',

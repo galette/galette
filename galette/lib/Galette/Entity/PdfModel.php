@@ -315,10 +315,8 @@ abstract class PdfModel
      *
      * @return mixed
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
-        global $lang;
-
         switch ($name) {
             case 'id':
                 return (int)$this->$name;
@@ -367,13 +365,15 @@ abstract class PdfModel
 
                 $value = $this->proceedReplacements($prop_value);
                 return $value;
-            default:
-                Analog::log(
-                    'Unable to get PdfModel property ' . $name,
-                    Analog::WARNING
-                );
-                break;
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -418,7 +418,7 @@ abstract class PdfModel
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'type':

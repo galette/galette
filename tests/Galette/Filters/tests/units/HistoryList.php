@@ -52,7 +52,7 @@ class HistoryList extends GaletteTestCase
      *
      * @return void
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $filters = new \Galette\Filters\HistoryList();
 

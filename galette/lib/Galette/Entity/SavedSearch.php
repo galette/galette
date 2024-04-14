@@ -247,7 +247,7 @@ class SavedSearch
      *
      * @return mixed
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         $forbidden = [];
         $virtuals = ['sparameters'];
@@ -289,17 +289,19 @@ class SavedSearch
                     }
                     return $parameters;
                 default:
-                    if (!property_exists($this, $name)) {
-                        Analog::log(
-                            "Unknown property '$name'",
-                            Analog::WARNING
-                        );
-                        return null;
-                    } else {
+                    if (property_exists($this, $name)) {
                         return $this->$name;
                     }
             }
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -338,7 +340,7 @@ class SavedSearch
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'form':

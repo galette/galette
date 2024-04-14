@@ -31,7 +31,6 @@ use Galette\GaletteTestCase;
 class Transactions extends GaletteTestCase
 {
     protected int $seed = 20230328103438;
-    /** @var \Galette\Entity\Transaction */
     private \Galette\Entity\Transaction $transaction;
 
     /**
@@ -88,7 +87,7 @@ class Transactions extends GaletteTestCase
      *
      * @return void
      */
-    private function createTransaction()
+    private function createTransaction(): void
     {
         $date = new \DateTime();
         $data = [
@@ -114,7 +113,7 @@ class Transactions extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $this->logSuperAdmin();
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
@@ -221,7 +220,7 @@ class Transactions extends GaletteTestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->logSuperAdmin();
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);

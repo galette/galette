@@ -41,10 +41,8 @@ trait Dynamics
 {
     use Dependencies;
 
-    /** @var string */
     protected string $name_pattern = 'info_field_';
 
-    /** @var DynamicFieldsHandle */
     protected DynamicFieldsHandle $dynamics;
 
     /**

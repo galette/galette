@@ -106,7 +106,7 @@ abstract class DynamicField
      * @param Db    $zdb  Database instance
      * @param mixed $args Arguments
      */
-    public function __construct(Db $zdb, $args = null)
+    public function __construct(Db $zdb, mixed $args = null)
     {
         $this->zdb = $zdb;
 

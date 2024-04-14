@@ -63,7 +63,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testAutoLang()
+    public function testAutoLang(): void
     {
         $this->i18n = new \Galette\Core\I18n();
 
@@ -93,7 +93,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $list = $this->i18n->getList();
 
@@ -109,7 +109,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testGetArrayList()
+    public function testGetArrayList(): void
     {
         $list = $this->i18n->getArrayList();
 
@@ -121,7 +121,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testGetNameFromid()
+    public function testGetNameFromid(): void
     {
         $lang = $this->i18n->getNameFromId('en_US');
         $this->assertSame('English', $lang);
@@ -135,7 +135,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testGetLangInfos()
+    public function testGetLangInfos(): void
     {
         $id = $this->i18n->getID();
         $longid = $this->i18n->getLongID();
@@ -164,7 +164,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testChangeUnknownLanguage()
+    public function testChangeUnknownLanguage(): void
     {
         $this->i18n->changeLanguage('un_KN');
         $id = $this->i18n->getID();
@@ -177,7 +177,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testSeemUtf8()
+    public function testSeemUtf8(): void
     {
         $is_utf = $this->i18n->seemUtf8('HéhéHÉHÉâ-ôß¬- ©»«<ëßßä€êþÿûîœô');
         $is_iso = $this->i18n->seemUtf8(mb_convert_encoding('Héhé', 'ISO-8859-1'));

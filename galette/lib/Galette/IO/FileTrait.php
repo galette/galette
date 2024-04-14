@@ -55,9 +55,9 @@ trait FileTrait
     protected ?string $extension;
     protected ?string $dest_dir;
     /** @var array<string> */
-    protected $allowed_extensions = array();
+    protected array $allowed_extensions = array();
     /** @var array<string,string> */
-    protected $allowed_mimes = array();
+    protected array $allowed_mimes = array();
     protected int $maxlenght;
     protected int $mincropsize;
 

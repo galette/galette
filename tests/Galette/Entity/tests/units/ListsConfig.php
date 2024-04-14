@@ -84,7 +84,7 @@ class ListsConfig extends TestCase
      *
      * @return void
      */
-    private function resetListsConfig()
+    private function resetListsConfig(): void
     {
         $new_list = [];
         foreach ($this->default_lists as $key) {
@@ -99,7 +99,7 @@ class ListsConfig extends TestCase
      *
      * @return void
      */
-    public function testGetVisibility()
+    public function testGetVisibility(): void
     {
         $this->lists_config->load();
 
@@ -123,7 +123,7 @@ class ListsConfig extends TestCase
      *
      * @return void
      */
-    public function testSetFields()
+    public function testSetFields(): void
     {
         $lists_config = $this->lists_config;
         $lists_config->installInit();
@@ -208,7 +208,7 @@ class ListsConfig extends TestCase
      *
      * @return void
      */
-    public function testGetDisplayElements()
+    public function testGetDisplayElements(): void
     {
         $lists_config = $this->lists_config;
         $lists_config->load();

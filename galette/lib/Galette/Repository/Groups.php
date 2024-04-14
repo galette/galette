@@ -39,9 +39,7 @@ use Galette\Core\Db;
  */
 class Groups
 {
-    /** @var Db */
     private Db $zdb;
-    /** @var Login */
     private Login $login;
 
     /**
@@ -407,7 +405,7 @@ class Groups
      *
      * @return boolean
      */
-    public static function isUnique(Db $zdb, string $name, ?int $parent = null, ?int $current = null)
+    public static function isUnique(Db $zdb, string $name, ?int $parent = null, ?int $current = null): bool
     {
         try {
             $select = $zdb->select(Group::TABLE);

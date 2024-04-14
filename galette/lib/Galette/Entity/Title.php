@@ -197,7 +197,7 @@ class Title
      *
      * @return mixed
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         global $lang;
 
@@ -231,13 +231,15 @@ class Title
                 } else {
                     return $this->$rname;
                 }
-            default:
-                Analog::log(
-                    'Unable to get Title property ' . $name,
-                    Analog::WARNING
-                );
-                break;
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -270,7 +272,7 @@ class Title
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'short':

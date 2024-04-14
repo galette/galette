@@ -139,7 +139,7 @@ class Members
         ?array $fields = null,
         bool $count = true,
         bool $limit = true
-    ) {
+    ): array|ResultSet {
         return $this->getMembersList(
             $as_members,
             $fields,
@@ -168,7 +168,7 @@ class Members
         ?array $fields = null,
         bool $count = true,
         bool $limit = true
-    ) {
+    ): array|ResultSet {
         return $this->getMembersList(
             $as_members,
             $fields,
@@ -203,7 +203,7 @@ class Members
         bool $managed = false,
         bool $limit = true,
         bool $export = false
-    ) {
+    ): array|ResultSet {
         global $zdb;
 
         if ($limit === true) {
@@ -425,7 +425,7 @@ class Members
      *
      * @return Adherent[]|ResultSet
      */
-    public function getList(bool $as_members = false, ?array $fields = null)
+    public function getList(bool $as_members = false, ?array $fields = null): array|ResultSet
     {
         return $this->getMembersList(
             $as_members,
@@ -446,7 +446,7 @@ class Members
      *
      * @return array<string, Adherent[]>
      */
-    public function getPublicList(bool $with_photos)
+    public function getPublicList(bool $with_photos): array
     {
         global $zdb;
 
@@ -523,7 +523,7 @@ class Members
         bool $export = false,
         bool $dues = false,
         bool $parent = false
-    ) {
+    ): array|false {
         global $zdb;
 
         if (!is_array($ids) || count($ids) < 1) {

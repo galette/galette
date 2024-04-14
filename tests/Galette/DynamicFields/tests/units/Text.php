@@ -49,7 +49,7 @@ class Text extends TestCase
      *
      * @return void
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $o = new \Galette\DynamicFields\Text($this->zdb, 10);
         $this->assertNull($o->getId());
@@ -60,7 +60,7 @@ class Text extends TestCase
      *
      * @return void
      */
-    public function testGetTypeName()
+    public function testGetTypeName(): void
     {
         $this->assertSame(_T('free text'), $this->text->getTypeName());
     }
@@ -70,7 +70,7 @@ class Text extends TestCase
      *
      * @return void
      */
-    public function testBaseProperties()
+    public function testBaseProperties(): void
     {
         $muliple = $this->text->isMultiValued();
         $this->assertFalse($muliple);

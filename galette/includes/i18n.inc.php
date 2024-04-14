@@ -39,7 +39,7 @@ $language = $i18n->getLongID();
  *
  * @return string
  */
-function _T($string, $domain = 'galette', $nt = true)
+function _T(string $string, string $domain = 'galette', bool $nt = true): string
 {
     global $language, $installer, $translator, $l10n;
 
@@ -92,7 +92,7 @@ function _T($string, $domain = 'galette', $nt = true)
  *
  * @return string
  */
-function _Tn($singular, $plural, $count, $domain = 'galette', $nt = true)
+function _Tn(string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
     global $language, $installer, $translator, $l10n;
 
@@ -144,7 +144,7 @@ function _Tn($singular, $plural, $count, $domain = 'galette', $nt = true)
  *
  * @return string
  */
-function _Tx($context, $string, $domain = 'galette', $nt = true)
+function _Tx(string $context, string $string, string $domain = 'galette', bool $nt = true): string
 {
     global $language, $installer, $translator, $l10n;
 
@@ -184,7 +184,7 @@ function _Tx($context, $string, $domain = 'galette', $nt = true)
  *
  * @return string
  */
-function _Tnx($context, $singular, $plural, $count, $domain = 'galette', $nt = true)
+function _Tnx(string $context, string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
     global $language, $installer, $translator, $l10n;
 
@@ -234,7 +234,7 @@ function _Tnx($context, $singular, $plural, $count, $domain = 'galette', $nt = t
  *
  * @return string
  */
-function contextualizedString($string, $context)
+function contextualizedString(string $string, string $context): string
 {
     return "{$string}\004{$context}";
 }
@@ -247,7 +247,7 @@ function contextualizedString($string, $context)
  *
  * @return string
  */
-function __($string, $domain = 'galette')
+function __(string $string, string $domain = 'galette'): string
 {
     return _T($string, $domain, false);
 }

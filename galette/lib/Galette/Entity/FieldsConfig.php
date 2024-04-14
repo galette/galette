@@ -316,7 +316,7 @@ class FieldsConfig
             if (count($this->core_db_fields)) {
                 array_walk(
                     $this->core_db_fields,
-                    function ($field) use (&$_all_fields) {
+                    function ($field) use (&$_all_fields): void {
                         $_all_fields[$field['field_id']] = $field;
                     }
                 );

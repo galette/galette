@@ -61,7 +61,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testRandom()
+    public function testRandom(): void
     {
         $results = array();
 
@@ -85,7 +85,7 @@ class Password extends TestCase
      *
      * @return int
      */
-    private function createMember()
+    private function createMember(): int
     {
         try {
             $this->deleteMember();
@@ -122,7 +122,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    private function deleteMember()
+    private function deleteMember(): void
     {
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['login_adh' => 'test_password_user']);
@@ -134,7 +134,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testGenerateNewPassword()
+    public function testGenerateNewPassword(): void
     {
         $id_adh = $this->createMember();
         $pass = $this->pass;
@@ -166,7 +166,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testCleanExpired()
+    public function testCleanExpired(): void
     {
         $id_adh = $this->createMember();
 
@@ -200,7 +200,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testGenerateNewPasswordWException()
+    public function testGenerateNewPasswordWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
@@ -209,7 +209,7 @@ class Password extends TestCase
         $this->zdb->method('execute')
             ->will(
                 $this->returnCallback(
-                    function ($o) {
+                    function ($o): void {
                         throw new \LogicException('Error executing query!', 123);
                     }
                 )
@@ -225,7 +225,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testGenerateNewPasswordWFalseInsert()
+    public function testGenerateNewPasswordWFalseInsert(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
@@ -234,7 +234,7 @@ class Password extends TestCase
         $this->zdb->method('execute')
             ->will(
                 $this->returnCallback(
-                    function ($o) {
+                    function ($o): void {
                         throw new \LogicException('Error executing query!', 123);
                     }
                 )
@@ -250,7 +250,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testCleanExpiredWException()
+    public function testCleanExpiredWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
@@ -259,7 +259,7 @@ class Password extends TestCase
         $this->zdb->method('execute')
             ->will(
                 $this->returnCallback(
-                    function ($o) {
+                    function ($o): void {
                         throw new \LogicException('Error executing query!', 123);
                     }
                 )
@@ -274,7 +274,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testIsHashValidWException()
+    public function testIsHashValidWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
@@ -283,7 +283,7 @@ class Password extends TestCase
         $this->zdb->method('execute')
             ->will(
                 $this->returnCallback(
-                    function ($o) {
+                    function ($o): void {
                         throw new \LogicException('Error executing query!', 123);
                     }
                 )
@@ -299,7 +299,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testRemoveHashWException()
+    public function testRemoveHashWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
@@ -308,7 +308,7 @@ class Password extends TestCase
         $this->zdb->method('execute')
             ->will(
                 $this->returnCallback(
-                    function ($o) {
+                    function ($o): void {
                         throw new \LogicException('Error executing query!', 123);
                     }
                 )

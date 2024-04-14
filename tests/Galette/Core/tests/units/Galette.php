@@ -37,7 +37,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGitVersion()
+    public function testGitVersion(): void
     {
         $gitversion = \Galette\Core\Galette::gitVersion();
         $this->assertStringStartsWith(str_replace('-dev', '', GALETTE_VERSION), $gitversion);
@@ -55,7 +55,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testSerialization()
+    public function testSerialization(): void
     {
         //global objects
         $login = new \Galette\Core\Login($this->zdb, $this->i18n);
@@ -130,7 +130,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetMenus()
+    public function testGetMenus(): void
     {
         global $preferences, $login, $plugins;
         $db = new \Galette\Core\Db();
@@ -220,7 +220,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetPublicMenus()
+    public function testGetPublicMenus(): void
     {
         global $preferences;
 
@@ -251,7 +251,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetDashboards()
+    public function testGetDashboards(): void
     {
         global $login;
 
@@ -318,7 +318,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetListActions()
+    public function testGetListActions(): void
     {
         global $login;
 
@@ -386,7 +386,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetDetailledActions()
+    public function testGetDetailledActions(): void
     {
         $member = $this->getMemberOne();
 
@@ -400,7 +400,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetBatchActions()
+    public function testGetBatchActions(): void
     {
         global $login;
 

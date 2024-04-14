@@ -1297,7 +1297,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      *
      * @return boolean
      */
-    public function isStepPassed($step): bool
+    public function isStepPassed(int $step): bool
     {
         return $this->step > $step;
     }

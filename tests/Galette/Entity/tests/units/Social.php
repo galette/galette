@@ -57,7 +57,7 @@ class Social extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteSocials()
+    private function deleteSocials(): void
     {
         $delete = $this->zdb->delete(\Galette\Entity\Social::TABLE);
         $this->zdb->execute($delete);
@@ -68,7 +68,7 @@ class Social extends GaletteTestCase
      *
      * @return void
      */
-    public function testObject()
+    public function testObject(): void
     {
         $social = new \Galette\Entity\Social($this->zdb);
 
@@ -96,7 +96,7 @@ class Social extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetSystemTypes()
+    public function testGetSystemTypes(): void
     {
         $social = new \Galette\Entity\Social($this->zdb);
         $this->assertCount(10, $social->getSystemTypes());

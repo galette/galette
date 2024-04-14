@@ -54,7 +54,6 @@ class MembersController extends CrudController
 {
     use BatchList;
 
-    /** @var bool */
     private bool $is_self_membership = false;
 
     // CRUD - Create

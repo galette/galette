@@ -22,7 +22,6 @@
 namespace Galette\Entity;
 
 use ArrayObject;
-use stdClass;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Login;
@@ -182,11 +181,11 @@ class ListsConfig extends FieldsConfig
     /**
      * Handle list labels
      *
-     * @param stdClass $field Field data
+     * @param object $field Field data
      *
      * @return void
      */
-    private function handleLabel(stdClass $field): void
+    private function handleLabel(object $field): void
     {
         switch ($field->field_id) {
             case 'bool_admin_adh':

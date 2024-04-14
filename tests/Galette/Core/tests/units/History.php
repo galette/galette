@@ -35,7 +35,7 @@ class History extends GaletteTestCase
      *
      * @return void
      */
-    public function testConstants()
+    public function testConstants(): void
     {
         $this->assertSame('logs', \Galette\Core\History::TABLE);
         $this->assertSame('id_log', \Galette\Core\History::PK);
@@ -46,7 +46,7 @@ class History extends GaletteTestCase
      *
      * @return void
      */
-    public function testHistoryFlow()
+    public function testHistoryFlow(): void
     {
         $this->i18n->changeLanguage('en_US');
         //nothing in the logs at the beginning

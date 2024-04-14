@@ -27,7 +27,7 @@ use Galette\Repository\Members;
 use Galette\Filters\MembersList;
 use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate) {
+$app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate): void {
     $app->get(
         '/messages',
         [AjaxController::class, 'messages']

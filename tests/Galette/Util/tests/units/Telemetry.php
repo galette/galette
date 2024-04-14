@@ -68,7 +68,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGrabGaletteInfos()
+    public function testGrabGaletteInfos(): void
     {
         $expected = [
             'uuid'               => 'TO BE SET',
@@ -142,7 +142,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGrabDbInfos()
+    public function testGrabDbInfos(): void
     {
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,
@@ -166,7 +166,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGrabWebserverInfos()
+    public function testGrabWebserverInfos(): void
     {
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,
@@ -186,7 +186,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGrabPhpInfos()
+    public function testGrabPhpInfos(): void
     {
         $expected = [
             'version'   => str_replace(PHP_EXTRA_VERSION, '', PHP_VERSION),
@@ -215,7 +215,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGrabOsInfos()
+    public function testGrabOsInfos(): void
     {
         $distro = '';
         if (file_exists('/etc/redhat-release')) {
@@ -245,7 +245,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGetTelemetryInfos()
+    public function testGetTelemetryInfos(): void
     {
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,

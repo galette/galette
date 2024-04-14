@@ -63,7 +63,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testNonRequired()
+    public function testNonRequired(): void
     {
         $nrequired = $this->fields_config->getNonRequired();
         $expected = [
@@ -89,7 +89,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testInstallInit()
+    public function testInstallInit(): void
     {
         $result = $this->fields_config->installInit();
         $this->assertTrue($result);
@@ -151,7 +151,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    private function countCategorizedFields($categorized)
+    private function countCategorizedFields(array $categorized): void
     {
         $this->assertCount(3, $categorized);
         $this->assertCount(13, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]);
@@ -164,7 +164,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testSetNotRequired()
+    public function testSetNotRequired(): void
     {
         $fields_config = $this->fields_config;
         $fields_config->load();
@@ -190,7 +190,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testGetVisibility()
+    public function testGetVisibility(): void
     {
         $this->fields_config->load();
 
@@ -209,7 +209,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testSetFields()
+    public function testSetFields(): void
     {
         $fields_config = $this->fields_config;
         $fields_config->installInit();
@@ -250,7 +250,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testIsSelfExcluded()
+    public function testIsSelfExcluded(): void
     {
         $this->assertTrue($this->fields_config->isSelfExcluded('bool_admin_adh'));
         $this->assertTrue($this->fields_config->isSelfExcluded('info_adh'));
@@ -262,7 +262,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testCheckUpdate()
+    public function testCheckUpdate(): void
     {
         $fields_config = $this->fields_config;
         $fields_config->load();
@@ -313,7 +313,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testCheckUpdateWhenEmpty()
+    public function testCheckUpdateWhenEmpty(): void
     {
         $this->zdb->db->query(
             'TRUNCATE ' . PREFIX_DB . \Galette\Entity\FieldsConfig::TABLE,
@@ -341,7 +341,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testGetDisplayElements()
+    public function testGetDisplayElements(): void
     {
         $fields_config = $this->fields_config;
         $fields_config->load();
@@ -397,7 +397,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testGetFormElements()
+    public function testGetFormElements(): void
     {
         $fields_config = $this->fields_config;
         $fields_config->load();

@@ -75,7 +75,7 @@ class MembersCsv extends CsvOut
      *
      * @return void
      */
-    public function exportMembers(MembersList $filters)
+    public function exportMembers(MembersList $filters): void
     {
         $export_fields = null;
         if (file_exists(GALETTE_CONFIG_PATH . 'local_export_fields.inc.php')) {
@@ -252,7 +252,7 @@ class MembersCsv extends CsvOut
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -262,7 +262,7 @@ class MembersCsv extends CsvOut
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->filename;
     }

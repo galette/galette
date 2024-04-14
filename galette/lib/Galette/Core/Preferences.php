@@ -642,7 +642,7 @@ class Preferences
      *
      * @return mixed
      */
-    public function validateValue(string $fieldname, $value)
+    public function validateValue(string $fieldname, mixed $value): mixed
     {
         global $login;
 
@@ -956,7 +956,7 @@ class Preferences
      *
      * @return mixed the called property
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         $forbidden = array('defaults');
         $virtuals = array('vpref_email', 'vpref_email_newadh');
@@ -1047,7 +1047,7 @@ class Preferences
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         //does this pref exists ?
         if (!array_key_exists($name, self::$defaults)) {

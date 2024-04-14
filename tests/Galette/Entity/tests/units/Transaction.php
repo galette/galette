@@ -31,7 +31,6 @@ use Galette\GaletteTestCase;
 class Transaction extends GaletteTestCase
 {
     protected int $seed = 95842354;
-    /** @var \Galette\Entity\Transaction */
     private \Galette\Entity\Transaction $transaction;
 
     /**
@@ -90,9 +89,9 @@ class Transaction extends GaletteTestCase
     /**
      * Create test transaction in database
      *
-     * @return void
+     * @return \Galette\Entity\Transaction
      */
-    private function createTransaction()
+    private function createTransaction(): \Galette\Entity\Transaction
     {
         $date = new \DateTime(); // 2020-11-07
         $data = [
@@ -120,7 +119,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $this->assertNull($this->transaction->id);
         $this->assertEquals(date('Y-m-d'), $this->transaction->date);
@@ -146,7 +145,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetterSetter()
+    public function testGetterSetter(): void
     {
         $transaction = $this->transaction;
 
@@ -186,7 +185,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testCreation()
+    public function testCreation(): void
     {
         $this->getMemberOne();
         //create transaction for member
@@ -198,7 +197,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $this->getMemberOne();
         //create transaction for member
@@ -226,7 +225,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetFieldLabel()
+    public function testGetFieldLabel(): void
     {
         $this->assertSame(
             'Amount',
@@ -254,7 +253,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
@@ -281,7 +280,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->logSuperAdmin();
 
@@ -300,7 +299,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testCan()
+    public function testCan(): void
     {
         $this->getMemberOne();
         //create transaction for member

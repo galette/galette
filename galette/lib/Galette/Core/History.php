@@ -375,22 +375,20 @@ class History
      *
      * @return mixed the called property
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
-        Analog::log(
-            '[History] Getting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
         $forbidden = array();
         if (!in_array($name, $forbidden)) {
             return $this->$name;
-        } else {
-            Analog::log(
-                '[History] Unable to get property `' . $name . '`',
-                Analog::WARNING
-            );
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -417,7 +415,7 @@ class History
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         Analog::log(
             '[History] Setting property `' . $name . '`',

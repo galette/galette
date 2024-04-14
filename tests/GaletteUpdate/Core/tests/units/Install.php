@@ -32,6 +32,7 @@ use PHPUnit\Framework\TestCase;
 class Install extends TestCase
 {
     private \Galette\Core\Db $zdb;
+    /** @var array<string> */
     private array $flash_data;
     private \Slim\Flash\Messages $flash;
     private \DI\Container $container;
@@ -81,7 +82,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testDbSupport()
+    public function testDbSupport(): void
     {
         $this->assertTrue($this->zdb->isEngineSUpported());
     }
@@ -91,7 +92,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testUpdates()
+    public function testUpdates(): void
     {
         $install = new \Galette\Core\Install();
         $update_scripts = \Galette\Core\Install::getUpdateScripts(

@@ -66,7 +66,7 @@ class ContributionsTypes extends TestCase
      *
      * @return void
      */
-    private function deleteTypes()
+    private function deleteTypes(): void
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\ContributionsTypes::TABLE);
@@ -86,7 +86,7 @@ class ContributionsTypes extends TestCase
      *
      * @return void
      */
-    public function testContributionsTypes()
+    public function testContributionsTypes(): void
     {
         global $i18n; // globals :(
         $i18n = $this->i18n;
@@ -192,7 +192,7 @@ class ContributionsTypes extends TestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $ctypes = new \Galette\Entity\ContributionsTypes($this->zdb);
 

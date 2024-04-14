@@ -32,7 +32,6 @@ use Slim\App;
  */
 class SlimApp
 {
-    /** @var App  */
     private App $app;
 
     /**

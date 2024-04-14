@@ -62,7 +62,7 @@ class PdfModels extends GaletteTestCase
      *
      * @return void
      */
-    private function deletePdfModels()
+    private function deletePdfModels(): void
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\PdfModel::TABLE);
@@ -82,7 +82,7 @@ class PdfModels extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         global $zdb;
         $zdb = $this->zdb; //globals '(

@@ -73,7 +73,7 @@ class L10n extends TestCase
      *
      * @return void
      */
-    public function testAddDynamicTranslation()
+    public function testAddDynamicTranslation(): void
     {
         $this->i18n->changeLanguage('en_US');
 

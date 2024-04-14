@@ -48,7 +48,7 @@ class ScheduledPayment extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteScheduledPayments()
+    private function deleteScheduledPayments(): void
     {
         $delete = $this->zdb->delete(\Galette\Entity\ScheduledPayment::TABLE);
         $delete->where(['comment' => 'FAKER' . $this->seed]);

@@ -50,7 +50,7 @@ class Groups extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteGroups()
+    private function deleteGroups(): void
     {
         $zdb = new \Galette\Core\Db();
 
@@ -136,7 +136,7 @@ class Groups extends GaletteTestCase
      *
      * @return void
      */
-    public function testCreateGroups(string $parent_name, array $children)
+    public function testCreateGroups(string $parent_name, array $children): void
     {
         $group = new \Galette\Entity\Group();
         $group->setName($parent_name);
@@ -167,7 +167,7 @@ class Groups extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetSimpleList()
+    public function testGetSimpleList(): void
     {
         $groups = self::groupsProvider();
         foreach ($groups as $group) {
@@ -193,7 +193,7 @@ class Groups extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $this->logSuperAdmin();
 
@@ -235,7 +235,7 @@ class Groups extends GaletteTestCase
      *
      * @return void
      */
-    public function testUniqueness()
+    public function testUniqueness(): void
     {
         $groups = self::groupsProvider();
         foreach ($groups as $group) {

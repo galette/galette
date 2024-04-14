@@ -47,14 +47,8 @@ class UpdateAndMaintenance
      */
     protected $callback;
 
-    /**
-     * @var I18n
-     */
     protected I18n $i18n;
 
-    /**
-     * @var RouteParser
-     */
     protected RouteParser $routeParser;
 
     /**

@@ -62,7 +62,7 @@
  *
  * @return string
  */
-function remove_comments(&$output)
+function remove_comments(string &$output): string
 {
     $lines = explode("\n", $output);
     $output = "";
@@ -96,7 +96,7 @@ function remove_comments(&$output)
  *
  * @return string
  */
-function remove_remarks($sql)
+function remove_remarks(string $sql): string
 {
     $lines = explode("\n", $sql);
 
@@ -131,7 +131,7 @@ function remove_remarks($sql)
  *
  * @return array
  */
-function split_sql_file($sql, $delimiter)
+function split_sql_file(string $sql, string $delimiter): array
 {
     // Split up our string into "possible" SQL statements.
     $tokens = explode($delimiter, $sql);

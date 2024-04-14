@@ -110,13 +110,8 @@ class HistoryList extends Pagination
      *
      * @return mixed the called property
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
-        Analog::log(
-            '[' . static::class . '] Getting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
         } else {
@@ -140,19 +135,21 @@ class HistoryList extends Pagination
                                 $e->getMessage(),
                                 Analog::INFO
                             );
-                            return $this->$name;
                         }
-                        break;
+                        return $this->$name;
                     default:
                         return $this->$name;
                 }
-            } else {
-                Analog::log(
-                    '[' . static::class . '] Unable to get property `' . $name . '`',
-                    Analog::WARNING
-                );
             }
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -182,7 +179,7 @@ class HistoryList extends Pagination
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         if (in_array($name, $this->pagination_fields)) {
             parent::__set($name, $value);

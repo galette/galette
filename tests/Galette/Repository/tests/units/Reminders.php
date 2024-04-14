@@ -88,7 +88,7 @@ class Reminders extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         //impendings
         $ireminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::IMPENDING]);

@@ -30,30 +30,22 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class GaletteTestCase extends TestCase
 {
-    /** @var \Galette\Core\Db */
     protected \Galette\Core\Db $zdb;
     protected array $members_fields;
     protected array $members_fields_cats;
-    /** @var \Galette\Core\I18n */
     protected \Galette\Core\I18n $i18n;
-    /** @var \Galette\Core\Preferences */
     protected \Galette\Core\Preferences $preferences;
     protected \RKA\Session $session;
-    /** @var \Galette\Core\Login */
     protected \Galette\Core\Login $login;
-    /** @var \Galette\Core\History */
     protected \Galette\Core\History $history;
-    protected $logger_storage = '';
+    protected string $logger_storage = '';
 
-    /** @var \Galette\Entity\Adherent */
     protected \Galette\Entity\Adherent $adh;
-    /** @var \Galette\Entity\Contribution */
     protected \Galette\Entity\Contribution $contrib;
     protected array $adh_ids = [];
     protected array $contrib_ids = [];
     /** @var array */
     protected array $flash_data;
-    /** @var \Slim\Flash\Messages */
     protected \Slim\Flash\Messages $flash;
     protected \DI\Container $container;
     protected int $seed;
@@ -141,7 +133,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return void
      */
-    protected function loadAdherent($id)
+    protected function loadAdherent(int $id): void
     {
         $this->adh = new \Galette\Entity\Adherent($this->zdb, (int)$id);
         $this->adh->setDependencies(
@@ -251,7 +243,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return \Galette\Entity\Adherent
      */
-    public function createMember(array $data)
+    public function createMember(array $data): \Galette\Entity\Adherent
     {
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
         $this->adh->setDependencies(
@@ -280,7 +272,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return void
      */
-    protected function checkMemberOneExpected($adh = null, $new_expecteds = [])
+    protected function checkMemberOneExpected(\Galette\Entity\Adherent $adh = null, array $new_expecteds = []): void
     {
         if ($adh === null) {
             $adh = $this->adh;
@@ -383,7 +375,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return void
      */
-    protected function checkMemberTwoExpected($adh = null, $new_expecteds = [])
+    protected function checkMemberTwoExpected(\Galette\Entity\Adherent $adh = null, array $new_expecteds = []): void
     {
         if ($adh === null) {
             $adh = $this->adh;
@@ -482,7 +474,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return false|\Laminas\Db\ResultSet\ResultSet
      */
-    protected function adhOneExists()
+    protected function adhOneExists(): false|\Laminas\Db\ResultSet\ResultSet
     {
         $mdata = $this->dataAdherentOne();
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
@@ -506,7 +498,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return false|\Laminas\Db\ResultSet\ResultSet
      */
-    protected function adhTwoExists()
+    protected function adhTwoExists(): false|\Laminas\Db\ResultSet\ResultSet
     {
         $mdata = $this->dataAdherentTwo();
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
@@ -530,7 +522,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return \Galette\Entity\Adherent
      */
-    protected function getMemberOne()
+    protected function getMemberOne(): \Galette\Entity\Adherent
     {
         $rs = $this->adhOneExists();
         if ($rs === false) {
@@ -546,7 +538,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return \Galette\Entity\Adherent
      */
-    protected function getMemberTwo()
+    protected function getMemberTwo(): \Galette\Entity\Adherent
     {
         $rs = $this->adhTwoExists();
         if ($rs === false) {
@@ -565,7 +557,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return \Galette\Entity\Contribution
      */
-    public function createContrib(array $data, \Galette\Entity\Contribution $contrib = null)
+    public function createContrib(array $data, \Galette\Entity\Contribution $contrib = null): \Galette\Entity\Contribution
     {
         if ($contrib === null) {
             $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
@@ -589,7 +581,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return void
      */
-    protected function createContribution()
+    protected function createContribution(): void
     {
         $now = new \DateTime(); // 2020-11-07
         $begin_date = clone $now;
@@ -617,12 +609,12 @@ abstract class GaletteTestCase extends TestCase
     /**
      * Check contributions expected
      *
-     * @param \Galette\Entity\Contribution $contrib       Contribution instance, if any
-     * @param array                        $new_expecteds Changes on expected values
+     * @param ?\Galette\Entity\Contribution $contrib       Contribution instance, if any
+     * @param array<string,mixed>           $new_expecteds Changes on expected values
      *
      * @return void
      */
-    protected function checkContribExpected($contrib = null, $new_expecteds = [])
+    protected function checkContribExpected(\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
     {
         if ($contrib === null) {
             $contrib = $this->contrib;

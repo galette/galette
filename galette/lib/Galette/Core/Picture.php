@@ -76,9 +76,9 @@ class Picture implements FileInterface
     /**
      * Default constructor.
      *
-     * @param mixed|null $id_adh the id of the member
+     * @param string|int|null $id_adh the id of the member
      */
-    public function __construct($id_adh = null)
+    public function __construct(string|int|null $id_adh = null)
     {
         $this->init(
             null,
@@ -92,7 +92,7 @@ class Picture implements FileInterface
         );
 
         // '!==' needed, otherwise ''==0
-        if ($id_adh !== '' && $id_adh !== null) {
+        if (!empty($id_adh) && $id_adh !== '') {
             $this->id = $id_adh;
             if (!isset($this->db_id)) {
                 $this->db_id = $id_adh;
@@ -289,11 +289,11 @@ class Picture implements FileInterface
     }
 
     /**
-     * Get image file content
+     * Get image file contents in stdOut
      *
-     * @return mixed
+     * @return void
      */
-    public function getContents()
+    public function getContents(): void
     {
         readfile($this->file_path);
     }
@@ -963,7 +963,7 @@ class Picture implements FileInterface
      *
      * @return string Localized message
      */
-    public function getErrorMessage($code): string
+    public function getErrorMessage(int $code): string
     {
         $error = null;
         switch ($code) {

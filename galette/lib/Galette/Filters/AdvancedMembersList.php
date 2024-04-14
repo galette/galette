@@ -297,14 +297,8 @@ class AdvancedMembersList extends MembersList
      *
      * @return mixed the called property
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
-
-        Analog::log(
-            '[AdvancedMembersList] Getting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
         if (
             in_array($name, $this->pagination_fields)
             || in_array($name, $this->memberslist_fields)
@@ -372,13 +366,16 @@ class AdvancedMembersList extends MembersList
                         return $search_fields;
                 }
                 return $this->$name;
-            } else {
-                Analog::log(
-                    '[AdvancedMembersList] Unable to get property `' . $name . '`',
-                    Analog::WARNING
-                );
             }
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -416,7 +413,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         global $zdb, $preferences, $login;
 

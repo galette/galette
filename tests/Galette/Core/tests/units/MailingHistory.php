@@ -51,7 +51,7 @@ class MailingHistory extends GaletteTestCase
      *
      * @return void
      */
-    public function testHistoryFlow()
+    public function testHistoryFlow(): void
     {
         $this->logSuperAdmin();
         $mh = new \Galette\Core\MailingHistory(

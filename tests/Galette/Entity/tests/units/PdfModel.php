@@ -92,7 +92,7 @@ class PdfModel extends GaletteTestCase
      *
      * @return void
      */
-    public function testExpectedPatterns()
+    public function testExpectedPatterns(): void
     {
         $model = new class ($this->zdb, $this->preferences, 1) extends \Galette\Entity\PdfModel {
         };
@@ -219,7 +219,7 @@ class PdfModel extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetypeClass($type, $expected)
+    public function testGetypeClass(int $type, string $expected): void
     {
         $this->assertSame($expected, \Galette\Entity\PdfModel::getTypeClass($type));
     }
@@ -229,7 +229,7 @@ class PdfModel extends GaletteTestCase
      *
      * @return void
      */
-    public function testReplacements()
+    public function testReplacements(): void
     {
         //create dynamic fields
         $field_data = [
@@ -357,7 +357,7 @@ Au milieu
      *
      * @return void
      */
-    protected function createPdfContribution($cdf)
+    protected function createPdfContribution(DynamicField $cdf): void
     {
         $bdate = new \DateTime(); // 2020-11-07
         $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
@@ -387,7 +387,7 @@ Au milieu
      *
      * @return void
      */
-    public function testStorage()
+    public function testStorage(): void
     {
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
 

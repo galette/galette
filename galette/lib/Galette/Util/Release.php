@@ -197,7 +197,7 @@ class Release
      *
      * @return bool
      */
-    protected function cacheLoaded($content): bool
+    protected function cacheLoaded(mixed $content): bool
     {
         if ($content === null) {
             return false;

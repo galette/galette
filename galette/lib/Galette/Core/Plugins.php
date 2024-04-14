@@ -415,7 +415,7 @@ class Plugins
      *
      * @return mixed module's information
      */
-    public function moduleInfo(string $id, string $info)
+    public function moduleInfo(string $id, string $info): mixed
     {
         return $this->modules[$id][$info] ?? null;
     }

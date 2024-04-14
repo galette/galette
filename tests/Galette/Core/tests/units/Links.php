@@ -82,7 +82,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    public function testGenerateNewLink()
+    public function testGenerateNewLink(): void
     {
         $links = $this->links;
         $this->getMemberTwo();
@@ -132,7 +132,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    public function testExpiredValidate()
+    public function testExpiredValidate(): void
     {
         $links = $this->links;
         $this->getMemberTwo();
@@ -173,7 +173,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    public function testCleanExpired()
+    public function testCleanExpired(): void
     {
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT48H'));
@@ -218,7 +218,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    public function testDuplicateLinkTarget()
+    public function testDuplicateLinkTarget(): void
     {
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT48H'));
@@ -255,7 +255,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    protected function createContribution()
+    protected function createContribution(): void
     {
         $now = new \DateTime(); // 2020-11-07
         $begin_date = clone $now;
@@ -284,12 +284,12 @@ class Links extends GaletteTestCase
     /**
      * Check contributions expecteds
      *
-     * @param Contribution $contrib       Contribution instance, if any
-     * @param array        $new_expecteds Changes on expected values
+     * @param ?\Galette\Entity\Contribution $contrib       Contribution instance, if any
+     * @param array<string,mixed>           $new_expecteds Changes on expected values
      *
      * @return void
      */
-    protected function checkContribExpected($contrib = null, $new_expecteds = [])
+    protected function checkContribExpected(\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
     {
         if ($contrib === null) {
             $contrib = $this->contrib;

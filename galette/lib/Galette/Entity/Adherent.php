@@ -1322,7 +1322,7 @@ class Adherent
      *
      * @return void
      */
-    public function validate(string $field, $value, array $values): void
+    public function validate(string $field, mixed $value, array $values): void
     {
         global $preferences;
 
@@ -1753,7 +1753,7 @@ class Adherent
      *
      * @return mixed
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         $forbidden = array(
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',

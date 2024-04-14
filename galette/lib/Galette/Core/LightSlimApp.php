@@ -33,7 +33,6 @@ use Slim\App;
 class LightSlimApp
 {
     private string $mode;
-    /** @var App  */
     private App $app;
 
     /**

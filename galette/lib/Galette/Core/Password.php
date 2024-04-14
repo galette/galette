@@ -95,7 +95,7 @@ class Password extends AbstractPassword
      *
      * @return boolean
      */
-    public function generateNewPassword($id_adh): bool
+    public function generateNewPassword(int $id_adh): bool
     {
         //first of all, we'll remove all existant entries for specified id
         $this->removeOldEntries($id_adh);
@@ -171,7 +171,7 @@ class Password extends AbstractPassword
      *
      * @return false|int false if hash is not valid, member id otherwise
      */
-    public function isHashValid(string $hash)
+    public function isHashValid(string $hash): false|int
     {
         try {
             $select = $this->zdb->select(self::TABLE);

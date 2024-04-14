@@ -56,15 +56,11 @@ use Laminas\Db\Sql\SqlInterface;
  */
 class Db
 {
-    /** @var Adapter */
     private Adapter $db;
-    /** @var string */
     private string $type_db;
-    /** @var Sql */
     private Sql $sql;
     /** @var array<string,string> */
     private array $options;
-    /** @var string */
     private string $last_query;
 
     public const MYSQL = 'mysql';
@@ -799,7 +795,7 @@ class Db
      * @return mixed
      * @throws RuntimeException
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         switch ($name) {
             case 'db':
@@ -1004,7 +1000,7 @@ class Db
      *
      * @return integer
      */
-    public function getLastGeneratedValue($entity): int
+    public function getLastGeneratedValue(object $entity): int
     {
         /** @phpstan-ignore-next-line */
         return (int)$this->driver->getLastGeneratedValue(

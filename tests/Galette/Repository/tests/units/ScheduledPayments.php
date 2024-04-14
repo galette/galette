@@ -48,7 +48,7 @@ class ScheduledPayments extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteScheduledPayments()
+    private function deleteScheduledPayments(): void
     {
         $delete = $this->zdb->delete(\Galette\Entity\ScheduledPayment::TABLE);
         $delete->where(['comment' => 'FAKER' . $this->seed]);
@@ -68,7 +68,7 @@ class ScheduledPayments extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $this->logSuperAdmin();
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login);
@@ -152,7 +152,7 @@ class ScheduledPayments extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetArrayList()
+    public function testGetArrayList(): void
     {
         $this->logSuperAdmin();
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login);
@@ -222,7 +222,7 @@ class ScheduledPayments extends GaletteTestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->logSuperAdmin();
         $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login);

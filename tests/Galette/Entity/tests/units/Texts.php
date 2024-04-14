@@ -39,7 +39,7 @@ class Texts extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $count_texts = 13;
         $texts = new \Galette\Entity\Texts(

@@ -37,9 +37,7 @@ class L10n
 {
     public const TABLE = 'l10n';
 
-    /** @var Db */
     private Db $zdb;
-    /** @var I18n */
     private I18n $i18n;
 
     /**

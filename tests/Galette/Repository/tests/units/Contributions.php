@@ -61,7 +61,7 @@ class Contributions extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $this->logSuperAdmin();
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
@@ -194,7 +194,7 @@ class Contributions extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetArrayList()
+    public function testGetArrayList(): void
     {
         $this->logSuperAdmin();
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
@@ -221,7 +221,7 @@ class Contributions extends GaletteTestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->logSuperAdmin();
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);

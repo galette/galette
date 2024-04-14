@@ -68,7 +68,7 @@ class CsvOut extends Csv
      * @return string CSV result
      */
     public function export(
-        $rs,
+        ResultSet|array $rs,
         string $separator,
         string $quote,
         array|bool $titles = false,

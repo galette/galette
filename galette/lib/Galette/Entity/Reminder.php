@@ -51,9 +51,7 @@ class Reminder
     private int $type;
     private Adherent $dest;
     private string $date;
-    /** @var boolean */
     private bool $success = false;
-    /** @var boolean */
     private bool $nomail;
     private string $comment;
     private string $msg;
@@ -314,7 +312,7 @@ class Reminder
      *
      * @return mixed
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         switch ($name) {
             case 'member_id':
@@ -324,13 +322,15 @@ class Reminder
                 return $this->$name;
             case 'comment':
                 return $this->comment;
-            default:
-                Analog::log(
-                    'Unable to get Reminder property ' . $name,
-                    Analog::WARNING
-                );
-                break;
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -361,7 +361,7 @@ class Reminder
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'type':

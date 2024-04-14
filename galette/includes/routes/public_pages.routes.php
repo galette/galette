@@ -22,7 +22,7 @@
 use Galette\Controllers\Crud;
 use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/public', function (RouteCollectorProxy $app) use ($routeparser) {
+$app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): void {
     //public members list
     $app->get(
         '/{type:list|trombi}[/{option:page|order}/{value:\d+|\w+}]',

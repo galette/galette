@@ -62,7 +62,7 @@ class Title extends TestCase
      *
      * @return void
      */
-    private function deleteTitle()
+    private function deleteTitle(): void
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\Title::TABLE);
@@ -82,7 +82,7 @@ class Title extends TestCase
      *
      * @return void
      */
-    public function testTitle()
+    public function testTitle(): void
     {
         global $zdb;
         $zdb = $this->zdb;

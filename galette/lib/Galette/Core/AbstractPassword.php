@@ -66,11 +66,11 @@ abstract class AbstractPassword
     /**
      * Generates a new password for specified member
      *
-     * @param mixed $arg Any argument required
+     * @param int $id_adh Member identifier
      *
      * @return boolean
      */
-    abstract public function generateNewPassword($arg): bool;
+    abstract public function generateNewPassword(int $id_adh): bool;
 
     /**
      * Remove expired passwords queries (older than 24 hours)

@@ -54,7 +54,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $this->assertFalse($this->login->isLogged());
         $this->assertFalse($this->login->isStaff());
@@ -72,7 +72,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testNotLoggedCantImpersonate()
+    public function testNotLoggedCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
@@ -89,7 +89,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testStaffCantImpersonate()
+    public function testStaffCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
@@ -110,7 +110,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testAdminCantImpersonate()
+    public function testAdminCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
@@ -131,7 +131,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testImpersonateExistsWException()
+    public function testImpersonateExistsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
@@ -139,7 +139,7 @@ class Login extends GaletteTestCase
 
         $zdb->method('execute')
             ->willReturnCallback(
-                function ($o) {
+                function ($o): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
@@ -159,7 +159,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testSuperadminCanImpersonate()
+    public function testSuperadminCanImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
@@ -177,7 +177,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testInexistingGetter()
+    public function testInexistingGetter(): void
     {
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Property doesnotexists is not set!');
@@ -189,7 +189,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoginExists()
+    public function testLoginExists(): void
     {
         $this->assertFalse($this->login->loginExists('exists'));
         $this->assertFalse($this->login->loginExists('doesnotexists'));
@@ -200,7 +200,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoginExistsWException()
+    public function testLoginExistsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
@@ -208,7 +208,7 @@ class Login extends GaletteTestCase
 
         $zdb->method('execute')
             ->willReturnCallback(
-                function ($o) {
+                function ($o): void {
                     if ($o instanceof \Laminas\Db\Sql\Select) {
                         throw new \LogicException('Error executing query!', 123);
                     }
@@ -224,7 +224,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLogAdmin()
+    public function testLogAdmin(): void
     {
         $this->login->logAdmin('superadmin', $this->preferences);
         $this->assertTrue($this->login->isLogged());
@@ -247,7 +247,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    private function createUser()
+    private function createUser(): void
     {
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
         $select->where(array('a.fingerprint' => 'FAKER' . $this->seed));
@@ -319,7 +319,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoginExistsDb()
+    public function testLoginExistsDb(): void
     {
         $this->createUser();
         $this->assertTrue($this->login->loginExists('dumas.roger'));
@@ -330,7 +330,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLogin()
+    public function testLogin(): void
     {
         $this->createUser();
         $this->assertFalse($this->login->login('doenotexists', 'empty'));
@@ -342,7 +342,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoggedInAs()
+    public function testLoggedInAs(): void
     {
         global $translator;
 
@@ -372,7 +372,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLogCron()
+    public function testLogCron(): void
     {
         $this->login->logCron('reminder', $this->preferences);
         $this->assertTrue($this->login->isLogged());

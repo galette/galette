@@ -30,7 +30,6 @@ use League\Event\HasEventName;
  */
 class GaletteEvent implements HasEventName
 {
-    /** @var string */
     private string $name;
     private object $object;
 

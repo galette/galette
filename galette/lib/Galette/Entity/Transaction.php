@@ -593,7 +593,7 @@ class Transaction
      *
      * @return mixed the called property
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         if (!in_array($name, $this->forbidden_fields) && property_exists($this, $name)) {
             switch ($name) {
@@ -633,7 +633,7 @@ class Transaction
      *
      * @return array<string>|true
      */
-    public function handleFiles(array $files)
+    public function handleFiles(array $files): array|bool
     {
         $this->errors = [];
 

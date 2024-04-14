@@ -75,7 +75,7 @@ class Picture extends TestCase
      *
      * @return void
      */
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $picture = new \Galette\Core\Picture();
         $this->assertNull($picture->getDestDir());
@@ -103,7 +103,7 @@ class Picture extends TestCase
      *
      * @return void
      */
-    public function testSetters()
+    public function testSetters(): void
     {
         $this->assertNull($this->picture->getDestDir());
         $this->assertNull($this->picture->getFileName());
@@ -121,7 +121,7 @@ class Picture extends TestCase
      *
      * @return void
      */
-    public function testFileInfoMimeType()
+    public function testFileInfoMimeType(): void
     {
         $url = realpath(GALETTE_ROOT . '../tests/fake_image.jpg');
         $this->assertNotFalse($url);
@@ -163,7 +163,7 @@ class Picture extends TestCase
      *
      * @return void
      */
-    public function testStore()
+    public function testStore(): void
     {
         foreach ($this->expected_badchars as $badchar) {
             $expected = \Galette\Core\Picture::INVALID_FILENAME;
@@ -203,7 +203,7 @@ class Picture extends TestCase
      *
      * @return void
      */
-    public function testErrorMessages()
+    public function testErrorMessages(): void
     {
         $this->assertSame(
             'File name is invalid, it should not contain any special character or space.',

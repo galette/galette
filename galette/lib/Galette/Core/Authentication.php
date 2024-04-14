@@ -295,7 +295,7 @@ abstract class Authentication
      *
      * @return mixed
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
         if (in_array($name, $forbidden)) {

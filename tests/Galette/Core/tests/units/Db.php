@@ -65,7 +65,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $db = new \Galette\Core\Db();
         $type = $db->type_db;
@@ -105,7 +105,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testConnectivity()
+    public function testConnectivity(): void
     {
         $res = $this->db->testConnectivity(
             TYPE_DB,
@@ -123,7 +123,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testGrant()
+    public function testGrant(): void
     {
         $result = $this->db->dropTestTable();
 
@@ -151,7 +151,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testGrantWException()
+    public function testGrantWException(): void
     {
         $atoum = $this;
 
@@ -163,7 +163,7 @@ class Db extends TestCase
         $this->db->method('execute')
             ->will(
                 $this->returnCallback(
-                    function ($o) {
+                    function ($o): void {
                         if ($o instanceof \Laminas\Db\Sql\Insert) {
                             throw new \LogicException('Error executing query!', 123);
                         }
@@ -286,7 +286,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testIsPostgres()
+    public function testIsPostgres(): void
     {
         $is_pg = $this->db->isPostgres();
 
@@ -305,7 +305,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testGetters()
+    public function testGetters(): void
     {
         switch (TYPE_DB) {
             case 'pgsql':
@@ -336,7 +336,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testSelect()
+    public function testSelect(): void
     {
         $select = $this->db->select('preferences', 'p');
         $select->where(array('p.nom_pref' => 'pref_nom'));
@@ -361,7 +361,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testSelectAll()
+    public function testSelectAll(): void
     {
         $all = $this->db->selectAll('preferences');
         $this->assertInstanceOf('Laminas\Db\ResultSet\ResultSet', $all);
@@ -372,7 +372,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testInsert()
+    public function testInsert(): void
     {
         $insert = $this->db->insert('titles');
         $data = [
@@ -400,7 +400,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $insert = $this->db->insert('titles');
         $data = [
@@ -442,7 +442,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $insert = $this->db->insert('titles');
         $data = [
@@ -474,7 +474,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testDbVersion()
+    public function testDbVersion(): void
     {
         $db_version = $this->db->getDbVersion();
         $this->assertSame(GALETTE_DB_VERSION, $db_version);
@@ -488,7 +488,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testDbVersionWException()
+    public function testDbVersionWException(): void
     {
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
@@ -496,7 +496,7 @@ class Db extends TestCase
         $this->db->method('execute')
             ->will(
                 $this->returnCallback(
-                    function ($table, $where) {
+                    function ($table, $where): void {
                         throw new \LogicException('Error executing query!', 123);
                     }
                 )
@@ -512,7 +512,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testGetColumns()
+    public function testGetColumns(): void
     {
         $cols = $this->db->getColumns('preferences');
 
@@ -540,7 +540,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testTables()
+    public function testTables(): void
     {
         $expected = array (
             'galette_groups_members',
@@ -594,7 +594,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testConvertToUtf()
+    public function testConvertToUtf(): void
     {
         $convert = $this->db->convertToUTF();
         $this->assertNull($convert);
@@ -605,7 +605,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testGetPlatform()
+    public function testGetPlatform(): void
     {
         $quoted = $this->db->platform->quoteValue('somethin\' to "quote"');
 
@@ -621,7 +621,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testExecute()
+    public function testExecute(): void
     {
         $select = $this->db->select('preferences', 'p');
         $select->where(['p.nom_pref' => 'azerty']);
@@ -635,7 +635,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testExecuteWException()
+    public function testExecuteWException(): void
     {
         $this->have_warnings = [
             new \ArrayObject(
@@ -659,7 +659,7 @@ class Db extends TestCase
      *
      * @return void
      */
-    public function testSerialization()
+    public function testSerialization(): void
     {
         $db = $this->db;
         $serialized = serialize($db);

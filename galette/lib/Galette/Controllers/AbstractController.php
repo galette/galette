@@ -50,83 +50,35 @@ use Slim\Views\Twig;
 
 abstract class AbstractController
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-    /**
-     * @var Db
-     */
+    private ContainerInterface $container;
     #[Inject]
     protected Db $zdb;
-    /**
-     * @var Login
-     */
     #[Inject]
     protected Login $login;
-    /**
-     * @var Preferences
-     */
     #[Inject]
     protected Preferences $preferences;
-    /**
-     * @var Twig
-     */
     #[Inject]
     protected Twig $view;
-    /**
-     * @var Logo
-     */
     #[Inject]
     protected Logo $logo;
-    /**
-     * @var PrintLogo
-     */
     #[Inject]
     protected PrintLogo $print_logo;
-    /**
-     * @var Plugins
-     */
     #[Inject]
     protected Plugins $plugins;
-    /**
-     * @var RouteParser
-     */
     #[Inject]
     protected RouteParser $routeparser;
-    /**
-     * @var History
-     */
     #[Inject]
     protected History $history;
-    /**
-     * @var I18n
-     */
     #[Inject]
     protected I18n $i18n;
-    /**
-     * @var L10n
-     */
     #[Inject]
     protected L10n $l10n;
-    /**
-     * @var Session
-     */
     #[Inject("session")]
     protected Session $session;
-    /**
-     * @var Messages
-     */
     #[Inject]
     protected Messages $flash;
-    /**
-     * @var FieldsConfig
-     */
     #[Inject]
     protected FieldsConfig $fields_config;
-    /**
-     * @var ListsConfig
-     */
     #[Inject]
     protected ListsConfig $lists_config;
     /**

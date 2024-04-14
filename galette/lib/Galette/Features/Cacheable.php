@@ -163,5 +163,5 @@ trait Cacheable
      *
      * @return bool
      */
-    abstract protected function cacheLoaded($content): bool;
+    abstract protected function cacheLoaded(mixed $content): bool;
 }

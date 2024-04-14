@@ -69,7 +69,7 @@ class ContributionsCsv extends CsvOut
      *
      * @return void
      */
-    public function exportContributions(ContributionsList $filters)
+    public function exportContributions(ContributionsList $filters): void
     {
         $class = '\\Galette\\Entity\\' . ucwords(trim($this->type, 's'));
         $contrib = new $class($this->zdb, $this->login);
@@ -164,7 +164,7 @@ class ContributionsCsv extends CsvOut
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -174,7 +174,7 @@ class ContributionsCsv extends CsvOut
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->filename;
     }

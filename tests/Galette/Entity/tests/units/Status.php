@@ -66,7 +66,7 @@ class Status extends TestCase
      *
      * @return void
      */
-    private function deleteStatus()
+    private function deleteStatus(): void
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\Status::TABLE);
@@ -86,7 +86,7 @@ class Status extends TestCase
      *
      * @return void
      */
-    public function testStatus()
+    public function testStatus(): void
     {
         global $i18n; // globals :(
         $i18n = $this->i18n;
@@ -175,7 +175,7 @@ class Status extends TestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $status = new \Galette\Entity\Status($this->zdb);
 

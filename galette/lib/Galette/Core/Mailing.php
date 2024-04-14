@@ -502,7 +502,7 @@ class Mailing extends GaletteMail
      *
      * @return mixed the called property
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         $forbidden = array('ordered');
         if (!in_array($name, $forbidden)) {
@@ -598,7 +598,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'subject':

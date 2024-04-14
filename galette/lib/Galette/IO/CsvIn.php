@@ -121,7 +121,7 @@ class CsvIn extends Csv implements FileInterface
      *
      * @return void
      */
-    private function loadFields()
+    private function loadFields(): void
     {
         //at last, we got the defaults
         $this->fields = $this->default_fields;
@@ -138,7 +138,7 @@ class CsvIn extends Csv implements FileInterface
      *
      * @return array<string>
      */
-    public function getDefaultFields()
+    public function getDefaultFields(): array
     {
         return $this->default_fields;
     }
@@ -160,11 +160,11 @@ class CsvIn extends Csv implements FileInterface
         Db $zdb,
         Preferences $preferences,
         History $history,
-        $filename,
+        string $filename,
         array $members_fields,
         array $members_fields_cats,
-        $dryrun
-    ) {
+        bool $dryrun
+    ): bool|int {
         if (
             !file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
@@ -205,7 +205,7 @@ class CsvIn extends Csv implements FileInterface
      *
      * @return boolean
      */
-    private function check(string $filename)
+    private function check(string $filename): bool
     {
         $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
         if (!$handle) {
@@ -445,7 +445,7 @@ class CsvIn extends Csv implements FileInterface
      *
      * @return boolean
      */
-    private function storeMembers($filename)
+    private function storeMembers(string $filename): bool
     {
         $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
 
@@ -558,7 +558,7 @@ class CsvIn extends Csv implements FileInterface
      *
      * @return string Localized message
      */
-    public function getErrorMessage($code)
+    public function getErrorMessage(int $code): string
     {
         $error = null;
         switch ($code) {

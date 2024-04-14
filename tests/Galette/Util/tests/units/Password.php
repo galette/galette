@@ -67,7 +67,7 @@ class Password extends TestCase
      *
      * @return array
      */
-    public static function passProvider()
+    public static function passProvider(): array
     {
         return [
             // [strength, password, errors]
@@ -112,7 +112,7 @@ class Password extends TestCase
      * @return void
      */
     #[DataProvider('passProvider')]
-    public function testValidatePassword($level, $pass, $errors)
+    public function testValidatePassword(int $level, string $pass, array $errors): void
     {
         //errror messages mapping
         foreach ($errors as &$err) {
@@ -154,7 +154,7 @@ class Password extends TestCase
      *
      * @return array
      */
-    public static function blacklistProvider()
+    public static function blacklistProvider(): array
     {
         return [
             ['galette', true],
@@ -175,7 +175,7 @@ class Password extends TestCase
      * @return void
      */
     #[DataProvider('blacklistProvider')]
-    public function testBlacklist($pass, $expected)
+    public function testBlacklist(string $pass, bool $expected): void
     {
         $this->preferences->pref_password_blacklist = true;
         $password = new \Galette\Util\Password($this->preferences);
@@ -191,7 +191,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testPersonalInformation()
+    public function testPersonalInformation(): void
     {
         $infos = [
             'login'     => 'mylogin',

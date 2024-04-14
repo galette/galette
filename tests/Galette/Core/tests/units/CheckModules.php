@@ -49,7 +49,7 @@ class CheckModules extends TestCase
      *
      * @return void
      */
-    public function testAllOK()
+    public function testAllOK(): void
     {
         $checks = new \Galette\Core\CheckModules();
         $this->assertTrue($checks->isValid());
@@ -65,7 +65,7 @@ class CheckModules extends TestCase
      *
      * @return void
      */
-    public function testAllKO()
+    public function testAllKO(): void
     {
         $checks = $this->getMockBuilder(\Galette\Core\CheckModules::class)
             ->setConstructorArgs([false])
@@ -88,7 +88,7 @@ class CheckModules extends TestCase
      *
      * @return void
      */
-    public function testToHtml()
+    public function testToHtml(): void
     {
         $checks = new \Galette\Core\CheckModules();
         $checks->doCheck();

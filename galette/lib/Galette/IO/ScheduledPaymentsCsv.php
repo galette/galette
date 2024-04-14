@@ -66,7 +66,7 @@ class ScheduledPaymentsCsv extends CsvOut
      *
      * @return void
      */
-    public function exportScheduledPayments(ScheduledPaymentsList $filters)
+    public function exportScheduledPayments(ScheduledPaymentsList $filters): void
     {
         $scheduled = new ScheduledPayment($this->zdb);
         $fields = $scheduled->getFields();
@@ -137,7 +137,7 @@ class ScheduledPaymentsCsv extends CsvOut
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -147,7 +147,7 @@ class ScheduledPaymentsCsv extends CsvOut
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->filename;
     }

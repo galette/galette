@@ -99,7 +99,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $adh = $this->adh;
         $this->assertFalse($adh->isAdmin());
@@ -129,7 +129,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testDependencies()
+    public function testDependencies(): void
     {
         $adh = $this->adh;
         $this->assertSame($this->default_deps, $adh->deps);
@@ -195,7 +195,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetterWException()
+    public function testGetterWException(): void
     {
         $adh = $this->adh;
 
@@ -208,7 +208,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testDepsAtConstuct()
+    public function testDepsAtConstuct(): void
     {
         $deps = [
             'picture'   => false,
@@ -233,7 +233,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testSimpleMember()
+    public function testSimpleMember(): void
     {
         $this->getMemberOne();
         $this->checkMemberOneExpected();
@@ -248,7 +248,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoadForLogin()
+    public function testLoadForLogin(): void
     {
         $this->getMemberOne();
 
@@ -269,7 +269,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testUpdatePassword()
+    public function testUpdatePassword(): void
     {
         $this->getMemberOne();
 
@@ -290,7 +290,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testCheckErrors()
+    public function testCheckErrors(): void
     {
         $adh = $this->adh;
 
@@ -398,7 +398,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testPhoto()
+    public function testPhoto(): void
     {
         $this->getMemberOne();
 
@@ -416,7 +416,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testCanEdit()
+    public function testCanEdit(): void
     {
         $adh = new \Galette\Entity\Adherent($this->zdb);
 
@@ -490,7 +490,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testDuplicate()
+    public function testDuplicate(): void
     {
         $this->getMemberOne();
 
@@ -515,7 +515,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testParents()
+    public function testParents(): void
     {
         $this->getMemberOne();
 
@@ -554,7 +554,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testInjection()
+    public function testInjection(): void
     {
         $data = [
             'nom_adh'           => 'Doe',
@@ -575,7 +575,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testCan()
+    public function testCan(): void
     {
         $this->getMemberOne();
         //load member from db
@@ -772,14 +772,20 @@ class Adherent extends GaletteTestCase
      * @param string                      $name     Name
      * @param string                      $surname  Surname
      * @param \Galette\Entity\Title|false $title    Title
-     * @param string|false                $id       ID
+     * @param int|false                   $id       ID
      * @param string|false                $nick     Nick
-     * @param  string                      $expected Expected result
+     * @param string                      $expected Expected result
      *
      * @return void
      */
-    public function testsGetNameWithCase(string $name, string $surname, $title, $id, $nick, string $expected)
-    {
+    public function testsGetNameWithCase(
+        string $name,
+        string $surname,
+        \Galette\Entity\Title|false $title,
+        int|false $id,
+        string|false $nick,
+        string $expected
+    ): void {
         $this->assertSame(
             $expected,
             \Galette\Entity\Adherent::getNameWithCase(
@@ -815,7 +821,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetDueStatus()
+    public function testGetDueStatus(): void
     {
         $now = new \DateTime();
         $member = new \Galette\Entity\Adherent($this->zdb);

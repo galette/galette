@@ -83,7 +83,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testInstallInit()
+    public function testInstallInit(): void
     {
         $result = $this->preferences->installInit(
             'en_US',
@@ -171,7 +171,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testFieldsNames()
+    public function testFieldsNames(): void
     {
         $this->preferences->load();
         $fields_names = $this->preferences->getFieldsNames();
@@ -188,7 +188,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
@@ -226,7 +226,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testPublicPagesVisibility()
+    public function testPublicPagesVisibility(): void
     {
         $this->preferences->load();
 
@@ -292,7 +292,7 @@ class Preferences extends TestCase
      *
      * @return array
      */
-    public static function sizesProvider()
+    public static function sizesProvider(): array
     {
         return [
             [//defaults
@@ -348,7 +348,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testCheckCardsSizes($vm, $hm, $vs, $hs, $count)
+    public function testCheckCardsSizes(int $vm, int $hm, int $vs, int $hs, int $count): void
     {
         $this->preferences->pref_card_marges_v = $vm;
         $this->preferences->pref_card_marges_h = $hm;
@@ -397,7 +397,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testColors($prop, $color, $expected)
+    public function testColors(string $prop, string $color, string $expected): void
     {
         $prop = 'pref_card_' . $prop;
         $this->preferences->$prop = $color;
@@ -409,7 +409,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testSocials()
+    public function testSocials(): void
     {
         $preferences = [];
         foreach ($this->preferences->getDefaults() as $key => $value) {
@@ -540,7 +540,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testGetMailSignature()
+    public function testGetMailSignature(): void
     {
         $mail = new PHPMailer();
         $this->assertSame("\r\n-- \r\nGalette", $this->preferences->getMailSignature($mail));
@@ -600,7 +600,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testGetLegend()
+    public function testGetLegend(): void
     {
         $legend = $this->preferences->getLegend();
         $this->assertCount(2, $legend);

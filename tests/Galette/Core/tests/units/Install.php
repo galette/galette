@@ -61,7 +61,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $install = new \Galette\Core\Install();
 
@@ -89,7 +89,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testGetUpgradeScripts()
+    public function testGetUpgradeScripts(): void
     {
         $update_scripts = \Galette\Core\Install::getUpdateScripts(
             GALETTE_BASE_PATH . '/install',
@@ -162,7 +162,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testTypeStep()
+    public function testTypeStep(): void
     {
         $this->install->atTypeStep();
 
@@ -178,7 +178,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testInstallDbStep()
+    public function testInstallDbStep(): void
     {
         $this->install->setMode(\Galette\Core\Install::INSTALL);
         $this->install->atDbStep();
@@ -202,7 +202,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testUpgradeDbStep()
+    public function testUpgradeDbStep(): void
     {
         $this->install->setMode(\Galette\Core\Install::UPDATE);
         $this->install->atDbStep();
@@ -227,7 +227,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testUnknownMode()
+    public function testUnknownMode(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Unknown mode "nonsense"');
@@ -239,7 +239,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testSetDbType()
+    public function testSetDbType(): void
     {
         $types = array(
             \Galette\Core\Db::MYSQL,
@@ -270,7 +270,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testDbCheckStep()
+    public function testDbCheckStep(): void
     {
         $errors = array();
         $this->install->setDbType(TYPE_DB, $errors);
@@ -326,7 +326,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testDbInstallStep()
+    public function testDbInstallStep(): void
     {
         $errors = array();
         $this->install->setDbType(TYPE_DB, $errors);
@@ -362,7 +362,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testAdminStep()
+    public function testAdminStep(): void
     {
         $this->install->atAdminStep();
 
@@ -386,7 +386,7 @@ class Install extends TestCase
      *
      * @return void
      */
-    public function testInitStep()
+    public function testInitStep(): void
     {
         $this->install->atGaletteInitStep();
 

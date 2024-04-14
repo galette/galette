@@ -30,7 +30,7 @@ if (!defined('GALETTE_ROOT')) {
  *
  * @return boolean
  */
-function isValidWebUrl($url)
+function isValidWebUrl(string $url): bool
 {
     return (preg_match(
         '#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i',

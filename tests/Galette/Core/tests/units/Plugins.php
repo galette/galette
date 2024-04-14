@@ -51,11 +51,11 @@ class Plugins extends TestCase
     );
 
     /**
-     * Get instanciated plugins instance
+     * Get instantiated plugins instance
      *
-     * @return Galette\Core\Plugins
+     * @return \Galette\Core\Plugins
      */
-    private function getPlugins()
+    private function getPlugins(): \Galette\Core\Plugins
     {
         $plugins = new \Galette\Core\Plugins();
         $plugins->autoload(GALETTE_PLUGINS_PATH);
@@ -96,7 +96,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testLoadModules()
+    public function testLoadModules(): void
     {
         $plugins = $this->getPlugins();
         $this->assertCount(3, $this->plugins->getModules());
@@ -112,7 +112,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testModuleExists()
+    public function testModuleExists(): void
     {
         $this->assertTrue($this->plugins->moduleExists('plugin-test2'));
         $this->assertFalse($this->plugins->moduleExists('plugin-disabled'));
@@ -123,7 +123,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testDisabledModules()
+    public function testDisabledModules(): void
     {
         $disabled_modules = $this->plugins->getDisabledModules();
         $this->assertTrue(isset($disabled_modules['plugin-disabled']));
@@ -136,7 +136,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testModuleRoot()
+    public function testModuleRoot(): void
     {
         $this->assertSame($this->plugin2['root'], $this->plugins->moduleRoot('plugin-test2'));
     }
@@ -160,7 +160,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testResetModulesList()
+    public function testResetModulesList(): void
     {
         $this->plugins->resetModulesList();
 
@@ -172,7 +172,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testModuleActivation()
+    public function testModuleActivation(): void
     {
         $plugins = $this->getPlugins();
         $modules = $plugins->getModules();
@@ -205,7 +205,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testNeedDatabse()
+    public function testNeedDatabse(): void
     {
         $this->assertTrue($this->plugins->needsDatabase('plugin-db'));
         $this->assertFalse($this->plugins->needsDatabase('plugin-test2'));

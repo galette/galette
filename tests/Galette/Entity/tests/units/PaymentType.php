@@ -73,7 +73,7 @@ class PaymentType extends TestCase
      *
      * @return void
      */
-    private function deletePaymentType()
+    private function deletePaymentType(): void
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\PaymentType::TABLE);
@@ -93,7 +93,7 @@ class PaymentType extends TestCase
      *
      * @return void
      */
-    public function testPaymentType()
+    public function testPaymentType(): void
     {
         global $i18n; // globals :(
         $i18n = $this->i18n;

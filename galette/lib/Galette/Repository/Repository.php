@@ -27,7 +27,6 @@ use Galette\Core\Pagination;
 use Galette\Core\Preferences;
 use Galette\Core\Login;
 use Laminas\Db\ResultSet\ResultSet;
-use stdClass;
 
 /**
  * Repositories
@@ -111,9 +110,9 @@ abstract class Repository
     /**
      * Get entity instance
      *
-     * @return stdClass
+     * @return object
      */
-    public function getEntity()
+    public function getEntity(): object
     {
         $name = $this->entity;
         return new $name(
@@ -126,7 +125,7 @@ abstract class Repository
     /**
      * Get list
      *
-     * @return array<int, stdClass>|ResultSet
+     * @return array<int, object>|ResultSet
      */
     abstract public function getList(): array|ResultSet;
 

@@ -61,7 +61,7 @@ class PrintLogo extends TestCase
      *
      * @return void
      */
-    public function testDefaults()
+    public function testDefaults(): void
     {
         global $zdb;
         $zdb = $this->zdb;

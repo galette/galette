@@ -62,7 +62,7 @@ class PaymentTypes extends GaletteTestCase
      *
      * @return void
      */
-    private function deletePaymentType()
+    private function deletePaymentType(): void
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\PaymentType::TABLE);
@@ -82,7 +82,7 @@ class PaymentTypes extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
 

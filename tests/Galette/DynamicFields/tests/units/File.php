@@ -49,7 +49,7 @@ class File extends TestCase
      *
      * @return void
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $o = new \Galette\DynamicFields\File($this->zdb, 10);
         $this->assertNull($o->getId());
@@ -60,7 +60,7 @@ class File extends TestCase
      *
      * @return void
      */
-    public function testGetTypeName()
+    public function testGetTypeName(): void
     {
         $this->assertSame(_T('file'), $this->file->getTypeName());
     }
@@ -70,7 +70,7 @@ class File extends TestCase
      *
      * @return void
      */
-    public function testBaseProperties()
+    public function testBaseProperties(): void
     {
         $muliple = $this->file->isMultiValued();
         $this->assertFalse($muliple);

@@ -80,7 +80,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $contrib = $this->contrib;
         $this->assertNull($contrib->id);
@@ -122,7 +122,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetterSetter()
+    public function testGetterSetter(): void
     {
         $contrib = $this->contrib;
 
@@ -189,7 +189,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testCreation()
+    public function testCreation(): void
     {
         $this->getMemberOne();
         //create contribution for member
@@ -201,7 +201,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testDonationUpdate()
+    public function testDonationUpdate(): void
     {
         $this->getMemberOne();
         //create contribution for member
@@ -274,7 +274,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testContributionUpdate()
+    public function testContributionUpdate(): void
     {
         $this->logSuperAdmin();
 
@@ -360,7 +360,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testRetrieveEndDate()
+    public function testRetrieveEndDate(): void
     {
         global $preferences;
         $orig_pref_beg_membership = $this->preferences->pref_beg_membership;
@@ -433,7 +433,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testCheckOverlap()
+    public function testCheckOverlap(): void
     {
         $adh = new \Galette\Entity\Adherent($this->zdb);
         $adh->setDependencies(
@@ -527,7 +527,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetFieldLabel()
+    public function testGetFieldLabel(): void
     {
         $this->assertSame(
             'Amount',
@@ -556,7 +556,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
@@ -585,7 +585,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->getMemberOne();
         $this->createContribution();
@@ -599,7 +599,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testCan()
+    public function testCan(): void
     {
         $this->getMemberOne();
         //create contribution for member
@@ -710,7 +710,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testNextYear()
+    public function testNextYear(): void
     {
         $this->logSuperAdmin();
         $this->getMemberOne();
@@ -747,7 +747,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testNextYearFrom096()
+    public function testNextYearFrom096(): void
     {
         $this->logSuperAdmin();
         $this->getMemberOne();

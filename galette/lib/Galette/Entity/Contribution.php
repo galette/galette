@@ -101,9 +101,7 @@ class Contribution
     /** @var array<int, PaymentType> */
     private array $ptypes_list;
 
-    /** @var Db */
     private Db $zdb;
-    /** @var Login */
     private Login $login;
     /** @var array<string> */
     protected array $errors = [];
@@ -1132,7 +1130,7 @@ class Contribution
      *
      * @return mixed the called property
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         if (in_array($name, $this->forbidden_fields)) {
             Analog::log(
@@ -1194,8 +1192,9 @@ class Contribution
                 "Unknown property '$name'",
                 Analog::WARNING
             );
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -1206,7 +1205,7 @@ class Contribution
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         global $preferences;
 

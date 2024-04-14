@@ -37,24 +37,12 @@ use Slim\Routing\RouteParser;
  */
 class PublicPages
 {
-    /**
-     * @var Messages
-     */
     protected Messages $flash;
 
-    /**
-     * @var Login
-     */
     private Login $login;
 
-    /**
-     * @var RouteParser
-     */
     private RouteParser $routeparser;
 
-    /**
-     * @var Preferences
-     */
     private Preferences $preferences;
 
     /**

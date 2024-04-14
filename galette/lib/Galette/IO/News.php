@@ -84,7 +84,7 @@ class News
      *
      * @return bool
      */
-    protected function cacheLoaded($contents): bool
+    protected function cacheLoaded(mixed $contents): bool
     {
         if (Galette::isSerialized($contents)) {
             //legacy cache format

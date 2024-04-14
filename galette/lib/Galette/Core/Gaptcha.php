@@ -38,15 +38,10 @@ class Gaptcha
     private int $max = 12;
     private int $min = 0;
 
-    /** @var I18n */
     private I18n $i18n;
-    /** @var integer */
     private int $current_left;
-    /** @var integer */
     private int $current_right;
-    /** @var integer */
     private int $current_op;
-    /** @var integer */
     private int $gaptcha;
 
     /**

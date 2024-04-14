@@ -72,7 +72,7 @@ class SavedSearch extends TestCase
      *
      * @return void
      */
-    private function deleteCreated()
+    private function deleteCreated(): void
     {
         $this->zdb->db->query(
             'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\SavedSearch::TABLE,
@@ -85,7 +85,7 @@ class SavedSearch extends TestCase
      *
      * @return void
      */
-    public function testSave()
+    public function testSave(): void
     {
         global $i18n, $translator; // globals :(
         $i18n = $this->i18n;

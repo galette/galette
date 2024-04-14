@@ -93,13 +93,13 @@ class CsvIn extends GaletteTestCase
      */
     private function doImportFileTest(
         array $fields,
-        $file_name,
+        string $file_name,
         array $flash_messages,
         array $members_list,
-        $count_before = null,
-        $count_after = null,
+        int $count_before = null,
+        int $count_after = null,
         array $values = []
-    ) {
+    ): void {
         if ($count_before === null) {
             $count_before = 0;
         }
@@ -223,7 +223,7 @@ class CsvIn extends GaletteTestCase
      *
      * @return void
      */
-    public function testImport()
+    public function testImport(): void
     {
         $fields = ['nom_adh', 'ville_adh', 'bool_exempt_adh', 'fingerprint'];
         $file_name = 'test-import-atoum.csv';
@@ -259,7 +259,7 @@ class CsvIn extends GaletteTestCase
      *
      * @return \Galette\Entity\ImportModel
      */
-    protected function getModel($fields): \Galette\Entity\ImportModel
+    protected function getModel(array $fields): \Galette\Entity\ImportModel
     {
         $model = new \Galette\Entity\ImportModel();
         $this->assertTrue($model->remove($this->zdb));
@@ -278,7 +278,7 @@ class CsvIn extends GaletteTestCase
      *
      * @return void
      */
-    protected function checkDynamicTranslation($text_orig, $lang = 'fr_FR.utf8')
+    protected function checkDynamicTranslation(string $text_orig, string $lang = 'fr_FR.utf8'): void
     {
         $langs = array_keys($this->i18n->getArrayList());
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
@@ -306,7 +306,7 @@ class CsvIn extends GaletteTestCase
      *
      * @return void
      */
-    public function testImportDynamics()
+    public function testImportDynamics(): void
     {
 
         $field_data = [
@@ -551,7 +551,7 @@ class CsvIn extends GaletteTestCase
      *
      * @return array
      */
-    private function getMemberData1()
+    private function getMemberData1(): array
     {
         return array(
             'FAKER_0' => array (
@@ -837,7 +837,7 @@ class CsvIn extends GaletteTestCase
      *
      * @return array
      */
-    private function getMemberData2()
+    private function getMemberData2(): array
     {
         return array (
             'FAKER_0' => array (
@@ -1120,7 +1120,7 @@ class CsvIn extends GaletteTestCase
      *
      * @return array
      */
-    private function getMemberData2NoName()
+    private function getMemberData2NoName(): array
     {
         $data = $this->getMemberData2();
         $data['FAKER_2']['nom_adh'] = '';

@@ -43,17 +43,11 @@ use Slim\Routing\RouteParser;
  */
 class ContribListener implements ListenerSubscriber
 {
-    /** @var Preferences */
     private Preferences $preferences;
-    /** @var RouteParser */
     private RouteParser $routeparser;
-    /** @var History */
     private History $history;
-    /** @var Messages */
     private Messages $flash;
-    /** @var Login */
     private Login $login;
-    /** @var Db */
     private Db $zdb;
 
     /**
@@ -93,7 +87,7 @@ class ContribListener implements ListenerSubscriber
     {
         $acceptor->subscribeTo(
             'contribution.add',
-            function (GaletteEvent $event) {
+            function (GaletteEvent $event): void {
                 $this->contributionAdded($event->getObject());
             }
         );

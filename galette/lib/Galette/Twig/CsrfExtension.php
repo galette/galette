@@ -34,9 +34,6 @@ use Twig\Extension\GlobalsInterface;
 
 class CsrfExtension extends AbstractExtension implements GlobalsInterface
 {
-    /**
-     * @var Guard
-     */
     protected Guard $csrf;
 
     /**

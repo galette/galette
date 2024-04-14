@@ -366,17 +366,19 @@ abstract class Pagination
      *
      * @return mixed the called property
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         if (in_array($name, $this->pagination_fields)) {
             return $this->$name;
-        } else {
-            Analog::log(
-                '[' . get_class($this) .
-                '|Pagination] Unable to get property `' . $name . '`',
-                Analog::WARNING
-            );
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -403,7 +405,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'ordered':

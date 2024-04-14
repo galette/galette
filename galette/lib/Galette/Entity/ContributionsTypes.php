@@ -581,7 +581,7 @@ class ContributionsTypes
      *
      * @return mixed the called property
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         $forbidden = array();
         $virtuals = array('extension', 'libelle');

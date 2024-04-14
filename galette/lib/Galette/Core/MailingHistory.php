@@ -68,6 +68,10 @@ class MailingHistory extends History
      */
     public function __construct(Db $zdb, Login $login, Preferences $preferences, MailingsList $filters = null, Mailing $mailing = null)
     {
+        if ($filters === null) {
+            $filters = new MailingsList();
+        }
+
         parent::__construct($zdb, $login, $preferences, $filters);
         $this->mailing = $mailing;
     }

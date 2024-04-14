@@ -177,7 +177,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, int $id = null, $type = null): Response
+    public function doEdit(Request $request, Response $response, int $id = null, ?string $type = null): Response
     {
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);

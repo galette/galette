@@ -57,19 +57,12 @@ class Document implements FileInterface
     public const MINUTES = 'minutes';
     public const VOTES = 'votes';
 
-    /** @var Db */
     private Db $zdb;
-    /** @var int */
     private int $id;
-    /** @var string */
     private string $type;
-    /** @var string */
     private string $filename;
-    /** @var DateTime */
     private DateTime $creation_date;
-    /** @var string */
     protected string $store_path = GALETTE_DOCUMENTS_PATH;
-    /** @var ?string */
     private ?string $comment = null;
     /** @var array<string> */
     private array $errors = [];

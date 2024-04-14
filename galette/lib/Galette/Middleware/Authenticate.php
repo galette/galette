@@ -39,9 +39,6 @@ use Slim\Routing\RouteParser;
  */
 class Authenticate
 {
-    /**
-     * @var Messages
-     */
     protected Messages $flash;
 
     /**
@@ -49,19 +46,10 @@ class Authenticate
      */
     protected array $acls;
 
-    /**
-     * @var Login
-     */
     private Login $login;
 
-    /**
-     * @var Session
-     */
     private Session $session;
 
-    /**
-     * @var RouteParser
-     */
     private RouteParser $routeparser;
 
     /**

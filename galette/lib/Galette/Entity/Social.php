@@ -55,17 +55,11 @@ class Social
     public const BLOG = 'blog';
     public const DISCORD = 'discord';
 
-    /** @var Db */
     private Db $zdb;
-    /** @var int */
     private int $id;
-    /** @var string */
     private string $type;
-    /** @var string */
     private string $url;
-    /** @var int */
     private ?int $id_adh;
-    /** @var Adherent|null */
     private ?Adherent $member = null;
 
     /**
@@ -251,7 +245,7 @@ class Social
      *
      * @return mixed
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         return $this->$name;
     }

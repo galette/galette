@@ -80,11 +80,11 @@ class Members extends GaletteTestCase
     }
 
     /**
-     * Create members and get their id
+     * Create members and store their id
      *
-     * @return int[]
+     * @return void
      */
-    private function createMembers()
+    private function createMembers(): void
     {
         global $zdb, $login, $hist, $i18n; // globals :(
         $zdb = $this->zdb;
@@ -184,7 +184,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteMembers()
+    private function deleteMembers(): void
     {
         if (is_array($this->mids) && count($this->mids) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
@@ -214,7 +214,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteGroups()
+    private function deleteGroups(): void
     {
         //clean groups
         $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
@@ -233,7 +233,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $members = new \Galette\Repository\Members();
 
@@ -613,7 +613,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetListContributionDynamics()
+    public function testGetListContributionDynamics(): void
     {
         // Advanced search on contributions dynamic fields
 
@@ -784,7 +784,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetPublicList()
+    public function testGetPublicList(): void
     {
         $members = new \Galette\Repository\Members();
 
@@ -825,7 +825,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGroupsSearch()
+    public function testGroupsSearch(): void
     {
         $members = new \Galette\Repository\Members();
         $list = $members->getList(true);
@@ -952,7 +952,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetRemindersCount()
+    public function testGetRemindersCount(): void
     {
         $members = new \Galette\Repository\Members();
         $counts = $members->getRemindersCount();
@@ -1123,7 +1123,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetDropdownMembers()
+    public function testGetDropdownMembers(): void
     {
         $members = new \Galette\Repository\Members();
         $this->logSuperAdmin();
@@ -1136,7 +1136,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetArrayList()
+    public function testGetArrayList(): void
     {
         $members = new \Galette\Repository\Members();
 
