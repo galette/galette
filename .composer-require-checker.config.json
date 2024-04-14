@@ -70,9 +70,6 @@
 
     "//know but not detected Galette function,",
     "remove_remarks",
-    "custom_html_entity_decode",
-    "get_form_value",
-    "get_numeric_form_value",
     "isValidWebUrl",
     "remove_remarks",
     "split_sql_file",

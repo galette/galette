@@ -23,8 +23,6 @@ if (!defined('GALETTE_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
-use Analog\Analog;
-
 /**
  * Check URL validity
  *
@@ -38,110 +36,4 @@ function isValidWebUrl($url)
         '#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i',
         $url
     ));
-}
-
-/**
- * Custom HTML entitiy decode
- *
- * @param string $given_html  Original HTML
- * @param int    $quote_style Quoting style
- *
- * @return string
- */
-function custom_html_entity_decode($given_html, $quote_style = ENT_QUOTES)
-{
-    $trans_table = array_flip(
-        get_html_translation_table(
-            HTML_ENTITIES,
-            $quote_style
-        )
-    );
-    $trans_table['&#39;'] = "'";
-    return strtr($given_html, $trans_table);
-}
-
-/**
- * Get a value sent by a form, either in POST and GET arrays
- *
- * @param string $name   property name
- * @param string $defval default rollback value
- *
- * @return string value retrieved from :
- * - GET array if defined and numeric,
- * - POST array if defined and numéric
- * - $defval otherwise
- */
-function get_form_value($name, $defval)
-{
-    $val = $defval;
-    if (isset($_GET[$name])) {
-        $val = $_GET[$name];
-    } elseif (isset($_POST[$name])) {
-        $val = $_POST[$name];
-    }
-    return $val;
-}
-
-/**
- * Get a numeric value sent by a form, either in POST and GET arrays
- *
- * @param string $name   property name
- * @param string $defval default rollback value
- *
- * @return numeric value retrieved from :
- * - GET array if defined and numeric,
- * - POST array if defined and numéric
- * - $defval otherwise
- */
-function get_numeric_form_value($name, $defval)
-{
-    $val = get_form_value($name, $defval);
-    if (!is_numeric($val)) {
-        Analog::log(
-            '[get_numeric_form_value] not a numeric value! (value was: `' .
-            $val . '`)',
-            Analog::INFO
-        );
-        $val = $defval;
-    }
-    return $val;
-}
-
-/**
- * Get a post numeric value
- *
- * @param string $name   property name
- * @param string $defval default rollback value
- *
- * @return string value retrieved from :
- * - POST array if defined and numéric
- * - $defval otherwise
- */
-function get_numeric_posted_value($name, $defval)
-{
-    if (isset($_POST[$name])) {
-        $val = $_POST[$name];
-        if (is_numeric($val)) {
-            return $val;
-        }
-    }
-    return $defval;
-}
-
-if (!function_exists('str_contains')) {
-    /**
-     * PHP8 str_contains polyfill
-     *
-     * based on original work from the PHP Laravel framework
-     * see https://www.php.net/manual/fr/function.str-contains.php#125977
-     *
-     * @param string $haystack The string to search in.
-     * @param string $needle   The substring to search for in the haystack
-     *
-     * @return bool
-     */
-    function str_contains($haystack, $needle)
-    {
-        return $needle !== '' && mb_strpos($haystack, $needle) !== false;
-    }
 }

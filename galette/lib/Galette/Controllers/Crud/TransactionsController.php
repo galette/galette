@@ -92,8 +92,6 @@ class TransactionsController extends ContributionsController
      */
     public function edit(Request $request, Response $response, int $id = null, string|null $action = 'edit'): Response
     {
-        $trans = null;
-
         if ($this->session->transaction !== null) {
             $trans = $this->session->transaction;
             $this->session->transaction = null;
@@ -105,12 +103,6 @@ class TransactionsController extends ContributionsController
         if ($id !== null) {
             $trans_id = $id;
         }
-
-        $transaction['trans_id'] = $trans_id;
-        $transaction['trans_amount'] = get_numeric_form_value("trans_amount", '');
-        $transaction['trans_date'] = get_form_value("trans_date", '');
-        $transaction['trans_desc'] = get_form_value("trans_desc", '');
-        $transaction['id_adh'] = get_numeric_form_value("id_adh", '');
 
         // flagging required fields
         $required = array(
@@ -140,7 +132,6 @@ class TransactionsController extends ContributionsController
         $params = [
             'page_title'        => $title,
             'required'          => $required,
-            'data'              => $transaction, //TODO: remove
             'transaction'       => $trans
         ];
 
