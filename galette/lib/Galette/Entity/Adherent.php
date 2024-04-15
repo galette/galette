@@ -356,7 +356,7 @@ class Adherent
         $this->id = $r->id_adh;
         //Identity
         if ($r->titre_adh !== null) {
-            $this->title = new Title((int)$r->titre_adh);
+            $this->title = new Title($this->zdb, (int)$r->titre_adh);
         }
         $this->company_name = $r->societe_adh;
         $this->id_legal_status = $r->id_legal_status;
