@@ -22,6 +22,8 @@
 namespace Galette\Entity;
 
 use Galette\Core\Db;
+use Galette\Entity\Base\EntityFromDb;
+use Galette\Entity\Base\Translate;
 use ArrayObject;
 
 class Title extends EntityFromDb
@@ -33,9 +35,8 @@ class Title extends EntityFromDb
     public const MRS = 2;
     public const MISS = 3;
 
-    public function __construct(ArrayObject|int $args = null)
+    public function __construct(Db $zdb, ArrayObject|int $args = null)
     {
-        global $zdb; //TODO
         parent::__construct(
             $zdb,
             [
@@ -47,13 +48,19 @@ class Title extends EntityFromDb
             [
                 'toString' => 'long',
 
-                //'short:validate' => function($value) { return ($value == null || trim($value) === '') ? $this->short : $value; },
-                'long:validate' => function ($value) { return ($value == null || trim($value) === '') ? $this->short : $value; },
-                'long:noempty' => true,
-                'tshort' => 'short:translate',
-                'tlong' => 'long:translate',
+                //if long value is null get short value
+                'long:override' => function ($value) {
+                    return ($value == null || trim($value) === '') ? $this->short : $value; },
+                'long:warningnoempty' => true,
 
+                'tshort:from' => 'short',
+                'tlong:from' => 'long',
+                'tshort:override' => function ($value) {
+                    return Translate::getFromLang($value); },
+                'tlong:override' => function ($value) {
+                    return Translate::getFromLang($value); },
 
+                'i18n' => ['long', 'short']
             ],
             $args
         );
@@ -68,7 +75,7 @@ class Title extends EntityFromDb
      */
     public function remove(): bool
     {
-        $id = (int)$this->id;
+        $id = (int) $this->id;
         if ($id === self::MR || $id === self::MRS) {
             throw new \RuntimeException(_T("You cannot delete Mr. or Mrs. titles!"));
         }
