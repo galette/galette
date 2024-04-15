@@ -73,7 +73,7 @@
 
     {% if list_type is defined and list_type == 'cards' %}
                 <div class="{% if nb %}ui doubling {% if cards_columns is defined %}{{ cards_columns }}{% else %}six{% endif %} column cards loader_selector{% endif %}">
-    {% else %}
+    {% elseif list_type is not defined %}
                 <div class="ui basic fitted segment loader_selector large-table-wrapper">
                     <table class="listing ui celled{% if basic_table is not defined %} striped{% endif %} table">
                         <thead>
