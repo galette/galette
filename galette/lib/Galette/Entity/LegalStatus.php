@@ -4,11 +4,10 @@ namespace Galette\Entity;
 
 use Galette\Core\Db;
 use ArrayObject;
+use Galette\Entity\Base\EntityFromDb;
 
 class LegalStatus extends EntityFromDb
 {
-    //use EntityTrait;
-
     public const TABLE = 'legalstatus';
     public const PK = 'id_legalstatus';
 
