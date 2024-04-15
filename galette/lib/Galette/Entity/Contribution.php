@@ -35,7 +35,7 @@ use Galette\IO\ExternalScript;
 use Galette\IO\PdfContribution;
 use Galette\Repository\PaymentTypes;
 use Galette\Features\Dynamics;
-use Galette\Features\EntityHelper;
+use Galette\Helpers\EntityHelper;
 
 /**
  * Contribution class for galette

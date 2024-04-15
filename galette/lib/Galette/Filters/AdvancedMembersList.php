@@ -21,11 +21,11 @@
 
 namespace Galette\Filters;
 
+use Galette\Helpers\DatesHelper;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Status;
 use Galette\Entity\ContributionsTypes;
-use Galette\Entity\Contribution;
 use Galette\Repository\Members;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\PaymentTypes;
@@ -79,6 +79,8 @@ use Galette\Repository\PaymentTypes;
 
 class AdvancedMembersList extends MembersList
 {
+    use DatesHelper;
+
     public const OP_AND = 0;
     public const OP_OR = 1;
 
@@ -324,21 +326,7 @@ class AdvancedMembersList extends MembersList
                     case 'contrib_begin_date_end':
                     case 'contrib_end_date_begin':
                     case 'contrib_end_date_end':
-                        try {
-                            if ($this->$name !== null) {
-                                $d = new \DateTime($this->$name);
-                                return $d->format(__("Y-m-d"));
-                            }
-                        } catch (Throwable $e) {
-                            //oops, we've got a bad date :/
-                            Analog::log(
-                                'Bad date (' . $this->$name . ') | ' .
-                                $e->getMessage(),
-                                Analog::INFO
-                            );
-                            return $this->$name;
-                        }
-                        break;
+                        return $this->getDate($name);
                     case 'rcreation_date_begin':
                     case 'rcreation_date_end':
                     case 'rmodif_date_begin':
@@ -354,7 +342,7 @@ class AdvancedMembersList extends MembersList
                     case 'rcontrib_end_date_begin':
                     case 'rcontrib_end_date_end':
                         $rname = substr($name, 1);
-                        return $this->$rname;
+                        return $this->getDate($rname, true, false);
                     case 'search_fields':
                         $search_fields = array_merge($this->memberslist_fields, $this->advancedmemberslist_fields);
                         $key = array_search('selected', $search_fields);
@@ -443,21 +431,7 @@ class AdvancedMembersList extends MembersList
                 case 'contrib_begin_date_end':
                 case 'contrib_end_date_begin':
                 case 'contrib_end_date_end':
-                    if ($value !== null && trim($value) !== '') {
-                        try {
-                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                            if ($d === false) {
-                                throw new \Exception('Incorrect format');
-                            }
-                            $this->$name = $d->format('Y-m-d');
-                        } catch (Throwable $e) {
-                            Analog::log(
-                                'Incorrect date format for ' . $name .
-                                '! was: ' . $value,
-                                Analog::WARNING
-                            );
-                        }
-                    }
+                    $this->setFilterDate($name, $value, str_contains($name, 'begin'));
                     break;
                 case 'contrib_min_amount':
                 case 'contrib_max_amount':

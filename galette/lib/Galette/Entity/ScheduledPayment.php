@@ -23,7 +23,7 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use DateTime;
-use Galette\Features\EntityHelper;
+use Galette\Helpers\EntityHelper;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\IsNull;
 use Laminas\Db\Sql\Predicate\Operator;

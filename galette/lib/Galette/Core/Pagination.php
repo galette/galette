@@ -22,7 +22,6 @@
 namespace Galette\Core;
 
 use Slim\Routing\RouteParser;
-use Slim\Slim;
 use Analog\Analog;
 use Laminas\Db\Sql\Select;
 use Slim\Views\Twig;
@@ -50,6 +49,8 @@ abstract class Pagination
     private ?int $counter = null;
     protected ?Twig $view;
     protected ?RouteParser $routeparser;
+    /** @var array<string> */
+    protected array $errors = [];
 
     public const ORDER_ASC = 'ASC';
     public const ORDER_DESC = 'DESC';

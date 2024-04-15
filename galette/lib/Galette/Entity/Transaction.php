@@ -32,7 +32,7 @@ use Galette\Core\Db;
 use Galette\Core\History;
 use Galette\Core\Login;
 use Galette\Features\Dynamics;
-use Galette\Features\EntityHelper;
+use Galette\Helpers\EntityHelper;
 
 /**
  * Transaction class for galette
