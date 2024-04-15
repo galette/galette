@@ -122,7 +122,7 @@ class TitlesController extends CrudController
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
-        $title = new Title($id);
+        $title = new Title($this->zdb, $id);
         $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
 
         // display page
@@ -175,7 +175,7 @@ class TitlesController extends CrudController
         $error_detected = [];
         $msg = null;
 
-        $title = new Title($id);
+        $title = new Title($this->zdb, $id);
         $title->short = $post['short_label'];
         $title->long = $post['long_label'];
         if ((isset($post['short_label']) && $post['short_label'] != '') && (isset($post['long_label']) && $post['long_label'] != '')) {
@@ -276,7 +276,7 @@ class TitlesController extends CrudController
      */
     public function confirmRemoveTitle(array $args): string
     {
-        $title = new Title((int)$args['id']);
+        $title = new Title($this->zdb, (int)$args['id']);
         return sprintf(
             _T('Remove title %1$s'),
             $title->short
@@ -293,8 +293,8 @@ class TitlesController extends CrudController
      */
     protected function doDelete(array $args, array $post): bool
     {
-        $title = new Title((int)$args['id']);
-        return $title->remove($this->zdb);
+        $title = new Title($this->zdb, (int)$args['id']);
+        return $title->remove();//$this->zdb);
     }
 
     // /CRUD - Delete
