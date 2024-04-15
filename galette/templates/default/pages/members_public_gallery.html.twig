@@ -22,7 +22,7 @@
 
 {% set nb = members|length %}
 {% set is_public = not login.isLogged() %}
-{% set list_type = 'cards' %}
+{% set list_type = nb_members > 0 ? 'cards' : 'empty' %}
 
 {% macro drawEntry(member, staff, time) %}
     <div class="ui fluid card">
