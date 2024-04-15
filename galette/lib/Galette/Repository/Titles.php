@@ -32,8 +32,9 @@ use Analog\Analog;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class Titles
+class Titles extends Repository
 {
+    use RepositoryTrait;
     public const TABLE = 'titles';
     public const PK = 'id_title';
 
@@ -41,51 +42,30 @@ class Titles
     public const MRS = 2;
     public const MISS = 3;
 
-    /** @var array<array<string,mixed>> */
-    private static array $defaults = array(
-        array(
-            'id_title'      => 1,
-            'short_label'   => 'Mr.',
-            'long_label'    => null
-        ),
-        array(
-            'id_title'      => 2,
-            'short_label'   => 'Mrs.',
-            'long_label'    => null
-        )
-    );
-
-    private Db $zdb;
-
     /**
-     * Default constructor
+     * Get defaults values
      *
-     * @param Db $zdb Database instance
+     * @return array<string, mixed>
      */
-    public function __construct(Db $zdb)
+    protected function loadDefaults(): array
     {
-        $this->zdb = $zdb;
+        return [
+            array(
+                self::PK => 1,
+                'short_label' => 'Mr.',
+                'long_label' => null
+            ),
+            array(
+                self::PK => 2,
+                'short_label' => 'Mrs.',
+                'long_label' => null
+            )
+        ];
     }
 
-    /**
-     * Get the list of all titles
-     *
-     * @return Title[]
-     */
-    public function getList(): array
-    {
-        $select = $this->zdb->select(self::TABLE);
-        $select->order(self::PK);
+ 
 
-        $results = $this->zdb->execute($select);
 
-        $pols = array();
-        foreach ($results as $r) {
-            $pk = self::PK;
-            $pols[$r->$pk] = new Title($r);
-        }
-        return $pols;
-    }
 
 
     /**
@@ -94,7 +74,7 @@ class Titles
      * @return boolean
      * @throws Throwable
      */
-    public function installInit(): bool
+    public function XXXXXXXXXXXXXXXXXinstallInit(): bool
     {
         try {
             //first, we drop all values
@@ -104,9 +84,9 @@ class Titles
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values(
                 array(
-                    'id_title'      => ':id',
-                    'short_label'   => ':short',
-                    'long_label'    => ':long'
+                    'id_title' => ':id',
+                    'short_label' => ':short',
+                    'long_label' => ':long'
                 )
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
@@ -124,9 +104,9 @@ class Titles
                 }
                 $stmt->execute(
                     array(
-                        'id'    => $d['id_title'],
+                        'id' => $d['id_title'],
                         'short' => $short,
-                        'long'  => $long
+                        'long' => $long
                     )
                 );
             }
