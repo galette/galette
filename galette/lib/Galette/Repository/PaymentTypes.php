@@ -34,36 +34,32 @@ use Galette\Entity\PaymentType;
  */
 class PaymentTypes extends Repository
 {
+    use RepositoryTrait;
+    public const TABLE = PaymentType::TABLE;
+    public const PK = PaymentType::PK;
+    
     /**
      * Get payments types
      *
-     * @param boolean $schedulable Types that can be used in schedules only
-     *
      * @return array<int, PaymentType>
      */
-    public static function getAll(bool $schedulable = true): array
+    public static function getAll(): array
     {
         global $zdb, $preferences, $login;
         $ptypes = new self($zdb, $preferences, $login);
-        return $ptypes->getList($schedulable);
+        return $ptypes->getList();
     }
 
     /**
      * Get list
      *
-     * @param boolean $schedulable Types that can be used in schedules only
-     *
      * @return array<int, PaymentType>|ResultSet
      */
-    public function getList(bool $schedulable = true): array|ResultSet
+    public function getList(): array|ResultSet
     {
         try {
             $select = $this->zdb->select(PaymentType::TABLE, 'a');
             $select->order(PaymentType::PK);
-
-            if ($schedulable === false) {
-                $select->where->notEqualTo('a.' . PaymentType::PK, PaymentType::SCHEDULED);
-            }
 
             $types = array();
             $results = $this->zdb->execute($select);
@@ -191,33 +187,7 @@ class PaymentTypes extends Repository
         return false;
     }
 
-    /**
-     * Insert values in database
-     *
-     * @param string              $table  Table name
-     * @param array<string,mixed> $values Values to insert
-     *
-     * @return void
-     */
-    private function insert(string $table, array $values): void
-    {
-        $insert = $this->zdb->insert($table);
-        $insert->values(
-            array(
-                'type_id'   => ':type_id',
-                'type_name' => ':type_name'
-            )
-        );
-        $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-
-        foreach ($values as $k => $v) {
-            $value = [
-                ':type_id'      => $k,
-                ':type_name'    => $v
-            ];
-            $stmt->execute($value);
-        }
-    }
+    
 
     /**
      * Get defaults values
