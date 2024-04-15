@@ -19,6 +19,8 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 // define relative base path templating can use
 if (!defined('GALETTE_BASE_PATH')) {
     define('GALETTE_BASE_PATH', '../');

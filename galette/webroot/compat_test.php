@@ -19,6 +19,8 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 define('GALETTE_ROOT', __DIR__ . '/../');
 require_once GALETTE_ROOT . 'includes/sys_config/versions.inc.php';
 require_once GALETTE_ROOT . 'includes/sys_config/paths.inc.php';

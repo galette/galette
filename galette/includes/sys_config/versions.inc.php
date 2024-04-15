@@ -19,6 +19,8 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 /**
  * External libraries versions
  * Defines various library versions, to avoid use of problematic symlinks under windows or via FTP.

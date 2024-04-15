@@ -47,4 +47,9 @@
          <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation"/>
          <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
      </rule>
+     <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+       <properties>
+         <property name="spacesCountAroundEqualsSign" value="0"/>
+       </properties>
+     </rule>
 </ruleset>

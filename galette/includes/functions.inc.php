@@ -19,6 +19,8 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 if (!defined('GALETTE_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }

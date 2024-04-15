@@ -19,6 +19,8 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 namespace Galette\Controllers\Crud;
 
 use Galette\Core\PluginControllerTrait;

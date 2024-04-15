@@ -48,6 +48,9 @@
 // See LICENSE.TXT file for more information.
 //============================================================+
 
+
+declare(strict_types=1);
+
 /**
  * Alternative configuration file for TCPDF.
  * @author Nicola Asuni

@@ -19,6 +19,8 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 //define galette's root directory
 if (!defined('GALETTE_ROOT')) {
     define('GALETTE_ROOT', __DIR__ . '/../');

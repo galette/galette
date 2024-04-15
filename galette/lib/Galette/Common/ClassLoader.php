@@ -44,6 +44,8 @@
  * @link     http://www.doctrine-project.org - https://galette.eu
  */
 
+declare(strict_types=1);
+
 namespace Galette\Common;
 
 /**
