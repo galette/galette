@@ -146,7 +146,7 @@ function split_sql_file(string $sql, string $delimiter): array
     $token_count = count($tokens);
     for ($i = 0; $i < $token_count; $i++) {
         // Don't wanna add an empty string as the last thing in the array.
-        if (($i != ($token_count - 1)) || (strlen($tokens[$i] > 0))) {
+        if (($i != ($token_count - 1)) || (strlen($tokens[$i]) > 0)) {
             // This is the total number of single quotes in the token.
             $total_quotes = preg_match_all("/'/", $tokens[$i], $matches);
             // Counts single quotes that are preceded by an odd number of backslashes,
