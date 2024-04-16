@@ -76,7 +76,7 @@ trait RepositoryTrait
         $return = $results->current();
     }
 
-        /**
+    /**
      * Count all entities
      *
      *
