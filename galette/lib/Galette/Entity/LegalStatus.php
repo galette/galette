@@ -25,6 +25,7 @@ class LegalStatus extends EntityFromDb
         ],
             [
             'toString' => 'long',
+            //Automatic add and removeTranslation() when store()
             'i18n' => ['short', 'long']
         ],
             $args
