@@ -95,7 +95,7 @@ class EntityFromDb
     }
 
     /**
-     * Load title from a db ResultSet
+     * Load entity from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
      *
