@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-04-16 23:19+0200\n"
-"PO-Revision-Date: 2024-04-16 21:19+0000\n"
+"PO-Revision-Date: 2024-04-16 21:24+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -3324,10 +3324,8 @@ msgid "Record date:"
 msgstr "Date d’enregistrement :"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:634
-#, fuzzy
-#| msgid "Scheduled date"
 msgid "Scheduled date:"
-msgstr "Date de planification"
+msgstr "Date de planification :"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:642
 msgid "Paid"
