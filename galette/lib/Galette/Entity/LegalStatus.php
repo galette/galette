@@ -24,7 +24,8 @@ class LegalStatus extends EntityFromDb
             'long' => 'long_label',
         ],
             [
-            'toString' => 'long'
+            'toString' => 'long',
+            'i18n' => ['short', 'long']
         ],
             $args
         );

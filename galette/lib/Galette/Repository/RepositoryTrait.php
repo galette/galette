@@ -49,7 +49,8 @@ trait RepositoryTrait
      */
     public static function getAll(): array
     {
-        $ptypes = new self(); 
+        global $zdb;
+        $ptypes = new self($zdb); 
         return $ptypes->getList();
     }
 

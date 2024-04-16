@@ -17,8 +17,8 @@ class LegalStatuss extends Repository
 {
     use RepositoryTrait;
 
-    public const TABLE = 'legalstatus';
-    public const PK = 'id_legalstatus';
+    public const TABLE = LegalStatus::TABLE;
+    public const PK = LegalStatus::PK;
 
 
     /**

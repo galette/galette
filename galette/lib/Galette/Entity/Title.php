@@ -46,6 +46,7 @@ class Title extends EntityFromDb
                 'long' => 'long_label',
             ],
             [
+                //toString() will return long property
                 'toString' => 'long',
 
                 //if long value is null get short value
@@ -53,14 +54,17 @@ class Title extends EntityFromDb
                     return ($value == null || trim($value) === '') ? $this->short : $value; },
                 'long:warningnoempty' => true,
 
-                'tshort:from' => 'short',
+                //Virtual properties
+                'tshort:from' => 'short',  //OR function() { return $this->short; }, 
                 'tlong:from' => 'long',
+
                 'tshort:override' => function ($value) {
                     return Translate::getFromLang($value); },
                 'tlong:override' => function ($value) {
                     return Translate::getFromLang($value); },
 
-                'i18n' => ['long', 'short']
+                //Automatic add and removeTranslation() when store()
+                //PAS pour TITLEs 'i18n' => ['long', 'short']
             ],
             $args
         );

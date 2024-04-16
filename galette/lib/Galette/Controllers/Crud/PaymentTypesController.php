@@ -294,7 +294,7 @@ class PaymentTypesController extends CrudController
         $ptype = new PaymentType($this->zdb, (int)$args['id']);
         return sprintf(
             _T('Remove payment type %1$s'),
-            $ptype->getName()
+            $ptype->name
         );
     }
 

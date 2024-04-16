@@ -120,13 +120,13 @@ class EntityFromDb
     public function __toString(): string
     {
         if (array_key_exists('toString', $this->options)) {
-            return $this->{$this->options['toString']};
+            return $this->getValue($this->options['toString'], true);
         }
         return "options[toString] not defined";
     }
 
     /**
-     * Store title in database
+     * Store this entity in database
      *
      * @param Db $zdb Database instance
      *
@@ -233,7 +233,8 @@ class EntityFromDb
      * @param string $translated translate returned string
      * 
      * @return mixed
-     */    public function getValue(string $name, bool $translated): mixed
+     */
+    public function getValue(string $name, bool $translated): mixed
     {
         //$name = 'tshort';
         $value = null;
@@ -245,7 +246,10 @@ class EntityFromDb
             //from other property
             $k = "$name:from";
             if (self::getOption($k, $f)) {
-                $value = $this->{$f};
+                if (is_callable($f))
+                    $value = $f();
+                elseif ($f != '')
+                    $value = $this->getValue($f, $translated); //equivalent $this->{$f};
                 $found = true;
             }
         }
@@ -312,6 +316,16 @@ class EntityFromDb
                 );
                 //                throw new \Exception($name . ' '. _T('cannot be empty'));
             }
+
+            //validate this value
+            $k = "$name:validate";
+            if (array_key_exists($k, $this->options)) {
+                $fct = $this->options[$k];
+
+                if (!$fct($value))
+                    throw new \Exception($name . ' ' . _T('invalid value !'));
+            }
+
             if (array_key_exists($name, $this->values))
                 $this->oldValues[$name] = $this->values[$name];
             $this->values[$name] = $value;

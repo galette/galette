@@ -73,6 +73,7 @@ class PaymentType extends EntityFromDb
         );
     }
 
+    // Compatibilité ancienne classe
     public function getName($translated = true): string
     {
         return $this->getValue('name', $translated);

@@ -75,8 +75,28 @@
                                 </a>
                             </span>
                         </td>
-                        <td class="left" data-col-label="{{ _T("Short form") }}">{{ item.short|escape }}</td>
-                        <td class="left" data-col-label="{{ _T("Long form") }}">{{ item.long|escape }}</td>
+                        <td class="left" data-col-label="{{ _T("Short form") }}">{{ item.short|escape }}
+                        {% if item.short is not empty %}
+                            &nbsp;-&nbsp;
+                            <a
+                                href="{{ url_for('dynamicTranslations', {'text_orig': item.getValue('short',false)|escape}) }}"
+                                class="action single-translate"
+                            >
+                                <i class="ui language grey icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T("Translate '%s'")|replace({'%s': item.getValue('short',false)}) }}</span>
+                            </a>
+                        {% endif %}
+                        </td>
+                        <td class="left" data-col-label="{{ _T("Long form") }}">{{ item.long|escape }}
+                            &nbsp;-&nbsp;
+                            <a
+                                href="{{ url_for('dynamicTranslations', {'text_orig': item.getValue('long',false)|escape}) }}"
+                                class="action single-translate"
+                            >
+                                <i class="ui language grey icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T("Translate '%s'")|replace({'%s': item.getValue('long',false)}) }}</span>
+                            </a>
+                        </td>
                         <td class="center actions_row">
                             <a
                                 href="{{ url_for('editLegalStatus', {'id': item.id}) }}"
@@ -85,7 +105,7 @@
                                 <i class="ui edit icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T("Edit '%s' legal status")|replace({'%s': item.short|escape}) }}</span>
                             </a>
-            {% if item.id == 1 or item.id == 2 %}
+            {% if item.id == 1 %}
                             <i class="ui icon">&nbsp;</i>
             {% else %}
                             <a
@@ -124,5 +144,116 @@
                 single_action: "true"
             } %}
         });
+
+
+
+        {% set extra_success = "
+            $('.modal-form form').on('submit', function(event) {
+                event.preventDefault();
+                var _form = $(this);
+                var _data = _form.serialize();
+                $.ajax({
+                    url: _form.attr('action'),
+                    type: 'POST',
+                    datatype: 'json',
+                    data: _data,
+                    error: function() {
+                        $.modal({
+                            title: '%error%',
+                            class: 'mini',
+                            actions: [{
+                                text: '%close%',
+                                icon: 'times',
+                                class: 'icon labeled cancel'
+                            }],
+                            className: {
+                                modal: 'ui redalert modal',
+                                title: 'center aligned header',
+                                content: 'center aligned content',
+                                actions: 'center aligned actions'
+                            }
+                        }).modal('show');
+                    }
+                });
+            });
+        " %}
+
+        {% include "elements/js/modal_action.js.twig" with {
+                selector: ".single-translate",
+                extra_success: extra_success|replace({'%error%': _T("An error occurred :(")|e("js"), '%close%': _T("Close")|e("js")}),
+                modal_title_twig: _T("Translate labels")|e("js"),
+                modal_content_class: "scrolling",
+                modal_onapprove: modal_onapprove
+            } 
+        %}
     </script>
 {% endblock %}
+
+
+
+
+
+
+{#
+
+{% block javascripts %}
+        <script type="text/javascript">
+            $(function() {
+                {% set modal_onapprove = "
+                    $('.modal-form form #redirect_uri').val(window.location.href);
+                    $('.modal-form form').submit();
+                " %}
+
+                {% include "elements/js/modal_action.js.twig" with {
+                    selector: ".single-edit",
+                    modal_title_twig: _T("Edit payment type")|e("js"),
+                    modal_class: "mini",
+                    modal_onapprove: modal_onapprove
+                } %}
+
+                {% set extra_success = "
+                    $('.modal-form form').on('submit', function(event) {
+                        event.preventDefault();
+                        var _form = $(this);
+                        var _data = _form.serialize();
+                        $.ajax({
+                            url: _form.attr('action'),
+                            type: 'POST',
+                            datatype: 'json',
+                            data: _data,
+                            error: function() {
+                                $.modal({
+                                    title: '%error%',
+                                    class: 'mini',
+                                    actions: [{
+                                        text: '%close%',
+                                        icon: 'times',
+                                        class: 'icon labeled cancel'
+                                    }],
+                                    className: {
+                                        modal: 'ui redalert modal',
+                                        title: 'center aligned header',
+                                        content: 'center aligned content',
+                                        actions: 'center aligned actions'
+                                    }
+                                }).modal('show');
+                            }
+                        });
+                    });
+                " %}
+                {% include "elements/js/modal_action.js.twig" with {
+                    selector: ".single-translate",
+                    extra_success: extra_success|replace({'%error%': _T("An error occurred :(")|e("js"), '%close%': _T("Close")|e("js")}),
+                    modal_title_twig: _T("Translate labels")|e("js"),
+                    modal_content_class: "scrolling",
+                    modal_onapprove: modal_onapprove
+                } %}
+
+                {% include "elements/js/removal.js.twig" with {
+                    single_action: "true"
+                } %}
+            });
+        </script>
+{% endblock %}
+
+#}
