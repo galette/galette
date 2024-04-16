@@ -623,19 +623,19 @@ class ScheduledPayment
                 'propname' => 'contribution'
             ),
             'id_paymenttype'   => array(
-                'label'    => _T('Payment type'),
+                'label'    => _T('Payment type:'),
                 'propname' => 'payment_type'
             ),
             'creation_date'    => array(
-                'label'    => _T('Creation date'),
+                'label'    => _T('Record date:'),
                 'propname' => 'creation_date'
             ),
             'scheduled_date'   => array(
-                'label'    => _T('Scheduled date'),
+                'label'    => _T('Scheduled date:'),
                 'propname' => 'scheduled_date'
             ),
             'amount'           => array(
-                'label'    => _T('Amount'),
+                'label'    => _T('Amount:'),
                 'propname' => 'amount'
             ),
             'paid'          => array(
@@ -643,7 +643,7 @@ class ScheduledPayment
                 'propname' => 'is_paid'
             ),
             'comment'          => array(
-                'label'    => _T('Comment'),
+                'label'    => _T('Comments:'),
                 'propname' => 'comment'
             )
         );

@@ -31,7 +31,7 @@
                 <div class="ui mobile reversed stackable grid">
                     <div class="six wide column">
                         <div class="inline field required">
-                            <label for="montant_cotis">{{ _T("Amount") }}</label>
+                            <label for="montant_cotis">{{ scheduled.getFieldLabel('amount') }}</label>
                             <input type="text" name="amount" id="amount" value="{% if scheduled.getId() %}{{ scheduled.getAmount() }}{% else %}{{ scheduled.getMissingAmount() }}{% endif %}" maxlength="10" required="required"/>
                         </div>
     {# payment type #}
@@ -49,7 +49,7 @@
         'required': true
     } %}
                         <div class="inline field">
-                            <label for="paid">{{ _T('Paid') }}</label>
+                            <label for="paid">{{ scheduled.getFieldLabel('paid') }}</label>
                             <input type="checkbox" name="paid" id="paid" value="1"{% if scheduled.isPaid() %} checked="checked"{% endif %}/>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                         <div class="two fields">
                             <div class="inline field required">
                                 <label for="creation_date">
-                                    {{ _T("Record date") }}
+                                    {{ scheduled.getFieldLabel('creation_date') }}
                                 </label>
                                 <div class="ui calendar" id="scheduled-creationdate">
                                     <div class="ui input left icon">
@@ -137,7 +137,7 @@
                                 </div>
                             </div>
                             <div class="inline field required">
-                                <label for="scheduled_date">{{ _T("Scheduled date") }}</label>
+                                <label for="scheduled_date">{{ scheduled.getFieldLabel('scheduled_date') }}</label>
                                 <div class="ui calendar" id="scheduled-scheduleddate">
                                     <div class="ui input left icon">
                                         <i class="calendar icon" aria-hidden="true"></i>
@@ -147,7 +147,7 @@
                             </div>
                         </div>
                         <div class="field">
-                            <label for="comment">{{ _T("Comments") }}</label>
+                            <label for="comment">{{ scheduled.getFieldLabel('comment') }}</label>
                             <textarea name="comment" id="comment" cols="61" rows="6">{{ scheduled.getComment() }}</textarea>
                         </div>
                     </div>
