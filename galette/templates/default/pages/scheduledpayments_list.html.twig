@@ -58,7 +58,7 @@
     <div class="ui secondary yellow segment">
         <div class="four fields">
             <div class="field">
-                <label for="date_field">{{ _T("Show contributions by") }}</label>
+                <label for="date_field">{{ _T("Show payments by") }}</label>
                 <select name="date_field" id="date_field" class="ui search dropdown">
                     <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD') %} selected="selected"{% endif %}>{{ _T("Date") }}</option>
                     <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED') %} selected="selected"{% endif %}>{{ _T("Scheduled date") }}</option>

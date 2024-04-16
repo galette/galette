@@ -46,7 +46,7 @@
                 </div>
                 <div class="active content">
                     <div class="ui mobile reversed stackable grid">
-                        <div class="{% if contribution.isTransactionPart() %}six wide {% endif %}column">
+                        <div class="{% if contribution.isTransactionPart() or contribution.hasSchedule() %}six wide {% endif %}column">
     {% if not require_mass %}
                             <div class="inline field">
                                 <label for="id_adh">{{ _T("Contributor:") }}</label>
