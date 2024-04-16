@@ -308,6 +308,19 @@ class EntityFromDb
      */
     public function __set(string $name, $value): void
     {
+        $this->setValue($name, $value);
+    }
+
+    /**
+     * setValue()
+     *
+     * @param string $name  Property name
+     * @param mixed  $value Property value
+     *
+     * @return void
+     */
+    public function setValue(string $name, $value): void
+    {
         if (in_array($name, $this->tableFieldsReversed)) {
             if ($this->getOption("$name:warningnoempty", $option) && $option === true && $value !== null && strlen(trim($value)) == 0) {
                 Analog::log(
@@ -344,4 +357,22 @@ class EntityFromDb
         $option = $this->options[$name];
         return true;
     }
+
+    //Implement a getMyProperty() for all columns in database; example : getId()
+    public function __call($name, $arguments)
+    {
+        $arg1 = (count($arguments) >= 1) ? $arguments[0] : false;
+        //All getters
+        if (str_starts_with($name, 'get')) {
+            $prop = lcfirst(substr($name, 3));
+            return $this->getValue($prop, $arg1);
+        }
+        //All setters
+        if (str_starts_with($name, 'set')) {
+            $prop = lcfirst(substr($name, 3));
+            return $this->setValue($prop, $arg1);
+        }
+        throw new \RuntimeException("Entity::$name property not available.");
+    }
+
 }
