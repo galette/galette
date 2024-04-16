@@ -130,7 +130,7 @@ class Adherent
     private ?int $id;
     //Identity
     private Title|string|null $title = null;
-    private int $id_legal_status=LegalStatus::INDIVIDUAL;
+    private int $id_legal_status = LegalStatus::INDIVIDUAL;
     private ?string $company_name;
     private ?string $name;
     private ?string $surname;
@@ -1402,7 +1402,9 @@ class Adherent
                 }
                 break;
             case 'id_legal_status':
-                if ($value !== '') $this->id_legal_status = intval($value);
+                if ($value !== '') {
+                    $this->id_legal_status = intval($value);
+                }
                 break;
             case 'email_adh':
                 if (!GaletteMail::isValidEmail($value)) {

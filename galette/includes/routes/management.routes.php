@@ -208,9 +208,9 @@ $app->post(
     [PdfController::class, 'storeModels']
 )->setName('pdfModels')->add($authenticate);
 
-CrudHelper::AddRoutesBasicEntityCRUD($app, Crud\TitlesController::class, $authenticate);
-CrudHelper::AddRoutesBasicEntityCRUD($app, Crud\LegalStatussController::class, $authenticate);
-CrudHelper::AddRoutesBasicEntityCRUD($app, Crud\PaymentTypesController::class, $authenticate);
+CrudHelper::addRoutesBasicEntityCRUD($app, Crud\TitlesController::class, $authenticate);
+CrudHelper::addRoutesBasicEntityCRUD($app, Crud\LegalStatussController::class, $authenticate);
+CrudHelper::addRoutesBasicEntityCRUD($app, Crud\PaymentTypesController::class, $authenticate);
 
 $app->get(
     '/texts[/{lang}/{ref}]',

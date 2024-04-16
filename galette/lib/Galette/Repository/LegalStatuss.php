@@ -9,9 +9,9 @@ use Laminas\Db\Sql\Expression;
 use Galette\Entity\LegalStatus;
 
 /**
- * Payment types
+ * LegalStatus repository
  *
- * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @author Manuel <manuelh78dev@ik.me>
  */
 class LegalStatuss extends Repository
 {
@@ -45,5 +45,4 @@ class LegalStatuss extends Repository
             'long_label'    => 'Entreprise'
         )];
     }
-
 }

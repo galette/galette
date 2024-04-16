@@ -11,6 +11,11 @@ use Galette\Core\Login;
 use DI\Attribute\Inject;
 use Analog\Analog;
 
+/**
+ * RepositoryTrait
+ *
+ * @author Manuel <manuelh78dev@ik.me>
+ */
 trait RepositoryTrait
 {
     private $entityClassName;
@@ -50,10 +55,17 @@ trait RepositoryTrait
     public static function getAll(): array
     {
         global $zdb;
-        $ptypes = new self($zdb); 
+        $ptypes = new self($zdb);
         return $ptypes->getList();
     }
 
+    /**
+     * Loads an entity from its id
+     *
+     * @param int $id Entry ID
+     *
+     * @return boolean true if query succeed, false otherwise
+     */
     public function load(int $id): null|\ArrayObject
     {
         $select = $this->zdb->select(constant($this->entity . '::TABLE'));
@@ -64,6 +76,12 @@ trait RepositoryTrait
         $return = $results->current();
     }
 
+        /**
+     * Count all entities
+     *
+     *
+     * @return int a count, 0 isf empty
+     */
     public function countAll(): int
     {
         $ent = $this->entity;
@@ -157,12 +175,12 @@ trait RepositoryTrait
     /**
      * Insert values in database
      *
-     * @param string              $table  Table name
+     * @param string       $table  Table name
      * @param array<array> $values Values to insert
      *
      * @return void
      */
-    private function multipleInsert(string $table, array $values): void
+    protected function multipleInsert(string $table, array $values): void
     {
         foreach ($values as $row) {
             $insert = $this->zdb->insert($table);

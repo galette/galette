@@ -29,9 +29,9 @@ use Galette\Entity\LegalStatus;
 use Analog\Analog;
 
 /**
- * Galette Legal status controller
+ * LegalStatuss Controller
  *
- * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @author Manuel <manuelh78dev@ik.me>
  */
 
 class LegalStatussController extends CrudController

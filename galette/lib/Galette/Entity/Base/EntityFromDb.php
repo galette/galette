@@ -8,6 +8,11 @@ use Throwable;
 use Analog\Analog;
 use Galette\Features\I18n;
 
+/**
+ * base class EntityFromDb
+ *
+ * @author Manuel <manuelh78dev@ik.me>
+ */
 class EntityFromDb
 {
     use I18n;
@@ -24,11 +29,16 @@ class EntityFromDb
     private $i18nProperties = [];
 
 
-    protected $TABLE, $PK;
+    protected $TABLE;
+    protected $PK;
+
     /**
      * Main constructor
      *
-     * @param int|ArrayObject<string, int|string>|null $args Arguments
+     * @param DB                                       $zdb              Database
+     * @param array<string,string>                     $tableDescription propertyname => db column name
+     * @param array                                    $options          add virtual properties, override or valid a value...
+     * @param int|ArrayObject<string, int|string>|null $args             Arguments
      */
     public function __construct($zdb, $tableDescription, $options, int|ArrayObject $args = null)
     {
@@ -82,8 +92,9 @@ class EntityFromDb
             $results = $this->zdb->execute($select);
             $res = $results->current();
 
-            if ($res)
+            if ($res) {
                 $this->loadFromRs($res);
+            }
         } catch (Throwable $e) {
             Analog::log(
                 "Error when loading {$this->entity} (#$id) Message:\n" .
@@ -95,7 +106,7 @@ class EntityFromDb
     }
 
     /**
-     * Load entity from a db ResultSet
+     * Load entity from a DB ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
      *
@@ -128,8 +139,6 @@ class EntityFromDb
     /**
      * Store this entity in database
      *
-     * @param Db $zdb Database instance
-     *
      * @return boolean
      */
     public function store(): bool
@@ -143,7 +152,6 @@ class EntityFromDb
 
         try {
             if (isset($this->id) && $this->id > 0) {
-
                 foreach ($this->i18nProperties as $prop) {
                     if ($this->oldValues[$prop] !== null) {
                         $this->deleteTranslation($this->oldValues[$prop]);
@@ -193,7 +201,7 @@ class EntityFromDb
             $delete->where([$this->PK => $this->id]);
             $this->zdb->execute($delete);
 
-            //I18n 
+            //I18n
             foreach ($this->i18nProperties as $prop) {
                 $this->deleteTranslation($this->values[$prop]);
             }
@@ -229,9 +237,9 @@ class EntityFromDb
     /**
      * getValue
      *
-     * @param string $name Property name
+     * @param string $name       Property name
      * @param string $translated translate returned string
-     * 
+     *
      * @return mixed
      */
     public function getValue(string $name, bool $translated): mixed
@@ -246,17 +254,17 @@ class EntityFromDb
             //from other property
             $k = "$name:from";
             if (self::getOption($k, $f)) {
-                if (is_callable($f))
+                if (is_callable($f)) {
                     $value = $f();
-                elseif ($f != '')
+                } elseif ($f != '') {
                     $value = $this->getValue($f, $translated); //equivalent $this->{$f};
+                }
                 $found = true;
             }
         }
 
-        if ($found) //value can be null
-        {
-            //override default 
+        if ($found) { //value can be null
+        //override default
             $k = "$name:override";
             if (array_key_exists($k, $this->options)) {
                 $fct = $this->options[$k];
@@ -269,8 +277,9 @@ class EntityFromDb
             if (array_key_exists($k, $this->options)) {
                 $fct = $this->options[$k];
 
-                if (!$fct($value))
+                if (!$fct($value)) {
                     throw new \Exception($name . ' ' . _T('invalid value !'));
+                }
             }
 
             if ($translated && in_array($name, $this->i18nProperties)) {
@@ -312,7 +321,7 @@ class EntityFromDb
     }
 
     /**
-     * setValue()
+     * setValue
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
@@ -335,12 +344,14 @@ class EntityFromDb
             if (array_key_exists($k, $this->options)) {
                 $fct = $this->options[$k];
 
-                if (!$fct($value))
+                if (!$fct($value)) {
                     throw new \Exception($name . ' ' . _T('invalid value !'));
+                }
             }
 
-            if (array_key_exists($name, $this->values))
+            if (array_key_exists($name, $this->values)) {
                 $this->oldValues[$name] = $this->values[$name];
+            }
             $this->values[$name] = $value;
         } else {
             Analog::log(
@@ -350,15 +361,30 @@ class EntityFromDb
         }
     }
 
+    /**
+     * getOption
+     *
+     * @param string $name   Option name
+     * @param mixed  $option by reference, Property value
+     *
+     * @return bool true if this option exist
+     */
     private function getOption(string $name, mixed &$option): bool
     {
-        if (!array_key_exists($name, $this->options))
+        if (!array_key_exists($name, $this->options)) {
             return false;
+        }
         $option = $this->options[$name];
         return true;
     }
 
-    //Implement a getMyProperty() for all columns in database; example : getId()
+   /**
+    * __call
+    * Implement a getMyProperty() for all columns in database; example : getId()
+    * @param string $name      Method name getXXXX
+    * @param array  $arguments getXXXX([$arguments])
+    * @return mixed optional returned value
+    */
     public function __call($name, $arguments)
     {
         $arg1 = (count($arguments) >= 1) ? $arguments[0] : false;
@@ -374,5 +400,4 @@ class EntityFromDb
         }
         throw new \RuntimeException("Entity::$name property not available.");
     }
-
 }

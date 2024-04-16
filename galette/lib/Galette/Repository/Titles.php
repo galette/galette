@@ -35,6 +35,7 @@ use Analog\Analog;
 class Titles extends Repository
 {
     use RepositoryTrait;
+
     public const TABLE = 'titles';
     public const PK = 'id_title';
 
@@ -62,10 +63,6 @@ class Titles extends Repository
             )
         ];
     }
-
- 
-
-
 
 
     /**

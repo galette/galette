@@ -4,18 +4,31 @@ namespace Galette\Controllers\Crud;
 
 use Slim\App;
 
+/**
+ * CrudHelper
+ *
+ * @author Manuel <manuelh78dev@ik.me>
+ */
 class CrudHelper
 {
-    //Ajouter des routes automatiquement pour un object Entity via le nom de son controller
-    public static function AddRoutesBasicEntityCRUD(App $app, string $controllerClassName, $authenticate)
+    /**
+     * Ajouter des routes automatiquement pour un object Entity via le nom de son controller
+     *
+     * @param Slim\App $app                 Slim application
+     * @param string   $controllerClassName controller class name AController::class
+     * @param $authenticate        Middleware for user authentification
+     *
+     * @return void
+     */
+    public static function addRoutesBasicEntityCRUD(App $app, string $controllerClassName, $authenticate)
     {
         //Galette\Controllers\Crud\TitlesController -> Title
         $entity = str_replace(['Controller', '\\'], ['', '/'], $controllerClassName);
         $entity = basename($entity);
         $entity = substr($entity, 0, -1);
 
-        $baseName=lcfirst($entity);
-        $basePath=strtolower($entity);
+        $baseName = lcfirst($entity);
+        $basePath = strtolower($entity);
 
         $app->get(
             "/{$basePath}s",
@@ -46,7 +59,6 @@ class CrudHelper
             "/{$basePath}/edit/{id:\d+}",
             [$controllerClassName, 'doEdit']
         )->setname("edit{$entity}")->add($authenticate);
-
     }
 }
 

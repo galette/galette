@@ -29,7 +29,6 @@ use Galette\Core\Preferences;
 use Galette\Core\Login;
 use Laminas\Db\ResultSet\ResultSet;
 
-
 /**
  * Repositories
  *
@@ -62,8 +61,8 @@ abstract class Repository
      */
     public function __construct(
         Db $zdb,
-        Preferences $preferences=null,
-        Login $login=null,
+        Preferences $preferences = null,
+        Login $login = null,
         ?string $entity = null,
         ?string $ns = null,
         string $prefix = ''
@@ -159,11 +158,9 @@ abstract class Repository
      *
      * @return array<string,mixed>
      */
-    //HM : TODO , pas clair, a approfondir
     protected function loadDefaults(): array
     {
         throw new \Exception("Error : you need to override loadDefaults()");
-        //return $this->defaults;
     }
 
     /**

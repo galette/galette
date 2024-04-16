@@ -26,6 +26,11 @@ use Galette\Entity\Base\EntityFromDb;
 use Galette\Entity\Base\Translate;
 use ArrayObject;
 
+/**
+ * Title
+ *
+ * @author Manuel <manuelh78dev@ik.me>
+ */
 class Title extends EntityFromDb
 {
     public const TABLE = 'titles';
@@ -35,6 +40,12 @@ class Title extends EntityFromDb
     public const MRS = 2;
     public const MISS = 3;
 
+    /**
+    *  Main constructor
+    *
+    * @param DB               $zdb  Database
+    * @param ?ArrayObject|int $args item data to load
+    */
     public function __construct(Db $zdb, ArrayObject|int $args = null)
     {
         parent::__construct(
@@ -51,17 +62,20 @@ class Title extends EntityFromDb
 
                 //if long value is null get short value
                 'long:override' => function ($value) {
-                    return ($value == null || trim($value) === '') ? $this->short : $value; },
+                    return ($value == null || trim($value) === '') ? $this->short : $value;
+                },
                 'long:warningnoempty' => true,
 
                 //Virtual properties
-                'tshort:from' => 'short',  //OR function() { return $this->short; }, 
+                'tshort:from' => 'short',  //OR function() { return $this->short; },
                 'tlong:from' => 'long',
 
                 'tshort:override' => function ($value) {
-                    return Translate::getFromLang($value); },
+                    return Translate::getFromLang($value);
+                },
                 'tlong:override' => function ($value) {
-                    return Translate::getFromLang($value); },
+                    return Translate::getFromLang($value);
+                },
             ],
             $args
         );
@@ -69,8 +83,6 @@ class Title extends EntityFromDb
 
     /**
      * Remove current title
-     *
-     * @param Db $zdb Database instance
      *
      * @return boolean
      */
@@ -83,6 +95,3 @@ class Title extends EntityFromDb
         return parent::remove();
     }
 }
-
-
-

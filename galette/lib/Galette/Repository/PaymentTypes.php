@@ -35,11 +35,12 @@ use Galette\Entity\PaymentType;
 class PaymentTypes extends Repository
 {
     use RepositoryTrait;
+
     public const TABLE = PaymentType::TABLE;
     public const PK = PaymentType::PK;
 
-    
-    
+
+
     /**
      * Checks for missing payment types in the database
      *
@@ -88,7 +89,7 @@ class PaymentTypes extends Repository
         return false;
     }
 
-    
+
 
     /**
      * Get defaults values

@@ -34,8 +34,6 @@ use Galette\Entity\Base\EntityFromDb;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
- * @property string $name
  */
 
 class PaymentType extends EntityFromDb
@@ -54,7 +52,12 @@ class PaymentType extends EntityFromDb
     public const TRANSFER = 4;
     public const PAYPAL = 5;
 
-
+    /**
+    *  Main constructor
+    *
+    * @param DB               $zdb  Database
+    * @param ?ArrayObject|int $args item data to load
+    */
     public function __construct(Db $zdb, ArrayObject|int $args = null)
     {
         parent::__construct(
@@ -140,5 +143,4 @@ class PaymentType extends EntityFromDb
     {
         return isset($this->getSystemTypes()[$this->id]);
     }
-
 }

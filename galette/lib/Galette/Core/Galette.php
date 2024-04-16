@@ -427,7 +427,7 @@ class Galette
                                     'name' => 'legalStatuss',
                                     'aliases' => ['editLegalStatus']
                                 ]
-                            ],                            
+                            ],
                             [
                                 'label' => _T("PDF models"),
                                 'title' => _T("Manage PDF models"),
