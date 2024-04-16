@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-04-16 22:53+0200\n"
-"PO-Revision-Date: 2024-04-12 05:52+0000\n"
+"PO-Revision-Date: 2024-04-16 21:19+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -106,22 +106,16 @@ msgid "Remove payment type %1$s"
 msgstr "Supprimer le type de paiement %1$s"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:67
-#, fuzzy
-#| msgid "Contribution full date"
 msgid "Contribution is fully scheduled!"
-msgstr "Date complète de la contribution"
+msgstr "La contribution est entièrement planifiée !"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:88
-#, fuzzy
-#| msgid "Add document"
 msgid "Add scheduled payment"
-msgstr "Ajouter un document"
+msgstr "Ajouter un paiement planifié"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:178
-#, fuzzy
-#| msgid "Payment types management"
 msgid "Scheduled payments management"
-msgstr "Gestion des types de paiement"
+msgstr "Gestion des paiements planifiés"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:271
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:652
@@ -129,49 +123,37 @@ msgid "- Unknown payment type!"
 msgstr "- Type de paiement inconnu !"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:327
-#, fuzzy
-#| msgid "No member was selected, please check at least one name."
 msgid "No scheduled payment was selected, please check at least one."
-msgstr "Veuillez sélectionner au moins un adhérent."
+msgstr ""
+"Aucun paiement planifié n'a été sélectionné, veuillent en sélectionner au "
+"moins un."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:363
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:400
-#, fuzzy
-#| msgid "Edit '%s' payment type"
 msgid "Edit scheduled payment"
-msgstr "Modifier le type de paiement « %s »"
+msgstr "Modifier le paiement planifié"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:433
-#, fuzzy
-#| msgid "Payment type '%s' has not been added!"
 msgid "Scheduled payment has not been added!"
-msgstr "Le type de paiement « %s » n'a pas été ajouté !"
+msgstr "Le paiement planifié n'a pas été ajouté !"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:435
-#, fuzzy
-#| msgid "Payment type '%s' has not been modified!"
 msgid "Scheduled payment has not been modified!"
-msgstr "Le type de paiement « %s » n'a pas été modifié !"
+msgstr "Le paiement planifié n'a pas été modifié !"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:441
-#, fuzzy
-#| msgid "New member has been successfully added."
 msgid "Scheduled payment has been successfully added."
-msgstr "Le nouvel adhérent a été ajouté avec succès."
+msgstr "Le paiement planifié a été ajouté avec succès."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:443
-#, fuzzy
-#| msgid "Payment type '%s' has been successfully modified."
 msgid "Scheduled payment has been successfully modified."
-msgstr "Le type de paiement « %s » a été modifié avec succès."
+msgstr "Le paiement planifié a été modifié avec succès."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:507
-#, fuzzy
-#| msgid "Remove attachment"
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
-msgstr[0] "Supprimer la pièce jointe"
-msgstr[1] "Supprimer la pièce jointe"
+msgstr[0] "Supprimer le paiement planifié"
+msgstr[1] "Supprimer les paiements planifiés"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:104
 msgid "Group name is missing!"
@@ -1455,13 +1437,11 @@ msgstr "Consulter et filtrer toutes mes contributions"
 
 #: ../lib/Galette/Core/Galette.php:134
 msgid "My scheduled payments"
-msgstr ""
+msgstr "Mes paiements planifiés"
 
 #: ../lib/Galette/Core/Galette.php:135
-#, fuzzy
-#| msgid "View and filter all my transactions"
 msgid "View and filter all my scheduled payments"
-msgstr "Consulter et filtrer toutes mes transactions"
+msgstr "Consulter et filtrer tous mes paiements planifiés"
 
 #: ../lib/Galette/Core/Galette.php:141 ../lib/Galette/Core/Galette.php:705
 msgid "My transactions"
@@ -1530,13 +1510,11 @@ msgstr "Consulter et filtrer les contributions"
 
 #: ../lib/Galette/Core/Galette.php:232
 msgid "List of scheduled payments"
-msgstr ""
+msgstr "Liste des paiements planifiés"
 
 #: ../lib/Galette/Core/Galette.php:233
-#, fuzzy
-#| msgid "View and filter transactions"
 msgid "View and filter scheduled payments"
-msgstr "Consulter et filtrer les transactions"
+msgstr "Consulter et filtrer les paiements planifiés"
 
 #: ../lib/Galette/Core/Galette.php:240
 msgid "List of transactions"
@@ -2041,10 +2019,8 @@ msgid "Searches deleted (%list)"
 msgstr "Recherches supprimées (%list)"
 
 #: ../lib/Galette/Repository/ScheduledPayments.php:434
-#, fuzzy
-#| msgid "Searches deleted (%list)"
 msgid "Scheduled payments deleted (%list)"
-msgstr "Recherches supprimées (%list)"
+msgstr "Paiements planifiés supprimés (%list)"
 
 #: ../lib/Galette/Repository/Contributions.php:502
 msgid "Contributions deleted (%list)"
@@ -3241,6 +3217,8 @@ msgstr "Cotisations"
 #: ../lib/Galette/Entity/Contribution.php:1442
 msgid "Cannot change payment type if there is an attached scheduled payment"
 msgstr ""
+"Impossible de modifier le type de paiement si un paiement planifié est "
+"attaché"
 
 #: ../lib/Galette/Entity/Document.php:460
 msgid "Association status"
@@ -3297,63 +3275,49 @@ msgid "Mail specific"
 msgstr "Spécifique aux courriels"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:149
-#, fuzzy
-#| msgid "Contribution id"
 msgid "Contribution is required"
-msgstr "Contribution id"
+msgstr "La contribution est requise"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:152
 #: ../lib/Galette/Entity/ScheduledPayment.php:318
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load contribution"
-msgstr "Impossible de charger la contribution #%id !"
+msgstr "Impossible de charger la contribution"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:157
-#, fuzzy
-#| msgid "- Width must be a positive integer!"
 msgid "Amount must be a positive number"
-msgstr "- La largeur doit être un entier positif !"
+msgstr "Le montant doit être un chiffre positif"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:164
 msgid "Amount cannot be greater than non allocated amount"
-msgstr ""
+msgstr "Le montant ne peut être supérieur au montant non alloué"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:169
 msgid "Payment type for contribution must be set to scheduled"
-msgstr ""
+msgstr "Le type de paiement pour la contribution doit être mis à planifié"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:175
-#, fuzzy
-#| msgid "Payment types"
 msgid "Payment type is required"
-msgstr "Types de paiement"
+msgstr "Le type de paiement est requis"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:179
 msgid "Cannot schedule a scheduled payment!"
-msgstr ""
+msgstr "Impossible de planifier un paiement planifié !"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:186
 msgid "Scheduled date is required"
-msgstr ""
+msgstr "La date de planification est requise"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:360
-#, fuzzy
-#| msgid "Manage payment types"
 msgid "Unable to load payment type"
-msgstr "Gérer les types de paiement"
+msgstr "Impossible de charger le type de paiement"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:618
-#, fuzzy
-#| msgid "Add payment type"
 msgid "Scheduled payment ID"
-msgstr "Ajouter un type de paiement"
+msgstr "ID du paiement planifié"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:622
-#, fuzzy
-#| msgid "Contribution"
 msgid "Contribution ID"
-msgstr "Contribution"
+msgstr "ID de la contribution"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:630
 #: ../../tempcache/pages/documents_list.html.twig:97
@@ -3370,15 +3334,13 @@ msgstr "Date de création"
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:93
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:365
-#, fuzzy
-#| msgid "Late due date"
 msgid "Scheduled date"
-msgstr "Échéance dépassée"
+msgstr "Date de planification"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:642
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:107
 msgid "Paid"
-msgstr ""
+msgstr "Payé"
 
 #: ../lib/Galette/Entity/Social.php:337
 msgid "Mastodon"
@@ -3478,10 +3440,8 @@ msgid "Paypal"
 msgstr "Paypal"
 
 #: ../lib/Galette/Entity/PaymentType.php:285
-#, fuzzy
-#| msgid "Payment type"
 msgid "Payment schedule"
-msgstr "Type de paiement"
+msgstr "Paiement planifié"
 
 #: ../lib/Galette/Entity/Status.php:471
 msgid "You cannot delete default status!"
@@ -7284,7 +7244,7 @@ msgstr "Lié à une transaction"
 
 #: ../../tempcache/pages/contribution_form.html.twig:102
 msgid "Has scheduled payments"
-msgstr ""
+msgstr "A des paiements planifiés"
 
 #: ../../tempcache/pages/contribution_form.html.twig:222
 msgid "View transaction"
@@ -7302,21 +7262,19 @@ msgstr "Montant non ventilé"
 
 #: ../../tempcache/pages/contribution_form.html.twig:393
 msgid "View scheduled payments"
-msgstr ""
+msgstr "Voir les paiements planifiés"
 
 #: ../../tempcache/pages/contribution_form.html.twig:398
 #: ../../tempcache/pages/contribution_form.html.twig:928
-#, fuzzy
-#| msgid "Select attachments"
 msgid "Scheduled payments"
-msgstr "Sélectionnez des pièces jointes"
+msgstr "Paiements planifiés"
 
 #: ../../tempcache/pages/contribution_form.html.twig:437
 #: ../../tempcache/pages/contribution_form.html.twig:444
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:237
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:244
 msgid "Create a new scheduled payment"
-msgstr ""
+msgstr "Créée un nouveau paiement planifié"
 
 #: ../../tempcache/pages/contribution_form.html.twig:474
 msgid "Details of membership fee"
@@ -7347,10 +7305,8 @@ msgid "Contribution amount should not be greater than %max"
 msgstr "Le montant de la contribution ne devrait pas être supérieur à %max"
 
 #: ../../tempcache/pages/contribution_form.html.twig:917
-#, fuzzy
-#| msgid "An error occurred displaying preview :("
 msgid "An error occurred displaying scheduled payments :("
-msgstr "Une erreur est survenue lors de l'affichage de l'aperçu :("
+msgstr "Une erreur est survenue lors de l'affichage des paiements planifiés :("
 
 #: ../../tempcache/pages/mailing_form.html.twig:75
 msgid "Mailing information"
@@ -7469,34 +7425,24 @@ msgstr ""
 "annulé."
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:61
-#, fuzzy
-#| msgid "Add payment type"
 msgid "Scheduled payment"
-msgstr "Ajouter un type de paiement"
+msgstr "Paiement planifié"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:134
-#, fuzzy
-#| msgid "View contributions"
 msgid "View contribution"
-msgstr "Voir les contributions"
+msgstr "Voir la contribution"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:139
-#, fuzzy
-#| msgid "Related transaction information"
 msgid "Related contribution information"
-msgstr "Informations sur la transaction liée"
+msgstr "Informations sur la contribution liée"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:265
-#, fuzzy
-#| msgid "Record date:"
 msgid "Record date"
-msgstr "Date d’enregistrement :"
+msgstr "Date d’enregistrement"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:301
-#, fuzzy
-#| msgid "Comments:"
 msgid "Comments"
-msgstr "Commentaires :"
+msgstr "Commentaires"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:63
 msgid "Short form:"
@@ -8399,10 +8345,8 @@ msgid "Attach member"
 msgstr "Attacher un adhérent"
 
 #: ../../tempcache/pages/member_form.html.twig:204
-#, fuzzy
-#| msgid "no member"
 msgid "Parent member"
-msgstr "aucun adhérent"
+msgstr "Adhérent parent"
 
 #: ../../tempcache/pages/member_form.html.twig:224
 #: ../../tempcache/pages/member_show.html.twig:307
@@ -8453,54 +8397,40 @@ msgid "Click on a row to select a group"
 msgstr "Cliquez sur une ligne pour sélectionner un groupe"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:50
-#, fuzzy
-#| msgid "No reminder selected"
 msgid "No entry selected"
-msgstr "Aucun rappel sélectionné"
+msgstr "Aucune entrée sélectionnée"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:50
-#, fuzzy
-#| msgid ""
-#| "Please make sure to select at least one member from the list to perform "
-#| "this action."
 msgid ""
 "Please make sure to select at least one entry from the list to perform this "
 "action."
 msgstr ""
-"Assurez-vous de sélectionner au moins un adhérent dans la liste avant "
-"d’effectuer cette action."
+"Assurez-vous de sélectionner au moins une entrée dans la liste avant d’"
+"effectuer cette action."
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:72
-#, fuzzy
-#| msgid "Show parameters"
 msgid "Show payments by"
-msgstr "Afficher les paramètres"
+msgstr "Afficher les paiements par"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:193
-#, fuzzy, php-format
-#| msgid "%count document"
-#| msgid_plural "%count documents"
+#, php-format
 msgid "%count shceduled payment"
 msgid_plural "%count scheduled payments"
-msgstr[0] "%count document"
-msgstr[1] "%count documents"
+msgstr[0] "%count paiement planifié"
+msgstr[1] "%count paiements planifiés"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:248
 #, php-format
 msgid "Found total scheduled %f"
-msgstr ""
+msgstr "Montant total planifié trouvé %f"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:413
-#, fuzzy
-#| msgid "Delete '%s' payment type"
 msgid "Delete scheduled payment"
-msgstr "Supprimer le type de paiement « %s »"
+msgstr "Supprimer le paiement planifié"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:438
-#, fuzzy
-#| msgid "Not dispatched amount"
 msgid "No scheduled payment"
-msgstr "Montant non ventilé"
+msgstr "Aucun paiement planifié"
 
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:63
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:71
