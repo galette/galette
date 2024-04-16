@@ -41,7 +41,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-16 22:53+0200\n"
+"POT-Creation-Date: 2024-04-16 23:19+0200\n"
 "PO-Revision-Date: 2024-03-17 18:40+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -2855,7 +2855,6 @@ msgid "Contribution label"
 msgstr "Etiqueta de contribución"
 
 #: ../lib/Galette/Features/Replacements.php:378
-#: ../lib/Galette/Entity/ScheduledPayment.php:638
 #: ../../tempcache/pages/transaction_form.html.twig:237
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:668
@@ -2864,7 +2863,6 @@ msgstr "Etiqueta de contribución"
 #: ../../tempcache/pages/contributions_types_list.html.twig:106
 #: ../../tempcache/pages/contribution_form.html.twig:260
 #: ../../tempcache/pages/contribution_form.html.twig:411
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:70
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:203
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:371
@@ -2887,7 +2885,6 @@ msgid "Contribution year"
 msgstr "Año de contribución"
 
 #: ../lib/Galette/Features/Replacements.php:394
-#: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/document_form.html.twig:176
 msgid "Comment"
 msgstr "Comentario"
@@ -2908,7 +2905,6 @@ msgid "Contribution id"
 msgstr "ID de contribucion"
 
 #: ../lib/Galette/Features/Replacements.php:410
-#: ../lib/Galette/Entity/ScheduledPayment.php:626
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:674
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
@@ -3139,6 +3135,7 @@ msgstr "Fecha:"
 
 #: ../lib/Galette/Entity/Transaction.php:118
 #: ../lib/Galette/Entity/Contribution.php:213
+#: ../lib/Galette/Entity/ScheduledPayment.php:638
 #: ../../tempcache/pages/contribution_type_form.html.twig:73
 #: ../../tempcache/pages/transaction_form.html.twig:134
 #: ../../tempcache/pages/contribution_form.html.twig:497
@@ -3158,6 +3155,7 @@ msgstr "Creador inicial:"
 
 #: ../lib/Galette/Entity/Transaction.php:130
 #: ../lib/Galette/Entity/Contribution.php:217
+#: ../lib/Galette/Entity/ScheduledPayment.php:626
 #: ../../tempcache/components/forms/payment_types.html.twig:53
 msgid "Payment type:"
 msgstr "Tipo de remuneración:"
@@ -3218,6 +3216,7 @@ msgid "Contribution type:"
 msgstr "Tipo de contribuidor:"
 
 #: ../lib/Galette/Entity/Contribution.php:221
+#: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/contribution_form.html.twig:669
 msgid "Comments:"
 msgstr "Comentarios:"
@@ -3417,27 +3416,17 @@ msgid "Contribution ID"
 msgstr "Contribución"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:630
-#: ../../tempcache/pages/documents_list.html.twig:97
-#: ../../tempcache/pages/documents_list.html.twig:180
-#: ../../tempcache/pages/saved_searches_list.html.twig:69
-#: ../../tempcache/pages/saved_searches_list.html.twig:128
-#: ../../tempcache/pages/advanced_search.html.twig:308
-#: ../../tempcache/pages/advanced_search.html.twig:661
-msgid "Creation date"
-msgstr "Fecha de creación"
+#: ../../tempcache/pages/contribution_form.html.twig:545
+msgid "Record date:"
+msgstr ""
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:634
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:283
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:93
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:208
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:365
 #, fuzzy
 #| msgid "Late due date"
-msgid "Scheduled date"
+msgid "Scheduled date:"
 msgstr "Última fecha de vencimiento"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:642
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:107
 msgid "Paid"
 msgstr ""
 
@@ -7075,6 +7064,15 @@ msgstr "Añadir archivo adjunto"
 msgid "Filename"
 msgstr "Nombre del campo"
 
+#: ../../tempcache/pages/documents_list.html.twig:97
+#: ../../tempcache/pages/documents_list.html.twig:180
+#: ../../tempcache/pages/saved_searches_list.html.twig:69
+#: ../../tempcache/pages/saved_searches_list.html.twig:128
+#: ../../tempcache/pages/advanced_search.html.twig:308
+#: ../../tempcache/pages/advanced_search.html.twig:661
+msgid "Creation date"
+msgstr "Fecha de creación"
+
 #: ../../tempcache/pages/index.html.twig:122
 msgid "Lost your password?"
 msgstr "¿Olvidó la contraseña?"
@@ -7311,10 +7309,6 @@ msgstr ""
 msgid "Details of donation"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:545
-msgid "Record date:"
-msgstr ""
-
 #: ../../tempcache/pages/contribution_form.html.twig:630
 msgid "months"
 msgstr "meses"
@@ -7465,18 +7459,6 @@ msgstr "contribución"
 #| msgid "Related transaction information"
 msgid "Related contribution information"
 msgstr "Información relacionada con la transacción"
-
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:265
-#, fuzzy
-#| msgid "Records per page:"
-msgid "Record date"
-msgstr "Registros por página:"
-
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:301
-#, fuzzy
-#| msgid "Comments:"
-msgid "Comments"
-msgstr "Comentarios:"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:63
 msgid "Short form:"
@@ -8394,6 +8376,14 @@ msgstr ""
 msgid "Show payments by"
 msgstr "Mostrar parámetros"
 
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:93
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:208
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:365
+#, fuzzy
+#| msgid "Late due date"
+msgid "Scheduled date"
+msgstr "Última fecha de vencimiento"
+
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:193
 #, fuzzy, php-format
 #| msgid "Download document"
@@ -8988,6 +8978,16 @@ msgstr "Menú de idiomas"
 #: ../../tempcache/page.html.twig:236
 msgid "Page content"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Records per page:"
+#~ msgid "Record date"
+#~ msgstr "Registros por página:"
+
+#, fuzzy
+#~| msgid "Comments:"
+#~ msgid "Comments"
+#~ msgstr "Comentarios:"
 
 #~ msgid "No member to show"
 #~ msgstr "No hay ningún miembro que mostrar"

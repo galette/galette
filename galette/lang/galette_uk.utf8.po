@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-16 22:53+0200\n"
+"POT-Creation-Date: 2024-04-16 23:19+0200\n"
 "PO-Revision-Date: 2024-02-08 22:42+0100\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -2808,7 +2808,6 @@ msgid "Contribution label"
 msgstr "Мітка внеску"
 
 #: ../lib/Galette/Features/Replacements.php:378
-#: ../lib/Galette/Entity/ScheduledPayment.php:638
 #: ../../tempcache/pages/transaction_form.html.twig:237
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:668
@@ -2817,7 +2816,6 @@ msgstr "Мітка внеску"
 #: ../../tempcache/pages/contributions_types_list.html.twig:106
 #: ../../tempcache/pages/contribution_form.html.twig:260
 #: ../../tempcache/pages/contribution_form.html.twig:411
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:70
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:203
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:371
@@ -2840,7 +2838,6 @@ msgid "Contribution year"
 msgstr "Рік внеску"
 
 #: ../lib/Galette/Features/Replacements.php:394
-#: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/document_form.html.twig:176
 msgid "Comment"
 msgstr "Коментар"
@@ -2861,7 +2858,6 @@ msgid "Contribution id"
 msgstr "ID внеску"
 
 #: ../lib/Galette/Features/Replacements.php:410
-#: ../lib/Galette/Entity/ScheduledPayment.php:626
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:674
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
@@ -3092,6 +3088,7 @@ msgstr "Дата:"
 
 #: ../lib/Galette/Entity/Transaction.php:118
 #: ../lib/Galette/Entity/Contribution.php:213
+#: ../lib/Galette/Entity/ScheduledPayment.php:638
 #: ../../tempcache/pages/contribution_type_form.html.twig:73
 #: ../../tempcache/pages/transaction_form.html.twig:134
 #: ../../tempcache/pages/contribution_form.html.twig:497
@@ -3111,6 +3108,7 @@ msgstr "Автор:"
 
 #: ../lib/Galette/Entity/Transaction.php:130
 #: ../lib/Galette/Entity/Contribution.php:217
+#: ../lib/Galette/Entity/ScheduledPayment.php:626
 #: ../../tempcache/components/forms/payment_types.html.twig:53
 msgid "Payment type:"
 msgstr "Вид оплати:"
@@ -3167,6 +3165,7 @@ msgid "Contribution type:"
 msgstr "Тип внеску:"
 
 #: ../lib/Galette/Entity/Contribution.php:221
+#: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/contribution_form.html.twig:669
 msgid "Comments:"
 msgstr "Коментарі:"
@@ -3366,27 +3365,17 @@ msgid "Contribution ID"
 msgstr "Внесок"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:630
-#: ../../tempcache/pages/documents_list.html.twig:97
-#: ../../tempcache/pages/documents_list.html.twig:180
-#: ../../tempcache/pages/saved_searches_list.html.twig:69
-#: ../../tempcache/pages/saved_searches_list.html.twig:128
-#: ../../tempcache/pages/advanced_search.html.twig:308
-#: ../../tempcache/pages/advanced_search.html.twig:661
-msgid "Creation date"
-msgstr "Дата створення"
+#: ../../tempcache/pages/contribution_form.html.twig:545
+msgid "Record date:"
+msgstr "Дата запису:"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:634
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:283
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:93
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:208
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:365
 #, fuzzy
 #| msgid "Late due date"
-msgid "Scheduled date"
+msgid "Scheduled date:"
 msgstr "Спізнілий строк"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:642
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:107
 msgid "Paid"
 msgstr ""
 
@@ -7129,6 +7118,15 @@ msgstr "Додати пожертву"
 msgid "Filename"
 msgstr "file_name"
 
+#: ../../tempcache/pages/documents_list.html.twig:97
+#: ../../tempcache/pages/documents_list.html.twig:180
+#: ../../tempcache/pages/saved_searches_list.html.twig:69
+#: ../../tempcache/pages/saved_searches_list.html.twig:128
+#: ../../tempcache/pages/advanced_search.html.twig:308
+#: ../../tempcache/pages/advanced_search.html.twig:661
+msgid "Creation date"
+msgstr "Дата створення"
+
 #: ../../tempcache/pages/index.html.twig:122
 msgid "Lost your password?"
 msgstr "Забули пароль?"
@@ -7369,10 +7367,6 @@ msgstr "Подробиці членського внеску"
 msgid "Details of donation"
 msgstr "Подробиці пожертвування"
 
-#: ../../tempcache/pages/contribution_form.html.twig:545
-msgid "Record date:"
-msgstr "Дата запису:"
-
 #: ../../tempcache/pages/contribution_form.html.twig:630
 msgid "months"
 msgstr "місяців"
@@ -7526,18 +7520,6 @@ msgstr "Переглянути внески"
 #| msgid "Related transaction information"
 msgid "Related contribution information"
 msgstr "Відомості про пов'язані перекази"
-
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:265
-#, fuzzy
-#| msgid "Record date:"
-msgid "Record date"
-msgstr "Дата запису:"
-
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:301
-#, fuzzy
-#| msgid "Comments:"
-msgid "Comments"
-msgstr "Коментарі:"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:63
 msgid "Short form:"
@@ -8518,6 +8500,14 @@ msgstr ""
 msgid "Show payments by"
 msgstr "Показати настройки"
 
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:93
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:208
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:365
+#, fuzzy
+#| msgid "Late due date"
+msgid "Scheduled date"
+msgstr "Спізнілий строк"
+
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:193
 #, fuzzy, php-format
 #| msgid "%count entry"
@@ -9136,6 +9126,16 @@ msgstr "Мова:"
 #: ../../tempcache/page.html.twig:236
 msgid "Page content"
 msgstr "Вміст сторінки"
+
+#, fuzzy
+#~| msgid "Record date:"
+#~ msgid "Record date"
+#~ msgstr "Дата запису:"
+
+#, fuzzy
+#~| msgid "Comments:"
+#~ msgid "Comments"
+#~ msgstr "Коментарі:"
 
 #~ msgid "Reset"
 #~ msgstr "Скинути"

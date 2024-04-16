@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-16 22:53+0200\n"
+"POT-Creation-Date: 2024-04-16 23:19+0200\n"
 "PO-Revision-Date: 2024-02-08 22:41+0100\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -3134,7 +3134,6 @@ msgid "Contribution label"
 msgstr "Etiqueta de contribució"
 
 #: ../lib/Galette/Features/Replacements.php:378
-#: ../lib/Galette/Entity/ScheduledPayment.php:638
 #: ../../tempcache/pages/transaction_form.html.twig:237
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:668
@@ -3143,7 +3142,6 @@ msgstr "Etiqueta de contribució"
 #: ../../tempcache/pages/contributions_types_list.html.twig:106
 #: ../../tempcache/pages/contribution_form.html.twig:260
 #: ../../tempcache/pages/contribution_form.html.twig:411
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:70
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:203
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:371
@@ -3170,7 +3168,6 @@ msgid "Contribution year"
 msgstr "Any de contribució"
 
 #: ../lib/Galette/Features/Replacements.php:394
-#: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/document_form.html.twig:176
 msgid "Comment"
 msgstr "Comentari"
@@ -3194,7 +3191,6 @@ msgid "Contribution id"
 msgstr "ID de contribució"
 
 #: ../lib/Galette/Features/Replacements.php:410
-#: ../lib/Galette/Entity/ScheduledPayment.php:626
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:674
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
@@ -3461,6 +3457,7 @@ msgstr "Data"
 
 #: ../lib/Galette/Entity/Transaction.php:118
 #: ../lib/Galette/Entity/Contribution.php:213
+#: ../lib/Galette/Entity/ScheduledPayment.php:638
 #: ../../tempcache/pages/contribution_type_form.html.twig:73
 #: ../../tempcache/pages/transaction_form.html.twig:134
 #: ../../tempcache/pages/contribution_form.html.twig:497
@@ -3483,6 +3480,7 @@ msgstr "Origen"
 
 #: ../lib/Galette/Entity/Transaction.php:130
 #: ../lib/Galette/Entity/Contribution.php:217
+#: ../lib/Galette/Entity/ScheduledPayment.php:626
 #: ../../tempcache/components/forms/payment_types.html.twig:53
 #, fuzzy
 msgid "Payment type:"
@@ -3554,6 +3552,7 @@ msgid "Contribution type:"
 msgstr "Tipus de contribució"
 
 #: ../lib/Galette/Entity/Contribution.php:221
+#: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/contribution_form.html.twig:669
 #, fuzzy
 msgid "Comments:"
@@ -3770,27 +3769,17 @@ msgid "Contribution ID"
 msgstr "Contribució"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:630
-#: ../../tempcache/pages/documents_list.html.twig:97
-#: ../../tempcache/pages/documents_list.html.twig:180
-#: ../../tempcache/pages/saved_searches_list.html.twig:69
-#: ../../tempcache/pages/saved_searches_list.html.twig:128
-#: ../../tempcache/pages/advanced_search.html.twig:308
-#: ../../tempcache/pages/advanced_search.html.twig:661
+#: ../../tempcache/pages/contribution_form.html.twig:545
 #, fuzzy
-msgid "Creation date"
-msgstr "Data de creació"
+msgid "Record date:"
+msgstr "Data de registre"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:634
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:283
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:93
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:208
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:365
 #, fuzzy
-msgid "Scheduled date"
+msgid "Scheduled date:"
 msgstr "Data de venciment tardana"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:642
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:107
 msgid "Paid"
 msgstr ""
 
@@ -8050,6 +8039,16 @@ msgstr "Afegeix una donació"
 msgid "Filename"
 msgstr "nomfitxer"
 
+#: ../../tempcache/pages/documents_list.html.twig:97
+#: ../../tempcache/pages/documents_list.html.twig:180
+#: ../../tempcache/pages/saved_searches_list.html.twig:69
+#: ../../tempcache/pages/saved_searches_list.html.twig:128
+#: ../../tempcache/pages/advanced_search.html.twig:308
+#: ../../tempcache/pages/advanced_search.html.twig:661
+#, fuzzy
+msgid "Creation date"
+msgstr "Data de creació"
+
 #: ../../tempcache/pages/index.html.twig:122
 msgid "Lost your password?"
 msgstr "Heu oblidat la contrasenya?"
@@ -8321,11 +8320,6 @@ msgstr "Detalls de la quota de pertinença"
 msgid "Details of donation"
 msgstr "Detalls de donació"
 
-#: ../../tempcache/pages/contribution_form.html.twig:545
-#, fuzzy
-msgid "Record date:"
-msgstr "Data de registre"
-
 #: ../../tempcache/pages/contribution_form.html.twig:630
 msgid "months"
 msgstr "mesos"
@@ -8500,16 +8494,6 @@ msgstr "Visualitza les contribucions"
 #, fuzzy
 msgid "Related contribution information"
 msgstr "Informació relacionada de transacció"
-
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:265
-#, fuzzy
-msgid "Record date"
-msgstr "Data de registre"
-
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:301
-#, fuzzy
-msgid "Comments"
-msgstr "Comentaris"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:63
 #, fuzzy
@@ -9652,6 +9636,13 @@ msgstr ""
 msgid "Show payments by"
 msgstr "Mostra els paràmetres"
 
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:93
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:208
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:365
+#, fuzzy
+msgid "Scheduled date"
+msgstr "Data de venciment tardana"
+
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:193
 #, fuzzy, php-format
 #| msgid "%count entry"
@@ -10367,6 +10358,14 @@ msgstr "Llengua:"
 #, fuzzy
 msgid "Page content"
 msgstr "Contingut de la pàgina"
+
+#, fuzzy
+#~ msgid "Record date"
+#~ msgstr "Data de registre"
+
+#, fuzzy
+#~ msgid "Comments"
+#~ msgstr "Comentaris"
 
 #, fuzzy
 #~ msgid "No member has been found"

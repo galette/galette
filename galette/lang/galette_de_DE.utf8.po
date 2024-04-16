@@ -37,7 +37,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-16 22:53+0200\n"
+"POT-Creation-Date: 2024-04-16 23:19+0200\n"
 "PO-Revision-Date: 2024-03-07 13:01+0000\n"
 "Last-Translator: Dynnammo <baptiste.thivend@protonmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -2860,7 +2860,6 @@ msgid "Contribution label"
 msgstr "Beitragsbeschreibung"
 
 #: ../lib/Galette/Features/Replacements.php:378
-#: ../lib/Galette/Entity/ScheduledPayment.php:638
 #: ../../tempcache/pages/transaction_form.html.twig:237
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:668
@@ -2869,7 +2868,6 @@ msgstr "Beitragsbeschreibung"
 #: ../../tempcache/pages/contributions_types_list.html.twig:106
 #: ../../tempcache/pages/contribution_form.html.twig:260
 #: ../../tempcache/pages/contribution_form.html.twig:411
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:70
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:203
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:371
@@ -2892,7 +2890,6 @@ msgid "Contribution year"
 msgstr "Beitragsjahr"
 
 #: ../lib/Galette/Features/Replacements.php:394
-#: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/document_form.html.twig:176
 msgid "Comment"
 msgstr "Kommentar"
@@ -2913,7 +2910,6 @@ msgid "Contribution id"
 msgstr "Beitrags-ID"
 
 #: ../lib/Galette/Features/Replacements.php:410
-#: ../lib/Galette/Entity/ScheduledPayment.php:626
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:674
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
@@ -3143,6 +3139,7 @@ msgstr "Datum:"
 
 #: ../lib/Galette/Entity/Transaction.php:118
 #: ../lib/Galette/Entity/Contribution.php:213
+#: ../lib/Galette/Entity/ScheduledPayment.php:638
 #: ../../tempcache/pages/contribution_type_form.html.twig:73
 #: ../../tempcache/pages/transaction_form.html.twig:134
 #: ../../tempcache/pages/contribution_form.html.twig:497
@@ -3162,6 +3159,7 @@ msgstr "Herausgeber:"
 
 #: ../lib/Galette/Entity/Transaction.php:130
 #: ../lib/Galette/Entity/Contribution.php:217
+#: ../lib/Galette/Entity/ScheduledPayment.php:626
 #: ../../tempcache/components/forms/payment_types.html.twig:53
 msgid "Payment type:"
 msgstr "Zahlunsgart:"
@@ -3220,6 +3218,7 @@ msgid "Contribution type:"
 msgstr "Beitragstyp:"
 
 #: ../lib/Galette/Entity/Contribution.php:221
+#: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/contribution_form.html.twig:669
 msgid "Comments:"
 msgstr "Kommentare:"
@@ -3419,27 +3418,17 @@ msgid "Contribution ID"
 msgstr "Beitrag"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:630
-#: ../../tempcache/pages/documents_list.html.twig:97
-#: ../../tempcache/pages/documents_list.html.twig:180
-#: ../../tempcache/pages/saved_searches_list.html.twig:69
-#: ../../tempcache/pages/saved_searches_list.html.twig:128
-#: ../../tempcache/pages/advanced_search.html.twig:308
-#: ../../tempcache/pages/advanced_search.html.twig:661
-msgid "Creation date"
-msgstr "Erstelldatum"
+#: ../../tempcache/pages/contribution_form.html.twig:545
+msgid "Record date:"
+msgstr "Datum des Datensatzes:"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:634
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:283
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:93
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:208
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:365
 #, fuzzy
 #| msgid "Late due date"
-msgid "Scheduled date"
+msgid "Scheduled date:"
 msgstr "Fälligkeitsdatum"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:642
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:107
 msgid "Paid"
 msgstr ""
 
@@ -7175,6 +7164,15 @@ msgstr "Eine Spende hinzufügen"
 msgid "Filename"
 msgstr "Dateiname"
 
+#: ../../tempcache/pages/documents_list.html.twig:97
+#: ../../tempcache/pages/documents_list.html.twig:180
+#: ../../tempcache/pages/saved_searches_list.html.twig:69
+#: ../../tempcache/pages/saved_searches_list.html.twig:128
+#: ../../tempcache/pages/advanced_search.html.twig:308
+#: ../../tempcache/pages/advanced_search.html.twig:661
+msgid "Creation date"
+msgstr "Erstelldatum"
+
 #: ../../tempcache/pages/index.html.twig:122
 msgid "Lost your password?"
 msgstr "Passwort vergessen?"
@@ -7414,10 +7412,6 @@ msgstr "Details des Mitgliedsbeitrags"
 msgid "Details of donation"
 msgstr "Details der Spende"
 
-#: ../../tempcache/pages/contribution_form.html.twig:545
-msgid "Record date:"
-msgstr "Datum des Datensatzes:"
-
 #: ../../tempcache/pages/contribution_form.html.twig:630
 msgid "months"
 msgstr "Monate"
@@ -7572,18 +7566,6 @@ msgstr "Beiträge anzeigen"
 #| msgid "Related transaction information"
 msgid "Related contribution information"
 msgstr "Informationen zu verknüpften Transaktionen"
-
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:265
-#, fuzzy
-#| msgid "Record date:"
-msgid "Record date"
-msgstr "Datum des Datensatzes:"
-
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:301
-#, fuzzy
-#| msgid "Comments:"
-msgid "Comments"
-msgstr "Kommentare:"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:63
 msgid "Short form:"
@@ -8565,6 +8547,14 @@ msgstr "Bitte wählen Sie für diese Aktion mindestens ein Mitglied aus."
 msgid "Show payments by"
 msgstr "Einstellungen anzeigen"
 
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:93
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:208
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:365
+#, fuzzy
+#| msgid "Late due date"
+msgid "Scheduled date"
+msgstr "Fälligkeitsdatum"
+
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:193
 #, fuzzy, php-format
 #| msgid "%count entry"
@@ -9183,6 +9173,16 @@ msgstr "Sprache:"
 #: ../../tempcache/page.html.twig:236
 msgid "Page content"
 msgstr "Seiteninhalt"
+
+#, fuzzy
+#~| msgid "Record date:"
+#~ msgid "Record date"
+#~ msgstr "Datum des Datensatzes:"
+
+#, fuzzy
+#~| msgid "Comments:"
+#~ msgid "Comments"
+#~ msgstr "Kommentare:"
 
 #~ msgid "Reset"
 #~ msgstr "Zurücksetzen"

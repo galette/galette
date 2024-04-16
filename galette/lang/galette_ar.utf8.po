@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-16 22:53+0200\n"
+"POT-Creation-Date: 2024-04-16 23:19+0200\n"
 "PO-Revision-Date: 2024-02-06 10:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -2781,7 +2781,6 @@ msgid "Contribution label"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:378
-#: ../lib/Galette/Entity/ScheduledPayment.php:638
 #: ../../tempcache/pages/transaction_form.html.twig:237
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:668
@@ -2790,7 +2789,6 @@ msgstr ""
 #: ../../tempcache/pages/contributions_types_list.html.twig:106
 #: ../../tempcache/pages/contribution_form.html.twig:260
 #: ../../tempcache/pages/contribution_form.html.twig:411
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:70
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:203
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:371
@@ -2813,7 +2811,6 @@ msgid "Contribution year"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:394
-#: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/document_form.html.twig:176
 msgid "Comment"
 msgstr ""
@@ -2834,7 +2831,6 @@ msgid "Contribution id"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:410
-#: ../lib/Galette/Entity/ScheduledPayment.php:626
 #: ../../tempcache/pages/contributions_list.html.twig:408
 #: ../../tempcache/pages/contributions_list.html.twig:674
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:208
@@ -3058,6 +3054,7 @@ msgstr "التاريخ:"
 
 #: ../lib/Galette/Entity/Transaction.php:118
 #: ../lib/Galette/Entity/Contribution.php:213
+#: ../lib/Galette/Entity/ScheduledPayment.php:638
 #: ../../tempcache/pages/contribution_type_form.html.twig:73
 #: ../../tempcache/pages/transaction_form.html.twig:134
 #: ../../tempcache/pages/contribution_form.html.twig:497
@@ -3077,6 +3074,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Transaction.php:130
 #: ../lib/Galette/Entity/Contribution.php:217
+#: ../lib/Galette/Entity/ScheduledPayment.php:626
 #: ../../tempcache/components/forms/payment_types.html.twig:53
 msgid "Payment type:"
 msgstr "نوع السداد:"
@@ -3133,6 +3131,7 @@ msgid "Contribution type:"
 msgstr "نوع المساهمة:"
 
 #: ../lib/Galette/Entity/Contribution.php:221
+#: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/contribution_form.html.twig:669
 msgid "Comments:"
 msgstr "تعليقات:"
@@ -3332,27 +3331,17 @@ msgid "Contribution ID"
 msgstr "الإشتراكات"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:630
-#: ../../tempcache/pages/documents_list.html.twig:97
-#: ../../tempcache/pages/documents_list.html.twig:180
-#: ../../tempcache/pages/saved_searches_list.html.twig:69
-#: ../../tempcache/pages/saved_searches_list.html.twig:128
-#: ../../tempcache/pages/advanced_search.html.twig:308
-#: ../../tempcache/pages/advanced_search.html.twig:661
-msgid "Creation date"
-msgstr "تاريخ الإنشاء"
+#: ../../tempcache/pages/contribution_form.html.twig:545
+msgid "Record date:"
+msgstr ""
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:634
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:283
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:93
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:208
-#: ../../tempcache/pages/scheduledpayments_list.html.twig:365
 #, fuzzy
 #| msgid "Release date"
-msgid "Scheduled date"
+msgid "Scheduled date:"
 msgstr "تاريخ النشر"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:642
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:107
 msgid "Paid"
 msgstr ""
 
@@ -6970,6 +6959,15 @@ msgstr "إضافة تبرع"
 msgid "Filename"
 msgstr "اسم الحقل"
 
+#: ../../tempcache/pages/documents_list.html.twig:97
+#: ../../tempcache/pages/documents_list.html.twig:180
+#: ../../tempcache/pages/saved_searches_list.html.twig:69
+#: ../../tempcache/pages/saved_searches_list.html.twig:128
+#: ../../tempcache/pages/advanced_search.html.twig:308
+#: ../../tempcache/pages/advanced_search.html.twig:661
+msgid "Creation date"
+msgstr "تاريخ الإنشاء"
+
 #: ../../tempcache/pages/index.html.twig:122
 msgid "Lost your password?"
 msgstr "هل فقدت كلمتك السرية؟"
@@ -7203,10 +7201,6 @@ msgstr "تفاصيل مستحقات العضوية"
 msgid "Details of donation"
 msgstr ""
 
-#: ../../tempcache/pages/contribution_form.html.twig:545
-msgid "Record date:"
-msgstr ""
-
 #: ../../tempcache/pages/contribution_form.html.twig:630
 msgid "months"
 msgstr "أشهر"
@@ -7359,18 +7353,6 @@ msgstr "عرض الإشتراكات"
 #| msgid "Contribution information"
 msgid "Related contribution information"
 msgstr "معلومات عن المساهمة"
-
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:265
-#, fuzzy
-#| msgid "Records per page:"
-msgid "Record date"
-msgstr "التسجيلات لكل صفحة:"
-
-#: ../../tempcache/pages/scheduledpayment_form.html.twig:301
-#, fuzzy
-#| msgid "Comments:"
-msgid "Comments"
-msgstr "تعليقات:"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:63
 msgid "Short form:"
@@ -8284,6 +8266,14 @@ msgstr ""
 msgid "Show payments by"
 msgstr "اظهر الخيارات"
 
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:93
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:208
+#: ../../tempcache/pages/scheduledpayments_list.html.twig:365
+#, fuzzy
+#| msgid "Release date"
+msgid "Scheduled date"
+msgstr "تاريخ النشر"
+
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:193
 #, php-format
 msgid "%count shceduled payment"
@@ -8889,6 +8879,16 @@ msgstr "اللغة:"
 #: ../../tempcache/page.html.twig:236
 msgid "Page content"
 msgstr "محتوى الصفحة"
+
+#, fuzzy
+#~| msgid "Records per page:"
+#~ msgid "Record date"
+#~ msgstr "التسجيلات لكل صفحة:"
+
+#, fuzzy
+#~| msgid "Comments:"
+#~ msgid "Comments"
+#~ msgstr "تعليقات:"
 
 #, fuzzy, php-format
 #~| msgid "Delete failed"
