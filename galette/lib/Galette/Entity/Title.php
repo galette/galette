@@ -62,9 +62,6 @@ class Title extends EntityFromDb
                     return Translate::getFromLang($value); },
                 'tlong:override' => function ($value) {
                     return Translate::getFromLang($value); },
-
-                //Automatic add and removeTranslation() when store()
-                //PAS pour TITLEs 'i18n' => ['long', 'short']
             ],
             $args
         );
