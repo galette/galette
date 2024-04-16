@@ -48,21 +48,13 @@
                     <div class="ui mobile reversed stackable grid">
                         <div class="{% if contribution.isTransactionPart() or contribution.hasSchedule() %}six wide {% endif %}column">
     {% if not require_mass %}
-                            <div class="inline field">
-                                <label for="id_adh">{{ _T("Contributor:") }}</label>
-                                <div id="id_adh" class="jsonly search-dropdown ui input paginated">
-                                    <input id="id_adh_input" type="hidden" name="id_adh" value="{{ contribution.member is not null ? contribution.member }}" placeholder="{{ _T("Member ID") }}">
-                                    <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
-                                    <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}" aria-hidden="true"></i></span>
-                                    <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}" aria-hidden="true"></i></span>
-                                    <div class="jsonly displaynone default text">{{ _T("Search for name or ID and pick member") }}</div>
-                                    <div class="jsonly displaynone menu">
-                            {% for k, v in members.list %}
-                                        <div class="item" data-value="{{ k }}">{{ v }}</div>
-                            {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
+                            {% include 'components/forms/member_dropdown.html.twig' with {
+                                'required': true,
+                                'label': _T("Contributor:"),
+                                'id': 'id_adh',
+                                'value': contribution.member,
+                                'component_class': 'inline field'
+                            } %}
     {% endif %}
                             <div class="inline field{% if required.id_type_cotis is defined and required.id_type_cotis == 1 %} required{% endif %}">
                                 <label for="id_type_cotis">{{ _T("Contribution type:") }}</label>

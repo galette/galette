@@ -35,21 +35,13 @@
                             <label for="trans_desc">{{ _T("Description:") }}</label>
                             <input type="text" name="trans_desc" id="trans_desc" value="{{ transaction.description }}" maxlength="150" size="30"{% if required.trans_desc is defined and required.trans_desc == 1 %} required="required"{% endif %}/>
                         </div>
-                        <div class="field inline{% if required.id_adh is defined and required.id_adh == 1 %} required{% endif %}">
-                            <label for="id_adh" >{{ _T("Originator:") }}</label>
-                            <div id="id_adh" class="jsonly search-dropdown ui input paginated"{% if required.id_adh is defined and required.id_adh == 1 %} required="required"{% endif %}>
-                                <input id="id_adh_input" type="text" name="id_adh" value="{{ transaction.member is not null ? transaction.member }}" placeholder="{{ _T("Member ID") }}">
-                                <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
-                                <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}" aria-hidden="true"></i></span>
-                                <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}" aria-hidden="true"></i></span>
-                                <div class="jsonly displaynone default text">{% if not transaction.member %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
-                                <div class="jsonly displaynone menu">
-    {% for k, v in members.list %}
-                                    <div class="item" data-value="{{ k }}">{{ v }}</div>
-    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'components/forms/member_dropdown.html.twig' with {
+                            'required': required.id_adh is defined and required.id_adh == 1,
+                            'id': 'id_adh',
+                            'label': _T("Originator:"),
+                            'value': transaction.member,
+                            'component_class': 'inline field'
+                        } %}
                         <div class="field inline{% if required.trans_date is defined and required.trans_date == 1 %} required{% endif %}">
                             <label for="trans_date">{{ _T("Date:") }}</label>
                             <div class="ui calendar" id="transaction-rangestart">
