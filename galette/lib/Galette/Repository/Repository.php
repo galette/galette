@@ -108,21 +108,6 @@ abstract class Repository
     }
 
     /**
-     * Get entity instance
-     *
-     * @return object
-     */
-    public function getEntity(): object
-    {
-        $name = $this->entity;
-        return new $name(
-            $this->zdb,
-            $this->preferences,
-            $this->login
-        );
-    }
-
-    /**
      * Get list
      *
      * @return array<int, object>|ResultSet
