@@ -26,10 +26,10 @@ jobs:
       matrix:
         include:
           #always tests higher stable php version with lower db version
-          #enable coverage on higher stable php version with higher postrgesql version
+          #enable coverage on higher stable php version with higher PostgreSQL version
           #higher stable php version
           - { php-version: "8.3", db-image: "postgres:11", coverage: none, always: true }
-          - { php-version: "8.3", db-image: "postgres:16", coverage: 'xdebug', always: true }
+          - { php-version: "8.3", db-image: "postgres:16", coverage: 'pcov', always: true }
           - { php-version: "8.3", db-image: "mysql:5.7", coverage: none, always: true }
           - { php-version: "8.3", db-image: "mysql:8.1", coverage: none, always: false }
           - { php-version: "8.3", db-image: "mariadb:10.4", coverage: none, always: true }
@@ -72,7 +72,7 @@ jobs:
           --health-timeout=5s
           --health-retries=10
 
-    name: PHP ${{ matrix.php-version }} ${{ matrix.db-image }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || matrix.coverage == 'xdebug' && ' (with coverage)' || ''}}
+    name: PHP ${{ matrix.php-version }} ${{ matrix.db-image }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || matrix.coverage == 'pcov' && ' (with coverage)' || ''}}
 
     steps:
       - name: PHP
@@ -131,7 +131,7 @@ jobs:
 
       - name: Update database tests
         run: TESTENV=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/GaletteUpdate/
-        if: env.skip != 'true' && matrix.coverage != 'xdebug'
+        if: env.skip != 'true' && matrix.coverage != 'pcov'
 
       - name: Init for PostgreSQL
         env:
@@ -149,11 +149,11 @@ jobs:
 
       - name: Unit tests
         run: galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/Galette/
-        if: env.skip != 'true' && matrix.coverage != 'xdebug'
+        if: env.skip != 'true' && matrix.coverage != 'pcov'
 
       - name: Unit tests (with coverage)
         run: galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --process-isolation --coverage-filter galette/lib --coverage-clover tests/clover.xml tests/Galette/
-        if: env.skip != 'true' && matrix.coverage == 'xdebug'
+        if: env.skip != 'true' && matrix.coverage == 'pcov'
 
       - name: Upload code coverage (scrutinizer)
         run: |
@@ -161,7 +161,7 @@ jobs:
           composer require scrutinizer/ocular --ignore-platform-reqs
           cd ..
           php galette/vendor/bin/ocular code-coverage:upload --format=php-clover tests/clover.xml
-        if: env.skip != 'true' && matrix.coverage == 'xdebug'
+        if: env.skip != 'true' && matrix.coverage == 'pcov'
 
       - name: Upload code coverage (codecov)
         uses: codecov/codecov-action@v4
@@ -169,7 +169,7 @@ jobs:
           CODECOV_TOKEN: 2d9dd954-bed8-4628-a267-28cd0108771b
         with:
           file: tests/clover.xml
-        if: env.skip != 'true' && matrix.coverage == 'xdebug'
+        if: env.skip != 'true' && matrix.coverage == 'pcov'
 
   unsupported-dbs:
     runs-on: ubuntu-latest
