@@ -334,7 +334,7 @@ class Groups
             }
             return true;
         } catch (Throwable $e) {
-            $te = clone $e;
+            $te = $e;
             if ($transaction === false) {
                 $zdb->connection->rollBack();
             }
@@ -455,7 +455,7 @@ class Groups
             [Adherent::PK]
         )->join(
             array('status' => PREFIX_DB . Status::TABLE),
-            'a.' . Status::PK . '=status.' . Status::PK,
+            'adh.' . Status::PK . '=status.' . Status::PK,
             array('priorite_statut')
         )->join(
             array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),

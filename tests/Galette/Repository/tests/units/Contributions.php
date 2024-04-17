@@ -214,6 +214,8 @@ class Contributions extends GaletteTestCase
         $this->assertCount(1, $list);
         $contrib = array_pop($list);
         $this->assertFalse($contrib instanceof \Galette\Entity\Contribution);
+
+        $this->assertFalse($contributions->getArrayList([]));
     }
 
     /**

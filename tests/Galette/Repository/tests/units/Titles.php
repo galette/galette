@@ -28,8 +28,10 @@ use Galette\GaletteTestCase;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class PaymentTypes extends GaletteTestCase
+class Titles extends GaletteTestCase
 {
+    protected int $seed = 20240417170519;
+
     private array $remove = [];
 
     /**
@@ -41,8 +43,8 @@ class PaymentTypes extends GaletteTestCase
     {
         parent::setUp();
 
-        $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
-        $res = $types->installInit(false);
+        $titles = new \Galette\Repository\Titles($this->zdb);
+        $res = $titles->installInit();
         $this->assertTrue($res);
     }
 
@@ -54,7 +56,7 @@ class PaymentTypes extends GaletteTestCase
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->deletePaymentType();
+        $this->deleteTitles();
     }
 
     /**
@@ -62,11 +64,11 @@ class PaymentTypes extends GaletteTestCase
      *
      * @return void
      */
-    private function deletePaymentType(): void
+    private function deleteTitles(): void
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\PaymentType::TABLE);
-            $delete->where->in(\Galette\Entity\PaymentTypes::PK, $this->remove);
+            $delete = $this->zdb->delete(\Galette\Entity\Title::TABLE);
+            $delete->where->in(\Galette\Entity\Title::PK, $this->remove);
             $this->zdb->execute($delete);
         }
 
@@ -84,24 +86,36 @@ class PaymentTypes extends GaletteTestCase
      */
     public function testGetList(): void
     {
-        $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
+        $titles = new \Galette\Repository\Titles($this->zdb);
 
-        $list = $types->getList();
-        $this->assertCount(7, $list);
+        $list = $titles->getList();
+        $this->assertCount(2, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select(\Galette\Entity\PaymentType::TABLE . '_id_seq');
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->assertGreaterThanOrEqual(6, $result->last_value, 'Incorrect payments types sequence');
+            $this->assertGreaterThanOrEqual(1, $result->last_value, 'Incorrect titles sequence');
         }
 
-        //reinstall payment types
-        $types->installInit();
+        //add another one
+        $title = new \Galette\Entity\Title();
+        $title->short = 'Te.';
+        $title->long = 'Test';
+        $this->assertTrue($title->store($this->zdb));
 
-        $list = $types->getList();
-        $this->assertCount(7, $list);
+        $id = $title->id;
+        $this->remove[] = $id;
+
+        $list = $titles->getList();
+        $this->assertCount(3, $list);
+
+        //reinstall payment types
+        $titles->installInit();
+
+        $list = $titles->getList();
+        $this->assertCount(2, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select(\Galette\Entity\PaymentType::TABLE . '_id_seq');
@@ -109,9 +123,9 @@ class PaymentTypes extends GaletteTestCase
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $this->assertGreaterThanOrEqual(
-                6,
+                1,
                 $result->last_value,
-                'Incorrect payment types sequence ' . $result->last_value
+                'Incorrect title sequence ' . $result->last_value
             );
         }
     }

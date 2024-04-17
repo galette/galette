@@ -200,6 +200,7 @@ class SavedSearch
                 Analog::log('Not stored!', Analog::ERROR);
                 return false;
             }
+            $this->id = $this->zdb->getLastGeneratedValue($this);
             return true;
         } catch (Throwable $e) {
             Analog::log(

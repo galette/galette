@@ -60,6 +60,11 @@ class Groups extends GaletteTestCase
             \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
 
+        $zdb->db->query(
+            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\Group::GROUPSUSERS_TABLE,
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+        );
+
         $groups = self::groupsProvider();
         foreach ($groups as $group) {
             foreach ($group['children'] as $child) {
@@ -269,5 +274,89 @@ class Groups extends GaletteTestCase
         //tests on another level
         $this->assertFalse(\Galette\Repository\Groups::isUnique($this->zdb, 'Nord', $france));
         $this->assertTrue(\Galette\Repository\Groups::isUnique($this->zdb, 'Creuse', $france));
+    }
+
+    /**
+     * Test members/groups
+     *
+     * @return void
+     */
+    public function testMembersGroups(): void
+    {
+        $groups = self::groupsProvider();
+        foreach ($groups as $group) {
+            $this->testCreateGroups($group['parent_name'], $group['children']);
+        }
+
+        $france = new \Galette\Entity\Group();
+        $this->assertTrue($france->loadFromName('France'));
+
+        $allemagne = new \Galette\Entity\Group();
+        $this->assertTrue($allemagne->loadFromName('Allemagne'));
+
+        $member = $this->getMemberOne();
+        $member->loadGroups();
+        $this->assertSame([], $member->managed_groups);
+        $this->assertSame([], $member->groups);
+
+        //add member to France and Allemagne groups, as simple member
+        $this->assertTrue(
+            \Galette\Repository\Groups::addMemberToGroups(
+                $member,
+                [
+                    sprintf('%s|%s', $france->getId(), $france->getName()),
+                    sprintf('%s|%s', $allemagne->getId(), $allemagne->getName())
+                ]
+            )
+        );
+
+        $member->loadGroups();
+        $this->assertSame([], $member->managed_groups);
+        $this->assertCount(2, $member->groups);
+
+        //Add as manager of France
+        $this->assertTrue(
+            \Galette\Repository\Groups::addMemberToGroups(
+                $member,
+                [
+                    sprintf('%s|%s', $france->getId(), $france->getName())
+                ],
+                true
+            ),
+        );
+
+        $member->loadGroups();
+        $this->assertCount(1, $member->managed_groups);
+        $this->assertCount(2, $member->groups);
+
+        $member2 = $this->getMemberTwo();
+        //Add as manager of France
+        $this->assertTrue(
+            \Galette\Repository\Groups::addMemberToGroups(
+                $member2,
+                [
+                    sprintf('%s|%s', $france->getId(), $france->getName())
+                ],
+                true
+            ),
+        );
+
+        $member2->loadGroups();
+        $this->assertCount(1, $member2->managed_groups);
+        $this->assertCount(0, $member2->groups);
+
+        $this->logSuperAdmin();
+        $this->login->impersonate($member2->id);
+
+        $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
+        $users = $groups->getManagerUsers([$allemagne->getId()]);
+        $this->assertSame([$member->id], $users);
+        $users = $groups->getManagerUsers([$france->getId()]);
+        $this->assertSame([$member->id], $users);
+
+        \Galette\Repository\Groups::removeMemberFromGroups($member->id);
+        $member->loadGroups();
+        $this->assertSame([], $member->managed_groups);
+        $this->assertSame([], $member->groups);
     }
 }

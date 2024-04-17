@@ -383,7 +383,7 @@ class CsvIn extends Csv implements FileInterface
                             if (!isset($this->langs[$column])) {
                                 $this->addError(
                                     str_replace(
-                                        '%title',
+                                        '%lang',
                                         $column,
                                         _T("Lang %lang does not exists!")
                                     )
@@ -497,6 +497,10 @@ class CsvIn extends Csv implements FileInterface
 
                         if ($this->fields[$col] == Status::PK && empty(trim($column))) {
                             $values[Status::PK] = $this->preferences->pref_statut ?? Status::DEFAULT_STATUS;
+                        }
+
+                        if ($this->fields[$col] == 'pref_lang' && empty(trim($column))) {
+                            $values[$this->fields[$col]] = $this->preferences->pref_lang;
                         }
 
                         $col++;

@@ -101,7 +101,39 @@ class Group
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
+                'Cannot load group from id `' . $id . '` | ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            throw $e;
+        }
+    }
+
+    /**
+     * Load group from its name
+     *
+     * @param string $group_name Group name
+     *
+     * @return bool
+     */
+    public function loadFromName(string $group_name): bool
+    {
+        global $zdb;
+
+        try {
+            $select = $zdb->select(self::TABLE);
+            $select->where(array('group_name' => $group_name));
+
+            $results = $zdb->execute($select);
+
+            if ($results->count() > 0) {
+                $this->loadFromRS($results->current());
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Throwable $e) {
+            Analog::log(
+                'Cannot load group from name `' . $group_name . '` | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;

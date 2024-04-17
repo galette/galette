@@ -144,25 +144,4 @@ class Titles
             throw $e;
         }
     }
-
-    /**
-     * Get translated title short version
-     *
-     * @param integer $title The title id to retrieve
-     *
-     * @return string
-     */
-    public static function getTitle(int $title): string
-    {
-        global $zdb;
-
-        $select = $zdb->select(self::TABLE);
-        $select->limit(1)
-            ->where(array(self::PK => $title));
-
-        $results = $zdb->execute($select);
-        $result = $results->current();
-        $res = $result->short_label;
-        return _T($res);
-    }
 }

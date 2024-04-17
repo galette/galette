@@ -87,12 +87,6 @@ class Title extends TestCase
         global $zdb;
         $zdb = $this->zdb;
 
-        $titles = new \Galette\Repository\Titles($this->zdb);
-        if (count($titles->getList()) === 0) {
-            $res = $titles->installInit();
-            $this->assertTrue($res);
-        }
-
         $title = new \Galette\Entity\Title();
 
         $title->short = 'Te.';
