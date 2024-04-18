@@ -173,7 +173,15 @@ class CsvIn extends Csv implements FileInterface
                 'File ' . $filename . ' does not exists or cannot be read.',
                 Analog::ERROR
             );
-            return false;
+            $this->addError(
+                str_replace(
+                    '%filename',
+                    $filename,
+                    _T('File %filename cannot be open!')
+                )
+            );
+
+            return self::INVALID_FILE;
         }
 
         $this->zdb = $zdb;
@@ -294,10 +302,10 @@ class CsvIn extends Csv implements FileInterface
                     }
 
                     //check for statuses
-                    //if missing, set default one; if not check it does exists
+                    //if missing, set default one; if not check it does exist
                     if ($this->fields[$col] == Status::PK) {
                         if (empty($column)) {
-                            $column = Status::DEFAULT_STATUS;
+                            $column = $this->preferences->pref_statut ?? Status::DEFAULT_STATUS;
                         } else {
                             if (!isset($this->statuses)) {
                                 //load existing status
@@ -488,7 +496,7 @@ class CsvIn extends Csv implements FileInterface
                         }
 
                         if ($this->fields[$col] == Status::PK && empty(trim($column))) {
-                            $values[Status::PK] = Status::DEFAULT_STATUS;
+                            $values[Status::PK] = $this->preferences->pref_statut ?? Status::DEFAULT_STATUS;
                         }
 
                         $col++;
