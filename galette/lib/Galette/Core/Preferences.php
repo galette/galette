@@ -48,7 +48,7 @@ use Galette\Repository\Members;
  * @property string $pref_ville Association
  * @property string $pref_region Region
  * @property string $pref_pays Country
- * @property integer $pref_postal_adress Postal adress to use, one of self::POSTAL_ADDRESS*
+ * @property integer $pref_postal_address Postal address to use, one of self::POSTAL_ADDRESS*
  * @property integer $pref_postal_staff_member Staff member ID from which retrieve postal address
  * @property boolean $pref_disable_members_socials
  * @property string $pref_lang Default instance language
@@ -193,7 +193,7 @@ class Preferences
         'pref_ville'        =>    '',
         'pref_region'        =>    '',
         'pref_pays'        =>    '',
-        'pref_postal_adress'  => self::POSTAL_ADDRESS_FROM_PREFS,
+        'pref_postal_address'  => self::POSTAL_ADDRESS_FROM_PREFS,
         'pref_postal_staff_member' => '',
         'pref_disable_members_socials' => false,
         'pref_lang'        =>    I18n::DEFAULT_LANG,
@@ -601,8 +601,8 @@ class Preferences
         }
 
         //postal address
-        if (isset($insert_values['pref_postal_adress'])) {
-            $value = $insert_values['pref_postal_adress'];
+        if (isset($insert_values['pref_postal_address'])) {
+            $value = $insert_values['pref_postal_address'];
             if ($value == Preferences::POSTAL_ADDRESS_FROM_PREFS) {
                 if (isset($insert_values['pref_postal_staff_member'])) {
                     unset($insert_values['pref_postal_staff_member']);
@@ -859,7 +859,7 @@ class Preferences
 
         $replacements = null;
 
-        if ($this->prefs['pref_postal_adress'] == self::POSTAL_ADDRESS_FROM_PREFS) {
+        if ($this->prefs['pref_postal_address'] == self::POSTAL_ADDRESS_FROM_PREFS) {
             $_address = $this->prefs['pref_adresse'];
             if ($this->prefs['pref_adresse2'] && $this->prefs['pref_adresse2'] != '') {
                 $_address .= "\n" . $this->prefs['pref_adresse2'];

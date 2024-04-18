@@ -132,12 +132,12 @@
                         </label>
                         <div class="inline fields">
                             <div class="field">
-                                <label for="pref_postal_adress_0">{{ _T("from preferences") }}</label>
-                                <input type="radio" name="pref_postal_adress" id="pref_postal_adress_0" value="{{ constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_PREFS') }}" {% if pref.pref_postal_adress == constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_PREFS') %}checked="checked"{% endif %}/>
+                                <label for="pref_postal_address_0">{{ _T("from preferences") }}</label>
+                                <input type="radio" name="pref_postal_address" id="pref_postal_address_0" value="{{ constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_PREFS') }}" {% if pref.pref_postal_address == constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_PREFS') %}checked="checked"{% endif %}/>
                             </div>
                             <div class="field">
-                                <label for="pref_postal_adress_1">{{ _T("from a staff user") }}</label>
-                                <input type="radio" name="pref_postal_adress" id="pref_postal_adress_1" value="{{ constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_STAFF') }}" {% if pref.pref_postal_adress == constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_STAFF') %}checked="checked"{% endif %}/>
+                                <label for="pref_postal_address_1">{{ _T("from a staff user") }}</label>
+                                <input type="radio" name="pref_postal_address" id="pref_postal_address_1" value="{{ constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_STAFF') }}" {% if pref.pref_postal_address == constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_STAFF') %}checked="checked"{% endif %}/>
                             </div>
                         </div>
                         <label for="pref_postal_staff_member">{{ _T("Staff member") }}</label>
