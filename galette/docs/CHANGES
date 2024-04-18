@@ -26,6 +26,7 @@ Changes
 - Identify sponsors in members list
 - Add scheduled payments feature
 - Dispatch contribution into scheduled payments
+- Contribution type filter in contributions list
 
 1.0.3 -> 1.0.4
 

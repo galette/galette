@@ -37,6 +37,7 @@ use Galette\Core\Pagination;
  * @property integer|false $filtre_cotis_children
  * @property integer $date_field
  * @property ?integer $payment_type_filter
+ * @property ?integer $contrib_type_filter
  * @property boolean $filtre_transactions
  * @property integer|false $from_transaction
  * @property ?integer $max_amount
@@ -68,10 +69,11 @@ class ContributionsList extends Pagination
     private ?string $start_date_filter = null;
     private ?string $end_date_filter = null;
     private ?int $payment_type_filter = null;
+    private ?int $contrib_type_filter = null;
+
     private ?int $filtre_cotis_adh = null;
     private int|false $filtre_cotis_children = false;
     private bool $filtre_transactions = false;
-
     private int|false $from_transaction = false;
     private ?int $max_amount = null;
 
@@ -86,6 +88,7 @@ class ContributionsList extends Pagination
         'filtre_cotis_children',
         'date_field',
         'payment_type_filter',
+        'contrib_type_filter',
         'filtre_transactions',
         'from_transaction',
         'max_amount',
@@ -130,6 +133,7 @@ class ContributionsList extends Pagination
         $this->start_date_filter = null;
         $this->end_date_filter = null;
         $this->payment_type_filter = null;
+        $this->contrib_type_filter = null;
         $this->filtre_cotis_adh = null;
         $this->filtre_cotis_children = false;
         $this->from_transaction = false;

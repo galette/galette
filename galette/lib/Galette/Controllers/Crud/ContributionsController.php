@@ -544,6 +544,11 @@ class ContributionsController extends CrudController
             $tpl_vars['pmember'] = $member;
         }
 
+        // contribution types
+        $ct = new ContributionsTypes($this->zdb);
+        $contributions_types = $ct->getList();
+        $tpl_vars['type_cotis_options'] = $contributions_types;
+
         // hide column action in ajax mode
         if ($ajax === true) {
             $tpl_vars['no_action'] = true;
@@ -650,6 +655,19 @@ class ContributionsController extends CrudController
                     $filters->payment_type_filter = null;
                 } else {
                     $error_detected[] = _T("- Unknown payment type!");
+                }
+            }
+
+            if (isset($post['contrib_type_filter'])) {
+                $ctf = (int)$post['contrib_type_filter'];
+                $ct = new ContributionsTypes($this->zdb);
+                $ctlist = $ct->getList();
+                if (isset($ctlist[$ctf])) {
+                    $filters->contrib_type_filter = $ctf;
+                } elseif ($ctf == 0) {
+                    $filters->contrib_type_filter = null;
+                } else {
+                    $error_detected[] = _T("- Unknown contribution type!");
                 }
             }
         }

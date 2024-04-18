@@ -359,6 +359,13 @@ class Contributions
                 );
             }
 
+            if ($this->filters->contrib_type_filter !== null) {
+                $select->where->equalTo(
+                    ContributionsTypes::PK,
+                    $this->filters->contrib_type_filter
+                );
+            }
+
             if ($this->filters->from_transaction !== false) {
                 $select->where->equalTo(
                     Transaction::PK,

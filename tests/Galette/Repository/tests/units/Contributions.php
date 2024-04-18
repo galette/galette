@@ -144,6 +144,12 @@ class Contributions extends GaletteTestCase
         $list = $contributions->getList(true);
         $this->assertCount(1, $list);
 
+        $filters = new \Galette\Filters\ContributionsList();
+        $filters->contrib_type_filter = $this->contrib->id_type_cotis;
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
+        $list = $contributions->getList(true);
+        $this->assertCount(1, $list);
+
         //member with a contribution
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
