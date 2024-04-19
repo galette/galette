@@ -1395,7 +1395,7 @@ class Adherent
                     if ($value == '-1') {
                         $this->$prop = null;
                     } elseif (!$value instanceof Title) {
-                        $this->$prop = new Title((int)$value);
+                        $this->$prop = new Title($this->zdb, (int)$value);
                     }
                 } else {
                     $this->$prop = null;
