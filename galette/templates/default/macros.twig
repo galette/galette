@@ -52,7 +52,8 @@
 
 {% macro renderMenuItem(label, title, route, icon, class, tips_position, mode) %}
     {% if class is empty %}
-        {% if is_current_url(route.name, route.args|default([])) or (cur_route in route.aliases ?? [] and route.sub_select ?? true == true) %}
+        {% set my_routes = [route.name]|merge(route.aliases ?? []) %}
+        {% if cur_route in my_routes %}
             {% set class = "active item" %}
         {% else %}
             {% set class = "item" %}

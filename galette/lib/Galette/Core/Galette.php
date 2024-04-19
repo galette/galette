@@ -395,8 +395,7 @@ class Galette
                                 'label' => _T("Manage statuses"),
                                 'route' => [
                                     'name' => 'status',
-                                    'aliases' => ['editStatus'],
-                                    'sub_select' => false
+                                    'aliases' => ['editStatus']
                                 ]
                             ],
                             [
