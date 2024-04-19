@@ -63,7 +63,9 @@ CREATE TABLE galette_documents (
 
 
 -- change fields types and default values
+UPDATE galette_cotisations SET montant_cotis = 0.00 WHERE montant_cotis IS NULL;
 ALTER TABLE galette_cotisations CHANGE montant_cotis montant_cotis decimal(15,2) NOT NULL;
+UPDATE galette_transactions SET trans_amount = 0.00 WHERE trans_amount IS NULL;
 ALTER TABLE galette_transactions CHANGE trans_amount trans_amount decimal(15,2) NOT NULL;
 
 -- table for payments schedules
