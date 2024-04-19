@@ -81,7 +81,3 @@ CREATE TABLE galette_payments_schedules (
   FOREIGN KEY (id_cotis) REFERENCES galette_cotisations (id_cotis) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_paymenttype) REFERENCES galette_paymenttypes (type_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
--- change fields types and default values
-ALTER TABLE galette_cotisations CHANGE montant_cotis montant_cotis decimal(15,2) NOT NULL;
-ALTER TABLE galette_transactions CHANGE trans_amount trans_amount decimal(15,2) NOT NULL;
