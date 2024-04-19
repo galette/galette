@@ -96,7 +96,11 @@ class ContributionsController extends CrudController
             $title .= ' (' . _T("modification") . ')';
         } else {
             $title .= ' (' . _T("creation") . ')';
+            if ($contrib->amount === null) {
+                $contrib->amount = $contributions_types[array_key_first($contributions_types)]['amount'];
+            }
         }
+
 
         $params = [
             'page_title'        => $title,
