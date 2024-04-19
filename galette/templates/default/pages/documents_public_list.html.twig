@@ -18,7 +18,8 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 #}
-{% extends 'public_page.html.twig' %}
+{% set is_public = not login.isLogged() %}
+{% extends is_public ? "public_page.html.twig" : "page.html.twig" %}
 
 {% macro getSlug(value) -%}
     {{ value|lower|spaceless|slug|e('html_attr') }}
