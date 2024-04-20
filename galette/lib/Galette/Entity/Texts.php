@@ -301,6 +301,18 @@ class Texts
                     );
                 }
             }
+
+            $this->all_texts->tbody = str_replace(
+                [
+                    '{BR}',
+                    '{NEWLINE}'
+                ],
+                [
+                    "\r\n",
+                    "\r\n\r\n"
+                ],
+                $this->all_texts->tbody
+            );
             return $this->all_texts;
         } catch (Throwable $e) {
             Analog::log(
