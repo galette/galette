@@ -71,6 +71,7 @@
             <h3>{{ _T("You current %name version is...")|replace({'%name': plugin.name}) }}</h3>
             <ul class="leaders">
         {% set last = 0.00 %}
+        {% set previous = null %}
         {% for k, val in update_scripts %}
                 <li>
                     <span>
@@ -86,9 +87,10 @@
                         </label>
                     </span>
                     <span>
-                        <input type="radio" name="previous_version" value="{{ val }}" id="upgrade-{{ val }}" required/>
+                        <input type="radio" name="previous_version" value="{{ previous ?? 0 }}" id="upgrade-{{ val }}" required/>
                     </span>
                 </li>
+            {% set previous = val %}
         {% endfor %}
             </ul>
     {% endif %}
