@@ -291,16 +291,8 @@ class Contributions
             case ContributionsList::ORDERBY_AMOUNT:
                 $order[] = 'montant_cotis ' . $this->filters->ordered;
                 break;
-            /*
-            Hum... I really do not know how to sort a query with a value that
-            is calculated code side :/
-            case ContributionsList::ORDERBY_DURATION:
-                break;*/
             case ContributionsList::ORDERBY_PAYMENT_TYPE:
                 $order[] = 'type_paiement_cotis ' . $this->filters->ordered;
-                break;
-            default:
-                $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
                 break;
         }
 

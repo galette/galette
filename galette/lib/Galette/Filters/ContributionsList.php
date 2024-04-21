@@ -56,9 +56,8 @@ class ContributionsList extends Pagination
     public const ORDERBY_MEMBER = 3;
     public const ORDERBY_TYPE = 4;
     public const ORDERBY_AMOUNT = 5;
-    public const ORDERBY_DURATION = 6;
-    public const ORDERBY_PAYMENT_TYPE = 7;
-    public const ORDERBY_ID = 8;
+    public const ORDERBY_PAYMENT_TYPE = 6;
+    public const ORDERBY_ID = 7;
 
     public const DATE_BEGIN = 0;
     public const DATE_END = 1;
