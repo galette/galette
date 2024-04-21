@@ -1,4 +1,4 @@
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023, 2024.
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
@@ -40,10 +40,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-04-21 09:11+0200\n"
-"PO-Revision-Date: 2024-03-17 18:40+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"PO-Revision-Date: 2024-04-21 07:17+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -6824,10 +6824,8 @@ msgid "among:"
 msgstr "entre:"
 
 #: ../../tempcache/pages/members_list.html.twig:286
-#, fuzzy
-#| msgid "All groups PDF"
 msgid "All groups"
-msgstr "PDF de todos los grupos"
+msgstr "Todos los grupos"
 
 #: ../../tempcache/pages/members_list.html.twig:317
 msgid "Members that have an email address:"
