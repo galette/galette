@@ -1,6 +1,6 @@
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023, 2024.
 # Joan Montané <joan@montane.cat>, 2020.
 # Pol Casares Civit <pol.casares@e-campus.uab.cat>, 2020.
 # Kilian Niubó Vinuesa <kilian.niubo@qubiq.es>, 2021.
@@ -13,9 +13,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-04-21 09:11+0200\n"
-"PO-Revision-Date: 2024-02-08 22:41+0100\n"
+"PO-Revision-Date: 2024-04-21 07:17+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Weblate 5.5-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -7757,9 +7757,8 @@ msgid "among:"
 msgstr "entre:"
 
 #: ../../tempcache/pages/members_list.html.twig:286
-#, fuzzy
 msgid "All groups"
-msgstr "Tots els grups PDF"
+msgstr "Tots els grups"
 
 #: ../../tempcache/pages/members_list.html.twig:317
 #, fuzzy
