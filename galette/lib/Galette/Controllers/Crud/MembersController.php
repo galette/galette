@@ -522,11 +522,12 @@ class MembersController extends CrudController
                 $filters->email_filter = (int)$post['email_filter'];
             }
             //group filter
-            if (
-                isset($post['group_filter'])
-                && $post['group_filter'] > 0
-            ) {
-                $filters->group_filter = (int)$post['group_filter'];
+            if (isset($post['group_filter'])) {
+                if ($post['group_filter'] > 0) {
+                    $filters->group_filter = (int)$post['group_filter'];
+                } else {
+                    $filters->group_filter = null;
+                }
             }
             //number of rows to show
             if (isset($post['nbshow'])) {

@@ -234,7 +234,9 @@ class MembersList extends Pagination
                                 Analog::WARNING
                             );
                         }
-                    } elseif ($value !== null && $value !== '0') {
+                    } elseif ($value === null) {
+                        $this->group_filter = null;
+                    } else {
                         Analog::log(
                             '[MembersList] Value for group filter should be an '
                             . 'integer (' . gettype($value) . ' given)',
