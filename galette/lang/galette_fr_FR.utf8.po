@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-04-21 09:11+0200\n"
-"PO-Revision-Date: 2024-04-16 21:24+0000\n"
+"PO-Revision-Date: 2024-04-21 07:17+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -550,10 +550,8 @@ msgid "Transactions management"
 msgstr "Gestion des transactions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:674
-#, fuzzy
-#| msgid "New contribution type"
 msgid "- Unknown contribution type!"
-msgstr "Nouveau type de contribution"
+msgstr "- Type de contribution inconnu !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:732
 msgid "No contribution was selected, please check at least one."
@@ -6798,10 +6796,8 @@ msgid "among:"
 msgstr "parmi :"
 
 #: ../../tempcache/pages/members_list.html.twig:286
-#, fuzzy
-#| msgid "All groups PDF"
 msgid "All groups"
-msgstr "PDF de l'ensemble des groupes"
+msgstr "Tous les groupes"
 
 #: ../../tempcache/pages/members_list.html.twig:317
 msgid "Members that have an email address:"
