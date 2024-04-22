@@ -349,12 +349,12 @@ abstract class Pagination
             'value'     => $page
         ];
 
-        if ($this->view->getEnvironment()->getGlobals()['cur_subroute']) {
-            $args['type'] = $this->view->getEnvironment()->getGlobals()['cur_subroute'];
+        if ($this->view->getEnvironment()->mergeGlobals([])['cur_subroute']) {
+            $args['type'] = $this->view->getEnvironment()->mergeGlobals([])['cur_subroute'];
         }
 
         $href = $this->routeparser->urlFor(
-            $this->view->getEnvironment()->getGlobals()['cur_route'],
+            $this->view->getEnvironment()->mergeGlobals([])['cur_route'],
             $args
         );
         return $href;
