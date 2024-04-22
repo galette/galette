@@ -278,9 +278,7 @@ class SavedSearch
                     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
                     $parameters = [];
                     foreach ($this->parameters as $key => $parameter) {
-                        //@phpstan-ignore-next-line
                         if (isset($members_fields[$key])) {
-                            //@phpstan-ignore-next-line
                             $key = $members_fields[$key]['label'];
                         }
                         if (is_array($parameter) || is_object($parameter)) {

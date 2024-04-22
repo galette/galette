@@ -44,7 +44,7 @@ abstract class GaletteTestCase extends TestCase
     protected \Galette\Entity\Contribution $contrib;
     protected array $adh_ids = [];
     protected array $contrib_ids = [];
-    /** @var array */
+    /** @var array<string,array<string,array<int,string>> */
     protected array $flash_data;
     protected \Slim\Flash\Messages $flash;
     protected \DI\Container $container;
