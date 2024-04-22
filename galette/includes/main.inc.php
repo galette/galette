@@ -167,8 +167,8 @@ $app->add(function (Request $request, RequestHandler $handler) use ($container) 
 
     $view = $container->get(Twig::class);
     $view->getEnvironment()->addGlobal('cur_route', $name);
+    $view->getEnvironment()->addGlobal('cur_route_args', $arguments);
     $view->getEnvironment()->addGlobal('cur_subroute', array_shift($arguments));
-    // ... do something with the data ...
 
     return $handler->handle($request);
 });
