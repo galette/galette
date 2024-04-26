@@ -379,18 +379,6 @@ class Contribution extends GaletteTestCase
         $due_date->sub(new \DateInterval('P1D'));
         $this->assertSame($due_date->format('Y-m-d'), $contrib->end_date);
 
-        //unset pref_beg_membership and pref_membership_ext
-        $preferences->pref_beg_membership = '';
-        $preferences->pref_membership_ext = '';
-
-        $this->expectException('RuntimeException');
-        $this->expectExceptionMessage('Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!');
-        $contrib = new \Galette\Entity\Contribution(
-            $this->zdb,
-            $this->login,
-            ['type' => 1] //annual fee
-        );
-
         // Second, test with beginning of membership date
         $preferences->pref_beg_membership = '29/05';
         $due_date = new \DateTime();
@@ -426,6 +414,18 @@ class Contribution extends GaletteTestCase
         $preferences->pref_beg_membership = $orig_pref_beg_membership;
         $preferences->pref_membership_ext = $orig_pref_membership_ext;
         $preferences->pref_membership_offermonths = $orig_pref_membership_offermonths;
+
+        //unset pref_beg_membership and pref_membership_ext
+        $preferences->pref_beg_membership = '';
+        $preferences->pref_membership_ext = '';
+
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!');
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] //annual fee
+        );
     }
 
     /**
