@@ -27,6 +27,8 @@ To use Galette, you can either:
 * use the [nightly build](https://galette.eu/download/galette-dev.tar.bz2) to test new features
 * use [Galette soure code from repository](https://doc.galette.eu/en/develop/source_code.html) (make sure you install third party dependencies), this solution requires some technical skills
 
+This project is tested with BrowserStack
+
 ### Français
 
 [![Télécharger la version de Galette la plus récente (1.0.4)](https://img.shields.io/badge/1.0.4-Dernière_Galette-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://galette.eu/download/galette-1.0.4.tar.bz2)
