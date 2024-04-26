@@ -482,9 +482,10 @@ class Contribution
                         if ($value != '') {
                             if (!is_numeric($value) || $value <= 0) {
                                 $this->errors[] = _T("- The duration must be a positive integer!");
+                            } else {
+                                $this->$prop = $value;
+                                $this->retrieveEndDate();
                             }
-                            $this->$prop = $value;
-                            $this->retrieveEndDate();
                         }
                         break;
                 }
