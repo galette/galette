@@ -207,12 +207,10 @@ class Password extends TestCase
             ->getMock();
 
         $this->zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o): void {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
@@ -232,12 +230,10 @@ class Password extends TestCase
             ->getMock();
 
         $this->zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o): void {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
@@ -257,12 +253,10 @@ class Password extends TestCase
             ->getMock();
 
         $this->zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o): void {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
@@ -281,12 +275,10 @@ class Password extends TestCase
             ->getMock();
 
         $this->zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o): void {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
@@ -306,12 +298,10 @@ class Password extends TestCase
             ->getMock();
 
         $this->zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o): void {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $pass = new \Galette\Core\Password($this->zdb, false);

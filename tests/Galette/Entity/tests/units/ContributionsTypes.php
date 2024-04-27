@@ -169,10 +169,6 @@ class ContributionsTypes extends TestCase
             $ctype->delete(42)
         );
 
-        /*$this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('You cannot delete default contribution type!');
-        $status->delete($status::DEFAULT_STATUS);*/
-
         $this->assertTrue(
             $ctype->delete($id)
         );

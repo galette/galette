@@ -130,11 +130,37 @@ class Group extends GaletteTestCase
     }
 
     /**
-     * Test group name unicity
+     * Test group name uniqueness when adding
      *
      * @return void
      */
-    public function testUnicity(): void
+    public function testAddUnicity(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $group = new \Galette\Entity\Group();
+        $group->setLogin($this->login);
+
+        $group->setName('A group');
+        $this->assertTrue($group->store());
+        $group->getId();
+
+        //Adding another group with same name throws an exception
+        $group = new \Galette\Entity\Group();
+        $group->setLogin($this->login);
+
+        $this->expectExceptionMessage('The group name you have requested already exists in the database.');
+        $group->setName('A group');
+        $this->assertFalse($group->store());
+    }
+
+    /**
+     * Test group name uniqueness when editing
+     *
+     * @return void
+     */
+    public function testEditUnicity(): void
     {
         global $zdb;
         $zdb = $this->zdb;
@@ -149,14 +175,6 @@ class Group extends GaletteTestCase
         //update without changes should be ok
         $group = new \Galette\Entity\Group($group_id);
         $this->assertTrue($group->store());
-
-        //Adding another group with same name throws an exception
-        $group = new \Galette\Entity\Group();
-        $group->setLogin($this->login);
-
-        $this->expectExceptionMessage('The group name you have requested already exists in the database.');
-        $group->setName('A group');
-        $this->assertFalse($group->store());
 
         //update with changes should be ok
         $group = new \Galette\Entity\Group($group_id);

@@ -596,10 +596,10 @@ class DynamicField extends TestCase
 
         $this->assertTrue($df->remove());
 
-        $this->expectException('\PDOException');
-        $results = $this->zdb->execute($select);
-
         $this->assertFalse(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df_id));
+
+        $this->expectException('\PDOException');
+        $this->zdb->execute($select);
     }
 
     /**

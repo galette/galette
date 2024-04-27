@@ -105,12 +105,12 @@ class Title extends TestCase
         //$this->assertSame('Test title 🤘', $title->long); //FIXME: works locally, fails on gh actions...
         $this->assertSame('Test title', $title->long);
 
+        $title = new \Galette\Entity\Title($id); //reload
+        $this->assertTrue($title->remove($this->zdb));
+
         $title = new \Galette\Entity\Title(\Galette\Entity\Title::MR);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('You cannot delete Mr. or Mrs. titles!');
         $title->remove($this->zdb);
-
-        $title = new \Galette\Entity\Title($id); //reload
-        $this->assertTrue($title->remove($this->zdb));
     }
 }

@@ -133,11 +133,6 @@ class PaymentType extends TestCase
         $results = $this->zdb->execute($select);
         $this->assertSame(count($this->i18n->getArrayList()), count($results));
 
-        $type = new \Galette\Entity\PaymentType($this->zdb, \Galette\Entity\PaymentType::CASH);
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('You cannot delete system payment types!');
-        $type->remove();
-
         $type = new \Galette\Entity\PaymentType($this->zdb, $id);
         $this->assertTrue($type->remove());
 
@@ -149,5 +144,10 @@ class PaymentType extends TestCase
         );
         $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());
+
+        $type = new \Galette\Entity\PaymentType($this->zdb, \Galette\Entity\PaymentType::CASH);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You cannot delete system payment types!');
+        $type->remove();
     }
 }

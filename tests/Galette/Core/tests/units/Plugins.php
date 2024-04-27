@@ -190,14 +190,30 @@ class Plugins extends TestCase
         $modules = $plugins->getModules();
         $this->assertCount(3, $modules);
         $this->assertTrue(isset($modules['plugin-test2']));
+    }
 
-        $plugins = $this->getPlugins();
-        $this->expectExceptionMessage(_T('No such module.'));
-        $plugins->deactivateModule('nonexistant');
-
+    /**
+     * Test non-existant module activation
+     *
+     * @return void
+     */
+    public function testNonExistantModuleActivation(): void
+    {
         $plugins = $this->getPlugins();
         $this->expectExceptionMessage(_T('No such module.'));
         $plugins->activateModule('nonexistant');
+    }
+
+    /**
+     * Test non-existant module de-activation
+     *
+     * @return void
+     */
+    public function testNonExistantModuleDeactivation(): void
+    {
+        $plugins = $this->getPlugins();
+        $this->expectExceptionMessage(_T('No such module.'));
+        $plugins->deactivateModule('nonexistant');
     }
 
     /**

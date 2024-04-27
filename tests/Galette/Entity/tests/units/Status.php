@@ -152,10 +152,6 @@ class Status extends TestCase
             $status->delete(42)
         );
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('You cannot delete default status!');
-        $status->delete($status::DEFAULT_STATUS);
-
         $this->assertTrue(
             $status->delete($id)
         );
@@ -168,6 +164,10 @@ class Status extends TestCase
         );
         $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You cannot delete default status!');
+        $status->delete($status::DEFAULT_STATUS);
     }
 
     /**

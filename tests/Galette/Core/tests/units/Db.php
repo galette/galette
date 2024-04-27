@@ -153,22 +153,18 @@ class Db extends TestCase
      */
     public function testGrantWException(): void
     {
-        $atoum = $this;
-
         //test insert failing
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
             ->getMock();
 
         $this->db->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o): void {
-                        if ($o instanceof \Laminas\Db\Sql\Insert) {
-                            throw new \LogicException('Error executing query!', 123);
-                        }
+            ->willReturnCallback(
+                function ($o): void {
+                    if ($o instanceof \Laminas\Db\Sql\Insert) {
+                        throw new \LogicException('Error executing query!', 123);
                     }
-                )
+                }
             );
 
         $result = $this->db->grantCheck('u');
@@ -187,21 +183,19 @@ class Db extends TestCase
             ->getMock();
 
         $this->db->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        if ($o instanceof \Laminas\Db\Sql\Select) {
-                            throw new \LogicException('Error executing query!', 123);
-                        } else {
-                            $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
-                                ->onlyMethods(array('count'))
-                                ->getMock();
-                            $rs->method('count')
-                                ->willReturn(1);
-                            return $rs;
-                        }
+            ->willReturnCallback(
+                function ($o) {
+                    if ($o instanceof \Laminas\Db\Sql\Select) {
+                        throw new \LogicException('Error executing query!', 123);
+                    } else {
+                        $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
+                            ->onlyMethods(array('count'))
+                            ->getMock();
+                        $rs->method('count')
+                            ->willReturn(1);
+                        return $rs;
                     }
-                )
+                }
             );
 
         $result = $this->db->grantCheck('u');
@@ -220,21 +214,19 @@ class Db extends TestCase
             ->getMock();
 
         $this->db->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        if ($o instanceof \Laminas\Db\Sql\Update) {
-                            throw new \LogicException('Error executing query!', 123);
-                        } else {
-                            $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
-                                ->onlyMethods(array('count'))
-                                ->getMock();
-                            $rs->method('count')
-                                ->willReturn(1);
-                            return $rs;
-                        }
+            ->willReturnCallback(
+                function ($o) {
+                    if ($o instanceof \Laminas\Db\Sql\Update) {
+                        throw new \LogicException('Error executing query!', 123);
+                    } else {
+                        $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
+                            ->onlyMethods(array('count'))
+                            ->getMock();
+                        $rs->method('count')
+                            ->willReturn(1);
+                        return $rs;
                     }
-                )
+                }
             );
 
         $result = $this->db->grantCheck('u');
@@ -253,21 +245,19 @@ class Db extends TestCase
             ->getMock();
 
         $this->db->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        if ($o instanceof \Laminas\Db\Sql\Delete) {
-                            throw new \LogicException('Error executing query!', 123);
-                        } else {
-                            $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
-                                ->onlyMethods(array('count'))
-                                ->getMock();
-                            $rs->method('count')
-                                ->willReturn(1);
-                            return $rs;
-                        }
+            ->willReturnCallback(
+                function ($o) {
+                    if ($o instanceof \Laminas\Db\Sql\Delete) {
+                        throw new \LogicException('Error executing query!', 123);
+                    } else {
+                        $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
+                            ->onlyMethods(array('count'))
+                            ->getMock();
+                        $rs->method('count')
+                            ->willReturn(1);
+                        return $rs;
                     }
-                )
+                }
             );
 
         $result = $this->db->grantCheck('u');
@@ -494,12 +484,10 @@ class Db extends TestCase
             ->onlyMethods(array('execute'))
             ->getMock();
         $this->db->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($table, $where): void {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($table, $where): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $this->expectException('LogicException');
@@ -651,7 +639,7 @@ class Db extends TestCase
         $select->where(['p.notknown' => 'azerty']);
 
         $this->expectException('\PDOException');
-        $results = $this->db->execute($select);
+        $this->db->execute($select);
     }
 
     /**

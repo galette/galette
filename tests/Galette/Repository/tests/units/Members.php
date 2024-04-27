@@ -832,15 +832,11 @@ class Members extends GaletteTestCase
         $this->assertSame(10, count($list));
         $this->assertSame(10, $members->getCount());
 
-        $group = new \Galette\Entity\Group();
-        $group->setName('World');
-        $this->assertTrue($group->store());
-        $world = $group->getId();
+        $world_group = new \Galette\Entity\Group();
+        $world_group->setName('World');
+        $this->assertTrue($world_group->store());
+        $world = $world_group->getId();
         $this->assertGreaterThan(0, $world);
-
-        //cannot be parent of itself
-        $this->expectExceptionMessage('Group `World` cannot be set as parent!');
-        $group->setParentGroup($group->getId());
 
         $group = new \Galette\Entity\Group();
         $group->setName('Europe')->setParentGroup($world);
@@ -860,34 +856,34 @@ class Members extends GaletteTestCase
         $group->setName('Africa')->setParentGroup($world);
         $this->assertTrue($group->store());
         $africa = $group->getId();
-        $this->assertassertGreaterThan(0, $africa);
+        $this->assertGreaterThan(0, $africa);
         $this->assertTrue($group->setMembers([$list[4], $list[5]]));
 
         $group = new \Galette\Entity\Group();
         $group->setName('America')->setParentGroup($world);
         $this->assertTrue($group->store());
         $america = $group->getId();
-        $this->assertassertGreaterThan(0, $america);
+        $this->assertGreaterThan(0, $america);
         $this->assertTrue($group->setMembers([$list[6], $list[7]]));
 
         $group = new \Galette\Entity\Group();
         $group->setName('Antarctica')->setParentGroup($world);
         $this->assertTrue($group->store());
         $antarctica = $group->getId();
-        $this->assertassertGreaterThan(0, $america);
+        $this->assertGreaterThan(0, $antarctica);
         $this->assertTrue($group->setMembers([$list[8], $list[9]]));
 
         $group = new \Galette\Entity\Group();
         $group->setName('Activities');
         $this->assertTrue($group->store());
         $activities = $group->getId();
-        $this->assertassertGreaterThan(0, $activities);
+        $this->assertGreaterThan(0, $activities);
 
         $group = new \Galette\Entity\Group();
         $group->setName('Pony')->setParentGroup($activities);
         $this->assertTrue($group->store());
         $pony = $group->getId();
-        $this->assertassertGreaterThan(0, $pony);
+        $this->assertGreaterThan(0, $pony);
         //assign Members to group
         $members = [];
         for ($i = 0; $i < 5; ++$i) {
@@ -900,7 +896,7 @@ class Members extends GaletteTestCase
         $group->setName('Swimming pool')->setParentGroup($activities);
         $this->assertTrue($group->store());
         $pool = $group->getId();
-        $this->assertassertGreaterThan(0, $pool);
+        $this->assertGreaterThan(0, $pool);
         //assign Members to group
         $members = [$list[0]];
         for ($i = 5; $i < 10; ++$i) {
@@ -909,7 +905,7 @@ class Members extends GaletteTestCase
         $this->assertTrue($group->setMembers($members));
         $this->assertSame(6, count($group->getMembers()));
 
-        //all groups/members are setup. try to find them now.
+        //all groups/members are set up. try to find them now.
         $filters = new \Galette\Filters\AdvancedMembersList();
         $filters->groups_search_log_op = \Galette\Filters\AdvancedMembersList::OP_OR;
         $filters->groups_search = ['idx' => 1, 'group' => $europe];
@@ -945,6 +941,10 @@ class Members extends GaletteTestCase
         $list = $members->getList();
 
         $this->assertSame(1, $list->count());
+
+        //cannot be parent of itself
+        $this->expectExceptionMessage('Group `World` cannot be set as parent!');
+        $world_group->setParentGroup($world_group->getId());
     }
 
     /**
