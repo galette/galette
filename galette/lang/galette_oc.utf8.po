@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-04-21 09:11+0200\n"
-"PO-Revision-Date: 2024-03-20 13:01+0000\n"
+"PO-Revision-Date: 2024-04-28 08:07+0000\n"
 "Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.5-dev\n"
+"X-Generator: Weblate 5.5.1\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -1013,7 +1013,7 @@ msgstr "L'adreiça electronica %s existís pas"
 #: ../lib/Galette/Controllers/AuthController.php:439
 #, php-format
 msgid "Login %s does not exist"
-msgstr "L'idendificant %s existís pas"
+msgstr "L'identificant %s existís pas"
 
 #: ../lib/Galette/Controllers/AuthController.php:470
 msgid ""
@@ -2972,7 +2972,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1484
 msgid "Password misrepeated: "
-msgstr ""
+msgstr "Lo senhau recopiat es pas parier : "
 
 #: ../lib/Galette/Entity/Adherent.php:1518
 msgid "Status #%id does not exists in database."
@@ -3249,7 +3249,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Texts.php:126
 msgid "Galette's change password URI"
-msgstr ""
+msgstr "URL de modificacion dau senhau per Galeta"
 
 #: ../lib/Galette/Entity/Texts.php:630
 msgid "Mail specific"
@@ -4079,7 +4079,7 @@ msgstr "Nom d'utilizaire :"
 #: ../../tempcache/pages/index.html.twig:93
 #: ../../tempcache/pages/preferences.html.twig:2461
 msgid "Password:"
-msgstr "Senhal :"
+msgstr "Senhau :"
 
 #: ../includes/fields_defs/members_fields.php:209
 #: ../../tempcache/elements/group.html.twig:116
@@ -4181,7 +4181,7 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:36
 msgid "Lost password email"
-msgstr ""
+msgstr "Recuperacion dau senhau"
 
 #: ../includes/fields_defs/texts_fields.php:41
 msgid "[{ASSO_NAME}] Your contribution"
@@ -4380,7 +4380,7 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:124
 msgid "Lost password email (disabled)"
-msgstr ""
+msgstr "Recuperacion dau senhau (inactiu)"
 
 #: ../install/scripts/upgrade-to-0.8.php:70
 msgid "Unable to create main datadir in %path!"
@@ -4430,7 +4430,7 @@ msgstr ""
 #: ../install/steps/admin.php:35
 #: ../../tempcache/pages/preferences.html.twig:2470
 msgid "Retype password:"
-msgstr ""
+msgstr "Confirmacion dau senhau :"
 
 #: ../install/steps/admin.php:43 ../install/steps/db_install.php:66
 #: ../install/steps/db_select_version.php:133
@@ -4445,7 +4445,7 @@ msgstr "Etapa seguenta"
 
 #: ../install/steps/admin.php:53
 msgid "Password mismatch!"
-msgstr ""
+msgstr "Lei senhaus correspòndon pas !"
 
 #: ../install/steps/db_install.php:28
 msgid "Database has not been installed!"
@@ -5682,11 +5682,11 @@ msgstr "Pecaire ! Una error capitèt per lo mandadís de la fòto :("
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:99
 msgid "Password is valid :)"
-msgstr ""
+msgstr "Senhau valide :)"
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:105
 msgid "Password is not valid!"
-msgstr ""
+msgstr "Senhau invalide !"
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:135
 msgid "An error occured checking password :("
@@ -6527,7 +6527,7 @@ msgstr ""
 
 #: ../../tempcache/pages/admintools.html.twig:147
 msgid "Generate empty logins and passwords"
-msgstr ""
+msgstr "Generar leis indentificants e senhaus vueges"
 
 #: ../../tempcache/pages/admintools.html.twig:163
 msgid "Go"
@@ -7002,7 +7002,7 @@ msgstr "Data de creacion"
 
 #: ../../tempcache/pages/index.html.twig:122
 msgid "Lost your password?"
-msgstr ""
+msgstr "Avètz oblidat lo senhau ?"
 
 #: ../../tempcache/pages/import.html.twig:66
 msgid "Existing files"
@@ -8015,7 +8015,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:2252
 msgid "Password length:"
-msgstr ""
+msgstr "Longor dau senhau :"
 
 #: ../../tempcache/pages/preferences.html.twig:2258
 msgid "Minimum password length required for all accounts. Minimal size is 6."
@@ -8036,6 +8036,8 @@ msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
 msgstr ""
+"S'activatz la lista negra, serà pas possible d'emplegar lei senhaus que "
+"contèn. Una lista es fornida per Galeta, mai podètz ajustar lei vòstres."
 
 #: ../../tempcache/pages/preferences.html.twig:2290
 msgid "Enforce password strength"
@@ -8043,7 +8045,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:2292
 msgid "Password strength:"
-msgstr ""
+msgstr "Complexitat dau senhau :"
 
 #: ../../tempcache/pages/preferences.html.twig:2303
 msgid "None (default)"
@@ -8111,11 +8113,11 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:2401
 msgid "Test a password:"
-msgstr ""
+msgstr "Assajat lo senhau :"
 
 #: ../../tempcache/pages/preferences.html.twig:2407
 msgid "Test a password with current selected values."
-msgstr ""
+msgstr "Assajar lo senhau ambe lei valors qu'avètz chausidas."
 
 #: ../../tempcache/pages/preferences.html.twig:2409
 msgid ""
@@ -8263,6 +8265,8 @@ msgstr ""
 msgid ""
 "Member will receive his username and password by email, if he has an address."
 msgstr ""
+"Lo membre recebrà seis identificants e lo senhau per corriel, s'a una "
+"adreiça electronica."
 
 #: ../../tempcache/pages/member_form.html.twig:603
 msgid "An error occurred displaying groups interface :("
@@ -8352,6 +8356,8 @@ msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
 msgstr ""
+"Mandar un liame au membre per generar un senhau novèu coma aguèsse emplegat "
+"la fonccion \"senhau perdut\"."
 
 #: ../../tempcache/pages/member_show.html.twig:111
 msgid "New password"
@@ -8406,7 +8412,7 @@ msgstr ""
 #: ../../tempcache/pages/password_recover.html.twig:65
 #: ../../tempcache/pages/password_recover.html.twig:69
 msgid "New password:"
-msgstr ""
+msgstr "Senhau nòu :"
 
 #: ../../tempcache/pages/password_recover.html.twig:77
 #: ../../tempcache/pages/password_recover.html.twig:81
@@ -8415,7 +8421,7 @@ msgstr ""
 
 #: ../../tempcache/pages/password_recover.html.twig:87
 msgid "Change my password"
-msgstr "Modificar mon senhal"
+msgstr "Modificar lo senhau"
 
 #: ../../tempcache/pages/transactions_list.html.twig:70
 msgid "Show transactions since"
@@ -8530,7 +8536,7 @@ msgstr ""
 
 #: ../../tempcache/pages/password_lost.html.twig:71
 msgid "Recover password"
-msgstr ""
+msgstr "Recuperar lo senhau"
 
 #: ../../tempcache/pages/advanced_search.html.twig:59
 msgid "Simple search"
