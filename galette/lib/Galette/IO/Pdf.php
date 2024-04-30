@@ -31,7 +31,7 @@ use TCPDF;
 /*
  * TCPDF configuration file for Galette
  */
-require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
+require_once GALETTE_SYSCONFIG_PATH . 'galette_tcpdf_config.php';
 
 /**
  * PDF class for galette

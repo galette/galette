@@ -20,8 +20,8 @@
  */
 
 define('GALETTE_ROOT', __DIR__ . '/../');
-require_once GALETTE_ROOT . 'config/versions.inc.php';
-require_once GALETTE_ROOT . 'config/paths.inc.php';
+require_once GALETTE_ROOT . 'includes/sys_config/versions.inc.php';
+require_once GALETTE_ROOT . 'includes/sys_config/paths.inc.php';
 
 $phpok = !version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<');
 $php_message = PHP_VERSION;

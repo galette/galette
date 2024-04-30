@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2024 The Galette Team
  *

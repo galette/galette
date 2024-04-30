@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2024 The Galette Team
  *
@@ -41,9 +42,11 @@ if (!defined('GALETTE_XHPROF_PATH')) {
 }
 
 //Galette paths
+const GALETTE_SYSCONFIG_PATH = GALETTE_ROOT . 'includes/sys_config/';
 if (!defined('GALETTE_CONFIG_PATH')) {
     define('GALETTE_CONFIG_PATH', GALETTE_ROOT . 'config/');
 }
+
 if (!defined('GALETTE_PLUGINS_PATH')) {
     define('GALETTE_PLUGINS_PATH', GALETTE_ROOT . 'plugins/');
 }

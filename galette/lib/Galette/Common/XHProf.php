@@ -30,7 +30,7 @@ use Analog\Analog;
  *
  * Install the pecl/xhprof extension
  *
- * Add XHPROF_PATH and XHPROF_URL in config/config_path.php (if needed)
+ * Add XHPROF_PATH and XHPROF_URL in config/local_paths.inc.php (if needed)
  *
  * Before the code
  *    $prof = new XHProf("something useful");

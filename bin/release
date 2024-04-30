@@ -142,7 +142,7 @@ def is_version_bumped(ver):
     global repo, tag_commit
 
     versions_file = repo.git.execute(
-        ["git", "show", f"{tag_commit}:{os.path.join('galette', 'config', 'versions.inc.php')}"])
+        ["git", "show", f"{tag_commit}:{os.path.join('galette', 'includes', 'sys_config', 'versions.inc.php')}"])
     file_version = re.search("^define\\('GALETTE_VERSION', 'v(?P<version>.+)'\\)", versions_file, re.MULTILINE)
     if file_version.group('version') != ver:
         print_err('Trying to release %s, but bumped version is %s!' % (ver, file_version.group('version')))
@@ -387,7 +387,7 @@ def add_libs(rel_name, galette_archive):
     galette.close()
 
     # set galette nightly version
-    config_dir = os.path.join(src_dir, rel_name, 'galette', 'config')
+    config_dir = os.path.join(src_dir, rel_name, 'galette', 'includes', 'sys_config')
     if nightly_version != None:
         sed_cmd = 'sed -e "s/GALETTE_NIGHTLY\', false/GALETTE_NIGHTLY\', \'%s\'/" -i versions.inc.php' % nightly_version
         print(sed_cmd)

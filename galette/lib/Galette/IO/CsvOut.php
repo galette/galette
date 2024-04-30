@@ -38,7 +38,6 @@ class CsvOut extends Csv
 {
     public const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 
-    private string $parameted_path;
     private string $legacy_parameted_file = 'exports.xml';
     private string $parameted_file = 'exports.yaml';
 
@@ -48,9 +47,12 @@ class CsvOut extends Csv
     public function __construct()
     {
         parent::__construct(self::DEFAULT_DIRECTORY);
-        $this->parameted_path = GALETTE_CONFIG_PATH;
-        $this->parameted_file = $this->parameted_path . $this->parameted_file;
-        $this->legacy_parameted_file = $this->parameted_path . $this->legacy_parameted_file;
+        if (file_exists(GALETTE_CONFIG_PATH . $this->parameted_file)) {
+            $this->parameted_file = GALETTE_CONFIG_PATH . $this->parameted_file;
+        } else {
+            $this->parameted_file = GALETTE_SYSCONFIG_PATH . $this->parameted_file;
+        }
+        $this->legacy_parameted_file = GALETTE_CONFIG_PATH . $this->legacy_parameted_file;
     }
 
     /**

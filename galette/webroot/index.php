@@ -27,7 +27,7 @@ if (!defined('GALETTE_BASE_PATH')) {
 define('GALETTE_ROOT', __DIR__ . '/../');
 
 // check PHP version
-require_once GALETTE_ROOT . 'config/versions.inc.php';
+require_once GALETTE_ROOT . 'includes/sys_config/versions.inc.php';
 if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
     header('location: ' . GALETTE_BASE_PATH . 'compat_test.php');
     die(1);
