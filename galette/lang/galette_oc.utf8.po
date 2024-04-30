@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-04-21 09:11+0200\n"
-"PO-Revision-Date: 2024-04-28 08:07+0000\n"
+"PO-Revision-Date: 2024-04-30 18:07+0000\n"
 "Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.5.1\n"
+"X-Generator: Weblate 5.5.3-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -98,22 +98,16 @@ msgid "Remove payment type %1$s"
 msgstr "Suprimir lo mòde de pagament %1$s"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:67
-#, fuzzy
-#| msgid "Contribution has been successfully stored"
 msgid "Contribution is fully scheduled!"
-msgstr "L'enregistrament de la contribucion a ben capitat"
+msgstr "L'enregistrament de la contribucion a ben capitat !"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:88
-#, fuzzy
-#| msgid "Download document"
 msgid "Add scheduled payment"
-msgstr "Teledescargar lo document"
+msgstr "Ajustar un pagament planificat"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:178
-#, fuzzy
-#| msgid "Payment types management"
 msgid "Scheduled payments management"
-msgstr "Administracion dei sòrtas de pagament"
+msgstr "Administracion dei pagaments a escasenças"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:271
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:661
@@ -121,47 +115,35 @@ msgid "- Unknown payment type!"
 msgstr "- Mòde de pagament inconegut !"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:327
-#, fuzzy
-#| msgid "No member was selected, please check at least one name."
 msgid "No scheduled payment was selected, please check at least one."
-msgstr "Vos fau chausir un membre au mens."
+msgstr "Ges de pagament a escasenças chausit, vos ne'n fau chausir un au mens."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:363
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:400
-#, fuzzy
-#| msgid "Edit '%s' payment type"
 msgid "Edit scheduled payment"
-msgstr "Modificar lo mòde de pagament « %s »"
+msgstr "Modificar lo pagament a escasenças"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:433
-#, fuzzy
-#| msgid "Payment type '%s' has not been added!"
 msgid "Scheduled payment has not been added!"
-msgstr "S'es pas pogut ajustar lo mòde de pagament «%s»!"
+msgstr "S'es pas pogut ajustar lo pagament a escasenças !"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:435
-#, fuzzy
-#| msgid "Payment type '%s' has not been modified!"
 msgid "Scheduled payment has not been modified!"
-msgstr "Lo mòde de pagament \"%s\" es pas estat modificat !"
+msgstr "Lo pagament a escasenças es pas estat modificat !"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:441
-#, fuzzy
-#| msgid "New member has been successfully added."
 msgid "Scheduled payment has been successfully added."
-msgstr "Lo membre novèu es estat ajustat."
+msgstr "Lo pagament a escasenças es estat ajustat."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:443
-#, fuzzy
-#| msgid "Payment type '%s' has been successfully modified."
 msgid "Scheduled payment has been successfully modified."
-msgstr "Lo mòde de pagament \"%s\" es estat modificat."
+msgstr "Lo pagament a escasenças es estat modificat."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:507
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Levat lo pagament a escasenças"
+msgstr[1] "Levar lei pagaments a escasenças"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:104
 msgid "Group name is missing!"
@@ -557,10 +539,8 @@ msgid "Transactions management"
 msgstr "Administracion dei transaccions"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:674
-#, fuzzy
-#| msgid "New contribution type"
 msgid "- Unknown contribution type!"
-msgstr "Mena de contribucion nòva"
+msgstr "- Mena de contribucion inconeguda"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:732
 msgid "No contribution was selected, please check at least one."
@@ -608,10 +588,8 @@ msgid "transaction"
 msgstr "transaccion"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:64
-#, fuzzy
-#| msgid "Download document"
 msgid "Add document"
-msgstr "Teledescargar lo document"
+msgstr "Ajustar lo document"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:120
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:406
@@ -622,31 +600,23 @@ msgstr "A pas capitat per ajustar lo camp dinamic :("
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:134
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:420
-#, fuzzy
-#| msgid "Model has been successfully stored!"
 msgid "Document has been successfully stored!"
-msgstr "L'enregistrament dau modèle a ben capitat !"
+msgstr "L'enregistrament dau document a ben capitat !"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:195
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:230
-#, fuzzy
-#| msgid "Documentation"
 msgid "Documents list"
-msgstr "Documentacion"
+msgstr "Lista dei documents"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:350
 #: ../../tempcache/pages/documents_list.html.twig:203
-#, fuzzy
-#| msgid "Download document"
 msgid "Edit document"
-msgstr "Teledescargar lo document"
+msgstr "Modiicar lo document"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:492
 #: ../../tempcache/pages/documents_list.html.twig:216
-#, fuzzy
-#| msgid "Download document"
 msgid "Delete document"
-msgstr "Teledescargar lo document"
+msgstr "Levar lo document"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:102
 msgid "This search is already saved."
@@ -719,7 +689,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:271
 msgid "Preferences has been saved."
-msgstr ""
+msgstr "Leis preferéncias son estadas sauvagardadas."
 
 #: ../lib/Galette/Controllers/GaletteController.php:388
 msgid ""
@@ -766,11 +736,11 @@ msgstr "Configuracion dei camps"
 
 #: ../lib/Galette/Controllers/GaletteController.php:556
 msgid "Fields configuration has been successfully stored"
-msgstr ""
+msgstr "La configuracion dei camps per defaut es estat sauvagardada"
 
 #: ../lib/Galette/Controllers/GaletteController.php:561
 msgid "An error occurred while storing fields configuration :("
-msgstr ""
+msgstr "L'enregistrament de la configuration dei camps a mau capitat :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:586
 msgid "Lists configuration"
@@ -914,13 +884,13 @@ msgstr "Devètz donar l'identificant e lo senhau."
 #: ../../tempcache/elements/footer.html.twig:73
 #: ../../tempcache/elements/footer.html.twig:89
 msgid "A new Galette release is available."
-msgstr ""
+msgstr "Una version novèla de Galeta es disponibla."
 
 #: ../lib/Galette/Controllers/AuthController.php:148
 #: ../../tempcache/elements/footer.html.twig:75
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
-msgstr ""
+msgstr "Emplegatz ara Galeta %1$s, e %2$s es disponibla."
 
 #: ../lib/Galette/Controllers/AuthController.php:167
 msgid "Your password is too weak! Please consider updating it."
@@ -1061,27 +1031,27 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:92
 msgid "Texts has been successfully reinitialized."
-msgstr ""
+msgstr "Lei tèxtes son estats actualizats tornar mai."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:94
 msgid "An error occurred reinitializing texts :("
-msgstr ""
+msgstr "La reactualizacion de tèxtes a mau capitat :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:103
 msgid "Fields configuration has been successfully reinitialized."
-msgstr ""
+msgstr "La configuracion dei camps per defaut a ben capitat."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:105
 msgid "An error occurred reinitializing fields configuration :("
-msgstr ""
+msgstr "La reinicializacion dei camps per defaut a mau capitat :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:114
 msgid "PDF models has been successfully reinitialized."
-msgstr ""
+msgstr "Lei modèles PDF son estats reinicializats."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:116
 msgid "An error occurred reinitializing PDF models :("
-msgstr ""
+msgstr "La reinicializacion dei modèles PDF a mau capitat :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:129
 msgid "Logins and passwords have been successfully filled (%i processed)."
@@ -1116,11 +1086,11 @@ msgstr "Extensions"
 
 #: ../lib/Galette/Controllers/PluginsController.php:92
 msgid "Plugin %name has been enabled"
-msgstr ""
+msgstr "L'ajuston %name es estat activat"
 
 #: ../lib/Galette/Controllers/PluginsController.php:110
 msgid "Plugin %name has been disabled"
-msgstr ""
+msgstr "L'ajuston %name es estat desactivat"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:54
 #: ../lib/Galette/Core/Galette.php:388
@@ -1134,6 +1104,8 @@ msgstr "Traduccion d'etiquetas"
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit above form to create it."
 msgstr ""
+"Ges de traduccion per '%s'!<br>Se vos platz emplissètz lo formulari çai-sota "
+"per o crear."
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:180
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:205
@@ -1174,7 +1146,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:246
 msgid "CSV members import"
-msgstr ""
+msgstr "Importacion CSV de membres"
 
 #: ../lib/Galette/Controllers/CsvController.php:298
 msgid "An error occurred importing the file :("
@@ -1182,64 +1154,64 @@ msgstr "Una error capitèt per l'importacion dau fichier :("
 
 #: ../lib/Galette/Controllers/CsvController.php:310
 msgid "File '%filename%' has been successfully imported :)"
-msgstr ""
+msgstr "Lo fichier '%filename%' es estat importat correctament :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:343
 msgid "Your file has been successfully uploaded!"
-msgstr ""
+msgstr "Lo fichier es estat mandat !"
 
 #: ../lib/Galette/Controllers/CsvController.php:362
 msgid "No files has been seleted for upload!"
-msgstr ""
+msgstr "Ges de fichier seleccionat per lo mandadís !"
 
 #: ../lib/Galette/Controllers/CsvController.php:368
 msgid "No files has been uploaded!"
-msgstr ""
+msgstr "Ges de fichier mandat !"
 
 #: ../lib/Galette/Controllers/CsvController.php:437
 #, php-format
 msgid "Remove %1$s file %2$s"
-msgstr ""
+msgstr "Levar lo fichier %1$s de %2$s"
 
 #: ../lib/Galette/Controllers/CsvController.php:489
 #, php-format
 msgid "'%export' file has been removed from disk."
-msgstr ""
+msgstr "Lo fichier '%export' es estat levat dau disc."
 
 #: ../lib/Galette/Controllers/CsvController.php:499
 #, php-format
 msgid "Cannot remove '%export' from disk :/"
-msgstr ""
+msgstr "Impossible de levar '%export' dau disc :/"
 
 #: ../lib/Galette/Controllers/CsvController.php:575
 msgid "CSV import model"
-msgstr ""
+msgstr "Modèle d'impòrt CSV"
 
 #: ../lib/Galette/Controllers/CsvController.php:616
 msgid "galette_import_model.csv"
-msgstr ""
+msgstr "galeta_import_modele.csv"
 
 #: ../lib/Galette/Controllers/CsvController.php:652
 msgid "Import model has been successfully stored :)"
-msgstr ""
+msgstr "Lo modèle d'impòrt es estat enregistrat :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:657
 msgid "Import model has not been stored :("
-msgstr ""
+msgstr "Lo modèle d'impòrt es pas estat enregistrat :("
 
 #: ../lib/Galette/Controllers/TextController.php:68
 msgid "Automatic emails texts edition"
-msgstr ""
+msgstr "Edicion dei corriers automatics"
 
 #: ../lib/Galette/Controllers/TextController.php:138
 #, php-format
 msgid "Email: '%s' has not been modified!"
-msgstr ""
+msgstr "Lo corrier electronic '%s' es pas estat modificat !"
 
 #: ../lib/Galette/Controllers/TextController.php:147
 #, php-format
 msgid "Email: '%s' has been successfully modified."
-msgstr ""
+msgstr "Lo corrier electronic '%s' es estat modificat."
 
 #: ../lib/Galette/Core/Install.php:102 ../webroot/installer.php:289
 msgid "Checks"
@@ -1264,11 +1236,11 @@ msgstr "Seleccion de la version anteriora"
 
 #: ../lib/Galette/Core/Install.php:117
 msgid "Datapase upgrade"
-msgstr ""
+msgstr "Actualizacion de la basa de donadas"
 
 #: ../lib/Galette/Core/Install.php:120
 msgid "Tables Creation"
-msgstr ""
+msgstr "Creacion dei taulas"
 
 #: ../lib/Galette/Core/Install.php:123 ../webroot/installer.php:342
 msgid "Admin parameters"
@@ -1281,7 +1253,7 @@ msgstr "Telemetria"
 
 #: ../lib/Galette/Core/Install.php:129
 msgid "Galette initialization"
-msgstr ""
+msgstr "Inicializacion de Galeta"
 
 #: ../lib/Galette/Core/Install.php:132 ../webroot/installer.php:363
 #: ../../tempcache/modals/plugin_initdb.html.twig:458
@@ -1294,7 +1266,7 @@ msgstr "D'acòrdi"
 
 #: ../lib/Galette/Core/Install.php:148 ../lib/Galette/Core/CheckModules.php:121
 msgid "Ko"
-msgstr ""
+msgstr "Ko"
 
 #: ../lib/Galette/Core/Install.php:309
 msgid "Database type unknown"
@@ -1328,11 +1300,11 @@ msgstr "Estat"
 
 #: ../lib/Galette/Core/Install.php:1174
 msgid "Fields config and categories"
-msgstr ""
+msgstr "Configuracion dei camps e dei categorias"
 
 #: ../lib/Galette/Core/Install.php:1178 ../lib/Galette/Core/Install.php:1200
 msgid "Mails texts"
-msgstr ""
+msgstr "Tèxtes deis corriers electronics"
 
 #: ../lib/Galette/Core/Install.php:1182 ../lib/Galette/Core/Galette.php:416
 msgid "Titles"
@@ -1340,16 +1312,16 @@ msgstr "Títols"
 
 #: ../lib/Galette/Core/Install.php:1192
 msgid "Update preferences"
-msgstr ""
+msgstr "Actualizacion dei preferéncias"
 
 #: ../lib/Galette/Core/Install.php:1196
 msgid "Update models"
-msgstr ""
+msgstr "Actualizacion dei modèles"
 
 #: ../lib/Galette/Core/Gaptcha.php:76
 #, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr ""
+msgstr "Quant fa %1$s plus %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:77
 #, php-format
@@ -1362,21 +1334,22 @@ msgid ""
 "I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
 "have?"
 msgstr ""
+"Ai %1$s Galeta(s), un amic me ne'n dona %2$s de mai. Quant ai de Galetas ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:81
 #, php-format
 msgid "How much is %1$s minus %2$s?"
-msgstr ""
+msgstr "Quant fa %1$s mens %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:82
 #, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr ""
+msgstr "Quant fa %1$s levat %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:83
 #, php-format
 msgid "How much is %2$s retired to %1$s?"
-msgstr ""
+msgstr "Quant fa %2$s levat(s) de %1$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:84
 #, php-format
@@ -1435,13 +1408,11 @@ msgstr "Consultar e filtrar totei mei contribucions"
 
 #: ../lib/Galette/Core/Galette.php:134
 msgid "My scheduled payments"
-msgstr ""
+msgstr "Mei pagaments a escasenças"
 
 #: ../lib/Galette/Core/Galette.php:135
-#, fuzzy
-#| msgid "View and filter all my transactions"
 msgid "View and filter all my scheduled payments"
-msgstr "Consultar e filtrar totei mei transaccions"
+msgstr "Consultar e filtrar totei lei pagaments a escasenças"
 
 #: ../lib/Galette/Core/Galette.php:141 ../lib/Galette/Core/Galette.php:704
 msgid "My transactions"
@@ -1510,13 +1481,11 @@ msgstr "Consultar e filtrar lei contribucions"
 
 #: ../lib/Galette/Core/Galette.php:232
 msgid "List of scheduled payments"
-msgstr ""
+msgstr "Lista dei pagaments a escasenças"
 
 #: ../lib/Galette/Core/Galette.php:233
-#, fuzzy
-#| msgid "View and filter transactions"
 msgid "View and filter scheduled payments"
-msgstr "Consultar e filtrar lei transaccions"
+msgstr "Consultar e filtrar lei pagaments a escasenças"
 
 #: ../lib/Galette/Core/Galette.php:240
 msgid "List of transactions"
@@ -2013,10 +1982,8 @@ msgid "Searches deleted (%list)"
 msgstr "Recèrca escafada (%list)"
 
 #: ../lib/Galette/Repository/ScheduledPayments.php:434
-#, fuzzy
-#| msgid "Searches deleted (%list)"
 msgid "Scheduled payments deleted (%list)"
-msgstr "Recèrca escafada (%list)"
+msgstr "Pagaments a escasenças escafats (%list)"
 
 #: ../lib/Galette/Repository/Contributions.php:509
 msgid "Contributions deleted (%list)"
@@ -2505,7 +2472,7 @@ msgstr "Lo fichier mandat passa la mesura maximala permesa per lo formulari"
 
 #: ../lib/Galette/IO/FileTrait.php:568
 msgid "The uploaded file was only partially uploaded"
-msgstr ""
+msgstr "Lo fichier es pas estat mandat en totalitat"
 
 #: ../lib/Galette/IO/FileTrait.php:570
 msgid "No file was uploaded"
@@ -2517,7 +2484,7 @@ msgstr "Lo dorsier temporari manca"
 
 #: ../lib/Galette/IO/FileTrait.php:574
 msgid "Failed to write file to disk"
-msgstr ""
+msgstr "Impossible d'escriure lo fichier sus lo disc"
 
 #: ../lib/Galette/IO/FileTrait.php:576
 msgid "File upload stopped by extension"
@@ -2655,7 +2622,7 @@ msgstr "L'URL de connexion de Galeta"
 #: ../lib/Galette/Features/Replacements.php:210
 #: ../../tempcache/pages/preferences.html.twig:427
 msgid "Footer text:"
-msgstr ""
+msgstr "Tèxte dau pè de pagina :"
 
 #: ../lib/Galette/Features/Replacements.php:228
 #: ../lib/Galette/Entity/PdfModel.php:453
@@ -2956,19 +2923,20 @@ msgstr "- Aquesta adreiça electronica es ja utilizada per un autre membre !"
 #: ../lib/Galette/Entity/Adherent.php:1427
 #: ../lib/Galette/Entity/Adherent.php:1468
 msgid "An error has occurred while looking if login already exists."
-msgstr ""
+msgstr "Au moment de verificar l'unicitat de l'identificant a mau capitat."
 
 #: ../lib/Galette/Entity/Adherent.php:1436
 msgid "- The username must be composed of at least %i characters!"
-msgstr ""
+msgstr "- L'identificant deu comptar au mens %i caractèrs !"
 
 #: ../lib/Galette/Entity/Adherent.php:1441
 msgid "- The username cannot contain the @ character"
-msgstr ""
+msgstr "- L'identificant deu pas comprendre lo caractèr @"
 
 #: ../lib/Galette/Entity/Adherent.php:1461
 msgid "- This username is already in use, please choose another one!"
 msgstr ""
+"- Aqueste identificant es ja en usatge, vos pregam de ne'n chausir un autre !"
 
 #: ../lib/Galette/Entity/Adherent.php:1484
 msgid "Password misrepeated: "
@@ -2981,6 +2949,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:1527
 msgid "An error has occurred while looking if status does exists."
 msgstr ""
+"Au moment de la verificacion de l'existéncia de l'estatut, una error capitèt."
 
 #: ../lib/Galette/Entity/Adherent.php:1534
 msgid "Gender %gender does not exists!"
@@ -2988,11 +2957,11 @@ msgstr "Lo genre %gender existís pas !"
 
 #: ../lib/Galette/Entity/Adherent.php:1540
 msgid "A member cannot be its own parent!"
-msgstr ""
+msgstr "Un membre se pòt pas aparentar eu !"
 
 #: ../lib/Galette/Entity/Adherent.php:1654
 msgid "Self_subscription as a member: "
-msgstr ""
+msgstr "Enregistrament en linha :"
 
 #: ../lib/Galette/Entity/Adherent.php:1660
 msgid "Member card added"
@@ -3021,11 +2990,11 @@ msgstr "Inactiu"
 #: ../lib/Galette/Entity/Adherent.php:2101
 #: ../../tempcache/pages/member_form.html.twig:891
 msgid " (%age years old)"
-msgstr ""
+msgstr " (edat de %age ans)"
 
 #: ../lib/Galette/Entity/Adherent.php:2179
 msgid "Duplicated from %name (%id)"
-msgstr ""
+msgstr "Duplicat dau nom %name (%id)"
 
 #: ../lib/Galette/Entity/Transaction.php:114
 #: ../../tempcache/pages/transaction_form.html.twig:108
@@ -3040,7 +3009,7 @@ msgstr "Data :"
 #: ../../tempcache/pages/transaction_form.html.twig:134
 #: ../../tempcache/pages/contribution_form.html.twig:497
 msgid "Amount:"
-msgstr ""
+msgstr "Soma :"
 
 #: ../lib/Galette/Entity/Transaction.php:122
 #: ../../tempcache/pages/transaction_form.html.twig:84
@@ -3051,7 +3020,7 @@ msgstr "Descripcion :"
 #: ../lib/Galette/Entity/Transaction.php:126
 #: ../../tempcache/pages/transaction_form.html.twig:98
 msgid "Originator:"
-msgstr ""
+msgstr "Emetor :"
 
 #: ../lib/Galette/Entity/Transaction.php:130
 #: ../lib/Galette/Entity/Contribution.php:217
@@ -3063,11 +3032,11 @@ msgstr "Mòde de pagament :"
 #: ../lib/Galette/Entity/Transaction.php:326
 #: ../lib/Galette/Entity/Contribution.php:465
 msgid "- The amount must be an integer!"
-msgstr ""
+msgstr "- La soma deu èstre un nombre entier !"
 
 #: ../lib/Galette/Entity/Transaction.php:333
 msgid "- Transaction description must be 150 characters long maximum."
-msgstr ""
+msgstr "- La descripcion de la transaccion deu pas passar lei 150 caractèrs."
 
 #: ../lib/Galette/Entity/Transaction.php:349
 #: ../lib/Galette/Entity/Contribution.php:1451
@@ -3096,17 +3065,17 @@ msgstr "Transaccion actualizada"
 #: ../lib/Galette/Entity/ContributionsTypes.php:317
 #: ../lib/Galette/Entity/Status.php:281
 msgid "Label does not exist"
-msgstr ""
+msgstr "L'intitolat se tròba pas"
 
 #: ../lib/Galette/Entity/ContributionsTypes.php:515
 #: ../lib/Galette/Entity/Status.php:481
 msgid "Cannot delete this label: it's still used"
-msgstr ""
+msgstr "Impossible de levar aquest intitolat : es encar en usatge"
 
 #: ../lib/Galette/Entity/Contribution.php:205
 #: ../../tempcache/pages/contribution_form.html.twig:122
 msgid "Contributor:"
-msgstr ""
+msgstr "Contributor :"
 
 #: ../lib/Galette/Entity/Contribution.php:209
 #: ../../tempcache/pages/contributions_list.html.twig:157
@@ -3118,7 +3087,7 @@ msgstr "Mena de contribucion :"
 #: ../lib/Galette/Entity/ScheduledPayment.php:646
 #: ../../tempcache/pages/contribution_form.html.twig:669
 msgid "Comments:"
-msgstr ""
+msgstr "Comentaris :"
 
 #: ../lib/Galette/Entity/Contribution.php:225
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:124
@@ -3145,7 +3114,7 @@ msgstr "Data"
 #: ../lib/Galette/Entity/Contribution.php:229
 #: ../../tempcache/pages/contribution_form.html.twig:582
 msgid "Date of contribution:"
-msgstr ""
+msgstr "Data de contribucion :"
 
 #: ../lib/Galette/Entity/Contribution.php:230
 #: ../../tempcache/pages/contribution_form.html.twig:576
@@ -3164,15 +3133,15 @@ msgstr "ID de Transaccion"
 #: ../lib/Galette/Entity/Contribution.php:244
 #: ../../tempcache/pages/contribution_form.html.twig:618
 msgid "Membership extension:"
-msgstr ""
+msgstr "Extension d'adesion :"
 
 #: ../lib/Galette/Entity/Contribution.php:484
 msgid "- The duration must be a positive integer!"
-msgstr ""
+msgstr "- La durada deu èstre un entier positiu !"
 
 #: ../lib/Galette/Entity/Contribution.php:591
 msgid "- Membership period overlaps period starting at "
-msgstr ""
+msgstr "- Lo periòde d'adesion cauciga lo periòde que comença lo "
 
 #: ../lib/Galette/Entity/Contribution.php:660
 msgid "Contribution added"
@@ -3184,11 +3153,11 @@ msgstr "L'ajustament de la contribucion novèla a pas capitat."
 
 #: ../lib/Galette/Entity/Contribution.php:680
 msgid "Contribution updated"
-msgstr ""
+msgstr "Conttribucion actualizada"
 
 #: ../lib/Galette/Entity/Contribution.php:1077
 msgid "Script output"
-msgstr ""
+msgstr "Sortida dau script"
 
 #: ../lib/Galette/Entity/Contribution.php:1105
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:97
@@ -3198,6 +3167,7 @@ msgstr "Cotisacions"
 #: ../lib/Galette/Entity/Contribution.php:1442
 msgid "Cannot change payment type if there is an attached scheduled payment"
 msgstr ""
+"Se pòt pas modificar la mena de pagament s'un pagament a escasenças es estat"
 
 #: ../lib/Galette/Entity/Document.php:460
 #, fuzzy
@@ -3280,7 +3250,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:169
 msgid "Payment type for contribution must be set to scheduled"
-msgstr ""
+msgstr "L'escasencier de pagament per la contribucion se deu determinar"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:175
 #, fuzzy
@@ -3290,7 +3260,7 @@ msgstr "Mòdes de pagament"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:179
 msgid "Cannot schedule a scheduled payment!"
-msgstr ""
+msgstr "Impossible de determinar l'escasencier dau pagament !"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:186
 msgid "Scheduled date is required"
@@ -3303,10 +3273,8 @@ msgid "Unable to load payment type"
 msgstr "Governar lei mòdes de pagament"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:618
-#, fuzzy
-#| msgid "Add payment type"
 msgid "Scheduled payment ID"
-msgstr "Ajustar un mòde de pagament"
+msgstr "ID dau pagament a escasenças"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:622
 #, fuzzy
@@ -4072,7 +4040,7 @@ msgstr ""
 #: ../../tempcache/pages/index.html.twig:81
 #: ../../tempcache/pages/preferences.html.twig:2447
 msgid "Username:"
-msgstr "Nom d'utilizaire :"
+msgstr "Identificant :"
 
 #: ../includes/fields_defs/members_fields.php:201 ../install/steps/admin.php:31
 #: ../install/steps/db.php:69 ../../tempcache/pages/index.html.twig:89
@@ -7197,7 +7165,7 @@ msgstr "Ligat a una transaccion"
 
 #: ../../tempcache/pages/contribution_form.html.twig:102
 msgid "Has scheduled payments"
-msgstr ""
+msgstr "A de pagaments a escasenças"
 
 #: ../../tempcache/pages/contribution_form.html.twig:222
 msgid "View transaction"
@@ -7215,19 +7183,19 @@ msgstr ""
 
 #: ../../tempcache/pages/contribution_form.html.twig:393
 msgid "View scheduled payments"
-msgstr ""
+msgstr "Veire lei pagaments a escasenças"
 
 #: ../../tempcache/pages/contribution_form.html.twig:398
 #: ../../tempcache/pages/contribution_form.html.twig:928
 msgid "Scheduled payments"
-msgstr ""
+msgstr "Pagaments a escasenças"
 
 #: ../../tempcache/pages/contribution_form.html.twig:437
 #: ../../tempcache/pages/contribution_form.html.twig:444
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:237
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:244
 msgid "Create a new scheduled payment"
-msgstr ""
+msgstr "Crear un pagament a escasenças novèu"
 
 #: ../../tempcache/pages/contribution_form.html.twig:474
 msgid "Details of membership fee"
@@ -7254,10 +7222,8 @@ msgid "Contribution amount should not be greater than %max"
 msgstr ""
 
 #: ../../tempcache/pages/contribution_form.html.twig:917
-#, fuzzy
-#| msgid "An error occurred displaying contributions :("
 msgid "An error occurred displaying scheduled payments :("
-msgstr "La mòstra dei contribucions a mau capitat :("
+msgstr "La mòstra dei pagaments a escasenças a mau capitat :("
 
 #: ../../tempcache/pages/mailing_form.html.twig:75
 msgid "Mailing information"
@@ -7371,10 +7337,8 @@ msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr ""
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:61
-#, fuzzy
-#| msgid "Add payment type"
 msgid "Scheduled payment"
-msgstr "Ajustar un mòde de pagament"
+msgstr "Pagament a escasenças"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:134
 #, fuzzy
@@ -8323,13 +8287,11 @@ msgid "Scheduled date"
 msgstr "Data de sortida"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:193
-#, fuzzy, php-format
-#| msgid "%count entry"
-#| msgid_plural "%count entries"
+#, php-format
 msgid "%count shceduled payment"
 msgid_plural "%count scheduled payments"
-msgstr[0] "%count intrada"
-msgstr[1] "%count intradas"
+msgstr[0] "%count pagament a escasenças"
+msgstr[1] "%count pagaments a escasenças"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:248
 #, php-format
@@ -8337,14 +8299,12 @@ msgid "Found total scheduled %f"
 msgstr ""
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:413
-#, fuzzy
-#| msgid "Delete '%s' payment type"
 msgid "Delete scheduled payment"
-msgstr "Suprimir lo mòde de pagament « %s »"
+msgstr "Suprimir lo pagament a escasenças « %s »"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:438
 msgid "No scheduled payment"
-msgstr ""
+msgstr "Ges de pagament a escasenças"
 
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:63
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:71
