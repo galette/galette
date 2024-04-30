@@ -46,7 +46,6 @@ $modules_ok = $cm->isValid();
 // check file permissions
 $perms_ok = true;
 $files_need_rw = array(
-    _T("Compilation")       => GALETTE_COMPILE_DIR,
     _T("Photos")            => GALETTE_PHOTOS_PATH,
     _T("Cache")             => str_replace(GALETTE_VERSION, '', GALETTE_CACHE_DIR),
     _T("Temporary images")  => GALETTE_TEMPIMAGES_PATH,

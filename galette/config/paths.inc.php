@@ -20,7 +20,7 @@
 
 /**
  * Various paths
- * Path to external librarires, logs files, exports directory, ...
+ * Path to external libraries, logs files, exports directory, ...
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -29,45 +29,18 @@ if (file_exists(GALETTE_ROOT . 'config/local_paths.inc.php')) {
     include GALETTE_ROOT . 'config/local_paths.inc.php';
 }
 
-//external libraries
-if (!defined('GALETTE_ZEND_PATH')) {
-    define('GALETTE_ZEND_PATH', GALETTE_ROOT . 'vendor/zendframework');
-}
-if (!defined('GALETTE_ANALOG_PATH')) {
-    define(
-        'GALETTE_ANALOG_PATH',
-        GALETTE_ROOT . 'vendor/analog/analog'
-    );
-}
-if (!defined('GALETTE_PHP_MAILER_PATH')) {
-    define(
-        'GALETTE_PHP_MAILER_PATH',
-        GALETTE_ROOT . 'vendor/phpmailer/phpmailer'
-    );
-}
-if (!defined('GALETTE_SMARTY_PATH')) {
-    define(
-        'GALETTE_SMARTY_PATH',
-        GALETTE_ROOT . 'vendor/smarty/smarty/'
-    );
-}
+//3rd party libs paths
 if (!defined('GALETTE_TCPDF_PATH')) {
     define(
         'GALETTE_TCPDF_PATH',
         GALETTE_ROOT . '/vendor/tecnickcom/tcpdf'
     );
 }
-/*if ( !defined('GALETTE_SLIM_PATH') ) {
-    define('GALETTE_SLIM_PATH', GALETTE_ROOT . 'lib/Slim-' . SLIM_VERSION);
-}
-if ( !defined('GALETTE_SLIM_VIEWS_PATH') ) {
-    define('GALETTE_SLIM_VIEWS_PATH', GALETTE_ROOT . 'lib/Slim-Views');
-}*/
 if (!defined('GALETTE_XHPROF_PATH')) {
     define('GALETTE_XHPROF_PATH', '/usr/share/xhprof/');
 }
 
-//galete's paths
+//Galette paths
 if (!defined('GALETTE_CONFIG_PATH')) {
     define('GALETTE_CONFIG_PATH', GALETTE_ROOT . 'config/');
 }
@@ -82,9 +55,6 @@ if (!defined('GALETTE_THEMES_PATH')) {
 }
 if (!defined('GALETTE_LOGS_PATH')) {
     define('GALETTE_LOGS_PATH', GALETTE_DATA_PATH . 'logs/');
-}
-if (!defined('GALETTE_COMPILE_DIR')) {
-    define('GALETTE_COMPILE_DIR', GALETTE_DATA_PATH . 'templates_c/');
 }
 if (!defined('GALETTE_CACHE_DIR')) {
     define('GALETTE_CACHE_DIR', GALETTE_DATA_PATH . 'cache/' . GALETTE_VERSION . '/');
