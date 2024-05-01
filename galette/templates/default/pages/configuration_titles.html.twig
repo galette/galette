@@ -69,11 +69,6 @@
             {% else %}
                             {{ loop.index }}
             {% endif %}
-                            <span class="displaynone">
-                                <a href="{{ url_for('editTitle', {'id': title.id}) }}">
-                                    {{ _T("%s title")|replace({'%s': title.short|escape}) }}
-                                </a>
-                            </span>
                         </td>
                         <td class="left" data-col-label="{{ _T("Short form") }}">{{ title.short|escape }}</td>
                         <td class="left" data-col-label="{{ _T("Long form") }}">{{ title.long|escape }}</td>

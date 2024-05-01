@@ -70,18 +70,13 @@
             <tbody>
 {% for eid, entry in entries %}
                 <tr>
-                    <td data-scope="row">
+                    <td data-scope="id" class="collapsing">
                         {{ eid }}
-                        <span class="displaynone">
-                            <a href="{{ url_for('editContributionType', {'id': eid}) }}">
-                                {{ _T("%s field")|replace({'%s': entry.name|escape}) }}
-                            </a>
-                        </span>
                     </td>
                     <td class="left" data-col-label="{{ _T("Name") }}">
                         {{ entry.name|escape }}
                     </td>
-                    <td>
+                    <td data-col-label="{{ _T("Amount") }}">
                         {{ entry.amount }}
                     </td>
                     <td data-col-label="{{ _T("Extends membership?") }}">

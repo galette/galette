@@ -66,13 +66,8 @@
                 <tbody>
                 {% for eid, entry in entries %}
                     <tr>
-                        <td data-scope="row">
+                        <td data-scope="id" class="collapsing">
                             {{ eid }}
-                            <span class="displaynone">
-                            <a href="{{ url_for('editStatus', {'id': eid}) }}">
-                                {{ _T("%s field")|replace({'%s': entry.name|escape}) }}
-                            </a>
-                        </span>
                         </td>
                         <td class="left" data-col-label="{{ _T("Name") }}">
                             {% if entry.extra < 30 %}

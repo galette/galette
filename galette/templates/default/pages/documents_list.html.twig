@@ -48,9 +48,9 @@
 {% block header %}
     {% set columns = [
         {'label': '#'},
+        {'label': _T("Filename")},
         {'label': _T('Type')},
         {'label': _T('Visibility')},
-        {'label': _T("Filename")},
         {'label': _T("Creation date")}
     ] %}
 
@@ -60,20 +60,20 @@
 {% block body %}
     {% for document in documents %}
         <tr class="" id="row_{{ document.id }}">
-            <td data-scope="row">
+            <td data-scope="id" class="collapsing">
                 {% if preferences.pref_show_id %}
                     {{ document.id }}
                 {% else %}
                     {{ loop.index }}
                 {% endif %}
             </td>
-            <td data-col-label="{{ _T("Type") }}">{{ document.getType() }}</td>
-            <td data-col-label="{{ _T("Visibility") }}">{{ document.getPermissionName() }}</td>
             <td data-col-label="{{ _T("Filename") }}">
                 <a href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
                     {{ document.getDocumentFilename() }}
                 </a>
             </td>
+            <td data-col-label="{{ _T("Type") }}">{{ document.getType() }}</td>
+            <td data-col-label="{{ _T("Visibility") }}">{{ document.getPermissionName() }}</td>
             <td data-col-label="{{ _T("Creation date") }}">{{ document.getCreationDate() }}</td>
             {% if mode != 'ajax' %}
                 <td class="actions_row center">
