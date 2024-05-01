@@ -64,7 +64,8 @@
                         {% include "components/forms/select.html.twig" with {
                             id: 'cotis_extension',
                             value: constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE"),
-                            values: cotisextensions
+                            values: cotisextensions,
+                            nolabel: true
                         } %}
                     </td>
                     <td class="center actions_row">
