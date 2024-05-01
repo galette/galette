@@ -29,7 +29,7 @@
                     <th class="id_row">#</th>
                     <th>{{ _T("Name") }}</th>
                     <th>{{ _T('Amount') }}</th>
-                    <th>{{ _T("Extends membership?") }}</th>
+                    <th>{{ _T("Membership extension") }}</th>
                     <th>{{ _T("Actions") }}</th>
                 </tr>
             </thead>
@@ -42,21 +42,30 @@
                     </td>
                     <td class="left" data-col-label="{{ _T("Name") }}">
                         <div class="required field">
-                            <label for="name" class="visually-hidden">{{ _T("Name") }}</label>
-                            <input size="40" type="text" name="libelle_type_cotis" required="required"/>
+                            <label for="libelle_type_cotis" class="visually-hidden">{{ _T("Name") }}</label>
+                            <input size="40" type="text" name="libelle_type_cotis" id="libelle_type_cotis" required="required"/>
                         </div>
                     </td>
                     <td class="left" data-col-label="{{ _T("Amount") }}">
                         <div class="field">
                             <label for="amount" class="visually-hidden">{{ _T("Amount") }}</label>
-                            <input size="5" type="text" name="amount"/>
+                            <input size="5" type="text" name="amount" id="amount" />
                         </div>
                     </td>
-                    <td class="left" data-col-label="{{ _T("Extends membership?") }}">
-                        <select name="cotis_extension" class="ui dropdown">
-                            <option value="0" selected="selected">{{ _T("No") }}</option>
-                            <option value="1">{{ _T("Yes") }}</option>
-                        </select>
+                    <td class="left" data-col-label="{{ _T("Membership extension") }}">
+                        {% set cotisextensions = {
+                            (constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE")): _T("Default"),
+                            (constant("Galette\\Entity\\ContributionsTypes::DONATION_TYPE")): _T("No"),
+                            (1): _Tn('%1$s month', '%1$s months', 1)|format(1)
+                        } %}
+                        {% for m in 2..11 %}
+                            {% set cotisextensions = cotisextensions + {(m): _Tn('%1$s month', '%1$s months', m)|format(m)} %}
+                        {% endfor %}
+                        {% include "components/forms/select.html.twig" with {
+                            id: 'cotis_extension',
+                            value: constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE"),
+                            values: cotisextensions
+                        } %}
                     </td>
                     <td class="center actions_row">
                         <input type="hidden" name="new" value="1" />
@@ -79,11 +88,13 @@
                     <td data-col-label="{{ _T("Amount") }}">
                         {{ entry.amount }}
                     </td>
-                    <td data-col-label="{{ _T("Extends membership?") }}">
-    {% if entry.extra == 1 %}
-                        {{ _T("Yes") }}
-    {% else %}
+                    <td data-col-label="{{ _T("Membership extension") }}">
+    {% if entry.extra == -1 %}
+                        {{ _T("Default") }}
+    {% elseif entry.extra == 0 %}
                         {{ _T("No") }}
+    {% else %}
+                        {{ _Tn('%1$s month', '%1$s months', entry.extra)|format(entry.extra) }}
     {% endif %}
                     </td>
                     <td class="center actions_row">

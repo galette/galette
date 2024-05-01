@@ -173,7 +173,7 @@ class Contribution
                     } else {
                         // Caution : the next_begin_date is the day after the due_date.
                         $next_begin_date = clone $due_date;
-                        $next_begin_date->add(new \DateInterval('P1D'));
+                        $next_begin_date->add(new DateInterval('P1D'));
                         $this->begin_date = $next_begin_date->format('Y-m-d');
                     }
                 }
@@ -249,7 +249,6 @@ class Contribution
         return $this;
     }
 
-
     /**
      * Sets end contribution date
      *
@@ -261,12 +260,16 @@ class Contribution
 
         $now = new \DateTime();
         $begin_date = new \DateTime($this->begin_date);
-        if ($preferences->pref_beg_membership != '') {
+
+        if ($this->type->extension > ContributionsTypes::DONATION_TYPE) {
+            $dext = new DateInterval('P' . $this->type->extension . 'M');
+            $end_date = $begin_date->add($dext);
+        } elseif ($preferences->pref_beg_membership != '') {
             //case beginning of membership
             list($j, $m) = explode('/', $preferences->pref_beg_membership);
             $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
             while ($next_begin_date <= $begin_date) {
-                $next_begin_date->add(new \DateInterval('P1Y'));
+                $next_begin_date->add(new DateInterval('P1Y'));
             }
 
             if ($preferences->pref_membership_offermonths > 0) {
@@ -275,35 +278,34 @@ class Contribution
 
                 //count days between next membership begin date and offered months
                 $tdate = clone $next_begin_date;
-                $tdate->sub(new \DateInterval('P' . $preferences->pref_membership_offermonths . 'M'));
+                $tdate->sub(new DateInterval('P' . $preferences->pref_membership_offermonths . 'M'));
                 $diff2 = (int)$next_begin_date->diff($tdate)->format('%a');
 
                 //when number of days until next membership begin date is less than or equal to the offered months, it's free :)
                 if ($diff1 <= $diff2) {
-                    $next_begin_date->add(new \DateInterval('P1Y'));
+                    $next_begin_date->add(new DateInterval('P1Y'));
                 }
             }
 
-            // Caution : the end_date to retrieve is the day before the next_begin_date.
             $end_date = clone $next_begin_date;
-            $end_date->sub(new \DateInterval('P1D'));
-            $this->end_date = $end_date->format('Y-m-d');
         } elseif ($preferences->pref_membership_ext != '') {
             //case membership extension
             if ($this->extension == null) {
                 $this->extension = $preferences->pref_membership_ext;
             }
-            $dext = new \DateInterval('P' . $this->extension . 'M');
+            $dext = new DateInterval('P' . $this->extension . 'M');
             // Caution : the end_date to retrieve is the day before the next_begin_date.
             $next_begin_date = $begin_date->add($dext);
             $end_date = clone $next_begin_date;
-            $end_date->sub(new \DateInterval('P1D'));
-            $this->end_date = $end_date->format('Y-m-d');
         } else {
             throw new \RuntimeException(
                 'Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!'
             );
         }
+
+        // Caution : the end_date to retrieve is the day before the next_begin_date.
+        $end_date->sub(new DateInterval('P1D'));
+        $this->end_date = $end_date->format('Y-m-d');
     }
 
     /**
@@ -564,7 +566,7 @@ class Contribution
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
             )->where([Adherent::PK => $this->member])
-                ->where(array('cotis_extension' => new Expression('true')))
+                ->where->notEqualTo('cotis_extension', ContributionsTypes::DONATION_TYPE)
                 ->where->nest->nest
                 ->greaterThanOrEqualTo('date_debut_cotis', $this->begin_date)
                 ->lessThanOrEqualTo('date_debut_cotis', $this->end_date)
@@ -861,9 +863,8 @@ class Contribution
                 array()
             )->where(
                 [Adherent::PK => $member_id]
-            )->where(
-                array('cotis_extension' => new Expression('true'))
-            );
+            )
+            ->where->notEqualTo('cotis_extension', ContributionsTypes::DONATION_TYPE);
 
             $results = $zdb->execute($select);
             $result = $results->current();
@@ -1375,10 +1376,10 @@ class Contribution
         //set type
         $this->type = new ContributionsTypes($this->zdb, $type);
         //set is_cotis according to type
-        if ($this->type->extension == 1) {
-            $this->is_cotis = true;
-        } else {
+        if ($this->type->extension == ContributionsTypes::DONATION_TYPE) {
             $this->is_cotis = false;
+        } else {
+            $this->is_cotis = true;
         }
 
         return $this;

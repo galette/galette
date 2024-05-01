@@ -70,3 +70,8 @@ CREATE TABLE galette_payments_schedules (
   comment text,
   PRIMARY KEY (id_schedule)
 );
+
+ALTER TABLE galette_types_cotisation ALTER COLUMN cotis_extension DROP DEFAULT;
+ALTER TABLE galette_types_cotisation ALTER cotis_extension TYPE integer USING CASE WHEN cotis_extension=false THEN 0 ELSE -1 END;
+ALTER TABLE galette_types_cotisation ALTER COLUMN cotis_extension SET DEFAULT 0;
+

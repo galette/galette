@@ -150,7 +150,7 @@ class Members extends GaletteTestCase
                     'date_enreg'                    => $begin_date->format('Y-m-d'),
                     'date_debut_cotis'              => $begin_date->format('Y-m-d'),
                     'date_fin_cotis'                => $due_date->format('Y-m-d'),
-                    \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+                    \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
                 ];
                 $this->assertTrue($contrib->check($cdata, [], []));
                 $this->assertTrue($contrib->store());
@@ -507,22 +507,22 @@ class Members extends GaletteTestCase
 
         //search on contribution type
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->contributions_types = \Galette\Entity\ContributionsTypes::DEFAULT_TYPE;
+        $filters->contributions_types = 1;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
         $this->assertSame(1, $list->count());
 
         $filters->contributions_types = [
-            \Galette\Entity\ContributionsTypes::DEFAULT_TYPE,
-            \Galette\Entity\ContributionsTypes::DEFAULT_TYPE + 1
+            1, // annual fee
+            2 //reduced annual fee
         ];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
         $this->assertSame(1, $list->count());
 
-        $filters->contributions_types = \Galette\Entity\ContributionsTypes::DEFAULT_TYPE + 1;
+        $filters->contributions_types = 2;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -983,7 +983,7 @@ class Members extends GaletteTestCase
             'date_enreg'                    => $begin_date->format('Y-m-d'),
             'date_debut_cotis'              => $begin_date->format('Y-m-d'),
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
-            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+            \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
@@ -1014,7 +1014,7 @@ class Members extends GaletteTestCase
             'date_enreg'                    => $begin_date->format('Y-m-d'),
             'date_debut_cotis'              => $begin_date->format('Y-m-d'),
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
-            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+            \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
@@ -1055,7 +1055,7 @@ class Members extends GaletteTestCase
             'date_enreg'                    => $begin_date->format('Y-m-d'),
             'date_debut_cotis'              => $begin_date->format('Y-m-d'),
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
-            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+            \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
@@ -1092,7 +1092,7 @@ class Members extends GaletteTestCase
             'date_enreg'                    => $begin_date->format('Y-m-d'),
             'date_debut_cotis'              => $begin_date->format('Y-m-d'),
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
-            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+            \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());

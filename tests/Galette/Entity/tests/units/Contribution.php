@@ -46,6 +46,10 @@ class Contribution extends GaletteTestCase
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
 
+        $delete = $this->zdb->delete(\Galette\Entity\ContributionsTypes::TABLE);
+        $delete->where(['libelle_type_cotis' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
+
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $delete->where('parent_id IS NOT NULL');
@@ -426,6 +430,29 @@ class Contribution extends GaletteTestCase
             $this->login,
             ['type' => 1] //annual fee
         );
+    }
+
+    /**
+     * Test monthly contribution
+     *
+     * @return void
+     */
+    public function testMonthlyContribution(): void
+    {
+        //create monthly fee type - 2 months extension
+        $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
+        $this->assertTrue($contribtype->add('FAKER' . $this->seed, 10.00, 2));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => $contribtype->id] //monthly fee
+        );
+
+        $due_date = new \DateTime();
+        $due_date->add(new \DateInterval('P2M'));
+        $due_date->sub(new \DateInterval('P1D'));
+        $this->assertSame($due_date->format('Y-m-d'), $contrib->end_date);
     }
 
     /**

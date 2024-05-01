@@ -33,12 +33,21 @@
                 <label for="amount">{{ _T("Amount:") }}</label>
                 <input type="text" name="amount" id="amount" value="{{ entry.amount }}"/>
             </div>
-            <div class="ui toggle checkbox">
-                <input type="checkbox" name="cotis_extension" id="cotis_extension" value="1"{% if entry.cotis_extension == 1 %} checked="checked"{% endif %} />
-                <label for="cotis_extension">
-                    {{ _T("Extends membership?") }}
-                </label>
-            </div>
+            {% set cotisextensions = {
+                (constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE")): _T("Default"),
+                (constant("Galette\\Entity\\ContributionsTypes::DONATION_TYPE")): _T("No"),
+                (1): _Tn('%1$s month', '%1$s months', 1)|format(1)
+            } %}
+            {% for m in 2..11 %}
+                {% set cotisextensions = cotisextensions + {(m): _Tn('%1$s month', '%1$s months', m)|format(m)} %}
+            {% endfor %}
+            {% include "components/forms/select.html.twig" with {
+                id: 'cotis_extension',
+                value: entry.cotis_extension,
+                values: cotisextensions,
+                label: _T("Membership extension"),
+                component_class: 'field inline',
+            } %}
         </div>
 
         <input type="hidden" name="mod" id="mod" value="{{ entry.id_type_cotis }}"/>

@@ -29,6 +29,7 @@ Changes
 - Menu entry was not always correctly selected
 - Add payment type on transactions
 - Remove non user related files from cofiguration folder
+- Add monthly contribution membership
 
 1.0.3 -> 1.0.4
 

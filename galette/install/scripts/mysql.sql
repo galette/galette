@@ -100,7 +100,7 @@ CREATE TABLE galette_types_cotisation (
   id_type_cotis int(10) unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(255) NOT NULL default '',
   amount decimal(15,2) NULL DEFAULT NULL,
-  cotis_extension tinyint(1) NOT NULL default 0,
+  cotis_extension tinyint NOT NULL default 0,
   PRIMARY KEY (id_type_cotis)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 

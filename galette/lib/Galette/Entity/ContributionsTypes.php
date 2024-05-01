@@ -37,14 +37,16 @@ use Throwable;
  * @property string $label
  * @property string $libelle
  * @property ?float $amount
- * @property boolean $extension
+ * @property int $extension
  */
 
 class ContributionsTypes
 {
     use I18n;
 
-    public const DEFAULT_TYPE = 1;
+    public const DEFAULT_TYPE = -1;
+    public const DONATION_TYPE = 0;
+
     public const TABLE = 'types_cotisation';
     public const PK = 'id_type_cotis';
 
@@ -53,7 +55,7 @@ class ContributionsTypes
     private int $id;
     private string $label;
     private ?float $amount;
-    private bool $is_extension = false;
+    private int $extension;
 
     public const ID_NOT_EXITS = -1;
 
@@ -62,13 +64,13 @@ class ContributionsTypes
 
     /** @var array<int, array<string, mixed>> */
     protected static array $defaults = array(
-        array('id' => 1, 'libelle' => 'annual fee', 'extension' => '1'),
-        array('id' => 2, 'libelle' => 'reduced annual fee', 'extension' => '1'),
-        array('id' => 3, 'libelle' => 'company fee', 'extension' => '1'),
-        array('id' => 4, 'libelle' => 'donation in kind', 'extension' => 0),
-        array('id' => 5, 'libelle' => 'donation in money', 'extension' => 0),
-        array('id' => 6, 'libelle' => 'partnership', 'extension' => 0),
-        array('id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => '1')
+        array('id' => 1, 'libelle' => 'annual fee', 'extension' => self::DEFAULT_TYPE),
+        array('id' => 2, 'libelle' => 'reduced annual fee', 'extension' => self::DEFAULT_TYPE),
+        array('id' => 3, 'libelle' => 'company fee', 'extension' => self::DEFAULT_TYPE),
+        array('id' => 4, 'libelle' => 'donation in kind', 'extension' => self::DONATION_TYPE),
+        array('id' => 5, 'libelle' => 'donation in money', 'extension' => self::DONATION_TYPE),
+        array('id' => 6, 'libelle' => 'partnership', 'extension' => self::DONATION_TYPE),
+        array('id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => self::DEFAULT_TYPE)
     );
 
     /**
@@ -80,6 +82,7 @@ class ContributionsTypes
     public function __construct(Db $zdb, int|ArrayObject $args = null)
     {
         $this->zdb = $zdb;
+        $this->extension = self::DEFAULT_TYPE;
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
@@ -136,7 +139,7 @@ class ContributionsTypes
         $this->id = $r->{self::PK};
         $this->label = $r->libelle_type_cotis;
         $this->amount = $r->amount;
-        $this->is_extension = (bool)$r->cotis_extension;
+        $this->extension = (int)$r->cotis_extension;
     }
 
     /**
@@ -146,7 +149,7 @@ class ContributionsTypes
      */
     public function isExtension(): bool
     {
-        return $this->is_extension;
+        return $this->extension !== self::DONATION_TYPE;
     }
 
     /**
@@ -234,9 +237,9 @@ class ContributionsTypes
             $select->order(self::PK);
 
             if ($extent === true) {
-                $select->where(array('cotis_extension' => new Expression('true')));
+                $select->where->notEqualTo('cotis_extension', self::DONATION_TYPE);
             } elseif ($extent === false) {
-                $select->where(array('cotis_extension' => new Expression('false')));
+                $select->where->equalTo('cotis_extension', self::DONATION_TYPE);
             }
 
             $results = $this->zdb->execute($select);
@@ -381,13 +384,13 @@ class ContributionsTypes
     /**
      * Add a new entry
      *
-     * @param string  $label     The label
-     * @param ?float  $amount    The amount
-     * @param boolean $extension Extends membership?
+     * @param string $label     The label
+     * @param ?float $amount    The amount
+     * @param int    $extension Membership extension in months, 0 for a donation or -1 for preferences default
      *
      * @return bool|integer  -2 : label already exists
      */
-    public function add(string $label, ?float $amount, bool $extension): bool|int
+    public function add(string $label, ?float $amount, int $extension): bool|int
     {
         // Avoid duplicates.
         $label = strip_tags($label);
@@ -406,7 +409,7 @@ class ContributionsTypes
             $values = array(
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
-                'cotis_extension' => $extension ? true : ($this->zdb->isPostgres() ? 'false' : 0)
+                'cotis_extension' => $extension
             );
 
             $insert = $this->zdb->insert(self::TABLE);
@@ -446,11 +449,11 @@ class ContributionsTypes
      * @param integer $id        Entry ID
      * @param string  $label     The label
      * @param ?float  $amount    The amount
-     * @param boolean $extension Extends membership?
+     * @param int     $extension Membership extension in months, 0 for a donation or -1 for preferences default
      *
      * @return self::ID_NOT_EXITS|boolean
      */
-    public function update(int $id, string $label, ?float $amount, bool $extension): int|bool
+    public function update(int $id, string $label, ?float $amount, int $extension): int|bool
     {
         $label = strip_tags($label);
         $ret = $this->get($id);
@@ -465,7 +468,7 @@ class ContributionsTypes
             $values = array(
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
-                'cotis_extension' => $extension ? true : ($this->zdb->isPostgres() ? 'false' : 0)
+                'cotis_extension' => $extension
             );
 
             $update = $this->zdb->update(self::TABLE);
@@ -593,8 +596,6 @@ class ContributionsTypes
             switch ($name) {
                 case 'libelle':
                     return _T($this->label);
-                case 'extension':
-                    return $this->isExtension();
                 default:
                     return $this->$name;
             }
