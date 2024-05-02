@@ -773,9 +773,7 @@ class Members
             }
 
             if ($mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED) {
-                if ($this->filters !== false) {
-                    $this->buildWhereClause($select);
-                }
+                $this->buildWhereClause($select);
             } elseif ($mode == self::SHOW_PUBLIC_LIST) {
                 $select->where(
                     array(
