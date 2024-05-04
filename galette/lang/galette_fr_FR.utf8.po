@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-05-04 09:04+0200\n"
-"PO-Revision-Date: 2024-04-21 07:17+0000\n"
+"PO-Revision-Date: 2024-05-04 07:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.5-dev\n"
+"X-Generator: Weblate 5.5.3\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -1852,11 +1852,11 @@ msgstr "- Les nombres et mesures doivent être des entiers !"
 
 #: ../lib/Galette/Core/Preferences.php:715
 msgid "- The card height have to be an integer between 40 and 55!"
-msgstr ""
+msgstr "- La hauteur de la carte doit être un entier entre 40 et 55 !"
 
 #: ../lib/Galette/Core/Preferences.php:720
 msgid "- The card width have to be an integer between 70 and 95!"
-msgstr ""
+msgstr "- La largeur de la carte doit être un entier entre 70 et 95 !"
 
 #: ../lib/Galette/Core/Preferences.php:754
 msgid "- Invalid number of months of membership extension."
@@ -6003,21 +6003,18 @@ msgstr "Pour la sélection :"
 #: ../../tempcache/pages/contributions_types_list.html.twig:118
 #: ../../tempcache/pages/contributions_types_list.html.twig:126
 #: ../../tempcache/pages/contributions_types_list.html.twig:205
-#, fuzzy, php-format
-#| msgid "months"
+#, php-format
 msgid "%1$s month"
 msgid_plural "%1$s months"
-msgstr[0] "mois"
-msgstr[1] "mois"
+msgstr[0] "%1$s mois"
+msgstr[1] "%1$s mois"
 
 #: ../../tempcache/pages/contribution_type_form.html.twig:102
 #: ../../tempcache/pages/contributions_types_list.html.twig:70
 #: ../../tempcache/pages/contributions_types_list.html.twig:114
 #: ../../tempcache/pages/contributions_types_list.html.twig:185
-#, fuzzy
-#| msgid "Membership extension:"
 msgid "Membership extension"
-msgstr "Extension d’adhésion :"
+msgstr "Extension d’adhésion"
 
 #: ../../tempcache/pages/plugins.html.twig:55
 #: ../../tempcache/pages/plugins.html.twig:86
@@ -8019,7 +8016,7 @@ msgstr "Corps du texte :"
 #: ../../tempcache/pages/preferences.html.twig:1831
 #, php-format
 msgid "Each page contains %1$s columns and  %2$s rows."
-msgstr ""
+msgstr "Chaque page contient %1$s colonnes %2$s lignes."
 
 #: ../../tempcache/pages/preferences.html.twig:1840
 msgid "Short Text (Card Center):"
@@ -8099,11 +8096,11 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:2244
 msgid "Card width from 70 to 95mm:"
-msgstr ""
+msgstr "Largeur de la carte de 70 à 95mm :"
 
 #: ../../tempcache/pages/preferences.html.twig:2266
 msgid "Card height from 40 to 55mm:"
-msgstr ""
+msgstr "Hauteur de la carte de 40 à 55mm :"
 
 #: ../../tempcache/pages/preferences.html.twig:2297
 msgid "Password length:"
