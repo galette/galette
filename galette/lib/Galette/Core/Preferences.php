@@ -717,7 +717,7 @@ class Preferences
                 break;
             case 'pref_card_hsize':
                 if (!is_numeric($value) || $value < 70 || $value > 95) {
-                    $this->errors[] = _T("- The card width have to be an integer between 75 and 95!");
+                    $this->errors[] = _T("- The card width have to be an integer between 70 and 95!");
                 }
                 break;
             case 'pref_card_tcol':
