@@ -380,7 +380,7 @@ class EntityFromDb
 
    /**
     * __call
-    * Implement a getMyProperty() for all columns in database; example : getId()
+    * Implement a getMyProperty() for all columns in database; example : getId(), getName()...
     * @param string $name      Method name getXXXX
     * @param array  $arguments getXXXX([$arguments])
     * @return mixed optional returned value
