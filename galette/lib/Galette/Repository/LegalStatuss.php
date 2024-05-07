@@ -24,9 +24,9 @@ class LegalStatuss extends Repository
     /**
      * Get defaults values
      *
-     * @return array<string, mixed>
+     * @return array<array>
      */
-    protected function loadDefaults(): array
+    protected function getInstallDefaultValues(): array
     {
         return [
         array(
