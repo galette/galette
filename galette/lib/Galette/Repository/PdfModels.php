@@ -37,6 +37,9 @@ use Galette\Entity\PdfReceipt;
  */
 class PdfModels extends Repository
 {
+    /** @var array<int|string,mixed> */
+    private array $defaults = [];  
+
     /**
      * Get models list
      *
@@ -215,13 +218,13 @@ class PdfModels extends Repository
      *
      * @return array<string,mixed>
      */
-    protected function loadDefaults(): array
+    protected function getInstallDefaultValues(): array
     {
         if (!count($this->defaults)) {
             include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
             //@phpstan-ignore-next-line
             $this->defaults = $pdfmodels_fields;
         }
-        return parent::loadDefaults();
+        return $this->defaults;
     }
 }

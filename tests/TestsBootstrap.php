@@ -130,7 +130,7 @@ if (
 ) {
     //do not initialize Tiles on update nor fail tests
     $titles = new \Galette\Repository\Titles($zdb);
-    $res = $titles->installInit($zdb);
+    $res = $titles->installInit();
 }
 
 require_once __DIR__ . '/GaletteTestCase.php';

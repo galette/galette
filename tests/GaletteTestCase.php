@@ -99,6 +99,7 @@ abstract class GaletteTestCase extends TestCase
         $this->initContributionsTypes();
         $this->initModels();
         $this->initTitles();
+        $this->initLegalStatus();
 
         $authenticate = new \Galette\Middleware\Authenticate($container);
 
@@ -184,6 +185,7 @@ abstract class GaletteTestCase extends TestCase
             'date_crea_adh' => '2020-06-10',
             'pref_lang' => 'en_US',
             'fingerprint' => 'FAKER' . $this->seed,
+            'id_legal_status' => 1
         ];
         return $data;
     }
@@ -231,7 +233,8 @@ abstract class GaletteTestCase extends TestCase
             'pref_lang' => 'ca',
             'fingerprint' => 'FAKER' . $this->seed,
             'societe_adh' => 'Philippe',
-            'is_company' => true,
+//            'is_company' => true,
+            'id_legal_status' => 2
         ];
         return $data;
     }
@@ -302,7 +305,8 @@ abstract class GaletteTestCase extends TestCase
             'id_statut' => 9,
             'pref_lang' => 'en_US',
             'fingerprint' => 'FAKER95842354',
-            'societe_adh' => ''
+            'societe_adh' => '',
+            'id_legal_status' => 1
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
@@ -405,7 +409,8 @@ abstract class GaletteTestCase extends TestCase
             'id_statut' => 9,
             'pref_lang' => 'ca',
             'fingerprint' => 'FAKER' . $this->seed,
-            'societe_adh' => 'Philippe'
+            'societe_adh' => 'Philippe',
+            'id_legal_status' => 1
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
@@ -736,6 +741,21 @@ abstract class GaletteTestCase extends TestCase
         $titles = new \Galette\Repository\Titles($this->zdb);
         if (count($titles->getList()) === 0) {
             $res = $titles->installInit();
+            $this->assertTrue($res);
+        }
+    }
+
+        /**
+     * Initialize default payment types in database
+     *
+     * @return void
+     */
+    protected function initLegalStatus(): void
+    {
+        $types = new \Galette\Repository\LegalStatuss($this->zdb, $this->preferences, $this->login);
+        if (count($types->getList()) === 0) {
+            //payment types are not yet instanciated.
+            $res = $types->installInit();
             $this->assertTrue($res);
         }
     }

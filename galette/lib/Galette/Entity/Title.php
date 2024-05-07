@@ -21,277 +21,77 @@
 
 namespace Galette\Entity;
 
-use ArrayObject;
 use Galette\Core\Db;
-use Throwable;
-use Analog\Analog;
+use Galette\Entity\Base\EntityFromDb;
+use Galette\Entity\Base\Translate;
+use ArrayObject;
 
 /**
  * Title
  *
- * @author Johan Cwiklinski <johan@x-tnd.be>
- *
- * @property int $id
- * @property string $short
- * @property ?string $long
- * @property-read string $tshort
- * @property-read string $tlong
+ * @author Manuel <manuelh78dev@ik.me>
  */
-
-class Title
+class Title extends EntityFromDb
 {
     public const TABLE = 'titles';
     public const PK = 'id_title';
-
-    private int $id;
-    private string $short;
-    private ?string $long;
 
     public const MR = 1;
     public const MRS = 2;
     public const MISS = 3;
 
     /**
-     * Main constructor
-     *
-     * @param int|ArrayObject<string, int|string>|null $args Arguments
-     */
-    public function __construct(int|ArrayObject $args = null)
+    *  Main constructor
+    *
+    * @param DB               $zdb  Database
+    * @param ?ArrayObject|int $args item data to load
+    */
+    public function __construct(Db $zdb, ArrayObject|int $args = null)
     {
-        if (is_int($args)) {
-            $this->load($args);
-        } elseif ($args instanceof ArrayObject) {
-            $this->loadFromRs($args);
-        }
-    }
+        parent::__construct(
+            $zdb,
+            [
+                'table' => self::TABLE,
+                'id' => self::PK,
+                'short' => 'short_label',
+                'long' => 'long_label',
+            ],
+            [
+                //toString() will return long property
+                'toString' => 'long',
 
-    /**
-     * Load a title from its identifier
-     *
-     * @param int $id Identifier
-     *
-     * @return void
-     */
-    private function load(int $id): void
-    {
-        global $zdb;
-        try {
-            $select = $zdb->select(self::TABLE);
-            $select->limit(1)->where([self::PK => $id]);
+                //if long value is null get short value
+                'long:override' => function ($value) {
+                    return ($value == null || trim($value) === '') ? $this->short : $value;
+                },
+                'long:warningnoempty' => true,
 
-            $results = $zdb->execute($select);
-            $res = $results->current();
+                //Virtual properties
+                'tshort:from' => 'short',  //OR function() { return $this->short; },
+                'tlong:from' => 'long',
 
-            $this->id = $id;
-            $this->short = $res->short_label;
-            $this->long = $res->long_label;
-        } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred loading title #' . $id . "Message:\n" .
-                $e->getMessage(),
-                Analog::ERROR
-            );
-            throw $e;
-        }
-    }
-
-    /**
-     * Load title from a db ResultSet
-     *
-     * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
-     */
-    private function loadFromRs(ArrayObject $rs): void
-    {
-        $pk = self::PK;
-        $this->id = $rs->$pk;
-        $this->short = $rs->short_label;
-        if ($rs->long_label === 'NULL') {
-            //mysql's null...
-            $this->long = null;
-        } else {
-            $this->long = $rs->long_label;
-        }
-    }
-
-    /**
-     * Store title in database
-     *
-     * @param Db $zdb Database instance
-     *
-     * @return boolean
-     */
-    public function store(Db $zdb): bool
-    {
-        $data = array(
-            'short_label'   => strip_tags($this->short),
-            'long_label'    => strip_tags($this->long)
+                'tshort:override' => function ($value) {
+                    return Translate::getFromLang($value);
+                },
+                'tlong:override' => function ($value) {
+                    return Translate::getFromLang($value);
+                },
+            ],
+            $args
         );
-        try {
-            if (isset($this->id) && $this->id > 0) {
-                $update = $zdb->update(self::TABLE);
-                $update->set($data)->where([self::PK => $this->id]);
-                $zdb->execute($update);
-            } else {
-                $insert = $zdb->insert(self::TABLE);
-                $insert->values($data);
-                $add = $zdb->execute($insert);
-                if (!$add->count() > 0) {
-                    Analog::log('Not stored!', Analog::ERROR);
-                    return false;
-                }
-
-                $this->id = $zdb->getLastGeneratedValue($this);
-            }
-            return true;
-        } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred storing title: ' . $e->getMessage() .
-                "\n" . print_r($data, true),
-                Analog::ERROR
-            );
-            throw $e;
-        }
     }
 
     /**
      * Remove current title
      *
-     * @param Db $zdb Database instance
-     *
      * @return boolean
      */
-    public function remove(Db $zdb): bool
+    public function remove(): bool
     {
-        $id = (int)$this->id;
+        $id = (int) $this->id;
         if ($id === self::MR || $id === self::MRS) {
             throw new \RuntimeException(_T("You cannot delete Mr. or Mrs. titles!"));
         }
-
-        try {
-            $delete = $zdb->delete(self::TABLE);
-            $delete->where([self::PK => $id]);
-            $zdb->execute($delete);
-            Analog::log(
-                'Title #' . $id . ' (' . $this->short
-                . ') deleted successfully.',
-                Analog::INFO
-            );
-            return true;
-        } catch (\RuntimeException $re) {
-            throw $re;
-        } catch (Throwable $e) {
-            Analog::log(
-                'Unable to delete title ' . $id . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
-            throw $e;
-        }
-    }
-
-    /**
-     * Getter
-     *
-     * @param string $name Property name
-     *
-     * @return mixed
-     */
-    public function __get(string $name): mixed
-    {
-        global $lang;
-
-        switch ($name) {
-            case 'id':
-                return $this->$name;
-            case 'short':
-            case 'long':
-                if (
-                    $name === 'long'
-                    && ($this->long == null || trim($this->long) === '')
-                ) {
-                    $name = 'short';
-                }
-                return $this->$name;
-            case 'tshort':
-            case 'tlong':
-                $rname = null;
-                if ($name === 'tshort') {
-                    $rname = 'short';
-                } else {
-                    if ($this->long !== null && trim($this->long) !== '') {
-                        $rname = 'long';
-                    } else {
-                        //switch back to short version if long does not exists
-                        $rname = 'short';
-                    }
-                }
-                if (isset($lang) && isset($lang[$this->$rname])) {
-                    return _T($this->$rname);
-                } else {
-                    return $this->$rname;
-                }
-        }
-
-        throw new \RuntimeException(
-            sprintf(
-                'Unable to get property "%s::%s"!',
-                __CLASS__,
-                $name
-            )
-        );
-    }
-
-    /**
-     * Isset
-     * Required for twig to access properties via __get
-     *
-     * @param string $name Property name
-     *
-     * @return bool
-     */
-    public function __isset(string $name): bool
-    {
-        switch ($name) {
-            case 'id':
-            case 'short':
-            case 'long':
-            case 'tshort':
-            case 'tlong':
-                return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Setter
-     *
-     * @param string $name  Property name
-     * @param mixed  $value Property value
-     *
-     * @return void
-     */
-    public function __set(string $name, mixed $value): void
-    {
-        switch ($name) {
-            case 'short':
-            case 'long':
-                if (trim($value) === '') {
-                    Analog::log(
-                        'Trying to set empty value for title' . $name,
-                        Analog::WARNING
-                    );
-                } else {
-                    $this->$name = $value;
-                }
-                break;
-            default:
-                Analog::log(
-                    'Unable to set property ' . $name,
-                    Analog::WARNING
-                );
-                break;
-        }
+        return parent::remove();
     }
 }

@@ -34,7 +34,7 @@ use Analog\Analog;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class PaymentTypeController extends CrudController
+class PaymentTypesController extends CrudController
 {
     // CRUD - Create
 

@@ -24,17 +24,17 @@ namespace Galette\Controllers\Crud;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Galette\Repository\Titles;
-use Galette\Entity\Title;
+use Galette\Repository\LegalStatuss;
+use Galette\Entity\LegalStatus;
 use Analog\Analog;
 
 /**
- * Galette Titles controller
+ * LegalStatuss Controller
  *
- * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @author Manuel <manuelh78dev@ik.me>
  */
 
-class TitlesController extends CrudController
+class LegalStatussController extends CrudController
 {
     // CRUD - Create
 
@@ -80,15 +80,15 @@ class TitlesController extends CrudController
      */
     public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
-        $titles = new Titles($this->zdb);
+        $legalStatuss = new LegalStatuss($this->zdb, $this->preferences, $this->login);
 
         // display page
         $this->view->render(
             $response,
-            'pages/configuration_titles.html.twig',
+            'pages/configuration_legalstatuss.html.twig',
             [
-                'page_title'        => _T("Titles management"),
-                'titles_list'       => $titles->getList()
+                'page_title'        => _T("Legal status management"),
+                'legalstatuss_list'       => $legalStatuss->getList()
             ]
         );
         return $response;
@@ -122,7 +122,7 @@ class TitlesController extends CrudController
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
-        $title = new Title($this->zdb, $id);
+        $ls = new LegalStatus($this->zdb, $id);
         $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
 
         // display page
@@ -130,9 +130,9 @@ class TitlesController extends CrudController
             $response,
             'pages/configuration_textsshortlong_form.html.twig',
             [
-                'page_title'    => _T("Edit title"),
-                'item'         => $title,
-                'entityName'    => 'Title',
+                'page_title'    => _T("Edit legal status"),
+                'item'   => $ls,
+                'entityName'    => 'LegalStatus',
                 'mode'         => $mode
             ]
         );
@@ -175,11 +175,11 @@ class TitlesController extends CrudController
         $error_detected = [];
         $msg = null;
 
-        $title = new Title($this->zdb, $id);
-        $title->short = $post['short_label'];
-        $title->long = $post['long_label'];
+        $ls = new LegalStatus($this->zdb, $id);
+        $ls->short = $post['short_label'];
+        $ls->long = $post['long_label'];
         if ((isset($post['short_label']) && $post['short_label'] != '') && (isset($post['long_label']) && $post['long_label'] != '')) {
-            $res = $title->store();//$this->zdb);
+            $res = $ls->store();//$this->zdb);
         } else {
             $res = false;
             $error_detected[] = _T("Missing required title's short or long form!");
@@ -190,29 +190,29 @@ class TitlesController extends CrudController
             if ($id === null) {
                 $error_detected[] = preg_replace(
                     '(%s)',
-                    $title->short !== null ? $title->short : '',
+                    $ls->short !== null ? $ls->short : '',
                     _T("Title '%s' has not been added!")
                 );
             } else {
                 $error_detected[] = preg_replace(
                     '(%s)',
-                    $title->short !== null ? $title->short : '',
+                    $ls->short !== null ? $ls->short : '',
                     _T("Title '%s' has not been modified!")
                 );
 
-                $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => (string)$id]);
+                $redirect_uri = $this->routeparser->urlFor('editLegalStatus', ['id' => (string)$id]);
             }
         } else {
             if ($id === null) {
                 $error_detected[] = preg_replace(
                     '(%s)',
-                    $title->short,
+                    $ls->short,
                     _T("Title '%s' has been successfully added.")
                 );
             } else {
                 $msg = preg_replace(
                     '(%s)',
-                    $title->short,
+                    $ls->short,
                     _T("Title '%s' has been successfully modified.")
                 );
             }
@@ -249,7 +249,7 @@ class TitlesController extends CrudController
      */
     public function redirectUri(array $args): string
     {
-        return $this->routeparser->urlFor('titles');
+        return $this->routeparser->urlFor('legalStatuss');
     }
 
     /**
@@ -262,7 +262,7 @@ class TitlesController extends CrudController
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
-            'doRemoveTitle',
+            'doRemoveLegalStatus',
             ['id' => $args['id']]
         );
     }
@@ -276,10 +276,10 @@ class TitlesController extends CrudController
      */
     public function confirmRemoveTitle(array $args): string
     {
-        $title = new Title($this->zdb, (int)$args['id']);
+        $ls = new LegalStatus($this->zdb, (int)$args['id']);
         return sprintf(
-            _T('Remove title %1$s'),
-            $title->short
+            _T('Remove LegalStatus %1$s'),
+            $ls->short
         );
     }
 
@@ -293,8 +293,8 @@ class TitlesController extends CrudController
      */
     protected function doDelete(array $args, array $post): bool
     {
-        $title = new Title($this->zdb, (int)$args['id']);
-        return $title->remove();//$this->zdb);
+        $ls = new LegalStatus($this->zdb, (int)$args['id']);
+        return $ls->remove();//$this->zdb);
     }
 
     // /CRUD - Delete

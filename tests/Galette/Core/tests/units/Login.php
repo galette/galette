@@ -292,6 +292,7 @@ class Login extends GaletteTestCase
                 'date_crea_adh' => '2019-09-02',
                 'pref_lang' => 'nb_NO',
                 'fingerprint' => 'FAKER' . $this->seed,
+                'id_legal_status' => '1'
             ];
 
             $this->adh = new \Galette\Entity\Adherent($this->zdb);

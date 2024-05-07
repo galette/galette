@@ -21,17 +21,17 @@
 {% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
-    <form action="{{ url_for('editTitle', {'id': title.id}) }}" method="post" class="ui form">
+    <form action="{{ url_for('edit'~ entityName, {'id': item.id}) }}" method="post" class="ui form">
     {% if mode != 'ajax' %}
         <div class="ui segment" id="general">
     {% endif %}
             <div class="required field inline">
                 <label for="short_label">{{ _T("Short form:") }}</label>
-                <input type="text" name="short_label" id="short_label" value="{{ title.short }}" required="required" />
+                <input type="text" name="short_label" id="short_label" value="{{ item.short }}" required="required" />
             </div>
             <div class="required field inline">
                 <label for="long_label">{{ _T("Long form:") }}</label>
-                <input type="text" name="long_label" id="long_label" value="{{ title.long }}" required="required" />
+                <input type="text" name="long_label" id="long_label" value="{{ item.long }}" required="required" />
             </div>
         </div>
     {% if mode != 'ajax' %}
@@ -41,7 +41,7 @@
             </button>
             <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button" />
     {% endif %}
-            <input type="hidden" name="id" id="id" value="{{ title.id }}"/>
+            <input type="hidden" name="id" id="id" value="{{ item.id }}"/>
             {% include 'components/forms/csrf.html.twig' %}
     {% if mode != 'ajax' %}
         </div>

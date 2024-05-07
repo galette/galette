@@ -29,6 +29,7 @@ use Galette\Controllers\CsvController;
 use Galette\Controllers\AdminToolsController;
 use Galette\Controllers\TextController;
 use Galette\DynamicFields\DynamicField;
+use Galette\Controllers\Crud\CrudHelper;
 
 //galette's dashboard
 $app->get(
@@ -207,35 +208,9 @@ $app->post(
     [PdfController::class, 'storeModels']
 )->setName('pdfModels')->add($authenticate);
 
-$app->get(
-    '/titles',
-    [Crud\TitlesController::class, 'list']
-)->setName('titles')->add($authenticate);
-
-$app->post(
-    '/titles',
-    [Crud\TitlesController::class, 'doAdd']
-)->setName('titles')->add($authenticate);
-
-$app->get(
-    '/titles/remove/{id:\d+}',
-    [Crud\TitlesController::class, 'confirmDelete']
-)->setName('removeTitle')->add($authenticate);
-
-$app->post(
-    '/titles/remove/{id:\d+}',
-    [Crud\TitlesController::class, 'delete']
-)->setName('doRemoveTitle')->add($authenticate);
-
-$app->get(
-    '/titles/edit/{id:\d+}',
-    [Crud\TitlesController::class, 'edit']
-)->setname('editTitle')->add($authenticate);
-
-$app->post(
-    '/titles/edit/{id:\d+}',
-    [Crud\TitlesController::class, 'doEdit']
-)->setname('editTitle')->add($authenticate);
+CrudHelper::addRoutesBasicEntityCRUD($app, Crud\TitlesController::class, $authenticate);
+CrudHelper::addRoutesBasicEntityCRUD($app, Crud\LegalStatussController::class, $authenticate);
+CrudHelper::addRoutesBasicEntityCRUD($app, Crud\PaymentTypesController::class, $authenticate);
 
 $app->get(
     '/texts[/{lang}/{ref}]',
@@ -402,36 +377,6 @@ $app->post(
     '/admin-tools',
     [AdminToolsController::class, 'process']
 )->setName('doAdminTools')->add($authenticate);
-
-$app->get(
-    '/payment-types',
-    [Crud\PaymentTypeController::class, 'list']
-)->setName('paymentTypes')->add($authenticate);
-
-$app->post(
-    '/payment-types',
-    [Crud\PaymentTypeController::class, 'doAdd']
-)->setName('paymentTypes')->add($authenticate);
-
-$app->get(
-    '/payment-type/remove/{id:\d+}',
-    [Crud\PaymentTypeController::class, 'confirmDelete']
-)->setName('removePaymentType')->add($authenticate);
-
-$app->post(
-    '/payment-type/remove/{id:\d+}',
-    [Crud\PaymentTypeController::class, 'delete']
-)->setName('doRemovePaymentType')->add($authenticate);
-
-$app->get(
-    '/payment-type/edit/{id:\d+}',
-    [Crud\PaymentTypeController::class, 'edit']
-)->setname('editPaymentType')->add($authenticate);
-
-$app->post(
-    '/payment-type/edit/{id:\d+}',
-    [Crud\PaymentTypeController::class, 'doEdit']
-)->setname('editPaymentType')->add($authenticate);
 
 $app->get(
     '/{form_name:adh|contrib|trans}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',

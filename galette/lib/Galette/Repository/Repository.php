@@ -21,6 +21,7 @@
 
 namespace Galette\Repository;
 
+use DI\Attribute\Inject;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\Pagination;
@@ -35,13 +36,17 @@ use Laminas\Db\ResultSet\ResultSet;
  */
 abstract class Repository
 {
-    protected Db $zdb;
-    protected Preferences $preferences;
+    public Db $zdb;
+    protected ?Login $login;
+    protected ?Preferences $preferences;
+
+
     protected string $entity;
-    protected Login $login;
+    protected string $entityShortName;
+
     protected Pagination $filters;
     /** @var array<int|string,mixed> */
-    protected array $defaults = [];
+    //protected array $defaults = []; //inutile reboucle sur lui même
     protected string $prefix;
 
     /**
@@ -56,15 +61,17 @@ abstract class Repository
      */
     public function __construct(
         Db $zdb,
-        Preferences $preferences,
-        Login $login,
+        Preferences $preferences = null,
+        Login $login = null,
         ?string $entity = null,
         ?string $ns = null,
         string $prefix = ''
     ) {
+        //TODO : //Utiliser DI ?
         $this->zdb = $zdb;
         $this->preferences = $preferences;
         $this->login = $login;
+
         $this->prefix = $prefix;
 
         if ($entity === null) {
@@ -82,6 +89,7 @@ abstract class Repository
                 );
             }
         }
+        $this->entityShortName = $entity;
         if ($ns === null) {
             $ns = 'Galette\\Entity';
         }
@@ -95,8 +103,7 @@ abstract class Repository
         }
 
         if (method_exists($this, 'checkUpdate')) {
-            $this->loadDefaults();
-            if (count($this->defaults)) {
+            if (count($this->getInstallDefaultValues())) {
                 $this->checkUpdate();
             } else {
                 Analog::log(
@@ -147,13 +154,13 @@ abstract class Repository
     }
 
     /**
-     * Load and get default values
+     * Get default values
      *
      * @return array<string,mixed>
      */
-    protected function loadDefaults(): array
+    protected function getInstallDefaultValues(): array
     {
-        return $this->defaults;
+        throw new \Exception("Error : you need to override getInstallDefaultValues()");
     }
 
     /**
