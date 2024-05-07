@@ -46,7 +46,7 @@ abstract class Repository
 
     protected Pagination $filters;
     /** @var array<int|string,mixed> */
-    protected array $defaults = [];
+    //protected array $defaults = []; //inutile reboucle sur lui même
     protected string $prefix;
 
     /**
@@ -103,7 +103,7 @@ abstract class Repository
         }
 
         if (method_exists($this, 'checkUpdate')) {
-            if (count($this->loadDefaults())) {
+            if (count($this->getInstallDefaultValues())) {
                 $this->checkUpdate();
             } else {
                 Analog::log(
@@ -154,13 +154,13 @@ abstract class Repository
     }
 
     /**
-     * Load and get default values
+     * Get default values
      *
      * @return array<string,mixed>
      */
-    protected function loadDefaults(): array
+    protected function getInstallDefaultValues(): array
     {
-        throw new \Exception("Error : you need to override loadDefaults()");
+        throw new \Exception("Error : you need to override getInstallDefaultValues()");
     }
 
     /**

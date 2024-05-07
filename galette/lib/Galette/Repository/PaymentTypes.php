@@ -55,24 +55,24 @@ class PaymentTypes extends Repository
             $list->buffer();
 
             $missing = array();
-            foreach ($this->defaults as $key => $value) {
+            foreach ($this->getInstallDefaultValues() as $row) {
                 $exists = false;
                 foreach ($list as $type) {
-                    if ($type->type_id == $key) {
+                    if ($type->type_id == $row['type_id']) {
                         $exists = true;
                         break;
                     }
                 }
 
                 if ($exists === false) {
-                    //model does not exists in database, insert it.
-                    $missing[$key] = $value;
+                    //does not exists in database, insert it.
+                    $missing[] = $row;
                 }
             }
 
             if (count($missing) > 0) {
                 $this->zdb->connection->beginTransaction();
-                $this->insert($ent::TABLE, $missing);
+                $this->multipleInsert($ent::TABLE, $missing);
                 Analog::log(
                     'Missing payment types were successfully stored into database.',
                     Analog::INFO
@@ -96,12 +96,14 @@ class PaymentTypes extends Repository
      *
      * @return array<string, mixed>
      */
-    protected function loadDefaults(): array
+    protected function getInstallDefaultValues(): array
     {
-        if (!count($this->defaults)) {
+        /*if (!count($this->defaults)) {
             $paytype = new PaymentType($this->zdb);
             $this->defaults = $paytype->getSystemTypes(false);
         }
-        return $this->defaults;
+        return $this->defaults;*/
+        $paytype = new PaymentType($this->zdb);
+        return self::convertArrayKeyValueForDBInsert($paytype->getSystemTypes(false), self::PK, 'type_name');
     }
 }

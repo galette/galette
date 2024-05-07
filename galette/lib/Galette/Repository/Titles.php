@@ -48,7 +48,7 @@ class Titles extends Repository
      *
      * @return array<string, mixed>
      */
-    protected function loadDefaults(): array
+    protected function getInstallDefaultValues(): array
     {
         return [
             array(

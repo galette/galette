@@ -73,7 +73,7 @@ trait RepositoryTrait
             ->where(array(constant($this->entity . '::PK') => $id));
 
         $results = $this->zdb->execute($select);
-        $return = $results->current();
+        return $results->current();
     }
 
     /**
@@ -109,7 +109,7 @@ trait RepositoryTrait
      */
     public function installInit(bool $check_first = true): bool
     {
-        $defaults = $this->loadDefaults();
+        $defaults = $this->getInstallDefaultValues();
         try {
             $ent = $this->entity;
             $TABLE = constant($ent . '::TABLE');
@@ -176,7 +176,7 @@ trait RepositoryTrait
      * Insert values in database
      *
      * @param string       $table  Table name
-     * @param array<array> $values Values to insert
+     * @param array<array> $values Values to insert; Format array<[col1=>value, col2=>value2]>
      *
      * @return void
      */
@@ -187,5 +187,26 @@ trait RepositoryTrait
             $insert->values($row);
             $this->zdb->execute($insert);
         }
+    }
+
+    /**
+     * Convert a keyvalue pair array <ID, VALUE> to simple array for DB Insert [[ID=>k,$COL=>v]]
+     *
+     * @param array $array Array to convert
+     * @param string $idColumn  ID column name in DB 
+     * @param string $valueColumn Value column name in DB 
+     *
+     * @return array
+     */
+    static public function convertArrayKeyValueForDBInsert(array $values, $idColumn, $valueColumn): array
+    {
+        $ret = [];
+        foreach ($values as $k => $v) {
+            $ret[] = [
+                $idColumn => $k,
+                $valueColumn => $v
+            ];
+        }
+        return $ret;
     }
 }
