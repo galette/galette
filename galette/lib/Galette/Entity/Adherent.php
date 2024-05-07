@@ -359,7 +359,8 @@ class Adherent
             $this->title = new Title($this->zdb, (int)$r->titre_adh);
         }
         $this->company_name = $r->societe_adh;
-        $this->id_legal_status = $r->id_legal_status;
+        $this->id_legal_status = (int)$r->id_legal_status;
+        if($this->id_legal_status ===null) $this->id_legal_status = LegalStatus::INDIVIDUAL;
         $this->name = $r->nom_adh;
         $this->surname = $r->prenom_adh;
         $this->nickname = $r->pseudo_adh;
@@ -1223,7 +1224,10 @@ class Adherent
                 if ($value !== null && $value !== true && $value !== false && !is_object($value)) {
                     $value = stripslashes($value);
                 }
-                $this->$prop = $value;
+                if (isset($this->$prop) && gettype($this->$prop)==="integer") 
+                    $this->$prop = (int) $value;
+                else
+                    $this->$prop = $value;
 
                 // now, check validity
                 if ($value !== null && $value != '') {
@@ -1403,7 +1407,7 @@ class Adherent
                 break;
             case 'id_legal_status':
                 if ($value !== '') {
-                    $this->id_legal_status = intval($value);
+                    $this->id_legal_status = (int) $value;
                 }
                 break;
             case 'email_adh':
