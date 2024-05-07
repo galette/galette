@@ -14,7 +14,7 @@ use Galette\Entity\Base\EntityFromDb;
 class LegalStatus extends EntityFromDb
 {
     public const TABLE = 'legalstatus';
-    public const PK = 'id_legalstatus';
+    public const PK = 'id_legal_status';
 
     public const INDIVIDUAL = 1; //physical member
 
