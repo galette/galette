@@ -87,30 +87,30 @@ class Title extends TestCase
         global $zdb;
         $zdb = $this->zdb;
 
-        $title = new \Galette\Entity\Title();
+        $title = new \Galette\Entity\Title($this->zdb);
 
         $title->short = 'Te.';
         $title->long = 'Test';
-        $this->assertTrue($title->store($this->zdb));
+        $this->assertTrue($title->store());
 
         $id = $title->id;
         $this->remove[] = $id;
-        $title = new \Galette\Entity\Title($id); //reload
+        $title = new \Galette\Entity\Title($this->zdb, $id); //reload
 
         //$title->long = 'Test title 🤘'; //FIXME: works locally, fails on gh actions...
         $title->long = 'Test title';
-        $this->assertTrue($title->store($this->zdb));
-        $title = new \Galette\Entity\Title($id); //reload
+        $this->assertTrue($title->store());
+        $title = new \Galette\Entity\Title($this->zdb, $id); //reload
 
         //$this->assertSame('Test title 🤘', $title->long); //FIXME: works locally, fails on gh actions...
         $this->assertSame('Test title', $title->long);
 
-        $title = new \Galette\Entity\Title($id); //reload
-        $this->assertTrue($title->remove($this->zdb));
+        $title = new \Galette\Entity\Title($this->zdb, $id); //reload
+        $this->assertTrue($title->remove());
 
-        $title = new \Galette\Entity\Title(\Galette\Entity\Title::MR);
+        $title = new \Galette\Entity\Title($this->zdb, \Galette\Entity\Title::MR);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('You cannot delete Mr. or Mrs. titles!');
-        $title->remove($this->zdb);
+        $title->remove();
     }
 }
