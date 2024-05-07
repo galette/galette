@@ -11,7 +11,7 @@ CREATE TABLE galette_adherents (
   prenom_adh varchar(255) NOT NULL default '',
   pseudo_adh varchar(255) NOT NULL default '',
   societe_adh varchar(200) default NULL,
-  id_legal_status int(10) unsigned NOT NULL default '1',  
+  id_legal_status int(10) unsigned DEFAULT NULL,  
   titre_adh int(10) unsigned default NULL,
   ddn_adh date default '1901-01-01',
   sexe_adh tinyint(1) NOT NULL default '0',
@@ -45,7 +45,7 @@ CREATE TABLE galette_adherents (
   UNIQUE (login_adh),
   FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title) ON DELETE RESTRICT ON UPDATE CASCADE,
-  FOREIGN KEY (id_legal_status) REFERENCES galette_legalstatus (id_legalstatus) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY (id_legal_status) REFERENCES galette_legalstatus (id_legal_status) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (parent_id) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
@@ -99,10 +99,10 @@ CREATE TABLE galette_titles (
 
 DROP TABLE IF EXISTS galette_legalstatus;
 CREATE TABLE galette_legalstatus (
-  id_legalstatus int(10) unsigned NOT NULL auto_increment,
+  id_legal_status int(10) unsigned NOT NULL auto_increment,
   short_label varchar(10) NOT NULL default '',
   long_label varchar(100) default '',
-  PRIMARY KEY (id_legalstatus)
+  PRIMARY KEY (id_legal_status)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 DROP TABLE IF EXISTS galette_types_cotisation;
