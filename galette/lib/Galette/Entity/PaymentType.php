@@ -94,8 +94,7 @@ class PaymentType extends EntityFromDb
         if ($this->isSystemType()) {
             throw new \RuntimeException(_T("You cannot delete system payment types!"));
         }
-        $ok = parent::remove();
-        return $ok;
+        return parent::remove();
     }
 
 
