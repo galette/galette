@@ -712,6 +712,7 @@ class Adherent extends GaletteTestCase
      */
     public static function nameCaseProvider(): array
     {
+        global $zdb;
         return [
             [
                 'name' => 'Doe',
@@ -732,7 +733,7 @@ class Adherent extends GaletteTestCase
             [
                 'name' => 'Doe',
                 'surname' => 'John',
-                'title' => new \Galette\Entity\Title(\Galette\Entity\Title::MR),
+                'title' => new \Galette\Entity\Title($zdb, \Galette\Entity\Title::MR),
                 'id' => false,
                 'nick' => false,
                 'expected' => 'Mr. DOE John'
@@ -756,7 +757,7 @@ class Adherent extends GaletteTestCase
             [
                 'name' => 'Doe',
                 'surname' => 'John',
-                'title' => new \Galette\Entity\Title(\Galette\Entity\Title::MR),
+                'title' => new \Galette\Entity\Title($zdb, \Galette\Entity\Title::MR),
                 'id' => 42,
                 'nick' => 'foo',
                 'expected' => 'Mr. DOE John (foo, 42)'
