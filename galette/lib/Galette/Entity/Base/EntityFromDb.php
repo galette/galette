@@ -81,9 +81,9 @@ class EntityFromDb
      *
      * @param int $id Identifier
      *
-     * @return void
+     * @return bool true if loaded
      */
-    public function load(int $id): void
+    public function load(int $id): bool
     {
         try {
             $select = $this->zdb->select($this->TABLE);
@@ -94,6 +94,7 @@ class EntityFromDb
 
             if ($res) {
                 $this->loadFromRs($res);
+                return true;
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -103,6 +104,7 @@ class EntityFromDb
             );
             throw $e;
         }
+        return false;
     }
 
     /**
