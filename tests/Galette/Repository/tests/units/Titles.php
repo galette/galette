@@ -44,8 +44,10 @@ class Titles extends GaletteTestCase
         parent::setUp();
 
         $titles = new \Galette\Repository\Titles($this->zdb);
-        $res = $titles->installInit();
-        $this->assertTrue($res);
+        if (count($titles->getList()) === 0) {
+            $res = $titles->installInit();
+            $this->assertTrue($res);
+        }
     }
 
     /**
@@ -87,6 +89,9 @@ class Titles extends GaletteTestCase
     public function testGetList(): void
     {
         $titles = new \Galette\Repository\Titles($this->zdb);
+        
+        //reinstall payment types
+        $titles->installInit(false);
 
         $list = $titles->getList();
         $this->assertCount(2, $list);
@@ -100,10 +105,10 @@ class Titles extends GaletteTestCase
         }
 
         //add another one
-        $title = new \Galette\Entity\Title();
+        $title = new \Galette\Entity\Title($this->zdb);
         $title->short = 'Te.';
         $title->long = 'Test';
-        $this->assertTrue($title->store($this->zdb));
+        $this->assertTrue($title->store());
 
         $id = $title->id;
         $this->remove[] = $id;
@@ -112,7 +117,7 @@ class Titles extends GaletteTestCase
         $this->assertCount(3, $list);
 
         //reinstall payment types
-        $titles->installInit();
+        $titles->installInit(false);
 
         $list = $titles->getList();
         $this->assertCount(2, $list);
