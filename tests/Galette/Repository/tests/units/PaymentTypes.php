@@ -41,6 +41,10 @@ class PaymentTypes extends GaletteTestCase
     {
         parent::setUp();
 
+        //You can't delete a payment if it's used in contributions table
+        $delete = $this->zdb->delete('cotisations');
+        $this->zdb->execute($delete);
+
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
         $res = $types->installInit(false);
         $this->assertTrue($res);
