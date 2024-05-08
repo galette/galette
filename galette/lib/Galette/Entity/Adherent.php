@@ -1219,25 +1219,20 @@ class Adherent
                 if ($value !== null && $value !== true && $value !== false && !is_object($value)) {
                     $value = stripslashes($value);
                 }
-                $this->$prop = $value;
 
                 // now, check validity
-                if ($value !== null && $value != '') {
-                    if ($key !== 'mdp_adh') {
-                        $this->validate($key, $value, $values);
-                    }
-                } elseif (empty($this->id)) {
-                    //ensure login and password are not empty
-                    if (($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
+                if ($key !== 'mdp_adh') { //mdp_adh is handled after all data has been set
+                    if (empty($this->id) && empty($value) && ($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
                         $p = new Password($this->zdb);
                         $generated_value = $p->makeRandomPassword(15);
                         if ($key == 'login_adh') {
                             //'@' is not permitted in logins
-                            $this->$prop = str_replace('@', 'a', $generated_value);
+                            $value = str_replace('@', 'a', $generated_value);
                         } else {
-                            $this->$prop = $generated_value;
+                            $value = $generated_value;
                         }
                     }
+                    $this->validate($key, $value, $values);
                 }
             }
         }
@@ -1330,6 +1325,10 @@ class Adherent
 
         if ($value === null || (is_string($value) && trim($value) == '')) {
             //empty values are OK
+            if ($field == 'parent_id') {
+                //parent_id cannot be a string
+                $value = null;
+            }
             $this->$prop = $value;
             return;
         }
@@ -1398,6 +1397,7 @@ class Adherent
                 }
                 break;
             case 'email_adh':
+                $this->$prop = $value;
                 if (!GaletteMail::isValidEmail($value)) {
                     $this->errors[] = _T("- Non-valid E-Mail address!") .
                         ' (' . $this->getFieldLabel($field) . ')';
@@ -1428,6 +1428,7 @@ class Adherent
                 }
                 break;
             case 'login_adh':
+                $this->$prop = $value;
                 /** FIXME: add a preference for login length */
                 if (strlen($value) < 2) {
                     $this->errors[] = str_replace(
@@ -1543,6 +1544,9 @@ class Adherent
                     $this->$prop = $pid;
                     $this->loadParent();
                 }
+                break;
+            default:
+                $this->$prop = $value;
                 break;
         }
     }
