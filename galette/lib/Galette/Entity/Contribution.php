@@ -962,7 +962,7 @@ class Contribution
      */
     public function isFee(): bool
     {
-        return $this->is_cotis;
+        return $this->is_cotis ?? false;
     }
 
     /**
