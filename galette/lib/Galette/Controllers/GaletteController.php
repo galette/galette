@@ -530,7 +530,7 @@ class GaletteController extends AbstractController
                 'category'      =>  $post[$field . '_category'],
                 'visible'       =>  $post[$field . '_visible'],
                 'required'      =>  $required,
-                'width_in_forms'  =>  $post[$field . '_width_in_forms']
+                'width_in_forms'  =>  $post[$field . '_width_in_forms'] ?? 1
             );
             $pos++;
         }
