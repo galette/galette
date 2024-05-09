@@ -76,6 +76,7 @@ use Galette\Features\Dynamics;
  * @property string $creation_date Localized creation date
  * @property string $modification_date Localized modification date
  * @property string $due_date Localized due date
+ * @property string $rdue_date Due date
  * @property string $others_infos
  * @property string $others_infos_admin
  * @property Picture $picture
@@ -1770,7 +1771,7 @@ class Adherent
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
             'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
-            'rbirthdate', 'sgender', 'contribstatus',
+            'rbirthdate', 'sgender', 'contribstatus', 'rdue_date'
         );
 
         $socials = array('website', 'msn', 'jabber', 'icq');
@@ -1835,6 +1836,8 @@ class Adherent
                     return $this->getNameWithCase($this->name ?? '', $this->surname ?? '');
                 case 'rbirthdate':
                     return $this->birthdate ?? null;
+                case 'rdue_date':
+                    return $this->due_date ?? null;
                 case 'sgender':
                     switch ($this->gender) {
                         case self::MAN:
