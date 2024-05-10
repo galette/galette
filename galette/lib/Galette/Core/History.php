@@ -212,6 +212,7 @@ class History
      */
     private function buildLists(Select $select): void
     {
+        $this->users = [];
         try {
             $usersSelect = clone $select;
             $usersSelect->reset($usersSelect::COLUMNS);
@@ -312,8 +313,7 @@ class History
                 );
             }
 
-            //@phpstan-ignore-next-line
-            if ($this->filters->user_filter != null) {
+            if ($this->filters->user_filter !== null && $this->filters->user_filter != '0') {
                 if ($this->filters->user_filter === _T('None')) {
                     $this->filters->user_filter = '';
                 }
@@ -323,8 +323,7 @@ class History
                 );
             }
 
-            //@phpstan-ignore-next-line
-            if ($this->filters->action_filter != null && $this->filters->action_filter != '0') {
+            if ($this->filters->action_filter !== null && $this->filters->action_filter != '0') {
                 $select->where->equalTo(
                     'action_log',
                     $this->filters->action_filter
