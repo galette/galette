@@ -221,9 +221,12 @@ class History
 
             $results = $this->zdb->execute($usersSelect);
 
-            $this->users = [];
             foreach ($results as $result) {
-                $this->users[] = $result->adh_log;
+                $ulabel = $result->adh_log;
+                if ($ulabel === '') {
+                    $ulabel = _T('None');
+                }
+                $this->users[] = $ulabel;
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -310,7 +313,10 @@ class History
             }
 
             //@phpstan-ignore-next-line
-            if ($this->filters->user_filter != null && $this->filters->user_filter != '0') {
+            if ($this->filters->user_filter != null) {
+                if ($this->filters->user_filter === _T('None')) {
+                    $this->filters->user_filter = '';
+                }
                 $select->where->equalTo(
                     'adh_log',
                     $this->filters->user_filter

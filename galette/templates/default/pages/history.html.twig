@@ -92,7 +92,7 @@
                 {% if users|length > 0 %}
                     <label for="user_filter">{{ _T("Member") }}</label>
                     <select name="user_filter" id="user_filter" class="ui search dropdown">
-                        <option value="0"{% if history.filters.user_filter == 0 %} selected="selected"{% endif %}>{{ _T("Select an user") }}</option>
+                        <option value="0">{{ _T("Select an user") }}</option>
                         {% for user in users %}
                             <option value="{{ user }}"{% if history.filters.user_filter == user %} selected="selected"{% endif %}>{{ user }}</option>
                         {% endfor %}

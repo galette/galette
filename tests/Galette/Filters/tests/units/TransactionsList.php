@@ -19,7 +19,7 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Galette\Entity\test\units;
+namespace Galette\Filters\test\units;
 
 use Galette\GaletteTestCase;
 

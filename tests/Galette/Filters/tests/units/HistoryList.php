@@ -19,7 +19,7 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Galette\Entity\test\units;
+namespace Galette\Filters\test\units;
 
 use Galette\GaletteTestCase;
 
@@ -43,7 +43,7 @@ class HistoryList extends GaletteTestCase
         $this->assertSame(\Galette\Filters\HistoryList::ORDER_DESC, $filters->ordered);
         $this->assertNull($filters->start_date_filter);
         $this->assertNull($filters->end_date_filter);
-        $this->assertSame('0', $filters->user_filter);
+        $this->assertNull($filters->user_filter);
         $this->assertNull($filters->action_filter);
     }
 
@@ -79,7 +79,7 @@ class HistoryList extends GaletteTestCase
         $this->assertSame(\Galette\Filters\HistoryList::ORDER_ASC, $filters->ordered);
 
         //set filter on user
-        $filters->user_filter = 42;
+        $filters->user_filter = '42';
         $this->assertSame('42', $filters->user_filter);
 
         //reinit and test defaults are back

@@ -102,7 +102,7 @@ class HistoryList extends Pagination
         parent::reinit();
         $this->start_date_filter = null;
         $this->end_date_filter = null;
-        $this->user_filter = '0';
+        $this->user_filter = null;
         $this->action_filter = null;
     }
 
