@@ -360,7 +360,9 @@ class Adherent
         }
         $this->company_name = $r->societe_adh;
         $this->id_legal_status = (int)$r->id_legal_status;
-        if($this->id_legal_status ===null) $this->id_legal_status = LegalStatus::INDIVIDUAL;
+        if ($this->id_legal_status === null) {
+            $this->id_legal_status = LegalStatus::INDIVIDUAL;
+        }
         $this->name = $r->nom_adh;
         $this->surname = $r->prenom_adh;
         $this->nickname = $r->pseudo_adh;
@@ -1224,10 +1226,11 @@ class Adherent
                 if ($value !== null && $value !== true && $value !== false && !is_object($value)) {
                     $value = stripslashes($value);
                 }
-                if (isset($this->$prop) && gettype($this->$prop)==="integer") 
+                if (isset($this->$prop) && gettype($this->$prop) === "integer") {
                     $this->$prop = (int) $value;
-                else
+                } else {
                     $this->$prop = $value;
+                }
 
                 // now, check validity
                 if ($value !== null && $value != '') {

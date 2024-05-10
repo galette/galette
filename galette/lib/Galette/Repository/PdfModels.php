@@ -38,7 +38,7 @@ use Galette\Entity\PdfReceipt;
 class PdfModels extends Repository
 {
     /** @var array<int|string,mixed> */
-    private array $defaults = [];  
+    private array $defaults = [];
 
     /**
      * Get models list

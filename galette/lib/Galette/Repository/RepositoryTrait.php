@@ -205,13 +205,13 @@ trait RepositoryTrait
     /**
      * Convert a keyvalue pair array <ID, VALUE> to simple array for DB Insert [[ID=>k,$COL=>v]]
      *
-     * @param array $array Array to convert
-     * @param string $idColumn  ID column name in DB 
-     * @param string $valueColumn Value column name in DB 
+     * @param array  $array       Array to convert
+     * @param string $idColumn    ID column name in DB
+     * @param string $valueColumn Value column name in DB
      *
      * @return array
      */
-    static public function convertArrayKeyValueForDBInsert(array $values, $idColumn, $valueColumn): array
+    public static function convertArrayKeyValueForDBInsert(array $values, string $idColumn, string $valueColumn): array
     {
         $ret = [];
         foreach ($values as $k => $v) {

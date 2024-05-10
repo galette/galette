@@ -40,7 +40,7 @@ class EntityFromDb
      * @param array                                    $options          add virtual properties, override or valid a value...
      * @param int|ArrayObject<string, int|string>|null $args             Arguments
      */
-    public function __construct($zdb, $tableDescription, $options, int|ArrayObject $args = null)
+    public function __construct(DB $zdb, array $tableDescription, array $options, int|ArrayObject $args = null)
     {
         $this->entity = basename(str_replace('\\', '/', get_class($this)));
 
@@ -317,7 +317,7 @@ class EntityFromDb
      *
      * @return void
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         $this->setValue($name, $value);
     }
@@ -330,7 +330,7 @@ class EntityFromDb
      *
      * @return void
      */
-    public function setValue(string $name, $value): void
+    public function setValue(string $name, mixed $value): void
     {
         if (in_array($name, $this->tableFieldsReversed)) {
             if ($this->getOption("$name:warningnoempty", $option) && $option === true && $value !== null && strlen(trim($value)) == 0) {
@@ -387,7 +387,7 @@ class EntityFromDb
     * @param array  $arguments getXXXX([$arguments])
     * @return mixed optional returned value
     */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         $arg1 = (count($arguments) >= 1) ? $arguments[0] : false;
         //All getters

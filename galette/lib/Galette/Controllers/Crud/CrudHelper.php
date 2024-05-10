@@ -20,7 +20,7 @@ class CrudHelper
      *
      * @return void
      */
-    public static function addRoutesBasicEntityCRUD(App $app, string $controllerClassName, $authenticate)
+    public static function addRoutesBasicEntityCRUD(App $app, string $controllerClassName, $authenticate): void
     {
         //Galette\Controllers\Crud\TitlesController -> Title
         $entity = str_replace(['Controller', '\\'], ['', '/'], $controllerClassName);
