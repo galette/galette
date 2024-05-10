@@ -3,6 +3,7 @@
 namespace Galette\Controllers\Crud;
 
 use Slim\App;
+use Galette\Middleware\Authenticate;
 
 /**
  * CrudHelper
@@ -14,13 +15,13 @@ class CrudHelper
     /**
      * Ajouter des routes automatiquement pour un object Entity via le nom de son controller
      *
-     * @param Slim\App $app                 Slim application
-     * @param string   $controllerClassName controller class name AController::class
-     * @param $authenticate        Middleware for user authentification
+     * @param Slim\App     $app                 Slim application
+     * @param string       $controllerClassName controller class name AController::class
+     * @param Authenticate $authenticate        Middleware for user authentification
      *
      * @return void
      */
-    public static function addRoutesBasicEntityCRUD(App $app, string $controllerClassName, $authenticate): void
+    public static function addRoutesBasicEntityCRUD(App $app, string $controllerClassName, Authenticate $authenticate): void
     {
         //Galette\Controllers\Crud\TitlesController -> Title
         $entity = str_replace(['Controller', '\\'], ['', '/'], $controllerClassName);

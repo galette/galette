@@ -17,20 +17,20 @@ class EntityFromDb
 {
     use I18n;
 
-    protected $zdb;
+    protected DB $zdb;
 
-    protected $tableName;
-    protected $tableFields;
-    protected $tableFieldsReversed;
-    protected $options;
-    protected $values = [];
-    protected $oldValues = [];
-    private $entity = self::class;
-    private $i18nProperties = [];
+    protected string $tableName;
+    protected array $tableFields;
+    protected array $tableFieldsReversed;
+    protected array $options;
+    protected array $values = [];
+    protected array $oldValues = [];
+    private string $entity = self::class;
+    private array $i18nProperties = [];
 
 
-    protected $TABLE;
-    protected $PK;
+    protected string $TABLE;
+    protected string $PK;
 
     /**
      * Main constructor

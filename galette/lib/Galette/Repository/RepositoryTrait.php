@@ -18,12 +18,12 @@ use Analog\Analog;
  */
 trait RepositoryTrait
 {
-    private $entityClassName;
+    private string $entityClassName;
 
     /**
      * Get list
      *
-     * @return array<int, stdClass>|ResultSet
+     * @return array<int, \stdClass>|ResultSet
      */
     public function getList(): array|ResultSet
     {
@@ -80,7 +80,7 @@ trait RepositoryTrait
      * Count all entities
      *
      *
-     * @return int a count, 0 isf empty
+     * @return int a count, 0 is empty
      */
     public function countAll(): int
     {
@@ -205,7 +205,7 @@ trait RepositoryTrait
     /**
      * Convert a keyvalue pair array <ID, VALUE> to simple array for DB Insert [[ID=>k,$COL=>v]]
      *
-     * @param array  $array       Array to convert
+     * @param array  $values      Array to convert
      * @param string $idColumn    ID column name in DB
      * @param string $valueColumn Value column name in DB
      *
