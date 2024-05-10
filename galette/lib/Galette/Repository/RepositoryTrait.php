@@ -101,6 +101,20 @@ trait RepositoryTrait
     }
 
     /**
+     * Remove all entities
+     *
+     *
+     * @return boolean
+     */
+    public function removeAll(): bool
+    {
+        $tableName = constant($this->entity . '::TABLE');
+        $delete = $this->zdb->delete($tableName);
+        $this->zdb->execute($delete);
+        return true;
+    }
+
+    /**
      * Add default values in database
      *
      * @param boolean $check_first Check first if it seems initialized, defaults to true
@@ -135,8 +149,7 @@ trait RepositoryTrait
                 $this->zdb->connection->beginTransaction();
 
                 //first, we drop all values
-                $delete = $this->zdb->delete($TABLE);
-                $this->zdb->execute($delete);
+                $this->removeAll();
 
                 $this->zdb->handleSequence(
                     $TABLE,
