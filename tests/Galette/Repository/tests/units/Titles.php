@@ -89,7 +89,7 @@ class Titles extends GaletteTestCase
     public function testGetList(): void
     {
         $titles = new \Galette\Repository\Titles($this->zdb);
-        
+
         //reinstall payment types
         $titles->installInit(false);
 
