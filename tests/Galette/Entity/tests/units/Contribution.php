@@ -386,7 +386,7 @@ class Contribution extends GaletteTestCase
         // Second, test with beginning of membership date
         $preferences->pref_beg_membership = '29/05';
         $due_date = new \DateTime();
-        $due_date->setDate(date('Y'), 5, 28);
+        $due_date->setDate((int)date('Y'), 5, 28);
         if ($due_date <= new \DateTime()) {
             $due_date->add(new \DateInterval('P1Y'));
         }
@@ -421,7 +421,7 @@ class Contribution extends GaletteTestCase
 
         //unset pref_beg_membership and pref_membership_ext
         $preferences->pref_beg_membership = '';
-        $preferences->pref_membership_ext = '';
+        $preferences->pref_membership_ext = 0;
 
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!');

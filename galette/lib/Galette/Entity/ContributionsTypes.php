@@ -138,7 +138,7 @@ class ContributionsTypes
     {
         $this->id = $r->{self::PK};
         $this->label = $r->libelle_type_cotis;
-        $this->amount = $r->amount;
+        $this->amount = (float)$r->amount;
         $this->extension = (int)$r->cotis_extension;
     }
 

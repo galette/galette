@@ -182,6 +182,9 @@ class TransactionsList extends Pagination
                 case 'end_date_filter':
                     $this->setFilterDate($name, $value, $name === 'start_date_filter');
                     break;
+                case 'filtre_cotis_adh':
+                    $this->$name = (int)$value;
+                    break;
                 default:
                     $this->$name = $value;
                     break;

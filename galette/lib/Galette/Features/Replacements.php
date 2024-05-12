@@ -688,9 +688,9 @@ trait Replacements
     /**
      * Set dynamic fields and proceed related replacements
      *
-     * @param string              $form_name      Form name
-     * @param array<string,mixed> $dynamic_fields Dynamic fields
-     * @param ?object             $object         Related object (Adherent, Contribution, ...)
+     * @param string                  $form_name      Form name
+     * @param array<string|int,mixed> $dynamic_fields Dynamic fields
+     * @param ?object                 $object         Related object (Adherent, Contribution, ...)
      *
      * @return self
      */
@@ -712,7 +712,7 @@ trait Replacements
             if (preg_match("/^{(INPUT_|VALUE_)?DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
                 /** dynamic field value */
                 $capacity = trim($match[1], '_');
-                $field_id    = $match[2];
+                $field_id    = (int)$match[2];
                 $field_name  = $dynamic_fields[$field_id]->getName();
                 $field_type  = $dynamic_fields[$field_id]->getType();
                 $field_values = [];

@@ -130,9 +130,9 @@ trait Dynamics
             }
 
             foreach ($dynamic_fields as $key => $dfield_values) {
-                $field_id = $dfield_values['field_id'];
+                $field_id = (int)$dfield_values['field_id'];
                 $value = $dfield_values['value'];
-                $val_index = $dfield_values['val_index'];
+                $val_index = (int)$dfield_values['val_index'];
 
                 if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
                     $this->errors[] = str_replace(

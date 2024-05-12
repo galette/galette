@@ -113,7 +113,7 @@ class Preferences extends TestCase
                     $this->assertSame(date('Y'), $value);
                     break;
                 default:
-                    $this->assertEquals($expected, $value);
+                    $this->assertEquals($expected, $value, 'Wrong value for ' . $key);
                     break;
             }
         }

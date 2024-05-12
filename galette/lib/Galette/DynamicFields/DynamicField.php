@@ -633,7 +633,7 @@ abstract class DynamicField
             $this->errors[] = _T("- Field name already used.");
         }
 
-        if ($this->hasWidth() && isset($values['field_width']) && trim($values['field_width']) != '') {
+        if ($this->hasWidth() && isset($values['field_width'])) {
             if (!is_numeric($values['field_width']) || $values['field_width'] <= 0) {
                 $this->errors[] = _T("- Width must be a positive integer!");
             } else {
@@ -641,7 +641,7 @@ abstract class DynamicField
             }
         }
 
-        if ($this->hasHeight() && isset($values['field_height']) && trim($values['field_height']) != '') {
+        if ($this->hasHeight() && isset($values['field_height'])) {
             if (!is_numeric($values['field_height']) || $values['field_height'] <= 0) {
                 $this->errors[] = _T("- Height must be a positive integer!");
             } else {
@@ -649,7 +649,7 @@ abstract class DynamicField
             }
         }
 
-        if ($this->hasSize() && isset($values['field_size']) && trim($values['field_size']) != '') {
+        if ($this->hasSize() && isset($values['field_size'])) {
             if (!is_numeric($values['field_size']) || $values['field_size'] <= 0) {
                 $this->errors[] = _T("- Size must be a positive integer!");
             } else {
@@ -657,7 +657,7 @@ abstract class DynamicField
             }
         }
 
-        if ($this->hasMinSize() && isset($values['field_min_size']) && trim($values['field_min_size']) != '') {
+        if ($this->hasMinSize() && isset($values['field_min_size'])) {
             if (!is_numeric($values['field_min_size']) || $values['field_min_size'] <= 0) {
                 $this->errors[] = _T("- Min size must be a positive integer!");
             } else {
@@ -676,7 +676,7 @@ abstract class DynamicField
             }
         }
 
-        if (isset($values['field_repeat']) && trim($values['field_repeat']) != '') {
+        if (isset($values['field_repeat'])) {
             if (!is_numeric($values['field_repeat'])) {
                 $this->errors[] = _T("- Repeat must be an integer!");
             } else {

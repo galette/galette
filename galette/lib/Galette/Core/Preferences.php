@@ -50,7 +50,7 @@ use Galette\Repository\Members;
  * @property string $pref_pays Country
  * @property integer $pref_postal_address Postal address to use, one of self::POSTAL_ADDRESS*
  * @property integer $pref_postal_staff_member Staff member ID from which retrieve postal address
- * @property boolean $pref_disable_members_socials
+ * @property boolean $pref_disable_members_socials Disable social networks for members
  * @property string $pref_lang Default instance language
  * @property integer $pref_numrows Default number of rows in lists
  * @property integer $pref_log History, one of self::LOG_*
@@ -506,7 +506,11 @@ class Preferences
         // obtain fields
         foreach ($this->getFieldsNames() as $fieldname) {
             if (isset($values[$fieldname])) {
-                $value = trim($values[$fieldname]);
+                if (is_string($values[$fieldname])) {
+                    $value = trim($values[$fieldname]);
+                } else {
+                    $value = $values[$fieldname];
+                }
             } else {
                 $value = "";
             }
@@ -590,7 +594,7 @@ class Preferences
 
         // missing required fields?
         foreach ($this->required as $val) {
-            if (!isset($values[$val]) || isset($values[$val]) && trim($values[$val]) == '') {
+            if (empty($values[$val])) {
                 $this->errors[] = str_replace(
                     '%field',
                     $val,
@@ -984,6 +988,61 @@ class Preferences
     {
         $forbidden = array('defaults');
         $virtuals = array('vpref_email', 'vpref_email_newadh');
+        $types = [
+            'int' => [
+                'pref_card_address',
+                'pref_card_hsize',
+                'pref_card_hspace',
+                'pref_card_marges_h',
+                'pref_card_marges_v',
+                'pref_card_vsize',
+                'pref_card_vspace',
+                'pref_default_paymenttype',
+                'pref_etiq_marges_v',
+                'pref_etiq_marges_h',
+                'pref_etiq_hspace',
+                'pref_etiq_vspace',
+                'pref_etiq_hsize',
+                'pref_etiq_vsize',
+                'pref_etiq_cols',
+                'pref_etiq_rows',
+                'pref_etiq_corps',
+                'pref_filter_account',
+                'pref_log',
+                'pref_mail_method',
+                'pref_membership_ext',
+                'pref_numrows',
+                'pref_postal_address',
+                'pref_postal_staff_member',
+                'pref_password_length',
+                'pref_password_strength',
+                'pref_publicpages_visibility',
+                'pref_redirect_on_create',
+                'pref_statut'
+            ],
+            'bool' => [
+                'pref_bool_create_member',
+                'pref_bool_groupsmanagers_create_member',
+                'pref_bool_groupsmanagers_edit_member',
+                'pref_bool_groupsmanagers_edit_groups',
+                'pref_bool_groupsmanagers_exports',
+                'pref_bool_groupsmanagers_mailings',
+                'pref_bool_mailadh',
+                'pref_bool_mailowner',
+                'pref_bool_publicpages',
+                'pref_bool_selfsubscribe',
+                'pref_bool_wrap_mails',
+                'pref_disable_members_socials',
+                'pref_editor_enabled',
+                'pref_etiq_border',
+                'pref_force_picture_ratio',
+                'pref_mail_smtp_auth',
+                'pref_mail_smtp_secure',
+                'pref_mail_allow_unsecure',
+                'pref_password_blacklist',
+                'pref_show_id',
+            ]
+        ];
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             if (
@@ -998,7 +1057,7 @@ class Preferences
                     $this->prefs[$name] = self::$defaults['pref_adhesion_form'];
                 }
                 $value = $this->prefs[$name];
-                if (TYPE_DB === \Galette\Core\Db::PGSQL) {
+                if (TYPE_DB === Db::PGSQL) {
                     if ($value === 'f') {
                         $value = false;
                     }
@@ -1007,6 +1066,14 @@ class Preferences
                 if (in_array($name, ['vpref_email', 'pref_email_newadh'])) {
                     $values = explode(',', $value);
                     $value = $values[0]; //take first as default
+                }
+
+                if (in_array($name, $types['int']) && $value !== '') {
+                    $value = (int)$value;
+                }
+
+                if (in_array($name, $types['bool']) && $value !== '') {
+                    $value = (bool)$value;
                 }
 
                 return $value;

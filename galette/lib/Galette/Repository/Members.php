@@ -1401,7 +1401,7 @@ class Members
                         $select->where($qry);
                     } else {
                         $qry .= 'LOWER(' . $prefix . $field . ') ' . $qop . ' ';
-                        $select->where($qry . $zdb->platform->quoteValue('%' . strtolower($cd) . '%'));
+                        $select->where($qry . $zdb->platform->quoteValue('%' . strtolower((string)$cd) . '%'));
                     }
                 }
             }
@@ -1412,7 +1412,7 @@ class Members
             && !isset($this->filters->free_search['empty'])
         ) {
             foreach ($this->filters->free_search as $fs) {
-                $fs['search'] = mb_strtolower($fs['search']);
+                $fs['search'] = mb_strtolower((string)$fs['search']);
                 $qop = null;
                 switch ($fs['qry_op']) {
                     case AdvancedMembersList::OP_EQUALS:

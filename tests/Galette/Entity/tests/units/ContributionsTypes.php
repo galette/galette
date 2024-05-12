@@ -95,11 +95,19 @@ class ContributionsTypes extends TestCase
 
         $this->assertSame(
             -2,
-            $ctype->add('annual fee', 10, false)
+            $ctype->add(
+                'annual fee',
+                10,
+                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
         );
 
         $this->assertTrue(
-            $ctype->add('Test contribution type', null, false)
+            $ctype->add(
+                'Test contribution type',
+                null,
+                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
         );
 
         $this->remove[] = $ctype->id;
@@ -131,11 +139,21 @@ class ContributionsTypes extends TestCase
 
         $this->assertSame(
             \Galette\Entity\ContributionsTypes::ID_NOT_EXITS,
-            $ctype->update(42, 'annual fee', 10, false)
+            $ctype->update(
+                42,
+                'annual fee',
+                10,
+                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
         );
 
         $this->assertTrue(
-            $ctype->update($id, 'Tested contribution type', 42, true)
+            $ctype->update(
+                $id,
+                'Tested contribution type',
+                42,
+                \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+            )
         );
 
         $this->assertSame(
@@ -148,7 +166,7 @@ class ContributionsTypes extends TestCase
 
         $this->assertSame('Tested contribution type', $test_ctype['libelle_type_cotis']);
         $this->assertSame(42.0, (float)$test_ctype['amount']);
-        $this->assertSame(1, $test_ctype['cotis_extension']);
+        $this->assertSame(\Galette\Entity\ContributionsTypes::DEFAULT_TYPE, $test_ctype['cotis_extension']);
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(

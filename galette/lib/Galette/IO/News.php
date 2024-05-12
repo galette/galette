@@ -238,7 +238,7 @@ class News
      */
     protected function allowURLFOpen(): bool
     {
-        return ini_get('allow_url_fopen');
+        return (bool)ini_get('allow_url_fopen');
     }
 
     /**

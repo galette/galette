@@ -513,15 +513,7 @@ class Adherent
     private function getDefaultStatus(): int
     {
         global $preferences;
-        if ($preferences->pref_statut != '') {
-            return $preferences->pref_statut;
-        } else {
-            Analog::log(
-                'Unable to get pref_statut; is it defined in preferences?',
-                Analog::ERROR
-            );
-            return Status::DEFAULT_STATUS;
-        }
+        return $preferences->pref_statut;
     }
 
     /**
@@ -1174,9 +1166,8 @@ class Adherent
 
             if (isset($values[$key])) {
                 $value = $values[$key];
-                if ($value !== true && $value !== false) {
-                    //@phpstan-ignore-next-line
-                    $value = trim($value ?? '');
+                if (is_string($value)) {
+                    $value = trim($value);
                 }
             } elseif (empty($this->id)) {
                 switch ($key) {
@@ -1217,7 +1208,7 @@ class Adherent
             // if the field is enabled, check it
             if (!in_array($key, $disabled)) {
                 // fill up the adherent structure
-                if ($value !== null && $value !== true && $value !== false && !is_object($value)) {
+                if (is_string($value)) {
                     $value = stripslashes($value);
                 }
 
@@ -1276,8 +1267,8 @@ class Adherent
             } else {
                 $owned_group = false;
                 foreach ($values['groups_adh'] as $group) {
-                    list($gid) = explode('|', $group);
-                    if ($login->isGroupManager($gid)) {
+                    list($gid) = explode('|', (string)$group);
+                    if ($login->isGroupManager((int)$gid)) {
                         $owned_group = true;
                     }
                 }
@@ -1330,6 +1321,16 @@ class Adherent
                 //parent_id cannot be a string
                 $value = null;
             }
+
+            $booleans = [
+                'bool_admin_adh',
+                'bool_exempt_adh',
+                'bool_display_info'
+            ];
+            if (in_array($field, $booleans) && $value !== null) {
+                $value = false;
+            }
+
             $this->$prop = $value;
             return;
         }
@@ -1385,6 +1386,12 @@ class Adherent
                         $this->getFieldLabel($field)
                     );
                 }
+                break;
+            //booleans
+            case 'bool_admin_adh':
+            case 'bool_exempt_adh':
+            case 'bool_display_info':
+                $this->$prop = (bool)$value;
                 break;
             case 'titre_adh':
                 if ($value !== '') {
@@ -1516,7 +1523,7 @@ class Adherent
                     if (!$result) {
                         $this->errors[] = str_replace(
                             '%id',
-                            $value,
+                            (string)$value,
                             _T("Status #%id does not exists in database.")
                         );
                         break;
@@ -1526,7 +1533,7 @@ class Adherent
                         'An error occurred checking status existence: ' . $e->getMessage(),
                         Analog::ERROR
                     );
-                    $this->errors[] = _T("An error has occurred while looking if status does exists.");
+                    throw $e;
                 }
                 break;
             case 'sexe_adh':

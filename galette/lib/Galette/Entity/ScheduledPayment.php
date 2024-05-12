@@ -126,7 +126,7 @@ class ScheduledPayment
         $this->payment_type = new PaymentType($this->zdb, $rs->id_paymenttype);
         $this->creation_date = $rs->creation_date;
         $this->scheduled_date = $rs->scheduled_date;
-        $this->amount = $rs->amount;
+        $this->amount = (float)$rs->amount;
         $this->is_paid = (bool)$rs->paid;
         $this->comment = $rs->comment;
     }
@@ -518,7 +518,7 @@ class ScheduledPayment
 
         $results = $this->zdb->execute($select);
         $result = $results->current();
-        return $result->allocation ?? 0;
+        return (float)($result->allocation ?? 0);
     }
 
     /**

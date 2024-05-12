@@ -180,8 +180,7 @@ class Login extends Authentication
                 'An error occurred: ' . $e->getMessage(),
                 Analog::WARNING
             );
-            Analog::log($e->getTrace(), Analog::ERROR);
-            return false;
+            throw $e;
         }
     }
 
@@ -226,12 +225,12 @@ class Login extends Authentication
         Analog::log('User `' . $row->login_adh . '` logged in.', Analog::INFO);
         $this->id = $row->id_adh;
         $this->login = $row->login_adh;
-        $this->admin = $row->bool_admin_adh;
+        $this->admin = (bool)$row->bool_admin_adh;
         $this->name = $row->nom_adh;
         $this->surname = $row->prenom_adh;
         $this->lang = $row->pref_lang;
         $this->i18n->changeLanguage($this->lang);
-        $this->active = $row->activite_adh;
+        $this->active = (bool)$row->activite_adh;
         $this->logged = true;
         if ($row->priorite_statut < Members::NON_STAFF_MEMBERS) {
             $this->staff = true;

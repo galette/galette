@@ -248,7 +248,7 @@ class Contributions
             $results = $this->zdb->execute($sumSelect);
             $result = $results->current();
             if ($result->contribsum) {
-                $this->sum = round($result->contribsum, 2);
+                $this->sum = round((float)$result->contribsum, 2);
             }
         } catch (Throwable $e) {
             Analog::log(

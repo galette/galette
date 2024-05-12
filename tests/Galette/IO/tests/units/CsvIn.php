@@ -208,7 +208,7 @@ class CsvIn extends GaletteTestCase
                                 ]
                             ];
 
-                            $dfield = $adh->getDynamicFields()->getValues($matches[1]);
+                            $dfield = $adh->getDynamicFields()->getValues((int)$matches[1]);
                             if (isset($dfield[0]['text_val'])) {
                                 //choice, add textual value
                                 $expected[0]['text_val'] = $values[$created[$field]];
@@ -216,7 +216,7 @@ class CsvIn extends GaletteTestCase
 
                             $this->assertEquals(
                                 $expected,
-                                $adh->getDynamicFields()->getValues($matches[1])
+                                $adh->getDynamicFields()->getValues((int)$matches[1])
                             );
                         } else {
                             throw new \RuntimeException("Unknown field $field");

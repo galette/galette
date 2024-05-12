@@ -335,7 +335,7 @@ class Members extends GaletteTestCase
 
         //search on member number
         $filters = new \Galette\Filters\MembersList();
-        $filters->filter_str = $this->mids[2];
+        $filters->filter_str = (string)$this->mids[2];
         $filters->field_filter = \Galette\Repository\Members::FILTER_ID;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
@@ -762,7 +762,7 @@ class Members extends GaletteTestCase
 
         $cdata += [
             'id_cotis' => $contrib->id,
-            'info_field_' . $cdf->getId() . '_1' => 2
+            'info_field_' . $cdf->getId() . '_1' => '2'
         ];
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());

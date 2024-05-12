@@ -288,7 +288,7 @@ class Contribution
             }
 
             $end_date = clone $next_begin_date;
-        } elseif ($preferences->pref_membership_ext != '') {
+        } elseif ($preferences->pref_membership_ext != '' && $preferences->pref_membership_ext != 0) {
             //case membership extension
             if ($this->extension == null) {
                 $this->extension = $preferences->pref_membership_ext;
@@ -428,15 +428,17 @@ class Contribution
             $prop = $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
-                $value = trim($values[$key]);
+                $value = $values[$key];
+                if (is_string($value)) {
+                    $value = trim($value);
+                }
             } else {
-                $value = '';
+                $value = null;
             }
 
             // if the field is enabled, check it
             if (!isset($disabled[$key])) {
-                // fill up the adherent structure
-                //$this->$prop = stripslashes($value); //not relevant here!
+                // fill up the contribution structure
 
                 // now, check validity
                 switch ($key) {
@@ -459,7 +461,8 @@ class Contribution
                         }
                         break;
                     case 'montant_cotis':
-                        $value = strtr($value, ',', '.');
+                        //FIXME: this is a hack to allow comma as decimal separator
+                        $value = strtr((string)$value, ',', '.');
                         if (!empty($value) || $value === '0') {
                             $this->amount = (double)$value;
                         }
@@ -1233,7 +1236,7 @@ class Contribution
                     break;
                 case 'amount':
                     if (is_numeric($value) && $value > 0) {
-                        $this->$name = $value;
+                        $this->$name = (float)$value;
                     } else {
                         Analog::log(
                             'Trying to set an amount with a non numeric value, ' .

@@ -109,11 +109,11 @@ class Password extends TestCase
         $this->zdb->execute($insert);
 
         if ($this->zdb->isPostgres()) {
-            return $this->zdb->driver->getLastGeneratedValue(
+            return (int)$this->zdb->driver->getLastGeneratedValue(
                 PREFIX_DB . 'adherents_id_seq'
             );
         } else {
-            return $this->zdb->driver->getLastGeneratedValue();
+            return (int)$this->zdb->driver->getLastGeneratedValue();
         }
     }
 

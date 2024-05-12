@@ -187,7 +187,7 @@ class Transactions extends GaletteTestCase
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\TransactionsList();
-        $filters->filtre_cotis_children = true;
+        $filters->filtre_cotis_children = $this->adh->id;
         $transactions = new \Galette\Repository\Transactions($this->zdb, $login, $filters);
         $list = $transactions->getList(true);
         $this->assertCount(1, $list);

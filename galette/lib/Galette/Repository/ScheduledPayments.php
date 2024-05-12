@@ -251,7 +251,7 @@ class ScheduledPayments
             $results = $this->zdb->execute($sumSelect);
             $result = $results->current();
             if ($result->scheduledsum) {
-                $this->sum = round($result->scheduledsum, 2);
+                $this->sum = round((float)$result->scheduledsum, 2);
             }
         } catch (Throwable $e) {
             Analog::log(

@@ -802,6 +802,9 @@ class Picture implements FileInterface
             }
         }
 
+        $h = (int)$h;
+        $w = (int)$w;
+
         // Resized image.
         $thumb = imagecreatetruecolor($w, $h);
 

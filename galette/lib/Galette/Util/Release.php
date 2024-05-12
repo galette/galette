@@ -124,7 +124,7 @@ class Release
                 if ($release === 'dev') {
                     continue;
                 }
-                if (version_compare($release, $latest ?? 0, '>')) {
+                if (version_compare($release, (string)($latest ?? 0), '>')) {
                     $latest = $release;
                 }
             }
@@ -185,7 +185,7 @@ class Release
      *
      * @return string
      */
-    protected function getDataTocache(): string
+    protected function getDataTocache(): ?string
     {
         return $this->latest;
     }

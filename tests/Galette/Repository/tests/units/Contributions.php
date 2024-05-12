@@ -209,7 +209,7 @@ class Contributions extends GaletteTestCase
 
         $filters = new \Galette\Filters\ContributionsList();
         $filters->date_field = \Galette\Filters\ContributionsList::DATE_END;
-        $filters->filtre_cotis_children = true;
+        $filters->filtre_cotis_children = $this->adh->id;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $login, $filters);
         $list = $contributions->getList(true);
         $this->assertCount(1, $list);

@@ -271,7 +271,7 @@ class Transaction
         $pk = self::PK;
         $this->id = $r->$pk;
         $this->date = $r->trans_date;
-        $this->amount = $r->trans_amount;
+        $this->amount = (float)$r->trans_amount;
         $this->description = $r->trans_desc;
         $adhpk = Adherent::PK;
         $this->member = (int)$r->$adhpk;
@@ -302,9 +302,12 @@ class Transaction
             $prop = $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
-                $value = trim($values[$key]);
+                $value = $values[$key];
+                if (is_string($value)) {
+                    $value = trim($value);
+                }
             } else {
-                $value = '';
+                $value = null;
             }
 
             // if the field is enabled, check it
@@ -320,7 +323,8 @@ class Transaction
                             $this->member = (int)$value;
                             break;
                         case 'trans_amount':
-                            $value = strtr($value, ',', '.');
+                            //FIXME: this is a hack to allow comma as decimal separator
+                            $value = strtr((string)$value, ',', '.');
                             $this->amount = (double)$value;
                             if (!is_numeric($value)) {
                                 $this->errors[] = _T("- The amount must be an integer!");
