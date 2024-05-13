@@ -203,7 +203,7 @@ class TitlesController extends CrudController
             }
         } else {
             if ($id === null) {
-                $error_detected[] = preg_replace(
+                $msg = preg_replace(
                     '(%s)',
                     $title->short,
                     _T("Title '%s' has been successfully added.")
