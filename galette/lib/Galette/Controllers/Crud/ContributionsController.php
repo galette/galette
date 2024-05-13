@@ -455,7 +455,7 @@ class ContributionsController extends CrudController
                     $filters->orderby = $value;
                     break;
                 case 'member':
-                    $filters->filtre_cotis_adh = ($value === 'all' ? null : $value);
+                    $filters->filtre_cotis_adh = ($value === 'all' ? null : (int)$value);
                     break;
             }
         }
@@ -1014,7 +1014,7 @@ class ContributionsController extends CrudController
 
         $class = '\\Galette\Repository\\' . ucwords($raw_type);
         $contribs = new $class($this->zdb, $this->login);
-        $rm = $contribs->remove($args['ids'] ?? $args['id'], $this->history);
+        $rm = $contribs->remove($args['ids'] ?? (int)$args['id'], $this->history);
         return $rm;
     }
 

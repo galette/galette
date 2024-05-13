@@ -1464,7 +1464,7 @@ class MembersController extends CrudController
                         case 'bool_admin_adh':
                         case 'bool_exempt_adh':
                         case 'bool_display_info':
-                            $post[$field->field_id] = 0;
+                            $post[$field->field_id] = false;
                             break;
                     }
                 }

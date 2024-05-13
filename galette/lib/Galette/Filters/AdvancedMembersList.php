@@ -449,7 +449,7 @@ class AdvancedMembersList extends MembersList
                     break;
                 case 'show_public_infos':
                     if (is_numeric($value)) {
-                        $this->$name = $value;
+                        $this->$name = (int)$value;
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for property `' . $name .

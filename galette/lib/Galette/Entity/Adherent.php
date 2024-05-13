@@ -1174,7 +1174,7 @@ class Adherent
                     case 'bool_admin_adh':
                     case 'bool_exempt_adh':
                     case 'bool_display_info':
-                        $value = 0;
+                        $value = false;
                         break;
                     case 'activite_adh':
                         //values that are set at object instantiation
@@ -1315,6 +1315,19 @@ class Adherent
 
         $prop = $this->fields[$field]['propname'];
 
+        $types = [
+            'int' => [
+                self::PK,
+                'titre_adh',
+            ],
+            'bool' => [
+                'bool_admin_adh',
+                'bool_exempt_adh',
+                'bool_display_info',
+                'activite_adh'
+            ]
+        ];
+
         if ($value === null || (is_string($value) && trim($value) == '')) {
             //empty values are OK
             if ($field == 'parent_id') {
@@ -1322,13 +1335,12 @@ class Adherent
                 $value = null;
             }
 
-            $booleans = [
-                'bool_admin_adh',
-                'bool_exempt_adh',
-                'bool_display_info'
-            ];
-            if (in_array($field, $booleans) && $value !== null) {
+            if (in_array($field, $types['bool']) && $value !== null) {
                 $value = false;
+            }
+
+            if (in_array($field, $types['int']) && $value !== null) {
+                $value = null;
             }
 
             $this->$prop = $value;
@@ -1386,12 +1398,6 @@ class Adherent
                         $this->getFieldLabel($field)
                     );
                 }
-                break;
-            //booleans
-            case 'bool_admin_adh':
-            case 'bool_exempt_adh':
-            case 'bool_display_info':
-                $this->$prop = (bool)$value;
                 break;
             case 'titre_adh':
                 if ($value !== '') {
@@ -1554,6 +1560,13 @@ class Adherent
                 }
                 break;
             default:
+                if (in_array($field, $types['int'])) {
+                    $value = (int)$value;
+                }
+                if (in_array($field, $types['bool'])) {
+                    $value = (bool)$value;
+                }
+
                 $this->$prop = $value;
                 break;
         }

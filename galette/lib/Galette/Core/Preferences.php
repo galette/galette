@@ -594,7 +594,7 @@ class Preferences
 
         // missing required fields?
         foreach ($this->required as $val) {
-            if (empty($values[$val])) {
+            if (!isset($values[$val]) || is_string($values[$val]) && trim($values[$val]) == '') {
                 $this->errors[] = str_replace(
                     '%field',
                     $val,

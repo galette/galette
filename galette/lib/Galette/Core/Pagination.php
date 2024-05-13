@@ -448,7 +448,7 @@ abstract class Pagination
             case 'show':
                 if (
                     $value == 'all'
-                    || preg_match('/[[:digit:]]/', $value)
+                    || preg_match('/[[:digit:]]/', (string)$value)
                     && $value >= 0
                 ) {
                     $this->$name = (int)$value;

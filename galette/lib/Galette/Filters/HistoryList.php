@@ -35,7 +35,7 @@ use Galette\Core\Pagination;
  * @property ?string $raw_start_date_filter
  * @property ?string $end_date_filter
  * @property ?string $raw_end_date_filter
- * @property ?string  $user_filter
+ * @property ?string $user_filter
  * @property ?string $action_filter
  */
 

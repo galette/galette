@@ -607,7 +607,7 @@ abstract class DynamicField
             $this->errors[] = _T('Missing required field permissions!');
         } else {
             if (in_array($values['field_perm'], array_keys(self::getPermissionsList()))) {
-                $this->permission = $values['field_perm'];
+                $this->permission = (int)$values['field_perm'];
             } else {
                 $this->errors[] = _T('Unknown permission!');
             }
@@ -637,35 +637,43 @@ abstract class DynamicField
             $this->errors[] = _T("- Field name already used.");
         }
 
-        if ($this->hasWidth() && isset($values['field_width'])) {
-            if (!is_numeric($values['field_width']) || $values['field_width'] <= 0) {
+        if ($this->hasWidth()) {
+            if (empty($values['field_width']) && !is_numeric($values['field_width'] ?? null)) {
+                $this->width = null;
+            } elseif (!is_numeric($values['field_width']) || $values['field_width'] <= 0) {
                 $this->errors[] = _T("- Width must be a positive integer!");
-            } else {
-                $this->width = $values['field_width'];
+            } elseif (!empty($values['field_width'])) {
+                $this->width = (int)$values['field_width'];
             }
         }
 
-        if ($this->hasHeight() && isset($values['field_height'])) {
-            if (!is_numeric($values['field_height']) || $values['field_height'] <= 0) {
+        if ($this->hasHeight()) {
+            if (empty($values['field_height']) && !is_numeric($values['field_height'] ?? null)) {
+                $this->height = null;
+            } elseif (!is_numeric($values['field_height']) || $values['field_height'] <= 0) {
                 $this->errors[] = _T("- Height must be a positive integer!");
             } else {
-                $this->height = $values['field_height'];
+                $this->height = (int)$values['field_height'];
             }
         }
 
-        if ($this->hasSize() && isset($values['field_size'])) {
-            if (!is_numeric($values['field_size']) || $values['field_size'] <= 0) {
+        if ($this->hasSize()) {
+            if (empty($values['field_size']) && !is_numeric($values['field_size'] ?? null)) {
+                $this->size = null;
+            } elseif (!is_numeric($values['field_size']) || $values['field_size'] <= 0) {
                 $this->errors[] = _T("- Size must be a positive integer!");
             } else {
-                $this->size = $values['field_size'];
+                $this->size = (int)$values['field_size'];
             }
         }
 
-        if ($this->hasMinSize() && isset($values['field_min_size'])) {
-            if (!is_numeric($values['field_min_size']) || $values['field_min_size'] <= 0) {
+        if ($this->hasMinSize()) {
+            if (empty($values['field_min_size']) && !is_numeric($values['field_min_size'] ?? null)) {
+                $this->min_size = null;
+            } elseif (!is_numeric($values['field_min_size']) || $values['field_min_size'] <= 0) {
                 $this->errors[] = _T("- Min size must be a positive integer!");
-            } else {
-                $this->min_size = $values['field_min_size'];
+            } elseif (!empty($values['field_min_size'])) {
+                $this->min_size = (int)$values['field_min_size'];
             }
         }
 
@@ -684,7 +692,7 @@ abstract class DynamicField
             if (!is_numeric($values['field_repeat'])) {
                 $this->errors[] = _T("- Repeat must be an integer!");
             } else {
-                $this->repeat = $values['field_repeat'];
+                $this->repeat = (int)$values['field_repeat'];
             }
         }
 
@@ -693,7 +701,7 @@ abstract class DynamicField
             $this->information = $preferences->cleanHtmlValue($values['field_information']);
         }
 
-        $this->information_above = $values['field_information_above'] ?? false;
+        $this->information_above = (bool)($values['field_information_above'] ?? false);
 
         if ($this->hasFixedValues() && isset($values['fixed_values'])) {
             $fixed_values = [];

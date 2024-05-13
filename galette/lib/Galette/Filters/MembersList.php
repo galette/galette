@@ -194,7 +194,7 @@ class MembersList extends Pagination
                 case 'membership_filter':
                 case 'filter_account':
                     if (is_numeric($value)) {
-                        $this->$name = $value;
+                        $this->$name = (int)$value;
                     } elseif ($value !== null) {
                         Analog::log(
                             '[MembersList] Value for property `' . $name .
@@ -208,7 +208,7 @@ class MembersList extends Pagination
                         case Members::FILTER_DC_EMAIL:
                         case Members::FILTER_W_EMAIL:
                         case Members::FILTER_WO_EMAIL:
-                            $this->email_filter = $value;
+                            $this->email_filter = (int)$value;
                             break;
                         default:
                             Analog::log(

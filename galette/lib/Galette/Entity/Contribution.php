@@ -504,8 +504,8 @@ class Contribution
                 if (
                     !isset($disabled[$key])
                     && (!isset($this->$prop)
-                    || (!is_object($this->$prop) && trim($this->$prop) == '')
-                    || (is_object($this->$prop) && trim($this->$prop->id) == ''))
+                    || (!is_object($this->$prop) && empty($this->$prop))
+                    || (is_object($this->$prop) && empty($this->$prop->id)))
                 ) {
                     $this->errors[] = str_replace(
                         '%field',

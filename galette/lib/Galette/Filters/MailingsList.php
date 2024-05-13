@@ -93,4 +93,25 @@ class MailingsList extends HistoryList
         $this->sent_filter = MailingHistory::FILTER_DC_SENT;
         $this->subject_filter = null;
     }
+
+    /**
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param mixed  $value a relevant value for the property
+     *
+     * @return void
+     */
+    public function __set(string $name, mixed $value): void
+    {
+        switch ($name) {
+            case 'sent_filter':
+                $this->$name = (int)$value;
+                break;
+            default:
+                parent::__set($name, $value);
+                $this->$name = $value;
+                break;
+        }
+    }
 }

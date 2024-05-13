@@ -257,7 +257,7 @@ class Document implements FileInterface
     {
         $this->setType($post['document_type']);
         $this->setComment($post['comment']);
-        $this->permission = $post['visible'];
+        $this->permission = (int)$post['visible'];
 
         $handled = $this->handleFiles($files);
         if ($handled !== true) {
