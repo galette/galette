@@ -269,7 +269,7 @@ class CsvOut extends Csv
 
         try {
             $results = $zdb->db->query(
-                str_replace('galette_', PREFIX_DB, $export->query),
+                str_replace('galette_', PREFIX_DB, (string)$export->query),
                 Adapter::QUERY_MODE_EXECUTE
             );
 

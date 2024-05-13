@@ -625,7 +625,11 @@ abstract class DynamicField
             }
         }
 
-        $this->required = $values['field_required'] ?? false;
+        if (isset($values['field_required'])) {
+            $this->required = $values['field_required'] == 1;
+        } else {
+            $this->required = false;
+        }
 
         $this->width_in_forms = $values['field_width_in_forms'] ?? 1;
 

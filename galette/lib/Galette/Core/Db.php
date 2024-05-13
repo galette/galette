@@ -193,7 +193,7 @@ class Db
                 $results = $this->execute($select);
                 $result = $results->current();
                 return number_format(
-                    $result->version,
+                    (float)$result->version,
                     3,
                     '.',
                     ''

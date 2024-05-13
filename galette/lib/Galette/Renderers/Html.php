@@ -72,6 +72,6 @@ class Html implements ErrorRendererInterface
             ]
         );
 
-        return $response->getBody();
+        return (string)$response->getBody();
     }
 }

@@ -99,7 +99,7 @@ if (!defined('GALETTE_DEBUG')) {
 if (!isset($_COOKIE['show_galette_dashboard'])) {
     setcookie(
         'show_galette_dashboard',
-        true,
+        'true',
         [
             'expires'   => time() + 31536000, //valid for a year
             'path'      => '/'
