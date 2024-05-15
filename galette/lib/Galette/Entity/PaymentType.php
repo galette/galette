@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\ORM\Mapping as ORM;
 use Throwable;
 use Galette\Core\Db;
 use Analog\Analog;
@@ -38,7 +39,8 @@ use Galette\Features\Translatable;
  * @property integer $id
  * @property string $name
  */
-
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_paymenttypes')]
 class PaymentType
 {
     use Translatable;
@@ -48,7 +50,14 @@ class PaymentType
     public const PK = 'type_id';
 
     private Db $zdb;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: self::PK, type: 'integer')]
+    //FIXME: does not works :/
+    //#[ORM\SequenceGenerator(sequenceName: 'galette_paymenttypes_id_seq', initialValue: 1)]
     private int $id;
+    #[ORM\Column(name: 'type_name', type: 'string', length: 255)]
+    protected ?string $name;
 
     public const SCHEDULED = 7;
     public const OTHER = 6;

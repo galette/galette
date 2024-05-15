@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\Db;
 use Throwable;
 use Analog\Analog;
@@ -39,12 +40,16 @@ use Analog\Analog;
  * @property-read string $tshort
  * @property-read string $tlong
  */
-
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_titles')]
 class Title
 {
     public const TABLE = 'titles';
     public const PK = 'id_title';
 
+    #[ORM\Id]
+    #[ORM\Column(name: 'id_statut', type: 'integer')]
+    #[ORM\GeneratedValue]
     private int $id;
     private string $short;
     private ?string $long;

@@ -50,10 +50,14 @@ class Status
     private Db $zdb;
 
     #[ORM\Id]
-    #[ORM\Column(name: 'id_statut', type: 'integer')]
     #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'id_statut', type: 'integer')]
+    //FIXME: does not works :/
+    //#[ORM\SequenceGenerator(sequenceName: 'galette_statuts_id_seq', initialValue: 1)]
     private int $id;
+    #[ORM\Column(name: 'libelle_statut', type: 'string')]
     private string $label;
+    #[ORM\Column(name: 'priorite_statut', type: 'smallint', options: ['default' => 0])]
     private int $priority;
 
     public const ID_NOT_EXISTS = -1;
