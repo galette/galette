@@ -45,6 +45,40 @@ $container->set(
     }
 );
 
+$container->set(
+    \Doctrine\ORM\EntityManager::class,
+    function (ContainerInterface $c) {
+        $paths = [__DIR__ . '/../lib/Galette/Entity'];
+        $isDevMode = false;
+
+        // the connection configuration
+        $dbParams = [
+            'driver'   => TYPE_DB === \Galette\Core\Db::MYSQL ? 'pdo_mysql' : 'pdo_pgsql',
+            'user'     => USER_DB,
+            'password' => PWD_DB,
+            'dbname'   => NAME_DB,
+            'port'     => PORT_DB,
+        ];
+        if (TYPE_DB === \Galette\Core\Db::MYSQL) {
+            $dbParams['charset'] = 'utf8mb4';
+        }
+
+        $evm = new \Doctrine\Common\EventManager;
+
+        // Table Prefix
+        $tablePrefix = new \Galette\ORM\TablePrefix(PREFIX_DB);
+        $evm->addEventListener(\Doctrine\ORM\Events::loadClassMetadata, $tablePrefix);
+        // FK manager
+        $tablePrefix = new \Galette\ORM\ForeignKeyManager();
+        $evm->addEventListener(\Doctrine\ORM\Tools\ToolEvents::postGenerateSchema, $tablePrefix);
+
+        $config = \Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration($paths, $isDevMode);
+        $connection = \Doctrine\DBAL\DriverManager::getConnection($dbParams, $config);
+        $entityManager = new \Doctrine\ORM\EntityManager($connection, $config, $evm);
+        return $entityManager;
+    }
+);
+
 // Register View helper
 $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
 
