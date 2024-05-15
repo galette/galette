@@ -26,6 +26,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use DateInterval;
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
 use Throwable;
@@ -64,6 +65,8 @@ use Galette\Helpers\EntityHelper;
  * @property integer $model
  * @property array<string, array<string, string>> $fields
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_cotisations')]
 class Contribution
 {
     use Dynamics;
@@ -87,6 +90,11 @@ class Contribution
     public const STATUS_LATE = 4;
     public const STATUS_OLD = 5;
 
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: self::PK, type: 'integer')]
+    //FIXME: does not works :/
+    //#[ORM\SequenceGenerator(sequenceName: 'galette_cotisations_id_seq', initialValue: 1)]
     private int $id;
     private ?string $date = null;
     private ?int $member = null;

@@ -27,8 +27,6 @@ use ArrayObject;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
@@ -161,12 +159,12 @@ class Adherent
     private string $language;
     #[ORM\Column(name: 'activite_adh', type: 'boolean')]
     private bool $active;
-    #[ManyToOne(targetEntity: Status::class)]
-    #[JoinColumn(
+    #[ORM\ManyToOne(targetEntity: Status::class)]
+    #[ORM\JoinColumn(
         name: 'id_statut',
         referencedColumnName: 'id_statut',
-        onDelete: 'restrict',
         nullable: false,
+        onDelete: 'restrict',
         options: [
             'default' => 4,
             'unsigned' => true
