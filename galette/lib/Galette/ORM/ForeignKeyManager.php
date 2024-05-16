@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\ORM;
 
+use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
@@ -37,9 +38,11 @@ class ForeignKeyManager
     /**
      * Post schema generation, to fix FK constraints names
      *
-     * @param GenerateSchemaEventArgs $args
+     * @param GenerateSchemaEventArgs $args Event arguments
+     *
      * @return void
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     *
+     * @throws SchemaException
      */
     public function postGenerateSchema(GenerateSchemaEventArgs $args): void
     {
