@@ -49,6 +49,8 @@ class TablePrefix
      * Load class metadata
      *
      * @param LoadClassMetadataEventArgs $eventArgs Event arguments
+     *
+     * @return void
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
@@ -75,5 +77,4 @@ class TablePrefix
             }
         }
     }
-
 }

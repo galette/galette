@@ -63,7 +63,7 @@ $container->set(
             $dbParams['charset'] = 'utf8mb4';
         }
 
-        $evm = new \Doctrine\Common\EventManager;
+        $evm = new \Doctrine\Common\EventManager();
 
         // Table Prefix
         $tablePrefix = new \Galette\ORM\TablePrefix(PREFIX_DB);
