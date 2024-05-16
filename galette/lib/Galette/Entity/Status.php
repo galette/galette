@@ -27,7 +27,6 @@ use Analog\Analog;
 use Galette\Core\Db;
 use ArrayObject;
 use Galette\Features\I18n;
-use Laminas\Db\Sql\Expression;
 use Throwable;
 
 /**

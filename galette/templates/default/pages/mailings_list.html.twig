@@ -39,6 +39,7 @@
 {% endblock %}
 
 {% block infoline_actions %}
+    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
     <a
         class="action ui tiny labeled icon button"
         href="{{ url_for('mailing') }}?mailing_new=true"
@@ -46,7 +47,7 @@
         <i class="plus circle green icon" aria-hidden="true"></i>
         {{ _T('Create new mailing') }}
     </a>
-    {% if login.isLogged() and (cur_route != 'mailing' and existing_mailing == true) %}
+        {% if login.isLogged() and (cur_route != 'mailing' and existing_mailing == true) %}
     <a
         href="{{ url_for("mailing") }}"
         class="action ui tiny labeled icon button tooltip"
@@ -55,6 +56,7 @@
         <i class="paper plane outline blue icon" aria-hidden="true"></i>
         {{ _T("Existing mailing") }}
     </a>
+        {% endif %}
     {% endif %}
 {% endblock %}
 

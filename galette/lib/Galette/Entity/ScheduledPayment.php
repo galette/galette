@@ -467,7 +467,7 @@ class ScheduledPayment
     /**
      * Get comment
      *
-     * @return string
+     * @return ?string
      */
     public function getComment(): ?string
     {
