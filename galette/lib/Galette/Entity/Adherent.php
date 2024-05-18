@@ -2006,7 +2006,7 @@ class Adherent
      */
     public function getEmail(): string
     {
-        $email = $this->email;
+        $email = $this->email ?? '';
         if (empty($email) && $this->hasParent()) {
             $this->loadParent();
             $email = $this->parent->email;
