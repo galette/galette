@@ -134,13 +134,11 @@ class ImportModel
     {
         try {
             $values = array(
-                self::PK        => $this->id,
                 'model_fields'  => Galette::jsonEncode($this->fields)
             );
 
             if (!isset($this->id) || $this->id == '') {
                 //we're inserting a new model
-                unset($values[self::PK]);
                 $this->creation_date = date("Y-m-d H:i:s");
                 $values['model_creation_date'] = $this->creation_date;
 
@@ -157,6 +155,7 @@ class ImportModel
                 }
             } else {
                 //we're editing an existing model
+                $values[self::PK] = $this->id;
                 $update = $zdb->update(self::TABLE);
                 $update->set($values);
                 $update->where([self::PK => $this->id]);
