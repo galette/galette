@@ -562,17 +562,31 @@ class Members extends GaletteTestCase
         $this->assertCount(10, $list);
         $this->assertInstanceOf(\Galette\Entity\Adherent::class, $list[0]);
 
+        //get list with default fields (*)
+        $members = new \Galette\Repository\Members();
+        $list = $members->getList(false);
+        $this->assertSame(10, $list->count());
+        $arraylist = $list->toArray();
+        foreach ($arraylist as $array) {
+            $this->assertGreaterThan(30, count($array));
+            $this->assertArrayHasKey('nom_adh', $array);
+            $this->assertArrayHasKey('ville_adh', $array);
+            $this->assertArrayHasKey('id_adh', $array);
+            $this->assertArrayHasKey('email_adh', $array);
+            $this->assertArrayHasKey('login_adh', $array);
+            $this->assertArrayHasKey('priorite_statut', $array);
+        }
+
         //get list with specified fields
         $members = new \Galette\Repository\Members();
         $list = $members->getList(false, ['nom_adh', 'ville_adh']);
         $this->assertSame(10, $list->count());
         $arraylist = $list->toArray();
         foreach ($arraylist as $array) {
-            $this->assertCount(4, $array);
+            $this->assertCount(3, $array);
             $this->assertArrayHasKey('nom_adh', $array);
             $this->assertArrayHasKey('ville_adh', $array);
             $this->assertArrayHasKey('id_adh', $array);
-            $this->assertArrayHasKey('priorite_statut', $array);
         }
 
         //Get staff
