@@ -138,7 +138,7 @@ class ContributionsTypes
      */
     private function loadFromRS(ArrayObject $r): void
     {
-        $this->id = $r->{self::PK};
+        $this->id = (int)$r->{self::PK};
         $this->label = $r->libelle_type_cotis;
         $this->amount = (float)$r->amount;
         $this->extension = (int)$r->cotis_extension;

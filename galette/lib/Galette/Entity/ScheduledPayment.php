@@ -123,9 +123,9 @@ class ScheduledPayment
         global $login;
 
         $pk = self::PK;
-        $this->id = $rs->$pk;
-        $this->contribution = new Contribution($this->zdb, $login, $rs->{Contribution::PK});
-        $this->payment_type = new PaymentType($this->zdb, $rs->id_paymenttype);
+        $this->id = (int)$rs->$pk;
+        $this->contribution = new Contribution($this->zdb, $login, (int)$rs->{Contribution::PK});
+        $this->payment_type = new PaymentType($this->zdb, (int)$rs->id_paymenttype);
         $this->creation_date = $rs->creation_date;
         $this->scheduled_date = $rs->scheduled_date;
         $this->amount = (float)$rs->amount;

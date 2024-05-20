@@ -239,9 +239,9 @@ class Document implements FileInterface
      */
     private function loadFromRS(ArrayObject $rs): void
     {
-        $this->id = $rs->{self::PK};
+        $this->id = (int)$rs->{self::PK};
         $this->type = $rs->type;
-        $this->permission = $rs->visible;
+        $this->permission = (int)$rs->visible;
         $this->filename = $rs->filename;
         $this->comment = $rs->comment;
         $this->creation_date = new DateTime($rs->creation_date);

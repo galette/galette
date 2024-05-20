@@ -117,12 +117,12 @@ class Reminder
 
         try {
             $pk = self::PK;
-            $this->id = $rs->$pk;
-            $this->type = $rs->reminder_type;
+            $this->id = (int)$rs->$pk;
+            $this->type = (int)$rs->reminder_type;
             $this->dest = new Adherent($zdb, (int)$rs->reminder_dest);
             $this->date = $rs->reminder_date;
-            $this->success = $rs->reminder_success;
-            $this->nomail = $rs->reminder_nomail;
+            $this->success = $rs->reminder_success == 1;
+            $this->nomail = $rs->reminder_nomail == 1;
             $this->comment = $rs->reminder_comment;
         } catch (Throwable $e) {
             Analog::log(

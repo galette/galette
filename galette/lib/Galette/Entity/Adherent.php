@@ -353,7 +353,7 @@ class Adherent
     private function loadFromRS(ArrayObject $r): void
     {
         $this->self_adh = false;
-        $this->id = $r->id_adh;
+        $this->id = (int)$r->id_adh;
         //Identity
         if ($r->titre_adh !== null) {
             $this->title = new Title((int)$r->titre_adh);

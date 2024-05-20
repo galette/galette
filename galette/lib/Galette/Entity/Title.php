@@ -107,7 +107,7 @@ class Title
     private function loadFromRS(ArrayObject $rs): void
     {
         $pk = self::PK;
-        $this->id = $rs->$pk;
+        $this->id = (int)$rs->$pk;
         $this->short = $rs->short_label;
         if ($rs->long_label === 'NULL') {
             //mysql's null...

@@ -160,7 +160,7 @@ class Social
      */
     private function loadFromRS(ArrayObject $rs): void
     {
-        $this->id = $rs->{self::PK};
+        $this->id = (int)$rs->{self::PK};
         $this->setLinkedMember((int)$rs->{Adherent::PK});
         $this->type = $rs->type;
         $this->url = $rs->url;

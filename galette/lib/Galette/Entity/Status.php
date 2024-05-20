@@ -131,9 +131,9 @@ class Status
      */
     private function loadFromRS(ArrayObject $r): void
     {
-        $this->id = $r->{self::PK};
+        $this->id = (int)$r->{self::PK};
         $this->label = $r->libelle_statut;
-        $this->priority = $r->priorite_statut;
+        $this->priority = (int)$r->priorite_statut;
     }
 
     /**

@@ -113,7 +113,7 @@ class PaymentType
     private function loadFromRS(ArrayObject $rs): void
     {
         $pk = self::PK;
-        $this->id = $rs->$pk;
+        $this->id = (int)$rs->$pk;
         $this->name = $rs->type_name;
     }
 

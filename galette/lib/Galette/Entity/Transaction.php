@@ -271,13 +271,13 @@ class Transaction
     private function loadFromRS(ArrayObject $r): void
     {
         $pk = self::PK;
-        $this->id = $r->$pk;
+        $this->id = (int)$r->$pk;
         $this->date = $r->trans_date;
         $this->amount = (float)$r->trans_amount;
         $this->description = $r->trans_desc;
         $adhpk = Adherent::PK;
         $this->member = (int)$r->$adhpk;
-        $this->payment_type = $r->type_paiement_trans;
+        $this->payment_type = (int)$r->type_paiement_trans;
 
         $this->loadDynamicFields();
     }

@@ -86,7 +86,7 @@ class ImportModel
      */
     private function loadFromRS(ArrayObject $r): void
     {
-        $this->id = $r->model_id;
+        $this->id = (int)$r->model_id;
         if (Galette::isSerialized($r->model_fields)) {
             $this->fields = unserialize($r->model_fields);
         } else {
