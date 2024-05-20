@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\GaletteMail;
 use Galette\Features\I18n;
 use Laminas\Db\Sql\Expression;
@@ -38,7 +39,8 @@ use Analog\Analog;
  *
  * @property string $url
  */
-
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_socials')]
 class Social
 {
     use I18n;
@@ -58,9 +60,27 @@ class Social
     public const DISCORD = 'discord';
 
     private Db $zdb;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'id_social', type: 'integer')]
+    //FIXME: does not works :/
+    //#[ORM\SequenceGenerator(sequenceName: 'galette_socials_id_seq', initialValue: 1)]
     private int $id;
+    #[ORM\Column(type: 'string', length: 250)]
     private string $type;
+    #[ORM\Column(type: 'string', length: 255)]
     private string $url;
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    #[ORM\JoinColumn(
+        name: 'id_adh',
+        referencedColumnName: 'id_adh',
+        nullable: true,
+        onDelete: 'restrict',
+        options: [
+            'default' => null,
+            'unsigned' => true
+        ]
+    )]
     private ?int $id_adh;
     private ?Adherent $member = null;
 

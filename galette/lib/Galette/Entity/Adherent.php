@@ -26,6 +26,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use DateInterval;
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
@@ -108,6 +109,8 @@ use Galette\Features\Dynamics;
  * @property-read bool $self_adh
  * @property ?string $region
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_adherents')]
 class Adherent
 {
     use Dynamics;
@@ -128,20 +131,45 @@ class Adherent
     public const AFTER_ADD_LIST = 4;
     public const AFTER_ADD_HOME = 5;
 
+    #[ORM\Id]
+    #[ORM\Column(name: 'id_adh', type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private ?int $id;
     //Identity
+    #[ORM\Column(name: 'titre_adh', type: 'integer', options: ['unsigned' => true])]
     private Title|string|null $title = null;
+    #[ORM\Column(name: 'societe_adh', type: 'string', length: 200, nullable: true)]
     private ?string $company_name;
+    #[ORM\Column(name: 'nom_adh', type: 'string', length: 50)]
     private ?string $name;
+    #[ORM\Column(name: 'prenom_adh', type: 'string', length: 50)]
     private ?string $surname;
+    #[ORM\Column(name: 'pseudo_adh', type: 'string', length: 20)]
     private ?string $nickname;
+    #[ORM\Column(name: 'ddn_adh', type: 'date')]
     private ?string $birthdate;
+    #[ORM\Column(name: 'lieu_naissance', type: 'string', length: 65536)]
     private ?string $birth_place;
+    #[ORM\Column(name: 'sexe_adh', type: 'smallint')]
     private int $gender;
+    #[ORM\Column(name: 'prof_adh', type: 'string', length: 150)]
     private string $job;
+    #[ORM\Column(name: 'pref_lang', type: 'string', length: 20)]
     private string $language;
+    #[ORM\Column(name: 'activite_adh', type: 'boolean')]
     private bool $active;
-    private int $status;
+    #[ORM\ManyToOne(targetEntity: Status::class)]
+    #[ORM\JoinColumn(
+        name: 'id_statut',
+        referencedColumnName: 'id_statut',
+        nullable: false,
+        onDelete: 'restrict',
+        options: [
+            'default' => 4,
+            'unsigned' => true
+        ]
+    )]
+    private int $status = 4;
     //Contact information
     private ?string $address = null;
     private ?string $zipcode = null;
