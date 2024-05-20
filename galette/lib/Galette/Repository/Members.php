@@ -627,14 +627,10 @@ class Members
                 case self::SHOW_LIST:
                 case self::SHOW_ARRAY_LIST:
                 case self::SHOW_EXPORT:
-                    $joinField = [];
-                    if ($fieldsList === ['*'] || in_array('priorite_statut', $fieldsList)) {
-                        $joinField[] = 'priorite_statut';
-                    }
                     $select->join(
                         array('status' => PREFIX_DB . Status::TABLE),
                         'a.' . Status::PK . '=status.' . Status::PK,
-                        $joinField
+                        array('priorite_statut')
                     );
                     break;
                 case self::SHOW_MANAGED:
