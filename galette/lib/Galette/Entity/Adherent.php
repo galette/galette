@@ -934,7 +934,7 @@ class Adherent
                 $row->nom_adh,
                 $row->prenom_adh,
                 false,
-                ($wid === true ? $row->id_adh : false),
+                ($wid === true ? (int)$row->id_adh : false),
                 ($wnick === true ? $row->pseudo_adh : false)
             );
         } catch (Throwable $e) {

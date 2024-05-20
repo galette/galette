@@ -220,7 +220,7 @@ class ScheduledPayments
             $result = $results->current();
 
             $k = self::PK;
-            $this->count = $result->$k;
+            $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(

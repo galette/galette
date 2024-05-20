@@ -53,7 +53,7 @@ class PdfModels extends Repository
             $models = array();
             $results = $this->zdb->execute($select);
             foreach ($results as $row) {
-                $class = PdfModel::getTypeClass($row->model_type);
+                $class = PdfModel::getTypeClass((int)$row->model_type);
                 $models[] = new $class($this->zdb, $this->preferences, $row);
             }
             return $models;

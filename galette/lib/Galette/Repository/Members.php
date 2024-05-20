@@ -1820,7 +1820,7 @@ class Members
                     $member->nom_adh,
                     $member->prenom_adh,
                     false,
-                    $member->id_adh,
+                    (int)$member->id_adh,
                     $member->pseudo_adh
                 );
             }
