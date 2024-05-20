@@ -72,7 +72,7 @@ class Reminder
             if (is_int($args)) {
                 $this->load($args);
             } elseif ($args instanceof ArrayObject) {
-                $this->loadFromRs($args);
+                $this->loadFromRS($args);
             }
         }
     }
@@ -93,7 +93,7 @@ class Reminder
                 ->where([self::PK => $id]);
 
             $results = $zdb->execute($select);
-            $this->loadFromRs($results->current());
+            $this->loadFromRS($results->current());
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading reminder #' . $id . "Message:\n" .
@@ -111,7 +111,7 @@ class Reminder
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs): void
+    private function loadFromRS(ArrayObject $rs): void
     {
         global $zdb;
 

@@ -86,7 +86,7 @@ class Document implements FileInterface
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
-            $this->loadFromRs($args);
+            $this->loadFromRS($args);
         }
     }
 
@@ -106,7 +106,7 @@ class Document implements FileInterface
             $results = $this->zdb->execute($select);
             /** @var ArrayObject<string, int|string> $res */
             $res = $results->current();
-            $this->loadFromRs($res);
+            $this->loadFromRS($res);
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading document #' . $id . "Message:\n" .
@@ -237,7 +237,7 @@ class Document implements FileInterface
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs): void
+    private function loadFromRS(ArrayObject $rs): void
     {
         $this->id = $rs->{self::PK};
         $this->type = $rs->type;

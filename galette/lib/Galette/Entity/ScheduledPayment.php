@@ -76,7 +76,7 @@ class ScheduledPayment
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
-            $this->loadFromRs($args);
+            $this->loadFromRS($args);
         }
     }
 
@@ -99,7 +99,7 @@ class ScheduledPayment
             if (!$rs) {
                 return false;
             }
-            $this->loadFromRs($rs);
+            $this->loadFromRS($rs);
             return true;
         } catch (Throwable $e) {
             Analog::log(
@@ -118,7 +118,7 @@ class ScheduledPayment
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs): void
+    private function loadFromRS(ArrayObject $rs): void
     {
         global $login;
 

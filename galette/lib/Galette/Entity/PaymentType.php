@@ -70,7 +70,7 @@ class PaymentType
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
-            $this->loadFromRs($args);
+            $this->loadFromRS($args);
         }
     }
 
@@ -110,7 +110,7 @@ class PaymentType
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs): void
+    private function loadFromRS(ArrayObject $rs): void
     {
         $pk = self::PK;
         $this->id = $rs->$pk;

@@ -115,7 +115,7 @@ abstract class DynamicField
         if (is_int($args)) {
             $this->load($args);
         } elseif (is_object($args)) {
-            $this->loadFromRs($args);
+            $this->loadFromRS($args);
         }
     }
 
@@ -139,7 +139,7 @@ abstract class DynamicField
                 $result = $results->current();
                 $field_type = $result->field_type;
                 $field_type = self::getFieldType($zdb, $field_type);
-                $field_type->loadFromRs($result);
+                $field_type->loadFromRS($result);
                 return $field_type;
             }
         } catch (Throwable $e) {
@@ -210,7 +210,7 @@ abstract class DynamicField
             if ($results->count() > 0) {
                 /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
-                $this->loadFromRs($result);
+                $this->loadFromRS($result);
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -229,7 +229,7 @@ abstract class DynamicField
      *
      * @return void
      */
-    public function loadFromRs(ArrayObject $rs, bool $values = true): void
+    public function loadFromRS(ArrayObject $rs, bool $values = true): void
     {
         $this->id = (int)$rs->field_id;
         $this->name = $rs->field_name;

@@ -103,7 +103,7 @@ class DynamicFieldsSet
                     continue;
                 }
                 $df = DynamicField::getFieldType($this->zdb, $r['field_type']);
-                $df->loadFromRs($r);
+                $df->loadFromRS($r);
                 $fields[$r[DynamicField::PK]] = $df;
             }
         }

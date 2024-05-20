@@ -100,7 +100,7 @@ abstract class PdfModel
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
-            $this->loadFromRs($args);
+            $this->loadFromRS($args);
         } else {
             $this->load($type);
         }
@@ -140,7 +140,7 @@ abstract class PdfModel
             } else {
                 /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
-                $this->loadFromRs($result);
+                $this->loadFromRS($result);
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -159,7 +159,7 @@ abstract class PdfModel
      *
      * @return void
      */
-    protected function loadFromRs(ArrayObject $rs): void
+    protected function loadFromRS(ArrayObject $rs): void
     {
         $pk = self::PK;
         $this->id = (int)$rs->$pk;

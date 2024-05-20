@@ -77,7 +77,7 @@ class SavedSearch
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
-            $this->loadFromRs($args);
+            $this->loadFromRS($args);
         }
     }
 
@@ -103,7 +103,7 @@ class SavedSearch
             /** @var ArrayObject<string, int|string> $res */
             $res = $results->current();
 
-            $this->loadFromRs($res);
+            $this->loadFromRS($res);
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading saved search #' . $id . "Message:\n" .
@@ -121,7 +121,7 @@ class SavedSearch
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs): void
+    private function loadFromRS(ArrayObject $rs): void
     {
         $pk = self::PK;
         $this->id = $rs->$pk;
