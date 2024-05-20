@@ -137,7 +137,7 @@ abstract class DynamicField
             if ($results->count() > 0) {
                 /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
-                $field_type = $result->field_type;
+                $field_type = (int)$result->field_type;
                 $field_type = self::getFieldType($zdb, $field_type);
                 $field_type->loadFromRS($result);
                 return $field_type;
@@ -241,7 +241,7 @@ abstract class DynamicField
         $this->width = $rs->field_width;
         $this->height = $rs->field_height;
         $this->repeat = (int)$rs->field_repeat;
-        $this->size = $rs->field_size;
+        $this->size = (int)$rs->field_size;
         $this->form = $rs->field_form;
         $this->information = $rs->field_information;
         $this->information_above = $rs->field_information_above == 1;

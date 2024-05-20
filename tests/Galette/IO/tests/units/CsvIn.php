@@ -313,8 +313,8 @@ class CsvIn extends GaletteTestCase
         $select->where(['fingerprint' => 'FAKER_DEF_STATUS']);
         $result = $this->zdb->execute($select)->current();
         $this->assertSame(
-            (int)($this->preferences->pref_statut ?? \Galette\Entity\Status::DEFAULT_STATUS),
-            $result[\Galette\Entity\Status::PK]
+            $this->preferences->pref_statut ?? \Galette\Entity\Status::DEFAULT_STATUS,
+            (int)$result[\Galette\Entity\Status::PK]
         );
 
         //test title import

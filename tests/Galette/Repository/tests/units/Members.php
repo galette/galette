@@ -1184,7 +1184,7 @@ class Members extends GaletteTestCase
         $this->assertSame(1, $list->count());
 
         $member_data = $list->current();
-        $member = new \Galette\Entity\Adherent($this->zdb, $member_data[\Galette\Entity\Adherent::PK]);
+        $member = new \Galette\Entity\Adherent($this->zdb, (int)$member_data[\Galette\Entity\Adherent::PK]);
 
         //add member as sender for a mailing
         $mailhist = new \Galette\Core\MailingHistory($this->zdb, $this->login, $this->preferences);

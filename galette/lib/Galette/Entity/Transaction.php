@@ -277,7 +277,9 @@ class Transaction
         $this->description = $r->trans_desc;
         $adhpk = Adherent::PK;
         $this->member = (int)$r->$adhpk;
-        $this->payment_type = (int)$r->type_paiement_trans;
+        if ($r->type_paiement_trans != null) {
+            $this->payment_type = (int)$r->type_paiement_trans;
+        }
 
         $this->loadDynamicFields();
     }

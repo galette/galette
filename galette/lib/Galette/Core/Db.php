@@ -116,6 +116,11 @@ class Db
                 'password' => $_pwd_db,
                 'database' => $_name_db
             );
+            if (defined('GALETTE_TESTS') && GALETTE_TESTS === true) {
+                $this->options['driver_options'] = [
+                    \PDO::ATTR_STRINGIFY_FETCHES => true
+                ];
+            }
             if ($_type_db === self::MYSQL) {
                 $this->options['charset'] = 'utf8mb4';
             }

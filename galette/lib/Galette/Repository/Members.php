@@ -716,7 +716,7 @@ class Members
                         $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
                         if ($dyn_field instanceof \Galette\DynamicFields\Choice) {
                             $hasCdfc = true;
-                            $cdfcs[] = $k;
+                            $cdfcs[] = (int)$k;
                         }
                     }
                 }

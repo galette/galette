@@ -382,7 +382,7 @@ class Contribution
         $this->amount = (double)$r->montant_cotis;
         //save original amount, we need it for transactions parts calculations
         $this->orig_amount = (double)$r->montant_cotis;
-        $this->payment_type = $r->type_paiement_cotis;
+        $this->payment_type = (int)$r->type_paiement_cotis;
         $this->info = $r->info_cotis;
         $this->begin_date = $r->date_debut_cotis;
         $end_date = $r->date_fin_cotis;

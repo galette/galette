@@ -225,7 +225,7 @@ class Login extends Authentication
     private function logUser(ArrayObject $row): void
     {
         Analog::log('User `' . $row->login_adh . '` logged in.', Analog::INFO);
-        $this->id = $row->id_adh;
+        $this->id = (int)$row->id_adh;
         $this->login = $row->login_adh;
         $this->admin = (bool)$row->bool_admin_adh;
         $this->name = $row->nom_adh;
@@ -234,11 +234,11 @@ class Login extends Authentication
         $this->i18n->changeLanguage($this->lang);
         $this->active = (bool)$row->activite_adh;
         $this->logged = true;
-        if ($row->priorite_statut < Members::NON_STAFF_MEMBERS) {
+        if ((int)$row->priorite_statut < Members::NON_STAFF_MEMBERS) {
             $this->staff = true;
         }
         //check if member is up-to-date
-        if ($row->bool_exempt_adh == true) {
+        if ($row->bool_exempt_adh) {
             //member is due free, he's up-to-date.
             $this->uptodate = true;
         } else {

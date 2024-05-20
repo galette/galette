@@ -123,7 +123,7 @@ class ContributionsTypes extends TestCase
 
         $this->assertSame('Test contribution type', $test_ctype['libelle_type_cotis']);
         $this->assertNull($test_ctype['amount']);
-        $this->assertSame(0, $test_ctype['cotis_extension']);
+        $this->assertSame(0, (int)$test_ctype['cotis_extension']);
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
@@ -168,7 +168,7 @@ class ContributionsTypes extends TestCase
 
         $this->assertSame('Tested contribution type', $test_ctype['libelle_type_cotis']);
         $this->assertSame(42.0, (float)$test_ctype['amount']);
-        $this->assertSame(\Galette\Entity\ContributionsTypes::DEFAULT_TYPE, $test_ctype['cotis_extension']);
+        $this->assertSame(\Galette\Entity\ContributionsTypes::DEFAULT_TYPE, (int)$test_ctype['cotis_extension']);
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(

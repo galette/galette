@@ -159,7 +159,7 @@ class Group
         }
         if (isset($r->members)) {
             //we're from a list, we just want members count
-            $this->count_members = $r->members;
+            $this->count_members = (int)$r->members;
         }
     }
 

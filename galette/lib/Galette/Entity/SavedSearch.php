@@ -124,7 +124,7 @@ class SavedSearch
     private function loadFromRS(ArrayObject $rs): void
     {
         $pk = self::PK;
-        $this->id = $rs->$pk;
+        $this->id = (int)$rs->$pk;
         $this->name = $rs->name;
         try {
             $this->parameters = Galette::jsonDecode($rs->parameters);
@@ -136,7 +136,7 @@ class SavedSearch
             );
             $this->parameters = [];
         }
-        $this->author_id = $rs->id_adh;
+        $this->author_id = (int)$rs->id_adh;
         $this->creation_date = $rs->creation_date;
         $this->form = $rs->form;
     }

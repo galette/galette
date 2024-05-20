@@ -369,7 +369,7 @@ class ContributionsTypes
             $results = $this->zdb->execute($select);
             $result = $results->current();
             if ($result) {
-                return $result->{self::PK};
+                return (int)$result->{self::PK};
             } else {
                 return false;
             }

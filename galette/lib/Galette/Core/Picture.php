@@ -97,7 +97,7 @@ class Picture implements FileInterface
         if (!empty($id_adh) && $id_adh !== '') {
             $this->id = $id_adh;
             if (!isset($this->db_id)) {
-                $this->db_id = $id_adh;
+                $this->db_id = (int)$id_adh;
             }
 
             //if file does not exist on the FileSystem, check for it in the database

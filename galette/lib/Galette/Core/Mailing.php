@@ -210,11 +210,11 @@ class Mailing extends GaletteMail
             $this->copyAttachments($rs->mailing_id);
         } else {
             $this->tmp_path = null;
-            $this->id = $rs->mailing_id;
+            $this->id = (int)$rs->mailing_id;
             if (!$this->attachments) {
                 $this->loadAttachments();
             }
-            $this->history_id = $rs->mailing_id;
+            $this->history_id = (int)$rs->mailing_id;
         }
         return true;
     }

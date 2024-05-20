@@ -220,7 +220,7 @@ class Groups extends GaletteTestCase
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
         $select->where(['group_name' => 'Europe']);
         $result = $this->zdb->execute($select)->current();
-        $europe = $result->{\Galette\Entity\Group::PK};
+        $europe = (int)$result->{\Galette\Entity\Group::PK};
 
         $children_list = $groups->getList(true, $europe);
         $this->assertCount(4, $children_list);
@@ -259,12 +259,12 @@ class Groups extends GaletteTestCase
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
         $select->where(['group_name' => 'Europe']);
         $result = $this->zdb->execute($select)->current();
-        $europe = $result->{\Galette\Entity\Group::PK};
+        $europe = (int)$result->{\Galette\Entity\Group::PK};
 
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
         $select->where(['group_name' => 'France']);
         $result = $this->zdb->execute($select)->current();
-        $france = $result->{\Galette\Entity\Group::PK};
+        $france = (int)$result->{\Galette\Entity\Group::PK};
 
         //name already exists - not unique
         $this->assertFalse(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name));
@@ -352,9 +352,9 @@ class Groups extends GaletteTestCase
 
         $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
         $users = $groups->getManagerUsers([$allemagne->getId()]);
-        $this->assertSame([$member->id], $users);
+        $this->assertEquals([$member->id], $users);
         $users = $groups->getManagerUsers([$france->getId()]);
-        $this->assertSame([$member->id], $users);
+        $this->assertEquals([$member->id], $users);
 
         \Galette\Repository\Groups::removeMemberFromGroups($member->id);
         $member->loadGroups();

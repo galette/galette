@@ -103,7 +103,7 @@ class MailingHistory extends GaletteTestCase
         $this->assertEquals(0, $entry->mailing_sent);
         $this->assertSame(0, $entry->attachments);
 
-        $first_not_sent_id = $entry->mailing_id;
+        $first_not_sent_id = (int)$entry->mailing_id;
 
         $mailing = new \Galette\Core\Mailing($this->preferences, $members);
         $mh = new \Galette\Core\MailingHistory(
@@ -129,7 +129,7 @@ class MailingHistory extends GaletteTestCase
         $this->assertCount(1, $list);
 
         $entry = $list[0];
-        $second_not_sent_id = $entry->mailing_id;
+        $second_not_sent_id = (int)$entry->mailing_id;
         $this->assertSame('Test mailing (changed)', $entry->mailing_subject);
         $this->assertCount(2, $entry->mailing_recipients);
         $this->assertEquals(0, $entry->mailing_sent);
@@ -158,7 +158,7 @@ class MailingHistory extends GaletteTestCase
         $this->assertCount(2, $entry->mailing_recipients);
         $this->assertEquals(1, $entry->mailing_sent);
         $this->assertSame(0, $entry->attachments);
-        $this->assertSame($second_not_sent_id, $entry->mailing_id);
+        $this->assertSame($second_not_sent_id, (int)$entry->mailing_id);
 
         //add antoher mailing in history
         $mailing = new \Galette\Core\Mailing($this->preferences, $members);

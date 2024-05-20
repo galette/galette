@@ -406,7 +406,7 @@ class ScheduledPayment extends GaletteTestCase
         $nonfulls = $scheduledPayment->getNotFullyAllocated();
         $this->assertCount(1, $nonfulls);
         $test = array_pop($nonfulls);
-        $this->assertSame(
+        $this->assertEquals(
             [
                 \Galette\Entity\Contribution::PK => $this->contrib->id,
                 'montant_cotis' => '92.00',
@@ -442,7 +442,7 @@ class ScheduledPayment extends GaletteTestCase
         $nonfulls = $scheduledPayment->getNotFullyAllocated();
         $this->assertCount(1, $nonfulls);
         $test = array_pop($nonfulls);
-        $this->assertSame(
+        $this->assertEquals(
             [
                 \Galette\Entity\Contribution::PK => $this->contrib->id,
                 'montant_cotis' => '92.00',
