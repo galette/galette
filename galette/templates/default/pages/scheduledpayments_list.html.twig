@@ -207,6 +207,6 @@
             {% endif %}
         </tr>
     {% else %}
-        <tr><td colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}6{% elseif login.isAdmin() or login.isStaff() %}6{% else %}5{% endif %}" class="emptylist">{{ _T("No scheduled payment") }}</td></tr>
+        <tr><td colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}7{% elseif login.isAdmin() or login.isStaff() %}6{% else %}5{% endif %}" class="emptylist">{{ _T("No scheduled payment") }}</td></tr>
     {% endfor %}
 {% endblock %}

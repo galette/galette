@@ -78,7 +78,9 @@
     {% if group.getId() %}
             {% include "elements/group.html.twig" with {"group": group, "parent_groups": parent_groups} %}
     {% else %}
-            {{ _T("no group") }}
+            <div class="ui small message">
+                {{ _T("no group") }}
+            </div>
     {% endif %}
         </div>
     </div>
