@@ -575,6 +575,18 @@ class Members extends GaletteTestCase
             $this->assertArrayHasKey('priorite_statut', $array);
         }
 
+        //get export list (no priorite_statut if not explicitely required)
+        $members = new \Galette\Repository\Members();
+        $list = $members->getMembersList(false, ['nom_adh', 'ville_adh'], true, false, false, true, true);
+        $this->assertSame(10, $list->count());
+        $arraylist = $list->toArray();
+        foreach ($arraylist as $array) {
+            $this->assertCount(3, $array);
+            $this->assertArrayHasKey('nom_adh', $array);
+            $this->assertArrayHasKey('ville_adh', $array);
+            $this->assertArrayHasKey('id_adh', $array);
+        }
+
         //Get staff
         $members = new \Galette\Repository\Members();
         $list = $members->getStaffMembersList();
