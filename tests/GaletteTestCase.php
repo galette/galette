@@ -546,7 +546,7 @@ abstract class GaletteTestCase extends TestCase
         if ($rs === false) {
             $this->createMember($this->dataAdherentTwo());
         } else {
-            $this->loadAdherent($rs->current()->id_adh);
+            $this->loadAdherent((int)$rs->current()->id_adh);
         }
         return $this->adh;
     }
