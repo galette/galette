@@ -187,9 +187,9 @@ class Release
      *
      * @return string
      */
-    protected function getDataTocache(): ?string
+    protected function getDataTocache(): string
     {
-        return $this->latest;
+        return $this->latest ?? '';
     }
 
     /**
