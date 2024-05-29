@@ -100,7 +100,7 @@ class DynamicFieldsController extends CrudController
                 ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
 
-        $df = DynamicField::getFieldType($this->zdb, $post['field_type']);
+        $df = DynamicField::getFieldType($this->zdb, (int)$post['field_type']);
 
         try {
             $df->store($post);

@@ -95,7 +95,6 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
