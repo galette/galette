@@ -159,18 +159,20 @@ jobs:
           mysql -e 'use galette_tests; source galette/install/scripts/mysql.sql;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
         if: env.skip != 'true' && (startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb'))
 
-      - name: Web serve
+      - name: Unit tests
         run: |
           cd galette/webroot
           php -S localhost:8000&
-        if: env.skip != 'true'
-
-      - name: Unit tests
-        run: galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/Galette/
+          cd ../..
+          galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/Galette/
         if: env.skip != 'true' && matrix.coverage != 'pcov'
 
       - name: Unit tests (with coverage)
-        run: galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --process-isolation --coverage-filter galette/lib --coverage-clover tests/clover.xml tests/Galette/
+        run: |
+          cd galette/webroot
+          php -S localhost:8000&
+          cd ../..
+          galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --process-isolation --coverage-filter galette/lib --coverage-clover tests/clover.xml tests/Galette/
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
       - name: Upload code coverage (scrutinizer)
