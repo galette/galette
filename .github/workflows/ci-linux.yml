@@ -323,3 +323,98 @@ jobs:
       - name: Headers checks
         run: |
           ./galette/vendor/bin/docheader check galette/config galette/lib galette/includes galette/install galette/webroot test
+
+
+  browerstack:
+    runs-on: ubuntu-latest
+    name: "BrowserStack tests"
+
+    strategy:
+      matrix:
+        include:
+          #tests only on higher stable php version with higher PostgreSQL version
+          - { php-version: "8.3", db-image: "postgres:16", coverage: none, always: true }
+      fail-fast: false
+
+    env:
+      DB: ${{ matrix.db-image }}
+
+    services:
+      # Label used to access the service container
+      db:
+        # Docker Hub image
+        image: ${{ matrix.db-image }}
+        # Provide env variables for both mysql and pgsql
+        env:
+          POSTGRES_USER: galette_tests
+          POSTGRES_PASSWORD: g@l3tte
+          POSTGRES_DB: galette_tests
+        # Open network port for pgsql
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd="bash -c 'pg_isready'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: 'BrowserStack Env Setup'  # Invokes the setup-env action
+        uses: browserstack/github-actions/setup-env@master
+        with:
+          username:  ${{ secrets.BROWSERSTACK_USERNAME }}
+          access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+
+      - name: 'BrowserStack Local Tunnel Setup'  # Invokes the setup-local action
+        uses: browserstack/github-actions/setup-local@master
+        with:
+          local-testing: start
+          local-identifier: random
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: composer, pecl
+          coverage: ${{ matrix.coverage }}
+          extensions: apcu
+          ini-values: apc.enable_cli=1
+
+      - name: "Show versions"
+        run: |
+          php --version
+          composer --version
+          echo "node $(node --version)"
+          echo "npm $(npm --version)"
+          docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else if [[ -n \$(command -v mysql) ]]; then mysql --version; else mariadb --version; fi fi"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: "Restore dependencies cache"
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.composer/cache/
+            ~/.npm/_cacache/
+          key: "${{ runner.os }}-galette-${{ matrix.php-version }}-${{ hashFiles('galette/composer.lock', 'package-lock.json') }}"
+          restore-keys: |
+            ${{ runner.os }}-galette-${{ matrix.php-version }}-
+
+      - name: Install dependencies
+        run: bin/install_deps
+
+      - name: Init for PostgreSQL
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+        run: |
+          PGPASSWORD=g@l3tte psql -d galette_tests -a -f galette/install/scripts/pgsql.sql -U galette_tests -h localhost
+
+      - name: Web serve
+        run: |
+          cd galette/webroot
+          php -S localhost:8000&

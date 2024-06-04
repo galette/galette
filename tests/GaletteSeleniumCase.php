@@ -25,6 +25,8 @@ namespace Galette;
 
 use PHPUnit\Framework\TestCase;
 
+require_once __DIR__ . '/config/globals.php';
+
 /**
  * Galette selenium tests case main class
  *
