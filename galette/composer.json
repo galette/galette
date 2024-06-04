@@ -63,7 +63,8 @@
         "malukenho/docheader": "^1.0",
         "slevomat/coding-standard": "^8.14",
         "phpunit/phpunit-selenium": "^1.3",
-        "browserstack/browserstack-local": "^1.1"
+        "browserstack/browserstack-local": "^1.1",
+        "php-webdriver/webdriver": "^1.15"
     },
     "config": {
         "optimize-autoloader": true,

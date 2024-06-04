@@ -23,9 +23,10 @@ declare(strict_types=1);
 
 namespace Galette;
 
-use PHPUnit\Framework\TestCase;
-
 require_once __DIR__ . '/config/globals.php';
+
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverBy;
 
 /**
  * Galette selenium tests case main class
@@ -53,7 +54,7 @@ abstract class GaletteSeleniumCase extends GaletteTestCase
         if(array_key_exists("browserstack.local", $caps) && $caps["browserstack.local"])
         {
             $bs_local_args = array("key" => $GLOBALS['BROWSERSTACK_ACCESS_KEY']);
-            self::$bs_local = new BrowserStack\Local();
+            self::$bs_local = new \BrowserStack\Local();
             self::$bs_local->start($bs_local_args);
         }
 
@@ -65,7 +66,9 @@ abstract class GaletteSeleniumCase extends GaletteTestCase
     public static function tearDownAfterClass(): void
     {
         self::$driver->quit();
-        if(self::$bs_local) self::$bs_local->stop();
+        if (self::$bs_local) {
+            self::$bs_local->stop();
+        }
         parent::tearDownAfterClass();
     }
 

@@ -1,35 +1,18 @@
 {
-  "capabilities": [{
-    "browserName": "chrome",
-    "browserVersion": "latest",
-    "bstack:options": {
-      "os": "OS X",
-      "osVersion": "Monterey",
-      "buildName": "browserstack-build-1",
-      "sessionName": "BStack phpunit chrome",
-      "source": "phpunit:sample-main:v1.0",
-      "local": true
-    }
-  }, {
-    "browserName": "edge",
-    "browserVersion": "latest",
-    "bstack:options": {
-      "os": "Windows",
-      "osVersion": "11",
-      "buildName": "browserstack-build-1",
-      "sessionName": "BStack phpunit edge",
-      "source": "phpunit:sample-main:v1.0",
-      "local": true
-    }
-  }, {
-    "browserName": "chrome",
-    "bstack:options": {
-      "osVersion": "12.0",
-      "deviceName": "Samsung Galaxy S22 Ultra",
-      "buildName": "browserstack-build-1",
-      "sessionName": "BStack phpunit android",
-      "source": "phpunit:sample-main:v1.0",
-      "local": true
-    }
+  "server": "hub.browserstack.com",
+  "capabilities": {
+    "build": "phpunit-browserstack",
+    "name": "parallel_test",
+    "browserstack.debug": true
+  },
+
+  "environments": [{
+    "browser": "chrome"
+  },{
+    "browser": "firefox"
+  },{
+    "browser": "safari"
+  },{
+    "browser": "internet explorer"
   }]
 }

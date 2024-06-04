@@ -23,8 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud\test\units;
 
-use PHPUnit\Framework\TestCase;
-use Galette\GaletteTestCase;
+use Galette\GaletteSeleniumCase;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request;
 
@@ -33,7 +32,7 @@ use Slim\Psr7\Request;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class DynamicFieldsController extends GaletteTestCase
+class DynamicFieldsController extends GaletteSeleniumCase
 {
     protected int $seed = 20240529064653;
 
