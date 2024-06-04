@@ -65,6 +65,7 @@ jobs:
         ports:
           - 3306:3306
           - 5432:5432
+          - 8000:8000
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd="bash -c 'if [[ -n $(command -v pg_isready) ]]; then pg_isready; else if [[ -n $(command -v mysqladmin) ]]; then mysqladmin ping; else mariadb-admin ping; fi fi'"
