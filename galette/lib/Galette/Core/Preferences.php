@@ -590,7 +590,7 @@ class Preferences
             && isset($insert_values['pref_membership_ext'])
             && $insert_values['pref_membership_ext'] != ''
         ) {
-            $this->errors[] = _T("- Default membership extention and beginning of membership are mutually exclusive.");
+            $this->errors[] = _T("- Default membership extension and beginning of membership are mutually exclusive.");
         }
 
         if (

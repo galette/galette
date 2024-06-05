@@ -1867,7 +1867,7 @@ msgstr "- È necessario fornire una password per l'autenticazione SMTP."
 
 #: ../lib/Galette/Core/Preferences.php:579
 msgid ""
-"- Default membership extention and beginning of membership are mutually "
+"- Default membership extension and beginning of membership are mutually "
 "exclusive."
 msgstr ""
 "- L'estensione predefinita e l'inizio dell'iscrizione si escludono a vicenda."

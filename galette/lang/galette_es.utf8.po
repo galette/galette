@@ -1883,7 +1883,7 @@ msgstr "- Debes proporcionar una contraseña para la autenticación SMTP."
 
 #: ../lib/Galette/Core/Preferences.php:579
 msgid ""
-"- Default membership extention and beginning of membership are mutually "
+"- Default membership extension and beginning of membership are mutually "
 "exclusive."
 msgstr ""
 "- La ampliación de la afiliación por defecto y el inicio de la afiliación "

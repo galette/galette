@@ -1324,7 +1324,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:647
 msgid ""
-"- Default membership extention and beginning of membership are mutually "
+"- Default membership extension and beginning of membership are mutually "
 "exclusive."
 msgstr ""
 

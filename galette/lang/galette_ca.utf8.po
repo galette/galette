@@ -2025,7 +2025,7 @@ msgstr "- Heu de proporcionar una contrasenya per a l'autenticació SMTP."
 #: ../lib/Galette/Core/Preferences.php:579
 #, fuzzy
 msgid ""
-"- Default membership extention and beginning of membership are mutually "
+"- Default membership extension and beginning of membership are mutually "
 "exclusive."
 msgstr ""
 "- L'extensió per defecte de la pertinença i el començament de la pertinença "

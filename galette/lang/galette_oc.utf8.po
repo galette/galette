@@ -1772,7 +1772,7 @@ msgstr "- Per l’identificacion SMTP, fornir un senhau es necessari."
 
 #: ../lib/Galette/Core/Preferences.php:579
 msgid ""
-"- Default membership extention and beginning of membership are mutually "
+"- Default membership extension and beginning of membership are mutually "
 "exclusive."
 msgstr ""
 "- Vos fau definir la durada que vau l’adesion ò donar una data de "
