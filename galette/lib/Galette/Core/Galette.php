@@ -1000,6 +1000,16 @@ class Galette
     }
 
     /**
+     * Is a hosted instance
+     *
+     * @return bool
+     */
+    public static function isHosted(): bool
+    {
+        return defined('GALETTE_HOSTED') && GALETTE_HOSTED === true;
+    }
+
+    /**
      * Is debug mode enabled
      *
      * @return bool

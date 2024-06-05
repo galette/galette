@@ -533,45 +533,53 @@ class Preferences
         if (
             !Galette::isDemo()
             && isset($insert_values['pref_mail_method'])
+            && $insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED
         ) {
-            if ($insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED) {
+            if (
+                Galette::isHosted() &&
+                in_array(
+                    $insert_values['pref_mail_method'],
+                    [GaletteMail::METHOD_PHPMAIL, GaletteMail::METHOD_SENDMAIL, GaletteMail::METHOD_QMAIL]
+                )
+            ) {
+                $this->errors[] = _T("- Only SMTP and GMail are allowed on hosted instances.");
+            }
+            if (
+                !isset($insert_values['pref_email_nom'])
+                || $insert_values['pref_email_nom'] == ''
+            ) {
+                $this->errors[] = _T("- You must indicate a sender name for emails!");
+            }
+            if (
+                !isset($insert_values['pref_email'])
+                || $insert_values['pref_email'] == ''
+            ) {
+                $this->errors[] = _T("- You must indicate an email address Galette should use to send emails!");
+            }
+            if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP) {
                 if (
-                    !isset($insert_values['pref_email_nom'])
-                    || $insert_values['pref_email_nom'] == ''
+                    !isset($insert_values['pref_mail_smtp_host'])
+                    || $insert_values['pref_mail_smtp_host'] == ''
                 ) {
-                    $this->errors[] = _T("- You must indicate a sender name for emails!");
+                    $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
+                }
+            }
+            if (
+                $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
+                || ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
+                && $insert_values['pref_mail_smtp_auth'])
+            ) {
+                if (
+                    !isset($insert_values['pref_mail_smtp_user'])
+                    || trim($insert_values['pref_mail_smtp_user']) == ''
+                ) {
+                    $this->errors[] = _T("- You must provide a login for SMTP authentication.");
                 }
                 if (
-                    !isset($insert_values['pref_email'])
-                    || $insert_values['pref_email'] == ''
+                    !isset($insert_values['pref_mail_smtp_password'])
+                    || ($insert_values['pref_mail_smtp_password']) == ''
                 ) {
-                    $this->errors[] = _T("- You must indicate an email address Galette should use to send emails!");
-                }
-                if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP) {
-                    if (
-                        !isset($insert_values['pref_mail_smtp_host'])
-                        || $insert_values['pref_mail_smtp_host'] == ''
-                    ) {
-                        $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
-                    }
-                }
-                if (
-                    $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
-                    || ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
-                    && $insert_values['pref_mail_smtp_auth'])
-                ) {
-                    if (
-                        !isset($insert_values['pref_mail_smtp_user'])
-                        || trim($insert_values['pref_mail_smtp_user']) == ''
-                    ) {
-                        $this->errors[] = _T("- You must provide a login for SMTP authentication.");
-                    }
-                    if (
-                        !isset($insert_values['pref_mail_smtp_password'])
-                        || ($insert_values['pref_mail_smtp_password']) == ''
-                    ) {
-                        $this->errors[] = _T("- You must provide a password for SMTP authentication.");
-                    }
+                    $this->errors[] = _T("- You must provide a password for SMTP authentication.");
                 }
             }
         }
