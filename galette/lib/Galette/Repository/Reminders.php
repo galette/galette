@@ -166,7 +166,7 @@ class Reminders
                 ]
             );
 
-            $due_date = new DateTime($member->due_date);
+            $due_date = new DateTime($member->rdue_date);
             //reminders 30 days and 7 days before
             $first = clone $due_date;
             $second = clone $due_date;
