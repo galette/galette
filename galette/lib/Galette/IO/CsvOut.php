@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * CSV exports
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  IO
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
  */
+
+declare(strict_types=1);
 
 namespace Galette\IO;
 
@@ -46,23 +33,15 @@ use Laminas\Db\Adapter\Adapter;
 /**
  * CSV exports
  *
- * @category  IO
- * @name      Csv
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class CsvOut extends Csv
 {
     public const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 
-    private $parameted_path;
-    private $legacy_parameted_file = 'exports.xml';
-    private $parameted_file = 'exports.yaml';
+    private string $legacy_parameted_file = 'exports.xml';
+    private string $parameted_file = 'exports.yaml';
 
     /**
      * Default constructor
@@ -70,27 +49,35 @@ class CsvOut extends Csv
     public function __construct()
     {
         parent::__construct(self::DEFAULT_DIRECTORY);
-        $this->parameted_path = GALETTE_CONFIG_PATH;
-        $this->parameted_file = $this->parameted_path . $this->parameted_file;
-        $this->legacy_parameted_file = $this->parameted_path . $this->legacy_parameted_file;
+        if (file_exists(GALETTE_CONFIG_PATH . $this->parameted_file)) {
+            $this->parameted_file = GALETTE_CONFIG_PATH . $this->parameted_file;
+        } else {
+            $this->parameted_file = GALETTE_SYSCONFIG_PATH . $this->parameted_file;
+        }
+        $this->legacy_parameted_file = GALETTE_CONFIG_PATH . $this->legacy_parameted_file;
     }
 
     /**
      * Export Array result set to CSV
      *
-     * @param ResultSet      $rs        Results as an array
-     * @param string         $separator The CSV separator (either '\t', ';' or ','
-     *                                  are accepted)
-     * @param string         $quote     how does fields should be quoted
-     * @param array|false    $titles    does export shows column titles or not.
-     *                                  Defaults to false.
-     * @param resource|false $file      export to a file on disk. A file pointer
-     *                                  should be passed here. Defaults to false.
+     * @param ResultSet|array<int,mixed> $rs        Results as an array
+     * @param string                     $separator The CSV separator (either '\t', ';' or ','
+     *                                              are accepted)
+     * @param string                     $quote     how does fields should be quoted
+     * @param array<string>|bool         $titles    does export shows column titles or not.
+     *                                              Defaults to false.
+     * @param resource|false             $file      export to a file on disk. A file pointer
+     *                                              should be passed here. Defaults to false.
      *
      * @return string CSV result
      */
-    public function export($rs, $separator, $quote, $titles = false, $file = false)
-    {
+    public function export(
+        ResultSet|array $rs,
+        string $separator,
+        string $quote,
+        array|bool $titles = false,
+        mixed $file = false //FIXME: replace resource from fopen() with SplFileObject
+    ): string {
         //switch back to the default separator if not in accepted_separators array
         if (!in_array($separator, $this->accepted_separators)) {
             $separator = self::DEFAULT_SEPARATOR;
@@ -115,17 +102,17 @@ class CsvOut extends Csv
         $this->current_line = 0;
 
         $fields = array();
-        if (!is_array($titles)) {
+        if ($titles === true) {
             $row = $results[0];
             foreach (array_keys((array)$row) as $field) {
                 $fields[] = $this->quote . str_replace(
                     $this->quote,
                     $this->escaped,
-                    $field
+                    (string)$field
                 ) . $this->quote;
             }
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
-        } elseif (count($titles) > 1) {
+        } elseif (is_array($titles) && count($titles) > 1) {
             foreach ($titles as $field) {
                 $field = str_replace(
                     array(':', '&nbsp;'),
@@ -149,7 +136,7 @@ class CsvOut extends Csv
                     $elts[] = $this->quote . str_replace(
                         $this->quote,
                         $this->escaped,
-                        $v ?? ''
+                        (string)($v ?? '')
                     ) . $this->quote;
                 }
 
@@ -173,7 +160,7 @@ class CsvOut extends Csv
      *
      * @return void
      */
-    private function write($last = false)
+    private function write(bool $last = false): void
     {
         if (
             $last && $this->file
@@ -196,7 +183,7 @@ class CsvOut extends Csv
      *
      * @return ?string
      */
-    public function getParamedtedExportName($id)
+    public function getParamedtedExportName(string $id): ?string
     {
         //check first in YAML configuration file
         $data = Yaml::parseFile($this->parameted_file);
@@ -225,9 +212,9 @@ class CsvOut extends Csv
     /**
      * Get al list of all parameted exports
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getParametedExports()
+    public function getParametedExports(): array
     {
         $parameted = [];
 
@@ -271,7 +258,7 @@ class CsvOut extends Csv
      *
      * @return string|int filename used or error code
      */
-    private function runXmlParametedExport($id)
+    private function runXmlParametedExport(string $id): string|int
     {
         global $zdb;
 
@@ -284,7 +271,7 @@ class CsvOut extends Csv
 
         try {
             $results = $zdb->db->query(
-                str_replace('galette_', PREFIX_DB, $export->query),
+                str_replace('galette_', PREFIX_DB, (string)$export->query),
                 Adapter::QUERY_MODE_EXECUTE
             );
 
@@ -338,7 +325,7 @@ class CsvOut extends Csv
      *
      * @return string|int|false filename used, error code or failure
      */
-    private function runYamlParametedExport($id)
+    private function runYamlParametedExport(string $id): string|int|false
     {
         global $zdb;
 
@@ -408,7 +395,7 @@ class CsvOut extends Csv
      *
      * @return ?string filename used
      */
-    public function runParametedExport($id)
+    public function runParametedExport(string $id): ?string
     {
         //try first to run from YAML configuration file
         $run = $this->runYamlParametedExport($id);

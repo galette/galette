@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * i18n functions
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2003-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,18 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Main
- * @package   Galette
- *
- * @author    Frédéric Jacquot <unknown@unknow.com>
- * @author    Georges Khaznadar (i18n using gettext) <unknown@unknow.com>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.62
  */
+
+declare(strict_types=1);
 
 if (!defined('GALETTE_ROOT')) {
     die("Sorry. You can't access directly to this file");
@@ -56,7 +41,7 @@ $language = $i18n->getLongID();
  *
  * @return string
  */
-function _T($string, $domain = 'galette', $nt = true)
+function _T(string $string, string $domain = 'galette', bool $nt = true): string
 {
     global $language, $installer, $translator, $l10n;
 
@@ -109,7 +94,7 @@ function _T($string, $domain = 'galette', $nt = true)
  *
  * @return string
  */
-function _Tn($singular, $plural, $count, $domain = 'galette', $nt = true)
+function _Tn(string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
     global $language, $installer, $translator, $l10n;
 
@@ -161,7 +146,7 @@ function _Tn($singular, $plural, $count, $domain = 'galette', $nt = true)
  *
  * @return string
  */
-function _Tx($context, $string, $domain = 'galette', $nt = true)
+function _Tx(string $context, string $string, string $domain = 'galette', bool $nt = true): string
 {
     global $language, $installer, $translator, $l10n;
 
@@ -201,7 +186,7 @@ function _Tx($context, $string, $domain = 'galette', $nt = true)
  *
  * @return string
  */
-function _Tnx($context, $singular, $plural, $count, $domain = 'galette', $nt = true)
+function _Tnx(string $context, string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
     global $language, $installer, $translator, $l10n;
 
@@ -244,14 +229,14 @@ function _Tnx($context, $singular, $plural, $count, $domain = 'galette', $nt = t
 }
 
 /**
- * Get contextualized strign (simalates pgettext)
+ * Get contextualized string (simulates pgettext)
  *
  * @param string $string  The string to translate
  * @param string $context The context
  *
  * @return string
  */
-function contextualizedString($string, $context)
+function contextualizedString(string $string, string $context): string
 {
     return "{$string}\004{$context}";
 }
@@ -264,7 +249,7 @@ function contextualizedString($string, $context)
  *
  * @return string
  */
-function __($string, $domain = 'galette')
+function __(string $string, string $domain = 'galette'): string
 {
     return _T($string, $domain, false);
 }

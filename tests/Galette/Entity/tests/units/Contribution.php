@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Contribution tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2017-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-06-11
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -41,14 +28,7 @@ use Galette\GaletteTestCase;
 /**
  * Contribution tests class
  *
- * @category  Entity
- * @name      Contribution
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-06-11
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Contribution extends GaletteTestCase
 {
@@ -66,6 +46,10 @@ class Contribution extends GaletteTestCase
         $this->zdb = new \Galette\Core\Db();
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\ContributionsTypes::TABLE);
+        $delete->where(['libelle_type_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
 
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
@@ -86,7 +70,6 @@ class Contribution extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->initContributionsTypes();
 
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
@@ -103,12 +86,10 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $contrib = $this->contrib;
         $this->assertNull($contrib->id);
-        $this->assertNull($contrib->isFee());
-        $this->assertNull($contrib->is_cotis);
         $this->assertNull($contrib->date);
         $this->assertNull($contrib->begin_date);
         $this->assertNull($contrib->end_date);
@@ -117,7 +98,7 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib->raw_end_date);
         $this->assertEmpty($contrib->duration);
         $this->assertSame((int)$this->preferences->pref_default_paymenttype, $contrib->payment_type);
-        $this->assertSame('Check', $contrib->spayment_type);
+        $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->model);
         $this->assertNull($contrib->member);
         $this->assertNull($contrib->type);
@@ -138,8 +119,6 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib::getDueDate($this->zdb, 1));
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
-        $this->assertSame('donation', $contrib->getRawType());
-        $this->assertSame('Donation', $contrib->getTypeLabel());
         $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->unknown_property);
     }
@@ -149,7 +128,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetterSetter()
+    public function testGetterSetter(): void
     {
         $contrib = $this->contrib;
 
@@ -167,12 +146,10 @@ class Contribution extends GaletteTestCase
         $contrib->amount = 0;
         $this->assertNull($contrib->amount);
         $contrib->amount = 42;
-        $this->assertSame(42, $contrib->amount);
+        $this->assertSame(42.0, $contrib->amount);
         $contrib->amount = '42';
-        $this->assertSame('42', $contrib->amount);
+        $this->assertSame(42.0, $contrib->amount);
 
-        $contrib->type = 'not a type';
-        $this->assertNull($contrib->type);
         $contrib->type = 156;
         $this->assertInstanceOf('\Galette\Entity\ContributionsTypes', $contrib->type);
         $this->assertFalse($contrib->type->id);
@@ -196,27 +173,21 @@ class Contribution extends GaletteTestCase
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CASH;
         $this->assertSame('Cash', $contrib->getPaymentType());
-        $this->assertSame('Cash', $contrib->spayment_type);
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CHECK;
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertSame('Check', $contrib->spayment_type);
 
         $contrib->payment_type = \Galette\Entity\PaymentType::OTHER;
         $this->assertSame('Other', $contrib->getPaymentType());
-        $this->assertSame('Other', $contrib->spayment_type);
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CREDITCARD;
         $this->assertSame('Credit card', $contrib->getPaymentType());
-        $this->assertSame('Credit card', $contrib->spayment_type);
 
         $contrib->payment_type = \Galette\Entity\PaymentType::TRANSFER;
         $this->assertSame('Transfer', $contrib->getPaymentType());
-        $this->assertSame('Transfer', $contrib->spayment_type);
 
         $contrib->payment_type = \Galette\Entity\PaymentType::PAYPAL;
         $this->assertSame('Paypal', $contrib->getPaymentType());
-        $this->assertSame('Paypal', $contrib->spayment_type);
     }
 
     /**
@@ -224,7 +195,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testCreation()
+    public function testCreation(): void
     {
         $this->getMemberOne();
         //create contribution for member
@@ -236,7 +207,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testDonationUpdate()
+    public function testDonationUpdate(): void
     {
         $this->getMemberOne();
         //create contribution for member
@@ -291,7 +262,7 @@ class Contribution extends GaletteTestCase
         $data = [
             'id_adh' => $this->adh->id,
             'id_type_cotis' => 4, //donation
-            'montant_cotis' => '',
+            'montant_cotis' => 0,
             'type_paiement_cotis' => 4,
             'info_cotis' => 'FAKER' . $this->seed,
             'date_enreg' => $begin_date->format('Y-m-d'),
@@ -309,7 +280,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testContributionUpdate()
+    public function testContributionUpdate(): void
     {
         $this->logSuperAdmin();
 
@@ -395,7 +366,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testRetrieveEndDate()
+    public function testRetrieveEndDate(): void
     {
         global $preferences;
         $orig_pref_beg_membership = $this->preferences->pref_beg_membership;
@@ -414,22 +385,10 @@ class Contribution extends GaletteTestCase
         $due_date->sub(new \DateInterval('P1D'));
         $this->assertSame($due_date->format('Y-m-d'), $contrib->end_date);
 
-        //unset pref_beg_membership and pref_membership_ext
-        $preferences->pref_beg_membership = '';
-        $preferences->pref_membership_ext = '';
-
-        $this->expectException('RuntimeException');
-        $this->expectExceptionMessage('Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!');
-        $contrib = new \Galette\Entity\Contribution(
-            $this->zdb,
-            $this->login,
-            ['type' => 1] //annual fee
-        );
-
         // Second, test with beginning of membership date
         $preferences->pref_beg_membership = '29/05';
         $due_date = new \DateTime();
-        $due_date->setDate(date('Y'), 5, 28);
+        $due_date->setDate((int)date('Y'), 5, 28);
         if ($due_date <= new \DateTime()) {
             $due_date->add(new \DateInterval('P1Y'));
         }
@@ -461,6 +420,41 @@ class Contribution extends GaletteTestCase
         $preferences->pref_beg_membership = $orig_pref_beg_membership;
         $preferences->pref_membership_ext = $orig_pref_membership_ext;
         $preferences->pref_membership_offermonths = $orig_pref_membership_offermonths;
+
+        //unset pref_beg_membership and pref_membership_ext
+        $preferences->pref_beg_membership = '';
+        $preferences->pref_membership_ext = 0;
+
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!');
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] //annual fee
+        );
+    }
+
+    /**
+     * Test monthly contribution
+     *
+     * @return void
+     */
+    public function testMonthlyContribution(): void
+    {
+        //create monthly fee type - 2 months extension
+        $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
+        $this->assertTrue($contribtype->add('FAKER' . $this->seed, 10.00, 2));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => $contribtype->id] //monthly fee
+        );
+
+        $due_date = new \DateTime();
+        $due_date->add(new \DateInterval('P2M'));
+        $due_date->sub(new \DateInterval('P1D'));
+        $this->assertSame($due_date->format('Y-m-d'), $contrib->end_date);
     }
 
     /**
@@ -468,7 +462,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testCheckOverlap()
+    public function testCheckOverlap(): void
     {
         $adh = new \Galette\Entity\Adherent($this->zdb);
         $adh->setDependencies(
@@ -562,7 +556,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetFieldLabel()
+    public function testGetFieldLabel(): void
     {
         $this->assertSame(
             'Amount',
@@ -591,7 +585,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
@@ -620,7 +614,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->getMemberOne();
         $this->createContribution();
@@ -634,7 +628,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testCan()
+    public function testCan(): void
     {
         $this->getMemberOne();
         //create contribution for member
@@ -745,7 +739,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testNextYear()
+    public function testNextYear(): void
     {
         $this->logSuperAdmin();
         $this->getMemberOne();
@@ -782,7 +776,7 @@ class Contribution extends GaletteTestCase
      *
      * @return void
      */
-    public function testNextYearFrom096()
+    public function testNextYearFrom096(): void
     {
         $this->logSuperAdmin();
         $this->getMemberOne();
@@ -828,7 +822,7 @@ class Contribution extends GaletteTestCase
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, ['type' => 1, 'adh' => $this->adh->id, 'payment_type' => 1]);
         $this->assertSame($ny_begin_date->format('Y-m-d'), $contrib->begin_date);
 
-        $check = $contrib->check(['type_paiement_cotis' => 1, 'info_cotis' => 'FAKER' . $this->seed], [], []);
+        $check = $contrib->check(['type_paiement_cotis' => 1, 'montant_cotis' => 1, 'info_cotis' => 'FAKER' . $this->seed], [], []);
         if (is_array($check)) {
             var_dump($check);
         }

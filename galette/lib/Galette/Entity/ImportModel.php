@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Import model
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,21 +17,15 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.6dev - 2013-09-26
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
 use ArrayObject;
 use Galette\Core\Db;
+use Galette\Core\Galette;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
@@ -45,30 +33,24 @@ use Laminas\Db\Adapter\Adapter;
 /**
  * Import model entity
  *
- * @category  Entity
- * @name      ImportModel
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.6dev - 2013-09-26
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class ImportModel
 {
     public const TABLE = 'import_model';
     public const PK = 'model_id';
 
-    private $id;
-    private $fields;
-    private $creation_date;
+    private ?int $id;
+    /** @var array<string>|null */
+    private ?array $fields;
+    private ?string $creation_date;
 
     /**
      * Loads model
      *
      * @return bool true if query succeed, false otherwise
      */
-    public function load()
+    public function load(): bool
     {
         global $zdb;
 
@@ -98,14 +80,18 @@ class ImportModel
     /**
      * Populate object from a resultset row
      *
-     * @param ArrayObject $r the resultset row
+     * @param ArrayObject<string, int|string> $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS(ArrayObject $r)
+    private function loadFromRS(ArrayObject $r): void
     {
-        $this->id = $r->model_id;
-        $this->fields = unserialize($r->model_fields);
+        $this->id = (int)$r->model_id;
+        if (Galette::isSerialized($r->model_fields)) {
+            $this->fields = unserialize($r->model_fields);
+        } else {
+            $this->fields = Galette::jsonDecode($r->model_fields);
+        }
         $this->creation_date = $r->model_creation_date;
     }
 
@@ -116,7 +102,7 @@ class ImportModel
      *
      * @return boolean
      */
-    public function remove(Db $zdb)
+    public function remove(Db $zdb): bool
     {
         try {
             $zdb->db->query(
@@ -144,17 +130,15 @@ class ImportModel
      *
      * @return boolean
      */
-    public function store(Db $zdb)
+    public function store(Db $zdb): bool
     {
         try {
             $values = array(
-                self::PK        => $this->id,
-                'model_fields'  => serialize($this->fields)
+                'model_fields'  => Galette::jsonEncode($this->fields)
             );
 
             if (!isset($this->id) || $this->id == '') {
                 //we're inserting a new model
-                unset($values[self::PK]);
                 $this->creation_date = date("Y-m-d H:i:s");
                 $values['model_creation_date'] = $this->creation_date;
 
@@ -171,6 +155,7 @@ class ImportModel
                 }
             } else {
                 //we're editing an existing model
+                $values[self::PK] = $this->id;
                 $update = $zdb->update(self::TABLE);
                 $update->set($values);
                 $update->where([self::PK => $this->id]);
@@ -190,11 +175,11 @@ class ImportModel
     /**
      * Get fields
      *
-     * @return ?array
+     * @return ?array<string>
      */
-    public function getFields()
+    public function getFields(): ?array
     {
-        return $this->fields;
+        return $this->fields ?? null;
     }
 
     /**
@@ -204,7 +189,7 @@ class ImportModel
      *
      * @return string
      */
-    public function getCreationDate($formatted = true)
+    public function getCreationDate(bool $formatted = true): string
     {
         if ($formatted === true) {
             $date = new \DateTime($this->creation_date);
@@ -217,11 +202,11 @@ class ImportModel
     /**
      * Set fields
      *
-     * @param array $fields Fields list
+     * @param array<string> $fields Fields list
      *
-     * @return ImportModel
+     * @return self
      */
-    public function setFields($fields)
+    public function setFields(array $fields): self
     {
         $this->fields = $fields;
         return $this;

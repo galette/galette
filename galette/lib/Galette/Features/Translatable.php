@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Translatable objects trait
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2018-2021 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,45 +17,31 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Features
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2021 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2017-05-26
  */
+
+declare(strict_types=1);
 
 namespace Galette\Features;
 
 /**
  * Translatable objects trait
  *
- * @category  Features
- * @name      Translatable
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2021 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2017-05-26
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 trait Translatable
 {
-    protected $old_name;
-    protected $name;
+    protected ?string $old_name = null;
+    protected ?string $name = null;
 
     /**
      * Get field name
      *
      * @param boolean $translated Get translated or raw name
      *
-     * @return String
+     * @return string
      */
-    public function getName($translated = true)
+    public function getName(bool $translated = true): string
     {
         if (empty($this->name)) {
             return '';

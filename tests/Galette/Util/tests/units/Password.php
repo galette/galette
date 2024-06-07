@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Password tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Util
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-04-25
  */
+
+declare(strict_types=1);
 
 namespace Galette\Util\test\units;
 
@@ -43,14 +30,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 /**
  * Password tests class
  *
- * @category  Util
- * @name      Password
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-04-25
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Password extends TestCase
 {
@@ -89,7 +69,7 @@ class Password extends TestCase
      *
      * @return array
      */
-    public static function passProvider()
+    public static function passProvider(): array
     {
         return [
             // [strength, password, errors]
@@ -134,7 +114,7 @@ class Password extends TestCase
      * @return void
      */
     #[DataProvider('passProvider')]
-    public function testValidatePassword($level, $pass, $errors)
+    public function testValidatePassword(int $level, string $pass, array $errors): void
     {
         //errror messages mapping
         foreach ($errors as &$err) {
@@ -176,7 +156,7 @@ class Password extends TestCase
      *
      * @return array
      */
-    public static function blacklistProvider()
+    public static function blacklistProvider(): array
     {
         return [
             ['galette', true],
@@ -197,7 +177,7 @@ class Password extends TestCase
      * @return void
      */
     #[DataProvider('blacklistProvider')]
-    public function testBlacklist($pass, $expected)
+    public function testBlacklist(string $pass, bool $expected): void
     {
         $this->preferences->pref_password_blacklist = true;
         $password = new \Galette\Util\Password($this->preferences);
@@ -213,7 +193,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testPersonalInformation()
+    public function testPersonalInformation(): void
     {
         $infos = [
             'login'     => 'mylogin',

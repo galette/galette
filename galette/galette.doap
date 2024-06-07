@@ -4,7 +4,7 @@
     xmlns="http://usefulinc.com/ns/doap#">
 
     <name>Galette</name>
-    <homepage rdf:resource="http://galette.tuxfamily.org" />
+    <homepage rdf:resource="https://galette.eu" />
     <created>2004-02-09</created>
 
     <shortdesc xml:lang="en">

@@ -17,15 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
  */
+
+declare(strict_types=1);
 
 namespace Galette\Middleware;
 
@@ -34,44 +28,23 @@ use Galette\Core\Preferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Analog\Analog;
 use DI\Container;
-use RKA\Session;
 use Slim\Flash\Messages;
-use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 
 /**
  * Galette Slim middleware for public pages access
  *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class PublicPages
 {
-    /**
-     * @var Messages
-     */
     protected Messages $flash;
 
-    /**
-     * @var Login
-     */
     private Login $login;
 
-    /**
-     * @var RouteParser
-     */
     private RouteParser $routeparser;
 
-    /**
-     * @var Preferences
-     */
     private Preferences $preferences;
 
     /**

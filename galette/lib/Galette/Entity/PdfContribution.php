@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * PDF contributions model
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,33 +17,20 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-11-21
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Galette\Core\Db;
 use Galette\Core\Preferences;
 
 /**
  * PDF contribution model
  *
- * @category  Entity
- * @name      PdfContribution
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-11-21
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 abstract class PdfContribution extends PdfModel
@@ -57,12 +38,12 @@ abstract class PdfContribution extends PdfModel
     /**
      * Main constructor
      *
-     * @param Db          $zdb         Database instance
-     * @param Preferences $preferences Galette preferences
-     * @param int         $type        Model type
-     * @param mixed       $args        Arguments
+     * @param Db                                      $zdb         Database instance
+     * @param Preferences                             $preferences Galette preferences
+     * @param int                                     $type        Model type
+     * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
-    public function __construct(Db $zdb, Preferences $preferences, int $type, $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int $args = null)
     {
         parent::__construct($zdb, $preferences, $type, $args);
 
@@ -74,7 +55,7 @@ abstract class PdfContribution extends PdfModel
     /**
      * Build legend array
      *
-     * @return array
+     * @return array<string,array<string,mixed>>
      */
     public function getLegend(): array
     {

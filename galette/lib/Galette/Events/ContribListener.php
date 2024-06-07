@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Event listener for contributions
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Events
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 2020-08-25
  */
+
+declare(strict_types=1);
 
 namespace Galette\Events;
 
@@ -54,29 +41,16 @@ use Slim\Routing\RouteParser;
 /**
  * Event listener for contributions
  *
- * @category  Events
- * @name      MemberListener
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 2020-08-25
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class ContribListener implements ListenerSubscriber
 {
-    /** @var Preferences */
-    private $preferences;
-    /** @var RouteParser */
-    private $routeparser;
-    /** @var History */
-    private $history;
-    /** @var Messages */
-    private $flash;
-    /** @var Login */
-    private $login;
-    /** @var Db */
-    private $zdb;
+    private Preferences $preferences;
+    private RouteParser $routeparser;
+    private History $history;
+    private Messages $flash;
+    private Login $login;
+    private Db $zdb;
 
     /**
      * Constructor
@@ -115,7 +89,7 @@ class ContribListener implements ListenerSubscriber
     {
         $acceptor->subscribeTo(
             'contribution.add',
-            function (GaletteEvent $event) {
+            function (GaletteEvent $event): void {
                 $this->contributionAdded($event->getObject());
             }
         );
@@ -128,7 +102,7 @@ class ContribListener implements ListenerSubscriber
      *
      * @return void
      */
-    public function contributionAdded(Contribution $contrib)
+    public function contributionAdded(Contribution $contrib): void
     {
         Analog::log(
             '[' . get_class($this) . '] Event contribution.add emitted for #' . $contrib->id,
@@ -151,7 +125,7 @@ class ContribListener implements ListenerSubscriber
      *
      * @return void
      */
-    private function sendContribEmail(Contribution $contrib, $new)
+    private function sendContribEmail(Contribution $contrib, bool $new): void
     {
         if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
             //if email has been disabled in the preferences, we should not be here ;
@@ -254,7 +228,7 @@ class ContribListener implements ListenerSubscriber
      *
      * @return void
      */
-    private function sendAdminEmail(Contribution $contrib, $new)
+    private function sendAdminEmail(Contribution $contrib, bool $new): void
     {
         if (
             $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED
@@ -325,7 +299,7 @@ class ContribListener implements ListenerSubscriber
      *
      * @return void
      */
-    private function callPostContributionScript($contrib)
+    private function callPostContributionScript(Contribution $contrib): void
     {
         //if an external script has been configured, we call it
         if ($this->preferences->pref_new_contrib_script) {

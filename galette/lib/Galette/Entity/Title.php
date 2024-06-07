@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Title
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.4dev - 2013-01-27
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
@@ -44,14 +31,7 @@ use Analog\Analog;
 /**
  * Title
  *
- * @category  Entity
- * @name      Title
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-04
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property int $id
  * @property string $short
@@ -65,9 +45,9 @@ class Title
     public const TABLE = 'titles';
     public const PK = 'id_title';
 
-    private $id;
-    private $short;
-    private $long;
+    private int $id;
+    private string $short;
+    private ?string $long;
 
     public const MR = 1;
     public const MRS = 2;
@@ -76,14 +56,14 @@ class Title
     /**
      * Main constructor
      *
-     * @param mixed $args Arguments
+     * @param int|ArrayObject<string, int|string>|null $args Arguments
      */
-    public function __construct($args = null)
+    public function __construct(int|ArrayObject $args = null)
     {
         if (is_int($args)) {
             $this->load($args);
-        } elseif ($args !== null && is_object($args)) {
-            $this->loadFromRs($args);
+        } elseif ($args instanceof ArrayObject) {
+            $this->loadFromRS($args);
         }
     }
 
@@ -94,7 +74,7 @@ class Title
      *
      * @return void
      */
-    private function load($id)
+    private function load(int $id): void
     {
         global $zdb;
         try {
@@ -120,14 +100,14 @@ class Title
     /**
      * Load title from a db ResultSet
      *
-     * @param ArrayObject $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs)
+    private function loadFromRS(ArrayObject $rs): void
     {
         $pk = self::PK;
-        $this->id = $rs->$pk;
+        $this->id = (int)$rs->$pk;
         $this->short = $rs->short_label;
         if ($rs->long_label === 'NULL') {
             //mysql's null...
@@ -144,14 +124,14 @@ class Title
      *
      * @return boolean
      */
-    public function store(Db $zdb)
+    public function store(Db $zdb): bool
     {
         $data = array(
             'short_label'   => strip_tags($this->short),
             'long_label'    => strip_tags($this->long)
         );
         try {
-            if ($this->id !== null && $this->id > 0) {
+            if (isset($this->id) && $this->id > 0) {
                 $update = $zdb->update(self::TABLE);
                 $update->set($data)->where([self::PK => $this->id]);
                 $zdb->execute($update);
@@ -184,7 +164,7 @@ class Title
      *
      * @return boolean
      */
-    public function remove($zdb)
+    public function remove(Db $zdb): bool
     {
         $id = (int)$this->id;
         if ($id === self::MR || $id === self::MRS) {
@@ -219,7 +199,7 @@ class Title
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         global $lang;
 
@@ -253,13 +233,15 @@ class Title
                 } else {
                     return $this->$rname;
                 }
-            default:
-                Analog::log(
-                    'Unable to get Title property ' . $name,
-                    Analog::WARNING
-                );
-                break;
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -270,7 +252,7 @@ class Title
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         switch ($name) {
             case 'id':
@@ -292,7 +274,7 @@ class Title
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'short':

@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette members controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Controllers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-02
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
@@ -62,22 +49,14 @@ use Analog\Analog;
 /**
  * Galette members controller
  *
- * @category  Controllers
- * @name      GaletteController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-02
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class MembersController extends CrudController
 {
     use BatchList;
 
-    /** @var bool */
-    private $is_self_membership = false;
+    private bool $is_self_membership = false;
 
     // CRUD - Create
 
@@ -272,7 +251,7 @@ class MembersController extends CrudController
             //member does not exist!
             $this->flash->addMessage(
                 'error_detected',
-                str_replace('%id', $id, _T("No member #%id."))
+                str_replace('%id', (string)$id, _T("No member #%id."))
             );
 
             return $response
@@ -326,20 +305,20 @@ class MembersController extends CrudController
     /**
      * Public pages (trombinoscope, public list)
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
-     * @param string         $type     List type (either list or trombi)
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
+     * @param string|null         $type     List type (either list or trombi)
      *
      * @return Response
      */
     public function publicList(
         Request $request,
         Response $response,
-        $option = null,
-        $value = null,
-        $type = null
+        string $option = null,
+        string|int $value = null,
+        string $type = null
     ): Response {
         $varname = $this->getFilterName(['prefix' => 'public', 'suffix' => $type]);
         if (isset($this->session->$varname)) {
@@ -425,14 +404,14 @@ class MembersController extends CrudController
     /**
      * Members list
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null): Response
+    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName()})) {
             $filters = $this->session->{$this->getFilterName()};
@@ -545,11 +524,12 @@ class MembersController extends CrudController
                 $filters->email_filter = (int)$post['email_filter'];
             }
             //group filter
-            if (
-                isset($post['group_filter'])
-                && $post['group_filter'] > 0
-            ) {
-                $filters->group_filter = (int)$post['group_filter'];
+            if (isset($post['group_filter'])) {
+                if ($post['group_filter'] > 0) {
+                    $filters->group_filter = (int)$post['group_filter'];
+                } else {
+                    $filters->group_filter = null;
+                }
             }
             //number of rows to show
             if (isset($post['nbshow'])) {
@@ -726,14 +706,14 @@ class MembersController extends CrudController
     /**
      * Members list for ajax
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string|null    $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
      *
      * @return Response
      */
-    public function ajaxList(Request $request, Response $response, string $option = null, $value = null): Response
+    public function ajaxList(Request $request, Response $response, string $option = null, string|int $value = null): Response
     {
         $post = $request->getParsedBody();
 
@@ -1118,7 +1098,7 @@ class MembersController extends CrudController
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
-                    count($data['id']),
+                    (string)count($data['id']),
                     _T('Mass change %count members')
                 ),
                 'form_url'      => $this->routeparser->urlFor('masschangeMembersReview'),
@@ -1215,7 +1195,7 @@ class MembersController extends CrudController
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
-                    count($data['id']),
+                    (string)count($data['id']),
                     _T('Review mass change %count members')
                 ),
                 'form_url'      => $this->routeparser->urlFor('massstoremembers'),
@@ -1343,10 +1323,14 @@ class MembersController extends CrudController
         } else {
             $this->flash->addMessage(
                 'success_detected',
-                str_replace(
-                    '%count',
-                    $mass,
-                    _T('%count members has been changed successfully!')
+                sprintf(
+                    //TRANS: first parameter is the number of edited members
+                    _Tn(
+                        '%1$s member has been changed successfully!',
+                        '%1$s members has been changed successfully!',
+                        $mass
+                    ),
+                    $mass
                 )
             );
         }
@@ -1408,6 +1392,7 @@ class MembersController extends CrudController
             $member->setSelfMembership();
 
             //check captcha
+            /** @var Gaptcha $gaptcha */
             $gaptcha = $this->session->gaptcha;
             if (!$gaptcha->check($post['gaptcha'])) {
                 $error_detected[] = _T('Invalid captcha');
@@ -1422,7 +1407,7 @@ class MembersController extends CrudController
                 throw new \RuntimeException(
                     str_replace(
                         '%id',
-                        $member->id,
+                        (string)$member->id,
                         'No right to store member #%id'
                     )
                 );
@@ -1470,25 +1455,25 @@ class MembersController extends CrudController
 
         foreach ($fieldsets as $category) {
             foreach ($category->elements as $field) {
-                if ($field->required == true) {
+                if ($field->required) {
                     $required[$field->field_id] = true;
                 }
-                if ($field->disabled == true) {
-                    $disabled[$field->field_id] = true;
+                if ($field->disabled) {
+                    $disabled[] = $field->field_id;
                 } elseif (!isset($post[$field->field_id])) {
                     switch ($field->field_id) {
                         //unchecked booleans are not sent from form
                         case 'bool_admin_adh':
                         case 'bool_exempt_adh':
                         case 'bool_display_info':
-                            $post[$field->field_id] = 0;
+                            $post[$field->field_id] = false;
                             break;
                     }
                 }
             }
         }
 
-        $real_requireds = array_diff(array_keys($required), array_keys($disabled));
+        $real_requireds = array_diff(array_keys($required), array_values($disabled));
 
         // send email to member
         if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
@@ -1496,7 +1481,7 @@ class MembersController extends CrudController
         }
 
         // Validation
-        $redirect_url = $this->routeparser->urlFor('member', ['id' => $member->id]);
+        $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
         if (!count($real_requireds) || isset($post[array_shift($real_requireds)])) {
             // regular fields
             $valid = $member->check($post, $required, $disabled);
@@ -1533,7 +1518,7 @@ class MembersController extends CrudController
 
                     if ($this->login->isGroupManager()) {
                         //add/remove user from groups
-                        $groups_adh = $post['groups_adh'] ?? null;
+                        $groups_adh = $post['groups_adh'] ?? [];
                         $add_groups = Groups::addMemberToGroups(
                             $member,
                             $groups_adh
@@ -1545,7 +1530,7 @@ class MembersController extends CrudController
                     }
                     if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
                         //add/remove manager from groups
-                        $managed_groups_adh = $post['groups_managed_adh'] ?? null;
+                        $managed_groups_adh = $post['groups_managed_adh'] ?? [];
                         $add_groups = Groups::addMemberToGroups(
                             $member,
                             $managed_groups_adh,
@@ -1576,7 +1561,7 @@ class MembersController extends CrudController
                 }
 
                 if (isset($post['del_photo'])) {
-                    if (!$member->picture->delete($member->id)) {
+                    if (!$member->picture->delete()) {
                         $error_detected[] = _T("Delete failed");
                         $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
                         Analog::log(
@@ -1629,7 +1614,7 @@ class MembersController extends CrudController
                             $redirect_url = $this->routeparser->urlFor('addMember');
                             break;
                         case Adherent::AFTER_ADD_SHOW:
-                            $redirect_url = $this->routeparser->urlFor('member', ['id' => $member->id]);
+                            $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
                             break;
                         case Adherent::AFTER_ADD_LIST:
                             $redirect_url = $this->routeparser->urlFor('members');
@@ -1644,7 +1629,7 @@ class MembersController extends CrudController
                         ['type' => 'fee']
                     ) . '?id_adh=' . $member->id;
                 } else {
-                    $redirect_url = $this->routeparser->urlFor('member', ['id' => $member->id]);
+                    $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
                 }
             } else {
                 //store entity in session
@@ -1656,7 +1641,7 @@ class MembersController extends CrudController
                     if ($member->id) {
                         $redirect_url = $this->routeparser->urlFor(
                             'editMember',
-                            ['id'    => $member->id]
+                            ['id'    => (string)$member->id]
                         );
                     } else {
                         $redirect_url = $this->routeparser->urlFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
@@ -1677,11 +1662,11 @@ class MembersController extends CrudController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('members');
     }
@@ -1689,11 +1674,11 @@ class MembersController extends CrudController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveMember',
@@ -1704,11 +1689,11 @@ class MembersController extends CrudController
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         if (isset($args['id_adh']) || isset($args['id'])) {
             //one member removal
@@ -1724,7 +1709,7 @@ class MembersController extends CrudController
             $this->session->{$this->getFilterName(['suffix' => 'delete'])} = $filters;
             return str_replace(
                 '%count',
-                count($filters->selected),
+                (string)count($filters->selected),
                 _T('You are about to remove %count members.')
             );
         }
@@ -1733,12 +1718,12 @@ class MembersController extends CrudController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return bool
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         if (isset($this->session->{$this->getFilterName(['suffix' => 'delete'])})) {
             $filters = $this->session->{$this->getFilterName(['suffix' => 'delete'])};
@@ -1784,7 +1769,7 @@ class MembersController extends CrudController
      *
      * @param int $id_adh Current member ID
      *
-     * @return array
+     * @return array<string,int>
      */
     private function handleNavigationLinks(int $id_adh): array
     {
@@ -1838,7 +1823,7 @@ class MembersController extends CrudController
     /**
      * Get filter name in session
      *
-     * @param array|null $args Route arguments
+     * @param array<string,mixed>|null $args Route arguments
      *
      * @return string
      */

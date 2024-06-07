@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette admin tools controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2022 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-03
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers;
 
@@ -47,14 +34,7 @@ use Analog\Analog;
 /**
  * Galette main controller
  *
- * @category  Controllers
- * @name      AdminToolsController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-03
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class AdminToolsController extends AbstractController
@@ -147,7 +127,7 @@ class AdminToolsController extends AbstractController
             if ($res === true) {
                 $success_detected[] = str_replace(
                     '%i',
-                    $members->getCount(),
+                    (string)$members->getCount(),
                     _T("Logins and passwords have been successfully filled (%i processed).")
                 );
             } else {

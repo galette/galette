@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Generic email for Galette
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +17,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-12-10
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Galette\IO\File;
+use Soundasleep\Html2Text;
 use Throwable;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -43,14 +32,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 /**
  * Generic email for Galette
  *
- * @category  Core
- * @name      GaletteMail
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-07
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class GaletteMail
 {
@@ -68,21 +50,24 @@ class GaletteMail
     public const SENDER_CURRENT = 1;
     public const SENDER_OTHER = 2;
 
-    private $sender_name;
-    private $sender_address;
-    private $subject;
-    private $message;
-    private $html;
-    private $word_wrap = 70;
-    private $timeout = 300;
+    private string $sender_name;
+    private string $sender_address;
+    private string $subject;
+    private string $message;
+    private bool $html = false;
+    private int $word_wrap = 70;
+    private int $timeout = 300;
 
-    private $errors = array();
-    private $recipients = array();
+    /** @var array<int, string> */
+    private array $errors = array();
+    /** @var array<string, string> */
+    private array $recipients = array();
 
-    private $mail = null;
-    protected $attachments = array();
+    private PHPMailer $mail;
+    /** @var array<int,File> */
+    protected array $attachments = array();
 
-    private $preferences;
+    private Preferences $preferences;
 
     /**
      * Constructor
@@ -103,7 +88,7 @@ class GaletteMail
      *
      * @return void
      */
-    private function initMailer()
+    private function initMailer(): void
     {
         global $i18n;
 
@@ -200,15 +185,15 @@ class GaletteMail
      * For mailing convenience, all recipients will be added as BCC,
      * regular recipient will be the sender.
      *
-     * @param array $recipients Array (mail=>name) of all recipients
+     * @param array<string, string> $recipients Array (mail=>name) of all recipients
      *
      * @return bool
      */
-    public function setRecipients($recipients)
+    public function setRecipients(array $recipients): bool
     {
         $res = true;
 
-        if ($this->mail === null) {
+        if (!isset($this->mail)) {
             $this->initMailer();
         }
 
@@ -245,9 +230,9 @@ class GaletteMail
      *
      * @return integer Either GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
      */
-    public function send()
+    public function send(): int
     {
-        if ($this->mail === null) {
+        if (!isset($this->mail)) {
             $this->initMailer();
         }
 
@@ -263,7 +248,6 @@ class GaletteMail
         } else {
             $this->mail->AddReplyTo($this->getSenderAddress());
         }
-
 
         if ($this->html) {
             //the email is html :(
@@ -331,7 +315,7 @@ class GaletteMail
                     "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
                 );
-                $this->mail = null;
+                unset($this->mail);
                 return self::MAIL_ERROR;
             } else {
                 $txt = '';
@@ -342,7 +326,7 @@ class GaletteMail
                     'An email has been sent to: ' . $txt,
                     Analog::INFO
                 );
-                $this->mail = null;
+                unset($this->mail);
                 return self::MAIL_SENT;
             }
         } catch (Throwable $e) {
@@ -351,7 +335,7 @@ class GaletteMail
                 Analog::ERROR
             );
             $this->errors[] = $e->getMessage();
-            $this->mail = null;
+            unset($this->mail);
             return self::MAIL_ERROR;
         }
     }
@@ -363,7 +347,7 @@ class GaletteMail
      *
      * @return bool
      */
-    public static function isValidEmail($address)
+    public static function isValidEmail(string $address): bool
     {
         $valid = PHPMailer::ValidateAddress($address);
         if (!$valid) {
@@ -382,7 +366,7 @@ class GaletteMail
      *
      * @return bool
      */
-    public static function isUrl($url)
+    public static function isUrl(string $url): bool
     {
         $valid = preg_match(
             '|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i',
@@ -393,8 +377,9 @@ class GaletteMail
                 '[GaletteMail] `' . $url . '` is not an url',
                 Analog::DEBUG
             );
+            return false;
         }
-        return $valid;
+        return true;
     }
 
     /**
@@ -402,10 +387,10 @@ class GaletteMail
      *
      * @return string current message in plaintext format
      */
-    protected function cleanedHtml()
+    protected function cleanedHtml(): string
     {
         $html = $this->message;
-        $txt = \Soundasleep\Html2Text::convert($html);
+        $txt = Html2Text::convert($html);
         return $txt;
     }
 
@@ -414,7 +399,7 @@ class GaletteMail
      *
      * @return PHPMailer object
      */
-    protected function getPhpMailer()
+    protected function getPhpMailer(): PHPMailer
     {
         return $this->mail;
     }
@@ -422,11 +407,11 @@ class GaletteMail
     /**
      * Is the email HTML formatted?
      *
-     * @param boolean $set The value to set
+     * @param ?boolean $set The value to set
      *
      * @return bool
      */
-    public function isHTML($set = null)
+    public function isHTML(bool $set = null): bool
     {
         if (is_bool($set)) {
             $this->html = $set;
@@ -439,7 +424,7 @@ class GaletteMail
      *
      * @return string
      */
-    public function getSenderName()
+    public function getSenderName(): string
     {
         return $this->sender_name;
     }
@@ -449,7 +434,7 @@ class GaletteMail
      *
      * @return string
      */
-    public function getSenderAddress()
+    public function getSenderAddress(): string
     {
         return $this->sender_address;
     }
@@ -459,17 +444,17 @@ class GaletteMail
      *
      * @return string The subject
      */
-    public function getSubject()
+    public function getSubject(): string
     {
-        return $this->subject;
+        return $this->subject ?? '';
     }
 
     /**
      * Retrieve array of errors
      *
-     * @return array
+     * @return array<int,string>
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -479,9 +464,9 @@ class GaletteMail
      *
      * @return string The message
      */
-    public function getMessage()
+    public function getMessage(): string
     {
-        return $this->message;
+        return $this->message ?? '';
     }
 
     /**
@@ -489,10 +474,10 @@ class GaletteMail
      *
      * @return string Wrapped message
      */
-    public function getWrappedMessage()
+    public function getWrappedMessage(): string
     {
         if ($this->word_wrap > 0) {
-            if ($this->mail === null) {
+            if (!isset($this->mail)) {
                 $this->initMailer();
             }
 
@@ -510,9 +495,9 @@ class GaletteMail
      *
      * @param string $subject The subject
      *
-     * @return GaletteMail
+     * @return self
      */
-    public function setSubject($subject)
+    public function setSubject(string $subject): self
     {
         $this->subject = $subject;
         return $this;
@@ -523,9 +508,9 @@ class GaletteMail
      *
      * @param string $message The message
      *
-     * @return GaletteMail
+     * @return self
      */
-    public function setMessage($message)
+    public function setMessage(string $message): self
     {
         $this->message = $message;
         return $this;
@@ -537,9 +522,9 @@ class GaletteMail
      * @param string $name    Sender name
      * @param string $address Sender address
      *
-     * @return GaletteMail
+     * @return self
      */
-    public function setSender($name, $address)
+    public function setSender(string $name, string $address): self
     {
         $this->sender_name = $name;
         $this->sender_address = $address;
@@ -551,9 +536,9 @@ class GaletteMail
      *
      * @param integer $timeout SMTP timeout
      *
-     * @return GaletteMail
+     * @return self
      */
-    public function setTimeout($timeout)
+    public function setTimeout(int $timeout): self
     {
         $this->timeout = $timeout;
         return $this;

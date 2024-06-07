@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Members repository tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2017-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-04-15
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository\test\units;
 
@@ -41,14 +28,7 @@ use Galette\GaletteTestCase;
 /**
  * Members repository tests
  *
- * @category  Repository
- * @name      Members
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-04-15
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Members extends GaletteTestCase
 {
@@ -102,11 +82,11 @@ class Members extends GaletteTestCase
     }
 
     /**
-     * Create members and get their id
+     * Create members and store their id
      *
-     * @return int[]
+     * @return void
      */
-    private function createMembers()
+    private function createMembers(): void
     {
         global $zdb, $login, $hist, $i18n; // globals :(
         $zdb = $this->zdb;
@@ -172,7 +152,7 @@ class Members extends GaletteTestCase
                     'date_enreg'                    => $begin_date->format('Y-m-d'),
                     'date_debut_cotis'              => $begin_date->format('Y-m-d'),
                     'date_fin_cotis'                => $due_date->format('Y-m-d'),
-                    \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+                    \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
                 ];
                 $this->assertTrue($contrib->check($cdata, [], []));
                 $this->assertTrue($contrib->store());
@@ -206,7 +186,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteMembers()
+    private function deleteMembers(): void
     {
         if (is_array($this->mids) && count($this->mids) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
@@ -236,7 +216,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteGroups()
+    private function deleteGroups(): void
     {
         //clean groups
         $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
@@ -255,7 +235,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $members = new \Galette\Repository\Members();
 
@@ -357,7 +337,7 @@ class Members extends GaletteTestCase
 
         //search on member number
         $filters = new \Galette\Filters\MembersList();
-        $filters->filter_str = $this->mids[2];
+        $filters->filter_str = (string)$this->mids[2];
         $filters->field_filter = \Galette\Repository\Members::FILTER_ID;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
@@ -529,22 +509,22 @@ class Members extends GaletteTestCase
 
         //search on contribution type
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->contributions_types = \Galette\Entity\ContributionsTypes::DEFAULT_TYPE;
+        $filters->contributions_types = 1;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
         $this->assertSame(1, $list->count());
 
         $filters->contributions_types = [
-            \Galette\Entity\ContributionsTypes::DEFAULT_TYPE,
-            \Galette\Entity\ContributionsTypes::DEFAULT_TYPE + 1
+            1, // annual fee
+            2 //reduced annual fee
         ];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
         $this->assertSame(1, $list->count());
 
-        $filters->contributions_types = \Galette\Entity\ContributionsTypes::DEFAULT_TYPE + 1;
+        $filters->contributions_types = 2;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -595,6 +575,18 @@ class Members extends GaletteTestCase
             $this->assertArrayHasKey('priorite_statut', $array);
         }
 
+        //get export list (no priorite_statut if not explicitely required)
+        $members = new \Galette\Repository\Members();
+        $list = $members->getMembersList(false, ['nom_adh', 'ville_adh'], true, false, false, true, true);
+        $this->assertSame(10, $list->count());
+        $arraylist = $list->toArray();
+        foreach ($arraylist as $array) {
+            $this->assertCount(3, $array);
+            $this->assertArrayHasKey('nom_adh', $array);
+            $this->assertArrayHasKey('ville_adh', $array);
+            $this->assertArrayHasKey('id_adh', $array);
+        }
+
         //Get staff
         $members = new \Galette\Repository\Members();
         $list = $members->getStaffMembersList();
@@ -608,7 +600,6 @@ class Members extends GaletteTestCase
         $this->mids = $mids;
 
         $members = new \Galette\Repository\Members();
-        $this->assertFalse($members->removeMembers('notanid'));
         $this->assertTrue($members->removeMembers($torm));
 
         $list = $members->getList();
@@ -636,7 +627,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetListContributionDynamics()
+    public function testGetListContributionDynamics(): void
     {
         // Advanced search on contributions dynamic fields
 
@@ -644,7 +635,7 @@ class Members extends GaletteTestCase
         $field_data = [
             'form_name'         => 'contrib',
             'field_name'        => 'Dynamic text field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
             'field_required'    => 1,
             'field_repeat'      => 1
@@ -674,7 +665,7 @@ class Members extends GaletteTestCase
         $field_data = [
             'form_name'         => 'contrib',
             'field_name'        => 'Dynamic choice field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::CHOICE,
             'field_required'    => 0,
             'field_repeat'      => 1,
@@ -702,7 +693,7 @@ class Members extends GaletteTestCase
         $field_data = [
             'form_name'         => 'contrib',
             'field_name'        => 'Dynamic date field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::DATE,
             'field_required'    => 0,
             'field_repeat'      => 1
@@ -785,7 +776,7 @@ class Members extends GaletteTestCase
 
         $cdata += [
             'id_cotis' => $contrib->id,
-            'info_field_' . $cdf->getId() . '_1' => 2
+            'info_field_' . $cdf->getId() . '_1' => '2'
         ];
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
@@ -807,25 +798,35 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetPublicList()
+    public function testGetPublicList(): void
     {
         $members = new \Galette\Repository\Members();
 
         $list = $members->getPublicList(false);
-        $this->assertCount(2, $list);
         $this->assertSame(2, $members->getCount());
+        $this->assertArrayHasKey('staff', $list);
+        $this->assertArrayHasKey('members', $list);
 
-        $adh = $list[0];
+        $staff = $list['staff'];
+        $list_members = $list['members'];
+        $this->assertCount(1, $staff);
+        $this->assertCount(1, $list_members);
+
+        $adh = $list_members[0];
 
         $this->assertInstanceOf(\Galette\Entity\Adherent::class, $adh);
         $this->assertTrue($adh->appearsInMembersList());
-        $this->assertNull($adh->_picture);
+        $this->assertNull($adh->picture);
 
         $list = $members->getPublicList(true);
-        $this->assertCount(1, $list);
         $this->assertSame(1, $members->getCount());
 
-        $adh = $list[0];
+        $staff = $list['staff'];
+        $list_members = $list['members'];
+        $this->assertCount(1, $staff);
+        $this->assertCount(0, $list_members);
+
+        $adh = $staff[0];
 
         $this->assertInstanceOf(\Galette\Entity\Adherent::class, $adh);
         $this->assertTrue($adh->appearsInMembersList());
@@ -838,22 +839,18 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGroupsSearch()
+    public function testGroupsSearch(): void
     {
         $members = new \Galette\Repository\Members();
         $list = $members->getList(true);
         $this->assertSame(10, count($list));
         $this->assertSame(10, $members->getCount());
 
-        $group = new \Galette\Entity\Group();
-        $group->setName('World');
-        $this->assertTrue($group->store());
-        $world = $group->getId();
+        $world_group = new \Galette\Entity\Group();
+        $world_group->setName('World');
+        $this->assertTrue($world_group->store());
+        $world = $world_group->getId();
         $this->assertGreaterThan(0, $world);
-
-        //cannot be parent of itself
-        $this->expectExceptionMessage('Group `World` cannot be set as parent!');
-        $group->setParentGroup($group->getId());
 
         $group = new \Galette\Entity\Group();
         $group->setName('Europe')->setParentGroup($world);
@@ -873,34 +870,34 @@ class Members extends GaletteTestCase
         $group->setName('Africa')->setParentGroup($world);
         $this->assertTrue($group->store());
         $africa = $group->getId();
-        $this->assertassertGreaterThan(0, $africa);
+        $this->assertGreaterThan(0, $africa);
         $this->assertTrue($group->setMembers([$list[4], $list[5]]));
 
         $group = new \Galette\Entity\Group();
         $group->setName('America')->setParentGroup($world);
         $this->assertTrue($group->store());
         $america = $group->getId();
-        $this->assertassertGreaterThan(0, $america);
+        $this->assertGreaterThan(0, $america);
         $this->assertTrue($group->setMembers([$list[6], $list[7]]));
 
         $group = new \Galette\Entity\Group();
         $group->setName('Antarctica')->setParentGroup($world);
         $this->assertTrue($group->store());
         $antarctica = $group->getId();
-        $this->assertassertGreaterThan(0, $america);
+        $this->assertGreaterThan(0, $antarctica);
         $this->assertTrue($group->setMembers([$list[8], $list[9]]));
 
         $group = new \Galette\Entity\Group();
         $group->setName('Activities');
         $this->assertTrue($group->store());
         $activities = $group->getId();
-        $this->assertassertGreaterThan(0, $activities);
+        $this->assertGreaterThan(0, $activities);
 
         $group = new \Galette\Entity\Group();
         $group->setName('Pony')->setParentGroup($activities);
         $this->assertTrue($group->store());
         $pony = $group->getId();
-        $this->assertassertGreaterThan(0, $pony);
+        $this->assertGreaterThan(0, $pony);
         //assign Members to group
         $members = [];
         for ($i = 0; $i < 5; ++$i) {
@@ -913,7 +910,7 @@ class Members extends GaletteTestCase
         $group->setName('Swimming pool')->setParentGroup($activities);
         $this->assertTrue($group->store());
         $pool = $group->getId();
-        $this->assertassertGreaterThan(0, $pool);
+        $this->assertGreaterThan(0, $pool);
         //assign Members to group
         $members = [$list[0]];
         for ($i = 5; $i < 10; ++$i) {
@@ -922,7 +919,7 @@ class Members extends GaletteTestCase
         $this->assertTrue($group->setMembers($members));
         $this->assertSame(6, count($group->getMembers()));
 
-        //all groups/members are setup. try to find them now.
+        //all groups/members are set up. try to find them now.
         $filters = new \Galette\Filters\AdvancedMembersList();
         $filters->groups_search_log_op = \Galette\Filters\AdvancedMembersList::OP_OR;
         $filters->groups_search = ['idx' => 1, 'group' => $europe];
@@ -958,6 +955,10 @@ class Members extends GaletteTestCase
         $list = $members->getList();
 
         $this->assertSame(1, $list->count());
+
+        //cannot be parent of itself
+        $this->expectExceptionMessage('Group `World` cannot be set as parent!');
+        $world_group->setParentGroup($world_group->getId());
     }
 
     /**
@@ -965,7 +966,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetRemindersCount()
+    public function testGetRemindersCount(): void
     {
         $members = new \Galette\Repository\Members();
         $counts = $members->getRemindersCount();
@@ -996,7 +997,7 @@ class Members extends GaletteTestCase
             'date_enreg'                    => $begin_date->format('Y-m-d'),
             'date_debut_cotis'              => $begin_date->format('Y-m-d'),
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
-            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+            \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
@@ -1027,7 +1028,7 @@ class Members extends GaletteTestCase
             'date_enreg'                    => $begin_date->format('Y-m-d'),
             'date_debut_cotis'              => $begin_date->format('Y-m-d'),
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
-            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+            \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
@@ -1068,7 +1069,7 @@ class Members extends GaletteTestCase
             'date_enreg'                    => $begin_date->format('Y-m-d'),
             'date_debut_cotis'              => $begin_date->format('Y-m-d'),
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
-            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+            \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
@@ -1105,7 +1106,7 @@ class Members extends GaletteTestCase
             'date_enreg'                    => $begin_date->format('Y-m-d'),
             'date_debut_cotis'              => $begin_date->format('Y-m-d'),
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
-            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+            \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
@@ -1136,7 +1137,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetDropdownMembers()
+    public function testGetDropdownMembers(): void
     {
         $members = new \Galette\Repository\Members();
         $this->logSuperAdmin();
@@ -1149,7 +1150,7 @@ class Members extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetArrayList()
+    public function testGetArrayList(): void
     {
         $members = new \Galette\Repository\Members();
 
@@ -1183,7 +1184,7 @@ class Members extends GaletteTestCase
         $this->assertSame(1, $list->count());
 
         $member_data = $list->current();
-        $member = new \Galette\Entity\Adherent($this->zdb, $member_data[\Galette\Entity\Adherent::PK]);
+        $member = new \Galette\Entity\Adherent($this->zdb, (int)$member_data[\Galette\Entity\Adherent::PK]);
 
         //add member as sender for a mailing
         $mailhist = new \Galette\Core\MailingHistory($this->zdb, $this->login, $this->preferences);
@@ -1195,7 +1196,7 @@ class Members extends GaletteTestCase
             'mailing_subject'           => $this->seed,
             'mailing_body'              => 'a mailing',
             'mailing_date'              => '2015-01-01 00:00:00',
-            'mailing_recipients'        => serialize([]),
+            'mailing_recipients'        => \Galette\Core\Galette::jsonEncode([]),
             'mailing_sent'              => true
         );
         $insert = $this->zdb->insert(\Galette\Core\MailingHistory::TABLE);

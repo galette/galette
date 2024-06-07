@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Picture handling
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2006-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,20 +17,15 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Frédéric Jacquot <unknown@unknow.com>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
 use ArrayObject;
+use Laminas\Db\Adapter\Driver\StatementInterface;
+use Laminas\Db\Sql\Select;
 use Slim\Psr7\Response;
 use Throwable;
 use Analog\Analog;
@@ -48,52 +37,51 @@ use Galette\IO\FileTrait;
 /**
  * Picture handling
  *
- * @name Picture
- * @category  Core
- * @package   Galette
- * @author    Frédéric Jacquot <unknown@unknow.com>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @author Frédéric Jacquot <gna@logeek.com>
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Picture implements FileInterface
 {
-    use FileTrait;
+    use FileTrait {
+        writeOnDisk as protected trait_writeOnDisk;
+        store as protected trait_store;
+        getMimeType as protected trait_getMimeType;
+    }
 
-    //constants that will not be overrided
+    //constants that will not be overridden
     public const SQL_ERROR = -10;
     public const SQL_BLOB_ERROR = -11;
-    //constants that can be overrided
+    //constants that can be overridden
     //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
     public const TABLE = 'pictures';
     public const PK = Adherent::PK;
 
-    protected $tbl_prefix = '';
+    protected string $tbl_prefix = '';
 
-    protected $id;
-    protected $db_id;
-    protected $height;
-    protected $width;
-    protected $optimal_height;
-    protected $optimal_width;
-    protected $file_path;
-    protected $format;
-    protected $mime;
-    protected $has_picture = false;
-    protected $store_path = GALETTE_PHOTOS_PATH;
-    protected $max_width = 200;
-    protected $max_height = 200;
-    private $insert_stmt;
+    protected string|int $id;
+    protected int $db_id;
+    protected int $height;
+    protected int $width;
+    protected int $optimal_height;
+    protected int $optimal_width;
+    protected string $file_path;
+    protected string $format;
+    protected string $mime;
+    protected bool $has_picture = false;
+    protected string $store_path = GALETTE_PHOTOS_PATH;
+    protected int $max_width = 200;
+    protected int $max_height = 200;
+    private StatementInterface $insert_stmt;
+    /** @var ?array<string, mixed> */
+    private ?array $cropping;
 
     /**
      * Default constructor.
      *
-     * @param mixed|null $id_adh the id of the member
+     * @param string|int|null $id_adh the id of the member
      */
-    public function __construct($id_adh = null)
+    public function __construct(string|int|null $id_adh = null)
     {
-
         $this->init(
             null,
             array('jpeg', 'jpg', 'png', 'gif', 'webp'),
@@ -106,10 +94,10 @@ class Picture implements FileInterface
         );
 
         // '!==' needed, otherwise ''==0
-        if ($id_adh !== '' && $id_adh !== null) {
+        if (!empty($id_adh) && $id_adh !== '') {
             $this->id = $id_adh;
             if (!isset($this->db_id)) {
-                $this->db_id = $id_adh;
+                $this->db_id = (int)$id_adh;
             }
 
             //if file does not exist on the FileSystem, check for it in the database
@@ -138,11 +126,11 @@ class Picture implements FileInterface
      *
      * @return void
      */
-    public function __wakeup()
+    public function __wakeup(): void
     {
         //if file has been deleted since we store our object in the session,
         //we try to retrieve it
-        if (!$this->checkFileOnFS()) {
+        if (isset($this->id) && !$this->checkFileOnFS()) {
             //if file does not exist on the FileSystem,
             //check for it in the database
             //$this->checkFileInDB();
@@ -166,7 +154,7 @@ class Picture implements FileInterface
      *
      * @return boolean true if file is present on FS, false otherwise
      */
-    private function checkFileOnFS()
+    private function checkFileOnFS(): bool
     {
         $file_wo_ext = $this->store_path . $this->id;
         if (file_exists($file_wo_ext . '.jpg')) {
@@ -199,7 +187,7 @@ class Picture implements FileInterface
      *
      * @return boolean true if file is present in the DB, false otherwise
      */
-    private function checkFileInDB()
+    private function checkFileInDB(): bool
     {
         global $zdb;
 
@@ -243,9 +231,9 @@ class Picture implements FileInterface
     /**
      * Returns the relevant query to check if picture exists in database.
      *
-     * @return string SELECT query
+     * @return Select SELECT query
      */
-    protected function getCheckFileQuery()
+    protected function getCheckFileQuery(): Select
     {
         global $zdb;
         $class = get_class($this);
@@ -262,11 +250,11 @@ class Picture implements FileInterface
     }
 
     /**
-     * Gets the default picture to show, anyways
+     * Gets the default picture to show, anyway
      *
      * @return void
      */
-    protected function getDefaultPicture()
+    protected function getDefaultPicture(): void
     {
         $this->file_path = realpath(_CURRENT_THEME_PATH . 'images/default.png');
         $this->format = 'png';
@@ -279,7 +267,7 @@ class Picture implements FileInterface
      *
      * @return void
      */
-    private function setSizes()
+    private function setSizes(): void
     {
         list($width, $height) = getimagesize($this->file_path);
         $this->height = $height;
@@ -291,23 +279,23 @@ class Picture implements FileInterface
             if ($this->height > $this->max_height) {
                 $ratio = $this->max_height / $this->height;
                 $this->optimal_height = $this->max_height;
-                $this->optimal_width = $this->width * $ratio;
+                $this->optimal_width = (int)($this->width * $ratio);
             }
         } else {
             if ($this->width > $this->max_width) {
                 $ratio = $this->max_width / $this->width;
                 $this->optimal_width = $this->max_width;
-                $this->optimal_height = $this->height * $ratio;
+                $this->optimal_height = (int)($this->height * $ratio);
             }
         }
     }
 
     /**
-     * Get image file content
+     * Get image file contents in stdOut
      *
-     * @return mixed
+     * @return void
      */
-    public function getContents()
+    public function getContents(): void
     {
         readfile($this->file_path);
     }
@@ -317,9 +305,9 @@ class Picture implements FileInterface
      *
      * @param Response $response Response
      *
-     * @return object the binary file
+     * @return Response the binary file
      */
-    public function display(Response $response)
+    public function display(Response $response): Response
     {
         $response = $response->withHeader('Content-Type', $this->mime)
             ->withHeader('Content-Transfer-Encoding', 'binary')
@@ -341,7 +329,7 @@ class Picture implements FileInterface
      *
      * @return boolean true if image was successfully deleted, false otherwise
      */
-    public function delete($transaction = true)
+    public function delete(bool $transaction = true): bool
     {
         global $zdb;
         $class = get_class($this);
@@ -425,124 +413,91 @@ class Picture implements FileInterface
     /**
      * Stores an image on the disk and in the database
      *
-     * @param object  $file     The uploaded file
-     * @param boolean $ajax     If the image cames from an ajax call (dnd)
-     * @param array   $cropping Cropping properties
+     * @param array<string, mixed>  $file     The uploaded file
+     * @param boolean               $ajax     If the image comes from an ajax call (dnd)
+     * @param ?array<string, mixed> $cropping Cropping properties
      *
      * @return bool|int
      */
-    public function store($file, $ajax = false, $cropping = null)
+    public function store(array $file, bool $ajax = false, array $cropping = null): bool|int
     {
-        /** TODO: fix max size (by preferences ?) */
+        $this->cropping = $cropping;
+        return $this->trait_store($file, $ajax);
+    }
+
+    /**
+     * Build destination path
+     *
+     * @return string
+     */
+    protected function buildDestPath(): string
+    {
+        return $this->dest_dir . $this->id . '.' . $this->extension;
+    }
+
+    /**
+     * Get file mime type
+     *
+     * @param string $file File
+     *
+     * @return string
+     */
+    public static function getMimeType(string $file): string
+    {
+        $info = getimagesize($file);
+        if ($info !== false) {
+            return $info['mime'];
+        }
+
+        //fallback if file is not an image
+        return static::trait_getMimeType($file);
+    }
+
+    /**
+     * Write file on disk
+     *
+     * @param string $tmpfile Temporary file
+     * @param bool   $ajax    If the file comes from an ajax call (dnd)
+     *
+     * @return bool|int
+     */
+    public function writeOnDisk(string $tmpfile, bool $ajax): bool|int
+    {
         global $zdb;
 
-        $class = get_class($this);
-
-        $name = $file['name'];
-        $tmpfile = $file['tmp_name'];
-
-        //First, does the file have a valid name?
-        $reg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(" .
-            implode('|', $this->allowed_extensions) . ")$/i";
-        if (preg_match($reg, $name, $matches)) {
-            Analog::log(
-                '[' . $class . '] Filename and extension are OK, proceed.',
-                Analog::DEBUG
-            );
-            $extension = strtolower($matches[2]);
-            if ($extension == 'jpeg') {
-                //jpeg is an allowed extension,
-                //but we change it to jpg to reduce further tests :)
-                $extension = 'jpg';
-            }
-        } else {
-            $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
-            $m = preg_match($erreg, $name, $errmatches);
-
-            $err_msg = '[' . $class . '] ';
-            if ($m == 1) {
-                //ok, we got a good filename and an extension. Extension is bad :)
-                $err_msg .= 'Invalid extension for file ' . $name . '.';
-                $ret = self::INVALID_EXTENSION;
-            } else {
-                $err_msg = 'Invalid filename `' . $name . '` (Tip: ';
-                $err_msg .= preg_replace(
-                    '|%s|',
-                    htmlentities($this->getBadChars()),
-                    "file name should not contain any of: %s). "
-                );
-                $ret = self::INVALID_FILENAME;
-            }
-
-            Analog::log(
-                $err_msg,
-                Analog::ERROR
-            );
-            return $ret;
-        }
-
-        //Second, let's check file size
-        if ($file['size'] > ($this->maxlenght * 1024)) {
-            Analog::log(
-                '[' . $class . '] File is too big (' . ($file['size'] * 1024) .
-                'Ko for maximum authorized ' . ($this->maxlenght * 1024) .
-                'Ko',
-                Analog::ERROR
-            );
-            return self::FILE_TOO_BIG;
-        } else {
-            Analog::log('[' . $class . '] Filesize is OK, proceed', Analog::DEBUG);
-        }
-
+        $this->setDestDir($this->store_path);
         $current = getimagesize($tmpfile);
-
-        if (!in_array($current['mime'], $this->allowed_mimes)) {
-            Analog::log(
-                '[' . $class . '] Mimetype `' . $current['mime'] . '` not allowed',
-                Analog::ERROR
-            );
-            return self::MIME_NOT_ALLOWED;
-        } else {
-            Analog::log(
-                '[' . $class . '] Mimetype is allowed, proceed',
-                Analog::DEBUG
-            );
-        }
 
         // Source image must have minimum dimensions to match the cropping process requirements
         // and ensure the final picture will fit the maximum allowed resizing dimensions.
-        if (isset($cropping['ratio']) && isset($cropping['focus'])) {
+        if (isset($this->cropping['ratio']) && isset($this->cropping['focus'])) {
             if ($current[0] < $this->mincropsize || $current[1] < $this->mincropsize) {
                 $min_current = min($current[0], $current[1]);
                 Analog::log(
-                    '[' . $class . '] Image is too small. The minimum image side size allowed is ' .
+                    '[' . get_class($this) . '] Image is too small. The minimum image side size allowed is ' .
                     $this->mincropsize . 'px, but current is ' . $min_current . 'px.',
                     Analog::ERROR
                 );
                 return self::IMAGE_TOO_SMALL;
             } else {
-                Analog::log('[' . $class . '] Image dimensions are OK, proceed', Analog::DEBUG);
+                Analog::log('[' . get_class($this) . '] Image dimensions are OK, proceed', Analog::DEBUG);
             }
         }
-
         $this->delete();
 
-        $new_file = $this->store_path .
-            $this->id . '.' . $extension;
-        if ($ajax === true) {
-            rename($tmpfile, $new_file);
-        } else {
-            move_uploaded_file($tmpfile, $new_file);
+        $result = $this->trait_writeOnDisk($tmpfile, $ajax);
+        if ($result !== true) {
+            return $result;
         }
 
         // current[0] gives width ; current[1] gives height
         if ($current[0] > $this->max_width || $current[1] > $this->max_height) {
             /** FIXME: what if image cannot be resized?
-                Should'nt we want to stop the process here? */
-            $this->resizeImage($new_file, $extension, null, $cropping);
+            Should'nt we want to stop the process here? */
+            $this->resizeImage($this->buildDestPath(), $this->extension, null, $this->cropping);
         }
 
-        return $this->storeInDb($zdb, $this->db_id, $new_file, $extension);
+        return $this->storeInDb($zdb, $this->db_id, $this->buildDestPath(), $this->extension);
     }
 
     /**
@@ -555,7 +510,7 @@ class Picture implements FileInterface
      *
      * @return bool|int
      */
-    private function storeInDb(Db $zdb, $id, $file, $ext)
+    private function storeInDb(Db $zdb, int $id, string $file, string $ext): bool|int
     {
         $f = fopen($file, 'r');
         $picture = '';
@@ -568,8 +523,10 @@ class Picture implements FileInterface
 
         try {
             $zdb->connection->beginTransaction();
-            $stmt = $this->insert_stmt;
-            if ($stmt == null) {
+
+            if (isset($this->insert_stmt)) {
+                $stmt = $this->insert_stmt;
+            } else {
                 $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
                 $insert->values(
                     array(
@@ -618,7 +575,7 @@ class Picture implements FileInterface
      *
      * @return void
      */
-    public function missingInDb(Db $zdb)
+    public function missingInDb(Db $zdb): void
     {
         $existing_disk = array();
 
@@ -668,7 +625,7 @@ class Picture implements FileInterface
             //retrieve valid members ids
             $members = new Members();
             $valids = $members->getArrayList(
-                $existing_diff,
+                array_map('intval', $existing_diff),
                 null,
                 false,
                 false,
@@ -676,11 +633,11 @@ class Picture implements FileInterface
             );
 
             foreach ($valids as $valid) {
-                /** @var ArrayObject $valid */
+                /** @var ArrayObject<string,mixed> $valid */
                 $file = $existing_disk[$valid->id_adh];
                 $this->storeInDb(
                     $zdb,
-                    $file['id'],
+                    (int)$file['id'],
                     $this->store_path . $file['id'] . '.' . $file['ext'],
                     $file['ext']
                 );
@@ -697,15 +654,15 @@ class Picture implements FileInterface
     /**
      * Resize and eventually crop the image if it exceeds max allowed sizes
      *
-     * @param string $source   The source image
-     * @param string $ext      File's extension
-     * @param string $dest     The destination image.
-     *                         If null, we'll use the source image. Defaults to null
-     * @param array  $cropping Cropping properties
+     * @param string                $source   The source image
+     * @param string                $ext      File's extension
+     * @param ?string               $dest     The destination image.
+     *                                        If null, we'll use the source image. Defaults to null
+     * @param ?array<string, mixed> $cropping Cropping properties
      *
      * @return boolean
      */
-    private function resizeImage($source, $ext, $dest = null, $cropping = null)
+    private function resizeImage(string $source, string $ext, string $dest = null, array $cropping = null): bool
     {
         $class = get_class($this);
 
@@ -847,6 +804,9 @@ class Picture implements FileInterface
             }
         }
 
+        $h = (int)$h;
+        $w = (int)$w;
+
         // Resized image.
         $thumb = imagecreatetruecolor($w, $h);
 
@@ -926,7 +886,7 @@ class Picture implements FileInterface
      *
      * @return int optimal height
      */
-    public function getOptimalHeight()
+    public function getOptimalHeight(): int
     {
         return (int)round($this->optimal_height, 1);
     }
@@ -936,7 +896,7 @@ class Picture implements FileInterface
      *
      * @return int current height
      */
-    public function getHeight()
+    public function getHeight(): int
     {
         return $this->height;
     }
@@ -946,7 +906,7 @@ class Picture implements FileInterface
      *
      * @return int optimal width
      */
-    public function getOptimalWidth()
+    public function getOptimalWidth(): int
     {
         return (int)round($this->optimal_width, 1);
     }
@@ -956,7 +916,7 @@ class Picture implements FileInterface
      *
      * @return int current width
      */
-    public function getWidth()
+    public function getWidth(): int
     {
         return $this->width;
     }
@@ -966,7 +926,7 @@ class Picture implements FileInterface
      *
      * @return string
      */
-    public function getFormat()
+    public function getFormat(): string
     {
         return $this->format;
     }
@@ -976,7 +936,7 @@ class Picture implements FileInterface
      *
      * @return bool True if a picture matches adherent's id, false otherwise
      */
-    public function hasPicture()
+    public function hasPicture(): bool
     {
         return $this->has_picture;
     }
@@ -986,7 +946,7 @@ class Picture implements FileInterface
      *
      * @return string full file path
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->file_path;
     }
@@ -996,7 +956,7 @@ class Picture implements FileInterface
      *
      * @return string
      */
-    public function getMime()
+    public function getMime(): string
     {
         return $this->mime;
     }
@@ -1008,7 +968,7 @@ class Picture implements FileInterface
      *
      * @return string Localized message
      */
-    public function getErrorMessage($code)
+    public function getErrorMessage(int $code): string
     {
         $error = null;
         switch ($code) {

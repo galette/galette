@@ -1,8 +1,70 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% extends 'elements/list.html.twig' %}
 
 {% set nb = members|length %}
 {% set no_action = true %}
 {% set is_public = not login.isLogged() %}
+
+{% macro drawEntry(member, staff) %}
+    {% set rclass = member.getRowClass() %}
+    <tr>
+        <td class="{{ rclass }} username_row" data-scope="row">
+            {% if member.isCompany() %}
+                <span>
+                        <i class="ui building outline icon tooltip" title="{{ _T('Is a company') }}" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T('Is a company') }}</span>
+                    </span>
+            {%  elseif member.isMan() %}
+                <span>
+                        <i class="ui male icon tooltip" title="{{ _T('Is a man') }}" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T('Is a man') }}</span>
+                    </span>
+            {%  elseif member.isWoman() %}
+                <span>
+                        <i class="ui female icon tooltip" title="{{ _T('Is a woman') }}" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T('Is a woman') }}</span>
+                    </span>
+            {% else %}
+                <i class="ui icon" aria-hidden="true"></i>
+            {% endif %}
+            {% if member.website != '' %}
+                <a href="{{ member.website }}">{{ member.sfullname }}</a>
+            {% else %}
+                {{ member.sfullname }}
+            {% endif %}
+            {% if staff %}
+                <a class="ui label">
+                    <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
+                    {{ member.sstatus }}
+                </a>
+            {% endif %}
+        </td>
+        <td class="{{ rclass }}" data-col-label="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
+        {% if login.isLogged() %}
+            <td class="{{ rclass }}" data-col-label="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
+        {% endif %}
+        <td class="{{ rclass }}" data-col-label="{{ _T('Information') }}">{{ member.others_infos }}</td>
+    </tr>
+{% endmacro %}
 
 {% set form = {
     'order': {
@@ -55,45 +117,19 @@
 {% endblock %}
 
 {% block body %}
-    {% for member in members %}
-        {% set rclass = member.getRowClass() %}
-        <tr>
-            <td class="{{ rclass }} username_row" data-scope="row">
-                {% if member.isCompany() %}
-                    <span>
-                        <i class="ui building outline icon tooltip" title="{{ _T('Is a company') }}" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T('Is a company') }}</span>
-                    </span>
-                {%  elseif member.isMan() %}
-                    <span>
-                        <i class="ui male icon tooltip" title="{{ _T('Is a man') }}" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T('Is a man') }}</span>
-                    </span>
-                {%  elseif member.isWoman() %}
-                    <span>
-                        <i class="ui female icon tooltip" title="{{ _T('Is a woman') }}" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T('Is a woman') }}</span>
-                    </span>
-                {% else %}
-                    <i class="ui icon" aria-hidden="true"></i>
-                {% endif %}
-                {% if member.website != '' %}
-                    <a href="{{ member.website }}">{{ member.sfullname }}</a>
-                {% else %}
-                    {{ member.sfullname }}
-                {% endif %}
-            </td>
-            <td class="{{ rclass }}" data-col-label="{{ _T('Nickname') }}">{{ member.nickname|escape }}</td>
-            {% if login.isLogged() %}
-                <td class="{{ rclass }}" data-col-label="{{ _T('Email') }}"><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
-            {% endif %}
-            <td class="{{ rclass }}" data-col-label="{{ _T('Information') }}">{{ member.others_infos }}</td>
-        </tr>
+    {% if nb_members > 0 %}
+        {% for member in members.staff %}
+            {{ _self.drawEntry(member, true) }}
+        {% endfor %}
+
+        {% for member in members.members %}
+            {{ _self.drawEntry(member, false) }}
+        {% endfor %}
     {% else %}
         <tr>
             <td class="emptylist" colspan="4">
-                {{ _T('No member to show') }}
+                {{ _T('No member') }}
             </td>
         </tr>
-    {% endfor %}
+    {% endif %}
 {% endblock %}

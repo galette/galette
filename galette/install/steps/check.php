@@ -1,15 +1,8 @@
 <?php
-
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette installation, check step
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2014 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,15 +16,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.8 - 2013-01-09
  */
 
 ?>
@@ -48,13 +32,11 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
 
 // check date settings
 $date_ok = false;
-if (!version_compare(PHP_VERSION, '5.2.0', '<')) {
-    try {
-        $test_date = new DateTime();
-        $date_ok = true;
-    } catch (Throwable $e) {
-        //do nothing
-    }
+try {
+    $test_date = new DateTime();
+    $date_ok = true;
+} catch (Throwable $e) {
+    //do nothing
 }
 
 // check PHP modules
@@ -64,7 +46,6 @@ $modules_ok = $cm->isValid();
 // check file permissions
 $perms_ok = true;
 $files_need_rw = array(
-    _T("Compilation")       => GALETTE_COMPILE_DIR,
     _T("Photos")            => GALETTE_PHOTOS_PATH,
     _T("Cache")             => str_replace(GALETTE_VERSION, '', GALETTE_CACHE_DIR),
     _T("Temporary images")  => GALETTE_TEMPIMAGES_PATH,

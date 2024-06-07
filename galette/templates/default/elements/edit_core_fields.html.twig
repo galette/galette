@@ -1,0 +1,84 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+    <div class="ui basic fitted segment loader_selector">
+        <table class="listing ui celled striped table">
+            <thead>
+                <tr>
+                    <th class="id_row">#</th>
+                    <th>{{ _T("Name") }}</th>
+                    <th>{{ _T("Permissions") }}</th>
+                    <th class="date_row">{{ _T("Required") }}</th>
+{% if preferences.pref_member_form_grid != 'one' %}
+                    <th class="date_row">{{ _T("Width in forms") }}</th>
+{% endif %}
+                </tr>
+            </thead>
+            <tbody id="sortable_fields_{{ fs }}" class="sortable-items" data-category="{{ fs }}">
+{% for col, field in categorized_fields[fs] %}
+    {% if (preferences.pref_show_id or field.field_id != 'id_adh') and field.field_id != 'parent_id' %}
+        {% set fid = field.field_id %}
+                <tr>
+                    <td data-scope="id" class="collapsing">
+                        <i class="jsonly displaynone arrows alternate icon" aria-hidden="true"></i>
+                        {{ loop.index }}
+                    </td>
+                    <td class="fieldname" data-scope="row">
+                        <input type="hidden" name="fields[]" value="{{ fid }}"/>
+                        <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>
+                        <input type="hidden" name="{{ fid }}_label" value="{{ field.label }}"/>
+                        {{ field.label }}
+                    </td>
+                    <td class="visibility_cell" data-col-label="{{ _T("Permissions") }}">
+                        <span data-prop-label="{{ _T("Permissions") }}" class="visible" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
+                            <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown">
+                                {% for key, value in perm_names %}
+                                    <option value="{{ key }}"{% if key == field.visible %} selected="selected"{% endif %}>{{ value }}</option>
+                                {% endfor %}
+                            </select>
+                        </span>
+                    </td>
+                    <td class="required_cell" data-col-label="{{ _T("Required") }}">
+                        <span data-prop-label="{{ _T("Required") }}" class="required" title="{% if fid in non_required %}{{ _T("Field '%field' cannot be set as required.")|replace({'%field': field.label}) }}{% else %}{{ _T("Mark '%field' as (not) required")|replace({'%field': field.label}) }}{% endif %}">
+                            <label for="{{ fid }}_required_yes">{{ _T("Yes") }}</label>
+                            <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_yes" value="1"{% if field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
+                            <label for="{{ fid }}_required_no">{{ _T("No") }}</label>
+                            <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_no" value="0"{% if not field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
+                        </span>
+                    </td>
+        {% if preferences.pref_member_form_grid != 'one' %}
+                    <td class="left" data-col-label="{{ _T("Width in forms") }}">
+                        <span data-prop-label="{{ _T("Width in forms") }}" title="{{ _T("Change field's width with in forms") }}">
+                            <select name="{{ fid }}_width_in_forms" id="{{ fid }}_width_in_forms" class="ui dropdown">
+                                <option value="1"{% if field.width_in_forms == 1 or (preferences.pref_member_form_grid == 'two' and field.width_in_forms == 3) %} selected="selected"{% endif %}>{{ _T("Default") }}</option>
+                                <option value="2"{% if field.width_in_forms == 2 %} selected="selected"{% endif %}>{{ _T("Full") }}</option>
+            {% if preferences.pref_member_form_grid == 'three' %}
+                                <option value="3"{% if field.width_in_forms == 3 %} selected="selected"{% endif %}>{{ _T("Half") }}</option>
+            {% endif %}
+                            </select>
+                        </span>
+                    </td>
+        {% endif %}
+                </tr>
+    {% endif %}
+{% endfor %}
+            </tbody>
+        </table>
+    </div>

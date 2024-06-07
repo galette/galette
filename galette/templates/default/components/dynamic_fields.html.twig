@@ -1,3 +1,23 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% if object.getDynamicFields() is not empty %}
     {% set fields = object.getDynamicFields().getFields() %}
     {% set masschange = masschange ?? false %}
@@ -17,6 +37,9 @@
                     {{ field.getName()|escape }}
                 </label>
             {% endif %}
+            {% if field.getInformation() and field.hasInformationAbove() %}
+                <div class="exemple">{{ field.getInformation()|raw }}</div>
+            {% endif %}
             {% if get_class(field) == 'Galette\\DynamicFields\\Text' %}
                 <textarea name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}"
                     cols="{% if field.getWidth() > 0 %}{{ field.getWidth() }}{% else %}61{% endif %}"
@@ -30,6 +53,7 @@
                 <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}"
                     {% if field.getWidth() > 0 %}size="{{ field.getWidth() }}"{% endif %}
                     {% if field.getSize() > 0 %}maxlength="{{ field.getSize() }}"{% endif %}
+                    {% if field.getMinSize() > 0 %}minlength="{{ field.getMinSize() }}"{% endif %}
                     value="{{ valuedata|raw }}"
                 {% if not masschange %}
                     {% if field.isRequired() %} required="required"{% endif %}
@@ -56,7 +80,7 @@
                     <div class="ui fluid input left icon">
                         <i class="calendar icon" aria-hidden="true"></i>
                         <input type="text" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" maxlength="10"
-                            value="{{ valuedata }}" class="dynamic_date modif_date"
+                            value="{{ valuedata }}" class="dynamic_date modif_date" placeholder="{{ _T("yyyy-mm-dd format") }}"
                             {% if field.isRepeatable() %} data-maxrepeat="{field.getRepeat()}"{% endif %}
                         {% if not masschange %}
                             {% if field.isRequired() %} required="required"{% endif %}
@@ -65,7 +89,6 @@
                         />
                     </div>
                 </div>
-                <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
             {% elseif get_class(field) == 'Galette\\DynamicFields\\Boolean' %}
                 <div class="ui toggle checkbox">
                     <input type="checkbox" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" value="1"
@@ -115,6 +138,9 @@
                 </div>
                 {% endif %}
             {% endif %}
+            {% if field.getInformation() and not field.hasInformationAbove() %}
+                <div class="exemple">{{ field.getInformation()|raw }}</div>
+            {% endif %}
         {% endmacro %}
 
         <div class="ui styled fluid accordion field">
@@ -123,10 +149,10 @@
                 {{ _T("Additionnal fields:") }}
             </div>
             <div class="active content field">
-                <div class="ui three column stackable grid">
+                <div class="ui{% if preferences.pref_member_form_grid is defined %} {{ preferences.pref_member_form_grid }}{% endif %} column stackable grid">
                 {% set access_level = login.getAccessLevel() %}
                 {% for field in fields %}
-                    {% set perm = field.getPerm() %}
+                    {% set perm = field.getPermission() %}
                     {% if get_class(field) == 'Galette\\DynamicFields\\Separator' %}
                     <div class="sixteen wide column">
                         <div class="ui horizontal divider">{{ field.getName()|escape }}</div>
@@ -135,7 +161,7 @@
                         <!-- File and repeatable fields not shown in mass changes form -->
                     {% else %}
                         {% set disabled = false %}
-                        {% if perm == constant('Galette\\DynamicFields\\DynamicField::PERM_USER_READ') and access_level == constant('Galette\\Core\\Authentication::ACCESS_USER') %}
+                        {% if perm == constant('Galette\\Entity\\FieldsConfig::USER_READ') and access_level == constant('Galette\\Core\\Authentication::ACCESS_USER') %}
                             {% set disabled = true %}
                         {% endif %}
                         {% set values = object.getDynamicFields().getValues(field.getId()) %}
@@ -143,15 +169,19 @@
                         {% if field.getRepeat() == 0 or values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
                             {% set can_add = true %}
                         {% endif #}
+                        {% if get_class(field) == 'Galette\\DynamicFields\\File' or (field.isRepeatable() and field.getRepeat() > 1) or (field.isMultiValued() and field.getRepeat() == 0) %}
+                          {% set columns = 'sixteen wide ' %}
+                        {% elseif field.getWidthInForms() == 1 or (preferences.pref_member_form_grid == 'two' and field.getWidthInForms() == 3) %}
+                          {% set columns = '' %}
+                        {% else %}
+                          {% set columns = (field.getWidthInForms() == 3) ? 'eight wide ' : 'sixteen wide ' %}
+                        {% endif %}
                         <div class="
                             {% if get_class(field) == 'Galette\\DynamicFields\\File' or (field.isRepeatable() and field.getRepeat() > 1) or (field.isMultiValued() and field.getRepeat() == 0) %}
-                               repetable sixteen wide {% endif %}column">
+                               repetable {% endif %}{{ columns }}column">
                             {% for field_data in values %}
                                 <div class="field{% if field.isRequired() %} required{% endif %}{% if get_class(field) == 'Galette\\DynamicFields\\File' %} wide{% endif %}">
                                     {{ _self.draw_field(field, field_data, disabled, loop.index, object, masschange) }}
-                                    {% if field.getInformation() %}
-                                        <div class="exemple">{{ field.getInformation()|raw }}</div>
-                                    {% endif %}
                                 </div>
                             {% endfor %}
                             {% if values is not iterable or values|length == 0 %}

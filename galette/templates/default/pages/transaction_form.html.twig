@@ -1,49 +1,74 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% extends "page.html.twig" %}
 
 {% block content %}
 {% if members.list is defined %}
     <form action="{% if transaction.id %}{{ url_for("editTransaction", {"id": transaction.id}) }}{% else %}{{ url_for("addTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
-        <div class="ui top attached accordion-styled header">
-            {{ _T("Transaction details") }}
-        </div>
-        <div class="ui bottom attached accordion-styled segment">
-            <div class="active content field">
+        <div class="ui styled fluid accordion field">
+            <div class="active title">
+                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                {{ _T("Transaction details") }}
+            </div>
+            <div class="active content">
                 <div class="ui mobile reversed stackable grid">
                     <div class="{% if transaction.id %}five wide {% endif %}column">
                         <div class="field inline{% if required.trans_desc is defined and required.trans_desc == 1 %} required{% endif %}">
                             <label for="trans_desc">{{ _T("Description:") }}</label>
                             <input type="text" name="trans_desc" id="trans_desc" value="{{ transaction.description }}" maxlength="150" size="30"{% if required.trans_desc is defined and required.trans_desc == 1 %} required="required"{% endif %}/>
                         </div>
-                        <div class="field inline{% if required.id_adh is defined and required.id_adh == 1 %} required{% endif %}">
-                            <label for="id_adh" >{{ _T("Originator:") }}</label>
-                            <div id="id_adh" class="jsonly search-dropdown ui input paginated"{% if required.id_adh is defined and required.id_adh == 1 %} required="required"{% endif %}>
-                                <input id="id_adh_input" type="text" name="id_adh" value="{{ transaction.member is not null ? transaction.member }}" placeholder="{{ _T("Member ID") }}">
-                                <i class="jsonly displaynone dropdown icon" aria-hidden="true"></i>
-                                <span class="ui mini compact icon disabled button prev-results"><i class="jsonly displaynone chevron circle left icon disabled button tooltip" title="{{ _T("Load previous members...") }}" aria-hidden="true"></i></span>
-                                <span class="ui mini compact icon disabled button next-results"><i class="jsonly displaynone chevron circle right icon disabled button tooltip" title="{{ _T("Load following members...") }}" aria-hidden="true"></i></span>
-                                <div class="jsonly displaynone default text">{% if not transaction.member %}{{ _T("Search for name or ID and pick member") }}{% endif %}</div>
-                                <div class="jsonly displaynone menu">
-    {% for k, v in members.list %}
-                                    <div class="item" data-value="{{ k }}">{{ v }}</div>
-    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'components/forms/member_dropdown.html.twig' with {
+                            'required': required.id_adh is defined and required.id_adh == 1,
+                            'id': 'id_adh',
+                            'label': _T("Originator:"),
+                            'value': transaction.member,
+                            'component_class': 'inline field'
+                        } %}
                         <div class="field inline{% if required.trans_date is defined and required.trans_date == 1 %} required{% endif %}">
                             <label for="trans_date">{{ _T("Date:") }}</label>
                             <div class="ui calendar" id="transaction-rangestart">
                                 <div class="ui input left icon">
                                     <i class="calendar icon" aria-hidden="true"></i>
-                                    <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{{ transaction.date }}" maxlength="10"{% if required.trans_date is defined and required.trans_date == 1 %} required="required"{% endif %}/>
+                                    <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{{ transaction.date }}" maxlength="10"{% if required.trans_date is defined and required.trans_date == 1 %} required="required"{% endif %} placeholder="{{ _T('yyyy-mm-dd format') }}" />
                                 </div>
                             </div>
-                            <span class="exemple">{{ _T("(yyyy-mm-dd format)") }}</span>
                         </div>
                         <div class="field inline{% if required.trans_amount is defined and required.trans_amount == 1 %} required{% endif %}">
                             <label for="trans_amount">{{ _T("Amount:") }}</label>
                             <input type="text" name="trans_amount" id="trans_amount" value="{{ transaction.amount }}" maxlength="10"{% if required.trans_amount is defined and required.trans_amount == 1 %} required="required"{% endif %}/>
                         </div>
-    {% if transaction.id == null %}
+                        <div class="field inline{% if required.trans_payment_type is defined and required.trans_payment_type == 1 %} required{% endif %}">
+                            {# payment type #}
+                            {% set ptype = transaction.payment_type %}
+                            {% include 'components/forms/payment_types.html.twig' with {
+                                    'current': ptype,
+                                    'varname': 'type_paiement_trans',
+                                    'show_inline': true,
+                                    'empty': {
+                                        'label': _T("None"),
+                                        'value': '0'
+                                    }
+                            } %}
+                        </div>
+                        {% if transaction.id == null %}
                         <div class="field inline">
                             <label class="inline" title="{{ _T("Select a contribution type to create for dispatch transaction") }}">{{ _T("Dispatch type:") }}</label>
                             <i class="circular inverted primary small icon info tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>
@@ -208,7 +233,7 @@
                         },
                         error: function() {
                             {% include "elements/js/modal.js.twig" with {
-                                modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
+                                modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
                                 modal_without_content: true,
                                 modal_class: "mini",
                                 modal_deny_only: true,

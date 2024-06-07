@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Dynamic date tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2021-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  DynamicFields
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-11-11
  */
+
+declare(strict_types=1);
 
 namespace Galette\DynamicFields\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Dynamic date test
  *
- * @category  DynamicFields
- * @name      Date
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-11-11
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Date extends TestCase
 {
@@ -71,7 +51,7 @@ class Date extends TestCase
      *
      * @return void
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $o = new \Galette\DynamicFields\Date($this->zdb, 10);
         $this->assertNull($o->getId());
@@ -82,7 +62,7 @@ class Date extends TestCase
      *
      * @return void
      */
-    public function testGetTypeName()
+    public function testGetTypeName(): void
     {
         $this->assertSame(_T('date'), $this->date->getTypeName());
     }
@@ -92,7 +72,7 @@ class Date extends TestCase
      *
      * @return void
      */
-    public function testBaseProperties()
+    public function testBaseProperties(): void
     {
         $muliple = $this->date->isMultiValued();
         $this->assertFalse($muliple);
@@ -118,7 +98,7 @@ class Date extends TestCase
         $has_s = $this->date->hasSize();
         $this->assertFalse($has_s);
 
-        $perms = $this->date->getPerm();
+        $perms = $this->date->getPermission();
         $this->assertNull($perms);
 
         $width = $this->date->getWidth();

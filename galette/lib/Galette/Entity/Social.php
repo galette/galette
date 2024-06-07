@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Social networks/Contacts
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2021-2024 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.6dev - 2021-10-23
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
@@ -47,14 +34,9 @@ use Analog\Analog;
 /**
  * Social networks/Contacts
  *
- * @category  Entity
- * @name      Social
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.6dev - 2021-10-23
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ *
+ * @property string $url
  */
 
 class Social
@@ -75,32 +57,26 @@ class Social
     public const BLOG = 'blog';
     public const DISCORD = 'discord';
 
-    /** @var Db */
-    private $zdb;
-    /** @var int */
-    private $id;
-    /** @var string */
-    private $type;
-    /** @var string */
-    private $url;
-    /** @var int */
-    private $id_adh;
-    /** @var Adherent */
-    private $member;
+    private Db $zdb;
+    private int $id;
+    private string $type;
+    private string $url;
+    private ?int $id_adh;
+    private ?Adherent $member = null;
 
     /**
      * Main constructor
      *
-     * @param Db    $zdb  Database instance
-     * @param mixed $args Arguments
+     * @param Db                                      $zdb  Database instance
+     * @param int|ArrayObject<string,int|string>|null $args Arguments
      */
-    public function __construct(Db $zdb, $args = null)
+    public function __construct(Db $zdb, int|ArrayObject $args = null)
     {
         $this->zdb = $zdb;
         if (is_int($args)) {
             $this->load($args);
-        } elseif (is_object($args)) {
-            $this->loadFromRs($args);
+        } elseif ($args instanceof ArrayObject) {
+            $this->loadFromRS($args);
         }
     }
 
@@ -118,9 +94,9 @@ class Social
             $select->limit(1)->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
-            /** @var ArrayObject $res */
+            /** @var ArrayObject<string, int|string> $res */
             $res = $results->current();
-            $this->loadFromRs($res);
+            $this->loadFromRS($res);
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading social #' . $id . "Message:\n" .
@@ -136,7 +112,7 @@ class Social
      * @param int|null    $id_adh Member id
      * @param string|null $type   Type to retrieve
      *
-     * @return array
+     * @return array<int,Social>
      *
      * @throws Throwable
      */
@@ -178,13 +154,13 @@ class Social
     /**
      * Load social from a db ResultSet
      *
-     * @param ArrayObject $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs)
+    private function loadFromRS(ArrayObject $rs): void
     {
-        $this->id = $rs->{self::PK};
+        $this->id = (int)$rs->{self::PK};
         $this->setLinkedMember((int)$rs->{Adherent::PK});
         $this->type = $rs->type;
         $this->url = $rs->url;
@@ -198,7 +174,7 @@ class Social
     public function store(): bool
     {
         try {
-            if ($this->id !== null && $this->id > 0) {
+            if (isset($this->id) && $this->id > 0) {
                 $update = $this->zdb->update(self::TABLE);
                 $update->set(['url' => $this->url])->where(
                     [self::PK => $this->id]
@@ -236,7 +212,7 @@ class Social
     /**
      * Remove current social
      *
-     * @param array|null $ids IDs to remove, default to current id
+     * @param array<int>|null $ids IDs to remove, default to current id
      *
      * @return boolean
      */
@@ -271,7 +247,7 @@ class Social
      *
      * @return mixed
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         return $this->$name;
     }
@@ -284,7 +260,7 @@ class Social
      *
      * @return bool
      */
-    public function __isset(string $name)
+    public function __isset(string $name): bool
     {
         return property_exists($this, $name);
     }
@@ -312,7 +288,7 @@ class Social
      *
      * @param string $type Type
      *
-     * @return $this
+     * @return self
      */
     public function setType(string $type): self
     {
@@ -325,7 +301,7 @@ class Social
      *
      * @param int|null $id Member id
      *
-     * @return $this
+     * @return self
      */
     public function setLinkedMember(int $id = null): self
     {
@@ -341,7 +317,7 @@ class Social
      *
      * @param string $url Value to set
      *
-     * @return $this
+     * @return self
      */
     public function setUrl(string $url): self
     {
@@ -354,7 +330,7 @@ class Social
      *
      * @param boolean $translated Return translated types (default) or not
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getSystemTypes(bool $translated = true): array
     {

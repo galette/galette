@@ -1,3 +1,23 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% extends 'elements/list.html.twig' %}
 
 {% set nb = history.getCount() %}
@@ -53,7 +73,7 @@
                     <div class="ui calendar" id="contrib-rangestart">
                         <div class="ui input left icon">
                             <i class="calendar icon" aria-hidden="true"></i>
-                            <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ history.filters.start_date_filter }}"/>
+                            <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ history.filters.start_date_filter }}"/>
                         </div>
                     </div>
                 </div>
@@ -62,7 +82,7 @@
                     <div class="ui calendar" id="contrib-rangeend">
                         <div class="ui input left icon">
                             <i class="calendar icon" aria-hidden="true"></i>
-                            <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ history.filters.end_date_filter }}"/>
+                            <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ history.filters.end_date_filter }}"/>
                         </div>
                     </div>
                 </div>
@@ -72,7 +92,7 @@
                 {% if users|length > 0 %}
                     <label for="user_filter">{{ _T("Member") }}</label>
                     <select name="user_filter" id="user_filter" class="ui search dropdown">
-                        <option value="0"{% if history.filters.user_filter == 0 %} selected="selected"{% endif %}>{{ _T("Select an user") }}</option>
+                        <option value="0">{{ _T("Select an user") }}</option>
                         {% for user in users %}
                             <option value="{{ user }}"{% if history.filters.user_filter == user %} selected="selected"{% endif %}>{{ user }}</option>
                         {% endfor %}

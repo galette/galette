@@ -1,14 +1,38 @@
-{% if show_inline is not defined %}
-<div class="field">
-{% else %}
-<div class="field">
-{% endif %}
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+<div class="{% if show_inline is defined %}inline {% endif %}field{% if required is defined and required == true %} required{% endif %}">
     <label for="{{ varname }}">{% if label is defined %}{{ label }}{% else %}{{ _T("Payment type:") }}{% endif %}</label>
-    <select name="{{ varname }}" id="{{ varname }}" class="ui search dropdown">
+    <select
+        name="{{ varname }}"
+        id="{{ varname }}"
+        {% if required is defined and required == true %} required="required"{% endif %}
+        {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
+        class="ui search dropdown"
+    >
 {% if empty is defined %}
         <option value="{{ empty.value }}">{{ empty.label }}</option>
 {% endif %}
-{% set ptypes = callstatic('\\Galette\\Repository\\PaymentTypes', 'getAll') %}
+{% if ptypes is not defined %}
+    {% set ptypes = callstatic('\\Galette\\Repository\\PaymentTypes', 'getAll') %}
+{% endif %}
 {% for ptype in ptypes %}
         <option value="{{ ptype.id }}"{% if current == ptype.id %} selected="selected"{% endif %}>{{ ptype.getName() }}</option>
 {% endfor %}

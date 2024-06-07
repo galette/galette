@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Status tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2018-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2018-03-10
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -42,14 +29,7 @@ use Laminas\Db\Adapter\Adapter;
 /**
  * Status tests
  *
- * @category  Entity
- * @name      Status
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2018-04-15
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Status extends TestCase
 {
@@ -88,7 +68,7 @@ class Status extends TestCase
      *
      * @return void
      */
-    private function deleteStatus()
+    private function deleteStatus(): void
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\Status::TABLE);
@@ -108,7 +88,7 @@ class Status extends TestCase
      *
      * @return void
      */
-    public function testStatus()
+    public function testStatus(): void
     {
         global $i18n; // globals :(
         $i18n = $this->i18n;
@@ -142,7 +122,7 @@ class Status extends TestCase
         $id = $status->id;
 
         $this->assertSame(
-            \Galette\Entity\Entitled::ID_NOT_EXITS,
+            \Galette\Entity\Status::ID_NOT_EXITS,
             $status->update(42, 'Active member', 81)
         );
 
@@ -170,13 +150,9 @@ class Status extends TestCase
         );
 
         $this->assertSame(
-            \Galette\Entity\Entitled::ID_NOT_EXITS,
+            \Galette\Entity\Status::ID_NOT_EXITS,
             $status->delete(42)
         );
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('You cannot delete default status!');
-        $status->delete($status::DEFAULT_STATUS);
 
         $this->assertTrue(
             $status->delete($id)
@@ -190,6 +166,10 @@ class Status extends TestCase
         );
         $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You cannot delete default status!');
+        $status->delete($status::DEFAULT_STATUS);
     }
 
     /**
@@ -197,7 +177,7 @@ class Status extends TestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $status = new \Galette\Entity\Status($this->zdb);
 

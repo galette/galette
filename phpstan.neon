@@ -1,21 +1,23 @@
 parameters:
     parallel:
         maximumNumberOfProcesses: 2
-    level: 4
+    level: 6
     paths:
         - galette/lib/
     scanFiles:
-        - galette/config/paths.inc.php
-        - galette/config/versions.inc.php
+        - galette/includes/sys_config/paths.inc.php
+        - galette/includes/sys_config/versions.inc.php
         - galette/config/config.inc.php.dist
-        - galette/config/galette_tcpdf_config.php
+        - galette/includes/sys_config/galette_tcpdf_config.php
     scanDirectories:
         - galette/includes/
     dynamicConstantNames:
         - GALETTE_NIGHTLY
+        - GALETTE_DEBUG
     universalObjectCratesClasses:
         - RKA\Session
     ignoreErrors:
         - '/Instantiated class XHProfRuns_Default not found/'
         - '/Cannot access property .* on .*ArrayObject.*/'
         - '/Access to an undefined property ArrayObject.*/'
+        - '/Parameter #3 \$right of class Laminas\\Db\\Sql\\Predicate\\Operator constructor expects bool\|float\|int\|string\|null, Laminas\\Db\\Sql\\Predicate\\Expression given./'

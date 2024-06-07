@@ -1,0 +1,66 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+    <form action="{{ url_for('editContributionType', {'id': entry.id_type_cotis}) }}" method="post" class="ui form">
+{% if mode != 'ajax' %}
+        <div class="ui segment">
+{% endif %}
+            <div class="required field inline">
+                <label for="libelle_type_cotis">{{ _T("Name:") }}</label>
+                <input type="text" name="libelle_type_cotis" id="libelle_type_cotis" value="{{ entry.libelle_type_cotis }}" required="required" />
+            </div>
+            <div class="field inline">
+                <label for="amount">{{ _T("Amount:") }}</label>
+                <input type="text" name="amount" id="amount" value="{{ entry.amount }}"/>
+            </div>
+            {% set cotisextensions = {
+                (constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE")): _T("Default"),
+                (constant("Galette\\Entity\\ContributionsTypes::DONATION_TYPE")): _T("No"),
+                (1): _Tn('%1$s month', '%1$s months', 1)|format(1)
+            } %}
+            {% for m in 2..11 %}
+                {% set cotisextensions = cotisextensions + {(m): _Tn('%1$s month', '%1$s months', m)|format(m)} %}
+            {% endfor %}
+            {% include "components/forms/select.html.twig" with {
+                id: 'cotis_extension',
+                value: entry.cotis_extension,
+                values: cotisextensions,
+                label: _T("Membership extension"),
+                component_class: 'field inline',
+            } %}
+        </div>
+
+        <input type="hidden" name="mod" id="mod" value="{{ entry.id_type_cotis }}"/>
+
+{% if mode != 'ajax' %}
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i>
+                {{ _T("Save") }}
+            </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
+        </div>
+{% endif %}
+        {% include 'components/forms/csrf.html.twig' %}
+    </form>
+{% endblock %}

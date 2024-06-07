@@ -1,3 +1,23 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% extends 'elements/list.html.twig' %}
 
 {% set nb = history.getCount() %}
@@ -19,6 +39,7 @@
 {% endblock %}
 
 {% block infoline_actions %}
+    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') %}
     <a
         class="action ui tiny labeled icon button"
         href="{{ url_for('mailing') }}?mailing_new=true"
@@ -26,7 +47,7 @@
         <i class="plus circle green icon" aria-hidden="true"></i>
         {{ _T('Create new mailing') }}
     </a>
-    {% if login.isLogged() and (cur_route != 'mailing' and existing_mailing == true) %}
+        {% if login.isLogged() and (cur_route != 'mailing' and existing_mailing == true) %}
     <a
         href="{{ url_for("mailing") }}"
         class="action ui tiny labeled icon button tooltip"
@@ -35,6 +56,7 @@
         <i class="paper plane outline blue icon" aria-hidden="true"></i>
         {{ _T("Existing mailing") }}
     </a>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
@@ -61,7 +83,7 @@
                         <div class="ui calendar" id="mailings-rangestart">
                             <div class="ui input left icon">
                                 <i class="calendar icon" aria-hidden="true"></i>
-                                <input placeholder="{{ _T('(yyyy-mm-dd format)') }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ history.filters.start_date_filter }}"/>
+                                <input placeholder="{{ _T('yyyy-mm-dd format') }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ history.filters.start_date_filter }}"/>
                             </div>
                         </div>
                     </div>
@@ -70,7 +92,7 @@
                         <div class="ui calendar" id="mailings-rangeend">
                             <div class="ui input left icon">
                                 <i class="calendar icon" aria-hidden="true"></i>
-                                <input placeholder="{{ _T('(yyyy-mm-dd format)') }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ history.filters.end_date_filter }}"/>
+                                <input placeholder="{{ _T('yyyy-mm-dd format') }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ history.filters.end_date_filter }}"/>
                             </div>
                         </div>
                     </div>

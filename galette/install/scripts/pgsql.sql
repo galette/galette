@@ -47,7 +47,7 @@ CREATE SEQUENCE galette_logs_id_seq
     MAXVALUE 2147483647
     MINVALUE 1
     CACHE 1;
-    
+
 -- Sequence for dynamic fields description;
 DROP SEQUENCE IF EXISTS galette_field_types_id_seq;
 CREATE SEQUENCE galette_field_types_id_seq
@@ -165,6 +165,24 @@ CREATE SEQUENCE galette_socials_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for documents
+DROP SEQUENCE IF EXISTS galette_documents_id_seq;
+CREATE SEQUENCE galette_documents_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
+-- sequence for payments schedules
+DROP SEQUENCE IF EXISTS galette_payments_schedules_id_seq;
+CREATE SEQUENCE galette_payments_schedules_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
 DROP TABLE IF EXISTS galette_paymenttypes CASCADE;
@@ -204,6 +222,7 @@ CREATE TABLE galette_adherents (
     adresse_adh text DEFAULT '' NOT NULL,
     cp_adh character varying(10) DEFAULT '' NOT NULL,
     ville_adh character varying(200) DEFAULT '' NOT NULL,
+    region_adh character varying(200) DEFAULT '' NOT NULL,
     pays_adh character varying(200) DEFAULT NULL,
     tel_adh character varying(50),
     gsm_adh character varying(50),
@@ -235,7 +254,8 @@ DROP TABLE IF EXISTS galette_types_cotisation CASCADE;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis integer DEFAULT nextval('galette_types_cotisation_id_seq'::text) NOT NULL,
   libelle_type_cotis character varying(255) DEFAULT '' NOT NULL,
-  cotis_extension boolean DEFAULT FALSE,
+  amount decimal(15,2) NULL DEFAULT NULL,
+  cotis_extension integer DEFAULT 0,
   PRIMARY KEY (id_type_cotis)
 );
 
@@ -243,9 +263,10 @@ DROP TABLE IF EXISTS galette_transactions CASCADE;
 CREATE TABLE galette_transactions (
     trans_id integer DEFAULT nextval('galette_transactions_id_seq'::text)  NOT NULL,
     trans_date date DEFAULT '19010101' NOT NULL,
-    trans_amount real DEFAULT '0',
+    trans_amount decimal(15,2) NOT NULL,
     trans_desc character varying(255) NOT NULL DEFAULT '',
     id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
+    type_paiement_trans integer REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE NULL,
     PRIMARY KEY (trans_id)
 );
 
@@ -254,7 +275,7 @@ CREATE TABLE galette_cotisations (
     id_cotis integer DEFAULT nextval('galette_cotisations_id_seq'::text)  NOT NULL,
     id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     id_type_cotis integer REFERENCES galette_types_cotisation (id_type_cotis) ON DELETE RESTRICT ON UPDATE CASCADE,
-    montant_cotis real DEFAULT '0',
+    montant_cotis decimal(15,2) NOT NULL,
     type_paiement_cotis integer REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL,
     info_cotis text,
     date_enreg date DEFAULT '19010101' NOT NULL,
@@ -293,15 +314,18 @@ CREATE TABLE galette_field_types (
   field_form character varying(10) NOT NULL,
   field_index integer DEFAULT '0' NOT NULL,
   field_name character varying(255) DEFAULT '' NOT NULL,
-  field_perm integer DEFAULT '0' NOT NULL,
+  field_perm integer DEFAULT 1 NOT NULL,
   field_type integer DEFAULT '0' NOT NULL,
   field_required boolean DEFAULT FALSE,
   field_pos integer DEFAULT '0' NOT NULL,
   field_width integer DEFAULT NULL,
   field_height integer DEFAULT NULL,
+  field_min_size integer DEFAULT NULL,
   field_size integer DEFAULT NULL,
   field_repeat integer DEFAULT NULL,
   field_information text DEFAULT NULL,
+  field_width_in_forms integer DEFAULT '1' NOT NULL,
+  field_information_above boolean DEFAULT FALSE,
   PRIMARY KEY (field_id)
 );
 -- add index, field_form is used elsewhere
@@ -376,6 +400,7 @@ CREATE TABLE galette_fields_config (
   position integer NOT NULL,
   list_visible boolean NOT NULL,
   list_position integer NOT NULL,
+  width_in_forms integer DEFAULT '1' NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (table_name, field_id)
 );
@@ -492,9 +517,37 @@ CREATE TABLE galette_socials (
 -- add index on table to look for type
 CREATE INDEX galette_socials_idx ON galette_socials (type);
 
+-- table for documents
+DROP TABLE IF EXISTS galette_documents CASCADE;
+CREATE TABLE galette_documents (
+  id_document integer DEFAULT nextval('galette_documents_id_seq'::text) NOT NULL,
+  type character varying(250) NOT NULL,
+  visible integer NOT NULL,
+  filename character varying(255) DEFAULT NULL,
+  comment text,
+  creation_date timestamp NOT NULL,
+  PRIMARY KEY (id_document)
+);
+-- add index on table to look for type
+CREATE INDEX galette_documents_idx ON galette_documents (type);
+
+-- table for payments schedules
+DROP TABLE IF EXISTS galette_payments_schedules CASCADE;
+CREATE TABLE galette_payments_schedules (
+  id_schedule integer DEFAULT nextval('galette_payments_schedules_id_seq'::text) NOT NULL,
+  id_cotis integer REFERENCES galette_cotisations (id_cotis) ON DELETE CASCADE ON UPDATE CASCADE,
+  id_paymenttype integer REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  creation_date date NOT NULL,
+  scheduled_date date NOT NULL,
+  amount decimal(15,2) NOT NULL,
+  paid boolean DEFAULT FALSE,
+  comment text,
+  PRIMARY KEY (id_schedule)
+);
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database CASCADE;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.96);
+INSERT INTO galette_database (version) VALUES(1.10);

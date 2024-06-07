@@ -1,6 +1,38 @@
 Changes
 -------
 
+1.0.4 -> 1.1.0
+
+- Add print logo variable in PDF models
+- No longer use unsafe serialization for database storage
+- More explicit upgrade warning when already on latest release
+- Prevent instance indexation from search engines bots
+- Clear old cache at upgrade
+- Change MySQL and MariaDB encoding
+- Add min size on dynamic fields
+- Add amounts on contributions types
+- Add region field
+- Check if new Galette version is available
+- Improve member form display
+- Add new specific constant to enable debug mode
+- Option to disable social networks on member form/view
+- Factorize permissions on core and dynamic fields
+- Manage administrative documents
+- Allow plugins to provide their own fonts
+- Use decimal for all amounts, drop defaults
+- Rework PDF footer, fix pagination on attendance sheet
+- Fix color for staff members on member cards
+- Display first staff members on public lists
+- Identify sponsors in members list
+- Dispatch contribution into scheduled payments
+- Contribution type filter in contributions list
+- Menu entry was not always correctly selected
+- Add payment type on transactions
+- Remove non user related files from cofiguration folder
+- Add monthly contribution membership
+- PDF Member card adaptative size
+- Fix extra non listed column on filtered memberslist CSV export
+
 1.0.3 -> 1.0.4
 
 - Cannot access tabs definition on some resolutions
@@ -852,7 +884,7 @@ Changes and additions
 - groups management
 - add a dashboard (which displays latest news from the project
 - public pages (members list en trombinoscope)
-- handle plugins (see available plugins at http://galette.tuxfamily.org/documentation/fr/plugins/index.html#plugins)
+- handle plugins (see available plugins at https://doc.galette.eu/en/master/plugins/index.html)
 - CSV export of selected tables and/or parameted requests (https://mail.gna.org/public/galette-devel/2009-02/msg00006.html)
 - required fields management for members add/edition
 - multilingual management for subjects and messages automatically send from Galette (subscription, password lots, ...)

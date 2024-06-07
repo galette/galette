@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Dynamic field descriptors set
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2017-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2017-05-20
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository;
 
@@ -42,24 +29,18 @@ use Galette\Core\Db;
 use Galette\Core\Authentication;
 use Galette\Core\Login;
 use Galette\DynamicFields\DynamicField;
+use Galette\Entity\FieldsConfig;
 
 /**
  * Dynamic field descriptors set
  *
- * @category  Repository
- * @name      DynamicFieldsSet
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2017-05-20
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class DynamicFieldsSet
 {
-    private $zdb;
-    private $login;
+    private Db $zdb;
+    private Login $login;
 
     /**
      * Main constructor
@@ -76,7 +57,7 @@ class DynamicFieldsSet
     /**
      * Get form names and associated classes
      *
-     * @return string[]
+     * @return array<string, string>
      */
     public static function getClasses(): array
     {
@@ -94,7 +75,7 @@ class DynamicFieldsSet
      *
      * @return DynamicField[]
      */
-    public function getList($form_name)
+    public function getList(string $form_name): array
     {
         $select = $this->zdb->select(DynamicField::TABLE);
         $where = ['field_form' => $form_name];
@@ -109,20 +90,20 @@ class DynamicFieldsSet
         $fields = [];
         if ($results->count() > 0) {
             foreach ($results as $r) {
-                /** @var ArrayObject $r */
+                /** @var ArrayObject<string, int|string> $r */
                 $perm = $r['field_perm'];
                 if (
-                    ($perm == DynamicField::PERM_MANAGER &&
+                    ($perm == FieldsConfig::MANAGER &&
                         $access_level < Authentication::ACCESS_MANAGER) ||
-                    ($perm == DynamicField::PERM_STAFF &&
+                    ($perm == FieldsConfig::STAFF &&
                          $access_level < Authentication::ACCESS_STAFF) ||
-                    ($perm == DynamicField::PERM_ADMIN &&
+                    ($perm == FieldsConfig::ADMIN &&
                         $access_level < Authentication::ACCESS_ADMIN)
                 ) {
                     continue;
                 }
-                $df = DynamicField::getFieldType($this->zdb, $r['field_type']);
-                $df->loadFromRs($r);
+                $df = DynamicField::getFieldType($this->zdb, (int)$r['field_type']);
+                $df->loadFromRS($r);
                 $fields[$r[DynamicField::PK]] = $df;
             }
         }

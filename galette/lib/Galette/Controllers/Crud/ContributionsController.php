@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette contributions controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,22 +17,19 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Controllers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-08
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Entity\PaymentType;
+use Galette\Entity\ScheduledPayment;
 use Galette\Features\BatchList;
 use Analog\Analog;
 use Galette\Controllers\CrudController;
+use Galette\Filters\ContributionsList;
+use Galette\Filters\TransactionsList;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
@@ -51,14 +42,7 @@ use Galette\Repository\PaymentTypes;
 /**
  * Galette contributions controller
  *
- * @category  Controllers
- * @name      ContributionsController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-02
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class ContributionsController extends CrudController
@@ -114,7 +98,11 @@ class ContributionsController extends CrudController
             $title .= ' (' . _T("modification") . ')';
         } else {
             $title .= ' (' . _T("creation") . ')';
+            if ($contrib->amount === null) {
+                $contrib->amount = $contributions_types[array_key_first($contributions_types)]['amount'];
+            }
         }
+
 
         $params = [
             'page_title'        => $title,
@@ -126,6 +114,10 @@ class ContributionsController extends CrudController
 
         // contribution types
         $params['type_cotis_options'] = $contributions_types;
+
+        if ($contrib->id != '') {
+            $params['scheduled'] = new ScheduledPayment($this->zdb, $contrib->id);
+        }
 
         // members
         $m = new Members();
@@ -249,7 +241,7 @@ class ContributionsController extends CrudController
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
-                    count($data['id']),
+                    (string)count($data['id']),
                     _T('Mass add contribution on %count members')
                 ),
                 'data'          => $data,
@@ -297,7 +289,7 @@ class ContributionsController extends CrudController
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => str_replace(
                     '%count',
-                    count($data['id']),
+                    (string)count($data['id']),
                     _T('Mass add contribution on %count members')
                 ),
                 'form_url'      => $this->routeparser->urlFor('doMassAddContributions'),
@@ -387,16 +379,21 @@ class ContributionsController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
-     * @param string         $type     One of 'transactions' or 'contributions'
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
+     * @param ?string             $type     One of 'transactions' or 'contributions'
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null, $type = null): Response
-    {
+    public function list(
+        Request $request,
+        Response $response,
+        string $option = null,
+        int|string $value = null,
+        string $type = null
+    ): Response {
         $ajax = false;
         $get = $request->getQueryParams();
 
@@ -431,9 +428,11 @@ class ContributionsController extends CrudController
         }
 
         if (isset($this->session->$filter_name)) {
+            /** @var ContributionsList|TransactionsList $filters */
             $filters = $this->session->$filter_name;
         } else {
             $filter_class = '\\Galette\\Filters\\' . ucwords($raw_type . 'List');
+            /** @var ContributionsList|TransactionsList $filters */
             $filters = new $filter_class();
         }
 
@@ -458,7 +457,7 @@ class ContributionsController extends CrudController
                     $filters->orderby = $value;
                     break;
                 case 'member':
-                    $filters->filtre_cotis_adh = ($value === 'all' ? null : $value);
+                    $filters->filtre_cotis_adh = ($value === 'all' ? null : (int)$value);
                     break;
             }
         }
@@ -489,7 +488,7 @@ class ContributionsController extends CrudController
                     );
                 }
             }
-            $filters->filtre_cotis_children = $value;
+            $filters->filtre_cotis_children = (int)$value;
         }
 
         $class = '\\Galette\\Entity\\' . ucwords(trim($raw_type, 's'));
@@ -518,7 +517,7 @@ class ContributionsController extends CrudController
         }
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->routeparser, $this->view);
+        $filters->setViewPagination($this->routeparser, $this->view);
 
         $tpl_vars = [
             'page_title'        => $raw_type === 'contributions' ?
@@ -537,7 +536,7 @@ class ContributionsController extends CrudController
             $tpl_vars['member'] = $member;
         }
 
-        if ($filters->filtre_cotis_children != false) {
+        if ($filters->filtre_cotis_children !== false) {
             $member = new Adherent(
                 $this->zdb,
                 $filters->filtre_cotis_children,
@@ -550,6 +549,11 @@ class ContributionsController extends CrudController
             );
             $tpl_vars['pmember'] = $member;
         }
+
+        // contribution types
+        $ct = new ContributionsTypes($this->zdb);
+        $contributions_types = $ct->getList();
+        $tpl_vars['type_cotis_options'] = $contributions_types;
 
         // hide column action in ajax mode
         if ($ajax === true) {
@@ -568,9 +572,9 @@ class ContributionsController extends CrudController
     /**
      * List page for logged-in member
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     One of 'transactions' or 'contributions'
+     * @param Request     $request  PSR Request
+     * @param Response    $response PSR Response
+     * @param string|null $type     One of 'transactions' or 'contributions'
      *
      * @return Response
      */
@@ -657,6 +661,19 @@ class ContributionsController extends CrudController
                     $filters->payment_type_filter = null;
                 } else {
                     $error_detected[] = _T("- Unknown payment type!");
+                }
+            }
+
+            if (isset($post['contrib_type_filter'])) {
+                $ctf = (int)$post['contrib_type_filter'];
+                $ct = new ContributionsTypes($this->zdb);
+                $ctlist = $ct->getList();
+                if (isset($ctlist[$ctf])) {
+                    $filters->contrib_type_filter = $ctf;
+                } elseif ($ctf == 0) {
+                    $filters->contrib_type_filter = null;
+                } else {
+                    $error_detected[] = _T("- Unknown contribution type!");
                 }
             }
         }
@@ -749,7 +766,7 @@ class ContributionsController extends CrudController
                     'error_detected',
                     str_replace(
                         '%id',
-                        $id,
+                        (string)$id,
                         _T("Unable to load contribution #%id!")
                     )
                 );
@@ -787,11 +804,11 @@ class ContributionsController extends CrudController
      * @param Response $response PSR Response
      * @param string   $action   Action ('edit' or 'add')
      * @param string   $type     Contribution type
-     * @param integer  $id       Contribution id
+     * @param ?integer $id       Contribution id
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, $action, string $type, $id = null): Response
+    public function store(Request $request, Response $response, string $action, string $type, int $id = null): Response
     {
         $post = $request->getParsedBody();
         $url_args = [
@@ -819,7 +836,11 @@ class ContributionsController extends CrudController
             $this->session->contribution = null;
         } else {
             if ($id === null) {
-                $contrib = new Contribution($this->zdb, $this->login);
+                $args = [
+                    'type' => $post[ContributionsTypes::PK],
+                    'adh' => $post[Adherent::PK]
+                ];
+                $contrib = new Contribution($this->zdb, $this->login, $args);
             } else {
                 $contrib = new Contribution($this->zdb, $this->login, $id);
             }
@@ -862,14 +883,22 @@ class ContributionsController extends CrudController
         if (count($error_detected) == 0) {
             $this->session->contribution = null;
             if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
-                //new contribution
+                //if part of a transaction, and transaction is not fully allocated, create a new contribution
                 $redirect_url = $this->routeparser->urlFor(
                     'addContribution',
                     [
-                        'type'      => $post['contrib_type'] ?? $type
+                        'type' => $post['contrib_type'] ?? $type
                     ]
                 ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
                 '&' . Adherent::PK . '=' . $contrib->member;
+            } elseif ($contrib->payment_type === PaymentType::SCHEDULED/* && !$contrib->isScheduleFullyAllocated() */) {
+                //if payment type is a payment schedule, and schedule is not fully allocated, create a new schedule entry
+                $redirect_url = $this->routeparser->urlFor(
+                    'addScheduledPayment',
+                    [
+                        Contribution::PK => $contrib->id
+                    ]
+                );
             } else {
                 //contributions list for member
                 $redirect_url = $this->routeparser->urlFor(
@@ -906,11 +935,11 @@ class ContributionsController extends CrudController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('contributions', ['type' => $args['type']]);
     }
@@ -918,11 +947,11 @@ class ContributionsController extends CrudController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveContribution',
@@ -933,11 +962,11 @@ class ContributionsController extends CrudController
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $raw_type = null;
 
@@ -968,12 +997,12 @@ class ContributionsController extends CrudController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $raw_type = null;
         switch ($args['type']) {
@@ -987,7 +1016,7 @@ class ContributionsController extends CrudController
 
         $class = '\\Galette\Repository\\' . ucwords($raw_type);
         $contribs = new $class($this->zdb, $this->login);
-        $rm = $contribs->remove($args['ids'] ?? $args['id'], $this->history);
+        $rm = $contribs->remove($args['ids'] ?? (int)$args['id'], $this->history);
         return $rm;
     }
 
@@ -997,7 +1026,7 @@ class ContributionsController extends CrudController
     /**
      * Get filter name in session
      *
-     * @param array|null $args Route arguments
+     * @param array<string,mixed>|null $args Route arguments
      *
      * @return string
      */

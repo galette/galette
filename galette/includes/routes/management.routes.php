@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Management routes
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2014-2020 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Routes
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014-2020 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     0.8.2dev 2014-11-11
  */
+
+declare(strict_types=1);
 
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\PluginsController;
@@ -268,39 +255,74 @@ $app->post(
 )->setName('texts')->add($authenticate);
 
 $app->get(
-    '/{class:contributions-types|status}',
-    [Crud\EntitledsController::class, 'list']
-)->setName('entitleds')->add($authenticate);
+    '/contributions-types',
+    [Crud\ContributionsTypesController::class, 'list']
+)->setName('contributionsTypes')->add($authenticate);
 
 $app->get(
-    '/{class:contributions-types|status}/edit/{id:\d+}',
-    [Crud\EntitledsController::class, 'edit']
-)->setName('editEntitled')->add($authenticate);
+    '/contributions-types/edit/{id:\d+}',
+    [Crud\ContributionsTypesController::class, 'edit']
+)->setName('editContributionType')->add($authenticate);
 
 $app->get(
-    '/{class:contributions-types|status}/add',
-    [Crud\EntitledsController::class, 'add']
-)->setName('addEntitled')->add($authenticate);
+    '/contributions-types/add',
+    [Crud\ContributionsTypesController::class, 'add']
+)->setName('addContributionType')->add($authenticate);
 
 $app->post(
-    '/{class:contributions-types|status}/edit/{id:\d+}',
-    [Crud\EntitledsController::class, 'doEdit']
-)->setName('doEditEntitled')->add($authenticate);
+    '/contributions-types/edit/{id:\d+}',
+    [Crud\ContributionsTypesController::class, 'doEdit']
+)->setName('doEditContributionType')->add($authenticate);
 
 $app->post(
-    '/{class:contributions-types|status}/add',
-    [Crud\EntitledsController::class, 'doAdd']
-)->setName('doAddEntitled')->add($authenticate);
+    '/contributions-types/add',
+    [Crud\ContributionsTypesController::class, 'doAdd']
+)->setName('doAddContributionType')->add($authenticate);
 
 $app->get(
-    '/{class:contributions-types|status}/remove/{id:\d+}',
-    [Crud\EntitledsController::class, 'confirmDelete']
-)->setName('removeEntitled')->add($authenticate);
+    '/contributions-types/remove/{id:\d+}',
+    [Crud\ContributionsTypesController::class, 'confirmDelete']
+)->setName('removeContributionType')->add($authenticate);
 
 $app->post(
-    '/{class:contributions-types|status}/remove/{id:\d+}',
-    [Crud\EntitledsController::class, 'delete']
-)->setName('doRemoveEntitled')->add($authenticate);
+    '/contributions-types/remove/{id:\d+}',
+    [Crud\ContributionsTypesController::class, 'delete']
+)->setName('doRemoveContributionType')->add($authenticate);
+
+$app->get(
+    '/status',
+    [Crud\StatusController::class, 'list']
+)->setName('status')->add($authenticate);
+
+$app->get(
+    '/status/edit/{id:\d+}',
+    [Crud\StatusController::class, 'edit']
+)->setName('editStatus')->add($authenticate);
+
+$app->get(
+    '/status/add',
+    [Crud\StatusController::class, 'add']
+)->setName('addStatus')->add($authenticate);
+
+$app->post(
+    '/status/edit/{id:\d+}',
+    [Crud\StatusController::class, 'doEdit']
+)->setName('doEditStatus')->add($authenticate);
+
+$app->post(
+    '/status/add',
+    [Crud\StatusController::class, 'doAdd']
+)->setName('doAddStatus')->add($authenticate);
+
+$app->get(
+    '/status/remove/{id:\d+}',
+    [Crud\StatusController::class, 'confirmDelete']
+)->setName('removeStatus')->add($authenticate);
+
+$app->post(
+    '/status/remove/{id:\d+}',
+    [Crud\StatusController::class, 'delete']
+)->setName('doRemoveStatus')->add($authenticate);
 
 $app->get(
     '/dynamic-translations[/{text_orig}]',
@@ -417,3 +439,48 @@ $app->get(
     '/{form_name:adh|contrib|trans}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
     [Crud\DynamicFieldsController::class, 'getDynamicFile']
 )->setName('getDynamicFile')->add($authenticate);
+
+$app->get(
+    '/documents[/{option:page|order}/{value}]',
+    [Crud\DocumentsController::class, 'list']
+)->setName('documentsList')->add($authenticate);
+
+$app->post(
+    '/documents/filter',
+    [Crud\DocumentsController::class, 'filter']
+)->setName('documentsFilter')->add($authenticate);
+
+$app->get(
+    '/document/remove/{id:\d+}',
+    [Crud\DocumentsController::class, 'confirmDelete']
+)->setName('removeDocument')->add($authenticate);
+
+$app->post(
+    '/document/remove/{id:\d+}',
+    [Crud\DocumentsController::class, 'delete']
+)->setName('doRemoveDocument')->add($authenticate);
+
+$app->get(
+    '/document/add',
+    [Crud\DocumentsController::class, 'add']
+)->setName('addDocument')->add($authenticate);
+
+$app->get(
+    '/document/edit/{id:\d+}',
+    [Crud\DocumentsController::class, 'edit']
+)->setName('editDocument')->add($authenticate);
+
+$app->post(
+    '/document/add',
+    [Crud\DocumentsController::class, 'doAdd']
+)->setName('doAddDocument')->add($authenticate);
+
+$app->post(
+    '/document/edit/{id:\d+}',
+    [Crud\DocumentsController::class, 'doEdit']
+)->setName('doEditDocument')->add($authenticate);
+
+$app->get(
+    '/document/get/{id:\d+}',
+    [Crud\DocumentsController::class, 'getDocument']
+)->setName('getDocumentFile');

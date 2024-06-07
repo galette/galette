@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Contributions CSV exports
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2021-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  IO
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.6-dev - 2021-11-07
  */
+
+declare(strict_types=1);
 
 namespace Galette\IO;
 
@@ -49,23 +36,16 @@ use Galette\Repository\PaymentTypes;
 /**
  * Contributions CSV exports
  *
- * @category  IO
- * @name      Csv
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.6-dev - 2021-11-07
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class ContributionsCsv extends CsvOut
 {
-    private $filename;
-    private $path;
-    private $zdb;
-    private $login;
-    private $type;
+    private string $filename;
+    private string $path;
+    private Db $zdb;
+    private Login $login;
+    private string $type;
 
     /**
      * Default constructor
@@ -91,7 +71,7 @@ class ContributionsCsv extends CsvOut
      *
      * @return void
      */
-    public function exportContributions(ContributionsList $filters)
+    public function exportContributions(ContributionsList $filters): void
     {
         $class = '\\Galette\\Entity\\' . ucwords(trim($this->type, 's'));
         $contrib = new $class($this->zdb, $this->login);
@@ -116,7 +96,7 @@ class ContributionsCsv extends CsvOut
         $ctype = new ContributionsTypes($this->zdb);
 
         foreach ($contributions_list as &$contribution) {
-            /** @var ArrayObject $contribution */
+            /** @var ArrayObject<string, int|string> $contribution */
             if (isset($contribution->type_paiement_cotis)) {
                 //add textual payment type
                 $contribution->type_paiement_cotis = $ptypes[$contribution->type_paiement_cotis];
@@ -186,7 +166,7 @@ class ContributionsCsv extends CsvOut
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -196,7 +176,7 @@ class ContributionsCsv extends CsvOut
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->filename;
     }

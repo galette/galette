@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette Title controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Controllers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-06
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
@@ -46,14 +33,7 @@ use Analog\Analog;
 /**
  * Galette Titles controller
  *
- * @category  Controllers
- * @name      TitlesController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-08
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class TitlesController extends CrudController
@@ -93,14 +73,14 @@ class TitlesController extends CrudController
     /**
      * Titles list page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null): Response
+    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
         $titles = new Titles($this->zdb);
 
@@ -179,7 +159,7 @@ class TitlesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Title id
+     * @param ?integer $id       Title id
      *
      * @return Response
      */
@@ -221,11 +201,11 @@ class TitlesController extends CrudController
                     _T("Title '%s' has not been modified!")
                 );
 
-                $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => $id]);
+                $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => (string)$id]);
             }
         } else {
             if ($id === null) {
-                $error_detected[] = preg_replace(
+                $msg = preg_replace(
                     '(%s)',
                     $title->short,
                     _T("Title '%s' has been successfully added.")
@@ -264,11 +244,11 @@ class TitlesController extends CrudController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('titles');
     }
@@ -276,11 +256,11 @@ class TitlesController extends CrudController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveTitle',
@@ -291,11 +271,11 @@ class TitlesController extends CrudController
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $title = new Title((int)$args['id']);
         return sprintf(
@@ -307,12 +287,12 @@ class TitlesController extends CrudController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $title = new Title((int)$args['id']);
         return $title->remove($this->zdb);

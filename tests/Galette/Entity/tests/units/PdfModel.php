@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * PDF model tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-11-21
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -43,14 +30,7 @@ use Galette\GaletteTestCase;
 /**
  * PDF model tests
  *
- * @category  Entity
- * @name      PdfModel
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-11-21
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class PdfModel extends GaletteTestCase
 {
@@ -114,7 +94,7 @@ class PdfModel extends GaletteTestCase
      *
      * @return void
      */
-    public function testExpectedPatterns()
+    public function testExpectedPatterns(): void
     {
         $model = new class ($this->zdb, $this->preferences, 1) extends \Galette\Entity\PdfModel {
         };
@@ -126,6 +106,7 @@ class PdfModel extends GaletteTestCase
             'asso_address_multi' => '/{ASSO_ADDRESS_MULTI}/',
             'asso_website'       => '/{ASSO_WEBSITE}/',
             'asso_logo'          => '/{ASSO_LOGO}/',
+            'asso_print_logo'    => '/{ASSO_PRINT_LOGO}/',
             'date_now'           => '/{DATE_NOW}/',
             'login_uri'          => '/{LOGIN_URI}/',
             'asso_footer'        => '/{ASSO_FOOTER}/',
@@ -240,7 +221,7 @@ class PdfModel extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetypeClass($type, $expected)
+    public function testGetypeClass(int $type, string $expected): void
     {
         $this->assertSame($expected, \Galette\Entity\PdfModel::getTypeClass($type));
     }
@@ -250,13 +231,13 @@ class PdfModel extends GaletteTestCase
      *
      * @return void
      */
-    public function testReplacements()
+    public function testReplacements(): void
     {
         //create dynamic fields
         $field_data = [
             'form_name'        => 'adh',
             'field_name'        => 'Dynamic text field',
-            'field_perm'        => DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => DynamicField::TEXT,
             'field_required'    => 1,
             'field_repeat'      => 1
@@ -281,7 +262,7 @@ class PdfModel extends GaletteTestCase
             'form_name'         => 'contrib',
             'field_form'        => 'contrib',
             'field_name'        => 'Dynamic date field',
-            'field_perm'        => DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => DynamicField::DATE,
             'field_required'    => 1,
             'field_repeat'      => 1
@@ -364,7 +345,7 @@ Au milieu
         $this->assertArrayHasKey('member', $legend);
         $this->assertArrayHasKey('contribution', $legend);
 
-        $this->assertCount(9, $legend['main']['patterns']);
+        $this->assertCount(10, $legend['main']['patterns']);
         $this->assertCount(28, $legend['member']['patterns']);
         $this->assertTrue(isset($legend['member']['patterns']['label_dynfield_' . $adf->getId() . '_adh']));
         $this->assertCount(14, $legend['contribution']['patterns']);
@@ -378,7 +359,7 @@ Au milieu
      *
      * @return void
      */
-    protected function createPdfContribution($cdf)
+    protected function createPdfContribution(DynamicField $cdf): void
     {
         $bdate = new \DateTime(); // 2020-11-07
         $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
@@ -408,7 +389,7 @@ Au milieu
      *
      * @return void
      */
-    public function testStorage()
+    public function testStorage(): void
     {
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
 

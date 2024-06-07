@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Contributions class
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2010-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,20 +17,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2010-03-11
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository;
 
 use ArrayObject;
+use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -53,36 +41,30 @@ use Laminas\Db\Sql\Select;
 /**
  * Contributions class for galette
  *
- * @name Contributions
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Contributions
 {
     public const TABLE = Contribution::TABLE;
     public const PK = Contribution::PK;
 
-    private $filters = false;
-    private $count = null;
+    private ContributionsList $filters;
+    private int $count = 0;
 
-    private $zdb;
-    private $login;
-    private $sum;
-    private $current_selection;
+    private Db $zdb;
+    private Login $login;
+    private float $sum = 0;
+    /** @var array<int> */
+    private array $current_selection;
 
     /**
      * Default constructor
      *
-     * @param Db                $zdb     Database
-     * @param Login             $login   Login
-     * @param ContributionsList $filters Filtering
+     * @param Db                 $zdb     Database
+     * @param Login              $login   Login
+     * @param ?ContributionsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, $filters = null)
+    public function __construct(Db $zdb, Login $login, ?ContributionsList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -99,9 +81,9 @@ class Contributions
      *
      * @param int $trans_id Transaction identifier
      *
-     * @return Contribution[]|ArrayObject
+     * @return Contribution[]
      */
-    public function getListFromTransaction($trans_id)
+    public function getListFromTransaction(int $trans_id): array
     {
         $this->filters->from_transaction = $trans_id;
         return $this->getList(true);
@@ -110,16 +92,14 @@ class Contributions
     /**
      * Get contributions list for a specific transaction
      *
-     * @param array   $ids        an array of members id that has been selected
-     * @param bool    $as_contrib return the results as an array of
-     * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
-     * @param boolean $count      true if we want to count members
+     * @param array<int>     $ids        an array of members id that has been selected
+     * @param bool           $as_contrib return the results as an array of
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be returned
      *
-     * @return Contribution[]|ArrayObject[]|false
+     * @return array<int, Contribution>|false
      */
-    public function getArrayList(array $ids, bool $as_contrib = false, array $fields = null, bool $count = true)
+    public function getArrayList(array $ids, bool $as_contrib = false, ?array $fields = null): array|false
     {
         if (count($ids) < 1) {
             Analog::log('No contribution selected.', Analog::INFO);
@@ -127,7 +107,7 @@ class Contributions
         }
 
         $this->current_selection = $ids;
-        $list = $this->getList($as_contrib, $fields, $count);
+        $list = $this->getList($as_contrib, $fields);
         $array_list = [];
         foreach ($list as $entry) {
             $array_list[] = $entry;
@@ -138,19 +118,17 @@ class Contributions
     /**
      * Get contributions list
      *
-     * @param bool    $as_contrib return the results as an array of
-     *                            Contribution object.
-     * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
-     * @param boolean $count      true if we want to count members
+     * @param bool           $as_contrib return the results as an array of
+     *                                   Contribution object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be returned
      *
-     * @return Contribution[]|ArrayObject
+     * @return array<int, Contribution>|ResultSet
      */
-    public function getList($as_contrib = false, $fields = null, $count = true)
+    public function getList(bool $as_contrib = false, ?array $fields = null): array|ResultSet
     {
         try {
-            $select = $this->buildSelect($fields, $count);
+            $select = $this->buildSelect($fields);
 
             $this->filters->setLimits($select);
 
@@ -176,20 +154,17 @@ class Contributions
     /**
      * Builds the SELECT statement
      *
-     * @param ?array $fields fields list to retrieve
-     * @param bool   $count  true if we want to count members
-     *                       (not applicable from static calls), defaults to false
+     * @param ?array<string> $fields fields list to retrieve
      *
      * @return Select SELECT statement
      */
-    private function buildSelect(?array $fields, bool $count = false): Select
+    private function buildSelect(?array $fields): Select
     {
         try {
             $fieldsList = ['*'];
             if (is_array($fields) && count($fields)) {
                 $fieldsList = $fields;
             }
-
 
             $select = $this->zdb->select(self::TABLE, 'a');
             $select->columns($fieldsList);
@@ -205,9 +180,7 @@ class Contributions
 
             $this->calculateSum($select);
 
-            if ($count) {
-                $this->proceedCount($select);
-            }
+            $this->proceedCount($select);
 
             return $select;
         } catch (Throwable $e) {
@@ -226,7 +199,7 @@ class Contributions
      *
      * @return void
      */
-    private function proceedCount(Select $select)
+    private function proceedCount(Select $select): void
     {
         try {
             $countSelect = clone $select;
@@ -243,7 +216,7 @@ class Contributions
             $result = $results->current();
 
             $k = self::PK;
-            $this->count = $result->$k;
+            $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
@@ -261,7 +234,7 @@ class Contributions
      *
      * @return void
      */
-    private function calculateSum(Select $select)
+    private function calculateSum(Select $select): void
     {
         try {
             $sumSelect = clone $select;
@@ -277,7 +250,7 @@ class Contributions
             $results = $this->zdb->execute($sumSelect);
             $result = $results->current();
             if ($result->contribsum) {
-                $this->sum = round($result->contribsum, 2);
+                $this->sum = round((float)$result->contribsum, 2);
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -291,9 +264,9 @@ class Contributions
     /**
      * Builds the order clause
      *
-     * @return array SQL ORDER clauses
+     * @return array<string> SQL ORDER clauses
      */
-    private function buildOrderClause()
+    private function buildOrderClause(): array
     {
         $order = array();
 
@@ -320,16 +293,8 @@ class Contributions
             case ContributionsList::ORDERBY_AMOUNT:
                 $order[] = 'montant_cotis ' . $this->filters->ordered;
                 break;
-            /*
-            Hum... I really do not know how to sort a query with a value that
-            is calculated code side :/
-            case ContributionsList::ORDERBY_DURATION:
-                break;*/
             case ContributionsList::ORDERBY_PAYMENT_TYPE:
                 $order[] = 'type_paiement_cotis ' . $this->filters->ordered;
-                break;
-            default:
-                $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
                 break;
         }
 
@@ -343,7 +308,7 @@ class Contributions
      *
      * @return void
      */
-    private function buildWhereClause(Select $select)
+    private function buildWhereClause(Select $select): void
     {
         $field = 'date_debut_cotis';
 
@@ -388,6 +353,13 @@ class Contributions
                 );
             }
 
+            if ($this->filters->contrib_type_filter !== null) {
+                $select->where->equalTo(
+                    ContributionsTypes::PK,
+                    $this->filters->contrib_type_filter
+                );
+            }
+
             if ($this->filters->from_transaction !== false) {
                 $select->where->equalTo(
                     Transaction::PK,
@@ -395,7 +367,7 @@ class Contributions
                 );
             }
 
-            if ($this->filters->max_amount !== null && is_int($this->filters->max_amount)) {
+            if ($this->filters->max_amount !== null) {
                 $select->where(
                     '(montant_cotis <= ' . $this->filters->max_amount .
                     ' OR montant_cotis IS NULL)'
@@ -474,7 +446,7 @@ class Contributions
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -482,9 +454,9 @@ class Contributions
     /**
      * Get sum
      *
-     * @return int
+     * @return float
      */
-    public function getSum()
+    public function getSum(): float
     {
         return $this->sum;
     }
@@ -492,26 +464,19 @@ class Contributions
     /**
      * Remove specified contributions
      *
-     * @param integer|array $ids         Contributions identifiers to delete
-     * @param History       $hist        History
-     * @param boolean       $transaction True to begin a database transaction
+     * @param integer|array<int> $ids         Contributions identifiers to delete
+     * @param History            $hist        History
+     * @param boolean            $transaction True to begin a database transaction
      *
      * @return boolean
      */
-    public function remove($ids, History $hist, $transaction = true)
+    public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
         $list = array();
         if (is_array($ids)) {
             $list = $ids;
-        } elseif (is_numeric($ids)) {
-            $list = [(int)$ids];
         } else {
-            //not numeric and not an array: incorrect.
-            Analog::log(
-                'Asking to remove contribution, but without providing an array or a single numeric value.',
-                Analog::WARNING
-            );
-            return false;
+            $list = [$ids];
         }
 
         try {

@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Picture tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2017-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  IO
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-05-14
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Picture tests class
  *
- * @category  Core
- * @name      Picture
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-05-14
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Picture extends TestCase
 {
@@ -97,7 +77,7 @@ class Picture extends TestCase
      *
      * @return void
      */
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $picture = new \Galette\Core\Picture();
         $this->assertNull($picture->getDestDir());
@@ -125,7 +105,7 @@ class Picture extends TestCase
      *
      * @return void
      */
-    public function testSetters()
+    public function testSetters(): void
     {
         $this->assertNull($this->picture->getDestDir());
         $this->assertNull($this->picture->getFileName());
@@ -143,7 +123,7 @@ class Picture extends TestCase
      *
      * @return void
      */
-    public function testFileInfoMimeType()
+    public function testFileInfoMimeType(): void
     {
         $url = realpath(GALETTE_ROOT . '../tests/fake_image.jpg');
         $this->assertNotFalse($url);
@@ -164,7 +144,7 @@ class Picture extends TestCase
      * Test mimetype guess
      * FileInfo not installed, back to mime_content_type call
      *
-     * Does not actually works :/
+     * Does not actually work :/
      *
      * @return void
      */
@@ -185,7 +165,7 @@ class Picture extends TestCase
      *
      * @return void
      */
-    public function testStore()
+    public function testStore(): void
     {
         foreach ($this->expected_badchars as $badchar) {
             $expected = \Galette\Core\Picture::INVALID_FILENAME;
@@ -225,7 +205,7 @@ class Picture extends TestCase
      *
      * @return void
      */
-    public function testErrorMessages()
+    public function testErrorMessages(): void
     {
         $this->assertSame(
             'File name is invalid, it should not contain any special character or space.',

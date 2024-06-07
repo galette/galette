@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette application instance
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,32 +17,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.9.4-dev - 2020-05-18
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Entity\Document;
+use Galette\Util\Release;
+use RuntimeException;
 
 /**
  * Galette application instance
  *
- * @category  Core
- * @name      Galette
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.9.4-dev - 2020-05-18
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Galette
 {
@@ -64,7 +48,7 @@ class Galette
      *
      * @return string
      */
-    public static function gitVersion($time = false)
+    public static function gitVersion(bool $time = false): string
     {
         $galette_version = GALETTE_VERSION;
 
@@ -92,9 +76,23 @@ class Galette
     }
 
     /**
+     * Get Galette new release
+     *
+     * @return array<string, string|array<string,mixed>>
+     */
+    public static function getNewRelease(): array
+    {
+        $release = new Release();
+        return [
+            'new' => $release->checkNewRelease(),
+            'version' => $release->getLatestRelease()
+        ];
+    }
+
+    /**
      * Get all menus
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getAllMenus(): array
     {
@@ -106,7 +104,7 @@ class Galette
      *
      * @param bool $public Include public menus. Defaults to false
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getMenus(bool $public = false): array
     {
@@ -132,6 +130,13 @@ class Galette
                             'route' => [
                                 'name' => 'myContributions',
                                 'args' => ['type' => 'contributions']
+                            ]
+                        ],
+                        [
+                            'label' => _T('My scheduled payments'),
+                            'title' => _T('View and filter all my scheduled payments'),
+                            'route' => [
+                                'name' => 'myScheduledPayments'
                             ]
                         ],
                         [
@@ -223,6 +228,14 @@ class Galette
                                 'name' => 'contributions',
                                 'args' => ['type' => 'contributions'],
                                 'aliases' => ['editContribution']
+                            ]
+                        ],
+                        [
+                            'label' => _T("List of scheduled payments"),
+                            'title' => _T("View and filter scheduled payments"),
+                            'route' => [
+                                'name' => 'scheduledPayments',
+                                'aliases' => ['addScheduledPayment', 'editScheduledPayment']
                             ]
                         ],
                         [
@@ -320,6 +333,13 @@ class Galette
                             'route' => [
                                 'name' => 'charts'
                             ]
+                        ], [
+                            'label' => _T("Documents"),
+                            'title' => _T("Add documents to share related to your association (status, rules of procedure, ...)"),
+                            'route' => [
+                                'name' => 'documentsList',
+                                'aliases' => ['editDocument', 'addDocument']
+                            ]
                         ]
                     ]);
                 }//admin or staff
@@ -368,7 +388,7 @@ class Galette
                             ],
                             [
                                 'label' => _T("Translate labels"),
-                                'title' => _T("Translate additionnals fields labels"),
+                                'title' => _T("Translate additional fields labels"),
                                 'route' => [
                                     'name' => 'dynamicTranslations'
                                 ]
@@ -376,18 +396,15 @@ class Galette
                             [
                                 'label' => _T("Manage statuses"),
                                 'route' => [
-                                    'name' => 'entitleds',
-                                    'args' => ['class' => 'status'],
-                                    'aliases' => ['editEntitled'],
-                                    'sub_select' => false
+                                    'name' => 'status',
+                                    'aliases' => ['editStatus']
                                 ]
                             ],
                             [
                                 'label' => _T("Contributions types"),
                                 'title' => _T("Manage contributions types"),
                                 'route' => [
-                                    'name' => 'entitleds',
-                                    'args' => ['class' => 'contributions-types']
+                                    'name' => 'contributionsTypes',
                                 ]
                             ],
                             [
@@ -472,7 +489,7 @@ class Galette
     /**
      * Get public menus
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getPublicMenus(): array
     {
@@ -481,7 +498,7 @@ class Galette
          * @var Login $login
          * @var Plugins $plugins
          */
-        global $preferences, $login, $plugins;
+        global $preferences, $login, $plugins, $zdb;
 
         $menus = [];
         if ($preferences->showPublicPages($login)) {
@@ -508,6 +525,20 @@ class Galette
                 ]
             ];
 
+            //display documents menu if at least one document is present with current ACLs
+            $document = new Document($zdb);
+            $documents = $document->getList();
+            if ($login->isSuperAdmin() || count($documents)) {
+                $menus['public']['items'][] = [
+                    'label' => _T("Documents"),
+                    'title' => _T("View documents related to your association"),
+                    'route' => [
+                        'name' => 'documentsPublicList'
+                    ],
+                    'icon' => 'file alternate'
+                ];
+            }
+
             foreach (array_keys($plugins->getModules()) as $module_id) {
                 //get plugins public menus entries
                 $plugin_class = $plugins->getClassName($module_id, true);
@@ -527,15 +558,16 @@ class Galette
     /**
      * Get dashboards
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getDashboards(): array
     {
         /**
          * @var Login $login
          * @var Plugins $plugins
+         * @var Db $zdb
          */
-        global $login, $plugins;
+        global $login, $plugins, $zdb;
 
         $dashboards = [];
 
@@ -605,6 +637,25 @@ class Galette
             );
         }
 
+        //display documents menu if at least one document is present with current ACLs
+        $document = new Document($zdb);
+        $documents = $document->getList();
+        if ($login->isSuperAdmin() || count($documents)) {
+            $dashboards = array_merge(
+                $dashboards,
+                [
+                    [
+                        'label' => _T("Documents"),
+                        'title' => _T("View documents related to your association"),
+                        'route' => [
+                            'name' => 'documentsPublicList'
+                        ],
+                        'icon' => 'dividers'
+                    ]
+                ]
+            );
+        }
+
         if ($login->isAdmin()) {
             $dashboards = array_merge(
                 $dashboards,
@@ -659,8 +710,7 @@ class Galette
                             'args' => ['type' => 'transactions']
                         ],
                         'icon' => 'book'
-                    ],
-
+                    ]
                 ]
             );
         }
@@ -686,7 +736,7 @@ class Galette
      *
      * @param Adherent $member Current member
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getListActions(Adherent $member): array
     {
@@ -806,7 +856,7 @@ class Galette
      *
      * @param Adherent $member Current member
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getDetailedActions(Adherent $member): array
     {
@@ -818,7 +868,7 @@ class Galette
 
         $actions = [];
 
-        //TODO: add core detailled actions
+        //TODO: add core detailed actions
 
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins menus entries
@@ -838,7 +888,7 @@ class Galette
     /**
      * Get members list batch actions
      *
-     * @return array
+     * @return array<string,array<string, string>>
      */
     public static function getBatchActions(): array
     {
@@ -950,13 +1000,32 @@ class Galette
     }
 
     /**
+     * Is a hosted instance
+     *
+     * @return bool
+     */
+    public static function isHosted(): bool
+    {
+        return defined('GALETTE_HOSTED') && GALETTE_HOSTED === true;
+    }
+
+    /**
      * Is debug mode enabled
      *
      * @return bool
      */
     public static function isDebugEnabled(): bool
     {
-        return GALETTE_MODE === static::MODE_DEV;
+        if (GALETTE_MODE === static::MODE_DEV) {
+            //since 1.1.0, GALETTE_MODE with DEV value is deprecated.
+            Analog::log(
+                'Using GALETTE_MODE set to DEV is deprecated. Use GALETTE_DEBUG.',
+                Analog::WARNING
+            );
+            return true;
+        }
+        // @const bool GALETTE_DEBUG
+        return GALETTE_DEBUG === true;
     }
 
     /**
@@ -977,5 +1046,53 @@ class Galette
     public static function isNightly(): bool
     {
         return GALETTE_NIGHTLY !== false;
+    }
+
+    /**
+     * Check if a string is serialized
+     *
+     * @param string $string String to check
+     *
+     * @return bool
+     */
+    public static function isSerialized(string $string): bool
+    {
+        return (@unserialize($string) !== false);
+    }
+
+    /**
+     * JSON decode with exception
+     *
+     * @param string $string JSON encoded string to decode
+     *
+     * @return array<string|int, mixed>
+     * @throws RuntimeException
+     */
+    public static function jsonDecode(string $string): array
+    {
+        $decoded = json_decode($string, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new RuntimeException('JSON decode error: ' . json_last_error_msg());
+        }
+
+        return $decoded;
+    }
+
+    /**
+     * JSON encode with exception
+     *
+     * @param array<string|int, mixed>|object $data Data to encode
+     *
+     * @return string
+     * @throws RuntimeException
+     */
+    public static function jsonEncode(array|object $data): string
+    {
+        $encoded = json_encode($data);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new RuntimeException('JSON encode error: ' . json_last_error_msg());
+        }
+
+        return $encoded;
     }
 }

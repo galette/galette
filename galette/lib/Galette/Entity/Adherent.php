@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Member class for galette
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,20 +17,16 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-06-02
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
 use ArrayObject;
+use DateInterval;
+use DateTime;
+use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
 use Galette\Features\Socials;
@@ -57,24 +47,17 @@ use Galette\Features\Dynamics;
 /**
  * Member class for galette
  *
- * @category  Entity
- * @name      Adherent
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 02-06-2009
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
- * @property integer|Title $title Either a title id or an instance of Title
+ * @property ?integer $id
+ * @property integer|Title|null $title Either a title id or an instance of Title
  * @property string $stitle Title label
  * @property string $company_name
  * @property string $name
  * @property ?string $surname
  * @property string $nickname
- * @property string $birthdate Localized birthdate
- * @property string $rbirthdate Raw birthdate
+ * @property ?string $birthdate Localized birthdate
+ * @property ?string $rbirthdate Raw birthdate
  * @property string $birth_place
  * @property integer $gender
  * @property string $sgender Gender label
@@ -82,25 +65,26 @@ use Galette\Features\Dynamics;
  * @property string $language
  * @property integer $status
  * @property string $sstatus Status label
- * @property string $address
- * @property string $zipcode
- * @property string $town
- * @property string $country
+ * @property ?string $address
+ * @property ?string $zipcode
+ * @property ?string $town
+ * @property ?string $country
  * @property string $phone
  * @property string $gsm
- * @property string $email
+ * @property ?string $email
  * @property string $gnupgid
  * @property string $fingerprint
- * @property string $login
+ * @property ?string $login
  * @property string $creation_date Localized creation date
  * @property string $modification_date Localized modification date
  * @property string $due_date Localized due date
+ * @property string $rdue_date Due date
  * @property string $others_infos
  * @property string $others_infos_admin
  * @property Picture $picture
  * @property array $groups
  * @property array $managed_groups
- * @property integer|Adherent $parent Parent id if parent dep is not loaded, Adherent instance otherwise
+ * @property integer|Adherent|null $parent Parent id if parent dep is not loaded, Adherent instance otherwise
  * @property array $children
  * @property boolean $admin better to rely on isAdmin()
  * @property boolean $staff better to rely on isStaff()
@@ -122,6 +106,7 @@ use Galette\Features\Dynamics;
  * @property Social $social Social networks/Contact
  * @property string $number Member number
  * @property-read bool $self_adh
+ * @property ?string $region
  */
 class Adherent
 {
@@ -143,84 +128,94 @@ class Adherent
     public const AFTER_ADD_LIST = 4;
     public const AFTER_ADD_HOME = 5;
 
-    private $_id;
+    private ?int $id;
     //Identity
-    private $_title;
-    private $_company_name;
-    private $_name;
-    private $_surname;
-    private $_nickname;
-    private $_birthdate;
-    private $_birth_place;
-    private $_gender;
-    private $_job;
-    private $_language;
-    private $_active;
-    private $_status;
+    private Title|string|null $title = null;
+    private ?string $company_name;
+    private ?string $name;
+    private ?string $surname;
+    private ?string $nickname;
+    private ?string $birthdate;
+    private ?string $birth_place;
+    private int $gender;
+    private string $job;
+    private string $language;
+    private bool $active;
+    private int $status;
     //Contact information
-    private $_address;
-    private $_zipcode;
-    private $_town;
-    private $_country;
-    private $_phone;
-    private $_gsm;
-    private $_email;
-    private $_gnupgid;
-    private $_fingerprint;
+    private ?string $address = null;
+    private ?string $zipcode = null;
+    private ?string $town = null;
+    private ?string $country = null;
+    private ?string $phone;
+    private ?string $gsm;
+    private ?string $email;
+    private ?string $gnupgid;
+    private ?string $fingerprint;
     //Galette relative information
-    private $_appears_in_list;
-    private $_admin;
-    private $_staff = false;
-    private $_due_free;
-    private $_login;
-    private $_password;
-    private $_creation_date;
-    private $_modification_date;
-    private $_due_date;
-    private $_others_infos;
-    private $_others_infos_admin;
-    private $_picture;
-    private $_oldness;
-    private $_days_remaining;
-    private $_groups = [];
-    private $_managed_groups = [];
-    private $_parent;
-    private $_children = [];
-    private $_duplicate = false;
-    private $_socials;
-    private $_number;
+    private bool $appears_in_list;
+    private bool $admin;
+    private bool $staff = false;
+    private bool $due_free;
+    private ?string $login;
+    private ?string $password;
+    private string $creation_date;
+    private string $modification_date;
+    private ?string $due_date;
+    private string $others_infos;
+    private ?string $others_infos_admin;
+    private ?Picture $picture = null;
+    private int $oldness;
+    private ?int $days_remaining = null;
+    /** @var array<int, Group> */
+    private array $groups = [];
+    /** @var array<int, Group> */
+    private array $managed_groups = [];
+    private int|Adherent|null $parent;
+    /** @var array<int, Adherent>|null */
+    private ?array $children = [];
+    private bool $duplicate = false;
+    /** @var array<int,Social> */
+    private array $socials;
+    private ?string $number = null;
+    private ?string $region = null;
 
-    private $_row_classes;
+    private string $row_classes;
 
-    private $_self_adh = false;
+    private bool $self_adh = false;
 
-    private $zdb;
-    private $preferences;
-    private $fields;
-    private $history;
+    private Db $zdb;
+    private Preferences $preferences;
+    /** @var array<string, mixed> */
+    private array $fields;
+    private History $history;
+    private int $due_status = Contribution::STATUS_UNKNOWN;
 
-    private $parent_fields = [
+    /** @var array<string> */
+    private array $parent_fields = [
         'adresse_adh',
         'cp_adh',
         'ville_adh',
         'email_adh'
     ];
 
-    private $errors = [];
+    /** @var array<string> */
+    private array $errors = [];
 
-    private $sendmail = false;
+    private bool $sendmail = false;
 
     /**
      * Default constructor
      *
-     * @param Db               $zdb  Database instance
-     * @param mixed            $args Either a ResultSet row, its id or its
-     *                               login or its email for to load s specific
-     *                               member, or null to just instantiate object
-     * @param false|array|null $deps Dependencies configuration, see Adherent::$_deps
+     * @param Db                                              $zdb  Database instance
+     * @param ArrayObject<string, int|string>|string|int|null $args Either a ResultSet row, its id or its
+     *                                                              login or its email for to load s specific
+     *                                                              member, or null to just instantiate object
+     * @param false|array<string,bool>|null                   $deps Dependencies configuration, see Adherent::$_deps
      */
-    public function __construct(Db $zdb, $args = null, $deps = null)
+    public function __construct(Db $zdb, ArrayObject|int|string $args = null, array|false $deps = null)
     {
+        /** @var I18n $i18n */
         global $i18n;
 
         $this->zdb = $zdb;
@@ -249,26 +244,26 @@ class Adherent
             if (is_int($args) && $args > 0) {
                 $this->load($args);
             } else {
-                $this->_active = true;
-                $this->_language = $i18n->getID();
-                $this->_creation_date = date("Y-m-d");
-                $this->_status = $this->getDefaultStatus();
-                $this->_title = null;
-                $this->_gender = self::NC;
+                $this->active = true;
+                $this->language = $i18n->getID();
+                $this->creation_date = date("Y-m-d");
+                $this->status = $this->getDefaultStatus();
+                $this->title = null;
+                $this->gender = self::NC;
                 $gp = new Password($this->zdb);
-                $this->_password = $gp->makeRandomPassword();
-                $this->_picture = new Picture();
-                $this->_admin = false;
-                $this->_staff = false;
-                $this->_due_free = false;
-                $this->_appears_in_list = false;
-                $this->_parent = null;
+                $this->password = $gp->makeRandomPassword();
+                $this->picture = new Picture();
+                $this->admin = false;
+                $this->staff = false;
+                $this->due_free = false;
+                $this->appears_in_list = false;
+                $this->parent = null;
 
-                if ($this->_deps['dynamics'] === true) {
+                if ($this->deps['dynamics'] === true) {
                     $this->loadDynamicFields();
                 }
             }
-        } elseif (is_object($args)) {
+        } elseif ($args instanceof ArrayObject) {
             $this->loadFromRS($args);
         } elseif (is_string($args)) {
             $this->loadFromLoginOrMail($args);
@@ -299,7 +294,7 @@ class Adherent
                 return false;
             }
 
-            /** @var ArrayObject $result */
+            /** @var ArrayObject<string, int|string> $result */
             $result = $results->current();
             $this->loadFromRS($result);
             return true;
@@ -333,7 +328,7 @@ class Adherent
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
                 $this->loadFromRS($result);
             }
@@ -351,92 +346,93 @@ class Adherent
     /**
      * Populate object from a resultset row
      *
-     * @param ArrayObject $r the resultset row
+     * @param ArrayObject<string, int|string> $r the resultset row
      *
      * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
-        $this->_self_adh = false;
-        $this->_id = $r->id_adh;
+        $this->self_adh = false;
+        $this->id = (int)$r->id_adh;
         //Identity
         if ($r->titre_adh !== null) {
-            $this->_title = new Title((int)$r->titre_adh);
+            $this->title = new Title((int)$r->titre_adh);
         }
-        $this->_company_name = $r->societe_adh;
-        $this->_name = $r->nom_adh;
-        $this->_surname = $r->prenom_adh;
-        $this->_nickname = $r->pseudo_adh;
+        $this->company_name = $r->societe_adh;
+        $this->name = $r->nom_adh;
+        $this->surname = $r->prenom_adh;
+        $this->nickname = $r->pseudo_adh;
         if ($r->ddn_adh != '1901-01-01') {
-            $this->_birthdate = $r->ddn_adh;
+            $this->birthdate = $r->ddn_adh;
         }
-        $this->_birth_place = $r->lieu_naissance;
-        $this->_gender = (int)$r->sexe_adh;
-        $this->_job = $r->prof_adh;
-        $this->_language = $r->pref_lang;
-        $this->_active = $r->activite_adh == 1;
-        $this->_status = (int)$r->id_statut;
+        $this->birth_place = $r->lieu_naissance;
+        $this->gender = (int)$r->sexe_adh;
+        $this->job = $r->prof_adh;
+        $this->language = $r->pref_lang;
+        $this->active = $r->activite_adh == 1;
+        $this->status = (int)$r->id_statut;
         //Contact information
-        $this->_address = $r->adresse_adh;
-        $this->_zipcode = $r->cp_adh;
-        $this->_town = $r->ville_adh;
-        $this->_country = $r->pays_adh;
-        $this->_phone = $r->tel_adh;
-        $this->_gsm = $r->gsm_adh;
-        $this->_email = $r->email_adh;
-        $this->_gnupgid = $r->gpgid;
-        $this->_fingerprint = $r->fingerprint;
+        $this->address = $r->adresse_adh;
+        $this->zipcode = $r->cp_adh;
+        $this->town = $r->ville_adh;
+        $this->region = $r->region_adh;
+        $this->country = $r->pays_adh;
+        $this->phone = $r->tel_adh;
+        $this->gsm = $r->gsm_adh;
+        $this->email = $r->email_adh;
+        $this->gnupgid = $r->gpgid;
+        $this->fingerprint = $r->fingerprint;
         //Galette relative information
-        $this->_appears_in_list = $r->bool_display_info == 1;
-        $this->_admin = $r->bool_admin_adh == 1;
+        $this->appears_in_list = $r->bool_display_info == 1;
+        $this->admin = $r->bool_admin_adh == 1;
         if (
             isset($r->priorite_statut)
             && $r->priorite_statut < Members::NON_STAFF_MEMBERS
         ) {
-            $this->_staff = true;
+            $this->staff = true;
         }
-        $this->_due_free = $r->bool_exempt_adh == 1;
-        $this->_login = $r->login_adh;
-        $this->_password = $r->mdp_adh;
-        $this->_creation_date = $r->date_crea_adh;
+        $this->due_free = $r->bool_exempt_adh == 1;
+        $this->login = $r->login_adh;
+        $this->password = $r->mdp_adh;
+        $this->creation_date = $r->date_crea_adh;
         if ($r->date_modif_adh != '1901-01-01') {
-            $this->_modification_date = $r->date_modif_adh;
+            $this->modification_date = $r->date_modif_adh;
         } else {
-            $this->_modification_date = $this->_creation_date;
+            $this->modification_date = $this->creation_date;
         }
-        $this->_due_date = $r->date_echeance;
-        $this->_others_infos = $r->info_public_adh;
-        $this->_others_infos_admin = $r->info_adh;
-        $this->_number = $r->num_adh;
+        $this->due_date = $r->date_echeance;
+        $this->others_infos = $r->info_public_adh;
+        $this->others_infos_admin = $r->info_adh;
+        $this->number = $r->num_adh;
 
         if ($r->parent_id !== null) {
-            $this->_parent = (int)$r->parent_id;
-            if ($this->_deps['parent'] === true) {
+            $this->parent = (int)$r->parent_id;
+            if ($this->deps['parent'] === true) {
                 $this->loadParent();
             }
         }
 
-        if ($this->_deps['children'] === true) {
+        if ($this->deps['children'] === true) {
             $this->loadChildren();
         }
 
-        if ($this->_deps['picture'] === true) {
-            $this->_picture = new Picture($this->_id);
+        if ($this->deps['picture'] === true) {
+            $this->picture = new Picture($this->id);
         }
 
-        if ($this->_deps['groups'] === true) {
+        if ($this->deps['groups'] === true) {
             $this->loadGroups();
         }
 
-        if ($this->_deps['dues'] === true) {
+        if ($this->deps['dues'] === true) {
             $this->checkDues();
         }
 
-        if ($this->_deps['dynamics'] === true) {
+        if ($this->deps['dynamics'] === true) {
             $this->loadDynamicFields();
         }
 
-        if ($this->_deps['socials'] === true) {
+        if ($this->deps['socials'] === true) {
             $this->loadSocials();
         }
     }
@@ -448,9 +444,9 @@ class Adherent
      */
     private function loadParent(): void
     {
-        if ($this->_parent !== null && !$this->_parent instanceof Adherent) {
-            $deps = array_fill_keys(array_keys($this->_deps), false);
-            $this->_parent = new Adherent($this->zdb, (int)$this->_parent, $deps);
+        if (isset($this->parent) && !$this->parent instanceof Adherent) {
+            $deps = array_fill_keys(array_keys($this->deps), false);
+            $this->parent = new Adherent($this->zdb, (int)$this->parent, $deps);
         }
     }
 
@@ -461,27 +457,27 @@ class Adherent
      */
     private function loadChildren(): void
     {
-        $this->_children = array();
+        $this->children = array();
         try {
             $id = self::PK;
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
                 array($id)
-            )->where(['parent_id' => $this->_id]);
+            )->where(['parent_id' => $this->id]);
 
             $results = $this->zdb->execute($select);
 
             if ($results->count() > 0) {
                 foreach ($results as $row) {
-                    $deps = $this->_deps;
+                    $deps = $this->deps;
                     $deps['children'] = false;
                     $deps['parent'] = false;
-                    $this->_children[] = new Adherent($this->zdb, (int)$row->$id, $deps);
+                    $this->children[] = new Adherent($this->zdb, (int)$row->$id, $deps);
                 }
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load children for member #' . $this->_id . ' | ' .
+                'Cannot load children for member #' . $this->id . ' | ' .
                 $e->getMessage(),
                 Analog::WARNING
             );
@@ -496,8 +492,8 @@ class Adherent
      */
     public function loadGroups(): void
     {
-        $this->_groups = Groups::loadGroups($this->_id);
-        $this->_managed_groups = Groups::loadManagedGroups($this->_id);
+        $this->groups = Groups::loadGroups($this->id);
+        $this->managed_groups = Groups::loadManagedGroups($this->id);
     }
 
     /**
@@ -507,7 +503,7 @@ class Adherent
      */
     public function loadSocials(): void
     {
-        $this->_socials = Social::getListForMember($this->_id);
+        $this->socials = Social::getListForMember($this->id);
     }
 
     /**
@@ -519,15 +515,7 @@ class Adherent
     private function getDefaultStatus(): int
     {
         global $preferences;
-        if ($preferences->pref_statut != '') {
-            return $preferences->pref_statut;
-        } else {
-            Analog::log(
-                'Unable to get pref_statut; is it defined in preferences?',
-                Analog::ERROR
-            );
-            return Status::DEFAULT_STATUS;
-        }
+        return $preferences->pref_statut;
     }
 
     /**
@@ -538,43 +526,65 @@ class Adherent
     private function checkDues(): void
     {
         //how many days since our beloved member has been created
-        $now = new \DateTime();
-        $this->_oldness = $now->diff(
-            new \DateTime($this->_creation_date)
+        $now = new DateTime();
+        $this->oldness = $now->diff(
+            new DateTime($this->creation_date)
         )->days;
 
+        $this->row_classes = '';
         if ($this->isDueFree()) {
             //no fee required, we don't care about dates
-            $this->_row_classes .= ' cotis-exempt';
+            $this->row_classes .= ' cotis-exempt';
+            $this->due_status = Contribution::STATUS_DUEFREE;
         } else {
             //ok, fee is required. Let's check the dates
-            if ($this->_due_date == '') {
-                $this->_row_classes .= ' cotis-never';
+            if ($this->due_date == '') {
+                $this->row_classes .= ' cotis-never';
+                $this->due_status = Contribution::STATUS_NEVER;
             } else {
                 // To count the days remaining, the next begin date is required.
-                $due_date = new \DateTime($this->_due_date);
+                $due_date = new DateTime($this->due_date);
                 $next_begin_date = clone $due_date;
-                $next_begin_date->add(new \DateInterval('P1D'));
+                $next_begin_date->add(new DateInterval('P1D'));
                 $date_diff = $now->diff($next_begin_date);
-                $this->_days_remaining = $date_diff->days;
+                $this->days_remaining = $date_diff->days;
                 // Active
                 if ($date_diff->invert == 0 && $date_diff->days >= 0) {
-                    $this->_days_remaining = $date_diff->days;
-                    if ($this->_days_remaining <= 30) {
+                    $this->days_remaining = $date_diff->days;
+                    if ($this->days_remaining <= 30) {
                         if ($date_diff->days == 0) {
-                            $this->_row_classes .= ' cotis-lastday';
+                            $this->row_classes .= ' cotis-lastday';
                         }
-                        $this->_row_classes .= ' cotis-soon';
+                        $this->row_classes .= ' cotis-soon';
+                        $this->due_status = Contribution::STATUS_IMPENDING;
                     } else {
-                        $this->_row_classes .= ' cotis-ok';
+                        $this->row_classes .= ' cotis-ok';
+                        $this->due_status = Contribution::STATUS_UPTODATE;
                     }
                 // Expired
                 } elseif ($date_diff->invert == 1 && $date_diff->days >= 0) {
-                    $this->_days_remaining = $date_diff->days;
+                    $this->days_remaining = $date_diff->days;
                     //check if member is still active
-                    $this->_row_classes .= $this->isActive() ? ' cotis-late' : ' cotis-old';
+                    if ($this->isActive()) {
+                        $this->row_classes .= ' cotis-late';
+                        $this->due_status = Contribution::STATUS_LATE;
+                    } else {
+                        $this->row_classes .= ' cotis-old';
+                        $this->due_status = Contribution::STATUS_OLD;
+                    }
                 }
             }
+        }
+
+        if (!$this->isActive()) {
+            //anyway, if a member is no longer active, its due status is old.
+            $this->due_status = Contribution::STATUS_OLD;
+        }
+
+        if ($this->due_status === Contribution::STATUS_UNKNOWN) {
+            throw new \RuntimeException(
+                'Unable to determine due status for member #' . $this->id
+            );
         }
     }
 
@@ -585,7 +595,7 @@ class Adherent
      */
     public function isAdmin(): bool
     {
-        return $this->_admin;
+        return $this->admin;
     }
 
     /**
@@ -595,7 +605,7 @@ class Adherent
      */
     public function isStaff(): bool
     {
-        return $this->_staff;
+        return $this->staff;
     }
 
     /**
@@ -605,7 +615,7 @@ class Adherent
      */
     public function isDueFree(): bool
     {
-        return $this->_due_free;
+        return $this->due_free;
     }
 
     /**
@@ -621,7 +631,7 @@ class Adherent
             $this->loadGroups();
         }
 
-        foreach ($this->_groups as $g) {
+        foreach ($this->groups as $g) {
             if ($g->getName() == $group_name) {
                 return true;
             }
@@ -632,22 +642,30 @@ class Adherent
     /**
      * Is member manager of specified group?
      *
-     * @param string $group_name Group name
+     * @param ?string $group_name Group name
      *
      * @return boolean
      */
-    public function isGroupManager(string $group_name): bool
+    public function isGroupManager(?string $group_name): bool
     {
         if (!$this->isDepEnabled('groups')) {
             $this->loadGroups();
         }
 
-        foreach ($this->_managed_groups as $mg) {
-            if ($mg->getName() == $group_name) {
+        if ($group_name !== null) {
+            foreach ($this->managed_groups as $mg) {
+                if ($mg->getName() == $group_name) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            if ($this->isAdmin() || $this->isStaff()) {
                 return true;
+            } else {
+                return count($this->managed_groups) > 0;
             }
         }
-        return false;
     }
 
     /**
@@ -657,7 +675,7 @@ class Adherent
      */
     public function isCompany(): bool
     {
-        return trim($this->_company_name ?? '') != '';
+        return trim($this->company_name ?? '') != '';
     }
 
     /**
@@ -667,7 +685,7 @@ class Adherent
      */
     public function isMan(): bool
     {
-        return (int)$this->_gender === self::MAN;
+        return $this->gender === self::MAN;
     }
 
     /**
@@ -677,7 +695,7 @@ class Adherent
      */
     public function isWoman(): bool
     {
-        return (int)$this->_gender === self::WOMAN;
+        return $this->gender === self::WOMAN;
     }
 
 
@@ -688,7 +706,7 @@ class Adherent
      */
     public function appearsInMembersList(): bool
     {
-        return $this->_appears_in_list;
+        return $this->appears_in_list;
     }
 
     /**
@@ -698,7 +716,7 @@ class Adherent
      */
     public function isActive(): bool
     {
-        return $this->_active;
+        return $this->active;
     }
 
     /**
@@ -708,7 +726,7 @@ class Adherent
      */
     public function hasPicture(): bool
     {
-        return $this->_picture->hasPicture();
+        return $this->picture->hasPicture();
     }
 
     /**
@@ -718,7 +736,7 @@ class Adherent
      */
     public function hasParent(): bool
     {
-        return !empty($this->_parent);
+        return !empty($this->parent);
     }
 
     /**
@@ -728,7 +746,7 @@ class Adherent
      */
     public function hasChildren(): bool
     {
-        if ($this->_children === null) {
+        if (!isset($this->children) || $this->children === null) {
             if ($this->id) {
                 Analog::log(
                     'Children has not been loaded!',
@@ -737,7 +755,7 @@ class Adherent
             }
             return false;
         } else {
-            return count($this->_children) > 0;
+            return count($this->children) > 0;
         }
     }
 
@@ -752,7 +770,7 @@ class Adherent
     {
         $strclass = ($this->isActive()) ? 'active-account' : 'inactive-account';
         if ($public === false) {
-            $strclass .= $this->_row_classes;
+            $strclass .= $this->row_classes ?? '';
         }
         return $strclass;
     }
@@ -766,26 +784,30 @@ class Adherent
     {
         $ret = '';
         $never_contributed = false;
-        $now = new \DateTime();
+        $now = new DateTime();
         // To count the days remaining, the next begin date is required.
-        if ($this->_due_date === null) {
-            $this->_due_date = $now->format('Y-m-d');
+        if (!isset($this->due_date)) {
+            $this->due_date = $now->format('Y-m-d');
             $never_contributed = true;
         }
-        $due_date = new \DateTime($this->_due_date);
+        $due_date = new DateTime($this->due_date);
         $next_begin_date = clone $due_date;
-        $next_begin_date->add(new \DateInterval('P1D'));
+        $next_begin_date->add(new DateInterval('P1D'));
         $date_diff = $now->diff($next_begin_date);
         if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
         } elseif ($never_contributed === true) {
-            $patterns = array('/%days/', '/%date/');
-            $cdate = new \DateTime($this->_creation_date);
-            $replace = array(
-                $this->_oldness,
-                $cdate->format(__("Y-m-d"))
-            );
-            if ($this->_active) {
+            if ($this->active) {
+                $patterns = array('/%days/', '/%date/');
+                $cdate = new DateTime($this->creation_date);
+                if (!isset($this->oldness)) {
+                    $this->checkDues();
+                }
+                $replace = array(
+                    $this->oldness,
+                    $cdate->format(__("Y-m-d"))
+                );
+
                 $ret = preg_replace(
                     $patterns,
                     $replace,
@@ -795,17 +817,17 @@ class Adherent
                 $ret = _T("Never contributed");
             }
         // Last active or first expired day
-        } elseif ($this->_days_remaining == 0) {
+        } elseif ($this->days_remaining === 0) {
             if ($date_diff->invert == 0) {
                 $ret = _T("Last day!");
             } else {
                 $ret = _T("Late since today!");
             }
         // Active
-        } elseif ($date_diff->invert == 0 && $this->_days_remaining > 0) {
+        } elseif ($date_diff->invert == 0 && $this->days_remaining > 0) {
             $patterns = array('/%days/', '/%date/');
             $replace = array(
-                $this->_days_remaining,
+                $this->days_remaining,
                 $due_date->format(__("Y-m-d"))
             );
             $ret = preg_replace(
@@ -814,14 +836,14 @@ class Adherent
                 _T("%days days remaining (ending on %date)")
             );
         // Expired
-        } elseif ($date_diff->invert == 1 && $this->_days_remaining > 0) {
+        } elseif ($date_diff->invert == 1 && $this->days_remaining > 0) {
             $patterns = array('/%days/', '/%date/');
             $replace = array(
                 // We need the number of days expired, not the number of days remaining.
-                $this->_days_remaining + 1,
+                $this->days_remaining + 1,
                 $due_date->format(__("Y-m-d"))
             );
-            if ($this->_active) {
+            if ($this->active) {
                 $ret = preg_replace(
                     $patterns,
                     $replace,
@@ -831,7 +853,63 @@ class Adherent
                 $ret = _T("No longer member");
             }
         }
+
         return $ret;
+    }
+
+    /**
+     * Is member a sponsor for current period?
+     *
+     * @return bool
+     */
+    public function isSponsor(): bool
+    {
+        global $preferences;
+
+        $date_now = new DateTime();
+
+        //calculate begin date of period
+        if ($preferences->pref_beg_membership != '') { //classical membership date + 1 year
+            list($j, $m) = explode('/', $preferences->pref_beg_membership);
+            $sdate = new DateTime($date_now->format('Y') . '-' . $m . '-' . $j);
+        } elseif ($preferences->pref_membership_ext != '') { //classical membership date + N months
+            $dext = new DateInterval('P' . $preferences->pref_membership_ext . 'M');
+            $sdate = $date_now->sub($dext);
+        } else {
+            throw new \RuntimeException(
+                'Unable to define sponsoring start date; none of pref_beg_membership nor pref_membership_ext are defined!'
+            );
+        }
+
+        //date_debut_cotis because member can ask for his donation ot be recorded for next year
+        $select = $this->zdb->select(Contribution::TABLE, 'c');
+        $select
+            ->columns(
+                array(
+                    'count' => new Expression('COUNT(*)')
+                )
+            )
+            ->join(
+                array(
+                    'ct' => PREFIX_DB . ContributionsTypes::TABLE),
+                'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
+                array()
+            )
+            ->where(
+                [
+                    'id_adh' => $this->id,
+                    'cotis_extension' => 0 //donations only
+                ]
+            )
+            ->where->greaterThanOrEqualTo(
+                'date_debut_cotis',
+                $sdate->format('Y-m-d')
+            );
+
+        $results = $this->zdb->execute($select);
+        $result = $results->current();
+
+        return (int)$result->count > 0;
     }
 
     /**
@@ -856,7 +934,7 @@ class Adherent
                 $row->nom_adh,
                 $row->prenom_adh,
                 false,
-                ($wid === true ? $row->id_adh : false),
+                ($wid === true ? (int)$row->id_adh : false),
                 ($wnick === true ? $row->pseudo_adh : false)
             );
         } catch (Throwable $e) {
@@ -872,8 +950,8 @@ class Adherent
     /**
      * Get member name with correct case
      *
-     * @param string        $name    Member name
-     * @param string        $surname Member surname
+     * @param ?string       $name    Member name
+     * @param ?string       $surname Member surname
      * @param false|Title   $title   Member title to show or false
      * @param false|integer $id      Member id to display or false
      * @param false|string  $nick    Member nickname to display or false
@@ -883,9 +961,9 @@ class Adherent
     public static function getNameWithCase(
         ?string $name,
         ?string $surname,
-        $title = false,
-        $id = false,
-        $nick = false
+        Title|bool $title = false,
+        int|bool $id = false,
+        string|bool $nick = false
     ): string {
         $str = '';
 
@@ -970,7 +1048,7 @@ class Adherent
      *
      * @param Db $zdb Database instance
      *
-     * @return array
+     * @return array<string>
      */
     public static function getDbFields(Db $zdb): array
     {
@@ -989,7 +1067,7 @@ class Adherent
      */
     public function setSelfMembership(): void
     {
-        $this->_self_adh = true;
+        $this->self_adh = true;
     }
 
     /**
@@ -1004,15 +1082,15 @@ class Adherent
         }
 
         if ($this->isDueFree()) {
-            //member is due free, he's up to date.
+            //member is due free, he's up-to-date.
             return true;
         } else {
             //let's check from due date, if present
-            if ($this->_due_date == null) {
+            if (!isset($this->due_date)) {
                 return false;
             } else {
-                $due_date = new \DateTime($this->_due_date);
-                $now = new \DateTime();
+                $due_date = new DateTime($this->due_date);
+                $now = new DateTime();
                 $now->setTime(0, 0, 0);
                 return $due_date >= $now;
             }
@@ -1022,9 +1100,9 @@ class Adherent
     /**
      * Set dependencies
      *
-     * @param Preferences $preferences Preferences instance
-     * @param array       $fields      Members fields configuration
-     * @param History     $history     History instance
+     * @param Preferences         $preferences Preferences instance
+     * @param array<string,mixed> $fields      Members fields configuration
+     * @param History             $history     History instance
      *
      * @return void
      */
@@ -1032,7 +1110,7 @@ class Adherent
         Preferences $preferences,
         array $fields,
         History $history
-    ) {
+    ): void {
         $this->preferences = $preferences;
         $this->fields = $fields;
         $this->history = $history;
@@ -1041,14 +1119,14 @@ class Adherent
     /**
      * Check posted values validity
      *
-     * @param array $values   All values to check, basically the $_POST array
-     *                        after sending the form
-     * @param array $required Array of required fields
-     * @param array $disabled Array of disabled fields
+     * @param array<string,mixed> $values   All values to check, basically the $_POST array
+     *                                      after sending the form
+     * @param array<string,bool>  $required Array of required fields
+     * @param array<string>       $disabled Array of disabled fields
      *
-     * @return true|array
+     * @return true|array<string>
      */
-    public function check(array $values, array $required, array $disabled)
+    public function check(array $values, array $required, array $disabled): bool|array
     {
         global $login;
 
@@ -1072,7 +1150,7 @@ class Adherent
         //no parent if checkbox was unchecked
         if (
             !isset($values['attach'])
-            && empty($this->_id)
+            && !empty($this->id)
             && isset($values['parent_id'])
         ) {
             unset($values['parent_id']);
@@ -1080,26 +1158,25 @@ class Adherent
 
         if (isset($values['duplicate'])) {
             //if we're duplicating, keep a trace (if an error occurs)
-            $this->_duplicate = true;
+            $this->duplicate = true;
         }
 
         foreach ($fields as $key) {
             //first, let's sanitize values
             $key = strtolower($key);
-            $prop = '_' . $this->fields[$key]['propname'];
+            $prop = $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
                 $value = $values[$key];
-                if ($value !== true && $value !== false) {
-                    //@phpstan-ignore-next-line
-                    $value = trim($value ?? '');
+                if (is_string($value)) {
+                    $value = trim($value);
                 }
-            } elseif (empty($this->_id)) {
+            } elseif (empty($this->id)) {
                 switch ($key) {
                     case 'bool_admin_adh':
                     case 'bool_exempt_adh':
                     case 'bool_display_info':
-                        $value = 0;
+                        $value = false;
                         break;
                     case 'activite_adh':
                         //values that are set at object instantiation
@@ -1123,7 +1200,7 @@ class Adherent
                 }
             } else {
                 //keep stored value on update
-                if ($prop != '_password' || isset($values['mdp_adh']) && isset($values['mdp_adh2'])) {
+                if ($prop != 'password' || isset($values['mdp_adh']) && isset($values['mdp_adh2'])) {
                     $value = $this->$prop;
                 } else {
                     $value = null;
@@ -1131,30 +1208,25 @@ class Adherent
             }
 
             // if the field is enabled, check it
-            if (!isset($disabled[$key])) {
+            if (!in_array($key, $disabled)) {
                 // fill up the adherent structure
-                if ($value !== null && $value !== true && $value !== false && !is_object($value)) {
+                if (is_string($value)) {
                     $value = stripslashes($value);
                 }
-                $this->$prop = $value;
 
                 // now, check validity
-                if ($value !== null && $value != '') {
-                    if ($key !== 'mdp_adh') {
-                        $this->validate($key, $value, $values);
-                    }
-                } elseif (empty($this->_id)) {
-                    //ensure login and password are not empty
-                    if (($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
+                if ($key !== 'mdp_adh') { //mdp_adh is handled after all data has been set
+                    if (empty($this->id) && empty($value) && ($key == 'login_adh' || $key == 'mdp_adh') && !isset($required[$key])) {
                         $p = new Password($this->zdb);
                         $generated_value = $p->makeRandomPassword(15);
                         if ($key == 'login_adh') {
                             //'@' is not permitted in logins
-                            $this->$prop = str_replace('@', 'a', $generated_value);
+                            $value = str_replace('@', 'a', $generated_value);
                         } else {
-                            $this->$prop = $generated_value;
+                            $value = $generated_value;
                         }
                     }
+                    $this->validate($key, $value, $values);
                 }
             }
         }
@@ -1166,7 +1238,7 @@ class Adherent
 
         // missing required fields?
         foreach ($required as $key => $val) {
-            $prop = '_' . $this->fields[$key]['propname'];
+            $prop = $this->fields[$key]['propname'];
 
             if (!isset($disabled[$key])) {
                 $mandatory_missing = false;
@@ -1188,7 +1260,7 @@ class Adherent
 
         //attach to/detach from parent
         if (isset($values['detach_parent'])) {
-            $this->_parent = null;
+            $this->parent = null;
         }
 
         if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && $this->parent_id !== $login->id) {
@@ -1197,8 +1269,8 @@ class Adherent
             } else {
                 $owned_group = false;
                 foreach ($values['groups_adh'] as $group) {
-                    list($gid) = explode('|', $group);
-                    if ($login->isGroupManager($gid)) {
+                    list($gid) = explode('|', (string)$group);
+                    if ($login->isGroupManager((int)$gid)) {
                         $owned_group = true;
                     }
                 }
@@ -1233,20 +1305,46 @@ class Adherent
      * Validate data for given key
      * Set valid data in current object, also resets errors list
      *
-     * @param string $field  Field name
-     * @param mixed  $value  Value we want to set
-     * @param array  $values All values, for some references
+     * @param string              $field  Field name
+     * @param mixed               $value  Value we want to set
+     * @param array<string,mixed> $values All values, for some references
      *
      * @return void
      */
-    public function validate(string $field, $value, array $values): void
+    public function validate(string $field, mixed $value, array $values): void
     {
         global $preferences;
 
-        $prop = '_' . $this->fields[$field]['propname'];
+        $prop = $this->fields[$field]['propname'];
+
+        $types = [
+            'int' => [
+                self::PK,
+                'titre_adh',
+            ],
+            'bool' => [
+                'bool_admin_adh',
+                'bool_exempt_adh',
+                'bool_display_info',
+                'activite_adh'
+            ]
+        ];
 
         if ($value === null || (is_string($value) && trim($value) == '')) {
             //empty values are OK
+            if ($field == 'parent_id') {
+                //parent_id cannot be a string
+                $value = null;
+            }
+
+            if (in_array($field, $types['bool']) && $value !== null) {
+                $value = false;
+            }
+
+            if (in_array($field, $types['int']) && $value !== null) {
+                $value = null;
+            }
+
             $this->$prop = $value;
             return;
         }
@@ -1258,17 +1356,17 @@ class Adherent
             case 'ddn_adh':
             case 'date_echeance':
                 try {
-                    $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                    $d = DateTime::createFromFormat(__("Y-m-d"), $value);
                     if ($d === false) {
                         //try with non localized date
-                        $d = \DateTime::createFromFormat("Y-m-d", $value);
+                        $d = DateTime::createFromFormat("Y-m-d", $value);
                         if ($d === false) {
                             throw new \Exception('Incorrect format');
                         }
                     }
 
                     if ($field === 'ddn_adh') {
-                        $now = new \DateTime();
+                        $now = new DateTime();
                         $now->setTime(0, 0, 0);
                         $d->setTime(0, 0, 0);
 
@@ -1282,7 +1380,7 @@ class Adherent
                         if ($years <= -200) {
                             $this->errors[] = str_replace(
                                 '%years',
-                                $years * -1,
+                                (string)($years * -1),
                                 _T('- Members must be less than 200 years old (currently %years)!')
                             );
                         }
@@ -1295,21 +1393,16 @@ class Adherent
                         __("Y-m-d") . ' | ' . $e->getMessage(),
                         Analog::INFO
                     );
-                    $this->errors[] = str_replace(
-                        array(
-                            '%date_format',
-                            '%field'
-                        ),
-                        array(
-                            __("Y-m-d"),
-                            $this->getFieldLabel($field)
-                        ),
-                        _T("- Wrong date format (%date_format) for %field!")
+                    $this->errors[] = sprintf(
+                        //TRANS %1$s is the expected dat format, %2$s the field label
+                        _T('- Wrong date format (%1$s) for %2$s!'),
+                        __("Y-m-d"),
+                        $this->getFieldLabel($field)
                     );
                 }
                 break;
             case 'titre_adh':
-                if ($value !== null && $value !== '') {
+                if ($value !== '') {
                     if ($value == '-1') {
                         $this->$prop = null;
                     } elseif (!$value instanceof Title) {
@@ -1320,6 +1413,7 @@ class Adherent
                 }
                 break;
             case 'email_adh':
+                $this->$prop = $value;
                 if (!GaletteMail::isValidEmail($value)) {
                     $this->errors[] = _T("- Non-valid E-Mail address!") .
                         ' (' . $this->getFieldLabel($field) . ')';
@@ -1330,10 +1424,10 @@ class Adherent
                     $select->columns(
                         array(self::PK)
                     )->where(array('email_adh' => $value));
-                    if (!empty($this->_id)) {
+                    if (!empty($this->id)) {
                         $select->where->notEqualTo(
                             self::PK,
-                            $this->_id
+                            $this->id
                         );
                     }
 
@@ -1350,11 +1444,12 @@ class Adherent
                 }
                 break;
             case 'login_adh':
+                $this->$prop = $value;
                 /** FIXME: add a preference for login length */
                 if (strlen($value) < 2) {
                     $this->errors[] = str_replace(
                         '%i',
-                        2,
+                        '2',
                         _T("- The username must be composed of at least %i characters!")
                     );
                 } else {
@@ -1368,10 +1463,10 @@ class Adherent
                             $select->columns(
                                 array(self::PK)
                             )->where(array('login_adh' => $value));
-                            if (!empty($this->_id)) {
+                            if (!empty($this->id)) {
                                 $select->where->notEqualTo(
                                     self::PK,
-                                    $this->_id
+                                    $this->id
                                 );
                             }
 
@@ -1394,13 +1489,13 @@ class Adherent
                 break;
             case 'mdp_adh':
                 if (
-                    $this->_self_adh !== true
+                    $this->self_adh !== true
                     && (!isset($values['mdp_adh2'])
                     || $values['mdp_adh2'] != $value)
                 ) {
                     $this->errors[] = _T("- The passwords don't match!");
                 } elseif (
-                    $this->_self_adh === true
+                    $this->self_adh === true
                     && !crypt($value, $values['mdp_crypt']) == $values['mdp_crypt']
                 ) {
                     $this->errors[] = _T("Password misrepeated: ");
@@ -1436,7 +1531,7 @@ class Adherent
                     if (!$result) {
                         $this->errors[] = str_replace(
                             '%id',
-                            $value,
+                            (string)$value,
                             _T("Status #%id does not exists in database.")
                         );
                         break;
@@ -1446,7 +1541,7 @@ class Adherent
                         'An error occurred checking status existence: ' . $e->getMessage(),
                         Analog::ERROR
                     );
-                    $this->errors[] = _T("An error has occurred while looking if status does exists.");
+                    throw $e;
                 }
                 break;
             case 'sexe_adh':
@@ -1466,6 +1561,16 @@ class Adherent
                     $this->loadParent();
                 }
                 break;
+            default:
+                if (in_array($field, $types['int'])) {
+                    $value = (int)$value;
+                }
+                if (in_array($field, $types['bool'])) {
+                    $value = (bool)$value;
+                }
+
+                $this->$prop = $value;
+                break;
         }
     }
 
@@ -1481,7 +1586,7 @@ class Adherent
 
         if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '') {
             if ($this->preferences->pref_bool_create_member) {
-                $this->_parent = $login->id;
+                $this->parent = $login->id;
             }
         }
 
@@ -1492,9 +1597,9 @@ class Adherent
             foreach ($fields as $field) {
                 if (
                     $field !== 'date_modif_adh'
-                    || empty($this->_id)
+                    || empty($this->id)
                 ) {
-                    $prop = '_' . $this->fields[$field]['propname'];
+                    $prop = $this->fields[$field]['propname'];
                     if (
                         ($field === 'bool_admin_adh'
                         || $field === 'bool_exempt_adh'
@@ -1506,12 +1611,12 @@ class Adherent
                         $values[$field] = $this->zdb->isPostgres() ? 'false' : 0;
                     } elseif ($field === 'parent_id') {
                         //handle parents
-                        if ($this->_parent === null) {
+                        if (!isset($this->parent)) {
                             $values['parent_id'] = new Expression('NULL');
                         } elseif ($this->parent instanceof Adherent) {
-                            $values['parent_id'] = $this->_parent->id;
+                            $values['parent_id'] = $this->parent->id;
                         } else {
-                            $values['parent_id'] = $this->_parent;
+                            $values['parent_id'] = $this->parent;
                         }
                     } else {
                         $values[$field] = $this->$prop;
@@ -1521,59 +1626,60 @@ class Adherent
 
             //an empty value will cause date to be set to 1901-01-01, a null
             //will result in 0000-00-00. We want a database NULL value here.
-            if (!$this->_birthdate) {
+            if (!$this->birthdate) {
                 $values['ddn_adh'] = new Expression('NULL');
             }
-            if (!$this->_due_date) {
+            if (!$this->due_date) {
                 $values['date_echeance'] = new Expression('NULL');
             }
 
-            if ($this->_title instanceof Title) {
-                $values['titre_adh'] = $this->_title->id;
+            if ($this->title instanceof Title) {
+                $values['titre_adh'] = $this->title->id;
             } else {
                 $values['titre_adh'] = new Expression('NULL');
             }
 
-            if (!$this->_parent) {
+            if (!$this->parent) {
                 $values['parent_id'] = new Expression('NULL');
             }
 
-            if (!$this->_number) {
+            if (!$this->number) {
                 $values['num_adh'] = new Expression('NULL');
             }
 
             //fields that cannot be null
             $notnull = [
-                '_surname'  => 'prenom_adh',
-                '_nickname' => 'pseudo_adh',
-                '_address'  => 'adresse_adh',
-                '_zipcode'  => 'cp_adh',
-                '_town'     => 'ville_adh'
+                'surname'  => 'prenom_adh',
+                'nickname' => 'pseudo_adh',
+                'address'  => 'adresse_adh',
+                'zipcode'  => 'cp_adh',
+                'town'     => 'ville_adh',
+                'region'   => 'region_adh'
             ];
             foreach ($notnull as $prop => $field) {
-                if ($this->$prop === null) {
+                if (!isset($this->$prop) || $this->$prop === null) {
                     $values[$field] = '';
                 }
             }
 
-            if (empty($this->_id)) {
+            if (empty($this->id)) {
                 //we're inserting a new member
                 unset($values[self::PK]);
                 //set modification date
-                $this->_modification_date = date('Y-m-d');
-                $values['date_modif_adh'] = $this->_modification_date;
+                $this->modification_date = date('Y-m-d');
+                $values['date_modif_adh'] = $this->modification_date;
 
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($values);
                 $add = $this->zdb->execute($insert);
                 if ($add->count() > 0) {
-                    $this->_id = $this->zdb->getLastGeneratedValue($this);
-                    $this->_picture = new Picture($this->_id);
+                    $this->id = $this->zdb->getLastGeneratedValue($this);
+                    $this->picture = new Picture($this->id);
                     // logging
-                    if ($this->_self_adh) {
+                    if ($this->self_adh) {
                         $hist->add(
                             _T("Self_subscription as a member: ") .
-                            $this->getNameWithCase($this->_name, $this->_surname),
+                            $this->getNameWithCase($this->name, $this->surname),
                             $this->sname
                         );
                     } else {
@@ -1594,19 +1700,19 @@ class Adherent
                 //we're editing an existing member
                 if (!$this->isDueFree()) {
                     // deadline
-                    $due_date = Contribution::getDueDate($this->zdb, $this->_id);
+                    $due_date = Contribution::getDueDate($this->zdb, $this->id);
                     if ($due_date) {
                         $values['date_echeance'] = $due_date;
                     }
                 }
 
-                if (!$this->_password) {
+                if (!$this->password) {
                     unset($values['mdp_adh']);
                 }
 
                 $update = $this->zdb->update(self::TABLE);
                 $update->set($values);
-                $update->where([self::PK => $this->_id]);
+                $update->where([self::PK => $this->id]);
 
                 $edit = $this->zdb->execute($update);
 
@@ -1653,10 +1759,10 @@ class Adherent
             $update = $this->zdb->update(self::TABLE);
             $update->set(
                 array('date_modif_adh' => $modif_date)
-            )->where([self::PK => $this->_id]);
+            )->where([self::PK => $this->id]);
 
             $this->zdb->execute($update);
-            $this->_modification_date = $modif_date;
+            $this->modification_date = $modif_date;
         } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong updating modif date :\'( | ' .
@@ -1674,7 +1780,7 @@ class Adherent
      *
      * @return mixed
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         $forbidden = array(
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
@@ -1687,7 +1793,7 @@ class Adherent
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
             'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
-            'rbirthdate', 'sgender', 'contribstatus',
+            'rbirthdate', 'sgender', 'contribstatus', 'rdue_date'
         );
 
         $socials = array('website', 'msn', 'jabber', 'icq');
@@ -1720,11 +1826,6 @@ class Adherent
         }
 
         if (in_array($name, $virtuals)) {
-            if (substr($name, 0, 1) !== '_') {
-                $real = '_' . substr($name, 1);
-            } else {
-                $real = $name;
-            }
             switch ($name) {
                 case 'sadmin':
                     return (($this->isAdmin()) ? _T("Yes") : _T("No"));
@@ -1733,31 +1834,32 @@ class Adherent
                 case 'sappears_in_list':
                     return (($this->appearsInMembersList()) ? _T("Yes") : _T("No"));
                 case 'sstaff':
-                    return (($this->$real) ? _T("Yes") : _T("No"));
+                    return (($this->isStaff()) ? _T("Yes") : _T("No"));
                 case 'sactive':
                     return (($this->isActive()) ? _T("Active") : _T("Inactive"));
                 case 'stitle':
-                    if (isset($this->_title) && $this->_title instanceof Title) {
-                        return $this->_title->tshort;
+                    if (isset($this->title) && $this->title instanceof Title) {
+                        return $this->title->tshort;
                     } else {
                         return null;
                     }
                 case 'sstatus':
                     $status = new Status($this->zdb);
-                    return $status->getLabel($this->_status);
+                    return $status->getLabel($this->status);
                 case 'sfullname':
                     return $this->getNameWithCase(
-                        $this->_name,
-                        $this->_surname,
-                        (isset($this->_title) ? $this->title : false)
+                        $this->name ?? '',
+                        $this->surname ?? '',
+                        ($this->title ?? false)
                     );
                 case 'saddress':
-                    $address = $this->_address;
-                    return $address;
+                    return $this->address;
                 case 'sname':
-                    return $this->getNameWithCase($this->_name, $this->_surname);
+                    return $this->getNameWithCase($this->name ?? '', $this->surname ?? '');
                 case 'rbirthdate':
-                    return $this->_birthdate;
+                    return $this->birthdate ?? null;
+                case 'rdue_date':
+                    return $this->due_date ?? null;
                 case 'sgender':
                     switch ($this->gender) {
                         case self::MAN:
@@ -1774,56 +1876,53 @@ class Adherent
 
         //for backward compatibility
         if (in_array($name, $socials)) {
-            $values = Social::getListForMember($this->_id, $name);
+            $values = Social::getListForMember($this->id, $name);
             return $values[0] ?? null;
-        }
-
-        if (substr($name, 0, 1) !== '_') {
-            $rname = '_' . $name;
-        } else {
-            $rname = $name;
         }
 
         switch ($name) {
             case 'id':
             case 'id_statut':
-                if ($this->$rname !== null) {
-                    return (int)$this->$rname;
+                if (isset($this->$name) && $this->$name !== null) {
+                    return (int)$this->$name;
                 } else {
                     return null;
                 }
             case 'address':
-                return $this->$rname ?? '';
+                return $this->$name ?? '';
             case 'birthdate':
             case 'creation_date':
             case 'modification_date':
             case 'due_date':
-                if ($this->$rname != '') {
+                if (isset($this->$name) && $this->$name != '') {
                     try {
-                        $d = new \DateTime($this->$rname);
+                        $d = new DateTime($this->$name);
                         return $d->format(__("Y-m-d"));
                     } catch (Throwable $e) {
                         //oops, we've got a bad date :/
                         Analog::log(
-                            'Bad date (' . $this->$rname . ') | ' .
+                            'Bad date (' . $this->$name . ') | ' .
                             $e->getMessage(),
                             Analog::INFO
                         );
-                        return $this->$rname;
+                        return $this->$name;
                     }
                 }
-                break;
+                return null;
             case 'parent_id':
-                return ($this->_parent instanceof Adherent) ? (int)$this->_parent->id : (int)$this->_parent;
+                return ($this->parent instanceof Adherent) ? $this->parent->id : (int)$this->parent;
             default:
-                if (!property_exists($this, $rname)) {
+                if (!property_exists($this, $name)) {
                     Analog::log(
-                        "Unknown property '$rname'",
+                        "Unknown property '$name'",
                         Analog::WARNING
                     );
                     return null;
                 } else {
-                    return $this->$rname;
+                    if (isset($this->$name)) {
+                        return $this->$name;
+                    }
+                    return null;
                 }
         }
     }
@@ -1836,7 +1935,7 @@ class Adherent
      *
      * @return bool
      */
-    public function __isset(string $name)
+    public function __isset(string $name): bool
     {
         $forbidden = array(
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
@@ -1883,12 +1982,6 @@ class Adherent
             return true;
         }
 
-        if (substr($name, 0, 1) !== '_') {
-            $rname = '_' . $name;
-        } else {
-            $rname = $name;
-        }
-
         switch ($name) {
             case 'id':
             case 'id_statut':
@@ -1900,7 +1993,7 @@ class Adherent
             case 'parent_id':
                 return true;
             default:
-                return property_exists($this, $rname);
+                return property_exists($this, $name);
         }
     }
 
@@ -1913,7 +2006,7 @@ class Adherent
      */
     public function getEmail(): string
     {
-        $email = $this->_email;
+        $email = $this->email ?? '';
         if (empty($email) && $this->hasParent()) {
             $this->loadParent();
             $email = $this->parent->email;
@@ -1930,7 +2023,7 @@ class Adherent
      */
     public function getAddress(): string
     {
-        $address = $this->_address;
+        $address = $this->address;
         if (empty($address) && $this->hasParent()) {
             $this->loadParent();
             $address = $this->parent->address;
@@ -1947,8 +2040,8 @@ class Adherent
      */
     public function getZipcode(): string
     {
-        $address = $this->_address;
-        $zip = $this->_zipcode;
+        $address = $this->address;
+        $zip = $this->zipcode;
         if (empty($address) && $this->hasParent()) {
             $this->loadParent();
             $zip = $this->parent->zipcode;
@@ -1965,14 +2058,32 @@ class Adherent
      */
     public function getTown(): string
     {
-        $address = $this->_address;
-        $town = $this->_town;
+        $address = $this->address;
+        $town = $this->town;
         if (empty($address) && $this->hasParent()) {
             $this->loadParent();
             $town = $this->parent->town;
         }
 
         return $town ?? '';
+    }
+
+    /**
+     * Get member region.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
+     *
+     * @return string
+     */
+    public function getRegion(): string
+    {
+        $address = $this->address;
+        $region = $this->region;
+        if (empty($address) && $this->hasParent()) {
+            $this->loadParent();
+            $region = $this->parent->region;
+        }
+
+        return $region ?? '';
     }
 
     /**
@@ -1983,8 +2094,8 @@ class Adherent
      */
     public function getCountry(): string
     {
-        $address = $this->_address;
-        $country = $this->_country;
+        $address = $this->address;
+        $country = $this->country;
         if (empty($address) && $this->hasParent()) {
             $this->loadParent();
             $country = $this->parent->country;
@@ -2000,14 +2111,14 @@ class Adherent
      */
     public function getAge(): string
     {
-        if ($this->_birthdate == null) {
+        if (!isset($this->birthdate) && $this->birthdate == null) {
             return '';
         }
 
-        $d = \DateTime::createFromFormat('Y-m-d', $this->_birthdate);
+        $d = DateTime::createFromFormat('Y-m-d', $this->birthdate);
         if ($d === false) {
             Analog::log(
-                'Invalid birthdate: ' . $this->_birthdate,
+                'Invalid birthdate: ' . $this->birthdate,
                 Analog::ERROR
             );
             return '';
@@ -2015,7 +2126,7 @@ class Adherent
 
         return str_replace(
             '%age',
-            $d->diff(new \DateTime())->y,
+            (string)$d->diff(new DateTime())->y,
             _T(' (%age years old)')
         );
     }
@@ -2023,7 +2134,7 @@ class Adherent
     /**
      * Get parent inherited fields
      *
-     * @return array
+     * @return array<string>
      */
     public function getParentFields(): array
     {
@@ -2033,12 +2144,12 @@ class Adherent
     /**
      * Handle files (photo and dynamics files)
      *
-     * @param array $files    Files sent
-     * @param array $cropping Cropping properties
+     * @param array<string,mixed>  $files    Files sent
+     * @param ?array<string,mixed> $cropping Cropping properties
      *
-     * @return array|true
+     * @return array<string>|true
      */
-    public function handleFiles(array $files, array $cropping = null)
+    public function handleFiles(array $files, array $cropping = null): array|bool
     {
         $this->errors = [];
         // picture upload
@@ -2089,40 +2200,40 @@ class Adherent
     public function setDuplicate(): void
     {
         //mark as duplicated
-        $this->_duplicate = true;
-        $infos = $this->_others_infos_admin;
-        $this->_others_infos_admin = str_replace(
+        $this->duplicate = true;
+        $infos = $this->others_infos_admin;
+        $this->others_infos_admin = str_replace(
             ['%name', '%id'],
-            [$this->sname, $this->_id],
+            [$this->sname, $this->id],
             _T('Duplicated from %name (%id)')
         );
         if (!empty($infos)) {
-            $this->_others_infos_admin .= "\n" . $infos;
+            $this->others_infos_admin .= "\n" . $infos;
         }
         //drop id_adh
-        $this->_id = null;
+        $this->id = null;
         //drop email, must be unique
-        $this->_email = null;
+        $this->email = null;
         //drop creation date
-        $this->_creation_date = date("Y-m-d");
+        $this->creation_date = date("Y-m-d");
         //drop login
-        $this->_login = null;
+        $this->login = null;
         //reset picture
-        $this->_picture = new Picture();
+        $this->picture = new Picture();
         //remove birthdate
-        $this->_birthdate = null;
+        $this->birthdate = null;
         //remove surname
-        $this->_surname = null;
+        $this->surname = null;
         //not admin
-        $this->_admin = false;
+        $this->admin = false;
         //not due free
-        $this->_due_free = false;
+        $this->due_free = false;
     }
 
     /**
      * Get current errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -2132,27 +2243,27 @@ class Adherent
     /**
      * Get user groups
      *
-     * @return array
+     * @return array<int, Group>
      */
     public function getGroups(): array
     {
         if (!$this->isDepEnabled('groups')) {
             $this->loadGroups();
         }
-        return $this->_groups;
+        return $this->groups;
     }
 
     /**
      * Get user managed groups
      *
-     * @return array
+     * @return array<int, Group>
      */
     public function getManagedGroups(): array
     {
         if (!$this->isDepEnabled('groups')) {
             $this->loadGroups();
         }
-        return $this->_managed_groups;
+        return $this->managed_groups;
     }
 
     /**
@@ -2166,7 +2277,7 @@ class Adherent
     {
         global $preferences;
 
-        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+        if (isset($this->id) && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
             return true;
         }
 
@@ -2193,7 +2304,7 @@ class Adherent
         global $preferences;
 
         //admin and staff users can edit, as well as member itself
-        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+        if (isset($this->id) && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
             return true;
         }
 
@@ -2242,7 +2353,7 @@ class Adherent
      */
     public function isDuplicate(): bool
     {
-        return $this->_duplicate;
+        return $this->duplicate;
     }
 
     /**
@@ -2277,9 +2388,19 @@ class Adherent
      */
     public function setParent(int $id): self
     {
-        $this->_parent = $id;
+        $this->parent = $id;
         $this->loadParent();
         return $this;
+    }
+
+    /**
+     * Get current due status
+     *
+     * @return int
+     */
+    public function getDueStatus(): int
+    {
+        return $this->due_status;
     }
 
     /**

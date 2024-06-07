@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette payment types controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Controllers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-09
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
@@ -46,14 +33,7 @@ use Analog\Analog;
 /**
  * Galette payment types controller
  *
- * @category  Controllers
- * @name      PaymentTypeController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-09
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class PaymentTypeController extends CrudController
@@ -93,14 +73,14 @@ class PaymentTypeController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null): Response
+    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
         $ptypes = new PaymentTypes(
             $this->zdb,
@@ -185,7 +165,7 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Type id
+     * @param ?integer $id       Type id
      *
      * @return Response
      */
@@ -226,7 +206,7 @@ class PaymentTypeController extends CrudController
                     _T("Payment type '%s' has not been modified!")
                 );
                 //redirect to payment type edition
-                $redirect_uri = $this->routeparser->urlFor('editPaymentType', ['id' => $id]);
+                $redirect_uri = $this->routeparser->urlFor('editPaymentType', ['id' => (string)$id]);
             }
         } else {
             if ($id === null) {
@@ -280,11 +260,11 @@ class PaymentTypeController extends CrudController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('paymentTypes');
     }
@@ -292,11 +272,11 @@ class PaymentTypeController extends CrudController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemovePaymentType',
@@ -307,11 +287,11 @@ class PaymentTypeController extends CrudController
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $ptype = new PaymentType($this->zdb, (int)$args['id']);
         return sprintf(
@@ -323,12 +303,12 @@ class PaymentTypeController extends CrudController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $ptype = new PaymentType($this->zdb, (int)$args['id']);
         return $ptype->remove();

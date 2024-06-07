@@ -1,3 +1,23 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% if tip_html is defined and tip_html != '' %}
     {% set tip = tip_html %}
 {% endif %}
@@ -8,7 +28,7 @@
 {% endif %}
     {% if type is defined and type == 'checkbox' %}
         <div class="ui toggle{% if checked is defined and checked == true %} checked{% endif %} right aligned checkbox">
-    {% else %}
+    {% elseif nolabel is not defined or nolabel != true %}
     {% block label %}
         <label for="{{ id }}"{% if title is defined %} title="{{ title }}"{% endif %}{% if labelclass is defined %} class="{% if labelclass is defined %}{{ labelclass }}{% endif %}"{% endif %}>
         {% if masschange ?? false %}
@@ -45,6 +65,7 @@
                     {% if autofocus is defined %} autofocus{% endif %}
                     {% if size is defined %} size="{{ size }}"{% endif %}
                     {% if checked is defined and checked == true %} checked{% endif %}
+                    {% if placeholder is defined %} placeholder="{{ placeholder }}"{% endif %}
                 />
     {% endblock %}
     {% if search_id is defined %}
@@ -77,7 +98,9 @@
     </div>
     {% endif %}
     {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}<i class="circular inverted primary small icon info tooltip" title="{{ tip }}" aria-hidden="true"></i>{% endif %}
-    {% if example is defined %}<span class="exemple">{{ example|raw }}</span>{% endif %}
+    {% if example is defined %}
+        <div class="exemple">{{ example|raw }}</div>
+    {% endif %}
 {% if notag is not defined %}
 </div>
 {% endif %}

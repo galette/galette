@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette transactions controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2022 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Controllers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-08
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
@@ -50,14 +37,7 @@ use Analog\Analog;
 /**
  * Galette transactions controller
  *
- * @category  Controllers
- * @name      TransactionsController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2022 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-02
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class TransactionsController extends ContributionsController
@@ -69,7 +49,7 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param string   $type     Contribution type
+     * @param ?string  $type     Contribution type
      *
      * @return Response
      */
@@ -83,13 +63,13 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param string   $type     Contribution type
+     * @param ?string  $type     Contribution type
      *
      * @return Response
      */
     public function doAdd(Request $request, Response $response, string $type = null): Response
     {
-        return $this->doEdit($request, $response, $type);
+        return $this->doEdit($request, $response, null, $type);
     }
 
     // /CRUD - Create
@@ -105,15 +85,13 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Transaction id
-     * @param string   $action   Action
+     * @param ?integer $id       Transaction id
+     * @param ?string  $action   Action
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, int $id = null, $action = 'edit'): Response
+    public function edit(Request $request, Response $response, int $id = null, string|null $action = 'edit'): Response
     {
-        $trans = null;
-
         if ($this->session->transaction !== null) {
             $trans = $this->session->transaction;
             $this->session->transaction = null;
@@ -125,12 +103,6 @@ class TransactionsController extends ContributionsController
         if ($id !== null) {
             $trans_id = $id;
         }
-
-        $transaction['trans_id'] = $trans_id;
-        $transaction['trans_amount'] = get_numeric_form_value("trans_amount", '');
-        $transaction['trans_date'] = get_form_value("trans_date", '');
-        $transaction['trans_desc'] = get_form_value("trans_desc", '');
-        $transaction['id_adh'] = get_numeric_form_value("id_adh", '');
 
         // flagging required fields
         $required = array(
@@ -160,7 +132,6 @@ class TransactionsController extends ContributionsController
         $params = [
             'page_title'        => $title,
             'required'          => $required,
-            'data'              => $transaction, //TODO: remove
             'transaction'       => $trans
         ];
 
@@ -174,7 +145,7 @@ class TransactionsController extends ContributionsController
         $members = $m->getDropdownMembers(
             $this->zdb,
             $this->login,
-            $trans->member > 0 ? $trans->member : null
+            $trans->member
         );
 
         $params['members'] = [
@@ -201,12 +172,12 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Transaction id
-     * @param string   $type     Transaction type
+     * @param ?integer $id       Transaction id
+     * @param ?string  $type     Transaction type
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, int $id = null, $type = null): Response
+    public function doEdit(Request $request, Response $response, int $id = null, ?string $type = null): Response
     {
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
@@ -325,7 +296,7 @@ class TransactionsController extends ContributionsController
 
             $args = [];
             if ($trans_id !== null) {
-                $args['id'] = $id;
+                $args['id'] = (string)$id;
             }
             //redirect to calling action
             return $response
@@ -350,7 +321,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function attach(Request $request, Response $response, int $id = null, int $cid = null): Response
+    public function attach(Request $request, Response $response, int $id, int $cid): Response
     {
         if (!Contribution::setTransactionPart($this->zdb, $id, $cid)) {
             $this->flash->addMessage(
@@ -368,7 +339,7 @@ class TransactionsController extends ContributionsController
             ->withStatus(301)
             ->withHeader('Location', $this->routeparser->urlFor(
                 'editTransaction',
-                ['id' => $id]
+                ['id' => (string)$id]
             ));
     }
 
@@ -382,7 +353,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function detach(Request $request, Response $response, int $id = null, int $cid = null): Response
+    public function detach(Request $request, Response $response, int $id, int $cid): Response
     {
         if (!Contribution::unsetTransactionPart($this->zdb, $this->login, $id, $cid)) {
             $this->flash->addMessage(
@@ -400,7 +371,7 @@ class TransactionsController extends ContributionsController
             ->withStatus(301)
             ->withHeader('Location', $this->routeparser->urlFor(
                 'editTransaction',
-                ['id' => $id]
+                ['id' => (string)$id]
             ));
     }
 

@@ -1,13 +1,7 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Dependencies feature
- *
- * PHP version 5
- *
- * Copyright © 2023 The Galette Team
+ * Copyright © 2003-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Features
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2023-09-25
  */
+
+declare(strict_types=1);
 
 namespace Galette\Features;
 
@@ -55,19 +42,13 @@ use Slim\Router;
 /**
  * Dependencies feature
  *
- * @category  Features
- * @name      Dependencies
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2023-09-25
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 trait Dependencies
 {
-    protected array $_deps = array(
+    /** @var array<string, bool> */
+    protected array $deps = array(
         'picture'   => true,
         'groups'    => true,
         'dues'      => true,
@@ -80,14 +61,14 @@ trait Dependencies
     /**
      * Set dependencies
      *
-     * @param array $deps Dependencies to set
+     * @param array<string, bool> $deps Dependencies to set
      *
-     * @return $this
+     * @return self
      */
     public function setDeps(array $deps): self
     {
-        $this->_deps = array_merge(
-            $this->_deps,
+        $this->deps = array_merge(
+            $this->deps,
             $deps
         );
         return $this;
@@ -96,12 +77,12 @@ trait Dependencies
     /**
      * Reset dependencies to load
      *
-     * @return $this
+     * @return self
      */
     public function disableAllDeps(): self
     {
-        $this->_deps = array_fill_keys(
-            array_keys($this->_deps),
+        $this->deps = array_fill_keys(
+            array_keys($this->deps),
             false
         );
         return $this;
@@ -110,11 +91,11 @@ trait Dependencies
     /**
      * Enable all dependencies to load
      *
-     * @return $this
+     * @return self
      */
     public function enableAllDeps(): self
     {
-        foreach ($this->_deps as &$dep) {
+        foreach ($this->deps as &$dep) {
             $dep = true;
         }
         return $this;
@@ -125,17 +106,17 @@ trait Dependencies
      *
      * @param string $name Dependency name
      *
-     * @return $this
+     * @return self
      */
     public function enableDep(string $name): self
     {
-        if (!isset($this->_deps[$name])) {
+        if (!isset($this->deps[$name])) {
             Analog::log(
                 'dependency ' . $name . ' does not exists!',
                 Analog::WARNING
             );
         } else {
-            $this->_deps[$name] = true;
+            $this->deps[$name] = true;
         }
 
         return $this;
@@ -146,17 +127,17 @@ trait Dependencies
      *
      * @param string $name Dependency name
      *
-     * @return $this
+     * @return self
      */
     public function disableDep(string $name): self
     {
-        if (!isset($this->_deps[$name])) {
+        if (!isset($this->deps[$name])) {
             Analog::log(
                 'dependency ' . $name . ' does not exists!',
                 Analog::WARNING
             );
         } else {
-            $this->_deps[$name] = false;
+            $this->deps[$name] = false;
         }
 
         return $this;
@@ -171,6 +152,6 @@ trait Dependencies
      */
     protected function isDepEnabled(string $name): bool
     {
-        return $this->_deps[$name];
+        return $this->deps[$name];
     }
 }

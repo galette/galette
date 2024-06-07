@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette's instantiation and routes
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2012-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Main
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     0.8.2dev 2014-11-10
  */
+
+declare(strict_types=1);
 
 use Galette\Middleware\Authenticate;
 use Galette\Middleware\Language;
@@ -137,9 +124,6 @@ if ($needs_update) {
     die();
 }
 
-//FIXME: remove in 1.1.0; routes/groups should call middleware directly
-$showPublicPages = new \Galette\Middleware\PublicPages($container);
-
 //Maintenance middleware
 if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
     $app->add(
@@ -185,8 +169,8 @@ $app->add(function (Request $request, RequestHandler $handler) use ($container) 
 
     $view = $container->get(Twig::class);
     $view->getEnvironment()->addGlobal('cur_route', $name);
+    $view->getEnvironment()->addGlobal('cur_route_args', $arguments);
     $view->getEnvironment()->addGlobal('cur_subroute', array_shift($arguments));
-    // ... do something with the data ...
 
     return $handler->handle($request);
 });

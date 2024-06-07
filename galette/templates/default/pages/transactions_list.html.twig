@@ -1,3 +1,23 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% extends 'elements/list.html.twig' %}
 
 {% set basic_table = true %}
@@ -25,7 +45,7 @@
                         <div class="ui calendar" id="contrib-rangestart">
                             <div class="ui input left icon">
                                 <i class="calendar icon" aria-hidden="true"></i>
-                                <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
+                                <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
                             </div>
                         </div>
                     </div>
@@ -34,7 +54,7 @@
                         <div class="ui calendar" id="contrib-rangeend">
                             <div class="ui input left icon">
                                 <i class="calendar icon" aria-hidden="true"></i>
-                                <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
+                                <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
 
                             </div>
                         </div>
@@ -118,11 +138,11 @@
 {% block header %}
     {% set columns = [
         {'label': '#', 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID")},
-        {'label': _T("Date"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_DATE")}
+        {'label': _T("Date"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE")}
     ] %}
 
     {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-        {% set columns = columns|merge([{'label': _T("Originator"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_MEMBER")}]) %}
+        {% set columns = columns|merge([{'label': _T("Originator"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER")}]) %}
     {% endif %}
 
     {% set columns = columns|merge([
@@ -130,7 +150,11 @@
     ]) %}
 
     {% set columns = columns|merge([
-        {'label': _T('Amount'), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_AMOUNT")}
+        {'label': _T('Amount'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT")}
+    ]) %}
+
+    {% set columns = columns|merge([
+        {'label': _T('Payment type'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_PAYMENT_TYPE")}
     ]) %}
 
     {{ parent() }}
@@ -179,7 +203,8 @@
         {% endif %}
             <td data-col-label="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
             <td data-col-label="{{ _T("Amount") }}">{{ transaction.amount }}</td>
-        {% if login.isAdmin() or login.isStaff() %}
+            <td data-col-label="{{ _T("Payment type") }}">{{ transaction.getPaymentType() }}</td>
+            {% if login.isAdmin() or login.isStaff() %}
             <td class="center actions_row">
                 <a
                     href="{{ url_for("editTransaction", {"id": transaction.id}) }}"

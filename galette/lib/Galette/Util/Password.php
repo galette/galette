@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Password checks
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Util
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4
  */
+
+declare(strict_types=1);
 
 namespace Galette\Util;
 
@@ -43,24 +30,31 @@ use Galette\Entity\Adherent;
 /**
  * Password checks
  *
- * @category  Util
- * @name      Password
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @see       https://github.com/rollerworks/PasswordStrengthValidator
- * @since     Available since 0.9.4
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Password
 {
-    protected $preferences;
-    protected $errors = [];
-    protected $strength_errors = [];
-    protected $strength = null;
-    protected $blacklisted = false;
-    protected $personal_infos = [];
+    protected Preferences $preferences;
+    /**
+     * Errors
+     *
+     * @var array<int, string>
+     */
+    protected array $errors = [];
+    /**
+     * Strength errors
+     *
+     * @var array<int, string>
+     */
+    protected array $strength_errors = [];
+    protected ?int $strength = null;
+    protected bool $blacklisted = false;
+    /**
+     * Personal information to check against
+     *
+     * @var array<int, string>
+     */
+    protected array $personal_infos = [];
 
     /**
      * Default constructor
@@ -79,7 +73,7 @@ class Password
      *
      * @return boolean
      */
-    public function isValid($password)
+    public function isValid(string $password): bool
     {
         $this->errors = []; //reset
 
@@ -120,7 +114,7 @@ class Password
      *
      * @return boolean
      */
-    public function isBlacklisted($password)
+    public function isBlacklisted(string $password): bool
     {
         if (!$this->preferences->pref_password_blacklist) {
             return false;
@@ -133,13 +127,13 @@ class Password
     }
 
     /**
-     * Calculate pasword strength
+     * Calculate password strength
      *
      * @param string $password Password to check
      *
      * @return integer
      */
-    public function calculateStrength($password)
+    public function calculateStrength(string $password): int
     {
         $strength = 0;
 
@@ -177,7 +171,7 @@ class Password
      *
      * @return integer
      */
-    public function getStrenght()
+    public function getStrenght(): int
     {
         return $this->strength;
     }
@@ -185,9 +179,9 @@ class Password
     /**
      * Get errors
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -195,9 +189,9 @@ class Password
     /**
      * Get strength errors
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function getStrenghtErrors()
+    public function getStrenghtErrors(): array
     {
         return $this->strength_errors;
     }
@@ -205,9 +199,9 @@ class Password
     /**
      * Build password blacklist
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function getBlacklistedPasswords()
+    public function getBlacklistedPasswords(): array
     {
         $file = GALETTE_DATA_PATH . '/blacklist.txt';
 
@@ -226,15 +220,23 @@ class Password
     /**
      * Add personal information to check against
      *
-     * @param array $infos Personal information
+     * @param array<int, string> $infos Personal information
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function addPersonalInformation(array $infos)
+    public function addPersonalInformation(array $infos): array
     {
         $this->personal_infos = array_merge(
             $this->personal_infos,
-            array_map('mb_strtolower', array_values($infos))
+            array_map(
+                function ($info) {
+                    if ($info !== null) {
+                        $info = mb_strtolower($info);
+                    }
+                    return $info;
+                },
+                array_values($infos)
+            )
         );
         return $this->personal_infos;
     }
@@ -244,9 +246,9 @@ class Password
      *
      * @param Adherent $adh Adherent instance
      *
-     * @return Password
+     * @return self
      */
-    public function setAdherent(Adherent $adh)
+    public function setAdherent(Adherent $adh): self
     {
         $infos = [
             $adh->name,
@@ -260,14 +262,16 @@ class Password
         ];
 
         //handle date formats
-        $bdate = \DateTime::createFromFormat('Y-m-d', $adh->rbirthdate);
-        if ($bdate !== false) {
-            $infos[] = $bdate->format('Y-m-d'); //standard format
-            //TRANS: see https://www.php.net/manual/datetime.format.php
-            $infos[] = $bdate->format(__('Y-m-d')); //localized format
-            $infos[] = $bdate->format('Ymd');
-            $infos[] = $bdate->format('dmY');
-            $infos[] = $bdate->format('Ydm');
+        if ($adh->rbirthdate !== null) {
+            $bdate = \DateTime::createFromFormat('Y-m-d', $adh->rbirthdate);
+            if ($bdate !== false) {
+                $infos[] = $bdate->format('Y-m-d'); //standard format
+                //TRANS: see https://www.php.net/manual/datetime.format.php
+                $infos[] = $bdate->format(__('Y-m-d')); //localized format
+                $infos[] = $bdate->format('Ymd');
+                $infos[] = $bdate->format('dmY');
+                $infos[] = $bdate->format('Ydm');
+            }
         }
 
         //some possible combinations

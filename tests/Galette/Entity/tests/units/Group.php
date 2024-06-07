@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Group tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2021-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-11-10
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -43,14 +30,7 @@ use Laminas\Db\Adapter\Adapter;
 /**
  * Group tests
  *
- * @category  Entity
- * @name      Title
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-11-10
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Group extends GaletteTestCase
 {
@@ -72,7 +52,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteGroups()
+    private function deleteGroups(): void
     {
         $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
         $delete->where('parent_group IS NOT NULL');
@@ -93,7 +73,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    public function testGroup()
+    public function testGroup(): void
     {
         global $zdb;
         $zdb = $this->zdb;
@@ -107,9 +87,6 @@ class Group extends GaletteTestCase
         $this->assertNull($group->getName());
         $this->assertNull($group->getFullName());
         $this->assertNull($group->getIndentName());
-        $this->assertNull($group->getMembers());
-        $this->assertNull($group->getMembers());
-        $this->assertEmpty($group->getGroups());
         $this->assertNull($group->getParentGroup());
     }
 
@@ -118,7 +95,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    public function testSingleGroup()
+    public function testSingleGroup(): void
     {
         global $zdb;
         $zdb = $this->zdb;
@@ -155,11 +132,37 @@ class Group extends GaletteTestCase
     }
 
     /**
-     * Test group name unicity
+     * Test group name uniqueness when adding
      *
      * @return void
      */
-    public function testUnicity()
+    public function testAddUnicity(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $group = new \Galette\Entity\Group();
+        $group->setLogin($this->login);
+
+        $group->setName('A group');
+        $this->assertTrue($group->store());
+        $group->getId();
+
+        //Adding another group with same name throws an exception
+        $group = new \Galette\Entity\Group();
+        $group->setLogin($this->login);
+
+        $this->expectExceptionMessage('The group name you have requested already exists in the database.');
+        $group->setName('A group');
+        $this->assertFalse($group->store());
+    }
+
+    /**
+     * Test group name uniqueness when editing
+     *
+     * @return void
+     */
+    public function testEditUnicity(): void
     {
         global $zdb;
         $zdb = $this->zdb;
@@ -174,14 +177,6 @@ class Group extends GaletteTestCase
         //update without changes should be ok
         $group = new \Galette\Entity\Group($group_id);
         $this->assertTrue($group->store());
-
-        //Adding another group with same name throws an exception
-        $group = new \Galette\Entity\Group();
-        $group->setLogin($this->login);
-
-        $this->expectExceptionMessage('The group name you have requested already exists in the database.');
-        $group->setName('A group');
-        $this->assertFalse($group->store());
 
         //update with changes should be ok
         $group = new \Galette\Entity\Group($group_id);
@@ -203,7 +198,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    public function testSubGroup()
+    public function testSubGroup(): void
     {
         global $zdb;
         $zdb = $this->zdb;
@@ -272,7 +267,7 @@ class Group extends GaletteTestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         global $zdb;
         $zdb = $this->zdb;

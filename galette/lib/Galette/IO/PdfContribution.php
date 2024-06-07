@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Contribution PDF: invoices and receipts
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  IO
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-07-07
  */
+
+declare(strict_types=1);
 
 namespace Galette\IO;
 
@@ -46,22 +33,14 @@ use Analog\Analog;
 /**
  * Contribution PDF: invoices and receipts
  *
- * @category  IO
- * @name      PDF
- * @package   Galette
- * @abstract  Class for expanding TCPDF.
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-07-07
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class PdfContribution extends Pdf
 {
-    private $contrib;
-    private $model;
-    private $path;
+    private Contribution $contrib;
+    private PdfModel $model;
+    private string $path;
 
     /**
      * Main constructor
@@ -70,7 +49,7 @@ class PdfContribution extends Pdf
      * @param Db           $zdb     Database instance
      * @param Preferences  $prefs   Preferences instance
      */
-    public function __construct(Contribution $contrib, Db $zdb, $prefs)
+    public function __construct(Contribution $contrib, Db $zdb, Preferences $prefs)
     {
         $this->contrib = $contrib;
 
@@ -94,9 +73,6 @@ class PdfContribution extends Pdf
 
         parent::__construct($prefs, $this->model);
 
-        $this->Open();
-
-        $this->AddPage();
         $this->PageHeader();
         $this->PageBody();
     }
@@ -118,7 +94,7 @@ class PdfContribution extends Pdf
      *
      * @return boolean
      */
-    public function store($path)
+    public function store(string $path): bool
     {
         if (file_exists($path) && is_dir($path) && is_writeable($path)) {
             $this->path = $path . '/' . $this->filename;
@@ -139,7 +115,7 @@ class PdfContribution extends Pdf
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return realpath($this->path);
     }
@@ -149,7 +125,7 @@ class PdfContribution extends Pdf
      *
      * @return string
      */
-    public function getFilename()
+    public function getFilename(): string
     {
         return $this->filename;
     }

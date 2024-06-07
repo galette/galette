@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette CSV controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,21 +17,16 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Controllers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-06
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers;
 
 use Galette\Filters\ContributionsList;
+use Galette\Filters\ScheduledPaymentsList;
 use Galette\IO\ContributionsCsv;
+use Galette\IO\ScheduledPaymentsCsv;
 use Laminas\Db\ResultSet\ResultSet;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -49,18 +38,12 @@ use Galette\IO\CsvOut;
 use Galette\IO\MembersCsv;
 use Galette\Repository\DynamicFieldsSet;
 use Analog\Analog;
+use Slim\Psr7\Stream;
 
 /**
  * Galette CSV controller
  *
- * @category  Controllers
- * @name      CsvController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-06
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class CsvController extends AbstractController
@@ -74,7 +57,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    protected function sendResponse(Response $response, $filepath, $filename): Response
+    protected function sendResponse(Response $response, string $filepath, string $filename): Response
     {
         if (file_exists($filepath)) {
             $response = $response->withHeader('Content-Description', 'File Transfer')
@@ -90,7 +73,7 @@ class CsvController extends AbstractController
             fwrite($stream, file_get_contents($filepath));
             rewind($stream);
 
-            return $response->withBody(new \Slim\Psr7\Stream($stream));
+            return $response->withBody(new Stream($stream));
         } else {
             Analog::log(
                 'A request has been made to get a CSV file named `' .
@@ -98,8 +81,6 @@ class CsvController extends AbstractController
                 Analog::WARNING
             );
             //FIXME: use a proper error page
-            /*$notFound = $this->notFoundHandler;
-            return $notFound($request, $response);*/
             return $response->withStatus(404);
         }
     }
@@ -221,7 +202,7 @@ class CsvController extends AbstractController
                         );
                         break;
                     default:
-                        //no error, file has been writted to disk
+                        //no error, file has been written to disk
                         $written[] = [
                             'name' => $pn,
                             'file' => (string)$res
@@ -258,7 +239,6 @@ class CsvController extends AbstractController
     {
         $csv = new CsvIn($this->zdb);
         $existing = $csv->getExisting();
-        $dryrun = true;
 
         // display page
         $this->view->render(
@@ -267,7 +247,7 @@ class CsvController extends AbstractController
             array(
                 'page_title'        => _T("CSV members import"),
                 'existing'          => $existing,
-                'dryrun'            => $dryrun,
+                'dryrun'            => true,
                 'import_file'       => $this->session->import_file
             )
         );
@@ -423,11 +403,6 @@ class CsvController extends AbstractController
                 $filename . '`. Access has not been granted.',
                 Analog::WARNING
             );
-            /*$error = $this->errorHandler;
-            return $error(
-                $request,
-                $response->withStatus(403)
-            );*/
             return $response->withStatus(403);
         }
     }
@@ -495,8 +470,7 @@ class CsvController extends AbstractController
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;
 
-        $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] : $this->routeparser->urlFor('slash');
+        $uri = $post['redirect_uri'] ?? $this->routeparser->urlFor('slash');
 
         if (!isset($post['confirm'])) {
             $this->flash->addMessage(
@@ -656,7 +630,7 @@ class CsvController extends AbstractController
         fwrite($stream, $res);
         rewind($stream);
 
-        return $response->withBody(new \Slim\Psr7\Stream($stream));
+        return $response->withBody(new Stream($stream));
     }
 
     /**
@@ -754,6 +728,39 @@ class CsvController extends AbstractController
             $type
         );
         $csv->exportContributions($filters);
+
+        $filepath = $csv->getPath();
+        $filename = $csv->getFileName();
+
+        return $this->sendResponse($response, $filepath, $filename);
+    }
+
+    /**
+     * Scheduled payments CSV exports
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function scheduledPaymentsExport(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $get = $request->getQueryParams();
+
+        $session_var = $post['session_var'] ?? $get['session_var'] ?? 'filter_scheduled_payments';
+
+        if (isset($this->session->$session_var)) {
+            $filters = $this->session->$session_var;
+        } else {
+            $filters = new ScheduledPaymentsList();
+        }
+
+        $csv = new ScheduledPaymentsCsv(
+            $this->zdb,
+            $this->login
+        );
+        $csv->exportScheduledPayments($filters);
 
         $filepath = $csv->getPath();
         $filename = $csv->getFileName();

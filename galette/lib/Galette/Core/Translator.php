@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * i18n handling
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2007-2018 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,15 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
@@ -41,13 +29,7 @@ use Laminas\I18n\Translator\Translator as ZTranslator;
 /**
  * Zend translator override
  *
- * @category  Core
- * @name      Translator
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class Translator extends ZTranslator
@@ -55,13 +37,13 @@ class Translator extends ZTranslator
     /**
      * Do a translation exist for string
      *
-     * @param string $message    String to check for
-     * @param string $textDomain Translation domain, defaults to "default"
-     * @param string $locale     Locale, defaults to null
+     * @param string  $message    String to check for
+     * @param string  $textDomain Translation domain, defaults to "default"
+     * @param ?string $locale     Locale, defaults to null
      *
      * @return boolean
      */
-    public function translationExists($message, $textDomain = 'default', $locale = null)
+    public function translationExists(string $message, string $textDomain = 'default', string $locale = null): bool
     {
         $locale = ($locale ?: $this->getLocale());
 

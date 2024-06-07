@@ -1,6 +1,25 @@
 <?php
 
 /**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -19,12 +38,13 @@
  *
  * @category Libraries
  * @package  ClassLoader
- * @author   Doctrine project <contact@doctrine-project.org>
- * @author   Johan Cwiklinski <johan@x-tnd.be>
+ * @author Doctrine project <contact@doctrine-project.org>
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  * @license  LGPL https://www.gnu.org/licenses/lgpl-3.0.fr.html
- * @link     http://www.doctrine-project.org - http://galette.tuxfamily.org
- * @since    ?
+ * @link     http://www.doctrine-project.org - https://galette.eu
  */
+
+declare(strict_types=1);
 
 namespace Galette\Common;
 
@@ -41,7 +61,7 @@ namespace Galette\Common;
  * @package  ClassLoader
  * @author Roman Borschel <roman@code-factory.org>
  * @license  LGPL https://www.gnu.org/licenses/lgpl-3.0.fr.html
- * @link     http://www.doctrine-project.org - http://galette.tuxfamily.org
+ * @link     http://www.doctrine-project.org - https://galette.eu
  * @since 2.0
  */
 class ClassLoader
@@ -49,22 +69,22 @@ class ClassLoader
     /**
      * @var string PHP file extension
      */
-    protected $fileExtension = '.php';
+    protected string $fileExtension = '.php';
 
     /**
      * @var string Current namespace
      */
-    protected $namespace;
+    protected string $namespace;
 
     /**
-     * @var string Current include path
+     * @var ?string Current include path
      */
-    protected $includePath;
+    protected ?string $includePath;
 
     /**
      * @var string PHP namespace separator
      */
-    protected $namespaceSeparator = '\\';
+    protected string $namespaceSeparator = '\\';
 
     /**
      * Creates a new <tt>ClassLoader</tt> that loads classes of the
@@ -74,10 +94,10 @@ class ClassLoader
      * If neither a namespace nor an include path is given, the ClassLoader will
      * be responsible for loading all classes, thereby relying on the PHP include_path.
      *
-     * @param string $ns          The namespace of the classes to load.
-     * @param string $includePath The base include path to use.
+     * @param ?string $ns          The namespace of the classes to load.
+     * @param ?string $includePath The base include path to use.
      */
-    public function __construct($ns = null, $includePath = null)
+    public function __construct(string $ns = null, string $includePath = null)
     {
         if (!file_exists($includePath)) {
             throw new \RuntimeException('Include path "' . $includePath . '" doesn\'t exists');
@@ -94,7 +114,7 @@ class ClassLoader
      *
      * @return void
      */
-    public function setNamespaceSeparator($sep)
+    public function setNamespaceSeparator(string $sep): void
     {
         $this->namespaceSeparator = $sep;
     }
@@ -104,7 +124,7 @@ class ClassLoader
      *
      * @return string
      */
-    public function getNamespaceSeparator()
+    public function getNamespaceSeparator(): string
     {
         return $this->namespaceSeparator;
     }
@@ -116,7 +136,7 @@ class ClassLoader
      *
      * @return void
      */
-    public function setIncludePath($includePath)
+    public function setIncludePath(string $includePath): void
     {
         $this->includePath = $includePath;
     }
@@ -126,7 +146,7 @@ class ClassLoader
      *
      * @return string
      */
-    public function getIncludePath()
+    public function getIncludePath(): string
     {
         return $this->includePath;
     }
@@ -138,7 +158,7 @@ class ClassLoader
      *
      * @return void
      */
-    public function setFileExtension($fileExtension)
+    public function setFileExtension(string $fileExtension): void
     {
         $this->fileExtension = $fileExtension;
     }
@@ -148,7 +168,7 @@ class ClassLoader
      *
      * @return string
      */
-    public function getFileExtension()
+    public function getFileExtension(): string
     {
         return $this->fileExtension;
     }
@@ -158,9 +178,11 @@ class ClassLoader
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        spl_autoload_register(array($this, 'loadClass'));
+        spl_autoload_register(function (string $class): void {
+            $this->loadClass($class);
+        });
     }
 
     /**
@@ -168,7 +190,7 @@ class ClassLoader
      *
      * @return void
      */
-    public function unregister()
+    public function unregister(): void
     {
         spl_autoload_unregister(array($this, 'loadClass'));
     }
@@ -180,7 +202,7 @@ class ClassLoader
      *
      * @return boolean TRUE if the class has been successfully loaded, FALSE otherwise.
      */
-    public function loadClass($className)
+    public function loadClass(string $className): bool
     {
         if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
             return false;
@@ -213,7 +235,7 @@ class ClassLoader
      * @param string $className The fully-qualified name of the class.
      * @return boolean TRUE if this ClassLoader can load the class, FALSE otherwise.
      */
-    public function canLoadClass($className)
+    public function canLoadClass(string $className): bool
     {
         if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
             return false;
@@ -249,7 +271,7 @@ class ClassLoader
      * @param string $className The fully-qualified name of the class.
      * @return boolean TRUE if the class exists as per the definition given above, FALSE otherwise.
      */
-    public static function classExists($className)
+    public static function classExists(string $className): bool
     {
         if (class_exists($className, false) || interface_exists($className, false)) {
             return true;
@@ -287,7 +309,7 @@ class ClassLoader
      * @param string $className The name of the class.
      * @return ClassLoader|null The <tt>ClassLoader</tt> responsible for the class or NULL if no such
      */
-    public static function getClassLoader($className)
+    public static function getClassLoader(string $className): ?ClassLoader
     {
         foreach (spl_autoload_functions() as $loader) {
             if (

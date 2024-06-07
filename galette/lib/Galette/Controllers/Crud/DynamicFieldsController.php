@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette dynamic fields controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Controllers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-02
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
@@ -49,14 +36,7 @@ use Analog\Analog;
 /**
  * Galette dynamic fields controller
  *
- * @category  Controllers
- * @name      DynamicFieldsController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-02
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class DynamicFieldsController extends CrudController
@@ -68,7 +48,7 @@ class DynamicFieldsController extends CrudController
      *
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
-     * @param string   $form_name Form name
+     * @param ?string  $form_name Form name
      *
      * @return Response
      */
@@ -78,7 +58,7 @@ class DynamicFieldsController extends CrudController
             'page_title'        => _T("Add field"),
             'form_name'         => $form_name,
             'action'            => 'add',
-            'perm_names'        => DynamicField::getPermsNames(),
+            'perm_names'        => DynamicField::getPermissionsList(),
             'mode'              => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
             'field_type_names'  => DynamicField::getFieldsTypesNames()
         ];
@@ -102,7 +82,7 @@ class DynamicFieldsController extends CrudController
      *
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
-     * @param string   $form_name Form name
+     * @param ?string  $form_name Form name
      *
      * @return Response
      */
@@ -120,7 +100,7 @@ class DynamicFieldsController extends CrudController
                 ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
 
-        $df = DynamicField::getFieldType($this->zdb, $post['field_type']);
+        $df = DynamicField::getFieldType($this->zdb, (int)$post['field_type']);
 
         try {
             $df->store($post);
@@ -210,20 +190,20 @@ class DynamicFieldsController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request   PSR Request
-     * @param Response       $response  PSR Response
-     * @param string         $option    One of 'page' or 'order'
-     * @param string|integer $value     Value of the option
-     * @param string         $form_name Form name
+     * @param Request             $request   PSR Request
+     * @param Response            $response  PSR Response
+     * @param string|null         $option    One of 'page' or 'order'
+     * @param integer|string|null $value     Value of the option
+     * @param string              $form_name Form name
      *
      * @return Response
      */
     public function list(
         Request $request,
         Response $response,
-        $option = null,
-        $value = null,
-        $form_name = 'adh'
+        string $option = null,
+        int|string $value = null,
+        string $form_name = 'adh'
     ): Response {
         if (isset($_POST['form_name']) && trim($_POST['form_name']) != '') {
             $form_name = $_POST['form_name'];
@@ -341,7 +321,7 @@ class DynamicFieldsController extends CrudController
                     'Location',
                     $this->routeparser->urlFor(
                         $route_name,
-                        ['id' => $id]
+                        ['id' => (string)$id]
                     )
                 );
         }
@@ -410,11 +390,11 @@ class DynamicFieldsController extends CrudController
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
      * @param integer  $id        Dynamic field id
-     * @param string   $form_name Form name
+     * @param ?string  $form_name Form name
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, int $id, $form_name = null): Response
+    public function edit(Request $request, Response $response, int $id, string $form_name = null): Response
     {
         $df = null;
         if ($this->session->dynamicfieldtype) {
@@ -437,7 +417,7 @@ class DynamicFieldsController extends CrudController
             'page_title'    => _T("Edit field"),
             'action'        => 'edit',
             'form_name'     => $form_name,
-            'perm_names'    => DynamicField::getPermsNames(),
+            'perm_names'    => DynamicField::getPermissionsList(),
             'mode'          => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
             'df'            => $df,
             'html_editor'   => true,
@@ -459,11 +439,11 @@ class DynamicFieldsController extends CrudController
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
      * @param integer  $id        Dynamic field id
-     * @param string   $form_name Form name
+     * @param ?string  $form_name Form name
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, int $id = null, string $form_name = null): Response
+    public function doEdit(Request $request, Response $response, int $id, string $form_name = null): Response
     {
         $post = $request->getParsedBody();
         $post['form_name'] = $form_name;
@@ -483,7 +463,6 @@ class DynamicFieldsController extends CrudController
         try {
             $df->store($post);
             $error_detected = $df->getErrors();
-            $warning_detected = $df->getWarnings();
         } catch (Throwable $e) {
             $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
             Analog::log(
@@ -494,7 +473,11 @@ class DynamicFieldsController extends CrudController
             if (Galette::isDebugEnabled()) {
                 throw $e;
             }
-            $error_detected[] = _T('An error occurred editing dynamic field :(');
+
+            $error_detected = $df->getErrors();
+            if (count($error_detected) == 0) {
+                $error_detected[] = _T('An error occurred editing dynamic field :(');
+            }
         }
 
         //flash messages
@@ -512,6 +495,7 @@ class DynamicFieldsController extends CrudController
             );
         }
 
+        $warning_detected = $df->getWarnings();
         if (count($warning_detected) > 0) {
             foreach ($warning_detected as $warning) {
                 $this->flash->addMessage(
@@ -556,11 +540,11 @@ class DynamicFieldsController extends CrudController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('configureDynamicFields', ['form_name' => $args['form_name']]);
     }
@@ -568,11 +552,11 @@ class DynamicFieldsController extends CrudController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveDynamicField',
@@ -583,11 +567,11 @@ class DynamicFieldsController extends CrudController
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $field = DynamicField::loadFieldType($this->zdb, (int)$args['id']);
         if ($field === false) {
@@ -607,12 +591,12 @@ class DynamicFieldsController extends CrudController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $field_id = (int)$post['id'];
         $field = DynamicField::loadFieldType($this->zdb, $field_id);

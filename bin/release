@@ -6,7 +6,12 @@ from datetime import datetime
 from termcolor import colored
 from urllib.parse import urlparse
 
+# on Tuxfamily
+ssh_path = 'galette/galette-repository/'
+ssh_host = 'ssh.tuxfamily.org'
 galette_dl_repo = 'http://download.tuxfamily.org/galette/'
+is_local = False
+
 local_dl_repo = os.path.join(
     os.path.dirname(
         os.path.dirname(os.path.abspath(__file__))
@@ -26,17 +31,20 @@ nightly_version = None
 tag_commit = None
 repo = None
 
+
 def print_err(msg):
     """
     Display colored error message
     """
     print(colored(msg, 'red', attrs=['bold']))
 
+
 def get_numeric_version(ver):
     """
     Returns all numeric version
     """
     return re.findall(r'\d+', ver)
+
 
 def valid_version(ver):
     """
@@ -47,6 +55,7 @@ def valid_version(ver):
     """
     return '.'.join(get_numeric_version(ver)) == ver
 
+
 def incr_version(ver):
     """
     Increment version number
@@ -54,6 +63,7 @@ def incr_version(ver):
     version = get_numeric_version(ver)
     version[-1] = str(int(version[-1]) + 1)
     return version
+
 
 def propose_version():
     """
@@ -66,24 +76,24 @@ def propose_version():
     for tagref in tagrefs:
         tag = tagref.tag
         if valid_version(tag.tag):
-            #last minor version is always the last one :)
+            # last minor version is always the last one :)
             if tag.tag > last_minor:
                 last_minor = tag.tag
 
-            #last major version
+            # last major version
             if len(tag.tag) == 5 and tag.tag > last_major:
                 last_major = tag.tag
 
     if verbose:
         print('last minor: %s | last major %s' % (last_minor, last_major))
 
-    #no version provided. propose one
+    # no version provided. propose one
     new_minor = None
     new_major = None
 
     if len(last_minor) == 5:
-        #if the latest is a major version
-        new_minor = last_minor + ('.1')
+        # if the latest is a major version
+        new_minor = last_minor + '.1'
     else:
         new_minor = '.'.join(incr_version(last_minor))
 
@@ -94,6 +104,7 @@ def propose_version():
     major: %s
     """ % (new_minor, new_major))
 
+
 def get_latest_version():
     """
     Look for latest version
@@ -103,13 +114,14 @@ def get_latest_version():
     last = None
     for tagref in tagrefs:
         tag = tagref.tag
-        if tag != None and valid_version(tag.tag):
-            #last minor version is always the last one :)
-            if last == None or tag.tag > last.tag:
+        if tag is not None and valid_version(tag.tag):
+            # last minor version is always the last one :)
+            if last is None or tag.tag > last.tag:
                 last = tag
 
     tag_commit = last.hexsha
     return last.tag
+
 
 def is_existing_version(ver):
     """
@@ -122,17 +134,20 @@ def is_existing_version(ver):
                 return True
     return False
 
+
 def is_version_bumped(ver):
     """
     Check if version has been bumped in Galette configuration file
     """
     global repo, tag_commit
 
-    versions_file = repo.git.execute(["git", "show", f"{tag_commit}:{os.path.join('galette', 'config', 'versions.inc.php')}"])
+    versions_file = repo.git.execute(
+        ["git", "show", f"{tag_commit}:{os.path.join('galette', 'includes', 'sys_config', 'versions.inc.php')}"])
     file_version = re.search("^define\\('GALETTE_VERSION', 'v(?P<version>.+)'\\)", versions_file, re.MULTILINE)
     if file_version.group('version') != ver:
         print_err('Trying to release %s, but bumped version is %s!' % (ver, file_version.group('version')))
         exit(1)
+
 
 def ask_user_confirm(msg):
     """
@@ -152,6 +167,7 @@ def ask_user_confirm(msg):
                 print_err(
                     "Invalid input. Please enter 'yes' or 'no' (or 'y' or 'n')."
                 )
+
 
 def get_rel_name(buildver):
     """
@@ -175,10 +191,13 @@ def get_rel_name(buildver):
 
     return archive_name
 
+
 def _do_build(ver):
     """
     Proceed build
     """
+    global is_local
+
     exists = False
     ascexists = False
     rel_name = get_rel_name(ver)
@@ -189,33 +208,40 @@ def _do_build(ver):
     )
 
     if not force:
-        #first check if a version
+        # first check if a version
         local = False
         ascLocal = False
 
         url = galette_dl_repo + '/' + archive_name
         urlasc = '%s.asc' % url
-        parsed = urlparse(url)
-        ascparsed = urlparse(urlasc)
 
-        connection = http.client.HTTPConnection(parsed[1], 80)
-        connection.request('HEAD', parsed[2])
-        response = connection.getresponse()
-        exists = response.status == 200
+        if is_local:
+            exists = os.path.isfile(url)
+        else:
+            parsed = urlparse(url)
+
+            connection = http.client.HTTPConnection(parsed[1], 80)
+            connection.request('HEAD', parsed[2])
+            response = connection.getresponse()
+            exists = response.status == 200
 
         if not exists:
-            #also check from local repo
+            # also check from local repo
             exists = os.path.exists(galette_archive)
             if exists:
                 local = True
 
-        connection = http.client.HTTPConnection(ascparsed[1], 80)
-        connection.request('HEAD', ascparsed[2])
-        response = connection.getresponse()
-        ascexists = response.status == 200
+        if is_local:
+            ascexists = os.path.isfile(urlasc)
+        else:
+            ascparsed = urlparse(urlasc)
+            connection = http.client.HTTPConnection(ascparsed[1], 80)
+            connection.request('HEAD', ascparsed[2])
+            response = connection.getresponse()
+            ascexists = response.status == 200
 
         if not ascexists:
-            #also check from local repo
+            # also check from local repo
             ascexists = os.path.exists(
                 os.path.join(
                     local_dl_repo,
@@ -231,7 +257,7 @@ def _do_build(ver):
             loctxt = ''
             if local:
                 loctxt = 'locally '
-            msg = 'Relase %s already %sexists' % (rel_name, loctxt)
+            msg = 'Release %s already %sexists' % (rel_name, loctxt)
 
         if ascexists:
             loctxt = ''
@@ -275,7 +301,7 @@ def _do_build(ver):
                 typever,
                 galette_archive
             ))
-            print('Archive command: %s' % (archive_cmd))
+            print('Archive command: %s' % archive_cmd)
 
         if commit and extra:
             print('Archiving GIT commit %s' % commit)
@@ -296,27 +322,57 @@ def _do_build(ver):
         )
 
         if upload:
-            do_scp(galette_archive)
+            do_upload(galette_archive)
+
 
 def do_sign(archive):
     sign_cmd = 'gpg --detach-sign --armor %s' % archive
     p1 = subprocess.Popen(sign_cmd, shell=True)
     p1.communicate()
 
-def do_scp(archive):
-    global ssh_key
 
-    path = 'galette/galette-repository/'
+def do_upload(galette_archive):
+    """
+    proceed file upload
+    :param galette_archive:
+    :return:
+    """
+    global is_local
+
+    if is_local:
+        do_cp(galette_archive)
+    else:
+        do_scp(galette_archive)
+
+
+def do_scp(archive):
+    global ssh_key, ssh_host, ssh_path
+
+    path = ssh_path
     if extra:
         path += 'dev/'
 
     if ssh_key:
-        scp_cmd = 'scp -i %s %s* ssh.tuxfamily.org:%s' % (ssh_key, archive, path)
+        scp_cmd = 'scp -i %s %s* %s:%s' % (ssh_key, archive, ssh_host, path)
     else:
-        scp_cmd = 'scp -r %s* ssh.tuxfamily.org:%s' % (archive, path)
+        scp_cmd = 'scp -r %s* %s:%s' % (archive, ssh_host, path)
     print(scp_cmd)
     p1 = subprocess.Popen(scp_cmd, shell=True)
     p1.communicate()
+
+
+def do_cp(archive):
+    global galette_dl_repo
+
+    path = galette_dl_repo
+    if extra:
+        path = os.path.join(path, 'dev')
+
+    shutil.copyfile(
+        archive,
+        os.path.join(path, os.path.basename(archive))
+    )
+
 
 def add_libs(rel_name, galette_archive):
     """
@@ -330,30 +386,30 @@ def add_libs(rel_name, galette_archive):
     galette.extractall(path=src_dir)
     galette.close()
 
-    #set galette nightly version
-    config_dir = os.path.join(src_dir, rel_name, 'galette', 'config')
+    # set galette nightly version
+    config_dir = os.path.join(src_dir, rel_name, 'galette', 'includes', 'sys_config')
     if nightly_version != None:
         sed_cmd = 'sed -e "s/GALETTE_NIGHTLY\', false/GALETTE_NIGHTLY\', \'%s\'/" -i versions.inc.php' % nightly_version
         print(sed_cmd)
         p1 = subprocess.Popen(sed_cmd, shell=True, cwd=config_dir)
         p1.wait()
 
-    #install npm modules
+    # install npm modules
     npm_dir = os.path.join(src_dir, rel_name)
     npm_cmd = 'npm install --prefix %s' % npm_dir
     print(npm_cmd)
     p1 = subprocess.Popen(npm_cmd, shell=True, cwd=npm_dir)
     p1.wait()
 
-    #build the UI assets
+    # build the UI assets
     wp_cmd = 'npm run first-build'
     p1 = subprocess.Popen(wp_cmd, shell=True, cwd=npm_dir)
     p1.wait()
 
-    #node modules are no longer needed
+    # node modules are no longer needed
     shutil.rmtree(os.path.join(npm_dir, 'node_modules'))
 
-    #UI sources and some built assets are no longer needed
+    # UI sources and some built assets are no longer needed
     shutil.rmtree(os.path.join(npm_dir, 'semantic'))
     shutil.rmtree(os.path.join(npm_dir, 'ui'))
     shutil.rmtree(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/components'))
@@ -364,14 +420,14 @@ def add_libs(rel_name, galette_archive):
     os.remove(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/semantic.css'))
     os.remove(os.path.join(src_dir, rel_name, 'galette/webroot/themes/default/ui/semantic.rtl.css'))
 
-    #install php dependencies
+    # install php dependencies
     composer_cmd = 'composer install --ignore-platform-reqs --no-dev'
     composer_dir = os.path.join(src_dir, rel_name, 'galette')
     print(composer_dir)
     p1 = subprocess.Popen(composer_cmd, shell=True, cwd=composer_dir)
     p1.wait()
 
-    #cleaunp files not required in releases
+    # cleaunp files not required in releases
     todrop = [
         '.travis.yml',
         'apigen.neon',
@@ -399,35 +455,35 @@ def add_libs(rel_name, galette_archive):
     if os.path.exists(os.path.join(src_dir, rel_name, '.github')):
         shutil.rmtree(os.path.join(src_dir, rel_name, '.github'))
 
-    #cleanup vendors
+    # cleanup vendors
     for root, dirnames, filenames in os.walk(os.path.join(composer_dir, 'vendor')):
-        #remove git directories
+        # remove git directories
         for dirname in fnmatch.filter(dirnames, '.git*'):
             remove_dir = os.path.join(composer_dir, root, dirname)
             shutil.rmtree(remove_dir)
-        #remove test directories
+        # remove test directories
         for dirname in fnmatch.filter(dirnames, 'test?'):
             remove_dir = os.path.join(composer_dir, root, dirname)
             shutil.rmtree(remove_dir)
-        #remove examples directories
+        # remove examples directories
         for dirname in fnmatch.filter(dirnames, 'example?'):
             remove_dir = os.path.join(composer_dir, root, dirname)
             shutil.rmtree(remove_dir)
-        #remove doc directories
+        # remove doc directories
         for dirname in fnmatch.filter(dirnames, 'doc?'):
             remove_dir = os.path.join(composer_dir, root, dirname)
             shutil.rmtree(remove_dir)
-        #remove composer stuff
+        # remove composer stuff
         for filename in fnmatch.filter(filenames, 'composer*'):
             remove_file = os.path.join(composer_dir, root, filename)
             os.remove(remove_file)
 
         for dirname in dirnames:
-            #remove Faker useless languages
+            # remove Faker useless languages
             if root.endswith('src/Faker/Provider'):
                 if dirname not in ['en_US', 'fr_FR', 'de_DE']:
                     shutil.rmtree(os.path.join(root, dirname))
-            #begin to remove tcpdf not used fonts
+            # begin to remove tcpdf not used fonts
             if root.endswith('tcpdf/fonts'):
                 if dirname != 'dejavu-fonts-ttf-2.34':
                     shutil.rmtree(os.path.join(root, dirname))
@@ -438,23 +494,23 @@ def add_libs(rel_name, galette_archive):
         for filename in filenames:
             if os.path.islink(os.path.join(root, filename)):
                 os.remove(os.path.join(root, filename))
-            #remove tcpdf not used fonts
+            # remove tcpdf not used fonts
             if root.endswith('tcpdf/fonts'):
                 if filename not in [
-                        'dejavusansbi.ctg.z',
-                        'dejavusansbi.z',
-                        'dejavusansb.z',
-                        'dejavusansi.ctg.z',
-                        'dejavusansi.z',
-                        'dejavusans.z',
-                        'zapfdingbats.php',
-                        'dejavusansb.ctg.z',
-                        'dejavusansbi.php',
-                        'dejavusansb.php',
-                        'dejavusans.ctg.z',
-                        'dejavusansi.php',
-                        'dejavusans.php',
-                        'helvetica.php'
+                    'dejavusansbi.ctg.z',
+                    'dejavusansbi.z',
+                    'dejavusansb.z',
+                    'dejavusansi.ctg.z',
+                    'dejavusansi.z',
+                    'dejavusans.z',
+                    'zapfdingbats.php',
+                    'dejavusansb.ctg.z',
+                    'dejavusansbi.php',
+                    'dejavusansb.php',
+                    'dejavusans.ctg.z',
+                    'dejavusansi.php',
+                    'dejavusans.php',
+                    'helvetica.php'
                 ]:
                     os.remove(os.path.join(root, filename))
 
@@ -469,9 +525,10 @@ def add_libs(rel_name, galette_archive):
     galette.close()
     shutil.rmtree(src_dir)
 
+
 def valid_commit(repo, c):
     """
-    Validate commit existance in repository
+    Validate commit existence in repository
     Also prepare version for GALETTE_NIGHTLY value
     """
     global commit, nightly_version
@@ -505,11 +562,12 @@ def valid_commit(repo, c):
     except gitdb.exc.BadObject:
         return False
 
+
 def main():
     """
     Main method
     """
-    global verbose, tagrefs, force, extra, assume_yes, nightly, sign, ssh_key, repo
+    global verbose, tagrefs, force, extra, assume_yes, nightly, sign, ssh_key, repo, ssh_host, ssh_path, galette_dl_repo, is_local
 
     parser = argparse.ArgumentParser(description='Release Galette')
     group = parser.add_mutually_exclusive_group()
@@ -553,14 +611,35 @@ def main():
         action="store_true"
     )
     parser.add_argument(
+        '-l',
+        '--local',
+        help='Use local copy (defined from galette_dl_repo) rather than SSH',
+        action='store_true'
+    )
+    parser.add_argument(
         '-k',
         '--ssh-key',
         help='SSH key to be used for uploading',
     )
+    parser.add_argument(
+        '-H',
+        '--ssh-host',
+        help='SSH host to upload to (default %s)' % ssh_host
+    )
+    parser.add_argument(
+        '-P',
+        '--ssh-path',
+        help='Path on SSH host (default %s)' % ssh_path
+    )
+    parser.add_argument(
+        '-d',
+        '--download-url',
+        help='Download URL (default %s)' % galette_dl_repo
+    )
     parser.add_argument('-f', action='store_true')
     args = parser.parse_args()
 
-    verbose=args.verbose
+    verbose = args.verbose
 
     if verbose:
         print(args)
@@ -573,10 +652,26 @@ def main():
         force = ask_user_confirm(
             'Are you *REALLY* sure you mean -f when you typed -f? [yes/No] '
         )
-    assume_yes=args.assume_yes
+    assume_yes = args.assume_yes
 
-    if args.ssh_key:
-        ssh_key = args.ssh_key
+    if args.local:
+        if not args.download_url:
+            print_err('download_url is mandatory for local builds!')
+            sys.exit(1)
+        is_local = args.local
+
+    else:
+        if args.ssh_key:
+            ssh_key = args.ssh_key
+
+        if args.ssh_host:
+            ssh_host = args.ssh_host
+
+        if args.ssh_path:
+            ssh_path = args.ssh_path
+
+    if args.download_url:
+        galette_dl_repo = args.download_url
 
     build = False
     buildver = None
@@ -608,7 +703,7 @@ def main():
             print_err('%s is not a valid version number!' % args.version)
             sys.exit(1)
         else:
-            #check if specified version exists
+            # check if specified version exists
             if not is_existing_version(args.version):
                 print_err('%s does not exist!' % args.version)
             else:
@@ -629,6 +724,7 @@ def main():
 
     if build:
         _do_build(buildver)
+
 
 if __name__ == "__main__":
     main()

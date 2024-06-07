@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Transactions class
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2011-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,20 +17,15 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-07-31
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository;
 
 use ArrayObject;
+use Laminas\Db\Adapter\Driver\Pdo\Result;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
@@ -51,33 +40,26 @@ use Galette\Filters\TransactionsList;
 /**
  * Transactions class for galette
  *
- * @name Transactions
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Transactions
 {
     public const TABLE = Transaction::TABLE;
     public const PK = Transaction::PK;
 
-    private $count = null;
-    private $zdb;
-    private $login;
-    private $filters;
+    private int $count = 0;
+    private Db $zdb;
+    private Login $login;
+    private TransactionsList $filters;
 
     /**
      * Default constructor
      *
-     * @param Db               $zdb     Database
-     * @param Login            $login   Login
-     * @param TransactionsList $filters Filtering
+     * @param Db                $zdb     Database
+     * @param Login             $login   Login
+     * @param ?TransactionsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, $filters = null)
+    public function __construct(Db $zdb, Login $login, ?TransactionsList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -92,25 +74,24 @@ class Transactions
     /**
      * Get transactions list
      *
-     * @param bool    $as_trans return the results as an array of
-     *                          Transaction object.
-     * @param ?array  $fields   field(s) name(s) to get. Should be a string or
-     *                          an array. If null, all fields will be returned
-     * @param boolean $count    true if we want to count members
+     * @param bool           $as_trans return the results as an array of
+     *                                 Transaction object.
+     * @param ?array<string> $fields   field(s) name(s) to get. Should be a string or
+     *                                 an array. If null, all fields will be returned
      *
-     * @return Transaction[]|ArrayObject
+     * @return array<int, Transaction>|ResultSet|Result
      */
-    public function getList(bool $as_trans = false, ?array $fields = null, bool $count = true): array|ArrayObject
+    public function getList(bool $as_trans = false, ?array $fields = null): array|ResultSet|Result
     {
         try {
-            $select = $this->buildSelect($fields, $count);
+            $select = $this->buildSelect($fields);
             $this->filters->setLimits($select);
 
             $transactions = array();
             $results = $this->zdb->execute($select);
             if ($as_trans) {
                 foreach ($results as $row) {
-                    /** @var ArrayObject $row */
+                    /** @var ArrayObject<string, int|string> $row */
                     $transactions[] = new Transaction($this->zdb, $this->login, $row);
                 }
             } else {
@@ -129,13 +110,11 @@ class Transactions
     /**
      * Builds the SELECT statement
      *
-     * @param ?array $fields fields list to retrieve
-     * @param bool   $count  true if we want to count members
-     *                       (not applicable from static calls), defaults to false
+     * @param ?array<string> $fields fields list to retrieve
      *
      * @return Select SELECT statement
      */
-    private function buildSelect(?array $fields, bool $count = false): Select
+    private function buildSelect(?array $fields): Select
     {
         try {
             $select = $this->zdb->select(self::TABLE, 't');
@@ -145,7 +124,8 @@ class Transactions
                     'trans_id',
                     'trans_desc',
                     'id_adh',
-                    'trans_amount'
+                    'trans_amount',
+                    'type_paiement_trans'
                 );
             }
             $select->columns($fields)->join(
@@ -157,9 +137,7 @@ class Transactions
             $this->buildWhereClause($select);
             $select->order(self::buildOrderClause());
 
-            if ($count) {
-                $this->proceedCount($select);
-            }
+            $this->proceedCount($select);
 
             return $select;
         } catch (Throwable $e) {
@@ -178,7 +156,7 @@ class Transactions
      *
      * @return void
      */
-    private function proceedCount($select)
+    private function proceedCount(Select $select): void
     {
         try {
             $countSelect = clone $select;
@@ -195,7 +173,7 @@ class Transactions
             $result = $results->current();
 
             $k = self::PK;
-            $this->count = $result->$k;
+            $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
@@ -209,9 +187,9 @@ class Transactions
     /**
      * Builds the order clause
      *
-     * @return array SQL ORDER clauses
+     * @return array<string> SQL ORDER clauses
      */
-    private function buildOrderClause()
+    private function buildOrderClause(): array
     {
         $order = array();
 
@@ -244,7 +222,7 @@ class Transactions
      *
      * @return void
      */
-    private function buildWhereClause($select)
+    private function buildWhereClause(Select $select): void
     {
         try {
             if ($this->filters->start_date_filter != null) {
@@ -329,7 +307,7 @@ class Transactions
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -337,12 +315,12 @@ class Transactions
     /**
      * Remove specified transactions
      *
-     * @param array|integer $ids  Transactions identifiers to delete
-     * @param History       $hist History
+     * @param array<int>|integer $ids  Transactions identifiers to delete
+     * @param History            $hist History
      *
      * @return boolean
      */
-    public function remove(array|int $ids, History $hist)
+    public function remove(array|int $ids, History $hist): bool
     {
         $list = array();
         if (is_numeric($ids)) {
@@ -360,7 +338,7 @@ class Transactions
 
             $results = $this->zdb->execute($select);
             foreach ($results as $transaction) {
-                /** @var ArrayObject $transaction */
+                /** @var ArrayObject<string, int|string> $transaction */
                 $c = new Transaction($this->zdb, $this->login, $transaction);
                 $res = $c->remove($hist, false);
                 if ($res === false) {

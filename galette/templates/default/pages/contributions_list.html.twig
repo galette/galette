@@ -1,3 +1,23 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% extends 'elements/list.html.twig' %}
 
 {% set basic_table = true %}
@@ -56,7 +76,7 @@
                     <div class="ui calendar" id="contrib-rangestart">
                         <div class="ui input left icon">
                             <i class="calendar icon" aria-hidden="true"></i>
-                            <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
+                            <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
                         </div>
                     </div>
                 </div>
@@ -65,7 +85,7 @@
                     <div class="ui calendar" id="contrib-rangeend">
                         <div class="ui input left icon">
                             <i class="calendar icon" aria-hidden="true"></i>
-                            <input placeholder="{{ _T("(yyyy-mm-dd format)") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
+                            <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
                         </div>
                     </div>
                 </div>
@@ -74,21 +94,30 @@
                 {% include "components/forms/payment_types.html.twig" with {
                     current: filters.payment_type_filter,
                     varname: "payment_type_filter",
-                    show_inline: "",
                     classname: "",
                     empty: {'value': -1, 'label': _T("Select")}
                 } %}
             </div>
-                <div class="ui right aligned basic fitted segment field flexend">
-                    <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
-                        <i class="search icon" aria-hidden="true"></i>
-                        {{ _T("Filter") }}
-                    </button>
-                    <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
-                        <i class="trash alt red icon" aria-hidden="true"></i>
-                        {{ _T("Clear filter") }}
-                    </button>
+            <div class="field">
+                <label for="contrib_type_filter">{{ _T("Contribution type:") }}</label>
+                <select name="contrib_type_filter" class="ui search dropdown">
+                    <option value="0">{{ _T('Select') }}</option>
+                    {% for key, values in type_cotis_options %}
+                        <option value="{{ key }}"{% if key == filters.contrib_type_filter %} selected="selected"{% endif %}>{{ values.label }}</option>
+                    {% endfor %}
+                </select>
             </div>
+        </div>
+
+        <div class="ui right aligned basic fitted segment field flexend">
+            <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
+                <i class="search icon" aria-hidden="true"></i>
+                {{ _T("Filter") }}
+            </button>
+            <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
+                <i class="trash alt red icon" aria-hidden="true"></i>
+                {{ _T("Clear filter") }}
+            </button>
         </div>
     </div>
     {% if member is defined and mode != 'ajax' %}
@@ -211,7 +240,7 @@
 {% block footer %}
     {% if nb != 0 %}
         <tr>
-            <th class="right" colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}10{% else %}9{% endif %}">
+            <th class="right aligned" colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}10{% else %}9{% endif %}">
                 {{ _T("Found contributions total %f")|replace({"%f": contribs.getSum()}) }}
             </th>
         </tr>
@@ -295,7 +324,7 @@
             {% endif %}
             <td data-col-label="{{ _T("Type") }}">{{ contribution.type.libelle }}</td>
             <td data-col-label="{{ _T("Amount") }}">{{ contribution.amount }}</td>
-            <td data-col-label="{{ _T("Payment type") }}">{{ contribution.spayment_type }}</td>
+            <td data-col-label="{{ _T("Payment type") }}">{{ contribution.getPaymentType() }}</td>
             <td data-col-label="{{ _T("Duration") }}">{{ contribution.duration }}</td>
             {% if mode != 'ajax' %}
                 <td class="actions_row center">

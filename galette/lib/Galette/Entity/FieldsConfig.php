@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Fields config handling
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,20 +17,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-26
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
 use ArrayObject;
+use Galette\Features\Permissions;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
@@ -49,23 +37,19 @@ use Galette\Core\Authentication;
  * defines fields visibility for lists and forms
  * defines fields order and requirement flag for forms
  *
- * @category  Entity
- * @name      FieldsConfig
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-26
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class FieldsConfig
 {
+    use Permissions;
+
     public const NOBODY = 0;
     public const USER_WRITE = 1;
     public const ADMIN = 2;
     public const STAFF = 3;
     public const MANAGER = 4;
     public const USER_READ = 5;
+    public const ALL = 10;
 
     public const TYPE_STR = 0;
     public const TYPE_HIDDEN = 1;
@@ -80,33 +64,43 @@ class FieldsConfig
     public const TYPE_RADIO = 10;
     public const TYPE_SELECT = 11;
 
-    protected $zdb;
-    protected $core_db_fields = array();
-    protected $all_required = array();
-    protected $all_visibles = array();
-    protected $categorized_fields = array();
-    protected $table;
-    protected $defaults = null;
-    protected $cats_defaults = null;
+    protected Db $zdb;
+    /** @var array<string, array<string, mixed>> */
+    protected array $core_db_fields = array();
+    /** @var array<string, bool> */
+    protected array $all_required = array();
+    /** @var array<string, int> */
+    protected array $all_visibles = array();
+    /** @var array<int, array<int, array<string, mixed>>> */
+    protected array $categorized_fields = array();
+    protected string $table;
+    /** @var array<string, mixed>|null  */
+    protected ?array $defaults = null;
+    /** @var array<string, mixed>|null */
+    protected ?array $cats_defaults = null;
 
-    private $staff_fields = array(
+    /** @var array<string> */
+    private array $staff_fields = array(
         'activite_adh',
         'id_statut',
         'bool_exempt_adh',
         'date_crea_adh',
         'info_adh'
     );
-    private $admin_fields = array(
+    /** @var array<string> */
+    private array $admin_fields = array(
         'bool_admin_adh'
     );
 
     public const TABLE = 'fields_config';
 
-    /*
+    /**
      * Fields that are not visible in the
      * form should not be visible here.
+     *
+     * @var array<string>
      */
-    private $non_required = array(
+    private array $non_required = array(
         'id_adh',
         'date_echeance',
         'bool_display_info',
@@ -123,12 +117,14 @@ class FieldsConfig
         'parent_id'
     );
 
-    private $non_form_elements = array(
+    /** @var array<string> */
+    private array $non_form_elements = array(
         'date_echeance',
         'date_modif_adh'
     );
 
-    private $non_display_elements = array(
+    /** @var array<string> */
+    private array $non_display_elements = array(
         'date_echeance',
         'mdp_adh',
         'titre_adh',
@@ -139,11 +135,11 @@ class FieldsConfig
     /**
      * Default constructor
      *
-     * @param Db      $zdb           Database
-     * @param string  $table         the table for which to get fields configuration
-     * @param array   $defaults      default values
-     * @param array   $cats_defaults default categories values
-     * @param boolean $install       Are we calling from installer?
+     * @param Db                   $zdb           Database
+     * @param string               $table         the table for which to get fields configuration
+     * @param array<string, mixed> $defaults      default values
+     * @param array<string, mixed> $cats_defaults default categories values
+     * @param boolean              $install       Are we calling from installer?
      */
     public function __construct(Db $zdb, string $table, array $defaults, array $cats_defaults, bool $install = false)
     {
@@ -163,7 +159,7 @@ class FieldsConfig
      *
      * @return boolean
      */
-    public function load()
+    public function load(): bool
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -175,7 +171,7 @@ class FieldsConfig
             $this->core_db_fields = [];
 
             foreach ($results as $k) {
-                /** @var ArrayObject $k */
+                /** @var ArrayObject<string, int|string> $k */
                 $field = $this->buildField($k);
                 $this->core_db_fields[$k->field_id] = $field;
             }
@@ -194,9 +190,9 @@ class FieldsConfig
     /**
      * Prepare a field (required data, automation)
      *
-     * @param ArrayObject $rset DB ResultSet row
+     * @param ArrayObject<string, int|string> $rset DB ResultSet row
      *
-     * @return ArrayObject
+     * @return ArrayObject<string, int|string>
      */
     protected function prepareField(ArrayObject $rset): ArrayObject
     {
@@ -210,22 +206,23 @@ class FieldsConfig
     /**
      * Prepare a field (required data, automation)
      *
-     * @param ArrayObject $rset DB ResultSet row
+     * @param ArrayObject<string, int|string> $rset DB ResultSet row
      *
-     * @return array
+     * @return array<string, mixed>
      */
     protected function buildField(ArrayObject $rset): array
     {
         $rset = $this->prepareField($rset);
         $f = array(
-            'field_id'  => $rset->field_id,
-            'label'     => $this->defaults[$rset->field_id]['label'],
-            'category'  => (int)$rset->id_field_category,
-            'visible'   => (int)$rset->visible,
-            'required'  => (bool)$rset->required,
-            'propname'  => $this->defaults[$rset->field_id]['propname'],
-            'position'  => (int)$rset->position,
-            'disabled'  => false
+            'field_id'       => $rset->field_id,
+            'label'          => $this->defaults[$rset->field_id]['label'],
+            'category'       => (int)$rset->id_field_category,
+            'visible'        => (int)$rset->visible,
+            'required'       => (bool)$rset->required,
+            'propname'       => $this->defaults[$rset->field_id]['propname'],
+            'position'       => (int)$rset->position,
+            'disabled'       => false,
+            'width_in_forms' => (int)$rset->width_in_forms,
         );
         return $f;
     }
@@ -236,7 +233,7 @@ class FieldsConfig
      *
      * @return void
      */
-    protected function buildLists()
+    protected function buildLists(): void
     {
         $this->categorized_fields = [];
         $this->all_required = [];
@@ -250,11 +247,11 @@ class FieldsConfig
     /**
      * Adds a field to lists
      *
-     * @param array $field Field values
+     * @param array<string,mixed> $field Field values
      *
      * @return void
      */
-    protected function addToLists(array $field)
+    protected function addToLists(array $field): void
     {
         if ($field['position'] >= 0) {
             $this->categorized_fields[$field['category']][] = $field;
@@ -276,7 +273,7 @@ class FieldsConfig
      *
      * @return boolean
      */
-    public function isRequired($field)
+    public function isRequired(string $field): bool
     {
         return isset($this->all_required[$field]);
     }
@@ -289,7 +286,7 @@ class FieldsConfig
      *
      * @return void
      */
-    public function setNotRequired($field)
+    public function setNotRequired(string $field): void
     {
         if (isset($this->all_required[$field])) {
             unset($this->all_required[$field]);
@@ -312,7 +309,7 @@ class FieldsConfig
      *
      * @return void
      */
-    private function checkUpdate()
+    private function checkUpdate(): void
     {
         $class = get_class($this);
 
@@ -321,7 +318,7 @@ class FieldsConfig
             if (count($this->core_db_fields)) {
                 array_walk(
                     $this->core_db_fields,
-                    function ($field) use (&$_all_fields) {
+                    function ($field) use (&$_all_fields): void {
                         $_all_fields[$field['field_id']] = $field;
                     }
                 );
@@ -354,14 +351,15 @@ class FieldsConfig
                             Analog::INFO
                         );
                         $params[] = array(
-                            'field_id'      => $k,
-                            'table_name'    => $this->table,
-                            'required'      => $f['required'],
-                            'visible'       => $f['visible'],
-                            'position'      => $f['position'],
-                            'category'      => $f['category'],
-                            'list_visible'  => $f['list_visible'] ?? false,
-                            'list_position' => $f['list_position'] ?? null
+                            'field_id'       => $k,
+                            'table_name'     => $this->table,
+                            'required'       => $f['required'],
+                            'visible'        => $f['visible'],
+                            'position'       => $f['position'],
+                            'category'       => $f['category'],
+                            'list_visible'   => $f['list_visible'] ?? false,
+                            'list_position'  => $f['list_position'] ?? null,
+                            'width_in_forms' => $f['width_in_forms'] ?? 1
                         );
                     }
                 }
@@ -389,7 +387,7 @@ class FieldsConfig
      * @return boolean
      * @throws Throwable
      */
-    public function installInit()
+    public function installInit(): bool
     {
         try {
             $fields = array_keys($this->defaults);
@@ -408,14 +406,15 @@ class FieldsConfig
             foreach ($fields as $f) {
                 //build default config for each field
                 $params[] = array(
-                    'field_id'      => $f,
-                    'table_name'    => $this->table,
-                    'required'      => $this->defaults[$f]['required'],
-                    'visible'       => $this->defaults[$f]['visible'],
-                    'position'      => (int)$this->defaults[$f]['position'],
-                    'category'      => $this->defaults[$f]['category'],
-                    'list_visible'  => $this->defaults[$f]['list_visible'] ?? false,
-                    'list_position' => $this->defaults[$f]['list_position'] ?? -1
+                    'field_id'       => $f,
+                    'table_name'     => $this->table,
+                    'required'       => $this->defaults[$f]['required'],
+                    'visible'        => $this->defaults[$f]['visible'],
+                    'position'       => (int)$this->defaults[$f]['position'],
+                    'category'       => $this->defaults[$f]['category'],
+                    'list_visible'   => $this->defaults[$f]['list_visible'] ?? false,
+                    'list_position'  => $this->defaults[$f]['list_position'] ?? -1,
+                    'width_in_forms' => $this->defaults[$f]['width_in_forms'] ?? 1
                 );
             }
             $this->insert($params);
@@ -438,9 +437,9 @@ class FieldsConfig
     /**
      * Get non required fields
      *
-     * @return array
+     * @return array<string>
      */
-    public function getNonRequired()
+    public function getNonRequired(): array
     {
         return $this->non_required;
     }
@@ -452,9 +451,9 @@ class FieldsConfig
      * @param boolean $new   True when adding a new member
      * @param boolean $selfs True if we're called from self subscription page
      *
-     * @return array
+     * @return array<string, array<int,object>>
      */
-    public function getFormElements(Login $login, $new, $selfs = false)
+    public function getFormElements(Login $login, bool $new, bool $selfs = false): array
     {
         global $preferences;
 
@@ -595,9 +594,9 @@ class FieldsConfig
      *
      * @param Login $login Login instance
      *
-     * @return array
+     * @return array<int,object>
      */
-    public function getDisplayElements(Login $login)
+    public function getDisplayElements(Login $login): array
     {
         global $preferences;
 
@@ -677,9 +676,9 @@ class FieldsConfig
     /**
      * Get required fields
      *
-     * @return array of all required fields. Field names = keys
+     * @return array<string, bool> of all required fields. Field names = keys
      */
-    public function getRequired()
+    public function getRequired(): array
     {
         return $this->all_required;
     }
@@ -687,9 +686,9 @@ class FieldsConfig
     /**
      * Get visible fields
      *
-     * @return array of all visibles fields
+     * @return array<string,int> of all visibles fields
      */
-    public function getVisibilities()
+    public function getVisibilities(): array
     {
         return $this->all_visibles;
     }
@@ -701,7 +700,7 @@ class FieldsConfig
      *
      * @return integer
      */
-    public function getVisibility($field)
+    public function getVisibility(string $field): int
     {
         return $this->all_visibles[$field];
     }
@@ -709,9 +708,9 @@ class FieldsConfig
     /**
      * Get all fields with their categories
      *
-     * @return array
+     * @return array<int, array<int, array<string, mixed>>>
      */
-    public function getCategorizedFields()
+    public function getCategorizedFields(): array
     {
         return $this->categorized_fields;
     }
@@ -719,11 +718,11 @@ class FieldsConfig
     /**
      * Set fields
      *
-     * @param array $fields categorized fields array
+     * @param array<int, array<int, array<string, mixed>>> $fields categorized fields array
      *
      * @return boolean
      */
-    public function setFields($fields)
+    public function setFields(array $fields): bool
     {
         $this->categorized_fields = $fields;
         return $this->store();
@@ -734,7 +733,7 @@ class FieldsConfig
      *
      * @return boolean
      */
-    private function store()
+    private function store(): bool
     {
         $class = get_class($this);
 
@@ -747,7 +746,8 @@ class FieldsConfig
                     'required'              => ':required',
                     'visible'               => ':visible',
                     'position'              => ':position',
-                    FieldsCategories::PK    => ':' . FieldsCategories::PK
+                    FieldsCategories::PK    => ':' . FieldsCategories::PK,
+                    'width_in_forms'          => ':width_in_forms'
                 )
             )->where(
                 array(
@@ -772,7 +772,8 @@ class FieldsConfig
                         'visible'               => $field['visible'],
                         'position'              => $pos,
                         FieldsCategories::PK    => $field['category'],
-                        'field_id'              => $field['field_id']
+                        'field_id'              => $field['field_id'],
+                        'width_in_forms'          => $field['width_in_forms']
                     );
 
                     $stmt->execute($params);
@@ -809,12 +810,12 @@ class FieldsConfig
 
     /**
      * Migrate old required fields configuration
-     * Only needeed for 0.7.4 upgrade
+     * Only needed for 0.7.4 upgrade
      * (should have been 0.7.3 - but I missed that.)
      *
      * @return boolean
      */
-    public function migrateRequired()
+    public function migrateRequired(): bool
     {
         try {
             $select = $this->zdb->select('required');
@@ -889,11 +890,11 @@ class FieldsConfig
     /**
      * Insert values in database
      *
-     * @param array $values Values to insert
+     * @param array<int,mixed> $values Values to insert
      *
      * @return void
      */
-    private function insert($values)
+    private function insert(array $values): void
     {
         $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
@@ -905,7 +906,8 @@ class FieldsConfig
                 FieldsCategories::PK    => ':category',
                 'position'              => ':position',
                 'list_visible'          => ':list_visible',
-                'list_position'         => ':list_position'
+                'list_position'         => ':list_position',
+                'width_in_forms'          => ':width_in_forms'
             )
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
@@ -929,7 +931,8 @@ class FieldsConfig
                     'category'              => $d['category'],
                     'position'              => $d['position'],
                     'list_visible'          => $list_visible,
-                    'list_position'         => $d['list_position'] ?? -1
+                    'list_position'         => $d['list_position'] ?? -1,
+                    'width_in_forms'        => $d['width_in_forms'] ?? 1
                 )
             );
         }
@@ -942,7 +945,7 @@ class FieldsConfig
      *
      * @return boolean
      */
-    public function isSelfExcluded($name)
+    public function isSelfExcluded(string $name): bool
     {
         return in_array(
             $name,
@@ -956,8 +959,8 @@ class FieldsConfig
     /**
      * Filter visible fields
      *
-     * @param Login $login  Login instance
-     * @param array $fields Fields list
+     * @param Login               $login  Login instance
+     * @param array<string,mixed> $fields Fields list
      *
      * @return void
      */
@@ -988,12 +991,12 @@ class FieldsConfig
      * Get fields for massive changes
      * @see FieldsConfig::getFormElements
      *
-     * @param array $fields Member fields
-     * @param Login $login  Login instance
+     * @param array<string,mixed> $fields Member fields
+     * @param Login               $login  Login instance
      *
-     * @return array
+     * @return array<string,mixed>
      */
-    public function getMassiveFormElements(array $fields, Login $login)
+    public function getMassiveFormElements(array $fields, Login $login): array
     {
         $this->filterVisible($login, $fields);
 
@@ -1029,12 +1032,12 @@ class FieldsConfig
      *
      * @param string $name Field name
      *
-     * @return array
+     * @return array<string,mixed>
      */
-    public function getField($name): array
+    public function getField(string $name): array
     {
         if (!isset($this->core_db_fields[$name])) {
-            throw new \UnexpectedValueException("$name fied does not exists");
+            throw new \UnexpectedValueException("$name field does not exists");
         }
         return $this->core_db_fields[$name];
     }

@@ -1,16 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Handle Telemetry data
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2017 GLPI and Contributors
- * Copyright © 2017-2022 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,21 +17,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Util
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 GLPI and Contributors
- * @copyright 2017-2022 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9
  */
+
+declare(strict_types=1);
 
 namespace Galette\Util;
 
 use Analog\Analog;
+use Exception;
 use Galette\Core\Db;
 use Galette\Core\Preferences;
 use Galette\Core\Plugins;
@@ -46,15 +32,9 @@ use Galette\Core\Plugins;
 /**
  * Handle Telemetry data
  *
- * @category  Util
- * @name      Telemetry
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 GLPI and Contributors
- * @copyright 2017-2022 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9
+ * @copyright 2017-2024 The Galette Team
  */
 class Telemetry
 {
@@ -80,9 +60,9 @@ class Telemetry
     /**
      * Grab telemetry information
      *
-     * @return array
+     * @return array<string, array<string, string|array<string, string|array<string, string>>>>
      */
-    public function getTelemetryInfos()
+    public function getTelemetryInfos(): array
     {
         $data = [
             'galette'  => $this->grabGaletteInfos(),
@@ -99,9 +79,9 @@ class Telemetry
     /**
      * Grab Galette part information
      *
-     * @return array
+     * @return array<string, string|array<string, string>>
      */
-    public function grabGaletteInfos()
+    public function grabGaletteInfos(): array
     {
         $galette = [
             'uuid'               => $this->getInstanceUuid(),
@@ -129,9 +109,9 @@ class Telemetry
     /**
      * Grab DB part information
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function grabDbInfos()
+    public function grabDbInfos(): array
     {
         $dbinfos = $this->zdb->getInfos();
         return $dbinfos;
@@ -140,9 +120,9 @@ class Telemetry
     /**
      * Grab web server part information
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function grabWebserverInfos()
+    public function grabWebserverInfos(): array
     {
         $server = [
             'engine'  => '',
@@ -179,9 +159,9 @@ class Telemetry
     /**
      * Grab PHP part information
      *
-     * @return array
+     * @return array<string, string|array<string, string>>
      */
-    public function grabPhpInfos()
+    public function grabPhpInfos(): array
     {
         $php = [
             'version'   => str_replace(PHP_EXTRA_VERSION, '', PHP_VERSION),
@@ -202,9 +182,9 @@ class Telemetry
     /**
      * Grab OS part information
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function grabOsInfos()
+    public function grabOsInfos(): array
     {
         $distro = false;
         if (@file_exists('/etc/redhat-release')) {
@@ -227,11 +207,10 @@ class Telemetry
      * Count
      *
      * @param string $table Table to query
-     * @param array  $where Where clause, if any
      *
      * @return integer
      */
-    public function getCount($table, $where = [])
+    public function getCount(string $table): int
     {
         $select = $this->zdb->select($table);
         $select->columns([
@@ -248,13 +227,12 @@ class Telemetry
      * Calculate average parts
      *
      * @param string $table Table to query
-     * @param array  $where Where clause, if any
      *
      * @return string
      */
-    private function getAverage($table, $where = [])
+    private function getAverage(string $table): string
     {
-        $count = $this->getCount($table, $where);
+        $count = $this->getCount($table);
 
         if ($count <= 50) {
             return '0-50';
@@ -275,7 +253,7 @@ class Telemetry
      *
      * @return boolean
      */
-    public function send()
+    public function send(): bool
     {
         $data = $this->getTelemetryInfos();
         $infos = json_encode(['data' => $data]);
@@ -335,7 +313,7 @@ class Telemetry
      *
      * @return string
      */
-    private function getUuid($type)
+    private function getUuid(string $type): string
     {
         $param = 'pref_' . $type . '_uuid';
         $uuid = $this->prefs->$param;
@@ -350,7 +328,7 @@ class Telemetry
      *
      * @return string
      */
-    private function getInstanceUuid()
+    private function getInstanceUuid(): string
     {
         return $this->getUuid('instance');
     }
@@ -360,7 +338,7 @@ class Telemetry
      *
      * @return string
      */
-    final public function getRegistrationUuid()
+    final public function getRegistrationUuid(): string
     {
         return $this->getUuid('registration');
     }
@@ -373,7 +351,7 @@ class Telemetry
      *
      * @return string
      */
-    final public function generateUuid($type)
+    final public function generateUuid(string $type): string
     {
         $uuid = $this->getRandomString(40);
         $param = 'pref_' . $type . '_uuid';
@@ -387,7 +365,7 @@ class Telemetry
      *
      * @return string
      */
-    final public function generateInstanceUuid()
+    final public function generateInstanceUuid(): string
     {
         return $this->generateUuid('instance');
     }
@@ -397,7 +375,7 @@ class Telemetry
      *
      * @return string
      */
-    final public function generateRegistrationUuid()
+    final public function generateRegistrationUuid(): string
     {
         return $this->generateUuid('registration');
     }
@@ -407,7 +385,7 @@ class Telemetry
      *
      * @return string
      */
-    public function getSentDate()
+    public function getSentDate(): string
     {
         return $this->prefs->pref_telemetry_date;
     }
@@ -417,7 +395,7 @@ class Telemetry
      *
      * @return string
      */
-    public function getRegistrationDate()
+    public function getRegistrationDate(): string
     {
         return $this->prefs->pref_registration_date;
     }
@@ -427,7 +405,7 @@ class Telemetry
      *
      * @return boolean
      */
-    public function isSent()
+    public function isSent(): bool
     {
         return $this->getSentDate() != false;
     }
@@ -437,7 +415,7 @@ class Telemetry
      *
      * @return boolean
      */
-    public function isRegistered()
+    public function isRegistered(): bool
     {
         return $this->getRegistrationDate() != false;
     }
@@ -446,7 +424,7 @@ class Telemetry
      * Should telemetry information sent again?
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function shouldRenew(): bool
     {
@@ -468,7 +446,7 @@ class Telemetry
      *
      * @see https://stackoverflow.com/questions/4356289/php-random-string-generator/31107425#31107425
      */
-    private function getRandomString($length)
+    private function getRandomString(int $length): string
     {
         $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $str = '';
@@ -483,9 +461,9 @@ class Telemetry
      * Set quick mode
      * Will set a short timeout on curl calls
      *
-     * @return Telemetry
+     * @return self
      */
-    public function setQuick()
+    public function setQuick(): self
     {
         $this->quick = true;
         return $this;

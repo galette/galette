@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * System information
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2012-2014 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,30 +17,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.1dev - 2012-06-26
  */
 
+declare(strict_types=1);
+
 namespace Galette\Core;
+
+use Galette\Util\Telemetry;
 
 /**
  * Grab system information
  *
- * @category  Core
- * @name      SysInfos
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.1dev - 2012-03-12
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class SysInfos
 {
@@ -59,11 +41,11 @@ class SysInfos
      *
      * @return string
      */
-    public function getRawData(Db $zdb, Preferences $prefs, Plugins $plugins)
+    public function getRawData(Db $zdb, Preferences $prefs, Plugins $plugins): string
     {
-        $telemetry = new \Galette\Util\Telemetry($zdb, $prefs, $plugins);
+        $telemetry = new Telemetry($zdb, $prefs, $plugins);
 
-        $str = str_pad('Galette version:', 20, '.') . ' ' . \Galette\Core\Galette::gitVersion(true) . "\n";
+        $str = str_pad('Galette version:', 20, '.') . ' ' . Galette::gitVersion(true) . "\n";
 
         if (Galette::isDemo()) {
             $str .= $this->getPluginsInfo($plugins);

@@ -1,3 +1,23 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
     <div class="ui basic fitted segment">
         <a
             href="{{ url_for('addDynamicField', {'form_name': form_name}) }}"
@@ -16,21 +36,35 @@
                     <th>{{ _T("Permissions") }}</th>
                     <th class="date_row">{{ _T("Type") }}</th>
                     <th class="date_row">{{ _T("Required") }}</th>
+{% if preferences.pref_member_form_grid != 'one' %}
+                    <th class="date_row">{{ _T("Width in forms") }}</th>
+{% endif %}
                     <th>{{ _T("Actions") }}</th>
                 </tr>
             </thead>
             <tbody>
 {% for field in fields_list %}
                 <tr>
-                    <td data-scope="id">{{ field.getIndex() }}</td>
+                    <td data-scope="id" class="collapsing">{{ field.getIndex() }}</td>
                     <td class="left" data-scope="row">{{ field.getName()|escape }}</td>
-                    <td class="left" data-col-label="{{ _T("Permissions") }}">{{ field.getPermName() }}</td>
+                    <td class="left" data-col-label="{{ _T("Permissions") }}">{{ field.getPermissionName() }}</td>
                     <td class="left" data-col-label="{{ _T("Type") }}">{{ field.getTypeName() }}</td>
                     <td data-col-label="{{ _T("Required") }}">
     {% if field.getType != 0 %}
         {% if field.isRequired() %}{{ _T("Yes") }}{% else %}{{ _T("No") }}{% endif %}
     {% endif %}
                     </td>
+    {% if preferences.pref_member_form_grid != 'one' %}
+                    <td class="left" data-col-label="{{ _T("Width in forms") }}">
+        {% if preferences.pref_member_form_grid == 'three' and field.getWidthInForms() == 3  %}
+                        {{ _T("Half") }}
+        {% elseif field.getWidthInForms() == 2 %}
+                        {{ _T("Full") }}
+        {% else %}
+                        {{ _T("Default") }}
+        {% endif %}
+                    </td>
+    {% endif %}
                     <td class="center actions_row">
                         <a
                             href="{{ url_for('editDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"

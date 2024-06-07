@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * PDF Model
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-02-19
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
@@ -49,14 +36,7 @@ use Laminas\Db\Sql\Expression;
 /**
  * PDF Model
  *
- * @category  Entity
- * @name      PdfModel
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-02-19
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property integer $id
  * @property string $name
@@ -72,6 +52,7 @@ use Laminas\Db\Sql\Expression;
  * @property string $body
  * @property-read string $hbody
  * @property string $styles
+ * @property string $hstyles
  * @property PdfMain $parent
  */
 
@@ -87,26 +68,26 @@ abstract class PdfModel
     public const RECEIPT_MODEL = 3;
     public const ADHESION_FORM_MODEL = 4;
 
-    private $id;
-    private $name;
-    private $type;
-    private $header;
-    private $footer;
-    private $title;
-    private $subtitle;
-    private $body;
-    private $styles;
-    private $parent;
+    private ?int $id = null;
+    private string $name;
+    private int $type;
+    private ?string $header;
+    private ?string $footer;
+    private ?string $title;
+    private ?string $subtitle;
+    private ?string $body;
+    private ?string $styles = '';
+    private ?PdfModel $parent = null;
 
     /**
      * Main constructor
      *
-     * @param Db          $zdb         Database instance
-     * @param Preferences $preferences Galette preferences
-     * @param int         $type        Model type
-     * @param mixed       $args        Arguments
+     * @param Db                                      $zdb         Database instance
+     * @param Preferences                             $preferences Galette preferences
+     * @param int                                     $type        Model type
+     * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
-    public function __construct(Db $zdb, Preferences $preferences, $type, $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int $args = null)
     {
         global $container, $login;
         $this->routeparser = $container->get(RouteParser::class);
@@ -118,8 +99,8 @@ abstract class PdfModel
 
         if (is_int($args)) {
             $this->load($args);
-        } elseif ($args !== null && is_object($args)) {
-            $this->loadFromRs($args);
+        } elseif ($args instanceof ArrayObject) {
+            $this->loadFromRS($args);
         } else {
             $this->load($type);
         }
@@ -136,7 +117,7 @@ abstract class PdfModel
      *
      * @return void
      */
-    protected function load($id, $init = true)
+    protected function load(int $id, bool $init = true): void
     {
         global $login;
 
@@ -157,9 +138,9 @@ abstract class PdfModel
                     throw new \RuntimeException('Model not found!');
                 }
             } else {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
-                $this->loadFromRs($result);
+                $this->loadFromRS($result);
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -174,11 +155,11 @@ abstract class PdfModel
     /**
      * Load model from a db ResultSet
      *
-     * @param ArrayObject $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs ResultSet
      *
      * @return void
      */
-    protected function loadFromRs(ArrayObject $rs)
+    protected function loadFromRS(ArrayObject $rs): void
     {
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
@@ -214,7 +195,7 @@ abstract class PdfModel
      *
      * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         $title = $this->title;
         //@phpstan-ignore-next-line
@@ -273,7 +254,7 @@ abstract class PdfModel
      *
      * @return string
      */
-    public static function getTypeClass(int $type)
+    public static function getTypeClass(int $type): string
     {
         $class = null;
         switch ($type) {
@@ -304,9 +285,9 @@ abstract class PdfModel
      *
      * @return void
      */
-    protected function checkChars($value, $chars, $field, $empty = false)
+    protected function checkChars(string $value, int $chars, string $field, bool $empty = false): void
     {
-        if ($value !== null && trim($value) !== '') {
+        if (trim($value) !== '') {
             if (mb_strlen($value) > $chars) {
                 throw new \LengthException(
                     str_replace(
@@ -336,10 +317,8 @@ abstract class PdfModel
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
-        global $lang;
-
         switch ($name) {
             case 'id':
                 return (int)$this->$name;
@@ -355,7 +334,7 @@ abstract class PdfModel
             case 'replaces':
                 return $this->$name ?? '';
             case 'hstyles':
-                $value = null;
+                $value = '';
 
                 //get header and footer from parent if not defined in current model
                 if (
@@ -388,13 +367,15 @@ abstract class PdfModel
 
                 $value = $this->proceedReplacements($prop_value);
                 return $value;
-            default:
-                Analog::log(
-                    'Unable to get PdfModel property ' . $name,
-                    Analog::WARNING
-                );
-                break;
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -405,7 +386,7 @@ abstract class PdfModel
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         switch ($name) {
             case 'id':
@@ -439,7 +420,7 @@ abstract class PdfModel
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'type':

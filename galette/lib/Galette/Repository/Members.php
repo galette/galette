@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Members class
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-02-28
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository;
 
@@ -45,7 +32,7 @@ use Throwable;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
 use Analog\Analog;
-use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\Expression;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Predicate\PredicateSet;
 use Laminas\Db\Sql\Predicate\Operator;
@@ -59,18 +46,12 @@ use Galette\Core\Picture;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Core\Db;
+use ArrayObject;
 
 /**
  * Members class for galette
  *
- * @name Members
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Members
 {
@@ -121,16 +102,19 @@ class Members
 
     public const NON_STAFF_MEMBERS = 30;
 
-    private $filters = false;
-    private $count = null;
-    private $errors = array();
+    private MembersList|AdvancedMembersList $filters;
+    private int $count = 0;
+    /** @var array<string> */
+    private array $errors = [];
+    /** @var string[] */
+    private array $extra_order = [];
 
     /**
      * Default constructor
      *
-     * @param MembersList $filters Filtering
+     * @param MembersList|AdvancedMembersList|null $filters Filtering
      */
-    public function __construct($filters = null)
+    public function __construct(MembersList|AdvancedMembersList|null $filters = null)
     {
         if ($filters === null) {
             $this->filters = new MembersList();
@@ -142,22 +126,22 @@ class Members
     /**
      * Get staff members list
      *
-     * @param bool    $as_members return the results as an array of
-     *                            Member object.
-     * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
-     * @param boolean $count      true if we want to count members
-     * @param boolean $limit      true to LIMIT query
+     * @param bool           $as_members return the results as an array of
+     *                                   Member object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be
+     *                                   returned
+     * @param boolean        $count      true if we want to count members
+     * @param boolean        $limit      true to LIMIT query
      *
      * @return Adherent[]|ResultSet
      */
     public function getStaffMembersList(
-        $as_members = false,
-        $fields = null,
-        $count = true,
-        $limit = true
-    ) {
+        bool $as_members = false,
+        ?array $fields = null,
+        bool $count = true,
+        bool $limit = true
+    ): array|ResultSet {
         return $this->getMembersList(
             $as_members,
             $fields,
@@ -171,22 +155,22 @@ class Members
     /**
      * Get managed members list (for groups managers)
      *
-     * @param bool    $as_members return the results as an array of
-     *                            Member object.
-     * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
-     * @param boolean $count      true if we want to count members
-     * @param boolean $limit      true to LIMIT query
+     * @param bool           $as_members return the results as an array of
+     *                                   Member object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be
+     *                                   returned
+     * @param boolean        $count      true if we want to count members
+     * @param boolean        $limit      true to LIMIT query
      *
      * @return Adherent[]|ResultSet
      */
     public function getManagedMembersList(
-        $as_members = false,
-        $fields = null,
-        $count = true,
-        $limit = true
-    ) {
+        bool $as_members = false,
+        ?array $fields = null,
+        bool $count = true,
+        bool $limit = true
+    ): array|ResultSet {
         return $this->getMembersList(
             $as_members,
             $fields,
@@ -200,28 +184,28 @@ class Members
     /**
      * Get members list
      *
-     * @param bool    $as_members return the results as an array of
-     *                            Member object.
-     * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
-     * @param boolean $count      true if we want to count members
-     * @param boolean $staff      true if we want only staff members
-     * @param boolean $managed    true if we want only managed groups
-     * @param boolean $limit      true if we want records pagination
-     * @param boolean $export     true if we are exporting
+     * @param bool           $as_members return the results as an array of
+     *                                   Member object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be
+     *                                   returned
+     * @param boolean        $count      true if we want to count members
+     * @param boolean        $staff      true if we want only staff members
+     * @param boolean        $managed    true if we want only managed groups
+     * @param boolean        $limit      true if we want records pagination
+     * @param boolean        $export     true if we are exporting
      *
      * @return Adherent[]|ResultSet
      */
     public function getMembersList(
-        $as_members = false,
-        $fields = null,
-        $count = true,
-        $staff = false,
-        $managed = false,
-        $limit = true,
-        $export = false
-    ) {
+        bool $as_members = false,
+        ?array $fields = null,
+        bool $count = true,
+        bool $staff = false,
+        bool $managed = false,
+        bool $limit = true,
+        bool $export = false
+    ): array|ResultSet {
         global $zdb;
 
         if ($limit === true) {
@@ -281,23 +265,16 @@ class Members
     /**
      * Remove specified members
      *
-     * @param integer|array $ids Members identifiers to delete
+     * @param integer|array<int> $ids Members identifiers to delete
      *
      * @return boolean
      */
-    public function removeMembers($ids)
+    public function removeMembers(int|array $ids): bool
     {
         global $zdb, $hist, $emitter;
 
         $processed = array();
-        $list = array();
-        if (is_array($ids)) {
-            $list = $ids;
-        } elseif (is_numeric($ids)) {
-            $list = [(int)$ids];
-        } else {
-            return false;
-        }
+        $list = (is_array($ids) ? $ids : [$ids]);
 
         try {
             $zdb->connection->beginTransaction();
@@ -335,12 +312,7 @@ class Members
                     }
                 }
 
-                $processed[] = [
-                    'id_adh' => $member->id_adh,
-                    'nom_adh' => $member->nom_adh,
-                    'prenom_adh' => $member->prenom_adh,
-                    'email_adh' => $member->email_adh
-                ];
+                $processed[] = $member;
             }
 
             //delete contributions
@@ -447,15 +419,15 @@ class Members
     /**
      * Get members list
      *
-     * @param boolean $as_members return the results as an array of
-     *                            Member object.
-     * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                            an array. If null, all fields will be
-     *                            returned
+     * @param boolean        $as_members return the results as an array of
+     *                                   Member object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be
+     *                                   returned
      *
      * @return Adherent[]|ResultSet
      */
-    public function getList($as_members = false, $fields = null)
+    public function getList(bool $as_members = false, ?array $fields = null): array|ResultSet
     {
         return $this->getMembersList(
             $as_members,
@@ -474,13 +446,14 @@ class Members
      * @param boolean $with_photos get only members which have uploaded a
      *                             photo (for trombinoscope)
      *
-     * @return Adherent[]
+     * @return array<string, Adherent[]>
      */
-    public function getPublicList($with_photos)
+    public function getPublicList(bool $with_photos): array
     {
         global $zdb;
 
         try {
+            $this->extra_order = ['priorite_statut ASC'];
             $select = $this->buildSelect(
                 self::SHOW_PUBLIC_LIST,
                 null,
@@ -488,19 +461,37 @@ class Members
                 true
             );
 
+            $select->join(
+                array('status' => PREFIX_DB . Status::TABLE),
+                'a.' . Status::PK . '=status.' . Status::PK
+            );
+
             $this->filters->setLimits($select);
 
             $results = $zdb->execute($select);
-            $members = array();
             $deps = array(
                 'groups'    => false,
                 'dues'      => false,
                 'picture'   => $with_photos
             );
+
+            $status = new Status($zdb);
+            $status_list = $status->getCompleteList();
+
+            $staff = [];
+            $members = [];
             foreach ($results as $row) {
-                $members[] = new Adherent($zdb, $row, $deps);
+                $member = new Adherent($zdb, $row, $deps);
+                if ($status_list[$row->id_statut]['extra'] < self::NON_STAFF_MEMBERS) {
+                    $staff[] = $member;
+                } else {
+                    $members[] = $member;
+                }
             }
-            return $members;
+            return [
+                'staff'     => $staff,
+                'members'   => $members
+            ];
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot list members with public information (photos: '
@@ -514,27 +505,27 @@ class Members
     /**
      * Get list of members that has been selected
      *
-     * @param array   $ids         an array of members id that has been selected
-     * @param array   $orderby     SQL order clause (optional)
-     * @param boolean $with_photos Should photos be loaded?
-     * @param boolean $as_members  Return Adherent[] or simple ResultSet
-     * @param array   $fields      Fields to use
-     * @param boolean $export      True if we are exporting
-     * @param boolean $dues        True if load dues as Adherent dependency
-     * @param boolean $parent      True if load parent as Adherent dependency
+     * @param int|array<int> $ids         an array of members id that has been selected
+     * @param ?array<string> $orderby     SQL order clause (optional)
+     * @param boolean        $with_photos Should photos be loaded?
+     * @param boolean        $as_members  Return Adherent[] or simple ResultSet
+     * @param ?array<string> $fields      Fields to use
+     * @param boolean        $export      True if we are exporting
+     * @param boolean        $dues        True if load dues as Adherent dependency
+     * @param boolean        $parent      True if load parent as Adherent dependency
      *
-     * @return Adherent[]|false
+     * @return array <int,Adherent|ArrayObject<string, int|string>>|false
      */
     public function getArrayList(
-        $ids,
-        $orderby = null,
-        $with_photos = false,
-        $as_members = true,
-        $fields = null,
-        $export = false,
-        $dues = false,
-        $parent = false
-    ) {
+        int|array $ids,
+        ?array $orderby = null,
+        bool $with_photos = false,
+        bool $as_members = true,
+        ?array $fields = null,
+        bool $export = false,
+        bool $dues = false,
+        bool $parent = false
+    ): array|false {
         global $zdb;
 
         if (!is_array($ids) || count($ids) < 1) {
@@ -589,15 +580,15 @@ class Members
     /**
      * Builds the SELECT statement
      *
-     * @param int    $mode   the current mode (see self::SHOW_*)
-     * @param ?array $fields fields list to retrieve
-     * @param bool   $photos true if we want to get only members with photos
-     *                       Default to false, only relevant for SHOW_PUBLIC_LIST
-     * @param bool   $count  true if we want to count members, defaults to false
+     * @param int            $mode   the current mode (see self::SHOW_*)
+     * @param ?array<string> $fields fields list to retrieve
+     * @param bool           $photos true if we want to get only members with photos
+     *                               Default to false, only relevant for SHOW_PUBLIC_LIST
+     * @param bool           $count  true if we want to count members, defaults to false
      *
      * @return Select SELECT statement
      */
-    private function buildSelect($mode, $fields, $photos, $count = false): Select
+    private function buildSelect(int $mode, ?array $fields, bool $photos, bool $count = false): Select
     {
         global $zdb, $login;
 
@@ -635,11 +626,17 @@ class Members
                 case self::SHOW_STAFF:
                 case self::SHOW_LIST:
                 case self::SHOW_ARRAY_LIST:
-                case self::SHOW_EXPORT:
                     $select->join(
                         array('status' => PREFIX_DB . Status::TABLE),
                         'a.' . Status::PK . '=status.' . Status::PK,
                         array('priorite_statut')
+                    );
+                    break;
+                case self::SHOW_EXPORT:
+                    $select->join(
+                        array('status' => PREFIX_DB . Status::TABLE),
+                        'a.' . Status::PK . '=status.' . Status::PK,
+                        array()
                     );
                     break;
                 case self::SHOW_MANAGED:
@@ -719,7 +716,7 @@ class Members
                         $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
                         if ($dyn_field instanceof \Galette\DynamicFields\Choice) {
                             $hasCdfc = true;
-                            $cdfcs[] = $k;
+                            $cdfcs[] = (int)$k;
                         }
                     }
                 }
@@ -784,9 +781,7 @@ class Members
             }
 
             if ($mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED) {
-                if ($this->filters !== false) {
-                    $this->buildWhereClause($select);
-                }
+                $this->buildWhereClause($select);
             } elseif ($mode == self::SHOW_PUBLIC_LIST) {
                 $select->where(
                     array(
@@ -854,7 +849,7 @@ class Members
      *
      * @return void
      */
-    private function proceedCount(Select $select)
+    private function proceedCount(Select $select): void
     {
         global $zdb;
 
@@ -905,15 +900,15 @@ class Members
     /**
      * Builds the order clause
      *
-     * @param Select $select Original select
-     * @param array  $fields Fields list to ensure ORDER clause
-     *                       references selected fields. Optional.
+     * @param Select         $select Original select
+     * @param ?array<string> $fields Fields list to ensure ORDER clause
+     *                               references selected fields. Optional.
      *
      * @return Select
      */
-    private function buildOrderClause(Select $select, $fields = null): Select
+    private function buildOrderClause(Select $select, ?array $fields = null): Select
     {
-        $order = array();
+        $order = $this->extra_order;
 
         switch ($this->filters->orderby) {
             case self::ORDERBY_NICKNAME:
@@ -959,7 +954,7 @@ class Members
                 break;
         }
 
-        //anyways, we want to order by firstname, lastname
+        //anyway, we want to order by firstname, lastname
         if ($this->canOrderBy('nom_adh', $fields)) {
             $order[] = 'nom_adh ' . $this->filters->getDirection();
         }
@@ -975,12 +970,12 @@ class Members
      * Is field allowed to order? it should be present in
      * provided fields list (those that are SELECT'ed).
      *
-     * @param string $field_name Field name to order by
-     * @param ?array $fields     SELECTE'ed fields
+     * @param string         $field_name Field name to order by
+     * @param ?array<string> $fields     SELECTE'ed fields
      *
      * @return boolean
      */
-    private function canOrderBy($field_name, $fields)
+    private function canOrderBy(string $field_name, ?array $fields): bool
     {
         if ($fields === null) {
             return true;
@@ -1005,7 +1000,7 @@ class Members
      *
      * @return void
      */
-    private function buildWhereClause(Select $select)
+    private function buildWhereClause(Select $select): void
     {
         /**
          * @var Db $zdb
@@ -1173,7 +1168,7 @@ class Members
                     array(),
                     $select::JOIN_LEFT
                 )->where(
-                    '(g.' . Group::PK . ' = ' . $zdb->platform->quoteValue($this->filters->group_filter) .
+                    '(g.' . Group::PK . ' = ' . $zdb->platform->quoteValue((string)$this->filters->group_filter) .
                     ' OR gs.parent_group = NULL OR gs.parent_group = ' .
                     $this->filters->group_filter . ')'
                 );
@@ -1198,9 +1193,13 @@ class Members
      *
      * @return void
      */
-    private function buildAdvancedWhereClause(Select $select)
+    private function buildAdvancedWhereClause(Select $select): void
     {
         global $zdb;
+
+        if (!$this->filters instanceof AdvancedMembersList) {
+            return;
+        }
 
         // Search members who belong to any (OR) or all (AND) listed groups.
         // Idea is to build an array of members ID that fits groups selection
@@ -1410,7 +1409,7 @@ class Members
                         $select->where($qry);
                     } else {
                         $qry .= 'LOWER(' . $prefix . $field . ') ' . $qop . ' ';
-                        $select->where($qry . $zdb->platform->quoteValue('%' . strtolower($cd) . '%'));
+                        $select->where($qry . $zdb->platform->quoteValue('%' . strtolower((string)$cd) . '%'));
                     }
                 }
             }
@@ -1421,7 +1420,7 @@ class Members
             && !isset($this->filters->free_search['empty'])
         ) {
             foreach ($this->filters->free_search as $fs) {
-                $fs['search'] = mb_strtolower($fs['search']);
+                $fs['search'] = mb_strtolower((string)$fs['search']);
                 $qop = null;
                 switch ($fs['qry_op']) {
                     case AdvancedMembersList::OP_EQUALS:
@@ -1542,7 +1541,7 @@ class Members
      *
      * @return boolean
      */
-    public function emptyLogins()
+    public function emptyLogins(): bool
     {
         global $zdb;
 
@@ -1640,9 +1639,9 @@ class Members
     /**
      * Get reminders count based on members state of dues
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getRemindersCount()
+    public function getRemindersCount(): array
     {
         global $zdb;
 
@@ -1739,7 +1738,7 @@ class Members
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -1747,9 +1746,9 @@ class Members
     /**
      * Get registered errors
      *
-     * @return array
+     * @return array<string>
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -1759,9 +1758,9 @@ class Members
      *
      * @param Db $zdb Database instance
      *
-     * @return array ['email' => 'id_adh']
+     * @return array<string,int> ['email' => 'id_adh']
      */
-    public static function getEmails(Db $zdb)
+    public static function getEmails(Db $zdb): array
     {
         $emails = [];
         $select = $zdb->select(self::TABLE);
@@ -1772,7 +1771,7 @@ class Members
         $select->where('email_adh != \'\' AND email_adh IS NOT NULL');
         $rows = $zdb->execute($select);
         foreach ($rows as $row) {
-            $emails[$row->email_adh] = $row->{self::PK};
+            $emails[(string)$row->email_adh] = (int)$row->{self::PK};
         }
         return $emails;
     }
@@ -1780,9 +1779,9 @@ class Members
     /**
      * Get current filters
      *
-     * @return MembersList
+     * @return MembersList|AdvancedMembersList
      */
-    public function getFilters()
+    public function getFilters(): MembersList|AdvancedMembersList
     {
         return $this->filters;
     }
@@ -1790,13 +1789,13 @@ class Members
     /**
      * Get members list to instanciate dropdowns
      *
-     * @param Db      $zdb     Database instance
-     * @param Login   $login   Login instance
-     * @param integer $current Current member
+     * @param Db       $zdb     Database instance
+     * @param Login    $login   Login instance
+     * @param ?integer $current Current member
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function getDropdownMembers(Db $zdb, Login $login, $current = null)
+    public function getDropdownMembers(Db $zdb, Login $login, ?int $current = null): array
     {
         $members = [];
         $required_fields = array(
@@ -1817,11 +1816,11 @@ class Members
             foreach ($list_members as $member) {
                 $pk = Adherent::PK;
 
-                $members[$member->$pk] = Adherent::getNameWithCase(
+                $members[(int)$member->$pk] = Adherent::getNameWithCase(
                     $member->nom_adh,
                     $member->prenom_adh,
                     false,
-                    $member->id_adh,
+                    (int)$member->id_adh,
                     $member->pseudo_adh
                 );
             }

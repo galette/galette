@@ -1,5 +1,26 @@
 <?php
 
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+declare(strict_types=1);
+
 /***************************************************************************
 *                             sql_parse.php
 *                              -------------------
@@ -43,7 +64,7 @@
  *
  * @return string
  */
-function remove_comments(&$output)
+function remove_comments(string &$output): string
 {
     $lines = explode("\n", $output);
     $output = "";
@@ -77,7 +98,7 @@ function remove_comments(&$output)
  *
  * @return string
  */
-function remove_remarks($sql)
+function remove_remarks(string $sql): string
 {
     $lines = explode("\n", $sql);
 
@@ -112,7 +133,7 @@ function remove_remarks($sql)
  *
  * @return array
  */
-function split_sql_file($sql, $delimiter)
+function split_sql_file(string $sql, string $delimiter): array
 {
     // Split up our string into "possible" SQL statements.
     $tokens = explode($delimiter, $sql);
@@ -127,7 +148,7 @@ function split_sql_file($sql, $delimiter)
     $token_count = count($tokens);
     for ($i = 0; $i < $token_count; $i++) {
         // Don't wanna add an empty string as the last thing in the array.
-        if (($i != ($token_count - 1)) || (strlen($tokens[$i] > 0))) {
+        if (($i != ($token_count - 1)) || (strlen($tokens[$i]) > 0)) {
             // This is the total number of single quotes in the token.
             $total_quotes = preg_match_all("/'/", $tokens[$i], $matches);
             // Counts single quotes that are preceded by an odd number of backslashes,

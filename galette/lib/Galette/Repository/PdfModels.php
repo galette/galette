@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * PDF models
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +17,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-02-25
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository;
 
+use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -47,23 +35,16 @@ use Galette\Entity\PdfReceipt;
 /**
  * PDF models
  *
- * @category  Repository
- * @name      PdfModels
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-02-25
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class PdfModels extends Repository
 {
     /**
      * Get models list
      *
-     * @return PdfModel[]
+     * @return array<int, PdfModel>|ResultSet
      */
-    public function getList()
+    public function getList(): array|ResultSet
     {
         try {
             $select = $this->zdb->select(PdfModel::TABLE, 'a');
@@ -72,7 +53,7 @@ class PdfModels extends Repository
             $models = array();
             $results = $this->zdb->execute($select);
             foreach ($results as $row) {
-                $class = PdfModel::getTypeClass($row->model_type);
+                $class = PdfModel::getTypeClass((int)$row->model_type);
                 $models[] = new $class($this->zdb, $this->preferences, $row);
             }
             return $models;
@@ -88,11 +69,11 @@ class PdfModels extends Repository
     /**
      * Add default models in database
      *
-     * @param boolean $check_first Check first if it seem initialized
+     * @param boolean $check_first Check first if it seems initialized
      *
      * @return boolean
      */
-    public function installInit($check_first = true)
+    public function installInit(bool $check_first = true): bool
     {
         try {
             $ent = $this->entity;
@@ -157,7 +138,7 @@ class PdfModels extends Repository
      *
      * @return boolean
      */
-    protected function checkUpdate()
+    protected function checkUpdate(): bool
     {
         try {
             $ent = $this->entity;
@@ -166,7 +147,7 @@ class PdfModels extends Repository
             $list->buffer();
 
             $missing = array();
-            foreach ($this->defaults as $default) {
+            foreach ($this->defaults as $key => $default) {
                 $exists = false;
                 foreach ($list as $model) {
                     if ($model->model_id == $default['model_id']) {
@@ -177,7 +158,7 @@ class PdfModels extends Repository
 
                 if ($exists === false) {
                     //model does not exist in database, insert it.
-                    $missing[] = $default;
+                    $missing[$key] = $default;
                 }
             }
 
@@ -203,12 +184,12 @@ class PdfModels extends Repository
     /**
      * Insert values in database
      *
-     * @param string $table  Table name
-     * @param array  $values Values to insert
+     * @param string              $table  Table name
+     * @param array<string,mixed> $values Values to insert
      *
      * @return void
      */
-    private function insert($table, $values)
+    private function insert(string $table, array $values): void
     {
         $insert = $this->zdb->insert($table);
         $insert->values(
@@ -234,9 +215,9 @@ class PdfModels extends Repository
     /**
      * Load and get default PDF models
      *
-     * @return array
+     * @return array<string,mixed>
      */
-    protected function loadDefaults()
+    protected function loadDefaults(): array
     {
         if (!count($this->defaults)) {
             include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';

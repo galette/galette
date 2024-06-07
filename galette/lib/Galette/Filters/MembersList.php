@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Members list filters and paginator
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Filters
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     march, 3rd 2009
  */
+
+declare(strict_types=1);
 
 namespace Galette\Filters;
 
@@ -41,25 +28,19 @@ use Galette\Core\Pagination;
 use Galette\Core\Preferences;
 use Galette\Entity\Group;
 use Galette\Repository\Members;
+use Slim\Views\Twig;
 
 /**
  * Members list filters and paginator
  *
- * @name      MembersList
- * @category  Filters
- * @package   Galette
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- *
- * @property string $filter_str
- * @property integer $field_filter
- * @property integer $membership_filter
- * @property integer $filter_account
- * @property integer $email_filter
- * @property integer $group_filter
+ * @property ?string $filter_str
+ * @property ?integer $field_filter
+ * @property ?integer $membership_filter
+ * @property ?integer $filter_account
+ * @property ?integer $email_filter
+ * @property ?integer $group_filter
  * @property array $selected
  * @property array $unreachable
  * @property string $query
@@ -68,19 +49,22 @@ use Galette\Repository\Members;
 class MembersList extends Pagination
 {
     //filters
-    private $_filter_str;
-    private $_field_filter;
-    private $_membership_filter;
-    private $_filter_account;
-    private $_email_filter;
-    private $_group_filter;
+    private ?string $filter_str = null;
+    private ?int $field_filter = null;
+    private ?int $membership_filter = null;
+    private ?int $filter_account = null;
+    private ?int $email_filter = null;
+    private ?int $group_filter = null;
 
-    private $_selected;
-    private $_unreachable;
+    /** @var array<int> */
+    private array $selected = [];
+    /** @var array<int> */
+    private array $unreachable = [];
 
-    protected $query;
+    protected string $query = '';
 
-    protected $memberslist_fields = array(
+    /** @var array<string> */
+    protected array $memberslist_fields = array(
         'filter_str',
         'field_filter',
         'membership_filter',
@@ -105,7 +89,7 @@ class MembersList extends Pagination
      *
      * @return int|string
      */
-    protected function getDefaultOrder()
+    protected function getDefaultOrder(): int|string
     {
         return 'nom_adh';
     }
@@ -115,18 +99,18 @@ class MembersList extends Pagination
      *
      * @return void
      */
-    public function reinit()
+    public function reinit(): void
     {
         global $preferences;
 
         parent::reinit();
-        $this->_filter_str = null;
-        $this->_field_filter = null;
-        $this->_membership_filter = null;
-        $this->_filter_account = $preferences->pref_filter_account;
-        $this->_email_filter = Members::FILTER_DC_EMAIL;
-        $this->_group_filter = null;
-        $this->_selected = array();
+        $this->filter_str = null;
+        $this->field_filter = null;
+        $this->membership_filter = null;
+        $this->filter_account = $preferences->pref_filter_account;
+        $this->email_filter = Members::FILTER_DC_EMAIL;
+        $this->group_filter = null;
+        $this->selected = array();
     }
 
     /**
@@ -136,25 +120,23 @@ class MembersList extends Pagination
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
         } else {
             if (in_array($name, $this->memberslist_fields)) {
-                if ($name === 'query') {
-                    return $this->$name;
-                } else {
-                    $name = '_' . $name;
-                    return $this->$name;
-                }
-            } else {
-                Analog::log(
-                    '[MembersList] Unable to get property `' . $name . '`',
-                    Analog::WARNING
-                );
+                return $this->$name;
             }
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -165,7 +147,7 @@ class MembersList extends Pagination
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
             return true;
@@ -184,7 +166,7 @@ class MembersList extends Pagination
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         if (in_array($name, $this->pagination_fields)) {
             parent::__set($name, $value);
@@ -198,7 +180,6 @@ class MembersList extends Pagination
                 case 'selected':
                 case 'unreachable':
                     if (is_array($value)) {
-                        $name = '_' . $name;
                         $this->$name = $value;
                     } elseif ($value !== null) {
                         Analog::log(
@@ -209,15 +190,13 @@ class MembersList extends Pagination
                     }
                     break;
                 case 'filter_str':
-                    $name = '_' . $name;
                     $this->$name = $value;
                     break;
                 case 'field_filter':
                 case 'membership_filter':
                 case 'filter_account':
                     if (is_numeric($value)) {
-                        $name = '_' . $name;
-                        $this->$name = $value;
+                        $this->$name = (int)$value;
                     } elseif ($value !== null) {
                         Analog::log(
                             '[MembersList] Value for property `' . $name .
@@ -231,7 +210,7 @@ class MembersList extends Pagination
                         case Members::FILTER_DC_EMAIL:
                         case Members::FILTER_W_EMAIL:
                         case Members::FILTER_WO_EMAIL:
-                            $this->_email_filter = $value;
+                            $this->email_filter = (int)$value;
                             break;
                         default:
                             Analog::log(
@@ -250,14 +229,16 @@ class MembersList extends Pagination
                         $g = new Group();
                         $res = $g->load($value);
                         if ($res === true) {
-                            $this->_group_filter = $value;
+                            $this->group_filter = $value;
                         } else {
                             Analog::log(
                                 'Group #' . $value . ' does not exists!',
                                 Analog::WARNING
                             );
                         }
-                    } elseif ($value !== null && $value !== '0') {
+                    } elseif ($value === null) {
+                        $this->group_filter = null;
+                    } else {
                         Analog::log(
                             '[MembersList] Value for group filter should be an '
                             . 'integer (' . gettype($value) . ' given)',
@@ -282,11 +263,11 @@ class MembersList extends Pagination
      * Set commons filters for templates
      *
      * @param Preferences $prefs Preferences instance
-     * @param mixed       $view  Template reference
+     * @param Twig        $view  Template reference
      *
      * @return void
      */
-    public function setViewCommonsFilters(Preferences $prefs, $view)
+    public function setViewCommonsFilters(Preferences $prefs, Twig $view): void
     {
         $filter_options = array(
             Members::FILTER_NAME            => _T("Name"),

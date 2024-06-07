@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Password tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2013-10-22
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Password tests class
  *
- * @category  Core
- * @name      Password
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2013-01-13
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Password extends TestCase
 {
@@ -83,7 +63,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testRandom()
+    public function testRandom(): void
     {
         $results = array();
 
@@ -107,7 +87,7 @@ class Password extends TestCase
      *
      * @return int
      */
-    private function createMember()
+    private function createMember(): int
     {
         try {
             $this->deleteMember();
@@ -131,11 +111,11 @@ class Password extends TestCase
         $this->zdb->execute($insert);
 
         if ($this->zdb->isPostgres()) {
-            return $this->zdb->driver->getLastGeneratedValue(
+            return (int)$this->zdb->driver->getLastGeneratedValue(
                 PREFIX_DB . 'adherents_id_seq'
             );
         } else {
-            return $this->zdb->driver->getLastGeneratedValue();
+            return (int)$this->zdb->driver->getLastGeneratedValue();
         }
     }
 
@@ -144,7 +124,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    private function deleteMember()
+    private function deleteMember(): void
     {
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['login_adh' => 'test_password_user']);
@@ -156,7 +136,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testGenerateNewPassword()
+    public function testGenerateNewPassword(): void
     {
         $id_adh = $this->createMember();
         $pass = $this->pass;
@@ -188,7 +168,7 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testCleanExpired()
+    public function testCleanExpired(): void
     {
         $id_adh = $this->createMember();
 
@@ -222,19 +202,17 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testGenerateNewPasswordWException()
+    public function testGenerateNewPasswordWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
             ->getMock();
 
         $this->zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
@@ -247,19 +225,17 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testGenerateNewPasswordWFalseInsert()
+    public function testGenerateNewPasswordWFalseInsert(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
             ->getMock();
 
         $this->zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
@@ -272,19 +248,17 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testCleanExpiredWException()
+    public function testCleanExpiredWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
             ->getMock();
 
         $this->zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
@@ -296,19 +270,17 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testIsHashValidWException()
+    public function testIsHashValidWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
             ->getMock();
 
         $this->zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $pass = new \Galette\Core\Password($this->zdb, false);
@@ -321,19 +293,17 @@ class Password extends TestCase
      *
      * @return void
      */
-    public function testRemoveHashWException()
+    public function testRemoveHashWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
             ->getMock();
 
         $this->zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $pass = new \Galette\Core\Password($this->zdb, false);

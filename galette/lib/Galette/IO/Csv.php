@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * CSV files
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2014 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  IO
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
  */
+
+declare(strict_types=1);
 
 namespace Galette\IO;
 
@@ -41,14 +28,7 @@ use Analog\Analog;
 /**
  * CSV files
  *
- * @category  IO
- * @name      Csv
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 abstract class Csv
@@ -62,35 +42,39 @@ abstract class Csv
     public const FILE_NOT_WRITABLE = -1;
     public const DB_ERROR = -2;
 
-    protected $separator;
-    protected $quote;
-    protected $escaped;
-    protected $file;
-    protected $result;
-    protected $current_line;
+    protected string $separator;
+    protected string $quote;
+    protected string $escaped;
+    protected mixed $file;
+    protected string $result;
+    protected int $current_line;
 
-    protected $extensions = array('csv');
+    /** @var array<string>  */
+    protected array $extensions = array('csv');
 
-    protected $accepted_separators = array(
+    /** @var array<string>  */
+    protected array $accepted_separators = array(
         ',',
         ';',
         '\t'
     );
 
-    protected $accepted_quotes = array(
+    /** @var array<string>  */
+    protected array $accepted_quotes = array(
         '"',
         "'"
     );
 
-    private $errors = array();
-    private $default_directory;
+    /** @var array<string> */
+    private array $errors = array();
+    private string $default_directory;
 
     /**
      * Default constructor
      *
      * @param string $default_dir Default directory
      */
-    public function __construct($default_dir)
+    public function __construct(string $default_dir)
     {
         $this->default_directory = $default_dir;
     }
@@ -98,9 +82,9 @@ abstract class Csv
     /**
      * Retrieve a list of already existing CSV files
      *
-     * @return array
+     * @return array<int, array<string,string>>
      */
-    public function getExisting()
+    public function getExisting(): array
     {
         $csv_files = array();
         $files = glob(
@@ -142,7 +126,7 @@ abstract class Csv
      *
      * @return boolean
      */
-    public function remove($name)
+    public function remove(string $name): bool
     {
         //let's ensure we do not have a path here
         $name = basename($name);
@@ -164,9 +148,9 @@ abstract class Csv
     /**
      * Accepted separators
      *
-     * @return array list of accepted separators
+     * @return array<string> list of accepted separators
      */
-    public function getAcceptedSeparators()
+    public function getAcceptedSeparators(): array
     {
         return $this->accepted_separators;
     }
@@ -174,9 +158,9 @@ abstract class Csv
     /**
      * Accepted quotes
      *
-     * @return array list of accepted quotes
+     * @return array<string> list of accepted quotes
      */
-    public function getAcceptedQuotes()
+    public function getAcceptedQuotes(): array
     {
         return $this->accepted_quotes;
     }
@@ -188,7 +172,7 @@ abstract class Csv
      *
      * @return void
      */
-    public function addError($msg)
+    public function addError(string $msg): void
     {
         $class = get_class($this);
         Analog::log(
@@ -201,9 +185,9 @@ abstract class Csv
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }

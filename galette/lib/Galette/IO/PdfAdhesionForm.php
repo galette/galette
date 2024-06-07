@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Adhesion form PDF
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2014 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  IO
- * @package   Galette
- *
- * @author    Guillaume Rousse <guillomovitch@gmail.com>
- * @copyright 2013-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-07-07
  */
+
+declare(strict_types=1);
 
 namespace Galette\IO;
 
@@ -47,24 +34,17 @@ use Analog\Analog;
 /**
  * Adhesion Form PDF
  *
- * @category  IO
- * @name      PDF
- * @package   Galette
- * @abstract  Class for expanding TCPDF.
- * @author    Guillaume Rousse <guillomovitch@gmail.com>
- * @copyright 2013-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-07-07
+ * @author Guillaume Rousse <guillomovitch@gmail.com>
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class PdfAdhesionForm extends Pdf
 {
-    protected $zdb;
-    protected $adh;
-    protected $prefs;
-    protected $filename;
-    private $path;
+    protected Db $zdb;
+    protected Adherent $adh;
+    protected Preferences $prefs;
+    protected string $filename;
+    private string $path;
 
     /**
      * Main constructor
@@ -73,7 +53,7 @@ class PdfAdhesionForm extends Pdf
      * @param Db          $zdb   Database instance
      * @param Preferences $prefs Preferences instance
      */
-    public function __construct(Adherent $adh = null, Db $zdb, Preferences $prefs)
+    public function __construct(Adherent $adh, Db $zdb, Preferences $prefs)
     {
         $this->zdb = $zdb;
         $this->adh = $adh;
@@ -82,12 +62,9 @@ class PdfAdhesionForm extends Pdf
         $model = $this->getModel();
         parent::__construct($prefs, $model);
 
-        $this->filename = $adh ?
+        $this->filename = $adh->id ?
             __("adherent_form") . '.' . $adh->id . '.pdf' : __("adherent_form") . '.pdf';
 
-        $this->Open();
-
-        $this->AddPage();
         if ($model !== null) {
             $this->PageHeader();
             $this->PageBody();
@@ -97,9 +74,9 @@ class PdfAdhesionForm extends Pdf
     /**
      * Get model
      *
-     * @return PdfModel
+     * @return ?PdfModel
      */
-    protected function getModel()
+    protected function getModel(): ?PdfModel
     {
         $model = new PdfAdhesionFormModel($this->zdb, $this->prefs);
         $model->setMember($this->adh);
@@ -114,7 +91,7 @@ class PdfAdhesionForm extends Pdf
      *
      * @return boolean
      */
-    public function store($path)
+    public function store(string $path): bool
     {
         if (file_exists($path) && is_dir($path) && is_writeable($path)) {
             $this->path = $path . '/' . $this->filename;
@@ -135,7 +112,7 @@ class PdfAdhesionForm extends Pdf
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return realpath($this->path);
     }

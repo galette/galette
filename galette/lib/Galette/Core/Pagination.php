@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Global pagination
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2010-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,35 +17,21 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2010-03-03
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
 use Slim\Routing\RouteParser;
-use Slim\Slim;
 use Analog\Analog;
 use Laminas\Db\Sql\Select;
+use Slim\Views\Twig;
 
 /**
  * Pagination and ordering facilities
  *
- * @name      Pagination
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property integer $current_page
  * @property string $orderby
@@ -63,19 +43,22 @@ use Laminas\Db\Sql\Select;
 
 abstract class Pagination
 {
-    private $current_page;
-    private $orderby;
-    private $ordered;
-    private $show;
-    private $pages = 1;
-    private $counter = null;
-    protected $view;
-    protected $routeparser;
+    private int $current_page;
+    private int|string $orderby;
+    private string $ordered;
+    private int $show;
+    private int $pages = 1;
+    private ?int $counter = null;
+    protected ?Twig $view;
+    protected ?RouteParser $routeparser;
+    /** @var array<string> */
+    protected array $errors = [];
 
     public const ORDER_ASC = 'ASC';
     public const ORDER_DESC = 'DESC';
 
-    protected $pagination_fields = array(
+    /** @var array<string> */
+    protected array $pagination_fields = array(
         'current_page',
         'orderby',
         'ordered',
@@ -97,14 +80,14 @@ abstract class Pagination
      *
      * @return int|string
      */
-    abstract protected function getDefaultOrder();
+    abstract protected function getDefaultOrder(): int|string;
 
     /**
      * Return the default direction for ordering
      *
      * @return string ASC or DESC
      */
-    protected function getDefaultDirection()
+    protected function getDefaultDirection(): string
     {
         return self::ORDER_ASC;
     }
@@ -114,14 +97,14 @@ abstract class Pagination
      *
      * @return void
      */
-    public function reinit()
+    public function reinit(): void
     {
         global $preferences;
 
         $this->current_page = 1;
         $this->orderby = $this->getDefaultOrder();
         $this->ordered = $this->getDefaultDirection();
-        $this->show = (int)$preferences->pref_numrows;
+        $this->show = $preferences->pref_numrows;
     }
 
     /**
@@ -129,7 +112,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function invertorder()
+    public function invertorder(): void
     {
         $actual = $this->ordered;
         if ($actual == self::ORDER_ASC) {
@@ -145,7 +128,7 @@ abstract class Pagination
      *
      * @return self::ORDER_ASC|self::ORDER_DESC
      */
-    public function getDirection()
+    public function getDirection(): string
     {
         return $this->ordered;
     }
@@ -157,7 +140,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function setDirection($direction)
+    public function setDirection(string $direction): void
     {
         if ($direction == self::ORDER_ASC || $direction == self::ORDER_DESC) {
             $this->ordered = $direction;
@@ -178,7 +161,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function setLimits(Select $select)
+    public function setLimits(Select $select): void
     {
         if ($this->show !== 0) {
             $select->limit($this->show);
@@ -195,9 +178,9 @@ abstract class Pagination
      *
      * @return void
      */
-    public function setCounter($c)
+    public function setCounter(int $c): void
     {
-        $this->counter = (int)$c;
+        $this->counter = $c;
         $this->countPages();
     }
 
@@ -206,7 +189,7 @@ abstract class Pagination
      *
      * @return void
      */
-    protected function countPages()
+    protected function countPages(): void
     {
         if ($this->show !== 0) {
             if ($this->counter % $this->show == 0) {
@@ -229,28 +212,12 @@ abstract class Pagination
      * Creates pagination links and assign some useful variables to the template
      *
      * @param RouteParser $routeparser Application instance
-     * @param mixed       $view        View instance
-     * @param boolean     $restricted  Do not permit to display all
-     *
-     * @return void
-     *
-     * @deprecated 1.0.0 use setViewPagination
-     */
-    public function setSmartyPagination(RouteParser $routeparser, $view, $restricted = true)
-    {
-        $this->setViewPagination($routeparser, $view, $restricted);
-    }
-
-    /**
-     * Creates pagination links and assign some useful variables to the template
-     *
-     * @param RouteParser $routeparser Application instance
-     * @param mixed       $view        View instance
+     * @param Twig        $view        View instance
      * @param boolean     $restricted  Do not permit to display all
      *
      * @return void
      */
-    public function setViewPagination(RouteParser $routeparser, $view, $restricted = true)
+    public function setViewPagination(RouteParser $routeparser, Twig $view, bool $restricted = true): void
     {
         $is_paginated = true;
         $paginate = null;
@@ -276,13 +243,13 @@ abstract class Pagination
             $paginate .= $this->getLink(
                 '<i class="fast backward small icon" aria-hidden="true"></i>',
                 $this->getHref(1),
-                preg_replace("(%i)", $next, _T("First page"))
+                preg_replace("(%i)", (string)$next, _T("First page"))
             );
 
             $paginate .= $this->getLink(
                 '<i class="step backward small icon" aria-hidden="true"></i>',
                 $this->getHref($previous),
-                preg_replace("(%i)", $previous, _T("Previous page (%i)"))
+                preg_replace("(%i)", (string)$previous, _T("Previous page (%i)"))
             );
         }
 
@@ -293,16 +260,16 @@ abstract class Pagination
                     $this->getHref($this->current_page),
                     preg_replace(
                         "(%i)",
-                        $this->current_page,
+                        (string)$this->current_page,
                         _T("Current page (%i)")
                     ),
                     true
                 );
             } else {
                 $paginate .= $this->getLink(
-                    $i,
+                    (string)$i,
                     $this->getHref($i),
-                    preg_replace("(%i)", $i, _T("Page %i"))
+                    preg_replace("(%i)", (string)$i, _T("Page %i"))
                 );
             }
         }
@@ -310,13 +277,13 @@ abstract class Pagination
             $paginate .= $this->getLink(
                 '<i class="step forward small icon" aria-hidden="true"></i>',
                 $this->getHref($next),
-                preg_replace("(%i)", $next, _T("Next page (%i)"))
+                preg_replace("(%i)", (string)$next, _T("Next page (%i)"))
             );
 
             $paginate .= $this->getLink(
                 '<i class="fast forward small icon" aria-hidden="true"></i>',
                 $this->getHref($this->pages),
-                preg_replace("(%i)", $this->pages, _T("Last page (%i)"))
+                preg_replace("(%i)", (string)$this->pages, _T("Last page (%i)"))
             );
         }
         if ($this->current_page == 1 && $this->current_page == $this->pages) {
@@ -342,6 +309,8 @@ abstract class Pagination
         $view->getEnvironment()->addGlobal('pagination', $paginate);
         $view->getEnvironment()->addGlobal('nbshow_options', $options);
 
+        //resetting prevents following error:
+        //PHP Fatal error:  Uncaught Exception: Serialization of '[...]' is not allowed in [no active file]:0
         $this->view = null;
         $this->routeparser = null;
     }
@@ -356,7 +325,7 @@ abstract class Pagination
      *
      * @return string
      */
-    private function getLink($content, $url, $title, $current = false)
+    private function getLink(string $content, string $url, string $title, bool $current = false): string
     {
         if ($current === true) {
             $active = "active ";
@@ -375,19 +344,19 @@ abstract class Pagination
      *
      * @return string
      */
-    protected function getHref($page)
+    protected function getHref(int $page): string
     {
         $args = [
             'option'    => 'page',
             'value'     => $page
         ];
 
-        if ($this->view->getEnvironment()->getGlobals()['cur_subroute']) {
-            $args['type'] = $this->view->getEnvironment()->getGlobals()['cur_subroute'];
+        if ($this->view->getEnvironment()->mergeGlobals([])['cur_subroute']) {
+            $args['type'] = $this->view->getEnvironment()->mergeGlobals([])['cur_subroute'];
         }
 
         $href = $this->routeparser->urlFor(
-            $this->view->getEnvironment()->getGlobals()['cur_route'],
+            $this->view->getEnvironment()->mergeGlobals([])['cur_route'],
             $args
         );
         return $href;
@@ -400,17 +369,19 @@ abstract class Pagination
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         if (in_array($name, $this->pagination_fields)) {
             return $this->$name;
-        } else {
-            Analog::log(
-                '[' . get_class($this) .
-                '|Pagination] Unable to get proprety `' . $name . '`',
-                Analog::WARNING
-            );
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -421,7 +392,7 @@ abstract class Pagination
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
             return true;
@@ -437,7 +408,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'ordered':
@@ -479,7 +450,7 @@ abstract class Pagination
             case 'show':
                 if (
                     $value == 'all'
-                    || preg_match('/[[:digit:]]/', $value)
+                    || preg_match('/[[:digit:]]/', (string)$value)
                     && $value >= 0
                 ) {
                     $this->$name = (int)$value;
@@ -495,7 +466,7 @@ abstract class Pagination
             default:
                 Analog::log(
                     '[' . get_class($this) .
-                    '|Pagination] Unable to set proprety `' . $name . '`',
+                    '|Pagination] Unable to set property `' . $name . '`',
                     Analog::WARNING
                 );
                 break;

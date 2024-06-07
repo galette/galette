@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Saved search tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2019-05-08
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -42,14 +29,7 @@ use Laminas\Db\Adapter\Adapter;
 /**
  * Saved search tests
  *
- * @category  Entity
- * @name      SavedSearch
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2019-05-08
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class SavedSearch extends TestCase
 {
@@ -94,7 +74,7 @@ class SavedSearch extends TestCase
      *
      * @return void
      */
-    private function deleteCreated()
+    private function deleteCreated(): void
     {
         $this->zdb->db->query(
             'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\SavedSearch::TABLE,
@@ -107,7 +87,7 @@ class SavedSearch extends TestCase
      *
      * @return void
      */
-    public function testSave()
+    public function testSave(): void
     {
         global $i18n, $translator; // globals :(
         $i18n = $this->i18n;

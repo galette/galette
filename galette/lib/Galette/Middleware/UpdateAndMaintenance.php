@@ -1,18 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette Slim middleware for maintenance and needs update pages display.
+ * Copyright © 2003-2024 The Galette Team
  *
- * Relies on Slim modes. Set 'MAINT' for maintenance mode, and 'NEED_UPDATE' for the need update one.
- * Maintenance mode page will be displayed if current logged in user is not super admin.
- *
- * PHP version 5
- *
- * Copyright © 2015-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2015-10-31
  */
+
+declare(strict_types=1);
 
 namespace Galette\Middleware;
 
@@ -46,18 +30,14 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Routing\RouteParser;
 
 /**
- * Galette's Slim middleware for Update and Maintenance
+ * Galette Slim middleware for maintenance and needs update pages display.
+ *
+ * Relies on Slim modes. Set 'MAINT' for maintenance mode, and 'NEED_UPDATE' for the need update one.
+ * Maintenance mode page will be displayed if current logged in user is not super admin.
  *
  * Renders maintenance and needs update pages, as 503 (service not available)
  *
- * @category  Middleware
- * @name      UpdateAndMaintenance
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2015-10-31
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class UpdateAndMaintenance
 {
@@ -69,14 +49,8 @@ class UpdateAndMaintenance
      */
     protected $callback;
 
-    /**
-     * @var I18n
-     */
-    protected $i18n;
+    protected I18n $i18n;
 
-    /**
-     * @var RouteParser
-     */
     protected RouteParser $routeParser;
 
     /**
@@ -130,7 +104,7 @@ class UpdateAndMaintenance
      *
      * @return string
      */
-    private function renderPage(Request $request, $contents)
+    private function renderPage(Request $request, string $contents): string
     {
         $path = $this->routeParser->urlFor('slash');
 
@@ -176,7 +150,7 @@ class UpdateAndMaintenance
      *
      * @return string
      */
-    private function maintenancePage(Request $request)
+    private function maintenancePage(Request $request): string
     {
         $contents = "<div class=\"header\">" . _T("Galette is currently under maintenance!") . "</div>
             <p>" . _T("The Galette instance you are requesting is currently under maintenance. Please come back later.") . "</p>";
@@ -190,7 +164,7 @@ class UpdateAndMaintenance
      *
      * @return string
      */
-    private function needsUpdatePage(Request $request)
+    private function needsUpdatePage(Request $request): string
     {
         $contents = "<h1>" . _T("Galette needs update!") . "</h1>
             <p>" . _T("Your Galette database is not present, or not up to date.") . "</p>

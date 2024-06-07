@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Dynamic fields tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2021-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  DynamicFields
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-11-11
  */
+
+declare(strict_types=1);
 
 namespace Galette\DynamicFields\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Dynamic fields test
  *
- * @category  DynamicFields
- * @name      DynamicField
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-11-11
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class DynamicField extends TestCase
 {
@@ -93,14 +73,14 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testLoadFieldType()
+    public function testLoadFieldType(): void
     {
         $this->assertFalse(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, 10));
 
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic text field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
             'field_required'    => true,
             'field_repeat'      => 1
@@ -115,7 +95,6 @@ class DynamicField extends TestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
@@ -160,47 +139,39 @@ class DynamicField extends TestCase
      */
     public static function permsProvider(): array
     {
-        return [
-            [
-                'perm' => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
-                'name' => "User, read/write"
-            ],
-            [
-                'perm' => \Galette\DynamicFields\DynamicField::PERM_STAFF,
-                'name' => "Staff member"
-            ],
-            [
-                'perm' => \Galette\DynamicFields\DynamicField::PERM_ADMIN,
-                'name' => "Administrator"
-            ],
-            [
-                'perm' => \Galette\DynamicFields\DynamicField::PERM_MANAGER,
-                'name' => "Group manager"
-            ],
-            [
-                'perm' => \Galette\DynamicFields\DynamicField::PERM_USER_READ,
-                'name' => "User, read only"
-            ]
-        ];
+        $list = \Galette\DynamicFields\DynamicField::getPermissionsList();
+        $perms = [];
+        foreach ($list as $perm => $name) {
+            $perms[] = [
+                'perm' => $perm,
+                'name' => $name
+            ];
+        }
+        return $perms;
     }
 
     /**
-     * Test getPermsNames
+     * Test getPermissionsList
      *
      * @return void
      */
-    public function testGetPermsNames()
+    public function testGetPermissionsList(): void
     {
         $expected = [];
         foreach (self::permsProvider() as $perm) {
             $expected[$perm['perm']] = $perm['name'];
         }
 
-        $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getPermsNames());
+        $this->assertArrayNotHasKey(
+            \Galette\Entity\FieldsConfig::ALL,
+            \Galette\DynamicFields\DynamicField::getPermissionsList()
+        );
+
+        $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getPermissionsList());
     }
 
     /**
-     * Tets getPermName
+     * Test getPermissionName
      *
      * @param integer $perm Permission
      * @param string  $name Name
@@ -209,7 +180,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetPermName(int $perm, string $name)
+    public function testGetPermissionName(int $perm, string $name): void
     {
         $field_data = [
             'form_name'         => 'adh',
@@ -230,7 +201,7 @@ class DynamicField extends TestCase
             )
         );
         $this->assertTrue($stored);
-        $this->assertSame($name, $df->getPermName());
+        $this->assertSame($name, $df->getPermissionName());
     }
 
     /**
@@ -238,7 +209,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetFormsNames()
+    public function testGetFormsNames(): void
     {
         $expected = [];
         foreach ($this->formNamesProvider() as $form) {
@@ -280,7 +251,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetFormTitle(string $form, string $expected)
+    public function testGetFormTitle(string $form, string $expected): void
     {
         $this->assertSame($expected, \Galette\DynamicFields\DynamicField::getFormTitle($form));
     }
@@ -290,7 +261,7 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetFixedValuesTableName()
+    public function testGetFixedValuesTableName(): void
     {
         $this->assertSame('field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10));
         $this->assertSame('field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10, false));
@@ -302,12 +273,12 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testGetValues()
+    public function testGetValues(): void
     {
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic choice',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::CHOICE,
             'field_required'    => false,
             'field_repeat'      => null,
@@ -340,12 +311,12 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testCheck()
+    public function testCheck(): void
     {
         $values = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic choice',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::CHOICE,
             'field_required'    => false,
             'field_repeat'      => null,
@@ -396,6 +367,104 @@ class DynamicField extends TestCase
         $this->assertFalse($df->check($values));
         $this->assertSame(['Missing required field name!'], $df->getErrors());
         $this->assertFalse($df->store($values));
+
+        //no error since field type does not have width
+        $this->assertFalse($df->hasWidth());
+        $values = $orig_values;
+        $values['field_width'] = 'ten pixels';
+        $this->assertTrue($df->check($values));
+        $this->assertSame([], $df->getErrors());
+
+        $values = [
+            'form_name'         => 'adh',
+            'field_name'        => 'Dynamic choice',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
+            'field_required'    => false,
+            'field_repeat'      => null
+        ];
+        $orig_values = $values;
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $values['field_type']);
+        $this->assertTrue($df->hasWidth());
+        $this->assertTrue($df->hasHeight());
+
+        $values['field_width'] = '100%';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Width must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_width'] = 0;
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Width must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values = $orig_values;
+        $values['field_height'] = '100%';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Height must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_height'] = 0;
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Height must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values = [
+            'form_name'         => 'adh',
+            'field_name'        => 'Dynamic choice',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::LINE,
+            'field_required'    => false,
+            'field_repeat'      => null
+        ];
+        $orig_values = $values;
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $values['field_type']);
+        $this->assertTrue($df->hasSize());
+
+        $values['field_size'] = '100%';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Size must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_size'] = 0;
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Size must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values = $orig_values;
+        $values['field_min_size'] = '100%';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Min size must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_min_size'] = 0;
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Min size must be a positive integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values = $orig_values;
+        $values['field_min_size'] = 10;
+        $values['field_size'] = 5;
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Min size must be lower than size!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_size'] = 10;
+        $this->assertTrue($df->check($values));
+
+        $values['field_size'] = 15;
+        $this->assertTrue($df->check($values));
+
+        $values = $orig_values;
+        $values['field_repeat'] = 'yes';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['- Repeat must be an integer!'], $df->getErrors());
+        $this->assertFalse($df->store($values));
+
+        $values['field_repeat'] = 2;
+        $this->assertTrue($df->check($values));
+        $this->assertSame([], $df->getErrors());
+        $this->assertTrue($df->store($values));
     }
 
     /**
@@ -403,12 +472,12 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testMove()
+    public function testMove(): void
     {
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'A first text field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
             'field_required'    => true,
             'field_repeat'      => 1
@@ -494,12 +563,12 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic choice',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::CHOICE,
             'field_required'    => false,
             'field_repeat'      => null,
@@ -528,10 +597,10 @@ class DynamicField extends TestCase
 
         $this->assertTrue($df->remove());
 
-        $this->expectException('\PDOException');
-        $results = $this->zdb->execute($select);
-
         $this->assertFalse(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df_id));
+
+        $this->expectException('\PDOException');
+        $this->zdb->execute($select);
     }
 
     /**
@@ -539,12 +608,12 @@ class DynamicField extends TestCase
      *
      * @return void
      */
-    public function testInformation()
+    public function testInformation(): void
     {
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'A first text field',
-            'field_perm'        => \Galette\DynamicFields\DynamicField::PERM_USER_WRITE,
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
             'field_type'        => \Galette\DynamicFields\DynamicField::TEXT,
             'field_information' => '<p>This is an important information.</p><p>And here an xss...  <img src=img.png onerror=alert(1) /></p>'
         ];

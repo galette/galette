@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Transaction class for galette
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2011-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,21 +17,15 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-07-31
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
 use ArrayObject;
 use Galette\Events\GaletteEvent;
+use Galette\Repository\PaymentTypes;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -46,71 +34,80 @@ use Galette\Core\Db;
 use Galette\Core\History;
 use Galette\Core\Login;
 use Galette\Features\Dynamics;
+use Galette\Helpers\EntityHelper;
 
 /**
  * Transaction class for galette
  *
- * @category  Entity
- * @name      Transaction
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2010-03-11
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property integer $id
- * @property date $date
- * @property integer $amount
- * @property string $description
- * @property integer $member
+ * @property string $date
+ * @property float $amount
+ * @property ?string $description
+ * @property ?integer $member
+ * @property ?integer $payment_type
  */
 class Transaction
 {
     use Dynamics;
+    use EntityHelper;
 
     public const TABLE = 'transactions';
     public const PK = 'trans_id';
 
-    private $_id;
-    private $_date;
-    private $_amount;
-    private $_description;
-    private $_member;
+    private int $id;
+    private string $date;
+    private float $amount;
+    private ?string $description = null;
+    private ?int $member = null;
+    private ?int $payment_type = null;
 
-    //fields list and their translation
-    private $_fields;
+    private Db $zdb;
+    private Login $login;
 
-    private $zdb;
-    private $login;
-
-    private $errors;
+    /** @var array<string> */
+    protected array $errors;
+    /** @var string[] */
+    protected array $forbidden_fields = [];
 
     /**
      * Default constructor
      *
-     * @param Db                   $zdb   Database instance
-     * @param Login                $login Login instance
-     * @param null|int|ArrayObject $args  Either a ResultSet row or its id for to load
-     *                                    a specific transaction, or null to just
-     *                                    instantiate object
+     * @param Db                                       $zdb   Database instance
+     * @param Login                                    $login Login instance
+     * @param null|int|ArrayObject<string, int|string> $args  Either a ResultSet row or its id for to load
+     *                                                        a specific transaction, or null to just
+     *                                                        instantiate object
      */
-    public function __construct(Db $zdb, Login $login, $args = null)
+    public function __construct(Db $zdb, Login $login, ArrayObject|int|null $args = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
+        $this->setFields();
 
-        /*
-         * Fields configuration. Each field is an array and must reflect:
-         * array(
-         *   (string)label,
-         *   (string) propname
-         * )
-         *
-         * I'd prefer a static private variable for this...
-         * But call to the _T function does not seem to be allowed there :/
-         */
-        $this->_fields = array(
+        if ($args === null || is_int($args)) {
+            $this->date = date("Y-m-d");
+
+            if (is_int($args) && $args > 0) {
+                $this->load($args);
+            }
+        } elseif ($args instanceof ArrayObject) {
+            $this->loadFromRS($args);
+        }
+
+        $this->loadDynamicFields();
+    }
+
+
+    /**
+     * Set fields, must populate $this->fields
+     *
+     * @return self
+     */
+    protected function setFields(): self
+    {
+        $this->fields = array(
             self::PK            => array(
                 'label'    => null, //not a field in the form
                 'propname' => 'id'
@@ -130,19 +127,13 @@ class Transaction
             Adherent::PK          => array(
                 'label'    => _T("Originator:"),
                 'propname' => 'member'
+            ),
+            'type_paiement_trans' => array(
+                'label'    => _T("Payment type:"),
+                'propname' => 'payment_type'
             )
         );
-        if ($args === null || is_int($args)) {
-            $this->_date = date("Y-m-d");
-
-            if (is_int($args) && $args > 0) {
-                $this->load($args);
-            }
-        } elseif (is_object($args)) {
-            $this->loadFromRS($args);
-        }
-
-        $this->loadDynamicFields();
+        return $this;
     }
 
     /**
@@ -152,7 +143,7 @@ class Transaction
      *
      * @return bool true if query succeed, false otherwise
      */
-    public function load($id)
+    public function load(int $id): bool
     {
         if (!$this->login->isLogged()) {
             Analog::log(
@@ -188,7 +179,7 @@ class Transaction
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
                 $this->loadFromRS($result);
                 return true;
@@ -217,7 +208,7 @@ class Transaction
      *
      * @return boolean
      */
-    public function remove(History $hist, $transaction = true)
+    public function remove(History $hist, bool $transaction = true): bool
     {
         global $emitter;
 
@@ -226,10 +217,10 @@ class Transaction
                 $this->zdb->connection->beginTransaction();
             }
 
-            //remove associated contributions if needeed
+            //remove associated contributions if needed
             if ($this->getDispatchedAmount() > 0) {
                 $c = new Contributions($this->zdb, $this->login);
-                $clist = $c->getListFromTransaction($this->_id);
+                $clist = $c->getListFromTransaction($this->id);
                 $cids = array();
                 foreach ($clist as $cid) {
                     $cids[] = $cid->id;
@@ -239,7 +230,7 @@ class Transaction
 
             //remove transaction itself
             $delete = $this->zdb->delete(self::TABLE);
-            $delete->where([self::PK => $this->_id]);
+            $delete->where([self::PK => $this->id]);
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
                 $this->dynamicsRemove(true);
@@ -263,7 +254,7 @@ class Transaction
             }
             Analog::log(
                 'An error occurred trying to remove transaction #' .
-                $this->_id . ' | ' . $e->getMessage(),
+                $this->id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -273,19 +264,22 @@ class Transaction
     /**
      * Populate object from a resultset row
      *
-     * @param ArrayObject $r the resultset row
+     * @param ArrayObject<string,int|string> $r the resultset row
      *
      * @return void
      */
-    private function loadFromRS(ArrayObject $r)
+    private function loadFromRS(ArrayObject $r): void
     {
         $pk = self::PK;
-        $this->_id = $r->$pk;
-        $this->_date = $r->trans_date;
-        $this->_amount = $r->trans_amount;
-        $this->_description = $r->trans_desc;
+        $this->id = (int)$r->$pk;
+        $this->date = $r->trans_date;
+        $this->amount = (float)$r->trans_amount;
+        $this->description = $r->trans_desc;
         $adhpk = Adherent::PK;
-        $this->_member = (int)$r->$adhpk;
+        $this->member = (int)$r->$adhpk;
+        if ($r->type_paiement_trans != null) {
+            $this->payment_type = (int)$r->type_paiement_trans;
+        }
 
         $this->loadDynamicFields();
     }
@@ -293,27 +287,31 @@ class Transaction
     /**
      * Check posted values validity
      *
-     * @param array $values   All values to check, basically the $_POST array
-     *                        after sending the form
-     * @param array $required Array of required fields
-     * @param array $disabled Array of disabled fields
+     * @param array<string,mixed> $values   All values to check, basically the $_POST array
+     *                                      after sending the form
+     * @param array<string,int>   $required Array of required fields
+     * @param array<string>       $disabled Array of disabled fields
      *
-     * @return true|array
+     * @return true|array<string>
      */
-    public function check($values, $required, $disabled)
+    public function check(array $values, array $required, array $disabled): bool|array
     {
+        global $preferences;
         $this->errors = array();
 
-        $fields = array_keys($this->_fields);
+        $fields = array_keys($this->fields);
         foreach ($fields as $key) {
             //first, let's sanitize values
             $key = strtolower($key);
-            $prop = '_' . $this->_fields[$key]['propname'];
+            $prop = $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
-                $value = trim($values[$key]);
+                $value = $values[$key];
+                if (is_string($value)) {
+                    $value = trim($value);
+                }
             } else {
-                $value = '';
+                $value = null;
             }
 
             // if the field is enabled, check it
@@ -323,51 +321,40 @@ class Transaction
                     switch ($key) {
                         // dates
                         case 'trans_date':
-                            try {
-                                $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                                if ($d === false) {
-                                    //try with non localized date
-                                    $d = \DateTime::createFromFormat("Y-m-d", $value);
-                                    if ($d === false) {
-                                        throw new \Exception('Incorrect format');
-                                    }
-                                }
-                                $this->$prop = $d->format('Y-m-d');
-                            } catch (Throwable $e) {
-                                Analog::log(
-                                    'Wrong date format. field: ' . $key .
-                                    ', value: ' . $value . ', expected fmt: ' .
-                                    __("Y-m-d") . ' | ' . $e->getMessage(),
-                                    Analog::INFO
-                                );
-                                $this->errors[] = str_replace(
-                                    array(
-                                        '%date_format',
-                                        '%field'
-                                    ),
-                                    array(
-                                        __("Y-m-d"),
-                                        $this->getFieldLabel($key)
-                                    ),
-                                    _T("- Wrong date format (%date_format) for %field!")
-                                );
-                            }
+                            $this->setDate($key, $value);
                             break;
                         case Adherent::PK:
-                            $this->_member = (int)$value;
+                            $this->member = (int)$value;
                             break;
                         case 'trans_amount':
-                            $this->_amount = $value;
-                            $value = strtr($value, ',', '.');
+                            //FIXME: this is a hack to allow comma as decimal separator
+                            $value = strtr((string)$value, ',', '.');
+                            $this->amount = (double)$value;
                             if (!is_numeric($value)) {
                                 $this->errors[] = _T("- The amount must be an integer!");
                             }
                             break;
                         case 'trans_desc':
                             /** TODO: retrieve field length from database and check that */
-                            $this->_description = strip_tags($value);
+                            $this->description = strip_tags($value);
                             if (mb_strlen($value) > 150) {
                                 $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
+                            }
+                            break;
+                        case 'type_paiement_trans':
+                            if ($value == 0) {
+                                break;
+                            }
+                            $ptypes = new PaymentTypes(
+                                $this->zdb,
+                                $preferences,
+                                $this->login
+                            );
+                            $ptlist = $ptypes->getList();
+                            if (isset($ptlist[$value])) {
+                                $this->payment_type = (int)$value;
+                            } else {
+                                $this->errors[] = _T("- Unknown payment type");
                             }
                             break;
                     }
@@ -378,7 +365,7 @@ class Transaction
         // missing required fields?
         foreach ($required as $key => $val) {
             if ($val === 1) {
-                $prop = '_' . $this->_fields[$key]['propname'];
+                $prop = $this->fields[$key]['propname'];
                 if (!isset($disabled[$key]) && !isset($this->$prop)) {
                     $this->errors[] = str_replace(
                         '%field',
@@ -389,9 +376,9 @@ class Transaction
             }
         }
 
-        if ($this->_id != '') {
+        if (isset($this->id)) {
             $dispatched = $this->getDispatchedAmount();
-            if ($dispatched > $this->_amount) {
+            if ($dispatched > $this->amount) {
                 $this->errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
             }
         }
@@ -421,7 +408,7 @@ class Transaction
      *
      * @return boolean
      */
-    public function store(History $hist)
+    public function store(History $hist): bool
     {
         global $emitter;
 
@@ -433,23 +420,25 @@ class Transaction
             $fields = $this->getDbFields($this->zdb);
             /** FIXME: quote? */
             foreach ($fields as $field) {
-                $prop = '_' . $this->_fields[$field]['propname'];
-                $values[$field] = $this->$prop;
+                $prop = $this->fields[$field]['propname'];
+                if (isset($this->$prop)) {
+                    $values[$field] = $this->$prop;
+                }
             }
 
-            if (!isset($this->_id) || $this->_id == '') {
+            if (!isset($this->id) || $this->id == '') {
                 //we're inserting a new transaction
                 unset($values[self::PK]);
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($values);
                 $add = $this->zdb->execute($insert);
                 if ($add->count() > 0) {
-                    $this->_id = $this->zdb->getLastGeneratedValue($this);
+                    $this->id = $this->zdb->getLastGeneratedValue($this);
 
                     // logging
                     $hist->add(
                         _T("Transaction added"),
-                        Adherent::getSName($this->zdb, $this->_member)
+                        Adherent::getSName($this->zdb, $this->member)
                     );
                     $event = 'transaction.add';
                 } else {
@@ -461,14 +450,14 @@ class Transaction
             } else {
                 //we're editing an existing transaction
                 $update = $this->zdb->update(self::TABLE);
-                $update->set($values)->where([self::PK => $this->_id]);
+                $update->set($values)->where([self::PK => $this->id]);
                 $edit = $this->zdb->execute($update);
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
                 if ($edit->count() > 0) {
                     $hist->add(
                         _T("Transaction updated"),
-                        Adherent::getSName($this->zdb, $this->_member)
+                        Adherent::getSName($this->zdb, $this->member)
                     );
                 }
                 $event = 'transaction.edit';
@@ -503,7 +492,7 @@ class Transaction
      */
     public function getDispatchedAmount(): float
     {
-        if (empty($this->_id)) {
+        if (empty($this->id)) {
             return (double)0;
         }
 
@@ -513,7 +502,7 @@ class Transaction
                 array(
                     'sum' => new Expression('SUM(montant_cotis)')
                 )
-            )->where([self::PK => $this->_id]);
+            )->where([self::PK => $this->id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -534,10 +523,10 @@ class Transaction
      *
      * @return double
      */
-    public function getMissingAmount()
+    public function getMissingAmount(): float
     {
-        if (empty($this->_id)) {
-            return (double)$this->amount;
+        if (empty($this->id)) {
+            return $this->amount ?? 0;
         }
 
         try {
@@ -546,12 +535,12 @@ class Transaction
                 array(
                     'sum' => new Expression('SUM(montant_cotis)')
                 )
-            )->where([self::PK => $this->_id]);
+            )->where([self::PK => $this->id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $dispatched_amount = $result->sum;
-            return (double)$this->_amount - (double)$dispatched_amount;
+            return (double)$this->amount - (double)$dispatched_amount;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred retrieving missing amounts | ' .
@@ -563,13 +552,28 @@ class Transaction
     }
 
     /**
+     * Get payment type label
+     *
+     * @return string
+     */
+    public function getPaymentType(): string
+    {
+        if ($this->payment_type === null) {
+            return '-';
+        }
+
+        $ptype = new PaymentType($this->zdb, $this->payment_type);
+        return $ptype->getName();
+    }
+
+    /**
      * Retrieve fields from database
      *
      * @param Db $zdb Database instance
      *
-     * @return array
+     * @return array<string>
      */
-    public function getDbFields(Db $zdb)
+    public function getDbFields(Db $zdb): array
     {
         $columns = $zdb->getColumns(self::TABLE);
         $fields = array();
@@ -584,7 +588,7 @@ class Transaction
      *
      * @return string current transaction row class
      */
-    public function getRowClass()
+    public function getRowClass(): string
     {
         return ($this->getMissingAmount() == 0) ?
             'transaction-normal' : 'transaction-uncomplete';
@@ -597,41 +601,26 @@ class Transaction
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
-        $forbidden = array();
-
-        $rname = '_' . $name;
-        if (!in_array($name, $forbidden) && property_exists($this, $rname)) {
+        if (!in_array($name, $this->forbidden_fields) && property_exists($this, $name)) {
             switch ($name) {
                 case 'date':
-                    if ($this->$rname != '') {
-                        try {
-                            $d = new \DateTime($this->$rname);
-                            return $d->format(__("Y-m-d"));
-                        } catch (Throwable $e) {
-                            //oops, we've got a bad date :/
-                            Analog::log(
-                                'Bad date (' . $this->$rname . ') | ' .
-                                $e->getMessage(),
-                                Analog::INFO
-                            );
-                            return $this->$rname;
-                        }
-                    }
-                    break;
+                    return $this->getDate($name);
                 case 'id':
-                    if ($this->$rname !== null) {
-                        return (int)$this->$rname;
+                    if (isset($this->$name) && $this->$name !== null) {
+                        return (int)$this->$name;
                     }
                     return null;
                 case 'amount':
-                    if ($this->$rname !== null) {
-                        return (double)$this->$rname;
+                    if (isset($this->$name)) {
+                        return (double)$this->$name;
                     }
                     return null;
+                case 'fields':
+                    return $this->fields;
                 default:
-                    return $this->$rname;
+                    return $this->$name;
             }
         } else {
             Analog::log(
@@ -646,50 +635,13 @@ class Transaction
     }
 
     /**
-     * Global isset method
-     * Required for twig to access properties via __get
-     *
-     * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
-     */
-    public function __isset($name)
-    {
-        $forbidden = array();
-
-        $rname = '_' . $name;
-        if (!in_array($name, $forbidden) && property_exists($this, $rname)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get field label
-     *
-     * @param string $field Field name
-     *
-     * @return string
-     */
-    public function getFieldLabel($field)
-    {
-        $label = $this->_fields[$field]['label'];
-        //replace "&nbsp;"
-        $label = str_replace('&nbsp;', ' ', $label);
-        //remove trailing ':' and then trim
-        $label = trim(trim($label, ':'));
-        return $label;
-    }
-
-    /**
      * Handle files (dynamics files)
      *
-     * @param array $files Files sent
+     * @param array<string,mixed> $files Files sent
      *
-     * @return array|true
+     * @return array<string>|true
      */
-    public function handleFiles($files)
+    public function handleFiles(array $files): array|bool
     {
         $this->errors = [];
 
@@ -722,7 +674,7 @@ class Transaction
         }
 
         //admin and staff users can edit, as well as member itself
-        if (!$this->id || $login->id == $this->_member || $login->isAdmin() || $login->isStaff()) {
+        if (!isset($this->id) || $login->id == $this->member || $login->isAdmin() || $login->isStaff()) {
             return true;
         }
 
@@ -734,7 +686,7 @@ class Transaction
             ->load($this->login->id);
         if ($parent->hasChildren()) {
             foreach ($parent->children as $child) {
-                if ($child->id === $this->_member) {
+                if ($child->id === $this->member) {
                     return true;
                 }
             }

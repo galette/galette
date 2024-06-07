@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Login tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2016-2024 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2016-12-05
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core\test\units;
 
@@ -41,14 +28,7 @@ use Galette\GaletteTestCase;
 /**
  * Login tests class
  *
- * @category  Core
- * @name      Login
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2016-12-05
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Login extends GaletteTestCase
 {
@@ -76,7 +56,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $this->assertFalse($this->login->isLogged());
         $this->assertFalse($this->login->isStaff());
@@ -86,7 +66,7 @@ class Login extends GaletteTestCase
         $this->assertFalse($this->login->isCron());
         $this->assertFalse($this->login->isUp2Date());
         $this->assertFalse($this->login->isImpersonated());
-        $this->assertFalse($this->login->lang);
+        $this->assertNull($this->login->lang);
     }
 
     /**
@@ -94,7 +74,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testNotLoggedCantImpersonate()
+    public function testNotLoggedCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
@@ -111,7 +91,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testStaffCantImpersonate()
+    public function testStaffCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
@@ -132,7 +112,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testAdminCantImpersonate()
+    public function testAdminCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
@@ -153,19 +133,17 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testImpersonateExistsWException()
+    public function testImpersonateExistsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
             ->getMock();
 
         $zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        throw new \LogicException('Error executing query!', 123);
-                    }
-                )
+            ->willReturnCallback(
+                function ($o): void {
+                    throw new \LogicException('Error executing query!', 123);
+                }
             );
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -183,7 +161,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testSuperadminCanImpersonate()
+    public function testSuperadminCanImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
@@ -201,8 +179,10 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testInexistingGetter()
+    public function testInexistingGetter(): void
     {
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Property doesnotexists is not set!');
         $this->assertFalse($this->login->doesnotexists);
     }
 
@@ -211,7 +191,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoginExists()
+    public function testLoginExists(): void
     {
         $this->assertFalse($this->login->loginExists('exists'));
         $this->assertFalse($this->login->loginExists('doesnotexists'));
@@ -222,21 +202,19 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoginExistsWException()
+    public function testLoginExistsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))
             ->getMock();
 
         $zdb->method('execute')
-            ->will(
-                $this->returnCallback(
-                    function ($o) {
-                        if ($o instanceof \Laminas\Db\Sql\Select) {
-                            throw new \LogicException('Error executing query!', 123);
-                        }
+            ->willReturnCallback(
+                function ($o): void {
+                    if ($o instanceof \Laminas\Db\Sql\Select) {
+                        throw new \LogicException('Error executing query!', 123);
                     }
-                )
+                }
             );
 
         $login = new \Galette\Core\Login($zdb, $this->i18n);
@@ -248,7 +226,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLogAdmin()
+    public function testLogAdmin(): void
     {
         $this->login->logAdmin('superadmin', $this->preferences);
         $this->assertTrue($this->login->isLogged());
@@ -271,7 +249,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    private function createUser()
+    private function createUser(): void
     {
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
         $select->where(array('a.fingerprint' => 'FAKER' . $this->seed));
@@ -343,10 +321,10 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoginExistsDb()
+    public function testLoginExistsDb(): void
     {
         $this->createUser();
-        $this->assertTrue($this->login->loginExists($this->login));
+        $this->assertTrue($this->login->loginExists('dumas.roger'));
     }
 
     /**
@@ -354,7 +332,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLogin()
+    public function testLogin(): void
     {
         $this->createUser();
         $this->assertFalse($this->login->login('doenotexists', 'empty'));
@@ -366,7 +344,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoggedInAs()
+    public function testLoggedInAs(): void
     {
         global $translator;
 
@@ -396,7 +374,7 @@ class Login extends GaletteTestCase
      *
      * @return void
      */
-    public function testLogCron()
+    public function testLogCron(): void
     {
         $this->login->logCron('reminder', $this->preferences);
         $this->assertTrue($this->login->isLogged());

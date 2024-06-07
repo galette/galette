@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Transactions repository tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2023-03-28
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository\test\units;
 
@@ -41,19 +28,11 @@ use Galette\GaletteTestCase;
 /**
  * Transactions repository tests
  *
- * @category  Repository
- * @name      Transactions
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2023-03-28
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Transactions extends GaletteTestCase
 {
     protected int $seed = 20230328103438;
-    /** @var \Galette\Entity\Transaction */
     private \Galette\Entity\Transaction $transaction;
 
     /**
@@ -93,7 +72,6 @@ class Transactions extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->initContributionsTypes();
 
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $this->transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
@@ -111,7 +89,7 @@ class Transactions extends GaletteTestCase
      *
      * @return void
      */
-    private function createTransaction()
+    private function createTransaction(): void
     {
         $date = new \DateTime();
         $data = [
@@ -137,17 +115,11 @@ class Transactions extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $this->logSuperAdmin();
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
-        $list = $transactions->getList(true, null, false);
-
-        $this->assertIsArray($list);
-        $this->assertCount(0, $list);
-        $this->assertNull($transactions->getCount());
-
-        $list = $transactions->getList(true, null, true);
+        $list = $transactions->getList(true, null);
 
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
@@ -217,7 +189,7 @@ class Transactions extends GaletteTestCase
         $this->assertCount(1, $list);
 
         $filters = new \Galette\Filters\TransactionsList();
-        $filters->filtre_cotis_children = true;
+        $filters->filtre_cotis_children = $this->adh->id;
         $transactions = new \Galette\Repository\Transactions($this->zdb, $login, $filters);
         $list = $transactions->getList(true);
         $this->assertCount(1, $list);
@@ -250,7 +222,7 @@ class Transactions extends GaletteTestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->logSuperAdmin();
         $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);

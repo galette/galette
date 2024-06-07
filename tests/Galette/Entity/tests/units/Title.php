@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Titles tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2019-12-14
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -42,14 +29,7 @@ use Laminas\Db\Adapter\Adapter;
 /**
  * Status tests
  *
- * @category  Entity
- * @name      Title
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2019-12-14
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Title extends TestCase
 {
@@ -84,7 +64,7 @@ class Title extends TestCase
      *
      * @return void
      */
-    private function deleteTitle()
+    private function deleteTitle(): void
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\Title::TABLE);
@@ -104,16 +84,10 @@ class Title extends TestCase
      *
      * @return void
      */
-    public function testTitle()
+    public function testTitle(): void
     {
         global $zdb;
         $zdb = $this->zdb;
-
-        $titles = new \Galette\Repository\Titles($this->zdb);
-        if (count($titles->getList()) === 0) {
-            $res = $titles->installInit();
-            $this->assertTrue($res);
-        }
 
         $title = new \Galette\Entity\Title();
 
@@ -125,18 +99,20 @@ class Title extends TestCase
         $this->remove[] = $id;
         $title = new \Galette\Entity\Title($id); //reload
 
+        //$title->long = 'Test title 🤘'; //FIXME: works locally, fails on gh actions...
         $title->long = 'Test title';
         $this->assertTrue($title->store($this->zdb));
         $title = new \Galette\Entity\Title($id); //reload
 
+        //$this->assertSame('Test title 🤘', $title->long); //FIXME: works locally, fails on gh actions...
         $this->assertSame('Test title', $title->long);
+
+        $title = new \Galette\Entity\Title($id); //reload
+        $this->assertTrue($title->remove($this->zdb));
 
         $title = new \Galette\Entity\Title(\Galette\Entity\Title::MR);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('You cannot delete Mr. or Mrs. titles!');
         $title->remove($this->zdb);
-
-        $title = new \Galette\Entity\Title($id); //reload
-        $this->assertTrue($title->remove($this->zdb));
     }
 }

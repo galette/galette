@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Zend Db wrapper
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2011-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +17,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-07-27
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Exception;
+use Laminas\Db\Adapter\Driver\Pdo\Result;
+use Laminas\Db\Metadata\Object\ColumnObject;
+use Laminas\Db\Metadata\Source\Factory;
+use LogicException;
+use RuntimeException;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
@@ -53,14 +46,7 @@ use Laminas\Db\Sql\SqlInterface;
 /**
  * Zend Db wrapper
  *
- * @category  Core
- * @name      Db
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://framework.zend.com/apidoc/2.2/namespaces/Zend.Db.html
- * @since     Available since 0.7dev - 2011-07-27
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property Adapter $db
  * @property Sql $sql
@@ -72,16 +58,12 @@ use Laminas\Db\Sql\SqlInterface;
  */
 class Db
 {
-    /** @var Adapter */
-    private $db;
-    /** @var string */
-    private $type_db;
-    /** @var Sql */
-    private $sql;
-    /** @var array */
-    private $options;
-    /** @var string */
-    private $last_query;
+    private Adapter $db;
+    private string $type_db;
+    private Sql $sql;
+    /** @var array<string,string> */
+    private array $options;
+    private string $last_query;
 
     public const MYSQL = 'mysql';
     public const PGSQL = 'pgsql';
@@ -92,14 +74,15 @@ class Db
     /**
      * Main constructor
      *
-     * @param array $dsn Connection information
-     *                   If not set, database constants will be used.
+     * @param ?array<string,string> $dsn Connection information
+     *                                   If not set, database constants will be used.
+     * @throws Throwable
      */
-    public function __construct($dsn = null)
+    public function __construct(array $dsn = null)
     {
         $_type = null;
 
-        if ($dsn !== null && is_array($dsn)) {
+        if (is_array($dsn)) {
             $_type_db = $dsn['TYPE_DB'];
             $_host_db = $dsn['HOST_DB'];
             $_port_db = $dsn['PORT_DB'];
@@ -121,7 +104,7 @@ class Db
             } elseif ($_type_db === self::PGSQL) {
                 $_type = 'Pdo_Pgsql';
             } else {
-                throw new \Exception("Type $_type_db not known (dsn: $_user_db@$_host_db(:$_port_db)/$_name_db)");
+                throw new Exception("Type $_type_db not known (dsn: $_user_db@$_host_db(:$_port_db)/$_name_db)");
             }
 
             $this->type_db = $_type_db;
@@ -133,8 +116,13 @@ class Db
                 'password' => $_pwd_db,
                 'database' => $_name_db
             );
-            if ($_type_db === self::MYSQL && !defined('NON_UTF_DBCONNECT')) {
-                $this->options['charset'] = 'utf8';
+            if (defined('GALETTE_TESTS') && GALETTE_TESTS === true) {
+                $this->options['driver_options'] = [
+                    \PDO::ATTR_STRINGIFY_FETCHES => true
+                ];
+            }
+            if ($_type_db === self::MYSQL) {
+                $this->options['charset'] = 'utf8mb4';
             }
 
             $this->doConnection();
@@ -154,7 +142,7 @@ class Db
      *
      * @return void
      */
-    private function doConnection()
+    private function doConnection(): void
     {
         $this->db = new Adapter($this->options);
         $this->db->getDriver()->getConnection()->connect();
@@ -170,7 +158,7 @@ class Db
      *
      * @return array
      */
-    public function __sleep()
+    public function __sleep(): array
     {
         return ['type_db', 'options'];
     }
@@ -180,7 +168,7 @@ class Db
      *
      * @return void
      */
-    public function __wakeup()
+    public function __wakeup(): void
     {
         $this->doConnection();
     }
@@ -194,7 +182,7 @@ class Db
      *
      * @throw LogicException
      */
-    public function getDbVersion($check_table = false)
+    public function getDbVersion(bool $check_table = false): string
     {
         try {
             if ($check_table === true) {
@@ -212,7 +200,7 @@ class Db
                 $results = $this->execute($select);
                 $result = $results->current();
                 return number_format(
-                    $result->version,
+                    (float)$result->version,
                     3,
                     '.',
                     ''
@@ -225,7 +213,7 @@ class Db
                 'Cannot check database version: ' . $e->getMessage(),
                 Analog::ERROR
             );
-            throw new \LogicException('Cannot check database version');
+            throw new LogicException('Cannot check database version');
         }
     }
 
@@ -234,7 +222,7 @@ class Db
      *
      * @return boolean
      */
-    public function checkDbVersion()
+    public function checkDbVersion(): bool
     {
         if (Galette::isDebugEnabled()) {
             Analog::log(
@@ -246,7 +234,7 @@ class Db
 
         try {
             return $this->getDbVersion() === GALETTE_DB_VERSION;
-        } catch (\LogicException $e) {
+        } catch (LogicException $e) {
             return false;
         }
     }
@@ -258,7 +246,7 @@ class Db
      *
      * @return ResultSet
      */
-    public function selectAll($table)
+    public function selectAll(string $table): ResultSet
     {
         return $this->db->query(
             'SELECT * FROM ' . PREFIX_DB . $table,
@@ -269,32 +257,32 @@ class Db
     /**
      * Test if database can be contacted. Mostly used for installation
      *
-     * @param string $type db type
-     * @param string $user database's user
-     * @param string $pass password for the user
-     * @param string $host which host we want to connect to
-     * @param string $port which tcp port we want to connect to
-     * @param string $db   database name
+     * @param string  $type db type
+     * @param ?string $user database's user
+     * @param ?string $pass password for the user
+     * @param ?string $host which host we want to connect to
+     * @param ?string $port which tcp port we want to connect to
+     * @param ?string $db   database name
      *
-     * @return true
+     * @return boolean
      *
-     * @throws \Exception|Throwable
+     * @throws Exception|Throwable
      */
     public static function testConnectivity(
-        $type,
-        $user = null,
-        $pass = null,
-        $host = null,
-        $port = null,
-        $db = null
-    ) {
+        string $type,
+        string $user = null,
+        string $pass = null,
+        string $host = null,
+        string $port = null,
+        string $db = null
+    ): bool {
         try {
             if ($type === self::MYSQL) {
                 $_type = 'Pdo_Mysql';
             } elseif ($type === self::PGSQL) {
                 $_type = 'Pdo_Pgsql';
             } else {
-                throw new \Exception('Unknown database type');
+                throw new Exception('Unknown database type');
             }
 
             $_options = array(
@@ -326,7 +314,7 @@ class Db
      *
      * @return void
      */
-    public function dropTestTable()
+    public function dropTestTable(): void
     {
         try {
             $this->db->query('DROP TABLE IF EXISTS galette_test');
@@ -344,11 +332,11 @@ class Db
      *
      * @param string $mode are we at install time (i) or update time (u) ?
      *
-     * @return array containing each test. Each array entry could
-     *           be either true or contains an exception of false if test did not
-     *           ran.
+     * @return array<string, bool|Throwable> containing each test. Each array entry could
+     *           be either true or contains an exception or false if test did not
+     *           run.
      */
-    public function grantCheck($mode = 'i')
+    public function grantCheck(string $mode = 'i'): array
     {
         Analog::log(
             'Check for database rights (mode ' . $mode . ')',
@@ -413,7 +401,7 @@ class Db
                 if ($res->count() === 1) {
                     $results['insert'] = true;
                 } else {
-                    throw new \Exception('No row inserted!');
+                    throw new Exception('No row inserted!');
                 }
             } catch (Throwable $e) {
                 Analog::log(
@@ -440,7 +428,7 @@ class Db
                     if ($res->count() === 1) {
                         $results['update'] = true;
                     } else {
-                        throw new \Exception('No row updated!');
+                        throw new Exception('No row updated!');
                     }
                 } catch (Throwable $e) {
                     Analog::log(
@@ -460,7 +448,7 @@ class Db
                     if ($pass) {
                         $results['select'] = true;
                     } else {
-                        throw new \Exception('Select is empty!');
+                        throw new Exception('Select is empty!');
                     }
                 } catch (Throwable $e) {
                     Analog::log(
@@ -505,13 +493,13 @@ class Db
     /**
      * Get a list of Galette's tables
      *
-     * @param string $prefix Specified table prefix, PREFIX_DB if null
+     * @param ?string $prefix Specified table prefix, PREFIX_DB if null
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function getTables($prefix = null)
+    public function getTables(string $prefix = null): array
     {
-        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
+        $metadata = Factory::createSourceFromAdapter($this->db);
         $tmp_tables_list = $metadata->getTableNames();
 
         if ($prefix === null) {
@@ -533,11 +521,11 @@ class Db
      *
      * @param string $table Table name
      *
-     * @return array
+     * @return array<int, ColumnObject>
      */
-    public function getColumns($table)
+    public function getColumns(string $table): array
     {
-        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
+        $metadata = Factory::createSourceFromAdapter($this->db);
         $table = $metadata->getTable(PREFIX_DB . $table);
         return $table->getColumns();
     }
@@ -545,12 +533,12 @@ class Db
     /**
      * Converts recursively database to UTF-8
      *
-     * @param string  $prefix       Specified table prefix
+     * @param ?string $prefix       Specified table prefix
      * @param boolean $content_only Proceed only content (no table conversion)
      *
      * @return void
      */
-    public function convertToUTF($prefix = null, $content_only = false)
+    public function convertToUTF(string $prefix = null, bool $content_only = false): void
     {
         if ($this->isPostgres()) {
             Analog::log(
@@ -609,7 +597,7 @@ class Db
      *
      * @return void
      */
-    private function convertContentToUTF($prefix, $table)
+    private function convertContentToUTF(string $prefix, string $table): void
     {
 
         try {
@@ -627,7 +615,7 @@ class Db
         }
 
         try {
-            $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
+            $metadata = Factory::createSourceFromAdapter($this->db);
             $tbl = $metadata->getTable($table);
             $constraints = $tbl->getConstraints();
             $pkeys = array();
@@ -658,7 +646,7 @@ class Db
                     );
                 } else {
                     //not a know case, we do not perform any update.
-                    throw new \Exception(
+                    throw new Exception(
                         'Cannot define primary key for table `' . $table .
                         '`, aborting'
                     );
@@ -701,7 +689,7 @@ class Db
      *
      * @return boolean
      */
-    public function isPostgres()
+    public function isPostgres(): bool
     {
         return $this->type_db === self::PGSQL;
     }
@@ -709,12 +697,12 @@ class Db
     /**
      * Instanciate a select query
      *
-     * @param string $table Table name, without prefix
-     * @param string $alias Tables alias, optionnal
+     * @param string  $table Table name, without prefix
+     * @param ?string $alias Tables alias, optional
      *
      * @return Select
      */
-    public function select($table, $alias = null)
+    public function select(string $table, string $alias = null): Select
     {
         if ($alias === null) {
             return $this->sql->select(
@@ -722,6 +710,7 @@ class Db
             );
         } else {
             return $this->sql->select(
+                //@phpstan-ignore-next-line
                 array(
                     $alias => PREFIX_DB . $table
                 )
@@ -736,7 +725,7 @@ class Db
      *
      * @return Insert
      */
-    public function insert($table)
+    public function insert(string $table): Insert
     {
         return $this->sql->insert(
             PREFIX_DB . $table
@@ -750,7 +739,7 @@ class Db
      *
      * @return Update
      */
-    public function update($table)
+    public function update(string $table): Update
     {
         return $this->sql->update(
             PREFIX_DB . $table
@@ -764,7 +753,7 @@ class Db
      *
      * @return Delete
      */
-    public function delete($table)
+    public function delete(string $table): Delete
     {
         return $this->sql->delete(
             PREFIX_DB . $table
@@ -776,9 +765,10 @@ class Db
      *
      * @param SqlInterface $sql SQL object
      *
-     * @return ResultSet
+     * @return ResultSet|Result
+     * @throws Throwable
      */
-    public function execute($sql)
+    public function execute(SqlInterface $sql): ResultSet|Result
     {
         try {
             $query_string = $this->sql->buildSqlString($sql);
@@ -810,8 +800,9 @@ class Db
      * @param string $name name of the variable we want to retrieve
      *
      * @return mixed
+     * @throws RuntimeException
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         switch ($name) {
             case 'db':
@@ -828,6 +819,8 @@ class Db
                 return $this->last_query;
             case 'type_db':
                 return $this->type_db;
+            default:
+                throw new RuntimeException('Unknown property ' . $name);
         }
     }
 
@@ -839,7 +832,7 @@ class Db
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         switch ($name) {
             case 'db':
@@ -857,9 +850,9 @@ class Db
     /**
      * Get database information
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function getInfos()
+    public function getInfos(): array
     {
         $infos = [
             'engine'    => null,
@@ -915,7 +908,7 @@ class Db
      *
      * @return void
      */
-    public function handleSequence($table, $expected)
+    public function handleSequence(string $table, int $expected): void
     {
         if ($this->isPostgres()) {
             //check for Postgres sequence
@@ -979,7 +972,7 @@ class Db
      *
      * @return void
      */
-    public function drop($table, $maymiss = false)
+    public function drop(string $table, bool $maymiss = false): void
     {
         $sql = 'DROP TABLE ';
         if ($maymiss === true) {
@@ -988,7 +981,7 @@ class Db
         $sql .= PREFIX_DB . $table;
         $this->db->query(
             $sql,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            Adapter::QUERY_MODE_EXECUTE
         );
     }
 
@@ -999,7 +992,7 @@ class Db
      *
      * @return void
      */
-    protected function log($query)
+    protected function log(string $query): void
     {
         if (Galette::isSqlDebugEnabled()) {
             $logfile = GALETTE_LOGS_PATH . 'galette_sql.log';
@@ -1014,7 +1007,7 @@ class Db
      *
      * @return integer
      */
-    public function getLastGeneratedValue($entity): int
+    public function getLastGeneratedValue(object $entity): int
     {
         /** @phpstan-ignore-next-line */
         return (int)$this->driver->getLastGeneratedValue(
@@ -1027,7 +1020,7 @@ class Db
     /**
      * Get MySQL warnings
      *
-     * @return array
+     * @return array<array<string, string>>
      */
     public function getWarnings(): array
     {
@@ -1053,7 +1046,7 @@ class Db
         if ($this->isPostgres()) {
             $min_version = GALETTE_PGSQL_MIN;
         } else {
-            $min_version = preg_match('/-MariaDB/', $version) ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+            $min_version = str_contains($version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
         }
 
         $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);
@@ -1069,13 +1062,12 @@ class Db
     {
         $infos = $this->getInfos();
         $version = $infos['version'];
-        $engine = null;
         if ($this->isPostgres()) {
             $engine = 'PostgreSQL';
             $min_version = GALETTE_PGSQL_MIN;
         } else {
-            $engine = preg_match('/-MariaDB/', $version) ? 'MariaDB' : 'MySQL';
-            $min_version = preg_match('/-MariaDB/', $version) ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+            $engine = str_contains($version, '-MariaDB') ? 'MariaDB' : 'MySQL';
+            $min_version = str_contains($version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
         }
 
         $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);

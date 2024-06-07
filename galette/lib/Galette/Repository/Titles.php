@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Titles repository management
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2014 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-04
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository;
 
@@ -44,14 +31,7 @@ use Analog\Analog;
 /**
  * Titles repository management
  *
- * @category  Entity
- * @name      Titles
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-04
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class Titles
@@ -63,7 +43,8 @@ class Titles
     public const MRS = 2;
     public const MISS = 3;
 
-    private static $defaults = array(
+    /** @var array<array<string,mixed>> */
+    private static array $defaults = array(
         array(
             'id_title'      => 1,
             'short_label'   => 'Mr.',
@@ -93,7 +74,7 @@ class Titles
      *
      * @return Title[]
      */
-    public function getList()
+    public function getList(): array
     {
         $select = $this->zdb->select(self::TABLE);
         $select->order(self::PK);
@@ -115,7 +96,7 @@ class Titles
      * @return boolean
      * @throws Throwable
      */
-    public function installInit()
+    public function installInit(): bool
     {
         try {
             //first, we drop all values
@@ -164,26 +145,5 @@ class Titles
             );
             throw $e;
         }
-    }
-
-    /**
-     * Get translated title short version
-     *
-     * @param integer $title The title id to retrieve
-     *
-     * @return string
-     */
-    public static function getTitle($title)
-    {
-        global $zdb;
-
-        $select = $zdb->select(self::TABLE);
-        $select->limit(1)
-            ->where(array(self::PK => $title));
-
-        $results = $zdb->execute($select);
-        $result = $results->current();
-        $res = $result->short_label;
-        return _T($res);
     }
 }

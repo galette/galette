@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Plugins tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2013-01-13
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Plugins tests class
  *
- * @category  Core
- * @name      Plugins
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2013-01-13
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Plugins extends TestCase
 {
@@ -73,11 +53,11 @@ class Plugins extends TestCase
     );
 
     /**
-     * Get instanciated plugins instance
+     * Get instantiated plugins instance
      *
-     * @return Galette\Core\Plugins
+     * @return \Galette\Core\Plugins
      */
-    private function getPlugins()
+    private function getPlugins(): \Galette\Core\Plugins
     {
         $plugins = new \Galette\Core\Plugins();
         $plugins->autoload(GALETTE_PLUGINS_PATH);
@@ -118,7 +98,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testLoadModules()
+    public function testLoadModules(): void
     {
         $plugins = $this->getPlugins();
         $this->assertCount(3, $this->plugins->getModules());
@@ -134,7 +114,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testModuleExists()
+    public function testModuleExists(): void
     {
         $this->assertTrue($this->plugins->moduleExists('plugin-test2'));
         $this->assertFalse($this->plugins->moduleExists('plugin-disabled'));
@@ -145,7 +125,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testDisabledModules()
+    public function testDisabledModules(): void
     {
         $disabled_modules = $this->plugins->getDisabledModules();
         $this->assertTrue(isset($disabled_modules['plugin-disabled']));
@@ -158,7 +138,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testModuleRoot()
+    public function testModuleRoot(): void
     {
         $this->assertSame($this->plugin2['root'], $this->plugins->moduleRoot('plugin-test2'));
     }
@@ -182,7 +162,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testResetModulesList()
+    public function testResetModulesList(): void
     {
         $this->plugins->resetModulesList();
 
@@ -194,7 +174,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testModuleActivation()
+    public function testModuleActivation(): void
     {
         $plugins = $this->getPlugins();
         $modules = $plugins->getModules();
@@ -212,14 +192,30 @@ class Plugins extends TestCase
         $modules = $plugins->getModules();
         $this->assertCount(3, $modules);
         $this->assertTrue(isset($modules['plugin-test2']));
+    }
 
-        $plugins = $this->getPlugins();
-        $this->expectExceptionMessage(_T('No such module.'));
-        $plugins->deactivateModule('nonexistant');
-
+    /**
+     * Test non-existant module activation
+     *
+     * @return void
+     */
+    public function testNonExistantModuleActivation(): void
+    {
         $plugins = $this->getPlugins();
         $this->expectExceptionMessage(_T('No such module.'));
         $plugins->activateModule('nonexistant');
+    }
+
+    /**
+     * Test non-existant module de-activation
+     *
+     * @return void
+     */
+    public function testNonExistantModuleDeactivation(): void
+    {
+        $plugins = $this->getPlugins();
+        $this->expectExceptionMessage(_T('No such module.'));
+        $plugins->deactivateModule('nonexistant');
     }
 
     /**
@@ -227,7 +223,7 @@ class Plugins extends TestCase
      *
      * @return void
      */
-    public function testNeedDatabse()
+    public function testNeedDatabse(): void
     {
         $this->assertTrue($this->plugins->needsDatabase('plugin-db'));
         $this->assertFalse($this->plugins->needsDatabase('plugin-test2'));

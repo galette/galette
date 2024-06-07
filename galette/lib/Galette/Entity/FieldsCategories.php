@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Fields categories handling
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +17,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-28
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
@@ -43,14 +31,7 @@ use Galette\Core\Db;
 /**
  * Fields categories class for galette
  *
- * @category  Entity
- * @name      FieldsCategories
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-28
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class FieldsCategories
@@ -58,9 +39,10 @@ class FieldsCategories
     public const TABLE = 'fields_categories';
     public const PK = 'id_field_category';
 
-    private $defaults;
+    /** @var array<string,mixed> */
+    private array $defaults;
 
-    private $zdb;
+    private Db $zdb;
 
     public const ADH_CATEGORY_IDENTITY = 1;
     public const ADH_CATEGORY_GALETTE = 2;
@@ -69,10 +51,10 @@ class FieldsCategories
     /**
      * Default constructor
      *
-     * @param Db    $zdb      Database
-     * @param array $defaults default values
+     * @param Db                  $zdb      Database
+     * @param array<string,mixed> $defaults default values
      */
-    public function __construct(Db $zdb, $defaults)
+    public function __construct(Db $zdb, array $defaults)
     {
         $this->zdb = $zdb;
         $this->defaults = $defaults;
@@ -83,9 +65,9 @@ class FieldsCategories
      *
      * @param Db $zdb Database
      *
-     * @return array
+     * @return array<ArrayObject<string, int|string>>
      */
-    public static function getList($zdb)
+    public static function getList(Db $zdb): array
     {
         try {
             $select = $zdb->select(self::TABLE);
@@ -110,12 +92,12 @@ class FieldsCategories
     /**
      * Store the categories
      *
-     * @param Db    $zdb        Database
-     * @param array $categories Categories
+     * @param Db                $zdb        Database
+     * @param array<int,string> $categories Categories
      *
      * @return boolean
      */
-    public static function setCategories(Db $zdb, $categories)
+    public static function setCategories(Db $zdb, array $categories): bool
     {
         try {
             $zdb->connection->beginTransaction();
@@ -150,11 +132,10 @@ class FieldsCategories
     /**
      * Set default fields categories at install time
      *
-     *
      * @return boolean
      * @throws Throwable
      */
-    public function installInit()
+    public function installInit(): bool
     {
         try {
             //first, we drop all values

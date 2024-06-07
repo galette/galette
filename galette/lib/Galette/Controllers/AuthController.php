@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette authentication controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +17,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-02
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Analog\Analog;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\Login;
@@ -43,18 +31,12 @@ use Galette\Core\Password;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
+use Galette\Util\Release;
 
 /**
  * Galette authentication controller
  *
- * @category  Controllers
- * @name      AuthController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-02
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class AuthController extends AbstractController
@@ -64,11 +46,11 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param string   $r        Redirect after login
+     * @param ?string  $r        Redirect after login
      *
      * @return Response
      */
-    public function login(Request $request, Response $response, string $r = null)
+    public function login(Request $request, Response $response, string $r = null): Response
     {
         //store redirect path if any
         if (
@@ -102,7 +84,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function doLogin(Request $request, Response $response)
+    public function doLogin(Request $request, Response $response): Response
     {
         $nick = $request->getParsedBody()['login'];
         $password = $request->getParsedBody()['password'];
@@ -136,11 +118,61 @@ class AuthController extends AbstractController
         }
 
         if ($this->login->isLogged()) {
-            if (defined('NON_UTF_DBCONNECT')) {
-                $this->flash->addMessage(
-                    'warning',
-                    'It appears you are using NON_UTF_DBCONNECT constant, it will be in next major release.'
-                );
+            //check for new release
+            if (
+                $this->login->isSuperAdmin()
+                || $this->login->isAdmin()
+                || $this->login->isStaff()
+            ) {
+                $deprecated_constants = [
+                    'NON_UTF_DBCONNECT',
+                    'GALETTE_CARD_WIDTH',
+                    'GALETTE_CARD_HEIGHT',
+                    'GALETTE_CARD_COLS',
+                    'GALETTE_CARD_ROWS'
+                ];
+
+                foreach ($deprecated_constants as $deprecated_constant) {
+                    if (defined($deprecated_constant)) {
+                        $this->flash->addMessage(
+                            'warning',
+                            sprintf(
+                                'It appears you are using %1$s constant, that has been removed in current release.',
+                                $deprecated_constant
+                            )
+                        );
+                    }
+                }
+
+                try {
+                    $release = new Release();
+                    if ($release->checkNewRelease()) {
+                        Analog::log(
+                            sprintf(
+                                'A new Galette release is available: %s (current %s)',
+                                $release->getLatestRelease(),
+                                GALETTE_VERSION
+                            ),
+                            Analog::INFO
+                        );
+                        $this->flash->addMessage(
+                            'info',
+                            [
+                                'title' => _T('A new Galette release is available.'),
+                                'message' => sprintf(
+                                    _T('You currently use Galette %1$s, and %2$s is available.'),
+                                    GALETTE_VERSION,
+                                    $release->getLatestRelease()
+                                )
+                            ]
+                        );
+                    }
+                } catch (\Throwable $e) {
+                    Analog::log(
+                        'Error looking for new release: ' . $e->getMessage(),
+                        Analog::ERROR
+                    );
+                }
             }
 
             if (!$checkpass->isValid($password)) {
@@ -169,7 +201,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function logout(Request $request, Response $response)
+    public function logout(Request $request, Response $response): Response
     {
         $this->login->logOut();
         $this->history->add(_T("Log off"));
@@ -188,7 +220,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function impersonate(Request $request, Response $response, int $id)
+    public function impersonate(Request $request, Response $response, int $id): Response
     {
         $success = $this->login->impersonate($id);
 
@@ -208,7 +240,7 @@ class AuthController extends AbstractController
         } else {
             $msg = str_replace(
                 '%id',
-                $id,
+                (string)$id,
                 _T("Unable to impersonate as %id")
             );
             $this->flash->addMessage(
@@ -231,7 +263,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function unimpersonate(Request $request, Response $response)
+    public function unimpersonate(Request $request, Response $response): Response
     {
         $login = new Login($this->zdb, $this->i18n);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
@@ -276,7 +308,7 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id_adh   Member id
+     * @param ?integer $id_adh   Member id
      *
      * @return Response
      */
@@ -286,7 +318,7 @@ class AuthController extends AbstractController
         $redirect_url = $this->routeparser->urlFor('slash');
         if ((($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null)) {
             $from_admin = true;
-            $redirect_url = $this->routeparser->urlFor('member', ['id' => $id_adh]);
+            $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$id_adh]);
         }
 
         if (
@@ -519,7 +551,7 @@ class AuthController extends AbstractController
                         $this->history->add(
                             str_replace(
                                 '%s',
-                                $id_adh,
+                                (string)$id_adh,
                                 _T("Password changed for member '%s'.")
                             )
                         );

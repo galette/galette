@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Replacements feature
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Features
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.eu
- * @since     2020-12-20
  */
+
+declare(strict_types=1);
 
 namespace Galette\Features;
 
@@ -58,45 +45,29 @@ use DI\Attribute\Inject;
 /**
  * Replacements feature
  *
- * @category  Features
- * @name      Replacements
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.eu
- * @since     2020-12-20
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 trait Replacements
 {
-    private $patterns = [];
-    private $replaces = [];
-    private $dynamic_patterns = [];
+    /** @var array<string,array<string,string>> */
+    private array $patterns = [];
+    /** @var array<string,?string> */
+    private array $replaces = [];
+    /** @var array<string,array<string,string>> */
+    private array $dynamic_patterns = [];
     private ?PHPMailer $mail = null;
 
-    /**
-     * @var Db
-     */
     #[Inject("zdb")]
-    protected $zdb;
+    protected Db $zdb;
 
-    /**
-     * @var Login
-     */
     #[Inject("login")]
-    protected $login;
+    protected Login $login;
 
-    /**
-     * @var Preferences
-     */
     #[Inject("preferences")]
-    protected $preferences;
+    protected Preferences $preferences;
 
-    /**
-     * @var RouteParser
-     */
-    protected $routeparser;
+    protected RouteParser $routeparser;
 
     /**
      * Get dynamic patterns
@@ -104,7 +75,7 @@ trait Replacements
      * @param string  $form_name Dynamic form name
      * @param boolean $legacy    Whether to load legacy patterns
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function getDynamicPatterns(string $form_name, bool $legacy = true): array
     {
@@ -158,19 +129,15 @@ trait Replacements
     /**
      * Set patterns
      *
-     * @param array $patterns Patterns to add
+     * @param array<string,array<string,string>> $patterns Patterns to add
      *
-     * @return $this
+     * @return self
      */
     protected function setPatterns(array $patterns): self
     {
         $toset = [];
         foreach ($patterns as $key => $info) {
-            if (is_array($info)) {
-                $toset[$key] = $info['pattern'];
-            } else {
-                $toset[$key] = $info;
-            }
+            $toset[$key] = $info['pattern'];
         }
 
         $this->patterns = array_merge(
@@ -184,7 +151,7 @@ trait Replacements
     /**
      * Set replacements
      *
-     * @param array $replaces Replacements to add
+     * @param array<string,?string> $replaces Replacements to add
      *
      * @return void
      */
@@ -199,7 +166,7 @@ trait Replacements
     /**
      * Get main patterns
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     protected function getMainPatterns(): array
     {
@@ -228,6 +195,10 @@ trait Replacements
                 'title'     => _T('Your organisation logo'),
                 'pattern'          => '/{ASSO_LOGO}/',
             ],
+            'asso_print_logo'             => [
+                'title'     => _T('Your organisation logo (print specific)'),
+                'pattern'          => '/{ASSO_PRINT_LOGO}/',
+            ],
             'date_now'              => [
                 //TRANS: see https://www.php.net/manual/datetime.format.php
                 'title'     => _T('Current date (Y-m-d)'),
@@ -249,7 +220,7 @@ trait Replacements
      *
      * @param boolean $legacy Whether to load legacy patterns
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     protected function getMemberPatterns(bool $legacy = true): array
     {
@@ -394,9 +365,9 @@ trait Replacements
      *
      * @param boolean $legacy Whether to load legacy patterns
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
-    protected function getContributionPatterns($legacy = true): array
+    protected function getContributionPatterns(bool $legacy = true): array
     {
         $dynamic_patterns = $this->getDynamicPatterns('contrib', $legacy);
 
@@ -489,7 +460,7 @@ trait Replacements
     /**
      * Set main replacements
      *
-     * @return $this
+     * @return self
      */
     public function setMain(): self
     {
@@ -515,6 +486,19 @@ trait Replacements
             $logo->getOptimalHeight()
         );
 
+        $print_logo = new Logo();
+        if ($this->mail !== null) {
+            $print_logo_content = $this->preferences->getURL() . $this->routeparser->urlFor('printLogo');
+        } else {
+            $print_logo_content = '@' . base64_encode(file_get_contents($print_logo->getPath()));
+        }
+        $print_logo_elt = sprintf(
+            '<img src="%1$s" width="%2$s" height="%3$s" alt="" />',
+            $print_logo_content,
+            $logo->getOptimalWidth(),
+            $logo->getOptimalHeight()
+        );
+
         $this->setReplacements(
             array(
                 'asso_name'          => $this->preferences->pref_nom,
@@ -523,6 +507,7 @@ trait Replacements
                 'asso_address_multi' => $address_multi,
                 'asso_website'       => $website,
                 'asso_logo'          => $logo_elt,
+                'asso_print_logo'    => $print_logo_elt,
                 //TRANS: see https://www.php.net/manual/datetime.format.php
                 'date_now'           => date(_T('Y-m-d')),
                 'login_uri'          => $this->preferences->getURL() . $this->routeparser->urlFor('login'),
@@ -536,7 +521,7 @@ trait Replacements
     /**
      * Set contribution and proceed related replacements
      *
-     * @return $this
+     * @return self
      */
     public function setNoContribution(): self
     {
@@ -598,7 +583,7 @@ trait Replacements
             'contrib_bdate'     => $contrib->begin_date,
             'contrib_edate'     => $contrib->end_date,
             'contrib_id'        => $contrib->id,
-            'contrib_payment'   => $contrib->spayment_type,
+            'contrib_payment'   => $contrib->getPaymentType(),
             'contrib_info'      => $contrib->info
         ];
 
@@ -705,13 +690,13 @@ trait Replacements
     /**
      * Set dynamic fields and proceed related replacements
      *
-     * @param string $form_name      Form name
-     * @param array  $dynamic_fields Dynamic fields
-     * @param mixed  $object         Related object (Adherent, Contribution, ...)
+     * @param string                  $form_name      Form name
+     * @param array<string|int,mixed> $dynamic_fields Dynamic fields
+     * @param ?object                 $object         Related object (Adherent, Contribution, ...)
      *
      * @return self
      */
-    public function setDynamicFields(string $form_name, array $dynamic_fields, $object): self
+    public function setDynamicFields(string $form_name, array $dynamic_fields, ?object $object): self
     {
         $uform_name = strtoupper($form_name);
 
@@ -729,7 +714,7 @@ trait Replacements
             if (preg_match("/^{(INPUT_|VALUE_)?DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
                 /** dynamic field value */
                 $capacity = trim($match[1], '_');
-                $field_id    = $match[2];
+                $field_id    = (int)$match[2];
                 $field_name  = $dynamic_fields[$field_id]->getName();
                 $field_type  = $dynamic_fields[$field_id]->getType();
                 $field_values = [];
@@ -809,7 +794,7 @@ trait Replacements
     /**
      * Build legend array
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function getLegend(): array
     {
@@ -831,7 +816,7 @@ trait Replacements
     /**
      * Get configured replacements
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getReplacements(): array
     {
@@ -843,7 +828,7 @@ trait Replacements
      *
      * @param Db $db Db instance
      *
-     * @return $this
+     * @return self
      */
     public function setDb(Db $db): self
     {
@@ -856,7 +841,7 @@ trait Replacements
      *
      * @param Login $login Login instance
      *
-     * @return $this
+     * @return self
      */
     public function setLogin(Login $login): self
     {
@@ -869,7 +854,7 @@ trait Replacements
      *
      * @param Preferences $preferences Preferences instance
      *
-     * @return $this
+     * @return self
      */
     public function setPreferences(Preferences $preferences): self
     {
@@ -882,7 +867,7 @@ trait Replacements
      *
      * @param RouteParser $routeparser RouteParser instance
      *
-     * @return $this
+     * @return self
      */
     public function setRouteparser(RouteParser $routeparser): self
     {
@@ -944,7 +929,7 @@ trait Replacements
     /**
      * Get patterns
      *
-     * @return array
+     * @return array<string,array<string,string>>
      */
     public function getPatterns(): array
     {

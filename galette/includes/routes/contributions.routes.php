@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Contributions related routes
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2014-2020 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Routes
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014-2020 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     0.8.2dev 2014-11-27
  */
+
+declare(strict_types=1);
 
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\Crud;
@@ -140,12 +127,12 @@ $app->get(
 )->setName('printContribution')->add($authenticate);
 
 $app->get(
-    '/document/{hash}',
+    '/document/download/{hash}',
     [GaletteController::class, 'documentLink']
 )->setName('directlink');
 
 $app->post(
-    '/document/{hash}',
+    '/document/download/{hash}',
     [PdfController::class, 'directlinkDocument']
 )->setName('get-directlink');
 
@@ -163,3 +150,66 @@ $app->post(
     '/contribution/do-mass-add',
     [Crud\ContributionsController::class, 'doMassAddContributions']
 )->setName('doMassAddContributions')->add($authenticate);
+
+$app->get(
+    '/scheduled-payments/mine',
+    [Crud\ScheduledPaymentController::class, 'myList']
+)->setName('myScheduledPayments')->add($authenticate);
+
+$app->get(
+    '/scheduled-payments[/{option:page|order|member}/{value:\d+|all}]',
+    [Crud\ScheduledPaymentController::class, 'list']
+)->setName('scheduledPayments')->add($authenticate);
+
+$app->post(
+    '/scheduled-payments/filter',
+    [Crud\ScheduledPaymentController::class, 'filter']
+)->setName('filterScheduledPayments')->add($authenticate);
+
+$app->get(
+    '/scheduled-payment/{id_cotis:\d+}/add',
+    [Crud\ScheduledPaymentController::class, 'add']
+)->setName('addScheduledPayment')->add($authenticate);
+
+$app->get(
+    '/scheduled-payment/edit/{id:\d+}',
+    [Crud\ScheduledPaymentController::class, 'edit']
+)->setName('editScheduledPayment')->add($authenticate);
+
+$app->post(
+    '/scheduled-payments/{id_cotis:\d+}/add',
+    [Crud\ScheduledPaymentController::class, 'doAdd']
+)->setName('doAddScheduledPayment')->add($authenticate);
+
+$app->post(
+    '/scheduled-payments/edit/{id:\d+}',
+    [Crud\ScheduledPaymentController::class, 'doEdit']
+)->setName('doEditScheduledPayment')->add($authenticate);
+
+//Batch actions on scheduled payments list
+$app->post(
+    '/scheduled-payments/batch',
+    [Crud\ScheduledPaymentController::class, 'handleBatch']
+)->setName('batch-scheduledPaymentslist')->add($authenticate);
+
+//scheduled payments list CSV export
+$app->map(
+    ['GET', 'POST'],
+    '/scheduled-payments/export/csv',
+    [CsvController::class, 'scheduledPaymentsExport']
+)->setName('csv-scheduledPaymentslist')->add($authenticate);
+
+$app->get(
+    '/scheduled-payment/remove' . '/{id:\d+}',
+    [Crud\ScheduledPaymentController::class, 'confirmDelete']
+)->setName('removeScheduledPayment')->add($authenticate);
+
+$app->get(
+    '/scheduled-payment/batch/remove',
+    [Crud\ScheduledPaymentController::class, 'confirmDelete']
+)->setName('removeScheduledPayments')->add($authenticate);
+
+$app->post(
+    '/scheduled-payment/remove[/{id}]',
+    [Crud\ScheduledPaymentController::class, 'delete']
+)->setName('doRemoveScheduledPayment')->add($authenticate);

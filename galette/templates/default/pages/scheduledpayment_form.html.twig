@@ -1,0 +1,175 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+    <form action="{% if scheduled.getId() is null %}{{ url_for('doAddScheduledPayment', {'id_cotis': scheduled.getContribution().id}) }}{% else %}{{ url_for('doEditScheduledPayment', {'id': scheduled.getId()}) }}{% endif %}" method="post" class="ui form">
+        <div class="ui styled fluid accordion field">
+            <div class="active title">
+                <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
+                {{ _T("Scheduled payment") }}
+            </div>
+            <div class="active content">
+                <div class="ui mobile reversed stackable grid">
+                    <div class="six wide column">
+                        <div class="inline field required">
+                            <label for="montant_cotis">{{ scheduled.getFieldLabel('amount') }}</label>
+                            <input type="text" name="amount" id="amount" value="{% if scheduled.getId() %}{{ scheduled.getAmount() }}{% else %}{{ scheduled.getMissingAmount() }}{% endif %}" maxlength="10" required="required"/>
+                        </div>
+    {# payment type #}
+    {% set ptype = scheduled.getPaymentType().id %}
+    {% if ptype == null %}
+        {% set ptype = preferences.pref_default_paymenttype %}
+    {% endif %}
+
+    {% set ptypes = callstatic('\\Galette\\Repository\\PaymentTypes', 'getAll', false) %}
+    {% include 'components/forms/payment_types.html.twig' with {
+        'current': ptype,
+        'varname': 'id_paymenttype',
+        'show_inline': true,
+        'component_class': 'inline field',
+        'required': true
+    } %}
+                        <div class="inline field">
+                            <label for="paid">{{ scheduled.getFieldLabel('paid') }}</label>
+                            <input type="checkbox" name="paid" id="paid" value="1"{% if scheduled.isPaid() %} checked="checked"{% endif %}/>
+                        </div>
+                    </div>
+                    <div class="ten wide column">
+    {% set contribution = scheduled.getContribution() %}
+                            <div class="ui yellow segment">
+                                <div class="ui tiny header">
+                                    <a
+                                        href="{{ url_for("editContribution", {"type": contribution.isFee() ? constant('Galette\\Entity\\Contribution::TYPE_FEE') : constant('Galette\\Entity\\Contribution::TYPE_DONATION'), "id": contribution.id}) }}"
+                                        class="ui mini icon blue compact button tooltip"
+                                    >
+                                        <i class="eye icon tooltip" aria-hidden="true"></i>
+                                        <span class="ui special popup">{{ _T("View contribution") }}</span>
+                                    </a>
+                                    {{ _T("Related contribution information") }}
+                                </div>
+                                <div class="content">
+                                    <div class="ui relaxed horizontal list">
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Type") }}</div>
+                                                {{ contribution.type.libelle }}
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Begin") }}</div>
+                                                {{ contribution.begin_date }}
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("End") }}</div>
+                                                {{ contribution.end_date }}
+                                            </div>
+                                        </div>
+            {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Member") }}</div>
+                                                {{ memberName({'id': contribution.member}) }}
+                                            </div>
+                                        </div>
+            {% endif %}
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Amount") }}</div>
+                                                {{ contribution.amount }}
+                                            </div>
+                                        </div>
+            {% if not contribution.isScheduleFullyAllocated() %}
+                                        <div class="item">
+                                            <div class="content">
+                                                <div class="header">{{ _T("Not dispatched amount") }}</div>
+                                                {{ scheduled.getMissingAmount() }}
+                {% if scheduled.getId() != '' %}
+                                                    <a
+                                                        href="{{ url_for("addScheduledPayment", {"id_cotis": contribution.id}) }}"
+                                                        class="ui mini icon green compact button tooltip"
+                                                        title="{{ _T("Create a new scheduled payment") }}"
+                                                    >
+                                                        <i class="plus tiny icon" aria-hidden="true"></i>
+                                                        <i class="money bill wave icon" aria-hidden="true"></i>
+                                                        <span class="visually-hidden">{{ _T("Create a new scheduled payment") }}</span>
+                                                    </a>
+                {% endif %}
+                                            </div>
+                                        </div>
+            {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="sixteen wide column">
+                        <div class="two fields">
+                            <div class="inline field required">
+                                <label for="creation_date">
+                                    {{ scheduled.getFieldLabel('creation_date') }}
+                                </label>
+                                <div class="ui calendar" id="scheduled-creationdate">
+                                    <div class="ui input left icon">
+                                        <i class="calendar icon" aria-hidden="true"></i>
+                                        <input type="text" name="creation_date" id="creation_date" value="{{ scheduled.getCreationDate() }}" maxlength="10" required="required" placeholder="{{ _T('yyyy-mm-dd format') }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inline field required">
+                                <label for="scheduled_date">{{ scheduled.getFieldLabel('scheduled_date') }}</label>
+                                <div class="ui calendar" id="scheduled-scheduleddate">
+                                    <div class="ui input left icon">
+                                        <i class="calendar icon" aria-hidden="true"></i>
+                                        <input type="text" name="scheduled_date" id="scheduled_date" value="{{ scheduled.getScheduledDate() }}" maxlength="10" required="required" placeholder="{{ _T('yyyy-mm-dd format') }}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="comment">{{ scheduled.getFieldLabel('comment') }}</label>
+                            <textarea name="comment" id="comment" cols="61" rows="6">{{ scheduled.getComment() }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% if mode != 'ajax' %}
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+            </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
+            <input type="hidden" name="id_cotis" id="id_cotis" value="{{ scheduled.getContribution().id }}"/>
+    {% endif %}
+    {% if scheduled.getId() %}
+            <input type="hidden" name="id" id="id" value="{{ scheduled.getId() }}"/>
+    {% endif %}
+
+            {% include 'components/forms/csrf.html.twig' %}
+    {% if mode != 'ajax' %}
+        </div>
+    {% endif %}
+     </form>
+{% endblock %}

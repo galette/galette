@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Saved searches
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,20 +17,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2019-09-21
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository;
 
 use ArrayObject;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
@@ -51,33 +39,26 @@ use Galette\Entity\Adherent;
 /**
  * Saved searches
  *
- * @category  Repository
- * @name      SavedSearches
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2019-09-21
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class SavedSearches
 {
     public const TABLE = SavedSearch::TABLE;
     public const PK = SavedSearch::PK;
 
-    private $filters = false;
-    private $zdb;
-    private $login;
-    private $count = null;
+    private SavedSearchesList $filters;
+    private Db $zdb;
+    private Login $login;
+    private ?int $count = null;
 
     /**
      * Default constructor
      *
-     * @param Db                $zdb     Database
-     * @param Login             $login   Login
-     * @param SavedSearchesList $filters Filtering
+     * @param Db                 $zdb     Database
+     * @param Login              $login   Login
+     * @param ?SavedSearchesList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, $filters = null)
+    public function __construct(Db $zdb, Login $login, SavedSearchesList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -92,19 +73,17 @@ class SavedSearches
     /**
      * Get saved searches list
      *
-     * @param bool    $as_search return the results as an array of
-     *                           SavedSearch object.
-     * @param array   $fields    field(s) name(s) to get. Should be a string or
-     *                           an array. If null, all fields will be
-     *                           returned
-     * @param boolean $count     true if we want to count
+     * @param bool           $as_search return the results as an array of
+     *                                  SavedSearch object.
+     * @param ?array<string> $fields    field(s) name(s) to get. Should be a string or
+     *                                  an array. If null, all fields will be returned
      *
-     * @return SavedSearch[]|ArrayObject
+     * @return array<int, SavedSearch>|ResultSet
      */
-    public function getList($as_search = false, $fields = null, $count = true)
+    public function getList(bool $as_search = false, ?array $fields = null): array|ResultSet
     {
         try {
-            $select = $this->buildSelect($fields, $count);
+            $select = $this->buildSelect($fields);
             $this->filters->setLimits($select);
 
             $searches = array();
@@ -129,13 +108,11 @@ class SavedSearches
     /**
      * Builds the SELECT statement
      *
-     * @param ?array $fields fields list to retrieve
-     * @param bool   $count  true if we want to count members
-     *                       (not applicable from static calls), defaults to false
+     * @param ?array<string> $fields fields list to retrieve
      *
      * @return Select SELECT statement
      */
-    private function buildSelect(?array $fields, bool $count = false): Select
+    private function buildSelect(?array $fields): Select
     {
         try {
             $fieldsList = ['*'];
@@ -153,9 +130,7 @@ class SavedSearches
 
             $select->order(self::buildOrderClause());
 
-            if ($count) {
-                $this->proceedCount($select);
-            }
+            $this->proceedCount($select);
 
             return $select;
         } catch (Throwable $e) {
@@ -174,7 +149,7 @@ class SavedSearches
      *
      * @return void
      */
-    private function proceedCount(Select $select)
+    private function proceedCount(Select $select): void
     {
         try {
             $countSelect = clone $select;
@@ -191,7 +166,7 @@ class SavedSearches
             $result = $results->current();
 
             $k = self::PK;
-            $this->count = $result->$k;
+            $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
@@ -205,9 +180,9 @@ class SavedSearches
     /**
      * Builds the order clause
      *
-     * @return array
+     * @return array<string>
      */
-    private function buildOrderClause()
+    private function buildOrderClause(): array
     {
         $order = array();
         $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
@@ -220,7 +195,7 @@ class SavedSearches
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -228,13 +203,13 @@ class SavedSearches
     /**
      * Remove specified searches
      *
-     * @param integer|array $ids         Searches identifiers to delete
-     * @param History       $hist        History
-     * @param boolean       $transaction True to begin a database transaction
+     * @param integer|array<int> $ids         Searches identifiers to delete
+     * @param History            $hist        History
+     * @param boolean            $transaction True to begin a database transaction
      *
      * @return boolean
      */
-    public function remove($ids, History $hist, $transaction = true)
+    public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
         $list = array();
         if (is_numeric($ids)) {

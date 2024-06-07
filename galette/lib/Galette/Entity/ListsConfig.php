@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Lists config handling
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,21 +17,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-13
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
 use ArrayObject;
-use stdClass;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Login;
@@ -47,25 +33,19 @@ use Galette\Core\Authentication;
  * Lists config class for galette:
  * defines fields order and visibility
  *
- * @category  Entity
- * @name      FieldsConfig
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-13
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class ListsConfig extends FieldsConfig
 {
-    protected $listed_fields = array();
+    /** @var array<int,array<string,mixed>> */
+    protected array $listed_fields = array();
 
     /**
      * Fields that are not part of lists
      *
-     * @var array
+     * @var array<string>
      */
-    private $non_list_elements = array(
+    private array $non_list_elements = array(
         'mdp_adh',
         'info_adh',
         'info_public_adh',
@@ -76,9 +56,9 @@ class ListsConfig extends FieldsConfig
     /**
      * ACL mapping for list elements not present in form configuration
      *
-     * @var array
+     * @var array<string,string>
      */
-    private $acl_mapping = array(
+    private array $acl_mapping = array(
         'list_adh_name'             => 'nom_adh',
         'list_adh_contribstatus'    => 'id_statut'
     );
@@ -86,15 +66,16 @@ class ListsConfig extends FieldsConfig
     /**
      * Prepare a field (required data, automation)
      *
-     * @param ArrayObject $rset DB ResultSet row
+     * @param ArrayObject<string, int|string> $rset DB ResultSet row
      *
-     * @return array
+     * @return array<string, int|string>
      */
     protected function buildField(ArrayObject $rset): array
     {
         $f = parent::buildField($rset);
         $f['list_position'] = (int)$rset->list_position;
         $f['list_visible'] = ($f['list_position'] >= 0);
+        $f['width_in_forms'] = (int)$rset->width_in_forms;
         return $f;
     }
 
@@ -104,7 +85,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return void
      */
-    protected function buildLists()
+    protected function buildLists(): void
     {
         //Specific list fields does not have rights; fix this from mapping
         //Cannot be done preparing fields, cannot be sure of the order it is processed
@@ -125,11 +106,11 @@ class ListsConfig extends FieldsConfig
     /**
      * Adds a field to lists
      *
-     * @param array $field Field values
+     * @param array<string,mixed> $field Field values
      *
      * @return void
      */
-    protected function addToLists(array $field)
+    protected function addToLists(array $field): void
     {
         if (in_array($field['field_id'], $this->non_list_elements)) {
             return;
@@ -146,9 +127,9 @@ class ListsConfig extends FieldsConfig
      *
      * @param Login $login Login instance
      *
-     * @return array
+     * @return array<int,object>
      */
-    public function getDisplayElements(Login $login)
+    public function getDisplayElements(Login $login): array
     {
         global $preferences;
 
@@ -202,11 +183,11 @@ class ListsConfig extends FieldsConfig
     /**
      * Handle list labels
      *
-     * @param stdClass $field Field data
+     * @param object $field Field data
      *
-     * @return stdClass
+     * @return void
      */
-    private function handleLabel($field)
+    private function handleLabel(object $field): void
     {
         switch ($field->field_id) {
             case 'bool_admin_adh':
@@ -225,14 +206,12 @@ class ListsConfig extends FieldsConfig
 
         $field->label = trim(str_replace('&nbsp;', ' ', $field->label));
         $field->label = preg_replace('/\s?:$/', '', $field->label);
-
-        return $field;
     }
 
     /**
      * Get all fields for list
      *
-     * @return array
+     * @return array<int,array<string,mixed>>
      */
     public function getListedFields(): array
     {
@@ -242,7 +221,7 @@ class ListsConfig extends FieldsConfig
     /**
      * Get remaining free fields for list
      *
-     * @return array
+     * @return array<string,array<string,mixed>>
      */
     public function getRemainingFields(): array
     {
@@ -269,11 +248,11 @@ class ListsConfig extends FieldsConfig
     /**
      * Set fields
      *
-     * @param array $fields categorized fields array
+     * @param array<int,array<string,mixed>> $fields categorized fields array
      *
      * @return boolean
      */
-    public function setListFields($fields)
+    public function setListFields(array $fields): bool
     {
         $this->listed_fields = $fields;
         return $this->storeList();
@@ -284,7 +263,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return boolean
      */
-    private function storeList()
+    private function storeList(): bool
     {
         $class = get_class($this);
 
@@ -299,7 +278,8 @@ class ListsConfig extends FieldsConfig
             $update->set(
                 array(
                     'list_visible'          => ':list_visible',
-                    'list_position'         => ':list_position'
+                    'list_position'         => ':list_position',
+                    'width_in_forms'        => ':width_in_forms'
                 )
             )->where(
                 array(
@@ -313,9 +293,10 @@ class ListsConfig extends FieldsConfig
 
             foreach ($this->listed_fields as $pos => $field) {
                 $params = array(
-                    'list_visible'  => $field['list_visible'],
-                    'list_position' => $pos,
-                    'field_id'      => $field['field_id']
+                    'list_visible'   => $field['list_visible'],
+                    'list_position'  => $pos,
+                    'field_id'       => $field['field_id'],
+                    'width_in_forms' => $field['width_in_forms']
                 );
                 $stmt->execute($params);
             }
@@ -356,7 +337,7 @@ class ListsConfig extends FieldsConfig
     /**
      * Get ACL mapping for list elements not present in form configuration
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getAclMapping(): array
     {
@@ -370,7 +351,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return integer
      */
-    public function getVisibility($field)
+    public function getVisibility(string $field): int
     {
         if (in_array($field, $this->non_list_elements)) {
             return self::NOBODY;

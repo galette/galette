@@ -1,0 +1,212 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends 'elements/list.html.twig' %}
+
+{% set form = {
+    'route': {
+        'name': "batch-scheduledPaymentslist"
+    },
+    'order': {
+        'name': "scheduledPayments"
+    }
+} %}
+
+{% if nb != 0 and (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
+    {% set batch = {
+        'route': {
+            'name': 'batch-scheduledPaymentslist'
+        },
+        'modal': {
+            'title': _T("No entry selected"),
+            'content': _T("Please make sure to select at least one entry from the list to perform this action.")
+        }
+    } %}
+    {% set batch_actions = [
+        {
+            'name': 'delete',
+            'label': _T("Delete"),
+            'icon': 'trash red'
+        },
+        {
+            'name': 'csv__directdownload',
+            'label': _T("Export as CSV"),
+            'icon': 'file csv'
+        }
+    ] %}
+{% endif %}
+
+{% block search %}
+    <form action="{{ url_for("filterScheduledPayments") }}" method="post" class="ui form filters">
+    <div class="ui secondary yellow segment">
+        <div class="four fields">
+            <div class="field">
+                <label for="date_field">{{ _T("Show payments by") }}</label>
+                <select name="date_field" id="date_field" class="ui search dropdown">
+                    <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD') %} selected="selected"{% endif %}>{{ _T("Date") }}</option>
+                    <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED') %} selected="selected"{% endif %}>{{ _T("Scheduled date") }}</option>
+                </select>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label for="start_date_filter">{{ _T("since") }}</label>
+                    <div class="ui calendar" id="contrib-rangestart">
+                        <div class="ui input left icon">
+                            <i class="calendar icon" aria-hidden="true"></i>
+                            <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="end_date_filter">{{ _T("until") }}</label>
+                    <div class="ui calendar" id="contrib-rangeend">
+                        <div class="ui input left icon">
+                            <i class="calendar icon" aria-hidden="true"></i>
+                            <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                {% include "components/forms/payment_types.html.twig" with {
+                    current: filters.payment_type_filter,
+                    varname: "payment_type_filter",
+                    classname: "",
+                    empty: {'value': -1, 'label': _T("Select")}
+                } %}
+            </div>
+                <div class="ui right aligned basic fitted segment field flexend">
+                    <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
+                        <i class="search icon" aria-hidden="true"></i>
+                        {{ _T("Filter") }}
+                    </button>
+                    <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
+                        <i class="trash alt red icon" aria-hidden="true"></i>
+                        {{ _T("Clear filter") }}
+                    </button>
+            </div>
+        </div>
+    </div>
+
+    {% if mode == 'ajax'%}
+        <input type="hidden" name="ajax" value="true"/>
+        <input type="hidden" name="from_contribution" value="{{ filters.from_contribution }}"/>
+    {% else %}
+        {% include "components/forms/csrf.html.twig" %}
+    {% endif %}
+    </form>
+{% endblock %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count shceduled payment", "%count scheduled payments", nb)|replace({"%count": nb}),
+        'route': {
+            'name': 'filterScheduledPayments'
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': '#', 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID")},
+        {'label': _T("Member"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")},
+        {'label': _T("Date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_DATE")},
+        {'label': _T("Scheduled date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE")},
+        {'label': _T('Amount'), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_AMOUNT")},
+        {'label': _T("Payment type"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE")}
+    ] %}
+
+    {% if (not login.isAdmin() and not login.isStaff()) or mode == 'ajax' %}
+        {% set no_action = true %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block footer %}
+    {% if nb != 0 %}
+        <tr>
+            <th class="right aligned" colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}7{% else %}6{% endif %}">
+                {{ _T("Found total scheduled %f")|replace({"%f": scheduled.getSum()}) }}
+            </th>
+        </tr>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% for ordre, scheduled in list %}
+        {% set contribution = scheduled.getContribution() %}
+        {% if contribution.isFee() %}
+            {% set ctype = constant('Galette\\Entity\\Contribution::TYPE_FEE') %}
+        {% else %}
+            {% set ctype = constant('Galette\\Entity\\Contribution::TYPE_DONATION') %}
+        {% endif %}
+
+        <tr class="{% if mode == 'ajax' %}schedule_row {% endif %}" id="row_{{ scheduled.getId() }}">
+            <td data-scope="row">
+                <input type="checkbox" name="entries_sel[]" value="{{ scheduled.getId() }}"/>
+                {% if preferences.pref_show_id %}
+                    {{ scheduled.getId() }}
+                {% else %}
+                    {{ ordre + 1 + (filters.current_page - 1) * numrows }}
+                {% endif %}
+                {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
+                    <span>
+                        <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
+                            <i
+                                class="ui {% if contribution.isFee() %}user check{% else %}gift{% endif %} grey icon tooltip"
+                                title="{% if contribution.isFee() %}{{ _T('Contribution') }}{% else %}{{ _T('Donation') }}{% endif %}"
+                            ></i>
+                            <span class="visually-hidden">{{ _T("Contribution %id")|replace({"%id": contribution.id}) }}</span>
+                        </a>
+                    </span>
+                {% endif %}
+            </td>
+            <td data-col-label="{{ _T("Member") }}">{{ memberName({id: scheduled.getContribution().member}) }}</td>
+            <td data-col-label="{{ _T("Date") }}">{{ scheduled.getCreationDate() }}</td>
+            <td data-col-label="{{ _T("Scheduled date") }}">{{ scheduled.getScheduledDate() }}</td>
+            <td data-col-label="{{ _T("Amount") }}">{{ scheduled.getAmount() }}</td>
+            <td data-col-label="{{ _T("Payment type") }}">{{ scheduled.getPaymentType() }}</td>
+            {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
+                <td class="actions_row center">
+                    {% if (login.isAdmin() or login.isStaff()) %}
+                        <a
+                            href="{{ url_for("editScheduledPayment", {"id": scheduled.getId()}) }}"
+                            class="action"
+                        >
+                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Edit scheduled payment") }}</span>
+                        </a>
+                        <a
+                            href="{{ url_for("removeScheduledPayment", {"id": scheduled.getId()}) }}"
+                            class="delete"
+                        >
+                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Delete scheduled payment") }}</span>
+                        </a>
+                    {% endif %}
+                </td>
+            {% endif %}
+        </tr>
+    {% else %}
+        <tr><td colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}7{% elseif login.isAdmin() or login.isStaff() %}6{% else %}5{% endif %}" class="emptylist">{{ _T("No scheduled payment") }}</td></tr>
+    {% endfor %}
+{% endblock %}

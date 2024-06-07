@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette plugin installation
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2017-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2017-01-08
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
@@ -42,14 +29,7 @@ use Laminas\Db\Adapter\Adapter;
 /**
  * Galette plugin installation
  *
- * @category  Core
- * @name      Install
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2017-01-08
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class PluginInstall extends Install
 {
@@ -65,10 +45,9 @@ class PluginInstall extends Install
     /**
      * Test database connection
      *
-     * @return true|array true if connection was successfull,
-     * an array with some infos otherwise
+     * @return boolean
      */
-    public function testDbConnexion()
+    public function testDbConnexion(): bool
     {
         //installing plugin, DB connection is already ok
         return true;
@@ -79,24 +58,24 @@ class PluginInstall extends Install
      *
      * @return void
      */
-    public function atPreviousStep()
+    public function atPreviousStep(): void
     {
-        if ($this->_step > 0) {
+        if ($this->step > 0) {
             if (
-                $this->_step - 1 !== self::STEP_DB_INSTALL
-                && $this->_step !== self::STEP_END
+                $this->step - 1 !== self::STEP_DB_INSTALL
+                && $this->step !== self::STEP_END
             ) {
-                if ($this->_step === self::STEP_DB_INSTALL) {
-                    $this->_step = self::STEP_DB_CHECKS;
+                if ($this->step === self::STEP_DB_INSTALL) {
+                    $this->step = self::STEP_DB_CHECKS;
                 } else {
-                    if ($this->_step === self::STEP_DB_UPGRADE) {
+                    if ($this->step === self::STEP_DB_UPGRADE) {
                         $this->setInstalledVersion(null);
                     }
-                    $this->_step = $this->_step - 1;
+                    $this->step = $this->step - 1;
                 }
             } else {
                 $msg = null;
-                if ($this->_step === self::STEP_END) {
+                if ($this->step === self::STEP_END) {
                     $msg = 'Ok man, install is finished already!';
                 } else {
                     $msg = 'It is forbidden to rerun database install!';
@@ -111,11 +90,11 @@ class PluginInstall extends Install
      *
      * @param I18n  $i18n  I18n
      * @param Db    $zdb   Database instance
-     * @param Login $login Loged in instance
+     * @param Login $login Logged in instance
      *
      * @return boolean
      */
-    public function initObjects(I18n $i18n, Db $zdb, Login $login)
+    public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
         return false;
     }

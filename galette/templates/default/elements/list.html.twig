@@ -1,3 +1,23 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% set mode = mode|default('') %}
 {% set is_paginated = is_paginated ?? (nb > 0) %}
 {% set is_public = is_public ?? false %}
@@ -53,7 +73,7 @@
 
     {% if list_type is defined and list_type == 'cards' %}
                 <div class="{% if nb %}ui doubling {% if cards_columns is defined %}{{ cards_columns }}{% else %}six{% endif %} column cards loader_selector{% endif %}">
-    {% else %}
+    {% elseif list_type is not defined %}
                 <div class="ui basic fitted segment loader_selector large-table-wrapper">
                     <table class="listing ui celled{% if basic_table is not defined %} striped{% endif %} table">
                         <thead>
@@ -77,7 +97,7 @@
                                     {% endif %}
                                 </th>
                             {% endfor %}
-                            {% if mode != 'ajax' and no_action is not defined or no_action == false %}
+                            {% if mode != 'ajax' and (no_action is not defined or no_action == false) %}
                                 <th class="actions_row">{{ _T('Actions') }}</th>
                             {% endif %}
                         {% endblock %}

@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette main controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +17,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-02
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Entity\FieldsConfig;
 use Galette\Entity\Social;
 use Galette\Repository\PaymentTypes;
 use Slim\Psr7\Request;
@@ -58,14 +46,7 @@ use Analog\Analog;
 /**
  * Galette main controller
  *
- * @category  Controllers
- * @name      GaletteController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2019-12-02
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class GaletteController extends AbstractController
@@ -227,7 +208,7 @@ class GaletteController extends AbstractController
             $this->preferences,
             $this->login
         );
-        $ptlist = $ptypes->getList();
+        $ptlist = $ptypes->getList(false);
 
         $m = new Members();
         $s = new Status($this->zdb);
@@ -279,7 +260,6 @@ class GaletteController extends AbstractController
     {
         $post = $request->getParsedBody();
         $error_detected = [];
-        $warning_detected = [];
 
         // Validation
         if (isset($post['valid']) && $post['valid'] == '1') {
@@ -292,7 +272,6 @@ class GaletteController extends AbstractController
                         _T("Preferences has been saved.")
                     );
                 }
-                $warning_detected = array_merge($warning_detected, $this->preferences->checkCardsSizes());
 
                 // picture upload
                 if (!Galette::isDemo() && isset($_FILES['logo'])) {
@@ -368,16 +347,6 @@ class GaletteController extends AbstractController
                     $this->flash->addMessage(
                         'error_detected',
                         $error
-                    );
-                }
-            }
-
-            if (count($warning_detected) > 0) {
-                //report warnings
-                foreach ($warning_detected as $warning) {
-                    $this->flash->addMessage(
-                        'warning_detected',
-                        $warning
                     );
                 }
             }
@@ -513,7 +482,8 @@ class GaletteController extends AbstractController
             'time'                  => time(),
             'categories'            => FieldsCategories::getList($this->zdb),
             'categorized_fields'    => $fc->getCategorizedFields(),
-            'non_required'          => $fc->getNonRequired()
+            'non_required'          => $fc->getNonRequired(),
+            'perm_names'            => FieldsConfig::getPermissionsList()
         ];
 
         // display page
@@ -557,11 +527,12 @@ class GaletteController extends AbstractController
             }
 
             $res[$current_cat][] = array(
-                'field_id'  =>  $field,
-                'label'     =>  htmlspecialchars($post[$field . '_label'], ENT_QUOTES),
-                'category'  =>  $post[$field . '_category'],
-                'visible'   =>  $post[$field . '_visible'],
-                'required'  =>  $required
+                'field_id'      =>  $field,
+                'label'         =>  htmlspecialchars($post[$field . '_label'], ENT_QUOTES),
+                'category'      =>  $post[$field . '_category'],
+                'visible'       =>  $post[$field . '_visible'],
+                'required'      =>  $required,
+                'width_in_forms'  =>  $post[$field . '_width_in_forms'] ?? 1
             );
             $pos++;
         }
@@ -606,7 +577,8 @@ class GaletteController extends AbstractController
             'table'         => $table,
             'time'          => time(),
             'listed_fields' => $lc->getListedFields(),
-            'remaining_fields'  => $lc->getRemainingFields()
+            'remaining_fields'  => $lc->getRemainingFields(),
+            'permissions' => $lc::getPermissionsList()
         ];
 
         // display page
@@ -818,7 +790,6 @@ class GaletteController extends AbstractController
             Members::MEMBERSHIP_NEARLY : Members::MEMBERSHIP_LATE);
         $filters->membership_filter = $membership;
 
-        //TODO: filter on reminder may take care of parent email as well
         $mail = ($mail === 'withmail' ?
             Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
         $filters->email_filter = $mail;

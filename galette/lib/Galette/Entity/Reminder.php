@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Reminders
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-02-11
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
@@ -47,14 +34,7 @@ use Galette\Core\History;
 /**
  * Reminders
  *
- * @category  Entity
- * @name      Reminder
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-02-11
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property-read integer $member_id
  * @property integer $type
@@ -69,16 +49,14 @@ class Reminder
     public const TABLE = 'reminders';
     public const PK = 'reminder_id';
 
-    private $id;
-    private $type;
-    private $dest;
-    private $date;
-    /** @var boolean */
-    private $success = false;
-    /** @var boolean */
-    private $nomail;
-    private $comment;
-    private $msg;
+    private int $id;
+    private int $type;
+    private Adherent $dest;
+    private string $date;
+    private bool $success = false;
+    private bool $nomail;
+    private string $comment;
+    private string $msg;
 
     public const IMPENDING = 1;
     public const LATE = 2;
@@ -86,20 +64,15 @@ class Reminder
     /**
      * Main constructor
      *
-     * @param mixed $args Arguments
+     * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
-    public function __construct($args = null)
+    public function __construct(ArrayObject|int $args = null)
     {
         if ($args !== null) {
             if (is_int($args)) {
                 $this->load($args);
-            } elseif (is_object($args)) {
-                $this->loadFromRs($args);
-            } else {
-                Analog::log(
-                    __METHOD__ . ': unknonw arg',
-                    Analog::WARNING
-                );
+            } elseif ($args instanceof ArrayObject) {
+                $this->loadFromRS($args);
             }
         }
     }
@@ -111,7 +84,7 @@ class Reminder
      *
      * @return void
      */
-    private function load($id)
+    private function load(int $id): void
     {
         global $zdb;
         try {
@@ -120,7 +93,7 @@ class Reminder
                 ->where([self::PK => $id]);
 
             $results = $zdb->execute($select);
-            $this->loadFromRs($results->current());
+            $this->loadFromRS($results->current());
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading reminder #' . $id . "Message:\n" .
@@ -134,22 +107,22 @@ class Reminder
     /**
      * Load reminder from a db ResultSet
      *
-     * @param ArrayObject $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs)
+    private function loadFromRS(ArrayObject $rs): void
     {
         global $zdb;
 
         try {
             $pk = self::PK;
-            $this->id = $rs->$pk;
-            $this->type = $rs->reminder_type;
+            $this->id = (int)$rs->$pk;
+            $this->type = (int)$rs->reminder_type;
             $this->dest = new Adherent($zdb, (int)$rs->reminder_dest);
             $this->date = $rs->reminder_date;
-            $this->success = $rs->reminder_success;
-            $this->nomail = $rs->reminder_nomail;
+            $this->success = $rs->reminder_success == 1;
+            $this->nomail = $rs->reminder_nomail == 1;
             $this->comment = $rs->reminder_comment;
         } catch (Throwable $e) {
             Analog::log(
@@ -167,7 +140,7 @@ class Reminder
      *
      * @return boolean
      */
-    private function store($zdb)
+    private function store(Db $zdb): bool
     {
         $now = new \DateTime();
         $data = array(
@@ -206,7 +179,7 @@ class Reminder
      *
      * @return boolean
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return $this->success;
     }
@@ -216,7 +189,7 @@ class Reminder
      *
      * @return boolean
      */
-    public function hasMail()
+    public function hasMail(): bool
     {
         return !$this->nomail;
     }
@@ -230,7 +203,7 @@ class Reminder
      *
      * @return boolean
      */
-    public function send(Texts $texts, History $hist, Db $zdb)
+    public function send(Texts $texts, History $hist, Db $zdb): bool
     {
         global $preferences;
 
@@ -329,7 +302,7 @@ class Reminder
      *
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->msg;
     }
@@ -341,7 +314,7 @@ class Reminder
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         switch ($name) {
             case 'member_id':
@@ -351,13 +324,15 @@ class Reminder
                 return $this->$name;
             case 'comment':
                 return $this->comment;
-            default:
-                Analog::log(
-                    'Unable to get Reminder property ' . $name,
-                    Analog::WARNING
-                );
-                break;
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -368,7 +343,7 @@ class Reminder
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         switch ($name) {
             case 'member_id':
@@ -388,7 +363,7 @@ class Reminder
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'type':

@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette Arithmetic captcha
+ * Copyright © 2003-2024 The Galette Team
  *
- * Copyright © 2020-2023 The Galette Team
- *
- * PHP version 5
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.5dev - 2020-11-08
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
@@ -43,33 +30,21 @@ use Galette\Entity\Adherent;
 /**
  * Password image (captcha) for galette.
  *
- * @category  Core
- * @name      Gaptcha
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.5dev - 2020-11-08
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Gaptcha
 {
     public const OP_ADD = 1;
     public const OP_SUB = 2;
 
-    private $max = 12;
-    private $min = 0;
+    private int $max = 12;
+    private int $min = 0;
 
-    /** @var I18n */
-    private $i18n;
-    /** @var integer */
-    private $current_left;
-    /** @var integer */
-    private $current_right;
-    /** @var integer */
-    private $current_op;
-    /** @var integer */
-    private $gaptcha;
+    private I18n $i18n;
+    private int $current_left;
+    private int $current_right;
+    private int $current_op;
+    private int $gaptcha;
 
     /**
      * Default constructor
@@ -97,7 +72,7 @@ class Gaptcha
      *
      * @return string
      */
-    public function getQuestion()
+    public function getQuestion(): string
     {
         $add_questions = [
             _T('How much is %1$s plus %2$s?'),
@@ -122,7 +97,7 @@ class Gaptcha
      *
      * @return string
      */
-    public function generateQuestion()
+    public function generateQuestion(): string
     {
         $formatter = new NumberFormatter($this->i18n->getID(), NumberFormatter::SPELLOUT);
         return sprintf(
@@ -139,8 +114,8 @@ class Gaptcha
      *
      * @return boolean
      */
-    public function check($gaptcha)
+    public function check(int $gaptcha): bool
     {
-        return (int)$gaptcha === $this->gaptcha;
+        return $gaptcha === $this->gaptcha;
     }
 }

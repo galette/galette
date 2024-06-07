@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette groups controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Controllers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-06
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
@@ -49,14 +36,7 @@ use Analog\Analog;
 /**
  * Galette groups controller
  *
- * @category  Controllers
- * @name      GroupsController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-06
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class GroupsController extends CrudController
@@ -93,13 +73,13 @@ class GroupsController extends CrudController
         $group->setName($name);
         $group->store();
         if (!$this->login->isSuperAdmin()) {
-            $group->setManagers(new Adherent($this->zdb, $this->login->id));
+            $group->setManagers([new Adherent($this->zdb, $this->login->id)]);
         }
         $id = $group->getId();
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => $id]));
+            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => (string)$id]));
     }
 
 
@@ -142,16 +122,21 @@ class GroupsController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
-     * @param integer        $id       Member id to check rights
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
+     * @param ?integer            $id       Member id to check rights
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null, $id = null): Response
-    {
+    public function list(
+        Request $request,
+        Response $response,
+        string $option = null,
+        int|string $value = null,
+        int $id = null
+    ): Response {
         $groups = new Groups($this->zdb, $this->login);
         $group = new Group();
         $group->setLogin($this->login);
@@ -413,7 +398,7 @@ class GroupsController extends CrudController
         }
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => $group->getId()]) . $tab);
+            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => (string)$group->getId()]) . $tab);
     }
 
     /**
@@ -466,11 +451,11 @@ class GroupsController extends CrudController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('groups');
     }
@@ -478,26 +463,26 @@ class GroupsController extends CrudController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveGroup',
-            ['id' => (int)$args['id']]
+            ['id' => (string)$args['id']]
         );
     }
 
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         $group = new Group((int)$args['id']);
         return sprintf(
@@ -509,12 +494,12 @@ class GroupsController extends CrudController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         $group = new Group((int)$post['id']);
         $group->setLogin($this->login);
@@ -532,11 +517,11 @@ class GroupsController extends CrudController
     }
 
     /**
-     * Removal confirmation parameters, can be overriden
+     * Removal confirmation parameters, can be override
      *
      * @param Request $request PSR Request
      *
-     * @return array
+     * @return array<string,mixed>
      */
     protected function getconfirmDeleteParams(Request $request): array
     {

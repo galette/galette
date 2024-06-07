@@ -1,16 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Various paths
- * Path to external librarires, logs files, exports directory, ...
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2011-2014 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,63 +17,38 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Various paths
+ * Path to external libraries, logs files, exports directory, ...
  *
- * @category  Config
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-13
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 if (file_exists(GALETTE_ROOT . 'config/local_paths.inc.php')) {
     include GALETTE_ROOT . 'config/local_paths.inc.php';
 }
 
-//external libraries
-if (!defined('GALETTE_ZEND_PATH')) {
-    define('GALETTE_ZEND_PATH', GALETTE_ROOT . 'vendor/zendframework');
-}
-if (!defined('GALETTE_ANALOG_PATH')) {
-    define(
-        'GALETTE_ANALOG_PATH',
-        GALETTE_ROOT . 'vendor/analog/analog'
-    );
-}
-if (!defined('GALETTE_PHP_MAILER_PATH')) {
-    define(
-        'GALETTE_PHP_MAILER_PATH',
-        GALETTE_ROOT . 'vendor/phpmailer/phpmailer'
-    );
-}
-if (!defined('GALETTE_SMARTY_PATH')) {
-    define(
-        'GALETTE_SMARTY_PATH',
-        GALETTE_ROOT . 'vendor/smarty/smarty/'
-    );
-}
+//3rd party libs paths
 if (!defined('GALETTE_TCPDF_PATH')) {
     define(
         'GALETTE_TCPDF_PATH',
         GALETTE_ROOT . '/vendor/tecnickcom/tcpdf'
     );
 }
-/*if ( !defined('GALETTE_SLIM_PATH') ) {
-    define('GALETTE_SLIM_PATH', GALETTE_ROOT . 'lib/Slim-' . SLIM_VERSION);
-}
-if ( !defined('GALETTE_SLIM_VIEWS_PATH') ) {
-    define('GALETTE_SLIM_VIEWS_PATH', GALETTE_ROOT . 'lib/Slim-Views');
-}*/
 if (!defined('GALETTE_XHPROF_PATH')) {
     define('GALETTE_XHPROF_PATH', '/usr/share/xhprof/');
 }
 
-//galete's paths
+//Galette paths
+const GALETTE_SYSCONFIG_PATH = GALETTE_ROOT . 'includes/sys_config/';
 if (!defined('GALETTE_CONFIG_PATH')) {
     define('GALETTE_CONFIG_PATH', GALETTE_ROOT . 'config/');
 }
+
 if (!defined('GALETTE_PLUGINS_PATH')) {
     define('GALETTE_PLUGINS_PATH', GALETTE_ROOT . 'plugins/');
 }
@@ -93,9 +61,6 @@ if (!defined('GALETTE_THEMES_PATH')) {
 if (!defined('GALETTE_LOGS_PATH')) {
     define('GALETTE_LOGS_PATH', GALETTE_DATA_PATH . 'logs/');
 }
-if (!defined('GALETTE_COMPILE_DIR')) {
-    define('GALETTE_COMPILE_DIR', GALETTE_DATA_PATH . 'templates_c/');
-}
 if (!defined('GALETTE_CACHE_DIR')) {
     define('GALETTE_CACHE_DIR', GALETTE_DATA_PATH . 'cache/' . GALETTE_VERSION . '/');
 }
@@ -107,6 +72,9 @@ if (!defined('GALETTE_IMPORTS_PATH')) {
 }
 if (!defined('GALETTE_PHOTOS_PATH')) {
     define('GALETTE_PHOTOS_PATH', GALETTE_DATA_PATH . 'photos/');
+}
+if (!defined('GALETTE_DOCUMENTS_PATH')) {
+    define('GALETTE_DOCUMENTS_PATH', GALETTE_DATA_PATH . 'documents/');
 }
 if (!defined('GALETTE_ATTACHMENTS_PATH')) {
     define('GALETTE_ATTACHMENTS_PATH', GALETTE_DATA_PATH . 'attachments/');
@@ -123,4 +91,8 @@ if (!defined('GALETTE_TELEMETRY_URI')) {
 
 if (!defined('GALETTE_TPL_THEME_DIR')) {
     define('GALETTE_TPL_THEME_DIR', GALETTE_ROOT . 'templates/default/');
+}
+
+if (!defined('GALETTE_DOWNLOADS_URI')) {
+    define('GALETTE_DOWNLOADS_URI', 'https://galette.eu/download/');
 }

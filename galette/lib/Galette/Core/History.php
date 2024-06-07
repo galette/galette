@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * History management
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-02-09
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
@@ -46,14 +33,7 @@ use Laminas\Db\Sql\Select;
 /**
  * History management
  *
- * @category  Core
- * @name      History
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-02-09
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property HistoryList $filters
  */
@@ -63,26 +43,28 @@ class History
     public const TABLE = 'logs';
     public const PK = 'id_log';
 
-    protected $count;
-    protected $zdb;
-    protected $login;
-    protected $preferences;
-    protected $filters;
+    protected int $count;
+    protected Db $zdb;
+    protected Login $login;
+    protected Preferences $preferences;
+    protected HistoryList $filters;
 
-    protected $users;
-    protected $actions;
+    /** @var array<int, string> */
+    protected array $users;
+    /** @var array<int, string> */
+    protected array $actions;
 
-    protected $with_lists = true;
+    protected bool $with_lists = true;
 
     /**
      * Default constructor
      *
-     * @param Db          $zdb         Database
-     * @param Login       $login       Login
-     * @param Preferences $preferences Preferences
-     * @param HistoryList $filters     Filtering
+     * @param Db           $zdb         Database
+     * @param Login        $login       Login
+     * @param Preferences  $preferences Preferences
+     * @param ?HistoryList $filters     Filtering
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, $filters = null)
+    public function __construct(Db $zdb, Login $login, Preferences $preferences, HistoryList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -105,7 +87,7 @@ class History
      *
      * @return string
      */
-    public static function findUserIPAddress()
+    public static function findUserIPAddress(): string
     {
         if (
             defined('GALETTE_X_FORWARDED_FOR_INDEX')
@@ -126,7 +108,7 @@ class History
      *
      * @return bool true if entry was successfully added, false otherwise
      */
-    public function add($action, $argument = '', $query = '')
+    public function add(string $action, string $argument = '', string $query = ''): bool
     {
         if ($this->preferences->pref_log == Preferences::LOG_DISABLED) {
             //logs are disabled
@@ -144,7 +126,7 @@ class History
             $values = array(
                 'date_log'   => date('Y-m-d H:i:s'),
                 'ip_log'     => $ip,
-                'adh_log'    => $this->login->login,
+                'adh_log'    => $this->login->login ?? '',
                 'action_log' => $action,
                 'text_log'   => $argument,
                 'sql_log'    => $query
@@ -169,26 +151,18 @@ class History
      *
      * @return boolean
      */
-    public function clean()
+    public function clean(): bool
     {
         try {
-            $result = $this->zdb->db->query(
+            $this->zdb->db->query(
                 'TRUNCATE TABLE ' . $this->getTableName(true),
                 Adapter::QUERY_MODE_EXECUTE
             );
-
-            if (!$result) {
-                Analog::log(
-                    'An error occurred cleaning history. ',
-                    Analog::WARNING
-                );
-                $this->add('Error flushing logs');
-                return false;
-            }
             $this->add('Logs flushed');
             $this->filters = new HistoryList();
             return true;
         } catch (Throwable $e) {
+            $this->add('Error flushing logs');
             Analog::log(
                 'Unable to flush logs. | ' . $e->getMessage(),
                 Analog::WARNING
@@ -200,9 +174,9 @@ class History
     /**
      * Get the entire history list
      *
-     * @return array
+     * @return array<int, object>
      */
-    public function getHistory()
+    public function getHistory(): array
     {
         try {
             $select = $this->zdb->select($this->getTableName());
@@ -238,8 +212,9 @@ class History
      *
      * @return void
      */
-    private function buildLists(Select $select)
+    private function buildLists(Select $select): void
     {
+        $this->users = [];
         try {
             $usersSelect = clone $select;
             $usersSelect->reset($usersSelect::COLUMNS);
@@ -249,9 +224,12 @@ class History
 
             $results = $this->zdb->execute($usersSelect);
 
-            $this->users = [];
             foreach ($results as $result) {
-                $this->users[] = $result->adh_log;
+                $ulabel = $result->adh_log;
+                if ($ulabel === '') {
+                    $ulabel = _T('None');
+                }
+                $this->users[] = $ulabel;
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -285,9 +263,9 @@ class History
     /**
      * Builds the order clause
      *
-     * @return array SQL ORDER clauses
+     * @return array<int, string> SQL ORDER clauses
      */
-    protected function buildOrderClause()
+    protected function buildOrderClause(): array
     {
         $order = array();
 
@@ -316,7 +294,7 @@ class History
      *
      * @return void
      */
-    private function buildWhereClause(Select $select)
+    private function buildWhereClause(Select $select): void
     {
         try {
             if ($this->filters->start_date_filter != null) {
@@ -337,15 +315,17 @@ class History
                 );
             }
 
-            if ($this->filters->user_filter != null && $this->filters->user_filter != '0') {
+            if ($this->filters->user_filter !== null && $this->filters->user_filter != '0') {
+                if ($this->filters->user_filter === _T('None')) {
+                    $this->filters->user_filter = '';
+                }
                 $select->where->equalTo(
                     'adh_log',
                     $this->filters->user_filter
                 );
             }
 
-            //@phpstan-ignore-next-line
-            if ($this->filters->action_filter != null && $this->filters->action_filter != '0') {
+            if ($this->filters->action_filter !== null && $this->filters->action_filter != '0') {
                 $select->where->equalTo(
                     'action_log',
                     $this->filters->action_filter
@@ -367,7 +347,7 @@ class History
      *
      * @return void
      */
-    private function proceedCount(Select $select)
+    private function proceedCount(Select $select): void
     {
         try {
             $countSelect = clone $select;
@@ -384,7 +364,7 @@ class History
             $result = $results->current();
 
             $k = $this->getPk();
-            $this->count = $result->$k;
+            $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
@@ -402,22 +382,20 @@ class History
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
-        Analog::log(
-            '[History] Getting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
         $forbidden = array();
         if (!in_array($name, $forbidden)) {
             return $this->$name;
-        } else {
-            Analog::log(
-                '[History] Unable to get property `' . $name . '`',
-                Analog::WARNING
-            );
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -428,7 +406,7 @@ class History
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (isset($this->$name)) {
             return true;
@@ -444,7 +422,7 @@ class History
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         Analog::log(
             '[History] Setting property `' . $name . '`',
@@ -473,7 +451,7 @@ class History
      *
      * @return string
      */
-    protected function getTableName($prefixed = false)
+    protected function getTableName(bool $prefixed = false): string
     {
         if ($prefixed === true) {
             return PREFIX_DB . self::TABLE;
@@ -487,7 +465,7 @@ class History
      *
      * @return string
      */
-    protected function getPk()
+    protected function getPk(): string
     {
         return self::PK;
     }
@@ -497,9 +475,9 @@ class History
      *
      * @param HistoryList $filters Filters
      *
-     * @return History
+     * @return self
      */
-    public function setFilters(HistoryList $filters)
+    public function setFilters(HistoryList $filters): self
     {
         $this->filters = $filters;
         return $this;
@@ -510,7 +488,7 @@ class History
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -518,9 +496,9 @@ class History
     /**
      * Get users list
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function getUsersList()
+    public function getUsersList(): array
     {
         return $this->users;
     }
@@ -528,9 +506,9 @@ class History
     /**
      * Get actions list
      *
-     * @return array
+     * @return array<int, string>
      */
-    public function getActionsList()
+    public function getActionsList(): array
     {
         return $this->actions;
     }

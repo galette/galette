@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Groups entity
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2011-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-10-25
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository;
 
@@ -48,23 +35,14 @@ use Galette\Core\Login;
 use Galette\Core\Db;
 
 /**
- * Groups entitiy
+ * Groups entity
  *
- * @category  Repository
- * @name      Groups
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-10-25
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Groups
 {
-    /** @var Db */
-    private $zdb;
-    /** @var Login */
-    private $login;
+    private Db $zdb;
+    private Login $login;
 
     /**
      * Constructor
@@ -83,7 +61,7 @@ class Groups
      *
      * @param boolean $as_groups Retrieve Group[]
      *
-     * @return array
+     * @return array<int, Group|string>
      */
     public static function getSimpleList(bool $as_groups = false): array
     {
@@ -126,7 +104,7 @@ class Groups
      *
      * @return Group[]
      */
-    public function getList(bool $full = true, int $id = null): array
+    public function getList(bool $full = true, ?int $id = null): array
     {
         try {
             $select = $this->zdb->select(Group::TABLE, 'ggroup');
@@ -171,7 +149,7 @@ class Groups
             $results = $this->zdb->execute($select);
 
             foreach ($results as $row) {
-                /** @var ArrayObject $row */
+                /** @var ArrayObject<string, int|string> $row */
                 $group = new Group($row);
                 $group->setLogin($this->login);
                 $groups[$group->getFullName()] = $group;
@@ -195,7 +173,7 @@ class Groups
      * @param int     $id       Member id
      * @param boolean $as_group Retrieve Group[] or int[]
      *
-     * @return array
+     * @return array<int, Group|int>
      */
     public static function loadManagedGroups(int $id, bool $as_group = true): array
     {
@@ -209,7 +187,7 @@ class Groups
      * @param boolean $managed  Retrieve managed groups (defaults to false)
      * @param boolean $as_group Retrieve Group[] or int[]
      *
-     * @return array
+     * @return array<int, Group|int>
      */
     public static function loadGroups(int $id, bool $managed = false, bool $as_group = true): array
     {
@@ -252,17 +230,17 @@ class Groups
     /**
      * Add a member to specified groups
      *
-     * @param Adherent $adh         Member
-     * @param array    $groups      Groups Groups list. Each entry must contain
-     *                              the group id, name each value separated
-     *                              by a pipe.
-     * @param boolean  $manager     Add member as manager, defaults to false
-     * @param boolean  $transaction Does a SQL transaction already exists? Defaults
-     *                              to false.
+     * @param Adherent      $adh         Member
+     * @param array<string> $groups      Groups Groups list. Each entry must contain
+     *                                   the group id, name each value separated
+     *                                   by a pipe.
+     * @param boolean       $manager     Add member as manager, defaults to false
+     * @param boolean       $transaction Does a SQL transaction already exists? Defaults
+     *                                   to false.
      *
      * @return boolean
      */
-    public static function addMemberToGroups($adh, $groups, $manager = false, $transaction = false)
+    public static function addMemberToGroups(Adherent $adh, array $groups, bool $manager = false, bool $transaction = false): bool
     {
         global $zdb, $login;
 
@@ -303,7 +281,7 @@ class Groups
             );
 
             //we proceed, if groups has been specified
-            if (is_array($groups)) {
+            if (count($groups)) {
                 $insert = $zdb->insert($table);
                 $insert->values(
                     array(
@@ -358,7 +336,7 @@ class Groups
             }
             return true;
         } catch (Throwable $e) {
-            $te = clone $e;
+            $te = $e;
             if ($transaction === false) {
                 $zdb->connection->rollBack();
             }
@@ -381,11 +359,11 @@ class Groups
     /**
      * Remove members from all their groups
      *
-     * @param array $ids Members ids
+     * @param array<int> $ids Members ids
      *
      * @return void
      */
-    public static function removeMembersFromGroups(array $ids)
+    public static function removeMembersFromGroups(array $ids): void
     {
         global $zdb;
 
@@ -414,7 +392,7 @@ class Groups
      *
      * @return void
      */
-    public static function removeMemberFromGroups($id)
+    public static function removeMemberFromGroups(int $id): void
     {
         self::removeMembersFromGroups([$id]);
     }
@@ -424,12 +402,12 @@ class Groups
      *
      * @param Db       $zdb     Database instance
      * @param string   $name    Requested name
-     * @param int|null $parent  Parent groupe (defaults to null)
+     * @param int|null $parent  Parent group (defaults to null)
      * @param int|null $current Current ID to be excluded (defaults to null)
      *
      * @return boolean
      */
-    public static function isUnique(Db $zdb, string $name, int $parent = null, int $current = null)
+    public static function isUnique(Db $zdb, string $name, ?int $parent = null, ?int $current = null): bool
     {
         try {
             $select = $zdb->select(Group::TABLE);
@@ -460,12 +438,12 @@ class Groups
     /**
      * Get managed users id list
      *
-     * @param array $groups List of managed groups.
-     *                      If empty, Groups::loadManagedGroups() will be called
+     * @param array<int, Group|int> $groups List of managed groups.
+     *                                      If empty, Groups::loadManagedGroups() will be called
      *
-     * @return array|false
+     * @return array<int>|false
      */
-    public function getManagerUsers(array $groups = [])
+    public function getManagerUsers(array $groups = []): array|false
     {
         if (!$this->login->isGroupManager()) {
             return false;
@@ -479,7 +457,7 @@ class Groups
             [Adherent::PK]
         )->join(
             array('status' => PREFIX_DB . Status::TABLE),
-            'a.' . Status::PK . '=status.' . Status::PK,
+            'adh.' . Status::PK . '=status.' . Status::PK,
             array('priorite_statut')
         )->join(
             array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),

@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * News tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2017-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-03-07
  */
+
+declare(strict_types=1);
 
 namespace Galette\IO\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * News tests class
  *
- * @category  Core
- * @name      News
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-03-07
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class News extends TestCase
 {
@@ -73,7 +53,7 @@ class News extends TestCase
      *
      * @return void
      */
-    public function testLoadNews()
+    public function testLoadNews(): void
     {
         //ensure allow_url_fopen is on
         ini_set('allow_url_fopen', true);
@@ -88,7 +68,7 @@ class News extends TestCase
      *
      * @return void
      */
-    public function testCacheNews()
+    public function testCacheNews(): void
     {
         //will use default lang to build RSS URL
         $file = GALETTE_CACHE_DIR . md5($this->local_url) . '.cache';
@@ -141,7 +121,7 @@ class News extends TestCase
      *
      * @return void
      */
-    public function testLoadNewsWExeption()
+    public function testLoadNewsWExeption(): void
     {
         $news = $this->getMockBuilder(\Galette\IO\News::class)
             ->setConstructorArgs(array($this->local_url, true))

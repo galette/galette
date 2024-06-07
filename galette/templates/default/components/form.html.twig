@@ -1,3 +1,23 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
             {% for fieldset in fieldsets %}
             <div class="galetteform fieldset-{{ fieldset.id }} ui styled fluid accordion field">
                 <div class="active title">
@@ -5,7 +25,7 @@
                     {{ _T(fieldset.label) }}
                 </div>
                 <div class="active content field">
-                    <div class="ui three column stackable grid">
+                    <div class="ui{% if preferences.pref_member_form_grid is defined %} {{ preferences.pref_member_form_grid }}{% endif %} column stackable grid">
                     {% if masschange is not defined and not self_adh and fieldset.id == '1' %}
                         <div class="sixteen wide field column">
                             {% include "components/forms/picture.html.twig" %}
@@ -17,7 +37,12 @@
                         </div>
                     {% endif %}
                     {% for entry in fieldset.elements %}
-                        <div class="field column">
+                        {% if entry.width_in_forms == 1 or (preferences.pref_member_form_grid == 'two' and entry.width_in_forms == 3) %}
+                          {% set columns = '' %}
+                        {% else %}
+                          {% set columns = (entry.width_in_forms == 3) ? 'eight wide ' : 'sixteen wide ' %}
+                        {% endif %}
+                        <div class="{{ columns }}field column">
                         {% set template = "text.html.twig" %}
                         {% set title = null %}
                         {% set tip = null %}
@@ -72,7 +97,7 @@
                         {% if entry.field_id == 'id_statut' %}
                             {% set template = "status.html.twig" %}
                         {% endif %}
-                        {% if entry.field_id == 'ville_adh' or entry.field_id == 'lieu_naissance' or entry.field_id == 'pays_adh' %}
+                        {% if entry.field_id == 'ville_adh' or entry.field_id == 'lieu_naissance' or entry.field_id == 'pays_adh' or entry.field_id == 'region_adh' %}
                             {% set template = "search.html.twig" %}
                         {% endif %}
 
@@ -134,7 +159,7 @@
             </div>
 
                 {# Social networks attached to the contact information fieldset #}
-                {% if fieldset.id == 3 and not (masschange ?? false) %}
+                {% if fieldset.id == 3 and not (masschange ?? false) and preferences.pref_disable_members_socials != 1 %}
                     {% include "elements/edit_socials.html.twig" with {socials: member.socials} %}
                 {% endif %}
             {% endfor %}

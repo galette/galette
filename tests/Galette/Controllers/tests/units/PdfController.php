@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * PDF model tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-11-21
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers\test\units;
 
@@ -44,14 +31,7 @@ use Slim\Psr7\Request;
 /**
  * PDF controller tests
  *
- * @category  Controllers
- * @name      PdfController
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-12-06
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class PdfController extends GaletteTestCase
 {
@@ -65,10 +45,6 @@ class PdfController extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->initModels();
-        $this->initStatus();
-        $this->initContributionsTypes();
 
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
         $this->adh->setDependencies(
@@ -114,7 +90,7 @@ class PdfController extends GaletteTestCase
      *
      * @return void
      */
-    public function testStoreModels()
+    public function testStoreModels(): void
     {
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
         $this->assertSame('_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}', $model->title);
@@ -162,7 +138,7 @@ class PdfController extends GaletteTestCase
      *
      * @return void
      */
-    public function testMembersCards()
+    public function testMembersCards(): void
     {
         $this->getMemberOne();
 
@@ -227,7 +203,7 @@ class PdfController extends GaletteTestCase
      *
      * @return void
      */
-    public function testFilteredMembersCards()
+    public function testFilteredMembersCards(): void
     {
         $this->getMemberOne();
 
@@ -269,7 +245,7 @@ class PdfController extends GaletteTestCase
      *
      * @return void
      */
-    public function testMembersLabels()
+    public function testMembersLabels(): void
     {
         unset($this->session->filter_members);
         $this->getMemberOne();
@@ -341,7 +317,7 @@ class PdfController extends GaletteTestCase
      *
      * @return void
      */
-    public function testFilteredMembersLabels()
+    public function testFilteredMembersLabels(): void
     {
         unset($this->session->filter_members);
         $this->getMemberOne();
@@ -383,7 +359,7 @@ class PdfController extends GaletteTestCase
      *
      * @return void
      */
-    public function testadhesionForm()
+    public function testadhesionForm(): void
     {
         unset($this->session->filter_members);
         $this->getMemberOne();
@@ -435,7 +411,7 @@ class PdfController extends GaletteTestCase
      *
      * @return void
      */
-    public function testAttendanceSheet()
+    public function testAttendanceSheet(): void
     {
         $this->getMemberOne();
 
@@ -492,7 +468,7 @@ class PdfController extends GaletteTestCase
      *
      * @return void
      */
-    public function testContribution()
+    public function testContribution(): void
     {
         $this->getMemberOne();
         $this->createContribution();

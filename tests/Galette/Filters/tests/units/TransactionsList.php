@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Transaction filters tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,32 +17,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Filters
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2023-10-04
  */
 
-namespace Galette\Entity\test\units;
+declare(strict_types=1);
+
+namespace Galette\Filters\test\units;
 
 use Galette\GaletteTestCase;
 
 /**
  * Transaction filters tests class
  *
- * @category  Filters
- * @name      TransactionsList
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2023-10-04
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class TransactionsList extends GaletteTestCase
 {
@@ -74,7 +54,7 @@ class TransactionsList extends GaletteTestCase
      *
      * @return void
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $filters = new \Galette\Filters\TransactionsList();
 
@@ -101,8 +81,8 @@ class TransactionsList extends GaletteTestCase
         $this->assertSame(\Galette\Filters\TransactionsList::ORDER_ASC, $filters->ordered);
 
         //set filter on children
-        $filters->filtre_cotis_children = true;
-        $this->assertTrue($filters->filtre_cotis_children);
+        $filters->filtre_cotis_children = 18;
+        $this->assertSame(18, $filters->filtre_cotis_children);
 
         //reinit and test defaults are back
         $filters->reinit();

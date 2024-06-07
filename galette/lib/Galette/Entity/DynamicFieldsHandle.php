@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Dynamic fields handle, aggregating field descriptors and values
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2011-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,22 +17,16 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-06-20
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
 use ArrayObject;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Separator;
+use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Driver\StatementInterface;
@@ -51,44 +39,40 @@ use Galette\Repository\DynamicFieldsSet;
 /**
  * Dynamic fields handle, aggregating field descriptors and values
  *
- * @name DynamicFieldsHandle
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class DynamicFieldsHandle
 {
     public const TABLE = 'dynamic_fields';
 
-    private $dynamic_fields = [];
-    private $current_values = [];
-    private $form_name;
-    private $item_id;
+    /** @var DynamicField[] */
+    private array $dynamic_fields = [];
+    /** @var array<int, array<int, mixed>> */
+    private array $current_values = [];
+    private string $form_name;
+    private ?int $item_id;
 
-    private $errors = array();
+    /** @var array<string> */
+    private array $errors = array();
 
-    private $zdb;
-    private $login;
+    private Db $zdb;
+    private Login $login;
 
-    private $insert_stmt;
-    private $update_stmt;
-    private $delete_stmt;
+    private StatementInterface $insert_stmt;
+    private StatementInterface $update_stmt;
+    private StatementInterface $delete_stmt;
 
-    private $has_changed = false;
+    private bool $has_changed = false;
 
     /**
      * Default constructor
      *
-     * @param Db    $zdb      Database instance
-     * @param Login $login    Login instance
-     * @param mixed $instance Object instance
+     * @param Db      $zdb      Database instance
+     * @param Login   $login    Login instance
+     * @param ?object $instance Object instance
      */
-    public function __construct(Db $zdb, Login $login, $instance = null)
+    public function __construct(Db $zdb, Login $login, object $instance = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -100,11 +84,11 @@ class DynamicFieldsHandle
     /**
      * Load dynamic fields values for specified object
      *
-     * @param mixed $object Object instance
+     * @param object $object Object instance
      *
      * @return bool
      */
-    public function load($object)
+    public function load(object $object): bool
     {
         $this->form_name = $object->getFormName();
 
@@ -169,7 +153,7 @@ class DynamicFieldsHandle
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -179,7 +163,7 @@ class DynamicFieldsHandle
     /**
      * Get fields
      *
-     * @return array
+     * @return array<int, DynamicField>
      */
     public function getFields(): array
     {
@@ -189,7 +173,7 @@ class DynamicFieldsHandle
     /**
      * Get fields for search pages
      *
-     * @return array
+     * @return array<int, DynamicField>
      */
     public function getSearchFields(): array
     {
@@ -209,9 +193,9 @@ class DynamicFieldsHandle
      *
      * @param integer $field Field ID
      *
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
-    public function getValues($field): array
+    public function getValues(int $field): array
     {
         if (!isset($this->current_values[$field])) {
             $this->current_values[$field][] = [
@@ -228,14 +212,14 @@ class DynamicFieldsHandle
     /**
      * Set field value
      *
-     * @param integer $item  Item ID
-     * @param integer $field Field ID
-     * @param integer $index Value index
-     * @param mixed   $value Value
+     * @param ?integer   $item  Item ID
+     * @param integer    $field Field ID
+     * @param integer    $index Value index
+     * @param string|int $value Value
      *
      * @return void
      */
-    public function setValue($item, $field, $index, $value)
+    public function setValue(?int $item, int $field, int $index, string|int $value): void
     {
         $idx = $index - 1;
         $input = [
@@ -255,13 +239,12 @@ class DynamicFieldsHandle
     /**
      * Unset field value
      *
-     * @param integer $item  Item ID
      * @param integer $field Field ID
      * @param integer $index Value index
      *
      * @return void
      */
-    public function unsetValue($item, $field, $index)
+    public function unsetValue(int $field, int $index): void
     {
         $idx = $index - 1;
         if (isset($this->current_values[$field][$idx])) {
@@ -272,15 +255,15 @@ class DynamicFieldsHandle
     /**
      * Store values
      *
-     * @param integer $item_id     Curent item id to use (will be used if current item_id is 0)
-     * @param boolean $transaction True if a transaction already exists
+     * @param ?integer $item_id     Current item id to use (will be used if current item_id is 0)
+     * @param boolean  $transaction True if a transaction already exists
      *
      * @return boolean
      */
-    public function storeValues($item_id = null, $transaction = false)
+    public function storeValues(int $item_id = null, bool $transaction = false): bool
     {
         try {
-            if ($item_id !== null && ($this->item_id == null || $this->item_id == 0)) {
+            if ($item_id !== null && ($this->item_id === null || $this->item_id === 0)) {
                 $this->item_id = $item_id;
             }
             if (!$transaction) {
@@ -386,7 +369,7 @@ class DynamicFieldsHandle
      *
      * @return void
      */
-    private function handleRemovals()
+    private function handleRemovals(): void
     {
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $this->dynamic_fields = $fields->getList($this->form_name);
@@ -421,7 +404,7 @@ class DynamicFieldsHandle
 
         if (count($fromdb)) {
             foreach ($fromdb as $entry) {
-                if ($this->delete_stmt === null) {
+                if (!isset($this->delete_stmt)) {
                     $delete = $this->zdb->delete(self::TABLE);
                     $delete->where([
                         'item_id'       => ':item_id',
@@ -457,7 +440,7 @@ class DynamicFieldsHandle
      *
      * @return boolean
      */
-    public function hasChanged()
+    public function hasChanged(): bool
     {
         return $this->has_changed;
     }
@@ -465,15 +448,15 @@ class DynamicFieldsHandle
     /**
      * Remove values
      *
-     * @param integer $item_id     Curent item id to use (will be used if current item_id is 0)
-     * @param boolean $transaction True if a transaction already exists
+     * @param ?integer $item_id     Current item id to use (will be used if current item_id is 0)
+     * @param boolean  $transaction True if a transaction already exists
      *
      * @return boolean
      */
-    public function removeValues($item_id = null, $transaction = false)
+    public function removeValues(int $item_id = null, bool $transaction = false): bool
     {
         try {
-            if ($item_id !== null && ($this->item_id == null || $this->item_id == 0)) {
+            if ($item_id !== null && ($this->item_id === null || $this->item_id === 0)) {
                 $this->item_id = $item_id;
             }
             if (!$transaction) {
@@ -509,9 +492,9 @@ class DynamicFieldsHandle
     /**
      * Get current fields resultset
      *
-     * @return ArrayObject
+     * @return ResultSet
      */
-    protected function getCurrentFields()
+    protected function getCurrentFields(): ResultSet
     {
         $select = $this->zdb->select(self::TABLE, 'd');
         $select->join(
@@ -530,13 +513,13 @@ class DynamicFieldsHandle
         $access_level = $this->login->getAccessLevel();
 
         foreach ($this->dynamic_fields as $field) {
-            $perm = $field->getPerm();
+            $perm = $field->getPermission();
             if (
-                ($perm == DynamicField::PERM_MANAGER &&
+                ($perm == FieldsConfig::MANAGER &&
                     $access_level < Authentication::ACCESS_MANAGER) ||
-                ($perm == DynamicField::PERM_STAFF &&
+                ($perm == FieldsConfig::STAFF &&
                         $access_level < Authentication::ACCESS_STAFF) ||
-                ($perm == DynamicField::PERM_ADMIN &&
+                ($perm == FieldsConfig::ADMIN &&
                     $access_level < Authentication::ACCESS_ADMIN)
             ) {
                 continue;

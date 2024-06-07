@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Payment type tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2019-12-15
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Payment type tests
  *
- * @category  Entity
- * @name      PaymentType
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2019-12-15
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class PaymentType extends TestCase
 {
@@ -95,7 +75,7 @@ class PaymentType extends TestCase
      *
      * @return void
      */
-    private function deletePaymentType()
+    private function deletePaymentType(): void
     {
         if (is_array($this->remove) && count($this->remove) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\PaymentType::TABLE);
@@ -115,7 +95,7 @@ class PaymentType extends TestCase
      *
      * @return void
      */
-    public function testPaymentType()
+    public function testPaymentType(): void
     {
         global $i18n; // globals :(
         $i18n = $this->i18n;
@@ -155,11 +135,6 @@ class PaymentType extends TestCase
         $results = $this->zdb->execute($select);
         $this->assertSame(count($this->i18n->getArrayList()), count($results));
 
-        $type = new \Galette\Entity\PaymentType($this->zdb, \Galette\Entity\PaymentType::CASH);
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('You cannot delete system payment types!');
-        $type->remove();
-
         $type = new \Galette\Entity\PaymentType($this->zdb, $id);
         $this->assertTrue($type->remove());
 
@@ -171,5 +146,10 @@ class PaymentType extends TestCase
         );
         $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());
+
+        $type = new \Galette\Entity\PaymentType($this->zdb, \Galette\Entity\PaymentType::CASH);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You cannot delete system payment types!');
+        $type->remove();
     }
 }

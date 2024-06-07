@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Telemetry tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2017-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Util
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-10-07
  */
+
+declare(strict_types=1);
 
 namespace Galette\Util\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Telemetry tests class
  *
- * @category  Util
- * @name      Telemetry
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-10-07
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Telemetry extends TestCase
 {
@@ -90,7 +70,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGrabGaletteInfos()
+    public function testGrabGaletteInfos(): void
     {
         $expected = [
             'uuid'               => 'TO BE SET',
@@ -138,20 +118,18 @@ class Telemetry extends TestCase
             ->onlyMethods(array('getCount'))
             ->getMock();
         $telemetry->method('getCount')
-            ->will(
-                $this->returnCallback(
-                    function ($table, $where) {
-                        switch ($table) {
-                            case \Galette\Entity\Adherent::TABLE:
-                                return 56;
-                            case \Galette\Entity\Contribution::TABLE:
-                                return 402;
-                            case \Galette\Entity\Transaction::TABLE:
-                                return 100;
-                        }
-                        return 0;
+            ->willReturnCallback(
+                function ($table) {
+                    switch ($table) {
+                        case \Galette\Entity\Adherent::TABLE:
+                            return 56;
+                        case \Galette\Entity\Contribution::TABLE:
+                            return 402;
+                        case \Galette\Entity\Transaction::TABLE:
+                            return 100;
                     }
-                )
+                    return 0;
+                }
             );
         $result = $telemetry->grabGaletteInfos();
 
@@ -166,7 +144,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGrabDbInfos()
+    public function testGrabDbInfos(): void
     {
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,
@@ -190,7 +168,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGrabWebserverInfos()
+    public function testGrabWebserverInfos(): void
     {
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,
@@ -210,7 +188,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGrabPhpInfos()
+    public function testGrabPhpInfos(): void
     {
         $expected = [
             'version'   => str_replace(PHP_EXTRA_VERSION, '', PHP_VERSION),
@@ -239,7 +217,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGrabOsInfos()
+    public function testGrabOsInfos(): void
     {
         $distro = '';
         if (file_exists('/etc/redhat-release')) {
@@ -269,7 +247,7 @@ class Telemetry extends TestCase
      *
      * @return void
      */
-    public function testGetTelemetryInfos()
+    public function testGetTelemetryInfos(): void
     {
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,

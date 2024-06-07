@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Logo handling
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,39 +17,27 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-09-13
  */
 
+declare(strict_types=1);
+
 namespace Galette\Core;
+
+use Laminas\Db\Sql\Select;
 
 /**
  * This class stores and serve the logo.
  * If no custom logo is found, we take galette's default one.
  *
- * @category  Core
- * @name      Logo
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-09-13
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Logo extends Picture
 {
-    protected $id = 'custom_logo';
+    protected string|int $id = 'custom_logo';
     //database wants a member id (integer), not a string.
     //  Will be used to query the correct id
-    protected $db_id = 0;
-    protected $custom = true;
+    protected int $db_id = 0;
+    protected bool $custom = true;
 
     /**
      * Default constructor.
@@ -66,13 +48,13 @@ class Logo extends Picture
     }
 
     /**
-     * Gets the default picture to show, anyways
+     * Gets the default picture to show, anyway
      *
      * @see Picture::getDefaultPicture()
      *
      * @return void
      */
-    protected function getDefaultPicture()
+    protected function getDefaultPicture(): void
     {
         $this->file_path = realpath(_CURRENT_THEME_PATH . 'images/galette.png');
         $this->format = 'png';
@@ -85,9 +67,9 @@ class Logo extends Picture
      *
      * @see picture::getCheckFileQuery()
      *
-     * @return string SELECT query
+     * @return Select SELECT query
      */
-    protected function getCheckFileQuery()
+    protected function getCheckFileQuery(): Select
     {
         global $zdb;
 
@@ -107,7 +89,7 @@ class Logo extends Picture
      *
      * @return boolean
      */
-    public function isCustom()
+    public function isCustom(): bool
     {
         return $this->custom;
     }

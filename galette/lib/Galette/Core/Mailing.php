@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Mailing features
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-07
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
@@ -45,14 +32,7 @@ use Laminas\Db\ResultSet\ResultSet;
 /**
  * Mailing features
  *
- * @category  Core
- * @name      Mailing
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2009-03-07
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property string $subject
  * @property string $message
@@ -63,9 +43,9 @@ use Laminas\Db\ResultSet\ResultSet;
  * @property-read string $alt_message
  * @property-read string $wrapped_message
  * @property-read PHPMailer\PHPMailer\PHPMailer $mail
- * @property-read PHPMailer\PHPMailer\PHPMailer $_mail
  * @property-read array $errors
  * @property-read array $recipients
+ * @property-read array $unreachables
  * @property-read string|false $tmp_path
  * @property array $attachments
  * @property-read string $sender_name
@@ -83,23 +63,25 @@ class Mailing extends GaletteMail
     public const MIME_TEXT = 'text/plain';
     public const MIME_DEFAULT = self::MIME_TEXT;
 
-    private $id;
+    private string|int $id;
 
-    private $unreachables = array();
-    private $mrecipients = array();
-    private $current_step;
+    /** @var array<int, Adherent> */
+    private array $unreachables = array();
+    /** @var array<int, Adherent> */
+    private array $mrecipients = array();
+    private int $current_step;
 
-    private $mime_type;
+    private string $mime_type;
 
-    private $tmp_path;
-    private $history_id;
+    private ?string $tmp_path;
+    private int $history_id;
 
     /**
      * Default constructor
      *
-     * @param Preferences $preferences Preferences instance
-     * @param array       $members     An array of members
-     * @param int         $id          Identifier, defaults to null
+     * @param Preferences          $preferences Preferences instance
+     * @param array<int, Adherent> $members     An array of members
+     * @param ?integer             $id          Identifier, defaults to null
      */
     public function __construct(Preferences $preferences, array $members = [], int $id = null)
     {
@@ -142,11 +124,11 @@ class Mailing extends GaletteMail
     /**
      * Generate temporary path
      *
-     * @param string $id Random id, defautls to null
+     * @param ?string $id Random id, defaults to null
      *
      * @return void
      */
-    private function generateTmpPath($id = null)
+    private function generateTmpPath(string $id = null): void
     {
         if ($id === null) {
             $id = $this->generateNewId();
@@ -159,7 +141,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    private function loadAttachments()
+    private function loadAttachments(): void
     {
         $dir = '';
         if (
@@ -182,21 +164,25 @@ class Mailing extends GaletteMail
     /**
      * Loads a mailing from history
      *
-     * @param ArrayObject $rs  Mailing entry
-     * @param boolean     $new True if we create a 'new' mailing,
-     *                         false otherwise (from preview for example)
+     * @param ArrayObject<string, mixed> $rs  Mailing entry
+     * @param boolean                    $new True if we create a 'new' mailing,
+     *                                        false otherwise (from preview for example)
      *
      * @return boolean
      */
-    public function loadFromHistory(ArrayObject $rs, $new = true)
+    public function loadFromHistory(ArrayObject $rs, bool $new = true): bool
     {
         global $zdb;
 
         try {
-            $orig_recipients = unserialize($rs->mailing_recipients);
+            if (Galette::isSerialized($rs->mailing_recipients)) {
+                $orig_recipients = unserialize($rs->mailing_recipients);
+            } else {
+                $orig_recipients = Galette::jsonDecode($rs->mailing_recipients);
+            }
         } catch (\Throwable $e) {
             Analog::log(
-                'Unable to unserialize recipients for mailing ' . $rs->mailing_id,
+                'Unable to retrieve recipients for mailing ' . $rs->mailing_id,
                 Analog::ERROR
             );
             $orig_recipients = [];
@@ -224,11 +210,11 @@ class Mailing extends GaletteMail
             $this->copyAttachments($rs->mailing_id);
         } else {
             $this->tmp_path = null;
-            $this->id = $rs->mailing_id;
+            $this->id = (int)$rs->mailing_id;
             if (!$this->attachments) {
                 $this->loadAttachments();
             }
-            $this->history_id = $rs->mailing_id;
+            $this->history_id = (int)$rs->mailing_id;
         }
         return true;
     }
@@ -240,7 +226,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    private function copyAttachments($id)
+    private function copyAttachments(int $id): void
     {
         $source_dir = GALETTE_ATTACHMENTS_PATH . $id . '/';
         $dest_dir = GALETTE_ATTACHMENTS_PATH . $this->id . '/';
@@ -280,7 +266,7 @@ class Mailing extends GaletteMail
      *
      * @return int
      */
-    public function send()
+    public function send(): int
     {
         $m = array();
         foreach ($this->mrecipients as $member) {
@@ -294,11 +280,12 @@ class Mailing extends GaletteMail
     /**
      * Set mailing recipients
      *
-     * @param array $members Array of Adherent objects
+     * @phpstan-ignore-next-line
+     * @param array<int, Adherent> $members Array of Adherent objects
      *
      * @return bool
      */
-    public function setRecipients($members)
+    public function setRecipients(array $members): bool
     {
         $m = array();
         $this->mrecipients = array();
@@ -324,11 +311,11 @@ class Mailing extends GaletteMail
     /**
      * Store maling attachments
      *
-     * @param array $files Array of uploaded files to store
+     * @param array<string, string|int> $files Array of uploaded files to store
      *
      * @return true|int error code
      */
-    public function store($files)
+    public function store(array $files): bool|int
     {
         if ($this->tmp_path === null) {
             $this->generateTmpPath();
@@ -364,7 +351,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    public function moveAttachments($id)
+    public function moveAttachments(int $id): void
     {
         if (
             isset($this->tmp_path)
@@ -395,7 +382,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    public function removeAttachment($name)
+    public function removeAttachment(string $name): void
     {
         $to_remove = null;
         if (
@@ -445,12 +432,12 @@ class Mailing extends GaletteMail
     /**
      * Remove mailing attachments
      *
-     * @param boolean $temp Remove only tmporary attachments,
+     * @param boolean $temp Remove only temporary attachments,
      *                      to avoid history breaking
      *
-     * @return void|false
+     * @return boolean
      */
-    public function removeAttachments($temp = false)
+    public function removeAttachments(bool $temp = false): bool
     {
         $to_remove = null;
         if (
@@ -484,6 +471,7 @@ class Mailing extends GaletteMail
             }
             rmdir($to_remove);
         }
+        return true;
     }
 
     /**
@@ -493,7 +481,7 @@ class Mailing extends GaletteMail
      *
      * @return string Localized message
      */
-    public function getAttachmentErrorMessage($code)
+    public function getAttachmentErrorMessage(int $code): string
     {
         $f = new File($this->tmp_path);
         return $f->getErrorMessage($code);
@@ -504,7 +492,7 @@ class Mailing extends GaletteMail
      *
      * @return boolean
      */
-    public function existsInHistory()
+    public function existsInHistory(): bool
     {
         return isset($this->history_id);
     }
@@ -516,7 +504,7 @@ class Mailing extends GaletteMail
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         $forbidden = array('ordered');
         if (!in_array($name, $forbidden)) {
@@ -534,7 +522,6 @@ class Mailing extends GaletteMail
                 case 'html':
                     return $this->isHTML();
                 case 'mail':
-                case '_mail':
                     return $this->getPhpMailer();
                 case 'errors':
                     return $this->getErrors();
@@ -579,7 +566,7 @@ class Mailing extends GaletteMail
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         $forbidden = array('ordered');
         if (!in_array($name, $forbidden)) {
@@ -591,7 +578,6 @@ class Mailing extends GaletteMail
                 case 'wrapped_message':
                 case 'html':
                 case 'mail':
-                case '_mail':
                 case 'errors':
                 case 'recipients':
                 case 'tmp_path':
@@ -614,7 +600,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'subject':

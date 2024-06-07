@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * i18n tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2013-01-13
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * I18n tests class
  *
- * @category  Core
- * @name      i18n
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2013-01-13
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class I18n extends TestCase
 {
@@ -85,7 +65,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testAutoLang()
+    public function testAutoLang(): void
     {
         $this->i18n = new \Galette\Core\I18n();
 
@@ -115,7 +95,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $list = $this->i18n->getList();
 
@@ -131,7 +111,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testGetArrayList()
+    public function testGetArrayList(): void
     {
         $list = $this->i18n->getArrayList();
 
@@ -143,7 +123,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testGetNameFromid()
+    public function testGetNameFromid(): void
     {
         $lang = $this->i18n->getNameFromId('en_US');
         $this->assertSame('English', $lang);
@@ -157,7 +137,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testGetLangInfos()
+    public function testGetLangInfos(): void
     {
         $id = $this->i18n->getID();
         $longid = $this->i18n->getLongID();
@@ -186,7 +166,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testChangeUnknownLanguage()
+    public function testChangeUnknownLanguage(): void
     {
         $this->i18n->changeLanguage('un_KN');
         $id = $this->i18n->getID();
@@ -199,7 +179,7 @@ class I18n extends TestCase
      *
      * @return void
      */
-    public function testSeemUtf8()
+    public function testSeemUtf8(): void
     {
         $is_utf = $this->i18n->seemUtf8('HéhéHÉHÉâ-ôß¬- ©»«<ëßßä€êþÿûîœô');
         $is_iso = $this->i18n->seemUtf8(mb_convert_encoding('Héhé', 'ISO-8859-1'));

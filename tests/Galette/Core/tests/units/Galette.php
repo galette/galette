@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2021-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-11-23
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core\test\units;
 
@@ -41,14 +28,7 @@ use Galette\GaletteTestCase;
 /**
  * Galette tests class
  *
- * @category  Core
- * @name      Galette
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-11-23
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Galette extends GaletteTestCase
 {
@@ -59,10 +39,10 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGitVersion()
+    public function testGitVersion(): void
     {
         $gitversion = \Galette\Core\Galette::gitVersion();
-        $this->assertStringStartsWith(GALETTE_VERSION, $gitversion);
+        $this->assertStringStartsWith(str_replace('-dev', '', GALETTE_VERSION), $gitversion);
         $this->assertSame(
             1,
             preg_match(
@@ -77,7 +57,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testSerialization()
+    public function testSerialization(): void
     {
         //global objects
         $login = new \Galette\Core\Login($this->zdb, $this->i18n);
@@ -152,7 +132,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetMenus()
+    public function testGetMenus(): void
     {
         global $preferences, $login, $plugins;
         $db = new \Galette\Core\Db();
@@ -242,7 +222,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetPublicMenus()
+    public function testGetPublicMenus(): void
     {
         global $preferences;
 
@@ -273,7 +253,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetDashboards()
+    public function testGetDashboards(): void
     {
         global $login;
 
@@ -293,7 +273,7 @@ class Galette extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(true);
 
         $dashboards = \Galette\Core\Galette::getDashboards();
-        $this->assertCount(8, $dashboards);
+        $this->assertCount(9, $dashboards);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
@@ -340,7 +320,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetListActions()
+    public function testGetListActions(): void
     {
         global $login;
 
@@ -408,7 +388,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetDetailledActions()
+    public function testGetDetailledActions(): void
     {
         $member = $this->getMemberOne();
 
@@ -422,7 +402,7 @@ class Galette extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetBatchActions()
+    public function testGetBatchActions(): void
     {
         global $login;
 

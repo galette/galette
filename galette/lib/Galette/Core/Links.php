@@ -1,16 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Temporary links for galette, to send direct links to invoices, receipts,
- * and member cards directly by email
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,19 +17,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4 - 2020-03-11
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
+use DateTime;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
@@ -46,14 +33,7 @@ use Galette\Entity\Contribution;
  * Temporary links for galette, to send direct links to invoices, receipts,
  * and member cards directly by email
  *
- * @category  Core
- * @name      Links
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4 - 2020-03-11
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class Links
@@ -65,7 +45,7 @@ class Links
     public const TARGET_INVOICE    = 2;
     public const TARGET_RECEIPT    = 3;
 
-    private $zdb;
+    private Db $zdb;
 
     /**
      * Default constructor
@@ -73,7 +53,7 @@ class Links
      * @param Db      $zdb   Database instance:
      * @param boolean $clean Whether we should clean expired links in database
      */
-    public function __construct(Db $zdb, $clean = true)
+    public function __construct(Db $zdb, bool $clean = true)
     {
         $this->zdb = $zdb;
         if ($clean === true) {
@@ -89,7 +69,7 @@ class Links
      *
      * @return boolean
      */
-    private function removeOldEntry($target, $id)
+    private function removeOldEntry(int $target, int $id): bool
     {
         try {
             $delete = $this->zdb->delete(self::TABLE);
@@ -120,9 +100,9 @@ class Links
      * @param int $target Target (one of self::TARGET_* constants)
      * @param int $id     Target identifier
      *
-     * @return false|string
+     * @return string
      */
-    public function generateNewLink($target, $id)
+    public function generateNewLink(int $target, int $id): string
     {
         //first of all, we'll remove all existant entries for specified id
         $this->removeOldEntry($target, $id);
@@ -178,11 +158,11 @@ class Links
     /**
      * Get expiration date
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    private function getExpirationDate()
+    private function getExpirationDate(): DateTime
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $date->sub(new \DateInterval('P1W'));
         return $date;
     }
@@ -192,7 +172,7 @@ class Links
      *
      * @return boolean
      */
-    protected function cleanExpired()
+    protected function cleanExpired(): bool
     {
         try {
             $date = $this->getExpirationDate();
@@ -223,9 +203,9 @@ class Links
      * @param string $hash the hash, base64 encoded
      * @param string $code Code sent to validate link
      *
-     * @return array|false false if hash is not valid, array otherwise
+     * @return array<int,int>|false false if hash is not valid, array otherwise
      */
-    public function isHashValid($hash, $code)
+    public function isHashValid(string $hash, string $code): array|bool
     {
         try {
             $hash = base64_decode($hash);

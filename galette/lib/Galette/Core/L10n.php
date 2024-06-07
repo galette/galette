@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * l10n handling
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2011-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-07-31
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
@@ -45,24 +32,15 @@ use Laminas\Db\Sql\Expression;
 /**
  * l10n handling
  *
- * @category  Core
- * @name      l10n
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-07-31
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class L10n
 {
     public const TABLE = 'l10n';
 
-    /** @var Db */
-    private $zdb;
-    /** @var I18n */
-    private $i18n;
+    private Db $zdb;
+    private I18n $i18n;
 
     /**
      * Default constructor.
@@ -83,7 +61,7 @@ class L10n
      *
      * @return boolean
      */
-    public function addDynamicTranslation($text_orig)
+    public function addDynamicTranslation(string $text_orig): bool
     {
         try {
             foreach ($this->i18n->getList() as $lang) {
@@ -156,7 +134,7 @@ class L10n
      *
      * @return boolean
      */
-    public function deleteDynamicTranslation($text_orig)
+    public function deleteDynamicTranslation(string $text_orig): bool
     {
         try {
             $delete = $this->zdb->delete(self::TABLE);
@@ -196,7 +174,7 @@ class L10n
      *
      * @return boolean
      */
-    public function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
+    public function updateDynamicTranslation(string $text_orig, string $text_locale, string $text_trans): bool
     {
         try {
             //check if translation already exists
@@ -254,7 +232,7 @@ class L10n
      *
      * @return string
      */
-    public function getDynamicTranslation($text_orig, $text_locale)
+    public function getDynamicTranslation(string $text_orig, string $text_locale): string
     {
         try {
             $select = $this->zdb->select(self::TABLE);

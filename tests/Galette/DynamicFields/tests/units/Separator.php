@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Dynamic separator tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  DynamicFields
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2013-01-14
  */
+
+declare(strict_types=1);
 
 namespace Galette\DynamicFields\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Dynamic separator test
  *
- * @category  DynamicFields
- * @name      Separator
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2013-01-14
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Separator extends TestCase
 {
@@ -71,7 +51,7 @@ class Separator extends TestCase
      *
      * @return void
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $o = new \Galette\DynamicFields\Separator($this->zdb, 10);
         $this->assertNull($o->getId());
@@ -82,7 +62,7 @@ class Separator extends TestCase
      *
      * @return void
      */
-    public function testGetTypeName()
+    public function testGetTypeName(): void
     {
         $this->assertSame(_T('separator'), $this->separator->getTypeName());
     }
@@ -92,7 +72,7 @@ class Separator extends TestCase
      *
      * @return void
      */
-    public function testBaseProperties()
+    public function testBaseProperties(): void
     {
         $muliple = $this->separator->isMultiValued();
         $this->assertFalse($muliple);
@@ -118,7 +98,7 @@ class Separator extends TestCase
         $has_s = $this->separator->hasSize();
         $this->assertFalse($has_s);
 
-        $perms = $this->separator->getPerm();
+        $perms = $this->separator->getPermission();
         $this->assertNull($perms);
 
         $width = $this->separator->getWidth();

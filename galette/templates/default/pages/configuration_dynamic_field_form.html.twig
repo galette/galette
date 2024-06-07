@@ -1,3 +1,23 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
@@ -18,7 +38,7 @@
                     <label for="field_perm">{{ _T("Permissions:") }}</label>
                     <select name="field_perm" id="field_perm" class="ui dropdown">
                         {% for key, value in perm_names %}
-                            <option value="{{ key }}"{% if key == df.getPerm() %} selected="selected"{% endif %}>{{ value }}</option>
+                            <option value="{{ key }}"{% if key == df.getPermission() %} selected="selected"{% endif %}>{{ value }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -41,6 +61,13 @@
                 <div class="inline field">
                     <label for="field_height">{{ _T("Height:") }}</label>
                     <input type="text" name="field_height" id="field_height" value="{{ df.getHeight() }}" size="3"/>
+                </div>
+    {% endif %}
+    {% if df.hasMinSize() %}
+                <div class="inline field">
+                    <label for="field_min_size">{{ _T("Min Size:") }}</label>
+                    <input type="text" name="field_min_size" id="field_min_size" value="{{ df.getMinSize() }}" size="3"/>
+                    <span class="exemple">{{ _T("Minimum number of characters.") }}</span>
                 </div>
     {% endif %}
     {% if df.hasSize() %}
@@ -73,6 +100,25 @@
                     <textarea name="field_information" id="field_information" cols="20" rows="6">{{ df.getInformation() }}</textarea>
                     <span class="tip">{{ _T("Extra information displayed along with dynamic field.") }}</span>
                 </div>
+                <div class="inline field">
+                    <label for="field_information_above">{{ _T("Display information above input") }}:</label>
+                    <select name="field_information_above" id="field_information_above" class="ui dropdown">
+                        <option value="0" {% if not df.hasInformationAbove() %}selected="selected"{% endif %}>{{ _T("No") }}</option>
+                        <option value="1" {% if df.hasInformationAbove() %}selected="selected"{% endif %}>{{ _T("Yes") }}</option>
+                    </select>
+                </div>
+    {% if preferences.pref_member_form_grid != 'one' %}
+                <div class="inline field">
+                    <label for="field_width_in_forms">{{ _T("Width in forms") }}:</label>
+                    <select name="field_width_in_forms" id="field_width_in_forms" class="ui dropdown">
+                        <option value="1"{% if df.getWidthInForms() == 1 or (preferences.pref_member_form_grid == 'two' and df.getWidthInForms() == 3) %}selected="selected"{% endif %}>{{ _T("Default") }}</option>
+                        <option value="2"{% if df.getWidthInForms() == 2 %}selected="selected"{% endif %}>{{ _T("Full") }}</option>
+        {% if preferences.pref_member_form_grid == 'three' %}
+                        <option value="3"{% if df.getWidthInForms() == 3 %}selected="selected"{% endif %}>{{ _T("Half") }}</option>
+        {% endif %}
+                    </select>
+                </div>
+    {% endif %}
     {% if mode != 'ajax' %}
             </div>
         </div>
@@ -105,7 +151,7 @@
                     <select name="field_perm" id="field_perm" class="ui dropdown">
                         {% set perm = 0 %}
                         {% if df is defined %}
-                            {% set perm = df.getPerm() %}
+                            {% set perm = df.getPermission() %}
                         {% endif %}
                         {% for key, value in perm_names %}
                             <option value="{{ key }}"{% if key == perm %} selected="selected"{% endif %}>{{ value }}</option>

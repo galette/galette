@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * ListsConfig tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-05-16
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * ListsConfig tests class
  *
- * @category  Entity
- * @name      ListsConfig
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-05-16
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class ListsConfig extends TestCase
 {
@@ -106,7 +86,7 @@ class ListsConfig extends TestCase
      *
      * @return void
      */
-    private function resetListsConfig()
+    private function resetListsConfig(): void
     {
         $new_list = [];
         foreach ($this->default_lists as $key) {
@@ -121,7 +101,7 @@ class ListsConfig extends TestCase
      *
      * @return void
      */
-    public function testGetVisibility()
+    public function testGetVisibility(): void
     {
         $this->lists_config->load();
 
@@ -145,7 +125,7 @@ class ListsConfig extends TestCase
      *
      * @return void
      */
-    public function testSetFields()
+    public function testSetFields(): void
     {
         $lists_config = $this->lists_config;
         $lists_config->installInit();
@@ -205,9 +185,9 @@ class ListsConfig extends TestCase
         $town['visible'] = \Galette\Entity\FieldsConfig::NOBODY;
 
         //gsm
-        $gsm = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][5]; //6 in FieldsConfig but 5 here.
+        $gsm = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][6]; //5 in FieldsConfig but 6 here.
         $gsm['position'] = count($fields[1]);
-        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][5]); //6 in FieldsConfig but 5 here.
+        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][6]); //5 in FieldsConfig but 6 here.
         $gsm['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
         $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $gsm;
 
@@ -230,7 +210,7 @@ class ListsConfig extends TestCase
      *
      * @return void
      */
-    public function testGetDisplayElements()
+    public function testGetDisplayElements(): void
     {
         $lists_config = $this->lists_config;
         $lists_config->load();

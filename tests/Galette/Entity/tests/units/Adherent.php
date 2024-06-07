@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Adherent tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2017-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-04-17
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -41,14 +28,7 @@ use Galette\GaletteTestCase;
 /**
  * Adherent tests class
  *
- * @category  Entity
- * @name      Adherent
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2017-04-17
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Adherent extends GaletteTestCase
 {
@@ -64,6 +44,8 @@ class Adherent extends GaletteTestCase
     {
         parent::tearDown();
         $this->zdb = new \Galette\Core\Db();
+
+        $this->cleanContributions();
 
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
@@ -95,8 +77,6 @@ class Adherent extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->initStatus();
-        $this->initTitles();
 
         $this->default_deps = [
             'picture'   => true,
@@ -121,7 +101,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $adh = $this->adh;
         $this->assertFalse($adh->isAdmin());
@@ -151,7 +131,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testDependencies()
+    public function testDependencies(): void
     {
         $adh = $this->adh;
         $this->assertSame($this->default_deps, $adh->deps);
@@ -217,7 +197,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetterWException()
+    public function testGetterWException(): void
     {
         $adh = $this->adh;
 
@@ -230,7 +210,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testDepsAtConstuct()
+    public function testDepsAtConstuct(): void
     {
         $deps = [
             'picture'   => false,
@@ -248,13 +228,6 @@ class Adherent extends GaletteTestCase
         );
 
         $this->assertSame($deps, $adh->deps);
-
-        $adh = new \Galette\Entity\Adherent(
-            $this->zdb,
-            null,
-            'not an array'
-        );
-        $this->assertSame($this->default_deps, $adh->deps);
     }
 
     /**
@@ -262,7 +235,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testSimpleMember()
+    public function testSimpleMember(): void
     {
         $this->getMemberOne();
         $this->checkMemberOneExpected();
@@ -277,7 +250,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoadForLogin()
+    public function testLoadForLogin(): void
     {
         $this->getMemberOne();
 
@@ -298,7 +271,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testUpdatePassword()
+    public function testUpdatePassword(): void
     {
         $this->getMemberOne();
 
@@ -319,7 +292,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testCheckErrors()
+    public function testCheckErrors(): void
     {
         $adh = $this->adh;
 
@@ -407,7 +380,7 @@ class Adherent extends GaletteTestCase
             }
         );
 
-        $data = ['id_statut' => ''];
+        $data = ['id_statut' => \Galette\Entity\Status::DEFAULT_STATUS];
         $check = $adh->check($data, [], []);
         $expected = ['You have to select a group you own!'];
         $this->assertSame($expected, $check);
@@ -427,7 +400,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testPhoto()
+    public function testPhoto(): void
     {
         $this->getMemberOne();
 
@@ -445,7 +418,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testCanEdit()
+    public function testCanEdit(): void
     {
         $adh = new \Galette\Entity\Adherent($this->zdb);
 
@@ -519,7 +492,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testDuplicate()
+    public function testDuplicate(): void
     {
         $this->getMemberOne();
 
@@ -544,7 +517,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testParents()
+    public function testParents(): void
     {
         $this->getMemberOne();
 
@@ -583,7 +556,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testInjection()
+    public function testInjection(): void
     {
         $data = [
             'nom_adh'           => 'Doe',
@@ -604,7 +577,7 @@ class Adherent extends GaletteTestCase
      *
      * @return void
      */
-    public function testCan()
+    public function testCan(): void
     {
         $this->getMemberOne();
         //load member from db
@@ -801,14 +774,20 @@ class Adherent extends GaletteTestCase
      * @param string                      $name     Name
      * @param string                      $surname  Surname
      * @param \Galette\Entity\Title|false $title    Title
-     * @param string|false                $id       ID
+     * @param int|false                   $id       ID
      * @param string|false                $nick     Nick
-     * @param  string                      $expected Expected result
+     * @param string                      $expected Expected result
      *
      * @return void
      */
-    public function testsGetNameWithCase(string $name, string $surname, $title, $id, $nick, string $expected)
-    {
+    public function testsGetNameWithCase(
+        string $name,
+        string $surname,
+        \Galette\Entity\Title|false $title,
+        int|false $id,
+        string|false $nick,
+        string $expected
+    ): void {
         $this->assertSame(
             $expected,
             \Galette\Entity\Adherent::getNameWithCase(
@@ -819,5 +798,175 @@ class Adherent extends GaletteTestCase
                 $nick,
             )
         );
+    }
+
+    /**
+     * Change member active status
+     *
+     * @param bool $active Activation status
+     *
+     * @return void
+     */
+    private function changeMemberActivation(bool $active): void
+    {
+        $check = $this->adh->check(['activite_adh' => $active], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($this->adh->store());
+        $this->assertTrue($this->adh->load($this->adh->id));
+    }
+
+    /**
+     * Test getDueStatus
+     *
+     * @return void
+     */
+    public function testGetDueStatus(): void
+    {
+        $now = new \DateTime();
+        $member = new \Galette\Entity\Adherent($this->zdb);
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_UNKNOWN, $member->getDueStatus());
+
+        $this->getMemberOne();
+
+        $this->assertTrue($this->adh->isActive());
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_NEVER, $this->adh->getDueStatus());
+
+        //non-active members always have OLD due status
+        $this->changeMemberActivation(false);
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_OLD, $this->adh->getDueStatus());
+        $this->changeMemberActivation(true);
+
+        //create a close to be expired contribution
+        $due_date = clone $now;
+        $due_date->add(new \DateInterval('P30D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $this->cleanContributions();
+        $this->createContrib([
+            'id_adh'                => $this->adh->id,
+            'id_type_cotis'         => 3,
+            'montant_cotis'         => '111',
+            'type_paiement_cotis'   => '6',
+            'info_cotis'            => 'FAKER' . $this->seed,
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
+        ]);
+
+        //member is up-to-date, close to be expired
+        $this->assertTrue($this->adh->load($this->adh->id));
+        $this->assertTrue($this->adh->isActive());
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_IMPENDING, $this->adh->getDueStatus());
+
+        //non-active members always have OLD due status
+        $this->changeMemberActivation(false);
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_OLD, $this->adh->getDueStatus());
+        $this->changeMemberActivation(true);
+
+        //create an expired contribution, 29 days ago
+        $due_date = clone $now;
+        $due_date->sub(new \DateInterval('P29D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $this->cleanContributions();
+        $this->createContrib([
+            'id_adh'                => $this->adh->id,
+            'id_type_cotis'         => 3,
+            'montant_cotis'         => '111',
+            'type_paiement_cotis'   => '6',
+            'info_cotis'            => 'FAKER' . $this->seed,
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
+        ]);
+
+        //member is late, but for less than 30 days, no reminder to send
+        $this->assertTrue($this->adh->load($this->adh->id));
+        $this->assertTrue($this->adh->isActive());
+        $this->assertFalse($this->adh->isUp2Date());
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_LATE, $this->adh->getDueStatus());
+
+        //non-active members always have OLD due status
+        $this->changeMemberActivation(false);
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_OLD, $this->adh->getDueStatus());
+        $this->changeMemberActivation(true);
+    }
+
+    /**
+     * Clean created contributions
+     *
+     * @return void
+     */
+    private function cleanContributions(): void
+    {
+        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
+        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
+    }
+
+    /**
+     * Test isSponsor
+     *
+     * @return void
+     */
+    public function testIsSponsor(): void
+    {
+        $now = new \DateTime();
+        $member = new \Galette\Entity\Adherent($this->zdb);
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_UNKNOWN, $member->getDueStatus());
+
+        $this->getMemberOne();
+
+        $this->assertTrue($this->adh->isActive());
+        $this->assertFalse($this->adh->isSponsor());
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_NEVER, $this->adh->getDueStatus());
+
+        //create a close to be expired contribution
+        $due_date = clone $now;
+        $due_date->add(new \DateInterval('P30D'));
+        $begin_date = clone $due_date;
+        $begin_date->add(new \DateInterval('P1D'));
+        $begin_date->sub(new \DateInterval('P1Y'));
+
+        $this->cleanContributions();
+        $this->createContrib([
+            'id_adh'                => $this->adh->id,
+            'id_type_cotis'         => 3,
+            'montant_cotis'         => '111',
+            'type_paiement_cotis'   => '6',
+            'info_cotis'            => 'FAKER' . $this->seed,
+            'date_fin_cotis'        => $due_date->format('Y-m-d'),
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
+        ]);
+
+        //member is up-to-date, close to be expired - still not sponsor
+        $this->assertTrue($this->adh->load($this->adh->id));
+        $this->assertTrue($this->adh->isActive());
+        $this->assertTrue($this->adh->isUp2Date());
+        $this->assertSame(\Galette\Entity\Contribution::STATUS_IMPENDING, $this->adh->getDueStatus());
+        $this->assertFalse($this->adh->isSponsor());
+
+        //create a donation
+        $this->createContrib([
+            'id_adh'                => $this->adh->id,
+            'id_type_cotis'         => 5, //donation in money
+            'montant_cotis'         => '10',
+            'type_paiement_cotis'   => '6',
+            'info_cotis'            => 'FAKER' . $this->seed,
+            'date_enreg'            => $begin_date->format('Y-m-d'),
+            'date_debut_cotis'      => $begin_date->format('Y-m-d')
+        ]);
+
+        $this->assertTrue($this->adh->load($this->adh->id));
+        $this->assertTrue($this->adh->isSponsor());
     }
 }

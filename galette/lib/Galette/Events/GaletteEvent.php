@@ -1,13 +1,7 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Event name
- *
- * PHP version 5
- *
- * Copyright © 2023 The Galette Team
+ * Copyright © 2003-2024 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Events
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 2023-01-10
  */
+
+declare(strict_types=1);
 
 namespace Galette\Events;
 
@@ -41,28 +28,20 @@ use League\Event\HasEventName;
 /**
  * Event name
  *
- * @category  Events
- * @name      MemberListener
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 2023-01-10
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class GaletteEvent implements HasEventName
 {
-    /** @var string */
-    private $name;
-    private $object;
+    private string $name;
+    private object $object;
 
     /**
      * Constructor
      *
      * @param string $name   Event name
-     * @param mixed  $object Event object
+     * @param object $object Event object
      */
-    public function __construct(string $name, /*object|array*/ $object)
+    public function __construct(string $name, object $object)
     {
         $this->name = $name;
         $this->object = $object;

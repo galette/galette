@@ -1,27 +1,41 @@
 <?php
 
 /**
- * Test bootstrap
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
+ * This file is part of Galette (https://galette.eu).
  *
- * @category  Tests
- * @package   Galette
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.3dev 2012-12-12
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
-$basepath = null;
-if (file_exists('../galette/index.php')) {
-    $basepath = '../galette/';
-} elseif (file_exists('galette/index.php')) {
-    $basepath = 'galette/';
-} else {
-    die('Unable to define GALETTE_BASE_PATH :\'(');
+declare(strict_types=1);
+
+/**
+ * Test bootstrap
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
+
+
+if (!isset($basepath)) {
+    if (file_exists('../galette/index.php')) {
+        $basepath = '../galette/';
+    } elseif (file_exists('galette/index.php')) {
+        $basepath = 'galette/';
+    } else {
+        die('Unable to define GALETTE_BASE_PATH :\'(');
+    }
 }
 
 $db = 'mysql';
@@ -33,7 +47,8 @@ if (
     $db = 'pgsql';
 }
 
-$fail_env = getenv('FAIL');
+$testenv = getenv('TESTENV');
+$fail_env = $testenv === 'FAIL';
 if ($fail_env !== false) {
     $db .= '_fail';
 }
@@ -43,7 +58,9 @@ define('GALETTE_BASE_PATH', $basepath);
 define('GALETTE_TESTS', true);
 define('GALETTE_TESTS_PATH', __DIR__);
 define('GALETTE_MODE', 'PROD');
-define('GALETTE_PLUGINS_PATH', GALETTE_TESTS_PATH . '/plugins/');
+if (!defined('GALETTE_PLUGINS_PATH')) {
+    define('GALETTE_PLUGINS_PATH', GALETTE_TESTS_PATH . '/plugins/');
+}
 define('GALETTE_TPL_SUBDIR', 'templates/default/');
 define('GALETTE_THEME', 'themes/default/');
 define('GALETTE_DATA_PATH', GALETTE_TESTS_PATH . '/tests-data/');
@@ -109,11 +126,11 @@ if (!defined('_CURRENT_THEME_PATH')) {
     );
 }
 
-$updateenv = getenv('UPDATE');
 if (
-    $updateenv !== 'UPDATE'
+    $testenv !== 'UPDATE'
+    && $testenv !== 'FAIL'
 ) {
-    //do not initialize Ttiles on update tests
+    //do not initialize Tiles on update nor fail tests
     $titles = new \Galette\Repository\Titles($zdb);
     $res = $titles->installInit($zdb);
 }

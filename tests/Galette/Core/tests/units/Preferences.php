@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Preferences tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2013-2024 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2013-10-19
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core\test\units;
 
@@ -42,14 +29,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Preferences tests class
  *
- * @category  Core
- * @name      Preferences
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2024 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2013-01-13
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Preferences extends TestCase
 {
@@ -105,7 +85,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testInstallInit()
+    public function testInstallInit(): void
     {
         $result = $this->preferences->installInit(
             'en_US',
@@ -135,7 +115,7 @@ class Preferences extends TestCase
                     $this->assertSame(date('Y'), $value);
                     break;
                 default:
-                    $this->assertEquals($expected, $value);
+                    $this->assertEquals($expected, $value, 'Wrong value for ' . $key);
                     break;
             }
         }
@@ -193,7 +173,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testFieldsNames()
+    public function testFieldsNames(): void
     {
         $this->preferences->load();
         $fields_names = $this->preferences->getFieldsNames();
@@ -210,7 +190,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
@@ -248,7 +228,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testPublicPagesVisibility()
+    public function testPublicPagesVisibility(): void
     {
         $this->preferences->load();
 
@@ -310,76 +290,6 @@ class Preferences extends TestCase
     }
 
     /**
-     * Data provider for cards sizes tests
-     *
-     * @return array
-     */
-    public static function sizesProvider()
-    {
-        return [
-            [//defaults
-                15, //vertical margin
-                20, //horizontal margin
-                5,  //vertical spacing
-                10, //horizontal spacing
-                0   //expected number of warnings
-            ], [ //OK
-                0,  //vertical margin
-                20, //horizontal margin
-                11, //vertical spacing
-                10, //horizontal spacing
-                0   //expected number of warnings
-            ], [ //vertical overflow
-                0,  //vertical margin
-                20, //horizontal margin
-                12, //vertical spacing
-                10, //horizontal spacing
-                1   //expected number of warnings
-            ], [//horizontal overflow
-                15, //vertical margin
-                20, //horizontal margin
-                5,  //vertical spacing
-                61, //horizontal spacing
-                1   //expected number of warnings
-            ], [//vertical and horizontal overflow
-                0,  //vertical margin
-                20, //horizontal margin
-                12, //vertical spacing
-                61, //horizontal spacing
-                2   //expected number of warnings
-            ], [//vertical overflow
-                17, //vertical margin
-                20, //horizontal margin
-                5,  //vertical spacing
-                10, //horizontal spacing
-                1   //expected number of warnings
-            ]
-        ];
-    }
-
-    /**
-     * Test checkCardsSizes
-     *
-     * @dataProvider sizesProvider
-     *
-     * @param integer $vm    Vertical margin
-     * @param integer $hm    Horizontal margin
-     * @param integer $vs    Vertical spacing
-     * @param integer $hs    Horizontal spacing
-     * @param integer $count Number of expected errors
-     *
-     * @return void
-     */
-    public function testCheckCardsSizes($vm, $hm, $vs, $hs, $count)
-    {
-        $this->preferences->pref_card_marges_v = $vm;
-        $this->preferences->pref_card_marges_h = $hm;
-        $this->preferences->pref_card_vspace = $vs;
-        $this->preferences->pref_card_hspace = $hs;
-        $this->assertCount($count, $this->preferences->checkCardsSizes());
-    }
-
-    /**
      * Data provider for colors
      *
      * @return array
@@ -419,7 +329,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testColors($prop, $color, $expected)
+    public function testColors(string $prop, string $color, string $expected): void
     {
         $prop = 'pref_card_' . $prop;
         $this->preferences->$prop = $color;
@@ -431,7 +341,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testSocials()
+    public function testSocials(): void
     {
         $preferences = [];
         foreach ($this->preferences->getDefaults() as $key => $value) {
@@ -562,7 +472,7 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testGetMailSignature()
+    public function testGetMailSignature(): void
     {
         $mail = new PHPMailer();
         $this->assertSame("\r\n-- \r\nGalette", $this->preferences->getMailSignature($mail));
@@ -622,11 +532,11 @@ class Preferences extends TestCase
      *
      * @return void
      */
-    public function testGetLegend()
+    public function testGetLegend(): void
     {
         $legend = $this->preferences->getLegend();
         $this->assertCount(2, $legend);
-        $this->assertCount(9, $legend['main']['patterns']);
+        $this->assertCount(10, $legend['main']['patterns']);
         $this->assertCount(10, $legend['socials']['patterns']);
         $this->assertSame(
             [

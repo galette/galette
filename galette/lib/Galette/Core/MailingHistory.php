@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Mailing features
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2009-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-08-27
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
@@ -47,14 +34,7 @@ use Laminas\Db\Sql\Expression;
 /**
  * Mailing features
  *
- * @category  Core
- * @name      MailingHistory
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2011-08-27
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property MailingsList $filters
  */
@@ -67,16 +47,17 @@ class MailingHistory extends History
     public const FILTER_SENT = 1;
     public const FILTER_NOT_SENT = 2;
 
-    private $mailing = null;
-    private $id;
-    private $date;
-    private $subject;
-    private $message;
-    private $recipients;
-    private $sender;
-    private $sender_name;
-    private $sender_address;
-    private $sent = false;
+    private ?Mailing $mailing = null;
+    private int $id;
+    private string $date;
+    private string $subject;
+    private string $message;
+    /** @var array<int, mixed> */
+    private array $recipients;
+    private int $sender;
+    private ?string $sender_name;
+    private ?string $sender_address;
+    private bool $sent = false;
 
     /**
      * Default constructor
@@ -89,6 +70,10 @@ class MailingHistory extends History
      */
     public function __construct(Db $zdb, Login $login, Preferences $preferences, MailingsList $filters = null, Mailing $mailing = null)
     {
+        if ($filters === null) {
+            $filters = new MailingsList();
+        }
+
         parent::__construct($zdb, $login, $preferences, $filters);
         $this->mailing = $mailing;
     }
@@ -96,9 +81,9 @@ class MailingHistory extends History
     /**
      * Get the entire history list
      *
-     * @return array
+     * @return array<int, object>
      */
-    public function getHistory()
+    public function getHistory(): array
     {
         try {
             $select = $this->zdb->select($this->getTableName(), 'a');
@@ -122,12 +107,7 @@ class MailingHistory extends History
                         = Adherent::getSName($this->zdb, $r['mailing_sender']);
                 }
 
-                $recipients = [];
-                if ($r['mailing_recipients'] != null) {
-                    //FIXME: error suppression with @ must be removed, see https://bugs.galette.eu/issues/1744
-                    $recipients = @unserialize($r['mailing_recipients']);
-                }
-                $r['mailing_recipients'] = $recipients;
+                $this->handleRecipients($r);
 
                 $attachments = 0;
                 if (file_exists(GALETTE_ATTACHMENTS_PATH . $r[self::PK])) {
@@ -161,9 +141,9 @@ class MailingHistory extends History
     /**
      * Builds the order clause
      *
-     * @return array SQL ORDER clauses
+     * @return array<int, string> SQL ORDER clauses
      */
-    protected function buildOrderClause()
+    protected function buildOrderClause(): array
     {
         $order = array();
 
@@ -192,7 +172,7 @@ class MailingHistory extends History
      *
      * @return void
      */
-    private function buildWhereClause($select)
+    private function buildWhereClause(Select $select): void
     {
         try {
             if ($this->filters->start_date_filter != null) {
@@ -262,7 +242,7 @@ class MailingHistory extends History
      *
      * @return void
      */
-    private function proceedCount($select)
+    private function proceedCount(Select $select): void
     {
         try {
             $countSelect = clone $select;
@@ -279,7 +259,7 @@ class MailingHistory extends History
             $result = $results->current();
 
             $k = self::PK;
-            $this->count = $result->$k;
+            $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
@@ -301,14 +281,14 @@ class MailingHistory extends History
      *
      * @return boolean
      */
-    public static function loadFrom(Db $zdb, $id, $mailing, $new = true)
+    public static function loadFrom(Db $zdb, int $id, Mailing $mailing, bool $new = true): bool
     {
         try {
             $select = $zdb->select(self::TABLE);
             $select->where(['mailing_id' => $id]);
 
             $results = $zdb->execute($select);
-            /** @var ArrayObject $result */
+            /** @var ArrayObject<string, mixed> $result */
             $result = $results->current();
 
             return $mailing->loadFromHistory($result, $new);
@@ -329,7 +309,7 @@ class MailingHistory extends History
      *
      * @return boolean
      */
-    public function storeMailing($sent = false)
+    public function storeMailing(bool $sent = false): bool
     {
         if ($this->mailing instanceof Mailing) {
             if ($this->mailing->sender_name != null) {
@@ -370,7 +350,7 @@ class MailingHistory extends History
      *
      * @return boolean
      */
-    public function update()
+    public function update(): bool
     {
         try {
             $_recipients = array();
@@ -394,7 +374,7 @@ class MailingHistory extends History
                 'mailing_subject'           => $this->subject,
                 'mailing_body'              => $this->message,
                 'mailing_date'              => $this->date,
-                'mailing_recipients'        => serialize($_recipients),
+                'mailing_recipients'        => Galette::jsonEncode($_recipients),
                 'mailing_sent'              => ($this->sent) ?
                     true :
                     ($this->zdb->isPostgres() ? 'false' : 0)
@@ -419,7 +399,7 @@ class MailingHistory extends History
      *
      * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         try {
             $_recipients = array();
@@ -447,7 +427,7 @@ class MailingHistory extends History
                 'mailing_subject'           => $this->subject,
                 'mailing_body'              => $this->message,
                 'mailing_date'              => $this->date,
-                'mailing_recipients'        => serialize($_recipients),
+                'mailing_recipients'        => Galette::jsonEncode($_recipients),
                 'mailing_sent'              => ($this->sent) ?
                     true :
                     ($this->zdb->isPostgres() ? 'false' : 0)
@@ -471,27 +451,14 @@ class MailingHistory extends History
     /**
      * Remove specified entries
      *
-     * @param integer|array $ids  Mailing history entries identifiers
-     * @param History       $hist History instance
+     * @param integer|array<int> $ids  Mailing history entries identifiers
+     * @param History            $hist History instance
      *
      * @return boolean
      */
-    public function removeEntries($ids, History $hist)
+    public function removeEntries(int|array $ids, History $hist): bool
     {
-        $list = array();
-        if (is_array($ids)) {
-            $list = $ids;
-        } elseif (is_numeric($ids)) {
-            $list = [(int)$ids];
-        } else {
-            //not numeric and not an array: incorrect.
-            Analog::log(
-                'Asking to remove mailing entries, but without ' .
-                'providing an array or a single numeric value.',
-                Analog::WARNING
-            );
-            return false;
-        }
+        $list = is_array($ids) ? $ids : [$ids];
 
         try {
             foreach ($list as $id) {
@@ -533,7 +500,7 @@ class MailingHistory extends History
      *
      * @return string
      */
-    protected function getTableName($prefixed = false)
+    protected function getTableName(bool $prefixed = false): string
     {
         if ($prefixed === true) {
             return PREFIX_DB . self::TABLE;
@@ -547,7 +514,7 @@ class MailingHistory extends History
      *
      * @return string
      */
-    protected function getPk()
+    protected function getPk(): string
     {
         return self::PK;
     }
@@ -557,8 +524,36 @@ class MailingHistory extends History
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
+    }
+
+    /**
+     * Handle mailing recipients
+     *
+     * @param ArrayObject<string, string> $row ResultSet row
+     * @return void
+     */
+    private function handleRecipients(ArrayObject &$row): void
+    {
+        if ($row['mailing_recipients'] == null) {
+            return;
+        }
+
+        $recipients = [];
+        try {
+            if (Galette::isSerialized($row['mailing_recipients'])) {
+                $recipients = unserialize($row['mailing_recipients']);
+            } else {
+                $recipients = Galette::jsonDecode($row['mailing_recipients']);
+            }
+        } catch (\Throwable $e) {
+            Analog::log(
+                'Unable to retrieve recipients for mailing history ' . $row['mailing_id'],
+                Analog::ERROR
+            );
+        }
+        $row['mailing_recipients'] = $recipients;
     }
 }

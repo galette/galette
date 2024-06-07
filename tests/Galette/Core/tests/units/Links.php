@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Password tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-03-15
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core\test\units;
 
@@ -41,14 +28,7 @@ use Galette\GaletteTestCase;
 /**
  * Password tests class
  *
- * @category  Core
- * @name      Password
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-03-15
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Links extends GaletteTestCase
 {
@@ -66,8 +46,6 @@ class Links extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->initStatus();
-        $this->initContributionsTypes();
 
         $this->links = new \Galette\Core\Links($this->zdb, false);
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
@@ -106,7 +84,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    public function testGenerateNewLink()
+    public function testGenerateNewLink(): void
     {
         $links = $this->links;
         $this->getMemberTwo();
@@ -156,7 +134,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    public function testExpiredValidate()
+    public function testExpiredValidate(): void
     {
         $links = $this->links;
         $this->getMemberTwo();
@@ -197,7 +175,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    public function testCleanExpired()
+    public function testCleanExpired(): void
     {
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT48H'));
@@ -242,7 +220,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    public function testDuplicateLinkTarget()
+    public function testDuplicateLinkTarget(): void
     {
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT48H'));
@@ -279,7 +257,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    protected function createContribution()
+    protected function createContribution(): void
     {
         $now = new \DateTime(); // 2020-11-07
         $begin_date = clone $now;
@@ -308,12 +286,12 @@ class Links extends GaletteTestCase
     /**
      * Check contributions expecteds
      *
-     * @param Contribution $contrib       Contribution instance, if any
-     * @param array        $new_expecteds Changes on expected values
+     * @param ?\Galette\Entity\Contribution $contrib       Contribution instance, if any
+     * @param array<string,mixed>           $new_expecteds Changes on expected values
      *
      * @return void
      */
-    protected function checkContribExpected($contrib = null, $new_expecteds = [])
+    protected function checkContribExpected(\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
     {
         if ($contrib === null) {
             $contrib = $this->contrib;

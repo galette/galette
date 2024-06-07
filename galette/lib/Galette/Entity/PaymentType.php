@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Payment type
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2018-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.2dev - 2018-07-23
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity;
 
@@ -46,14 +33,7 @@ use Galette\Features\Translatable;
 /**
  * Payment type
  *
- * @category  Entity
- * @name      PaymentType
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.2dev - 2018-07-23
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property integer $id
  * @property string $name
@@ -67,9 +47,10 @@ class PaymentType
     public const TABLE = 'paymenttypes';
     public const PK = 'type_id';
 
-    private $zdb;
-    private $id;
+    private Db $zdb;
+    private int $id;
 
+    public const SCHEDULED = 7;
     public const OTHER = 6;
     public const CASH = 1;
     public const CREDITCARD = 2;
@@ -80,16 +61,16 @@ class PaymentType
     /**
      * Main constructor
      *
-     * @param Db    $zdb  Database instance
-     * @param mixed $args Arguments
+     * @param Db                                      $zdb  Database instance
+     * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
-    public function __construct(Db $zdb, $args = null)
+    public function __construct(Db $zdb, ArrayObject|int $args = null)
     {
         $this->zdb = $zdb;
         if (is_int($args)) {
             $this->load($args);
-        } elseif ($args !== null && is_object($args)) {
-            $this->loadFromRs($args);
+        } elseif ($args instanceof ArrayObject) {
+            $this->loadFromRS($args);
         }
     }
 
@@ -98,9 +79,9 @@ class PaymentType
      *
      * @param integer $id Identifier
      *
-     * @return void
+     * @return bool
      */
-    private function load($id)
+    public function load(int $id): bool
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -111,6 +92,7 @@ class PaymentType
 
             $this->id = $id;
             $this->name = $res->type_name;
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading payment type #' . $id . "Message:\n" .
@@ -124,14 +106,14 @@ class PaymentType
     /**
      * Load payment type from a db ResultSet
      *
-     * @param ArrayObject $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs ResultSet
      *
      * @return void
      */
-    private function loadFromRs(ArrayObject $rs)
+    private function loadFromRS(ArrayObject $rs): void
     {
         $pk = self::PK;
-        $this->id = $rs->$pk;
+        $this->id = (int)$rs->$pk;
         $this->name = $rs->type_name;
     }
 
@@ -140,13 +122,13 @@ class PaymentType
      *
      * @return boolean
      */
-    public function store()
+    public function store(): bool
     {
         $data = array(
             'type_name' => $this->name
         );
         try {
-            if ($this->id !== null && $this->id > 0) {
+            if (isset($this->id) && $this->id > 0) {
                 if ($this->old_name !== null) {
                     $this->deleteTranslation($this->old_name);
                     $this->addTranslation($this->name);
@@ -184,7 +166,7 @@ class PaymentType
      *
      * @return boolean
      */
-    public function remove()
+    public function remove(): bool
     {
         $id = (int)$this->id;
         if ($this->isSystemType()) {
@@ -218,19 +200,21 @@ class PaymentType
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         switch ($name) {
             case 'id':
             case 'name':
                 return $this->$name;
-            default:
-                Analog::log(
-                    'Unable to get Title property ' . $name,
-                    Analog::WARNING
-                );
-                break;
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -241,7 +225,7 @@ class PaymentType
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         switch ($name) {
             case 'id':
@@ -260,7 +244,7 @@ class PaymentType
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         switch ($name) {
             case 'name':
@@ -288,9 +272,9 @@ class PaymentType
      *
      * @param boolean $translated Return translated types (default) or not
      *
-     * @return array
+     * @return array<int,string>
      */
-    public function getSystemTypes($translated = true)
+    public function getSystemTypes(bool $translated = true): array
     {
         if ($translated) {
             $systypes = [
@@ -299,7 +283,8 @@ class PaymentType
                 self::CREDITCARD    => _T("Credit card"),
                 self::CHECK         => _T("Check"),
                 self::TRANSFER      => _T("Transfer"),
-                self::PAYPAL        => _T("Paypal")
+                self::PAYPAL        => _T("Paypal"),
+                self::SCHEDULED     => _T("Payment schedule")
             ];
         } else {
             $systypes = [
@@ -308,7 +293,8 @@ class PaymentType
                 self::CREDITCARD    => "Credit card",
                 self::CHECK         => "Check",
                 self::TRANSFER      => "Transfer",
-                self::PAYPAL        => "Paypal"
+                self::PAYPAL        => "Paypal",
+                self::SCHEDULED     => "Payment schedule"
             ];
         }
         return $systypes;
@@ -320,7 +306,7 @@ class PaymentType
      * @return boolean
      *
      */
-    public function isSystemType()
+    public function isSystemType(): bool
     {
         return isset($this->getSystemTypes()[$this->id]);
     }
@@ -330,7 +316,7 @@ class PaymentType
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }

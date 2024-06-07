@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Required modules checking
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2007-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,38 +17,28 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.1dev - 2012-03-12
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
 /**
  * Required modules checking
  *
- * @category  Core
- * @name      CheckModules
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.1dev - 2012-03-12
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class CheckModules
 {
-    private $good = array();
-    private $should = array();
-    private $missing = array();
+    /** @var array<string,string> */
+    private array $good = array();
+    /** @var array<int,string> */
+    private array $should = array();
+    /** @var array<int,string> */
+    private array $missing = array();
 
-    private $modules = [
+    /** @var array<string,bool> */
+    private array $modules = [
         //name      => required
         'SimpleXML' => true,
         'gd'        => true,
@@ -73,7 +57,7 @@ class CheckModules
      *
      * @param boolean $do Whether to do checks, defaults to true
      */
-    public function __construct($do = true)
+    public function __construct(bool $do = true)
     {
         if ($do === true) {
             $this->doCheck();
@@ -81,7 +65,7 @@ class CheckModules
     }
 
     /**
-     * Check various modules and dispatch them beetween:
+     * Check various modules and dispatch them between:
      * - good: module that are present,
      * - may: modules that may be present but are not,
      * - should: modules that should be present but are not,
@@ -91,7 +75,7 @@ class CheckModules
      *
      * @return void
      */
-    public function doCheck($translated = true)
+    public function doCheck(bool $translated = true): void
     {
         $string = ($translated ? _T("'%s' module") : "'%s' module");
         foreach ($this->modules as $name => $required) {
@@ -131,7 +115,7 @@ class CheckModules
      *
      * @return string
      */
-    public function toHtml($translated = true)
+    public function toHtml(bool $translated = true): string
     {
         $html = null;
 
@@ -165,7 +149,7 @@ class CheckModules
      *
      * @return boolean
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return count($this->missing) === 0;
     }
@@ -177,7 +161,7 @@ class CheckModules
      *
      * @return boolean
      */
-    public function isGood($module)
+    public function isGood(string $module): bool
     {
         return isset($this->good[$module]);
     }
@@ -185,19 +169,19 @@ class CheckModules
     /**
      * Retrieve good modules
      *
-     * @return array
+     * @return array<string,string>
      */
-    public function getGoods()
+    public function getGoods(): array
     {
         return $this->good;
     }
 
     /**
-     * Retrieve should modules
+     * Retrieve modules that should be present
      *
-     * @return array
+     * @return array<int,string>
      */
-    public function getShoulds()
+    public function getShoulds(): array
     {
         return $this->should;
     }
@@ -205,9 +189,9 @@ class CheckModules
     /**
      * Retrieve missing modules
      *
-     * @return array
+     * @return array<int,string>
      */
-    public function getMissings()
+    public function getMissings(): array
     {
         return $this->missing;
     }

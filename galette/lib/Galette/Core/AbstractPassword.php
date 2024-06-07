@@ -3,14 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Abstract password for galette. The original code was found
- * in includes/functions.inc.php
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2003-2020 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,18 +19,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Frédéric Jacquot <unknown@unknow.com>
- * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2020 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2016-11-08
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
@@ -45,16 +31,9 @@ use Galette\Entity\Adherent;
 /**
  * Abstract password
  *
- * @category  Core
- * @name      AbstractPassword
- * @package   Galette
- * @author    Frédéric Jacquot <unknown@unknow.com>
- * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2016 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2016-11-08
+ * @author Frédéric Jacquot <gna@logeek.com>
+ * @author Georges Khaznadar (password encryption, images) <georges@unknow.org>
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 abstract class AbstractPassword
@@ -62,9 +41,9 @@ abstract class AbstractPassword
     /** Default password size */
     public const DEFAULT_SIZE = 8;
 
-    protected $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
-    protected $hash = null;
-    protected $new_password;
+    protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
+    protected ?string $hash = null;
+    protected string $new_password;
 
     /**
      * Generates a random password based on default salt
@@ -89,11 +68,11 @@ abstract class AbstractPassword
     /**
      * Generates a new password for specified member
      *
-     * @param mixed $arg Any argument required
+     * @param int $id_adh Member identifier
      *
      * @return boolean
      */
-    abstract public function generateNewPassword($arg): bool;
+    abstract public function generateNewPassword(int $id_adh): bool;
 
     /**
      * Remove expired passwords queries (older than 24 hours)
@@ -127,11 +106,12 @@ abstract class AbstractPassword
      *
      * @param string $password Password
      *
-     * @return void
+     * @return self
      */
-    protected function setPassword(string $password): void
+    protected function setPassword(string $password): self
     {
         $this->new_password = $password;
+        return $this;
     }
 
     /**
@@ -139,10 +119,11 @@ abstract class AbstractPassword
      *
      * @param string $hash Hash
      *
-     * @return void
+     * @return self
      */
-    protected function setHash(string $hash): void
+    protected function setHash(string $hash): self
     {
         $this->hash = $hash;
+        return $this;
     }
 }

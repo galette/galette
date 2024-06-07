@@ -1,42 +1,25 @@
 <?php
 
 /**
- * XHProf Profiling for Galette
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP VERSION 5
+ * This file is part of Galette (https://galette.eu).
  *
- -------------------------------------------------------------------------
- GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2013 by the INDEPNET Development Team.
-
- http://indepnet.net/   http://glpi-project.org
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of GLPI.
-
- GLPI is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- GLPI is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with GLPI. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * @category Libraries
- * @package  XHProf
- * @author   Johan Cwiklinski <johan@x-tnd.be>
- * @license  MIT http://en.wikipedia.org/wiki/MIT_License
- * @link     http://codefury.net - http://galette.tuxfamily.org
- * @since    0.7.2dev 2012-1008
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
+
+declare(strict_types=1);
 
 namespace Galette\Common;
 
@@ -49,7 +32,7 @@ use Analog\Analog;
  *
  * Install the pecl/xhprof extension
  *
- * Add XHPROF_PATH and XHPROF_URL in config/config_path.php (if needed)
+ * Add XHPROF_PATH and XHPROF_URL in config/local_paths.inc.php (if needed)
  *
  * Before the code
  *    $prof = new XHProf("something useful");
@@ -59,16 +42,8 @@ use Analog\Analog;
  *
  * php-errors.log will give you the URL of the result.
  *
- * Class documentation
- *
- * @category Libraries
- * @package  XHProf
- * @author   Kenny Katzgrau <katzgrau@gmail.com>
- * @author   Johan Cwiklinski <johan@x-tnd.be>
- * @license  MIT http://en.wikipedia.org/wiki/MIT_License
- * @version  Release: 0.1
- * @link     http://codefury.net - http://galette.tuxfamily.org
- * @since    0.7.2dev 2012-10-08
+ * @author Kenny Katzgrau <katzgrau@gmail.com>
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class XHProf
 {
@@ -76,14 +51,14 @@ class XHProf
     public const XHPROF_PATH = '/usr/share/xhprof/xhprof_lib';
     public const XHPROF_URL  = '/xhprof';
 
-    private static $run = false;
+    private static bool $run = false;
 
     /**
      * Default constructor
      *
      * @param string $msg Message(default '')
      */
-    public function __construct($msg = '')
+    public function __construct(string $msg = '')
     {
         $this->start($msg);
     }
@@ -105,7 +80,7 @@ class XHProf
      *
      * @return void
      */
-    public function start($msg = '')
+    public function start(string $msg = ''): void
     {
         if (
             !self::$run
@@ -129,7 +104,7 @@ class XHProf
      *
      * @return void
      */
-    public function stop()
+    public function stop(): void
     {
         if (self::$run && function_exists('xhprof_disable')) {
             $data = xhprof_disable();

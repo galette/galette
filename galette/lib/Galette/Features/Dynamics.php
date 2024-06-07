@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Dynamics fields trait
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2017-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +17,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Features
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2017-05-26
  */
+
+declare(strict_types=1);
 
 namespace Galette\Features;
 
+use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Repository\DynamicFieldsSet;
 use Throwable;
@@ -48,37 +36,29 @@ use Galette\Entity\DynamicFieldsHandle;
 /**
  * Dynamics fields trait
  *
- * @category  Features
- * @name      Dynamics
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9dev - 2017-05-26
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 trait Dynamics
 {
     use Dependencies;
 
-    /** @var string */
-    protected $name_pattern = 'info_field_';
+    protected string $name_pattern = 'info_field_';
 
-    /** @var DynamicFieldsHandle */
-    protected $dynamics;
+    protected DynamicFieldsHandle $dynamics;
 
     /**
      * Load dynamic fields for member
      *
      * @return void
      */
-    private function loadDynamicFields()
+    private function loadDynamicFields(): void
     {
-        if (!property_exists($this, 'login')) {
-            global $login;
-        } else {
+        /** @phpstan-ignore-next-line */
+        if (property_exists($this, 'login') && ($this->login ?? null) instanceof Login) {
             $login = $this->login;
+        } else {
+            global $login;
         }
         $this->dynamics = new DynamicFieldsHandle($this->zdb, $login, $this);
     }
@@ -88,9 +68,9 @@ trait Dynamics
      *
      * @return DynamicFieldsHandle
      */
-    public function getDynamicFields()
+    public function getDynamicFields(): DynamicFieldsHandle
     {
-        if (null === $this->dynamics) {
+        if (empty($this->dynamics)) {
             $this->loadDynamicFields();
         }
         return $this->dynamics;
@@ -99,15 +79,15 @@ trait Dynamics
     /**
      * Extract posted values for dynamic fields
      *
-     * @param array $post     Posted values
-     * @param array $required Array of required fields
-     * @param array $disabled Array of disabled fields
+     * @param array<string, mixed>   $post     Posted values
+     * @param array<string,int|bool> $required Array of required fields
+     * @param array<string>          $disabled Array of disabled fields
      *
      * @return bool
      */
-    protected function dynamicsCheck(array $post, array $required, array $disabled)
+    protected function dynamicsCheck(array $post, array $required, array $disabled): bool
     {
-        if ($this->dynamics === null) {
+        if (!isset($this->dynamics)) {
             Analog::log(
                 'Dynamics fields have not been loaded, cannot be checked. (from: ' . __METHOD__ . ')',
                 Analog::WARNING
@@ -139,7 +119,7 @@ trait Dynamics
                 ];
             }
 
-            //some fields may be mising in posted values (checkboxes)
+            //some fields may be missing in posted values (checkboxes)
             foreach ($fields as $field) {
                 $pattern = '/' . $this->name_pattern . $field->getId() . '_(\d)/';
                 if ($field instanceof Boolean && !preg_grep($pattern, array_keys($dynamic_fields))) {
@@ -152,9 +132,9 @@ trait Dynamics
             }
 
             foreach ($dynamic_fields as $key => $dfield_values) {
-                $field_id = $dfield_values['field_id'];
+                $field_id = (int)$dfield_values['field_id'];
                 $value = $dfield_values['value'];
-                $val_index = $dfield_values['val_index'];
+                $val_index = (int)$dfield_values['val_index'];
 
                 if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
                     $this->errors[] = str_replace(
@@ -195,24 +175,19 @@ trait Dynamics
                                     __("Y-m-d") . ' | ' . $e->getMessage(),
                                     Analog::INFO
                                 );
-                                $this->errors[] = str_replace(
-                                    array(
-                                        '%date_format',
-                                        '%field'
-                                    ),
-                                    array(
-                                        __("Y-m-d"),
-                                        $fields[$field_id]->getName()
-                                    ),
-                                    _T("- Wrong date format (%date_format) for %field!")
+                                $this->errors[] = sprintf(
+                                    //TRANS: %1$s date format, %2$s is the field name
+                                    _T('- Wrong date format (%1$s) for %2$s!'),
+                                    __("Y-m-d"),
+                                    $fields[$field_id]->getName()
                                 );
                             }
                         }
                         //actual field value
                         if ($value !== null && trim($value) !== '') {
-                            $this->dynamics->setValue($this->id, $field_id, $val_index, $value);
+                            $this->dynamics->setValue($this->id ?? null, $field_id, $val_index, $value);
                         } else {
-                            $this->dynamics->unsetValue($this->id, $field_id, $val_index);
+                            $this->dynamics->unsetValue($field_id, $val_index);
                         }
                     }
                 }
@@ -230,9 +205,9 @@ trait Dynamics
      *
      * @return bool
      */
-    protected function dynamicsStore($transaction = false)
+    protected function dynamicsStore(bool $transaction = false): bool
     {
-        if ($this->dynamics === null) {
+        if (!isset($this->dynamics)) {
             Analog::log(
                 'Dynamics fields have not been loaded, cannot be stored. (from: ' . __METHOD__ . ')',
                 Analog::WARNING
@@ -249,11 +224,11 @@ trait Dynamics
     /**
      * Store dynamic Files
      *
-     * @param array $files Posted files
+     * @param array<string, mixed> $files Posted files
      *
      * @return void
      */
-    protected function dynamicsFiles($files)
+    protected function dynamicsFiles(array $files): void
     {
         $this->loadDynamicFields();
         $fields = $this->dynamics->getFields();
@@ -302,7 +277,7 @@ trait Dynamics
                 );
                 $this->errors[] = preg_replace(
                     '|%d|',
-                    $max_size,
+                    (string)$max_size,
                     _T("File is too big. Maximum allowed size is %dKo")
                 );
                 continue;
@@ -325,7 +300,7 @@ trait Dynamics
                 $tmp_filename,
                 GALETTE_FILES_PATH . $new_filename
             );
-            $this->dynamics->setValue($this->id, $field_id, $val_index, $file['name']);
+            $this->dynamics->setValue($this->id, (int)$field_id, (int)$val_index, $file['name']);
             $store = true;
         }
 
@@ -341,9 +316,9 @@ trait Dynamics
      *
      * @return bool
      */
-    protected function dynamicsRemove($transaction = false)
+    protected function dynamicsRemove(bool $transaction = false): bool
     {
-        if ($this->dynamics === null) {
+        if (!isset($this->dynamics)) {
             Analog::log(
                 'Dynamics fields have not been loaded, cannot be removed. (from: ' . __METHOD__ . ')',
                 Analog::WARNING
@@ -354,14 +329,12 @@ trait Dynamics
         return $return;
     }
 
-
-
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -370,12 +343,12 @@ trait Dynamics
      * Validate data for dynamic fields
      * Set valid data in current object, also resets errors list
      *
-     * @param array  $values Dynamic fields values
-     * @param string $prefix Prefix to replace, default to 'dynfield_'
+     * @param array<string> $values Dynamic fields values
+     * @param string        $prefix Prefix to replace, default to 'dynfield_'
      *
      * @return bool
      */
-    public function dynamicsValidate($values, $prefix = 'dynfield_')
+    public function dynamicsValidate(array $values, string $prefix = 'dynfield_'): bool
     {
         $dfields = [];
         foreach ($values as $key => $value) {

@@ -1,0 +1,53 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
+
+{% block content %}
+    <form action="{{ url_for('editStatus', {'id': entry.id_statut}) }}" method="post" class="ui form">
+{% if mode != 'ajax' %}
+        <div class="ui segment">
+{% endif %}
+            <div class="required field inline">
+                <label for="libelle_statut">{{ _T("Name:") }}</label>
+                <input type="text" name="libelle_statut" id="libelle_statut" value="{{ entry.libelle_statut }}" required="required" />
+            </div>
+            <div class="field inline">
+                <label for="priorite_statut">
+                    {{ _T("Priority:") }}
+                </label>
+                <input type="number" size="4" name="priorite_statut" id="priorite_statut" value="{{ entry.priorite_statut }}" />
+            </div>
+            <p class="exemple">{{ _T("Note: members with a status priority lower than %priority are staff members.")|replace({'%priority': non_staff_priority}) }}</p>
+        </div>
+
+        <input type="hidden" name="mod" id="mod" value="{{ entry.id_statut }}"/>
+{% if mode != 'ajax' %}
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i>
+                {{ _T("Save") }}
+            </button>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
+        </div>
+{% endif %}
+        {% include 'components/forms/csrf.html.twig' %}
+    </form>
+{% endblock %}

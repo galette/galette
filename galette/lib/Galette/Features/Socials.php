@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Socials feature
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2021 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2021-10-25
  */
+
+declare(strict_types=1);
 
 namespace Galette\Features;
 
@@ -40,30 +27,24 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Social;
 
 /**
- * Replacements feature
+ * Socials feature
  *
- * @category  Features
- * @name      Replacements
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2021 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.eu
- * @since     2020-12-20
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 trait Socials
 {
-    protected $socials_input = [];
+    /** @var array<string,mixed> */
+    protected array $socials_input = [];
 
     /**
      * Check socials
      *
-     * @param array $post User input
+     * @param array<string,mixed> $post User input
      *
      * @return void
      */
-    protected function checkSocials(array $post)
+    protected function checkSocials(array $post): void
     {
         $this->socials_input = [];
         foreach ($post as $key => $value) {
@@ -121,7 +102,8 @@ trait Socials
 
     /**
      * Get core registered types
-     * @return array
+     *
+     * @return array<string,string>
      */
     protected function getCoreRegisteredTypes(): array
     {
@@ -131,7 +113,7 @@ trait Socials
     /**
      * Get member registered types
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getMemberRegisteredTypes(): array
     {
@@ -143,7 +125,7 @@ trait Socials
      *
      * @param bool $core True for core type, false for members ones
      *
-     * @return array
+     * @return array<string,string>
      */
     protected function getRegisteredTypes(bool $core): array
     {

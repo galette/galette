@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Translatable objects trait
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-12-09
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
@@ -41,14 +28,7 @@ use DI\Attribute\Inject;
 /**
  * Plugin controllers trait
  *
- * @category  Entity
- * @name      PluginControllerTrait
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2020-12-09
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 trait PluginControllerTrait
@@ -56,25 +36,26 @@ trait PluginControllerTrait
     /**
      * Something like:
      * #[Inject("Plugin Galette Name")]
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $module_info;
+    protected array $module_info;
 
     /**
      * Get plugin module ID
      *
      * @return string
      */
-    protected function getModuleId()
+    protected function getModuleId(): string
     {
         return $this->module_info['module_id'];
     }
 
     /**
      * Get plugin module route namespace
+     *
      * @return string
      */
-    protected function getModuleRoute()
+    protected function getModuleRoute(): string
     {
         return $this->module_info['module']['route'];
     }
@@ -82,11 +63,11 @@ trait PluginControllerTrait
     /**
      * Get plugin template name for Twig
      *
-     * @param $name Template name
+     * @param string $name Template name
      *
      * @return string
      */
-    protected function getTemplate($name): string
+    protected function getTemplate(string $name): string
     {
         return sprintf('@%s/%s.html.twig', $this->plugins->getClassName($this->getModuleId()), $name);
     }

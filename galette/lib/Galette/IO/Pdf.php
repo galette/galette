@@ -1,17 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * PDF class for galette
- * Traps tcpdf errors by overloading tcpdf::error method
- * Adds convenient method to convert color html codes
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2007-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,55 +17,43 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  IO
- * @package   Galette
- *
- * @author    John Perr <johnperr@abul.org>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2007-07-21
  */
+
+declare(strict_types=1);
 
 namespace Galette\IO;
 
+use Galette\Core\I18n;
 use Galette\Core\Preferences;
 use Galette\Entity\PdfModel;
 use Analog\Analog;
 use Slim\Routing\RouteParser;
+use TCPDF;
 
 /*
  * TCPDF configuration file for Galette
  */
-require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
+require_once GALETTE_SYSCONFIG_PATH . 'galette_tcpdf_config.php';
 
 /**
  * PDF class for galette
  *
- * @category  IO
- * @name      PDF
- * @package   Galette
- * @abstract  Class for expanding TCPDF.
- * @author    John Perr <johnperr@abul.org>
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7dev - 2007-07-21
+ * @author John Perr <johnperr@abul.org>
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class Pdf extends \TCPDF
+class Pdf extends TCPDF
 {
     public const FONT = 'DejaVuSans';
     public const FONT_SIZE = 10;
 
-    protected $preferences;
-    protected $i18n;
-    private $model;
-    private $paginated = false;
-    protected $filename;
+    protected Preferences $preferences;
+    protected I18n $i18n;
+    private PdfModel $model;
+    private bool $paginated = false;
+    protected string $filename;
+    private bool $has_footer = true;
+    protected float $footer_height;
 
     /**
      * Main constructor, set creator and author
@@ -111,6 +91,59 @@ class Pdf extends \TCPDF
             $this->model = $model;
             $this->SetTitle($this->model->htitle);
         }
+
+        $this->init();
+        if ($this->has_footer) {
+            $this->calculateFooterHeight();
+        }
+    }
+
+    /**
+     * Initialize PDF
+     *
+     * @return void
+     */
+    public function init(): void
+    {
+        $this->Open();
+        $this->AddPage();
+    }
+
+    /**
+     * No header
+     *
+     * @return void
+     */
+    protected function setNoHeader(): void
+    {
+        $this->SetPrintHeader(false);
+        $this->setHeaderMargin(0);
+    }
+
+    /**
+     * No footer
+     *
+     * @return void
+     */
+    protected function setNoFooter(): void
+    {
+        $this->SetPrintFooter(false);
+        $this->setFooterMargin(0);
+        $this->has_footer = false;
+    }
+
+    /**
+     * Calculate footer height
+     *
+     * @return void
+     */
+    private function calculateFooterHeight(): void
+    {
+        $pdf = clone $this;
+        $y_orig = $pdf->getY();
+        $this->Footer($pdf);
+        $y_end = $pdf->getY();
+        $this->footer_height = $y_end - $y_orig;
     }
 
     /**
@@ -118,7 +151,7 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    public function showPagination()
+    public function showPagination(): void
     {
         $this->paginated = true;
     }
@@ -147,7 +180,7 @@ class Pdf extends \TCPDF
      * @access public
      * @since 1.0
      */
-    public function Error($msg) // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function Error(mixed $msg): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         global $container;
 
@@ -173,9 +206,9 @@ class Pdf extends \TCPDF
      *
      *  @param string $hex6 7 chars string #RRVVBB
      *
-     * @return array
+     * @return array<string,float|int>
      */
-    public function colorHex2Dec($hex6)
+    public function colorHex2Dec(string $hex6): array
     {
         $dec = array(
             "R" => hexdec(substr($hex6, 1, 2)),
@@ -190,70 +223,61 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    public function Header() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function Header(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
-        //just ovverride default header to prevent black line at top
+        //just override default header to prevent black line at top
     }
 
     /**
      * Draws PDF page footer
      *
+     * @param ?TCPDF $pdf PDF instance
+     *
      * @return void
      */
-    public function Footer() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function Footer(TCPDF $pdf = null): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
-        $this->SetY(-20);
+        if ($pdf === null) {
+            $pdf = $this;
+            $pdf->SetY(-($this->footer_height + 15));
+        }
         if (isset($this->model)) {
             $hfooter = '';
             if (trim($this->model->hstyles) !== '') {
                 $hfooter .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
             }
             $hfooter .= $this->model->hfooter;
-            $this->writeHtml($hfooter);
+            $pdf->writeHtml($hfooter);
         } else {
-            $this->SetFont(self::FONT, '', self::FONT_SIZE - 2);
-            $this->SetTextColor(0, 0, 0);
-
-            $name = preg_replace(
-                '/%s/',
-                $this->preferences->pref_nom,
-                _T("Association %s")
-            );
-
             $address = $this->preferences->getPostalAddress();
+            $hfooter = '<style>div#pdf_footer {text-align: center;font-size: 0.7em;}</style>';
+            $hfooter .= '<div id="pdf_footer">' . nl2br($address) . '</div>';
+            $pdf->writeHTML($hfooter);
+        }
 
-            $this->MultiCell(
+        if ($this->paginated) {
+            $pdf->SetFont(self::FONT, '', self::FONT_SIZE - 3);
+            $pdf->Ln();
+            $pdf->Cell(
                 0,
                 4,
-                $address,
+                $this->getAliasRightShift() . $this->PageNo() .
+                '/' . $this->getAliasNbPages(),
                 0,
-                'C'
+                1,
+                ($this->i18n->isRTL() ? 'L' : 'R')
             );
-
-            if ($this->paginated) {
-                $this->SetFont(self::FONT, '', self::FONT_SIZE - 3);
-                $this->Ln();
-                $this->Cell(
-                    0,
-                    4,
-                    $this->getAliasRightShift() . $this->PageNo() .
-                    '/' . $this->getAliasNbPages(),
-                    0,
-                    1,
-                    ($this->i18n->isRTL() ? 'L' : 'R')
-                );
-            }
         }
     }
 
     /**
      * Draws PDF page header
      *
-     * @param string $title Additionnal title to display just after logo
+     * @param ?string $title Additional title to display just after logo
      *
      * @return void
      */
-    public function PageHeader($title = null) // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function PageHeader(string $title = null): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         if (isset($this->model)) {
             $this->modelPageHeader($title);
@@ -265,11 +289,11 @@ class Pdf extends \TCPDF
     /**
      * Draws models PDF page header
      *
-     * @param string $title Additionnal title to display just after logo
+     * @param ?string $title Additional title to display just after logo
      *
      * @return void
      */
-    protected function modelPageHeader($title = null)
+    protected function modelPageHeader(string $title = null): void
     {
         $html = null;
         if (trim($this->model->hstyles) !== '') {
@@ -312,11 +336,11 @@ class Pdf extends \TCPDF
     /**
      * Draws standard PDF page header
      *
-     * @param string $title Additionnal title to display just after logo
+     * @param ?string $title Additional title to display just after logo
      *
      * @return void
      */
-    protected function standardPageHeader($title = null)
+    protected function standardPageHeader(string $title = null): void
     {
         //default header
         $print_logo = new \Galette\Core\PrintLogo();
@@ -357,7 +381,7 @@ class Pdf extends \TCPDF
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
         if ($title !== null) {
-            $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), 0);
+            $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), false);
         }
         $yend = $this->getY(); //store position at the end of the text
 
@@ -381,7 +405,7 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    public function PageBody() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function PageBody(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         $hbody = '';
         if (trim($this->model->hstyles) !== '') {
@@ -398,12 +422,17 @@ class Pdf extends \TCPDF
      * @param integer $maxsize   Maximal size
      * @param integer $fontsize  Font size
      * @param string  $fontstyle Font style (defaults to '')
-     * @param string  $fontname  Font name (defaults to static::FONT)
+     * @param ?string $fontname  Font name (defaults to static::FONT)
      *
      * @return void
      */
-    protected function fixSize($text, $maxsize, $fontsize, $fontstyle = '', $fontname = null)
-    {
+    protected function fixSize(
+        string $text,
+        int $maxsize,
+        int $fontsize,
+        string $fontstyle = '',
+        string $fontname = null
+    ): void {
         if ($fontname === null) {
             $fontname = static::FONT;
         }
@@ -422,7 +451,7 @@ class Pdf extends \TCPDF
      *
      * @return string
      */
-    protected function cut($str, $length)
+    protected function cut(string $str, int $length): string
     {
         $length = $length - 2; //keep a margin
         if ((int)$this->GetStringWidth($str) > $length) {
@@ -442,7 +471,7 @@ class Pdf extends \TCPDF
      *
      * @return string
      */
-    protected function stretchHead($str, $length)
+    protected function stretchHead(string $str, int $length): string
     {
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE);
         $stretch = 100;
@@ -459,7 +488,7 @@ class Pdf extends \TCPDF
      *
      * @return string
      */
-    public function getFilename()
+    public function getFilename(): string
     {
         return $this->filename;
     }

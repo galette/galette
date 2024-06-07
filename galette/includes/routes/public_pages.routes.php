@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Public pages routes
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2014-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,21 +17,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Routes
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     0.8.2dev 2014-11-11
  */
+
+declare(strict_types=1);
 
 use Galette\Controllers\Crud;
 use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/public', function (RouteCollectorProxy $app) use ($routeparser) {
+$app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): void {
     //public members list
     $app->get(
         '/{type:list|trombi}[/{option:page|order}/{value:\d+|\w+}]',
@@ -73,4 +60,9 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser) {
                 ->withHeader('Location', $routeparser->urlFor('publicList', $args));
         }
     );
+
+    $app->get(
+        '/documents[/{option:page|order}/{value:\d+|\w+}]',
+        [Crud\DocumentsController::class, 'publicList']
+    )->setName('documentsPublicList');
 })->add(\Galette\Middleware\PublicPages::class);

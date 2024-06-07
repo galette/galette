@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Member's table fields declarations
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2012-2021 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Functions
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     0.7.2.8 - 2012-12-18
  */
+
+declare(strict_types=1);
 
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\FieldsCategories;
@@ -140,12 +127,20 @@ $members_fields = array(
         'position' => 14,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
+    'region_adh' => array(
+        'label'    => _T("Region:"),
+        'propname' => 'region',
+        'required' => false,
+        'visible'  => FieldsConfig::USER_WRITE,
+        'position' => 15,
+        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
+    ),
     'pays_adh' => array(
         'label'    => _T("Country:"),
         'propname' => 'country',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 15,
+        'position' => 16,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'tel_adh' => array(
@@ -153,7 +148,7 @@ $members_fields = array(
         'propname' => 'phone',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 16,
+        'position' => 17,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'gsm_adh' => array(
@@ -161,7 +156,7 @@ $members_fields = array(
         'propname' => 'gsm',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 17,
+        'position' => 18,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'email_adh' => array(
@@ -169,7 +164,7 @@ $members_fields = array(
         'propname' => 'email',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
-        'position' => 18,
+        'position' => 19,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'info_adh' => array(

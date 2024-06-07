@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette saved searches controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2020-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Controllers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-03
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
@@ -50,14 +37,7 @@ use Analog\Analog;
 /**
  * Galette saved searches controller
  *
- * @category  Controllers
- * @name      SavedSearchesController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2020-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4dev - 2020-05-03
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class SavedSearchesController extends CrudController
@@ -118,18 +98,11 @@ class SavedSearchesController extends CrudController
 
         $sco = new SavedSearch($this->zdb, $this->login);
         if ($check = $sco->check($post)) {
-            if (!$res = $sco->store()) {
-                if ($res === false) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T("An SQL error has occurred while storing search.")
-                    );
-                } else {
-                    $this->flash->addMessage(
-                        'warning_detected',
-                        _T("This search is already saved.")
-                    );
-                }
+            if (!$sco->store()) {
+                $this->flash->addMessage(
+                    'warning_detected',
+                    _T("This search is already saved.")
+                );
             } else {
                 $this->flash->addMessage(
                     'success_detected',
@@ -162,14 +135,14 @@ class SavedSearchesController extends CrudController
     /**
      * List page
      *
-     * @param Request        $request  PSR Request
-     * @param Response       $response PSR Response
-     * @param string         $option   One of 'page' or 'order'
-     * @param string|integer $value    Value of the option
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param integer|string|null $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, $option = null, $value = null): Response
+    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
     {
         if (isset($this->session->filter_savedsearch)) {
             $filters = $this->session->filter_savedsearch;
@@ -263,11 +236,11 @@ class SavedSearchesController extends CrudController
     /**
      * Get redirection URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function redirectUri(array $args)
+    public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('searches');
     }
@@ -275,11 +248,11 @@ class SavedSearchesController extends CrudController
     /**
      * Get form URI
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function formUri(array $args)
+    public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
             'doRemoveSearch',
@@ -290,11 +263,11 @@ class SavedSearchesController extends CrudController
     /**
      * Get confirmation removal page title
      *
-     * @param array $args Route arguments
+     * @param array<string,mixed> $args Route arguments
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args)
+    public function confirmRemoveTitle(array $args): string
     {
         if (isset($args['id'])) {
             return _T('Remove saved search');
@@ -303,7 +276,7 @@ class SavedSearchesController extends CrudController
             $filters = $this->session->filter_savedsearch;
             return str_replace(
                 '%count',
-                count($filters->selected),
+                (string)count($filters->selected),
                 _T('You are about to remove %count searches.')
             );
         }
@@ -312,12 +285,12 @@ class SavedSearchesController extends CrudController
     /**
      * Remove object
      *
-     * @param array $args Route arguments
-     * @param array $post POST values
+     * @param array<string,mixed> $args Route arguments
+     * @param array<string,mixed> $post POST values
      *
      * @return boolean
      */
-    protected function doDelete(array $args, array $post)
+    protected function doDelete(array $args, array $post): bool
     {
         if (isset($this->session->filter_savedsearch)) {
             $filters = $this->session->filter_savedsearch;

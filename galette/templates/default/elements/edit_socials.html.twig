@@ -1,5 +1,27 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
 {% if tabbed ?? false == true %}
 <div id="social" class="ui{{ tab == 'social' ? ' active' }} tab segment" data-tab="social">
+    <div class="ui stackable two column grid">
+        <div class="ten wide column">
     {% block social_edit %}
         {% for social in socials %}
             <div class="inline field stored">
@@ -39,6 +61,16 @@
                 </a>
             </div>
     {% endblock %}
+        </div>
+        <div class="six wide column">
+            <div class="field inline">
+                <div class="ui right aligned toggle checkbox">
+                    <input type="checkbox" name="pref_disable_members_socials" id="pref_disable_members_socials" value="1" {% if preferences.pref_disable_members_socials %} checked="checked"{% endif %}/>
+                    <label for="pref_disable_members_socials">{{ _T("Disable social networks on member form") }}</label>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% else %}
     <div id="social" class="ui styled fluid accordion field">

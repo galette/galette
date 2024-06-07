@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette application instance
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2022 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2022 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 1.0.0-dev - 2022-05-28
  */
+
+declare(strict_types=1);
 
 namespace Galette\Core;
 
@@ -41,21 +28,14 @@ use Galette\Entity\Adherent;
 /**
  * Galette application instance
  *
- * @category  Core
- * @name      Galette
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2022 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 1.0.0-dev - 2022-05-28
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 abstract class GalettePlugin
 {
     /**
      * Get all menus
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getAllMenus(): array
     {
@@ -67,7 +47,7 @@ abstract class GalettePlugin
      *
      * @param bool $public Include public menus. Defaults to false
      *
-     * @return array
+     * @return array<string, string|array<string,mixed>>
      */
     public static function getMenus(bool $public = false): array
     {
@@ -78,7 +58,7 @@ abstract class GalettePlugin
     /**
      * Get plugins public menus
      *
-     * @return array
+     * @return array<int, string|array<string,mixed>>
      */
     public static function getPublicMenuItems(): array
     {
@@ -95,7 +75,7 @@ abstract class GalettePlugin
     /**
      * Get plugins dashboards
      *
-     * @return array|array[]
+     * @return array<int, string|array<string,mixed>>
      */
     public static function getDashboards(): array
     {
@@ -106,21 +86,21 @@ abstract class GalettePlugin
     /**
      * Extra menus entries
      *
-     * @return array|array[]
+     * @return array<string, string|array<string,mixed>>
      */
     abstract public static function getMenusContents(): array;
 
     /**
      * Extra public menus entries
      *
-     * @return array|array[]
+     * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getPublicMenusItemsList(): array;
 
     /**
      * Get dashboards contents
      *
-     * @return array|array[]
+     * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getDashboardsContents(): array;
 
@@ -129,7 +109,7 @@ abstract class GalettePlugin
      *
      * @param Adherent $member Current member
      *
-     * @return array|array[]
+     * @return array<int, string|array<string,mixed>>
      */
     public static function getListActions(Adherent $member): array
     {
@@ -142,7 +122,7 @@ abstract class GalettePlugin
      *
      * @param Adherent $member Current member
      *
-     * @return array|array[]
+     * @return array<int, string|array<string,mixed>>
      */
     public static function getDetailedActions(Adherent $member): array
     {
@@ -153,7 +133,7 @@ abstract class GalettePlugin
     /**
      * Get member batch actions
      *
-     * @return array|array[]
+     * @return array<int, string|array<string,mixed>>
      */
     public static function getBatchActions(): array
     {
@@ -166,14 +146,14 @@ abstract class GalettePlugin
      *
      * @param Adherent $member Current member
      *
-     * @return array|array[]
+     * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getListActionsContents(Adherent $member): array;
 
     /**
      * Get batch actions contents
      *
-     * @return array|array[]
+     * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getBatchActionsContents(): array;
 
@@ -182,7 +162,7 @@ abstract class GalettePlugin
      *
      * @param Adherent $member Current member
      *
-     * @return array|array[]
+     * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getDetailedActionsContents(Adherent $member): array;
 }

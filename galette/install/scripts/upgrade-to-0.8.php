@@ -1,15 +1,8 @@
 <?php
-
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette 0.8 upgrade script
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2014 The Galette Team
- *
- * This file is part of Galette (http://galette.eu).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +16,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Upgrades
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.eu
- * @since     Available since 0.8 - 2014-01-04
  */
+
+declare(strict_types=1);
 
 namespace Galette\Updates;
 
@@ -42,18 +28,11 @@ use Galette\Updater\AbstractUpdater;
 /**
  * Galette 0.8 upgrade script
  *
- * @category  Upgrades
- * @name      Install
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.eu
- * @since     Available since 0.8 - 2014-01-04
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class UpgradeTo08 extends AbstractUpdater
 {
-    protected $db_version = '0.80';
+    protected ?string $db_version = '0.80';
 
     /**
      * Main constructor
@@ -69,7 +48,7 @@ class UpgradeTo08 extends AbstractUpdater
      *
      * @return boolean
      */
-    protected function update()
+    protected function update(): bool
     {
         $dirs = array(
             'logs',
@@ -122,9 +101,9 @@ class UpgradeTo08 extends AbstractUpdater
      *
      * @param string $dirname Directory name to move
      *
-     * @return boolean
+     * @return void
      */
-    private function moveDataDir($dirname)
+    private function moveDataDir(string $dirname): void
     {
         //all directories should not be moved
         $nomove = array(

@@ -1324,7 +1324,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:647
 msgid ""
-"- Default membership extention and beginning of membership are mutually "
+"- Default membership extension and beginning of membership are mutually "
 "exclusive."
 msgstr ""
 
@@ -2077,7 +2077,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:391
 #: ../lib/Galette/Entity/Contribution.php:1274
 #, php-format
-msgid "- Wrong date format (%date_format) for %field!"
+msgid "- Wrong date format (%1$s) for %2$s!"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1197
@@ -2520,7 +2520,7 @@ msgstr ""
 #: ../lib/Galette/Filters/MailingsList.php:247
 #: ../lib/Galette/Filters/ContributionsList.php:267
 #, php-format
-msgid "Unknown date format for %field.<br/>Know formats are: %formats"
+msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
 msgstr ""
 
 #: ../webroot/installer.php:151
@@ -4002,7 +4002,7 @@ msgid "Dynamic fields"
 msgstr ""
 
 #: :85
-msgid "Translate additionnals fields labels"
+msgid "Translate additional fields labels"
 msgstr ""
 
 #: :86

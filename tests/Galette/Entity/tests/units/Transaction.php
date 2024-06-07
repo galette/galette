@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Transaction tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2021-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-10-16
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -41,19 +28,11 @@ use Galette\GaletteTestCase;
 /**
  * Transaction tests class
  *
- * @category  Entity
- * @name      Transaction
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-10-16
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Transaction extends GaletteTestCase
 {
     protected int $seed = 95842354;
-    /** @var \Galette\Entity\Transaction */
     private \Galette\Entity\Transaction $transaction;
 
     /**
@@ -97,7 +76,6 @@ class Transaction extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->initContributionsTypes();
 
         $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $this->transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
@@ -113,9 +91,9 @@ class Transaction extends GaletteTestCase
     /**
      * Create test transaction in database
      *
-     * @return void
+     * @return \Galette\Entity\Transaction
      */
-    private function createTransaction()
+    private function createTransaction(): \Galette\Entity\Transaction
     {
         $date = new \DateTime(); // 2020-11-07
         $data = [
@@ -143,7 +121,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $this->assertNull($this->transaction->id);
         $this->assertEquals(date('Y-m-d'), $this->transaction->date);
@@ -153,12 +131,13 @@ class Transaction extends GaletteTestCase
         $this->assertSame((double)0, $this->transaction->getDispatchedAmount());
         $this->assertSame((double)0, $this->transaction->getMissingAmount());
         $this->assertSame('transaction-normal', $this->transaction->getRowClass());
-        $this->assertCount(5, $this->transaction->fields);
+        $this->assertCount(6, $this->transaction->fields);
         $this->assertArrayHasKey(\Galette\Entity\Transaction::PK, $this->transaction->fields);
         $this->assertArrayHasKey(\Galette\Entity\Adherent::PK, $this->transaction->fields);
         $this->assertArrayHasKey('trans_date', $this->transaction->fields);
         $this->assertArrayHasKey('trans_amount', $this->transaction->fields);
         $this->assertArrayHasKey('trans_desc', $this->transaction->fields);
+        $this->assertArrayHasKey('type_paiement_trans', $this->transaction->fields);
 
         $this->assertEquals(false, $this->transaction->unknown_property);
     }
@@ -168,7 +147,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetterSetter()
+    public function testGetterSetter(): void
     {
         $transaction = $this->transaction;
 
@@ -208,7 +187,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testCreation()
+    public function testCreation(): void
     {
         $this->getMemberOne();
         //create transaction for member
@@ -220,7 +199,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $this->getMemberOne();
         //create transaction for member
@@ -248,7 +227,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetFieldLabel()
+    public function testGetFieldLabel(): void
     {
         $this->assertSame(
             'Amount',
@@ -276,7 +255,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
@@ -303,7 +282,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->logSuperAdmin();
 
@@ -322,7 +301,7 @@ class Transaction extends GaletteTestCase
      *
      * @return void
      */
-    public function testCan()
+    public function testCan(): void
     {
         $this->getMemberOne();
         //create transaction for member

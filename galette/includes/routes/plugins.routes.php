@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Plugins routes
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2015-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,23 +17,16 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Routes
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     0.9dev 2015-10-28
  */
+
+declare(strict_types=1);
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
 $app->group(
     '/plugins',
-    function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate, $showPublicPages) {
+    function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate): void {
         /** @var $container \DI\Container */
         $container = $app->getContainer();
         $modules = $container->get('plugins')->getModules();
@@ -57,7 +44,9 @@ $app->group(
                     'jpeg'  => 'image/jpg',
                     'gif'   => 'image/gif',
                     'svg'   => 'image/svg+xml',
-                    'map'   => 'application/json'
+                    'map'   => 'application/json',
+                    'woff'  => 'application/font-woff',
+                    'woff2' => 'application/font-woff2'
                 ];
                 if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
                     $file = $container->get('plugins')->getFile(
@@ -90,7 +79,7 @@ $app->group(
             $app->group(
                 '/' . $module['route'],
                 //$module_id may be used in included _routes.php from plugin.
-                function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $authenticate, $showPublicPages, $container) {
+                function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $authenticate, $container): void {
                     //Plugin home: give information
                     $app->get(
                         '',

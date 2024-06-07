@@ -1,0 +1,145 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <form action="{{ url_for('doAddContributionType') }}" method="post" class="tabbed ui form">
+    <div class="ui basic fitted segment loader_selector">
+        <table class="listing ui celled striped table">
+            <thead>
+                <tr>
+                    <th class="id_row">#</th>
+                    <th>{{ _T("Name") }}</th>
+                    <th>{{ _T('Amount') }}</th>
+                    <th>{{ _T("Membership extension") }}</th>
+                    <th>{{ _T("Actions") }}</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td data-scope="row">
+                        <span class="visually-hidden">
+                            {{ _T("New contribution type") }}
+                        </span>
+                    </td>
+                    <td class="left" data-col-label="{{ _T("Name") }}">
+                        <div class="required field">
+                            <label for="libelle_type_cotis" class="visually-hidden">{{ _T("Name") }}</label>
+                            <input size="40" type="text" name="libelle_type_cotis" id="libelle_type_cotis" required="required"/>
+                        </div>
+                    </td>
+                    <td class="left" data-col-label="{{ _T("Amount") }}">
+                        <div class="field">
+                            <label for="amount" class="visually-hidden">{{ _T("Amount") }}</label>
+                            <input size="5" type="text" name="amount" id="amount" />
+                        </div>
+                    </td>
+                    <td class="left" data-col-label="{{ _T("Membership extension") }}">
+                        {% set cotisextensions = {
+                            (constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE")): _T("Default"),
+                            (constant("Galette\\Entity\\ContributionsTypes::DONATION_TYPE")): _T("No"),
+                            (1): _Tn('%1$s month', '%1$s months', 1)|format(1)
+                        } %}
+                        {% for m in 2..11 %}
+                            {% set cotisextensions = cotisextensions + {(m): _Tn('%1$s month', '%1$s months', m)|format(m)} %}
+                        {% endfor %}
+                        {% include "components/forms/select.html.twig" with {
+                            id: 'cotis_extension',
+                            value: constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE"),
+                            values: cotisextensions,
+                            nolabel: true
+                        } %}
+                    </td>
+                    <td class="center actions_row">
+                        <input type="hidden" name="new" value="1" />
+                        <button type="submit" name="valid" class="ui labeled icon button">
+                            <i class="plus green icon" aria-hidden="true"></i>
+                            {{ _T("Add") }}
+                        </button>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
+{% for eid, entry in entries %}
+                <tr>
+                    <td data-scope="id" class="collapsing">
+                        {{ eid }}
+                    </td>
+                    <td class="left" data-col-label="{{ _T("Name") }}">
+                        {{ entry.name|escape }}
+                    </td>
+                    <td data-col-label="{{ _T("Amount") }}">
+                        {{ entry.amount }}
+                    </td>
+                    <td data-col-label="{{ _T("Membership extension") }}">
+    {% if entry.extra == -1 %}
+                        {{ _T("Default") }}
+    {% elseif entry.extra == 0 %}
+                        {{ _T("No") }}
+    {% else %}
+                        {{ _Tn('%1$s month', '%1$s months', entry.extra)|format(entry.extra) }}
+    {% endif %}
+                    </td>
+                    <td class="center actions_row">
+                        <a
+                            href="{{ url_for('editContributionType', {'id': eid}) }}"
+                            class="action single-edit"
+                        >
+                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
+                        </a>
+                        <a
+                            href="{{ url_for('removeContributionType', {'id': eid}) }}"
+                            class="delete"
+                        >
+                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': entry.name|escape}) }}</span>
+                        </a>
+                    </td>
+                </tr>
+{% endfor %}
+            </tbody>
+        </table>
+    </div>
+        {% include 'components/forms/csrf.html.twig' %}
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function() {
+            {% set modal_onapprove = "
+                $('.modal-form form #redirect_uri').val(window.location.href);
+                $('.modal-form form').submit();
+            " %}
+            {% include "elements/js/modal_action.js.twig" with {
+                selector: ".single-edit",
+                modal_title_twig: _T("Edit contribution type")|e("js"),
+                modal_class: "mini",
+                modal_onapprove: modal_onapprove
+            } %}
+
+            {% include "elements/js/removal.js.twig" with {
+                single_action: "true"
+            } %}
+        });
+    </script>
+{% endblock %}

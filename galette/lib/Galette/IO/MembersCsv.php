@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Members CSV exports
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2019-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  IO
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4-dev - 2019-12-03
  */
+
+declare(strict_types=1);
 
 namespace Galette\IO;
 
@@ -51,32 +38,26 @@ use Galette\Filters\MembersList;
 /**
  * Members CSV exports
  *
- * @category  IO
- * @name      Csv
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.4-dev - 2019-12-03
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class MembersCsv extends CsvOut
 {
-    private $filename;
-    private $path;
-    private $zdb;
-    private $login;
-    private $members_fields;
-    private $fields_config;
+    private string $filename;
+    private string $path;
+    private Db $zdb;
+    private Login $login;
+    /** @var array<string,mixed> */
+    private array $members_fields;
+    private FieldsConfig $fields_config;
 
     /**
      * Default constructor
      *
-     * @param Db           $zdb            Db instance
-     * @param Login        $login          Login instance
-     * @param array        $members_fields Members fields
-     * @param FieldsConfig $fields_config  Fields configuration
+     * @param Db                  $zdb            Db instance
+     * @param Login               $login          Login instance
+     * @param array<string,mixed> $members_fields Members fields
+     * @param FieldsConfig        $fields_config  Fields configuration
      */
     public function __construct(Db $zdb, Login $login, array $members_fields, FieldsConfig $fields_config)
     {
@@ -96,7 +77,7 @@ class MembersCsv extends CsvOut
      *
      * @return void
      */
-    public function exportMembers(MembersList $filters)
+    public function exportMembers(MembersList $filters): void
     {
         $export_fields = null;
         if (file_exists(GALETTE_CONFIG_PATH . 'local_export_fields.inc.php')) {
@@ -273,7 +254,7 @@ class MembersCsv extends CsvOut
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -283,7 +264,7 @@ class MembersCsv extends CsvOut
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->filename;
     }

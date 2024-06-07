@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * FieldsConfig tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2016-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Entity
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2016-09-24
  */
+
+declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
@@ -41,14 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Preferences tests class
  *
- * @category  Entity
- * @name      FieldsConfig
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2016-09-24
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class FieldsConfig extends TestCase
 {
@@ -85,7 +65,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testNonRequired()
+    public function testNonRequired(): void
     {
         $nrequired = $this->fields_config->getNonRequired();
         $expected = [
@@ -111,7 +91,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testInstallInit()
+    public function testInstallInit(): void
     {
         $result = $this->fields_config->installInit();
         $this->assertTrue($result);
@@ -173,12 +153,12 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    private function countCategorizedFields($categorized)
+    private function countCategorizedFields(array $categorized): void
     {
         $this->assertCount(3, $categorized);
         $this->assertCount(13, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]);
         $this->assertCount(11, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE]);
-        $this->assertCount(10, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]);
+        $this->assertCount(11, $categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]);
     }
 
     /**
@@ -186,7 +166,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testSetNotRequired()
+    public function testSetNotRequired(): void
     {
         $fields_config = $this->fields_config;
         $fields_config->load();
@@ -212,7 +192,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testGetVisibility()
+    public function testGetVisibility(): void
     {
         $this->fields_config->load();
 
@@ -231,7 +211,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testSetFields()
+    public function testSetFields(): void
     {
         $fields_config = $this->fields_config;
         $fields_config->installInit();
@@ -272,7 +252,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testIsSelfExcluded()
+    public function testIsSelfExcluded(): void
     {
         $this->assertTrue($this->fields_config->isSelfExcluded('bool_admin_adh'));
         $this->assertTrue($this->fields_config->isSelfExcluded('info_adh'));
@@ -284,7 +264,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testCheckUpdate()
+    public function testCheckUpdate(): void
     {
         $fields_config = $this->fields_config;
         $fields_config->load();
@@ -335,7 +315,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testCheckUpdateWhenEmpty()
+    public function testCheckUpdateWhenEmpty(): void
     {
         $this->zdb->db->query(
             'TRUNCATE ' . PREFIX_DB . \Galette\Entity\FieldsConfig::TABLE,
@@ -363,7 +343,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testGetDisplayElements()
+    public function testGetDisplayElements(): void
     {
         $fields_config = $this->fields_config;
         $fields_config->load();
@@ -383,7 +363,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements[1]);
         $this->assertSame(3, $elements[1]->id);
-        $this->assertCount(8, $elements[1]->elements);
+        $this->assertCount(9, $elements[1]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements[2]);
         $this->assertSame(2, $elements[2]->id);
@@ -406,7 +386,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements[1]);
         $this->assertSame(3, $elements[1]->id);
-        $this->assertCount(8, $elements[1]->elements);
+        $this->assertCount(9, $elements[1]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements[2]);
         $this->assertSame(2, $elements[2]->id);
@@ -419,7 +399,7 @@ class FieldsConfig extends TestCase
      *
      * @return void
      */
-    public function testGetFormElements()
+    public function testGetFormElements(): void
     {
         $fields_config = $this->fields_config;
         $fields_config->load();
@@ -443,7 +423,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
-        $this->assertCount(8, $elements['fieldsets'][1]->elements);
+        $this->assertCount(9, $elements['fieldsets'][1]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][2]);
         $this->assertSame(2, $elements['fieldsets'][2]->id);
@@ -471,7 +451,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
-        $this->assertCount(8, $elements['fieldsets'][1]->elements);
+        $this->assertCount(9, $elements['fieldsets'][1]->elements);
 
         $mail = $elements['fieldsets'][1]->elements['email_adh'];
         $this->assertFalse($mail->required); //email is not required per default
@@ -506,7 +486,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
-        $this->assertCount(8, $elements['fieldsets'][1]->elements);
+        $this->assertCount(9, $elements['fieldsets'][1]->elements);
 
         $mail = $elements['fieldsets'][1]->elements['email_adh'];
         $this->assertTrue($mail->required); //email is required for self subscription
@@ -517,5 +497,16 @@ class FieldsConfig extends TestCase
         $this->assertFalse(isset($elements['fieldsets'][2]->elements['info_adh']));
 
         $this->assertCount(2, $elements['hiddens']);
+    }
+
+    /**
+     * Test permissions list
+     *
+     * @return void
+     */
+    public function testGetPermissionsList(): void
+    {
+        $list = \Galette\Entity\FieldsConfig::getPermissionsList();
+        $this->assertArrayNotHasKey(\Galette\Entity\FieldsConfig::ALL, $list);
     }
 }

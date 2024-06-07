@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Payment types
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2018-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +17,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.2dev - 2018-07-23
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository;
 
+use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -44,39 +32,40 @@ use Galette\Entity\PaymentType;
 /**
  * Payment types
  *
- * @category  Repository
- * @name      PaymentTypes
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2018-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.9.2dev - 2018-07-23
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class PaymentTypes extends Repository
 {
     /**
      * Get payments types
      *
-     * @return PaymentType[]
+     * @param boolean $schedulable Types that can be used in schedules only
+     *
+     * @return array<int, PaymentType>
      */
-    public static function getAll()
+    public static function getAll(bool $schedulable = true): array
     {
         global $zdb, $preferences, $login;
         $ptypes = new self($zdb, $preferences, $login);
-        return $ptypes->getList();
+        return $ptypes->getList($schedulable);
     }
 
     /**
      * Get list
      *
-     * @return PaymentType[]
+     * @param boolean $schedulable Types that can be used in schedules only
+     *
+     * @return array<int, PaymentType>|ResultSet
      */
-    public function getList()
+    public function getList(bool $schedulable = true): array|ResultSet
     {
         try {
             $select = $this->zdb->select(PaymentType::TABLE, 'a');
             $select->order(PaymentType::PK);
+
+            if ($schedulable === false) {
+                $select->where->notEqualTo('a.' . PaymentType::PK, PaymentType::SCHEDULED);
+            }
 
             $types = array();
             $results = $this->zdb->execute($select);
@@ -96,11 +85,11 @@ class PaymentTypes extends Repository
     /**
      * Add default payment types in database
      *
-     * @param boolean $check_first Check first if it seem initialized
+     * @param boolean $check_first Check first if it seems initialized
      *
      * @return boolean
      */
-    public function installInit($check_first = true)
+    public function installInit(bool $check_first = true): bool
     {
         try {
             $ent = $this->entity;
@@ -160,7 +149,7 @@ class PaymentTypes extends Repository
      *
      * @return boolean
      */
-    protected function checkUpdate()
+    protected function checkUpdate(): bool
     {
         try {
             $ent = $this->entity;
@@ -206,12 +195,12 @@ class PaymentTypes extends Repository
     /**
      * Insert values in database
      *
-     * @param string $table  Table name
-     * @param array  $values Values to insert
+     * @param string              $table  Table name
+     * @param array<string,mixed> $values Values to insert
      *
      * @return void
      */
-    private function insert($table, $values)
+    private function insert(string $table, array $values): void
     {
         $insert = $this->zdb->insert($table);
         $insert->values(
@@ -234,9 +223,9 @@ class PaymentTypes extends Repository
     /**
      * Get defaults values
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function loadDefaults()
+    protected function loadDefaults(): array
     {
         if (!count($this->defaults)) {
             $paytype = new PaymentType($this->zdb);

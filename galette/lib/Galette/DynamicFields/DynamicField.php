@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Abstract dynamic field
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2012-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,20 +17,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  DynamicFields
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.1dev - 2012-07-28
  */
+
+declare(strict_types=1);
 
 namespace Galette\DynamicFields;
 
 use ArrayObject;
+use Galette\Features\Permissions;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
@@ -49,20 +37,14 @@ use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 /**
  * Abstract dynamic field
  *
- * @name      DynamicField
- * @category  DynamicFields
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 abstract class DynamicField
 {
     use Translatable;
     use I18n;
+    use Permissions;
 
     public const TABLE = 'field_types';
     public const PK = 'field_id';
@@ -85,41 +67,40 @@ abstract class DynamicField
     public const MOVE_UP = 'up';
     public const MOVE_DOWN = 'down';
 
-    public const PERM_USER_WRITE = 0;
-    public const PERM_ADMIN = 1;
-    public const PERM_STAFF = 2;
-    public const PERM_MANAGER = 3;
-    public const PERM_USER_READ = 4;
-
     public const DEFAULT_MAX_FILE_SIZE = 1024;
     public const VALUES_FIELD_LENGTH = 100;
 
-    protected $has_data = false;
-    protected $has_width = false;
-    protected $has_height = false;
-    protected $has_size = false;
-    protected $multi_valued = false;
-    protected $fixed_values = false;
-    protected $has_permissions = true;
+    protected bool $has_data = false;
+    protected bool $has_width = false;
+    protected bool $has_height = false;
+    protected bool $has_size = false;
+    protected bool $has_min_size = false;
+    protected bool $multi_valued = false;
+    protected bool $fixed_values = false;
+    protected bool $has_permissions = true;
 
-    protected $id;
-    protected $index;
-    protected $perm;
-    protected $required;
-    protected $width;
-    protected $height;
-    protected $repeat;
-    protected $size;
-    protected $old_size;
-    protected $values;
-    protected $form;
-    protected $information;
-    protected $name;
-    protected $old_name;
+    protected ?int $id = null;
+    protected ?int $index = null;
+    protected bool $required = false;
+    protected ?int $width_in_forms = 1;
+    protected bool $information_above = false;
+    protected ?int $width = null;
+    protected ?int $height = null;
+    protected ?int $repeat = null;
+    protected ?int $min_size = null;
+    protected ?int $size = null;
+    protected ?int $old_size = null;
+    /** @var string|array<string>|false */
+    protected string|array|false $values = false;
+    protected string $form;
+    protected ?string $information = null;
+    protected ?string $name = null;
+    protected ?string $old_name = null;
 
-    protected $errors = [];
+    /** @var array<string> */
+    protected array $errors = [];
 
-    protected $zdb;
+    protected Db $zdb;
 
     /**
      * Default constructor
@@ -127,14 +108,14 @@ abstract class DynamicField
      * @param Db    $zdb  Database instance
      * @param mixed $args Arguments
      */
-    public function __construct(Db $zdb, $args = null)
+    public function __construct(Db $zdb, mixed $args = null)
     {
         $this->zdb = $zdb;
 
         if (is_int($args)) {
             $this->load($args);
         } elseif (is_object($args)) {
-            $this->loadFromRs($args);
+            $this->loadFromRS($args);
         }
     }
 
@@ -146,7 +127,7 @@ abstract class DynamicField
      *
      * @return DynamicField|false
      */
-    public static function loadFieldType(Db $zdb, int $id)
+    public static function loadFieldType(Db $zdb, int $id): DynamicField|false
     {
         try {
             $select = $zdb->select(self::TABLE);
@@ -154,11 +135,11 @@ abstract class DynamicField
 
             $results = $zdb->execute($select);
             if ($results->count() > 0) {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
-                $field_type = $result->field_type;
+                $field_type = (int)$result->field_type;
                 $field_type = self::getFieldType($zdb, $field_type);
-                $field_type->loadFromRs($result);
+                $field_type->loadFromRS($result);
                 return $field_type;
             }
         } catch (Throwable $e) {
@@ -181,7 +162,7 @@ abstract class DynamicField
      *
      * @return DynamicField
      */
-    public static function getFieldType(Db $zdb, int $t, int $id = null)
+    public static function getFieldType(Db $zdb, int $t, int $id = null): DynamicField
     {
         $df = null;
         switch ($t) {
@@ -227,9 +208,9 @@ abstract class DynamicField
 
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
-                /** @var ArrayObject $result */
+                /** @var ArrayObject<string, int|string> $result */
                 $result = $results->current();
-                $this->loadFromRs($result);
+                $this->loadFromRS($result);
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -243,24 +224,27 @@ abstract class DynamicField
     /**
      * Load field type from a db ResultSet
      *
-     * @param ArrayObject $rs     ResultSet
-     * @param bool        $values Whether to load values. Defaults to true
+     * @param ArrayObject<string, int|string> $rs     ResultSet
+     * @param bool                            $values Whether to load values. Defaults to true
      *
      * @return void
      */
-    public function loadFromRs(ArrayObject $rs, bool $values = true): void
+    public function loadFromRS(ArrayObject $rs, bool $values = true): void
     {
         $this->id = (int)$rs->field_id;
         $this->name = $rs->field_name;
         $this->index = (int)$rs->field_index;
-        $this->perm = (int)$rs->field_perm;
+        $this->permission = (int)$rs->field_perm;
         $this->required = $rs->field_required == 1;
+        $this->min_size = $rs->field_min_size;
+        $this->width_in_forms = (int)$rs->field_width_in_forms;
         $this->width = $rs->field_width;
         $this->height = $rs->field_height;
         $this->repeat = (int)$rs->field_repeat;
-        $this->size = $rs->field_size;
+        $this->size = (int)$rs->field_size;
         $this->form = $rs->field_form;
         $this->information = $rs->field_information;
+        $this->information_above = $rs->field_information_above == 1;
         if ($values && $this->hasFixedValues()) {
             $this->loadFixedValues();
         }
@@ -288,7 +272,7 @@ abstract class DynamicField
      *
      * @return void
      */
-    private function loadFixedValues()
+    private function loadFixedValues(): void
     {
         try {
             $val_select = $this->zdb->select(
@@ -347,7 +331,7 @@ abstract class DynamicField
      */
     public function hasData(): bool
     {
-        return (bool)$this->has_data;
+        return $this->has_data;
     }
 
     /**
@@ -357,7 +341,7 @@ abstract class DynamicField
      */
     public function hasWidth(): bool
     {
-        return (bool)$this->has_width;
+        return $this->has_width;
     }
 
     /**
@@ -367,7 +351,17 @@ abstract class DynamicField
      */
     public function hasHeight(): bool
     {
-        return (bool)$this->has_height;
+        return $this->has_height;
+    }
+
+    /**
+     * Does the field has min size?
+     *
+     * @return bool
+     */
+    public function hasMinSize(): bool
+    {
+        return $this->has_min_size;
     }
 
     /**
@@ -377,7 +371,7 @@ abstract class DynamicField
      */
     public function hasSize(): bool
     {
-        return (bool)$this->has_size;
+        return $this->has_size;
     }
 
     /**
@@ -387,7 +381,7 @@ abstract class DynamicField
      */
     public function isMultiValued(): bool
     {
-        return (bool)$this->multi_valued;
+        return $this->multi_valued;
     }
 
     /**
@@ -397,7 +391,7 @@ abstract class DynamicField
      */
     public function hasFixedValues(): bool
     {
-        return (bool)$this->fixed_values;
+        return $this->fixed_values;
     }
 
     /**
@@ -407,7 +401,7 @@ abstract class DynamicField
      */
     public function hasPermissions(): bool
     {
-        return (bool)$this->has_permissions;
+        return $this->has_permissions;
     }
 
     /**
@@ -421,23 +415,23 @@ abstract class DynamicField
     }
 
     /**
-     * Get field Permissions
-     *
-     * @return integer|null
-     */
-    public function getPerm(): ?int
-    {
-        return $this->perm;
-    }
-
-    /**
      * Is field required?
      *
      * @return bool
      */
     public function isRequired(): bool
     {
-        return (bool)$this->required;
+        return $this->required;
+    }
+
+    /**
+     * Get field's width in forms
+     *
+     * @return integer|null
+     */
+    public function getWidthInForms(): ?int
+    {
+        return $this->width_in_forms;
     }
 
     /**
@@ -467,7 +461,7 @@ abstract class DynamicField
      */
     public function isRepeatable(): bool
     {
-        return $this->repeat != null && trim($this->repeat) != '' && (int)$this->repeat >= 0;
+        return $this->repeat != null && $this->repeat >= 0;
     }
 
     /**
@@ -478,6 +472,16 @@ abstract class DynamicField
     public function getRepeat(): ?int
     {
         return $this->repeat;
+    }
+
+    /**
+     * Get field min size
+     *
+     * @return integer|null
+     */
+    public function getMinSize(): ?int
+    {
+        return $this->min_size;
     }
 
     /**
@@ -511,25 +515,19 @@ abstract class DynamicField
     }
 
     /**
-     * Retrieve permissions names for display
+     * Does the field information have to be displayed above input?
      *
-     * @return array
+     * @return bool
      */
-    public static function getPermsNames(): array
+    public function hasInformationAbove(): bool
     {
-        return [
-            self::PERM_USER_WRITE => _T("User, read/write"),
-            self::PERM_STAFF      => _T("Staff member"),
-            self::PERM_ADMIN      => _T("Administrator"),
-            self::PERM_MANAGER    => _T("Group manager"),
-            self::PERM_USER_READ  => _T("User, read only")
-        ];
+        return $this->information_above;
     }
 
     /**
      * Retrieve forms names
      *
-     * @return array
+     * @return array<string,string>
      */
     public static function getFormsNames(): array
     {
@@ -554,17 +552,6 @@ abstract class DynamicField
     }
 
     /**
-     * Get permission name
-     *
-     * @return string
-     */
-    public function getPermName(): string
-    {
-        $perms = self::getPermsNames();
-        return $perms[$this->getPerm()];
-    }
-
-    /**
      * Get form
      *
      * @return string
@@ -579,9 +566,9 @@ abstract class DynamicField
      *
      * @param bool $imploded Whether to implode values
      *
-     * @return array|string|false
+     * @return array<string>|string|false
      */
-    public function getValues(bool $imploded = false)
+    public function getValues(bool $imploded = false): array|string|false
     {
         if (!is_array($this->values)) {
             return false;
@@ -596,12 +583,12 @@ abstract class DynamicField
     /**
      * Check posted values validity
      *
-     * @param array $values All values to check, basically the $_POST array
-     *                      after sending the form
+     * @param array<string,mixed> $values All values to check, basically the $_POST array
+     *                                    after sending the form
      *
      * @return bool
      */
-    public function check(array $values)
+    public function check(array $values): bool
     {
         $this->errors = [];
         $this->warnings = [];
@@ -621,14 +608,14 @@ abstract class DynamicField
         if (!isset($values['field_perm']) || $values['field_perm'] === '') {
             $this->errors[] = _T('Missing required field permissions!');
         } else {
-            if (in_array($values['field_perm'], array_keys(self::getPermsNames()))) {
-                $this->perm = $values['field_perm'];
+            if (in_array($values['field_perm'], array_keys(self::getPermissionsList()))) {
+                $this->permission = (int)$values['field_perm'];
             } else {
                 $this->errors[] = _T('Unknown permission!');
             }
         }
 
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             if (!isset($values['form_name']) || $values['form_name'] == '') {
                 $this->errors[] = _T('Missing required form!');
             } else {
@@ -640,32 +627,83 @@ abstract class DynamicField
             }
         }
 
-        $this->required = $values['field_required'] ?? false;
+        if (isset($values['field_required'])) {
+            $this->required = $values['field_required'] == 1;
+        } else {
+            $this->required = false;
+        }
+
+        $this->width_in_forms = $values['field_width_in_forms'] ?? 1;
 
         if (count($this->errors) === 0 && $this->isDuplicate()) {
             $this->errors[] = _T("- Field name already used.");
         }
 
-        if ($this->hasWidth() && isset($values['field_width']) && trim($values['field_width']) != '') {
-            $this->width = $values['field_width'];
+        if ($this->hasWidth()) {
+            if (empty($values['field_width']) && !is_numeric($values['field_width'] ?? null)) {
+                $this->width = null;
+            } elseif (!is_numeric($values['field_width']) || $values['field_width'] <= 0) {
+                $this->errors[] = _T("- Width must be a positive integer!");
+            } elseif (!empty($values['field_width'])) {
+                $this->width = (int)$values['field_width'];
+            }
         }
 
-        if ($this->hasHeight() && isset($values['field_height']) && trim($values['field_height']) != '') {
-            $this->height = $values['field_height'];
+        if ($this->hasHeight()) {
+            if (empty($values['field_height']) && !is_numeric($values['field_height'] ?? null)) {
+                $this->height = null;
+            } elseif (!is_numeric($values['field_height']) || $values['field_height'] <= 0) {
+                $this->errors[] = _T("- Height must be a positive integer!");
+            } else {
+                $this->height = (int)$values['field_height'];
+            }
         }
 
-        if ($this->hasSize() && isset($values['field_size']) && trim($values['field_size']) != '') {
-            $this->size = $values['field_size'];
+        if ($this->hasSize()) {
+            if (empty($values['field_size']) && !is_numeric($values['field_size'] ?? null)) {
+                $this->size = null;
+            } elseif (!is_numeric($values['field_size']) || $values['field_size'] <= 0) {
+                $this->errors[] = _T("- Size must be a positive integer!");
+            } else {
+                $this->size = (int)$values['field_size'];
+            }
         }
 
-        if (isset($values['field_repeat']) && trim($values['field_repeat']) != '') {
-            $this->repeat = $values['field_repeat'];
+        if ($this->hasMinSize()) {
+            if (empty($values['field_min_size']) && !is_numeric($values['field_min_size'] ?? null)) {
+                $this->min_size = null;
+            } elseif (!is_numeric($values['field_min_size']) || $values['field_min_size'] <= 0) {
+                $this->errors[] = _T("- Min size must be a positive integer!");
+            } elseif (!empty($values['field_min_size'])) {
+                $this->min_size = (int)$values['field_min_size'];
+            }
+        }
+
+        if (
+            $this->hasMinSize()
+                && $this->min_size !== null
+            && $this->hasSize()
+                && $this->size !== null
+        ) {
+            if ($this->min_size > $this->size) {
+                $this->errors[] = _T("- Min size must be lower than size!");
+            }
+        }
+
+        if (isset($values['field_repeat'])) {
+            if (!is_numeric($values['field_repeat'])) {
+                $this->errors[] = _T("- Repeat must be an integer!");
+            } else {
+                $this->repeat = (int)$values['field_repeat'];
+            }
         }
 
         if (isset($values['field_information']) && trim($values['field_information']) != '') {
             global $preferences;
             $this->information = $preferences->cleanHtmlValue($values['field_information']);
         }
+
+        $this->information_above = (bool)($values['field_information_above'] ?? false);
 
         if ($this->hasFixedValues() && isset($values['fixed_values'])) {
             $fixed_values = [];
@@ -686,7 +724,7 @@ abstract class DynamicField
             $this->values = $fixed_values;
         }
 
-        if ($this->id == null) {
+        if (!isset($this->id)) {
             $this->index = $this->getNewIndex();
         }
 
@@ -700,8 +738,8 @@ abstract class DynamicField
     /**
      * Store the field type
      *
-     * @param array $values All values to check, basically the $_POST array
-     *                      after sending the form
+     * @param array<string,mixed> $values All values to check, basically the $_POST array
+     *                                    after sending the form
      *
      * @return bool
      */
@@ -711,7 +749,7 @@ abstract class DynamicField
             return false;
         }
 
-        $isnew = ($this->id === null);
+        $isnew = (!isset($this->id));
         if ($this->old_name !== null) {
             $this->deleteTranslation($this->old_name);
             $this->addTranslation($this->name);
@@ -719,21 +757,29 @@ abstract class DynamicField
 
         try {
             $values = array(
-                'field_name'        => strip_tags($this->name),
-                'field_perm'        => $this->perm,
-                'field_required'    => $this->required,
-                'field_width'       => ($this->width === null ? new Expression('NULL') : $this->width),
-                'field_height'      => ($this->height === null ? new Expression('NULL') : $this->height),
-                'field_size'        => ($this->size === null ? new Expression('NULL') : $this->size),
-                'field_repeat'      => ($this->repeat === null ? new Expression('NULL') : $this->repeat),
-                'field_form'        => $this->form,
-                'field_index'       => $this->index,
-                'field_information' => ($this->information === null ? new Expression('NULL') : $this->information)
+                'field_name'              => strip_tags($this->name),
+                'field_perm'              => $this->permission,
+                'field_required'          => $this->required,
+                'field_width_in_forms'    => $this->width_in_forms,
+                'field_width'             => ($this->width === null ? new Expression('NULL') : $this->width),
+                'field_height'            => ($this->height === null ? new Expression('NULL') : $this->height),
+                'field_min_size'          => ($this->min_size === null ? new Expression('NULL') : $this->min_size),
+                'field_size'              => ($this->size === null ? new Expression('NULL') : $this->size),
+                'field_repeat'            => ($this->repeat === null ? new Expression('NULL') : $this->repeat),
+                'field_form'              => $this->form,
+                'field_index'             => $this->index,
+                'field_information'       => ($this->information === null ? new Expression('NULL') : $this->information),
+                'field_information_above' => $this->information_above,
             );
 
             if ($this->required === false) {
                 //Handle booleans for postgres ; bugs #18899 and #19354
                 $values['field_required'] = $this->zdb->isPostgres() ? 'false' : 0;
+            }
+
+            if ($this->information_above === false) {
+                //Handle booleans for postgres ; bugs #18899 and #19354
+                $values['field_information_above'] = $this->zdb->isPostgres() ? 'false' : 0;
             }
 
             if (!$isnew) {
@@ -866,7 +912,7 @@ abstract class DynamicField
                 )
             );
 
-            if ($this->id !== null) {
+            if (isset($this->id)) {
                 $select->where->addPredicate(
                     new PredicateExpression(
                         'field_id NOT IN (?)',
@@ -886,6 +932,7 @@ abstract class DynamicField
                 'An error occurred checking field duplicity' . $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
         return $duplicated;
     }
@@ -926,7 +973,7 @@ abstract class DynamicField
                 )
             )->where(
                 array(
-                    self::PK        => $this->id
+                    self::PK => $this->id
                 )
             );
             $this->zdb->execute($update);
@@ -1019,7 +1066,7 @@ abstract class DynamicField
     /**
      * Retrieve fields types names
      *
-     * @return array
+     * @return array<int, string>
      */
     public static function getFieldsTypesNames(): array
     {
@@ -1038,7 +1085,7 @@ abstract class DynamicField
     /**
      * Get errors
      *
-     * @return array
+     * @return array<string>
      */
     public function getErrors(): array
     {
@@ -1048,7 +1095,7 @@ abstract class DynamicField
     /**
      * Get warnings
      *
-     * @return array
+     * @return array<string>
      */
     public function getWarnings(): array
     {

@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Groups repository tests
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2021-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Repository
- * @package   GaletteTests
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-11-10
  */
+
+declare(strict_types=1);
 
 namespace Galette\Repository\test\units;
 
@@ -41,14 +28,7 @@ use Galette\GaletteTestCase;
 /**
  * Groups repository tests
  *
- * @category  Repository
- * @name      Groups
- * @package   GaletteTests
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2021-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     2021-11-10
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Groups extends GaletteTestCase
 {
@@ -72,13 +52,18 @@ class Groups extends GaletteTestCase
      *
      * @return void
      */
-    private function deleteGroups()
+    private function deleteGroups(): void
     {
         $zdb = new \Galette\Core\Db();
 
         //Clean managers
         $zdb->db->query(
             'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\Group::GROUPSMANAGERS_TABLE,
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+        );
+
+        $zdb->db->query(
+            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\Group::GROUPSUSERS_TABLE,
             \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
 
@@ -158,7 +143,7 @@ class Groups extends GaletteTestCase
      *
      * @return void
      */
-    public function testCreateGroups(string $parent_name, array $children)
+    public function testCreateGroups(string $parent_name, array $children): void
     {
         $group = new \Galette\Entity\Group();
         $group->setName($parent_name);
@@ -189,7 +174,7 @@ class Groups extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetSimpleList()
+    public function testGetSimpleList(): void
     {
         $groups = self::groupsProvider();
         foreach ($groups as $group) {
@@ -215,7 +200,7 @@ class Groups extends GaletteTestCase
      *
      * @return void
      */
-    public function testGetList()
+    public function testGetList(): void
     {
         $this->logSuperAdmin();
 
@@ -235,7 +220,7 @@ class Groups extends GaletteTestCase
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
         $select->where(['group_name' => 'Europe']);
         $result = $this->zdb->execute($select)->current();
-        $europe = $result->{\Galette\Entity\Group::PK};
+        $europe = (int)$result->{\Galette\Entity\Group::PK};
 
         $children_list = $groups->getList(true, $europe);
         $this->assertCount(4, $children_list);
@@ -257,7 +242,7 @@ class Groups extends GaletteTestCase
      *
      * @return void
      */
-    public function testUniqueness()
+    public function testUniqueness(): void
     {
         $groups = self::groupsProvider();
         foreach ($groups as $group) {
@@ -274,12 +259,12 @@ class Groups extends GaletteTestCase
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
         $select->where(['group_name' => 'Europe']);
         $result = $this->zdb->execute($select)->current();
-        $europe = $result->{\Galette\Entity\Group::PK};
+        $europe = (int)$result->{\Galette\Entity\Group::PK};
 
         $select = $this->zdb->select(\Galette\Entity\Group::TABLE);
         $select->where(['group_name' => 'France']);
         $result = $this->zdb->execute($select)->current();
-        $france = $result->{\Galette\Entity\Group::PK};
+        $france = (int)$result->{\Galette\Entity\Group::PK};
 
         //name already exists - not unique
         $this->assertFalse(\Galette\Repository\Groups::isUnique($this->zdb, $unique_name));
@@ -291,5 +276,89 @@ class Groups extends GaletteTestCase
         //tests on another level
         $this->assertFalse(\Galette\Repository\Groups::isUnique($this->zdb, 'Nord', $france));
         $this->assertTrue(\Galette\Repository\Groups::isUnique($this->zdb, 'Creuse', $france));
+    }
+
+    /**
+     * Test members/groups
+     *
+     * @return void
+     */
+    public function testMembersGroups(): void
+    {
+        $groups = self::groupsProvider();
+        foreach ($groups as $group) {
+            $this->testCreateGroups($group['parent_name'], $group['children']);
+        }
+
+        $france = new \Galette\Entity\Group();
+        $this->assertTrue($france->loadFromName('France'));
+
+        $allemagne = new \Galette\Entity\Group();
+        $this->assertTrue($allemagne->loadFromName('Allemagne'));
+
+        $member = $this->getMemberOne();
+        $member->loadGroups();
+        $this->assertSame([], $member->managed_groups);
+        $this->assertSame([], $member->groups);
+
+        //add member to France and Allemagne groups, as simple member
+        $this->assertTrue(
+            \Galette\Repository\Groups::addMemberToGroups(
+                $member,
+                [
+                    sprintf('%s|%s', $france->getId(), $france->getName()),
+                    sprintf('%s|%s', $allemagne->getId(), $allemagne->getName())
+                ]
+            )
+        );
+
+        $member->loadGroups();
+        $this->assertSame([], $member->managed_groups);
+        $this->assertCount(2, $member->groups);
+
+        //Add as manager of France
+        $this->assertTrue(
+            \Galette\Repository\Groups::addMemberToGroups(
+                $member,
+                [
+                    sprintf('%s|%s', $france->getId(), $france->getName())
+                ],
+                true
+            ),
+        );
+
+        $member->loadGroups();
+        $this->assertCount(1, $member->managed_groups);
+        $this->assertCount(2, $member->groups);
+
+        $member2 = $this->getMemberTwo();
+        //Add as manager of France
+        $this->assertTrue(
+            \Galette\Repository\Groups::addMemberToGroups(
+                $member2,
+                [
+                    sprintf('%s|%s', $france->getId(), $france->getName())
+                ],
+                true
+            ),
+        );
+
+        $member2->loadGroups();
+        $this->assertCount(1, $member2->managed_groups);
+        $this->assertCount(0, $member2->groups);
+
+        $this->logSuperAdmin();
+        $this->login->impersonate($member2->id);
+
+        $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
+        $users = $groups->getManagerUsers([$allemagne->getId()]);
+        $this->assertEquals([$member->id], $users);
+        $users = $groups->getManagerUsers([$france->getId()]);
+        $this->assertEquals([$member->id], $users);
+
+        \Galette\Repository\Groups::removeMemberFromGroups($member->id);
+        $member->loadGroups();
+        $this->assertSame([], $member->managed_groups);
+        $this->assertSame([], $member->groups);
     }
 }

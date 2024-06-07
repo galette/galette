@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Galette ajax controller
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,16 +17,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Controllers
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2023-02-01
  */
+
+declare(strict_types=1);
 
 namespace Galette\Controllers;
 
@@ -50,14 +37,7 @@ use Throwable;
 /**
  * Galette ajax controller
  *
- * @category  Controllers
- * @name      GaletteController
- * @package   Galette
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     2023-02-01
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
 class AjaxController extends AbstractController
@@ -234,7 +214,7 @@ class AjaxController extends AbstractController
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong is towns suggestion: ' . $e->getMessage(),
+                'Something went wrong in towns suggestion: ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -274,7 +254,47 @@ class AjaxController extends AbstractController
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong is countries suggestion: ' . $e->getMessage(),
+                'Something went wrong in countries suggestion: ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            throw $e;
+        }
+
+        return $this->withJson($response, $ret);
+    }
+
+    /**
+     * Ajax regions suggestion
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param string   $term     Search term
+     *
+     * @return Response
+     */
+    public function suggestRegions(Request $request, Response $response, string $term): Response
+    {
+        $ret = [];
+
+        try {
+            $select = $this->zdb->select(Adherent::TABLE);
+            $select->columns(['region_adh']);
+            $select->where->like('region_adh', '%' . html_entity_decode($term) . '%');
+            $select->limit(10);
+            $select->order(['region_adh ASC']);
+
+            $regions = $this->zdb->execute($select);
+
+            $ret['success'] = true;
+            $ret['results'] = [];
+            foreach ($regions as $region) {
+                $ret['results'][] = [
+                    'title' => $region->region_adh
+                ];
+            }
+        } catch (Throwable $e) {
+            Analog::log(
+                'Something went wrong in regions suggestion: ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;

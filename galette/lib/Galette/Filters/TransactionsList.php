@@ -1,15 +1,9 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Transactions lists filters and paginator
+ * Copyright © 2003-2024 The Galette Team
  *
- * PHP version 5
- *
- * Copyright © 2016-2023 The Galette Team
- *
- * This file is part of Galette (http://galette.tuxfamily.org).
+ * This file is part of Galette (https://galette.eu).
  *
  * Galette is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +17,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Filters
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
- * @since     june, 12th 2016
  */
+
+declare(strict_types=1);
 
 namespace Galette\Filters;
 
+use Galette\Helpers\DatesHelper;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Pagination;
@@ -43,19 +31,12 @@ use Galette\Core\Pagination;
 /**
  * Transactions lists filters and paginator
  *
- * @name      TransactionsList
- * @category  Filters
- * @package   Galette
- *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2016-2023 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://galette.tuxfamily.org
+ * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property ?string $start_date_filter
  * @property ?string $end_date_filter
  * @property ?integer $filtre_cotis_adh
- * @property boolean $filtre_cotis_children
+ * @property integer|false $filtre_cotis_children
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
  * @property ?integer $max_amount
@@ -63,26 +44,31 @@ use Galette\Core\Pagination;
 
 class TransactionsList extends Pagination
 {
+    use DatesHelper;
+
     public const ORDERBY_DATE = 0;
     public const ORDERBY_MEMBER = 3;
     public const ORDERBY_AMOUNT = 5;
+    public const ORDERBY_PAYMENT_TYPE = 7;
     public const ORDERBY_ID = 8;
 
     //filters
-    private $start_date_filter;
-    private $end_date_filter;
-    private $filtre_cotis_adh;
-    private $filtre_cotis_children = false;
-    private $max_amount;
+    private ?string $start_date_filter = null;
+    private ?string $end_date_filter = null;
+    private ?int $filtre_cotis_adh = null;
+    private int|false $filtre_cotis_children = false;
+    private ?int $max_amount = null;
 
-    protected $list_fields = array(
+    /** @var array<string> */
+    protected array $list_fields = array(
         'start_date_filter',
         'end_date_filter',
         'filtre_cotis_adh',
         'filtre_cotis_children'
     );
 
-    protected $virtuals_list_fields = array(
+    /** @var array<string> */
+    protected array $virtuals_list_fields = array(
         'rstart_date_filter',
         'rend_date_filter'
     );
@@ -100,7 +86,7 @@ class TransactionsList extends Pagination
      *
      * @return int|string
      */
-    protected function getDefaultOrder()
+    protected function getDefaultOrder(): int|string
     {
         return self::ORDERBY_DATE;
     }
@@ -110,7 +96,7 @@ class TransactionsList extends Pagination
      *
      * @return void
      */
-    public function reinit()
+    public function reinit(): void
     {
         parent::reinit();
         $this->start_date_filter = null;
@@ -126,13 +112,8 @@ class TransactionsList extends Pagination
      *
      * @return mixed the called property
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
-        Analog::log(
-            '[TransactionsList] Getting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
         } else {
@@ -140,43 +121,25 @@ class TransactionsList extends Pagination
                 switch ($name) {
                     case 'start_date_filter':
                     case 'end_date_filter':
-                        if ($this->$name === null) {
-                            return $this->$name;
-                        }
-                        try {
-                            $d = \DateTime::createFromFormat(__("Y-m-d"), $this->$name);
-                            if ($d === false) {
-                                //try with non localized date
-                                $d = \DateTime::createFromFormat("Y-m-d", $this->$name);
-                                if ($d === false) {
-                                    throw new \Exception('Incorrect format');
-                                }
-                            }
-                            return $d->format(__("Y-m-d"));
-                        } catch (Throwable $e) {
-                            //oops, we've got a bad date :/
-                            Analog::log(
-                                'Bad date (' . $this->$name . ') | ' .
-                                $e->getMessage(),
-                                Analog::INFO
-                            );
-                            return $this->$name;
-                        }
+                        return $this->getDate($name);
                     case 'rstart_date_filter':
                     case 'rend_date_filter':
                         //same as above, but raw format
                         $rname = substr($name, 1);
-                        return $this->$rname;
+                        return $this->getDate($rname, true, false);
                     default:
                         return $this->$name;
                 }
-            } else {
-                Analog::log(
-                    '[TransactionsList] Unable to get property `' . $name . '`',
-                    Analog::WARNING
-                );
             }
         }
+
+        throw new \RuntimeException(
+            sprintf(
+                'Unable to get property "%s::%s"!',
+                __CLASS__,
+                $name
+            )
+        );
     }
 
     /**
@@ -187,7 +150,7 @@ class TransactionsList extends Pagination
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
             return true;
@@ -206,7 +169,7 @@ class TransactionsList extends Pagination
      *
      * @return void
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         if (in_array($name, $this->pagination_fields)) {
             parent::__set($name, $value);
@@ -219,81 +182,10 @@ class TransactionsList extends Pagination
             switch ($name) {
                 case 'start_date_filter':
                 case 'end_date_filter':
-                    try {
-                        if ($value !== '') {
-                            $y = \DateTime::createFromFormat(__("Y"), $value);
-                            if ($y !== false) {
-                                $month = 1;
-                                $day = 1;
-                                if ($name === 'end_date_filter') {
-                                    $month = 12;
-                                    $day = 31;
-                                }
-                                $y->setDate(
-                                    $y->format('Y'),
-                                    $month,
-                                    $day
-                                );
-                                $this->$name = $y->format('Y-m-d');
-                            }
-
-                            $ym = \DateTime::createFromFormat(__("Y-m"), $value);
-                            if ($y === false && $ym !== false) {
-                                $day = 1;
-                                if ($name === 'end_date_filter') {
-                                    $day = $ym->format('t');
-                                }
-                                $ym->setDate(
-                                    $ym->format('Y'),
-                                    $ym->format('m'),
-                                    $day
-                                );
-                                $this->$name = $ym->format('Y-m-d');
-                            }
-
-                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                            if ($y === false && $ym === false && $d !== false) {
-                                $this->$name = $d->format('Y-m-d');
-                            }
-
-                            if ($y === false && $ym === false && $d === false) {
-                                $formats = array(
-                                    __("Y"),
-                                    __("Y-m"),
-                                    __("Y-m-d"),
-                                );
-
-                                $field = null;
-                                if ($name === 'start_date_filter') {
-                                    $field = _T("start date filter");
-                                }
-                                if ($name === 'end_date_filter') {
-                                    $field = _T("end date filter");
-                                }
-
-                                throw new \Exception(
-                                    str_replace(
-                                        array('%field', '%formats'),
-                                        array(
-                                            $field,
-                                            implode(', ', $formats)
-                                        ),
-                                        _T("Unknown date format for %field.<br/>Know formats are: %formats")
-                                    )
-                                );
-                            }
-                        } else {
-                            $this->$name = null;
-                        }
-                    } catch (Throwable $e) {
-                        Analog::log(
-                            'Wrong date format. field: ' . $name .
-                            ', value: ' . $value . ', expected fmt: ' .
-                            __("Y-m-d") . ' | ' . $e->getMessage(),
-                            Analog::INFO
-                        );
-                        throw $e;
-                    }
+                    $this->setFilterDate($name, $value, $name === 'start_date_filter');
+                    break;
+                case 'filtre_cotis_adh':
+                    $this->$name = (int)$value;
                     break;
                 default:
                     $this->$name = $value;
