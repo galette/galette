@@ -1394,7 +1394,7 @@ class MembersController extends CrudController
             //check captcha
             /** @var Gaptcha $gaptcha */
             $gaptcha = $this->session->gaptcha;
-            if (!$gaptcha->check($post['gaptcha'])) {
+            if (!$gaptcha->check((int)$post['gaptcha'])) {
                 $error_detected[] = _T('Invalid captcha');
             }
         }
