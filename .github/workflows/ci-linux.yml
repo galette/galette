@@ -65,7 +65,6 @@ jobs:
         ports:
           - 3306:3306
           - 5432:5432
-          - 8000:8000
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd="bash -c 'if [[ -n $(command -v pg_isready) ]]; then pg_isready; else if [[ -n $(command -v mysqladmin) ]]; then mysqladmin ping; else mariadb-admin ping; fi fi'"
@@ -163,7 +162,7 @@ jobs:
       - name: Unit tests
         run: |
           cd galette/webroot
-          php -S localhost:8000&
+          php -S localhost:8080&
           cd ../..
           galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/Galette/
         if: env.skip != 'true' && matrix.coverage != 'pcov'
@@ -171,7 +170,7 @@ jobs:
       - name: Unit tests (with coverage)
         run: |
           cd galette/webroot
-          php -S localhost:8000&
+          php -S localhost:8080&
           cd ../..
           galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --process-isolation --coverage-filter galette/lib --coverage-clover tests/clover.xml tests/Galette/
         if: env.skip != 'true' && matrix.coverage == 'pcov'
@@ -438,4 +437,4 @@ jobs:
       - name: Web serve
         run: |
           cd galette/webroot
-          php -S localhost:8000&
+          php -S localhost:8080&

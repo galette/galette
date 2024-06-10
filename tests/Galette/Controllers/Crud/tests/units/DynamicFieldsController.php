@@ -234,7 +234,7 @@ class DynamicFieldsController extends GaletteSeleniumCase
      */
     public function testUi(): void
     {
-        self::$driver->get("http://localhost:8000");
+        self::$driver->get("http://localhost:8080");
         $element = self::$driver->findElement(WebDriverBy::name("q"));
         $element->sendKeys("BrowserStack");
         $element->submit();
