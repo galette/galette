@@ -469,7 +469,7 @@ class AdvancedMembersList extends MembersList
                         if (is_numeric($v)) {
                             //check status existence
                             $s = new Status($zdb);
-                            $res = $s->get($v);
+                            $res = $s->get((int)$v);
                             if ($res !== false) {
                                 $this->status[] = $v;
                             } else {

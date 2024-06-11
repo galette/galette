@@ -465,6 +465,20 @@ class Members extends GaletteTestCase
 
         $this->assertSame(5, $list->count());
 
+        //search on status
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->status = [(string)\Galette\Entity\Status::DEFAULT_STATUS];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        $this->assertSame(5, $list->count());
+
+        //search on non existing status
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->status = [999];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        $this->assertSame(10, $list->count());
+
         //search on status from free search
         $filters = new \Galette\Filters\AdvancedMembersList();
         $filters->free_search = [
