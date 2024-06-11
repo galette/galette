@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-07 07:09+0000\n"
+"PO-Revision-Date: 2024-06-11 19:30+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -3291,7 +3291,7 @@ msgstr "Risultati dei voti"
 
 #: ../lib/Galette/Entity/Title.php:171
 msgid "You cannot delete Mr. or Mrs. titles!"
-msgstr ""
+msgstr "Non puoi eliminare i titoli del signor o della signora!"
 
 #: ../lib/Galette/Entity/Texts.php:105
 msgid "Insert a carriage return"
@@ -3303,23 +3303,23 @@ msgstr "Inserisci una nuova riga vuota"
 
 #: ../lib/Galette/Entity/Texts.php:113
 msgid "Link validity"
-msgstr ""
+msgstr "Validità del collegamento"
 
 #: ../lib/Galette/Entity/Texts.php:118
 msgid "Direct link for member card download"
-msgstr ""
+msgstr "Collegamento diretto per lo scaricamento della tessera membro"
 
 #: ../lib/Galette/Entity/Texts.php:123
 msgid "Direct link for invoice/receipt download"
-msgstr ""
+msgstr "Collegamento diretto per lo scaricamento fattura/ricevuta"
 
 #: ../lib/Galette/Entity/Texts.php:128
 msgid "Galette's change password URI"
-msgstr ""
+msgstr "URI per il cambio password di Galette"
 
 #: ../lib/Galette/Entity/Texts.php:632
 msgid "Mail specific"
-msgstr ""
+msgstr "Specifica mail"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:151
 #, fuzzy
@@ -3336,15 +3336,16 @@ msgstr "Impossibile caricare il contributo #%id!"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:159
 msgid "Amount must be a positive number"
-msgstr ""
+msgstr "L'importo deve essere un numero positivo"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:166
 msgid "Amount cannot be greater than non allocated amount"
-msgstr ""
+msgstr "Importo non può essere maggiore dell'importo non assegnato"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:171
 msgid "Payment type for contribution must be set to scheduled"
 msgstr ""
+"Il tipo di pagamento per il contributo deve essere impostato a programmato"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:177
 #, fuzzy
@@ -3354,11 +3355,11 @@ msgstr "Gestione delle tipologie di pagamento"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:181
 msgid "Cannot schedule a scheduled payment!"
-msgstr ""
+msgstr "Impossibile programmare un pagamento programmato!"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:188
 msgid "Scheduled date is required"
-msgstr ""
+msgstr "È necessaria la data di programmazione"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:362
 #, fuzzy
@@ -3368,7 +3369,7 @@ msgstr "Modifica tipologia di pagamento"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:620
 msgid "Scheduled payment ID"
-msgstr ""
+msgstr "ID pagamento programmato"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:624
 #, fuzzy
@@ -3379,7 +3380,7 @@ msgstr "Contributi"
 #: ../lib/Galette/Entity/ScheduledPayment.php:632
 #: ../../tempcache/pages/contribution_form.html.twig:546
 msgid "Record date:"
-msgstr ""
+msgstr "Data di registrazione:"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:636
 #, fuzzy
@@ -3389,11 +3390,11 @@ msgstr "Data di rilascio"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:644
 msgid "Paid"
-msgstr ""
+msgstr "Pagato"
 
 #: ../lib/Galette/Entity/Social.php:339
 msgid "Mastodon"
-msgstr ""
+msgstr "Mastodon"
 
 #: ../lib/Galette/Entity/Social.php:340
 msgid "Twitter"
@@ -3401,15 +3402,15 @@ msgstr "Twitter"
 
 #: ../lib/Galette/Entity/Social.php:341
 msgid "Facebook"
-msgstr ""
+msgstr "Facebook"
 
 #: ../lib/Galette/Entity/Social.php:342
 msgid "LinkedIn"
-msgstr ""
+msgstr "LinkedIn"
 
 #: ../lib/Galette/Entity/Social.php:343
 msgid "Viadeo"
-msgstr ""
+msgstr "Viadeo"
 
 #: ../lib/Galette/Entity/Social.php:344
 msgid "Jabber"
@@ -3417,7 +3418,7 @@ msgstr "Jabber"
 
 #: ../lib/Galette/Entity/Social.php:345
 msgid "ICQ"
-msgstr ""
+msgstr "ICQ"
 
 #: ../lib/Galette/Entity/Social.php:346 ../webroot/installer.php:400
 #: ../../tempcache/elements/footer.html.twig:52
@@ -3426,31 +3427,31 @@ msgstr "Sito Web"
 
 #: ../lib/Galette/Entity/Social.php:347
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #: ../lib/Galette/Entity/Social.php:348
 msgid "Discord"
-msgstr ""
+msgstr "Discordia"
 
 #: ../lib/Galette/Entity/PdfModel.php:296
 #, php-format
 msgid "%field should be less than %chars characters long."
-msgstr ""
+msgstr "%field dovrebbe avere lunghezza minore di %chars caratteri."
 
 #: ../lib/Galette/Entity/PdfModel.php:306
-#, php-format
+#, fuzzy, php-format
 msgid "%field should not be empty!"
-msgstr ""
+msgstr "%field non dovrebbe essere vuoto!"
 
 #: ../lib/Galette/Entity/PdfModel.php:439
 msgid "Unknown type %type!"
-msgstr ""
+msgstr "Tipo sconosciuto %type!"
 
 #: ../lib/Galette/Entity/PdfModel.php:457
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:118
 #: ../../tempcache/elements/edit_pdf_models.html.twig:68
 msgid "Subtitle"
-msgstr ""
+msgstr "Sottotitolo"
 
 #: ../lib/Galette/Entity/PdfModel.php:472
 msgid "header and footer should not be empty!"
@@ -3458,15 +3459,15 @@ msgstr "intestazione e piè di pagina non dovrebbero essere vuoti!"
 
 #: ../lib/Galette/Entity/PdfModel.php:476
 msgid "body should not be empty!"
-msgstr ""
+msgstr "il corpo non deve essere vuoto!"
 
 #: ../lib/Galette/Entity/PaymentType.php:173
 msgid "You cannot delete system payment types!"
-msgstr ""
+msgstr "Impossibile eliminare i tipi di pagamento di sistema!"
 
 #: ../lib/Galette/Entity/PaymentType.php:281
 msgid "Other"
-msgstr ""
+msgstr "Altro"
 
 #: ../lib/Galette/Entity/PaymentType.php:282
 msgid "Cash"
@@ -3482,7 +3483,7 @@ msgstr "Assegno bancario"
 
 #: ../lib/Galette/Entity/PaymentType.php:285
 msgid "Transfer"
-msgstr ""
+msgstr "Trasferimento"
 
 #: ../lib/Galette/Entity/PaymentType.php:286
 msgid "Paypal"
@@ -3496,7 +3497,7 @@ msgstr "Tipo di pagamento"
 
 #: ../lib/Galette/Entity/Status.php:472
 msgid "You cannot delete default status!"
-msgstr ""
+msgstr "Impossibile eliminare lo stato predefinito!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:155
 msgid "Form is mandatory!"
@@ -3505,76 +3506,80 @@ msgstr "Campo obbligatorio!"
 #: ../lib/Galette/Entity/SavedSearch.php:349
 #, php-format
 msgid "Unknown form %form!"
-msgstr ""
+msgstr "Modulo sconosciuto %form!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:364
 msgid "Name cannot be empty!"
-msgstr ""
+msgstr "Il nome non può essere vuoto!"
 
 #: ../lib/Galette/Entity/Group.php:400
 msgid "Group has been detached from its parent"
-msgstr ""
+msgstr "Il gruppo è stato staccato dal suo genitore"
 
 #: ../lib/Galette/Entity/Group.php:437
 #: ../../tempcache/pages/groups_list.html.twig:216
 msgid "The group name you have requested already exists in the database."
-msgstr ""
+msgstr "Il nome del gruppo che hai richiesto esiste già nel database."
 
 #: ../lib/Galette/Entity/Group.php:463
 msgid "Group added"
-msgstr ""
+msgstr "Gruppo aggiunto"
 
 #: ../lib/Galette/Entity/Group.php:468
 msgid "Fail to add new group."
-msgstr ""
+msgstr "Fallita aggiunta nuovo gruppo."
 
 #: ../lib/Galette/Entity/Group.php:487
 msgid "Group updated"
-msgstr ""
+msgstr "Gruppo aggiornato"
 
 #: ../lib/Galette/Entity/Group.php:740
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
-msgstr ""
+msgstr "Gruppo `%1$s` non può essere impostato come genitore!"
 
 #: ../lib/Galette/Middleware/Authenticate.php:92
 msgid "Login required"
-msgstr ""
+msgstr "Richiesta registrazione"
 
 #: ../lib/Galette/Middleware/Authenticate.php:148
 msgid "Unknown ACL rule '%acl'!"
-msgstr ""
+msgstr "Regola ACL '%acl' sconosciuta!"
 
 #: ../lib/Galette/Middleware/Authenticate.php:198
 msgid "Route '%name' is not registered in ACLs!"
-msgstr ""
+msgstr "Route '%name' non è registrato in ACLs!"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:125
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:169
 msgid "Galette needs update!"
-msgstr ""
+msgstr "Galette ha bisogno di aggiornamento!"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:155
 msgid "Galette is currently under maintenance!"
-msgstr ""
+msgstr "Galette è attualmente in manutenzione!"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:156
 msgid ""
 "The Galette instance you are requesting is currently under maintenance. "
 "Please come back later."
 msgstr ""
+"L'istanza Galette che state richiedendo è attualmente in manutenzione. Ti "
+"prego, torna più tardi."
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:170
 msgid "Your Galette database is not present, or not up to date."
-msgstr ""
+msgstr "Il tuo database Galette non è presente, o non aggiornato."
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:171
 msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr ""
+"Eseguire la procedura d'installazione o d'aggiornamento (controllare la "
+"documentazione)"
 
 #: ../lib/Galette/Middleware/PublicPages.php:76
 msgid "Unauthorized"
-msgstr ""
+msgstr "Non autorizzato"
 
 #: ../lib/Galette/Events/ContribListener.php:133
 #: ../lib/Galette/Events/MemberListener.php:159
@@ -3618,43 +3623,46 @@ msgstr ""
 
 #: ../lib/Galette/Events/ContribListener.php:314
 msgid "Post contribution script failed"
-msgstr ""
+msgstr "Script di post contribuzione fallito"
 
 #: ../lib/Galette/Events/ContribListener.php:323
 msgid "The configured post contribution script has failed."
-msgstr ""
+msgstr "Lo script configurato di post contribuzione è fallito."
 
 #: ../lib/Galette/Events/ContribListener.php:324
 msgid "You can find contribution information and script output below."
 msgstr ""
+"Qui sotto si trovano le informazioni di contribuzione e il risultato dello "
+"script."
 
 #: ../lib/Galette/Events/ContribListener.php:332
 msgid "Post contribution script has failed."
-msgstr ""
+msgstr "Lo script di post contribuzione è fallito."
 
 #: ../lib/Galette/Events/MemberListener.php:225
 #, php-format
 msgid "New account email sent to '%s'."
-msgstr ""
+msgstr "E-mail di nuovo account inviata a '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:225
 #, php-format
 msgid "Account modification email sent to '%s'."
-msgstr ""
+msgstr "E-mail di modifica dell'account inviata a '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:233
 #, php-format
 msgid "A problem happened while sending account email to '%s'"
 msgstr ""
+"Si è verificato un problema durante l'invio di un'e-mail di account a '%s '"
 
 #: ../lib/Galette/Events/MemberListener.php:293
 #, php-format
 msgid "New account email sent to admin for '%s'."
-msgstr ""
+msgstr "Nuova e-mail di account inviata ad admin per '%s'."
 
 #: ../lib/Galette/Events/MemberListener.php:294
 msgid "Account modification email sent to admin."
-msgstr ""
+msgstr "E-mail di modifica dell'account inviata ad admin."
 
 #: ../lib/Galette/Events/MemberListener.php:306
 #, php-format
@@ -3678,7 +3686,7 @@ msgstr "Lavoro"
 
 #: ../lib/Galette/Filters/MembersList.php:279
 msgid "Infos"
-msgstr ""
+msgstr "Informazioni"
 
 #: ../lib/Galette/Filters/MembersList.php:283
 #: ../../tempcache/components/forms/member_dropdown.html.twig:64
@@ -3689,28 +3697,28 @@ msgstr "Lista dei membri"
 
 #: ../lib/Galette/Filters/MembersList.php:294
 msgid "All members"
-msgstr ""
+msgstr "Tutti i soci"
 
 #: ../lib/Galette/Filters/MembersList.php:295
 #: ../../tempcache/pages/preferences.html.twig:829
 msgid "Up to date members"
-msgstr ""
+msgstr "Soci aggiornati"
 
 #: ../lib/Galette/Filters/MembersList.php:296
 msgid "Close expiries"
-msgstr ""
+msgstr "Scadenze ravvicinate"
 
 #: ../lib/Galette/Filters/MembersList.php:297
 msgid "Latecomers"
-msgstr ""
+msgstr "Ritardatari"
 
 #: ../lib/Galette/Filters/MembersList.php:300
 msgid "Administrators"
-msgstr ""
+msgstr "Amministratori"
 
 #: ../lib/Galette/Filters/MembersList.php:301
 msgid "Non members"
-msgstr ""
+msgstr "Non soci"
 
 #: ../lib/Galette/Helpers/DatesHelper.php:102
 #: ../lib/Galette/Helpers/DatesHelper.php:109
