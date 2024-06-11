@@ -342,6 +342,7 @@ class SavedSearchesController extends CrudController
             }
             $this->session->filter_members = $filters;
         } catch (Throwable $e) {
+            Analog::log($e->getMessage(), Analog::ERROR);
             $this->flash->addMessage(
                 'error_detected',
                 _T("An SQL error has occurred while loading search.")
