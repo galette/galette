@@ -433,7 +433,7 @@ class AdvancedMembersList extends MembersList
                 case 'contrib_begin_date_end':
                 case 'contrib_end_date_begin':
                 case 'contrib_end_date_end':
-                    $this->setFilterDate($name, $value, str_contains($name, 'begin'));
+                    $this->setFilterDate($name, (string)$value, str_contains($name, 'begin'));
                     break;
                 case 'contrib_min_amount':
                 case 'contrib_max_amount':
