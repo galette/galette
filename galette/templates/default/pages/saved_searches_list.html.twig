@@ -44,7 +44,7 @@
                 {% if preferences.pref_show_id %}
                     {{ search.id }}
                 {% else %}
-                    {{ loop.index1 }}
+                    {{ loop.index }}
                 {% endif %}
             </td>
             <td class="left" data-col-label="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
