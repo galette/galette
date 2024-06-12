@@ -19,7 +19,7 @@
  */
 #}
     <nav id="sidebarmenu" class="ui simple left vertical accordion menu sidebar">
-{% if not login.isLogged() %}
+{% if not login.isLogged() or ext_auth is defined %}
     {% if cur_route != "login" %}
         {% import "macros.twig" as menus_macros %}
         {% set item = {
@@ -44,7 +44,7 @@
     {% include "elements/language.html.twig" with {
             ui: "item"
     } %}
-{% if login.isLogged() %}
+{% if login.isLogged() and ext_auth is not defined %}
         {% include "elements/logged_user.html.twig" with {
                 ui: "item"
         } %}
