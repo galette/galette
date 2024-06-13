@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-11 19:30+0000\n"
+"PO-Revision-Date: 2024-06-14 10:09+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -524,16 +524,12 @@ msgid "Status has been successfully added!"
 msgstr "Lo stato è stato aggiunto con successo!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:229
-#, fuzzy
-#| msgid "%type #%id has been successfully updated!"
 msgid "Status #%id has been successfully updated!"
-msgstr "%type #%id è stato modificato!"
+msgstr "Lo stato #%id è stato aggiornato con successo!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:307
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove status '%label'"
-msgstr "Rimuovi %type '%label'"
+msgstr "Rimuovi lo stato '%label '"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:92
 #: ../../tempcache/pages/transaction_form.html.twig:181
@@ -565,10 +561,8 @@ msgid "Transactions management"
 msgstr "Gestione transazioni"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:676
-#, fuzzy
-#| msgid "Edit contribution type"
 msgid "- Unknown contribution type!"
-msgstr "Modifica tipo di contributo"
+msgstr "- Tipo di contributo sconosciuto!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:734
 msgid "No contribution was selected, please check at least one."
@@ -617,45 +611,33 @@ msgid "transaction"
 msgstr "transazione"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:66
-#, fuzzy
-#| msgid "Download document"
 msgid "Add document"
-msgstr "Scarica documento"
+msgstr "Aggiungi documento"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:122
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:408
-#, fuzzy
-#| msgid "An error occurred adding dynamic field :("
 msgid "An error occurred adding document :("
-msgstr "Errore durante l'aggiunta del campo dinamico :("
+msgstr "Errore nell'aggiunta di un documento:("
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:136
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:422
-#, fuzzy
-#| msgid "Model has been successfully stored!"
 msgid "Document has been successfully stored!"
-msgstr "Il modello è stato salvato!"
+msgstr "Il documento è stato archiviato con successo!"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:197
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:232
-#, fuzzy
-#| msgid "Documentation"
 msgid "Documents list"
-msgstr "Documentazione"
+msgstr "Elenco documenti"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:352
 #: ../../tempcache/pages/documents_list.html.twig:207
-#, fuzzy
-#| msgid "Download document"
 msgid "Edit document"
-msgstr "Scarica documento"
+msgstr "Modifica documento"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:494
 #: ../../tempcache/pages/documents_list.html.twig:220
-#, fuzzy
-#| msgid "Download document"
 msgid "Delete document"
-msgstr "Scarica documento"
+msgstr "Cancella documento"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:104
 msgid "This search is already saved."
@@ -906,7 +888,6 @@ msgid "Model has not been stored :("
 msgstr "Il modello non è stato salvato :("
 
 #: ../lib/Galette/Controllers/PdfController.php:636
-#, fuzzy
 msgid "Invalid link!"
 msgstr "Collegamento non valido!"
 
@@ -1455,10 +1436,8 @@ msgid "Delete mailing entries"
 msgstr "Elimina le voci di posta"
 
 #: ../lib/Galette/Core/Galette.php:124
-#, fuzzy
-#| msgid "All accounts"
 msgid "My Account"
-msgstr "Tutti gli account"
+msgstr "Il mio account"
 
 #: ../lib/Galette/Core/Galette.php:128 ../lib/Galette/Core/Galette.php:697
 msgid "My contributions"
@@ -1594,10 +1573,8 @@ msgid "Send reminders to late members"
 msgstr "Manda un promemoria ai membri in ritardo"
 
 #: ../lib/Galette/Core/Galette.php:286
-#, fuzzy
-#| msgid "Members management"
 msgid "Management"
-msgstr "Gestione membri"
+msgstr "Gestione"
 
 #: ../lib/Galette/Core/Galette.php:290
 msgid "Manage groups"
@@ -2051,10 +2028,8 @@ msgid "Searches deleted (%list)"
 msgstr "Ricerche eliminate (%list)"
 
 #: ../lib/Galette/Repository/ScheduledPayments.php:436
-#, fuzzy
-#| msgid "Searches deleted (%list)"
 msgid "Scheduled payments deleted (%list)"
-msgstr "Ricerche eliminate (%list)"
+msgstr "Pagamenti programmati cancellati (%list)"
 
 #: ../lib/Galette/Repository/Contributions.php:503
 msgid "Contributions deleted (%list)"
@@ -2665,16 +2640,14 @@ msgid "Label for dynamic field \"%s\""
 msgstr "Etichetta per il campo dinamico \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:106
-#, fuzzy, php-format
-#| msgid "Input for dynamic field \"%s\""
+#, php-format
 msgid "Form entry for dynamic field \"%s\""
-msgstr "Input per il campo dinamico \"%s\""
+msgstr "Modulo di ingresso per il campo dinamico \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:112
-#, fuzzy, php-format
-#| msgid "Label for dynamic field \"%s\""
+#, php-format
 msgid "Value for dynamic field \"%s\""
-msgstr "Etichetta per il campo dinamico \"%s\""
+msgstr "Valore per il campo dinamico \"%s\""
 
 #: ../lib/Galette/Features/Replacements.php:175
 msgid "Your organisation name"
@@ -2703,10 +2676,8 @@ msgid "Your organisation logo"
 msgstr "Logo della tua organizzazione"
 
 #: ../lib/Galette/Features/Replacements.php:199
-#, fuzzy
-#| msgid "Your organisation logo"
 msgid "Your organisation logo (print specific)"
-msgstr "Logo della tua organizzazione"
+msgstr "Il logo dell'organizzazione (adatto alla stampa)"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 #: ../lib/Galette/Features/Replacements.php:204
@@ -2809,10 +2780,8 @@ msgid "Member's groups (as list)"
 msgstr "Gruppi dei soci (come elenco)"
 
 #: ../lib/Galette/Features/Replacements.php:322
-#, fuzzy
-#| msgid "User statuses"
 msgid "Member state of dues"
-msgstr "Stati dell'utente"
+msgstr "Stato delle quote del socio"
 
 #: ../lib/Galette/Features/Replacements.php:326
 msgid "Membership remaining days"
@@ -3045,10 +3014,8 @@ msgid "Gender %gender does not exists!"
 msgstr "Il genere %gender non esiste!"
 
 #: ../lib/Galette/Entity/Adherent.php:1557
-#, fuzzy
-#| msgid "File %filename cannot be open!"
 msgid "A member cannot be its own parent!"
-msgstr "Il file %filename non può essere aperto!"
+msgstr "Un socio non può essere il proprio genitore!"
 
 #: ../lib/Galette/Entity/Adherent.php:1681
 msgid "Self_subscription as a member: "
@@ -3220,10 +3187,8 @@ msgid "End date of membership:"
 msgstr "Data di fine iscrizione:"
 
 #: ../lib/Galette/Entity/Contribution.php:240
-#, fuzzy
-#| msgid "Transaction"
 msgid "Transaction ID"
-msgstr "Transazione"
+msgstr "ID transazione"
 
 #: ../lib/Galette/Entity/Contribution.php:246
 #: ../../tempcache/pages/contribution_form.html.twig:619
@@ -3266,10 +3231,8 @@ msgstr ""
 "programmato allegato"
 
 #: ../lib/Galette/Entity/Document.php:462
-#, fuzzy
-#| msgid "%name association's %status"
 msgid "Association status"
-msgstr "%status dell'associazione %name"
+msgstr "Stato associazione"
 
 #: ../lib/Galette/Entity/Document.php:463
 msgid "Rules of procedure"
@@ -3322,17 +3285,13 @@ msgid "Mail specific"
 msgstr "Specifica mail"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:151
-#, fuzzy
-#| msgid "Contributions"
 msgid "Contribution is required"
-msgstr "Contributi"
+msgstr "Il contributo è richiesto"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:154
 #: ../lib/Galette/Entity/ScheduledPayment.php:320
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load contribution"
-msgstr "Impossibile caricare il contributo #%id!"
+msgstr "Impossibile caricare il contributo"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:159
 msgid "Amount must be a positive number"
@@ -3348,10 +3307,8 @@ msgstr ""
 "Il tipo di pagamento per il contributo deve essere impostato a programmato"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:177
-#, fuzzy
-#| msgid "Payment types management"
 msgid "Payment type is required"
-msgstr "Gestione delle tipologie di pagamento"
+msgstr "Il tipo di pagamento è necessario"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:181
 msgid "Cannot schedule a scheduled payment!"
@@ -3362,20 +3319,16 @@ msgid "Scheduled date is required"
 msgstr "È necessaria la data di programmazione"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:362
-#, fuzzy
-#| msgid "Edit payment type"
 msgid "Unable to load payment type"
-msgstr "Modifica tipologia di pagamento"
+msgstr "Impossibile caricare il tipo di pagamento"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:620
 msgid "Scheduled payment ID"
 msgstr "ID pagamento programmato"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:624
-#, fuzzy
-#| msgid "Contributions"
 msgid "Contribution ID"
-msgstr "Contributi"
+msgstr "ID contributo"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:632
 #: ../../tempcache/pages/contribution_form.html.twig:546
@@ -3383,10 +3336,8 @@ msgid "Record date:"
 msgstr "Data di registrazione:"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:636
-#, fuzzy
-#| msgid "Release date"
 msgid "Scheduled date:"
-msgstr "Data di rilascio"
+msgstr "Data prevista:"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:644
 msgid "Paid"
