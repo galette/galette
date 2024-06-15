@@ -26,12 +26,13 @@
 # Paolo Mauri <paolo@paolomauri.it>, 2023.
 # Marco Ciampa <ciampix@posteo.net>, 2024.
 # Roberto Resoli <roberto@resolutions.it>, 2024.
+# Ilario Quinson <ilario.quinson@e.email>, 2024.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-15 22:25+0000\n"
-"Last-Translator: Roberto Resoli <roberto@resolutions.it>\n"
+"PO-Revision-Date: 2024-06-16 23:09+0000\n"
+"Last-Translator: Ilario Quinson <ilario.quinson@e.email>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -3816,16 +3817,18 @@ msgid "Reduced annual contribution"
 msgstr ""
 
 #: ../includes/i18n.inc.php:277
+#, fuzzy
 msgid "Company cotisation"
-msgstr ""
+msgstr "Quota associativa"
 
 #: ../includes/i18n.inc.php:278
 msgid "Donation in kind"
 msgstr ""
 
 #: ../includes/i18n.inc.php:279
+#, fuzzy
 msgid "Donation in money"
-msgstr ""
+msgstr "Donazione in denaro"
 
 #: ../includes/i18n.inc.php:280
 msgid "Partnership"
@@ -3844,8 +3847,9 @@ msgid "spanish"
 msgstr ""
 
 #: ../includes/i18n.inc.php:284
+#, fuzzy
 msgid "annual fee"
-msgstr ""
+msgstr "Quota annuale"
 
 #: ../includes/i18n.inc.php:285
 msgid "annual fee (to be paid)"
@@ -3885,11 +3889,11 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:294
 msgid "Mr."
-msgstr ""
+msgstr "Signor"
 
 #: ../includes/i18n.inc.php:295
 msgid "Mrs."
-msgstr ""
+msgstr "Signora"
 
 #: ../includes/i18n.inc.php:296
 msgid "Miss"
@@ -3953,8 +3957,9 @@ msgid "City"
 msgstr ""
 
 #: ../includes/i18n.inc.php:313
+#, fuzzy
 msgid "Zip Code"
-msgstr ""
+msgstr "Codice postale"
 
 #: ../includes/i18n.inc.php:315
 msgid ""
@@ -3978,12 +3983,13 @@ msgid "on"
 msgstr ""
 
 #: ../includes/i18n.inc.php:319
+#, fuzzy
 msgid "from"
-msgstr ""
+msgstr "da"
 
 #: ../includes/i18n.inc.php:320
 msgid "to"
-msgstr ""
+msgstr "a"
 
 #: ../includes/i18n.inc.php:321
 msgid "Association"
@@ -4028,8 +4034,9 @@ msgid "Company:"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:73
+#, fuzzy
 msgid "Nickname:"
-msgstr ""
+msgstr "Soprannome"
 
 #: ../includes/fields_defs/members_fields.php:83
 msgid "Title:"
@@ -4037,17 +4044,17 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:91
 msgid "Birth date:"
-msgstr ""
+msgstr "Data di nascita:"
 
 #: ../includes/fields_defs/members_fields.php:99
 msgid "Gender:"
-msgstr ""
+msgstr "Genere:"
 
 #: ../includes/fields_defs/members_fields.php:107
 #: ../../tempcache/pages/preferences.html.twig:278
 #: ../../tempcache/pages/preferences.html.twig:288
 msgid "Address:"
-msgstr ""
+msgstr "Indirizzo:"
 
 #: ../includes/fields_defs/members_fields.php:115
 #: ../../tempcache/pages/preferences.html.twig:300
@@ -4057,7 +4064,7 @@ msgstr "CAP:"
 #: ../includes/fields_defs/members_fields.php:123
 #: ../../tempcache/pages/preferences.html.twig:310
 msgid "City:"
-msgstr ""
+msgstr "Città:"
 
 #: ../includes/fields_defs/members_fields.php:131
 #: ../../tempcache/pages/preferences.html.twig:320
@@ -4074,12 +4081,13 @@ msgid "Phone:"
 msgstr "Telefono:"
 
 #: ../includes/fields_defs/members_fields.php:155
+#, fuzzy
 msgid "Mobile phone:"
-msgstr ""
+msgstr "Cellulare:"
 
 #: ../includes/fields_defs/members_fields.php:163
 msgid "E-Mail:"
-msgstr ""
+msgstr "Indirizzo posta elettronica:"
 
 #: ../includes/fields_defs/members_fields.php:171
 msgid "Other information (admin):"
@@ -4091,7 +4099,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:187
 msgid "Profession:"
-msgstr ""
+msgstr "Professione:"
 
 #: ../includes/fields_defs/members_fields.php:195 ../install/steps/admin.php:27
 #: ../../tempcache/pages/index.html.twig:79
@@ -4183,7 +4191,7 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:30
 msgid "New user registration"
-msgstr ""
+msgstr "Registrazione nuovo utente"
 
 #: ../includes/fields_defs/texts_fields.php:36
 msgid ""
@@ -4414,7 +4422,7 @@ msgstr ""
 #: ../install/steps/admin.php:35
 #: ../../tempcache/pages/preferences.html.twig:2529
 msgid "Retype password:"
-msgstr ""
+msgstr "Re-inserire la password:"
 
 #: ../install/steps/admin.php:43 ../install/steps/db_install.php:66
 #: ../install/steps/db_select_version.php:133
@@ -4429,7 +4437,7 @@ msgstr ""
 
 #: ../install/steps/admin.php:53
 msgid "Password mismatch!"
-msgstr ""
+msgstr "La password non corrisponde!"
 
 #: ../install/steps/db_install.php:28
 msgid "Database has not been installed!"
@@ -4441,17 +4449,17 @@ msgstr ""
 
 #: ../install/steps/db_install.php:34
 msgid "Database has been installed :)"
-msgstr ""
+msgstr "Il database è stato installato :)"
 
 #: ../install/steps/db_install.php:36
 msgid "Database has been upgraded :)"
-msgstr ""
+msgstr "Il database è stato aggiornato :)"
 
 #: ../install/steps/db_install.php:62 ../install/steps/galette.php:61
 #: ../install/steps/check.php:143
 #: ../../tempcache/modals/plugin_initdb.html.twig:340
 msgid "Retry"
-msgstr ""
+msgstr "Riprovare"
 
 #: ../install/steps/db_install.php:80
 #: ../install/steps/db_select_version.php:136
@@ -4459,7 +4467,7 @@ msgstr ""
 #: ../install/steps/db_checks.php:250 ../install/steps/galette.php:79
 #: ../install/steps/db.php:95 ../install/steps/type.php:56
 msgid "Back"
-msgstr ""
+msgstr "Indietro"
 
 #: ../install/steps/db_select_version.php:35
 #: ../install/steps/db_select_version.php:49
@@ -4468,7 +4476,7 @@ msgstr ""
 
 #: ../install/steps/db_select_version.php:38
 msgid "Are you sure you want to upgrade?"
-msgstr ""
+msgstr "Sei sicuro di voler aggiornare?"
 
 #: ../install/steps/db_select_version.php:41
 #: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:50
@@ -4616,11 +4624,11 @@ msgstr ""
 
 #: ../install/steps/db_checks.php:174
 msgid "Incompatible database version."
-msgstr ""
+msgstr "La versione del database non è compatibile."
 
 #: ../install/steps/db_checks.php:178
 msgid "Connection to database successfull"
-msgstr ""
+msgstr "Connessione al database riuscita"
 
 #: ../install/steps/db_checks.php:179 ../install/steps/db_checks.php:182
 msgid "Permissions to database are OK."
@@ -4653,7 +4661,7 @@ msgstr ""
 
 #: ../install/steps/galette.php:34
 msgid "Configuration file created!"
-msgstr ""
+msgstr "Il file di configurazione è stato creato!"
 
 #: ../install/steps/galette.php:35
 msgid "Data initialized."
@@ -4679,7 +4687,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:180
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:252
 msgid "An error occurred :("
-msgstr ""
+msgstr "Si è verificato un errore :("
 
 #: ../install/steps/check.php:49
 msgid "Photos"
@@ -4697,7 +4705,7 @@ msgstr ""
 #: ../../tempcache/pages/mailing_form.html.twig:244
 #: ../../tempcache/pages/mailings_list.html.twig:364
 msgid "Attachments"
-msgstr ""
+msgstr "Allegati"
 
 #: ../install/steps/check.php:57
 msgid "Files"
@@ -4705,7 +4713,7 @@ msgstr ""
 
 #: ../install/steps/check.php:69
 msgid "Welcome to the Galette Install!"
-msgstr ""
+msgstr "Installazione di Galette. Benvenuti!"
 
 #: ../install/steps/check.php:72
 msgid "Galette requirements are met :)"
@@ -4719,7 +4727,7 @@ msgstr ""
 
 #: ../install/steps/check.php:81
 msgid "PHP version"
-msgstr ""
+msgstr "versione PHP"
 
 #: ../install/steps/check.php:85
 msgid "Date settings"
