@@ -207,6 +207,9 @@ class Transactions
             case TransactionsList::ORDERBY_AMOUNT:
                 $order[] = 'trans_amount' . ' ' . $this->filters->ordered;
                 break;
+            case TransactionsList::ORDERBY_PAYMENT_TYPE:
+                $order[] = 'type_paiement_trans' . ' ' . $this->filters->ordered;
+                break;
             default:
                 $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
                 break;

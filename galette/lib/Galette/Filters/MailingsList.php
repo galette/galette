@@ -112,7 +112,6 @@ class MailingsList extends HistoryList
                 break;
             default:
                 parent::__set($name, $value);
-                $this->$name = $value;
                 break;
         }
     }

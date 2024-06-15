@@ -1,6 +1,15 @@
 Changes
 -------
 
+1.1.0 -> 1.1.1
+
+- Cannot sort transactions on payment type column
+- Self subscriptions cannot be stored
+- Error on sorting sent mailings
+- Error filtering members on status
+- Cannot replay a saved search
+- Cannot list saved search with "show identifiers" parameters set to false
+
 1.0.4 -> 1.1.0
 
 - Add print logo variable in PDF models

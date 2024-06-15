@@ -37,6 +37,8 @@ use Analog\Analog;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property string $url
+ * @property string $type
+ * @property int $id
  */
 
 class Social

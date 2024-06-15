@@ -105,7 +105,7 @@
                     }
                 });
 
-    {% if login.isLogged() %}
+    {% if login.isLogged() and ext_auth is not defined %}
                 // Display user menu in compact mode
                 var _compactMenu = function() {
                     var _hidden = Cookies.get('galette_compact_menu');
@@ -213,7 +213,7 @@
 
             });
         </script>
-    {% if login.isLogged() %}
+    {% if login.isLogged() and ext_aut is not defined %}
         <script type="module" src="{{ base_path() }}/assets/js/sortable.min.js"></script>
     {% endif %}
     {% if require_charts %}

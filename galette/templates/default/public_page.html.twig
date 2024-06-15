@@ -26,17 +26,17 @@
             galette_lang: galette_lang
         } %}
     </head>
-    <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() %} loggedin{% endif %} nojs">
+    <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() and ext_auth is not defined %} loggedin{% endif %} nojs">
         <a href="#main-content" class="skiptocontent visually-hidden focusable">{{ _T("Skip to content") }}</a>
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
         <main class="pusher">
-            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" %}text {% endif %}{% if not login.isLogged() %}ui container{% else %}full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
-{% if login.isLogged() %}
+            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" %}text {% endif %}{% if not login.isLogged() or ext_auth is defined %}ui container{% else %}full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
+{% if login.isLogged() and ext_auth is not defined %}
                 {% include "elements/navigation/navigation_aside.html.twig" %}
 {% endif %}
-                <section class="{% if login.isLogged() %}content{% else %}vertically centered{% endif %}">
-{% if not login.isLogged() %}
+                <section class="{% if login.isLogged() and ext_auth is not defined %}content{% else %}vertically centered{% endif %}">
+{% if not login.isLogged() or ext_auth is defined %}
                     <div class="ui basic center aligned fitted segment">
     {% if preferences.pref_website is not empty %}
                         <a href="{{ preferences.pref_website }}" target="_blank">
@@ -60,7 +60,7 @@
 {% endif %}
                                 {{ page_title }}
                             </h1>
-{% if login.isLogged() %}
+{% if login.isLogged() and ext_auth is not defined %}
                         </div>
                     </div>
 {% endif %}
