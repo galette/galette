@@ -25,12 +25,13 @@
 # Antonio Bifulco <gighen11@gmail.com>, 2022.
 # Paolo Mauri <paolo@paolomauri.it>, 2023.
 # Marco Ciampa <ciampix@posteo.net>, 2024.
+# Roberto Resoli <roberto@resolutions.it>, 2024.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-14 10:09+0000\n"
-"Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
+"PO-Revision-Date: 2024-06-15 22:25+0000\n"
+"Last-Translator: Roberto Resoli <roberto@resolutions.it>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -3390,7 +3391,7 @@ msgid "%field should be less than %chars characters long."
 msgstr "%field dovrebbe avere lunghezza minore di %chars caratteri."
 
 #: ../lib/Galette/Entity/PdfModel.php:306
-#, fuzzy, php-format
+#, php-format
 msgid "%field should not be empty!"
 msgstr "%field non dovrebbe essere vuoto!"
 
@@ -3441,10 +3442,8 @@ msgid "Paypal"
 msgstr "Paypal"
 
 #: ../lib/Galette/Entity/PaymentType.php:287
-#, fuzzy
-#| msgid "Payment type"
 msgid "Payment schedule"
-msgstr "Tipo di pagamento"
+msgstr "Piano pagamenti"
 
 #: ../lib/Galette/Entity/Status.php:472
 msgid "You cannot delete default status!"
@@ -3641,10 +3640,8 @@ msgstr "Informazioni"
 
 #: ../lib/Galette/Filters/MembersList.php:283
 #: ../../tempcache/components/forms/member_dropdown.html.twig:64
-#, fuzzy
-#| msgid "Members list"
 msgid "Member ID"
-msgstr "Lista dei membri"
+msgstr "ID socio"
 
 #: ../lib/Galette/Filters/MembersList.php:294
 msgid "All members"
@@ -3693,15 +3690,15 @@ msgstr "filtro per fine data"
 #: ../lib/Galette/Helpers/DatesHelper.php:157
 #, php-format
 msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
-msgstr ""
+msgstr "Formato data sconosciuto per %1$s.<br>I formati noti sono: %2$s"
 
 #: ../webroot/installer.php:130
 msgid "No host"
-msgstr ""
+msgstr "Nessun host"
 
 #: ../webroot/installer.php:133
 msgid "No port"
-msgstr ""
+msgstr "Nessuna porta"
 
 #: ../webroot/installer.php:136 ../webroot/installer.php:177
 msgid "No user name"
@@ -3713,25 +3710,25 @@ msgstr "Nessun nome di banca dati"
 
 #: ../webroot/installer.php:180
 msgid "The username cannot contain the @ character"
-msgstr ""
+msgstr "Il nome utente non può contenere il carattere @"
 
 #: ../webroot/installer.php:225
 msgid "Galette Installation"
-msgstr ""
+msgstr "Installazione di Galette"
 
 #: ../webroot/installer.php:233 ../../tempcache/public_page.html.twig:74
 #: ../../tempcache/page.html.twig:66
 msgid "Skip to content"
-msgstr ""
+msgstr "Salta al contenuto"
 
 #: ../webroot/installer.php:237
 msgid "Galette installation"
-msgstr ""
+msgstr "Installazione di Galette"
 
 #: ../webroot/installer.php:316
 #: ../../tempcache/modals/plugin_initdb.html.twig:425
 msgid "Version selection"
-msgstr ""
+msgstr "Selezione versione"
 
 #: ../webroot/installer.php:322
 #: ../../tempcache/modals/plugin_initdb.html.twig:444
@@ -3745,27 +3742,30 @@ msgstr "Installazione della banca dati"
 
 #: ../webroot/installer.php:357
 msgid "Galette initialisation"
-msgstr ""
+msgstr "Inizializzazione di Galette"
 
 #: ../webroot/installer.php:404 ../../tempcache/elements/footer.html.twig:59
 msgid "Documentation"
 msgstr "Documentazione"
 
 #: ../includes/i18n.inc.php:261
+#, fuzzy
 msgid "Realization:"
-msgstr ""
+msgstr "Realizzazione:"
 
 #: ../includes/i18n.inc.php:262
+#, fuzzy
 msgid "Graphics:"
-msgstr ""
+msgstr "Grafica:"
 
 #: ../includes/i18n.inc.php:263
+#, fuzzy
 msgid "Publisher:"
-msgstr ""
+msgstr "Editore:"
 
 #: ../includes/i18n.inc.php:264
 msgid "President"
-msgstr ""
+msgstr "Presidente"
 
 #: ../includes/i18n.inc.php:265
 msgid "Vice-president"
@@ -3773,15 +3773,15 @@ msgstr "Vicepresidente"
 
 #: ../includes/i18n.inc.php:266
 msgid "Treasurer"
-msgstr ""
+msgstr "Tesoriere"
 
 #: ../includes/i18n.inc.php:267
 msgid "Vice-treasurer"
-msgstr ""
+msgstr "Vice-tesoriere"
 
 #: ../includes/i18n.inc.php:268
 msgid "Secretary"
-msgstr ""
+msgstr "Segretario"
 
 #: ../includes/i18n.inc.php:269
 msgid "Vice-secretary"
