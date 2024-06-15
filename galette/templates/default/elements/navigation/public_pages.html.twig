@@ -21,16 +21,18 @@
 {% if sign_in is defined and sign_in == true %}
     {% import "macros.twig" as menus_macros %}
 
-    {% set public_menus = callstatic('\\Galette\\Core\\Galette', 'getPublicMenus') %}
-    {% for public_menu in public_menus %}
-        {% for public_item in public_menu.items %}
-            {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route, public_item.icon ?? null, null, tips_position, mode) }}
+    {% if ext_auth is not defined %}
+        {% set public_menus = callstatic('\\Galette\\Core\\Galette', 'getPublicMenus') %}
+        {% for public_menu in public_menus %}
+            {% for public_item in public_menu.items %}
+                {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route, public_item.icon ?? null, null, tips_position, mode) }}
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
+    {% endif %}
 
     {% set public_items = [] %}
     <div class="{% if sign_in_side is defined and sign_in_side is not empty %}right {% endif %}item">
-    {% if preferences.pref_bool_selfsubscribe == true and not is_current_url("subscribe") %}
+    {% if preferences.pref_bool_selfsubscribe == true and not is_current_url("subscribe") and ext_auth is not defined %}
         {% set public_items = public_items|merge([{
             'label': _T("Subscribe"),
             'route': {'name': 'subscribe'},
@@ -38,7 +40,7 @@
             'class': 'ui basic button'
         }]) %}
     {% endif %}
-    {% if not is_current_url("login") %}
+    {% if not is_current_url("login") and ext_auth is not defined %}
         {% set public_items = public_items|merge([{
             'label': _T("Login"),
             'route': {'name': 'slash'},
@@ -47,9 +49,11 @@
         }]) %}
     {% endif %}
 
-    {% for public_item in public_items %}
-        {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route, public_item.icon, public_item.class, tips_position, mode) }}
-    {% endfor %}
+    {% if ext_auth is not defined %}
+        {% for public_item in public_items %}
+            {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route, public_item.icon, public_item.class, tips_position, mode) }}
+        {% endfor %}
+    {% endif %}
         <a
             href="#"
             class="ui darkmode{% if login.isDarkModeEnabled() %} black{% endif %} icon button"

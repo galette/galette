@@ -267,7 +267,7 @@ abstract class GaletteTestCase extends TestCase
     }
 
     /**
-     * Check members expecteds
+     * Check members expected
      *
      * @param \Galette\Entity\Adherent $adh           Member instance, if any
      * @param array                    $new_expecteds Changes on expected values
