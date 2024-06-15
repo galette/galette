@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2024 The Galette Team
  *
@@ -79,7 +80,7 @@ $error_detected = array();
  *
  * @return void
  */
-function initDbConstants($install)
+function initDbConstants(Install $install): void
 {
     define('TYPE_DB', $install->getDbType());
     define('PREFIX_DB', $install->getTablesPrefix());
@@ -98,7 +99,8 @@ if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     Analog::handler($galette_run_log);
 }
 
-if (!$install->isEndStep()
+if (
+    !$install->isEndStep()
     && ($install->postCheckDb())
 ) {
     //if we have passed database configuration, define required constants
@@ -112,7 +114,6 @@ if (!$install->isEndStep()
                 throw $e;
             }
         }
-
     }
 }
 
@@ -169,7 +170,8 @@ if (isset($_POST['stepback_btn'])) {
     $install->atAdminStep();
 } elseif (isset($_POST['install_dbwrite_ok']) && $install->isUpgrade()) {
     $install->atTelemetryStep();
-} elseif (isset($_POST['install_adminlogin'])
+} elseif (
+    isset($_POST['install_adminlogin'])
     && isset($_POST['install_adminpass'])
     && $install->isInstall()
 ) {
@@ -182,7 +184,8 @@ if (isset($_POST['stepback_btn'])) {
     if ($_POST['install_adminpass'] == '') {
         $error_detected[] = _T("No password");
     }
-    if (!isset($_POST['install_passwdverified'])
+    if (
+        !isset($_POST['install_passwdverified'])
         && strcmp(
             $_POST['install_adminpass'],
             $_POST['install_adminpass_verif']
@@ -243,9 +246,9 @@ header('Content-Type: text/html; charset=UTF-8');
                     <div class="menu">
 <?php
 foreach ($i18n->getList() as $langue) {
-?>
+    ?>
                         <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>" class="item"><?php echo $langue->getName(); ?> <span>(<?php echo $langue->getAbbrev(); ?>)</span></a>
-<?php
+    <?php
 }
 ?>
                     </div>
