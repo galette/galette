@@ -958,7 +958,7 @@ class Preferences
             //display them for curent call
             switch ($this->prefs['pref_publicpages_visibility']) {
                 case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
-                    //pages are publically visibles
+                    //pages are publicly visibles
                     return true;
                 case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
                     //pages should be displayed only for up-to-date members
