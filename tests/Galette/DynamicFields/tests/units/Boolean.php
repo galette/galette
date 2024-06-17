@@ -23,16 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\DynamicFields\test\units;
 
-use PHPUnit\Framework\TestCase;
+use Galette\GaletteTestCase;
 
 /**
  * Dynamic booleans test
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Boolean extends TestCase
+class Boolean extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private \Galette\DynamicFields\Boolean $bool;
 
     /**
@@ -42,8 +41,23 @@ class Boolean extends TestCase
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
+        parent::setUp();
         $this->bool = new \Galette\DynamicFields\Boolean($this->zdb);
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
+        $this->zdb->execute($delete);
     }
 
     /**
@@ -120,5 +134,43 @@ class Boolean extends TestCase
         $this->assertFalse($values);
 
         $this->assertTrue($this->bool->hasPermissions());
+    }
+
+    /**
+     * Test from database
+     *
+     * @return void
+     */
+    public function testInDb(): void
+    {
+        //add dynamic fields on contributions
+        $field_data = [
+            'form_name'         => 'contrib',
+            'field_name'        => 'Dynamic boolean',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::BOOLEAN,
+            'field_required'    => 0
+        ];
+
+        $tdf = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type']);
+
+        $stored = $tdf->store($field_data);
+        $error_detected = $tdf->getErrors();
+        $warning_detected = $tdf->getWarnings();
+        $this->assertTrue(
+            $stored,
+            implode(
+                ' ',
+                $tdf->getErrors() + $tdf->getWarnings()
+            )
+        );
+        $this->assertEmpty($error_detected, implode(' ', $tdf->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $tdf->getWarnings()));
+
+        $id = $tdf->getId();
+        $this->assertIsInt($id);
+
+        //load from DB.
+        $tdf = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type'], $id);
     }
 }

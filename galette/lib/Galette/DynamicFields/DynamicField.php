@@ -218,6 +218,7 @@ abstract class DynamicField
                 $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 
