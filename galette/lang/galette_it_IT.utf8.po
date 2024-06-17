@@ -31,8 +31,8 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-16 23:09+0000\n"
-"Last-Translator: Ilario Quinson <ilario.quinson@e.email>\n"
+"PO-Revision-Date: 2024-06-17 20:59+0000\n"
+"Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -3786,19 +3786,19 @@ msgstr "Segretario"
 
 #: ../includes/i18n.inc.php:269
 msgid "Vice-secretary"
-msgstr ""
+msgstr "Vicesegretario"
 
 #: ../includes/i18n.inc.php:270
 msgid "Active member"
-msgstr ""
+msgstr "Socio attivo"
 
 #: ../includes/i18n.inc.php:271
 msgid "Benefactor member"
-msgstr ""
+msgstr "Socio benefattore"
 
 #: ../includes/i18n.inc.php:272
 msgid "Founder member"
-msgstr ""
+msgstr "Socio fondatore"
 
 #: ../includes/i18n.inc.php:273
 msgid "Old-timer"
@@ -3806,15 +3806,15 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:274
 msgid "Legal entity"
-msgstr ""
+msgstr "Ente giuridico"
 
 #: ../includes/i18n.inc.php:275
 msgid "Non-member"
-msgstr ""
+msgstr "Non socio"
 
 #: ../includes/i18n.inc.php:276
 msgid "Reduced annual contribution"
-msgstr ""
+msgstr "Contributo annuo ridotto"
 
 #: ../includes/i18n.inc.php:277
 #, fuzzy
@@ -3823,7 +3823,7 @@ msgstr "Quota associativa"
 
 #: ../includes/i18n.inc.php:278
 msgid "Donation in kind"
-msgstr ""
+msgstr "Donazione in natura"
 
 #: ../includes/i18n.inc.php:279
 #, fuzzy
@@ -3832,19 +3832,19 @@ msgstr "Donazione in denaro"
 
 #: ../includes/i18n.inc.php:280
 msgid "Partnership"
-msgstr ""
+msgstr "Partenariato"
 
 #: ../includes/i18n.inc.php:281
 msgid "french"
-msgstr ""
+msgstr "francese"
 
 #: ../includes/i18n.inc.php:282
 msgid "english"
-msgstr ""
+msgstr "inglese"
 
 #: ../includes/i18n.inc.php:283
 msgid "spanish"
-msgstr ""
+msgstr "spagnolo"
 
 #: ../includes/i18n.inc.php:284
 #, fuzzy
@@ -3853,39 +3853,39 @@ msgstr "Quota annuale"
 
 #: ../includes/i18n.inc.php:285
 msgid "annual fee (to be paid)"
-msgstr ""
+msgstr "quota annuale (da pagare)"
 
 #: ../includes/i18n.inc.php:286
 msgid "company fee"
-msgstr ""
+msgstr "quota societaria"
 
 #: ../includes/i18n.inc.php:287
 msgid "donation in kind"
-msgstr ""
+msgstr "donazione in natura"
 
 #: ../includes/i18n.inc.php:288
 msgid "donation in money"
-msgstr ""
+msgstr "donazione in denaro"
 
 #: ../includes/i18n.inc.php:289
 msgid "partnership"
-msgstr ""
+msgstr "partenariato"
 
 #: ../includes/i18n.inc.php:290
 msgid "reduced annual fee"
-msgstr ""
+msgstr "quota annuale ridotta"
 
 #: ../includes/i18n.inc.php:291
 msgid "Identity"
-msgstr ""
+msgstr "Identità"
 
 #: ../includes/i18n.inc.php:292
 msgid "Galette-related data"
-msgstr ""
+msgstr "Dati relativi a Galette"
 
 #: ../includes/i18n.inc.php:293
 msgid "Contact information"
-msgstr ""
+msgstr "Informazioni di contatto"
 
 #: ../includes/i18n.inc.php:294
 msgid "Mr."
@@ -3901,19 +3901,19 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:297
 msgid "Identity:"
-msgstr ""
+msgstr "Identità:"
 
 #: ../includes/i18n.inc.php:298
 msgid "Galette-related data:"
-msgstr ""
+msgstr "Dati relativi a Galette:"
 
 #: ../includes/i18n.inc.php:299
 msgid "Contact information:"
-msgstr ""
+msgstr "Informazioni di contatto:"
 
 #: ../includes/i18n.inc.php:300
 msgid "Society"
-msgstr ""
+msgstr "Società"
 
 #: ../includes/i18n.inc.php:301
 msgid "Politeness"
@@ -3921,24 +3921,26 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:303
 msgid "Main"
-msgstr ""
+msgstr "Principale"
 
 #: ../includes/i18n.inc.php:304
 msgid "** Galette identifier, if applicable"
-msgstr ""
+msgstr "** Identificatore Galette, se applicabile"
 
 #: ../includes/i18n.inc.php:305
 msgid "* Only for compagnies"
-msgstr ""
+msgstr "* Solo per aziende"
 
 #: ../includes/i18n.inc.php:306
 #, php-format
 msgid "Hereby, I agree to comply to %s association statutes and its rules."
 msgstr ""
+"Pertanto, accetto di rispettare gli statuti di associazione %s e le sue "
+"regole."
 
 #: ../includes/i18n.inc.php:307
 msgid "At ................................................"
-msgstr ""
+msgstr "A ..................................................."
 
 #: ../includes/i18n.inc.php:308
 msgid "On .......... / .......... / .......... "
@@ -3946,7 +3948,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:309
 msgid "Username"
-msgstr ""
+msgstr "Nome utente"
 
 #: ../includes/i18n.inc.php:310
 msgid "Email address"
@@ -3954,7 +3956,7 @@ msgstr "Indirizzo e-mail"
 
 #: ../includes/i18n.inc.php:312
 msgid "City"
-msgstr ""
+msgstr "Città"
 
 #: ../includes/i18n.inc.php:313
 #, fuzzy
@@ -3993,7 +3995,7 @@ msgstr "a"
 
 #: ../includes/i18n.inc.php:321
 msgid "Association"
-msgstr ""
+msgstr "Associazione"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 #: ../includes/dependencies.php:176
@@ -4002,7 +4004,7 @@ msgstr "DD/MM/YYYY"
 
 #: ../includes/dependencies.php:447
 msgid "Failed CSRF check!"
-msgstr ""
+msgstr "Controllo CSRF fallito!"
 
 #: ../includes/fields_defs/members_fields.php:29
 #, fuzzy
@@ -4012,7 +4014,7 @@ msgstr "Lista dei membri"
 
 #: ../includes/fields_defs/members_fields.php:39
 msgid "Status:"
-msgstr ""
+msgstr "Stato:"
 
 #: ../includes/fields_defs/members_fields.php:49
 #: ../../tempcache/elements/group.html.twig:134
@@ -4023,15 +4025,15 @@ msgstr ""
 #: ../../tempcache/pages/status_form.html.twig:64
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:66
 msgid "Name:"
-msgstr ""
+msgstr "Nome:"
 
 #: ../includes/fields_defs/members_fields.php:57
 msgid "First name:"
-msgstr ""
+msgstr "Nome:"
 
 #: ../includes/fields_defs/members_fields.php:65
 msgid "Company:"
-msgstr ""
+msgstr "Azienda:"
 
 #: ../includes/fields_defs/members_fields.php:73
 #, fuzzy
@@ -4040,7 +4042,7 @@ msgstr "Soprannome"
 
 #: ../includes/fields_defs/members_fields.php:83
 msgid "Title:"
-msgstr ""
+msgstr "Titolo:"
 
 #: ../includes/fields_defs/members_fields.php:91
 msgid "Birth date:"
@@ -4069,12 +4071,12 @@ msgstr "Città:"
 #: ../includes/fields_defs/members_fields.php:131
 #: ../../tempcache/pages/preferences.html.twig:320
 msgid "Region:"
-msgstr ""
+msgstr "Regione:"
 
 #: ../includes/fields_defs/members_fields.php:139
 #: ../../tempcache/pages/preferences.html.twig:330
 msgid "Country:"
-msgstr ""
+msgstr "Paese:"
 
 #: ../includes/fields_defs/members_fields.php:147
 msgid "Phone:"
@@ -4091,11 +4093,11 @@ msgstr "Indirizzo posta elettronica:"
 
 #: ../includes/fields_defs/members_fields.php:171
 msgid "Other information (admin):"
-msgstr ""
+msgstr "Altre informazioni (admin):"
 
 #: ../includes/fields_defs/members_fields.php:179
 msgid "Other information:"
-msgstr ""
+msgstr "Altre informazioni:"
 
 #: ../includes/fields_defs/members_fields.php:187
 msgid "Profession:"
@@ -4118,31 +4120,31 @@ msgstr "Password:"
 #: ../includes/fields_defs/members_fields.php:211
 #: ../../tempcache/elements/group.html.twig:117
 msgid "Creation date:"
-msgstr ""
+msgstr "Data di creazione:"
 
 #: ../includes/fields_defs/members_fields.php:219
 msgid "Modification date:"
-msgstr ""
+msgstr "Data di modifica:"
 
 #: ../includes/fields_defs/members_fields.php:229
 msgid "Account:"
-msgstr ""
+msgstr "Conto:"
 
 #: ../includes/fields_defs/members_fields.php:237
 msgid "Galette Admin:"
-msgstr ""
+msgstr "Amministratore di Galette:"
 
 #: ../includes/fields_defs/members_fields.php:245
 msgid "Freed of dues:"
-msgstr ""
+msgstr "Esentasse:"
 
 #: ../includes/fields_defs/members_fields.php:253
 msgid "Be visible in the members list:"
-msgstr ""
+msgstr "Visibilità nella lista soci:"
 
 #: ../includes/fields_defs/members_fields.php:261
 msgid "Due date:"
-msgstr ""
+msgstr "Scadenza:"
 
 #: ../includes/fields_defs/members_fields.php:269
 #: ../../tempcache/pages/configuration_texts.html.twig:67
@@ -4151,32 +4153,32 @@ msgstr "Lingua:"
 
 #: ../includes/fields_defs/members_fields.php:277
 msgid "Birthplace:"
-msgstr ""
+msgstr "Luogo di nascita:"
 
 #: ../includes/fields_defs/members_fields.php:285
 msgid "Id GNUpg (GPG):"
-msgstr ""
+msgstr "Id GNUpg (GPG):"
 
 #: ../includes/fields_defs/members_fields.php:293
 msgid "fingerprint:"
-msgstr ""
+msgstr "impronta:"
 
 #: ../includes/fields_defs/members_fields.php:301
 msgid "Parent:"
-msgstr ""
+msgstr "Genitore:"
 
 #: ../includes/fields_defs/members_fields.php:309
 msgid "Member number:"
-msgstr ""
+msgstr "Numero del socio:"
 
 #: ../includes/fields_defs/members_fields.php:327
 msgid "State of dues"
-msgstr ""
+msgstr "Scadenze"
 
 #: ../includes/fields_defs/texts_fields.php:27
 #: ../includes/fields_defs/texts_fields.php:35
 msgid "[{ASSO_NAME}] Your identifiers"
-msgstr ""
+msgstr "[ASSO_NAME] I vostri identificatori"
 
 #: ../includes/fields_defs/texts_fields.php:28
 msgid ""
@@ -4188,6 +4190,13 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Ciao,{NEWLINE} Sei stato appena iscritto nel sistema di gestione soci di "
+"{ASSO_NAME}.{NEWLINE}Da ora è possibile seguire in tempo reale lo stato del "
+"proprio abbonamento e aggiornare le preferenze dall'interfaccia web.{NEWLINE}"
+"Si prega di registrarsi a questo indirizzo per impostare la propria nuova "
+"password:{BR}{CHG_PWD_URI}{NEWLINE}Nome utente: {LOGIN}{BR}Il collegamento "
+"sopra sarà valido fino a {LINK_VALIDITY}.{NEWLINE}Ci vediamo "
+"presto!{NEWLINE}(questa e-mail è stata inviata automaticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:30
 msgid "New user registration"
@@ -4201,14 +4210,19 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Ciao,{NEWLINE}Qualcuno (si presume tu) ha chiesto di recuperare la "
+"password.{NEWLINE}Effettuare il login a questo indirizzo per impostare la "
+"nuova password:{BR}{CHG_PWD_URI}{NEWLINE}Nome utente: {LOGIN}{BR}Il link "
+"sopra sarà valido fino a {LINK_VALIDITY}.{NEWLINE}Ci vediamo "
+"presto!{NEWLINE}(questa e-mail è stata inviata automaticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:38
 msgid "Lost password email"
-msgstr ""
+msgstr "E-mail password dimenticata"
 
 #: ../includes/fields_defs/texts_fields.php:43
 msgid "[{ASSO_NAME}] Your contribution"
-msgstr ""
+msgstr "[ASSO_NAME] Il tuo contributo"
 
 #: ../includes/fields_defs/texts_fields.php:44
 msgid ""
@@ -4218,14 +4232,20 @@ msgid ""
 "this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Salve,{NEWLINE} il contributo è stato preso in considerazione con successo "
+"da {ASSO_NAME}.{NEWLINE}Resterà valido fino a {DEADLINE}.{NEWLINE} Ora è "
+"possibile identificarsi e visionare o modificare i propri dati personali "
+"utilizzando i propri identificativi Galette a questo "
+"indirizzo:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE} A "
+"presto!{NEWLINE}(questa email è stata inviata automaticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:46
 msgid "Receipt send for new contribution"
-msgstr ""
+msgstr "Ricevuta inoltrata per il nuovo contributo"
 
 #: ../includes/fields_defs/texts_fields.php:51
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
-msgstr ""
+msgstr "[ASSO_NAME] Nuova registrazione da {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:52
 msgid ""
@@ -4233,14 +4253,17 @@ msgid ""
 "following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
 "mail: {MAIL_ADH}{NEWLINE}Yours sincerely,{BR}Galette"
 msgstr ""
+"Ciao amministratore,{NEWLINE}Un nuovo socio è stato registrato con le "
+"seguenti informazioni:{BR}* Nome: {NAME_ADH}{BR}* Conto: {LOGIN}{BR}* E-mail:"
+" {MAIL_ADH}{NEWLINE} Saluti,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:54
 msgid "New user registration (sent to admin)"
-msgstr ""
+msgstr "Nuova registrazione utente (inviata a admin)"
 
 #: ../includes/fields_defs/texts_fields.php:59
 msgid "[{ASSO_NAME}] New contribution for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nuovo contributo per {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:60
 msgid ""
@@ -4248,14 +4271,17 @@ msgid ""
 "registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours "
 "sincerly,{BR}Galette"
 msgstr ""
+"Ciao amministratore,{NEWLINE}Un contributo da {NAME_ADH} è stato registrato ("
+"nuova scadenza: "
+"{DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Cordialmente,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:62
 msgid "New contribution (sent to admin)"
-msgstr ""
+msgstr "Nuovo contributo (inoltrato a admin)"
 
 #: ../includes/fields_defs/texts_fields.php:67
 msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nuova auto-registrazione da {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:68
 msgid ""
@@ -4263,14 +4289,17 @@ msgid ""
 "with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
 "* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Salve amministratore,{NEWLINE}Un nuovo socio si è registrato in linea con le "
+"seguenti informazioni:{BR}* Nome: {NAME_ADH}{BR}* Account: E-mail: "
+"{MAIL_ADH}{NEWLINE}"
 
 #: ../includes/fields_defs/texts_fields.php:70
 msgid "New self registration (sent to admin)"
-msgstr ""
+msgstr "Nuova auto-registrazione (inoltrato a admin)"
 
 #: ../includes/fields_defs/texts_fields.php:75
 msgid "[{ASSO_NAME}] Your account has been modified"
-msgstr ""
+msgstr "[{ASSO_NAME}] Il tuo account è stato modificato"
 
 #: ../includes/fields_defs/texts_fields.php:76
 msgid ""
@@ -4279,14 +4308,18 @@ msgid ""
 "into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
 "soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Ciao!{NEWLINE}Il tuo account su {ASSO_NAME} (con il login '{LOGIN}') è stato "
+"modificato da un amministratore o da un membro del personale. Puoi accedere "
+"a {LOGIN_URI} per rivedere le modifiche e/o modificarlo.{NEWLINE}Ci vediamo "
+"presto!{NEWLINE}(questa e-mail è stata inviata automaticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:78
 msgid "Informs user that his account has been modified"
-msgstr ""
+msgstr "Informa l'utente che il suo account è stato modificato"
 
 #: ../includes/fields_defs/texts_fields.php:83
 msgid "[{ASSO_NAME}] Your membership is about to expire"
-msgstr ""
+msgstr "[ASSO_NAME] La tua iscrizione sta per scadere"
 
 #: ../includes/fields_defs/texts_fields.php:84
 msgid ""
@@ -4294,21 +4327,27 @@ msgid ""
 "{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Ciao,{NEWLINE}La tua iscrizione a {ASSO_NAME} scadrà tra {DAYS_REMAINING} "
+"giorni.{NEWLINE}Ci vediamo presto!{NEWLINE}(questa e-mail è stata inviata "
+"automaticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:86
 #: ../../tempcache/pages/reminder.html.twig:80
 msgid "Impending due date"
-msgstr ""
+msgstr "Data di prossima scadenza"
 
 #: ../includes/fields_defs/texts_fields.php:91
 msgid "[{ASSO_NAME}] Your membership has expired"
-msgstr ""
+msgstr "[{ASSO_NAME}] La tua iscrizione è scaduta"
 
 #: ../includes/fields_defs/texts_fields.php:92
 msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
 "days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Ciao,{NEWLINE}Il tuo abbonamento {ASSO_NAME} è scaduto da {DAYS_EXPIRED} "
+"giorni.{NEWLINE}Ci vediamo presto!{NEWLINE}(questa e-mail è stata inviata "
+"automaticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:94
 msgid "Late due date"
@@ -4316,7 +4355,7 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:99
 msgid "[{ASSO_NAME}] Your donation"
-msgstr ""
+msgstr "[{ASSO_NAME}] La tua donazione"
 
 #: ../includes/fields_defs/texts_fields.php:100
 msgid ""
@@ -4324,14 +4363,17 @@ msgid ""
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Ciao, la tua donazione a {ASSO_NAME} è stata registrata con "
+"successo.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Grazie!{NEWLINE}(questa email è "
+"stata inviata automaticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:102
 msgid "Receipt send for new donations"
-msgstr ""
+msgstr "Ricevuta inviata per le nuove donazioni"
 
 #: ../includes/fields_defs/texts_fields.php:107
 msgid "[{ASSO_NAME}] New donation for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nuova donazione per {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:108
 msgid ""
@@ -4495,7 +4537,7 @@ msgstr ""
 
 #: ../install/steps/db_select_version.php:57
 msgid "No update script found!"
-msgstr ""
+msgstr "Nessuno script di aggiornamento trovato!"
 
 #: ../install/steps/db_select_version.php:63
 msgid ""
