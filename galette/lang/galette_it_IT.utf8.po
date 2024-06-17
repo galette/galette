@@ -32,7 +32,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
 "PO-Revision-Date: 2024-06-17 20:59+0000\n"
-"Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
+"Last-Translator: Roberto Resoli <roberto@resolutions.it>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -3801,8 +3801,9 @@ msgid "Founder member"
 msgstr "Socio fondatore"
 
 #: ../includes/i18n.inc.php:273
+#, fuzzy
 msgid "Old-timer"
-msgstr ""
+msgstr "Veterano"
 
 #: ../includes/i18n.inc.php:274
 msgid "Legal entity"
@@ -3896,8 +3897,9 @@ msgid "Mrs."
 msgstr "Signora"
 
 #: ../includes/i18n.inc.php:296
+#, fuzzy
 msgid "Miss"
-msgstr ""
+msgstr "Signora"
 
 #: ../includes/i18n.inc.php:297
 msgid "Identity:"
@@ -3916,8 +3918,9 @@ msgid "Society"
 msgstr "Società"
 
 #: ../includes/i18n.inc.php:301
+#, fuzzy
 msgid "Politeness"
-msgstr ""
+msgstr "Politica aziendale"
 
 #: ../includes/i18n.inc.php:303
 msgid "Main"
@@ -3943,8 +3946,9 @@ msgid "At ................................................"
 msgstr "A ..................................................."
 
 #: ../includes/i18n.inc.php:308
+#, fuzzy
 msgid "On .......... / .......... / .......... "
-msgstr ""
+msgstr "Il .......... / .......... / .......... "
 
 #: ../includes/i18n.inc.php:309
 msgid "Username"
@@ -3959,9 +3963,8 @@ msgid "City"
 msgstr "Città"
 
 #: ../includes/i18n.inc.php:313
-#, fuzzy
 msgid "Zip Code"
-msgstr "Codice postale"
+msgstr "Codice di Avviamento Postale"
 
 #: ../includes/i18n.inc.php:315
 msgid ""
@@ -3969,20 +3972,27 @@ msgid ""
 "website of the association. The amount of donations are free to be decided "
 "by the generous donor."
 msgstr ""
+"Il contributo minimo per ogni tipo di iscrizione è definito sul sito web "
+"dell'associazione. Gli importi delle donazioni sono decisi liberamente da "
+"ciascun generoso donatore."
 
 #: ../includes/i18n.inc.php:316
 msgid "Required membership:"
 msgstr "Iscrizione obbligatoria:"
 
 #: ../includes/i18n.inc.php:317
+#, fuzzy
 msgid ""
 "Complete the following form and send it with your funds, in order to "
 "complete your subscription."
 msgstr ""
+"Compilare il seguente modulo e inviarlo insieme all'importo per completare "
+"l'iscrizione."
 
 #: ../includes/i18n.inc.php:318
+#, fuzzy
 msgid "on"
-msgstr ""
+msgstr "Il"
 
 #: ../includes/i18n.inc.php:319
 #, fuzzy
@@ -4007,10 +4017,8 @@ msgid "Failed CSRF check!"
 msgstr "Controllo CSRF fallito!"
 
 #: ../includes/fields_defs/members_fields.php:29
-#, fuzzy
-#| msgid "Members list"
 msgid "Member id:"
-msgstr "Lista dei membri"
+msgstr "Lista dei soci:"
 
 #: ../includes/fields_defs/members_fields.php:39
 msgid "Status:"
@@ -4036,9 +4044,8 @@ msgid "Company:"
 msgstr "Azienda:"
 
 #: ../includes/fields_defs/members_fields.php:73
-#, fuzzy
 msgid "Nickname:"
-msgstr "Soprannome"
+msgstr "Soprannome:"
 
 #: ../includes/fields_defs/members_fields.php:83
 msgid "Title:"
