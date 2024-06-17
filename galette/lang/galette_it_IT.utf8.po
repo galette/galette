@@ -31,8 +31,8 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-17 20:59+0000\n"
-"Last-Translator: Roberto Resoli <roberto@resolutions.it>\n"
+"PO-Revision-Date: 2024-06-18 05:58+0000\n"
+"Last-Translator: Ilario Quinson <ilario.quinson@e.email>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -3801,9 +3801,8 @@ msgid "Founder member"
 msgstr "Socio fondatore"
 
 #: ../includes/i18n.inc.php:273
-#, fuzzy
 msgid "Old-timer"
-msgstr "Veterano"
+msgstr "Ex socio"
 
 #: ../includes/i18n.inc.php:274
 msgid "Legal entity"
@@ -4454,11 +4453,11 @@ msgstr ""
 
 #: ../install/steps/end.php:29
 msgid "Galette has been successfully installed!"
-msgstr ""
+msgstr "Galette è stato installato con successo!"
 
 #: ../install/steps/end.php:32
 msgid "Galette has been successfully updated!"
-msgstr ""
+msgstr "Galette è stato aggiornato con successo!"
 
 #: ../install/steps/end.php:42
 msgid "Homepage"
@@ -4560,7 +4559,7 @@ msgstr ""
 
 #: ../install/steps/db_select_version.php:72
 msgid "Your current Galette version is..."
-msgstr ""
+msgstr "L'attuale versione di Galette è..."
 
 #: ../install/steps/db_select_version.php:93
 #: ../../tempcache/modals/plugin_initdb.html.twig:186
@@ -4762,7 +4761,7 @@ msgstr ""
 
 #: ../install/steps/check.php:69
 msgid "Welcome to the Galette Install!"
-msgstr "Installazione di Galette. Benvenuti!"
+msgstr "Benvenuti nella procedura di installazione di Galette!"
 
 #: ../install/steps/check.php:72
 msgid "Galette requirements are met :)"
@@ -4837,7 +4836,7 @@ msgstr ""
 
 #: ../install/steps/db.php:40
 msgid "Enter connection data for the existing database."
-msgstr ""
+msgstr "Inserire i parametri per la connessione al database."
 
 #: ../install/steps/db.php:44
 msgid ""
@@ -4847,7 +4846,7 @@ msgstr ""
 
 #: ../install/steps/db.php:50
 msgid "Database type:"
-msgstr ""
+msgstr "Database tipo:"
 
 #: ../install/steps/db.php:58
 msgid "Host:"
@@ -4859,11 +4858,11 @@ msgstr ""
 
 #: ../install/steps/db.php:66
 msgid "User:"
-msgstr ""
+msgstr "Utente:"
 
 #: ../install/steps/db.php:74
 msgid "Database:"
-msgstr ""
+msgstr "Database:"
 
 #: ../install/steps/db.php:78
 msgid "Table prefix:"
@@ -5029,7 +5028,7 @@ msgstr ""
 
 #: ../../tempcache/modals/mailing_preview.html.twig:62
 msgid "From:"
-msgstr ""
+msgstr "Da:"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:74
 msgid "To:"
@@ -5043,11 +5042,11 @@ msgstr ""
 
 #: ../../tempcache/modals/mailing_preview.html.twig:130
 msgid "Attachments:"
-msgstr ""
+msgstr "Allegati:"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:187
 msgid "Mail body"
-msgstr ""
+msgstr "Testo della mail"
 
 #: ../../tempcache/modals/mass_change_members.html.twig:93
 msgid "Only checked fields will be updated."
@@ -5198,7 +5197,7 @@ msgstr ""
 #: ../../tempcache/pages/member_show.html.twig:716
 #: ../../tempcache/pages/transactions_list.html.twig:530
 msgid "Close"
-msgstr ""
+msgstr "Chiudi"
 
 #: ../../tempcache/modals/replacements_legend.html.twig:140
 msgid "Show existing variables"
@@ -5374,7 +5373,7 @@ msgstr ""
 
 #: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:50
 msgid "Go back to Galette homepage"
-msgstr ""
+msgstr "Ritornare alla home di Galette"
 
 #: ../../tempcache/elements/navigation/navigation_topbar.html.twig:43
 msgid "Menu"
@@ -5390,7 +5389,7 @@ msgstr ""
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:115
 msgid "Main menu"
-msgstr ""
+msgstr "Menù principale"
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:139
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:146
@@ -5411,7 +5410,7 @@ msgstr "Iscriviti"
 #: ../../tempcache/elements/logged_user.html.twig:325
 #: ../../tempcache/elements/logged_user.html.twig:336
 msgid "Disable dark mode"
-msgstr ""
+msgstr "Disabilita modalità scura"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:135
 #: ../../tempcache/elements/navigation/public_pages.html.twig:145
@@ -5421,7 +5420,7 @@ msgstr ""
 #: ../../tempcache/elements/logged_user.html.twig:327
 #: ../../tempcache/elements/logged_user.html.twig:338
 msgid "Enable dark mode"
-msgstr ""
+msgstr "Abilita modalità scura"
 
 #: ../../tempcache/elements/logged_user.html.twig:118
 #: ../../tempcache/elements/logged_user.html.twig:193
@@ -5438,7 +5437,7 @@ msgstr "Impossibile accedere come %id"
 #, fuzzy
 #| msgid "Username:"
 msgid "User menu"
-msgstr "Nome utente:"
+msgstr "Menù utente:"
 
 #: ../../tempcache/elements/ajax_members.html.twig:58
 #: ../../tempcache/pages/preferences.html.twig:2112
@@ -5454,7 +5453,7 @@ msgstr "Aziende"
 
 #: ../../tempcache/elements/ajax_members.html.twig:183
 msgid "no member"
-msgstr ""
+msgstr "non socio"
 
 #: ../../tempcache/elements/ajax_members.html.twig:206
 #: ../../tempcache/elements/list.html.twig:186
@@ -5467,7 +5466,7 @@ msgstr ""
 
 #: ../../tempcache/elements/ajax_members.html.twig:249
 msgid "No members has been selected yet."
-msgstr ""
+msgstr "Nessun socio selezionato."
 
 #: ../../tempcache/elements/ajax_members.html.twig:313
 #: ../../tempcache/elements/ajax_groups.html.twig:206
@@ -5493,7 +5492,7 @@ msgstr "Gruppi selezionati"
 
 #: ../../tempcache/elements/ajax_groups.html.twig:168
 msgid "No groups has been selected yet."
-msgstr ""
+msgstr "Nessun gruppo selezionato."
 
 #: ../../tempcache/elements/js/calendar.js.twig:47
 msgid "S,M,T,W,T,F,S"
@@ -5501,122 +5500,104 @@ msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:52
 msgid "January"
-msgstr ""
+msgstr "Gennaio"
 
 #: ../../tempcache/elements/js/calendar.js.twig:56
 msgid "February"
-msgstr ""
+msgstr "Febbraio"
 
 #: ../../tempcache/elements/js/calendar.js.twig:60
-#, fuzzy
-#| msgid "Search:"
 msgid "March"
-msgstr "Ricerca:"
+msgstr "Marzo"
 
 #: ../../tempcache/elements/js/calendar.js.twig:64
 msgid "April"
-msgstr ""
+msgstr "Aprile"
 
 #: ../../tempcache/elements/js/calendar.js.twig:68
 #: ../../tempcache/elements/js/calendar.js.twig:118
-#, fuzzy
-#| msgid "Man"
 msgid "May"
-msgstr "Uomo"
+msgstr "Maggio"
 
 #: ../../tempcache/elements/js/calendar.js.twig:72
 msgid "June"
-msgstr ""
+msgstr "Giugno"
 
 #: ../../tempcache/elements/js/calendar.js.twig:76
 msgid "July"
-msgstr ""
+msgstr "Luglio"
 
 #: ../../tempcache/elements/js/calendar.js.twig:80
 msgid "August"
-msgstr ""
+msgstr "Agosto"
 
 #: ../../tempcache/elements/js/calendar.js.twig:84
-#, fuzzy
-#| msgid "Staff member"
 msgid "September"
-msgstr "Membri dello staff"
+msgstr "Settembre"
 
 #: ../../tempcache/elements/js/calendar.js.twig:88
 msgid "October"
-msgstr ""
+msgstr "Ottobre"
 
 #: ../../tempcache/elements/js/calendar.js.twig:92
-#, fuzzy
-#| msgid "Members"
 msgid "November"
-msgstr "Membri"
+msgstr "Novembre"
 
 #: ../../tempcache/elements/js/calendar.js.twig:96
-#, fuzzy
-#| msgid "Members"
 msgid "December"
-msgstr "Membri"
+msgstr "Dicembre"
 
 #: ../../tempcache/elements/js/calendar.js.twig:102
-#, fuzzy
-#| msgid "Man"
 msgid "Jan"
-msgstr "Uomo"
+msgstr "Gen"
 
 #: ../../tempcache/elements/js/calendar.js.twig:106
 msgid "Feb"
-msgstr ""
+msgstr "Feb"
 
 #: ../../tempcache/elements/js/calendar.js.twig:110
-#, fuzzy
-#| msgid "Man"
 msgid "Mar"
-msgstr "Uomo"
+msgstr "Mar"
 
 #: ../../tempcache/elements/js/calendar.js.twig:114
 msgid "Apr"
-msgstr ""
+msgstr "Apr"
 
 #: ../../tempcache/elements/js/calendar.js.twig:122
 msgid "Jun"
-msgstr ""
+msgstr "Giu"
 
 #: ../../tempcache/elements/js/calendar.js.twig:126
 msgid "Jul"
-msgstr ""
+msgstr "Lug"
 
 #: ../../tempcache/elements/js/calendar.js.twig:130
 msgid "Aug"
-msgstr ""
+msgstr "Ago"
 
 #: ../../tempcache/elements/js/calendar.js.twig:134
 msgid "Sep"
-msgstr ""
+msgstr "Set"
 
 #: ../../tempcache/elements/js/calendar.js.twig:138
 msgid "Oct"
-msgstr ""
+msgstr "Ott"
 
 #: ../../tempcache/elements/js/calendar.js.twig:142
-#, fuzzy
-#| msgid "No"
 msgid "Nov"
-msgstr "No"
+msgstr "Nov"
 
 #: ../../tempcache/elements/js/calendar.js.twig:146
 msgid "Dec"
-msgstr ""
+msgstr "Dic"
 
 #: ../../tempcache/elements/js/calendar.js.twig:151
 msgid "Today"
-msgstr ""
+msgstr "Oggi"
 
 #: ../../tempcache/elements/js/calendar.js.twig:155
-#, fuzzy
-#| msgid "No"
 msgid "Now"
-msgstr "No"
+msgstr "Adesso"
 
 #: ../../tempcache/elements/js/modal_action.js.twig:53
 #: ../../tempcache/elements/js/loader.js.twig:50
@@ -5654,46 +5635,44 @@ msgstr "Salva"
 #: ../../tempcache/pages/preferences.html.twig:878
 #: ../../tempcache/components/forms/picture.html.twig:87
 msgid "Square (1:1)"
-msgstr ""
+msgstr "Quadrato (1:1)"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:76
 #: ../../tempcache/pages/preferences.html.twig:886
 #: ../../tempcache/components/forms/picture.html.twig:87
 msgid "Portrait (3:4)"
-msgstr ""
+msgstr "Ritratto (3:4)"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:76
 #: ../../tempcache/pages/preferences.html.twig:894
 #: ../../tempcache/components/forms/picture.html.twig:87
 msgid "Landscape (4:3)"
-msgstr ""
+msgstr "Paesaggio (4:3)"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:87
 #: ../../tempcache/components/forms/picture.html.twig:98
 msgid "Center"
-msgstr ""
+msgstr "Centro"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:91
 #: ../../tempcache/components/forms/picture.html.twig:102
-#, fuzzy
-#| msgid "To:"
 msgid "Top"
-msgstr "A:"
+msgstr "In alto"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:95
 #: ../../tempcache/components/forms/picture.html.twig:106
 msgid "Bottom"
-msgstr ""
+msgstr "In basso"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:99
 #: ../../tempcache/components/forms/picture.html.twig:110
 msgid "Left"
-msgstr ""
+msgstr "Sinistra"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:103
 #: ../../tempcache/components/forms/picture.html.twig:114
 msgid "Right"
-msgstr ""
+msgstr "Destra"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:110
 #: ../../tempcache/components/forms/picture.html.twig:93
@@ -5709,7 +5688,7 @@ msgstr ""
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:160
 msgid "An error occurred sending photo :("
-msgstr ""
+msgstr "Si è verificato un errore nel caricamento dell'immagine :("
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:100
 msgid "Password is valid :)"
@@ -5731,7 +5710,7 @@ msgstr ""
 #: ../../tempcache/elements/js/messages.js.twig:321
 #: ../../tempcache/elements/messages_inline.html.twig:416
 msgid "Do you want to send it again?"
-msgstr "Vuoi inviarlo di nuovo?"
+msgstr "Inviarlo di nuovo?"
 
 #: ../../tempcache/elements/js/messages.js.twig:362
 #: ../../tempcache/elements/messages_inline.html.twig:428
@@ -5762,7 +5741,7 @@ msgstr "Precedente"
 #: ../../tempcache/elements/navigate.html.twig:88
 #: ../../tempcache/elements/navigate.html.twig:93
 msgid "Next"
-msgstr ""
+msgstr "Prossimo"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:88
 msgid "Header"
@@ -5821,7 +5800,7 @@ msgstr ""
 
 #: ../../tempcache/elements/group.html.twig:307
 msgid "Manage members"
-msgstr "Gestisci membri"
+msgstr "Gestisci soci"
 
 #: ../../tempcache/elements/group.html.twig:355
 msgid "Current group (and attached people) as PDF"
@@ -5846,11 +5825,11 @@ msgstr ""
 
 #: ../../tempcache/elements/list.html.twig:469
 msgid "(Un)Check all"
-msgstr ""
+msgstr "Deselezionare tutti"
 
 #: ../../tempcache/elements/list.html.twig:473
 msgid "Invert selection"
-msgstr ""
+msgstr "Invertire la selezione"
 
 #: ../../tempcache/elements/list.html.twig:480
 #: ../../tempcache/pages/transactions_list.html.twig:546
@@ -5912,7 +5891,7 @@ msgstr ""
 
 #: ../../tempcache/elements/member_card.html.twig:69
 msgid "Drag and drop an image file to change the picture"
-msgstr ""
+msgstr "Trascinare un file immagine per cambiare la foto"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:51
 #, php-format
@@ -5926,7 +5905,7 @@ msgstr ""
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:69
 msgid "None of the selected members has an email address."
-msgstr "Nessuno dei membri selezionati ha un indirizzo di posta elettronica."
+msgstr "Nessuno dei soci selezionati ha un indirizzo di posta elettronica."
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:75
 msgid "No member selected (yet)."
@@ -5953,11 +5932,11 @@ msgstr ""
 #: ../../tempcache/elements/edit_socials.html.twig:120
 #: ../../tempcache/elements/edit_socials.html.twig:125
 msgid "Remove %type"
-msgstr "Rimuovi %type"
+msgstr "Rimuovere %type"
 
 #: ../../tempcache/elements/edit_socials.html.twig:144
 msgid "Add new social network"
-msgstr ""
+msgstr "Aggiungere social network"
 
 #: ../../tempcache/elements/edit_socials.html.twig:153
 #: ../../tempcache/pages/document_form.html.twig:122
@@ -6007,7 +5986,7 @@ msgstr ""
 #: ../../tempcache/pages/plugins.html.twig:69
 #: ../../tempcache/pages/plugins.html.twig:132
 msgid "Author"
-msgstr ""
+msgstr "Autore"
 
 #: ../../tempcache/pages/plugins.html.twig:73
 #: ../../tempcache/pages/plugins.html.twig:138
@@ -6021,7 +6000,7 @@ msgstr "Data di rilascio"
 
 #: ../../tempcache/pages/plugins.html.twig:159
 msgid "Click here to deactivate plugin '%name'"
-msgstr ""
+msgstr "Premere qui per disattivare il plugin '%name'"
 
 #: ../../tempcache/pages/plugins.html.twig:180
 msgid "Initialize '%name' database"
@@ -6029,7 +6008,7 @@ msgstr ""
 
 #: ../../tempcache/pages/plugins.html.twig:208
 msgid "No active plugin."
-msgstr ""
+msgstr "Nessun plugin attivo."
 
 #: ../../tempcache/pages/plugins.html.twig:220
 msgid "Inactive plugins"
@@ -6046,7 +6025,7 @@ msgstr ""
 
 #: ../../tempcache/pages/plugins.html.twig:264
 msgid "Incompatible with current version"
-msgstr ""
+msgstr "Incompatibile con la versione attuale"
 
 #: ../../tempcache/pages/plugins.html.twig:271
 msgid "Explicitely disabled"
@@ -6054,7 +6033,7 @@ msgstr ""
 
 #: ../../tempcache/pages/plugins.html.twig:277
 msgid "Unknown"
-msgstr ""
+msgstr "Sconosciuto"
 
 #: ../../tempcache/pages/plugins.html.twig:294
 msgid "Activate plugin '%name'"
@@ -6096,31 +6075,31 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:155
 msgid "Width:"
-msgstr ""
+msgstr "Larghezza:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:171
 msgid "Height:"
-msgstr ""
+msgstr "Altezza:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:187
 msgid "Min Size:"
-msgstr ""
+msgstr "Dimensione minima:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:195
 msgid "Minimum number of characters."
-msgstr ""
+msgstr "Numero minimo di caratteri."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:207
 msgid "Size:"
-msgstr ""
+msgstr "Dimensioni:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:218
 msgid "Maximum file size, in Ko."
-msgstr ""
+msgstr "Dimensione massima del file in Ko."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:224
 msgid "Maximum number of characters."
-msgstr ""
+msgstr "Numero massimo di caratteri."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:239
 msgid "Repeat:"
@@ -6136,7 +6115,7 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:267
 msgid "Choice list (one entry per line)."
-msgstr ""
+msgstr "Scegliere dall'elenco (un solo valore per riga)."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:276
 #, fuzzy
@@ -6212,7 +6191,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:629
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:161
 msgid "Begin"
-msgstr ""
+msgstr "Inizio"
 
 #: ../../tempcache/pages/transaction_form.html.twig:217
 #: ../../tempcache/pages/contributions_list.html.twig:98
@@ -6220,7 +6199,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:635
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:173
 msgid "End"
-msgstr ""
+msgstr "Fine"
 
 #: ../../tempcache/pages/transaction_form.html.twig:221
 #: ../../tempcache/pages/contributions_list.html.twig:446
@@ -6279,7 +6258,7 @@ msgstr ""
 #: ../../tempcache/pages/transaction_form.html.twig:512
 #: ../../tempcache/pages/contribution_form.html.twig:781
 msgid "please create a member"
-msgstr ""
+msgstr "aggiungere nuovo socio"
 
 #: ../../tempcache/pages/transaction_form.html.twig:569
 #: ../../tempcache/pages/transaction_form.html.twig:623
@@ -6301,7 +6280,7 @@ msgstr ""
 
 #: ../../tempcache/pages/plugin_info.html.twig:63
 msgid "By %name"
-msgstr ""
+msgstr "Per %name"
 
 #: ../../tempcache/pages/plugin_info.html.twig:90
 msgid "Version:"
@@ -6389,7 +6368,7 @@ msgstr ""
 #: ../../tempcache/pages/transactions_list.html.twig:112
 #: ../../tempcache/pages/advanced_search.html.twig:1531
 msgid "Filter"
-msgstr "Filtra"
+msgstr "Filtrare"
 
 #: ../../tempcache/pages/contributions_list.html.twig:203
 #: ../../tempcache/pages/history.html.twig:257
@@ -6410,7 +6389,7 @@ msgstr ""
 #: ../../tempcache/pages/transactions_list.html.twig:122
 #: ../../tempcache/pages/advanced_search.html.twig:1539
 msgid "Clear filter"
-msgstr ""
+msgstr "Cancellare filtri"
 
 #: ../../tempcache/pages/contributions_list.html.twig:243
 #, fuzzy
@@ -6425,7 +6404,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:283
 #: ../../tempcache/pages/transactions_list.html.twig:195
 msgid "See member profile"
-msgstr ""
+msgstr "Visualizzare il profilo del socio"
 
 #: ../../tempcache/pages/contributions_list.html.twig:374
 #, php-format
@@ -6604,7 +6583,7 @@ msgstr ""
 #: ../../tempcache/pages/history.html.twig:105
 #: ../../tempcache/pages/history.html.twig:334
 msgid "User"
-msgstr ""
+msgstr "Utente"
 
 #: ../../tempcache/pages/history.html.twig:105
 #: ../../tempcache/pages/history.html.twig:211
@@ -6631,7 +6610,7 @@ msgstr ""
 
 #: ../../tempcache/pages/history.html.twig:391
 msgid "logs are empty"
-msgstr ""
+msgstr "logs sono vuoti"
 
 #: ../../tempcache/pages/import_model.html.twig:59
 msgid "Current model"
