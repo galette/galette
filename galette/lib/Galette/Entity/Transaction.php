@@ -276,7 +276,9 @@ class Transaction
         $this->amount = (float)$r->trans_amount;
         $this->description = $r->trans_desc;
         $adhpk = Adherent::PK;
-        $this->member = (int)$r->$adhpk;
+        if ($r->$adhpk !== null) {
+            $this->member = (int)$r->$adhpk;
+        }
         if ($r->type_paiement_trans != null) {
             $this->payment_type = (int)$r->type_paiement_trans;
         }
