@@ -1135,8 +1135,8 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $preferences = new Preferences($zdb, false);
             $ct = new \Galette\Entity\ContributionsTypes($zdb);
             $status = new \Galette\Entity\Status($zdb);
-            include_once '../includes/fields_defs/members_fields.php';
-            include_once '../includes/fields_defs/members_fields_cats.php';
+            include_once __DIR__ . '/../../../includes/fields_defs/members_fields.php';
+            include_once __DIR__ . '/../../../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
                 $zdb,
                 \Galette\Entity\Adherent::TABLE,

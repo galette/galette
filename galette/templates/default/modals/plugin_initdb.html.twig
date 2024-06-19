@@ -24,6 +24,17 @@
     <div id="plugins_initdb_ajax">
         <form action="{{ url_for('pluginInitDb', {'id': plugid}) }}" id="plugins_initdb_form" method="post" class="ui form">
             {% if mode != 'ajax' %}<h2>{{ page_title }}</h2>{% endif %}
+            {% set messages = install.getInitializationReport() %}
+            {% if messages|length > 0 %}
+                <ul class="leaders">
+                {% for message in messages %}
+                <li>
+                    <span>{{ message.message }}</span>
+                    <span>{{ install.getValidationImage(message.res)|raw }}</span>
+                </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
             {% if mode == 'ajax' %}
                 {% include 'elements/messages_inline.html.twig' %}
             {% endif %}

@@ -138,13 +138,13 @@ jobs:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
         run: |
-          PGPASSWORD=g@l3tte psql -d galette_tests -a -f galette/install/scripts/pgsql.sql -U galette_tests -h localhost
+          bin/console galette:install -v --dbtype=pgsql --dbhost=localhost --dbname=galette_tests --dbuser=galette_tests --dbpass=g@l3tte --admin=admin --password=admin --no-interaction
         if: env.skip != 'true' && startsWith(matrix.db-image, 'postgres')
 
       - name: Init for MariaDB
         run: |
           mysql -e 'create database IF NOT EXISTS galette_tests;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
-          mysql -e 'use galette_tests; source galette/install/scripts/mysql.sql;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
+          bin/console galette:install -v --dbtype=mysql --dbhost=127.0.0.1 --dbname=galette_tests --dbuser=galette_tests --dbpass=g@l3tte --admin=admin --password=admin --no-interaction
         if: env.skip != 'true' && (startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb'))
 
       - name: Unit tests

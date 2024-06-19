@@ -455,7 +455,7 @@ $container->set(
 global $translator, $i18n;
 if (
     !$container->has('galette.mode')
-    || $container->get('galette.mode') !== 'INSTALL'
+    || $container->get('galette.mode') !== 'INSTALL' //legacy case
     && $container->get('galette.mode') !== 'NEED_UPDATE'
     && !defined('GALETTE_INSTALLER')
 ) {
