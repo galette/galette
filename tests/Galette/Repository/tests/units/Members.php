@@ -529,6 +529,14 @@ class Members extends GaletteTestCase
 
         $this->assertSame(1, $list->count());
 
+        //search on contribution type
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contributions_types = '1';
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(1, $list->count());
+
         $filters->contributions_types = [
             1, // annual fee
             2 //reduced annual fee
@@ -543,6 +551,15 @@ class Members extends GaletteTestCase
         $list = $members->getList();
 
         $this->assertSame(0, $list->count());
+
+        //search on non existing contribution type
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contributions_types = 999;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(10, $list->count());
+
 
         //search on payment type
         $filters = new \Galette\Filters\AdvancedMembersList();
