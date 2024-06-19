@@ -496,7 +496,7 @@ class AdvancedMembersList extends MembersList
                         if (is_numeric($v)) {
                             //check type existence
                             $s = new ContributionsTypes($zdb);
-                            $res = $s->get($v);
+                            $res = $s->get((int)$v);
                             if ($res !== false) {
                                 $this->contributions_types[] = $v;
                             } else {
