@@ -31,15 +31,15 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-18 05:58+0000\n"
-"Last-Translator: Ilario Quinson <ilario.quinson@e.email>\n"
+"PO-Revision-Date: 2024-06-20 11:09+0000\n"
+"Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6-dev\n"
+"X-Generator: Weblate 5.6-rc\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -3760,7 +3760,6 @@ msgid "Graphics:"
 msgstr "Grafica:"
 
 #: ../includes/i18n.inc.php:263
-#, fuzzy
 msgid "Publisher:"
 msgstr "Editore:"
 
@@ -3826,7 +3825,6 @@ msgid "Donation in kind"
 msgstr "Donazione in natura"
 
 #: ../includes/i18n.inc.php:279
-#, fuzzy
 msgid "Donation in money"
 msgstr "Donazione in denaro"
 
@@ -3847,9 +3845,8 @@ msgid "spanish"
 msgstr "spagnolo"
 
 #: ../includes/i18n.inc.php:284
-#, fuzzy
 msgid "annual fee"
-msgstr "Quota annuale"
+msgstr "quota annuale"
 
 #: ../includes/i18n.inc.php:285
 msgid "annual fee (to be paid)"
@@ -3980,7 +3977,6 @@ msgid "Required membership:"
 msgstr "Iscrizione obbligatoria:"
 
 #: ../includes/i18n.inc.php:317
-#, fuzzy
 msgid ""
 "Complete the following form and send it with your funds, in order to "
 "complete your subscription."
@@ -3989,9 +3985,8 @@ msgstr ""
 "l'iscrizione."
 
 #: ../includes/i18n.inc.php:318
-#, fuzzy
 msgid "on"
-msgstr "Il"
+msgstr "il"
 
 #: ../includes/i18n.inc.php:319
 #, fuzzy
@@ -4089,7 +4084,6 @@ msgid "Phone:"
 msgstr "Telefono:"
 
 #: ../includes/fields_defs/members_fields.php:155
-#, fuzzy
 msgid "Mobile phone:"
 msgstr "Cellulare:"
 
@@ -4407,7 +4401,7 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:123
 msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
-msgstr ""
+msgstr "[{ASSO_NAME}] L'account {NAME_ADH} è inattivo"
 
 #: ../includes/fields_defs/texts_fields.php:124
 msgid ""
@@ -4417,10 +4411,15 @@ msgid ""
 "is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Ciao! Una richiesta di recupero password è stata effettuata sul tuo account "
+"su {ASSO_NAME}, ma questo è attualmente inattivo e quindi non può essere "
+"elaborata. Si prega di contattare un amministratore o un membro del "
+"personale se si pensa che questo sia un errore. A presto!{NEWLINE}(questa "
+"email è stata inviata automaticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:126
 msgid "Lost password email (disabled)"
-msgstr ""
+msgstr "Email di recupero password (disabilitata)"
 
 #: ../install/scripts/upgrade-to-0.8.php:72
 msgid "Unable to create main datadir in %path!"
@@ -5227,10 +5226,8 @@ msgid "Send"
 msgstr ""
 
 #: ../../tempcache/elements/language.html.twig:76
-#, fuzzy
-#| msgid "Change language"
 msgid "Choose your language"
-msgstr "Cambia lingua"
+msgstr "Scelta lingua"
 
 #: ../../tempcache/elements/language.html.twig:121
 #, php-format
@@ -5317,10 +5314,8 @@ msgstr ""
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:156
 #: ../../tempcache/elements/edit_core_fields.html.twig:255
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:335
-#, fuzzy
-#| msgid "Full date"
 msgid "Full"
-msgstr "Data completa"
+msgstr "Completa"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:162
 #: ../../tempcache/elements/edit_core_fields.html.twig:247
@@ -5393,10 +5388,8 @@ msgstr "Menù principale"
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:139
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:146
-#, fuzzy
-#| msgid "Companies"
 msgid "Compact menu"
-msgstr "Aziende"
+msgstr "Menu compatto"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:88
 msgid "Subscribe"
@@ -5434,10 +5427,8 @@ msgstr "Impossibile accedere come %id"
 
 #: ../../tempcache/elements/logged_user.html.twig:134
 #: ../../tempcache/elements/logged_user.html.twig:236
-#, fuzzy
-#| msgid "Username:"
 msgid "User menu"
-msgstr "Menù utente:"
+msgstr "Menu utente"
 
 #: ../../tempcache/elements/ajax_members.html.twig:58
 #: ../../tempcache/pages/preferences.html.twig:2112
@@ -5446,10 +5437,8 @@ msgstr ""
 
 #: ../../tempcache/elements/ajax_members.html.twig:90
 #: ../../tempcache/elements/group_persons.html.twig:88
-#, fuzzy
-#| msgid "Companies"
 msgid "Company"
-msgstr "Aziende"
+msgstr "Azienda"
 
 #: ../../tempcache/elements/ajax_members.html.twig:183
 msgid "no member"
@@ -5719,10 +5708,8 @@ msgstr "Più tardi"
 
 #: ../../tempcache/elements/js/choose_adh.js.twig:135
 #: ../../tempcache/elements/js/choose_adh.js.twig:214
-#, fuzzy
-#| msgid "An error occurred sending test email :("
 msgid "An error occurred retrieving members :("
-msgstr "Si è verificato un errore durante l’invio dell’e-mail di prova :("
+msgstr "Si è verificato un errore durante il recupero dei soci :("
 
 #: ../../tempcache/elements/js/choose_adh.js.twig:288
 msgid "An error occurred retrieving dates :("
@@ -5962,10 +5949,8 @@ msgstr[1] ""
 #: ../../tempcache/pages/contributions_types_list.html.twig:70
 #: ../../tempcache/pages/contributions_types_list.html.twig:114
 #: ../../tempcache/pages/contributions_types_list.html.twig:185
-#, fuzzy
-#| msgid "Membership fee"
 msgid "Membership extension"
-msgstr "Contributo Membership"
+msgstr "Estensione dell'iscrizione"
 
 #: ../../tempcache/pages/plugins.html.twig:55
 #: ../../tempcache/pages/plugins.html.twig:86
@@ -6118,10 +6103,8 @@ msgid "Choice list (one entry per line)."
 msgstr "Scegliere dall'elenco (un solo valore per riga)."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:276
-#, fuzzy
-#| msgid "Information"
 msgid "Information:"
-msgstr "Informazioni"
+msgstr "Informazioni:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:284
 msgid "Extra information displayed along with dynamic field."
@@ -6152,10 +6135,8 @@ msgstr ""
 
 #: ../../tempcache/pages/documents_public_list.html.twig:61
 #: ../../tempcache/pages/documents_list.html.twig:251
-#, fuzzy
-#| msgid "Download document"
 msgid "No document"
-msgstr "Scarica documento"
+msgstr "Nessun documento"
 
 #: ../../tempcache/pages/documents_public_list.html.twig:103
 #: ../../tempcache/pages/documents_list.html.twig:58
@@ -6876,7 +6857,7 @@ msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:1199
 msgid "New"
-msgstr ""
+msgstr "Nuovo"
 
 #: ../../tempcache/pages/members_list.html.twig:1199
 msgid "Resume"
