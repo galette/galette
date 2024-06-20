@@ -1483,8 +1483,13 @@ class Members
 
                 if ($dyn_field && $dyn_field instanceof \Galette\DynamicFields\Boolean) {
                     if ($fs['search'] != 0) {
+                        if ($zdb->isPostgres()) {
+                            $sval = $fs['search'] == 1 ? $zdb->platform->quoteValue('true') : $zdb->platform->quoteValue('false');
+                        } else {
+                            $sval = $fs['search'];
+                        }
                         $qry .= $prefix . $fs['field'] . $qop . ' ' .
-                            $fs['search'];
+                            $sval;
                     } else {
                         $qry .= $prefix . $fs['field'] . ' IS NULL';
                     }
