@@ -377,9 +377,8 @@
                             <label for="contributions_types">{{ _T('Type') }}</label>
                             <select name="contributions_types[]" id="contributions_types" multiple="" class="ui dropdown">
                                 <option value="">{{ _T('Type') }}</option>
-
                             {% for key, value in contributions_types %}
-                                    <option value="{{ key }}"{% if key == filters.contributions_types %} selected="selected"{% endif %}>{{ value.label }}</option>
+                                <option value="{{ key }}"{% if key in filters.contributions_types %} selected="selected"{% endif %}>{{ value.label }}</option>
                             {% endfor %}
                             </select>
                         </div>
@@ -388,7 +387,7 @@
                             <select name="payments_types[]" id="payments_types" multiple="" class="ui dropdown">
                                 <option value="">{{ _T('Payment type') }}</option>
                             {% for key, value in payments_types %}
-                                <option value="{{ key }}"{% if key == filters.payments_types %} selected="selected"{% endif %}>{{ value }}</option>
+                                <option value="{{ key }}"{% if key in filters.payments_types %} selected="selected"{% endif %}>{{ value }}</option>
                             {% endfor %}
                             </select>
                         </div>
