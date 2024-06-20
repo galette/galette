@@ -1,0 +1,18 @@
+{
+  "server": "hub.browserstack.com",
+  "capabilities": {
+    "build": "phpunit-browserstack",
+    "name": "parallel_test",
+    "browserstack.debug": true
+  },
+
+  "environments": [{
+    "browser": "chrome"
+  },{
+    "browser": "firefox"
+  },{
+    "browser": "safari"
+  },{
+    "browser": "internet explorer"
+  }]
+}

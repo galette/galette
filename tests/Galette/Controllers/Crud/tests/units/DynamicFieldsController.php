@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud\test\units;
 
-use PHPUnit\Framework\TestCase;
-use Galette\GaletteTestCase;
+use Facebook\WebDriver\WebDriverBy;
+use Galette\GaletteSeleniumCase;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request;
 
@@ -33,7 +33,7 @@ use Slim\Psr7\Request;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class DynamicFieldsController extends GaletteTestCase
+class DynamicFieldsController extends GaletteSeleniumCase
 {
     protected int $seed = 20240529064653;
 
@@ -225,5 +225,19 @@ class DynamicFieldsController extends GaletteTestCase
             ],
             $this->flash_data['slimFlash']
         );
+    }
+
+    /**
+     * Test from UI
+     *
+     * @return void
+     */
+    public function testUi(): void
+    {
+        self::$driver->get("http://localhost:8080");
+        $element = self::$driver->findElement(WebDriverBy::name("q"));
+        $element->sendKeys("BrowserStack");
+        $element->submit();
+        $this->assertEquals('BrowserStack - Google Search', self::$driver->getTitle());
     }
 }
