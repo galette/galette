@@ -31,8 +31,8 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-20 11:09+0000\n"
-"Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
+"PO-Revision-Date: 2024-06-21 23:09+0000\n"
+"Last-Translator: Ilario Quinson <ilario.quinson@e.email>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -4480,7 +4480,7 @@ msgstr "Re-inserire la password:"
 #: ../../tempcache/modals/plugin_initdb.html.twig:346
 #: ../../tempcache/pages/plugins.html.twig:379
 msgid "Next step"
-msgstr ""
+msgstr "Passo successivo"
 
 #: ../install/steps/admin.php:53
 msgid "Password mismatch!"
@@ -4690,6 +4690,7 @@ msgid ""
 "Database can't be reached. Please go back to enter the connection parameters "
 "again."
 msgstr ""
+"Il database non è raggiungibile. Re-inserire i parametri di connessione."
 
 #: ../install/steps/db_checks.php:200
 msgid "Permissions on the base"
@@ -4853,7 +4854,7 @@ msgstr ""
 
 #: ../install/steps/db.php:62
 msgid "Port:"
-msgstr ""
+msgstr "Porta:"
 
 #: ../install/steps/db.php:66
 msgid "User:"
@@ -4874,7 +4875,7 @@ msgstr ""
 #: ../install/steps/type.php:29
 #: ../../tempcache/modals/plugin_initdb.html.twig:89
 msgid "New installation"
-msgstr ""
+msgstr "Nuova installazione"
 
 #: ../install/steps/type.php:32
 msgid "you're installing Galette for the first time"
@@ -4894,7 +4895,7 @@ msgstr ""
 #: ../../tempcache/modals/plugin_initdb.html.twig:131
 #: ../../tempcache/pages/import.html.twig:57
 msgid "Warning: Don't forget to backup your current database."
-msgstr ""
+msgstr "Attenzione: Effettuare il backup del database."
 
 #: ../install/steps/telemetry.php:35 ../../tempcache/pages/desktop.html.twig:82
 msgid "Send anonymous and imprecise data about your Galette instance"
@@ -5014,12 +5015,12 @@ msgstr ""
 #: ../../tempcache/elements/js/removal.js.twig:188
 #: ../../tempcache/pages/mailing_form.html.twig:723
 msgid "Remove"
-msgstr ""
+msgstr "Rimuovere"
 
 #: ../../tempcache/modals/mass_add_contributions.html.twig:106
 #: ../../tempcache/modals/mass_change_members.html.twig:208
 msgid "Edit"
-msgstr ""
+msgstr "Modificare"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:53
 msgid "Headers"
@@ -5223,7 +5224,7 @@ msgstr "Si è verificato un errore durante l’invio della telemetria :("
 #: ../../tempcache/pages/mailing_form.html.twig:465
 #: ../../tempcache/pages/preferences.html.twig:2715
 msgid "Send"
-msgstr ""
+msgstr "Inviare"
 
 #: ../../tempcache/elements/language.html.twig:76
 msgid "Choose your language"
@@ -5281,7 +5282,7 @@ msgstr ""
 #: ../../tempcache/elements/edit_core_fields.html.twig:174
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:506
 msgid "Required"
-msgstr "Richiesta"
+msgstr "Richiesto"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:79
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:142
@@ -5364,7 +5365,7 @@ msgstr ""
 
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:55
 msgid "Go to Galette's dashboard"
-msgstr ""
+msgstr "Andare alla dashboard di Galette"
 
 #: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:50
 msgid "Go back to Galette homepage"
@@ -5433,7 +5434,7 @@ msgstr "Menu utente"
 #: ../../tempcache/elements/ajax_members.html.twig:58
 #: ../../tempcache/pages/preferences.html.twig:2112
 msgid "Zip - Town"
-msgstr ""
+msgstr "CAP - Città"
 
 #: ../../tempcache/elements/ajax_members.html.twig:90
 #: ../../tempcache/elements/group_persons.html.twig:88
