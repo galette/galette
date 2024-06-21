@@ -31,8 +31,8 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-21 23:09+0000\n"
-"Last-Translator: Ilario Quinson <ilario.quinson@e.email>\n"
+"PO-Revision-Date: 2024-06-23 00:09+0000\n"
+"Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -413,8 +413,8 @@ msgstr "Qualcosa è andato storto nell'edizione massiva!"
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] "%count socio è stato cambiato con successo!"
-msgstr[1] "%count soci sono stati cambiati con successo!"
+msgstr[0] "%1$s socio è stato cambiato con successo!"
+msgstr[1] "%1$s soci sono stati cambiati con successo!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1398
 msgid "Invalid captcha"
@@ -681,7 +681,7 @@ msgstr "Informazioni di sistema"
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:72
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:87
 msgid "Dashboard"
-msgstr "Dashboard"
+msgstr "Cruscotto"
 
 #: ../lib/Galette/Controllers/GaletteController.php:224
 #: ../lib/Galette/Core/Install.php:1164 ../lib/Galette/Core/Galette.php:353
@@ -3750,12 +3750,10 @@ msgid "Documentation"
 msgstr "Documentazione"
 
 #: ../includes/i18n.inc.php:261
-#, fuzzy
 msgid "Realization:"
 msgstr "Realizzazione:"
 
 #: ../includes/i18n.inc.php:262
-#, fuzzy
 msgid "Graphics:"
 msgstr "Grafica:"
 
@@ -3914,9 +3912,8 @@ msgid "Society"
 msgstr "Società"
 
 #: ../includes/i18n.inc.php:301
-#, fuzzy
 msgid "Politeness"
-msgstr "Politica aziendale"
+msgstr "Cortesia"
 
 #: ../includes/i18n.inc.php:303
 msgid "Main"
@@ -4351,7 +4348,7 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:94
 msgid "Late due date"
-msgstr ""
+msgstr "Data ultima di scadenza"
 
 #: ../includes/fields_defs/texts_fields.php:99
 msgid "[{ASSO_NAME}] Your donation"
@@ -4380,14 +4377,16 @@ msgid ""
 "Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been "
 "registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Buongiorno amministratore,{NEWLINE}Una donazione da {NAME_ADH} è stata "
+"registrata{BR}{CONTRIB_INFO}{NEWLINE}Distinti saluti,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:110
 msgid "New donation (sent to admin)"
-msgstr ""
+msgstr "Nuova donazione (inviato ad admin)"
 
 #: ../includes/fields_defs/texts_fields.php:115
 msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
-msgstr ""
+msgstr "[{ASSO_NAME}] Conto {NAME_ADH} è stato modificato"
 
 #: ../includes/fields_defs/texts_fields.php:116
 msgid ""
@@ -4772,6 +4771,8 @@ msgid ""
 "Your PHP date settings are not correct. Maybe you've missed the timezone "
 "settings that is mandatory since PHP 5.3?"
 msgstr ""
+"La configurazione di PHP non è corretta. Forse mancano le impostazioni del "
+"fuso orario, necessarie dalla versione 5.3 di PHP?"
 
 #: ../install/steps/check.php:81
 msgid "PHP version"
@@ -4932,10 +4933,8 @@ msgid ""
 msgstr ""
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:91
-#, fuzzy
-#| msgid "Contribution types"
 msgid "Contribution type"
-msgstr "Tipi di contributo"
+msgstr "Tipo di contributo"
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:115
 #: ../../tempcache/modals/mass_add_contributions.html.twig:108
@@ -6141,12 +6140,11 @@ msgstr "Nessun documento"
 
 #: ../../tempcache/pages/documents_public_list.html.twig:103
 #: ../../tempcache/pages/documents_list.html.twig:58
-#, fuzzy, php-format
-#| msgid "Download document"
+#, php-format
 msgid "%count document"
 msgid_plural "%count documents"
-msgstr[0] "Scarica documento"
-msgstr[1] "Scarica documento"
+msgstr[0] "%count documento"
+msgstr[1] "%count documenti"
 
 #: ../../tempcache/pages/transaction_form.html.twig:66
 msgid "Transaction details"
@@ -6374,10 +6372,8 @@ msgid "Clear filter"
 msgstr "Cancellare filtri"
 
 #: ../../tempcache/pages/contributions_list.html.twig:243
-#, fuzzy
-#| msgid "List of contributions"
 msgid "Show all your contributions"
-msgstr "Elenco dei contributi"
+msgstr "Mostra elenco dei contributi"
 
 #: ../../tempcache/pages/contributions_list.html.twig:249
 msgid "Show all members contributions"
@@ -6720,10 +6716,8 @@ msgid "among:"
 msgstr "tra:"
 
 #: ../../tempcache/pages/members_list.html.twig:290
-#, fuzzy
-#| msgid "Selected groups"
 msgid "All groups"
-msgstr "Gruppi selezionati"
+msgstr "Tutti i gruppi"
 
 #: ../../tempcache/pages/members_list.html.twig:321
 msgid "Members that have an email address:"
@@ -6869,10 +6863,8 @@ msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:1460
-#, fuzzy
-#| msgid "Required"
 msgid "Required field!"
-msgstr "Richiesta"
+msgstr "Campo obbligatorio!"
 
 #: ../../tempcache/pages/configuration_core_fields.html.twig:263
 msgid "Some warnings has been thrown:"
@@ -6953,10 +6945,8 @@ msgid "Click on a row to select a member"
 msgstr "Fare clic su una riga per selezionare un socio"
 
 #: ../../tempcache/pages/documents_list.html.twig:86
-#, fuzzy
-#| msgid "Download document"
 msgid "Add a document"
-msgstr "Scarica documento"
+msgstr "Aggiungi documento"
 
 #: ../../tempcache/pages/documents_list.html.twig:100
 #: ../../tempcache/pages/documents_list.html.twig:158
@@ -7033,10 +7023,8 @@ msgstr ""
 #: ../../tempcache/pages/document_form.html.twig:102
 #: ../../tempcache/components/forms/picture.html.twig:76
 #: ../../tempcache/components/dynamic_fields.html.twig:759
-#, fuzzy
-#| msgid "Change language"
 msgid "Choose a file"
-msgstr "Cambia lingua"
+msgstr "Scegli un file"
 
 #: ../../tempcache/pages/import.html.twig:274
 msgid "Upload file"
@@ -7219,10 +7207,8 @@ msgid "Contribution amount should not be greater than %max"
 msgstr ""
 
 #: ../../tempcache/pages/contribution_form.html.twig:919
-#, fuzzy
-#| msgid "An error occurred adding dynamic field :("
 msgid "An error occurred displaying scheduled payments :("
-msgstr "Errore durante l'aggiunta del campo dinamico :("
+msgstr "Errore di visualizzazione dei pagamenti programmati :("
 
 #: ../../tempcache/pages/mailing_form.html.twig:76
 msgid "Mailing information"
@@ -7340,16 +7326,12 @@ msgid "Scheduled payment"
 msgstr ""
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:135
-#, fuzzy
-#| msgid "contribution"
 msgid "View contribution"
-msgstr "Contributo"
+msgstr "Visualizza contributo"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:140
-#, fuzzy
-#| msgid "Edit contribution type"
 msgid "Related contribution information"
-msgstr "Modifica tipo di contributo"
+msgstr "Informazioni sul contributo"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:64
 msgid "Short form:"
@@ -7408,10 +7390,8 @@ msgstr ""
 #: ../../tempcache/pages/document_form.html.twig:100
 #: ../../tempcache/components/forms/picture.html.twig:74
 #: ../../tempcache/components/dynamic_fields.html.twig:757
-#, fuzzy
-#| msgid "Change language"
 msgid "Choose another file"
-msgstr "Cambia lingua"
+msgstr "Scegli un altro file"
 
 #: ../../tempcache/pages/preferences.html.twig:261
 #: ../../tempcache/pages/preferences.html.twig:2047
@@ -7543,10 +7523,8 @@ msgid "Default account filter:"
 msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:757
-#, fuzzy
-#| msgid "Edit payment type"
 msgid "Default payment type:"
-msgstr "Modifica tipologia di pagamento"
+msgstr "Tipo di pagamento predefinito:"
 
 #: ../../tempcache/pages/preferences.html.twig:796
 msgid "Public pages enabled?"
@@ -7575,10 +7553,8 @@ msgid ""
 msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:869
-#, fuzzy
-#| msgid "Selected groups"
 msgid "Select a ratio"
-msgstr "Gruppi selezionati"
+msgstr "Seleziona un rapporto"
 
 #: ../../tempcache/pages/preferences.html.twig:908
 msgid "Self subscription enabled?"
@@ -7750,10 +7726,8 @@ msgid ""
 msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:1345
-#, fuzzy
-#| msgid "Send email to administrators?"
 msgid "Send email to members?"
-msgstr "Inviare un’e-mail agli amministratori?"
+msgstr "Inviare email ai soci?"
 
 #: ../../tempcache/pages/preferences.html.twig:1350
 msgid ""
@@ -8287,12 +8261,11 @@ msgid "Scheduled date"
 msgstr "Data di rilascio"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:195
-#, fuzzy, php-format
-#| msgid "Download document"
+#, php-format
 msgid "%count shceduled payment"
 msgid_plural "%count scheduled payments"
-msgstr[0] "Scarica documento"
-msgstr[1] "Scarica documento"
+msgstr[0] "%count pagamento programmato"
+msgstr[1] "%count pagamenti programmati"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:252
 #, php-format
@@ -8876,10 +8849,8 @@ msgid "Ajax page content"
 msgstr ""
 
 #: ../../tempcache/page.html.twig:166
-#, fuzzy
-#| msgid "Language:"
 msgid "Language menu"
-msgstr "Lingua:"
+msgstr "Menu lingua"
 
 #: ../../tempcache/page.html.twig:239
 msgid "Page content"
