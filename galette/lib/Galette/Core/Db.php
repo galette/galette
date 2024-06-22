@@ -364,7 +364,10 @@ class Db
             $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
             $results['create'] = true;
         } catch (Throwable $e) {
-            Analog::log('Cannot CREATE TABLE', Analog::WARNING);
+            Analog::log(
+                'Cannot CREATE TABLE | ' . $e->getMessage(),
+                Analog::WARNING
+            );
             //if we cannot create tables, we cannot check other permissions
             $stop = true;
             $results['create'] = $e;
