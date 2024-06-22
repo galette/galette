@@ -42,7 +42,9 @@ class PluginsList extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->addOption('full', null, InputOption::VALUE_NONE, 'Display full information')
+            ->addOption('complete', null, InputOption::VALUE_NONE, 'Display complete information')
+            ->addOption('enabled', null, InputOption::VALUE_NONE, 'Display enabled plugins')
+            ->addOption('disabled', null, InputOption::VALUE_NONE, 'Display disabled plugins')
         ;
     }
 
@@ -61,35 +63,40 @@ class PluginsList extends AbstractCommand
         $io = new SymfonyStyle($input, $output);
 
         $definitions = [];
-        foreach($plugins->getModules() as $module_id => $module) {
-            if ($input->getOption('full')) {
-                $io->definitionList(
-                    $module['name'] ?? $module_id,
-                    ['Active' => 'Yes'],
-                    ['Name' => $module['name']],
-                    ['Description' => $module['desc']],
-                    ['Version' => $module['version']],
-                    ['Author' => $module['author']],
-                    ['Date' => $module['date']],
-                    ['Has database' => $plugins->needsDatabase($module_id) ? 'Yes' : 'No']
-                );
-            } else {
-                $definitions[] = sprintf('%s (%s)', $module['name'], $module['version']);
+        if ($input->getOption('enabled') || !$input->getOption('enabled') && !$input->getOption('disabled')) {
+            foreach ($plugins->getModules() as $module_id => $module) {
+                if ($input->getOption('complete')) {
+                    $io->definitionList(
+                        $module['name'] ?? $module_id,
+                        ['Active' => 'Yes'],
+                        ['Name' => $module['name']],
+                        ['Description' => $module['desc']],
+                        ['Version' => $module['version']],
+                        ['Author' => $module['author']],
+                        ['Date' => $module['date']],
+                        ['Has database' => $plugins->needsDatabase($module_id) ? 'Yes' : 'No']
+                    );
+                } else {
+                    $definitions[] = sprintf('%s (%s)', $module['name'], $module['version']);
+                }
             }
         }
 
-        foreach ($plugins->getDisabledModules() as $module_id => $module) {
-            if ($input->getOption('full')) {
-                $io->definitionList(
-                    $module['name'] ?? $module_id,
-                    ['Active' => 'No']
-                );
-            } else {
-                $definitions[] = sprintf('%s (disabled)', $module_id);
+        if ($input->getOption('disabled') || !$input->getOption('disabled') && !$input->getOption('enabled')) {
+            foreach ($plugins->getDisabledModules() as $module_id => $module) {
+                if ($input->getOption('complete')) {
+                    $io->definitionList(
+                        $module['name'] ?? $module_id,
+                        ['Active' => 'No']
+                    );
+                } else {
+                    $definitions[] = sprintf('%s (disabled)', $module_id);
+                }
             }
+
         }
 
-        if (!$input->getOption('full')) {
+        if (!$input->getOption('complete')) {
             $io->listing($definitions);
         }
 
