@@ -67,8 +67,9 @@ class PluginsList extends AbstractCommand
             foreach ($plugins->getModules() as $module_id => $module) {
                 if ($input->getOption('complete')) {
                     $io->definitionList(
-                        $module['name'] ?? $module_id,
+                        sprintf('%s (%s)', $module['name'], $module_id),
                         ['Active' => 'Yes'],
+                        ['ID' => $module_id],
                         ['Name' => $module['name']],
                         ['Description' => $module['desc']],
                         ['Version' => $module['version']],
@@ -85,9 +86,21 @@ class PluginsList extends AbstractCommand
         if ($input->getOption('disabled') || !$input->getOption('disabled') && !$input->getOption('enabled')) {
             foreach ($plugins->getDisabledModules() as $module_id => $module) {
                 if ($input->getOption('complete')) {
+                    switch ($module['cause']) {
+                        case \Galette\Core\Plugins::DISABLED_COMPAT:
+                            $module['cause'] = 'Not compatible';
+                            break;
+                        case \Galette\Core\Plugins::DISABLED_MISS:
+                            $module['cause'] = 'Miss a reqiuired file';
+                            break;
+                        case \Galette\Core\Plugins::DISABLED_EXPLICIT:
+                            $module['cause'] = 'Exlicitly disabled';
+                            break;
+                    }
                     $io->definitionList(
-                        $module['name'] ?? $module_id,
-                        ['Active' => 'No']
+                        $module_id,
+                        ['Active' => 'No'],
+                        ['Cause' => $module['cause']]
                     );
                 } else {
                     $definitions[] = sprintf('%s (disabled)', $module_id);
