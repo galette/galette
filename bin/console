@@ -32,6 +32,27 @@ if (!isset($basepath)) {
     }
 }
 
-require $basepath . 'vendor/autoload.php';
+define('GALETTE_ENV', 'CLI');
+define('GALETTE_ROOT', realpath(__DIR__ . '/../galette/') . '/');
 
-$test = new \Galette\Core\Db();
+//specific logfile for console
+$logfile = 'galette_cli';
+
+require_once $basepath . 'vendor/autoload.php';
+require_once $basepath . 'includes/sys_config/versions.inc.php';
+
+//require_once $basepath . 'includes/main.inc.php';
+require_once $basepath . 'includes/galette.inc.php';
+
+session_start();
+$session_name = 'galette_cli_' . str_replace('.', '_', GALETTE_VERSION);
+$session = &$_SESSION['galette'][$session_name];
+
+$gapp = new \Galette\Core\SlimApp();
+$app = $gapp->getApp();
+
+require_once $basepath . 'includes/dependencies.php';
+
+$console = new \Galette\Console\GaletteApplication($basepath);
+$console->init();
+$console->run();
