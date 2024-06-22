@@ -332,15 +332,16 @@ class Install
      * @param string  $user Database username
      * @param ?string $pass Database user's password
      *
-     * @return void
+     * @return self
      */
-    public function setDsn(string $host, string $port, string $name, string $user, ?string $pass): void
+    public function setDsn(string $host, string $port, string $name, string $user, ?string $pass): self
     {
         $this->db_host = $host;
         $this->db_port = $port;
         $this->db_name = $name;
         $this->db_user = $user;
         $this->db_pass = $pass;
+        return $this;
     }
 
     /**
@@ -833,12 +834,13 @@ class Install
      * @param string $login Login
      * @param string $pass  Password
      *
-     * @return void
+     * @return self
      */
-    public function setAdminInfos(string $login, string $pass): void
+    public function setAdminInfos(string $login, string $pass): self
     {
         $this->admin_login = $login;
         $this->admin_pass = password_hash($pass, PASSWORD_BCRYPT);
+        return $this;
     }
 
     /**
@@ -1264,11 +1266,12 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      *
      * @param ?string $version Installed version
      *
-     * @return void
+     * @return self
      */
-    public function setInstalledVersion(?string $version): void
+    public function setInstalledVersion(?string $version): self
     {
         $this->installed_version = $version;
+        return $this;
     }
 
     /**
