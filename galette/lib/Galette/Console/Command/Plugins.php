@@ -59,8 +59,50 @@ class Plugins extends AbstractCommand
             ''
         ]);
 
+        /** @var \Galette\Core\Plugins $plugins */
         $plugins = $container->get('plugins');
         $io = new SymfonyStyle($input, $output);
+
+        $requested_plugins = $input->getArgument('plugins');
+
+        $enabled_plugins = $plugins->getModules();
+        $disabled_plugins = $plugins->getDisabledModules();
+
+        if ($requested_plugins) {
+            $unknown_plugins = array_diff($requested_plugins, array_keys($enabled_plugins), array_keys($disabled_plugins));
+            if (count($unknown_plugins)) {
+                $io->error(sprintf('Unknown plugin(s): %s', implode(', ', $unknown_plugins)));
+                return Command::FAILURE;
+            }
+        }
+
+        if (!count($input->getOptions())) {
+            $io->error('No action specified');
+            return Command::FAILURE;
+        }
+
+        if ($input->getOption('enable') && $input->getOption('disable')) {
+            $io->error('You can\'t enable and disable plugins at the same time!');
+            return Command::FAILURE;
+        }
+
+        if ($input->getOption('disable') && $input->getOption('install-db')) {
+            $io->error('You can\'t disable and install database at the same time!');
+            return Command::FAILURE;
+        }
+
+        /*if ($input->getOption('enable')) {
+            $plugins->enable($requested_plugins);
+            $io->success('Plugin(s) enabled');
+        }*/
+        /*if ($input->getOption('disable')) {
+            $plugins->disable($requested_plugins);
+            $io->success('Plugin(s) disabled');
+        }*/
+        /*if ($input->getOption('install-db')) {
+            $plugins->installDatabase($requested_plugins);
+            $io->success('Plugin(s) database installed');
+        }*/
 
         return Command::SUCCESS;
     }
