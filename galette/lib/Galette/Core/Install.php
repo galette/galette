@@ -624,6 +624,8 @@ class Install
         $this->report = array();
         $scripts_path = ($spath ?? GALETTE_ROOT . '/install') . '/scripts/';
 
+        return false;
+
         foreach ($update_scripts as $key => $val) {
             if (str_ends_with($val, '.sql')) {
                 //just a SQL script, run it
