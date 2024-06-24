@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-23 00:09+0000\n"
+"PO-Revision-Date: 2024-06-24 16:09+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -4393,10 +4393,12 @@ msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Salve!{NEWLINE}{NAME_ADH} ha modificato il suo account.{NEWLINE}Ci vediamo "
+"presto!{NEWLINE}(questa e-mail è stata inviata automaticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:118
 msgid "Informs admin a member edit his information"
-msgstr ""
+msgstr "Informa l'amministratore che un socio modifica le sue informazioni"
 
 #: ../includes/fields_defs/texts_fields.php:123
 msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
@@ -4422,32 +4424,32 @@ msgstr "Email di recupero password (disabilitata)"
 
 #: ../install/scripts/upgrade-to-0.8.php:72
 msgid "Unable to create main datadir in %path!"
-msgstr ""
+msgstr "Impossibile creare la datadir principale in %path!"
 
 #: ../install/scripts/upgrade-to-0.8.php:88
 #, php-format
 msgid "Unable to create datadir in %dir!"
-msgstr ""
+msgstr "Impossibile creare la datadir in %dir!"
 
 #: ../install/scripts/upgrade-to-0.8.php:166
 #, php-format
 msgid "File %file has not been moved :-/"
-msgstr ""
+msgstr "Il file %file non è stato spostato :-/"
 
 #: ../install/scripts/upgrade-to-0.8.php:179
 #, php-format
 msgid "Directory %dir has been moved!"
-msgstr ""
+msgstr "La cartella %dir è stata spostata!"
 
 #: ../install/scripts/upgrade-to-0.8.php:191
 #, php-format
 msgid "Directory %dir has not been moved :("
-msgstr ""
+msgstr "La cartella %dir non è stata spostata :("
 
 #: ../install/scripts/upgrade-to-0.8.php:200
 #, php-format
 msgid "Directory %dir is not in its original path and will not be moved."
-msgstr ""
+msgstr "La cartella %dir non è nel suo percorso originale e non verrà spostata."
 
 #: ../install/steps/end.php:29
 msgid "Galette has been successfully installed!"
@@ -4459,11 +4461,11 @@ msgstr "Galette è stato aggiornato con successo!"
 
 #: ../install/steps/end.php:42
 msgid "Homepage"
-msgstr ""
+msgstr "Pagina principale"
 
 #: ../install/steps/admin.php:25
 msgid "Please chose the parameters of the admin account on Galette"
-msgstr ""
+msgstr "Prego scegliere i parametri dell'account admin su Galette"
 
 #: ../install/steps/admin.php:35
 #: ../../tempcache/pages/preferences.html.twig:2529
@@ -4487,11 +4489,11 @@ msgstr "La password non corrisponde!"
 
 #: ../install/steps/db_install.php:28
 msgid "Database has not been installed!"
-msgstr ""
+msgstr "Database non è stato installato!"
 
 #: ../install/steps/db_install.php:30
 msgid "Database has not been upgraded!"
-msgstr ""
+msgstr "Database non è stato aggiornato!"
 
 #: ../install/steps/db_install.php:34
 msgid "Database has been installed :)"
@@ -4518,7 +4520,7 @@ msgstr "Indietro"
 #: ../install/steps/db_select_version.php:35
 #: ../install/steps/db_select_version.php:49
 msgid "It seems you already use latest Galette version!"
-msgstr ""
+msgstr "Sembra che tu utilizzi già l'ultima versione di Galette!"
 
 #: ../install/steps/db_select_version.php:38
 msgid "Are you sure you want to upgrade?"
@@ -4533,11 +4535,13 @@ msgstr "Home"
 #: ../install/steps/db_select_version.php:42 ../install/steps/type.php:41
 #: ../../tempcache/modals/plugin_initdb.html.twig:117
 msgid "Update"
-msgstr ""
+msgstr "Aggiornamento"
 
 #: ../install/steps/db_select_version.php:53
 msgid "Select your previous Galette version below, and then click next."
 msgstr ""
+"Selezionare la propria precedente versione di Galette qui sotto, poi fare "
+"clic su Prossimo."
 
 #: ../install/steps/db_select_version.php:57
 msgid "No update script found!"
@@ -4548,12 +4552,16 @@ msgid ""
 "Previous version is older than 0.7. <strong>Make sure you select the right "
 "version</strong>."
 msgstr ""
+"La versione precedente è antecedente alla 0.7. <strong> Assicurarsi di "
+"selezionare la versione giusta</strong>."
 
 #: ../install/steps/db_select_version.php:67
 msgid ""
 "Your previous version should be selected and <strong>displayed in bold</"
 "strong>."
 msgstr ""
+"La propria versione precedente dovrebbe essere selezionata e "
+"<strong>visualizzata in grassetto</strong>."
 
 #: ../install/steps/db_select_version.php:72
 msgid "Your current Galette version is..."
@@ -4562,12 +4570,12 @@ msgstr "L'attuale versione di Galette è..."
 #: ../install/steps/db_select_version.php:93
 #: ../../tempcache/modals/plugin_initdb.html.twig:186
 msgid "older than %version"
-msgstr ""
+msgstr "antecedente alla %version"
 
 #: ../install/steps/db_select_version.php:96
 #: ../../tempcache/modals/plugin_initdb.html.twig:193
 msgid "comprised between"
-msgstr ""
+msgstr "compresa tra"
 
 #: ../install/steps/db_select_version.php:97
 #: ../../tempcache/modals/plugin_initdb.html.twig:197
@@ -4581,7 +4589,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:806
 #: ../../tempcache/pages/advanced_search.html.twig:1095
 msgid "and"
-msgstr ""
+msgstr "e"
 
 #: ../install/steps/db_select_version.php:132
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:121
@@ -4606,67 +4614,67 @@ msgstr "Annulla"
 
 #: ../install/steps/db_checks.php:60
 msgid "CREATE operation not allowed"
-msgstr ""
+msgstr "Comando CREATE non consentito"
 
 #: ../install/steps/db_checks.php:67
 msgid "CREATE operation allowed"
-msgstr ""
+msgstr "Comando CREATE consentito"
 
 #: ../install/steps/db_checks.php:74
 msgid "INSERT operation not allowed"
-msgstr ""
+msgstr "Comando INSERT non consentito"
 
 #: ../install/steps/db_checks.php:81
 msgid "INSERT operation allowed"
-msgstr ""
+msgstr "Comando INSERT consentito"
 
 #: ../install/steps/db_checks.php:88
 msgid "UPDATE operation not allowed"
-msgstr ""
+msgstr "Comando UPDATE non consentito"
 
 #: ../install/steps/db_checks.php:95
 msgid "UPDATE operation allowed"
-msgstr ""
+msgstr "Comando UPDATE consentito"
 
 #: ../install/steps/db_checks.php:102
 msgid "SELECT operation not allowed"
-msgstr ""
+msgstr "Comando SELECT non consentito"
 
 #: ../install/steps/db_checks.php:109
 msgid "SELECT operation allowed"
-msgstr ""
+msgstr "ComandoSELECT consentito"
 
 #: ../install/steps/db_checks.php:116
 msgid "DELETE operation not allowed"
-msgstr ""
+msgstr "Comando DELETE non consentito"
 
 #: ../install/steps/db_checks.php:123
 msgid "DELETE operation allowed"
-msgstr ""
+msgstr "Comando DELETE consentito"
 
 #: ../install/steps/db_checks.php:130
 msgid "DROP operation not allowed"
-msgstr ""
+msgstr "Comando DROP non consentito"
 
 #: ../install/steps/db_checks.php:137
 msgid "DROP operation allowed"
-msgstr ""
+msgstr "Comando DROP consentito"
 
 #: ../install/steps/db_checks.php:145
 msgid "ALTER operation not allowed"
-msgstr ""
+msgstr "Comando ALTER non consentito"
 
 #: ../install/steps/db_checks.php:152
 msgid "ALTER operation allowed"
-msgstr ""
+msgstr "Comando ALTER consentito"
 
 #: ../install/steps/db_checks.php:168
 msgid "Check of the database"
-msgstr ""
+msgstr "Controllo del database"
 
 #: ../install/steps/db_checks.php:170
 msgid "Database exists and connection parameters are OK."
-msgstr ""
+msgstr "Il database esiste e i parametri di connessione sono OK."
 
 #: ../install/steps/db_checks.php:174
 msgid "Incompatible database version."
@@ -4678,11 +4686,11 @@ msgstr "Connessione al database riuscita"
 
 #: ../install/steps/db_checks.php:179 ../install/steps/db_checks.php:182
 msgid "Permissions to database are OK."
-msgstr ""
+msgstr "I permessi sul database sono OK."
 
 #: ../install/steps/db_checks.php:188
 msgid "Unable to connect to the database"
-msgstr ""
+msgstr "Impossibile connettersi al database"
 
 #: ../install/steps/db_checks.php:195
 msgid ""
@@ -4693,18 +4701,22 @@ msgstr ""
 
 #: ../install/steps/db_checks.php:200
 msgid "Permissions on the base"
-msgstr ""
+msgstr "Permessi sul database"
 
 #: ../install/steps/db_checks.php:207
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
 msgstr ""
+"GALETTE non ha permessi sufficienti sul database per continuare "
+"l'installazione."
 
 #: ../install/steps/db_checks.php:209
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
+"GALETTE non ha sufficienti permessi sul database per continuare "
+"l'aggiornamento."
 
 #: ../install/steps/galette.php:34
 msgid "Configuration file created!"
@@ -4712,7 +4724,7 @@ msgstr "Il file di configurazione è stato creato!"
 
 #: ../install/steps/galette.php:35
 msgid "Data initialized."
-msgstr ""
+msgstr "Dati inizializzati."
 
 #: ../install/steps/galette.php:37
 #: ../../tempcache/elements/js/modal_action.js.twig:139
@@ -4738,15 +4750,15 @@ msgstr "Si è verificato un errore :("
 
 #: ../install/steps/check.php:49
 msgid "Photos"
-msgstr ""
+msgstr "Fotografie"
 
 #: ../install/steps/check.php:50
 msgid "Cache"
-msgstr ""
+msgstr "Cache"
 
 #: ../install/steps/check.php:51
 msgid "Temporary images"
-msgstr ""
+msgstr "Immagini temporanee"
 
 #: ../install/steps/check.php:56
 #: ../../tempcache/pages/mailing_form.html.twig:244
@@ -4756,7 +4768,7 @@ msgstr "Allegati"
 
 #: ../install/steps/check.php:57
 msgid "Files"
-msgstr ""
+msgstr "File"
 
 #: ../install/steps/check.php:69
 msgid "Welcome to the Galette Install!"
@@ -4764,7 +4776,7 @@ msgstr "Benvenuti nella procedura di installazione di Galette!"
 
 #: ../install/steps/check.php:72
 msgid "Galette requirements are met :)"
-msgstr ""
+msgstr "I requisiti di Galette sono soddisfatti :)"
 
 #: ../install/steps/check.php:76
 msgid ""
@@ -4780,60 +4792,70 @@ msgstr "versione PHP"
 
 #: ../install/steps/check.php:85
 msgid "Date settings"
-msgstr ""
+msgstr "Impostazioni della data"
 
 #: ../install/steps/check.php:90
 msgid "PHP Modules"
-msgstr ""
+msgstr "Moduli PHP"
 
 #: ../install/steps/check.php:100
 msgid "Files permissions"
-msgstr ""
+msgstr "Permessi sui file"
 
 #: ../install/steps/check.php:118
 msgid "Files permissions are not OK!"
-msgstr ""
+msgstr "I permessi sui file non sono OK!"
 
 #: ../install/steps/check.php:122
 msgid ""
 "To work as excpected, Galette needs write permission on files listed above."
 msgstr ""
+"Per funzionare correttamente, Galette necessita dei permessi di scrittura "
+"sui file sopra elencati."
 
 #: ../install/steps/check.php:124
 msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
+"Per poter essere aggiornato, Galette necessita dei permessi di scrittura sui "
+"file sopra elencati."
 
 #: ../install/steps/check.php:128
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr ""
+"Su UNIX/Linux, è possibile dare le autorizzazioni utilizzando questi comandi"
 
 #: ../install/steps/check.php:129
 msgid "apache_user"
-msgstr ""
+msgstr "utente_apache"
 
 #: ../install/steps/check.php:129
 msgid "file_name"
-msgstr ""
+msgstr "nome_file"
 
 #: ../install/steps/check.php:129
 msgid "directory_name"
-msgstr ""
+msgstr "nome_cartella"
 
 #: ../install/steps/check.php:131
 msgid ""
 "Under Windows, check these directories are not in Read-Only mode in their "
 "property panel."
 msgstr ""
+"Su Windows, verificare che queste cartelle non siano in modalità Sola-"
+"lettura nelle loro proprietà."
 
 #: ../install/steps/db.php:36
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
+"Se non fosse stato già fatto, creare un database e un utente per Galette."
 
 #: ../install/steps/db.php:38
 msgid ""
 "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
+"Le autorizzazioni necessarie sono CREATE, DROP, DELETE, UPDATE, SELECT e "
+"INSERT."
 
 #: ../install/steps/db.php:40
 msgid "Enter connection data for the existing database."
@@ -4844,6 +4866,8 @@ msgid ""
 "It seems that you have already installed Galette once.<br/>All existing data "
 "will be removed if you keep going on using existing database!"
 msgstr ""
+"Sembra che Galette sia già stato installato una volta!<br>Tutti i dati "
+"presenti verranno rimossi se si continua a utilizzare il database esistente!"
 
 #: ../install/steps/db.php:50
 msgid "Database type:"
@@ -4851,7 +4875,7 @@ msgstr "Database tipo:"
 
 #: ../install/steps/db.php:58
 msgid "Host:"
-msgstr ""
+msgstr "Host:"
 
 #: ../install/steps/db.php:62
 msgid "Port:"
@@ -4867,11 +4891,11 @@ msgstr "Database:"
 
 #: ../install/steps/db.php:78
 msgid "Table prefix:"
-msgstr ""
+msgstr "Prefisso tabelle:"
 
 #: ../install/steps/db.php:83
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
-msgstr ""
+msgstr "(Indicare il prefisso CORRENTE delle tabelle di Galette)"
 
 #: ../install/steps/type.php:29
 #: ../../tempcache/modals/plugin_initdb.html.twig:89
@@ -4880,17 +4904,20 @@ msgstr "Nuova installazione"
 
 #: ../install/steps/type.php:32
 msgid "you're installing Galette for the first time"
-msgstr ""
+msgstr "si sta installando Galette per la prima volta"
 
 #: ../install/steps/type.php:33
 msgid "you wish to erase an older version of Galette without keeping your data"
 msgstr ""
+"si vuole cancellare la versione precedente di Galette senza mantenerne i dati"
 
 #: ../install/steps/type.php:44
 msgid ""
 "you already have installed Galette, and you want to upgrade to the latest "
 "version"
 msgstr ""
+"si ha già installato Galette, e si desidera aggiornare alla versione più "
+"recente"
 
 #: ../install/steps/type.php:46
 #: ../../tempcache/modals/plugin_initdb.html.twig:131
@@ -4900,23 +4927,23 @@ msgstr "Attenzione: Effettuare il backup del database."
 
 #: ../install/steps/telemetry.php:35 ../../tempcache/pages/desktop.html.twig:82
 msgid "Send anonymous and imprecise data about your Galette instance"
-msgstr ""
+msgstr "Inviare dati anonimi e imprecisi sulla propria istanza Galette"
 
 #: ../install/steps/telemetry.php:37
 #: ../../tempcache/modals/telemetry.html.twig:67
 msgid "Send telemetry information"
-msgstr ""
+msgstr "Inviare informazioni di telemetria"
 
 #: ../install/steps/telemetry.php:44
 #: ../../tempcache/pages/desktop.html.twig:101
 msgid "Register your organization as a Galette user"
-msgstr ""
+msgstr "Registrare la propria organizzazione come utilizzatrice di Galette"
 
 #: ../install/steps/telemetry.php:46
 #: ../../tempcache/pages/preferences.html.twig:491
 #: ../../tempcache/pages/desktop.html.twig:106
 msgid "Register"
-msgstr ""
+msgstr "Registrazione"
 
 #: ../install/steps/telemetry.php:54
 #: ../../tempcache/modals/telemetry.html.twig:45
@@ -4924,6 +4951,8 @@ msgid ""
 "Telemetry data are <strong>anonymous</strong>; nothing about your "
 "organization or its members will be sent."
 msgstr ""
+"I dati della telemetria sono <strong>anonimi </strong>; non verrà inviato "
+"nulla della propria organizzazione o dei suoi soci."
 
 #: ../install/steps/telemetry.php:56
 #: ../../tempcache/modals/telemetry.html.twig:53
@@ -4931,6 +4960,8 @@ msgid ""
 "Also note that all data are sent over a <strong>HTTPS secured connection</"
 "strong>."
 msgstr ""
+"Si noti anche che tutti i dati verranno inviati su un <strong>connessione "
+"protetta HTTPS</strong>."
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:91
 msgid "Contribution type"
@@ -4940,47 +4971,57 @@ msgstr "Tipo di contributo"
 #: ../../tempcache/modals/mass_add_contributions.html.twig:108
 #: ../../tempcache/modals/mass_change_members.html.twig:210
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:95
 msgid "you're installing %name for the first time"
-msgstr ""
+msgstr "si sta installando %name per la prima volta"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:99
 msgid ""
 "you wish to erase an older version of of %name without keeping your data"
 msgstr ""
+"si desidera cancellare una versione precedente di %name senza mantenerne i "
+"dati"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:123
 msgid ""
 "you already have installed %name, and you want to upgrade to the latest "
 "version"
 msgstr ""
+"si ha già installato %name, e si desidera aggiornarlo alla versione più "
+"recente"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:160
 msgid "You current %name version is..."
-msgstr ""
+msgstr "L'attuale versione di %name è..."
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:242
 msgid "(Errors on DROP and RENAME operations can be ignored)"
-msgstr ""
+msgstr "(Gli errori sulle operazioni DROP e RENAME possono essere ignorati)"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:254
 msgid "The tables are not totally created, it may be a permission problem."
 msgstr ""
+"Le tabelle non sono state create completamente, può essere un problema di "
+"permessi."
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:260
 msgid ""
 "The tables have not been totally created, it may be a permission problem."
 msgstr ""
+"Le tabelle non sono state create totalmente, può essere un problema di "
+"permessi."
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:265
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
+"Il database non è utilizzabile, provare a ripristinare la versione più "
+"vecchia."
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:286
 msgid "Plugin '%name' has been successfully installed!"
-msgstr ""
+msgstr "Il plugin '%name' è stato installato con successo!"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:292
 msgid "Plugin '%name' has been successfully updated!"
@@ -4988,15 +5029,15 @@ msgstr "Il plugin '%name' è stato aggiornato correttamente!"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:363
 msgid "Back to plugins managment page"
-msgstr ""
+msgstr "Torna alla pagina di gestione dei plugin"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:408
 msgid "Access permissions to database"
-msgstr ""
+msgstr "Permessi di accesso al database"
 
 #: ../../tempcache/modals/confirm_removal.html.twig:87
 msgid "Delete all associated data"
-msgstr ""
+msgstr "Elimina tutti i dati associati"
 
 #: ../../tempcache/modals/confirm_removal.html.twig:91
 msgid "Cascade delete"
@@ -5004,11 +5045,11 @@ msgstr ""
 
 #: ../../tempcache/modals/confirm_removal.html.twig:135
 msgid "Are you sure you want to proceed?"
-msgstr ""
+msgstr "Sicuri di voler procedere?"
 
 #: ../../tempcache/modals/confirm_removal.html.twig:137
 msgid "This can't be undone."
-msgstr ""
+msgstr "L'operazione non può essere annullata."
 
 #: ../../tempcache/modals/confirm_removal.html.twig:155
 #: ../../tempcache/elements/js/removal.js.twig:188
@@ -5023,7 +5064,7 @@ msgstr "Modificare"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:53
 msgid "Headers"
-msgstr ""
+msgstr "Intestazioni"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:62
 msgid "From:"
@@ -5037,7 +5078,7 @@ msgstr "A:"
 #: ../../tempcache/pages/reminder.html.twig:191
 #: ../../tempcache/pages/mailing_form.html.twig:407
 msgid "Subject:"
-msgstr ""
+msgstr "Oggetto:"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:130
 msgid "Attachments:"
@@ -5049,24 +5090,24 @@ msgstr "Testo della mail"
 
 #: ../../tempcache/modals/mass_change_members.html.twig:93
 msgid "Only checked fields will be updated."
-msgstr ""
+msgstr "Verranno aggiornati solo i campi selezionati."
 
 #: ../../tempcache/modals/mass_change_members.html.twig:109
 msgid "You are about to proceed following changes for selected members:"
-msgstr ""
+msgstr "Si sta per procedere alle seguenti modifiche per i soci selezionati:"
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:91
 msgid "Some details about your attendance sheet..."
-msgstr ""
+msgstr "Alcuni dettagli sulla scheda partecipazione..."
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:93
 #, php-format
 msgid "%s attendees"
-msgstr ""
+msgstr "%s partecipanti"
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:101
 msgid "Sheet type"
-msgstr ""
+msgstr "Tipo di foglio"
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:135
 #: ../../tempcache/pages/transaction_form.html.twig:122
@@ -5105,20 +5146,20 @@ msgstr ""
 #: ../../tempcache/components/forms/date.html.twig:56
 #: ../../tempcache/components/dynamic_fields.html.twig:627
 msgid "yyyy-mm-dd format"
-msgstr ""
+msgstr "formato aaaa-mm-gg"
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:143
 msgid "With photos?"
-msgstr ""
+msgstr "Con foto?"
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:176
 msgid "Generate"
-msgstr ""
+msgstr "Genera"
 
 #: ../../tempcache/modals/replacements_legend.html.twig:41
 #: ../../tempcache/modals/replacements_legend.html.twig:45
 msgid "Existing variables"
-msgstr ""
+msgstr "Variabili esistenti"
 
 #: ../../tempcache/modals/replacements_legend.html.twig:132
 #: ../../tempcache/modals/telemetry.html.twig:113
@@ -5200,18 +5241,22 @@ msgstr "Chiudi"
 
 #: ../../tempcache/modals/replacements_legend.html.twig:140
 msgid "Show existing variables"
-msgstr ""
+msgstr "Mostra le variabili esistenti"
 
 #: ../../tempcache/modals/telemetry.html.twig:49
 msgid ""
 "Nothing is automated in the process; it's up to you to send (or resend) data."
 msgstr ""
+"Nulla è stato automatizzato nel processo; spetta all'utente inviare (o "
+"rivendere) i dati."
 
 #: ../../tempcache/modals/telemetry.html.twig:51
 msgid ""
 "You can review below the raw data that would be send if you press the 'Send' "
 "button."
 msgstr ""
+"È possibile revisionare sotto i dati grezzi che verranno inviati alla "
+"pressione del pulsante 'Invia'."
 
 #: ../../tempcache/modals/telemetry.html.twig:119
 msgid "An error occurred sending telemetry information :("
@@ -5232,7 +5277,7 @@ msgstr "Scelta lingua"
 #: ../../tempcache/elements/language.html.twig:121
 #, php-format
 msgid "Switch locale to '%locale'"
-msgstr ""
+msgstr "Passa alla localizzazione '%locale '"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:49
 #: ../../tempcache/elements/edit_socials.html.twig:184
@@ -5245,7 +5290,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_core_lists.html.twig:143
 #: ../../tempcache/components/dynamic_fields.html.twig:282
 msgid "Add"
-msgstr ""
+msgstr "Aggiungi"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:64
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:108
@@ -5257,7 +5302,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_core_lists.html.twig:307
 #: ../../tempcache/pages/document_form.html.twig:148
 msgid "Permissions"
-msgstr ""
+msgstr "Permessi"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:68
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:114
@@ -5272,7 +5317,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:820
 #: ../../tempcache/pages/advanced_search.html.twig:825
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:72
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:120
@@ -5290,7 +5335,7 @@ msgstr "Richiesto"
 #: ../../tempcache/elements/edit_core_fields.html.twig:231
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:318
 msgid "Width in forms"
-msgstr ""
+msgstr "Larghezza moduli"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:85
 #: ../../tempcache/elements/list.html.twig:392
@@ -5303,13 +5348,13 @@ msgstr ""
 #: ../../tempcache/pages/status_list.html.twig:79
 #: ../../tempcache/pages/configuration_core_lists.html.twig:79
 msgid "Actions"
-msgstr ""
+msgstr "Azioni"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:149
 #: ../../tempcache/elements/edit_core_fields.html.twig:266
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:346
 msgid "Half"
-msgstr ""
+msgstr "Metà"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:156
 #: ../../tempcache/elements/edit_core_fields.html.twig:255
@@ -5324,19 +5369,19 @@ msgstr "Completa"
 #: ../../tempcache/pages/contributions_types_list.html.twig:118
 #: ../../tempcache/pages/contributions_types_list.html.twig:192
 msgid "Default"
-msgstr ""
+msgstr "Predefinito"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:182
 #: ../../tempcache/pages/contributions_types_list.html.twig:222
 #: ../../tempcache/pages/status_list.html.twig:183
 #, php-format
 msgid "Edit '%s' field"
-msgstr ""
+msgstr "Modifica il campo '%s'"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:195
 #, php-format
 msgid "Translate '%s' field"
-msgstr ""
+msgstr "Traduci il campo '%s'"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:208
 #: ../../tempcache/pages/contributions_types_list.html.twig:235
@@ -5345,22 +5390,22 @@ msgstr ""
 #: ../../tempcache/pages/configuration_core_lists.html.twig:313
 #, php-format
 msgid "Delete '%s' field"
-msgstr ""
+msgstr "Cancella il campo '%s'"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:228
 #, php-format
 msgid "Move up '%s' field"
-msgstr ""
+msgstr "Sposta in alto il campo '%s'"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:250
 #, php-format
 msgid "Move down '%s' field"
-msgstr ""
+msgstr "Sposta in basso il campo '%s'"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:267
 #, php-format
 msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr ""
+msgstr "Non c'è ancora alcun campo dinamico configurato per '%formname '"
 
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:55
 msgid "Go to Galette's dashboard"
@@ -5372,7 +5417,7 @@ msgstr "Ritornare alla home di Galette"
 
 #: ../../tempcache/elements/navigation/navigation_topbar.html.twig:43
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:70
 #: ../../tempcache/elements/logged_user.html.twig:268
@@ -5380,7 +5425,7 @@ msgstr ""
 #: ../../tempcache/public_page.html.twig:135 ../../tempcache/page.html.twig:126
 #, php-format
 msgid "Open '%s' in a new window"
-msgstr ""
+msgstr "Apri '%s' in una nuova finestra"
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:115
 msgid "Main menu"
@@ -5447,11 +5492,11 @@ msgstr "non socio"
 #: ../../tempcache/elements/ajax_members.html.twig:206
 #: ../../tempcache/elements/list.html.twig:186
 msgid "Pages:"
-msgstr ""
+msgstr "Pagine:"
 
 #: ../../tempcache/elements/ajax_members.html.twig:232
 msgid "Selected members"
-msgstr ""
+msgstr "Soci selezionati"
 
 #: ../../tempcache/elements/ajax_members.html.twig:249
 msgid "No members has been selected yet."
@@ -5460,20 +5505,20 @@ msgstr "Nessun socio selezionato."
 #: ../../tempcache/elements/ajax_members.html.twig:313
 #: ../../tempcache/elements/ajax_groups.html.twig:206
 msgid "Validate"
-msgstr ""
+msgstr "Valida"
 
 #: ../../tempcache/elements/ajax_groups.html.twig:53
 msgid "Manager(s)"
-msgstr ""
+msgstr "Amministratori"
 
 #: ../../tempcache/elements/ajax_groups.html.twig:128
 msgid "%membercount members"
-msgstr ""
+msgstr "%membercount soci"
 
 #: ../../tempcache/elements/ajax_groups.html.twig:137
 #: ../../tempcache/pages/groups_list.html.twig:151
 msgid "no group"
-msgstr ""
+msgstr "nessun gruppo"
 
 #: ../../tempcache/elements/ajax_groups.html.twig:153
 msgid "Selected groups"
@@ -5485,7 +5530,7 @@ msgstr "Nessun gruppo selezionato."
 
 #: ../../tempcache/elements/js/calendar.js.twig:47
 msgid "S,M,T,W,T,F,S"
-msgstr ""
+msgstr "D,L,M,M,G,V,S"
 
 #: ../../tempcache/elements/js/calendar.js.twig:52
 msgid "January"
@@ -5592,7 +5637,7 @@ msgstr "Adesso"
 #: ../../tempcache/elements/js/loader.js.twig:50
 #: ../../tempcache/elements/js/loader.js.twig:69
 msgid "Loading..."
-msgstr ""
+msgstr "Caricamento..."
 
 #: ../../tempcache/elements/js/modal_action.js.twig:71
 #: ../../tempcache/elements/edit_pdf_models.html.twig:217
@@ -5666,7 +5711,7 @@ msgstr "Destra"
 #: ../../tempcache/elements/js/photo_dnd.js.twig:110
 #: ../../tempcache/components/forms/picture.html.twig:93
 msgid "Cropping focus"
-msgstr ""
+msgstr "Focus ritaglio"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:110
 #: ../../tempcache/components/forms/picture.html.twig:119
@@ -5674,6 +5719,8 @@ msgid ""
 "Choose the area of the original image to preserve after cropping to the "
 "final ratio defined in the settings : %ratio"
 msgstr ""
+"Scegliere l'area dell'immagine originale per preservare dopo aver ritagliato "
+"il rapporto finale definito nelle impostazioni: %ratio"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:160
 msgid "An error occurred sending photo :("
@@ -5681,11 +5728,11 @@ msgstr "Si è verificato un errore nel caricamento dell'immagine :("
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:100
 msgid "Password is valid :)"
-msgstr ""
+msgstr "La password è valida :)"
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:106
 msgid "Password is not valid!"
-msgstr ""
+msgstr "La password non è valida!"
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:136
 msgid "An error occured checking password :("
@@ -5694,7 +5741,7 @@ msgstr "Si è verificato un errore durante la verifica della password :("
 #: ../../tempcache/elements/js/messages.js.twig:319
 #: ../../tempcache/elements/messages_inline.html.twig:412
 msgid "Your telemetry data are more than one year old."
-msgstr ""
+msgstr "I dati di telemetria hanno più di un anno."
 
 #: ../../tempcache/elements/js/messages.js.twig:321
 #: ../../tempcache/elements/messages_inline.html.twig:416
@@ -5713,12 +5760,12 @@ msgstr "Si è verificato un errore durante il recupero dei soci :("
 
 #: ../../tempcache/elements/js/choose_adh.js.twig:288
 msgid "An error occurred retrieving dates :("
-msgstr ""
+msgstr "Si è verificato un errore di recupero delle date :("
 
 #: ../../tempcache/elements/js/modal.js.twig:239
 #: ../../tempcache/pages/export.html.twig:385
 msgid "Continue"
-msgstr ""
+msgstr "Continua"
 
 #: ../../tempcache/elements/navigate.html.twig:57
 #: ../../tempcache/elements/navigate.html.twig:63
@@ -5732,11 +5779,11 @@ msgstr "Prossimo"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:88
 msgid "Header"
-msgstr ""
+msgstr "Intestazione"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:105
 msgid "Footer"
-msgstr ""
+msgstr "Piè di pagina"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:126
 msgid "Body"
@@ -5744,7 +5791,7 @@ msgstr "Stato della carrozzeria"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:146
 msgid "CSS styles"
-msgstr ""
+msgstr "Stili CSS"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:172
 #: ../../tempcache/pages/contributions_list.html.twig:152
@@ -5752,20 +5799,20 @@ msgstr ""
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:138
 #: ../../tempcache/pages/advanced_search.html.twig:962
 msgid "Select"
-msgstr ""
+msgstr "Seleziona"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:178
 msgid "Invoice"
-msgstr ""
+msgstr "Fattura"
 
 #: ../../tempcache/elements/edit_pdf_models.html.twig:184
 msgid "Receipt"
-msgstr ""
+msgstr "Ricevuta"
 
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:46
 #: ../../tempcache/components/dynamic_fields.html.twig:61
 msgid "Additionnal fields:"
-msgstr ""
+msgstr "Campi aggiuntivi:"
 
 #: ../../tempcache/elements/group.html.twig:78
 #: ../../tempcache/pages/members_public_list.html.twig:97
@@ -5775,15 +5822,15 @@ msgstr "Informazioni"
 
 #: ../../tempcache/elements/group.html.twig:86
 msgid "Managers"
-msgstr ""
+msgstr "Gestori"
 
 #: ../../tempcache/elements/group.html.twig:167
 msgid "Parent group:"
-msgstr ""
+msgstr "Gruppo genitore:"
 
 #: ../../tempcache/elements/group.html.twig:276
 msgid "Manage managers"
-msgstr ""
+msgstr "Gestione amministratori"
 
 #: ../../tempcache/elements/group.html.twig:307
 msgid "Manage members"
@@ -5791,20 +5838,21 @@ msgstr "Gestisci soci"
 
 #: ../../tempcache/elements/group.html.twig:355
 msgid "Current group (and attached people) as PDF"
-msgstr ""
+msgstr "Gruppo attuale (e persone collegate) come PDF"
 
 #: ../../tempcache/elements/group.html.twig:360
+#, fuzzy
 msgid "Group PDF"
-msgstr ""
+msgstr "Raggruppa PDF"
 
 #: ../../tempcache/elements/scripts.html.twig:387
 msgid "Deactivate HTML editor"
-msgstr ""
+msgstr "Disattiva l'editor HTML"
 
 #: ../../tempcache/elements/scripts.html.twig:397
 #: ../../tempcache/pages/mailing_form.html.twig:339
 msgid "Activate HTML editor"
-msgstr ""
+msgstr "Attiva l'editor HTML"
 
 #: ../../tempcache/elements/list.html.twig:262
 msgid "Records per page:"
@@ -5822,13 +5870,15 @@ msgstr "Invertire la selezione"
 #: ../../tempcache/pages/transactions_list.html.twig:546
 #: ../../tempcache/pages/transactions_list.html.twig:561
 msgid "Show legend"
-msgstr ""
+msgstr "Mostra legenda"
 
 #: ../../tempcache/elements/modes.html.twig:41
 msgid ""
 "You are actually logged-in as superadmin. Some functionnalities may not be "
 "available since this is *not* a regular member."
 msgstr ""
+"Sei attualmente collegato come superamministratore. Alcune funzioni non "
+"possono essere disponibili in quanto questo è *non* un membro normale."
 
 #: ../../tempcache/elements/modes.html.twig:46
 #: ../../tempcache/pages/mailings_list.html.twig:345
@@ -5839,42 +5889,44 @@ msgstr "Superamministratore"
 msgid ""
 "This application runs under DEMO mode, all features may not be available."
 msgstr ""
+"Questa applicazione funziona in modalità DEMO, non tutte le funzionalità "
+"potrebbero essere disponibili."
 
 #: ../../tempcache/elements/modes.html.twig:60
 msgid "Demonstration"
-msgstr ""
+msgstr "Dimostrazione"
 
 #: ../../tempcache/elements/group_persons.html.twig:208
 #: ../../tempcache/pages/groups_list.html.twig:361
 msgid "No member attached"
-msgstr ""
+msgstr "Nessun membro collegato"
 
 #: ../../tempcache/elements/group_persons.html.twig:214
 msgid "No manager attached"
-msgstr ""
+msgstr "Nessun gestore collegato"
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:136
 #, php-format
 msgid "Change '%field' permissions"
-msgstr ""
+msgstr "Cambia i permessi di '%field'"
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:177
 #, php-format
 msgid "Field '%field' cannot be set as required."
-msgstr ""
+msgstr "Il campo '%field' non può essere impostato come necessario."
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:179
 #, php-format
 msgid "Mark '%field' as (not) required"
-msgstr ""
+msgstr "Marca '%field' come (non) richiesto"
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:233
 msgid "Change field's width with in forms"
-msgstr ""
+msgstr "Cambia la larghezza del campo nei moduli"
 
 #: ../../tempcache/elements/member_card.html.twig:60
 msgid "Picture"
-msgstr ""
+msgstr "Immagine"
 
 #: ../../tempcache/elements/member_card.html.twig:69
 msgid "Drag and drop an image file to change the picture"
@@ -5883,12 +5935,12 @@ msgstr "Trascinare un file immagine per cambiare la foto"
 #: ../../tempcache/elements/mailing_recipients.html.twig:51
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
-msgstr ""
+msgstr "Il messaggio è stato inviato a <strong>%s soci</strong>"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:57
 #, php-format
 msgid "You are about to send an e-mail to <strong>%s members</strong>"
-msgstr ""
+msgstr "Si sta per inviare una e-mail a <strong>%s soci</strong>"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:69
 msgid "None of the selected members has an email address."
@@ -5896,21 +5948,23 @@ msgstr "Nessuno dei soci selezionati ha un indirizzo di posta elettronica."
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:75
 msgid "No member selected (yet)."
-msgstr ""
+msgstr "Nessun socio selezionato (per ora)."
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:93
 msgid "unreachable members:"
-msgstr ""
+msgstr "soci non raggiungibili:"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:95
 msgid "unreachable member:"
-msgstr ""
+msgstr "socio non raggiungibile:"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:101
 msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
 msgstr ""
+"Alcuni soci selezionati non hanno indirizzo e-mail. Tuttavia, è possibile "
+"generare etichette per buste per contattarli tramite posta ordinaria."
 
 #: ../../tempcache/elements/edit_socials.html.twig:62
 msgid "Disable social networks on member form"
@@ -5928,11 +5982,11 @@ msgstr "Aggiungere social network"
 #: ../../tempcache/elements/edit_socials.html.twig:153
 #: ../../tempcache/pages/document_form.html.twig:122
 msgid "Choose or enter your own..."
-msgstr ""
+msgstr "Scegliere o inserire il proprio..."
 
 #: ../../tempcache/macros.twig:416
 msgid "For the selection:"
-msgstr ""
+msgstr "Per la selezione:"
 
 #: ../../tempcache/pages/contribution_type_form.html.twig:83
 #: ../../tempcache/pages/contribution_type_form.html.twig:91
@@ -5942,8 +5996,8 @@ msgstr ""
 #, php-format
 msgid "%1$s month"
 msgid_plural "%1$s months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s mese"
+msgstr[1] "%1$s mesi"
 
 #: ../../tempcache/pages/contribution_type_form.html.twig:102
 #: ../../tempcache/pages/contributions_types_list.html.twig:70
@@ -5955,7 +6009,7 @@ msgstr "Estensione dell'iscrizione"
 #: ../../tempcache/pages/plugins.html.twig:55
 #: ../../tempcache/pages/plugins.html.twig:86
 msgid "Active plugins"
-msgstr ""
+msgstr "Plugin attivi"
 
 #: ../../tempcache/pages/plugins.html.twig:65
 #: ../../tempcache/pages/plugins.html.twig:126
@@ -5966,7 +6020,7 @@ msgstr ""
 #: ../../tempcache/pages/export.html.twig:260
 #: ../../tempcache/pages/export.html.twig:290
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #: ../../tempcache/pages/plugins.html.twig:69
 #: ../../tempcache/pages/plugins.html.twig:132
@@ -5976,7 +6030,7 @@ msgstr "Autore"
 #: ../../tempcache/pages/plugins.html.twig:73
 #: ../../tempcache/pages/plugins.html.twig:138
 msgid "Version"
-msgstr ""
+msgstr "Versione"
 
 #: ../../tempcache/pages/plugins.html.twig:77
 #: ../../tempcache/pages/plugins.html.twig:144
@@ -5989,7 +6043,7 @@ msgstr "Premere qui per disattivare il plugin '%name'"
 
 #: ../../tempcache/pages/plugins.html.twig:180
 msgid "Initialize '%name' database"
-msgstr ""
+msgstr "Inizializza il database '%name'"
 
 #: ../../tempcache/pages/plugins.html.twig:208
 msgid "No active plugin."
@@ -5997,16 +6051,16 @@ msgstr "Nessun plugin attivo."
 
 #: ../../tempcache/pages/plugins.html.twig:220
 msgid "Inactive plugins"
-msgstr ""
+msgstr "Plugin inattivi"
 
 #: ../../tempcache/pages/plugins.html.twig:231
 #: ../../tempcache/pages/plugins.html.twig:250
 msgid "Cause"
-msgstr ""
+msgstr "Causa"
 
 #: ../../tempcache/pages/plugins.html.twig:257
 msgid "A required file is missing"
-msgstr ""
+msgstr "Manca un file richiesto"
 
 #: ../../tempcache/pages/plugins.html.twig:264
 msgid "Incompatible with current version"
@@ -6014,7 +6068,7 @@ msgstr "Incompatibile con la versione attuale"
 
 #: ../../tempcache/pages/plugins.html.twig:271
 msgid "Explicitely disabled"
-msgstr ""
+msgstr "Disabilitati esplicitamente"
 
 #: ../../tempcache/pages/plugins.html.twig:277
 msgid "Unknown"
@@ -6022,11 +6076,11 @@ msgstr "Sconosciuto"
 
 #: ../../tempcache/pages/plugins.html.twig:294
 msgid "Activate plugin '%name'"
-msgstr ""
+msgstr "Attiva il plugin '%name '"
 
 #: ../../tempcache/pages/plugins.html.twig:308
 msgid "No inactive plugin."
-msgstr ""
+msgstr "Nessun plugin inattivo."
 
 #: ../../tempcache/pages/plugins.html.twig:337
 #: ../../tempcache/pages/preferences.html.twig:1227
@@ -6034,29 +6088,33 @@ msgstr ""
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
+"L'applicazione viene eseguita in modalità demo. Questa funzionalità non è "
+"abilitata, ci scusiamo."
 
 #: ../../tempcache/pages/plugins.html.twig:363
 #: ../../tempcache/pages/plugins.html.twig:411
 msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
+"Si è verificato un errore durante la visualizzazione dell'interfaccia di "
+"inizializzazione del plugin database :("
 
 #: ../../tempcache/pages/plugins.html.twig:375
 msgid "Plugin database initialization: %name"
-msgstr ""
+msgstr "Inizializzazione plugin database: %name"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:63
 #, php-format
 msgid "Edit field %field"
-msgstr ""
+msgstr "Modifica campo %field"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:92
 msgid "Permissions:"
-msgstr ""
+msgstr "Permessi:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:125
 msgid "Required:"
-msgstr ""
+msgstr "Richiesto:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:155
 msgid "Width:"
@@ -6088,15 +6146,15 @@ msgstr "Numero massimo di caratteri."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:239
 msgid "Repeat:"
-msgstr ""
+msgstr "Ripeti:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:247
 msgid "Number of values or zero if infinite."
-msgstr ""
+msgstr "Numero di valori o zero se infinito."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:259
 msgid "Values:"
-msgstr ""
+msgstr "Valori:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:267
 msgid "Choice list (one entry per line)."
@@ -8834,19 +8892,19 @@ msgstr ""
 
 #: ../../tempcache/components/dynamic_fields.html.twig:800
 msgid "delete"
-msgstr ""
+msgstr "elimina"
 
 #: ../../tempcache/public_page.html.twig:208 ../../tempcache/page.html.twig:210
 msgid "Back to top"
-msgstr ""
+msgstr "Torna all'inizio"
 
 #: ../../tempcache/public_page.html.twig:229
 msgid "Public page content"
-msgstr ""
+msgstr "Contenuti della pagina pubblica"
 
 #: ../../tempcache/ajax.html.twig:46
 msgid "Ajax page content"
-msgstr ""
+msgstr "Contenuti Ajax della pagina"
 
 #: ../../tempcache/page.html.twig:166
 msgid "Language menu"
@@ -8854,7 +8912,7 @@ msgstr "Menu lingua"
 
 #: ../../tempcache/page.html.twig:239
 msgid "Page content"
-msgstr ""
+msgstr "Contenuti della pagina"
 
 #~ msgid "Current cards configuration may exceed page width!"
 #~ msgstr ""
