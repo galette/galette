@@ -245,6 +245,7 @@ class Install extends AbstractCommand
             throw new \RuntimeException('Database connection failed');
         }
 
+        global $zdb;
         $zdb = new \Galette\Core\Db(
             [
                 'TYPE_DB' => $db_type,
@@ -323,13 +324,17 @@ class Install extends AbstractCommand
             return Command::FAILURE;
         }
 
+        $install->initDbConstants();
+
         //FIXME
         //$config_file_ok = $install->writeConfFile();
 
         $install->setAdminInfos($galette_sa, $galette_sa_pass);
 
         $io->info('Initializing data, please wait...');
-        define('GALETTE_INSTALLER', true);
+        if (!defined('GALETTE_INSTALLER')) {
+            define('GALETTE_INSTALLER', true);
+        }
         $i18n = new \Galette\Core\I18n();
         $install->initObjects(
             $i18n,
