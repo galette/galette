@@ -73,24 +73,6 @@ if (isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz'])) {
 
 $error_detected = array();
 
-/**
- * Initialize database constants to connect
- *
- * @param Install $install Installer
- *
- * @return void
- */
-function initDbConstants(Install $install): void
-{
-    define('TYPE_DB', $install->getDbType());
-    define('PREFIX_DB', $install->getTablesPrefix());
-    define('USER_DB', $install->getDbUser());
-    define('PWD_DB', $install->getDbPass());
-    define('HOST_DB', $install->getDbHost());
-    define('PORT_DB', $install->getDbPort());
-    define('NAME_DB', $install->getDbName());
-}
-
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', true);
 
@@ -104,7 +86,7 @@ if (
     && ($install->postCheckDb())
 ) {
     //if we have passed database configuration, define required constants
-    initDbConstants($install);
+    $install->initDbConstants();
 
     if ($install->postCheckDb()) {
         try {
@@ -155,7 +137,7 @@ if (isset($_POST['stepback_btn'])) {
             $_POST['install_dbprefix']
         );
         $install->atDbCheckStep();
-        initDbConstants($install);
+        $install->initDbConstants();
     }
 } elseif (isset($_POST['install_dbperms_ok'])) {
     if ($install->isInstall()) {

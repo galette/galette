@@ -625,7 +625,7 @@ class Install
         $scripts_path = ($spath ?? GALETTE_ROOT . '/install') . '/scripts/';
 
         foreach ($update_scripts as $key => $val) {
-            if (substr($val, -strlen('.sql')) === '.sql') {
+            if (str_ends_with($val, '.sql')) {
                 //just a SQL script, run it
                 $script = fopen($scripts_path . $val, 'r');
 
@@ -1305,5 +1305,21 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
     public function isStepPassed(int $step): bool
     {
         return $this->step > $step;
+    }
+
+    /**
+     *  Initialize database constants to connect
+     *
+     * @return void
+     */
+    public function initDbConstants(): void
+    {
+        define('TYPE_DB', $this->getDbType());
+        define('PREFIX_DB', $this->getTablesPrefix());
+        define('USER_DB', $this->getDbUser());
+        define('PWD_DB', $this->getDbPass());
+        define('HOST_DB', $this->getDbHost());
+        define('PORT_DB', $this->getDbPort());
+        define('NAME_DB', $this->getDbName());
     }
 }
