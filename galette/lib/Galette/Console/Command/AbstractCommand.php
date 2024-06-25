@@ -31,10 +31,20 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Console abstract command
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
 abstract class AbstractCommand extends Command
 {
     protected string $basepath;
 
+    /**
+     * Default constructor
+     *
+     * @param string $basepath Base path to Galette installation
+     */
     public function __construct(string $basepath)
     {
         $this->basepath = $basepath;

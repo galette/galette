@@ -31,12 +31,22 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Plugins list console command
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
 #[AsCommand(
     name: 'galette:plugins:list',
     description: 'List existing Galette plugins'
 )]
 class PluginsList extends AbstractCommand
 {
+    /**
+     * Configure command
+     *
+     * @return void
+     */
     protected function configure(): void
     {
         $this
@@ -46,6 +56,14 @@ class PluginsList extends AbstractCommand
         ;
     }
 
+    /**
+     * Command execution
+     *
+     * @param InputInterface  $input  Input interface
+     * @param OutputInterface $output Output interface
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         global $container;
@@ -104,7 +122,6 @@ class PluginsList extends AbstractCommand
                     $definitions[] = sprintf('%s (disabled)', $module_id);
                 }
             }
-
         }
 
         if (!$input->getOption('complete')) {

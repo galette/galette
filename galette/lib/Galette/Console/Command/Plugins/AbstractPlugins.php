@@ -32,12 +32,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-abstract  class AbstractPlugins extends AbstractCommand
+/**
+ * Abstract command for plugins
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
+abstract class AbstractPlugins extends AbstractCommand
 {
     public const ALL = '*';
 
     protected \Galette\Core\Plugins $plugins;
 
+    /**
+     * Default constructor
+     *
+     * @param string $basepath Base path to Galette installation
+     */
     public function __construct(string $basepath)
     {
         global $container;
@@ -46,14 +56,27 @@ abstract  class AbstractPlugins extends AbstractCommand
         $this->plugins = $container->get('plugins');
     }
 
+    /**
+     * Configure command
+     *
+     * @return void
+     */
     protected function configure(): void
     {
         $this
-            ->addArgument('plugins', InputArgument::IS_ARRAY|InputArgument::OPTIONAL, 'Plugins names')
+            ->addArgument('plugins', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Plugins names')
             ->addOption('all', 'a', InputOption::VALUE_NONE, 'Enable plugin(s)')
         ;
     }
 
+    /**
+     * Interacts to request missing arguments or options
+     *
+     * @param InputInterface  $input  Input interface
+     * @param OutputInterface $output Output interface
+     *
+     * @return void
+     */
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
@@ -129,21 +152,43 @@ abstract  class AbstractPlugins extends AbstractCommand
         }
     }
 
+    /**
+     * Get active plugins ids list
+     *
+     * @return array<string>
+     */
     protected function getActivePlugins(): array
     {
         return array_keys($this->plugins->getModules());
     }
 
+    /**
+     * Get inactive plugins ids list
+     *
+     * @return array<string>
+     */
     protected function getInactivePlugins(): array
     {
         return array_keys($this->plugins->getDisabledModules());
     }
 
+    /**
+     * Get all plugins ids list
+     *
+     * @return array<string>
+     */
     protected function getPlugins(): array
     {
         return array_merge($this->getActivePlugins(), $this->getInactivePlugins());
     }
 
+    /**
+     * Get relevant choices (getRelevantPlugins formatted) for the command
+     *
+     * @param SymfonyStyle $io Output interface
+     *
+     * @return array<string, string>
+     */
     protected function getRelevantChoices(SymfonyStyle $io): array
     {
         $relevant = $this->getRelevantPlugins($io);
@@ -156,5 +201,12 @@ abstract  class AbstractPlugins extends AbstractCommand
         return $choices;
     }
 
+    /**
+     * Get relevant plugins for current command
+     *
+     * @param SymfonyStyle $io Output interface
+     *
+     * @return array<string, array<string, string>>
+     */
     abstract protected function getRelevantPlugins(SymfonyStyle $io): array;
 }
