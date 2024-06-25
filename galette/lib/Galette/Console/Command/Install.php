@@ -32,13 +32,29 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Install console command
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
 #[AsCommand(
     name: 'galette:install',
     description: 'Install Galette'
 )]
 class Install extends AbstractCommand
 {
+    /**
+     * Database types
+     *
+     * @var array<string>
+     */
     private array $db_types = ['mysql', 'pgsql'];
+
+    /**
+     * Configure command
+     *
+     * @return void
+     */
     protected function configure(): void
     {
         $this
@@ -55,6 +71,14 @@ class Install extends AbstractCommand
         ;
     }
 
+    /**
+     * Command execution
+     *
+     * @param InputInterface  $input  Input interface
+     * @param OutputInterface $output Output interface
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         global $installer;
@@ -192,7 +216,7 @@ class Install extends AbstractCommand
             }
             $galette_sa_pass = $io->askHidden(
                 'Superadmin password',
-                function(?string $password) {
+                function (?string $password) {
                     if ($password === null) {
                         throw new \RuntimeException('Galette super user password cannot be empty.');
                     }

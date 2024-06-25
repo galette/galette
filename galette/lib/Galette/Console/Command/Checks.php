@@ -30,12 +30,25 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Checks console command
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
 #[AsCommand(
     name: 'galette:checks',
     description: 'Check Galette requirements'
 )]
 class Checks extends AbstractCommand
 {
+    /**
+     * Command execution
+     *
+     * @param InputInterface  $input  Input interface
+     * @param OutputInterface $output Output interface
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln([
@@ -92,7 +105,6 @@ class Checks extends AbstractCommand
 
         if (
             !$phpok
-            || !isset($cm)
             || !$cm->isValid()
         ) {
             $io->error('Something is wrong with your setup :(');

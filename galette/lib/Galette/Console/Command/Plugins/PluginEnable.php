@@ -1,5 +1,26 @@
 <?php
 
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+declare(strict_types=1);
+
 namespace Galette\Console\Command\Plugins;
 
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -8,12 +29,26 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Plugins activation console command
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
+
 #[AsCommand(
     name: 'galette:plugins:enable',
     description: 'Enable Galette plugins'
 )]
 class PluginEnable extends AbstractPlugins
 {
+    /**
+     * Command execution
+     *
+     * @param InputInterface  $input  Input interface
+     * @param OutputInterface $output Output interface
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -30,6 +65,13 @@ class PluginEnable extends AbstractPlugins
         return Command::SUCCESS;
     }
 
+    /**
+     * Get relevant plugins (disabled ones) for current command
+     *
+     * @param SymfonyStyle $io Output interface
+     *
+     * @return array<string, array<string, string>>
+     */
     protected function getRelevantPlugins(SymfonyStyle $io): array
     {
         $disabled_plugins = $this->plugins->getDisabledModules();

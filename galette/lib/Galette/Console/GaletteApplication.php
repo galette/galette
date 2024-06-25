@@ -25,16 +25,31 @@ namespace Galette\Console;
 
 use Symfony\Component\Console\Application;
 
+/**
+ * Galetet console application
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
 class GaletteApplication extends Application
 {
     private string $basepath;
 
+    /**
+     * Default constructor
+     *
+     * @param string $basepath Base path to Galette installation
+     */
     public function __construct(string $basepath)
     {
         $this->basepath = $basepath;
         parent::__construct('Galette', GALETTE_VERSION);
     }
 
+    /**
+     * Initialize application
+     *
+     * @return void
+     */
     public function init(): void
     {
         $this->add(new Command\Checks($this->basepath));
