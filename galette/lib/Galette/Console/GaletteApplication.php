@@ -39,7 +39,9 @@ class GaletteApplication extends Application
     {
         $this->add(new Command\Checks($this->basepath));
         $this->add(new Command\Install($this->basepath));
-        $this->add(new Command\PluginsList($this->basepath));
-        $this->add(new Command\Plugins($this->basepath));
+        $this->add(new Command\Plugins\PluginsList($this->basepath));
+        $this->add(new Command\Plugins\PluginEnable($this->basepath));
+        $this->add(new Command\Plugins\PluginDisable($this->basepath));
+        $this->add(new Command\Plugins\PluginInstallDb($this->basepath));
     }
 }

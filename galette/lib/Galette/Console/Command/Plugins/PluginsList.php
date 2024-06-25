@@ -21,13 +21,11 @@
 
 declare(strict_types=1);
 
-namespace Galette\Console\Command;
+namespace Galette\Console\Command\Plugins;
 
-use Galette\Core\CheckModules;
+use Galette\Console\Command\AbstractCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\TableSeparator;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -91,10 +89,10 @@ class PluginsList extends AbstractCommand
                             $module['cause'] = 'Not compatible';
                             break;
                         case \Galette\Core\Plugins::DISABLED_MISS:
-                            $module['cause'] = 'Miss a reqiuired file';
+                            $module['cause'] = 'Miss a required file';
                             break;
                         case \Galette\Core\Plugins::DISABLED_EXPLICIT:
-                            $module['cause'] = 'Exlicitly disabled';
+                            $module['cause'] = 'Explicitly disabled';
                             break;
                     }
                     $io->definitionList(

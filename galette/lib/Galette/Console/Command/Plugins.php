@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace Galette\Console\Command;
+namespace Galette\Console\Command\Plugins;
 
 use Galette\Core\CheckModules;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -43,9 +43,10 @@ class Plugins extends AbstractCommand
     {
         $this
             ->addArgument('plugins', InputArgument::IS_ARRAY|InputArgument::OPTIONAL, 'Plugins names')
-            ->addoption('enable', null, InputOption::VALUE_NONE, 'Enable plugin(s)')
+            ->addOption('all', null, InputOption::VALUE_NONE, 'Enable plugin(s)')
+            /*->addoption('enable', null, InputOption::VALUE_NONE, 'Enable plugin(s)')
             ->addOption('disable', null, InputOption::VALUE_NONE, 'Disable plugin(s)')
-            ->addOption('install-db', null, InputOption::VALUE_NONE, 'Install plugin(s) database')
+            ->addOption('install-db', null, InputOption::VALUE_NONE, 'Install plugin(s) database')*/
         ;
     }
 
