@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-24 16:09+0000\n"
+"PO-Revision-Date: 2024-06-25 15:26+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -5856,7 +5856,7 @@ msgstr "Attiva l'editor HTML"
 
 #: ../../tempcache/elements/list.html.twig:262
 msgid "Records per page:"
-msgstr ""
+msgstr "Registrazioni per pagina:"
 
 #: ../../tempcache/elements/list.html.twig:469
 msgid "(Un)Check all"
@@ -5968,7 +5968,7 @@ msgstr ""
 
 #: ../../tempcache/elements/edit_socials.html.twig:62
 msgid "Disable social networks on member form"
-msgstr ""
+msgstr "Disattiva i social network nel modulo del socio"
 
 #: ../../tempcache/elements/edit_socials.html.twig:120
 #: ../../tempcache/elements/edit_socials.html.twig:125
@@ -6166,30 +6166,30 @@ msgstr "Informazioni:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:284
 msgid "Extra information displayed along with dynamic field."
-msgstr ""
+msgstr "Informazioni aggiuntive visualizzate insieme al campo dinamico."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:290
 msgid "Display information above input"
-msgstr ""
+msgstr "Mostra informazioni sopra l'inserimento"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:392
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:401
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:174
 msgid "New dynamic field"
-msgstr ""
+msgstr "Nuovo campo dinamico"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:412
 #: ../../tempcache/pages/configuration_core_lists.html.twig:71
 #: ../../tempcache/pages/configuration_core_lists.html.twig:174
 #: ../../tempcache/pages/configuration_core_lists.html.twig:301
 msgid "Field name"
-msgstr ""
+msgstr "Nome campo"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:424
 #: ../../tempcache/pages/documents_list.html.twig:100
 #: ../../tempcache/pages/documents_list.html.twig:178
 msgid "Visibility"
-msgstr ""
+msgstr "Visibilità"
 
 #: ../../tempcache/pages/documents_public_list.html.twig:61
 #: ../../tempcache/pages/documents_list.html.twig:251
@@ -6206,22 +6206,23 @@ msgstr[1] "%count documenti"
 
 #: ../../tempcache/pages/transaction_form.html.twig:66
 msgid "Transaction details"
-msgstr ""
+msgstr "Dettagli sulla transazione"
 
 #: ../../tempcache/pages/transaction_form.html.twig:169
 #: ../../tempcache/pages/transaction_form.html.twig:175
 #: ../../tempcache/pages/contribution_form.html.twig:347
 msgid "Select a contribution type to create for dispatch transaction"
 msgstr ""
+"Selezionare un tipo di contributo da creare per la transazione di spedizione"
 
 #: ../../tempcache/pages/transaction_form.html.twig:171
 #: ../../tempcache/pages/contribution_form.html.twig:343
 msgid "Dispatch type:"
-msgstr ""
+msgstr "Tipo di spedizione:"
 
 #: ../../tempcache/pages/transaction_form.html.twig:201
 msgid "Attached contributions"
-msgstr ""
+msgstr "Contributi allegati"
 
 #: ../../tempcache/pages/transaction_form.html.twig:213
 #: ../../tempcache/pages/contributions_list.html.twig:88
@@ -6243,29 +6244,29 @@ msgstr "Fine"
 #: ../../tempcache/pages/contributions_list.html.twig:446
 #: ../../tempcache/pages/contributions_list.html.twig:720
 msgid "Duration"
-msgstr ""
+msgstr "Durata"
 
 #: ../../tempcache/pages/transaction_form.html.twig:262
 msgid "Dispatched amount:"
-msgstr ""
+msgstr "Importo di spedizione:"
 
 #: ../../tempcache/pages/transaction_form.html.twig:279
 msgid "Not dispatched amount:"
-msgstr ""
+msgstr "Importo non spedito:"
 
 #: ../../tempcache/pages/transaction_form.html.twig:311
 #: ../../tempcache/pages/transaction_form.html.twig:318
 #: ../../tempcache/pages/contribution_form.html.twig:297
 #: ../../tempcache/pages/contribution_form.html.twig:304
 msgid "Create a new fee that will be attached to the current transaction"
-msgstr ""
+msgstr "Creare una nuova tariffa che sarà allegata alla transazione corrente"
 
 #: ../../tempcache/pages/transaction_form.html.twig:331
 #: ../../tempcache/pages/transaction_form.html.twig:338
 #: ../../tempcache/pages/contribution_form.html.twig:317
 #: ../../tempcache/pages/contribution_form.html.twig:324
 msgid "Create a new donation that will be attached to the current transaction"
-msgstr ""
+msgstr "Creare una nuova donazione che sarà allegata alla transazione corrente"
 
 #: ../../tempcache/pages/transaction_form.html.twig:346
 #: ../../tempcache/pages/transaction_form.html.twig:353
@@ -6273,25 +6274,27 @@ msgid ""
 "Select an existing contribution in the database, and attach it to the "
 "current transaction"
 msgstr ""
+"Seleziona un contributo esistente nel database, e collegalo alla transazione "
+"corrente"
 
 #: ../../tempcache/pages/transaction_form.html.twig:431
 msgid "Detach contribution from this transaction"
-msgstr ""
+msgstr "Scollega il contributo da questa transazione"
 
 #: ../../tempcache/pages/transaction_form.html.twig:451
 #: ../../tempcache/pages/contributions_list.html.twig:793
 msgid "no contribution"
-msgstr ""
+msgstr "nessun contributo"
 
 #: ../../tempcache/pages/transaction_form.html.twig:500
 #: ../../tempcache/pages/contribution_form.html.twig:769
 msgid "No member registered!"
-msgstr ""
+msgstr "Nessun socio registrato!"
 
 #: ../../tempcache/pages/transaction_form.html.twig:505
 #: ../../tempcache/pages/contribution_form.html.twig:774
 msgid "Unfortunately, there is no member in your database yet,"
-msgstr ""
+msgstr "Sfortunatamente, non c'è ancora alcun socio nel database,"
 
 #: ../../tempcache/pages/transaction_form.html.twig:512
 #: ../../tempcache/pages/contribution_form.html.twig:781
@@ -6306,11 +6309,11 @@ msgstr "aggiungere nuovo socio"
 #: ../../tempcache/pages/contribution_form.html.twig:1004
 #: ../../tempcache/pages/contribution_form.html.twig:1035
 msgid "An error occurred displaying contributions :("
-msgstr ""
+msgstr "Si è verificato un errore di visualizzazione dei contributi :("
 
 #: ../../tempcache/pages/transaction_form.html.twig:580
 msgid "Contributions selection"
-msgstr ""
+msgstr "Selezione dei contributi"
 
 #: ../../tempcache/pages/transaction_form.html.twig:702
 msgid "Click on a contribution row to attach it to the current transaction"
