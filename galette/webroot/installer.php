@@ -32,7 +32,7 @@ use Galette\Util\Telemetry;
 //that way, in galette.inc.php, we'll only include relevant parts
 $installer = true;
 define('GALETTE_ROOT', __DIR__ . '/../');
-define('GALETTE_MODE', 'INSTALL');
+define('GALETTE_INSTALLER', true);
 
 // check PHP modules
 require_once GALETTE_ROOT . '/vendor/autoload.php';

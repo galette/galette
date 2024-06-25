@@ -84,7 +84,7 @@ class Texts
             + $this->getContributionPatterns()
         );
 
-        if (GALETTE_MODE !== 'INSTALL') {
+        if (!defined('GALETTE_INSTALLER') || GALETTE_INSTALLER !== true) {
             $this
                 ->setMain()
                 ->setMail();
