@@ -264,8 +264,6 @@ class Install extends AbstractCommand
 
         $results = $zdb->grantCheck($install->getMode());
         $sql_messages = [];
-
-        $result = array();
         $sql_error = false;
 
         //test returned values
@@ -318,13 +316,28 @@ class Install extends AbstractCommand
             return Command::FAILURE;
         }
 
+        $io->info('Installing database, please wait...');
         $installed = $install->executeScripts($zdb);
         if (!$installed) {
             $io->error('Database has not been installed');
             return Command::FAILURE;
         }
 
+        //FIXME
+        //$config_file_ok = $install->writeConfFile();
+
+        $install->setAdminInfos($galette_sa, $galette_sa_pass);
+
+        $io->info('Initializing data, please wait...');
+        define('GALETTE_INSTALLER', true);
+        $i18n = new \Galette\Core\I18n();
+        $install->initObjects(
+            $i18n,
+            $zdb,
+            new \Galette\Core\Login($zdb, $i18n)
+        );
+
         $io->success('Galette installation is complete!');
-        return Command::FAILURE;
+        return Command::SUCCESS;
     }
 }
