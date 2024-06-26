@@ -52,7 +52,7 @@ if (!isset($installer)) {
 // test if galette is already installed or if we're form installer
 // and redirect to install page if not
 $installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
-if (!$installed && !$installer) {
+if (!$installed && !$installer && (!defined('GALETTE_ENV') || GALETTE_ENV != 'CLI')) {
     header('location: ./installer.php');
     die();
 }
