@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-28 01:16+0000\n"
+"PO-Revision-Date: 2024-06-29 12:09+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -5041,7 +5041,7 @@ msgstr "Elimina tutti i dati associati"
 
 #: ../../tempcache/modals/confirm_removal.html.twig:91
 msgid "Cascade delete"
-msgstr ""
+msgstr "Cancellamento a cascata"
 
 #: ../../tempcache/modals/confirm_removal.html.twig:135
 msgid "Are you sure you want to proceed?"
@@ -6358,7 +6358,7 @@ msgstr "Nessuna ACL!"
 
 #: ../../tempcache/pages/plugin_info.html.twig:181
 msgid "Raw information"
-msgstr ""
+msgstr "Informazioni grezze"
 
 #: ../../tempcache/pages/contributions_list.html.twig:55
 msgid "No contribution selected"
@@ -6378,7 +6378,7 @@ msgstr "Mostra i contributi di"
 
 #: ../../tempcache/pages/contributions_list.html.twig:108
 msgid "Record"
-msgstr ""
+msgstr "Registrazione"
 
 #: ../../tempcache/pages/contributions_list.html.twig:116
 #: ../../tempcache/pages/history.html.twig:128
@@ -6673,7 +6673,7 @@ msgstr "Campi predefiniti"
 #: ../../tempcache/pages/import_model.html.twig:87
 #, php-format
 msgid "Model parameted on %date"
-msgstr ""
+msgstr "Modello parametrizzato su %date"
 
 #: ../../tempcache/pages/import_model.html.twig:97
 #: ../../tempcache/pages/import_model.html.twig:187
@@ -6910,13 +6910,14 @@ msgstr "Titolo ricerca"
 #: ../../tempcache/pages/members_list.html.twig:1199
 #: ../../tempcache/pages/mailings_list.html.twig:111
 msgid "Existing mailing"
-msgstr ""
+msgstr "Invio postale esistente"
 
 #: ../../tempcache/pages/members_list.html.twig:1199
 msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
 msgstr ""
+"Un invio postale esiste già. Crearne uno nuovo o riprendere l'esistente?"
 
 #: ../../tempcache/pages/members_list.html.twig:1199
 msgid "New"
@@ -6929,6 +6930,8 @@ msgstr "Riprendi"
 #: ../../tempcache/pages/members_list.html.twig:1237
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
+"Si è verificato un errore nel mostrare l'interfaccia dettagli del foglio di "
+"frequenza :("
 
 #: ../../tempcache/pages/members_list.html.twig:1460
 msgid "Required field!"
@@ -7006,6 +7009,8 @@ msgstr "Selezione gestori di gruppo"
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
+"Gli articoli in questo elenco sono stati modificati. Ricordarsi di salvare i "
+"cambiamenti."
 
 #: ../../tempcache/pages/groups_list.html.twig:407
 #: ../../tempcache/pages/mailing_form.html.twig:664
@@ -7019,7 +7024,7 @@ msgstr "Aggiungi documento"
 #: ../../tempcache/pages/documents_list.html.twig:100
 #: ../../tempcache/pages/documents_list.html.twig:158
 msgid "Filename"
-msgstr ""
+msgstr "Nomefile"
 
 #: ../../tempcache/pages/documents_list.html.twig:100
 #: ../../tempcache/pages/documents_list.html.twig:184
@@ -7028,7 +7033,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:309
 #: ../../tempcache/pages/advanced_search.html.twig:662
 msgid "Creation date"
-msgstr ""
+msgstr "Data di creazione"
 
 #: ../../tempcache/pages/index.html.twig:124
 msgid "Lost your password?"
@@ -7036,40 +7041,41 @@ msgstr "Hai perso la password?"
 
 #: ../../tempcache/pages/import.html.twig:67
 msgid "Existing files"
-msgstr ""
+msgstr "File esistenti"
 
 #: ../../tempcache/pages/import.html.twig:80
 msgid "The following files seems ready to import on the disk:"
-msgstr ""
+msgstr "I seguenti file sembrano pronti all'importazione sul disco:"
 
 #: ../../tempcache/pages/import.html.twig:95
 #: ../../tempcache/pages/import.html.twig:157
 #: ../../tempcache/pages/export.html.twig:137
 #: ../../tempcache/pages/export.html.twig:188
 msgid "Size"
-msgstr ""
+msgstr "Dimensione"
 
 #: ../../tempcache/pages/import.html.twig:143
 msgid "see"
-msgstr ""
+msgstr "vedere"
 
 #: ../../tempcache/pages/import.html.twig:175
 #: ../../tempcache/pages/export.html.twig:206
 #, php-format
 msgid "Remove '%file' from disk"
-msgstr ""
+msgstr "Rimuovere '%file' dal disco"
 
 #: ../../tempcache/pages/import.html.twig:199
 msgid "Run the import process, but do *not* store anything in the database"
 msgstr ""
+"Eseguire il processo di importazione, ma *non* memorizzare nulla nel database"
 
 #: ../../tempcache/pages/import.html.twig:203
 msgid "Dry run"
-msgstr ""
+msgstr "Esecuzione di prova"
 
 #: ../../tempcache/pages/import.html.twig:216
 msgid "Import"
-msgstr ""
+msgstr "Importa"
 
 #: ../../tempcache/pages/import.html.twig:228
 msgid "No import file actually exists."
@@ -7098,47 +7104,49 @@ msgstr "Scegli un file"
 
 #: ../../tempcache/pages/import.html.twig:274
 msgid "Upload file"
-msgstr ""
+msgstr "Carica file"
 
 #: ../../tempcache/pages/import.html.twig:287
 msgid "Configure import model"
-msgstr ""
+msgstr "Configura modello di importazione"
 
 #: ../../tempcache/pages/import.html.twig:315
 #: ../../tempcache/pages/import.html.twig:326
 msgid "No file selected"
-msgstr ""
+msgstr "Nessun file selezionato"
 
 #: ../../tempcache/pages/import.html.twig:315
 msgid "Please make sure to select one file to import."
-msgstr ""
+msgstr "Assicurarsi di selezionare un file da importare."
 
 #: ../../tempcache/pages/import.html.twig:326
 msgid "Please make sure to select one file to upload."
-msgstr ""
+msgstr "Assicurarsi di selezionare un file da caricare."
 
 #: ../../tempcache/pages/status_form.html.twig:75
 msgid "Priority:"
-msgstr ""
+msgstr "Priorità:"
 
 #: ../../tempcache/pages/status_form.html.twig:85
 #: ../../tempcache/pages/status_list.html.twig:60
 msgid ""
 "Note: members with a status priority lower than %priority are staff members."
 msgstr ""
+"Nota: i soci con una priorità di stato inferiore a %priority sono membri del "
+"personale."
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:76
 msgid "Add payment type"
-msgstr ""
+msgstr "Aggiungi tipo di pagamento"
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:82
 msgid "Label"
-msgstr ""
+msgstr "Etichetta"
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:160
 #, php-format
 msgid "Edit '%s' payment type"
-msgstr ""
+msgstr "Modifica tipo di pagamento '%s'"
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:173
 #: ../../tempcache/pages/preferences.html.twig:187
@@ -7149,37 +7157,37 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:1918
 #, php-format
 msgid "Translate '%s'"
-msgstr ""
+msgstr "Traduci '%s'"
 
 #: ../../tempcache/pages/configuration_payment_types.html.twig:194
 #, php-format
 msgid "Delete '%s' payment type"
-msgstr ""
+msgstr "Cancella tipo di pagamento '%s'"
 
 #: ../../tempcache/pages/status_list.html.twig:75
 #: ../../tempcache/pages/status_list.html.twig:107
 #: ../../tempcache/pages/status_list.html.twig:165
 msgid "Priority"
-msgstr ""
+msgstr "Priorità"
 
 #: ../../tempcache/pages/status_list.html.twig:89
 msgid "New status"
-msgstr ""
+msgstr "Nuovo stato"
 
 #: ../../tempcache/pages/reminder.html.twig:58
 msgid "Choose wich reminder(s) you want to send:"
-msgstr ""
+msgstr "Scegliere i promemoria che si desidera inviare:"
 
 #: ../../tempcache/pages/reminder.html.twig:85
 #: ../../tempcache/pages/reminder.html.twig:122
 msgid "preview"
-msgstr ""
+msgstr "anteprima"
 
 #: ../../tempcache/pages/reminder.html.twig:91
 #: ../../tempcache/pages/reminder.html.twig:128
 #, php-format
 msgid "%s members with an email address"
-msgstr ""
+msgstr "%s soci con indirizzo email"
 
 #: ../../tempcache/pages/reminder.html.twig:97
 #: ../../tempcache/pages/reminder.html.twig:134
@@ -7196,77 +7204,77 @@ msgstr "Genera etichette per i membri senza indirizzo e-mail"
 #: ../../tempcache/pages/mailing_form.html.twig:417
 #: ../../tempcache/pages/500.html.twig:112
 msgid "Message:"
-msgstr ""
+msgstr "Messaggio:"
 
 #: ../../tempcache/pages/reminder.html.twig:246
 msgid "No reminder selected"
-msgstr ""
+msgstr "Nessun promemoria selezionato"
 
 #: ../../tempcache/pages/reminder.html.twig:246
 msgid "Please make sure to select at least one reminder."
-msgstr ""
+msgstr "Assicurarsi di selezionare almeno un promemoria."
 
 #: ../../tempcache/pages/contribution_form.html.twig:74
 msgid "Select contributor and membership fee type"
-msgstr ""
+msgstr "Selezionare il tipo di contributo e quota di iscrizione"
 
 #: ../../tempcache/pages/contribution_form.html.twig:80
 msgid "Select contributor and donation type"
-msgstr ""
+msgstr "Selezionare il tipo di contributo e donazione"
 
 #: ../../tempcache/pages/contribution_form.html.twig:91
 msgid "Transaction related"
-msgstr ""
+msgstr "Relativo alla transazione"
 
 #: ../../tempcache/pages/contribution_form.html.twig:103
 msgid "Has scheduled payments"
-msgstr ""
+msgstr "Ha pagamenti previsti"
 
 #: ../../tempcache/pages/contribution_form.html.twig:223
 msgid "View transaction"
-msgstr ""
+msgstr "Visualizza la transazione"
 
 #: ../../tempcache/pages/contribution_form.html.twig:228
 msgid "Related transaction information"
-msgstr ""
+msgstr "Informazioni sulle transazioni correlate"
 
 #: ../../tempcache/pages/contribution_form.html.twig:277
 #: ../../tempcache/pages/contribution_form.html.twig:424
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:220
 msgid "Not dispatched amount"
-msgstr ""
+msgstr "Importo non inviato"
 
 #: ../../tempcache/pages/contribution_form.html.twig:394
 msgid "View scheduled payments"
-msgstr ""
+msgstr "Visualizza i pagamenti programmati"
 
 #: ../../tempcache/pages/contribution_form.html.twig:399
 #: ../../tempcache/pages/contribution_form.html.twig:930
 msgid "Scheduled payments"
-msgstr ""
+msgstr "Pagamenti programmati"
 
 #: ../../tempcache/pages/contribution_form.html.twig:438
 #: ../../tempcache/pages/contribution_form.html.twig:445
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:238
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:245
 msgid "Create a new scheduled payment"
-msgstr ""
+msgstr "Crea un nuovo pagamento programmato"
 
 #: ../../tempcache/pages/contribution_form.html.twig:475
 msgid "Details of membership fee"
-msgstr ""
+msgstr "Dettagli della quota di iscrizione"
 
 #: ../../tempcache/pages/contribution_form.html.twig:481
 msgid "Details of donation"
-msgstr ""
+msgstr "Dettagli della donazione"
 
 #: ../../tempcache/pages/contribution_form.html.twig:631
 msgid "months"
-msgstr ""
+msgstr "mesi"
 
 #: ../../tempcache/pages/contribution_form.html.twig:709
 msgid "Notify member"
-msgstr ""
+msgstr "Informa il socio"
 
 #: ../../tempcache/pages/contribution_form.html.twig:716
 msgid "Member will receive a notification by email, if he has an address."
@@ -7274,7 +7282,7 @@ msgstr "Il socio riceverà una notifica via e-mail, se ha un indirizzo."
 
 #: ../../tempcache/pages/contribution_form.html.twig:873
 msgid "Contribution amount should not be greater than %max"
-msgstr ""
+msgstr "L'importo del contributo non dovrebbe essere superiore a %max"
 
 #: ../../tempcache/pages/contribution_form.html.twig:919
 msgid "An error occurred displaying scheduled payments :("
@@ -7282,40 +7290,40 @@ msgstr "Errore di visualizzazione dei pagamenti programmati :("
 
 #: ../../tempcache/pages/mailing_form.html.twig:76
 msgid "Mailing information"
-msgstr ""
+msgstr "Informazioni sull'invio postale"
 
 #: ../../tempcache/pages/mailing_form.html.twig:84
 #: ../../tempcache/pages/mailings_list.html.twig:128
 #: ../../tempcache/pages/mailings_list.html.twig:342
 msgid "Sender"
-msgstr ""
+msgstr "Mittente"
 
 #: ../../tempcache/pages/mailing_form.html.twig:91
 #: ../../tempcache/pages/preferences.html.twig:365
 msgid "from preferences"
-msgstr ""
+msgstr "dalle preferenze"
 
 #: ../../tempcache/pages/mailing_form.html.twig:100
 msgid "current logged in user"
-msgstr ""
+msgstr "utente attualmente collegato"
 
 #: ../../tempcache/pages/mailing_form.html.twig:108
 msgid "other"
-msgstr ""
+msgstr "altro"
 
 #: ../../tempcache/pages/mailing_form.html.twig:138
 #: ../../tempcache/pages/mailings_list.html.twig:128
 #: ../../tempcache/pages/mailings_list.html.twig:352
 msgid "Recipients"
-msgstr ""
+msgstr "Destinatari"
 
 #: ../../tempcache/pages/mailing_form.html.twig:151
 msgid "Go back to members list"
-msgstr ""
+msgstr "Torna alla lista dei soci"
 
 #: ../../tempcache/pages/mailing_form.html.twig:160
 msgid "Manage selected members"
-msgstr ""
+msgstr "Gestisci i soci selezionati"
 
 #: ../../tempcache/pages/mailing_form.html.twig:182
 #: ../../tempcache/pages/configuration_core_lists.html.twig:56
@@ -7324,76 +7332,81 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:1045
 #: ../../tempcache/components/forms/groups.html.twig:48
 msgid "This feature requires javascript."
-msgstr ""
+msgstr "Questa funzione richiede javascript."
 
 #: ../../tempcache/pages/mailing_form.html.twig:199
 msgid "Existing attachments:"
-msgstr ""
+msgstr "Allegati esistenti:"
 
 #: ../../tempcache/pages/mailing_form.html.twig:221
 #: ../../tempcache/pages/mailing_form.html.twig:721
 msgid "Remove attachment"
-msgstr ""
+msgstr "Rimuovere l'allegato"
 
 #: ../../tempcache/pages/mailing_form.html.twig:256
 msgid ""
 "Select files to add as attachments.<br/>Multiple file selection using 'ctrl' "
 "or 'shift' keys are only available on compatible browsers."
 msgstr ""
+"Selezionare i file da aggiungere come allegati.<br>La selezione multipla dei "
+"file tramite i tasti 'ctrl' o 'maiusc' è disponibile solo su browser "
+"compatibili."
 
 #: ../../tempcache/pages/mailing_form.html.twig:264
 msgid "Add attachment"
-msgstr ""
+msgstr "Aggiungi allegato"
 
 #: ../../tempcache/pages/mailing_form.html.twig:287
 msgid "Write your mailing"
-msgstr ""
+msgstr "Scrivere l'invio postale"
 
 #: ../../tempcache/pages/mailing_form.html.twig:294
 msgid "Object:"
-msgstr ""
+msgstr "Oggetto:"
 
 #: ../../tempcache/pages/mailing_form.html.twig:332
 msgid "Interpret HTML"
-msgstr ""
+msgstr "Interpreta l'HTML"
 
 #: ../../tempcache/pages/mailing_form.html.twig:355
 msgid "Preview"
-msgstr ""
+msgstr "Anteprima"
 
 #: ../../tempcache/pages/mailing_form.html.twig:381
 #: ../../tempcache/pages/mailing_form.html.twig:472
 msgid "Cancel mailing"
-msgstr ""
+msgstr "Annulla la l'invio postale"
 
 #: ../../tempcache/pages/mailing_form.html.twig:398
 msgid "Preview your mailing"
-msgstr ""
+msgstr "Anteprima dell'invio postale"
 
 #: ../../tempcache/pages/mailing_form.html.twig:451
 msgid "Modifiy mailing"
-msgstr ""
+msgstr "Modifica l'invio postale"
 
 #: ../../tempcache/pages/mailing_form.html.twig:551
 #: ../../tempcache/pages/mailings_list.html.twig:487
 msgid "An error occurred displaying preview :("
-msgstr ""
+msgstr "Errore durante la visualizzazione dell'anteprima :("
 
 #: ../../tempcache/pages/mailing_form.html.twig:598
 msgid "Members selection"
-msgstr ""
+msgstr "Selezione soci"
 
 #: ../../tempcache/pages/mailing_form.html.twig:718
 msgid "Are you sure you want to remove this attachment?"
-msgstr ""
+msgstr "Sicuri di voler rimuovere questo allegato?"
 
 #: ../../tempcache/pages/mailing_form.html.twig:718
 msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr ""
+"Questo comando rimuoverà immediatamente l'allegato dal disco e non potrà "
+"essere annullato."
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:62
 msgid "Scheduled payment"
-msgstr ""
+msgstr "Pagamento programmato"
 
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:135
 msgid "View contribution"
@@ -7405,11 +7418,11 @@ msgstr "Informazioni sul contributo"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:64
 msgid "Short form:"
-msgstr ""
+msgstr "Forma breve:"
 
 #: ../../tempcache/pages/configuration_title_form.html.twig:74
 msgid "Long form:"
-msgstr ""
+msgstr "Forma estesa:"
 
 #: ../../tempcache/pages/preferences.html.twig:62
 msgid "General"
@@ -7422,7 +7435,7 @@ msgstr "Parametri"
 
 #: ../../tempcache/pages/preferences.html.twig:86
 msgid "Rights"
-msgstr ""
+msgstr "Diritti"
 
 #: ../../tempcache/pages/preferences.html.twig:94
 msgid "E-Mail"
@@ -7430,30 +7443,32 @@ msgstr "Email"
 
 #: ../../tempcache/pages/preferences.html.twig:121
 msgid "Security parameters"
-msgstr ""
+msgstr "Parametri di sicurezza"
 
 #: ../../tempcache/pages/preferences.html.twig:153
 msgid "Name of the association:"
-msgstr ""
+msgstr "Nome dell'associazione:"
 
 #: ../../tempcache/pages/preferences.html.twig:167
 msgid "Association's short description:"
-msgstr ""
+msgstr "Descrizione breve dell'associazione:"
 
 #: ../../tempcache/pages/preferences.html.twig:171
 msgid ""
 "Enter here a short description for your association, it will be displayed on "
 "the index page and into pages' title."
 msgstr ""
+"Inserire una breve descrizione per l'associazione; verrà visualizzata nella "
+"pagina dell'indice e nel titolo delle pagine."
 
 #: ../../tempcache/pages/preferences.html.twig:203
 #: ../../tempcache/pages/preferences.html.twig:1989
 msgid "Logo:"
-msgstr ""
+msgstr "Logo:"
 
 #: ../../tempcache/pages/preferences.html.twig:219
 msgid "Current logo"
-msgstr ""
+msgstr "Logo attuale"
 
 #: ../../tempcache/pages/preferences.html.twig:244
 #: ../../tempcache/pages/preferences.html.twig:2030
@@ -7467,11 +7482,11 @@ msgstr "Scegli un altro file"
 #: ../../tempcache/pages/preferences.html.twig:2047
 #: ../../tempcache/components/forms/picture.html.twig:54
 msgid "Delete image"
-msgstr ""
+msgstr "Cancella immagine"
 
 #: ../../tempcache/pages/preferences.html.twig:290
 msgid " (continuation)"
-msgstr ""
+msgstr " (continua)"
 
 #: ../../tempcache/pages/preferences.html.twig:340
 msgid "Website:"
@@ -7479,51 +7494,55 @@ msgstr "Sito Web:"
 
 #: ../../tempcache/pages/preferences.html.twig:354
 msgid "Postal address:"
-msgstr ""
+msgstr "Indirizzo postale:"
 
 #: ../../tempcache/pages/preferences.html.twig:358
 msgid ""
 "Use either the address setted below or select a staff member to retrieve "
 "he's address."
 msgstr ""
+"Utilizzare l'indirizzo di seguito o selezionare un membro del personale per "
+"recuperare l'indirizzo."
 
 #: ../../tempcache/pages/preferences.html.twig:379
 msgid "from a staff user"
-msgstr ""
+msgstr "da un membro del personale"
 
 #: ../../tempcache/pages/preferences.html.twig:398
 msgid "-- Choose a staff member --"
-msgstr ""
+msgstr "-- Scegliere un membro del personale --"
 
 #: ../../tempcache/pages/preferences.html.twig:434
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "
 "page"
 msgstr ""
+"Inserire un testo (l'HTML è permesso) che verrà visualizzato nel piè di "
+"pagina di ogni pagina"
 
 #: ../../tempcache/pages/preferences.html.twig:447
 msgid "Telemetry date:"
-msgstr ""
+msgstr "Data di telemetria:"
 
 #: ../../tempcache/pages/preferences.html.twig:451
 msgid "Last telemetry sent date."
-msgstr ""
+msgstr "Ultima telemetria inviata."
 
 #: ../../tempcache/pages/preferences.html.twig:461
 msgid "send"
-msgstr ""
+msgstr "invia"
 
 #: ../../tempcache/pages/preferences.html.twig:469
 msgid "Registration date:"
-msgstr ""
+msgstr "Data di registrazione:"
 
 #: ../../tempcache/pages/preferences.html.twig:473
 msgid "Date on which you registered your Galette instance."
-msgstr ""
+msgstr "Data in cui è stata registrata l'istanza di Galette."
 
 #: ../../tempcache/pages/preferences.html.twig:482
 msgid "Update your information"
-msgstr ""
+msgstr "Aggiorna i tuoi dati"
 
 #: ../../tempcache/pages/preferences.html.twig:494
 msgid "Not registered"
@@ -7531,66 +7550,66 @@ msgstr "Non registrato"
 
 #: ../../tempcache/pages/preferences.html.twig:518
 msgid "Prevent search engines indexation"
-msgstr ""
+msgstr "Evita l'indicizzazione dei motori di ricerca"
 
 #: ../../tempcache/pages/preferences.html.twig:548
 msgid "Default language:"
-msgstr ""
+msgstr "Lingua predefinita:"
 
 #: ../../tempcache/pages/preferences.html.twig:588
 msgid "Lines / Page:"
-msgstr ""
+msgstr "Righe / Pagina:"
 
 #: ../../tempcache/pages/preferences.html.twig:622
 #: ../../tempcache/pages/member_form.html.twig:290
 msgid "After member creation:"
-msgstr ""
+msgstr "Dopo la creazione del socio:"
 
 #: ../../tempcache/pages/preferences.html.twig:633
 #: ../../tempcache/pages/member_form.html.twig:301
 msgid "create a new contribution (default action)"
-msgstr ""
+msgstr "crea un nuovo contributo (azione predefinita)"
 
 #: ../../tempcache/pages/preferences.html.twig:643
 #: ../../tempcache/pages/member_form.html.twig:311
 msgid "create a new transaction"
-msgstr ""
+msgstr "crea una nuova transazione"
 
 #: ../../tempcache/pages/preferences.html.twig:653
 #: ../../tempcache/pages/member_form.html.twig:321
 msgid "create another new member"
-msgstr ""
+msgstr "crea un altro nuovo socio"
 
 #: ../../tempcache/pages/preferences.html.twig:663
 #: ../../tempcache/pages/member_form.html.twig:331
 msgid "show member"
-msgstr ""
+msgstr "mostra il socio"
 
 #: ../../tempcache/pages/preferences.html.twig:673
 #: ../../tempcache/pages/member_form.html.twig:341
 msgid "go to members list"
-msgstr ""
+msgstr "vai all'elenco dei soci"
 
 #: ../../tempcache/pages/preferences.html.twig:683
 #: ../../tempcache/pages/member_form.html.twig:351
 msgid "go to main page"
-msgstr ""
+msgstr "vai alla pagina principale"
 
 #: ../../tempcache/pages/preferences.html.twig:695
 msgid "Logging level:"
-msgstr ""
+msgstr "Livello dei log:"
 
 #: ../../tempcache/pages/preferences.html.twig:711
 msgid "Disabled"
-msgstr ""
+msgstr "Disabilitata"
 
 #: ../../tempcache/pages/preferences.html.twig:721
 msgid "Enabled"
-msgstr ""
+msgstr "Abilitata"
 
 #: ../../tempcache/pages/preferences.html.twig:728
 msgid "Default account filter:"
-msgstr ""
+msgstr "Filtro account predefinito:"
 
 #: ../../tempcache/pages/preferences.html.twig:757
 msgid "Default payment type:"
@@ -7598,29 +7617,31 @@ msgstr "Tipo di pagamento predefinito:"
 
 #: ../../tempcache/pages/preferences.html.twig:796
 msgid "Public pages enabled?"
-msgstr ""
+msgstr "Pagine pubbliche abilitate?"
 
 #: ../../tempcache/pages/preferences.html.twig:808
 msgid "Show public pages for"
-msgstr ""
+msgstr "Mostra le pagine pubbliche per"
 
 #: ../../tempcache/pages/preferences.html.twig:819
 msgid "Everyone"
-msgstr ""
+msgstr "Tutti"
 
 #: ../../tempcache/pages/preferences.html.twig:839
 msgid "Admin and staff only"
-msgstr ""
+msgstr "Sono amministratore e membri del personale"
 
 #: ../../tempcache/pages/preferences.html.twig:853
 msgid "Force member picture ratio"
-msgstr ""
+msgstr "Forza rapporto immagine socio"
 
 #: ../../tempcache/pages/preferences.html.twig:858
 msgid ""
 "If checked, the members's picture will be resized and cropped to the ratio "
 "selected below."
 msgstr ""
+"Se selezionata, l'immagine dei soci verrà ridimensionata e ritagliata al "
+"rapporto selezionato di seguito."
 
 #: ../../tempcache/pages/preferences.html.twig:869
 msgid "Select a ratio"
@@ -7628,11 +7649,11 @@ msgstr "Seleziona un rapporto"
 
 #: ../../tempcache/pages/preferences.html.twig:908
 msgid "Self subscription enabled?"
-msgstr ""
+msgstr "Autoiscrizione abilitata?"
 
 #: ../../tempcache/pages/preferences.html.twig:915
 msgid "Number of columns on the member form"
-msgstr ""
+msgstr "Numero di colonne sul modulo socio"
 
 #: ../../tempcache/pages/preferences.html.twig:941
 msgid "Post new contribution script URI"
@@ -7649,26 +7670,30 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:959
 msgid "RSS feed URL"
-msgstr ""
+msgstr "URL feed RSS"
 
 #: ../../tempcache/pages/preferences.html.twig:965
 msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr ""
+"Inserire l'URL completo nel feed RSS. Verrà visualizzato sul desktop di "
+"Galette."
 
 #: ../../tempcache/pages/preferences.html.twig:977
 msgid "Galette base URL"
-msgstr ""
+msgstr "URL base di Galette"
 
 #: ../../tempcache/pages/preferences.html.twig:983
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%galette_url"
 msgstr ""
+"Inserire l'URL base per l'istanza Galette. È necessario modificare questo "
+"parametro solo se l'URL della pagina corrente non è:<br>%galette_url"
 
 #: ../../tempcache/pages/preferences.html.twig:1004
 msgid "Show identifiers"
-msgstr ""
+msgstr "Mostra identificatori"
 
 #: ../../tempcache/pages/preferences.html.twig:1009
 msgid "Display database identifiers in related windows"
