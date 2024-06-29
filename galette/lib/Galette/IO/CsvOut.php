@@ -393,9 +393,9 @@ class CsvOut extends Csv
      *
      * @param string $id export's id to run
      *
-     * @return ?string filename used
+     * @return string|int|null filename used
      */
-    public function runParametedExport(string $id): ?string
+    public function runParametedExport(string $id): string|int|null
     {
         //try first to run from YAML configuration file
         $run = $this->runYamlParametedExport($id);
