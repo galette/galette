@@ -136,7 +136,9 @@ class SavedSearch
             );
             $this->parameters = [];
         }
-        $this->author_id = (int)$rs->id_adh;
+        if ($rs->id_adh !== null) {
+            $this->author_id = (int)$rs->id_adh;
+        }
         $this->creation_date = $rs->creation_date;
         $this->form = $rs->form;
     }

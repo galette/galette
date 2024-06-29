@@ -566,8 +566,9 @@ class Galette
          * @var Login $login
          * @var Plugins $plugins
          * @var Db $zdb
+         * @var Preferences $preferences
          */
-        global $login, $plugins, $zdb;
+        global $login, $plugins, $zdb, $preferences;
 
         $dashboards = [];
 
@@ -640,7 +641,7 @@ class Galette
         //display documents menu if at least one document is present with current ACLs
         $document = new Document($zdb);
         $documents = $document->getList();
-        if ($login->isSuperAdmin() || count($documents)) {
+        if ($preferences->showPublicPages($login) && ($login->isSuperAdmin() || count($documents))) {
             $dashboards = array_merge(
                 $dashboards,
                 [

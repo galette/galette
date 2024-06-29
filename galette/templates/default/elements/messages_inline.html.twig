@@ -145,7 +145,7 @@
                             <p class="header">{{ info_title }}</p>
                             {% set info_message = entry.message %}
                         {% endif %}
-                        <p>{{ entry|raw }}</p>
+                        <p>{{ info_message|raw }}</p>
                     {% endfor %}
                 {% endif %}
             </div>

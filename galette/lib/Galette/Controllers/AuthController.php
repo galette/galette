@@ -118,7 +118,6 @@ class AuthController extends AbstractController
         }
 
         if ($this->login->isLogged()) {
-            //check for new release
             if (
                 $this->login->isSuperAdmin()
                 || $this->login->isAdmin()
@@ -144,6 +143,7 @@ class AuthController extends AbstractController
                     }
                 }
 
+                //check for new release
                 try {
                     $release = new Release();
                     if ($release->checkNewRelease()) {
