@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-06-29 12:09+0000\n"
+"PO-Revision-Date: 2024-06-30 16:09+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -7657,7 +7657,7 @@ msgstr "Numero di colonne sul modulo socio"
 
 #: ../../tempcache/pages/preferences.html.twig:941
 msgid "Post new contribution script URI"
-msgstr ""
+msgstr "Invia URI script nuovo contributo"
 
 #: ../../tempcache/pages/preferences.html.twig:947
 msgid ""
@@ -7667,6 +7667,11 @@ msgid ""
 "or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in "
 "those cases)."
 msgstr ""
+"Inserire l'URI dello script che verrà chiamato all'aggiunta di un nuovo "
+"contributo.<br>L'URI dello script deve essere preceduto da uno tra "
+"'<em>galette://</em>' per la chiamata interna a Galette. '<em>file://</em>' "
+"per una chiamata diretta al file, '<em>get://</em>' o '<em>post://</em>' per "
+"chiamate HTTP (in questi casi il prefisso sarà sostituito da http://)."
 
 #: ../../tempcache/pages/preferences.html.twig:959
 msgid "RSS feed URL"
@@ -7697,37 +7702,39 @@ msgstr "Mostra identificatori"
 
 #: ../../tempcache/pages/preferences.html.twig:1009
 msgid "Display database identifiers in related windows"
-msgstr ""
+msgstr "Visualizza gli identificatori di database in finestre correlate"
 
 #: ../../tempcache/pages/preferences.html.twig:1026
 msgid "Default membership status:"
-msgstr ""
+msgstr "Stato di appartenenza predefinito:"
 
 #: ../../tempcache/pages/preferences.html.twig:1060
 msgid "Default membership extension:"
-msgstr ""
+msgstr "Estensione appartenenza predefinita:"
 
 #: ../../tempcache/pages/preferences.html.twig:1070
 msgid "(Months)"
-msgstr ""
+msgstr "(Mesi)"
 
 #: ../../tempcache/pages/preferences.html.twig:1081
 msgid "Beginning of membership:"
-msgstr ""
+msgstr "Inizio appartenenza:"
 
 #: ../../tempcache/pages/preferences.html.twig:1089
 msgid "(dd/mm)"
-msgstr ""
+msgstr "(gg/mm)"
 
 #: ../../tempcache/pages/preferences.html.twig:1095
 msgid "Number of months offered:"
-msgstr ""
+msgstr "Numero di mesi offerti:"
 
 #: ../../tempcache/pages/preferences.html.twig:1101
 msgid ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
 msgstr ""
+"Quando si utilizza l'opzione di appartenenza, è possibile offrire gli ultimi "
+"mesi dell'anno."
 
 #: ../../tempcache/pages/preferences.html.twig:1103
 msgid ""
@@ -7735,6 +7742,10 @@ msgid ""
 "All created contributions in current year will be valid until this date, but "
 "as of October, they will be valid for the entire next year."
 msgstr ""
+"Supponiamo che vengano offerti gli ultimi 2 mesi e che si abbia un rinnovo "
+"il 31 dicembre. Tutti i contributi creati nell'anno in corso saranno validi "
+"fino a questa data, ma da ottobre saranno validi per l'intero anno "
+"successivo."
 
 #: ../../tempcache/pages/preferences.html.twig:1133
 msgid "Can members create child?"
@@ -7742,33 +7753,35 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:1147
 msgid "Can group managers edit their groups?"
-msgstr ""
+msgstr "I gestori dei gruppi possono modificare i propri gruppi?"
 
 #: ../../tempcache/pages/preferences.html.twig:1161
 msgid "Can group managers create members?"
-msgstr ""
+msgstr "I gestori dei gruppi possono creare membri?"
 
 #: ../../tempcache/pages/preferences.html.twig:1175
 msgid "Can group managers edit members?"
-msgstr ""
+msgstr "I gestori dei gruppi possono modificare i membri?"
 
 #: ../../tempcache/pages/preferences.html.twig:1189
 msgid "Can group managers send mailings?"
-msgstr ""
+msgstr "I gestori dei gruppi possono inviare email?"
 
 #: ../../tempcache/pages/preferences.html.twig:1203
 msgid "Can group managers do exports?"
-msgstr ""
+msgstr "I gestori dei gruppi fare esportazioni?"
 
 #: ../../tempcache/pages/preferences.html.twig:1208
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
+"I gestori dei gruppi potranno esportare i membri come CSV, schede pdf, fogli "
+"presenza e gruppi pdf"
 
 #: ../../tempcache/pages/preferences.html.twig:1239
 msgid "Sender name:"
-msgstr ""
+msgstr "Nome mittente:"
 
 #: ../../tempcache/pages/preferences.html.twig:1249
 msgid "Sender Email:"
@@ -7789,13 +7802,15 @@ msgstr "E-mail dell’amministratore dei membri:"
 
 #: ../../tempcache/pages/preferences.html.twig:1286
 msgid "Recipient of new online registation and edition emails"
-msgstr ""
+msgstr "Destinatario delle e-mail di nuova registrazione e modifica online"
 
 #: ../../tempcache/pages/preferences.html.twig:1296
 msgid ""
 "(You can enter several emails separated with a comma. First address will be "
 "the default one.)"
 msgstr ""
+"(Si può inserire più email separate da una virgola. Il primo indirizzo sarà "
+"quello predefinito.)"
 
 #: ../../tempcache/pages/preferences.html.twig:1309
 msgid "Send email to administrators?"
@@ -7811,7 +7826,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:1327
 msgid "Wrap emails text?"
-msgstr ""
+msgstr "A capo le email?"
 
 #: ../../tempcache/pages/preferences.html.twig:1332
 msgid ""
@@ -7819,6 +7834,9 @@ msgid ""
 "if you disable that. Please note that current editing mailing will not be "
 "affected by a change."
 msgstr ""
+"Manda a capo automaticamente i testi delle e-mail prima dell'invio. "
+"Ricordarsi di andare a capo a mano se si disabilita la funzione. Tenere "
+"presente che l'invio postale corrente non sarà influenzato da una modifica."
 
 #: ../../tempcache/pages/preferences.html.twig:1345
 msgid "Send email to members?"
@@ -7834,103 +7852,110 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:1363
 msgid "Activate HTML editor?"
-msgstr ""
+msgstr "Attivare l'editor HTML?"
 
 #: ../../tempcache/pages/preferences.html.twig:1368
 msgid "Should HTML editor be activated on page load ?"
-msgstr ""
+msgstr "L'editor HTML dovrebbe essere attivato al caricamento della pagina?"
 
 #: ../../tempcache/pages/preferences.html.twig:1374
 msgid "Mail signature"
-msgstr ""
+msgstr "Firma della posta"
 
 #: ../../tempcache/pages/preferences.html.twig:1391
 msgid "Emailing method:"
-msgstr ""
+msgstr "Metodo di invio email:"
 
 #: ../../tempcache/pages/preferences.html.twig:1403
 msgid "Emailing disabled"
-msgstr ""
+msgstr "E-mail disabilitate"
 
 #: ../../tempcache/pages/preferences.html.twig:1421
 msgid "PHP mail() function"
-msgstr ""
+msgstr "Funzione PHP mail()"
 
 #: ../../tempcache/pages/preferences.html.twig:1438
 msgid "Using a SMTP server (slower)"
-msgstr ""
+msgstr "Uso di un server SMTP (più lento)"
 
 #: ../../tempcache/pages/preferences.html.twig:1452
 msgid "Using GMAIL as SMTP server (slower)"
-msgstr ""
+msgstr "Uso di GMAIL come server SMTP (più lento)"
 
 #: ../../tempcache/pages/preferences.html.twig:1470
 msgid "Using Sendmail server"
-msgstr ""
+msgstr "Uso del server Sendmail"
 
 #: ../../tempcache/pages/preferences.html.twig:1484
 msgid "Using QMAIL server"
-msgstr ""
+msgstr "Uso del server QMAIL"
 
 #: ../../tempcache/pages/preferences.html.twig:1503
 msgid "Test email settings"
-msgstr ""
+msgstr "Controllo impostazioni della posta"
 
 #: ../../tempcache/pages/preferences.html.twig:1511
 msgid "SMTP server:"
-msgstr ""
+msgstr "Server SMTP:"
 
 #: ../../tempcache/pages/preferences.html.twig:1521
 msgid "SMTP port:"
-msgstr ""
+msgstr "Porta SMTP:"
 
 #: ../../tempcache/pages/preferences.html.twig:1539
 msgid "Use SMTP authentication?"
-msgstr ""
+msgstr "Usare l'autenticazione SMTP?"
 
 #: ../../tempcache/pages/preferences.html.twig:1544
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
 msgstr ""
+"Usare per le e-mail qualsiasi tipo di autenticazione SMTP? Si dovrà fornire "
+"nome utente e password di seguito. Per GMail, l'autenticazione sarà sempre "
+"attiva."
 
 #: ../../tempcache/pages/preferences.html.twig:1557
 msgid "Use TLS for SMTP?"
-msgstr ""
+msgstr "Usare TLS per l'SMTP?"
 
 #: ../../tempcache/pages/preferences.html.twig:1562
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
 msgstr ""
+"Usare le funzionalità TLS del server?&lt; br / &gt;Per GMail, questa "
+"impostazione sarà sempre attiva."
 
 #: ../../tempcache/pages/preferences.html.twig:1575
 msgid "Allow unsecure TLS?"
-msgstr ""
+msgstr "Permettere TLS non sicuri?"
 
 #: ../../tempcache/pages/preferences.html.twig:1580
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
 msgstr ""
+"Consentire connessioni 'non sicure'? Può essere utile se il server utilizza "
+"un certificato autofirmato, e in alcuni altri casi."
 
 #: ../../tempcache/pages/preferences.html.twig:1589
 msgid "SMTP (or GMail) user:"
-msgstr ""
+msgstr "utente SMTP (o GMail):"
 
 #: ../../tempcache/pages/preferences.html.twig:1599
 msgid "SMTP (or GMail) password:"
-msgstr ""
+msgstr "password SMTP (o GMail):"
 
 #: ../../tempcache/pages/preferences.html.twig:1629
 #: ../../tempcache/pages/preferences.html.twig:2170
 msgid "Vertical margins:"
-msgstr ""
+msgstr "Margini verticali:"
 
 #: ../../tempcache/pages/preferences.html.twig:1651
 #: ../../tempcache/pages/preferences.html.twig:2192
 msgid "Horizontal margins:"
-msgstr ""
+msgstr "Margini orizzontali:"
 
 #: ../../tempcache/pages/preferences.html.twig:1673
 #: ../../tempcache/pages/preferences.html.twig:2236
@@ -7940,11 +7965,11 @@ msgstr "Spaziatura orizzontale:"
 #: ../../tempcache/pages/preferences.html.twig:1695
 #: ../../tempcache/pages/preferences.html.twig:2214
 msgid "Vertical spacing:"
-msgstr ""
+msgstr "Spaziatura verticale:"
 
 #: ../../tempcache/pages/preferences.html.twig:1719
 msgid "Print border"
-msgstr ""
+msgstr "Bordo di stampa"
 
 #: ../../tempcache/pages/preferences.html.twig:1724
 msgid "Check this box to print a grey border around each label."
@@ -8925,7 +8950,7 @@ msgstr ""
 
 #: ../../tempcache/components/dynamic_fields.html.twig:580
 msgid "Select an option"
-msgstr ""
+msgstr "Selezionare un'opzione"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:800
 msgid "delete"
