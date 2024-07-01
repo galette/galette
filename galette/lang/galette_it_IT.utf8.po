@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-07-01 09:11+0000\n"
+"PO-Revision-Date: 2024-07-01 13:01+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -7749,7 +7749,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:1133
 msgid "Can members create child?"
-msgstr ""
+msgstr "Possono i soci creare soci minorenni collegati?"
 
 #: ../../tempcache/pages/preferences.html.twig:1147
 msgid "Can group managers edit their groups?"
@@ -8438,6 +8438,8 @@ msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
 msgstr ""
+"Invia all'utente un collegamento per generare una nuova password, come se "
+"avesse usato la funzionalità 'password dimenticata'."
 
 #: ../../tempcache/pages/member_show.html.twig:112
 msgid "New password"
@@ -8810,6 +8812,8 @@ msgid ""
 "Each selected export will be stored into a separate file in the exports "
 "directory."
 msgstr ""
+"Ogni esportazione selezionata verrà memorizzata in un file separato nella "
+"cartella delle esportazioni."
 
 #: ../../tempcache/pages/export.html.twig:80
 msgid "The following files have been written on disk:"
@@ -8864,34 +8868,38 @@ msgid ""
 "The panel will be automatically hidden once you have registered and send "
 "telemetry data. Check the box if you want to hide it anyways."
 msgstr ""
+"Il pannello verrà nascosto automaticamente una volta registrati e inviati i "
+"dati di telemetria. Selezionare la casella se vuole nasconderlo comunque."
 
 #: ../../tempcache/pages/desktop.html.twig:125
 msgid "Hide this panel"
-msgstr ""
+msgstr "Nascondi questo pannello"
 
 #: ../../tempcache/pages/desktop.html.twig:143
 msgid "Activities"
-msgstr ""
+msgstr "Attività"
 
 #: ../../tempcache/pages/desktop.html.twig:182
 msgid "News"
-msgstr ""
+msgstr "Novità"
 
 #: ../../tempcache/pages/desktop.html.twig:224
 msgid "Show dashboard on login"
-msgstr ""
+msgstr "Mostra cruscotto al login"
 
 #: ../../tempcache/components/form.html.twig:259
 msgid "This comment is only displayed for admins and staff members."
 msgstr ""
+"Questo commento viene visualizzato solo per amministratori e membri del "
+"personale."
 
 #: ../../tempcache/components/form.html.twig:268
 msgid "This comment is reserved to the member."
-msgstr ""
+msgstr "Questo commento è riservato ai soci."
 
 #: ../../tempcache/components/form.html.twig:339
 msgid "Do member want to appear publically?"
-msgstr ""
+msgstr "Il socio vuole apparire pubblicamente?"
 
 #: ../../tempcache/components/form.html.twig:342
 msgid ""
@@ -8901,14 +8909,21 @@ msgid ""
 "trombinoscope page.<br/>Note that administrators can disabled public pages, "
 "this setting will have no effect in that case."
 msgstr ""
+"Se si seleziona questa casella (e se si è aggiornati con i propri contributi)"
+", il proprio nome completo e altre informazioni saranno visibili "
+"pubblicamente nell'elenco dei soci.<br>Se si ha caricato una foto, questa "
+"verrà visualizzata su la pagina del trombinoscopio.<br>Si noti che gli "
+"amministratori possono disabilitare le pagine pubbliche, questa impostazione "
+"in questo caso non avrà alcun effetto."
 
 #: ../../tempcache/components/form.html.twig:354
+#, fuzzy
 msgid "(at least %i characters)"
-msgstr ""
+msgstr "(almeno %i caratteri)"
 
 #: ../../tempcache/components/forms/password.html.twig:48
 msgid "Password confirmation:"
-msgstr ""
+msgstr "Conferma della password:"
 
 #: ../../tempcache/components/forms/groups.html.twig:181
 msgid "Manage user's groups"
@@ -8916,39 +8931,43 @@ msgstr "Gestisci gruppi di utenti"
 
 #: ../../tempcache/components/forms/groups.html.twig:194
 msgid "Manage user's managed groups"
-msgstr ""
+msgstr "Gestire i gruppi gestiti dell'utente"
 
 #: ../../tempcache/components/forms/company.html.twig:61
 msgid "Is company?"
-msgstr ""
+msgstr "È una società?"
 
 #: ../../tempcache/components/forms/company.html.twig:61
 msgid "Is member a company?"
-msgstr ""
+msgstr "È membro di una società?"
 
 #: ../../tempcache/components/forms/company.html.twig:61
 msgid ""
 "Do you manage a non profit organization, or a company? If you do so, check "
 "the box, and then enter its name in the field that will appear."
 msgstr ""
+"Gestisci un'organizzazione non profit o un'azienda? Se lo fai, seleziona la "
+"casella e poi inserisci il suo nome nel campo che apparirà."
 
 #: ../../tempcache/components/forms/captcha.html.twig:68
 msgid "(numbers only)"
-msgstr ""
+msgstr "(solo numeri)"
 
 #: ../../tempcache/components/forms/captcha.html.twig:71
 msgid ""
 "This field is required trying to avoid registration spam. We are sorry for "
 "the inconvennience."
 msgstr ""
+"Questo campo è necessario per evitare lo spam di registrazione. Siamo "
+"spiacenti per il disturbo."
 
 #: ../../tempcache/components/forms/captcha.html.twig:92
 msgid "Captcha"
-msgstr ""
+msgstr "Captcha"
 
 #: ../../tempcache/components/forms/member_dropdown.html.twig:70
 msgid "Load previous members..."
-msgstr ""
+msgstr "Caricare i membri precedenti..."
 
 #: ../../tempcache/components/forms/member_dropdown.html.twig:76
 msgid "Load following members..."
@@ -8956,11 +8975,11 @@ msgstr "Carica i seguenti soci..."
 
 #: ../../tempcache/components/forms/member_dropdown.html.twig:81
 msgid "Search for name or ID and pick member"
-msgstr ""
+msgstr "Cerca nome o ID e seleziona il socio"
 
 #: ../../tempcache/components/forms/titles.html.twig:68
 msgid "Not supplied"
-msgstr ""
+msgstr "Non fornito"
 
 #: ../../tempcache/components/forms/picture.html.twig:41
 msgid "Picture:"
@@ -8968,17 +8987,17 @@ msgstr "Foto:"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:228
 msgid "Enter as many occurences you want."
-msgstr ""
+msgstr "Inserire quanti riscontri si desidera."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:253
 #, php-format
 msgid "Enter up to %count more occurences."
-msgstr ""
+msgstr "Immettere fino a %count ulteriori occorrenze."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:315
 #, php-format
 msgid "Enter up to %count more occurrences."
-msgstr ""
+msgstr "Immettere fino a %count ulteriori occorrenze."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:580
 msgid "Select an option"
