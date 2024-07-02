@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-06-05 09:58+0200\n"
-"PO-Revision-Date: 2024-07-01 13:01+0000\n"
+"PO-Revision-Date: 2024-07-02 10:16+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -1641,7 +1641,7 @@ msgid ""
 "configuration, ...)"
 msgstr ""
 "Imposta le preferenze delle applicazioni (indirizzo, sito web, "
-"configurazione delle tessere membri, ...)"
+"configurazione tessere soci, ...)"
 
 #: ../lib/Galette/Core/Galette.php:361 ../lib/Galette/Core/Galette.php:673
 msgid "Information about available plugins"
@@ -1864,12 +1864,13 @@ msgstr "- I numeri e le misure devono essere interi!"
 #: ../lib/Galette/Core/Preferences.php:729
 msgid "- The card height have to be an integer between 40 and 55!"
 msgstr ""
-"- L'altezza della carta deve essere un numero intero compreso tra 40 e 55!"
+"- L'altezza della tessera deve essere un numero intero compreso tra 40 e 55!"
 
 #: ../lib/Galette/Core/Preferences.php:734
 msgid "- The card width have to be an integer between 70 and 95!"
 msgstr ""
-"- La larghezza della carta deve essere un numero intero compreso tra 70 e 95!"
+"- La larghezza della tessera deve essere un numero intero compreso tra 70 e "
+"95!"
 
 #: ../lib/Galette/Core/Preferences.php:768
 msgid "- Invalid number of months of membership extension."
@@ -1891,7 +1892,7 @@ msgstr "- Numero di mesi offerti non valido."
 
 #: ../lib/Galette/Core/Preferences.php:789
 msgid "- Invalid year for cards."
-msgstr "- Anno per le carte non valido."
+msgstr "- Anno per le tessere non valido."
 
 #: ../lib/Galette/Core/Preferences.php:797
 msgid "- Invalid website URL."
@@ -1977,7 +1978,7 @@ msgstr "Immagine di profilo cancellata"
 
 #: ../lib/Galette/Repository/Members.php:389
 msgid "Delete members cards, transactions and dues"
-msgstr "Elimina carte membri, transazioni e quote"
+msgstr "Elimina tessere, transazioni e quote soci"
 
 #: ../lib/Galette/Repository/Members.php:406
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
@@ -3260,7 +3261,7 @@ msgstr "Non puoi eliminare i titoli del signor o della signora!"
 
 #: ../lib/Galette/Entity/Texts.php:105
 msgid "Insert a carriage return"
-msgstr "Inserisci un ritorno a capo"
+msgstr "Inserire un ritorno a capo"
 
 #: ../lib/Galette/Entity/Texts.php:109
 msgid "Insert a new blank line"
@@ -3272,7 +3273,7 @@ msgstr "Validità del collegamento"
 
 #: ../lib/Galette/Entity/Texts.php:118
 msgid "Direct link for member card download"
-msgstr "Collegamento diretto per lo scaricamento della tessera membro"
+msgstr "Collegamento diretto per lo scaricamento della tessera socio"
 
 #: ../lib/Galette/Entity/Texts.php:123
 msgid "Direct link for invoice/receipt download"
@@ -3637,7 +3638,7 @@ msgstr "Lavoro"
 
 #: ../lib/Galette/Filters/MembersList.php:279
 msgid "Infos"
-msgstr "Informazioni"
+msgstr "Info"
 
 #: ../lib/Galette/Filters/MembersList.php:283
 #: ../../tempcache/components/forms/member_dropdown.html.twig:64
@@ -3814,9 +3815,8 @@ msgid "Reduced annual contribution"
 msgstr "Contributo annuo ridotto"
 
 #: ../includes/i18n.inc.php:277
-#, fuzzy
 msgid "Company cotisation"
-msgstr "Quota associativa"
+msgstr "Cotificazione aziendale"
 
 #: ../includes/i18n.inc.php:278
 msgid "Donation in kind"
@@ -3891,9 +3891,8 @@ msgid "Mrs."
 msgstr "Signora"
 
 #: ../includes/i18n.inc.php:296
-#, fuzzy
 msgid "Miss"
-msgstr "Signora"
+msgstr "Signorina"
 
 #: ../includes/i18n.inc.php:297
 msgid "Identity:"
@@ -3939,9 +3938,8 @@ msgid "At ................................................"
 msgstr "A ..................................................."
 
 #: ../includes/i18n.inc.php:308
-#, fuzzy
 msgid "On .......... / .......... / .......... "
-msgstr "Il .......... / .......... / .......... "
+msgstr "Il .......... / .......... / ........... "
 
 #: ../includes/i18n.inc.php:309
 msgid "Username"
@@ -3986,9 +3984,8 @@ msgid "on"
 msgstr "il"
 
 #: ../includes/i18n.inc.php:319
-#, fuzzy
 msgid "from"
-msgstr "da"
+msgstr "dal"
 
 #: ../includes/i18n.inc.php:320
 msgid "to"
@@ -5465,10 +5462,8 @@ msgstr "Abilita modalità scura"
 #: ../../tempcache/elements/logged_user.html.twig:211
 #: ../../tempcache/elements/logged_user.html.twig:362
 #: ../../tempcache/elements/logged_user.html.twig:380
-#, fuzzy
-#| msgid "Unable to impersonate as %id"
 msgid "Unimpersonate"
-msgstr "Impossibile accedere come %id"
+msgstr "Deimpersonare"
 
 #: ../../tempcache/elements/logged_user.html.twig:134
 #: ../../tempcache/elements/logged_user.html.twig:236
@@ -5841,7 +5836,6 @@ msgid "Current group (and attached people) as PDF"
 msgstr "Gruppo attuale (e persone collegate) come PDF"
 
 #: ../../tempcache/elements/group.html.twig:360
-#, fuzzy
 msgid "Group PDF"
 msgstr "Raggruppa PDF"
 
@@ -6479,7 +6473,7 @@ msgstr "Mostra solo i contributi di '%name'"
 #: ../../tempcache/pages/contributions_list.html.twig:689
 #: ../../tempcache/pages/transactions_list.html.twig:411
 msgid "Show '%name' card"
-msgstr "Mostra la carta di '%name'"
+msgstr "Mostra la tessera di '%name'"
 
 #: ../../tempcache/pages/contributions_list.html.twig:738
 msgid "Print an invoice or a receipt (depending on contribution type)"
@@ -6898,10 +6892,8 @@ msgstr "È uno sponsor"
 #: ../../tempcache/pages/members_list.html.twig:1044
 #: ../../tempcache/pages/members_public_list.html.twig:171
 #: ../../tempcache/pages/members_public_gallery.html.twig:133
-#, fuzzy
-#| msgid "Members"
 msgid "No member"
-msgstr "Membri"
+msgstr "Nessun membro"
 
 #: ../../tempcache/pages/members_list.html.twig:1109
 msgid "Search title"
@@ -7847,7 +7839,7 @@ msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
 msgstr ""
-"Invia un'email ogni volta che una tessera socio o un contributo è stato "
+"Inviare un'email ogni volta che una tessera socio o un contributo sia stato "
 "aggiunto o modificato. Questa opzione può essere disattivata per ogni caso."
 
 #: ../../tempcache/pages/preferences.html.twig:1363
@@ -8282,13 +8274,11 @@ msgstr ""
 "nella lista."
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:55
-#, fuzzy, php-format
-#| msgid "%count transaction"
-#| msgid_plural "%count transactions"
+#, php-format
 msgid "%count search"
 msgid_plural "%count searches"
-msgstr[0] "%count transazione"
-msgstr[1] "%count transazioni"
+msgstr[0] "%count ricerca"
+msgstr[1] "%count ricerche"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:143
 msgid "Search parameters"
@@ -8324,10 +8314,8 @@ msgid "Attach member"
 msgstr "Membro collegato"
 
 #: ../../tempcache/pages/member_form.html.twig:205
-#, fuzzy
-#| msgid "Manage members"
 msgid "Parent member"
-msgstr "Gestisci membri"
+msgstr "Membro genitore"
 
 #: ../../tempcache/pages/member_form.html.twig:225
 #: ../../tempcache/pages/member_show.html.twig:308
@@ -8393,18 +8381,14 @@ msgstr ""
 "azione."
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:73
-#, fuzzy
-#| msgid "Show parameters"
 msgid "Show payments by"
-msgstr "Mostra parametri"
+msgstr "Mostra parametri per"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:94
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:211
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:370
-#, fuzzy
-#| msgid "Release date"
 msgid "Scheduled date"
-msgstr "Data di rilascio"
+msgstr "Data programmata"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:195
 #, php-format
@@ -8419,10 +8403,8 @@ msgid "Found total scheduled %f"
 msgstr "Trovato totale in programma %f"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:418
-#, fuzzy
-#| msgid "Download document"
 msgid "Delete scheduled payment"
-msgstr "Scarica documento"
+msgstr "Eliminare il pagamento programmato"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:443
 msgid "No scheduled payment"
@@ -8510,10 +8492,8 @@ msgid "Show transactions since"
 msgstr "Mostra transazioni da"
 
 #: ../../tempcache/pages/transactions_list.html.twig:158
-#, fuzzy
-#| msgid "View member's contributions"
 msgid "Show all your transactions"
-msgstr "Visualizza i contributi degli utenti"
+msgstr "Mostra tutte le tue transazioni"
 
 #: ../../tempcache/pages/transactions_list.html.twig:164
 msgid "Show all members transactions"
@@ -8535,10 +8515,8 @@ msgid "Transaction %id"
 msgstr "Transazione %id"
 
 #: ../../tempcache/pages/transactions_list.html.twig:396
-#, fuzzy
-#| msgid "View member's contributions"
 msgid "Show only '%name' transactions"
-msgstr "Visualizza i contributi degli utenti"
+msgstr "Mostra solo le transazioni '%name'"
 
 #: ../../tempcache/pages/transactions_list.html.twig:455
 msgid "Edit transaction #%id"
@@ -8603,10 +8581,8 @@ msgid "Contributions over time"
 msgstr "Contributi nel tempo"
 
 #: ../../tempcache/pages/charts.html.twig:407
-#, fuzzy
-#| msgid "Edit contribution type"
 msgid "Total contributions for the month"
-msgstr "Modifica tipo di contributo"
+msgstr "Totale contributi per il mese"
 
 #: ../../tempcache/pages/members_public_list.html.twig:118
 #: ../../tempcache/pages/members_public_gallery.html.twig:82
@@ -8703,10 +8679,8 @@ msgid "Within contributions"
 msgstr "Nei contributi"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1052
-#, fuzzy
-#| msgid "Saved searches"
 msgid "Free search"
-msgstr "Ricerche salvate"
+msgstr "Ricerca libera"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1062
 #: ../../tempcache/pages/advanced_search.html.twig:1068
@@ -8719,10 +8693,8 @@ msgstr "o"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1116
 #: ../../tempcache/pages/advanced_search.html.twig:1820
-#, fuzzy
-#| msgid "Selected groups"
 msgid "Select a field"
-msgstr "Gruppi selezionati"
+msgstr "Seleziona un campo"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1283
 #: ../../tempcache/pages/advanced_search.html.twig:1361
@@ -8798,10 +8770,8 @@ msgid "Trace"
 msgstr "Traccia"
 
 #: ../../tempcache/pages/document_form.html.twig:112
-#, fuzzy
-#| msgid "Payment type"
 msgid "Document type"
-msgstr "Tipo di pagamento"
+msgstr "Tipo di documento"
 
 #: ../../tempcache/pages/document_form.html.twig:185
 msgid "Extra information displayed along with document."
@@ -8917,7 +8887,6 @@ msgstr ""
 "in questo caso non avrà alcun effetto."
 
 #: ../../tempcache/components/form.html.twig:354
-#, fuzzy
 msgid "(at least %i characters)"
 msgstr "(almeno %i caratteri)"
 
