@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 09:58+0200\n"
+"POT-Creation-Date: 2024-07-02 21:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -219,7 +219,7 @@ msgid "Mailing preview"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:91
-#: ../lib/Galette/Core/Install.php:1168 ../lib/Galette/Core/Galette.php:404
+#: ../lib/Galette/Core/Install.php:1170 ../lib/Galette/Core/Galette.php:404
 msgid "Contributions types"
 msgstr ""
 
@@ -638,7 +638,7 @@ msgstr ""
 msgid "Saved search loaded"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:347
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:348
 msgid "An SQL error has occurred while loading search."
 msgstr ""
 
@@ -654,7 +654,7 @@ msgid "Dashboard"
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:224
-#: ../lib/Galette/Core/Install.php:1164 ../lib/Galette/Core/Galette.php:353
+#: ../lib/Galette/Core/Install.php:1166 ../lib/Galette/Core/Galette.php:353
 #: ../lib/Galette/Core/Galette.php:664
 msgid "Settings"
 msgstr ""
@@ -771,7 +771,7 @@ msgid "Download document"
 msgstr ""
 
 #: ../lib/Galette/Controllers/AjaxController.php:63
-#: ../webroot/installer.php:269
+#: ../webroot/installer.php:254
 #: ../../tempcache/elements/messages_inline.html.twig:91
 msgid "- ERROR -"
 msgstr ""
@@ -838,7 +838,7 @@ msgid "Unable to get groups list."
 msgstr ""
 
 #: ../lib/Galette/Controllers/PdfController.php:527
-#: ../lib/Galette/Core/Install.php:1188 ../lib/Galette/Core/Galette.php:426
+#: ../lib/Galette/Core/Install.php:1190 ../lib/Galette/Core/Galette.php:426
 msgid "PDF models"
 msgstr ""
 
@@ -862,7 +862,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:187
 #: ../lib/Galette/Features/Replacements.php:310
 #: ../lib/Galette/Features/Replacements.php:350
-#: ../../tempcache/elements/navigation/public_pages.html.twig:97
+#: ../../tempcache/elements/navigation/public_pages.html.twig:103
 #: ../../tempcache/pages/index.html.twig:101
 msgid "Login"
 msgstr ""
@@ -976,7 +976,7 @@ msgid ""
 msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:531
-#: ../webroot/installer.php:139 ../webroot/installer.php:183
+#: ../webroot/installer.php:122 ../webroot/installer.php:167
 msgid "No password"
 msgstr ""
 
@@ -1203,20 +1203,20 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:104 ../webroot/installer.php:289
+#: ../lib/Galette/Core/Install.php:104 ../webroot/installer.php:274
 msgid "Checks"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:107 ../webroot/installer.php:295
+#: ../lib/Galette/Core/Install.php:107 ../webroot/installer.php:280
 #: ../../tempcache/modals/plugin_initdb.html.twig:394
 msgid "Installation mode"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:110 ../webroot/installer.php:301
+#: ../lib/Galette/Core/Install.php:110 ../webroot/installer.php:286
 msgid "Database"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:113 ../webroot/installer.php:307
+#: ../lib/Galette/Core/Install.php:113 ../webroot/installer.php:292
 msgid "Database access and permissions"
 msgstr ""
 
@@ -1232,20 +1232,20 @@ msgstr ""
 msgid "Tables Creation"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:342
+#: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:327
 msgid "Admin parameters"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:351
+#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:336
 #: ../../tempcache/pages/desktop.html.twig:87
 msgid "Telemetry"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:131
+#: ../lib/Galette/Core/Install.php:131 ../webroot/installer.php:342
 msgid "Galette initialization"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:134 ../webroot/installer.php:363
+#: ../lib/Galette/Core/Install.php:134 ../webroot/installer.php:348
 #: ../../tempcache/modals/plugin_initdb.html.twig:459
 msgid "End!"
 msgstr ""
@@ -1262,49 +1262,49 @@ msgstr ""
 msgid "Database type unknown"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:672
+#: ../lib/Galette/Core/Install.php:673
 msgid "%version script has been successfully executed :)"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:684
+#: ../lib/Galette/Core/Install.php:685
 msgid "Unable to run %version update script :("
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1053
+#: ../lib/Galette/Core/Install.php:1055
 msgid "Write configuration file"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1082
+#: ../lib/Galette/Core/Install.php:1084
 msgid "Config file already exists and is up to date"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1111
+#: ../lib/Galette/Core/Install.php:1113
 msgid "Unable to create configuration file (%path)"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1172
+#: ../lib/Galette/Core/Install.php:1174
 #: ../../tempcache/pages/advanced_search.html.twig:495
 #: ../../tempcache/pages/advanced_search.html.twig:500
 msgid "Status"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1176
+#: ../lib/Galette/Core/Install.php:1178
 msgid "Fields config and categories"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1180 ../lib/Galette/Core/Install.php:1202
+#: ../lib/Galette/Core/Install.php:1182 ../lib/Galette/Core/Install.php:1204
 msgid "Mails texts"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1184 ../lib/Galette/Core/Galette.php:418
+#: ../lib/Galette/Core/Install.php:1186 ../lib/Galette/Core/Galette.php:418
 msgid "Titles"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1194
+#: ../lib/Galette/Core/Install.php:1196
 msgid "Update preferences"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1198
+#: ../lib/Galette/Core/Install.php:1200
 msgid "Update models"
 msgstr ""
 
@@ -1773,7 +1773,7 @@ msgstr ""
 msgid "- Mandatory field %field empty."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:619 ../webroot/installer.php:191
+#: ../lib/Galette/Core/Preferences.php:619 ../webroot/installer.php:176
 msgid "Passwords mismatch"
 msgstr ""
 
@@ -1875,7 +1875,7 @@ msgstr ""
 msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr ""
 
-#: ../lib/Galette/Core/Db.php:1076
+#: ../lib/Galette/Core/Db.php:1079
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
 msgstr ""
@@ -3253,44 +3253,44 @@ msgstr ""
 msgid "Paid"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:339
+#: ../lib/Galette/Entity/Social.php:341
 msgid "Mastodon"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:340
+#: ../lib/Galette/Entity/Social.php:342
 msgid "Twitter"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:341
+#: ../lib/Galette/Entity/Social.php:343
 msgid "Facebook"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:342
+#: ../lib/Galette/Entity/Social.php:344
 msgid "LinkedIn"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:343
+#: ../lib/Galette/Entity/Social.php:345
 msgid "Viadeo"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:344
+#: ../lib/Galette/Entity/Social.php:346
 msgid "Jabber"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:345
+#: ../lib/Galette/Entity/Social.php:347
 msgid "ICQ"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:346 ../webroot/installer.php:400
+#: ../lib/Galette/Entity/Social.php:348 ../webroot/installer.php:385
 #: ../../tempcache/elements/footer.html.twig:52
 msgid "Website"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:347
+#: ../lib/Galette/Entity/Social.php:349
 msgid "Blog"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:348
+#: ../lib/Galette/Entity/Social.php:350
 msgid "Discord"
 msgstr ""
 
@@ -3583,59 +3583,55 @@ msgstr ""
 msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
 msgstr ""
 
-#: ../webroot/installer.php:130
+#: ../webroot/installer.php:113
 msgid "No host"
 msgstr ""
 
-#: ../webroot/installer.php:133
+#: ../webroot/installer.php:116
 msgid "No port"
 msgstr ""
 
-#: ../webroot/installer.php:136 ../webroot/installer.php:177
+#: ../webroot/installer.php:119 ../webroot/installer.php:161
 msgid "No user name"
 msgstr ""
 
-#: ../webroot/installer.php:142
+#: ../webroot/installer.php:125
 msgid "No database name"
 msgstr ""
 
-#: ../webroot/installer.php:180
+#: ../webroot/installer.php:164
 msgid "The username cannot contain the @ character"
 msgstr ""
 
-#: ../webroot/installer.php:225
+#: ../webroot/installer.php:210
 msgid "Galette Installation"
 msgstr ""
 
-#: ../webroot/installer.php:233 ../../tempcache/public_page.html.twig:74
+#: ../webroot/installer.php:218 ../../tempcache/public_page.html.twig:74
 #: ../../tempcache/page.html.twig:66
 msgid "Skip to content"
 msgstr ""
 
-#: ../webroot/installer.php:237
+#: ../webroot/installer.php:222
 msgid "Galette installation"
 msgstr ""
 
-#: ../webroot/installer.php:316
+#: ../webroot/installer.php:301
 #: ../../tempcache/modals/plugin_initdb.html.twig:425
 msgid "Version selection"
 msgstr ""
 
-#: ../webroot/installer.php:322
+#: ../webroot/installer.php:307
 #: ../../tempcache/modals/plugin_initdb.html.twig:444
 msgid "Database upgrade"
 msgstr ""
 
-#: ../webroot/installer.php:331
+#: ../webroot/installer.php:316
 #: ../../tempcache/modals/plugin_initdb.html.twig:442
 msgid "Database installation"
 msgstr ""
 
-#: ../webroot/installer.php:357
-msgid "Galette initialisation"
-msgstr ""
-
-#: ../webroot/installer.php:404 ../../tempcache/elements/footer.html.twig:59
+#: ../webroot/installer.php:389 ../../tempcache/elements/footer.html.twig:59
 msgid "Documentation"
 msgstr ""
 
@@ -3704,7 +3700,7 @@ msgid "Reduced annual contribution"
 msgstr ""
 
 #: ../includes/i18n.inc.php:277
-msgid "Company cotisation"
+msgid "Company fee"
 msgstr ""
 
 #: ../includes/i18n.inc.php:278
@@ -5220,12 +5216,12 @@ msgstr ""
 msgid "Compact menu"
 msgstr ""
 
-#: ../../tempcache/elements/navigation/public_pages.html.twig:88
+#: ../../tempcache/elements/navigation/public_pages.html.twig:94
 msgid "Subscribe"
 msgstr ""
 
-#: ../../tempcache/elements/navigation/public_pages.html.twig:133
-#: ../../tempcache/elements/navigation/public_pages.html.twig:143
+#: ../../tempcache/elements/navigation/public_pages.html.twig:145
+#: ../../tempcache/elements/navigation/public_pages.html.twig:155
 #: ../../tempcache/elements/logged_user.html.twig:83
 #: ../../tempcache/elements/logged_user.html.twig:157
 #: ../../tempcache/elements/logged_user.html.twig:167
@@ -5234,8 +5230,8 @@ msgstr ""
 msgid "Disable dark mode"
 msgstr ""
 
-#: ../../tempcache/elements/navigation/public_pages.html.twig:135
-#: ../../tempcache/elements/navigation/public_pages.html.twig:145
+#: ../../tempcache/elements/navigation/public_pages.html.twig:147
+#: ../../tempcache/elements/navigation/public_pages.html.twig:157
 #: ../../tempcache/elements/logged_user.html.twig:85
 #: ../../tempcache/elements/logged_user.html.twig:159
 #: ../../tempcache/elements/logged_user.html.twig:169
@@ -5757,7 +5753,7 @@ msgstr ""
 msgid "Choose or enter your own..."
 msgstr ""
 
-#: ../../tempcache/macros.twig:416
+#: ../../tempcache/macros.twig:421
 msgid "For the selection:"
 msgstr ""
 
@@ -8145,21 +8141,17 @@ msgstr ""
 msgid "Get my document"
 msgstr ""
 
-#: ../../tempcache/pages/password_recover.html.twig:60
-msgid "(at least 4 characters)"
-msgstr ""
-
-#: ../../tempcache/pages/password_recover.html.twig:66
-#: ../../tempcache/pages/password_recover.html.twig:70
+#: ../../tempcache/pages/password_recover.html.twig:63
+#: ../../tempcache/pages/password_recover.html.twig:67
 msgid "New password:"
 msgstr ""
 
-#: ../../tempcache/pages/password_recover.html.twig:78
-#: ../../tempcache/pages/password_recover.html.twig:82
+#: ../../tempcache/pages/password_recover.html.twig:75
+#: ../../tempcache/pages/password_recover.html.twig:79
 msgid "Confirmation:"
 msgstr ""
 
-#: ../../tempcache/pages/password_recover.html.twig:88
+#: ../../tempcache/pages/password_recover.html.twig:85
 msgid "Change my password"
 msgstr ""
 
@@ -8609,14 +8601,10 @@ msgid "Picture:"
 msgstr ""
 
 #: ../../tempcache/components/dynamic_fields.html.twig:228
-msgid "Enter as many occurences you want."
+msgid "Enter as many occurrences you want."
 msgstr ""
 
 #: ../../tempcache/components/dynamic_fields.html.twig:253
-#, php-format
-msgid "Enter up to %count more occurences."
-msgstr ""
-
 #: ../../tempcache/components/dynamic_fields.html.twig:315
 #, php-format
 msgid "Enter up to %count more occurrences."

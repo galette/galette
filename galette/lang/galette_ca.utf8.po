@@ -4355,7 +4355,7 @@ msgstr "Contribució anual reduïda"
 
 #: ../includes/i18n.inc.php:277
 #, fuzzy
-msgid "Company cotisation"
+msgid "Company fee"
 msgstr "Cotització de l'empresa"
 
 #: ../includes/i18n.inc.php:278
@@ -10317,7 +10317,7 @@ msgstr "Imatge:"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:228
 #, fuzzy
-msgid "Enter as many occurences you want."
+msgid "Enter as many occurrences you want."
 msgstr "Introduïu tantes ocurrències que vulgueu."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:253

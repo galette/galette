@@ -3749,7 +3749,7 @@ msgid "Reduced annual contribution"
 msgstr ""
 
 #: ../includes/i18n.inc.php:277
-msgid "Company cotisation"
+msgid "Company fee"
 msgstr ""
 
 #: ../includes/i18n.inc.php:278
@@ -8697,7 +8697,7 @@ msgid "Picture:"
 msgstr ""
 
 #: ../../tempcache/components/dynamic_fields.html.twig:228
-msgid "Enter as many occurences you want."
+msgid "Enter as many occurrences you want."
 msgstr ""
 
 #: ../../tempcache/components/dynamic_fields.html.twig:253

@@ -345,7 +345,7 @@
         };
         $('#id_type_cotis').dropdown({
             onChange: function(value) {
-                //change to predefined amout if there is one, and if user has not entered data himself
+                //change to predefined amount if there is one, and if user has not entered data himself
                 if ($('#montant_cotis').data('userset') != true && _types_amounts[value]) {
                     var _amount = _types_amounts[value];
                     $('#montant_cotis').val(_amount);

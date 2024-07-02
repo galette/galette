@@ -339,7 +339,7 @@ if (!$install->isUpgrade()) {
                                 <div class="step<?php if ($install->isGaletteInitStep()) echo ' active'; elseif (!$install->isStepPassed(GaletteInstall::STEP_GALETTE_INIT)) echo ' disabled'; ?>">
                                     <i class="cogs icon<?php if($install->isStepPassed(GaletteInstall::STEP_GALETTE_INIT)) { echo ' green'; } ?>"></i>
                                     <div class="content">
-                                        <div class="title"><?php echo _T("Galette initialisation"); ?></div>
+                                        <div class="title"><?php echo _T("Galette initialization"); ?></div>
                                     </div>
                                 </div>
                                 <div class="step<?php if ($install->isEndStep()) echo ' active'; elseif (!$install->isStepPassed(GaletteInstall::STEP_END)) echo ' disabled'; ?>">
