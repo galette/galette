@@ -1,6 +1,17 @@
 Changes
 -------
 
+1.1.1 -> 1.1.2
+
+- Do not display links to public documents page if public pages are not enabled
+- Fix info message display on new release
+- Fix typehint issues on dynamic fields
+- Check for possible null from DB converted to int
+- Fix member search on contribution type
+- Contributions types and payments types were no longer selected when displaying search parameters
+- Fix SQL issue searching on dynamic booleans fields with PostgreSQL
+- Fix return types on parameted exports
+
 1.1.0 -> 1.1.1
 
 - Cannot sort transactions on payment type column
