@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 09:58+0200\n"
+"POT-Creation-Date: 2024-07-02 21:36+0200\n"
 "PO-Revision-Date: 2024-04-21 07:17+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -250,7 +250,7 @@ msgid "Mailing preview"
 msgstr "Vista prèvia del correu"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:91
-#: ../lib/Galette/Core/Install.php:1168 ../lib/Galette/Core/Galette.php:404
+#: ../lib/Galette/Core/Install.php:1170 ../lib/Galette/Core/Galette.php:404
 #, fuzzy
 msgid "Contributions types"
 msgstr "Tipus de contribucions"
@@ -703,7 +703,7 @@ msgstr "Esteu a punt d'eliminar %count cerques."
 msgid "Saved search loaded"
 msgstr "S'ha carregat la cerca emmagatzemada"
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:347
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:348
 msgid "An SQL error has occurred while loading search."
 msgstr "S'ha produït un error SQL durant la carrega de la cerca."
 
@@ -719,7 +719,7 @@ msgid "Dashboard"
 msgstr "Tauler"
 
 #: ../lib/Galette/Controllers/GaletteController.php:224
-#: ../lib/Galette/Core/Install.php:1164 ../lib/Galette/Core/Galette.php:353
+#: ../lib/Galette/Core/Install.php:1166 ../lib/Galette/Core/Galette.php:353
 #: ../lib/Galette/Core/Galette.php:664
 msgid "Settings"
 msgstr "Configuració"
@@ -855,7 +855,7 @@ msgid "Download document"
 msgstr "Descarrega el document"
 
 #: ../lib/Galette/Controllers/AjaxController.php:63
-#: ../webroot/installer.php:269
+#: ../webroot/installer.php:254
 #: ../../tempcache/elements/messages_inline.html.twig:91
 #, fuzzy
 msgid "- ERROR -"
@@ -936,7 +936,7 @@ msgid "Unable to get groups list."
 msgstr "No s'ha pogut obtenir la llista de grups."
 
 #: ../lib/Galette/Controllers/PdfController.php:527
-#: ../lib/Galette/Core/Install.php:1188 ../lib/Galette/Core/Galette.php:426
+#: ../lib/Galette/Core/Install.php:1190 ../lib/Galette/Core/Galette.php:426
 msgid "PDF models"
 msgstr "Models PDF"
 
@@ -964,7 +964,7 @@ msgstr "Enllaç invàlid!"
 #: ../lib/Galette/Controllers/AuthController.php:187
 #: ../lib/Galette/Features/Replacements.php:310
 #: ../lib/Galette/Features/Replacements.php:350
-#: ../../tempcache/elements/navigation/public_pages.html.twig:97
+#: ../../tempcache/elements/navigation/public_pages.html.twig:103
 #: ../../tempcache/pages/index.html.twig:101
 #, fuzzy
 msgid "Login"
@@ -1100,7 +1100,7 @@ msgstr ""
 "contrasenya de nou."
 
 #: ../lib/Galette/Controllers/AuthController.php:531
-#: ../webroot/installer.php:139 ../webroot/installer.php:183
+#: ../webroot/installer.php:122 ../webroot/installer.php:167
 #, fuzzy
 msgid "No password"
 msgstr "Sense contrasenya"
@@ -1375,22 +1375,22 @@ msgstr "El correu electrònic '%s' s'ha modificat amb èxit."
 msgid "None"
 msgstr "Cap"
 
-#: ../lib/Galette/Core/Install.php:104 ../webroot/installer.php:289
+#: ../lib/Galette/Core/Install.php:104 ../webroot/installer.php:274
 #, fuzzy
 msgid "Checks"
 msgstr "Comprovacions"
 
-#: ../lib/Galette/Core/Install.php:107 ../webroot/installer.php:295
+#: ../lib/Galette/Core/Install.php:107 ../webroot/installer.php:280
 #: ../../tempcache/modals/plugin_initdb.html.twig:394
 #, fuzzy
 msgid "Installation mode"
 msgstr "Mode d'instal·lació"
 
-#: ../lib/Galette/Core/Install.php:110 ../webroot/installer.php:301
+#: ../lib/Galette/Core/Install.php:110 ../webroot/installer.php:286
 msgid "Database"
 msgstr "Base de dades"
 
-#: ../lib/Galette/Core/Install.php:113 ../webroot/installer.php:307
+#: ../lib/Galette/Core/Install.php:113 ../webroot/installer.php:292
 msgid "Database access and permissions"
 msgstr "Accés i permisos de la base de dades"
 
@@ -1408,22 +1408,22 @@ msgstr "Actualització de dades"
 msgid "Tables Creation"
 msgstr "Creació de taules"
 
-#: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:342
+#: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:327
 #, fuzzy
 msgid "Admin parameters"
 msgstr "Paràmetres d'administració"
 
-#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:351
+#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:336
 #: ../../tempcache/pages/desktop.html.twig:87
 #, fuzzy
 msgid "Telemetry"
 msgstr "Telemesura"
 
-#: ../lib/Galette/Core/Install.php:131
+#: ../lib/Galette/Core/Install.php:131 ../webroot/installer.php:342
 msgid "Galette initialization"
 msgstr "Inicialització de Galette"
 
-#: ../lib/Galette/Core/Install.php:134 ../webroot/installer.php:363
+#: ../lib/Galette/Core/Install.php:134 ../webroot/installer.php:348
 #: ../../tempcache/modals/plugin_initdb.html.twig:459
 #, fuzzy
 msgid "End!"
@@ -1444,58 +1444,58 @@ msgstr "Ko"
 msgid "Database type unknown"
 msgstr "Tipus de base de dades desconegut"
 
-#: ../lib/Galette/Core/Install.php:672
+#: ../lib/Galette/Core/Install.php:673
 #, fuzzy
 msgid "%version script has been successfully executed :)"
 msgstr "s'ha executat amb èxit l'script de versió del 5% )"
 
-#: ../lib/Galette/Core/Install.php:684
+#: ../lib/Galette/Core/Install.php:685
 #, fuzzy
 msgid "Unable to run %version update script :("
 msgstr "No s'ha pogut executar l'script d'actualització de la versió ("
 
-#: ../lib/Galette/Core/Install.php:1053
+#: ../lib/Galette/Core/Install.php:1055
 #, fuzzy
 msgid "Write configuration file"
 msgstr "Escriu el fitxer de configuració"
 
-#: ../lib/Galette/Core/Install.php:1082
+#: ../lib/Galette/Core/Install.php:1084
 #, fuzzy
 msgid "Config file already exists and is up to date"
 msgstr "El fitxer Config ja existeix i està actualitzat"
 
-#: ../lib/Galette/Core/Install.php:1111
+#: ../lib/Galette/Core/Install.php:1113
 msgid "Unable to create configuration file (%path)"
 msgstr "No s'ha pogut crear el fitxer de configuració (%path)"
 
-#: ../lib/Galette/Core/Install.php:1172
+#: ../lib/Galette/Core/Install.php:1174
 #: ../../tempcache/pages/advanced_search.html.twig:495
 #: ../../tempcache/pages/advanced_search.html.twig:500
 #, fuzzy
 msgid "Status"
 msgstr "Estat"
 
-#: ../lib/Galette/Core/Install.php:1176
+#: ../lib/Galette/Core/Install.php:1178
 #, fuzzy
 msgid "Fields config and categories"
 msgstr "Configuració dels camps i categories"
 
-#: ../lib/Galette/Core/Install.php:1180 ../lib/Galette/Core/Install.php:1202
+#: ../lib/Galette/Core/Install.php:1182 ../lib/Galette/Core/Install.php:1204
 #, fuzzy
 msgid "Mails texts"
 msgstr "Texts de Mail"
 
-#: ../lib/Galette/Core/Install.php:1184 ../lib/Galette/Core/Galette.php:418
+#: ../lib/Galette/Core/Install.php:1186 ../lib/Galette/Core/Galette.php:418
 #, fuzzy
 msgid "Titles"
 msgstr "Títols"
 
-#: ../lib/Galette/Core/Install.php:1194
+#: ../lib/Galette/Core/Install.php:1196
 #, fuzzy
 msgid "Update preferences"
 msgstr "Actualitza les preferències"
 
-#: ../lib/Galette/Core/Install.php:1198
+#: ../lib/Galette/Core/Install.php:1200
 #, fuzzy
 msgid "Update models"
 msgstr "Actualitza els models"
@@ -2060,7 +2060,7 @@ msgstr ""
 msgid "- Mandatory field %field empty."
 msgstr "- El camp obligatori està buit."
 
-#: ../lib/Galette/Core/Preferences.php:619 ../webroot/installer.php:191
+#: ../lib/Galette/Core/Preferences.php:619 ../webroot/installer.php:176
 #, fuzzy
 msgid "Passwords mismatch"
 msgstr "Les contrasenyes no coincideixen"
@@ -2178,7 +2178,7 @@ msgstr "mòdul '%s'"
 msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr "controlador PDO 'mysql' o 'pgsql'"
 
-#: ../lib/Galette/Core/Db.php:1076
+#: ../lib/Galette/Core/Db.php:1079
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
 msgstr ""
@@ -3800,51 +3800,51 @@ msgstr "Data de venciment tardana"
 msgid "Paid"
 msgstr ""
 
-#: ../lib/Galette/Entity/Social.php:339
+#: ../lib/Galette/Entity/Social.php:341
 msgid "Mastodon"
 msgstr "Mastodon"
 
-#: ../lib/Galette/Entity/Social.php:340
+#: ../lib/Galette/Entity/Social.php:342
 #, fuzzy
 msgid "Twitter"
 msgstr "Twitter"
 
-#: ../lib/Galette/Entity/Social.php:341
+#: ../lib/Galette/Entity/Social.php:343
 #, fuzzy
 msgid "Facebook"
 msgstr "Facebook"
 
-#: ../lib/Galette/Entity/Social.php:342
+#: ../lib/Galette/Entity/Social.php:344
 #, fuzzy
 msgid "LinkedIn"
 msgstr "EnllaçedIn"
 
-#: ../lib/Galette/Entity/Social.php:343
+#: ../lib/Galette/Entity/Social.php:345
 #, fuzzy
 msgid "Viadeo"
 msgstr "Viadeo"
 
-#: ../lib/Galette/Entity/Social.php:344
+#: ../lib/Galette/Entity/Social.php:346
 #, fuzzy
 msgid "Jabber"
 msgstr "Jabber"
 
-#: ../lib/Galette/Entity/Social.php:345
+#: ../lib/Galette/Entity/Social.php:347
 #, fuzzy
 msgid "ICQ"
 msgstr "ICQ"
 
-#: ../lib/Galette/Entity/Social.php:346 ../webroot/installer.php:400
+#: ../lib/Galette/Entity/Social.php:348 ../webroot/installer.php:385
 #: ../../tempcache/elements/footer.html.twig:52
 msgid "Website"
 msgstr "Lloc web"
 
-#: ../lib/Galette/Entity/Social.php:347
+#: ../lib/Galette/Entity/Social.php:349
 #, fuzzy
 msgid "Blog"
 msgstr "Bloc"
 
-#: ../lib/Galette/Entity/Social.php:348
+#: ../lib/Galette/Entity/Social.php:350
 #, fuzzy
 msgid "Discord"
 msgstr "Enregistra"
@@ -4204,71 +4204,66 @@ msgstr "filtre de data final"
 msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
 msgstr "Format de data desconegut per a %1$s.<br/>Els formats know són %2$s"
 
-#: ../webroot/installer.php:130
+#: ../webroot/installer.php:113
 #, fuzzy
 msgid "No host"
 msgstr "Sense amfitrió"
 
-#: ../webroot/installer.php:133
+#: ../webroot/installer.php:116
 #, fuzzy
 msgid "No port"
 msgstr "Sense port"
 
-#: ../webroot/installer.php:136 ../webroot/installer.php:177
+#: ../webroot/installer.php:119 ../webroot/installer.php:161
 #, fuzzy
 msgid "No user name"
 msgstr "Sense nom d'usuari"
 
-#: ../webroot/installer.php:142
+#: ../webroot/installer.php:125
 #, fuzzy
 msgid "No database name"
 msgstr "Sense nom de base de dades"
 
-#: ../webroot/installer.php:180
+#: ../webroot/installer.php:164
 #, fuzzy
 msgid "The username cannot contain the @ character"
 msgstr "El nom d'usuari no pot contenir el caràcter @"
 
-#: ../webroot/installer.php:225
+#: ../webroot/installer.php:210
 #, fuzzy
 msgid "Galette Installation"
 msgstr "Instal·lació de Galette"
 
-#: ../webroot/installer.php:233 ../../tempcache/public_page.html.twig:74
+#: ../webroot/installer.php:218 ../../tempcache/public_page.html.twig:74
 #: ../../tempcache/page.html.twig:66
 #, fuzzy
 msgid "Skip to content"
 msgstr "Contingut dels correus electrònics"
 
-#: ../webroot/installer.php:237
+#: ../webroot/installer.php:222
 #, fuzzy
 msgid "Galette installation"
 msgstr "Instal·lació de Galette"
 
-#: ../webroot/installer.php:316
+#: ../webroot/installer.php:301
 #: ../../tempcache/modals/plugin_initdb.html.twig:425
 #, fuzzy
 msgid "Version selection"
 msgstr "Selecció de versió"
 
-#: ../webroot/installer.php:322
+#: ../webroot/installer.php:307
 #: ../../tempcache/modals/plugin_initdb.html.twig:444
 #, fuzzy
 msgid "Database upgrade"
 msgstr "Actualització de la base de dades"
 
-#: ../webroot/installer.php:331
+#: ../webroot/installer.php:316
 #: ../../tempcache/modals/plugin_initdb.html.twig:442
 #, fuzzy
 msgid "Database installation"
 msgstr "Instal·lació de la base de dades"
 
-#: ../webroot/installer.php:357
-#, fuzzy
-msgid "Galette initialisation"
-msgstr "Inicialització de Galette"
-
-#: ../webroot/installer.php:404 ../../tempcache/elements/footer.html.twig:59
+#: ../webroot/installer.php:389 ../../tempcache/elements/footer.html.twig:59
 #, fuzzy
 msgid "Documentation"
 msgstr "Documentació"
@@ -4355,7 +4350,7 @@ msgstr "Contribució anual reduïda"
 
 #: ../includes/i18n.inc.php:277
 #, fuzzy
-msgid "Company cotisation"
+msgid "Company fee"
 msgstr "Cotització de l'empresa"
 
 #: ../includes/i18n.inc.php:278
@@ -6202,13 +6197,13 @@ msgstr "Principal"
 msgid "Compact menu"
 msgstr "Nom de l'empresa"
 
-#: ../../tempcache/elements/navigation/public_pages.html.twig:88
+#: ../../tempcache/elements/navigation/public_pages.html.twig:94
 #, fuzzy
 msgid "Subscribe"
 msgstr "Subscriu-me"
 
-#: ../../tempcache/elements/navigation/public_pages.html.twig:133
-#: ../../tempcache/elements/navigation/public_pages.html.twig:143
+#: ../../tempcache/elements/navigation/public_pages.html.twig:145
+#: ../../tempcache/elements/navigation/public_pages.html.twig:155
 #: ../../tempcache/elements/logged_user.html.twig:83
 #: ../../tempcache/elements/logged_user.html.twig:157
 #: ../../tempcache/elements/logged_user.html.twig:167
@@ -6218,8 +6213,8 @@ msgstr "Subscriu-me"
 msgid "Disable dark mode"
 msgstr "Desactivat"
 
-#: ../../tempcache/elements/navigation/public_pages.html.twig:135
-#: ../../tempcache/elements/navigation/public_pages.html.twig:145
+#: ../../tempcache/elements/navigation/public_pages.html.twig:147
+#: ../../tempcache/elements/navigation/public_pages.html.twig:157
 #: ../../tempcache/elements/logged_user.html.twig:85
 #: ../../tempcache/elements/logged_user.html.twig:159
 #: ../../tempcache/elements/logged_user.html.twig:169
@@ -6822,7 +6817,7 @@ msgstr "Xarxes socials"
 msgid "Choose or enter your own..."
 msgstr "Trieu una entrada..."
 
-#: ../../tempcache/macros.twig:416
+#: ../../tempcache/macros.twig:421
 #, fuzzy
 msgid "For the selection:"
 msgstr "Per a la selecció"
@@ -9745,24 +9740,19 @@ msgstr "Confirmeu la vostra adreça electrònica"
 msgid "Get my document"
 msgstr "Obtenir el meu document"
 
-#: ../../tempcache/pages/password_recover.html.twig:60
-#, fuzzy
-msgid "(at least 4 characters)"
-msgstr "(almenys 4 caràcters)"
-
-#: ../../tempcache/pages/password_recover.html.twig:66
-#: ../../tempcache/pages/password_recover.html.twig:70
+#: ../../tempcache/pages/password_recover.html.twig:63
+#: ../../tempcache/pages/password_recover.html.twig:67
 #, fuzzy
 msgid "New password:"
 msgstr "Nova contrasenya"
 
-#: ../../tempcache/pages/password_recover.html.twig:78
-#: ../../tempcache/pages/password_recover.html.twig:82
+#: ../../tempcache/pages/password_recover.html.twig:75
+#: ../../tempcache/pages/password_recover.html.twig:79
 #, fuzzy
 msgid "Confirmation:"
 msgstr "Confirmació"
 
-#: ../../tempcache/pages/password_recover.html.twig:88
+#: ../../tempcache/pages/password_recover.html.twig:85
 #, fuzzy
 msgid "Change my password"
 msgstr "Canvia la meva contrasenya"
@@ -10317,14 +10307,10 @@ msgstr "Imatge:"
 
 #: ../../tempcache/components/dynamic_fields.html.twig:228
 #, fuzzy
-msgid "Enter as many occurences you want."
+msgid "Enter as many occurrences you want."
 msgstr "Introduïu tantes ocurrències que vulgueu."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:253
-#, php-format
-msgid "Enter up to %count more occurences."
-msgstr ""
-
 #: ../../tempcache/components/dynamic_fields.html.twig:315
 #, fuzzy, php-format
 msgid "Enter up to %count more occurrences."
@@ -10365,6 +10351,14 @@ msgstr "Llengua:"
 #, fuzzy
 msgid "Page content"
 msgstr "Contingut de la pàgina"
+
+#, fuzzy
+#~ msgid "Galette initialisation"
+#~ msgstr "Inicialització de Galette"
+
+#, fuzzy
+#~ msgid "(at least 4 characters)"
+#~ msgstr "(almenys 4 caràcters)"
 
 #, fuzzy
 #~ msgid "An error has occurred while looking if status does exists."

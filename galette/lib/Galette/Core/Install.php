@@ -332,15 +332,16 @@ class Install
      * @param string  $user Database username
      * @param ?string $pass Database user's password
      *
-     * @return void
+     * @return self
      */
-    public function setDsn(string $host, string $port, string $name, string $user, ?string $pass): void
+    public function setDsn(string $host, string $port, string $name, string $user, ?string $pass): self
     {
         $this->db_host = $host;
         $this->db_port = $port;
         $this->db_name = $name;
         $this->db_user = $user;
         $this->db_pass = $pass;
+        return $this;
     }
 
     /**
@@ -624,7 +625,7 @@ class Install
         $scripts_path = ($spath ?? GALETTE_ROOT . '/install') . '/scripts/';
 
         foreach ($update_scripts as $key => $val) {
-            if (substr($val, -strlen('.sql')) === '.sql') {
+            if (str_ends_with($val, '.sql')) {
                 //just a SQL script, run it
                 $script = fopen($scripts_path . $val, 'r');
 
@@ -833,12 +834,13 @@ class Install
      * @param string $login Login
      * @param string $pass  Password
      *
-     * @return void
+     * @return self
      */
-    public function setAdminInfos(string $login, string $pass): void
+    public function setAdminInfos(string $login, string $pass): self
     {
         $this->admin_login = $login;
         $this->admin_pass = password_hash($pass, PASSWORD_BCRYPT);
+        return $this;
     }
 
     /**
@@ -1264,11 +1266,12 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      *
      * @param ?string $version Installed version
      *
-     * @return void
+     * @return self
      */
-    public function setInstalledVersion(?string $version): void
+    public function setInstalledVersion(?string $version): self
     {
         $this->installed_version = $version;
+        return $this;
     }
 
     /**
@@ -1302,5 +1305,21 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
     public function isStepPassed(int $step): bool
     {
         return $this->step > $step;
+    }
+
+    /**
+     *  Initialize database constants to connect
+     *
+     * @return void
+     */
+    public function initDbConstants(): void
+    {
+        define('TYPE_DB', $this->getDbType());
+        define('PREFIX_DB', $this->getTablesPrefix());
+        define('USER_DB', $this->getDbUser());
+        define('PWD_DB', $this->getDbPass());
+        define('HOST_DB', $this->getDbHost());
+        define('PORT_DB', $this->getDbPort());
+        define('NAME_DB', $this->getDbName());
     }
 }

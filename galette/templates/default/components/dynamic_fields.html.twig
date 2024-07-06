@@ -195,7 +195,7 @@
                             {% endif %}
                             {% if field.isRepeatable() %}
                                 {% if field.getRepeat() == 0 %}
-                                    <p class="exemple" id="repeat_msg">{{ _T("Enter as many occurences you want.") }}</p>
+                                    <p class="exemple" id="repeat_msg">{{ _T("Enter as many occurrences you want.") }}</p>
                                 {% elseif values is not iterable or values|length < field.getRepeat() or values|length == 0 %}
                                     {% if values is iterable %}
                                         {% set current_count = values|length %}
@@ -203,7 +203,7 @@
                                         {% set current_count = 1 %}
                                     {% endif %}
                                     {% set remaining = field.getRepeat() - current_count %}
-                                    <p class="exemple" id="repeat_msg">{{ _T("Enter up to %count more occurences.")|replace({"%count": remaining}) }}</p>
+                                    <p class="exemple" id="repeat_msg">{{ _T("Enter up to %count more occurrences.")|replace({"%count": remaining}) }}</p>
                                 {% endif %}
                             {% endif %}
                         </div>

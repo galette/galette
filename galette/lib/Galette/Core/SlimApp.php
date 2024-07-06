@@ -25,15 +25,19 @@ namespace Galette\Core;
 
 use DI\Bridge\Slim\Bridge;
 use DI\ContainerBuilder;
+use Psr\Container\ContainerInterface;
 use Slim\App;
 
 /**
  * Slim application
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ *
+ * @template TContainerInterface of (ContainerInterface|null)
  */
 class SlimApp
 {
+    /** @var App<TContainerInterface> */
     private App $app;
 
     /**
@@ -64,7 +68,7 @@ class SlimApp
     /**
      * Get Slim application
      *
-     * @return App
+     * @return App<TContainerInterface>
      */
     public function getApp(): App
     {

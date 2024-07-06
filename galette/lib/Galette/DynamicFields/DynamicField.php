@@ -218,6 +218,7 @@ abstract class DynamicField
                 $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 
@@ -236,12 +237,22 @@ abstract class DynamicField
         $this->index = (int)$rs->field_index;
         $this->permission = (int)$rs->field_perm;
         $this->required = $rs->field_required == 1;
-        $this->min_size = $rs->field_min_size;
+        if ($rs->field_min_size !== null) {
+            $this->min_size = (int)$rs->field_min_size;
+        }
         $this->width_in_forms = (int)$rs->field_width_in_forms;
-        $this->width = $rs->field_width;
-        $this->height = $rs->field_height;
-        $this->repeat = (int)$rs->field_repeat;
-        $this->size = (int)$rs->field_size;
+        if ($rs->field_width !== null) {
+            $this->width = (int)$rs->field_width;
+        }
+        if ($rs->field_height !== null) {
+            $this->height = (int)$rs->field_height;
+        }
+        if ($rs->field_repeat !== null) {
+            $this->repeat = (int)$rs->field_repeat;
+        }
+        if ($rs->field_size !== null) {
+            $this->size = (int)$rs->field_size;
+        }
         $this->form = $rs->field_form;
         $this->information = $rs->field_information;
         $this->information_above = $rs->field_information_above == 1;

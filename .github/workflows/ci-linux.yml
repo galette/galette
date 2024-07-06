@@ -157,10 +157,8 @@ jobs:
 
       - name: Upload code coverage (scrutinizer)
         run: |
-          cd galette
           composer require scrutinizer/ocular -W --ignore-platform-reqs
-          cd ..
-          php galette/vendor/bin/ocular code-coverage:upload --format=php-clover tests/clover.xml
+          php vendor/bin/ocular code-coverage:upload --format=php-clover tests/clover.xml
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
       - name: Upload code coverage (codecov)

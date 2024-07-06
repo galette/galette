@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2024 The Galette Team
  *
@@ -31,7 +32,7 @@ use Galette\Util\Telemetry;
 //that way, in galette.inc.php, we'll only include relevant parts
 $installer = true;
 define('GALETTE_ROOT', __DIR__ . '/../');
-define('GALETTE_MODE', 'INSTALL');
+define('GALETTE_INSTALLER', true);
 
 // check PHP modules
 require_once GALETTE_ROOT . '/vendor/autoload.php';
@@ -72,24 +73,6 @@ if (isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz'])) {
 
 $error_detected = array();
 
-/**
- * Initialize database constants to connect
- *
- * @param Install $install Installer
- *
- * @return void
- */
-function initDbConstants($install)
-{
-    define('TYPE_DB', $install->getDbType());
-    define('PREFIX_DB', $install->getTablesPrefix());
-    define('USER_DB', $install->getDbUser());
-    define('PWD_DB', $install->getDbPass());
-    define('HOST_DB', $install->getDbHost());
-    define('PORT_DB', $install->getDbPort());
-    define('NAME_DB', $install->getDbName());
-}
-
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', true);
 
@@ -98,11 +81,12 @@ if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     Analog::handler($galette_run_log);
 }
 
-if (!$install->isEndStep()
+if (
+    !$install->isEndStep()
     && ($install->postCheckDb())
 ) {
     //if we have passed database configuration, define required constants
-    initDbConstants($install);
+    $install->initDbConstants();
 
     if ($install->postCheckDb()) {
         try {
@@ -112,7 +96,6 @@ if (!$install->isEndStep()
                 throw $e;
             }
         }
-
     }
 }
 
@@ -154,7 +137,7 @@ if (isset($_POST['stepback_btn'])) {
             $_POST['install_dbprefix']
         );
         $install->atDbCheckStep();
-        initDbConstants($install);
+        $install->initDbConstants();
     }
 } elseif (isset($_POST['install_dbperms_ok'])) {
     if ($install->isInstall()) {
@@ -169,7 +152,8 @@ if (isset($_POST['stepback_btn'])) {
     $install->atAdminStep();
 } elseif (isset($_POST['install_dbwrite_ok']) && $install->isUpgrade()) {
     $install->atTelemetryStep();
-} elseif (isset($_POST['install_adminlogin'])
+} elseif (
+    isset($_POST['install_adminlogin'])
     && isset($_POST['install_adminpass'])
     && $install->isInstall()
 ) {
@@ -182,7 +166,8 @@ if (isset($_POST['stepback_btn'])) {
     if ($_POST['install_adminpass'] == '') {
         $error_detected[] = _T("No password");
     }
-    if (!isset($_POST['install_passwdverified'])
+    if (
+        !isset($_POST['install_passwdverified'])
         && strcmp(
             $_POST['install_adminpass'],
             $_POST['install_adminpass_verif']
@@ -243,9 +228,9 @@ header('Content-Type: text/html; charset=UTF-8');
                     <div class="menu">
 <?php
 foreach ($i18n->getList() as $langue) {
-?>
+    ?>
                         <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>" class="item"><?php echo $langue->getName(); ?> <span>(<?php echo $langue->getAbbrev(); ?>)</span></a>
-<?php
+    <?php
 }
 ?>
                     </div>
@@ -354,7 +339,7 @@ if (!$install->isUpgrade()) {
                                 <div class="step<?php if ($install->isGaletteInitStep()) echo ' active'; elseif (!$install->isStepPassed(GaletteInstall::STEP_GALETTE_INIT)) echo ' disabled'; ?>">
                                     <i class="cogs icon<?php if($install->isStepPassed(GaletteInstall::STEP_GALETTE_INIT)) { echo ' green'; } ?>"></i>
                                     <div class="content">
-                                        <div class="title"><?php echo _T("Galette initialisation"); ?></div>
+                                        <div class="title"><?php echo _T("Galette initialization"); ?></div>
                                     </div>
                                 </div>
                                 <div class="step<?php if ($install->isEndStep()) echo ' active'; elseif (!$install->isStepPassed(GaletteInstall::STEP_END)) echo ' disabled'; ?>">
