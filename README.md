@@ -7,7 +7,7 @@
 
 ### English
 
-[![Download most recent Galette release (1.0.4)](https://img.shields.io/badge/1.0.4-Latest_Galette-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://galette.eu/download/galette-1.0.4.tar.bz2)
+[![Download most recent Galette release (1.1.2)](https://img.shields.io/badge/1.1.2-Latest_Galette-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://galette.eu/download/galette-1.1.2.tar.bz2)
 [![Download Galette development (nightly) build](https://img.shields.io/badge/nightly-Galette_development-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://galette.eu/download/galette-dev.tar.bz2)
 
 Galette is a membership management web application towards non profit organizations; released under GPLv3.
@@ -31,7 +31,7 @@ This project is tested with BrowserStack
 
 ### Français
 
-[![Télécharger la version de Galette la plus récente (1.0.4)](https://img.shields.io/badge/1.0.4-Dernière_Galette-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://galette.eu/download/galette-1.0.4.tar.bz2)
+[![Télécharger la version de Galette la plus récente (1.1.2)](https://img.shields.io/badge/1.1.2-Dernière_Galette-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://galette.eu/download/galette-1.1.2.tar.bz2)
 [![Télécharger la version de développement (nighly) de Galette](https://img.shields.io/badge/nightly-Galette_développement-ffb619.svg?logo=php&logoColor=white&style=for-the-badge)](https://galette.eu/download/galette-dev.tar.bz2)
 
 Galette est un outil de gestion d’adhérents et de cotisations en ligne à destination des associations, sous license GPLV3.
