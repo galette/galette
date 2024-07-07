@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+declare(strict_types=1);
+
+namespace Galette\Console\Command\Plugins;
+
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
+/**
+ * Plugins database install console command
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
+#[AsCommand(
+    name: 'galette:plugins:install-db',
+    description: 'Install Galette plugins database'
+)]
+class PluginInstallDb extends AbstractPlugins
+{
+    /**
+     * Command execution
+     *
+     * @param InputInterface  $input  Input interface
+     * @param OutputInterface $output Output interface
+     *
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        //TODO
+        return Command::SUCCESS;
+    }
+
+    /**
+     * Get relevant plugins (actives, with database) for current command
+     *
+     * @param SymfonyStyle $io Output interface
+     *
+     * @return array<string, array<string, string>>
+     */
+    protected function getRelevantPlugins(SymfonyStyle $io): array
+    {
+        $enabled_plugins = $this->plugins->getModules();
+
+        $relevant_plugins = [];
+        foreach ($enabled_plugins as $module_id => $module) {
+            if ($this->plugins->needsDatabase($module_id)) {
+                $relevant_plugins[$module_id] = $module;
+            } else {
+                $io->writeln(
+                    sprintf('Plugin "%s" doe snot use a database', $module_id),
+                    OutputInterface::VERBOSITY_VERBOSE
+                );
+            }
+        }
+
+        return $relevant_plugins;
+    }
+}

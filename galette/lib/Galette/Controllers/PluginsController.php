@@ -254,9 +254,15 @@ class PluginsController extends AbstractController
             case 'u4':
                 $messages = [];
 
+                $install->setDbType(TYPE_DB);
+                $install->setInstalledVersion($post['previous_version']);
+                $install->executeScripts($this->zdb, $plugin['root']);
+
+                $messages = $install->getReport();
+
                 // begin : copyright (2002) the phpbb group (support@phpbb.com)
                 // load in the sql parser
-                include GALETTE_ROOT . 'includes/sql_parse.php';
+                /*include GALETTE_ROOT . 'includes/sql_parse.php';
                 if ($step == 'u4') {
                     $update_scripts = Install::getUpdateScripts(
                         $plugin['root'],
@@ -316,7 +322,7 @@ class PluginsController extends AbstractController
                             }
                         }
                     }
-                }
+                }*/
                 break;
         }
 
