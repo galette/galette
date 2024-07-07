@@ -79,7 +79,7 @@ class PluginsList extends AbstractCommand
         $io = new SymfonyStyle($input, $output);
 
         $definitions = [];
-        if ($input->getOption('enabled') || !$input->getOption('enabled') && !$input->getOption('disabled')) {
+        if (!$input->getOption('enabled') && !$input->getOption('disabled') || $input->getOption('enabled')) {
             foreach ($plugins->getModules() as $module_id => $module) {
                 if ($input->getOption('complete')) {
                     $io->definitionList(
@@ -99,7 +99,7 @@ class PluginsList extends AbstractCommand
             }
         }
 
-        if ($input->getOption('disabled') || !$input->getOption('disabled') && !$input->getOption('enabled')) {
+        if (!$input->getOption('disabled') && !$input->getOption('enabled') || $input->getOption('disabled')) {
             foreach ($plugins->getDisabledModules() as $module_id => $module) {
                 if ($input->getOption('complete')) {
                     switch ($module['cause']) {
