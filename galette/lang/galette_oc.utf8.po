@@ -1,14 +1,14 @@
-# Quentin PAGÈS <quentinantonin@free.fr>, 2020.
+# Quentin PAGÈS <quentinantonin@free.fr>, 2020, 2024.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023.
 # Pèire Bréchet <charrar@free.fr>, 2022, 2024.
 # Pèire Bréchet <oxytanistzero@tutanota.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-07-02 21:36+0200\n"
-"PO-Revision-Date: 2024-04-30 18:07+0000\n"
-"Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
+"PO-Revision-Date: 2024-07-10 18:09+0000\n"
+"Last-Translator: Quentin PAGÈS <quentinantonin@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
 "Language: oc\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.5.3-dev\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -593,10 +593,8 @@ msgstr "Ajustar lo document"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:122
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:408
-#, fuzzy
-#| msgid "An error occurred adding dynamic field :("
 msgid "An error occurred adding document :("
-msgstr "A pas capitat per ajustar lo camp dinamic :("
+msgstr "A pas capitat per ajustar lo document :("
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:136
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:422
@@ -611,7 +609,7 @@ msgstr "Lista dei documents"
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:352
 #: ../../tempcache/pages/documents_list.html.twig:207
 msgid "Edit document"
-msgstr "Modiicar lo document"
+msgstr "Modificar lo document"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:494
 #: ../../tempcache/pages/documents_list.html.twig:220
