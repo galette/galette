@@ -1,6 +1,10 @@
 Changes
 -------
 
+1.1.2 -> 1.1.3
+
+- Impossible to update database
+
 1.1.1 -> 1.1.2
 
 - Do not display links to public documents page if public pages are not enabled
