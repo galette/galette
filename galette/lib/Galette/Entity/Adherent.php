@@ -1156,6 +1156,12 @@ class Adherent
             unset($values['parent_id']);
         }
 
+        //attach to/detach from parent
+        if (isset($values['detach_parent'])) {
+            $this->parent = null;
+            unset($values['parent_id']);
+        }
+
         if (isset($values['duplicate'])) {
             //if we're duplicating, keep a trace (if an error occurs)
             $this->duplicate = true;
@@ -1256,11 +1262,6 @@ class Adherent
                     );
                 }
             }
-        }
-
-        //attach to/detach from parent
-        if (isset($values['detach_parent'])) {
-            $this->parent = null;
         }
 
         if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && $this->parent_id !== $login->id) {
