@@ -33,13 +33,14 @@
 # klausellus-wallace <muetze.polka0e@icloud.com>, 2023.
 # CryptKid <CryptKiddie@chaospott.de>, 2023.
 # Dynnammo <baptiste.thivend@protonmail.com>, 2024.
+# rabbitmc <weblate@sternwelt.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-07-02 21:36+0200\n"
-"PO-Revision-Date: 2024-04-21 07:17+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2024-07-18 14:09+0000\n"
+"Last-Translator: rabbitmc <weblate@sternwelt.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -47,7 +48,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5-dev\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -785,7 +786,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:272
 msgid "Preferences has been saved."
-msgstr "Einstellungen wurden nicht gespeichert."
+msgstr "Einstellungen wurden gespeichert."
 
 #: ../lib/Galette/Controllers/GaletteController.php:378
 msgid ""
@@ -980,13 +981,13 @@ msgstr "Du must sowohl einen Benutzernamen als auch ein Passwort eingeben."
 #: ../../tempcache/elements/footer.html.twig:74
 #: ../../tempcache/elements/footer.html.twig:90
 msgid "A new Galette release is available."
-msgstr ""
+msgstr "Eine neue Galette Version is verfügbar."
 
 #: ../lib/Galette/Controllers/AuthController.php:163
 #: ../../tempcache/elements/footer.html.twig:76
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
-msgstr ""
+msgstr "Es wird derzeit Galette %1$s genutzt und %2$s ist verfügbar."
 
 #: ../lib/Galette/Controllers/AuthController.php:182
 msgid "Your password is too weak! Please consider updating it."
@@ -3546,7 +3547,7 @@ msgstr "Scheck"
 
 #: ../lib/Galette/Entity/PaymentType.php:285
 msgid "Transfer"
-msgstr "Übertrag"
+msgstr "Überweisung"
 
 #: ../lib/Galette/Entity/PaymentType.php:286
 msgid "Paypal"
