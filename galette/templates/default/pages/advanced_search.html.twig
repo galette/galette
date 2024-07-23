@@ -464,6 +464,8 @@
                                             <i class="dropdown icon"></i>
                                             <div class="text">{{ _T('Select a field') }}</div>
                                             <div class="menu">
+    {% set type = null %}
+    {% set fvalues = null %}
     {% for key, field in search_fields %}
         {% if fs.field == key %}
             {% if key starts with 'date_' or key == 'ddn_adh' %}
@@ -484,6 +486,8 @@
         {% endif %}
                                                 <div class="item{% if fs.field == key %} active selected{% endif %}" data-value="{{ key }}">{{ field.label }}</div>
     {% endfor %}
+
+    {% set cur_field = null %}
     {% for field in adh_dynamics %}
         {% if get_class(field) != "Galette\\DynamicFields\\Separator" %}
             {% set fid = field.getId() %}
@@ -491,30 +495,27 @@
             {% if fs.field == rid %}
                 {% set cur_field = field %}
             {% endif %}
+                                                <div class="item{% if fs.field == rid %} active selected{% endif %}" data-value="{{ rid }}">{{ field.getName() }}</div>
         {% endif %}
-                                                <div class="item{% if fs.field == rid %} active selected{% endif %}" data-value="dyn_{{ field.getId() }}">{{ field.getName() }}</div>
     {% endfor %}
-    {% for type, label in adh_socials %}
-        {% set rid = "socials_" ~ type %}
+    {% for soctype, label in adh_socials %}
+        {% set rid = "socials_" ~ soctype %}
         {% if fs.field == rid %}
-            {% set cur_field = type %}
+            {% set cur_field = soctype %}
         {% endif %}
-                                                <div class="item{% if fs.field == rid %} active selected{% endif %}" data-value="socials_{{ type }}">{{ label }}</div>
+                                                <div class="item{% if fs.field == rid %} active selected{% endif %}" data-value="socials_{{ soctype }}">{{ label }}</div>
     {% endfor %}
                                             </div>
                                         </div>
-    {# may not be defined #}
-    {#  #}
-    {% if type is not defined %}{% set type = null %}{% endif %}
                                         <div class="data inline fields">
-                                            <input type="hidden" name="free_type[]" value="{% if cur_field is defined %}{{ cur_field.getType() }}{% endif %}"/>
-    {% if cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Choice" or type == constant("Galette\\DynamicFields\\DynamicField::CHOICE")) %}
+                                            <input type="hidden" name="free_type[]" value="{% if cur_field is not null %}{{ cur_field.getType() }}{% endif %}"/>
+    {% if cur_field is not null and (get_class(cur_field) == "Galette\\DynamicFields\\Choice" or type == constant("Galette\\DynamicFields\\DynamicField::CHOICE")) %}
                                             <select name="free_query_operator[]" class="free_operator ui selection dropdown">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_NOT_EQUALS") %} selected="selected"{% endif %}>{{ _T('is not') }}</option>
                                             </select>
                                             <select name="free_text[]" class="free_text ui search dropdown">
-        {% if cur_field is defined and get_class(cur_field) == "Galette\\DynamicFields\\Choice" %}
+        {% if cur_field is not null and get_class(cur_field) == "Galette\\DynamicFields\\Choice" %}
             {% for key, value in cur_field.getValues() %}
                                                 <option value="{{ key }}"{% if key == fs.search %} selected="selected"{% endif %}>{{ value }}</option>
             {% endfor %}
@@ -524,14 +525,14 @@
             {% endfor %}
         {% endif %}
                                             </select>
-    {% elseif cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Date" or type == constant("Galette\\DynamicFields\\DynamicField::DATE")) %}
+    {% elseif cur_field is not null and (get_class(cur_field) == "Galette\\DynamicFields\\Date" or type == constant("Galette\\DynamicFields\\DynamicField::DATE")) %}
                                             <select name="free_query_operator[]" class="free_operator ui selection dropdown">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_BEFORE") %} selected="selected"{% endif %}>{{ _T('before') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_AFTER") %} selected="selected"{% endif %}>{{ _T('after') }}</option>
                                             </select>
                                             <input type="text" name="free_text[]" value="{{ fs.search|date(_T('Y-m-d')) }}" class="modif_date" maxlength="10" size="10" placeholder="{{ _T('yyyy-mm-dd format') }}"/>
-    {% elseif cur_field is defined and (get_class(cur_field) == "Galette\\DynamicFields\\Boolean" or type == constant("Galette\\DynamicFields\\DynamicField::BOOLEAN")) %}
+    {% elseif cur_field is not null and (get_class(cur_field) == "Galette\\DynamicFields\\Boolean" or type == constant("Galette\\DynamicFields\\DynamicField::BOOLEAN")) %}
                                             <select name="free_query_operator[]" class="free_operator ui selection dropdown">
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") %} selected="selected"{% endif %}>{{ _T('is') }}</option>
                                             </select>
@@ -546,7 +547,7 @@
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_STARTS_WITH") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_STARTS_WITH") %} selected="selected"{% endif %}>{{ _T('starts with') }}</option>
                                                 <option value="{{ constant("Galette\\Filters\\AdvancedMembersList::OP_ENDS_WITH") }}"{% if fs.qry_op == constant("Galette\\Filters\\AdvancedMembersList::OP_ENDS_WITH") %} selected="selected"{% endif %}>{{ _T('ends with') }}</option>
                                             </select>
-                                            <input type="text" name="free_text[]" value="{{ fs.search }}"{% if cur_field is defined and get_class(cur_field) == "Galette\\DynamicFields\\Text" %} class="large"{% endif %}/>
+                                            <input type="text" name="free_text[]" value="{{ fs.search }}"{% if cur_field is not null and get_class(cur_field) == "Galette\\DynamicFields\\Text" %} class="large"{% endif %}/>
     {% endif %}
                                         </div>
                                         <a
