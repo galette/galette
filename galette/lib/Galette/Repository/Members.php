@@ -1510,8 +1510,8 @@ class Members
                         //FIXME works with french formatted date only -_-
                         if ($zdb->isPostgres()) {
                             $store_fmt = __("Y-m-d") === 'Y-m-d' ? 'YYYY-MM-DD' : 'DD/MM/YYYY';
-                            $fs['search'] = "to_date('" . $fs['search'] . "', '" . $store_fmt . "')";
-                            $qry .= "to_date('" . $prefix . $fs['field'] . "', '$store_fmt')";
+                            $fs['search'] = "'" . $fs['search'] . "'";
+                            $qry .= "to_date(" . $prefix . $fs['field'] . ", '$store_fmt')";
                         } else {
                             $store_fmt = __("Y-m-d") === 'Y-m-d' ? '%Y-%m-%d' : '%d/%m/%Y';
                             $fs['search'] = "STR_TO_DATE('" . $fs['search'] . "', '" . $store_fmt . "')";
