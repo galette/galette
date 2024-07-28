@@ -44,6 +44,7 @@ class Plugins
     public const DISABLED_COMPAT   = 0;
     public const DISABLED_MISS     = 1;
     public const DISABLED_EXPLICIT = 2;
+    public const DISABLED_DBVERSION = 3;
 
     /** @var array<string> */
     protected array $path;
@@ -192,6 +193,7 @@ class Plugins
      * @param ?string               $route    Module route name
      * @param ?string               $date     Module release date
      * @param ?array<string,string> $acls     Module routes ACLs
+     * @param ?float                $dbver    Module database version
      * @param ?int                  $priority Module priority
      */
     public function register(
@@ -203,6 +205,7 @@ class Plugins
         ?string $route = null,
         ?string $date = null,
         ?array $acls = null,
+        ?float $dbver = null,
         ?int $priority = 1000
     ): void {
         if ($compver === null) {
@@ -234,6 +237,15 @@ class Plugins
                 'priority'      => $priority ?? 1000,
                 'route'         => $route
             ];
+
+            if (!$dbver && $this->needsDatabase($this->id)) {
+                //plugin needs a database but no version is provided
+                Analog::log(
+                    'Plugin ' . $name . ' needs a database but no version is provided.',
+                    Analog::ERROR
+                );
+                $this->setDisabled(self::DISABLED_DBVERSION);
+            }
         }
     }
 
@@ -564,7 +576,7 @@ class Plugins
             $d = $this->modules[$id]['root'] . '/scripts/';
             return file_exists($d);
         } else {
-            throw new Exception(_T("Module does not exists!"));
+            throw new Exception(sprintf("Module %s does not exists!", $id));
         }
     }
 
