@@ -41,7 +41,7 @@ $container->set(
 $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 
     $templates = ['__main__' => GALETTE_TPL_THEME_DIR];
-    foreach ($c->get(\Galette\Core\Plugins::class)->getModules() as $module_id => $module) {
+    foreach ($c->get(\Galette\Core\Plugins::class)->getActiveModules() as $module_id => $module) {
         $dir = $module['root'] . '/templates/' . $c->get(\Galette\Core\Preferences::class)->pref_theme;
         if (!is_dir($dir)) {
             continue;
@@ -79,15 +79,17 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('login', $c->get(\Galette\Core\Login::class));
     $view->getEnvironment()->addGlobal('logo', $c->get(\Galette\Core\Logo::class));
 
-    $view->getEnvironment()->addGlobal('plugin_headers', $c->get(\Galette\Core\Plugins::class)->getTplHeaders());
-    $view->getEnvironment()->addGlobal('plugin_scripts', $c->get(\Galette\Core\Plugins::class)->getTplScripts());
+    /** @var \Galette\Core\Plugins $plugins */
+    $plugins = $c->get(\Galette\Core\Plugins::class);
+    $view->getEnvironment()->addGlobal('plugin_headers', $plugins->getTplHeaders());
+    $view->getEnvironment()->addGlobal('plugin_scripts', $plugins->getTplScripts());
 
     // galette_lang should be removed and languages used instead
     $view->getEnvironment()->addGlobal('galette_lang', $c->get(\Galette\Core\I18n::class)->getAbbrev());
     $view->getEnvironment()->addGlobal('galette_lang_name', $c->get(\Galette\Core\I18n::class)->getName());
     $view->getEnvironment()->addGlobal('languages', $c->get(\Galette\Core\I18n::class)->getList());
     $view->getEnvironment()->addGlobal('i18n', $c->get(\Galette\Core\I18n::class));
-    $view->getEnvironment()->addGlobal('plugins', $c->get(\Galette\Core\Plugins::class));
+    $view->getEnvironment()->addGlobal('plugins', $plugins);
     $view->getEnvironment()->addGlobal('preferences', $c->get(\Galette\Core\Preferences::class));
     $view->getEnvironment()->addGlobal('existing_mailing', $c->get(\RKA\Session::class)->mailing !== null);
     $view->getEnvironment()->addGlobal('html_editor', false);
@@ -128,8 +130,7 @@ $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) us
         && !defined('GALETTE_INSTALLER'))
     ) {
         $plugins
-            ->setTranslator($c->get(\Galette\Core\Translator::class))
-            ->setEventDispatcher($c->get(\League\Event\EventDispatcher::class))
+            ->setContainer($c)
             ->loadModules(
                 $c->get(\Galette\Core\Preferences::class),
                 GALETTE_PLUGINS_PATH,
@@ -174,7 +175,7 @@ $container->set('acls', function (ContainerInterface $c) {
     /** @var array<string, string> $core_acls */
     $acls = $core_acls;
 
-    foreach ($c->get(\Galette\Core\Plugins::class)->getModules() as $plugin) {
+    foreach ($c->get(\Galette\Core\Plugins::class)->getActiveModules() as $plugin) {
         $acls[$plugin['route'] . 'Info'] = 'member';
     }
 

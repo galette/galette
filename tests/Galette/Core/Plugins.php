@@ -11,7 +11,11 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
+
+use function Safe\touch;
+use function Safe\unlink;
 
 /**
  * Plugins tests class
@@ -20,6 +24,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class Plugins extends GaletteTestCase
 {
+    private int $count_modules = 9;
+    private int $active_modules = 3;
+
     /** @var array<string, mixed> */
     private array $plugin2 = [
         'root'          => 'plugin-test2',
@@ -33,7 +40,8 @@ class Plugins extends GaletteTestCase
         ],
         'date'          => '2013-12-15',
         'priority'      => 1000,
-        'route'         => 'plugin2'
+        'route'         => 'plugin2',
+        'dbversion'     => null
     ];
 
     /**
@@ -42,8 +50,9 @@ class Plugins extends GaletteTestCase
     private function getPlugins(): \Galette\Core\Plugins
     {
         $plugins = new \Galette\Core\Plugins();
-        $plugins->autoload(GALETTE_PLUGINS_PATH);
-        $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         return $plugins;
     }
 
@@ -64,9 +73,38 @@ class Plugins extends GaletteTestCase
     public function testLoadModules(): void
     {
         $this->getPlugins();
-        $this->assertCount(3, $this->plugins->getModules());
+        $modules = $this->plugins->getModules();
+        $this->assertCount($this->count_modules, $modules);
 
-        $loaded_plugin = $this->plugins->getModules('plugin-test2');
+        //all plugins are present, but only 3 are active
+        $this->assertEquals(
+            [
+                'plugin-db-noversion',
+                'plugin-db',
+                'plugin-disabled',
+                'plugin-news',
+                'plugin-noclass',
+                'plugin-oldversion',
+                'plugin-test1',
+                'plugin-test2',
+                'plugin-unversionned'
+            ],
+            array_keys($modules)
+        );
+
+        $active_modules = $this->plugins->getActiveModules();
+        $this->assertCount($this->active_modules, $active_modules);
+
+        $this->assertEquals(
+            [
+                'plugin-db',
+                'plugin-test1',
+                'plugin-test2'
+            ],
+            array_keys($active_modules)
+        );
+
+        $loaded_plugin = $this->plugins->getModule('plugin-test2');
         $loaded_plugin['date'] = $this->plugin2['date'];
 
         $this->assertSame($this->plugin2, $loaded_plugin);
@@ -78,7 +116,8 @@ class Plugins extends GaletteTestCase
     public function testModuleExists(): void
     {
         $this->assertTrue($this->plugins->moduleExists('plugin-test2'));
-        $this->assertFalse($this->plugins->moduleExists('plugin-disabled'));
+        $this->assertTrue($this->plugins->moduleExists('plugin-disabled'));
+        $this->assertFalse($this->plugins->moduleExists('plugin-notaplugin'));
     }
 
     /**
@@ -107,6 +146,10 @@ class Plugins extends GaletteTestCase
             [
                 'module' => 'plugin-noclass',
                 'cause' =>  \Galette\Core\Plugins::DISABLED_MISS
+            ],
+            [
+                'module' => 'plugin-db-noversion',
+                'cause' => \Galette\Core\Plugins::DISABLED_DBVERSION
             ]
         ];
     }
@@ -119,7 +162,8 @@ class Plugins extends GaletteTestCase
     {
         $disabled_modules = $this->plugins->getDisabledModules();
         $this->assertTrue(isset($disabled_modules[$module]));
-        $this->assertSame($cause, $disabled_modules[$module]['cause']);
+        $this->assertSame($cause, $this->plugins->getDisabledCause($module));
+        $this->assertTrue(isset($disabled_modules['plugin-db-noversion']));
     }
 
     /**
@@ -146,21 +190,20 @@ class Plugins extends GaletteTestCase
     public function testModuleActivation(): void
     {
         $plugins = $this->getPlugins();
-        $modules = $plugins->getModules();
-        $this->assertCount(3, $modules);
-        $this->assertTrue(isset($modules['plugin-test2']));
+        $active_modules = $plugins->getActiveModules();
+        $this->assertTrue(isset($active_modules['plugin-test2']));
         $plugins->deactivateModule('plugin-test2');
 
         $plugins = $this->getPlugins();
-        $modules = $plugins->getModules();
-        $this->assertCount(2, $modules);
-        $this->assertFalse(isset($modules['plugin-test2']));
+        $active_modules = $plugins->getActiveModules();
+        $this->assertCount($this->active_modules - 1, $plugins->getActiveModules());
+        $this->assertFalse(isset($active_modules['plugin-test2']));
         $plugins->activateModule('plugin-test2');
 
         $plugins = $this->getPlugins();
-        $modules = $plugins->getModules();
-        $this->assertCount(3, $modules);
-        $this->assertTrue(isset($modules['plugin-test2']));
+        $active_modules = $plugins->getActiveModules();
+        $this->assertCount($this->active_modules, $active_modules);
+        $this->assertTrue(isset($active_modules['plugin-test2']));
     }
 
     /**
@@ -186,13 +229,84 @@ class Plugins extends GaletteTestCase
     /**
      * Test if plugin needs database
      */
-    public function testNeedDatabse(): void
+    public function testNeedDatabase(): void
     {
         $this->assertTrue($this->plugins->needsDatabase('plugin-db'));
         $this->assertFalse($this->plugins->needsDatabase('plugin-test2'));
 
         $plugins = $this->getPlugins();
-        $this->expectExceptionMessage(_T('Module does not exists!'));
+        $this->expectExceptionMessage('Module "nonexistant" does not exist!');
         $plugins->needsDatabase('nonexistant');
+    }
+
+    /**
+     * Test getInstalledDbVersion() for a module that is active and whose version
+     * was auto-migrated into galette_plugins when loadModules() ran.
+     */
+    public function testGetInstalledDbVersionActivePlugin(): void
+    {
+        // plugin-db has dbver 0.1 and isInstalled()=true → auto-migrated on load
+        $version = $this->plugins->getInstalledDbVersion('plugin-db');
+        $this->assertSame('0.1', $version);
+    }
+
+    /**
+     * Test getInstalledDbVersion() for a module that does not use a database.
+     * It is never inserted into galette_plugins, so null is expected.
+     */
+    public function testGetInstalledDbVersionPluginWithoutDb(): void
+    {
+        $this->assertNull($this->plugins->getInstalledDbVersion('plugin-test2'));
+    }
+
+    /**
+     * Test getInstalledDbVersion() throws for an unknown plugin identifier.
+     */
+    public function testGetInstalledDbVersionUnknownPlugin(): void
+    {
+        $this->expectException(\Galette\Exception\MissingPluginException::class);
+        $this->plugins->getInstalledDbVersion('plugin-nonexistant');
+    }
+
+    /**
+     * A plugin without a scripts/ directory whose isInstalled() returns false
+     * must remain active. Marking such a plugin DISABLED_NOT_INSTALLED would
+     * leave it unrecoverable through the UI: the init-db wizard rejects
+     * plugins that do not need a database.
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testCheckKeepsNonDbPluginActiveWhenIsInstalledFalse(): void
+    {
+        $plugin_class = \GaletteTest1Plugin\PluginGalettePlugin1::class;
+        $mock = $this->getMockBuilder($plugin_class)
+            ->onlyMethods(['isInstalled'])
+            ->getMock();
+        $mock->method('isInstalled')->willReturn(false);
+        $this->container->set($plugin_class, $mock);
+
+        $plugins = $this->getPlugins();
+
+        $this->assertFalse($plugins->isDisabled('plugin-test1'));
+        $this->assertArrayHasKey('plugin-test1', $plugins->getActiveModules());
+    }
+
+    /**
+     * A plugin disabled by register() (e.g. for an incompatible compver) must
+     * keep that original cause even when an explicit-disabled marker also
+     * exists on disk — otherwise the surfaced cause hides the real problem.
+     */
+    public function testDisabledCompatNotOverwrittenByExplicit(): void
+    {
+        $marker = GALETTE_PLUGINS_DATA_PATH . '/plugin_plugin-oldversion_disabled';
+        touch($marker);
+        try {
+            $plugins = $this->getPlugins();
+            $this->assertSame(
+                \Galette\Core\Plugins::DISABLED_COMPAT,
+                $plugins->getDisabledCause('plugin-oldversion')
+            );
+        } finally {
+            @unlink($marker);
+        }
     }
 }

@@ -531,18 +531,29 @@ class Galette extends GaletteTestCase
 
         $this->assertCount(1, $entries);
 
-        $this->plugins->autoload(GALETTE_PLUGINS_PATH);
-        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $this->plugins->activateModule('plugin-news');
 
         $this->plugins = new \Galette\Core\Plugins();
-        $this->plugins->autoload(GALETTE_PLUGINS_PATH);
-        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
 
         $this->assertArrayNotHasKey('plugin-news', $this->plugins->getDisabledModules());
 
         global $plugins, $container;
         $plugins = $this->plugins;
+
+        //mock plugin to mark as not installed
+        /** @var class-string<\Galette\Core\GalettePlugin> $plugin_class */
+        $plugin_class = $plugins->getClassName('plugin-news', true);
+        $mock = $this->getMockBuilder($plugin_class)
+            ->onlyMethods(['isInstalled'])
+            ->getMock();
+        $mock->method('isInstalled')->willReturn(false);
+        $container->set($plugin_class, $mock);
 
         //we got asso and plugin news
         $entries = \Galette\Core\Galette::getNews();

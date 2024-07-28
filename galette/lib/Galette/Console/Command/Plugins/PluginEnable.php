@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command\Plugins;
 
+use Galette\Core\Plugins;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,6 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Plugins activation console command
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @phpstan-import-type Modules from Plugins
  */
 
 #[AsCommand(
@@ -50,7 +52,7 @@ class PluginEnable extends AbstractPlugins
     /**
      * Get relevant plugins (disabled ones) for current command
      *
-     * @return array<string, array<string, string>>
+     * @return Modules
      */
     protected function getRelevantPlugins(SymfonyStyle $io): array
     {
@@ -58,19 +60,16 @@ class PluginEnable extends AbstractPlugins
 
         $relevant_plugins = [];
         foreach ($disabled_plugins as $module_id => $module) {
-            if ($module['cause'] == \Galette\Core\Plugins::DISABLED_EXPLICIT) {
+            $cause = $this->plugins->getDisabledCause($module_id);
+            if ($cause === Plugins::DISABLED_EXPLICIT) {
                 $relevant_plugins[$module_id] = $module;
             } else {
-                switch ($module['cause']) {
-                    case \Galette\Core\Plugins::DISABLED_COMPAT:
-                        $module['cause'] = 'Not compatible';
-                        break;
-                    case \Galette\Core\Plugins::DISABLED_MISS:
-                        $module['cause'] = 'Miss a required file';
-                        break;
-                }
                 $io->writeln(
-                    sprintf('Plugin "%s" is not explicitly disabled (%s)', $module_id, $module['cause']),
+                    sprintf(
+                        'Plugin "%s" is not explicitly disabled (%s)',
+                        $module_id,
+                        $this->getDisplayCause($cause)
+                    ),
                     OutputInterface::VERBOSITY_VERBOSE
                 );
             }

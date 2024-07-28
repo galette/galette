@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Core\Plugins;
 use Throwable;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -37,7 +38,7 @@ class PluginsController extends AbstractController
     {
         $plugins = $this->plugins;
 
-        $plugins_list = $plugins->getModules();
+        $plugins_list = $plugins->getActiveModules();
         $disabled_plugins = $plugins->getDisabledModules();
 
         // display page
@@ -130,7 +131,35 @@ class PluginsController extends AbstractController
             return $response->withStatus(404);
         }
 
-        $plugin = $this->plugins->getModules($plugid);
+        $plugin = $this->plugins->getModule($plugid);
+
+        // Reject plugins that cannot be installed or updated due to missing files
+        // or incompatibility. Only plugins that are installable/upgradable should
+        // reach the database initialization step.
+        if (
+            $this->plugins->isDisabled($plugid)
+            && !in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_NOT_INSTALLED, Plugins::DISABLED_NOT_UP2DATE], true)
+        ) {
+            Analog::log(
+                'Plugin `' . $plugid . '` is disabled and cannot be initialized (reason: '
+                . $this->plugins->getDisabledCause($plugid) . ').',
+                Analog::WARNING
+            );
+
+            return $response->withStatus(404);
+        }
+
+        // If available, ensure the plugin actually uses a database before offering
+        // database initialization.
+        if (!$this->plugins->needsDatabase($plugid)) {
+            Analog::log(
+                'Database initialization requested for plugin `' . $plugid
+                . '` that does not require a database.',
+                Analog::WARNING
+            );
+
+            return $response->withStatus(400);
+        }
 
         $mdplugin = md5((string)$plugin['root']);
         if (
@@ -148,6 +177,8 @@ class PluginsController extends AbstractController
         if (isset($post['stepback_btn'])) {
             $install->atPreviousStep();
         } elseif (isset($post['install_prefs_ok'])) {
+            $install->atEndStep();
+        } elseif (isset($post['install_dbwrite_ok'])) {
             $install->atEndStep();
         } elseif (isset($post['previous_version'])) {
             $install->setInstalledVersion($post['previous_version']);
@@ -219,9 +250,16 @@ class PluginsController extends AbstractController
                 $install->setInstalledVersion($post['previous_version'] ?? null);
                 $install->executeScripts($this->zdb, $plugin['root']);
                 break;
+            case 'i5':
+            case 'u5':
+                $install->setPluginInstalled($this->zdb, $this->plugins, $plugid);
         }
 
-        $this->session->$mdplugin = $install;
+        if ($step !== 'i5' && $step !== 'u5') {
+            $this->session->$mdplugin = $install;
+        } else {
+            unset($this->session->$mdplugin);
+        }
 
         $params += [
             'page_title'    => $install->getStepDetail('title'),

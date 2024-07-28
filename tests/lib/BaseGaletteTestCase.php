@@ -263,7 +263,12 @@ abstract class BaseGaletteTestCase extends TestCase
         $excluded_logs = [
             'WARNING - Plugin "Galette Old Plugin" is known to be compatible with Galette 0.7.0 only',
             'ERROR - Plugin "Galette Unversionned Plugin" does not contain mandatory version compatibility information',
-            'ERROR - Plugin "Galette Noclass Plugin" class "GaletteNoclassPlugin\PluginGalettePluginnoclass" is missing '
+            'ERROR - Plugin "Galette Noclass Plugin" class "GaletteNoclassPlugin\PluginGalettePluginnoclass" is missing ',
+            'ERROR - Plugin "Galette Db No Version" needs a database but no version is provided.',
+            'WARNING - Plugin "Galette Db Plugin" database needs to be updated.',
+            // Expected logs from the install-db test plugins
+            'WARNING - Plugin "Galette Db Install Plugin" has not been installed.',
+            'WARNING - Plugin "Galette Db Upgrade Plugin" database needs to be updated.',
         ];
 
         foreach ($logs as $i => $log) {

@@ -30,6 +30,7 @@ class Telemetry extends GaletteTestCase
     #[AllowMockObjectsWithoutExpectations]
     public function testGrabGaletteInfos(): void
     {
+        $this->plugins = new \Galette\Core\Plugins();
         $expected = [
             'uuid'               => 'TO BE SET',
             'version'            => GALETTE_VERSION,
@@ -53,7 +54,9 @@ class Telemetry extends GaletteTestCase
         $expected['uuid'] = $result['uuid'];
         $this->assertSame($expected, $result);
 
-        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->plugins
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,
             $this->preferences,

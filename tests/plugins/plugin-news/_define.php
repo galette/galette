@@ -16,7 +16,5 @@ $this->register(
     version: '1.0',                  //Version
     compver: GALETTE_COMPAT_VERSION, //Galette compatible version
     route: 'news',                   //routing name
-    date: '2025-08-16',              //Release date
-    acls: [                          //Permissions needed
-    ]
+    date: '2025-08-16'               //Release date
 );

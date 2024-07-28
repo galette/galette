@@ -23,6 +23,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Plugins list console command
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @phpstan-type ModuleId string
+ * @phpstan-import-type Module from Plugins
  */
 #[AsCommand(
     name: 'galette:plugins:list',
@@ -30,6 +32,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class PluginsList extends AbstractCommand
 {
+    use DisplayCause;
+
+    private Plugins $plugins;
+
     /**
      * Configure command
      */
@@ -55,17 +61,16 @@ class PluginsList extends AbstractCommand
             ''
         ]);
 
-        /** @var Plugins $plugins */
-        $plugins = $container->get(Plugins::class);
+        $this->plugins = $container->get(Plugins::class);
         $io = new SymfonyStyle($input, $output);
 
         $definitions = [];
         if (!$input->getOption('enabled') && !$input->getOption('disabled') || $input->getOption('enabled')) {
-            $this->listEnabledPlugins($plugins, $input, $io, $definitions);
+            $this->listEnabledPlugins($input, $io, $definitions);
         }
 
         if (!$input->getOption('disabled') && !$input->getOption('enabled') || $input->getOption('disabled')) {
-            $this->listDisabledPlugins($plugins, $input, $io, $definitions);
+            $this->listDisabledPlugins($input, $io, $definitions);
         }
 
         if (!$input->getOption('complete')) {
@@ -78,71 +83,83 @@ class PluginsList extends AbstractCommand
     /**
      * List of enabled plugins
      *
-     * @param Plugins        $plugins     Plugins instance
      * @param InputInterface $input       Console input
      * @param SymfonyStyle   $io          Console style
      * @param string[]       $definitions Definitions (for simple output)
      */
     private function listEnabledPlugins(
-        Plugins $plugins,
         InputInterface $input,
         SymfonyStyle $io,
         array &$definitions
     ): void {
-        foreach ($plugins->getModules() as $module_id => $module) {
-            if ($input->getOption('complete')) {
-                $io->definitionList(
-                    sprintf('%s (%s)', $module['name'], $module_id),
-                    ['Active' => 'Yes'],
-                    ['ID' => $module_id],
-                    ['Name' => $module['name']],
-                    ['Description' => $module['desc']],
-                    ['Version' => $module['version']],
-                    ['Author' => $module['author']],
-                    ['Date' => $module['date']],
-                    ['Has database' => $plugins->needsDatabase($module_id) ? 'Yes' : 'No']
-                );
-            } else {
-                $definitions[] = sprintf('%s (%s)', $module['name'], $module['version']);
-            }
+        foreach ($this->plugins->getActiveModules() as $module_id => $module) {
+            $this->pluginDefinition($input, $io, $module_id, $module, $definitions);
         }
     }
 
     /**
      * List of disabled plugins
      *
-     * @param Plugins        $plugins     Plugins instance
      * @param InputInterface $input       Console input
      * @param SymfonyStyle   $io          Console style
      * @param string[]       $definitions Definitions (for simple output)
      */
     private function listDisabledPlugins(
-        Plugins $plugins,
         InputInterface $input,
         SymfonyStyle $io,
         array &$definitions
     ): void {
-        foreach ($plugins->getDisabledModules() as $module_id => $module) {
-            if ($input->getOption('complete')) {
-                switch ($module['cause']) {
-                    case Plugins::DISABLED_COMPAT:
-                        $module['cause'] = 'Not compatible';
-                        break;
-                    case Plugins::DISABLED_MISS:
-                        $module['cause'] = 'Miss a required file';
-                        break;
-                    case Plugins::DISABLED_EXPLICIT:
-                        $module['cause'] = 'Explicitly disabled';
-                        break;
-                }
-                $io->definitionList(
-                    $module_id,
-                    ['Active' => 'No'],
-                    ['Cause' => $module['cause']]
+        foreach ($this->plugins->getDisabledModules() as $module_id => $module) {
+            $this->pluginDefinition($input, $io, $module_id, $module, $definitions);
+        }
+    }
+
+    /**
+     * @param Module   $module
+     * @param string[] $definitions Definitions (for simple output)
+     */
+    private function pluginDefinition(
+        InputInterface $input,
+        SymfonyStyle $io,
+        string $module_id,
+        array $module,
+        array &$definitions
+    ): void {
+        $name = $module['name'];
+        $desc = $module['desc'];
+        $version = $module['version'];
+        $author = $module['author'];
+        $date = $module['date'] ?? 'N/A';
+
+        $tag = $this->plugins->isDisabled($module_id) ? 'error' : 'info';
+        if ($input->getOption('complete')) {
+            $active = 'Yes';
+            if ($this->plugins->isDisabled($module_id)) {
+                $active = sprintf(
+                    'No (%s)',
+                    $this->getDisplayCause($this->plugins->getDisabledCause($module_id))
                 );
-            } else {
-                $definitions[] = sprintf('%s (disabled)', $module_id);
             }
+            $io->definitionList(
+                sprintf('<%1$s>%2$s (%3$s)</%1$s>', $tag, $name, $module_id),
+                ['Active' => $active],
+                ['ID' => $module_id],
+                ['Name' => $name],
+                ['Description' => $desc],
+                ['Version' => $version],
+                ['Author' => $author],
+                ['Date' => $date],
+                ['Has database' => $this->plugins->needsDatabase($module_id) ? 'Yes' : 'No']
+            );
+        } else {
+            $definitions[] = sprintf(
+                '<%1$s>%2$s %3$s (%4$s)</%1$s>%5$s',
+                $tag,
+                $name,
+                $version,
+                $module_id,
+                $this->plugins->isDisabled($module_id) ? ' ' . $this->getDisplayCause($this->plugins->getDisabledCause($module_id)) : ''
+            );
         }
     }
 }

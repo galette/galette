@@ -46,15 +46,15 @@ class Reminders extends GaletteTestCase
     {
         //impendings
         $ireminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::IMPENDING]);
-        $this->assertSame([], $ireminders->getList($this->zdb));
+        $this->assertEmpty($ireminders->getList($this->zdb));
 
         //lates
         $lreminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::LATE]);
-        $this->assertSame([], $lreminders->getList($this->zdb));
+        $this->assertEmpty($lreminders->getList($this->zdb));
 
         //all
         $reminders = new \Galette\Repository\Reminders();
-        $this->assertSame([], $reminders->getList($this->zdb));
+        $this->assertEmpty($reminders->getList($this->zdb));
 
         //create member
         $this->getMemberTwo();
@@ -408,15 +408,15 @@ class Reminders extends GaletteTestCase
     {
         //impendings
         $ireminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::IMPENDING]);
-        $this->assertSame([], $ireminders->getList($this->zdb));
+        $this->assertEmpty($ireminders->getList($this->zdb));
 
         //lates
         $lreminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::LATE]);
-        $this->assertSame([], $lreminders->getList($this->zdb));
+        $this->assertEmpty($lreminders->getList($this->zdb));
 
         //all
         $reminders = new \Galette\Repository\Reminders();
-        $this->assertSame([], $reminders->getList($this->zdb));
+        $this->assertEmpty($reminders->getList($this->zdb));
 
         //create member
         $this->getMemberTwo();

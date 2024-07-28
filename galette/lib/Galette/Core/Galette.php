@@ -498,7 +498,7 @@ class Galette
             }
         } // /isLogged
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             /** @var GalettePlugin $plugin */
@@ -627,7 +627,7 @@ class Galette
             ];
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins public menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             /** @var GalettePlugin $plugin */
@@ -705,7 +705,7 @@ class Galette
             );
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             /** @var GalettePlugin $plugin */
@@ -851,7 +851,7 @@ class Galette
             );
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             /** @var GalettePlugin $plugin */
@@ -977,7 +977,7 @@ class Galette
             ];
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             /** @var GalettePlugin $plugin */
@@ -1015,7 +1015,7 @@ class Galette
 
         //TODO: add core detailed actions
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             /** @var GalettePlugin $plugin */
@@ -1124,7 +1124,7 @@ class Galette
             );
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             /** @var GalettePlugin $plugin */
@@ -1182,7 +1182,7 @@ class Galette
             $news[$entry->getPosition()] = $entry;
         }
 
-        foreach (array_keys($plugins->getModules()) as $module_id) {
+        foreach (array_keys($plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             /** @var GalettePlugin $plugin */

@@ -53,6 +53,6 @@ class PluginGaletteNews extends GalettePlugin implements NewsProviderInterface
      */
     public function isInstalled(): bool
     {
-        return false;
+        return true;
     }
 }
