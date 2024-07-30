@@ -40,6 +40,7 @@ class Plugins
     public const DISABLED_COMPAT   = 0;
     public const DISABLED_MISS     = 1;
     public const DISABLED_EXPLICIT = 2;
+    public const DISABLED_DBVERSION = 3;
 
     /** @var array<string> */
     protected array $path;
@@ -122,7 +123,6 @@ class Plugins
                                 $$varname->register();
                             }
                         } else {
-                            //plugin is not compatible with that version of galette.
                             Analog::log(
                                 'Plugin ' . $entry . ' is explicitly disabled',
                                 Analog::INFO
@@ -186,7 +186,8 @@ class Plugins
      * @param ?string               $route    Module route name
      * @param ?string               $date     Module release date
      * @param ?array<string,string> $acls     Module routes ACLs
-     * @param integer               $priority Module priority
+     * @param ?float                $dbver    Module database version
+     * @param ?integer              $priority Module priority
      *
      * @return void
      */
@@ -195,10 +196,11 @@ class Plugins
         string $desc,
         string $author,
         string $version,
-        string $compver = null,
-        string $route = null,
-        string $date = null,
-        array $acls = null,
+        ?string $compver = null,
+        ?string $route = null,
+        ?string $date = null,
+        ?array $acls = null,
+        ?float $dbver = null,
         ?int $priority = 1000
     ): void {
         if ($compver === null) {
@@ -232,6 +234,15 @@ class Plugins
                 'root_writable' => is_writable($this->mroot),
                 'route'         => $route
             );
+
+            if (!$dbver && $this->needsDatabase($this->id)) {
+                //plugin needs a database but no version is provided
+                Analog::log(
+                    'Plugin ' . $name . ' needs a database but no version is provided.',
+                    Analog::ERROR
+                );
+                $this->setDisabled(self::DISABLED_DBVERSION);
+            }
         }
     }
 
@@ -503,7 +514,7 @@ class Plugins
                 return false;
             }
         } else {
-            throw new Exception(_T("Module does not exists!"));
+            throw new Exception(sprintf("Module %s does not exists!", $id));
         }
     }
 
