@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-07-02 21:36+0200\n"
-"PO-Revision-Date: 2024-07-10 18:09+0000\n"
-"Last-Translator: Quentin PAGÈS <quentinantonin@free.fr>\n"
+"PO-Revision-Date: 2024-08-04 15:09+0000\n"
+"Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
 "Language: oc\n"
@@ -70,7 +70,7 @@ msgstr "Modificar lo mòde de pagament"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:191
 msgid "Missing required payment type's name!"
-msgstr "Governar lo mòde de pagament"
+msgstr "Lo mòde de pagament manca !"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:200
 #, php-format
@@ -1477,11 +1477,11 @@ msgstr "Ajustar un membre novèu dins la basa de donadas"
 #: ../lib/Galette/DynamicFields/DynamicField.php:536
 #: ../../tempcache/pages/members_list.html.twig:566
 msgid "Contributions"
-msgstr "Contribucions"
+msgstr "Pagaments"
 
 #: ../lib/Galette/Core/Galette.php:225
 msgid "List of contributions"
-msgstr "Lista dei contribucions"
+msgstr "Lista dei pagaments"
 
 #: ../lib/Galette/Core/Galette.php:226 ../lib/Galette/Core/Galette.php:612
 msgid "View and filter contributions"
