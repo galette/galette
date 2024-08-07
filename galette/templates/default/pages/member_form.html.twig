@@ -148,7 +148,7 @@
             <input type="hidden" name="addchild" value="true"/>
         {% endif %}
     {% endif %}
-    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (not self_adh and (login.isAdmin() or login.isStaff())) %}
+    {% if preferences.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_DISABLED') and (not self_adh and (login.isAdmin() or login.isStaff() or login.isGroupManager())) %}
             <div class="ui center aligned yellow segment">
                 <div class="inline field">
                     <div class="ui toggle checkbox">
