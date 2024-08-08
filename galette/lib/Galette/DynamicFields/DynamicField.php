@@ -644,7 +644,7 @@ abstract class DynamicField
             $this->required = false;
         }
 
-        $this->width_in_forms = int($values['field_width_in_forms'] ?? 1);
+        $this->width_in_forms = (int)($values['field_width_in_forms'] ?? 1);
 
         if (count($this->errors) === 0 && $this->isDuplicate()) {
             $this->errors[] = _T("- Field name already used.");
