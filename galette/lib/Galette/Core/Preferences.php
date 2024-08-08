@@ -864,7 +864,9 @@ class Preferences
 
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            if ($this->zdb->connection->inTransaction()) {
+                $this->zdb->connection->rollBack();
+            }
 
             $messages = array();
             do {
