@@ -593,4 +593,45 @@ class Preferences extends TestCase
         );
         $this->assertSame(['- Invalid website URL.'], $this->preferences->getErrors());
     }
+
+    /**
+     * Test updateTelemetryDate
+     *
+     * @return void
+     */
+    public function testUpdateTelemetryDate(): void
+    {
+        $this->assertSame('', $this->preferences->pref_telemetry_date);
+
+        $this->preferences->updateTelemetryDate();
+        $this->assertStringStartsWith(date('Y-m-d'), $this->preferences->pref_telemetry_date);
+    }
+
+    /**
+     * Test updateRegistrationDate
+     *
+     * @return void
+     */
+    public function testUpdateRegistrationDate(): void
+    {
+        $this->assertSame('', $this->preferences->pref_registration_date);
+
+        $this->preferences->updateRegistrationDate();
+        $this->assertStringStartsWith(date('Y-m-d'), $this->preferences->pref_registration_date);
+    }
+
+    /**
+     * Test generateUUID
+     *
+     * @return void
+     */
+    public function testGenerateUUID(): void
+    {
+        $this->assertSame('', $this->preferences->pref_instance_uuid);
+        $this->assertSame('', $this->preferences->pref_registration_uuid);
+        $uuid = $this->preferences->generateUUID('instance');
+        $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]{40}$/', $uuid);
+        $this->assertSame($uuid, $this->preferences->pref_instance_uuid);
+        $this->assertSame('', $this->preferences->pref_registration_uuid);
+    }
 }

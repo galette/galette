@@ -27,6 +27,7 @@ use Galette\Entity\PaymentType;
 use Galette\Entity\Social;
 use Galette\Features\Replacements;
 use Galette\Features\Socials;
+use Galette\Util\Text;
 use PHPMailer\PHPMailer\PHPMailer;
 use Throwable;
 use Analog\Analog;
@@ -1427,5 +1428,88 @@ class Preferences
         $config->set('Cache.SerializerPath', $cache_dir);
         $purifier = new \HTMLPurifier($config);
         return $purifier->purify($value);
+    }
+
+    /**
+     * Update one preference field in database
+     *
+     * @param string $field Field name
+     * @param mixed  $value Field value
+     *
+     * @return bool
+     */
+    protected function updateOneField(
+        string $field,
+        mixed $value,
+    ): bool {
+        try {
+            $update = $this->zdb->update(self::TABLE);
+            $update
+                ->set(['val_pref'  => $value])
+                ->where->equalTo('nom_pref', $field);
+            $this->zdb->execute($update);
+            $this->$field = $value;
+            Analog::log(
+                sprintf('%s updated.', $field),
+                Analog::INFO
+            );
+            return true;
+        } catch (Throwable $e) {
+            $messages = array();
+            do {
+                $messages[] = $e->getMessage();
+            } while ($e = $e->getPrevious());
+
+            Analog::log(
+                sprintf('Unable to store update field %s | %s', $field, print_r($messages, true)),
+                Analog::WARNING
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Update telemetry date only
+     *
+     * @return bool
+     */
+    public function updateTelemetryDate(): bool
+    {
+        return $this->updateOneField(
+            'pref_telemetry_date',
+            date('Y-m-d H:i:s')
+        );
+    }
+
+    /**
+     * Update registration date only
+     *
+     * @return bool
+     */
+    public function updateRegistrationDate(): bool
+    {
+        return $this->updateOneField(
+            'pref_registration_date',
+            date('Y-m-d H:i:s')
+        );
+    }
+
+    /**
+     * Generate and store UUID of specified type
+     *
+     * @param string $type UUID type to generate
+     *
+     * @return string
+     */
+    public function generateUUID(string $type): string
+    {
+        $uuid = Text::getRandomString(40);
+        $field = 'pref_' . $type . '_uuid';
+        $this->updateOneField(
+            $field,
+            $uuid
+        );
+        $this->$field = $uuid;
+        return $uuid;
     }
 }
