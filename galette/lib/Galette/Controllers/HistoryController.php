@@ -54,8 +54,8 @@ class HistoryController extends AbstractController
         string $option = null,
         string|int $value = null
     ): Response {
-        if (isset($this->session->filter_history)) {
-            $filters = $this->session->filter_history;
+        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
         } else {
             $filters = new HistoryList();
         }
@@ -75,7 +75,7 @@ class HistoryController extends AbstractController
             }
         }
 
-        $this->session->filter_history = $filters;
+        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
 
         $this->history->setFilters($filters);
         $logs = $this->history->getHistory();
@@ -108,8 +108,8 @@ class HistoryController extends AbstractController
     {
         $post = $request->getParsedBody();
 
-        if ($this->session->filter_history !== null) {
-            $filters = $this->session->filter_history;
+        if ($this->session->{$this->getFilterName($this->getDefaultFilterName())} !== null) {
+            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
         } else {
             $filters = new HistoryList();
         }
@@ -141,7 +141,7 @@ class HistoryController extends AbstractController
             }
         }
 
-        $this->session->filter_history = $filters;
+        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
 
         return $response
             ->withStatus(301)
@@ -176,7 +176,7 @@ class HistoryController extends AbstractController
                 //reinitialize object after flush
                 $this->history = new History($this->zdb, $this->login, $this->preferences);
                 $filters = new HistoryList();
-                $this->session->filter_history = $filters;
+                $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
 
                 $this->flash->addMessage(
                     'success_detected',
@@ -238,5 +238,15 @@ class HistoryController extends AbstractController
             )
         );
         return $response;
+    }
+
+    /**
+     * Get default filter name
+     *
+     * @return string
+     */
+    public static function getDefaultFilterName(): string
+    {
+        return 'history';
     }
 }

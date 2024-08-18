@@ -718,7 +718,7 @@ class GaletteController extends AbstractController
 
             if ($labels === true) {
                 if (count($labels_members) > 0) {
-                    $session_var = 'filters_reminders_labels';
+                    $session_var = $this->getFilterName('reminders_labels');
                     $labels_filters = new MembersList();
                     $labels_filters->selected = $labels_members;
                     $this->session->$session_var = $labels_filters;
@@ -794,7 +794,7 @@ class GaletteController extends AbstractController
             Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
         $filters->email_filter = $mail;
 
-        $this->session->filter_members = $filters;
+        $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
 
         return $response
             ->withStatus(301)

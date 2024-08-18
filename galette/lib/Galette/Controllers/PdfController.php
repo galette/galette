@@ -79,8 +79,8 @@ class PdfController extends AbstractController
      */
     public function membersCards(Request $request, Response $response, int $id_adh = null): Response
     {
-        if ($this->session->filter_members) {
-            $filters = $this->session->filter_members;
+        if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())}) {
+            $filters = $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())};
         } else {
             $filters = new MembersList();
         }
@@ -188,7 +188,7 @@ class PdfController extends AbstractController
         $post = $request->getParsedBody();
         $get = $request->getQueryParams();
 
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? 'filter_members';
+        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\MembersController::getDefaultFilterName());
 
         if (isset($this->session->$session_var)) {
             $filters = $this->session->$session_var;
@@ -291,8 +291,8 @@ class PdfController extends AbstractController
     {
         $post = $request->getParsedBody();
 
-        if ($this->session->filter_members !== null) {
-            $filters = $this->session->filter_members;
+        if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} !== null) {
+            $filters = $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())};
         } else {
             $filters = new MembersList();
         }
@@ -310,7 +310,7 @@ class PdfController extends AbstractController
             $data = $post['selection'] ?? array();
 
             $filters->selected = $data;
-            $this->session->filter_members = $filters;
+            $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
         } else {
             $data = $filters->selected;
         }
@@ -340,8 +340,8 @@ class PdfController extends AbstractController
     {
         $post = $request->getParsedBody();
 
-        if ($this->session->filter_members !== null) {
-            $filters = $this->session->filter_members;
+        if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} !== null) {
+            $filters = $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())};
         } else {
             $filters = new MembersList();
         }
@@ -350,7 +350,7 @@ class PdfController extends AbstractController
         $selection = (isset($post['selection'])) ? $post['selection'] : array();
 
         $filters->selected = $selection;
-        $this->session->filter_members = $filters;
+        $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
 
         if (count($filters->selected) == 0) {
             Analog::log('No member selected to generate attendance sheet', Analog::INFO);

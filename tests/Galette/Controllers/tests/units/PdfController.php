@@ -229,12 +229,12 @@ class PdfController extends GaletteTestCase
         //test with filters
         $filters = new \Galette\Filters\MembersList();
         $filters->selected = [$this->adh->id];
-        $this->session->filter_members = $filters;
+        $this->session->{$controller->getFilterName('members')} = $filters;
 
         $this->expectOutputRegex('/^%PDF-\d.\d.');
         $test_response = $controller->membersCards($request, $response);
 
-        unset($this->session->filter_members);
+        unset($this->session->{$controller->getFilterName('members')});
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
         $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
@@ -247,7 +247,8 @@ class PdfController extends GaletteTestCase
      */
     public function testMembersLabels(): void
     {
-        unset($this->session->filter_members);
+        $controller = new \Galette\Controllers\PdfController($this->container);
+        unset($this->session->{$controller->getFilterName('members')});
         $this->getMemberOne();
 
         $ufactory = new \Slim\Psr7\Factory\UriFactory();
@@ -263,7 +264,6 @@ class PdfController extends GaletteTestCase
         );
 
         $response = new \Slim\Psr7\Response();
-        $controller = new \Galette\Controllers\PdfController($this->container);
         $this->container->injectOn($controller);
 
         //test with non-logged-in user
@@ -284,7 +284,7 @@ class PdfController extends GaletteTestCase
         $test_response = null;
         $filters = new \Galette\Filters\MembersList();
         $filters->selected = [$this->adh->id];
-        $this->session->filter_members = $filters;
+        $this->session->{$controller->getFilterName('members')} = $filters;
 
         $this->expectOutputRegex('/^%PDF-\d\.\d');
         $test_response = $controller->membersLabels($request, $response);
@@ -292,7 +292,7 @@ class PdfController extends GaletteTestCase
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
         $this->assertSame('attachment;filename="labels_print_filename.pdf"', $test_response->getHeader('Content-Disposition')[0]);
-        unset($this->session->filter_members);
+        unset($this->session->{$controller->getFilterName('members')});
 
         //test logged-in as superadmin
         $this->logSuperAdmin();
@@ -319,7 +319,8 @@ class PdfController extends GaletteTestCase
      */
     public function testFilteredMembersLabels(): void
     {
-        unset($this->session->filter_members);
+        $controller = new \Galette\Controllers\PdfController($this->container);
+        unset($this->session->{$controller->getFilterName('members')});
         $this->getMemberOne();
 
         $ufactory = new \Slim\Psr7\Factory\UriFactory();
@@ -335,7 +336,6 @@ class PdfController extends GaletteTestCase
         );
 
         $response = new \Slim\Psr7\Response();
-        $controller = new \Galette\Controllers\PdfController($this->container);
         $this->container->injectOn($controller);
 
         //test logged-in as superadmin
@@ -344,7 +344,7 @@ class PdfController extends GaletteTestCase
         //test again from filters
         $filters = new \Galette\Filters\MembersList();
         $filters->selected = [$this->adh->id];
-        $this->session->filter_members = $filters;
+        $this->session->{$controller->getFilterName('members')} = $filters;
 
         $this->expectOutputRegex('/^%PDF-\d\.\d');
         $test_response = $controller->membersCards($request, $response);
@@ -361,7 +361,8 @@ class PdfController extends GaletteTestCase
      */
     public function testadhesionForm(): void
     {
-        unset($this->session->filter_members);
+        $controller = new \Galette\Controllers\PdfController($this->container);
+        unset($this->session->{$controller->getFilterName('members')});
         $this->getMemberOne();
 
         $ufactory = new \Slim\Psr7\Factory\UriFactory();
@@ -377,7 +378,6 @@ class PdfController extends GaletteTestCase
         );
 
         $response = new \Slim\Psr7\Response();
-        $controller = new \Galette\Controllers\PdfController($this->container);
         $this->container->injectOn($controller);
 
         //test with non-logged-in user

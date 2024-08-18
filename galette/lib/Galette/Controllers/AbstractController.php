@@ -34,6 +34,7 @@ use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\ListsConfig;
+use Galette\Util\Text;
 use Psr\Container\ContainerInterface;
 use RKA\Session;
 use Slim\Flash\Messages;
@@ -201,5 +202,35 @@ abstract class AbstractController
         $response = $response->withHeader('Content-Type', 'application/json');
         $response->getBody()->write(json_encode($data));
         return $response;
+    }
+
+    /**
+     * Get filter name in session
+     *
+     * @param string                   $filter_name Filter name
+     * @param array<string,mixed>|null $args        Arguments
+     *
+     * @return string
+     */
+    public function getFilterName(string $filter_name, array $args = null): string
+    {
+        if (empty($filter_name)) {
+            throw new \OutOfBoundsException(
+                'Filter name cannot be empty!'
+            );
+        }
+
+        if (isset($args['prefix'])) {
+            $filter_name = $args['prefix'] . '_' . $filter_name;
+        }
+
+        $filter_name .= '_filter';
+
+        if (isset($args['suffix'])) {
+            $filter_name .= '_' . $args['suffix'];
+        }
+
+        $filter_name = Text::slugify($filter_name);
+        return $filter_name;
     }
 }

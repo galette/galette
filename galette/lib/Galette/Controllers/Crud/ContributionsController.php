@@ -25,7 +25,6 @@ namespace Galette\Controllers\Crud;
 
 use Galette\Entity\PaymentType;
 use Galette\Entity\ScheduledPayment;
-use Galette\Features\BatchList;
 use Analog\Analog;
 use Galette\Controllers\CrudController;
 use Galette\Filters\ContributionsList;
@@ -47,8 +46,6 @@ use Galette\Repository\PaymentTypes;
 
 class ContributionsController extends CrudController
 {
-    use BatchList;
-
     // CRUD - Create
 
     /**
@@ -227,7 +224,7 @@ class ContributionsController extends CrudController
      */
     public function massAddChooseType(Request $request, Response $response): Response
     {
-        $filters = $this->session->filter_members;
+        $filters = $this->session->{$this->getFilterName('members')};
         $data = [
             'id'            => $filters->selected,
             'redirect_uri'  => $this->routeparser->urlFor('members')
@@ -263,7 +260,7 @@ class ContributionsController extends CrudController
     public function massAddContributions(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $filters = $this->session->filter_members;
+        $filters = $this->session->{$this->getFilterName('members')};
         $type = $post['type'];
 
         $ct = new ContributionsTypes($this->zdb);
@@ -417,15 +414,16 @@ class ContributionsController extends CrudController
                     );
         }
 
-        $filter_name = 'filter_' . $raw_type;
+        $filter_args = [];
         if (
             ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
             || isset($get['ajax'])
             && $get['ajax'] == 'true'
         ) {
             $ajax = true;
-            $filter_name .= '_ajax';
+            $filter_args['suffix'] = 'ajax';
         }
+        $filter_name = $this->getFilterName($raw_type, $filter_args);
 
         if (isset($this->session->$filter_name)) {
             /** @var ContributionsList|TransactionsList $filters */
@@ -605,11 +603,12 @@ class ContributionsController extends CrudController
     public function filter(Request $request, Response $response, string $type = null): Response
     {
         $ajax = false;
-        $filter_name = 'filter_' . $type;
+        $filter_args = [];
         if ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') {
             $ajax = true;
-            $filter_name .= '_ajax';
+            $filter_args['suffix'] = 'ajax';
         }
+        $filter_name = $this->getFilterName($type, $filter_args);
 
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -706,7 +705,7 @@ class ContributionsController extends CrudController
      */
     public function handleBatch(Request $request, Response $response, string $type): Response
     {
-        $filter_name = 'filter_' . $type;
+        $filter_name = $this->getFilterName($type);
         $post = $request->getParsedBody();
 
         if (isset($post['entries_sel'])) {
@@ -1022,16 +1021,4 @@ class ContributionsController extends CrudController
 
     // /CRUD - Delete
     // /CRUD
-
-    /**
-     * Get filter name in session
-     *
-     * @param array<string,mixed>|null $args Route arguments
-     *
-     * @return string
-     */
-    public function getFilterName(array $args = null): string
-    {
-        return 'filter_' . $args['type'];
-    }
 }
