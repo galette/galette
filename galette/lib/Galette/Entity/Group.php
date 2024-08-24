@@ -748,6 +748,37 @@ class Group
     }
 
     /**
+     * Add member to group
+     *
+     * @param Adherent $member
+     *
+     * @return void
+     */
+    public function addMember(Adherent $member): void
+    {
+        global $zdb;
+
+        try {
+            $insert = $zdb->insert(self::GROUPSUSERS_TABLE);
+            $insert->values(
+                array(
+                    self::PK => $this->getId(),
+                    Adherent::PK => $member->id
+                )
+            );
+            $zdb->execute($insert);
+            $this->members[] = $member;
+        } catch (\Throwable $e) {
+            Analog::log(
+                'Cannot add member to group `' . $this->group_name .
+                '` (' . $this->id . ') | ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            throw $e;
+        }
+    }
+
+    /**
      * Set members
      *
      * @param Adherent[] $members Members list
