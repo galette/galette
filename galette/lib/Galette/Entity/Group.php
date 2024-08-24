@@ -750,7 +750,7 @@ class Group
     /**
      * Add member to group
      *
-     * @param Adherent $member
+     * @param Adherent $member Member to add
      *
      * @return void
      */
