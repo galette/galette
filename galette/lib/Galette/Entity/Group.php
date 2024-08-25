@@ -768,6 +768,13 @@ class Group
             );
             $zdb->execute($insert);
             $this->members[] = $member;
+        } catch (\OverflowException $e) {
+            //nothing to do, member is already in group
+            Analog::log(
+                'Member `' . $member->sname . '` already in group `' .
+                $this->group_name . '` (' . $this->id . ').',
+                Analog::INFO
+            );
         } catch (\Throwable $e) {
             Analog::log(
                 'Cannot add member to group `' . $this->group_name .
