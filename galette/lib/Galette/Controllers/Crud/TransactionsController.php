@@ -274,11 +274,17 @@ class TransactionsController extends ContributionsController
                 );
 
                 //get back to transactions list
+                $redirect_url = $this->routeparser->urlFor('contributions', ['type' => 'transactions']);
+                if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+                    //or slash URL for non staff nor admin
+                    $redirect_url = $this->routeparser->urlFor('slash');
+                }
+
                 return $response
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->routeparser->urlFor('contributions', ['type' => 'transactions'])
+                        $redirect_url
                     );
             }
         } else {

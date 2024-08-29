@@ -22,6 +22,10 @@
 
 {% set basic_table = true %}
 
+{% if not login.isAdmin() and not login.isStaff() %}
+    {% set no_action = true %}
+{% endif %}
+
 {% set form = {
     'route': {
         'name': 'payments_filter',

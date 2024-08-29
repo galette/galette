@@ -189,7 +189,6 @@
                             <label for="pref_noindex">{{ _T("Prevent search engines indexation") }}</label>
                         </div>
                     </div>
-
                 </div>{# /column #}
             </div>{# /column grid #}
         </div>{# /tab segment #}
@@ -418,6 +417,30 @@
                             <label for="pref_bool_groupsmanagers_exports">{{ _T("Can group managers do exports?") }}</label>
                         </div>
                         <i class="circular small inverted primary icon info tooltip" title="{{ _T("Groups managers will be allowed to export members as csv, pdf cards, attendence sheetss and groups pdf") }}" aria-hidden="true"></i>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_see_contributions" id="pref_bool_groupsmanagers_see_contributions" value="1" {% if pref.pref_bool_groupsmanagers_see_contributions == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_see_contributions">{{ _T("Can group managers see contributions?") }}</label>
+                        </div>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_create_contributions" id="pref_bool_groupsmanagers_create_contributions" value="1" {% if pref.pref_bool_groupsmanagers_create_contributions == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_create_contributions">{{ _T("Can group managers create contributions?") }}</label>
+                        </div>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_see_transactions" id="pref_bool_groupsmanagers_see_transactions" value="1" {% if pref.pref_bool_groupsmanagers_see_transactions == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_see_transactions">{{ _T("Can group managers see transactions?") }}</label>
+                        </div>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_create_transactions" id="pref_bool_groupsmanagers_create_transactions" value="1" {% if pref.pref_bool_groupsmanagers_create_transactions == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_create_transactions">{{ _T("Can group managers create transactions?") }}</label>
+                        </div>
                     </div>
                 </div>
             </div>

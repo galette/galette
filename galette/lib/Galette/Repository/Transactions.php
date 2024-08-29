@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Repository;
 
 use ArrayObject;
+use Galette\Entity\Group;
 use Laminas\Db\Adapter\Driver\Pdo\Result;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
@@ -131,7 +132,7 @@ class Transactions
             $select->columns($fields)->join(
                 array('a' => PREFIX_DB . Adherent::TABLE),
                 't.' . Adherent::PK . '=' . 'a.' . Adherent::PK,
-                array('nom_adh', 'prenom_adh')
+                array()
             );
 
             $this->buildWhereClause($select);
@@ -162,7 +163,6 @@ class Transactions
             $countSelect = clone $select;
             $countSelect->reset($countSelect::COLUMNS);
             $countSelect->reset($countSelect::ORDER);
-            $countSelect->reset($countSelect::JOINS);
             $countSelect->columns(
                 array(
                     self::PK => new Expression('COUNT(' . self::PK . ')')
@@ -227,6 +227,8 @@ class Transactions
      */
     private function buildWhereClause(Select $select): void
     {
+        global $preferences;
+
         try {
             if ($this->filters->start_date_filter != null) {
                 $d = new \DateTime($this->filters->rstart_date_filter);
@@ -245,8 +247,12 @@ class Transactions
             }
 
             $member_clause = null;
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+                //default case, only display transactions for current member
+                $member_clause = [$this->login->id];
+            }
             if ($this->filters->filtre_cotis_adh != null) {
-                $member_clause = [$this->filters->filtre_cotis_adh];
+                //handle case when list is filtered on a single member id
                 if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->filters->filtre_cotis_adh != $this->login->id) {
                     $member = new Adherent(
                         $this->zdb,
@@ -262,32 +268,60 @@ class Transactions
                         !$member->hasParent() ||
                         $member->parent->id != $this->login->id
                     ) {
-                        Analog::log(
-                            'Trying to display transactions for member #' . $member->id .
-                            ' without appropriate ACLs',
-                            Analog::WARNING
-                        );
-                        $this->filters->filtre_cotis_adh = $this->login->id;
-                        $member_clause = [$this->login->id];
+                        //check if member is part of logged-in user managed groups
+                        $mgroup = $this->login->getManagedGroups();
+                        $groups = $member->getGroups();
+                        if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
+                            Analog::log(
+                                'Trying to display transactions for member #' . $member->id .
+                                ' without appropriate ACLs',
+                                Analog::WARNING
+                            );
+                            $this->filters->filtre_cotis_adh = $this->login->id;
+                        }
                     }
                 }
+                $member_clause = [$this->filters->filtre_cotis_adh];
             } elseif ($this->filters->filtre_cotis_children !== false) {
-                $member_clause = [$this->login->id];
+                //handle children case
                 $member = new Adherent(
                     $this->zdb,
                     (int)$this->filters->filtre_cotis_children,
                     [
-                        'picture'   => false,
-                        'groups'    => false,
-                        'dues'      => false,
-                        'children'  => true
+                        'picture' => false,
+                        'groups' => false,
+                        'dues' => false,
+                        'children' => true
                     ]
                 );
                 foreach ($member->children as $child) {
                     $member_clause[] = $child->id;
                 }
-            } elseif (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                $member_clause = $this->login->id;
+            }
+
+            if (
+                $this->filters->filtre_cotis_adh == null
+                && !$this->login->isAdmin()
+                && !$this->login->isStaff()
+                && $this->login->isGroupManager()
+                && $preferences->pref_bool_groupsmanagers_see_transactions
+            ) {
+                //limit to managed members from managed groups
+                $mgroups = $this->login->getManagedGroups();
+
+                $select->join(
+                    array('users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    't.' . Adherent::PK . '=users_groups.' . Adherent::PK,
+                    array(),
+                    $select::JOIN_LEFT
+                );
+                $select->where->nest()
+                    ->in('users_groups.' . Group::PK, array_values($mgroups))
+                    ->or
+                    ->in('t.' . Adherent::PK, $member_clause);
+
+                //member clause is already handled, reset it
+                $member_clause = null;
             }
 
             if ($member_clause !== null) {

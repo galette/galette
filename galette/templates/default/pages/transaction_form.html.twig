@@ -22,7 +22,7 @@
 
 {% block content %}
 {% if members.list is defined %}
-    <form action="{% if transaction.id %}{{ url_for("editTransaction", {"id": transaction.id}) }}{% else %}{{ url_for("addTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
+    <form action="{% if transaction.id %}{{ url_for("doEditTransaction", {"id": transaction.id}) }}{% else %}{{ url_for("doAddTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
         <div class="ui styled fluid accordion field">
             <div class="active title">
                 <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>

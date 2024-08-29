@@ -137,6 +137,10 @@ use Galette\Repository\Members;
  * @property boolean $pref_bool_groupsmanagers_edit_groups
  * @property boolean $pref_bool_groupsmanagers_mailings
  * @property boolean $pref_bool_groupsmanagers_exports
+ * @property boolean $pref_bool_groupsmanagers_create_contributions
+ * @property boolean $pref_bool_groupsmanagers_create_transactions
+ * @property boolean $pref_bool_groupsmanagers_see_contributions
+ * @property boolean $pref_bool_groupsmanagers_see_transactions
  * @property-read array $vpref_email_newadh list of mail senders
  * @property boolean $pref_noindex
  */
@@ -291,6 +295,10 @@ class Preferences
         'pref_bool_groupsmanagers_edit_groups' => false,
         'pref_bool_groupsmanagers_mailings' => false,
         'pref_bool_groupsmanagers_exports' => true,
+        'pref_bool_groupsmanagers_create_contributions' => false,
+        'pref_bool_groupsmanagers_create_transactions' => false,
+        'pref_bool_groupsmanagers_see_contributions' => false,
+        'pref_bool_groupsmanagers_see_transactions' => false,
         'pref_noindex' => false
     );
 
@@ -1043,6 +1051,10 @@ class Preferences
                 'pref_bool_groupsmanagers_edit_groups',
                 'pref_bool_groupsmanagers_exports',
                 'pref_bool_groupsmanagers_mailings',
+                'pref_bool_groupsmanagers_create_contributions',
+                'pref_bool_groupsmanagers_create_transactions',
+                'pref_bool_groupsmanagers_see_contributions',
+                'pref_bool_groupsmanagers_see_transactions',
                 'pref_bool_mailadh',
                 'pref_bool_mailowner',
                 'pref_bool_publicpages',

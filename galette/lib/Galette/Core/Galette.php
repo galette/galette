@@ -216,11 +216,16 @@ class Galette
                 ];
             }
 
-            if ($login->isAdmin() || $login->isStaff()) {
+            // Contributions
+            if ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) {
                 $menus['contributions'] = [
                     'title' => _T('Contributions'),
                     'icon' => 'receipt',
-                    'items' => [
+                    'items' => []
+                ];
+
+                if ($preferences->pref_bool_groupsmanagers_see_contributions || $login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("List of contributions"),
                             'title' => _T("View and filter contributions"),
@@ -229,7 +234,12 @@ class Galette
                                 'args' => ['type' => 'contributions'],
                                 'aliases' => ['editContribution']
                             ]
-                        ],
+                        ]
+                    ]);
+                }
+
+                if ($login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("List of scheduled payments"),
                             'title' => _T("View and filter scheduled payments"),
@@ -237,7 +247,12 @@ class Galette
                                 'name' => 'scheduledPayments',
                                 'aliases' => ['addScheduledPayment', 'editScheduledPayment']
                             ]
-                        ],
+                        ]
+                    ]);
+                }
+
+                if ($preferences->pref_bool_groupsmanagers_see_transactions || $login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("List of transactions"),
                             'title' => _T("View and filter transactions"),
@@ -246,7 +261,12 @@ class Galette
                                 'args' => ['type' => 'transactions'],
                                 'aliases' => ['editTransaction']
                             ]
-                        ],
+                        ]
+                    ]);
+                }
+
+                if ($preferences->pref_bool_groupsmanagers_create_contributions || $login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("Add a membership fee"),
                             'title' => _T("Add new membership fee in database"),
@@ -262,14 +282,24 @@ class Galette
                                 'name' => 'addContribution',
                                 'args' => ['type' => \Galette\Entity\Contribution::TYPE_DONATION]
                             ]
-                        ],
+                        ]
+                    ]);
+                }
+
+                if ($preferences->pref_bool_groupsmanagers_create_transactions || $login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("Add a transaction"),
                             'title' => _T("Add new transaction in database"),
                             'route' => [
                                 'name' => 'addTransaction'
                             ]
-                        ],
+                        ]
+                    ]);
+                }
+
+                if ($login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("Reminders"),
                             'title' => _T("Send reminders to late members"),
@@ -277,9 +307,9 @@ class Galette
                                 'name' => 'reminders'
                             ]
                         ]
-                    ]
-                ];
-            } //admin or staff
+                    ]);
+                }
+            } // /Contributions
 
             if ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) {
                 $menus['management'] = [

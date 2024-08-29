@@ -208,12 +208,12 @@ class Groups
             $results = $zdb->execute($select);
 
             $groups = array();
+            $gpk = Group::PK;
             foreach ($results as $r) {
                 if ($as_group === true) {
-                    $groups[] = new Group($r);
+                    $groups[$r->$gpk] = new Group($r);
                 } else {
-                    $gpk = Group::PK;
-                    $groups[] = $r->$gpk;
+                    $groups[$r->$gpk] = $r->$gpk;
                 }
             }
             return $groups;

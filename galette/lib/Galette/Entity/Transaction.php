@@ -163,7 +163,7 @@ class Transaction
             );
 
             //restrict query on current member id if he's not admin nor staff member
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            if (!$this->login->isAdmin() && !$this->login->isStaff() && !$this->login->isGroupManager()) {
                 $select->where
                     ->nest()
                         ->equalTo('a.' . Adherent::PK, $this->login->id)
@@ -670,6 +670,8 @@ class Transaction
      */
     public function canShow(Login $login): bool
     {
+        global $preferences;
+
         //non-logged-in members cannot show contributions
         if (!$login->isLogged()) {
             return false;
@@ -677,6 +679,11 @@ class Transaction
 
         //admin and staff users can edit, as well as member itself
         if (!isset($this->id) || $login->id == $this->member || $login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        //group managers can see contributions of members of groups they manage - if enabled in preferences
+        if ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_see_transactions) {
             return true;
         }
 

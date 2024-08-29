@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Repository;
 
 use ArrayObject;
+use Galette\Entity\Group;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
@@ -166,12 +167,12 @@ class Contributions
                 $fieldsList = $fields;
             }
 
-            $select = $this->zdb->select(self::TABLE, 'a');
+            $select = $this->zdb->select(self::TABLE, 'c');
             $select->columns($fieldsList);
 
             $select->join(
-                array('p' => PREFIX_DB . Adherent::TABLE),
-                'a.' . Adherent::PK . '= p.' . Adherent::PK,
+                array('a' => PREFIX_DB . Adherent::TABLE),
+                'c.' . Adherent::PK . '= a.' . Adherent::PK,
                 array()
             );
 
@@ -204,7 +205,6 @@ class Contributions
         try {
             $countSelect = clone $select;
             $countSelect->reset($countSelect::COLUMNS);
-            $countSelect->reset($countSelect::JOINS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
                 array(
@@ -239,7 +239,6 @@ class Contributions
         try {
             $sumSelect = clone $select;
             $sumSelect->reset($sumSelect::COLUMNS);
-            $sumSelect->reset($sumSelect::JOINS);
             $sumSelect->reset($sumSelect::ORDER);
             $sumSelect->columns(
                 array(
@@ -310,6 +309,7 @@ class Contributions
      */
     private function buildWhereClause(Select $select): void
     {
+        global $preferences;
         $field = 'date_debut_cotis';
 
         switch ($this->filters->date_field) {
@@ -326,7 +326,7 @@ class Contributions
         }
 
         if (isset($this->current_selection)) {
-            $select->where->in('a.' . self::PK, $this->current_selection);
+            $select->where->in('c.' . self::PK, $this->current_selection);
         }
 
         try {
@@ -375,15 +375,19 @@ class Contributions
             }
 
             $member_clause = null;
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+                //default case, only display transactions for current member
+                $member_clause = [$this->login->id];
+            }
             if ($this->filters->filtre_cotis_adh != null) {
-                $member_clause = [$this->filters->filtre_cotis_adh];
+                //handle case when list is filtered on a single member id
                 if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->filters->filtre_cotis_adh != $this->login->id) {
                     $member = new Adherent(
                         $this->zdb,
                         (int)$this->filters->filtre_cotis_adh,
                         [
                             'picture' => false,
-                            'groups' => false,
+                            'groups' => true,
                             'dues' => false,
                             'parent' => true
                         ]
@@ -392,17 +396,22 @@ class Contributions
                         !$member->hasParent() ||
                         $member->parent->id != $this->login->id
                     ) {
-                        Analog::log(
-                            'Trying to display contributions for member #' . $member->id .
-                            ' without appropriate ACLs',
-                            Analog::WARNING
-                        );
-                        $this->filters->filtre_cotis_adh = $this->login->id;
-                        $member_clause = [$this->login->id];
+                        //check if member is part of logged-in user managed groups
+                        $mgroup = $this->login->getManagedGroups();
+                        $groups = $member->getGroups();
+                        if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
+                            Analog::log(
+                                'Trying to display contributions for member #' . $member->id .
+                                ' without appropriate ACLs',
+                                Analog::WARNING
+                            );
+                            $this->filters->filtre_cotis_adh = $this->login->id;
+                        }
                     }
                 }
+                $member_clause = [$this->filters->filtre_cotis_adh];
             } elseif ($this->filters->filtre_cotis_children !== false) {
-                $member_clause = [$this->login->id];
+                //handle children case
                 $member = new Adherent(
                     $this->zdb,
                     (int)$this->filters->filtre_cotis_children,
@@ -416,21 +425,44 @@ class Contributions
                 foreach ($member->children as $child) {
                     $member_clause[] = $child->id;
                 }
-            } elseif (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                //non staff members can only view their own contributions
-                $member_clause = $this->login->id;
+            }
+
+            if (
+                $this->filters->filtre_cotis_adh == null
+                && !$this->login->isAdmin()
+                && !$this->login->isStaff()
+                && $this->login->isGroupManager()
+                && $preferences->pref_bool_groupsmanagers_see_contributions
+            ) {
+                //limit to managed members from managed groups
+                $mgroups = $this->login->getManagedGroups();
+
+                $select->join(
+                    array('users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
+                    array(),
+                    $select::JOIN_LEFT
+                );
+                $select->where->nest()
+                    ->in('users_groups.' . Group::PK, array_values($mgroups))
+                    ->or
+                    ->in('c.' . Adherent::PK, $member_clause);
+                $select->group('c.' . Contribution::PK);
+
+                //member clause is already handled, reset it
+                $member_clause = null;
             }
 
             if ($member_clause !== null) {
                 $select->where(
                     array(
-                        'a.' . Adherent::PK => $member_clause
+                        'c.' . Adherent::PK => $member_clause
                     )
                 );
             }
 
             if ($this->filters->filtre_transactions === true) {
-                $select->where('a.trans_id IS NULL');
+                $select->where('c.trans_id IS NULL');
             }
         } catch (Throwable $e) {
             Analog::log(

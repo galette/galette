@@ -899,14 +899,16 @@ class ContributionsController extends CrudController
                         Contribution::PK => $contrib->id
                     ]
                 );
-            } else {
-                //contributions list for member
+            } elseif ($this->login->isAdmin() || $this->login->isStaff()) {
+                //contributions list (for member if admin or staff member)
                 $redirect_url = $this->routeparser->urlFor(
                     'contributions',
                     [
                         'type'      => 'contributions'
                     ]
                 ) . '?' . Adherent::PK . '=' . $contrib->member;
+            } else {
+                $redirect_url = $this->routeparser->urlFor('slash');
             }
         } else {
             //something went wrong.
