@@ -493,9 +493,7 @@ class MembersController extends CrudController
         } else {
             //string to filter
             if (isset($post['filter_str'])) { //filter search string
-                $filters->filter_str = stripslashes(
-                    htmlspecialchars($post['filter_str'], ENT_QUOTES)
-                );
+                $filters->filter_str = $post['filter_str'];
             }
             //field to filter
             if (isset($post['field_filter'])) {
