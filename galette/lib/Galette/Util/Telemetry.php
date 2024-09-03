@@ -172,7 +172,8 @@ class Telemetry
                 'post_max_size'         => ini_get('post_max_size'),
                 'safe_mode'             => ini_get('safe_mode'),
                 'session'               => ini_get('session.save_handler'),
-                'upload_max_filesize'   => ini_get('upload_max_filesize')
+                'upload_max_filesize'   => ini_get('upload_max_filesize'),
+                'max_input_vars'        => ini_get('max_input_vars'),
             ]
         ];
 
