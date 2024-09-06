@@ -127,13 +127,17 @@
             {% include "components/dynamic_fields.html.twig" with {object: member} %}
 
     {% if not member.id and not self_adh %}
-        {% if login.isAdmin() or login.isStaff() %}
+        {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
             <div class="ui center aligned yellow segment">
                 <div class="inline field">
                     <label for="redirect_on_create">{{ _T("After member creation:") }}</label>
-                    <select name="redirect_on_create" id="redirect_on_create"i class="ui search dropdown">
+                    <select name="redirect_on_create" id="redirect_on_create" class="ui search dropdown">
+            {% if login.isAdmin() or login.isStaff() or preferences.pref_bool_groupsmanagers_create_contributions %}
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_DEFAULT') %} selected="selected"{% endif %}>{{ _T("create a new contribution (default action)") }}</option>
+            {% endif %}
+            {% if login.isAdmin() or login.isStaff() or preferences.pref_bool_groupsmanagers_create_transactions %}
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_TRANS') %} selected="selected"{% endif %}>{{ _T("create a new transaction") }}</option>
+            {% endif %}
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_NEW') %} selected="selected"{% endif %}>{{ _T("create another new member") }}</option>
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') %} selected="selected"{% endif %}>{{ _T("show member") }}</option>
                         <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') }}"{% if preferences.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') %} selected="selected"{% endif %}>{{ _T("go to members list") }}</option>
