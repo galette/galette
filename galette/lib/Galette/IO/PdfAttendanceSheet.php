@@ -107,7 +107,7 @@ class PdfAttendanceSheet extends Pdf
 
         parent::__construct($prefs, $model);
         // Enable Auto Page breaks
-        $this->SetAutoPageBreak(true, $this->footer_height + 10);
+        $this->SetAutoPageBreak(true, $this->footer_height + $this->getMargins()['bottom']);
     }
 
     /**
