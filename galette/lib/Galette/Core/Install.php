@@ -534,7 +534,7 @@ class Install
      *
      * @return array<string, string>
      */
-    public function getScripts(string $path = null): array
+    public function getScripts(?string $path = null): array
     {
         if ($path === null) {
             $path = GALETTE_ROOT . '/install';
@@ -569,7 +569,7 @@ class Install
     public static function getUpdateScripts(
         string $path,
         string $db_type = 'mysql',
-        string $version = null
+        ?string $version = null
     ): array {
         $dh = opendir($path . '/scripts');
         $php_update_scripts = array();
@@ -617,7 +617,7 @@ class Install
      *
      * @return bool
      */
-    public function executeScripts(Db $zdb, string $spath = null): bool
+    public function executeScripts(Db $zdb, ?string $spath = null): bool
     {
         $fatal_error = false;
         $update_scripts = $this->getScripts($spath);

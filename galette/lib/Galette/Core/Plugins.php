@@ -147,7 +147,7 @@ class Plugins
      *
      * @return void
      */
-    public function loadModules(Preferences $preferences, string $path, string $lang = null): void
+    public function loadModules(Preferences $preferences, string $path, ?string $lang = null): void
     {
         $this->preferences = $preferences;
         $this->path = explode(PATH_SEPARATOR, $path);
@@ -186,7 +186,7 @@ class Plugins
      * @param ?string               $route    Module route name
      * @param ?string               $date     Module release date
      * @param ?array<string,string> $acls     Module routes ACLs
-     * @param integer               $priority Module priority
+     * @param ?integer              $priority Module priority
      *
      * @return void
      */
@@ -195,10 +195,10 @@ class Plugins
         string $desc,
         string $author,
         string $version,
-        string $compver = null,
-        string $route = null,
-        string $date = null,
-        array $acls = null,
+        ?string $compver = null,
+        ?string $route = null,
+        ?string $date = null,
+        ?array $acls = null,
         ?int $priority = 1000
     ): void {
         if ($compver === null) {
@@ -359,7 +359,7 @@ class Plugins
      *
      * @return array<string, mixed>
      */
-    public function getModules(string $id = null): array
+    public function getModules(?string $id = null): array
     {
         if ($id && isset($this->modules[$id])) {
             return $this->modules[$id];

@@ -78,7 +78,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function membersCards(Request $request, Response $response, int $id_adh = null): Response
+    public function membersCards(Request $request, Response $response, ?int $id_adh = null): Response
     {
         if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())}) {
             $filters = $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())};
@@ -262,7 +262,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function adhesionForm(Request $request, Response $response, int $id_adh = null): Response
+    public function adhesionForm(Request $request, Response $response, ?int $id_adh = null): Response
     {
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
 
@@ -453,7 +453,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function group(Request $request, Response $response, int $id = null): Response
+    public function group(Request $request, Response $response, ?int $id = null): Response
     {
         $groups = new Groups($this->zdb, $this->login);
 
@@ -495,7 +495,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function models(Request $request, Response $response, int $id = null): Response
+    public function models(Request $request, Response $response, ?int $id = null): Response
     {
         $mid = 1;
         if (isset($_POST[PdfModel::PK])) {

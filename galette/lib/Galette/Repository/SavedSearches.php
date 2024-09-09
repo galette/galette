@@ -58,7 +58,7 @@ class SavedSearches
      * @param Login              $login   Login
      * @param ?SavedSearchesList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, SavedSearchesList $filters = null)
+    public function __construct(Db $zdb, Login $login, ?SavedSearchesList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;

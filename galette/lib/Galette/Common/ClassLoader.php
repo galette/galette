@@ -97,7 +97,7 @@ class ClassLoader
      * @param ?string $ns          The namespace of the classes to load.
      * @param ?string $includePath The base include path to use.
      */
-    public function __construct(string $ns = null, string $includePath = null)
+    public function __construct(?string $ns = null, ?string $includePath = null)
     {
         if (!file_exists($includePath)) {
             throw new \RuntimeException('Include path "' . $includePath . '" doesn\'t exists');

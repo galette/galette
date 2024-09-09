@@ -408,7 +408,7 @@ class AjaxController extends AbstractController
      *
      * @return Response
      */
-    public function contributionMembers(Request $request, Response $response, int $page = null, string $search = null): Response
+    public function contributionMembers(Request $request, Response $response, ?int $page = null, ?string $search = null): Response
     {
         $post = $request->getParsedBody();
         $filters = new MembersList();

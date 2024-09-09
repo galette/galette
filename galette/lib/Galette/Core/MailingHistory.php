@@ -68,7 +68,7 @@ class MailingHistory extends History
      * @param MailingsList|null $filters     Filtering
      * @param Mailing|null      $mailing     Mailing
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, MailingsList $filters = null, Mailing $mailing = null)
+    public function __construct(Db $zdb, Login $login, Preferences $preferences, ?MailingsList $filters = null, ?Mailing $mailing = null)
     {
         if ($filters === null) {
             $filters = new MailingsList();

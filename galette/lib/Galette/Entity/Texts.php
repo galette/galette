@@ -62,7 +62,7 @@ class Texts
      * @param Preferences      $preferences Galette's preferences
      * @param RouteParser|null $routeparser RouteParser instance
      */
-    public function __construct(Preferences $preferences, RouteParser $routeparser = null)
+    public function __construct(Preferences $preferences, ?RouteParser $routeparser = null)
     {
         global $zdb, $login, $container;
         $this->preferences = $preferences;

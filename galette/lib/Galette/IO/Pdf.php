@@ -235,7 +235,7 @@ class Pdf extends TCPDF
      *
      * @return void
      */
-    public function Footer(TCPDF $pdf = null): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function Footer(?TCPDF $pdf = null): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         if ($pdf === null) {
             $pdf = $this;
@@ -277,7 +277,7 @@ class Pdf extends TCPDF
      *
      * @return void
      */
-    public function PageHeader(string $title = null): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function PageHeader(?string $title = null): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         if (isset($this->model)) {
             $this->modelPageHeader($title);
@@ -293,7 +293,7 @@ class Pdf extends TCPDF
      *
      * @return void
      */
-    protected function modelPageHeader(string $title = null): void
+    protected function modelPageHeader(?string $title = null): void
     {
         $html = null;
         if (trim($this->model->hstyles) !== '') {
@@ -340,7 +340,7 @@ class Pdf extends TCPDF
      *
      * @return void
      */
-    protected function standardPageHeader(string $title = null): void
+    protected function standardPageHeader(?string $title = null): void
     {
         //default header
         $print_logo = new \Galette\Core\PrintLogo();
@@ -431,7 +431,7 @@ class Pdf extends TCPDF
         int $maxsize,
         int $fontsize,
         string $fontstyle = '',
-        string $fontname = null
+        ?string $fontname = null
     ): void {
         if ($fontname === null) {
             $fontname = static::FONT;

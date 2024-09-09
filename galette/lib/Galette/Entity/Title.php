@@ -58,7 +58,7 @@ class Title
      *
      * @param int|ArrayObject<string, int|string>|null $args Arguments
      */
-    public function __construct(int|ArrayObject $args = null)
+    public function __construct(int|ArrayObject|null $args = null)
     {
         if (is_int($args)) {
             $this->load($args);

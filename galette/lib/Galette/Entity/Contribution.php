@@ -131,7 +131,7 @@ class Contribution
      *                                                                           a specific contribution, or a type id
      *                                                                           to just instantiate object
      */
-    public function __construct(Db $zdb, Login $login, int|array|ArrayObject $args = null)
+    public function __construct(Db $zdb, Login $login, int|array|ArrayObject|null $args = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -1009,8 +1009,8 @@ class Contribution
      */
     public function executePostScript(
         ExternalScript $es,
-        array $extra = null,
-        array $pextra = null
+        ?array $extra = null,
+        ?array $pextra = null
     ): string|bool {
         global $preferences;
 

@@ -68,7 +68,7 @@ class SavedSearch
      * @param Login                                   $login Login instance
      * @param ArrayObject<string,int|string>|int|null $args  Arguments
      */
-    public function __construct(Db $zdb, Login $login, ArrayObject|int $args = null)
+    public function __construct(Db $zdb, Login $login, ArrayObject|int|null $args = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;

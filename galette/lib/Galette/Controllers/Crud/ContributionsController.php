@@ -159,7 +159,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, string $type = null): Response
+    public function add(Request $request, Response $response, ?string $type = null): Response
     {
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
@@ -209,7 +209,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, string $type = null): Response
+    public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->store($request, $response, 'add', $type);
     }
@@ -387,9 +387,9 @@ class ContributionsController extends CrudController
     public function list(
         Request $request,
         Response $response,
-        string $option = null,
-        int|string $value = null,
-        string $type = null
+        ?string $option = null,
+        int|string|null $value = null,
+        ?string $type = null
     ): Response {
         $ajax = false;
         $get = $request->getQueryParams();
@@ -576,7 +576,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function myList(Request $request, Response $response, string $type = null): Response
+    public function myList(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->list(
             $request->withQueryParams(
@@ -600,7 +600,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function filter(Request $request, Response $response, string $type = null): Response
+    public function filter(Request $request, Response $response, ?string $type = null): Response
     {
         $ajax = false;
         $filter_args = [];
@@ -753,7 +753,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, int $id, string $type = null): Response
+    public function edit(Request $request, Response $response, ?int $id, ?string $type = null): Response
     {
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
@@ -792,7 +792,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, int $id, string $type = null): Response
+    public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
         return $this->store($request, $response, 'edit', $type, $id);
     }
@@ -808,7 +808,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, string $action, string $type, int $id = null): Response
+    public function store(Request $request, Response $response, string $action, string $type, ?int $id = null): Response
     {
         $post = $request->getParsedBody();
         $url_args = [

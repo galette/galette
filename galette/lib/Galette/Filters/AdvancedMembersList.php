@@ -206,7 +206,7 @@ class AdvancedMembersList extends MembersList
      *
      * @param ?MembersList $simple A simple filter search to keep
      */
-    public function __construct(MembersList $simple = null)
+    public function __construct(?MembersList $simple = null)
     {
         parent::__construct();
         if ($simple instanceof MembersList) {

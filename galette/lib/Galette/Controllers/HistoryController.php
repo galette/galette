@@ -51,8 +51,8 @@ class HistoryController extends AbstractController
     public function list(
         Request $request,
         Response $response,
-        string $option = null,
-        string|int $value = null
+        ?string $option = null,
+        string|int|null $value = null
     ): Response {
         if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
             $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};

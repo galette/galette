@@ -72,7 +72,7 @@ class DynamicFieldsHandle
      * @param Login   $login    Login instance
      * @param ?object $instance Object instance
      */
-    public function __construct(Db $zdb, Login $login, object $instance = null)
+    public function __construct(Db $zdb, Login $login, ?object $instance = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -260,7 +260,7 @@ class DynamicFieldsHandle
      *
      * @return boolean
      */
-    public function storeValues(int $item_id = null, bool $transaction = false): bool
+    public function storeValues(?int $item_id = null, bool $transaction = false): bool
     {
         try {
             if ($item_id !== null && ($this->item_id === null || $this->item_id === 0)) {
@@ -453,7 +453,7 @@ class DynamicFieldsHandle
      *
      * @return boolean
      */
-    public function removeValues(int $item_id = null, bool $transaction = false): bool
+    public function removeValues(?int $item_id = null, bool $transaction = false): bool
     {
         try {
             if ($item_id !== null && ($this->item_id === null || $this->item_id === 0)) {

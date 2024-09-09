@@ -84,8 +84,8 @@ class ContributionsTypesController extends CrudController
     public function list(
         Request $request,
         Response $response,
-        string $option = null,
-        int|string $value = null,
+        ?string $option = null,
+        int|string|null $value = null,
     ): Response {
         $ctypes = new ContributionsTypes($this->zdb);
         $params['page_title'] = _T("Contributions types");
@@ -183,7 +183,7 @@ class ContributionsTypesController extends CrudController
     public function store(
         Request $request,
         Response $response,
-        int $id = null,
+        ?int $id = null,
         string $action = 'edit'
     ): Response {
         $post = $request->getParsedBody();

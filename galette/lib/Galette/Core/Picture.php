@@ -419,7 +419,7 @@ class Picture implements FileInterface
      *
      * @return bool|int
      */
-    public function store(array $file, bool $ajax = false, array $cropping = null): bool|int
+    public function store(array $file, bool $ajax = false, ?array $cropping = null): bool|int
     {
         $this->cropping = $cropping;
         return $this->trait_store($file, $ajax);
@@ -662,7 +662,7 @@ class Picture implements FileInterface
      *
      * @return boolean
      */
-    private function resizeImage(string $source, string $ext, string $dest = null, array $cropping = null): bool
+    private function resizeImage(string $source, string $ext, ?string $dest = null, ?array $cropping = null): bool
     {
         $class = get_class($this);
 

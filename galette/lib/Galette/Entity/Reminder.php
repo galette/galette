@@ -66,7 +66,7 @@ class Reminder
      *
      * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
-    public function __construct(ArrayObject|int $args = null)
+    public function __construct(ArrayObject|int|null $args = null)
     {
         if ($args !== null) {
             if (is_int($args)) {

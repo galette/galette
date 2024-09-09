@@ -411,7 +411,7 @@ class GaletteMail
      *
      * @return bool
      */
-    public function isHTML(bool $set = null): bool
+    public function isHTML(?bool $set = null): bool
     {
         if (is_bool($set)) {
             $this->html = $set;

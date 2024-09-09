@@ -313,9 +313,9 @@ class MembersController extends CrudController
     public function publicList(
         Request $request,
         Response $response,
-        string $option = null,
-        string|int $value = null,
-        string $type = null
+        ?string $option = null,
+        string|int|null $value = null,
+        ?string $type = null
     ): Response {
         $varname = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => $type]);
         if (isset($this->session->$varname)) {
@@ -408,7 +408,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
+    public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
             $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
@@ -708,7 +708,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function ajaxList(Request $request, Response $response, string $option = null, string|int $value = null): Response
+    public function ajaxList(Request $request, Response $response, ?string $option = null, string|int|null $value = null): Response
     {
         $post = $request->getParsedBody();
 
@@ -904,7 +904,7 @@ class MembersController extends CrudController
     public function edit(
         Request $request,
         Response $response,
-        int $id = null,
+        ?int $id = null,
         string $action = 'edit'
     ): Response {
         //instantiate member object

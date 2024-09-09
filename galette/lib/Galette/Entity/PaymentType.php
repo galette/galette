@@ -64,7 +64,7 @@ class PaymentType
      * @param Db                                      $zdb  Database instance
      * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
-    public function __construct(Db $zdb, ArrayObject|int $args = null)
+    public function __construct(Db $zdb, ArrayObject|int|null $args = null)
     {
         $this->zdb = $zdb;
         if (is_int($args)) {

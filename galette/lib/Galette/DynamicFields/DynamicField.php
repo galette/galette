@@ -162,7 +162,7 @@ abstract class DynamicField
      *
      * @return DynamicField
      */
-    public static function getFieldType(Db $zdb, int $t, int $id = null): DynamicField
+    public static function getFieldType(Db $zdb, int $t, ?int $id = null): DynamicField
     {
         $df = null;
         switch ($t) {

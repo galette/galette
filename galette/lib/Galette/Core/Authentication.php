@@ -205,7 +205,7 @@ abstract class Authentication
      *
      * @return boolean
      */
-    public function isGroupManager(array|int $id_group = null): bool
+    public function isGroupManager(array|int|null $id_group = null): bool
     {
         $manager = false;
         if ($this->isAdmin() || $this->isStaff()) {

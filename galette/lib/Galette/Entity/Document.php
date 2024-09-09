@@ -76,7 +76,7 @@ class Document implements FileInterface
      * @param Db                                      $zdb  Database instance
      * @param int|ArrayObject<string,int|string>|null $args Arguments
      */
-    public function __construct(Db $zdb, int|ArrayObject $args = null)
+    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
     {
         $this->zdb = $zdb;
         $this->can_public = true;
@@ -125,7 +125,7 @@ class Document implements FileInterface
      *
      * @throws Throwable
      */
-    public function getList(string $type = null): array
+    public function getList(?string $type = null): array
     {
         global $login;
 
@@ -311,7 +311,7 @@ class Document implements FileInterface
      *
      * @return boolean
      */
-    public function remove(array $ids = null): bool
+    public function remove(?array $ids = null): bool
     {
         if ($ids == null) {
             $ids[] = $this->id;

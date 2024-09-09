@@ -80,7 +80,7 @@ trait PluginControllerTrait
      *
      * @return string
      */
-    public function getFilterName(string $filter_name, array $args = null): string
+    public function getFilterName(string $filter_name, ?array $args = null): string
     {
         if (!isset($args['prefix'])) {
             $args['prefix'] = 'plugin_' . $this->module_info['module']['route'];

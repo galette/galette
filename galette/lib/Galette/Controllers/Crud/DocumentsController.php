@@ -54,7 +54,7 @@ class DocumentsController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, string $form_name = null): Response
+    public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
         if (isset($this->session->document)) {
             $document = $this->session->document;
@@ -90,7 +90,7 @@ class DocumentsController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, string $form_name = null): Response
+    public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
         $post = $request->getParsedBody();
 
@@ -182,8 +182,8 @@ class DocumentsController extends CrudController
     public function list(
         Request $request,
         Response $response,
-        string $option = null,
-        int|string $value = null,
+        ?string $option = null,
+        int|string|null $value = null,
     ): Response {
         $filters = new DocumentsList();
 
@@ -222,8 +222,8 @@ class DocumentsController extends CrudController
     public function publicList(
         Request $request,
         Response $response,
-        string $option = null,
-        int|string $value = null,
+        ?string $option = null,
+        int|string|null $value = null,
     ): Response {
         $document = new Document($this->zdb);
         $documents = $document->getTypedList();

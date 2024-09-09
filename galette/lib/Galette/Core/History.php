@@ -64,7 +64,7 @@ class History
      * @param Preferences  $preferences Preferences
      * @param ?HistoryList $filters     Filtering
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, HistoryList $filters = null)
+    public function __construct(Db $zdb, Login $login, Preferences $preferences, ?HistoryList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;

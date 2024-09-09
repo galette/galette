@@ -67,7 +67,7 @@ class Group
      *                                                      a specific group, or null to just
      *                                                      instanciate object
      */
-    public function __construct(ArrayObject|int $args = null)
+    public function __construct(ArrayObject|int|null $args = null)
     {
         if ($args === null || is_int($args)) {
             if (is_int($args) && $args > 0) {

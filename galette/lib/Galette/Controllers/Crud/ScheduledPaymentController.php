@@ -121,7 +121,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
+    public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         $get = $request->getQueryParams();
         $ajax = false;
@@ -196,7 +196,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
-    public function myList(Request $request, Response $response, string $type = null): Response
+    public function myList(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->list(
             $request->withQueryParams(
@@ -394,7 +394,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, int $id = null): Response
+    public function store(Request $request, Response $response, ?int $id = null): Response
     {
         $post = $request->getParsedBody();
 

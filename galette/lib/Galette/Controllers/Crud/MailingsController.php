@@ -432,7 +432,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
+    public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName('mailings')})) {
             $filters = $this->session->{$this->getFilterName('mailings')};
@@ -642,7 +642,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function preview(Request $request, Response $response, int $id = null): Response
+    public function preview(Request $request, Response $response, ?int $id = null): Response
     {
         $post = $request->getParsedBody();
         // check for ajax mode

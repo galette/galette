@@ -212,7 +212,7 @@ abstract class AbstractController
      *
      * @return string
      */
-    public function getFilterName(string $filter_name, array $args = null): string
+    public function getFilterName(string $filter_name, ?array $args = null): string
     {
         if (empty($filter_name)) {
             throw new \OutOfBoundsException(

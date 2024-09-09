@@ -71,7 +71,7 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    abstract public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response;
+    abstract public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response;
 
     /**
      * List filtering
