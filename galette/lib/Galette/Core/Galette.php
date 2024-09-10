@@ -556,6 +556,73 @@ class Galette
     }
 
     /**
+     * Get current logged-in user dashboards
+     *
+     * @return array<string, string|array<string,mixed>>
+     */
+    public static function getMyDashboards(): array
+    {
+        /**
+         * @var Login $login
+         * @var Plugins $plugins
+         * @var Db $zdb
+         * @var Preferences $preferences
+         */
+        global $login, $plugins, $zdb, $preferences;
+
+        $dashboards = [];
+        if ($login->isLogged() && !$login->isSuperAdmin()) {
+            // Single member
+            $dashboards = array_merge(
+                $dashboards,
+                [
+                    [
+                        'label' => _T("My information"),
+                        'title' => _T("View my member card"),
+                        'route' => [
+                            'name' => 'me'
+                        ],
+                        'icon' => 'bust_in_silhouette'
+                    ],
+                    [
+                        'label' => _T("My contributions"),
+                        'title' => _T("View and filter all my contributions"),
+                        'route' => [
+                            'name' => 'myContributions',
+                            'args' => ['type' => 'contributions']
+                        ],
+                        'icon' => 'receipt'
+                    ],
+                    [
+                        'label' => _T("My transactions"),
+                        'title' => _T("View and filter all my transactions"),
+                        'route' => [
+                            'name' => 'myContributions',
+                            'args' => ['type' => 'transactions']
+                        ],
+                        'icon' => 'book'
+                    ]
+                ]
+            );
+        }
+
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class) && method_exists($plugin_class, 'getMyDashboards')) {
+                /** @var GalettePlugin $plugin */
+                $plugin = new $plugin_class();
+                $dashboards = array_merge_recursive(
+                    $dashboards,
+                    $plugin->getMyDashboards()
+                );
+            }
+        }
+
+        return $dashboards;
+    }
+
+    /**
      * Get dashboards
      *
      * @return array<string, string|array<string,mixed>>
@@ -677,41 +744,6 @@ class Galette
                         ],
                         'icon' => 'package'
                     ],
-                ]
-            );
-        }
-
-        if ($login->isLogged() && !$login->isSuperAdmin()) {
-            // Single member
-            $dashboards = array_merge(
-                $dashboards,
-                [
-                    [
-                        'label' => _T("My information"),
-                        'title' => _T("View my member card"),
-                        'route' => [
-                            'name' => 'me'
-                        ],
-                        'icon' => 'bust_in_silhouette'
-                    ],
-                    [
-                        'label' => _T("My contributions"),
-                        'title' => _T("View and filter all my contributions"),
-                        'route' => [
-                            'name' => 'myContributions',
-                            'args' => ['type' => 'contributions']
-                        ],
-                        'icon' => 'receipt'
-                    ],
-                    [
-                        'label' => _T("My transactions"),
-                        'title' => _T("View and filter all my transactions"),
-                        'route' => [
-                            'name' => 'myContributions',
-                            'args' => ['type' => 'transactions']
-                        ],
-                        'icon' => 'book'
-                    ]
                 ]
             );
         }

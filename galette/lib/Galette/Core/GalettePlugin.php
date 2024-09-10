@@ -84,6 +84,17 @@ abstract class GalettePlugin
     }
 
     /**
+     * Get current logged-in user plugins dashboards
+     *
+     * @return array<int, string|array<string,mixed>>
+     */
+    public static function getMyDashboards(): array
+    {
+        $dashboards = static::getMyDashboardsContents();
+        return $dashboards;
+    }
+
+    /**
      * Extra menus entries
      *
      * @return array<string, string|array<string,mixed>>
@@ -103,6 +114,17 @@ abstract class GalettePlugin
      * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getDashboardsContents(): array;
+
+    /**
+     * Get current logged-in user dashboards contents
+     *
+     * @return array<int, string|array<string,mixed>>
+     */
+    public static function getMyDashboardsContents(): array
+    {
+        //FIXME: should be abstract, but would require a Galette bump version in plugins
+        return [];
+    }
 
     /**
      * Get member actions
