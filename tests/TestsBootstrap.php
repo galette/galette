@@ -136,3 +136,4 @@ if (
 }
 
 require_once __DIR__ . '/GaletteTestCase.php';
+require_once __DIR__ . '/GaletteSeleniumCase.php';
