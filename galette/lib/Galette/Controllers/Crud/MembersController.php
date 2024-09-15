@@ -1085,6 +1085,10 @@ class MembersController extends CrudController
         //Titles
         $titles = new Titles($this->zdb);
 
+        //Groups
+        $groups = new Groups($this->zdb, $this->login);
+        $groups_list = $groups->getList();
+
         // display page
         $this->view->render(
             $response,
@@ -1103,7 +1107,8 @@ class MembersController extends CrudController
                 'fieldsets'     => $form_elements['fieldsets'],
                 'titles_list'   => $titles->getList(),
                 'statuts'       => $statuts->getList(),
-                'require_mass'  => true
+                'require_mass'  => true,
+                'groups'        => $groups_list
             )
         );
         return $response;
@@ -1144,6 +1149,24 @@ class MembersController extends CrudController
                         ];
                     }
                 }
+            }
+
+            //handle groups to add
+            if (isset($post['mass_group_to_add'])) {
+                $group = new Group((int)$post['group_to_add']);
+                $changes['group_to_add'] = [
+                    'label' => _T('Add to group'),
+                    'value' => $group->getFullName()
+                ];
+            }
+
+            //handle groups to remove
+            if (isset($post['mass_group_to_remove'])) {
+                $group = new Group((int)$post['group_to_remove']);
+                $changes['group_to_remove'] = [
+                    'label' => _T('Remove from group'),
+                    'value' => $group->getFullName()
+                ];
             }
 
             //handle dynamic fields
@@ -1237,6 +1260,15 @@ class MembersController extends CrudController
                     if (isset($fieldset->elements[$key])) {
                         $found = true;
                         break;
+                    }
+                }
+
+                if (!$found) {
+                    //try to check group to add or remove
+                    if ($key == 'group_to_add' || $key == 'group_to_remove') {
+                        //TODO: check group ACLs
+                        $this->login->isGroupManager($post[$key]);
+                        $found = true;
                     }
                 }
 

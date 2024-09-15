@@ -39,6 +39,9 @@
                 <p>{{ _T("Only checked fields will be updated.") }}</p>
                 {# Form entries #}
                 {% include "components/form.html.twig" with {masschange: true} %}
+                {# Groups #}
+                {# TODO: check ACLs #}
+                {% include "components/forms/mass_groups.html.twig" %}
                 {# Dynamic entries #}
                 {% include "components/dynamic_fields.html.twig" with {object: member, masschange: true} %}
             {% else %}
