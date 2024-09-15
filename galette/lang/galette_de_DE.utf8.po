@@ -37,7 +37,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-02 21:36+0200\n"
 "PO-Revision-Date: 2024-07-18 14:09+0000\n"
 "Last-Translator: rabbitmc <weblate@sternwelt.org>\n"
