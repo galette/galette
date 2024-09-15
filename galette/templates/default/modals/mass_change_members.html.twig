@@ -39,6 +39,9 @@
                 <p>{{ _T("Only checked fields will be updated.") }}</p>
                 {# Form entries #}
                 {% include "components/form.html.twig" with {masschange: true} %}
+                {# Groups #}
+                {# TODO: check ACLs #}
+                {% include "components/forms/mass_groups.html.twig" %}
                 {# Dynamic entries #}
                 {% include "components/dynamic_fields.html.twig" with {object: member, masschange: true} %}
             {% else %}
@@ -48,6 +51,9 @@
                     {% set display_value = change.value %}
                     {% if field == 'id_statut' %}
                         {% set display_value = statuts[display_value] %}
+                    {% endif %}
+                    {% if field == 'group_to_add' or field == 'group_to_remove' %}
+                        {% set display_value = groups[display_value] %}
                     {% endif %}
                     {% if field == 'titre_adh' %}
                         {% set display_value = titles_list[display_value].long %}
