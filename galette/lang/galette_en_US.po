@@ -378,8 +378,8 @@ msgid "An error occurred while storing the member."
 msgstr "An error occurred while storing the member."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1322
-msgid "Something went wront during mass edition!"
-msgstr "Something went wront during mass edition!"
+msgid "Something went wrong during mass edition!"
+msgstr "Something went wrong during mass edition!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1329
 #, php-format

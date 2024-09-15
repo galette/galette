@@ -1314,7 +1314,7 @@ class MembersController extends CrudController
         }
 
         if ($mass == 0 && !count($error_detected)) {
-            $error_detected[] = _T('Something went wront during mass edition!');
+            $error_detected[] = _T('Something went wrong during mass edition!');
         } else {
             $this->flash->addMessage(
                 'success_detected',

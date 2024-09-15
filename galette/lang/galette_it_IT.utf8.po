@@ -406,7 +406,7 @@ msgid "An error occurred while storing the member."
 msgstr "Si è verificato un errore nella memorizzazione del socio."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1322
-msgid "Something went wront during mass edition!"
+msgid "Something went wrong during mass edition!"
 msgstr "Qualcosa è andato storto nell'edizione massiva!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1329

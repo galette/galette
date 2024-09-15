@@ -394,7 +394,7 @@ msgid "An error occurred while storing the member."
 msgstr "Une erreur est survenue lors de l'enregistrement de l'adhérent."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1322
-msgid "Something went wront during mass edition!"
+msgid "Something went wrong during mass edition!"
 msgstr "Quelque chose s’est mal passé lors de la modification en masse !"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1329

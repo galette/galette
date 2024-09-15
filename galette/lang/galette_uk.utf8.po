@@ -421,7 +421,7 @@ msgid "An error occurred while storing the member."
 msgstr "Під час зберігання члена сталася помилка."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1322
-msgid "Something went wront during mass edition!"
+msgid "Something went wrong during mass edition!"
 msgstr "Щось пішло не так під час масової правки!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1329
