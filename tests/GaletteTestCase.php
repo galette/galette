@@ -88,13 +88,14 @@ abstract class GaletteTestCase extends TestCase
         $this->members_fields_cats = $container->get('members_fields_cats');
         $this->session = $container->get('session');
 
-        global $zdb, $login, $hist, $i18n, $container, $galette_log_var; // globals :(
+        global $zdb, $login, $hist, $i18n, $container, $galette_log_var, $routeparser;  // globals :(
         $zdb = $this->zdb;
         $login = $this->login;
         $hist = $this->history;
         $i18n = $this->i18n;
         $container = $this->container;
         $galette_log_var = $this->logger_storage;
+        $routeparser = $container->get(\Slim\Routing\RouteParser::class);
 
         $this->initPaymentTypes();
         $this->initStatus();

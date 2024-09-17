@@ -134,7 +134,6 @@ use Galette\Repository\Members;
  * @property boolean $pref_bool_groupsmanagers_mailings
  * @property boolean $pref_bool_groupsmanagers_exports
  * @property-read array $vpref_email_newadh list of mail senders
- * @property-read array $vpref_email list of mail senders
  * @property boolean $pref_noindex
  */
 class Preferences
@@ -159,7 +158,7 @@ class Preferences
     /** Public pages stuff */
     /** Public pages are publically visibles */
     public const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
-    /** Public pages are visibles for up to date members only */
+    /** Public pages are visibles for up-to-date members only */
     public const PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
     /** Public pages are visibles for admin and staff members only */
     public const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
@@ -295,28 +294,26 @@ class Preferences
     private array $socials;
 
     // flagging required fields
-    /** @var array<string> */
+    /** @var array<string,int> */
     private array $required = array(
-        'pref_nom',
-        'pref_lang',
-        'pref_numrows',
-        'pref_log',
-        'pref_statut',
-        'pref_etiq_marges_v',
-        'pref_etiq_marges_h',
-        'pref_etiq_hspace',
-        'pref_etiq_vspace',
-        'pref_etiq_hsize',
-        'pref_etiq_vsize',
-        'pref_etiq_cols',
-        'pref_etiq_rows',
-        'pref_etiq_corps',
-        'pref_card_marges_v',
-        'pref_card_marges_h',
-        'pref_card_hspace',
-        'pref_card_vspace',
-        'pref_card_hsize',
-        'pref_card_vsize'
+        'pref_nom' => 1,
+        'pref_lang' => 1,
+        'pref_numrows' => 1,
+        'pref_log' => 1,
+        'pref_statut' => 1,
+        'pref_etiq_marges_v' => 1,
+        'pref_etiq_marges_h' => 1,
+        'pref_etiq_hspace' => 1,
+        'pref_etiq_vspace' => 1,
+        'pref_etiq_hsize' => 1,
+        'pref_etiq_vsize' => 1,
+        'pref_etiq_cols' => 1,
+        'pref_etiq_rows' => 1,
+        'pref_etiq_corps' => 1,
+        'pref_card_marges_v' => 1,
+        'pref_card_marges_h' => 1,
+        'pref_card_hspace' => 1,
+        'pref_card_vspace' => 1
     );
 
     /**
@@ -501,10 +498,9 @@ class Preferences
      */
     public function check(array $values, Login $login): bool
     {
+        $this->errors = [];
         $insert_values = array();
-        if ($login->isSuperAdmin() && !Galette::isDemo()) {
-            $this->required[] = 'pref_admin_login';
-        }
+        $this->getRequiredFields($login); //make sure required are all set
 
         // obtain fields
         foreach ($this->getFieldsNames() as $fieldname) {
@@ -586,9 +582,12 @@ class Preferences
         }
 
         if (
-            isset($insert_values['pref_beg_membership'])
-            && $insert_values['pref_beg_membership'] != ''
-            && isset($insert_values['pref_membership_ext'])
+            (!isset($insert_values['pref_beg_membership']) || $insert_values['pref_beg_membership'] == '')
+            && (!isset($insert_values['pref_membership_ext']) || $insert_values['pref_membership_ext'] == '')
+        ) {
+            $this->errors[] = _T("- You must indicate a membership extension or a beginning of membership.");
+        } elseif (
+            $insert_values['pref_beg_membership'] != ''
             && $insert_values['pref_membership_ext'] != ''
         ) {
             $this->errors[] = _T("- Default membership extension and beginning of membership are mutually exclusive.");
@@ -604,7 +603,7 @@ class Preferences
         }
 
         // missing required fields?
-        foreach ($this->required as $val) {
+        foreach (array_keys($this->required) as $val) {
             if (!isset($values[$val]) || is_string($values[$val]) && trim($values[$val]) == '') {
                 $this->errors[] = str_replace(
                     '%field',
@@ -629,7 +628,7 @@ class Preferences
                     unset($insert_values['pref_postal_staff_member']);
                 }
             } elseif ($value == Preferences::POSTAL_ADDRESS_FROM_STAFF) {
-                if ($value < 1) {
+                if (!isset($insert_values['pref_postal_staff_member']) || $insert_values['pref_postal_staff_member'] < 1) {
                     $this->errors[] = _T("You have to select a staff member");
                 }
             }
@@ -642,7 +641,7 @@ class Preferences
                 || $champ != 'pref_admin_pass' && $champ != 'pref_admin_login'
             ) {
                 if (
-                    ($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] != '')
+                    ($champ == "pref_admin_pass" && ($_POST['pref_admin_pass'] ?? '') != '')
                     || ($champ != "pref_admin_pass")
                 ) {
                     $this->$champ = $valeur;
@@ -672,8 +671,8 @@ class Preferences
             case 'pref_email_newadh':
             case 'pref_email_reply_to':
                 //check emails validity
-                //may be a comma separated list of valid emails identifiers:
-                //"The Name <mail@domain.com>,The Other <other@mail.com>" expect for reply_to.
+                //may be a comma separated list of valid emails:
+                //"mail@domain.com,other@mail.com" only for pref_email_newadh.
                 $addresses = [];
                 if (trim($value) != '') {
                     if ($fieldname == 'pref_email_newadh') {
@@ -765,7 +764,7 @@ class Preferences
                 }
                 break;
             case 'pref_membership_ext':
-                if (!is_numeric($value) || $value < 0) {
+                if (!is_numeric($value) || $value <= 0) {
                     $this->errors[] = _T("- Invalid number of months of membership extension.");
                 }
                 break;
@@ -1000,7 +999,7 @@ class Preferences
     public function __get(string $name): mixed
     {
         $forbidden = array('defaults');
-        $virtuals = array('vpref_email', 'vpref_email_newadh');
+        $virtuals = array('vpref_email_newadh');
         $types = [
             'int' => [
                 'pref_card_address',
@@ -1076,7 +1075,7 @@ class Preferences
                     }
                 }
 
-                if (in_array($name, ['vpref_email', 'pref_email_newadh'])) {
+                if ($name === 'pref_email_newadh') {
                     $values = explode(',', $value);
                     $value = $values[0]; //take first as default
                 }
@@ -1116,7 +1115,7 @@ class Preferences
     public function __isset(string $name): bool
     {
         $forbidden = array('defaults');
-        $virtuals = array('vpref_email', 'vpref_email_newadh');
+        $virtuals = array('vpref_email_newadh');
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             return true;
@@ -1511,5 +1510,20 @@ class Preferences
         );
         $this->$field = $uuid;
         return $uuid;
+    }
+
+    /**
+     * Get required fields
+     *
+     * @param Login $login Logged in user
+     *
+     * @return array<string, int>
+     */
+    public function getRequiredFields(Login $login): array
+    {
+        if ($login->isSuperAdmin() && !Galette::isDemo()) {
+            $this->required['pref_admin_login'] = 1;
+        }
+        return $this->required;
     }
 }

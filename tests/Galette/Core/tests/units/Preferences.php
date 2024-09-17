@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Core\test\units;
 
+use Galette\GaletteTestCase;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPUnit\Framework\TestCase;
 
@@ -31,18 +32,19 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Preferences extends TestCase
+class Preferences extends GaletteTestCase
 {
-    private ?\Galette\Core\Preferences $preferences = null;
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\Login $login;
+    protected int $seed = 20240917074915;
+    //private ?\Galette\Core\Preferences $preferences = null;
+    //private \Galette\Core\Db $zdb;
+    //private \Galette\Core\Login $login;
 
     /**
      * Set up tests
      *
      * @return void
      */
-    public function setUp(): void
+    /*public function setUp(): void
     {
         $gapp =  new \Galette\Core\SlimApp();
         $app = $gapp->getApp();
@@ -63,14 +65,14 @@ class Preferences extends TestCase
         $authenticate = new \Galette\Middleware\Authenticate($container);
         require GALETTE_ROOT . 'includes/routes/main.routes.php';
         require GALETTE_ROOT . 'includes/routes/authentication.routes.php';
-    }
+    }*/
 
     /**
      * Tear down tests
      *
      * @return void
      */
-    public function tearDown(): void
+    /*public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
             $this->assertSame([], $this->zdb->getWarnings());
@@ -78,7 +80,7 @@ class Preferences extends TestCase
 
         $delete = $this->zdb->delete(\Galette\Entity\Social::TABLE);
         $this->zdb->execute($delete);
-    }
+    }*/
 
     /**
      * Test preferences initialization
@@ -465,6 +467,12 @@ class Preferences extends TestCase
             1,
             \Galette\Entity\Social::getListForMember(null, \Galette\Entity\Social::FACEBOOK)
         );
+
+        $this->assertTrue(
+            $this->preferences->check($preferences, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $this->assertTrue($this->preferences->store());
     }
 
     /**
@@ -602,9 +610,11 @@ class Preferences extends TestCase
     public function testUpdateTelemetryDate(): void
     {
         $this->assertSame('', $this->preferences->pref_telemetry_date);
+        $this->assertSame('Never', $this->preferences->getTelemetryDate());
 
         $this->preferences->updateTelemetryDate();
         $this->assertStringStartsWith(date('Y-m-d'), $this->preferences->pref_telemetry_date);
+        $this->assertSame($this->preferences->pref_telemetry_date, $this->preferences->getTelemetryDate());
     }
 
     /**
@@ -615,9 +625,11 @@ class Preferences extends TestCase
     public function testUpdateRegistrationDate(): void
     {
         $this->assertSame('', $this->preferences->pref_registration_date);
+        $this->assertNull($this->preferences->getRegistrationDate());
 
         $this->preferences->updateRegistrationDate();
         $this->assertStringStartsWith(date('Y-m-d'), $this->preferences->pref_registration_date);
+        $this->assertSame($this->preferences->pref_registration_date, $this->preferences->getRegistrationDate());
     }
 
     /**
@@ -633,5 +645,388 @@ class Preferences extends TestCase
         $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]{40}$/', $uuid);
         $this->assertSame($uuid, $this->preferences->pref_instance_uuid);
         $this->assertSame('', $this->preferences->pref_registration_uuid);
+    }
+
+    /**
+     * Test for required end of membership parameter(s) presence and values
+     *
+     * @return void
+     */
+    public function testRequiredEndOfMembership(): void
+    {
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => null]);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['- You must indicate a membership extension or a beginning of membership.'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_membership_ext' => '10', 'pref_beg_membership' => '01/01']);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['- Default membership extension and beginning of membership are mutually exclusive.'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_membership_ext' => 0, 'pref_beg_membership' => null]);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['- Invalid number of months of membership extension.'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_membership_ext' => '10', 'pref_beg_membership' => null]);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => '10']);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['- Invalid format of beginning of membership.'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => '01/01']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge($preferences, ['pref_membership_ext' => '10', 'pref_beg_membership' => null, 'pref_membership_offermonths' => -1]);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['- Invalid number of offered months.'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_membership_ext' => '10', 'pref_beg_membership' => null, 'pref_membership_offermonths' => 2]);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['- Offering months is only compatible with beginning of membership.'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_membership_ext' => null, 'pref_beg_membership' => '01/01', 'pref_membership_offermonths' => 2]);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+    }
+
+    /**
+     * Test email related parameters
+     *
+     * @return void
+     */
+    public function testEmailParameters(): void
+    {
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        $post = array_merge($preferences, ['pref_email' => 'notvalid']);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['Invalid E-Mail address: notvalid'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_email' => 'email@address.com']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $this->assertSame('email@address.com', $this->preferences->pref_email);
+
+        $post = array_merge($preferences, ['pref_email' => 'email+me@address.com']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge($preferences, ['pref_email' => 'email-me@address.com']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge($preferences, ['pref_email' => 'email.me@address.com']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge($preferences, ['pref_email' => 'email@localhost']);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['Invalid E-Mail address: email@localhost'], $this->preferences->getErrors());
+
+        //can be a coma separated value only for pref_email_newadh
+        $post = array_merge($preferences, ['pref_email' => 'email@address.com,another@galette.eu']);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['Invalid E-Mail address: email@address.com,another@galette.eu'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_email_newadh' => 'email@address.com,another@galette.eu']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $this->assertSame('email@address.com', $this->preferences->pref_email_newadh);
+        $this->assertSame(['email@address.com', 'another@galette.eu'], $this->preferences->vpref_email_newadh);
+
+        $post = array_merge(
+            $preferences,
+            [
+                'pref_mail_method' => \Galette\Core\GaletteMail::METHOD_DISABLED,
+                'pref_email_nom' => null,
+                'pref_email' => null,
+            ]
+        );
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge(
+            $preferences,
+            [
+                'pref_mail_method' => \Galette\Core\GaletteMail::METHOD_PHPMAIL,
+                'pref_email_nom' => null,
+                'pref_email' => null,
+            ]
+        );
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(
+            [
+                '- You must indicate a sender name for emails!',
+                '- You must indicate an email address Galette should use to send emails!',
+            ],
+            $this->preferences->getErrors()
+        );
+
+        $post = array_merge(
+            $preferences,
+            [
+                'pref_mail_method' => \Galette\Core\GaletteMail::METHOD_DISABLED,
+                'pref_email_nom' => 'G@l3tt3',
+                'pref_email' => 'test@galette.eu',
+            ]
+        );
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge(
+            $preferences,
+            [
+                'pref_mail_method' => \Galette\Core\GaletteMail::METHOD_SMTP,
+                'pref_email_nom' => 'G@l3tt3',
+                'pref_email' => 'test@galette.eu',
+            ]
+        );
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(
+            [
+                '- You must indicate the SMTP server you want to use!'
+            ],
+            $this->preferences->getErrors()
+        );
+
+        $post = array_merge(
+            $preferences,
+            [
+                'pref_mail_method' => \Galette\Core\GaletteMail::METHOD_SMTP,
+                'pref_email_nom' => 'G@l3tt3',
+                'pref_email' => 'test@galette.eu',
+                'pref_mail_smtp_host' => 'smtp.galette.eu',
+            ]
+        );
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge(
+            $preferences,
+            [
+                'pref_mail_method' => \Galette\Core\GaletteMail::METHOD_SMTP,
+                'pref_email_nom' => 'G@l3tt3',
+                'pref_email' => 'test@galette.eu',
+                'pref_mail_smtp_host' => 'smtp.galette.eu',
+                'pref_mail_smtp_auth' => 1,
+            ]
+        );
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(
+            [
+                '- You must provide a login for SMTP authentication.',
+                '- You must provide a password for SMTP authentication.'
+            ],
+            $this->preferences->getErrors()
+        );
+
+        $post = array_merge(
+            $preferences,
+            [
+                'pref_mail_method' => \Galette\Core\GaletteMail::METHOD_GMAIL,
+                'pref_email_nom' => 'G@l3tt3',
+                'pref_email' => 'test@galette.eu',
+            ]
+        );
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(
+            [
+                '- You must provide a login for SMTP authentication.',
+                '- You must provide a password for SMTP authentication.'
+            ],
+            $this->preferences->getErrors()
+        );
+    }
+
+    /**
+     * Test for required fields
+     *
+     * @return void
+     */
+    public function testRequireds(): void
+    {
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        $count_required = 18;
+        $this->assertCount($count_required, $this->preferences->getRequiredFields($this->login));
+
+        $post = array_merge($preferences, ['pref_admin_login' => null, 'pref_nom' => null]);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['- Mandatory field pref_nom empty.'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_nom' => 'Galette']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $this->logSuperAdmin();
+        $this->assertCount(++$count_required, $this->preferences->getRequiredFields($this->login));
+
+        $post = array_merge($preferences, ['pref_admin_login' => null, 'pref_nom' => null]);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(
+            [
+                '- Mandatory field pref_nom empty.',
+                '- Mandatory field pref_admin_login empty.'
+            ],
+            $this->preferences->getErrors()
+        );
+
+        $post = array_merge($preferences, ['pref_admin_login' => null, 'pref_nom' => 'Galette']);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(
+            [
+                '- Mandatory field pref_admin_login empty.'
+            ],
+            $this->preferences->getErrors()
+        );
+    }
+
+    /**
+     * Test admin password check
+     *
+     * @return void
+     */
+    public function testAdminPassCheck(): void
+    {
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        $post = array_merge($preferences, ['pref_admin_pass' => 'one', 'pref_admin_pass_check' => 'another']);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['Passwords mismatch'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_admin_pass' => 'G@L3tt3', 'pref_admin_pass_check' => 'G@L3tt3']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+    }
+
+    /**
+     * Test postal address
+     *
+     * @return void
+     */
+    public function testPostalAddress(): void
+    {
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        $post = array_merge($preferences, ['pref_postal_address' => \Galette\Core\Preferences::POSTAL_ADDRESS_FROM_PREFS]);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge($preferences, ['pref_postal_address' => \Galette\Core\Preferences::POSTAL_ADDRESS_FROM_STAFF]);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['You have to select a staff member'], $this->preferences->getErrors());
+
+        $memberOne = $this->getMemberOne();
+        $post = array_merge(
+            $preferences,
+            [
+                'pref_postal_address' => \Galette\Core\Preferences::POSTAL_ADDRESS_FROM_STAFF,
+                'pref_postal_staff_member' => $memberOne->id
+            ]
+        );
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $expected = "DURAND René\nGalette association's Non-member\n66, boulevard De Oliveira\n39 069 Martel - Antarctique";
+        $this->assertSame($expected, $this->preferences->getPostalAddress());
+    }
+
+    /**
+     * Test for admin login
+     *
+     * @return void
+     */
+    public function testAdminLogin(): void
+    {
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        //not superadmin, cannot change admin login nor password - ignored
+        $post = array_merge($preferences, ['pref_admin_login' => 'abc']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $this->assertSame('admin', $this->preferences->pref_admin_login);
+
+        $this->logSuperAdmin();
+        $post = array_merge($preferences, ['pref_admin_login' => 'abc']);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['- The username must be composed of at least 4 characters!'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_admin_login' => 'GSuperUser']);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $memberOne = $this->getMemberOne();
+        $post = array_merge($preferences, ['pref_admin_login' => $memberOne->login]);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['- This username is already used by another member !'], $this->preferences->getErrors());
+    }
+
+    /**
+     * Test __isset
+     *
+     * @return void
+     */
+    public function testIsset(): void
+    {
+        $this->assertFalse(isset($this->preferences->defaults));
+        $this->assertFalse(isset($this->preferences->pref_not_exists));
+        $this->assertTrue(isset($this->preferences->pref_nom));
+        $this->assertTrue(isset($this->preferences->vpref_email_newadh));
+        $this->assertTrue(isset($this->preferences->socials));
     }
 }
