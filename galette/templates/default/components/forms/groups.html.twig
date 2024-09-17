@@ -20,9 +20,6 @@
 #}
 <div id="groups_field" class="field">
     <label>{{ _T("Groups:") }}</label>
-    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-    <noscript><div class="ui message">{{ _T("This feature requires javascript.") }}</div></noscript>
-    {% endif %}
     <span id="usergroups_form">
     {% if member.id %}
         {% for group in groups %}
