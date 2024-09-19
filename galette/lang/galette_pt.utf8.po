@@ -3,13 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Languages add-on <noreply-addon-languages@weblate.org>, 2024.
 # Manuela Silva <mmsrs@sky.com>, 2024.
+# Gustavo Lorenzato dos Santos <gustavolorenzatodossantos@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-09-17 17:10+0200\n"
-"PO-Revision-Date: 2024-04-29 04:34+0000\n"
-"Last-Translator: Manuela Silva <mmsrs@sky.com>\n"
+"PO-Revision-Date: 2024-09-20 15:21+0000\n"
+"Last-Translator: Gustavo Lorenzato dos Santos "
+"<gustavolorenzatodossantos@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
 "galette/pt/>\n"
 "Language: pt\n"
@@ -17,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.5.1\n"
+"X-Generator: Weblate 5.8-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -37,27 +39,27 @@ msgstr "criação"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:238
 msgid "An error occurred while storing the transaction."
-msgstr ""
+msgstr "Ocorreu um erro ao armazenar a transação."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:273
 msgid "Transaction has been successfully stored"
-msgstr ""
+msgstr "A transação foi armazenada com sucesso"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:329
 msgid "Unable to attach contribution to transaction"
-msgstr ""
+msgstr "Não foi possível anexar a contribuição à transação"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:334
 msgid "Contribution has been successfully attached to current transaction"
-msgstr ""
+msgstr "A contribuição foi anexada com sucesso à transação atual"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:361
 msgid "Unable to detach contribution from transaction"
-msgstr ""
+msgstr "Não é possível separar a contribuição da transação"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:366
 msgid "Contribution has been successfully detached from current transaction"
-msgstr ""
+msgstr "A contribuição foi desvinculada com sucesso da transação atual"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:97
 msgid "Payment types management"
@@ -70,84 +72,84 @@ msgstr "Editar tipo de pagamento"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:191
 msgid "Missing required payment type's name!"
-msgstr ""
+msgstr "Falta o nome do tipo de pagamento obrigatório!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:200
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr ""
+msgstr "O tipo de pagamento '%s' não foi adicionado!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:206
 #, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr ""
+msgstr "O tipo de pagamento '%s' não foi modificado!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:216
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr ""
+msgstr "O tipo de pagamento '%s' foi adicionado com sucesso."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
-msgstr ""
+msgstr "O tipo de pagamento '%s' foi modificado com sucesso."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:298
 #, php-format
 msgid "Remove payment type %1$s"
-msgstr ""
+msgstr "Remover o tipo de pagamento %1$s"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:69
 msgid "Contribution is fully scheduled!"
-msgstr ""
+msgstr "A contribuição está devidamente agendada!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:90
 msgid "Add scheduled payment"
-msgstr ""
+msgstr "Adicionar pagamento agendado"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:179
 msgid "Scheduled payments management"
-msgstr ""
+msgstr "Gerenciamento de pagamentos agendados"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:273
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:662
 msgid "- Unknown payment type!"
-msgstr ""
+msgstr "- Tipo de pagamento desconhecido!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:329
 msgid "No scheduled payment was selected, please check at least one."
-msgstr ""
+msgstr "Nenhum pagamento programado foi selecionado, marque pelo menos um."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:365
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:405
 msgid "Edit scheduled payment"
-msgstr ""
+msgstr "Editar pagamento agendado"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:435
 msgid "Scheduled payment has not been added!"
-msgstr ""
+msgstr "O pagamento agendado não foi adicionado!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:437
 msgid "Scheduled payment has not been modified!"
-msgstr ""
+msgstr "O pagamento agendado não foi modificado!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:443
 msgid "Scheduled payment has been successfully added."
-msgstr ""
+msgstr "O pagamento agendado foi adicionado com sucesso."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:445
 msgid "Scheduled payment has been successfully modified."
-msgstr ""
+msgstr "O pagamento agendado foi modificado com sucesso."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:509
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Remover pagamento agendado"
+msgstr[1] "Remover pagamentos agendados"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:106
 msgid "Group name is missing!"
-msgstr ""
+msgstr "O nome do grupo está faltando!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:186
 #: ../lib/Galette/Core/Galette.php:588
@@ -156,11 +158,11 @@ msgstr "Grupos"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
 msgid "Group `%groupname` has been successfully saved."
-msgstr ""
+msgstr "O grupo `%groupname` foi salvo com sucesso."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:384
 msgid "An error occurred while storing the group."
-msgstr ""
+msgstr "Ocorreu um erro ao armazenar o grupo."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:489
 #, php-format
@@ -210,18 +212,18 @@ msgstr "A correspondência foi guardada com sucesso."
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:479
 #: ../lib/Galette/Core/Galette.php:604
 msgid "Mailings"
-msgstr ""
+msgstr "Mailings"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:615
 #, php-format
 msgid "Remove mailing #%1$s"
-msgstr ""
+msgstr "Remover mailing #%1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:695
 #: ../../tempcache/pages/mailing_form.html.twig:561
 #: ../../tempcache/pages/mailings_list.html.twig:497
 msgid "Mailing preview"
-msgstr ""
+msgstr "Pré-visualização do mailing"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:91
 #: ../lib/Galette/Core/Install.php:1170 ../lib/Galette/Core/Galette.php:404
@@ -235,27 +237,27 @@ msgstr "Editar tipo de contribuição"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:212
 msgid "Missing required contribution type name!"
-msgstr ""
+msgstr "Nome do tipo de contribuição obrigatório ausente!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:218
 msgid "Contribution type has not been added :("
-msgstr ""
+msgstr "O tipo de contribuição não foi adicionado :("
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:218
 msgid "Contribution type #%id has not been updated"
-msgstr ""
+msgstr "O tipo de contribuição #%id não foi atualizado"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:224
 msgid "Contribution type has been successfully added!"
-msgstr ""
+msgstr "O tipo de contribuição foi adicionado com sucesso!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:224
 msgid "Contribution type #%id has been successfully updated!"
-msgstr ""
+msgstr "O tipo de contribuição #%id foi atualizado com sucesso!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:302
 msgid "Remove contribution type '%label'"
-msgstr ""
+msgstr "Remover tipo de contribuição '%label'"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:58
 msgid "Add field"
@@ -263,16 +265,16 @@ msgstr "Adicionar campo"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:119
 msgid "An error occurred adding dynamic field :("
-msgstr ""
+msgstr "Ocorreu um erro ao adicionar campo dinâmico :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:133
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:494
 msgid "Dynamic field has been successfully stored!"
-msgstr ""
+msgstr "O campo dinâmico foi armazenado com sucesso!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:218
 msgid "Dynamic fields configuration"
-msgstr ""
+msgstr "Configuração de campos dinâmicos"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:310
 #: ../lib/Galette/Controllers/Crud/MembersController.php:236
@@ -282,16 +284,16 @@ msgstr ""
 #: ../lib/Galette/Controllers/PdfController.php:266
 #: ../lib/Galette/Middleware/Authenticate.php:159
 msgid "You do not have permission for requested URL."
-msgstr ""
+msgstr "Você não tem permissão para o URL solicitado."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:366
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:317
 msgid "The file does not exists or cannot be read :("
-msgstr ""
+msgstr "O arquivo não existe ou não pode ser lido :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:408
 msgid "Unable to retrieve field information."
-msgstr ""
+msgstr "Não foi possível recuperar as informações do campo."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:417
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:209
@@ -300,25 +302,25 @@ msgstr "Editar campo"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:479
 msgid "An error occurred editing dynamic field :("
-msgstr ""
+msgstr "Ocorreu um erro ao editar o campo dinâmico :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:580
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:582
 msgid "Requested field does not exists!"
-msgstr ""
+msgstr "O campo solicitado não existe!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:586
 #, php-format
 msgid "Remove dynamic field %1$s"
-msgstr ""
+msgstr "Remover campo dinâmico %1$s"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:631
 msgid "Field has been successfully moved"
-msgstr ""
+msgstr "O campo foi movido com sucesso"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:636
 msgid "An error occurred moving field :("
-msgstr ""
+msgstr "Ocorreu um erro ao mover o campo :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:146
 msgid "Subscription"
@@ -326,7 +328,7 @@ msgstr "Subscrição"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:251
 msgid "No member #%id."
-msgstr ""
+msgstr "Nenhum membro #%id."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:270
 #: ../lib/Galette/Controllers/Crud/MembersController.php:974
@@ -341,7 +343,7 @@ msgstr "Lista de membros"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:351
 #: ../lib/Galette/Core/Galette.php:518
 msgid "Trombinoscope"
-msgstr ""
+msgstr "Trombinoscope"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:453
 msgid "Members management"
@@ -357,42 +359,42 @@ msgstr "Pesquisa avançada"
 #: ../lib/Galette/Controllers/PdfController.php:132
 #: ../lib/Galette/Controllers/PdfController.php:213
 msgid "No member was selected, please check at least one name."
-msgstr ""
+msgstr "Nenhum membro foi selecionado, marque pelo menos um nome."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1097
 #, php-format
 msgid "Mass change %count members"
-msgstr ""
+msgstr "Mudança em massa de %count membros"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1128
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1225
 msgid "Mass changes has not been confirmed!"
-msgstr ""
+msgstr "Mudanças em massa não foram confirmadas!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1194
 #, php-format
 msgid "Review mass change %count members"
-msgstr ""
+msgstr "Revisar alteração em massa de %count membros"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1278
 msgid "Nothing to do!"
-msgstr ""
+msgstr "Não há nada para fazer!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1305
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1542
 msgid "An error occurred while storing the member."
-msgstr ""
+msgstr "Ocorreu um erro ao armazenar o membro."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1317
 msgid "Something went wrong during mass edition!"
-msgstr ""
+msgstr "Algo deu errado durante a edição em massa!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1324
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "O membro %1$s foi alterado com sucesso!"
+msgstr[1] "Os membros %1$s foram alterados com sucesso!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1393
 msgid "Invalid captcha"
@@ -416,11 +418,11 @@ msgstr "A conta do membro foi modificada."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1523
 msgid "An error occurred adding member to its groups."
-msgstr ""
+msgstr "Ocorreu um erro ao adicionar membro aos seus grupos."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1537
 msgid "An error occurred adding member to its groups as manager."
-msgstr ""
+msgstr "Ocorreu um erro ao adicionar um membro aos seus grupos como gerente."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1560
 #: ../lib/Galette/Controllers/GaletteController.php:279
@@ -449,27 +451,27 @@ msgstr "Editar título"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:186
 msgid "Missing required title's short or long form!"
-msgstr ""
+msgstr "O formato curto ou longo do título obrigatório está faltando!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:195
 #, php-format
 msgid "Title '%s' has not been added!"
-msgstr ""
+msgstr "O título '%s' não foi adicionado!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:201
 #, php-format
 msgid "Title '%s' has not been modified!"
-msgstr ""
+msgstr "O título '%s' não foi modificado!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:211
 #, php-format
 msgid "Title '%s' has been successfully added."
-msgstr ""
+msgstr "O título '%s' foi adicionado com sucesso."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:217
 #, php-format
 msgid "Title '%s' has been successfully modified."
-msgstr ""
+msgstr "O título '%s' foi modificado com sucesso."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:282
 #, php-format
@@ -487,23 +489,23 @@ msgstr "Editar estado"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:217
 msgid "Missing required status name!"
-msgstr ""
+msgstr "Nome de status obrigatório ausente!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:223
 msgid "Status has not been added :("
-msgstr ""
+msgstr "Status não foi adicionado :("
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:223
 msgid "Status #%id has not been updated"
-msgstr ""
+msgstr "O status #%id não foi atualizado"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:229
 msgid "Status has been successfully added!"
-msgstr ""
+msgstr "Status adicionado com sucesso!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:229
 msgid "Status #%id has been successfully updated!"
-msgstr ""
+msgstr "O status #%id foi atualizado com sucesso!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:307
 msgid "Remove status '%label'"
@@ -528,37 +530,37 @@ msgstr "Doação"
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:290
 #, php-format
 msgid "Mass add contribution on %count members"
-msgstr ""
+msgstr "Adicionar contribuição em massa em %count membros"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:522
 msgid "Contributions management"
-msgstr ""
+msgstr "Gerenciamento de Contribuições"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:522
 msgid "Transactions management"
-msgstr ""
+msgstr "Gerenciamento de Transações"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:675
 msgid "- Unknown contribution type!"
-msgstr ""
+msgstr "- Tipo de contribuição desconhecido!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:733
 msgid "No contribution was selected, please check at least one."
-msgstr ""
+msgstr "Nenhuma contribuição foi selecionada, marque pelo menos uma."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:769
 #: ../lib/Galette/Controllers/PdfController.php:426
 #: ../lib/Galette/Controllers/PdfController.php:695
 msgid "Unable to load contribution #%id!"
-msgstr ""
+msgstr "Não foi possível carregar a contribuição #%id!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:867
 msgid "Contribution has been successfully stored"
-msgstr ""
+msgstr "A contribuição foi armazenada com sucesso"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:871
 msgid "An error occurred while storing the contribution."
-msgstr ""
+msgstr "Ocorreu um erro ao armazenar a contribuição."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:983
 #, php-format
@@ -645,7 +647,7 @@ msgstr "Pesquisa guardada carregada"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:348
 msgid "An SQL error has occurred while loading search."
-msgstr ""
+msgstr "Ocorreu um erro de SQL ao carregar a pesquisa."
 
 #: ../lib/Galette/Controllers/GaletteController.php:89
 #: ../../tempcache/elements/footer.html.twig:114
@@ -684,6 +686,8 @@ msgid ""
 "An SQL error has occurred while storing preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
+"Ocorreu um erro de SQL ao armazenar preferências. Tente novamente e entre em "
+"contato com o administrador se o problema persistir."
 
 #: ../lib/Galette/Controllers/GaletteController.php:249
 msgid "Preferences has been saved."
@@ -759,15 +763,15 @@ msgstr "Lembretes"
 
 #: ../lib/Galette/Controllers/GaletteController.php:672
 msgid "No reminder to send for now."
-msgstr ""
+msgstr "Nenhum lembrete para enviar por enquanto."
 
 #: ../lib/Galette/Controllers/GaletteController.php:709
 msgid "There are no member to proceed."
-msgstr ""
+msgstr "Não há membros para prosseguir."
 
 #: ../lib/Galette/Controllers/GaletteController.php:716
 msgid "Reminder has not been sent:"
-msgstr ""
+msgstr "O lembrete não foi enviado:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:723
 msgid "Sent reminders:"
@@ -790,7 +794,7 @@ msgstr "- AVISO -"
 
 #: ../lib/Galette/Controllers/AjaxController.php:126
 msgid "Required argument not present!"
-msgstr ""
+msgstr "Argumento obrigatório não presente!"
 
 #: ../lib/Galette/Controllers/AjaxController.php:170
 msgid "Member photo has been changed."
@@ -826,23 +830,23 @@ msgstr "Não é possível obter a lista de membros."
 
 #: ../lib/Galette/Controllers/PdfController.php:323
 msgid "Attendance sheet configuration"
-msgstr ""
+msgstr "Configuração da planilha de presença"
 
 #: ../lib/Galette/Controllers/PdfController.php:359
 #: ../lib/Galette/Controllers/PdfController.php:378
 msgid "No member selected to generate attendance sheet"
-msgstr ""
+msgstr "Nenhum membro selecionado para gerar planilha de presença"
 
 #: ../lib/Galette/Controllers/PdfController.php:386
 #: ../lib/Galette/Core/Galette.php:956
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:122
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:105
 msgid "Attendance sheet"
-msgstr ""
+msgstr "Planilha de presença"
 
 #: ../lib/Galette/Controllers/PdfController.php:469
 msgid "Unable to get groups list."
-msgstr ""
+msgstr "Não é possível obter a lista de grupos."
 
 #: ../lib/Galette/Controllers/PdfController.php:527
 #: ../lib/Galette/Core/Install.php:1190 ../lib/Galette/Core/Galette.php:426
@@ -914,16 +918,16 @@ msgstr "Terminar sessão"
 #: ../lib/Galette/Controllers/AuthController.php:232
 #, php-format
 msgid "Impersonating as %login"
-msgstr ""
+msgstr "Logando como %login"
 
 #: ../lib/Galette/Controllers/AuthController.php:244
 msgid "Unable to impersonate as %id"
-msgstr ""
+msgstr "Não é possível logar como %id"
 
 #: ../lib/Galette/Controllers/AuthController.php:270
 #: ../lib/Galette/Controllers/AuthController.php:275
 msgid "Impersonating ended"
-msgstr ""
+msgstr "A representação foi encerrada"
 
 #: ../lib/Galette/Controllers/AuthController.php:300
 #: ../lib/Galette/Controllers/AuthController.php:501
@@ -934,26 +938,30 @@ msgstr "Recuperação de palavra-passe"
 #: ../../tempcache/pages/mailing_form.html.twig:59
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
+"O e-mail enviado está desabilitado nas preferências. Pergunte ao "
+"administrador"
 
 #: ../lib/Galette/Controllers/AuthController.php:391
 #, php-format
 msgid "Email sent to '%s' for password recovery."
-msgstr ""
+msgstr "E-mail enviado para '%s' para recuperação de senha."
 
 #: ../lib/Galette/Controllers/AuthController.php:395
 msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
+"Um e-mail foi enviado para seu endereço.<br>Verifique sua caixa de entrada e "
+"siga as instruções."
 
 #: ../lib/Galette/Controllers/AuthController.php:397
 msgid "An email has been sent to the member."
-msgstr ""
+msgstr "Um e-mail foi enviado ao membro."
 
 #: ../lib/Galette/Controllers/AuthController.php:408
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
-msgstr ""
+msgstr "Ocorreu um problema ao enviar a senha para a conta '%s'"
 
 #: ../lib/Galette/Controllers/AuthController.php:422
 #: ../lib/Galette/Events/MemberListener.php:194
@@ -961,16 +969,18 @@ msgstr ""
 msgid ""
 "An error occurred storing temporary password for %s. Please inform an admin."
 msgstr ""
+"Ocorreu um erro ao armazenar a senha temporária para %s. Por favor, informe "
+"para um administrador."
 
 #: ../lib/Galette/Controllers/AuthController.php:434
 #, php-format
 msgid "Your account (%s) do not contain any valid email address"
-msgstr ""
+msgstr "Sua conta (%s) não contém nenhum endereço de e-mail válido"
 
 #: ../lib/Galette/Controllers/AuthController.php:448
 #, php-format
 msgid "Mails address %s does not exist"
-msgstr ""
+msgstr "O endereço de e-mail %s não existe"
 
 #: ../lib/Galette/Controllers/AuthController.php:454
 #, php-format
@@ -981,6 +991,8 @@ msgstr "A credencial %s não existe"
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
+"Este link não é mais válido. Você deve pedir para recuperar sua senha "
+"novamente."
 
 #: ../lib/Galette/Controllers/AuthController.php:531
 #: ../webroot/installer.php:122 ../webroot/installer.php:167
@@ -1019,38 +1031,41 @@ msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
+"Alguns módulos PHP estão faltando. Por favor, instale-os ou entre em contato "
+"com seu suporte.<br>Mais informações sobre os módulos necessários podem ser "
+"encontradas na documentação."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:94
 msgid "Texts has been successfully reinitialized."
-msgstr ""
+msgstr "Os textos foram reinicializados com sucesso."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:96
 msgid "An error occurred reinitializing texts :("
-msgstr ""
+msgstr "Ocorreu um erro ao reinicializar os textos :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:105
 msgid "Fields configuration has been successfully reinitialized."
-msgstr ""
+msgstr "A configuração dos campos foi reinicializada com sucesso."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:107
 msgid "An error occurred reinitializing fields configuration :("
-msgstr ""
+msgstr "Ocorreu um erro ao reinicializar a configuração dos campos :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:116
 msgid "PDF models has been successfully reinitialized."
-msgstr ""
+msgstr "Os modelos PDF foram reinicializados com sucesso."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:118
 msgid "An error occurred reinitializing PDF models :("
-msgstr ""
+msgstr "Ocorreu um erro ao reinicializar os modelos PDF :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:131
 msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr ""
+msgstr "Logins e senhas foram preenchidos com sucesso (%i processados)."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:134
 msgid "An error occurred filling empty logins and passwords :("
-msgstr ""
+msgstr "Ocorreu um erro ao preencher logins e senhas vazios :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:91
 #: ../lib/Galette/Core/Galette.php:302 ../install/steps/check.php:55
@@ -1077,41 +1092,43 @@ msgstr "Plug-ins"
 
 #: ../lib/Galette/Controllers/PluginsController.php:94
 msgid "Plugin %name has been enabled"
-msgstr ""
+msgstr "O plugin %name foi habilitado"
 
 #: ../lib/Galette/Controllers/PluginsController.php:112
 msgid "Plugin %name has been disabled"
-msgstr ""
+msgstr "O plugin %name foi desabilitado"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:56
 #: ../lib/Galette/Core/Galette.php:390
 #: ../../tempcache/pages/configuration_payment_types.html.twig:284
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:252
 msgid "Translate labels"
-msgstr ""
+msgstr "Traduzir rótulos"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:99
 #, php-format
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit above form to create it."
 msgstr ""
+"Nenhuma tradução para '%s'!<br>Por favor, preencha e envie o formulário "
+"acima para criá-lo."
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:182
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:207
 msgid "An error occurred saving label `%label` for language `%lang`"
-msgstr ""
+msgstr "Ocorreu um erro ao salvar o rótulo `%label` para o idioma `%lang`"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:223
 msgid "Labels has been sucessfully translated!"
-msgstr ""
+msgstr "Os rótulos foram traduzidos com sucesso!"
 
 #: ../lib/Galette/Controllers/CsvController.php:109
 msgid "CVS database Export"
-msgstr ""
+msgstr "Exportação de banco de dados CVS"
 
 #: ../lib/Galette/Controllers/CsvController.php:162
 msgid "Table %table is empty, and has not been exported."
-msgstr ""
+msgstr "A tabela %table está vazia e não foi exportada."
 
 #: ../lib/Galette/Controllers/CsvController.php:180
 #, php-format
@@ -1119,86 +1136,90 @@ msgid ""
 "Export file could not be write on disk for '%export'. Make sure web server "
 "can write in the exports directory."
 msgstr ""
+"O arquivo de exportação não pôde ser gravado no disco para '%export'. "
+"Certifique-se de que o servidor web pode gravar no diretório exports."
 
 #: ../lib/Galette/Controllers/CsvController.php:190
 #, php-format
 msgid "An error occurred running parameted export '%export'."
-msgstr ""
+msgstr "Ocorreu um erro ao executar a exportação parametrizada '%export'."
 
 #: ../lib/Galette/Controllers/CsvController.php:200
 #, php-format
 msgid ""
 "An error occurred running parameted export '%export'. Please check the logs."
 msgstr ""
+"Ocorreu um erro ao executar a exportação parametrizada '%export'. Verifique "
+"os logs."
 
 #: ../lib/Galette/Controllers/CsvController.php:248
 msgid "CSV members import"
-msgstr ""
+msgstr "Importação de membros CSV"
 
 #: ../lib/Galette/Controllers/CsvController.php:300
 msgid "An error occurred importing the file :("
-msgstr ""
+msgstr "Ocorreu um erro ao importar o arquivo :("
 
 #: ../lib/Galette/Controllers/CsvController.php:312
 msgid "File '%filename%' has been successfully imported :)"
-msgstr ""
+msgstr "O arquivo '%filename%' foi importado com sucesso :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:345
 msgid "Your file has been successfully uploaded!"
-msgstr ""
+msgstr "Seu arquivo foi carregado com sucesso!"
 
 #: ../lib/Galette/Controllers/CsvController.php:364
 msgid "No files has been seleted for upload!"
-msgstr ""
+msgstr "Nenhum arquivo foi selecionado para upload!"
 
 #: ../lib/Galette/Controllers/CsvController.php:370
 msgid "No files has been uploaded!"
-msgstr ""
+msgstr "Nenhum arquivo foi enviado!"
 
 #: ../lib/Galette/Controllers/CsvController.php:439
 #, php-format
 msgid "Remove %1$s file %2$s"
-msgstr ""
+msgstr "Remover %1$s arquivo %2$s"
 
 #: ../lib/Galette/Controllers/CsvController.php:491
 #, php-format
 msgid "'%export' file has been removed from disk."
-msgstr ""
+msgstr "O arquivo '%export' foi removido do disco."
 
 #: ../lib/Galette/Controllers/CsvController.php:501
 #, php-format
 msgid "Cannot remove '%export' from disk :/"
-msgstr ""
+msgstr "Não é possível remover '%export' do disco :/"
 
 #: ../lib/Galette/Controllers/CsvController.php:577
 msgid "CSV import model"
-msgstr ""
+msgstr "Modelo de importação CSV"
 
 #: ../lib/Galette/Controllers/CsvController.php:618
 msgid "galette_import_model.csv"
-msgstr ""
+msgstr "galette_import_model.csv"
 
 #: ../lib/Galette/Controllers/CsvController.php:654
 msgid "Import model has been successfully stored :)"
-msgstr ""
+msgstr "O modelo de importação foi armazenado com sucesso :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:659
 msgid "Import model has not been stored :("
-msgstr ""
+msgstr "O modelo de importação não foi armazenado :("
 
 #: ../lib/Galette/Controllers/TextController.php:70
 msgid "Automatic emails texts edition"
-msgstr ""
+msgstr "Edição automática de textos de e-mails"
 
 #: ../lib/Galette/Controllers/TextController.php:140
 #, php-format
 msgid "Email: '%s' has not been modified!"
-msgstr ""
+msgstr "E-mail: '%s' não foi modificado!"
 
 #: ../lib/Galette/Controllers/TextController.php:149
 #, php-format
 msgid "Email: '%s' has been successfully modified."
-msgstr ""
+msgstr "E-mail: '%s' foi modificado com sucesso."
 
 #: ../lib/Galette/Core/History.php:230 ../lib/Galette/Core/History.php:319
 #: ../lib/Galette/Features/Replacements.php:632
@@ -1208,7 +1229,7 @@ msgstr ""
 #: ../../tempcache/pages/transaction_form.html.twig:159
 #: ../../tempcache/pages/preferences.html.twig:2421
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: ../lib/Galette/Core/Install.php:104 ../webroot/installer.php:274
 msgid "Checks"
@@ -1217,7 +1238,7 @@ msgstr "Verificações"
 #: ../lib/Galette/Core/Install.php:107 ../webroot/installer.php:280
 #: ../../tempcache/modals/plugin_initdb.html.twig:394
 msgid "Installation mode"
-msgstr ""
+msgstr "Modo de instalação"
 
 #: ../lib/Galette/Core/Install.php:110 ../webroot/installer.php:286
 msgid "Database"
@@ -1225,7 +1246,7 @@ msgstr "Base de dados"
 
 #: ../lib/Galette/Core/Install.php:113 ../webroot/installer.php:292
 msgid "Database access and permissions"
-msgstr ""
+msgstr "Acesso e permissões ao banco de dados"
 
 #: ../lib/Galette/Core/Install.php:116
 msgid "Previous version selection"
@@ -1233,15 +1254,15 @@ msgstr "Seleção da versão anterior"
 
 #: ../lib/Galette/Core/Install.php:119
 msgid "Datapase upgrade"
-msgstr ""
+msgstr "Atualização do banco de dados"
 
 #: ../lib/Galette/Core/Install.php:122
 msgid "Tables Creation"
-msgstr ""
+msgstr "Criação de tabelas"
 
 #: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:327
 msgid "Admin parameters"
-msgstr ""
+msgstr "Parâmetros de administração"
 
 #: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:336
 #: ../../tempcache/pages/desktop.html.twig:87
@@ -1250,80 +1271,80 @@ msgstr "Telemetria"
 
 #: ../lib/Galette/Core/Install.php:131 ../webroot/installer.php:342
 msgid "Galette initialization"
-msgstr ""
+msgstr "Inicialização do Galette"
 
 #: ../lib/Galette/Core/Install.php:134 ../webroot/installer.php:348
 #: ../../tempcache/modals/plugin_initdb.html.twig:459
 msgid "End!"
-msgstr ""
+msgstr "Fim!"
 
 #: ../lib/Galette/Core/Install.php:150 ../lib/Galette/Core/CheckModules.php:131
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: ../lib/Galette/Core/Install.php:150 ../lib/Galette/Core/CheckModules.php:123
 msgid "Ko"
-msgstr ""
+msgstr "Ko"
 
 #: ../lib/Galette/Core/Install.php:311
 msgid "Database type unknown"
-msgstr ""
+msgstr "Tipo de banco de dados desconhecido"
 
 #: ../lib/Galette/Core/Install.php:673
 msgid "%version script has been successfully executed :)"
-msgstr ""
+msgstr "O script %version foi executado com sucesso :)"
 
 #: ../lib/Galette/Core/Install.php:685
 msgid "Unable to run %version update script :("
-msgstr ""
+msgstr "Não é possível executar o script de atualização %version :("
 
 #: ../lib/Galette/Core/Install.php:1055
 msgid "Write configuration file"
-msgstr ""
+msgstr "Escrever arquivo de configuração"
 
 #: ../lib/Galette/Core/Install.php:1084
 msgid "Config file already exists and is up to date"
-msgstr ""
+msgstr "O arquivo de configuração já existe e está atualizado"
 
 #: ../lib/Galette/Core/Install.php:1113
 msgid "Unable to create configuration file (%path)"
-msgstr ""
+msgstr "Não foi possível criar o arquivo de configuração (%path)"
 
 #: ../lib/Galette/Core/Install.php:1174
 #: ../../tempcache/pages/advanced_search.html.twig:495
 #: ../../tempcache/pages/advanced_search.html.twig:500
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: ../lib/Galette/Core/Install.php:1178
 msgid "Fields config and categories"
-msgstr ""
+msgstr "Configuração de campos e categorias"
 
 #: ../lib/Galette/Core/Install.php:1182 ../lib/Galette/Core/Install.php:1204
 msgid "Mails texts"
-msgstr ""
+msgstr "Textos de e-mails"
 
 #: ../lib/Galette/Core/Install.php:1186 ../lib/Galette/Core/Galette.php:418
 msgid "Titles"
-msgstr ""
+msgstr "Títulos"
 
 #: ../lib/Galette/Core/Install.php:1196
 msgid "Update preferences"
-msgstr ""
+msgstr "Atualizar preferências"
 
 #: ../lib/Galette/Core/Install.php:1200
 msgid "Update models"
-msgstr ""
+msgstr "Atualizar modelos"
 
 #: ../lib/Galette/Core/Gaptcha.php:78
 #, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr ""
+msgstr "Quanto é %1$s mais %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:79
 #, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr ""
+msgstr "Quanto %1$s é adicionado a %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:80
 #, php-format
@@ -1331,126 +1352,127 @@ msgid ""
 "I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
 "have?"
 msgstr ""
+"Eu tenho %1$s Galettes, um amigo me deu mais %2$s. Quantas Galettes eu tenho?"
 
 #: ../lib/Galette/Core/Gaptcha.php:83
 #, php-format
 msgid "How much is %1$s minus %2$s?"
-msgstr ""
+msgstr "Quanto é %1$s menos %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:84
 #, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr ""
+msgstr "Quanto é %1$s quando retirámos %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:85
 #, php-format
 msgid "How much is %2$s retired to %1$s?"
-msgstr ""
+msgstr "Quanto de %2$s foi subtraído de %1$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:86
 #, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
-msgstr ""
+msgstr "Eu tenho %1$s Galettes, eu dou %2$s delas. Quantas Galettes eu tenho?"
 
 #: ../lib/Galette/Core/Pagination.php:246
 msgid "First page"
-msgstr ""
+msgstr "Primeira página"
 
 #: ../lib/Galette/Core/Pagination.php:252
 msgid "Previous page (%i)"
-msgstr ""
+msgstr "Página anterior (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:264
 msgid "Current page (%i)"
-msgstr ""
+msgstr "Página atual (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:272
 msgid "Page %i"
-msgstr ""
+msgstr "Página %i"
 
 #: ../lib/Galette/Core/Pagination.php:280
 msgid "Next page (%i)"
-msgstr ""
+msgstr "Próxima página (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:286
 msgid "Last page (%i)"
-msgstr ""
+msgstr "Última página (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:301
 #: ../../tempcache/elements/list.html.twig:273
 msgid "All"
-msgstr ""
+msgstr "Todos"
 
 #: ../lib/Galette/Core/Authentication.php:286
 #, php-format
 msgid "Logged in as:<br/>%login"
-msgstr ""
+msgstr "Conectado como:<br>%login"
 
 #: ../lib/Galette/Core/MailingHistory.php:481
 msgid "Delete mailing entries"
-msgstr ""
+msgstr "Excluir entradas de malling"
 
 #: ../lib/Galette/Core/Galette.php:124
 msgid "My Account"
-msgstr ""
+msgstr "Minha Conta"
 
 #: ../lib/Galette/Core/Galette.php:128 ../lib/Galette/Core/Galette.php:698
 msgid "My contributions"
-msgstr ""
+msgstr "Minhas contribuições"
 
 #: ../lib/Galette/Core/Galette.php:129 ../lib/Galette/Core/Galette.php:699
 msgid "View and filter all my contributions"
-msgstr ""
+msgstr "Ver e filtrar todas as minhas contribuições"
 
 #: ../lib/Galette/Core/Galette.php:136
 msgid "My scheduled payments"
-msgstr ""
+msgstr "Meus pagamentos agendados"
 
 #: ../lib/Galette/Core/Galette.php:137
 msgid "View and filter all my scheduled payments"
-msgstr ""
+msgstr "Visualizar e filtrar todos os meus pagamentos agendados"
 
 #: ../lib/Galette/Core/Galette.php:143 ../lib/Galette/Core/Galette.php:707
 msgid "My transactions"
-msgstr ""
+msgstr "Minhas transações"
 
 #: ../lib/Galette/Core/Galette.php:144 ../lib/Galette/Core/Galette.php:708
 msgid "View and filter all my transactions"
-msgstr ""
+msgstr "Visualizar e filtrar todas as minhas transações"
 
 #: ../lib/Galette/Core/Galette.php:151 ../lib/Galette/Core/Galette.php:690
 msgid "My information"
-msgstr ""
+msgstr "Minhas informações"
 
 #: ../lib/Galette/Core/Galette.php:152 ../lib/Galette/Core/Galette.php:691
 msgid "View my member card"
-msgstr ""
+msgstr "Ver meu cartão de membro"
 
 #: ../lib/Galette/Core/Galette.php:163
 msgid "Add a child member"
-msgstr ""
+msgstr "Adicionar um membro filho"
 
 #: ../lib/Galette/Core/Galette.php:164
 msgid "Add new child member in database"
-msgstr ""
+msgstr "Adicionar novo membro filho no banco de dados"
 
 #: ../lib/Galette/Core/Galette.php:174 ../lib/Galette/Core/Galette.php:580
 #: ../lib/Galette/DynamicFields/DynamicField.php:546
 #: ../../tempcache/elements/group.html.twig:96
 msgid "Members"
-msgstr ""
+msgstr "Membros"
 
 #: ../lib/Galette/Core/Galette.php:182
 msgid "List of members"
-msgstr ""
+msgstr "Lista dos membros"
 
 #: ../lib/Galette/Core/Galette.php:183 ../lib/Galette/Core/Galette.php:581
 msgid "View, search into and filter member's list"
-msgstr ""
+msgstr "Visualizar, pesquisar e filtrar a lista de membros"
 
 #: ../lib/Galette/Core/Galette.php:191
 msgid "Perform advanced search into members list"
-msgstr ""
+msgstr "Realizar pesquisa avançada na lista de membros"
 
 #: ../lib/Galette/Core/Galette.php:211
 #: ../../tempcache/pages/members_list.html.twig:104
