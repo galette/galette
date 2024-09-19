@@ -64,6 +64,7 @@ class PdfMembersCards extends Pdf
     private float $wlogo;
     private float $hlogo;
     private string $logofile;
+    private int $nb_car;
 
     /**
      * Main constructor, set creator and author
@@ -155,8 +156,8 @@ class PdfMembersCards extends Pdf
             }
             $this->wlogo = round($this->hlogo * $ratio);
         } else {
-            if ($print_logo->getWidth() > 0.2 * $this->he * 3.78) {
-                $this->wlogo = round(0.2 * $this->he);
+            if ($print_logo->getWidth() > 0.5 * $this->he * 3.78) {
+                $this->wlogo = round(0.5 * $this->he);
             } else {
                 // Convert original pixels size to millimeters
                 $this->wlogo = $print_logo->getWidth() / 3.78;
@@ -308,13 +309,17 @@ class PdfMembersCards extends Pdf
             $this->writeHTML('<strong>' . $email . '</strong>', false, false);
 
             // Lower colored strip with long text
+            $nb_car =  round($this->wi / iconv_strlen($this->preferences->pref_card_strip) * 4.1 );
+			if ( $nb_car > 12 ) {
+				$nb_car = 12 ;
+				}
             $this->SetFillColor($fcol['R'], $fcol['G'], $fcol['B']);
             $this->SetTextColor(
                 $this->tcol['R'],
                 $this->tcol['G'],
                 $this->tcol['B']
             );
-            $this->SetFont(self::FONT, 'B', 8);
+            $this->SetFont(self::FONT, 'B', $nb_car);
             $this->SetXY($x0, $y0 + round($this->wi / 3.5) * 1.3 + 2);
             $this->Cell(
                 $this->wi,
