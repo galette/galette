@@ -40,6 +40,10 @@ class PdfMembersCards extends Pdf
 {
     public const PAGE_WIDTH = 210;
     public const PAGE_HEIGHT = 297;
+    public const WIDTH = 75;
+    public const HEIGHT = 40;
+    public const COLS = 2;
+    public const ROWS = 6;
 
     /** @var array<string,float|int> */
     private array $tcol;
@@ -134,8 +138,8 @@ class PdfMembersCards extends Pdf
         $this->vspacing = $this->preferences->pref_card_vspace;
 
         //maximum size for visible text. May vary with fonts.
-        $this->max_text_size = self::getWidth() - (int)round($this->wi / 3.5) - 2;
-        $this->year_font_size = (int)round(self::getWidth() / 7);
+        $this->max_text_size = 80;
+        $this->year_font_size = 8;
 
         // Get fixed data from preferences
         $this->an_cot = $this->preferences->pref_card_year;
@@ -144,19 +148,19 @@ class PdfMembersCards extends Pdf
         $print_logo = new PrintLogo();
         $this->logofile = $print_logo->getPath();
 
-        // Set logo size to max 20% width  or max 25% height
+        // Set logo size to max width 30mm (113px) or max height 17mm (64px)
         $ratio = $print_logo->getWidth() / $print_logo->getHeight();
         if ($ratio < 1.71) {
-            if ($print_logo->getHeight() > 0.25 * $this->wi * 3.78) {
-                $this->hlogo = round(0.25 * $this->wi);
+            if ($print_logo->getHeight() > 64) {
+                $this->hlogo = 17;
             } else {
                 // Convert original pixels size to millimeters
                 $this->hlogo = $print_logo->getHeight() / 3.78;
             }
             $this->wlogo = round($this->hlogo * $ratio);
         } else {
-            if ($print_logo->getWidth() > 0.2 * $this->he * 3.78) {
-                $this->wlogo = round(0.2 * $this->he);
+            if ($print_logo->getWidth() > 113) {
+                $this->wlogo = 30;
             } else {
                 // Convert original pixels size to millimeters
                 $this->wlogo = $print_logo->getWidth() / 3.78;
@@ -230,15 +234,15 @@ class PdfMembersCards extends Pdf
 
             $nom_adh_ext = '';
             if ($this->preferences->pref_bool_display_title) {
-                $nom_adh_ext .= $member->stitle;
+                $nom_adh_ext .= $member->stitle . ' ';
             }
             $nom_adh_ext .= $member->sname;
             $photo = $member->picture;
             $photofile = $photo->getPath();
 
             // Photo 100x130 and logo
-            $this->Image($photofile, $x0 + 1, $y0 + 1, round($this->wi / 3.5));
-            $this->Image($this->logofile, $xl - 1, $y0 + 1, round($this->wlogo));
+            $this->Image($photofile, $x0, $y0, 25);
+            $this->Image($this->logofile, $xl, $y0, round($this->wlogo));
 
             // Color=#8C8C8C: Shadow of the year
             $this->SetTextColor(140);
@@ -250,14 +254,15 @@ class PdfMembersCards extends Pdf
                 $an_cot = $member->due_date;
             }
 
-            $xan_cot = $x0 + $this->wi / 2 - $this->GetStringWidth(
+            $xan_cot = $x0 + $this->wi - $this->GetStringWidth(
                 $an_cot,
                 self::FONT,
                 'B',
                 $this->year_font_size
-            ) / 2 ;
-            $this->SetXY($xan_cot, $y0 + 1);
+            ) - 0.2;
+            $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
             $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
+
             // Colored Text (Big label, id, year)
             $this->SetTextColor($fcol['R'], $fcol['G'], $fcol['B']);
 
@@ -265,46 +270,47 @@ class PdfMembersCards extends Pdf
 
             if (!empty($this->preferences->pref_show_id) || !empty($member->number)) {
                 $member_id = (!empty($member->number)) ? $member->number : $member->id;
-                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth(_T("Member") . ' n° : ' . $member_id, self::FONT, 'B', 8) / 2;
-                $this->SetXY($xid, $y0 + 8);
-                $this->writeHTML('<strong>' . _T("Member") . ' n° : ' . $member_id . '  </strong>', false, false);
+                $xid = $x0 + $this->wi - $this->GetStringWidth($member_id, self::FONT, 'B', 8) - 0.2;
+                $this->SetXY($xid, $y0 + 28);
+                $this->writeHTML('<strong>' . $member_id . '</strong>', false, false);
             }
             $this->SetFontSize($this->year_font_size);
-            $xan_cot = $xan_cot - 0.1;
-            $this->SetXY($xan_cot, $y0 + 1 - 0.1);
+            $xan_cot = $xan_cot - 0.3;
+            $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
             $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
+            $y_an_cot = $this->getY();
+
+            $x_gap = 27;
 
             // Abbrev: Adapt font size to text length
             $this->fixSize(
                 $this->abrev,
-                $this->max_text_size,
+                $this->max_text_size - ($x_gap + 5 + (int)$this->wlogo),
                 12,
                 'B'
             );
-            $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->abrev, self::FONT, 'B', 12) / 2;
-            $this->SetXY($xid, $y0 + 12);
+            $this->SetXY($x0 + $x_gap, $y0 + 12);
             $this->writeHTML('<strong>' . $this->abrev . '</strong>', true, false);
 
             // Name: Adapt font size to text length
             $this->SetTextColor(0);
             $this->fixSize(
                 $nom_adh_ext,
-                $this->max_text_size,
+                $this->max_text_size - ($x_gap + 5),
                 8,
                 'B'
             );
-            $this->SetXY($x0 + round($this->wi / 3.5) + 2, $y0 + $this->hlogo + 3);
-            //$this->setX($x0 + 27);
+            $this->SetXY($x0 + $x_gap, $y_an_cot + 4);
             $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', true, false);
 
             // Email (adapt too)
             $this->fixSize(
                 $email,
-                $this->max_text_size,
+                $this->max_text_size - ($x_gap + 5),
                 6,
                 'B'
             );
-            $this->setX($x0 + round($this->wi / 3.5) + 2);
+            $this->setX($x0 + $x_gap);
             $this->writeHTML('<strong>' . $email . '</strong>', false, false);
 
             // Lower colored strip with long text
@@ -314,16 +320,18 @@ class PdfMembersCards extends Pdf
                 $this->tcol['G'],
                 $this->tcol['B']
             );
-            $this->SetFont(self::FONT, 'B', 8);
-            $this->SetXY($x0, $y0 + round($this->wi / 3.5) * 1.3 + 2);
+            $this->SetFont(self::FONT, 'B', 6);
+            $this->SetXY($x0, $y0 + 33);
             $this->Cell(
                 $this->wi,
-                ($this->he - (round($this->wi / 3.5) * 1.3 + 2)),
+                7,
                 $this->preferences->pref_card_strip,
                 0,
                 0,
                 'C',
-                true
+                true,
+                '',
+                2
             );
 
             // Draw a gray frame around the card
@@ -340,8 +348,10 @@ class PdfMembersCards extends Pdf
     public static function getWidth(): int
     {
         global $preferences;
-
-        return $preferences->pref_card_hsize ;
+        if (defined('GALETTE_CARD_WIDTH')) {
+            return GALETTE_CARD_WIDTH;
+        }
+        return $preferences->pref_card_hsize;
     }
 
     /**
@@ -352,8 +362,10 @@ class PdfMembersCards extends Pdf
     public static function getHeight(): int
     {
         global $preferences;
-
-        return $preferences->pref_card_vsize ;
+        if (defined('GALETTE_CARD_HEIGHT')) {
+            return GALETTE_CARD_HEIGHT;
+        }
+        return $preferences->pref_card_vsize;
     }
 
     /**
@@ -363,20 +375,7 @@ class PdfMembersCards extends Pdf
      */
     public static function getCols(): int
     {
-        global $preferences;
-
-        $margins = $preferences->pref_card_marges_h * 2;
-
-        $nbcols = (int)round(
-            ((self::PAGE_WIDTH - $margins) / $preferences->pref_card_hsize),
-            0,
-            PHP_ROUND_HALF_DOWN
-        );
-        if ((($nbcols - 1) * $preferences->pref_card_hspace + $margins + $preferences->pref_card_hsize *  $nbcols) > self::PAGE_WIDTH) {
-            --$nbcols;
-        }
-
-        return $nbcols;
+        return defined('GALETTE_CARD_COLS') ? GALETTE_CARD_COLS : self::COLS;
     }
 
     /**
@@ -386,19 +385,6 @@ class PdfMembersCards extends Pdf
      */
     public static function getRows(): int
     {
-        global $preferences;
-
-        $margins = $preferences->pref_card_marges_v * 2;
-
-        $nbrows = (int)round(
-            ((self::PAGE_HEIGHT - $margins) / $preferences->pref_card_vsize),
-            0,
-            PHP_ROUND_HALF_DOWN
-        );
-        if ((($nbrows - 1) * $preferences->pref_card_vspace + $margins + $preferences->pref_card_vsize *  $nbrows) > self::PAGE_HEIGHT) {
-            --$nbrows;
-        }
-
-        return $nbrows;
+        return defined('GALETTE_CARD_ROWS') ? GALETTE_CARD_ROWS : self::ROWS;
     }
 }
