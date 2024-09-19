@@ -162,8 +162,6 @@ class ScheduledPayment
         $this->contribution = new Contribution($this->zdb, $login, $this->id_contribution);
         $this->id_paymenttype = (int)$rs->id_paymenttype;
         $this->payment_type = new PaymentType($this->zdb, $this->id_paymenttype);
-        $this->id_paymenttype = $rs->id_paymenttype;
-        $this->payment_type = new PaymentType($this->zdb, $this->id_paymenttype);
         $this->creation_date = $rs->creation_date;
         $this->scheduled_date = $rs->scheduled_date;
         $this->amount = (float)$rs->amount;
