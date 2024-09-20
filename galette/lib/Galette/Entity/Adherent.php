@@ -135,25 +135,36 @@ class Adherent
     #[ORM\Id]
     #[ORM\Column(name: 'id_adh', type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    //FIXME: does not works :/
+    //#[ORM\SequenceGenerator(sequenceName: 'galette_adherents_id_seq', initialValue: 1)]
     private ?int $id;
     //Identity
-    #[ORM\Column(name: 'titre_adh', type: 'integer', options: ['unsigned' => true])]
-    private Title|string|null $title = null; //@phpstan-ignore-line
+    #[ORM\ManyToOne(targetEntity: Title::class)]
+    #[ORM\JoinColumn(
+        name: 'titre_adh',
+        referencedColumnName: Title::PK,
+        nullable: true,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
+    private Title|string|null $title = null;
     #[ORM\Column(name: 'societe_adh', type: 'string', length: 200, nullable: true)]
     private ?string $company_name;
-    #[ORM\Column(name: 'nom_adh', type: 'string', length: 50)]
+    #[ORM\Column(name: 'nom_adh', type: 'string', length: 50, options: ['default' => ''])]
     private ?string $name;
-    #[ORM\Column(name: 'prenom_adh', type: 'string', length: 50)]
+    #[ORM\Column(name: 'prenom_adh', type: 'string', length: 50, options: ['default' => ''])]
     private ?string $surname;
-    #[ORM\Column(name: 'pseudo_adh', type: 'string', length: 20)]
+    #[ORM\Column(name: 'pseudo_adh', type: 'string', length: 20, options: ['default' => ''])]
     private ?string $nickname;
     #[ORM\Column(name: 'ddn_adh', type: 'date')]
     private ?string $birthdate;
-    #[ORM\Column(name: 'lieu_naissance', type: 'string', length: 65536)]
+    #[ORM\Column(name: 'lieu_naissance', type: 'text')]
     private ?string $birth_place;
     #[ORM\Column(name: 'sexe_adh', type: 'smallint')]
     private int $gender;
-    #[ORM\Column(name: 'prof_adh', type: 'string', length: 150)]
+    #[ORM\Column(name: 'prof_adh', type: 'string', length: 150, nullable: true)]
     private ?string $job;
     #[ORM\Column(name: 'pref_lang', type: 'string', length: 20)]
     private string $language;

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Features\Replacements;
 use Throwable;
 use Analog\Analog;
@@ -42,6 +43,8 @@ use Galette\Core\History;
  * @property string $date
  */
 
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_reminders')]
 class Reminder
 {
     use Replacements;
@@ -49,12 +52,33 @@ class Reminder
     public const TABLE = 'reminders';
     public const PK = 'reminder_id';
 
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
+    //FIXME: does not works :/
+    //#[ORM\SequenceGenerator(sequenceName: 'galette_reminders_id_seq', initialValue: 1)]
     private int $id;
+    #[ORM\Column(name: 'reminder_type', type: 'integer')]
     private int $type;
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    #[ORM\JoinColumn(
+        name: 'reminder_dest',
+        referencedColumnName: Adherent::PK,
+        nullable: false,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
+    private int $dest_id;
     private Adherent $dest;
+    #[ORM\Column(name: 'reminder_date', type: 'datetime')]
     private string $date;
+    #[ORM\Column(name: 'reminder_success', type: 'boolean', options: ['default' => false])]
     private bool $success = false;
+    #[ORM\Column(name: 'reminder_nomail', type: 'boolean', options: ['default' => true])]
     private bool $nomail;
+    #[ORM\Column(name: 'reminder_comment', type: 'text')]
     private string $comment;
     private string $msg;
 
@@ -119,7 +143,8 @@ class Reminder
             $pk = self::PK;
             $this->id = (int)$rs->$pk;
             $this->type = (int)$rs->reminder_type;
-            $this->dest = new Adherent($zdb, (int)$rs->reminder_dest);
+            $this->dest_id = (int)$rs->reminder_dest;
+            $this->dest = new Adherent($zdb, $this->dest_id);
             $this->date = $rs->reminder_date;
             $this->success = $rs->reminder_success == 1;
             $this->nomail = $rs->reminder_nomail == 1;

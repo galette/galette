@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\Db;
 use ArrayObject;
 use Galette\Features\I18n;
@@ -42,6 +43,8 @@ use Throwable;
  * @property int $extension
  */
 
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_types_cotisation')]
 class ContributionsTypes
 {
     use I18n;
@@ -54,9 +57,17 @@ class ContributionsTypes
 
     private Db $zdb;
 
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
+    //FIXME: does not works :/
+    //#[ORM\SequenceGenerator(sequenceName: 'galette_types_cotisation_id_seq', initialValue: 1)]
     private int $id;
+    #[ORM\Column(name: 'libelle_type_cotis', type: 'string', length: 255, options: ['default' => ''])]
     private string $label;
+    #[ORM\Column(name: 'amount', type: 'decimal', precision: 15, scale: 2, nullable: true)]
     private ?float $amount; //@phpstan-ignore-line
+    #[ORM\Column(name: 'cotis_extension', type: 'integer', options: ['default' => 0])]
     private int $extension;
 
     public const ID_NOT_EXITS = -1;

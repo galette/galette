@@ -69,7 +69,7 @@ class ScheduledPayment
     private Contribution $contribution;
     #[ORM\ManyToOne(targetEntity: PaymentType::class)]
     #[ORM\JoinColumn(
-        name: PaymentType::PK,
+        name: 'id_paymenttype',
         referencedColumnName: PaymentType::PK,
         nullable: false,
         onDelete: 'restrict',
