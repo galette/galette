@@ -197,7 +197,7 @@ class ScheduledPayment
             ->setPaymentType((int)$data['id_paymenttype'])
             ->setCreationDate($data['creation_date'] ?? date('Y-m-d'))
             ->setScheduledDate($data['scheduled_date'])
-            ->setAmount((float)$data['amount'] ?? $this->contribution->amount)
+            ->setAmount(isset($data['amount']) ? (float)$data['amount'] : $this->contribution->amount)
             ->setPaid($data['paid'] ? boolval($data['paid']) : false)
             ->setComment($data['comment'] ?? null);
 
