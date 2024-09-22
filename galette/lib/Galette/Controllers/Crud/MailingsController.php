@@ -628,7 +628,7 @@ class MailingsController extends CrudController
     protected function doDelete(array $args, array $post): bool
     {
         $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences);
-        return $mailhist->removeEntries($args['id'], $this->history);
+        return $mailhist->removeEntries((int)$args['id'], $this->history);
     }
     // /CRUD - Delete
     // /CRUD
