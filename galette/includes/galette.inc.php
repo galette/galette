@@ -98,6 +98,10 @@ if (!defined('GALETTE_DEBUG')) {
     define('GALETTE_DEBUG', false);
 }
 
+if (!defined('GALETTE_ADAPTATIVE_CARDS')) {
+    define('GALETTE_ADAPTATIVE_CARDS', false);
+}
+
 if (!isset($_COOKIE['show_galette_dashboard'])) {
     setcookie(
         'show_galette_dashboard',

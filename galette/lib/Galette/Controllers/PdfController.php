@@ -38,6 +38,7 @@ use Galette\IO\PdfAttendanceSheet;
 use Galette\IO\PdfContribution;
 use Galette\IO\PdfGroups;
 use Galette\IO\PdfMembersCards;
+use Galette\IO\PdfMembersCardsAdaptative;
 use Galette\IO\PdfMembersLabels;
 use Galette\Repository\Members;
 use Galette\Repository\Groups;
@@ -169,7 +170,12 @@ class PdfController extends AbstractController
                 ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
-        $pdf = new PdfMembersCards($this->preferences);
+        $class = PdfMembersCards::class;
+        /** @phpstan-ignore-next-line */
+        if (GALETTE_ADAPTATIVE_CARDS === true) {
+            $class = PdfMembersCardsAdaptative::class;
+        }
+        $pdf = new $class($this->preferences);
         $pdf->drawCards($members);
 
         return $this->sendResponse($response, $pdf);
