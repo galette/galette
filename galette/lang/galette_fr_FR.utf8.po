@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-09-17 17:10+0200\n"
-"PO-Revision-Date: 2024-09-22 08:51+0000\n"
+"PO-Revision-Date: 2024-09-18 15:40+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -3442,7 +3442,7 @@ msgstr "Carte de crédit"
 
 #: ../lib/Galette/Entity/PaymentType.php:284
 msgid "Check"
-msgstr "Vérifications"
+msgstr "Chèque"
 
 #: ../lib/Galette/Entity/PaymentType.php:285
 msgid "Transfer"
