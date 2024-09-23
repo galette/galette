@@ -32,6 +32,5 @@ $this->register(
     [   //Permissions needed
         'plugdb_root'   => 'member',
         'plugdb_admin'  => 'staff'
-    ],
-    0.1,                      //DB version
+    ]
 );

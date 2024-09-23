@@ -20,18 +20,3 @@
  */
 
 declare(strict_types=1);
-
-$this->register(
-    'Galette Db Plugin',        //Name
-    'Test db plugin',           //Short description
-    'Johan Cwiklinski',         //Author
-    '1.0',                      //Version
-    GALETTE_COMPAT_VERSION,     //Galette compatible version
-    'plugdb',                   //routing name
-    '2015-01-30',               //release date
-    [   //Permissions needed
-        'plugdb_root'   => 'member',
-        'plugdb_admin'  => 'staff'
-    ],
-    0.1,                      //DB version
-);
