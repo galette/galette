@@ -814,6 +814,7 @@
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
+{% if constant('GALETTE_ADAPTATIVE_CARDS') is same as true %}
                     <div class="{% if required.pref_card_hsize is defined and required.pref_card_hsize == 1 %}required {% endif %}field">
                         <label for="pref_card_hsize">{{ _T("Card width from 70 to 95mm:") }}</label>
                         <div class="ui right labeled input">
@@ -828,6 +829,7 @@
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
+{% endif %}
                 </div>{# /column #}
             </div>{# /column grid #}
         </div>{# /tab segment #}

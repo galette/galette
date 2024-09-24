@@ -347,11 +347,10 @@ class PdfMembersCards extends Pdf
      */
     public static function getWidth(): int
     {
-        global $preferences;
         if (defined('GALETTE_CARD_WIDTH')) {
             return GALETTE_CARD_WIDTH;
         }
-        return $preferences->pref_card_hsize;
+        return self::WIDTH;
     }
 
     /**
@@ -361,11 +360,10 @@ class PdfMembersCards extends Pdf
      */
     public static function getHeight(): int
     {
-        global $preferences;
         if (defined('GALETTE_CARD_HEIGHT')) {
             return GALETTE_CARD_HEIGHT;
         }
-        return $preferences->pref_card_vsize;
+        return self::HEIGHT;
     }
 
     /**
