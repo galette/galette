@@ -224,11 +224,11 @@ abstract class AbstractController
             $filter_name = $args['prefix'] . '_' . $filter_name;
         }
 
-        $filter_name .= '_filter';
-
         if (isset($args['suffix'])) {
             $filter_name .= '_' . $args['suffix'];
         }
+
+        $filter_name .= '_filter';
 
         $filter_name = Text::slugify($filter_name);
         return $filter_name;
