@@ -230,7 +230,10 @@ class Adherent
     private array $groups = [];
     /** @var array<int, Group> */
     private array $managed_groups = [];
-    private int|Adherent|null $parent;
+    #[ORM\OneToOne(targetEntity: self::class)]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: self::PK)]
+    private ?int $parent_id;
+    private ?Adherent $parent;
     /** @var array<int, Adherent>|null */
     private ?array $children = []; //@phpstan-ignore-line
     private bool $duplicate = false;
@@ -310,7 +313,7 @@ class Adherent
                 $this->staff = false;
                 $this->due_free = false;
                 $this->appears_in_list = false;
-                $this->parent = null;
+                $this->setParent(null);
 
                 if ($this->deps['dynamics'] === true) {
                     $this->loadDynamicFields();
@@ -459,10 +462,7 @@ class Adherent
         $this->number = $r->num_adh;
 
         if ($r->parent_id !== null) {
-            $this->parent = (int)$r->parent_id;
-            if ($this->deps['parent'] === true) {
-                $this->loadParent();
-            }
+            $this->setParent((int)$r->parent_id);
         }
 
         if ($this->deps['children'] === true) {
@@ -497,9 +497,9 @@ class Adherent
      */
     private function loadParent(): void
     {
-        if (isset($this->parent) && !$this->parent instanceof Adherent) {
+        if (isset($this->parent_id)) {
             $deps = array_fill_keys(array_keys($this->deps), false);
-            $this->parent = new Adherent($this->zdb, (int)$this->parent, $deps);
+            $this->parent = new Adherent($this->zdb, (int)$this->parent_id, $deps);
         }
     }
 
@@ -789,7 +789,7 @@ class Adherent
      */
     public function hasParent(): bool
     {
-        return !empty($this->parent);
+        return !empty($this->parent_id);
     }
 
     /**
@@ -1313,7 +1313,7 @@ class Adherent
 
         //attach to/detach from parent
         if (isset($values['detach_parent'])) {
-            $this->parent = null;
+            $this->setParent(null);
         }
 
         if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && $this->parent_id !== $login->id) {
@@ -1507,7 +1507,7 @@ class Adherent
                     );
                 } else {
                     //check if login does not contain the @ character
-                    if (strpos($value, '@') != false) {
+                    if (strpos($value, '@')) {
                         $this->errors[] = _T("- The username cannot contain the @ character");
                     } else {
                         //check if login is already taken
@@ -1639,7 +1639,7 @@ class Adherent
 
         if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '') {
             if ($this->preferences->pref_bool_create_member) {
-                $this->parent = $login->id;
+                $this->setParent($login->id);
             }
         }
 
@@ -1664,12 +1664,10 @@ class Adherent
                         $values[$field] = $this->zdb->isPostgres() ? 'false' : 0;
                     } elseif ($field === 'parent_id') {
                         //handle parents
-                        if (!isset($this->parent)) {
+                        if (!isset($this->parent_id)) {
                             $values['parent_id'] = new Expression('NULL');
-                        } elseif ($this->parent instanceof Adherent) {
-                            $values['parent_id'] = $this->parent->id;
                         } else {
-                            $values['parent_id'] = $this->parent;
+                            $values['parent_id'] = $this->parent_id;
                         }
                     } else {
                         $values[$field] = $this->$prop;
@@ -1692,7 +1690,7 @@ class Adherent
                 $values['titre_adh'] = new Expression('NULL');
             }
 
-            if (!$this->parent) {
+            if (!$this->parent_id) {
                 $values['parent_id'] = new Expression('NULL');
             }
 
@@ -1936,6 +1934,7 @@ class Adherent
         switch ($name) {
             case 'id':
             case 'id_statut':
+            case 'parent_id':
                 if (isset($this->$name) && $this->$name !== null) {
                     return (int)$this->$name;
                 } else {
@@ -1962,8 +1961,6 @@ class Adherent
                     }
                 }
                 return null;
-            case 'parent_id':
-                return ($this->parent instanceof Adherent) ? $this->parent->id : (int)$this->parent;
             default:
                 if (!property_exists($this, $name)) {
                     Analog::log(
@@ -2362,7 +2359,7 @@ class Adherent
         }
 
         //parent can edit their child cards
-        if ($this->hasParent() && $this->parent_id === $login->id) {
+        if ($this->parent_id === $login->id) {
             return true;
         }
 
@@ -2435,14 +2432,18 @@ class Adherent
     /**
      * Set member parent
      *
-     * @param integer $id Parent identifier
+     * @param ?integer $id Parent identifier
      *
      * @return $this
      */
-    public function setParent(int $id): self
+    public function setParent(?int $id): self
     {
-        $this->parent = $id;
-        $this->loadParent();
+        $this->parent_id = $id;
+        if ($id !== null && $this->deps['parent'] === true) {
+            $this->loadParent();
+        } else {
+            $this->parent = null;
+        }
         return $this;
     }
 
