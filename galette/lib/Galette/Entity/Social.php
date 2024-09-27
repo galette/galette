@@ -65,8 +65,6 @@ class Social
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id_social', type: 'integer')]
-    //FIXME: does not works :/
-    //#[ORM\SequenceGenerator(sequenceName: 'galette_socials_id_seq', initialValue: 1)]
     private int $id;
     #[ORM\Column(type: 'string', length: 250)]
     private string $type;

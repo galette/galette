@@ -53,8 +53,6 @@ class PaymentType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: self::PK, type: 'integer')]
-    //FIXME: does not works :/
-    //#[ORM\SequenceGenerator(sequenceName: 'galette_paymenttypes_id_seq', initialValue: 1)]
     private int $id;
     #[ORM\Column(name: 'type_name', type: 'string', length: 255)]
     protected ?string $name = null;

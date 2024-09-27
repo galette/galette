@@ -55,8 +55,6 @@ class SavedSearch
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
-    //FIXME: does not works :/
-    //#[ORM\SequenceGenerator(sequenceName: 'galette_searches_id_seq', initialValue: 1)]
     private int $id;
     #[ORM\Column(name: 'name', type: 'string', length: 100, nullable: true)]
     private string $name;

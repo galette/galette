@@ -55,8 +55,6 @@ class Reminder
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
-    //FIXME: does not works :/
-    //#[ORM\SequenceGenerator(sequenceName: 'galette_reminders_id_seq', initialValue: 1)]
     private int $id;
     #[ORM\Column(name: 'reminder_type', type: 'integer')]
     private int $type;

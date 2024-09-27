@@ -93,8 +93,6 @@ class Contribution
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: self::PK, type: 'integer')]
-    //FIXME: does not works :/
-    //#[ORM\SequenceGenerator(sequenceName: 'galette_cotisations_id_seq', initialValue: 1)]
     private int $id;
     private ?string $date = null;
     private ?int $member = null;

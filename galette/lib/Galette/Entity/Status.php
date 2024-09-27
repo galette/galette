@@ -52,8 +52,6 @@ class Status
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id_statut', type: 'integer')]
-    //FIXME: does not works :/
-    //#[ORM\SequenceGenerator(sequenceName: 'galette_statuts_id_seq', initialValue: 1)]
     private int $id;
     #[ORM\Column(name: 'libelle_statut', type: 'string')]
     private string $label;

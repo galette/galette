@@ -60,8 +60,6 @@ class ContributionsTypes
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
-    //FIXME: does not works :/
-    //#[ORM\SequenceGenerator(sequenceName: 'galette_types_cotisation_id_seq', initialValue: 1)]
     private int $id;
     #[ORM\Column(name: 'libelle_type_cotis', type: 'string', length: 255, options: ['default' => ''])]
     private string $label;
