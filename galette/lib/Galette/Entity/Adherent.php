@@ -166,7 +166,7 @@ class Adherent
     private ?string $job;
     #[ORM\Column(name: 'pref_lang', type: 'string', length: 20)]
     private string $language;
-    #[ORM\Column(name: 'activite_adh', type: 'boolean')]
+    #[ORM\Column(name: 'activite_adh', type: 'boolean', options: ['default' => false])]
     private bool $active;
     #[ORM\ManyToOne(targetEntity: Status::class)]
     #[ORM\JoinColumn(
@@ -181,26 +181,47 @@ class Adherent
     )]
     private int $status;
     //Contact information
+    #[ORM\Column(name: 'adresse_adh', type: 'text')]
     private ?string $address = null;
+    #[ORM\Column(name: 'cp_adh', type: 'string', length: 10, options: ['default' => ''])]
     private ?string $zipcode = null;
+    #[ORM\Column(name: 'ville_adh', type: 'string', length: 200, options: ['default' => ''])]
     private ?string $town = null;
+    #[ORM\Column(name: 'region_adh', type: 'string', length: 200, options: ['default' => ''])]
+    private ?string $region = null;
+    #[ORM\Column(name: 'pays_adh', type: 'string', length: 200, nullable: true)]
     private ?string $country = null;
+    #[ORM\Column(name: 'tel_adh', type: 'string', length: 50, nullable: true)]
     private ?string $phone;
+    #[ORM\Column(name: 'gsm_adh', type: 'string', length: 50, nullable: true)]
     private ?string $gsm;
+    #[ORM\Column(name: 'email_adh', type: 'string', length: 255, nullable: true)]
     private ?string $email;
+    #[ORM\Column(name: 'gpgid', type: 'text', nullable: true)]
     private ?string $gnupgid;
+    #[ORM\Column(name: 'fingerprint', type: 'string', length: 255, nullable: true)]
     private ?string $fingerprint;
     //Galette relative information
+    #[ORM\Column(name: 'bool_display_info', type: 'boolean', options: ['default' => false])]
     private bool $appears_in_list;
+    #[ORM\Column(name: 'bool_admin_adh', type: 'boolean', options: ['default' => false])]
     private bool $admin;
     private bool $staff = false;
+    #[ORM\Column(name: 'bool_exempt_adh', type: 'boolean', options: ['default' => false])]
     private bool $due_free;
+    #[ORM\Column(name: 'login_adh', type: 'string', length: 200, options: ['default' => ''])]
     private ?string $login;
+    #[ORM\Column(name: 'mdp_adh', type: 'string', length: 255, options: ['default' => ''])]
     private ?string $password;
+    #[ORM\Column(name: 'date_crea_adh', type: 'date')]
     private string $creation_date;
+    #[ORM\Column(name: 'date_modif_adh', type: 'date')]
     private string $modification_date;
+    #[ORM\Column(name: 'date_echeance', type: 'date', nullable: true)]
     private ?string $due_date;
+    #[ORM\Column(name: 'info_public_adh', type: 'text')]
     private ?string $others_infos;
+    #[ORM\Column(name: 'info_adh', type: 'text')]
     private ?string $others_infos_admin;
     private ?Picture $picture = null;
     private int $oldness;
@@ -215,8 +236,8 @@ class Adherent
     private bool $duplicate = false;
     /** @var array<int,Social> */
     private array $socials;
+    #[ORM\Column(name: 'num_adh', type: 'string', length: 255, nullable: true)]
     private ?string $number = null;
-    private ?string $region = null;
 
     private string $row_classes;
 
