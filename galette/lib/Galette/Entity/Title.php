@@ -50,8 +50,6 @@ class Title
     #[ORM\Id]
     #[ORM\Column(name: 'id_title', type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
-    //FIXME: does not works :/
-    //#[ORM\SequenceGenerator(sequenceName: 'galette_titles_id_seq', initialValue: 1)]
     private int $id;
     #[ORM\Column(name: 'short_label', type: 'string', length: 10)]
     private string $short;

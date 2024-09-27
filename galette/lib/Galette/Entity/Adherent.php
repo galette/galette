@@ -135,8 +135,6 @@ class Adherent
     #[ORM\Id]
     #[ORM\Column(name: 'id_adh', type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
-    //FIXME: does not works :/
-    //#[ORM\SequenceGenerator(sequenceName: 'galette_adherents_id_seq', initialValue: 1)]
     private ?int $id;
     //Identity
     #[ORM\ManyToOne(targetEntity: Title::class)]

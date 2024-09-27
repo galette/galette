@@ -52,8 +52,6 @@ class ScheduledPayment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id_schedule', type: 'integer')]
-    //FIXME: does not works :/
-    //#[ORM\SequenceGenerator(sequenceName: 'galette_payments_schedules_id_seq', initialValue: 1)]
     private int $id;
     #[ORM\ManyToOne(targetEntity: Contribution::class)]
     #[ORM\JoinColumn(
