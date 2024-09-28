@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Events\GaletteEvent;
 use Galette\Repository\PaymentTypes;
 use Throwable;
@@ -48,6 +49,8 @@ use Galette\Helpers\EntityHelper;
  * @property ?integer $member
  * @property ?integer $payment_type
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_transactions')]
 class Transaction
 {
     use Dynamics;
@@ -56,11 +59,35 @@ class Transaction
     public const TABLE = 'transactions';
     public const PK = 'trans_id';
 
+    #[ORM\Id]
+    #[ORM\Column(name: 'trans_id', type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private int $id;
+    #[ORM\Column(name: 'trans_date', type: 'date')]
     private string $date;
+    #[ORM\Column(name: 'trans_amount', type: 'decimal', precision: 15, scale: 2)]
     private float $amount;
+    #[ORM\Column(name: 'trans_desc', type: 'string', length: 255, options: ['default' => ''])]
     private ?string $description = null;
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    #[ORM\JoinColumn(
+        name: Adherent::PK,
+        referencedColumnName: Adherent::PK,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
     private ?int $member = null;
+    #[ORM\ManyToOne(targetEntity: PaymentType::class)]
+    #[ORM\JoinColumn(
+        name: 'type_paiement_trans',
+        referencedColumnName: PaymentType::PK,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
     private ?int $payment_type = null;
 
     private Db $zdb;
