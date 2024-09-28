@@ -92,17 +92,58 @@ class Contribution
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: self::PK, type: 'integer')]
+    #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
     private int $id;
+    #[ORM\Column(name: 'date_enreg', type: 'date')]
     private ?string $date = null;
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    #[ORM\JoinColumn(
+        name: Adherent::PK,
+        referencedColumnName: Adherent::PK,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
     private ?int $member = null;
+    #[ORM\ManyToOne(targetEntity: ContributionsTypes::class)]
+    #[ORM\JoinColumn(
+        name: ContributionsTypes::PK,
+        referencedColumnName: ContributionsTypes::PK,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
     private ?ContributionsTypes $type = null;
+    #[ORM\Column(name: 'montant_cotis', type: 'decimal', precision: 15, scale: 2)]
     private ?float $amount = null;
+    #[ORM\ManyToOne(targetEntity: PaymentType::class)]
+    #[ORM\JoinColumn(
+        name: 'type_paiement_cotis',
+        referencedColumnName: PaymentType::PK,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
     private ?int $payment_type;
     private ?float $orig_amount = null;
+    #[ORM\Column(name: 'info_cotis', type: 'text')]
     private ?string $info = null;
+    #[ORM\Column(name: 'date_debut_cotis', type: 'date')]
     private ?string $begin_date = null;
+    #[ORM\Column(name: 'date_fin_cotis', type: 'date')]
     private ?string $end_date = null;
+    #[ORM\ManyToOne(targetEntity: Transaction::class)]
+    #[ORM\JoinColumn(
+        name: Transaction::PK,
+        referencedColumnName: Transaction::PK,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
     private ?Transaction $transaction = null;
     private bool $is_cotis;
     private ?int $extension = null;
