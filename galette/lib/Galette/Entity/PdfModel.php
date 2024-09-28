@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\ORM\Mapping as ORM;
 use Slim\Routing\RouteParser;
 use Throwable;
 use Galette\Core\Db;
@@ -53,9 +54,11 @@ use Laminas\Db\Sql\Expression;
  * @property-read string $hbody
  * @property string $styles
  * @property string $hstyles
+ * @property ?integer $parent_id
  * @property PdfMain $parent
  */
-
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_pdfmodels')]
 abstract class PdfModel
 {
     use Replacements;
@@ -68,15 +71,29 @@ abstract class PdfModel
     public const RECEIPT_MODEL = 3;
     public const ADHESION_FORM_MODEL = 4;
 
+    #[ORM\Id]
+    #[ORM\Column(name: 'model_id', type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
+    #[ORM\Column(name: 'model_name', type: 'string', length: 50)]
     private string $name;
+    #[ORM\Column(name: 'model_type', type: 'smallint')]
     private int $type;
+    #[ORM\Column(name: 'model_header', type: 'text')]
     private ?string $header;
+    #[ORM\Column(name: 'model_footer', type: 'text')]
     private ?string $footer;
+    #[ORM\Column(name: 'model_title', type: 'string', length: 250)]
     private ?string $title;
+    #[ORM\Column(name: 'model_subtitle', type: 'string', length: 250)]
     private ?string $subtitle;
+    #[ORM\Column(name: 'model_body', type: 'text')]
     private ?string $body;
+    #[ORM\Column(name: 'model_styles', type: 'text')]
     private ?string $styles = '';
+    #[ORM\OneToOne(targetEntity: self::class)]
+    #[ORM\JoinColumn(name: 'model_parent', referencedColumnName: self::PK)]
+    private ?int $parent_id = null;
     private ?PdfModel $parent = null;
 
     /**
