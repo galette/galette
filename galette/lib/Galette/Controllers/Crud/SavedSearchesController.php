@@ -273,7 +273,7 @@ class SavedSearchesController extends CrudController
             return _T('Remove saved search');
         } else {
             //batch saved search removal
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
             return str_replace(
                 '%count',
                 (string)count($filters->selected),

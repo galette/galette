@@ -714,7 +714,7 @@ class CsvController extends AbstractController
         $post = $request->getParsedBody();
         $get = $request->getQueryParams();
 
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName($type);
+        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName($type, ['suffix' => 'csvexport']);
 
         if (isset($this->session->$session_var)) {
             $filters = $this->session->$session_var;
@@ -748,7 +748,7 @@ class CsvController extends AbstractController
         $post = $request->getParsedBody();
         $get = $request->getQueryParams();
 
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\ScheduledPaymentController::getDefaultFilterName());
+        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\ScheduledPaymentController::getDefaultFilterName(), ['suffix' => 'csvexport']);
 
         if (isset($this->session->$session_var)) {
             $filters = $this->session->$session_var;

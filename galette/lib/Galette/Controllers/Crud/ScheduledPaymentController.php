@@ -308,15 +308,16 @@ class ScheduledPaymentController extends CrudController
         if (isset($post['entries_sel'])) {
             $filters = $this->session->$filter_name ?? new ScheduledPaymentsList();
             $filters->selected = $post['entries_sel'];
-            $this->session->$filter_name = $filters;
 
             if (isset($post['csv'])) {
+                $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'csvexport'])} = $filters;
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->routeparser->urlFor('csv-scheduledPaymentslist'));
             }
 
             if (isset($post['delete'])) {
+                $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])} = $filters;
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->routeparser->urlFor('removeScheduledPayments'));

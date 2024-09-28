@@ -712,15 +712,16 @@ class ContributionsController extends CrudController
             $filter_class = '\\Galette\\Filters\\' . ucwords($type . 'List');
             $filters = $this->session->$filter_name ?? new $filter_class();
             $filters->selected = $post['entries_sel'];
-            $this->session->$filter_name = $filters;
 
             if (isset($post['csv'])) {
+                $this->session->{$this->getFilterName($type, ['suffix' => 'csvexport'])} = $filters;
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->routeparser->urlFor('csv-contributionslist', ['type' => $type]));
             }
 
             if (isset($post['delete'])) {
+                $this->session->{$this->getFilterName($type, ['suffix' => 'delete'])} = $filters;
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->routeparser->urlFor('removeContributions', ['type' => $type]));

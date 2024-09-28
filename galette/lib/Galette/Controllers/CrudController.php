@@ -179,12 +179,14 @@ abstract class CrudController extends AbstractController
 
         if ($ids === null) {
             $filter_name = null;
+            $filter_args = ['suffix' => 'delete'];
             if (isset($args['type'])) {
-                $filter_name = $this->getFilterName($args['type'], $args);
+                $filter_args['type'] = $args['type'];
+                $filter_name = $this->getFilterName($args['type'], $filter_args);
             } elseif (method_exists($this, 'getDefaultFilterName')) {
-                $filter_name = $this->getFilterName($this->getDefaultFilterName(), $args);
+                $filter_name = $this->getFilterName($this->getDefaultFilterName(), $filter_args);
             }
-            if ($filter_name === null) {
+            if ($filter_name !== null) {
                 $filters = $this->session->$filter_name;
                 $ids = $filters->selected;
             }
