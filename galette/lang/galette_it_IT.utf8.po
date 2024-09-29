@@ -29,9 +29,9 @@
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-09-17 17:10+0200\n"
-"PO-Revision-Date: 2024-07-02 19:11+0000\n"
+"PO-Revision-Date: 2024-09-30 18:16+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -39,7 +39,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7-dev\n"
+"X-Generator: Weblate 5.8-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -1818,14 +1818,11 @@ msgid "- You must provide a password for SMTP authentication."
 msgstr "- È necessario fornire una password per l'autenticazione SMTP."
 
 #: ../lib/Galette/Core/Preferences.php:588
-#, fuzzy
-#| msgid ""
-#| "- Default membership extension and beginning of membership are mutually "
-#| "exclusive."
 msgid ""
 "- You must indicate a membership extension or a beginning of membership."
 msgstr ""
-"- L'estensione predefinita e l'inizio dell'iscrizione si escludono a vicenda."
+"- È necessario indicare un'estensione di iscrizione o un inizio di "
+"iscrizione."
 
 #: ../lib/Galette/Core/Preferences.php:593
 msgid ""
