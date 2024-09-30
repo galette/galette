@@ -51,7 +51,7 @@ class Status
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id_statut', type: 'integer')]
+    #[ORM\Column(name: 'id_statut', type: 'integer', options: ['unsigned' => true])]
     private int $id;
     #[ORM\Column(name: 'libelle_statut', type: 'string')]
     private string $label;

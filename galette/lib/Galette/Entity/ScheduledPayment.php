@@ -51,18 +51,10 @@ class ScheduledPayment
     private Db $zdb;
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id_schedule', type: 'integer')]
+    #[ORM\Column(name: 'id_schedule', type: 'integer', options: ['unsigned' => true])]
     private int $id;
     #[ORM\ManyToOne(targetEntity: Contribution::class)]
-    #[ORM\JoinColumn(
-        name: Contribution::PK,
-        referencedColumnName: Contribution::PK,
-        nullable: false,
-        onDelete: 'cascade',
-        options: [
-            'unsigned' => true
-        ]
-    )]
+    #[ORM\JoinColumn(onDelete: 'cascade')]
     private int $id_contribution;
     private Contribution $contribution;
     #[ORM\ManyToOne(targetEntity: PaymentType::class)]

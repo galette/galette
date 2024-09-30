@@ -97,24 +97,10 @@ class Contribution
     #[ORM\Column(name: 'date_enreg', type: 'date')]
     private ?string $date = null;
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[ORM\JoinColumn(
-        name: Adherent::PK,
-        referencedColumnName: Adherent::PK,
-        onDelete: 'restrict',
-        options: [
-            'unsigned' => true
-        ]
-    )]
+    #[ORM\JoinColumn(onDelete: 'restrict')]
     private ?int $member = null;
     #[ORM\ManyToOne(targetEntity: ContributionsTypes::class)]
-    #[ORM\JoinColumn(
-        name: ContributionsTypes::PK,
-        referencedColumnName: ContributionsTypes::PK,
-        onDelete: 'restrict',
-        options: [
-            'unsigned' => true
-        ]
-    )]
+    #[ORM\JoinColumn(onDelete: 'restrict')]
     private ?ContributionsTypes $type = null;
     #[ORM\Column(name: 'montant_cotis', type: 'decimal', precision: 15, scale: 2)]
     private ?float $amount = null;

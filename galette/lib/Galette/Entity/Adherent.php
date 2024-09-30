@@ -170,8 +170,8 @@ class Adherent
     private bool $active;
     #[ORM\ManyToOne(targetEntity: Status::class)]
     #[ORM\JoinColumn(
-        name: 'id_statut',
-        referencedColumnName: 'id_statut',
+        name: Status::PK,
+        referencedColumnName: Status::PK,
         nullable: false,
         onDelete: 'restrict',
         options: [
