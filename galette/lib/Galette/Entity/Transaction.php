@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Galette\Events\GaletteEvent;
 use Galette\Repository\PaymentTypes;
@@ -60,14 +61,14 @@ class Transaction
     public const PK = 'trans_id';
 
     #[ORM\Id]
-    #[ORM\Column(name: 'trans_id', type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(name: 'trans_id', type: Types::INTEGER, options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
     private int $id;
-    #[ORM\Column(name: 'trans_date', type: 'date')]
+    #[ORM\Column(name: 'trans_date', type: Types::DATE_MUTABLE)]
     private string $date;
-    #[ORM\Column(name: 'trans_amount', type: 'decimal', precision: 15, scale: 2)]
+    #[ORM\Column(name: 'trans_amount', type: Types::DECIMAL, precision: 15, scale: 2)]
     private float $amount;
-    #[ORM\Column(name: 'trans_desc', type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'trans_desc', type: Types::STRING, length: 255, options: ['default' => ''])]
     private ?string $description = null;
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     #[ORM\JoinColumn(

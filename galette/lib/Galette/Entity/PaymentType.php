@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Throwable;
 use Galette\Core\Db;
@@ -52,9 +53,9 @@ class PaymentType
     private Db $zdb;
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(name: self::PK, type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
-    #[ORM\Column(name: 'type_name', type: 'string', length: 255)]
+    #[ORM\Column(name: 'type_name', type: Types::STRING, length: 255)]
     protected ?string $name = null;
 
     public const SCHEDULED = 7;

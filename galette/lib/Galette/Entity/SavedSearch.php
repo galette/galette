@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\Galette;
 use Throwable;
@@ -54,12 +55,12 @@ class SavedSearch
     private Db $zdb;
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(name: self::PK, type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
-    #[ORM\Column(name: 'name', type: 'string', length: 100, nullable: true)]
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 100, nullable: true)]
     private string $name;
     /** @var array<string, mixed> */
-    #[ORM\Column(name: 'parameters', type: 'json')]
+    #[ORM\Column(name: 'parameters', type: Types::JSON)]
     private array $parameters = [];
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     #[ORM\JoinColumn(
@@ -72,9 +73,9 @@ class SavedSearch
         ]
     )]
     private ?int $author_id = null;
-    #[ORM\Column(name: 'creation_date', type: 'datetime')]
+    #[ORM\Column(name: 'creation_date', type: Types::DATETIME_MUTABLE)]
     private ?string $creation_date;
-    #[ORM\Column(name: 'form', type: 'string', length: 50)]
+    #[ORM\Column(name: 'form', type: Types::STRING, length: 50)]
     private string $form;
 
     private Login $login;

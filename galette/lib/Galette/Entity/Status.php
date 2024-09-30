@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\Db;
 use ArrayObject;
@@ -51,11 +52,11 @@ class Status
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id_statut', type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(name: 'id_statut', type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
-    #[ORM\Column(name: 'libelle_statut', type: 'string')]
+    #[ORM\Column(name: 'libelle_statut', type: Types::STRING)]
     private string $label;
-    #[ORM\Column(name: 'priorite_statut', type: 'smallint', options: ['default' => 0])]
+    #[ORM\Column(name: 'priorite_statut', type: Types::SMALLINT, options: ['default' => 0])]
     private int $priority;
 
     public const ID_NOT_EXISTS = -1;
