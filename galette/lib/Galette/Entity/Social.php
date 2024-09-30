@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\GaletteMail;
 use Galette\Features\I18n;
@@ -64,11 +65,11 @@ class Social
     private Db $zdb;
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id_social', type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(name: 'id_social', type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
-    #[ORM\Column(type: 'string', length: 250)]
+    #[ORM\Column(type: Types::STRING, length: 250)]
     private string $type;
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $url;
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     #[ORM\JoinColumn(

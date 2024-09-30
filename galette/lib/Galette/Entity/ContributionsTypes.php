@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\Db;
 use ArrayObject;
@@ -59,13 +60,13 @@ class ContributionsTypes
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(name: self::PK, type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
-    #[ORM\Column(name: 'libelle_type_cotis', type: 'string', length: 255, options: ['default' => ''])]
+    #[ORM\Column(name: 'libelle_type_cotis', type: Types::STRING, length: 255, options: ['default' => ''])]
     private string $label;
-    #[ORM\Column(name: 'amount', type: 'decimal', precision: 15, scale: 2, nullable: true)]
+    #[ORM\Column(name: 'amount', type: Types::DECIMAL, precision: 15, scale: 2, nullable: true)]
     private ?float $amount; //@phpstan-ignore-line
-    #[ORM\Column(name: 'cotis_extension', type: 'integer', options: ['default' => 0])]
+    #[ORM\Column(name: 'cotis_extension', type: Types::INTEGER, options: ['default' => 0])]
     private int $extension;
 
     public const ID_NOT_EXITS = -1;

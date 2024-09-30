@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Galette\Features\Replacements;
 use Throwable;
@@ -54,9 +55,9 @@ class Reminder
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(name: self::PK, type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
-    #[ORM\Column(name: 'reminder_type', type: 'integer')]
+    #[ORM\Column(name: 'reminder_type', type: Types::INTEGER)]
     private int $type;
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     #[ORM\JoinColumn(
@@ -69,13 +70,13 @@ class Reminder
         ]
     )]
     private Adherent $dest;
-    #[ORM\Column(name: 'reminder_date', type: 'datetime')]
+    #[ORM\Column(name: 'reminder_date', type: Types::DATETIME_MUTABLE)]
     private string $date;
-    #[ORM\Column(name: 'reminder_success', type: 'boolean', options: ['default' => false])]
+    #[ORM\Column(name: 'reminder_success', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $success = false;
-    #[ORM\Column(name: 'reminder_nomail', type: 'boolean', options: ['default' => true])]
+    #[ORM\Column(name: 'reminder_nomail', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $nomail;
-    #[ORM\Column(name: 'reminder_comment', type: 'text')]
+    #[ORM\Column(name: 'reminder_comment', type: Types::TEXT)]
     private string $comment;
     private string $msg;
 

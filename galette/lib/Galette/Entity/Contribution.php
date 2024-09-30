@@ -26,6 +26,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use DateInterval;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
@@ -92,9 +93,9 @@ class Contribution
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(name: self::PK, type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
-    #[ORM\Column(name: 'date_enreg', type: 'date')]
+    #[ORM\Column(name: 'date_enreg', type: Types::DATE_MUTABLE)]
     private ?string $date = null;
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     #[ORM\JoinColumn(onDelete: 'restrict')]
@@ -102,7 +103,7 @@ class Contribution
     #[ORM\ManyToOne(targetEntity: ContributionsTypes::class)]
     #[ORM\JoinColumn(onDelete: 'restrict')]
     private ?ContributionsTypes $type = null;
-    #[ORM\Column(name: 'montant_cotis', type: 'decimal', precision: 15, scale: 2)]
+    #[ORM\Column(name: 'montant_cotis', type: Types::DECIMAL, precision: 15, scale: 2)]
     private ?float $amount = null;
     #[ORM\ManyToOne(targetEntity: PaymentType::class)]
     #[ORM\JoinColumn(
@@ -115,11 +116,11 @@ class Contribution
     )]
     private ?int $payment_type;
     private ?float $orig_amount = null;
-    #[ORM\Column(name: 'info_cotis', type: 'text')]
+    #[ORM\Column(name: 'info_cotis', type: Types::TEXT)]
     private ?string $info = null;
-    #[ORM\Column(name: 'date_debut_cotis', type: 'date')]
+    #[ORM\Column(name: 'date_debut_cotis', type: Types::DATE_MUTABLE)]
     private ?string $begin_date = null;
-    #[ORM\Column(name: 'date_fin_cotis', type: 'date')]
+    #[ORM\Column(name: 'date_fin_cotis', type: Types::DATE_MUTABLE)]
     private ?string $end_date = null;
     #[ORM\ManyToOne(targetEntity: Transaction::class)]
     #[ORM\JoinColumn(

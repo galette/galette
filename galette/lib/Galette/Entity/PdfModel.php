@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Slim\Routing\RouteParser;
 use Throwable;
@@ -71,24 +72,24 @@ abstract class PdfModel
     public const ADHESION_FORM_MODEL = 4;
 
     #[ORM\Id]
-    #[ORM\Column(name: 'model_id', type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(name: 'model_id', type: Types::INTEGER, options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
     private ?int $id = null;
-    #[ORM\Column(name: 'model_name', type: 'string', length: 50)]
+    #[ORM\Column(name: 'model_name', type: Types::STRING, length: 50)]
     private string $name;
-    #[ORM\Column(name: 'model_type', type: 'smallint')]
+    #[ORM\Column(name: 'model_type', type: Types::SMALLINT)]
     private int $type;
-    #[ORM\Column(name: 'model_header', type: 'text')]
+    #[ORM\Column(name: 'model_header', type: Types::TEXT)]
     private ?string $header;
-    #[ORM\Column(name: 'model_footer', type: 'text')]
+    #[ORM\Column(name: 'model_footer', type: Types::TEXT)]
     private ?string $footer;
-    #[ORM\Column(name: 'model_title', type: 'string', length: 250)]
+    #[ORM\Column(name: 'model_title', type: Types::STRING, length: 250)]
     private ?string $title;
-    #[ORM\Column(name: 'model_subtitle', type: 'string', length: 250)]
+    #[ORM\Column(name: 'model_subtitle', type: Types::STRING, length: 250)]
     private ?string $subtitle;
-    #[ORM\Column(name: 'model_body', type: 'text')]
+    #[ORM\Column(name: 'model_body', type: Types::TEXT)]
     private ?string $body;
-    #[ORM\Column(name: 'model_styles', type: 'text')]
+    #[ORM\Column(name: 'model_styles', type: Types::TEXT)]
     private ?string $styles = '';
     #[ORM\OneToOne(targetEntity: self::class)]
     #[ORM\JoinColumn(name: 'model_parent', referencedColumnName: self::PK)]
