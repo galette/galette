@@ -58,14 +58,14 @@ class Texts extends GaletteTestCase
         }
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select($texts::TABLE . '_id_seq');
+            $select = $this->zdb->select($this->zdb->getSequenceName($texts::TABLE, $texts::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $this->assertGreaterThanOrEqual($count_texts, $result->last_value, 'Incorrect texts sequence ' . $result->last_value);
 
             $this->zdb->db->query(
-                'SELECT setval(\'' . PREFIX_DB . $texts::TABLE . '_id_seq\', 1)',
+                'SELECT setval(\'' . $this->zdb->getSequenceName($texts::TABLE, $texts::PK, true) . '\', 1)',
                 Adapter::QUERY_MODE_EXECUTE
             );
         }
@@ -77,7 +77,7 @@ class Texts extends GaletteTestCase
         $this->assertCount($count_texts, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select($texts::TABLE . '_id_seq');
+            $select = $this->zdb->select($this->zdb->getSequenceName($texts::TABLE, $texts::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();

@@ -191,6 +191,7 @@ class ContributionsTypes
 
             $this->zdb->handleSequence(
                 self::TABLE,
+                self::PK,
                 count(static::$defaults)
             );
 

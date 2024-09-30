@@ -35,4 +35,4 @@ define('GALETTE_PGSQL_MIN', '11');
 define('GALETTE_NIGHTLY', false);
 define('GALETTE_VERSION', 'v1.2-dev');
 define('GALETTE_COMPAT_VERSION', '1.1.0');
-define('GALETTE_DB_VERSION', '1.100');
+define('GALETTE_DB_VERSION', '1.200');

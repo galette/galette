@@ -119,6 +119,7 @@ class Install extends TestCase
             '0.95'  => 'upgrade-to-0.95-pgsql.sql',
             '0.96'  => 'upgrade-to-0.96-pgsql.sql',
             '1.10'  => 'upgrade-to-1.10.php',
+            '1.20'  => 'upgrade-to-1.20.php',
         );
 
         $this->assertSame($knowns, $update_scripts);

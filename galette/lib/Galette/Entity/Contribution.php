@@ -684,7 +684,7 @@ class Contribution
 
             //no end date, let's take database defaults
             if (!$this->isFee() && !$this->end_date) {
-                unset($values['date_fin_cotis']);
+                $values['date_fin_cotis'] = new Expression('NULL');
             }
 
             if (!isset($this->id) || $this->id == '') {
