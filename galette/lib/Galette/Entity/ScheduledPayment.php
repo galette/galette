@@ -55,7 +55,6 @@ class ScheduledPayment
     private int $id;
     #[ORM\ManyToOne(targetEntity: Contribution::class)]
     #[ORM\JoinColumn(onDelete: 'cascade')]
-    private int $id_contribution;
     private Contribution $contribution;
     #[ORM\ManyToOne(targetEntity: PaymentType::class)]
     #[ORM\JoinColumn(
@@ -67,7 +66,6 @@ class ScheduledPayment
             'unsigned' => true
         ]
     )]
-    private int $id_paymenttype;
     private PaymentType $payment_type;
     #[ORM\Column(name: 'creation_date', type: 'date')]
     private string $creation_date;
@@ -148,10 +146,8 @@ class ScheduledPayment
 
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
-        $this->id_contribution = (int)$rs->{Contribution::PK};
-        $this->contribution = new Contribution($this->zdb, $login, $this->id_contribution);
-        $this->id_paymenttype = (int)$rs->id_paymenttype;
-        $this->payment_type = new PaymentType($this->zdb, $this->id_paymenttype);
+        $this->contribution = new Contribution($this->zdb, $login, (int)$rs->{Contribution::PK});
+        $this->payment_type = new PaymentType($this->zdb, (int)$rs->id_paymenttype);
         $this->creation_date = $rs->creation_date;
         $this->scheduled_date = $rs->scheduled_date;
         $this->amount = (float)$rs->amount;
@@ -348,7 +344,6 @@ class ScheduledPayment
         } else {
             $this->contribution = $contribution;
         }
-        $this->id_contribution = $this->contribution->id;
         return $this;
     }
 
@@ -391,7 +386,6 @@ class ScheduledPayment
         } else {
             $this->payment_type = $payment_type;
         }
-        $this->id_paymenttype = $this->payment_type->id;
         return $this;
     }
 
