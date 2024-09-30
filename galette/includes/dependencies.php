@@ -73,10 +73,14 @@ $container->set(
         $evm->addEventListener(\Doctrine\ORM\Tools\ToolEvents::postGenerateSchema, $tablePrefix);
 
         $config = \Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration($paths, $isDevMode);
-        //FIXME: should be correct with DBAL v4, will use serial before (I prefer to keep sequences)
-        /*$config->setIdentityGenerationPreferences([
-            \Doctrine\DBAL\Platforms\PostgreSQLPlatform::class => \Doctrine\ORM\Mapping\ClassMetadataInfo::GENERATOR_TYPE_IDENTITY,
-        ]);*/
+        //FIXME: to remove. Temporary filter form ORM to work only with "PREFIX_DB_orm" tables
+        $config->setSchemaAssetsFilter(function (string|\Doctrine\DBAL\Schema\AbstractAsset $assetName): bool {
+            if ($assetName instanceof \Doctrine\DBAL\Schema\AbstractAsset) {
+                $assetName = $assetName->getName();
+            }
+
+            return str_starts_with($assetName, PREFIX_DB . '_orm_');
+        });
         $connection = \Doctrine\DBAL\DriverManager::getConnection($dbParams, $config);
         $entityManager = new \Doctrine\ORM\EntityManager($connection, $config, $evm);
         return $entityManager;
