@@ -98,7 +98,7 @@ class PdfModels extends GaletteTestCase
         $this->assertCount(4, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select(\Galette\Entity\PdfModel::TABLE . '_id_seq');
+            $select = $this->zdb->select($this->zdb->getSequenceName(\Galette\Entity\PdfModel::TABLE, \Galette\Entity\PdfModel::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -116,7 +116,7 @@ class PdfModels extends GaletteTestCase
         $this->assertCount(4, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select(\Galette\Entity\PdfModel::TABLE . '_id_seq');
+            $select = $this->zdb->select($this->zdb->getSequenceName(\Galette\Entity\PdfModel::TABLE, \Galette\Entity\PdfModel::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
