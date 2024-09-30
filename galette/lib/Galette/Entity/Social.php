@@ -64,7 +64,7 @@ class Social
     private Db $zdb;
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id_social', type: 'integer')]
+    #[ORM\Column(name: 'id_social', type: 'integer', options: ['unsigned' => true])]
     private int $id;
     #[ORM\Column(type: 'string', length: 250)]
     private string $type;

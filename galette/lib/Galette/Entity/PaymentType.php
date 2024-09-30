@@ -52,7 +52,7 @@ class PaymentType
     private Db $zdb;
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: self::PK, type: 'integer')]
+    #[ORM\Column(name: self::PK, type: 'integer', options: ['unsigned' => true])]
     private int $id;
     #[ORM\Column(name: 'type_name', type: 'string', length: 255)]
     protected ?string $name = null;
