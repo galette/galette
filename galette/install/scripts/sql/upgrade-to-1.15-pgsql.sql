@@ -1,0 +1,22 @@
+-- rename sequences
+ALTER SEQUENCE galette_adherents_id_seq RENAME TO galette_adherents_id_adh_seq;
+ALTER SEQUENCE galette_cotisations_id_seq RENAME TO galette_cotisations_id_cotis_seq;
+ALTER SEQUENCE galette_statuts_id_seq RENAME TO galette_statuts_id_statut_seq;
+ALTER SEQUENCE galette_transactions_id_seq RENAME TO galette_transactions_trans_id_seq;
+ALTER SEQUENCE galette_preferences_id_seq RENAME TO galette_preferences_id_pref_seq;
+ALTER SEQUENCE galette_logs_id_seq RENAME TO galette_logs_id_log_seq;
+ALTER SEQUENCE galette_field_types_id_seq RENAME TO galette_field_types_field_id_seq;
+ALTER SEQUENCE galette_types_cotisation_id_seq RENAME TO galette_types_cotisation_id_type_cotis_seq;
+ALTER SEQUENCE galette_groups_id_seq RENAME TO galette_groups_id_group_seq;
+ALTER SEQUENCE galette_mailing_history_id_seq RENAME TO galette_mailing_history_mailing_id_seq;
+ALTER SEQUENCE galette_titles_id_seq RENAME TO galette_titles_id_title_seq;
+ALTER SEQUENCE galette_reminders_id_seq RENAME TO galette_reminders_reminder_id_seq;
+ALTER SEQUENCE galette_pdfmodels_id_seq RENAME TO galette_pdfmodels_model_id_seq;
+ALTER SEQUENCE galette_import_model_id_seq RENAME TO galette_import_model_model_id_seq;
+ALTER SEQUENCE galette_paymenttypes_id_seq RENAME TO galette_paymenttypes_type_id_seq;
+ALTER SEQUENCE galette_searches_id_seq RENAME TO galette_searches_search_id_seq;
+ALTER SEQUENCE galette_texts_id_seq RENAME TO galette_texts_tid_seq;
+ALTER SEQUENCE galette_fields_categories_id_seq RENAME TO galette_fields_categories_id_field_category_seq;
+ALTER SEQUENCE galette_socials_id_seq RENAME TO galette_socials_id_social_seq;
+ALTER SEQUENCE galette_documents_id_seq RENAME TO galette_documents_id_document_seq;
+ALTER SEQUENCE galette_payments_schedules_id_seq RENAME TO galette_payments_schedules_id_schedule_seq;

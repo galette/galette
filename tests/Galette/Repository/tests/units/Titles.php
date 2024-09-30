@@ -94,7 +94,7 @@ class Titles extends GaletteTestCase
         $this->assertCount(2, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select(\Galette\Entity\PaymentType::TABLE . '_id_seq');
+            $select = $this->zdb->select($this->zdb->getSequenceName(\Galette\Entity\PaymentType::TABLE, \Galette\Entity\PaymentType::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -120,7 +120,7 @@ class Titles extends GaletteTestCase
         $this->assertCount(2, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select(\Galette\Entity\PaymentType::TABLE . '_id_seq');
+            $select = $this->zdb->select($this->zdb->getSequenceName(\Galette\Entity\PaymentType::TABLE, \Galette\Entity\PaymentType::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();

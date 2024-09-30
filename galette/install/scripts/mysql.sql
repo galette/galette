@@ -388,6 +388,6 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
-INSERT INTO galette_database(version) VALUES(1.10);
+INSERT INTO galette_database(version) VALUES(1.15);
 
 SET FOREIGN_KEY_CHECKS=1;

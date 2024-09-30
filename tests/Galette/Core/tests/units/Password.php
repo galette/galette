@@ -112,7 +112,7 @@ class Password extends TestCase
 
         if ($this->zdb->isPostgres()) {
             return (int)$this->zdb->driver->getLastGeneratedValue(
-                PREFIX_DB . 'adherents_id_seq'
+                $this->zdb->getSequenceName(\Galette\Entity\Adherent::TABLE, \Galette\Entity\Adherent::PK, true)
             );
         } else {
             return (int)$this->zdb->driver->getLastGeneratedValue();

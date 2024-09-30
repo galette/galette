@@ -161,6 +161,7 @@ class Status
 
             $this->zdb->handleSequence(
                 self::TABLE,
+                self::PK,
                 count(static::$defaults)
             );
 

@@ -129,6 +129,7 @@ class PaymentTypes extends Repository
 
                 $this->zdb->handleSequence(
                     $ent::TABLE,
+                    $ent::PK,
                     count($this->defaults)
                 );
                 $this->insert($ent::TABLE, $this->defaults);
