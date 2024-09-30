@@ -73,6 +73,10 @@ $container->set(
         $evm->addEventListener(\Doctrine\ORM\Tools\ToolEvents::postGenerateSchema, $tablePrefix);
 
         $config = \Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration($paths, $isDevMode);
+        //FIXME: should be correct with DBAL v4, will use serial before (I prefer to keep sequences)
+        /*$config->setIdentityGenerationPreferences([
+            \Doctrine\DBAL\Platforms\PostgreSQLPlatform::class => \Doctrine\ORM\Mapping\ClassMetadataInfo::GENERATOR_TYPE_IDENTITY,
+        ]);*/
         $connection = \Doctrine\DBAL\DriverManager::getConnection($dbParams, $config);
         $entityManager = new \Doctrine\ORM\EntityManager($connection, $config, $evm);
         return $entityManager;
