@@ -232,8 +232,7 @@ class Adherent
     private array $managed_groups = [];
     #[ORM\OneToOne(targetEntity: self::class)]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: self::PK)]
-    private ?int $parent_id;
-    private ?Adherent $parent;
+    private int|Adherent|null $parent;
     /** @var array<int, Adherent>|null */
     private ?array $children = []; //@phpstan-ignore-line
     private bool $duplicate = false;
@@ -313,7 +312,7 @@ class Adherent
                 $this->staff = false;
                 $this->due_free = false;
                 $this->appears_in_list = false;
-                $this->setParent(null);
+                $this->parent = null;
 
                 if ($this->deps['dynamics'] === true) {
                     $this->loadDynamicFields();
@@ -497,9 +496,9 @@ class Adherent
      */
     private function loadParent(): void
     {
-        if (isset($this->parent_id)) {
+        if (isset($this->parent) && !$this->parent instanceof Adherent) {
             $deps = array_fill_keys(array_keys($this->deps), false);
-            $this->parent = new Adherent($this->zdb, (int)$this->parent_id, $deps);
+            $this->parent = new Adherent($this->zdb, (int)$this->parent, $deps);
         }
     }
 
@@ -789,7 +788,7 @@ class Adherent
      */
     public function hasParent(): bool
     {
-        return !empty($this->parent_id);
+        return !empty($this->parent);
     }
 
     /**
@@ -1664,10 +1663,12 @@ class Adherent
                         $values[$field] = $this->zdb->isPostgres() ? 'false' : 0;
                     } elseif ($field === 'parent_id') {
                         //handle parents
-                        if (!isset($this->parent_id)) {
+                        if (!isset($this->parent)) {
                             $values['parent_id'] = new Expression('NULL');
+                        } elseif ($this->parent instanceof Adherent) {
+                            $values['parent_id'] = $this->parent->id;
                         } else {
-                            $values['parent_id'] = $this->parent_id;
+                            $values['parent_id'] = $this->parent;
                         }
                     } else {
                         $values[$field] = $this->$prop;
@@ -1690,7 +1691,7 @@ class Adherent
                 $values['titre_adh'] = new Expression('NULL');
             }
 
-            if (!$this->parent_id) {
+            if (!$this->parent) {
                 $values['parent_id'] = new Expression('NULL');
             }
 
@@ -1934,7 +1935,6 @@ class Adherent
         switch ($name) {
             case 'id':
             case 'id_statut':
-            case 'parent_id':
                 if (isset($this->$name) && $this->$name !== null) {
                     return (int)$this->$name;
                 } else {
@@ -1961,6 +1961,8 @@ class Adherent
                     }
                 }
                 return null;
+            case 'parent_id':
+                return ($this->parent instanceof Adherent) ? $this->parent->id : $this->parent;
             default:
                 if (!property_exists($this, $name)) {
                     Analog::log(
@@ -2359,7 +2361,7 @@ class Adherent
         }
 
         //parent can edit their child cards
-        if ($this->parent_id === $login->id) {
+        if ($this->hasParent() && $this->parent_id === $login->id) {
             return true;
         }
 
@@ -2438,12 +2440,16 @@ class Adherent
      */
     public function setParent(?int $id): self
     {
-        $this->parent_id = $id;
-        if ($id !== null && $this->deps['parent'] === true) {
-            $this->loadParent();
-        } else {
+        if ($id === null) {
             $this->parent = null;
+            return $this;
         }
+
+        $this->parent = $id;
+        if ($this->deps['parent'] === true) {
+            $this->loadParent();
+        }
+
         return $this;
     }
 
