@@ -216,14 +216,14 @@ class ContributionsTypes extends TestCase
         $this->assertCount(7, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select($ctypes::TABLE . '_id_seq');
+            $select = $this->zdb->select($this->zdb->getSequenceName($ctypes::TABLE, $ctypes::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $this->assertGreaterThanOrEqual(7, $result->last_value, 'Incorrect contributions types sequence');
 
             $this->zdb->db->query(
-                'SELECT setval(\'' . PREFIX_DB . $ctypes::TABLE . '_id_seq\', 1)',
+                'SELECT setval(\'' . $this->zdb->getSequenceName($ctypes::TABLE, $ctypes::PK, true) . '\', 1)',
                 Adapter::QUERY_MODE_EXECUTE
             );
         }
@@ -235,7 +235,7 @@ class ContributionsTypes extends TestCase
         $this->assertCount(7, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select($ctypes::TABLE . '_id_seq');
+            $select = $this->zdb->select($this->zdb->getSequenceName($ctypes::TABLE, $ctypes::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
