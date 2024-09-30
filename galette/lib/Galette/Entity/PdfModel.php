@@ -54,7 +54,6 @@ use Laminas\Db\Sql\Expression;
  * @property-read string $hbody
  * @property string $styles
  * @property string $hstyles
- * @property ?integer $parent_id
  * @property PdfMain $parent
  */
 #[ORM\Entity]
@@ -93,7 +92,6 @@ abstract class PdfModel
     private ?string $styles = '';
     #[ORM\OneToOne(targetEntity: self::class)]
     #[ORM\JoinColumn(name: 'model_parent', referencedColumnName: self::PK)]
-    private ?int $parent_id = null;
     private ?PdfModel $parent = null;
 
     /**

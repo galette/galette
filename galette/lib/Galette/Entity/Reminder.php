@@ -68,7 +68,6 @@ class Reminder
             'unsigned' => true
         ]
     )]
-    private int $dest_id;
     private Adherent $dest;
     #[ORM\Column(name: 'reminder_date', type: 'datetime')]
     private string $date;
@@ -141,8 +140,7 @@ class Reminder
             $pk = self::PK;
             $this->id = (int)$rs->$pk;
             $this->type = (int)$rs->reminder_type;
-            $this->dest_id = (int)$rs->reminder_dest;
-            $this->dest = new Adherent($zdb, $this->dest_id);
+            $this->dest = new Adherent($zdb, (int)$rs->reminder_dest);
             $this->date = $rs->reminder_date;
             $this->success = $rs->reminder_success == 1;
             $this->nomail = $rs->reminder_nomail == 1;
