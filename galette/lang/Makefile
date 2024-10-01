@@ -12,7 +12,7 @@ PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
 all : extract mo
 
 twig :
-	../../bin/twig-cache
+	pushd ../../ && bin/console galette:twig-cache
 
 po :
 	@echo "Generating PO files:"

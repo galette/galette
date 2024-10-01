@@ -61,5 +61,6 @@ class GaletteApplication extends Application
             $this->add(new Command\Plugins\PluginDisable($this->basepath));
             $this->add(new Command\Plugins\PluginInstallDb($this->basepath));
         }
+        $this->add(new Command\MakeTwigCache($this->basepath));
     }
 }
