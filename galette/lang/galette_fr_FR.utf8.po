@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-03 09:20+0200\n"
-"PO-Revision-Date: 2024-09-18 15:40+0000\n"
+"PO-Revision-Date: 2024-10-03 07:25+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -7813,28 +7813,20 @@ msgstr ""
 "adhérents, les cartes pdf, les feuilles d'émargement et les pdf des groupes"
 
 #: ../../tempcache/pages/preferences.html.twig:1231
-#, fuzzy
-#| msgid "Can group managers send mailings?"
 msgid "Can group managers see contributions?"
-msgstr "Les responsables de groupe peuvent effectuer des envois ?"
+msgstr "Les responsables de groupe peuvent voir les contributions ?"
 
 #: ../../tempcache/pages/preferences.html.twig:1245
-#, fuzzy
-#| msgid "Can group managers create members?"
 msgid "Can group managers create contributions?"
-msgstr "Les responsables de groupes peuvent créer des adhérents ?"
+msgstr "Les responsables de groupes peuvent créer des contributions ?"
 
 #: ../../tempcache/pages/preferences.html.twig:1259
-#, fuzzy
-#| msgid "Can group managers send mailings?"
 msgid "Can group managers see transactions?"
-msgstr "Les responsables de groupe peuvent effectuer des envois ?"
+msgstr "Les responsables de groupe peuvent voir les transactions ?"
 
 #: ../../tempcache/pages/preferences.html.twig:1273
-#, fuzzy
-#| msgid "Can group managers create members?"
 msgid "Can group managers create transactions?"
-msgstr "Les responsables de groupes peuvent créer des adhérents ?"
+msgstr "Les responsables de groupes peuvent créer des transactions ?"
 
 #: ../../tempcache/pages/preferences.html.twig:1305
 msgid "Sender name:"
@@ -8903,10 +8895,8 @@ msgid "Hide this panel"
 msgstr "Cacher ce panneau"
 
 #: ../../tempcache/pages/desktop.html.twig:157
-#, fuzzy
-#| msgid "Activities"
 msgid "My activities"
-msgstr "Activités"
+msgstr "Mes activités"
 
 #: ../../tempcache/pages/desktop.html.twig:196
 msgid "Activities"
