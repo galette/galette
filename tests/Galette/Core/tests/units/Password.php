@@ -105,7 +105,8 @@ class Password extends TestCase
             [
                 'nom_adh'   => 'Test password user',
                 'login_adh' => 'test_password_user',
-                'adresse_adh' => 'The address'
+                'adresse_adh' => 'The address',
+                \Galette\Entity\Status::PK => \Galette\Entity\Status::DEFAULT_STATUS
             ]
         );
         $this->zdb->execute($insert);
