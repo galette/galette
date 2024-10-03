@@ -27,6 +27,8 @@ use Galette\DynamicFields\DynamicField;
 use Galette\Entity\ContributionsTypes;
 use Galette\Updater\AbstractUpdater;
 use GalettePaypal\Paypal;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Metadata\Source\Factory;
 
 /**
  * Galette 1.1.0 upgrade script
@@ -36,6 +38,7 @@ use GalettePaypal\Paypal;
 class UpgradeTo115 extends AbstractUpdater
 {
     protected ?string $db_version = '1.15';
+    protected array $groups_fkeys = [];
 
     /**
      * Main constructor
@@ -47,12 +50,72 @@ class UpgradeTo115 extends AbstractUpdater
     }
 
     /**
+     * Pre stuff, if any.
+     * Will be executed first.
+     *
+     * @return boolean
+     */
+    protected function preUpdate(): bool
+    {
+        if ($this->zdb->isPostgres()) {
+            return true;
+        }
+        $tables = $this->zdb->getTables();
+        $metadata = Factory::createSourceFromAdapter($this->zdb->db);
+        $groups_table = PREFIX_DB . 'groups';
+        foreach ($tables as $table) {
+            foreach ($metadata->getConstraints($table) as $constraint) {
+                if ($constraint->isForeignKey() && $constraint->getReferencedTableName() == $groups_table) {
+                    $this->groups_fkeys[] = $constraint;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Update instructions
      *
      * @return boolean
      */
     protected function update(): bool
     {
+        foreach ($this->groups_fkeys as $group_fkey) {
+            $this->zdb->db->query(
+                sprintf(
+                    'ALTER TABLE %s DROP FOREIGN KEY %s;',
+                    $group_fkey->getTableName(),
+                    $group_fkey->getName()
+                ),
+                Adapter::QUERY_MODE_EXECUTE
+            );
+        }
+        return true;
+    }
+
+    /**
+     * Post stuff, if any.
+     * Will be executed at the end.
+     *
+     * @return boolean
+     */
+    protected function postUpdate(): bool
+    {
+        foreach ($this->groups_fkeys as $group_fkey) {
+            $this->zdb->db->query(
+                sprintf(
+                    'ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s;',
+                    $group_fkey->getTableName(),
+                    $group_fkey->getColumns()[0],
+                    PREFIX_DB . 'groups',
+                    \Galette\Entity\Group::PK,
+                    $group_fkey->getDeleteRule(),
+                    $group_fkey->getUpdateRule()
+                ),
+                Adapter::QUERY_MODE_EXECUTE
+            );
+        }
         return true;
     }
 }
