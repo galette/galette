@@ -1,0 +1,85 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Remove size on integers
+ALTER TABLE galette_adherents CHANGE id_adh id_adh INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_adherents CHANGE id_statut id_statut INT UNSIGNED NOT NULL; -- also remove default value here
+ALTER TABLE galette_adherents CHANGE titre_adh titre_adh INT UNSIGNED DEFAULT NULL;
+ALTER TABLE galette_adherents CHANGE parent_id parent_id INT UNSIGNED DEFAULT NULL;
+
+ALTER TABLE galette_cotisations CHANGE id_cotis id_cotis INT UNSIGNED AUTO_INCREMENT;
+ALTER TABLE galette_cotisations CHANGE id_adh id_adh INT UNSIGNED NOT NULL; -- also remove default value here
+ALTER TABLE galette_cotisations CHANGE id_type_cotis id_type_cotis INT UNSIGNED NOT NULL; -- also remove default value here
+ALTER TABLE galette_cotisations CHANGE type_paiement_cotis type_paiement_cotis INT UNSIGNED NOT NULL; -- also remove default value here
+ALTER TABLE galette_cotisations CHANGE trans_id trans_id INT UNSIGNED NOT NULL;
+
+ALTER TABLE galette_transactions CHANGE trans_id trans_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_transactions CHANGE id_adh id_adh INT UNSIGNED DEFAULT NULL;
+ALTER TABLE galette_transactions CHANGE type_paiement_trans type_paiement_trans INT UNSIGNED DEFAULT NULL;
+
+ALTER TABLE galette_statuts CHANGE id_statut id_statut INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_titles CHANGE id_title id_title INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_types_cotisation CHANGE id_type_cotis id_type_cotis INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_preferences CHANGE id_pref id_pref INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_logs CHANGE id_log id_log INT UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE galette_field_types CHANGE field_id field_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_field_types CHANGE field_index field_index INT UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE galette_field_types CHANGE field_perm field_perm INT UNSIGNED NOT NULL DEFAULT 1;
+ALTER TABLE galette_field_types CHANGE field_type field_type INT UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE galette_field_types CHANGE field_pos field_pos INT UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE galette_field_types CHANGE field_width field_width INT UNSIGNED DEFAULT NULL;
+ALTER TABLE galette_field_types CHANGE field_height field_height INT UNSIGNED DEFAULT NULL;
+ALTER TABLE galette_field_types CHANGE field_min_size field_min_size INT UNSIGNED DEFAULT NULL;
+ALTER TABLE galette_field_types CHANGE field_size field_size INT UNSIGNED DEFAULT NULL;
+ALTER TABLE galette_field_types CHANGE field_repeat field_repeat INT UNSIGNED DEFAULT NULL;
+
+ALTER TABLE galette_dynamic_fields CHANGE item_id item_id INT NOT NULL DEFAULT 0;
+ALTER TABLE galette_dynamic_fields CHANGE field_id field_id INT UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE galette_dynamic_fields CHANGE val_index val_index INT NOT NULL DEFAULT 0;
+
+ALTER TABLE galette_pictures CHANGE id_adh id_adh INT UNSIGNED NOT NULL DEFAULT 0;
+
+ALTER TABLE galette_l10n CHANGE text_nref text_nref INT NOT NULL DEFAULT 1;
+
+ALTER TABLE galette_tmppasswds CHANGE id_adh id_adh INT UNSIGNED NOT NULL DEFAULT 0;
+
+ALTER TABLE galette_mailing_history CHANGE mailing_id mailing_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_mailing_history CHANGE mailing_sender mailing_sender INT UNSIGNED;
+
+ALTER TABLE galette_groups CHANGE id_group id_group INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_groups CHANGE parent_group parent_group INT UNSIGNED DEFAULT NULL;
+
+ALTER TABLE galette_groups_managers CHANGE id_group id_group INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_groups_managers CHANGE id_adh id_adh INT UNSIGNED NOT NULL;
+
+ALTER TABLE galette_groups_members CHANGE id_group id_group INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_groups_members CHANGE id_adh id_adh INT UNSIGNED NOT NULL;
+
+ALTER TABLE galette_reminders CHANGE reminder_id reminder_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE galette_reminders CHANGE reminder_id reminder_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_reminders CHANGE reminder_type reminder_type INT NOT NULL;
+ALTER TABLE galette_reminders CHANGE reminder_dest reminder_dest INT unsigned;
+
+ALTER TABLE galette_pdfmodels CHANGE model_id model_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_pdfmodels CHANGE model_parent model_parent INT UNSIGNED DEFAULT NULL;
+
+ALTER TABLE galette_import_model CHANGE model_id model_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE galette_paymenttypes CHANGE type_id type_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE galette_searches CHANGE search_id search_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_searches CHANGE id_adh id_adh INT UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE galette_tmplinks CHANGE id id INT UNSIGNED;
+
+ALTER TABLE galette_socials CHANGE id_social id_social INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_socials CHANGE id_adh id_adh INT UNSIGNED DEFAULT NULL;
+
+ALTER TABLE galette_documents CHANGE id_document id_document INT UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE galette_payments_schedules CHANGE id_schedule id_schedule INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_payments_schedules CHANGE id_cotis id_cotis INT UNSIGNED NOT NULL;
+ALTER TABLE galette_payments_schedules CHANGE id_paymenttype id_paymenttype INT UNSIGNED NOT NULL;
+
+SET FOREIGN_KEY_CHECKS = 1;
