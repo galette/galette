@@ -632,7 +632,7 @@ trait Replacements
         $main_group = _T("None");
         $group_list = _T("None");
         if (is_array($member_groups) && count($member_groups) > 0) {
-            $main_group = $member_groups[0]->getName();
+            $main_group = current($member_groups)->getName();
             $group_list = '<ul>';
             foreach ($member_groups as $group) {
                 $group_list .= '<li>' . $group->getName() . '</li>';
