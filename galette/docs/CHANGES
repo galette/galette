@@ -1,6 +1,25 @@
 Changes
 -------
 
+1.1.3 -> 1.1.4
+
+- Groups managers can add or list contributions and transactions (from a preference)
+- Install from command line
+- Improve dashboard
+- Activate choice after member creation for groups managers
+- Revert PDF member card to previous version, new adaptative one is optional
+- Fix PDF footer overlaps
+- Notify members when groups managers edit their account
+- Preferences socials networks were removed on telemetry update
+- Special HTML character are encoded on members search, therefore no results are found
+- Begin membership date changes on keyboard browse
+- Improve Preferences checks for membership extension/date
+- Cannot remove emails from emails management
+- Force image crop in preferences does not work
+- Display PHP startup messages on error page
+- Display max_input_vars configuration on sys info page
+- Fix SQL issue with postgres searching on dynamic dates
+
 1.1.2 -> 1.1.3
 
 - Impossible to update database
@@ -52,10 +71,10 @@ Changes
 - Contribution type filter in contributions list
 - Menu entry was not always correctly selected
 - Add payment type on transactions
-- Remove non user related files from cofiguration folder
+- Remove non user related files from configuration folder
 - Add monthly contribution membership
 - PDF Member card adaptative size
-- Fix extra non listed column on filtered memberslist CSV export
+- Fix extra non listed column on filtered members list CSV export
 
 1.0.3 -> 1.0.4
 
@@ -74,7 +93,7 @@ Changes
 
 - Logo in mail signature is not shown
 - Missing HTML editor for dynamic fields information field
-- Update and maintainance pages are no longer working
+- Update and maintenance pages are no longer working
 - Do not throw events on mass edition
 - Make cache version dependent
 - Check preferences website is valid
