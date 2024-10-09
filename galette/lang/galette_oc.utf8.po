@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-03 09:20+0200\n"
-"PO-Revision-Date: 2024-08-04 15:09+0000\n"
+"PO-Revision-Date: 2024-10-10 00:40+0000\n"
 "Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.7-dev\n"
+"X-Generator: Weblate 5.8-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -923,7 +923,7 @@ msgstr "Impossible d'accedir per %id"
 #: ../lib/Galette/Controllers/AuthController.php:270
 #: ../lib/Galette/Controllers/AuthController.php:275
 msgid "Impersonating ended"
-msgstr ""
+msgstr "Semblança acabada"
 
 #: ../lib/Galette/Controllers/AuthController.php:300
 #: ../lib/Galette/Controllers/AuthController.php:501
@@ -1278,7 +1278,7 @@ msgstr "Ko"
 
 #: ../lib/Galette/Core/Install.php:311
 msgid "Database type unknown"
-msgstr ""
+msgstr "Mena de basa inconeguda"
 
 #: ../lib/Galette/Core/Install.php:673
 msgid "%version script has been successfully executed :)"
@@ -1286,15 +1286,15 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:685
 msgid "Unable to run %version update script :("
-msgstr ""
+msgstr "Pas possible de lançar l’actualizacion per la %version :("
 
 #: ../lib/Galette/Core/Install.php:1055
 msgid "Write configuration file"
-msgstr ""
+msgstr "Escritura dau fichier de configuracion"
 
 #: ../lib/Galette/Core/Install.php:1084
 msgid "Config file already exists and is up to date"
-msgstr ""
+msgstr "Lo fichier de configuracion es ja estat actualizat"
 
 #: ../lib/Galette/Core/Install.php:1113
 msgid "Unable to create configuration file (%path)"
@@ -1362,27 +1362,27 @@ msgstr "Quant fa %2$s levat(s) de %1$s ?"
 #: ../lib/Galette/Core/Gaptcha.php:86
 #, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
-msgstr ""
+msgstr "Ai %1$s Galetas, ne’n òfron %2$s. Quant de Galetas me rèstan ?"
 
 #: ../lib/Galette/Core/Pagination.php:246
 msgid "First page"
-msgstr ""
+msgstr "Pagina premiera"
 
 #: ../lib/Galette/Core/Pagination.php:252
 msgid "Previous page (%i)"
-msgstr ""
+msgstr "Pagina precedenta (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:264
 msgid "Current page (%i)"
-msgstr ""
+msgstr "Pagina correnta (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:272
 msgid "Page %i"
-msgstr ""
+msgstr "Pagina %i"
 
 #: ../lib/Galette/Core/Pagination.php:280
 msgid "Next page (%i)"
-msgstr ""
+msgstr "Pagina seguenta (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:286
 msgid "Last page (%i)"
@@ -1595,6 +1595,8 @@ msgid ""
 "Add documents to share related to your association (status, rules of "
 "procedure, ...)"
 msgstr ""
+"Ajustar de documents relatius a vòstra associacion per partejar ( estatuts, "
+"reglament interior, …)"
 
 #: ../lib/Galette/Core/Galette.php:379 ../install/steps/check.php:52
 msgid "Configuration"
@@ -1697,7 +1699,7 @@ msgstr "Paginas publicas"
 
 #: ../lib/Galette/Core/Galette.php:564 ../lib/Galette/Core/Galette.php:747
 msgid "View documents related to your association"
-msgstr ""
+msgstr "Veire lei documents relatius a vòstra associacion"
 
 #: ../lib/Galette/Core/Galette.php:718
 #: ../lib/Galette/DynamicFields/DynamicField.php:548
@@ -1842,11 +1844,11 @@ msgstr "- Lei nombres e mesuras se devon definir per d’entiers !"
 
 #: ../lib/Galette/Core/Preferences.php:741
 msgid "- The card height have to be an integer between 40 and 55!"
-msgstr ""
+msgstr "- L’autor de la carta deu èstre unentier entre 40 e 55 !"
 
 #: ../lib/Galette/Core/Preferences.php:746
 msgid "- The card width have to be an integer between 70 and 95!"
-msgstr ""
+msgstr "- La largor de la carta deu èstre un entier entre 70 e 95 !"
 
 #: ../lib/Galette/Core/Preferences.php:780
 msgid "- Invalid number of months of membership extension."
@@ -1854,7 +1856,7 @@ msgstr "- Lo nombre de mes definit per l’extension de l’adesion es invalide.
 
 #: ../lib/Galette/Core/Preferences.php:786
 msgid "- Invalid format of beginning of membership."
-msgstr ""
+msgstr "- Lo format de la data de començament d’exercici convèn pas"
 
 #: ../lib/Galette/Core/Preferences.php:790
 msgid "- Invalid date for beginning of membership."
@@ -1862,19 +1864,19 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:796
 msgid "- Invalid number of offered months."
-msgstr ""
+msgstr "- Lo nombre de mes ofèrts convèn pas."
 
 #: ../lib/Galette/Core/Preferences.php:801
 msgid "- Invalid year for cards."
-msgstr ""
+msgstr "- L’annada per lei cartas convèn pas."
 
 #: ../lib/Galette/Core/Preferences.php:809
 msgid "- Invalid website URL."
-msgstr ""
+msgstr "- URL dau site invalide."
 
 #: ../lib/Galette/Core/Preferences.php:933
 msgid "%name association's %status"
-msgstr ""
+msgstr "%estatuts de l’associacion %name"
 
 #: ../lib/Galette/Core/Preferences.php:1236
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
@@ -1886,7 +1888,7 @@ msgstr ""
 #: ../../tempcache/pages/history.html.twig:343
 #: ../../tempcache/pages/mailings_list.html.twig:326
 msgid "Y-m-d H:i:s"
-msgstr ""
+msgstr "d/m/Y H:i:s"
 
 #: ../lib/Galette/Core/Preferences.php:1257
 msgid "Never"
@@ -1895,10 +1897,11 @@ msgstr "Jamai"
 #: ../lib/Galette/Core/Preferences.php:1295
 msgid "Current cards configuration may exceed page width!"
 msgstr ""
+"La configuracion correnta dei cartas pòt passar la largor de la pagina !"
 
 #: ../lib/Galette/Core/Preferences.php:1306
 msgid "Current cards configuration may exceed page height!"
-msgstr ""
+msgstr "La configuracion correnta dei cartas pòt passar l’autor de la pagina !"
 
 #: ../lib/Galette/Core/Preferences.php:1332
 #: ../lib/Galette/Features/Replacements.php:804
@@ -1919,7 +1922,7 @@ msgstr ""
 #: ../lib/Galette/Core/CheckModules.php:80
 #, php-format
 msgid "'%s' module"
-msgstr ""
+msgstr "module '%s'"
 
 #: ../lib/Galette/Core/CheckModules.php:86
 msgid "either 'mysql' or 'pgsql' PDO driver"
@@ -1932,11 +1935,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/Plugins.php:259 ../lib/Galette/Core/Plugins.php:282
 msgid "No such module."
-msgstr ""
+msgstr "Module inconegut."
 
 #: ../lib/Galette/Core/Plugins.php:263 ../lib/Galette/Core/Plugins.php:267
 msgid "Cannot deactivate plugin."
-msgstr ""
+msgstr "Impossible de desactivar l’ajuston."
 
 #: ../lib/Galette/Core/Plugins.php:286 ../lib/Galette/Core/Plugins.php:290
 msgid "Cannot activate plugin."
@@ -8448,7 +8451,7 @@ msgstr[1] "Proporcion de transaccions : %count"
 
 #: ../../tempcache/pages/transactions_list.html.twig:301
 msgid "Originator"
-msgstr ""
+msgstr "Emetor"
 
 #: ../../tempcache/pages/transactions_list.html.twig:391
 msgid "Transaction %id"
