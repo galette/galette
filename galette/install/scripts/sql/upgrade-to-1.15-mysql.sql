@@ -69,7 +69,7 @@ ALTER TABLE galette_import_model CHANGE model_id model_id INT UNSIGNED NOT NULL 
 ALTER TABLE galette_paymenttypes CHANGE type_id type_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE galette_searches CHANGE search_id search_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
-ALTER TABLE galette_searches CHANGE id_adh id_adh INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_searches CHANGE id_adh id_adh INT UNSIGNED;
 
 ALTER TABLE galette_tmplinks CHANGE id id INT UNSIGNED;
 
