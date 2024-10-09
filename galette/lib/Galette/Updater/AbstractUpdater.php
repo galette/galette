@@ -176,7 +176,7 @@ abstract class AbstractUpdater
             @filesize($script)
         ) . "\n";
 
-        if ($sql_query !== '') {
+        if (trim($sql_query) !== '') {
             return $installer->executeSql($zdb, $sql_query);
         }
 
