@@ -1035,7 +1035,7 @@ class Db
         /** @phpstan-ignore-next-line */
         return (int)$this->driver->getLastGeneratedValue(
             $this->isPostgres() ?
-                PREFIX_DB . $entity::TABLE . '_' . $entity::PK . '_seq'
+                $this->getSequenceName($entity::TABLE, $entity::PK, true)
                 : null
         );
     }
