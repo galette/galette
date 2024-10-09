@@ -15,7 +15,7 @@ var gulp = require('gulp'),
   merge = require('merge-stream'),
   concat = require('gulp-concat'),
   replace = require('gulp-replace'),
-  download = require("gulp-download"),
+  download = require("gulp-download2"),
   browserSync = require('browser-sync').create(),
   build = require('./semantic/tasks/build'),
   buildJS = require('./semantic/tasks/build/javascript'),
@@ -66,7 +66,7 @@ var paths = {
       './node_modules/summernote/dist/summernote-lite.min.css'
     ],
     codemirror: [
-      'https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.css'
+      'https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.24.0/codemirror.css'
     ]
   },
   scripts: {
@@ -89,10 +89,10 @@ var paths = {
       './node_modules/summernote/dist/summernote-lite.min.js'
     ],
     codemirror: [
-      'https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.js'
+      'https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.24.0/codemirror.js'
     ],
     codemirrorxml: [
-      'https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/mode/xml/xml.js'
+      'https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.24.0/mode/xml/xml.js'
     ],
     codemirrorformatting: [
       'https://cdnjs.cloudflare.com/ajax/libs/codemirror/2.36.0/formatting.js'
@@ -162,8 +162,7 @@ function styles() {
     .pipe(gulp.dest(paths.assets.css))
     .pipe(browserSync.stream());
 
-  codemirror = download(paths.styles.codemirror)
-    .pipe(concat('codemirror.css'))
+  codemirror = download(paths.styles.codemirror, { ci: true })
     .pipe(gulp.dest(paths.assets.css))
     .pipe(browserSync.stream());
 
@@ -206,18 +205,15 @@ function scripts() {
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  codemirror = download(paths.scripts.codemirror)
-    .pipe(concat('codemirror.js'))
+  codemirror = download(paths.scripts.codemirror, { ci: true })
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  codemirrorxml = download(paths.scripts.codemirrorxml)
-    .pipe(concat('xml.js'))
+  codemirrorxml = download(paths.scripts.codemirrorxml, { ci: true })
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  codemirrorformatting = download(paths.scripts.codemirrorformatting)
-    .pipe(concat('formatting.js'))
+  codemirrorformatting = download(paths.scripts.codemirrorformatting, { ci: true })
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 

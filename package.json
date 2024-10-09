@@ -10,10 +10,10 @@
     "clean": "rm -rf node_modules && rm -rf semantic && rm -rf galette/vendor && rm -rf galette/webroot/assets && rm -rf galette/webroot/themes",
     "fomantic-install": "cd node_modules/fomantic-ui && npx gulp install",
     "install-deps": "npm run clean && cd galette && composer install -o --ignore-platform-reqs && cd .. && npm install && npm run fomantic-install",
-    "first-build": "npm run fomantic-install && gulp",
-    "build": "gulp",
-    "rebuild": "npm run install-deps && gulp",
-    "watch": "gulp watch"
+    "first-build": "npm run fomantic-install && npx gulp",
+    "build": "npx gulp",
+    "rebuild": "npm run install-deps && npx gulp",
+    "watch": "npx gulp watch"
   },
   "repository": {
     "type": "git",
@@ -22,31 +22,31 @@
   "author": "Johan Cwiklinski <johan AT x-tnd DOT be>",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "browser-sync": "^3.0.2",
-    "clean-css": "^5.3.2",
-    "css-loader": "^6.8.1",
+    "browser-sync": "^3.0.3",
+    "clean-css": "^5.3.3",
+    "css-loader": "^7.1.2",
     "del": "^6.1.1",
     "file-loader": "^6.2.0",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
     "gulp-cli": "^2.3.0",
     "gulp-concat": "^2.6.1",
-    "gulp-download": "^0.0.1",
+    "gulp-download2": "^1.1.0",
     "gulp-replace": "^1.1.4",
     "gulp-uglify": "^3.0.2",
     "merge-stream": "^2.0.0",
-    "uglify-js": "^3.17.4"
+    "uglify-js": "^3.19.3"
   },
   "dependencies": {
-    "chart.js": "^4.4.0",
-    "chartjs-plugin-autocolors": "^0.2.2",
+    "chart.js": "^4.4.4",
+    "chartjs-plugin-autocolors": "^0.3.1",
     "chartjs-plugin-datalabels": "^2.2.0",
-    "darkreader": "^4.9.67",
+    "darkreader": "^4.9.95",
     "fomantic-ui": "^2.9.3",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
-    "sortablejs": "^1.15.0",
-    "summernote": "^0.8.20",
+    "sortablejs": "^1.15.3",
+    "summernote": "^0.9.1",
     "twemoji-emojis": "^14.1.0"
   }
 }
