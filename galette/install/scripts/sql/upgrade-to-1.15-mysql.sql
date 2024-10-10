@@ -56,8 +56,6 @@ ALTER TABLE galette_groups_members CHANGE id_group id_group INT UNSIGNED NOT NUL
 ALTER TABLE galette_groups_members CHANGE id_adh id_adh INT UNSIGNED NOT NULL;
 
 ALTER TABLE galette_reminders CHANGE reminder_id reminder_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE galette_reminders CHANGE reminder_id reminder_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE galette_reminders CHANGE reminder_type reminder_type INT NOT NULL;
 ALTER TABLE galette_reminders CHANGE reminder_dest reminder_dest INT unsigned;
 

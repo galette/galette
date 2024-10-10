@@ -275,7 +275,7 @@ CREATE TABLE galette_groups_members (
 -- Table for reminders
 DROP TABLE IF EXISTS galette_reminders;
 CREATE TABLE galette_reminders (
-  reminder_id int NOT NULL auto_increment,
+  reminder_id int unsigned NOT NULL auto_increment,
   reminder_type int NOT NULL,
   reminder_dest int unsigned,
   reminder_date datetime NOT NULL,

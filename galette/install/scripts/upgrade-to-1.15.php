@@ -112,7 +112,8 @@ class UpgradeTo115 extends AbstractUpdater
                     \Galette\Entity\Group::PK,
                     $group_fkey->getDeleteRule(),
                     $group_fkey->getUpdateRule()
-                )
+                ),
+                Adapter::QUERY_MODE_EXECUTE
             );
         }
         return true;
