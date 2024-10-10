@@ -87,7 +87,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
                 $this->wlogo = $print_logo->getWidth() / 3.78;
             }
             $this->hlogo = round($this->wlogo / $this->ratio);
-            // check if the logo heigh is greater than 42%
+            // check if the logo height is greater than 42%
             if ($this->hlogo  > 0.42 * $this->he) {
                 $this->hlogo = round(0.42 * $this->he, 0, PHP_ROUND_HALF_DOWN);
                 $this->wlogo = round($this->hlogo * $this->ratio);
@@ -195,16 +195,21 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
 
             // Color=#8C8C8C: Shadow of the year
             $this->SetTextColor(140);
-            $this->SetFontSize($this->year_font_size);
 
             //Write shadow of the year, center of the card
             $an_cot = $this->an_cot;
             if ($an_cot === 'DEADLINE') {
                 //get current member deadline
-                $an_cot = $member->due_date;
+                $an_cot = $member->due_date ?? '';
             }
-
-            $xan_cot = $x0 + $this->wi / 2 - $this->GetStringWidth(
+            $this->fixSize(
+                $an_cot,
+                intval(round($this->max_text_size_top * 0.80, PHP_ROUND_HALF_DOWN)),
+                14,
+                'B'
+            );
+            $this->year_font_size = intval(round($this->FontSizePt, PHP_ROUND_HALF_DOWN));
+            $xan_cot = $x0 + $this->wphoto + $this->max_text_size_top / 2 - $this->GetStringWidth(
                 $an_cot,
                 self::FONT,
                 'B',
