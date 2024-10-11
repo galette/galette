@@ -25,6 +25,8 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Helpers\EntityHelper;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\IsNull;
@@ -39,7 +41,8 @@ use Analog\Analog;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_payments_schedules')]
 class ScheduledPayment
 {
     use EntityHelper;
@@ -47,13 +50,33 @@ class ScheduledPayment
     public const TABLE = 'payments_schedules';
     public const PK = 'id_schedule';
     private Db $zdb;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'id_schedule', type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
+    #[ORM\ManyToOne(targetEntity: Contribution::class)]
+    #[ORM\JoinColumn(onDelete: 'cascade')]
     private Contribution $contribution;
+    #[ORM\ManyToOne(targetEntity: PaymentType::class)]
+    #[ORM\JoinColumn(
+        name: 'id_paymenttype',
+        referencedColumnName: PaymentType::PK,
+        nullable: false,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
     private PaymentType $payment_type;
+    #[ORM\Column(name: 'creation_date', type: Types::DATE_MUTABLE)]
     private string $creation_date;
+    #[ORM\Column(name: 'scheduled_date', type: Types::DATE_MUTABLE)]
     private string $scheduled_date;
+    #[ORM\Column(name: 'amount', type: Types::DECIMAL, precision: 15, scale: 2)]
     private float $amount;
+    #[ORM\Column(name: 'paid', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $is_paid = false;
+    #[ORM\Column(name: 'comment', type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
     /** @var string[] */
     private array $errors = [];
@@ -364,7 +387,6 @@ class ScheduledPayment
         } else {
             $this->payment_type = $payment_type;
         }
-
         return $this;
     }
 
