@@ -55,6 +55,7 @@ $core_acls = [
     'contributionMembers'               => 'groupmanager',
     '/(.*)?addContribution/i'           => 'groupmanager',
     '/(at|de)tach_contribution/i'       => 'groupmanager',
+    '/contributionDates/i'              => 'groupmanager',
     '/(.+)?contribution(.+)?/i'         => 'staff',
     '/(.*)?addTransaction/i'            => 'groupmanager',
     '/(.*)?editTransaction/i'           => 'groupmanager',
