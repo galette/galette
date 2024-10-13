@@ -319,6 +319,8 @@ class Contribution
      */
     public function load(int $id): bool
     {
+        global $preferences;
+
         if (!$this->login->isLogged() && $this->login->id == '') {
             return false;
         }
@@ -332,15 +334,37 @@ class Contribution
             );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                $select->where
-                    ->nest()
-                        ->equalTo('a.' . Adherent::PK, $this->login->id)
-                        ->or
-                        ->equalTo('a.parent_id', $this->login->id)
-                    ->unnest()
-                    ->and
-                    ->equalTo('c.' . self::PK, $id)
-                ;
+                if ($this->login->isGroupManager() && $preferences->pref_bool_groupsmanagers_create_transactions) {
+                    //limit to managed members from managed groups
+                    $mgroups = $this->login->getManagedGroups();
+                    $select->join(
+                        array('users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                        'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
+                        array(),
+                        $select::JOIN_LEFT
+                    );
+                    $select->where
+                        ->nest()
+                            ->in('users_groups.' . Group::PK, array_values($mgroups))
+                            ->or
+                            ->equalTo('a.' . Adherent::PK, $this->login->id)
+                            ->or
+                            ->equalTo('a.parent_id', $this->login->id)
+                        ->unnest()
+                        ->and
+                        ->equalTo('c.' . self::PK, $id);
+                    //$select->group('c.' . Contribution::PK);
+                } else {
+                    $select->where
+                        ->nest()
+                            ->equalTo('a.' . Adherent::PK, $this->login->id)
+                            ->or
+                            ->equalTo('a.parent_id', $this->login->id)
+                        ->unnest()
+                        ->and
+                        ->equalTo('c.' . self::PK, $id)
+                    ;
+                }
             } else {
                 $select->where->equalTo(self::PK, $id);
             }
@@ -420,7 +444,6 @@ class Contribution
      */
     public function check(array $values, array $required, array $disabled): bool|array
     {
-        global $preferences;
         $this->errors = array();
 
         $fields = array_keys($this->fields);
@@ -1214,8 +1237,6 @@ class Contribution
      */
     public function __set(string $name, mixed $value): void
     {
-        global $preferences;
-
         $forbidden = array('fields', 'is_cotis', 'end_date');
 
         if (!in_array($name, $forbidden)) {
