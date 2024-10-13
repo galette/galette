@@ -215,6 +215,10 @@ class Contributions
             $results = $this->zdb->execute($countSelect);
             $result = $results->current();
 
+            if (!$result) {
+                return;
+            }
+
             $k = self::PK;
             $this->count = (int)$result->$k;
             $this->filters->setCounter($this->count);
@@ -248,7 +252,7 @@ class Contributions
 
             $results = $this->zdb->execute($sumSelect);
             $result = $results->current();
-            if ($result->contribsum) {
+            if ($result && $result->contribsum) {
                 $this->sum = round((float)$result->contribsum, 2);
             }
         } catch (Throwable $e) {
