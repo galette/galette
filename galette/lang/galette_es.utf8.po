@@ -44,7 +44,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-03 09:20+0200\n"
 "PO-Revision-Date: 2024-10-15 05:29+0000\n"
-"Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -3091,7 +3091,7 @@ msgstr "Auto_suscripción como miembro: "
 
 #: ../lib/Galette/Entity/Adherent.php:1687
 msgid "Member card added"
-msgstr "Tarjeta de miembro agregada"
+msgstr "Tarjeta de socio añadida"
 
 #: ../lib/Galette/Entity/Adherent.php:1694
 msgid "Fail to add new member."
@@ -3360,16 +3360,12 @@ msgstr "ID de contribucion"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:154
 #: ../lib/Galette/Entity/ScheduledPayment.php:320
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load contribution"
-msgstr "¡No se ha podido cargar la contribución #%id!"
+msgstr "No se puede cargar la colaboración"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:159
-#, fuzzy
-#| msgid "- The duration must be a positive integer!"
 msgid "Amount must be a positive number"
-msgstr "- ¡el duracion nesesitan ser un integro positivo!"
+msgstr "El importe debe ser un número positivo"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:166
 msgid "Amount cannot be greater than non allocated amount"
@@ -3417,14 +3413,12 @@ msgid "Record date:"
 msgstr ""
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:636
-#, fuzzy
-#| msgid "Late due date"
 msgid "Scheduled date:"
-msgstr "Última fecha de vencimiento"
+msgstr "Fecha prevista:"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:644
 msgid "Paid"
-msgstr ""
+msgstr "Pagado"
 
 #: ../lib/Galette/Entity/Social.php:341
 msgid "Mastodon"
@@ -5549,10 +5543,8 @@ msgid "February"
 msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:64
-#, fuzzy
-#| msgid "Search:"
 msgid "March"
-msgstr "Buscar:"
+msgstr "Marzo"
 
 #: ../../tempcache/elements/js/calendar.js.twig:68
 msgid "April"
@@ -5632,10 +5624,8 @@ msgid "Aug"
 msgstr ""
 
 #: ../../tempcache/elements/js/calendar.js.twig:138
-#, fuzzy
-#| msgid "Steps:"
 msgid "Sep"
-msgstr "Pasos:"
+msgstr "Set."
 
 #: ../../tempcache/elements/js/calendar.js.twig:142
 msgid "Oct"
@@ -5716,10 +5706,8 @@ msgstr ""
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:95
 #: ../../tempcache/components/forms/picture.html.twig:106
-#, fuzzy
-#| msgid "To:"
 msgid "Top"
-msgstr "A:"
+msgstr "Arriba"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:99
 #: ../../tempcache/components/forms/picture.html.twig:110
@@ -6016,21 +6004,18 @@ msgstr ""
 #: ../../tempcache/pages/contributions_types_list.html.twig:125
 #: ../../tempcache/pages/contributions_types_list.html.twig:133
 #: ../../tempcache/pages/contributions_types_list.html.twig:212
-#, fuzzy, php-format
-#| msgid "months"
+#, php-format
 msgid "%1$s month"
 msgid_plural "%1$s months"
-msgstr[0] "meses"
-msgstr[1] "meses"
+msgstr[0] "%1$s mes"
+msgstr[1] "%1$s meses"
 
 #: ../../tempcache/pages/contribution_type_form.html.twig:109
 #: ../../tempcache/pages/contributions_types_list.html.twig:77
 #: ../../tempcache/pages/contributions_types_list.html.twig:121
 #: ../../tempcache/pages/contributions_types_list.html.twig:192
-#, fuzzy
-#| msgid "Membership extension:"
 msgid "Membership extension"
-msgstr "Extensión de membresía:"
+msgstr "Ampliación de la afiliación"
 
 #: ../../tempcache/pages/plugins.html.twig:62
 #: ../../tempcache/pages/plugins.html.twig:93
@@ -6222,31 +6207,30 @@ msgstr "Descargar documento"
 
 #: ../../tempcache/pages/documents_public_list.html.twig:110
 #: ../../tempcache/pages/documents_list.html.twig:65
-#, fuzzy, php-format
-#| msgid "Download document"
+#, php-format
 msgid "%count document"
 msgid_plural "%count documents"
-msgstr[0] "Descargar documento"
-msgstr[1] "Descargar documento"
+msgstr[0] "%count documento"
+msgstr[1] "%count documentos"
 
 #: ../../tempcache/pages/transaction_form.html.twig:73
 msgid "Transaction details"
-msgstr ""
+msgstr "Detalles de la transacción"
 
 #: ../../tempcache/pages/transaction_form.html.twig:176
 #: ../../tempcache/pages/transaction_form.html.twig:182
 #: ../../tempcache/pages/contribution_form.html.twig:354
 msgid "Select a contribution type to create for dispatch transaction"
-msgstr ""
+msgstr "Seleccione un tipo de colaboración para crear una transacción de envío"
 
 #: ../../tempcache/pages/transaction_form.html.twig:178
 #: ../../tempcache/pages/contribution_form.html.twig:350
 msgid "Dispatch type:"
-msgstr ""
+msgstr "Método de envío:"
 
 #: ../../tempcache/pages/transaction_form.html.twig:208
 msgid "Attached contributions"
-msgstr ""
+msgstr "Contribuciones anexas"
 
 #: ../../tempcache/pages/transaction_form.html.twig:220
 #: ../../tempcache/pages/contributions_list.html.twig:100
@@ -6254,7 +6238,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:656
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:168
 msgid "Begin"
-msgstr "Comienzo"
+msgstr "Iniciar"
 
 #: ../../tempcache/pages/transaction_form.html.twig:224
 #: ../../tempcache/pages/contributions_list.html.twig:110
@@ -6262,7 +6246,7 @@ msgstr "Comienzo"
 #: ../../tempcache/pages/contributions_list.html.twig:662
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:180
 msgid "End"
-msgstr "Final"
+msgstr "Terminar"
 
 #: ../../tempcache/pages/transaction_form.html.twig:228
 #: ../../tempcache/pages/contributions_list.html.twig:467
@@ -6952,10 +6936,8 @@ msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:1488
-#, fuzzy
-#| msgid "Required"
 msgid "Required field!"
-msgstr "Requerido"
+msgstr "¡Campo obligatorio!"
 
 #: ../../tempcache/pages/configuration_core_fields.html.twig:273
 msgid "Some warnings has been thrown:"
@@ -7789,10 +7771,8 @@ msgid ""
 msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:1231
-#, fuzzy
-#| msgid "Fail to add new contribution."
 msgid "Can group managers see contributions?"
-msgstr "Ha ocurrido un error al añadir la contribución."
+msgstr "¿Pueden ver las contribuciones los responsables de grupos?"
 
 #: ../../tempcache/pages/preferences.html.twig:1245
 msgid "Can group managers create contributions?"
@@ -8396,38 +8376,37 @@ msgid "Scheduled date"
 msgstr "Última fecha de vencimiento"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:205
-#, fuzzy, php-format
-#| msgid "Download document"
+#, php-format
 msgid "%count shceduled payment"
 msgid_plural "%count scheduled payments"
-msgstr[0] "Descargar documento"
-msgstr[1] "Descargar documento"
+msgstr[0] "%count pago programado"
+msgstr[1] "%count pagos programados"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:268
 #, php-format
 msgid "Found total scheduled %f"
-msgstr ""
+msgstr "Se ha encontrado el total programado %f"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:437
-#, fuzzy
-#| msgid "Delete '%s' payment type"
 msgid "Delete scheduled payment"
-msgstr "Eliminar tipo de pago «%s»"
+msgstr "Eliminar pago programado"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:462
 msgid "No scheduled payment"
-msgstr ""
+msgstr "No hay ningún pago programado"
 
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:71
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:79
 msgid "Original string for name, that will be used for translations."
-msgstr ""
+msgstr "Cadena original para el nombre, que se utilizará para las traducciones."
 
 #: ../../tempcache/pages/member_show.html.twig:112
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
 "password' functionality."
 msgstr ""
+"Enviar al usuario un enlace para generar una nueva contraseña, como si "
+"hubiera utilizado la función \"contraseña perdida\"."
 
 #: ../../tempcache/pages/member_show.html.twig:119
 msgid "New password"
@@ -8693,10 +8672,8 @@ msgstr "Agregar nuevos criterios de búsqueda de grupos"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1122
 #: ../../tempcache/pages/advanced_search.html.twig:1832
-#, fuzzy
-#| msgid "Select a file:"
 msgid "Select a field"
-msgstr "Seleccione un archivo:"
+msgstr "Seleccionar un campo"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1291
 #: ../../tempcache/pages/advanced_search.html.twig:1369
