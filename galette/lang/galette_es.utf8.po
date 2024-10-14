@@ -37,13 +37,14 @@
 # Dragos <dragos@duckly.com>, 2022.
 # Javier <javier.fserrador@gmail.com>, 2022.
 # gallegonovato <fran-carro@hotmail.es>, 2022, 2023, 2024.
+# Kamborio <Kamborio15@users.noreply.hosted.weblate.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-03 09:20+0200\n"
-"PO-Revision-Date: 2024-04-21 07:17+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2024-10-15 05:29+0000\n"
+"Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -51,7 +52,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5-dev\n"
+"X-Generator: Weblate 5.8-rc\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -75,7 +76,7 @@ msgstr "Se ha producido un error al almacenar la transacción."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:273
 msgid "Transaction has been successfully stored"
-msgstr "Se ha almacenado la transacción correctamente"
+msgstr "Se ha almacenado con éxito la transacción"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:335
 msgid "Unable to attach contribution to transaction"
@@ -83,7 +84,7 @@ msgstr "No se ha podido adjuntar la contribución a la transacción"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:340
 msgid "Contribution has been successfully attached to current transaction"
-msgstr "Se ha adjuntado la contribución a la transacción actual correctamente"
+msgstr "Se ha adjuntado con éxito la contribución a la transacción actual"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:367
 msgid "Unable to detach contribution from transaction"
@@ -91,8 +92,7 @@ msgstr "No se ha podido desadjuntar la contribución de la transacción"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:372
 msgid "Contribution has been successfully detached from current transaction"
-msgstr ""
-"Se ha desadjuntado la contribución de la transacción actual correctamente"
+msgstr "Se ha separado con éxito la contribución de la transacción actual"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:97
 msgid "Payment types management"
@@ -104,30 +104,28 @@ msgid "Edit payment type"
 msgstr "Editar tipo de pago"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:191
-#, fuzzy
-#| msgid "Missing required field name!"
 msgid "Missing required payment type's name!"
-msgstr "Falta campo obligatorio!"
+msgstr "¡Falta el nombre del tipo de pago obligatorio!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:200
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr "¡No se ha añadido el tipo de pago «%s»!"
+msgstr "¡No se ha añadido el tipo de pago '%s'!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:206
 #, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr "¡No se ha modificado el tipo de pago «%s»!"
+msgstr "¡No se ha modificado el tipo de pago '%s'!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:216
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr "Se ha añadido el tipo de pago «%s» correctamente."
+msgstr "Se ha añadido con éxito el tipo de pago '%s'."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
-msgstr "Se ha modificado el tipo de pago «%s» correctamente."
+msgstr "Se ha modificado con éxito el tipo de pago '%s'."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:298
 #, php-format
@@ -135,22 +133,16 @@ msgid "Remove payment type %1$s"
 msgstr "Quitar tipo de pago %1$s"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:69
-#, fuzzy
-#| msgid "Contribution has been successfully stored"
 msgid "Contribution is fully scheduled!"
-msgstr "Se almacenó la contribución correctamente"
+msgstr "¡Contribución totalmente programada!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:90
-#, fuzzy
-#| msgid "Add attachment"
 msgid "Add scheduled payment"
-msgstr "Añadir archivo adjunto"
+msgstr "Añadir pago programado"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:179
-#, fuzzy
-#| msgid "Payment types management"
 msgid "Scheduled payments management"
-msgstr "Gestión de tipos de pago"
+msgstr "Gestión de pagos programados"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:273
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:662
@@ -158,48 +150,36 @@ msgid "- Unknown payment type!"
 msgstr "- ¡Tipo de pago desconocido!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:330
-#, fuzzy
-#| msgid "No member was selected, please check at least one name."
 msgid "No scheduled payment was selected, please check at least one."
 msgstr ""
-"No se ha seleccionado ningún miembro, por favor marque al menos un nombre."
+"No se ha seleccionado ningún pago programado, por favor marca uno al menos."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:366
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:424
-#, fuzzy
-#| msgid "Download document"
 msgid "Edit scheduled payment"
-msgstr "Descargar documento"
+msgstr "Editar pago programado"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:436
-#, fuzzy
-#| msgid "Payment type '%s' has not been added!"
 msgid "Scheduled payment has not been added!"
-msgstr "¡No se ha añadido el tipo de pago «%s»!"
+msgstr "¡No se ha añadido el pago programado!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:438
-#, fuzzy
-#| msgid "Payment type '%s' has not been modified!"
 msgid "Scheduled payment has not been modified!"
-msgstr "¡No se ha modificado el tipo de pago «%s»!"
+msgstr "¡No se ha modificado el pago programado!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:444
-#, fuzzy
-#| msgid "New member has been successfully added."
 msgid "Scheduled payment has been successfully added."
-msgstr "Has añadido un nuevo miembro correctamente."
+msgstr "Se ha añadido con éxito un pago programado."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:446
-#, fuzzy
-#| msgid "Payment type '%s' has been successfully modified."
 msgid "Scheduled payment has been successfully modified."
-msgstr "Se ha modificado el tipo de pago «%s» correctamente."
+msgstr "Se ha modificado con éxito el pago programado."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:510
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Pago programado eliminado"
+msgstr[1] "Pagos programados eliminados"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:106
 msgid "Group name is missing!"
@@ -288,22 +268,16 @@ msgid "Edit contribution type"
 msgstr "Editar un tipo de contribución"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:212
-#, fuzzy
-#| msgid "Missing required field name!"
 msgid "Missing required contribution type name!"
-msgstr "Falta campo obligatorio!"
+msgstr "¡Falta el nombre de tipo de contribución obligatorio!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:218
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Contribution type has not been added :("
-msgstr "%type no se ha añadido :("
+msgstr "No se ha añadido el tipo de contribución :("
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:218
-#, fuzzy
-#| msgid "%type #%id has not been updated"
 msgid "Contribution type #%id has not been updated"
-msgstr "%type n.º %id no se ha actualizado"
+msgstr "No se ha modificado el tipo de contribución n.º %id"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:224
 msgid "Contribution type has been successfully added!"
@@ -314,10 +288,8 @@ msgid "Contribution type #%id has been successfully updated!"
 msgstr "¡El tipo de contribución #%id se ha actualizado con éxito!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:302
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove contribution type '%label'"
-msgstr "Remover %type '%label'"
+msgstr "Eliminar tipo de contribución '%label'"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:58
 msgid "Add field"
@@ -451,12 +423,11 @@ msgid "Something went wrong during mass edition!"
 msgstr "Ocurrió un error durante la edición masiva!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1324
-#, fuzzy, php-format
-#| msgid "%count members has been changed successfully!"
+#, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] "%count de miembros se ha modificado correctamente!"
-msgstr[1] "%count de miembros se ha modificado correctamente!"
+msgstr[0] "¡Se ha modificado con éxito %1$s miembro!"
+msgstr[1] "¡Se han modificado con éxito %1$s miembros!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1393
 msgid "Invalid captcha"
@@ -513,39 +484,37 @@ msgid "Edit title"
 msgstr "Editar título"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:186
-#, fuzzy
-#| msgid "Missing required form!"
 msgid "Missing required title's short or long form!"
-msgstr "¡Falta formulario requerido!"
+msgstr "¡Falta la forma corta o larga del título obligatoria!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:195
 #, php-format
 msgid "Title '%s' has not been added!"
-msgstr "¡No se ha añadido el título «%s»!"
+msgstr "¡No se ha añadido el título '%s'!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:201
 #, php-format
 msgid "Title '%s' has not been modified!"
-msgstr "¡No se ha modificado el título «%s»!"
+msgstr "¡No se ha modificado el título '%s'!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:211
 #, php-format
 msgid "Title '%s' has been successfully added."
-msgstr "Se ha añadido el título «%s» correctamente."
+msgstr "Se ha añadido con éxito el título '%s'."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:217
 #, php-format
 msgid "Title '%s' has been successfully modified."
-msgstr "Se ha modificado el título «%s» correctamente."
+msgstr "Se ha modificado con éxito el título '%s'."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:282
 #, php-format
 msgid "Remove title %1$s"
-msgstr "Remover título %1$s"
+msgstr "Eliminar título %1$s"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:97
 msgid "User statuses"
-msgstr "Estado del Usuario"
+msgstr "Estados del ssuario"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:150
 #: ../../tempcache/pages/status_list.html.twig:245
@@ -553,40 +522,28 @@ msgid "Edit status"
 msgstr "Editar estatus"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:217
-#, fuzzy
-#| msgid "Missing required field name!"
 msgid "Missing required status name!"
-msgstr "Falta campo obligatorio!"
+msgstr "¡Falta el nombre del estado obligatorio!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:223
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Status has not been added :("
-msgstr "%type no se ha añadido :("
+msgstr "No se ha añadido el estado :("
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:223
-#, fuzzy
-#| msgid "%type #%id has not been updated"
 msgid "Status #%id has not been updated"
-msgstr "%type n.º %id no se ha actualizado"
+msgstr "No se ha actualizado el estado #%id"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:229
-#, fuzzy
-#| msgid "%type has been successfully added!"
 msgid "Status has been successfully added!"
-msgstr "¡%type fue añadido exitosamente!"
+msgstr "¡Se ha añadido con éxito el estado!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:229
-#, fuzzy
-#| msgid "%type #%id has been successfully updated!"
 msgid "Status #%id has been successfully updated!"
-msgstr "¡%type #%id ha sido actualizado exitosamente!"
+msgstr "¡Se ha actualizado con éxito el estado #%id!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:307
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove status '%label'"
-msgstr "Remover %type '%label'"
+msgstr "Eliminar estado '%label'"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:89
 #: ../../tempcache/pages/transaction_form.html.twig:188
@@ -618,15 +575,13 @@ msgid "Transactions management"
 msgstr "Gestión de transacciones"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:675
-#, fuzzy
-#| msgid "contribution type"
 msgid "- Unknown contribution type!"
-msgstr "tipo de contribución"
+msgstr "¡tipo de contribución desconocido!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:734
 msgid "No contribution was selected, please check at least one."
 msgstr ""
-"No se ha seleccionado ninguna contribución, por favor marque al menos una."
+"No se ha seleccionado ninguna contribución, por favor marque una al menos."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:770
 #: ../lib/Galette/Controllers/PdfController.php:432
@@ -670,10 +625,8 @@ msgid "transaction"
 msgstr "transacción"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:66
-#, fuzzy
-#| msgid "Add attachment"
 msgid "Add document"
-msgstr "Añadir archivo adjunto"
+msgstr "Añadir documento"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:122
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:408
@@ -2365,8 +2318,9 @@ msgid "GSM"
 msgstr "GSM"
 
 #: ../lib/Galette/IO/MembersCsv.php:64
+#, fuzzy
 msgid "filtered_memberslist"
-msgstr "Lista filtrada de miembros"
+msgstr "lista_miembros_filtrada"
 
 #: ../lib/Galette/IO/MembersCsv.php:209
 #: ../lib/Galette/Features/Replacements.php:624
@@ -3131,8 +3085,9 @@ msgid "A member cannot be its own parent!"
 msgstr "¡Un miembro no puede ser su propio padre!"
 
 #: ../lib/Galette/Entity/Adherent.php:1681
+#, fuzzy
 msgid "Self_subscription as a member: "
-msgstr "Auto_subscricion como miembro"
+msgstr "Auto_suscripción como miembro: "
 
 #: ../lib/Galette/Entity/Adherent.php:1687
 msgid "Member card added"
@@ -4564,7 +4519,7 @@ msgstr "Paso siguiente"
 
 #: ../install/steps/admin.php:53
 msgid "Password mismatch!"
-msgstr "Contraseña no coincidente"
+msgstr "¡La contraseña no coincide!"
 
 #: ../install/steps/db_install.php:28
 msgid "Database has not been installed!"
