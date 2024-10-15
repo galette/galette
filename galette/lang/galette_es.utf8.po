@@ -43,8 +43,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-03 09:20+0200\n"
-"PO-Revision-Date: 2024-10-15 08:05+0000\n"
-"Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2024-10-15 12:44+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -4327,6 +4327,9 @@ msgid ""
 "{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Hola,{NEWLINE}. Su afiliación a {ASSO_NAME} está a punto de caducar en "
+"{DAYS_REMAINING} días. {NEWLINE} ¡Hasta pronto! {NEWLINE}(este correo "
+"electrónico se envió automáticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:86
 #: ../../tempcache/pages/reminder.html.twig:87
@@ -7704,7 +7707,7 @@ msgstr "(Meses)"
 
 #: ../../tempcache/pages/preferences.html.twig:1092
 msgid "Beginning of membership:"
-msgstr "Inicio de membresía:"
+msgstr "Inicio de la afiliación:"
 
 #: ../../tempcache/pages/preferences.html.twig:1098
 msgid "(dd/mm)"
@@ -8594,7 +8597,7 @@ msgstr "Búsqueda simple"
 
 #: ../../tempcache/pages/advanced_search.html.twig:116
 msgid "Membership status"
-msgstr "Estado de membresía"
+msgstr "Condición de miembro"
 
 #: ../../tempcache/pages/advanced_search.html.twig:145
 msgid "Account activity"
