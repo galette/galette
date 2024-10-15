@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-15 14:43+0200\n"
-"PO-Revision-Date: 2024-10-03 07:25+0000\n"
+"PO-Revision-Date: 2024-10-15 12:48+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8-dev\n"
+"X-Generator: Weblate 5.8-rc\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -7261,13 +7261,11 @@ msgstr "A des paiements planifiés"
 
 #: ../../tempcache/pages/contribution_form.html.twig:229
 msgid "Switch to fee"
-msgstr ""
+msgstr "Basculer sur une contribution"
 
 #: ../../tempcache/pages/contribution_form.html.twig:232
-#, fuzzy
-#| msgid "New attached donation"
 msgid "Switch to donation"
-msgstr "Nouveau don attaché"
+msgstr "Basculer sur un don"
 
 #: ../../tempcache/pages/contribution_form.html.twig:284
 msgid "View transaction"
