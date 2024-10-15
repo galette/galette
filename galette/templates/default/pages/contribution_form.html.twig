@@ -73,6 +73,30 @@
                                     {% endfor %}
                                     </div>
                                 </div>
+                                {% if contribution.isTransactionPart() and not contribution.id %}
+                                    {% set inverted_type %}
+                                        {%- if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') -%}
+                                            {{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}
+                                        {%- else -%}
+                                            {{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}
+                                        {%- endif -%}
+                                    {% endset %}
+                                    {% set switch_title %}
+                                        {%- if inverted_type == constant('Galette\\Entity\\Contribution::TYPE_FEE') -%}
+                                            {{  _T('Switch to fee') }}
+                                        {%- else -%}
+                                            {{ _T('Switch to donation') }}
+                                        {%- endif -%}
+                                    {% endset %}
+                                    <a
+                                        href="{{ url_for("doAddContribution", {'type': inverted_type}) }}?trans_id={{ contribution.transaction.id }}&id_adh={{ contribution.member }}"
+                                        class="ui basic icon button"
+                                        title="{{ switch_title }}"
+                                    >
+                                        <i class="exchange icon" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{{ switch_title }}</span>
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
     {% if contribution.isTransactionPart() or contribution.hasSchedule() %}
