@@ -68,6 +68,7 @@ class Install extends AbstractCommand
             ->addOption('admin', null, InputOption::VALUE_REQUIRED, 'Administrator username')
             ->addOption('password', null, InputOption::VALUE_REQUIRED, 'Administrator password')
             ->addOption('ignore-config', null, InputOption::VALUE_NONE, 'Ignore existing configuration file')
+            ->addOption('write-config', 'w', InputOption::VALUE_NONE, 'Write configuration file (incompatible with --ignore-config)')
         ;
     }
 
@@ -337,7 +338,7 @@ class Install extends AbstractCommand
         $io->listing($sql_messages);
 
         if ($sql_error) {
-            $io->error('SQL operations check failed');
+            $io->error('SQL operations check failed :/');
             return Command::FAILURE;
         }
 
@@ -350,8 +351,14 @@ class Install extends AbstractCommand
 
         $install->initDbConstants();
 
-        //FIXME
-        //$config_file_ok = $install->writeConfFile();
+        if (!$input->getOption('ignore-config') && !$input->getOption('write-config')) {
+            $config_file_ok = $install->writeConfFile();
+            if (!$config_file_ok) {
+                $io->warning('Configuration file could not be written :(');
+                $io->info('Please copy the following content to config/config.inc.php:');
+                $io->block($install->getConfigFileContents());
+            }
+        }
 
         $install->setAdminInfos($galette_sa, $galette_sa_pass);
 
@@ -360,11 +367,14 @@ class Install extends AbstractCommand
             define('GALETTE_INSTALLER', true);
         }
         $i18n = new \Galette\Core\I18n();
-        $install->initObjects(
+        $init_ok = $install->initObjects(
             $i18n,
             $zdb,
             new \Galette\Core\Login($zdb, $i18n)
         );
+        if (!$init_ok) {
+            $io->warning('Data initialization has failed :(');
+        }
 
         $io->success('Galette installation is complete!');
         return Command::SUCCESS;
