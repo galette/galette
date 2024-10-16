@@ -907,17 +907,18 @@ class Db
      * @see https://bugs.galette.eu/issues/1374
      *
      * @param string  $table    Table name
-     * @param integer $expected Expected value
+     * @param string  $pkcol    Primary key column name
+     * @param integer $expected Expected sequence value
      *
      * @return void
      */
-    public function handleSequence(string $table, int $expected): void
+    public function handleSequence(string $table, string $pkcol, int $expected): void
     {
         if ($this->isPostgres()) {
             //check for Postgres sequence
             //see https://bugs.galette.eu/issues/1158
             //see https://bugs.galette.eu/issues/1374
-            $seq = $table . '_id_seq';
+            $seq = $this->getSequenceName($table, $pkcol);
 
             $select = $this->select($seq);
             $select->columns(['last_value']);
@@ -930,6 +931,25 @@ class Db
                 );
             }
         }
+    }
+
+    /**
+     * Get sequence name
+     *
+     * @param string  $table    Table name
+     * @param string  $pkcol    Primary key column name
+     * @param boolean $prefixed Whether to prefix the sequence name
+     *
+     * @return string
+     */
+    public function getSequenceName(string $table, string $pkcol, bool $prefixed = false): string
+    {
+        return sprintf(
+            '%s%s_%s_seq',
+            $prefixed ? PREFIX_DB : '',
+            $table,
+            $pkcol
+        );
     }
 
     /**
@@ -1015,7 +1035,7 @@ class Db
         /** @phpstan-ignore-next-line */
         return (int)$this->driver->getLastGeneratedValue(
             $this->isPostgres() ?
-                PREFIX_DB . $entity::TABLE . '_id_seq'
+                $this->getSequenceName($entity::TABLE, $entity::PK, true)
                 : null
         );
     }

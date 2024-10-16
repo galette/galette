@@ -117,6 +117,7 @@ class PdfModels extends Repository
 
                 $this->zdb->handleSequence(
                     $ent::TABLE,
+                    $ent::PK,
                     count($this->defaults)
                 );
 

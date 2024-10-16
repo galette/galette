@@ -185,14 +185,14 @@ class Status extends TestCase
         $this->assertCount(10, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select($status::TABLE . '_id_seq');
+            $select = $this->zdb->select($this->zdb->getSequenceName($status::TABLE, $status::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $this->assertGreaterThanOrEqual(10, $result->last_value, 'Incorrect status sequence');
 
             $this->zdb->db->query(
-                'SELECT setval(\'' . PREFIX_DB . $status::TABLE . '_id_seq\', 1)',
+                'SELECT setval(\'' . $this->zdb->getSequenceName($status::TABLE, $status::PK, true) . '\', 1)',
                 Adapter::QUERY_MODE_EXECUTE
             );
         }
@@ -204,7 +204,7 @@ class Status extends TestCase
         $this->assertCount(10, $list);
 
         if ($this->zdb->isPostgres()) {
-            $select = $this->zdb->select($status::TABLE . '_id_seq');
+            $select = $this->zdb->select($this->zdb->getSequenceName($status::TABLE, $status::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();

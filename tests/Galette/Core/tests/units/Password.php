@@ -105,14 +105,15 @@ class Password extends TestCase
             [
                 'nom_adh'   => 'Test password user',
                 'login_adh' => 'test_password_user',
-                'adresse_adh' => 'The address'
+                'adresse_adh' => 'The address',
+                \Galette\Entity\Status::PK => \Galette\Entity\Status::DEFAULT_STATUS
             ]
         );
         $this->zdb->execute($insert);
 
         if ($this->zdb->isPostgres()) {
             return (int)$this->zdb->driver->getLastGeneratedValue(
-                PREFIX_DB . 'adherents_id_seq'
+                $this->zdb->getSequenceName(\Galette\Entity\Adherent::TABLE, \Galette\Entity\Adherent::PK, true)
             );
         } else {
             return (int)$this->zdb->driver->getLastGeneratedValue();
