@@ -41,7 +41,14 @@ $logfile = 'galette_cli';
 require_once $basepath . 'vendor/autoload.php';
 require_once $basepath . 'includes/sys_config/versions.inc.php';
 
-if (!file_exists($basepath . 'config/config.inc.php')) {
+$installer = false;
+if ($argc > 1) {
+    if ($argv[1] == 'galette:install') {
+        $installer = true;
+    }
+}
+
+if ($installer || !file_exists($basepath . 'config/config.inc.php')) {
     define('GALETTE_INSTALLER', true);
     $installer = true; //consider we're installing
 }

@@ -68,6 +68,7 @@ class Install extends AbstractCommand
             ->addOption('admin', null, InputOption::VALUE_REQUIRED, 'Administrator username')
             ->addOption('password', null, InputOption::VALUE_REQUIRED, 'Administrator password')
             ->addOption('ignore-config', null, InputOption::VALUE_NONE, 'Ignore existing configuration file')
+            ->addOption('write-config', 'w', InputOption::VALUE_NONE, 'Write configuration file (incompatible with --ignore-config)')
         ;
     }
 
@@ -95,32 +96,23 @@ class Install extends AbstractCommand
 
         $io = new SymfonyStyle($input, $output);
 
+        $errors = [];
+        $install = new \Galette\Core\Install();
+
         $use_config = !$input->getOption('ignore-config');
         $config_exists = file_exists($this->basepath . 'config/config.inc.php');
         if ($use_config && $config_exists) {
-            require_once $this->basepath . 'config/config.inc.php';
-
-            if (
-                !defined('TYPE_DB')
-                || !defined('HOST_DB')
-                || !defined('PORT_DB')
-                || !defined('USER_DB')
-                || !defined('PWD_DB')
-                || !defined('NAME_DB')
-            ) {
-                $io->warning('Configuration file is not valid, ignoring.');
-                $use_config = false;
-            }
+            $install->loadExistingConfig([], $errors);
         }
 
         $db_type = $input->getOption('dbtype');
         if ($db_type === null) {
-            if ($use_config && defined('TYPE_DB')) {
+            if ($use_config && $install->getDbType() !== null) {
                 $io->writeln(
                     '<comment>Using existing configuration for database type</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_type = TYPE_DB;
+                $db_type = $install->getDbType();
             } else {
                 $db_type = $io->choice(
                     'Database type',
@@ -131,12 +123,12 @@ class Install extends AbstractCommand
 
         $db_name = $input->getOption('dbname');
         if ($db_name === null) {
-            if ($use_config && defined('NAME_DB')) {
+            if ($use_config && $install->getDbName() !== null) {
                 $io->writeln(
                     '<comment>Using existing configuration for database name</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_name = NAME_DB;
+                $db_name = $install->getDbName();
             } else {
                 $db_name = $io->ask('Database name', 'galette');
             }
@@ -144,12 +136,12 @@ class Install extends AbstractCommand
 
         $db_prefix = $input->getOption('dbprefix');
         if ($db_prefix === null) {
-            if ($use_config && defined('PREFIX_DB')) {
+            if ($use_config && $install->getTablesPrefix() !== null) {
                 $io->writeln(
                     '<comment>Using existing configuration for database prefix</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_prefix = PREFIX_DB;
+                $db_prefix = $install->getTablesPrefix();
             } else {
                 $db_prefix = $io->ask('Database prefix', 'galette_');
             }
@@ -157,12 +149,12 @@ class Install extends AbstractCommand
 
         $db_host = $input->getOption('dbhost');
         if ($db_host === null) {
-            if ($use_config && defined('HOST_DB')) {
+            if ($use_config && $install->getDbHost() !== null) {
                 $io->writeln(
                     '<comment>Using existing configuration for database host</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_host = HOST_DB;
+                $db_host = $install->getDbHost();
             } else {
                 $db_host = $io->ask('Database host', 'localhost');
             }
@@ -170,12 +162,12 @@ class Install extends AbstractCommand
 
         $db_port = $input->getOption('dbport');
         if ($db_port === null) {
-            if ($use_config && defined('PORT_DB')) {
+            if ($use_config && $install->getDbPort() !== null) {
                 $io->writeln(
                     '<comment>Using existing configuration for database port</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_port = PORT_DB;
+                $db_port = $install->getDbPort();
             } else {
                 $db_port = $io->ask('Database port', $db_type === 'mysql' ? '3306' : '5432');
             }
@@ -183,7 +175,7 @@ class Install extends AbstractCommand
 
         $db_user = $input->getOption('dbuser');
         if ($db_user === null) {
-            if ($use_config && defined('USER_DB')) {
+            if ($use_config && $install->getDbUser() !== null) {
                 $io->writeln(
                     '<comment>Using existing configuration for database user</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
@@ -244,9 +236,9 @@ class Install extends AbstractCommand
 
         if (
             $config_exists
-            && TYPE_DB == $db_type
-            && HOST_DB == $db_host
-            && PORT_DB == $db_port
+            && $install->getDbType() == $db_type
+            && $install->getDbHost() == $db_host
+            && $install->getDbPort() == $db_port
             && !$input->getOption('no-interaction')
         ) {
             $io->warning("Configuration file already exists and matches the provided database information.\nAll existing data will be lost if you continue.");
@@ -256,8 +248,6 @@ class Install extends AbstractCommand
             }
         }
 
-        $errors = [];
-        $install = new \Galette\Core\Install();
         $install
             ->setMode(\Galette\Core\Install::INSTALL)
             ->setDbType($db_type, $errors)
@@ -337,7 +327,7 @@ class Install extends AbstractCommand
         $io->listing($sql_messages);
 
         if ($sql_error) {
-            $io->error('SQL operations check failed');
+            $io->error('SQL operations check failed :/');
             return Command::FAILURE;
         }
 
@@ -350,8 +340,15 @@ class Install extends AbstractCommand
 
         $install->initDbConstants();
 
-        //FIXME
-        //$config_file_ok = $install->writeConfFile();
+        if ($input->getOption('write-config')) {
+            $io->info('Writing configuration, please wait...');
+            $config_file_ok = $install->writeConfFile();
+            if (!$config_file_ok) {
+                $io->warning('Configuration file could not be written :(');
+                $io->info('Please copy the following content to config/config.inc.php:');
+                $io->block($install->getConfigFileContents());
+            }
+        }
 
         $install->setAdminInfos($galette_sa, $galette_sa_pass);
 
@@ -360,11 +357,14 @@ class Install extends AbstractCommand
             define('GALETTE_INSTALLER', true);
         }
         $i18n = new \Galette\Core\I18n();
-        $install->initObjects(
+        $init_ok = $install->initObjects(
             $i18n,
             $zdb,
             new \Galette\Core\Login($zdb, $i18n)
         );
+        if (!$init_ok) {
+            $io->warning('Data initialization has failed :(');
+        }
 
         $io->success('Galette installation is complete!');
         return Command::SUCCESS;
