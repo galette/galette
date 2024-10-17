@@ -22,6 +22,10 @@
         }
     ],
     "autoload": {
+        "files": [
+            "includes/sys_config/versions.inc.php",
+            "includes/functions.inc.php"
+        ],
         "psr-4": {
             "Galette\\": "lib/Galette"
         }

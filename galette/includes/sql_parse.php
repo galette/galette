@@ -57,41 +57,6 @@ declare(strict_types=1);
 \***************************************************************************/
 
 /**
- * remove_comments will strip the sql comment lines out of an uploaded sql file
- * specifically for mssql and postgres type files in the install....
- *
- * @param string $output sql
- *
- * @return string
- */
-function remove_comments(string &$output): string
-{
-    $lines = explode("\n", $output);
-    $output = "";
-
-    // try to keep mem. use down
-    $linecount = count($lines);
-
-    $in_comment = false;
-    for ($i = 0; $i < $linecount; $i++) {
-        if (preg_match("/^\/\*/", preg_quote($lines[$i]))) {
-            $in_comment = true;
-        }
-
-        if (!$in_comment) {
-            $output .= $lines[$i] . "\n";
-        }
-
-        if (preg_match("/\*\/$/", preg_quote($lines[$i]))) {
-            $in_comment = false;
-        }
-    }
-
-    unset($lines);
-    return $output;
-}
-
-/**
  * remove_remarks will strip the sql comment lines out of an uploaded sql file
  *
  * @param string $sql sql

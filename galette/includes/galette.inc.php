@@ -164,8 +164,6 @@ if (defined('GALETTE_TESTS')) {
 
 Analog::handler($galette_run_log);
 
-require_once GALETTE_ROOT . 'includes/functions.inc.php';
-
 if (!$installer and !defined('GALETTE_TESTS')) {
     //If we're not working from installer nor from tests
     include_once GALETTE_CONFIG_PATH . 'config.inc.php';
