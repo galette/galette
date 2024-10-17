@@ -384,18 +384,7 @@ class History
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array();
-        if (!in_array($name, $forbidden)) {
-            return $this->$name;
-        }
-
-        throw new \RuntimeException(
-            sprintf(
-                'Unable to get property "%s::%s"!',
-                __CLASS__,
-                $name
-            )
-        );
+        return $this->$name;
     }
 
     /**
@@ -429,19 +418,7 @@ class History
             Analog::DEBUG
         );
 
-        $forbidden = array();
-        if (!in_array($name, $forbidden)) {
-            switch ($name) {
-                default:
-                    $this->$name = $value;
-                    break;
-            }
-        } else {
-            Analog::log(
-                '[History] Unable to set property `' . $name . '`',
-                Analog::WARNING
-            );
-        }
+        $this->$name = $value;
     }
 
     /**

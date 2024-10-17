@@ -563,6 +563,7 @@ class CsvIn extends GaletteTestCase
         foreach ($members_list as $fingerprint => &$data) {
             $data['dynfield_' . $df->getId()] = 'Dynamic field value for ' . $data['fingerprint'];
         }
+        unset($data);
         $count_before = 0;
         $count_after = 10;
 
@@ -581,6 +582,7 @@ class CsvIn extends GaletteTestCase
         foreach ($members_list as $fingerprint => &$data) {
             $data['dynfield_' . $df->getId()] = 'Dynamic field value for ' . $data['fingerprint'];
         }
+        unset($data);
 
         $count_before = 10;
         $count_after = 10;
@@ -604,6 +606,7 @@ class CsvIn extends GaletteTestCase
                 'Dynamic field value for ' . $data['fingerprint']);
             ++$i;
         }
+        unset($data);
 
         $count_before = 10;
         $count_after = 10;
@@ -666,6 +669,7 @@ class CsvIn extends GaletteTestCase
             //two lines without required dynamic field.
             $data['dynfield_' . $cdf->getId()] = rand(0, 2);
         }
+        unset($data);
 
         $count_before = 0;
         $count_after = 10;
@@ -731,6 +735,7 @@ class CsvIn extends GaletteTestCase
             //two lines without required dynamic field.
             $data['dynfield_' . $cdf->getId()] = $data['date_crea_adh'];
         }
+        unset($data);
 
         $count_before = 0;
         $count_after = 10;
@@ -753,6 +758,7 @@ class CsvIn extends GaletteTestCase
             $data['dynfield_' . $cdf->getId()] = (($i == 2 || $i == 5) ? '20200513' : $data['date_crea_adh']);
             ++$i;
         }
+        unset($data);
 
         $count_before = 10;
         $count_after = 10;

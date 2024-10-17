@@ -22,7 +22,7 @@
 
 {% block content %}
     <h2>
-        {{ name }} <tt>{{ version }} - {{ date }}</tt>
+        {{ name }} <code>{{ version }} - {{ date }}</code>
         <br/><span class="author">
             {{ _T("By %name")|replace({"%name": author}) }}
         </span>
@@ -52,8 +52,8 @@
                 </thead>
        {% for route, acl in module.acls %}
                 <tr>
-                    <td><tt>{{ route }}</tt></td>
-                    <td><tt>{{ acl }}</tt></td>
+                    <td><code>{{ route }}</code></td>
+                    <td><code>{{ acl }}</code></td>
                 </tr>
         {% else %}
                 <td colspan="2"><strong>{{ _T('No ACLs!') }}</strong></td>

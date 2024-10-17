@@ -49,7 +49,7 @@ declare(strict_types=1);
 namespace Galette\Common;
 
 /**
- * A <tt>ClassLoader</tt> is an autoloader for class files that can be
+ * A <code>ClassLoader</code> is an autoloader for class files that can be
  * installed on the SPL autoload stack. It is a class loader that either loads only classes
  * of a specific namespace or all namespaces and it is suitable for working together
  * with other autoloaders in the SPL autoload stack.
@@ -87,7 +87,7 @@ class ClassLoader
     protected string $namespaceSeparator = '\\';
 
     /**
-     * Creates a new <tt>ClassLoader</tt> that loads classes of the
+     * Creates a new <code>ClassLoader</code> that loads classes of the
      * specified namespace from the specified include path.
      *
      * If no include path is given, the ClassLoader relies on the PHP include_path.
@@ -258,14 +258,14 @@ class ClassLoader
      *
      * If the class is not already defined, each autoloader in the SPL autoload stack
      * is asked whether it is able to tell if the class exists. If the autoloader is
-     * a <tt>ClassLoader</tt>, {@link canLoadClass} is used, otherwise the autoload
+     * a <code>ClassLoader</code>, {@link canLoadClass} is used, otherwise the autoload
      * function of the autoloader is invoked and expected to return a value that
      * evaluates to TRUE if the class (file) exists. As soon as one autoloader reports
      * that the class exists, TRUE is returned.
      *
      * Note that, depending on what kinds of autoloaders are installed on the SPL
      * autoload stack, the class (file) might already be loaded as a result of checking
-     * for its existence. This is not the case with a <tt>ClassLoader</tt>, who separates
+     * for its existence. This is not the case with a <code>ClassLoader</code>, who separates
      * these responsibilities.
      *
      * @param string $className The fully-qualified name of the class.
@@ -303,11 +303,11 @@ class ClassLoader
     }
 
     /**
-     * Gets the <tt>ClassLoader</tt> from the SPL autoload stack that is responsible
+     * Gets the <code>ClassLoader</code> from the SPL autoload stack that is responsible
      * for (and is able to load) the class with the given name.
      *
      * @param string $className The name of the class.
-     * @return ClassLoader|null The <tt>ClassLoader</tt> responsible for the class or NULL if no such
+     * @return ClassLoader|null The <code>ClassLoader</code> responsible for the class or NULL if no such
      */
     public static function getClassLoader(string $className): ?ClassLoader
     {

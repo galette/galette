@@ -35,52 +35,6 @@ use PHPUnit\Framework\TestCase;
 class Preferences extends GaletteTestCase
 {
     protected int $seed = 20240917074915;
-    //private ?\Galette\Core\Preferences $preferences = null;
-    //private \Galette\Core\Db $zdb;
-    //private \Galette\Core\Login $login;
-
-    /**
-     * Set up tests
-     *
-     * @return void
-     */
-    /*public function setUp(): void
-    {
-        $gapp =  new \Galette\Core\SlimApp();
-        $app = $gapp->getApp();
-        $app->addRoutingMiddleware();
-
-        $plugins = new \Galette\Core\Plugins();
-        require GALETTE_BASE_PATH . '/includes/dependencies.php';
-        $container = $app->getContainer();
-        $_SERVER['HTTP_HOST'] = '';
-
-        $this->zdb = $container->get('zdb');
-        $this->login = $container->get('login');
-        $this->preferences = $container->get('preferences');
-
-        global $routeparser;
-        $routeparser = $container->get(\Slim\Routing\RouteParser::class);
-
-        $authenticate = new \Galette\Middleware\Authenticate($container);
-        require GALETTE_ROOT . 'includes/routes/main.routes.php';
-        require GALETTE_ROOT . 'includes/routes/authentication.routes.php';
-    }*/
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    /*public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
-
-        $delete = $this->zdb->delete(\Galette\Entity\Social::TABLE);
-        $this->zdb->execute($delete);
-    }*/
 
     /**
      * Test preferences initialization
