@@ -94,9 +94,19 @@ class History
             && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
         ) {
             $split_xff = preg_split('/,\s*/', $_SERVER['HTTP_X_FORWARDED_FOR']);
-            return $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
+            $ip = $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
         }
-        return $_SERVER['REMOTE_ADDR'];
+
+        if (
+            filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false
+            || filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false
+        ) {
+            return $ip;
+        }
+
+        return '';
     }
 
     /**
