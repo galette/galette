@@ -44,7 +44,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-15 14:43+0200\n"
 "PO-Revision-Date: 2024-10-17 19:21+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -7479,7 +7479,7 @@ msgstr "Parámetros"
 
 #: ../../tempcache/pages/preferences.html.twig:93
 msgid "Rights"
-msgstr "Derechos"
+msgstr "Permisos"
 
 #: ../../tempcache/pages/preferences.html.twig:101
 msgid "E-Mail"
