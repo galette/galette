@@ -43,8 +43,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-15 14:43+0200\n"
-"PO-Revision-Date: 2024-10-17 11:16+0000\n"
-"Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2024-10-17 19:21+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -2296,9 +2296,8 @@ msgid "GSM"
 msgstr "GSM"
 
 #: ../lib/Galette/IO/MembersCsv.php:64
-#, fuzzy
 msgid "filtered_memberslist"
-msgstr "lista_miembros_filtrada"
+msgstr "lista de socios_filtrada"
 
 #: ../lib/Galette/IO/MembersCsv.php:209
 #: ../lib/Galette/Features/Replacements.php:624
@@ -4297,6 +4296,9 @@ msgid ""
 "registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours "
 "sincerly,{BR}Galette"
 msgstr ""
+"Hola estimado Administrador,{NEWLINE}Una contribución de {NAME_ADH} ha sido "
+"registrada (nuevo plazo: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Suyos "
+"sinceramente,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:62
 msgid "New contribution (sent to admin)"
@@ -4312,6 +4314,10 @@ msgid ""
 "with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
 "* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Hola querido Administrador,{NEWLINE}Un nuevo miembro se ha registrado en "
+"línea con la siguiente información:{BR}* Nombre: {NAME_ADH}{BR}* Inicio de "
+"sesión: {LOGIN}{BR}* Correo electrónico: {MAIL_ADH}{NEWLINE}Suyos "
+"sinceramente,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:70
 msgid "New self registration (sent to admin)"
@@ -4328,6 +4334,12 @@ msgid ""
 "into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
 "soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"¡Hola¡ {NEWLINE}Su cuenta en {ASSO_NAME} (con login '{LOGIN}') ha sido "
+"modificada por un administrador o miembro del personal. (con el nombre de "
+"usuario '{LOGIN}') ha sido modificada por un administrador o un miembro del "
+"personal.{NEWLINE}Puede iniciar sesión en {LOGIN_URI} para revisar las "
+"modificaciones y/o cambiarla.{NEWLINE}¡Hasta pronto!{NEWLINE}(este correo "
+"electrónico se envió automáticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:78
 msgid "Informs user that his account has been modified"
@@ -4361,6 +4373,9 @@ msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
 "days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Hola,{NEWLINE}Su afiliación a {ASSO_NAME} ha caducado hace {DAYS_EXPIRED} "
+"días.{NEWLINE}¡Hasta pronto!{NEWLINE}(este correo se ha enviado "
+"automáticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:94
 msgid "Late due date"
@@ -4376,6 +4391,9 @@ msgid ""
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Hola,{NEWLINE}Su donación a {ASSO_NAME} se ha almacenado "
+"correctamente.{NEWLINE}{CONTRIB_INFO}{NEWLINE}¡Gracias!{NEWLINE}(este correo "
+"electrónico se envió automáticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:102
 msgid "Receipt send for new donations"
@@ -4406,6 +4424,8 @@ msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"¡Hola! {NEWLINE}{NAME_ADH} ha modificado su cuenta. {NEWLINE}¡Hasta pronto! "
+"{NEWLINE}(este correo se envió automáticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:118
 msgid "Informs admin a member edit his information"
@@ -4423,6 +4443,11 @@ msgid ""
 "is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"¡Hola¡ {NEWLINE}Se ha realizado una solicitud de recuperación de contraseña "
+"en su cuenta de {ASSO_NAME}, pero actualmente está inactiva y, por lo tanto, "
+"no se puede procesar.{NEWLINE}Póngase en contacto con un administrador o un "
+"miembro del personal si cree que se trata de un error.{NEWLINE}¡Hasta "
+"pronto!{NEWLINE}(este correo se envió automáticamente)"
 
 #: ../includes/fields_defs/texts_fields.php:126
 msgid "Lost password email (disabled)"
@@ -5711,7 +5736,7 @@ msgstr "Derecha"
 #: ../../tempcache/elements/js/photo_dnd.js.twig:114
 #: ../../tempcache/components/forms/picture.html.twig:97
 msgid "Cropping focus"
-msgstr ""
+msgstr "Recortar el enfoque"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:114
 #: ../../tempcache/components/forms/picture.html.twig:123
@@ -5719,6 +5744,8 @@ msgid ""
 "Choose the area of the original image to preserve after cropping to the "
 "final ratio defined in the settings : %ratio"
 msgstr ""
+"Elija el área de la imagen original que desea conservar después de "
+"recortarla a la proporción final definida en los ajustes : %ratio"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:164
 msgid "An error occurred sending photo :("
@@ -6335,7 +6362,7 @@ msgstr "Autor:"
 
 #: ../../tempcache/pages/plugin_info.html.twig:121
 msgid "Path:"
-msgstr ""
+msgstr "Ruta:"
 
 #: ../../tempcache/pages/plugin_info.html.twig:129
 msgid "Main route:"
@@ -6343,19 +6370,19 @@ msgstr "Ruta principal:"
 
 #: ../../tempcache/pages/plugin_info.html.twig:137
 msgid "ACLs"
-msgstr ""
+msgstr "ACLs"
 
 #: ../../tempcache/pages/plugin_info.html.twig:144
 msgid "Route"
-msgstr ""
+msgstr "Ruta"
 
 #: ../../tempcache/pages/plugin_info.html.twig:148
 msgid "ACL"
-msgstr ""
+msgstr "ACL"
 
 #: ../../tempcache/pages/plugin_info.html.twig:174
 msgid "No ACLs!"
-msgstr ""
+msgstr "¡Sin ACLs!"
 
 #: ../../tempcache/pages/plugin_info.html.twig:188
 msgid "Raw information"
@@ -6379,7 +6406,7 @@ msgstr "Mostrar contribuciones por"
 
 #: ../../tempcache/pages/contributions_list.html.twig:120
 msgid "Record"
-msgstr ""
+msgstr "Registro"
 
 #: ../../tempcache/pages/contributions_list.html.twig:128
 #: ../../tempcache/pages/history.html.twig:144
@@ -6676,7 +6703,7 @@ msgstr "Campos predeterminados"
 #: ../../tempcache/pages/import_model.html.twig:94
 #, php-format
 msgid "Model parameted on %date"
-msgstr ""
+msgstr "Modelo configurado en %date"
 
 #: ../../tempcache/pages/import_model.html.twig:104
 #: ../../tempcache/pages/import_model.html.twig:194
@@ -6767,7 +6794,7 @@ msgstr[1] "%count miembros"
 
 #: ../../tempcache/pages/members_list.html.twig:145
 msgid "Mbr id"
-msgstr ""
+msgstr "ID del miembro"
 
 #: ../../tempcache/pages/members_list.html.twig:202
 #: ../../tempcache/pages/advanced_search.html.twig:75
@@ -6853,7 +6880,7 @@ msgstr "Cuenta inactiva"
 
 #: ../../tempcache/pages/members_list.html.twig:540
 msgid "Membership in order"
-msgstr ""
+msgstr "Afiliación en regla"
 
 #: ../../tempcache/pages/members_list.html.twig:545
 msgid "Membership will expire soon (&lt;30d)"
@@ -7239,13 +7266,11 @@ msgstr "Tiene pagos programados"
 
 #: ../../tempcache/pages/contribution_form.html.twig:229
 msgid "Switch to fee"
-msgstr ""
+msgstr "Cambiar a la tarifa"
 
 #: ../../tempcache/pages/contribution_form.html.twig:232
-#, fuzzy
-#| msgid "Details of donation"
 msgid "Switch to donation"
-msgstr "Detalles de la donación"
+msgstr "Cambiar a la donación"
 
 #: ../../tempcache/pages/contribution_form.html.twig:284
 msgid "View transaction"
@@ -7381,7 +7406,7 @@ msgstr "Escribir tu correspondencia"
 
 #: ../../tempcache/pages/mailing_form.html.twig:301
 msgid "Object:"
-msgstr ""
+msgstr "Objeto:"
 
 #: ../../tempcache/pages/mailing_form.html.twig:339
 msgid "Interpret HTML"
@@ -7679,7 +7704,7 @@ msgstr "Número de columnas en el formulario de miembro"
 
 #: ../../tempcache/pages/preferences.html.twig:986
 msgid "Post new contribution script URI"
-msgstr ""
+msgstr "Publicar nueva URL del script de colaboración"
 
 #: ../../tempcache/pages/preferences.html.twig:992
 msgid ""
@@ -7689,15 +7714,23 @@ msgid ""
 "or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in "
 "those cases)."
 msgstr ""
+"Introduzca un URI de script que se llamaría después de añadir una nueva "
+"contribución. <br>URI de script debe ser prefijado por uno de los "
+"'<em>galette://</em>' para la llamada interna Galette. '<em>file://</em>' "
+"para una llamada directa a un archivo, '<em>get://</em>' o '<em>post://</"
+"em>' para llamadas HTTP (el prefijo será reemplazado por http:// en esos "
+"casos)."
 
 #: ../../tempcache/pages/preferences.html.twig:1004
 msgid "RSS feed URL"
-msgstr ""
+msgstr "URL del feed RSS"
 
 #: ../../tempcache/pages/preferences.html.twig:1010
 msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr ""
+"Introduzca la URL completa a la fuente RSS. Se mostrará en el escritorio de "
+"Galette."
 
 #: ../../tempcache/pages/preferences.html.twig:1022
 msgid "Galette base URL"
@@ -7867,6 +7900,9 @@ msgid ""
 "if you disable that. Please note that current editing mailing will not be "
 "affected by a change."
 msgstr ""
+"Envuelve automáticamente los mensajes de texto antes de enviarlos. Asegúrate "
+"de envolverte si desactivas esto. Tenga en cuenta que el cambio no afectará "
+"al correo de edición actual."
 
 #: ../../tempcache/pages/preferences.html.twig:1411
 msgid "Send email to members?"
@@ -7894,11 +7930,11 @@ msgstr "Firma"
 
 #: ../../tempcache/pages/preferences.html.twig:1457
 msgid "Emailing method:"
-msgstr ""
+msgstr "Forma del envío por correo electrónico:"
 
 #: ../../tempcache/pages/preferences.html.twig:1469
 msgid "Emailing disabled"
-msgstr ""
+msgstr "Envío de correo electrónico deshabilitado"
 
 #: ../../tempcache/pages/preferences.html.twig:1487
 msgid "PHP mail() function"
@@ -7941,6 +7977,9 @@ msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
 msgstr ""
+"¿Enviar por correo electrónico usaría cualquier autenticación SMTP? Tendrá "
+"que proporcionar nombre de usuario y contraseña a continuación. Para GMail, "
+"la autenticación siempre estará activada."
 
 #: ../../tempcache/pages/preferences.html.twig:1623
 msgid "Use TLS for SMTP?"
@@ -7963,6 +8002,8 @@ msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
 msgstr ""
+"¿Desea permitir conexiones 'inseguras'? Esto puede ser útil si su servidor "
+"usa un certificado autofirmado, y en algunos otros casos."
 
 #: ../../tempcache/pages/preferences.html.twig:1655
 msgid "SMTP (or GMail) user:"
@@ -8098,6 +8139,8 @@ msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
 msgstr ""
+"Puede introducir:<br>- un año,<br>- dos años con una barra como "
+"separador,<br>- la cadena 'DEADLINE' para utilizar el plazo de los miembros"
 
 #: ../../tempcache/pages/preferences.html.twig:2327
 msgid "Card width from 70 to 95mm:"
@@ -8207,6 +8250,9 @@ msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
 msgstr ""
+"Tenga en cuenta que con cualquier nivel de aplicación, el usuario no puede "
+"utilizar su información personal (nombre, inicio de sesión,...) como "
+"contraseña."
 
 #: ../../tempcache/pages/preferences.html.twig:2532
 msgid "Test a password:"
@@ -8238,6 +8284,8 @@ msgid ""
 "A mailing exists in the current session. Click here if you want to resume or "
 "cancel it."
 msgstr ""
+"Existe un correo en la sesión actual. Haga clic aquí si desea reanudarlo o "
+"cancelarlo."
 
 #: ../../tempcache/pages/mailings_list.html.twig:141
 #: ../../tempcache/pages/mailings_list.html.twig:202
@@ -8260,7 +8308,7 @@ msgstr "Correspondencia enviada:"
 
 #: ../../tempcache/pages/mailings_list.html.twig:349
 msgid "Mailing entry %id"
-msgstr ""
+msgstr "Entrada de correo %id"
 
 #: ../../tempcache/pages/mailings_list.html.twig:419
 #, php-format
@@ -8459,7 +8507,7 @@ msgstr "Ver contribuciones"
 
 #: ../../tempcache/pages/member_show.html.twig:229
 msgid "Create a new member with %name information."
-msgstr ""
+msgstr "Crear un nuevo miembro con la información de %name."
 
 #: ../../tempcache/pages/member_show.html.twig:236
 msgid "Duplicate"
@@ -8526,7 +8574,7 @@ msgstr[1] "%count transacciones"
 
 #: ../../tempcache/pages/transactions_list.html.twig:296
 msgid "Originator"
-msgstr ""
+msgstr "Creador"
 
 #: ../../tempcache/pages/transactions_list.html.twig:386
 msgid "Transaction %id"
@@ -8550,11 +8598,11 @@ msgstr "ninguna transacción"
 
 #: ../../tempcache/pages/transactions_list.html.twig:545
 msgid "Completely dispatched transaction"
-msgstr ""
+msgstr "Transmisión completada"
 
 #: ../../tempcache/pages/transactions_list.html.twig:552
 msgid "Uncomplete dispatched transaction"
-msgstr ""
+msgstr "Transmisión no completada"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:65
 msgid "Choose label to translate"
@@ -8582,7 +8630,7 @@ msgstr "Miembros por estado"
 #: ../../tempcache/pages/charts.html.twig:81
 #: ../../tempcache/pages/charts.html.twig:226
 msgid "Members by state of dues"
-msgstr ""
+msgstr "Miembros por estado de cuotas"
 
 #: ../../tempcache/pages/charts.html.twig:91
 #: ../../tempcache/pages/charts.html.twig:291
@@ -8610,6 +8658,10 @@ msgid ""
 "account to be visible here, edit your profile and check 'Be visible in the "
 "members list'"
 msgstr ""
+"Esta página muestra sólo a los miembros que han optado por ser visibles en "
+"las listas públicas y están actualizados dentro de sus contribuciones. Si "
+"desea que su cuenta sea visible aquí, edite su perfil y compruebe 'Sé "
+"visible en la lista de miembros'"
 
 #: ../../tempcache/pages/password_lost.html.twig:69
 #: ../../tempcache/pages/password_lost.html.twig:73
@@ -8777,7 +8829,7 @@ msgstr "Línea:"
 
 #: ../../tempcache/pages/500.html.twig:161
 msgid "Trace"
-msgstr ""
+msgstr "Rastro"
 
 #: ../../tempcache/pages/document_form.html.twig:119
 msgid "Document type"
@@ -8809,15 +8861,15 @@ msgstr "Las siguientes exportaciones ya existen en el disco:"
 
 #: ../../tempcache/pages/export.html.twig:246
 msgid "Parameted exports"
-msgstr ""
+msgstr "Exportaciones con parámetros"
 
 #: ../../tempcache/pages/export.html.twig:255
 msgid "Which parameted export(s) do you want to run?"
-msgstr ""
+msgstr "¿Qué exportación(es) con parámetros desea ejecutar?"
 
 #: ../../tempcache/pages/export.html.twig:319
 msgid "No parameted exports are available."
-msgstr ""
+msgstr "Sin exportaciones con parámetros."
 
 #: ../../tempcache/pages/export.html.twig:333
 msgid "Galette tables exports"
@@ -8883,7 +8935,7 @@ msgstr "Este comentario está reservado para los miembros."
 
 #: ../../tempcache/components/form.html.twig:343
 msgid "Do member want to appear publically?"
-msgstr ""
+msgstr "¿El miembro desea aparecer públicamente?"
 
 #: ../../tempcache/components/form.html.twig:346
 msgid ""
@@ -8893,6 +8945,12 @@ msgid ""
 "trombinoscope page.<br/>Note that administrators can disabled public pages, "
 "this setting will have no effect in that case."
 msgstr ""
+"Si marca esta casilla (y está actualizado con sus contribuciones), su nombre "
+"completo y otra información serán visibles públicamente en la lista de "
+"miembros. <br>Si ha subido una foto, se mostrará en la página del "
+"trombinoscopio. <br>Tenga en cuenta que los administradores pueden "
+"deshabilitar las páginas públicas, esta configuración no tendrá efecto en "
+"ese caso."
 
 #: ../../tempcache/components/form.html.twig:358
 msgid "(at least %i characters)"
@@ -8923,6 +8981,8 @@ msgid ""
 "Do you manage a non profit organization, or a company? If you do so, check "
 "the box, and then enter its name in the field that will appear."
 msgstr ""
+"¿Usted administra una organización sin fines de lucro o una empresa? Si lo "
+"hace, marque la casilla y luego ingrese su nombre en el campo que aparecerá."
 
 #: ../../tempcache/components/forms/captcha.html.twig:75
 msgid "(numbers only)"
