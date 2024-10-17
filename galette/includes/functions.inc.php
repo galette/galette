@@ -24,6 +24,8 @@ declare(strict_types=1);
 use Analog\Analog;
 use Galette\Core\Galette;
 
+const NOT_TRANSLATED = ' (not translated)';
+
 /**
  * Check URL validity
  *
@@ -52,19 +54,10 @@ function _T(string $string, string $domain = 'galette', bool $nt = true): string
 {
     global $language, $installer, $translator, $l10n;
 
-    if (empty($string)) {
-        Analog::log(
-            'Cannot translate empty strings..',
-            Analog::INFO
-        );
-        return $string;
-    }
-
-    if (strpos($domain, 'route') !== false) {
-        Analog::log(
-            'Routes are no longer translated, return string.',
-            Analog::DEBUG
-        );
+    if (
+        empty($string) //cannot translate an empty string
+        || str_contains($domain, 'route') //routes are no longer translated
+    ) {
         return $string;
     }
 
@@ -84,7 +77,7 @@ function _T(string $string, string $domain = 'galette', bool $nt = true): string
         $trans = $string;
 
         if (Galette::isDebugEnabled() && $nt === true) {
-            $trans .= ' (not translated)';
+            $trans .= NOT_TRANSLATED;
         }
     }
     return $trans;
@@ -110,20 +103,19 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
             'Cannot translate empty strings..',
             Analog::INFO
         );
-        return ($count > 1 ? $plural : $singular);
+        return $count > 1 ? $plural : $singular;
     }
 
     if (
         $translator->translationExists($singular, $domain)
         && $translator->translationExists($plural, $domain)
     ) {
-        $ret = $translator->translatePlural(
+        return $translator->translatePlural(
             $singular,
             $plural,
             $count,
             $domain
         );
-        return $ret;
     }
 
     if (!isset($installer) || $installer !== true) {
@@ -137,7 +129,7 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
         $trans = ($count > 1 ? $plural : $singular);
 
         if (Galette::isDebugEnabled() && $nt === true) {
-            $trans .= ' (not translated)';
+            $trans .= NOT_TRANSLATED;
         }
     }
     return $trans;
@@ -175,7 +167,7 @@ function _Tx(string $context, string $string, string $domain = 'galette', bool $
         $trans = $ret;
 
         if (Galette::isDebugEnabled() && $nt === true) {
-            $trans .= ' (not translated)';
+            $trans .= NOT_TRANSLATED;
         }
     }
     return $trans;
@@ -228,7 +220,7 @@ function _Tnx(string $context, string $singular, string $plural, int $count, str
         $trans = $ret;
 
         if (Galette::isDebugEnabled() && $nt === true) {
-            $trans .= ' (not translated)';
+            $trans .= NOT_TRANSLATED;
         }
     }
 
