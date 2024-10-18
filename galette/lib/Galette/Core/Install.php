@@ -1093,15 +1093,7 @@ class Install
             && (!file_exists($conffile) || is_writable($conffile))
             && $fd = @fopen($conffile, 'w')
         ) {
-                $data = "<?php
-define('TYPE_DB', '" . $this->db_type . "');
-define('HOST_DB', '" . $this->db_host . "');
-define('PORT_DB', '" . $this->db_port . "');
-define('USER_DB', '" . $this->db_user . "');
-define('PWD_DB', '" . $this->db_pass . "');
-define('NAME_DB', '" . $this->db_name . "');
-define('PREFIX_DB', '" . $this->db_prefix . "');
-";
+            $data = $this->getConfigFileContents();
             fwrite($fd, $data);
             fclose($fd);
             $ret['res'] = true;
@@ -1118,6 +1110,24 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
         }
         $this->report[] = $ret;
         return !$error;
+    }
+
+    /**
+     * Get configuration file contents
+     *
+     * @return string
+     */
+    public function getConfigFileContents(): string
+    {
+        return "<?php
+define('TYPE_DB', '" . $this->db_type . "');
+define('HOST_DB', '" . $this->db_host . "');
+define('PORT_DB', '" . $this->db_port . "');
+define('USER_DB', '" . $this->db_user . "');
+define('PWD_DB', '" . $this->db_pass . "');
+define('NAME_DB', '" . $this->db_name . "');
+define('PREFIX_DB', '" . $this->db_prefix . "');
+";
     }
 
     /**
