@@ -43,7 +43,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-15 14:43+0200\n"
-"PO-Revision-Date: 2024-10-17 19:21+0000\n"
+"PO-Revision-Date: 2024-10-19 07:02+0000\n"
 "Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -694,7 +694,7 @@ msgstr "Información del sistema"
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:76
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:91
 msgid "Dashboard"
-msgstr "Tablero de mandos"
+msgstr "Panel de control"
 
 #: ../lib/Galette/Controllers/GaletteController.php:201
 #: ../lib/Galette/Core/Install.php:1166 ../lib/Galette/Core/Galette.php:383
@@ -3479,7 +3479,7 @@ msgstr "Transferir"
 
 #: ../lib/Galette/Entity/PaymentType.php:286
 msgid "Paypal"
-msgstr "Paypal"
+msgstr "PayPal"
 
 #: ../lib/Galette/Entity/PaymentType.php:287
 msgid "Payment schedule"
@@ -8077,7 +8077,7 @@ msgstr "(máximo 10 caracteres)"
 
 #: ../../tempcache/pages/preferences.html.twig:1958
 msgid "Long Text (Bottom Line):"
-msgstr "Texto largo (línea inferior)"
+msgstr "Texto largo (línea inferior):"
 
 #: ../../tempcache/pages/preferences.html.twig:1990
 msgid "(65 characters max)"
