@@ -151,7 +151,7 @@
         $('{{ js_chosen_id }}').dropdown({
             match: 'text',
             apiSettings: {
-                {% if js_chosen_cache is defined and js_chosen_cache == false %}cache: false,{% endif %}
+                cache: false,
                 url: '{{ url_for("contributionMembers", {"page": 1, "search": "{query}"}) }}',
                 method: 'post',
                 beforeSend: function (settings) {
@@ -195,8 +195,8 @@
                             selector: '#contribdetails'
                         } %},
                         success: function(res){
-                            $('#date_debut_cotis').val(res.date_debut_cotis);
-                            $('#date_fin_cotis').val(res.date_fin_cotis);
+                            $('#contribution-rangeend').calendar('set date', res.date_debut_cotis);
+                            $('#membership-rangeend').calendar('set date', res.date_fin_cotis);
                         },
                         error: function() {
                             {% include "elements/js/modal.js.twig" with {

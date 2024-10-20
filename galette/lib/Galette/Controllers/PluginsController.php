@@ -152,7 +152,6 @@ class PluginsController extends AbstractController
         }
 
         $params = [];
-        $warning_detected = [];
         $error_detected = [];
 
         $plugid = $id;
@@ -176,6 +175,7 @@ class PluginsController extends AbstractController
         } else {
             $install = new PluginInstall();
         }
+        $install->reinitReport();
 
         $post = $request->getParsedBody();
 
@@ -252,71 +252,10 @@ class PluginsController extends AbstractController
                 break;
             case 'i4':
             case 'u4':
-                $messages = [];
-
-                // begin : copyright (2002) the phpbb group (support@phpbb.com)
-                // load in the sql parser
-                include GALETTE_ROOT . 'includes/sql_parse.php';
-                if ($step == 'u4') {
-                    $update_scripts = Install::getUpdateScripts(
-                        $plugin['root'],
-                        TYPE_DB,
-                        $post['previous_version']
-                    );
-                } else {
-                    $update_scripts['current'] = TYPE_DB . '.sql';
-                }
-
-                $sql_query = '';
-                foreach ($update_scripts as $key => $val) {
-                    $sql_query .= @fread(
-                        @fopen($plugin['root'] . '/scripts/' . $val, 'r'),
-                        @filesize($plugin['root'] . '/scripts/' . $val)
-                    );
-                    $sql_query .= "\n";
-                }
-
-                $sql_query = preg_replace('/galette_/', PREFIX_DB, $sql_query);
-                $sql_query = remove_remarks($sql_query);
-
-                $sql_query = split_sql_file($sql_query, ';');
-
-                $sql_size = sizeof($sql_query);
-                for ($i = 0; $i < $sql_size; $i++) {
-                    $query = trim($sql_query[$i]);
-                    if ($query != '' && $query[0] != '-') {
-                        //some output infos
-                        @list($w1, $w2, $w3, $extra) = array_pad(explode(' ', $query, 4), 4, '');
-                        if ($extra != '') {
-                            $extra = '...';
-                        }
-                        try {
-                            $this->zdb->db->query(
-                                $query,
-                                Adapter::QUERY_MODE_EXECUTE
-                            );
-                            $messages['success'][] = $w1 . ' ' . $w2 . ' ' . $w3 .
-                                ' ' . $extra;
-                        } catch (Throwable $e) {
-                            Analog::log(
-                                'Error executing query | ' . $e->getMessage() .
-                                ' | Query was: ' . $query,
-                                Analog::WARNING
-                            );
-                            if (
-                                (strcasecmp(trim($w1), 'drop') != 0)
-                                && (strcasecmp(trim($w1), 'rename') != 0)
-                            ) {
-                                $error_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra;
-                                $error_detected[] = $e->getMessage() . '<br/>(' . $query . ')';
-                            } else {
-                                //if error are on drop, DROP, rename or RENAME we can continue
-                                $warning_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra;
-                                $warning_detected[] = $e->getMessage() . '<br/>(' . $query . ')';
-                            }
-                        }
-                    }
-                }
+                $install->setDbType(TYPE_DB, $error_detected);
+                $install->setTablesPrefix(PREFIX_DB);
+                $install->setInstalledVersion($post['previous_version'] ?? null);
+                $install->executeScripts($this->zdb, $plugin['root']);
                 break;
         }
 
@@ -329,7 +268,8 @@ class PluginsController extends AbstractController
             'plugid'        => $plugid,
             'plugin'        => $plugin,
             'mode'          => (($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : ''),
-            'error_detected' => $error_detected
+            'error_detected' => $error_detected,
+            'install' => $install,
         ];
 
         // display page

@@ -81,7 +81,7 @@ class ContributionsTypes
      * @param Db                                      $zdb  Database
      * @param int|ArrayObject<string,int|string>|null $args Optional existing result set
      */
-    public function __construct(Db $zdb, int|ArrayObject $args = null)
+    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
     {
         $this->zdb = $zdb;
         $this->extension = self::DEFAULT_TYPE;
@@ -229,7 +229,7 @@ class ContributionsTypes
      *
      * @return array<int, array<string, mixed>>
      */
-    public function getList(bool $extent = null): array
+    public function getList(?bool $extent = null): array
     {
         $list = array();
 

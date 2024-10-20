@@ -52,7 +52,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, string $form_name = null): Response
+    public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
         $params = [
             'page_title'        => _T("Add field"),
@@ -86,7 +86,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, string $form_name = null): Response
+    public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
         $post = $request->getParsedBody();
         $post['form_name'] = $form_name;
@@ -201,8 +201,8 @@ class DynamicFieldsController extends CrudController
     public function list(
         Request $request,
         Response $response,
-        string $option = null,
-        int|string $value = null,
+        ?string $option = null,
+        int|string|null $value = null,
         string $form_name = 'adh'
     ): Response {
         if (isset($_POST['form_name']) && trim($_POST['form_name']) != '') {
@@ -394,7 +394,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, int $id, string $form_name = null): Response
+    public function edit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
         $df = null;
         if ($this->session->dynamicfieldtype) {
@@ -443,7 +443,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, int $id, string $form_name = null): Response
+    public function doEdit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
         $post = $request->getParsedBody();
         $post['form_name'] = $form_name;

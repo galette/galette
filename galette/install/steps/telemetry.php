@@ -34,7 +34,7 @@ $telemetry = new \Galette\Util\Telemetry(
             <div class="column">
                 <div class="ui toggle checkbox tooltip" title="<?php echo _T("Send anonymous and imprecise data about your Galette instance"); ?>">
                     <input type="checkbox" name="send_telemetry" tabindex="0" class="hidden" checked="checked"/>
-                    <label><?php echo _T("Send telemetry information"); ?></label>
+                    <label for="send_telemetry"><?php echo _T("Send telemetry information"); ?></label>
                 </div>
             </div>
 <?php

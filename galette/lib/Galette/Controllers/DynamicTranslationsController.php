@@ -46,7 +46,7 @@ class DynamicTranslationsController extends AbstractController
      *
      * @return Response
      */
-    public function dynamicTranslations(Request $request, Response $response, string $text_orig = null): Response
+    public function dynamicTranslations(Request $request, Response $response, ?string $text_orig = null): Response
     {
         if ($text_orig == null && isset($_GET['text_orig'])) {
             $text_orig = $_GET['text_orig'];

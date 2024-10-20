@@ -177,11 +177,11 @@ trait FileTrait
      * @return void
      */
     protected function init(
-        string|null $dest = null,
-        array $extensions = null,
-        array $mimes = null,
-        int $maxlenght = null,
-        int $mincropsize = null
+        ?string $dest = null,
+        ?array $extensions = null,
+        ?array $mimes = null,
+        ?int $maxlenght = null,
+        ?int $mincropsize = null
     ): void {
         if ($dest !== null && !str_ends_with($dest, '/')) {
             //normalize path

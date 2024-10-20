@@ -27,6 +27,13 @@ jobs:
         include:
           #always tests higher stable php version with lower db version
           #enable coverage on higher stable php version with higher PostgreSQL version
+          #php development version
+          - { php-version: "8.4", db-image: "postgres:11", coverage: none, always: true }
+          - { php-version: "8.4", db-image: "postgres:16", coverage: 'pcov', always: true }
+          - { php-version: "8.4", db-image: "mysql:5.7", coverage: none, always: true }
+          - { php-version: "8.4", db-image: "mysql:8.1", coverage: none, always: false }
+          - { php-version: "8.4", db-image: "mariadb:10.4", coverage: none, always: true }
+          - { php-version: "8.4", db-image: "mariadb:11.3", coverage: none, always: false }
           #higher stable php version
           - { php-version: "8.3", db-image: "postgres:11", coverage: none, always: true }
           - { php-version: "8.3", db-image: "postgres:16", coverage: 'pcov', always: true }
@@ -138,13 +145,13 @@ jobs:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
         run: |
-          PGPASSWORD=g@l3tte psql -d galette_tests -a -f galette/install/scripts/pgsql.sql -U galette_tests -h localhost
+          bin/console galette:install -v --dbtype=pgsql --dbhost=localhost --dbname=galette_tests --dbuser=galette_tests --dbpass=g@l3tte --admin=admin --password=admin --no-interaction
         if: env.skip != 'true' && startsWith(matrix.db-image, 'postgres')
 
       - name: Init for MariaDB
         run: |
           mysql -e 'create database IF NOT EXISTS galette_tests;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
-          mysql -e 'use galette_tests; source galette/install/scripts/mysql.sql;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
+          bin/console galette:install -v --dbtype=mysql --dbhost=127.0.0.1 --dbname=galette_tests --dbuser=galette_tests --dbpass=g@l3tte --admin=admin --password=admin --no-interaction
         if: env.skip != 'true' && (startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb'))
 
       - name: Unit tests
@@ -261,7 +268,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: [ '8.1', '8.3' ]
+        php-versions: [ '8.1', '8.3', '8.4' ]
 
     steps:
       - name: PHP

@@ -98,7 +98,7 @@ $app->get(
 $app->post(
     '/transaction/add',
     [Crud\TransactionsController::class, 'doAdd']
-)->setName('doEditTransaction')->add($authenticate);
+)->setName('doAddTransaction')->add($authenticate);
 
 $app->post(
     '/transaction/edit/{id:\d+}',

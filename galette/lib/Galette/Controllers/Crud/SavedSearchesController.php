@@ -83,7 +83,7 @@ class SavedSearchesController extends CrudController
         //when using advanced search, no parameters are sent
         if (isset($post['advanced_search'])) {
             $post = [];
-            $filters = $this->session->filter_members;
+            $filters = $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())};
             foreach ($filters->search_fields as $field) {
                 $post[$field] = $filters->$field;
             }
@@ -122,7 +122,7 @@ class SavedSearchesController extends CrudController
         if ($request->getMethod() === 'GET') {
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('members'));
+                ->withHeader('Location', $this->routeparser->urlFor(MembersController::getDefaultFilterName()));
         } else {
             //called from ajax, return json
             return $this->withJson($response, ['success' => $check]);
@@ -142,10 +142,10 @@ class SavedSearchesController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
+    public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
-        if (isset($this->session->filter_savedsearch)) {
-            $filters = $this->session->filter_savedsearch;
+        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
         } else {
             $filters = new SavedSearchesList();
         }
@@ -167,7 +167,7 @@ class SavedSearchesController extends CrudController
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
 
-        $this->session->filter_savedsearch = $filters;
+        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
 
         // display page
         $this->view->render(
@@ -273,7 +273,7 @@ class SavedSearchesController extends CrudController
             return _T('Remove saved search');
         } else {
             //batch saved search removal
-            $filters = $this->session->filter_savedsearch;
+            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
             return str_replace(
                 '%count',
                 (string)count($filters->selected),
@@ -292,8 +292,8 @@ class SavedSearchesController extends CrudController
      */
     protected function doDelete(array $args, array $post): bool
     {
-        if (isset($this->session->filter_savedsearch)) {
-            $filters = $this->session->filter_savedsearch;
+        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
         } else {
             $filters = new SavedSearchesList();
         }
@@ -340,7 +340,7 @@ class SavedSearchesController extends CrudController
             foreach ($parameters as $key => $value) {
                 $filters->$key = $value;
             }
-            $this->session->filter_members = $filters;
+            $this->session->{$this->getFilterName(MembersController::getDefaultFilterName())} = $filters;
         } catch (Throwable $e) {
             Analog::log($e->getMessage(), Analog::ERROR);
             $this->flash->addMessage(
@@ -352,5 +352,15 @@ class SavedSearchesController extends CrudController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->routeparser->urlFor('members'));
+    }
+
+    /**
+     * Get default filter name
+     *
+     * @return string
+     */
+    public static function getDefaultFilterName(): string
+    {
+        return 'savedsearch';
     }
 }

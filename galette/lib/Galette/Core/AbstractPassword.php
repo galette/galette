@@ -52,7 +52,7 @@ abstract class AbstractPassword
      *
      * @return string random password
      */
-    public function makeRandomPassword(int $size = null): string
+    public function makeRandomPassword(?int $size = null): string
     {
         $size = $size ?? static::DEFAULT_SIZE;
         $pass = '';

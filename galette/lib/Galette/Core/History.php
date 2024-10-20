@@ -64,7 +64,7 @@ class History
      * @param Preferences  $preferences Preferences
      * @param ?HistoryList $filters     Filtering
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, HistoryList $filters = null)
+    public function __construct(Db $zdb, Login $login, Preferences $preferences, ?HistoryList $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
@@ -94,9 +94,19 @@ class History
             && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
         ) {
             $split_xff = preg_split('/,\s*/', $_SERVER['HTTP_X_FORWARDED_FOR']);
-            return $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
+            $ip = $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
         }
-        return $_SERVER['REMOTE_ADDR'];
+
+        if (
+            filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false
+            || filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false
+        ) {
+            return $ip;
+        }
+
+        return '';
     }
 
     /**
@@ -384,18 +394,7 @@ class History
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array();
-        if (!in_array($name, $forbidden)) {
-            return $this->$name;
-        }
-
-        throw new \RuntimeException(
-            sprintf(
-                'Unable to get property "%s::%s"!',
-                __CLASS__,
-                $name
-            )
-        );
+        return $this->$name;
     }
 
     /**
@@ -429,19 +428,7 @@ class History
             Analog::DEBUG
         );
 
-        $forbidden = array();
-        if (!in_array($name, $forbidden)) {
-            switch ($name) {
-                default:
-                    $this->$name = $value;
-                    break;
-            }
-        } else {
-            Analog::log(
-                '[History] Unable to set property `' . $name . '`',
-                Analog::WARNING
-            );
-        }
+        $this->$name = $value;
     }
 
     /**

@@ -67,7 +67,7 @@ class Group
      *                                                      a specific group, or null to just
      *                                                      instanciate object
      */
-    public function __construct(ArrayObject|int $args = null)
+    public function __construct(ArrayObject|int|null $args = null)
     {
         if ($args === null || is_int($args)) {
             if (is_int($args) && $args > 0) {
@@ -745,6 +745,44 @@ class Group
 
         $this->parent_group = $group;
         return $this;
+    }
+
+    /**
+     * Add member to group
+     *
+     * @param Adherent $member Member to add
+     *
+     * @return void
+     */
+    public function addMember(Adherent $member): void
+    {
+        global $zdb;
+
+        try {
+            $insert = $zdb->insert(self::GROUPSUSERS_TABLE);
+            $insert->values(
+                array(
+                    self::PK => $this->getId(),
+                    Adherent::PK => $member->id
+                )
+            );
+            $zdb->execute($insert);
+            $this->members[] = $member;
+        } catch (\OverflowException $e) {
+            //nothing to do, member is already in group
+            Analog::log(
+                'Member `' . $member->sname . '` already in group `' .
+                $this->group_name . '` (' . $this->id . ').',
+                Analog::INFO
+            );
+        } catch (\Throwable $e) {
+            Analog::log(
+                'Cannot add member to group `' . $this->group_name .
+                '` (' . $this->id . ') | ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            throw $e;
+        }
     }
 
     /**

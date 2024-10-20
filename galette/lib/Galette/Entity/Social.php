@@ -72,7 +72,7 @@ class Social
      * @param Db                                      $zdb  Database instance
      * @param int|ArrayObject<string,int|string>|null $args Arguments
      */
-    public function __construct(Db $zdb, int|ArrayObject $args = null)
+    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
     {
         $this->zdb = $zdb;
         if (is_int($args)) {
@@ -118,7 +118,7 @@ class Social
      *
      * @throws Throwable
      */
-    public static function getListForMember(int $id_adh = null, string $type = null): array
+    public static function getListForMember(?int $id_adh = null, ?string $type = null): array
     {
         global $zdb;
 
@@ -218,7 +218,7 @@ class Social
      *
      * @return boolean
      */
-    public function remove(array $ids = null): bool
+    public function remove(?array $ids = null): bool
     {
         if ($ids == null) {
             $ids[] = $this->id;
@@ -305,7 +305,7 @@ class Social
      *
      * @return self
      */
-    public function setLinkedMember(int $id = null): self
+    public function setLinkedMember(?int $id = null): self
     {
         $this->{Adherent::PK} = $id;
         if ($this->{Adherent::PK} > 0) {

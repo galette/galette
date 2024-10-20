@@ -89,8 +89,8 @@ class StatusController extends CrudController
     public function list(
         Request $request,
         Response $response,
-        string $option = null,
-        int|string $value = null,
+        ?string $option = null,
+        int|string|null $value = null,
     ): Response {
 
         $status = new Status($this->zdb);
@@ -192,7 +192,7 @@ class StatusController extends CrudController
     public function store(
         Request $request,
         Response $response,
-        int $id = null,
+        ?int $id = null,
         string $action = 'edit'
     ): Response {
         $post = $request->getParsedBody();

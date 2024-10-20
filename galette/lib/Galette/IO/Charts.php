@@ -57,7 +57,7 @@ class Charts
      *
      * @param ?array<string> $types Charts types to cache
      */
-    public function __construct(array $types = null)
+    public function __construct(?array $types = null)
     {
         if ($types !== null) {
             if (!is_array($types)) {

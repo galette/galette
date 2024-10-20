@@ -172,7 +172,8 @@ class Telemetry
                 'post_max_size'         => ini_get('post_max_size'),
                 'safe_mode'             => ini_get('safe_mode'),
                 'session'               => ini_get('session.save_handler'),
-                'upload_max_filesize'   => ini_get('upload_max_filesize')
+                'upload_max_filesize'   => ini_get('upload_max_filesize'),
+                'max_input_vars'        => ini_get('max_input_vars'),
             ]
         ];
 
@@ -288,8 +289,7 @@ class Telemetry
                 throw new \RuntimeException($errors);
             }
 
-            $this->prefs->pref_telemetry_date = date('Y-m-d H:i:s');
-            $this->prefs->store();
+            $this->prefs->updateTelemetryDate();
 
             //all is OK!
             return true;
@@ -318,7 +318,7 @@ class Telemetry
         $param = 'pref_' . $type . '_uuid';
         $uuid = $this->prefs->$param;
         if (empty($uuid)) {
-            $uuid = $this->generateUuid($type);
+            $uuid = $this->prefs->generateUuid($type);
         }
         return $uuid;
     }
@@ -341,43 +341,6 @@ class Telemetry
     final public function getRegistrationUuid(): string
     {
         return $this->getUuid('registration');
-    }
-
-
-    /**
-     * Generates an unique identifier and store it
-     *
-     * @param string $type UUID type (either instance or registration)
-     *
-     * @return string
-     */
-    final public function generateUuid(string $type): string
-    {
-        $uuid = $this->getRandomString(40);
-        $param = 'pref_' . $type . '_uuid';
-        $this->prefs->$param = $uuid;
-        $this->prefs->store();
-        return $uuid;
-    }
-
-    /**
-     * Generates an unique identifier for current instance and store it
-     *
-     * @return string
-     */
-    final public function generateInstanceUuid(): string
-    {
-        return $this->generateUuid('instance');
-    }
-
-    /**
-     * Generates an unique identifier for current instance and store it
-     *
-     * @return string
-     */
-    final public function generateRegistrationUuid(): string
-    {
-        return $this->generateUuid('registration');
     }
 
     /**
@@ -435,26 +398,6 @@ class Telemetry
             return true;
         }
         return false;
-    }
-
-    /**
-     * Get a random string
-     *
-     * @param integer $length of the random string
-     *
-     * @return string
-     *
-     * @see https://stackoverflow.com/questions/4356289/php-random-string-generator/31107425#31107425
-     */
-    private function getRandomString(int $length): string
-    {
-        $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $str = '';
-        $max = mb_strlen($keyspace, '8bit') - 1;
-        for ($i = 0; $i < $length; ++$i) {
-            $str .= $keyspace[random_int(0, $max)];
-        }
-        return $str;
     }
 
     /**

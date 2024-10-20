@@ -53,7 +53,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, string $type = null): Response
+    public function add(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->edit($request, $response, null, 'add');
     }
@@ -67,7 +67,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, string $type = null): Response
+    public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->doEdit($request, $response, null, $type);
     }
@@ -90,7 +90,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, int $id = null, string|null $action = 'edit'): Response
+    public function edit(Request $request, Response $response, ?int $id = null, string|null $action = 'edit'): Response
     {
         if ($this->session->transaction !== null) {
             $trans = $this->session->transaction;
@@ -177,7 +177,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, int $id = null, ?string $type = null): Response
+    public function doEdit(Request $request, Response $response, ?int $id = null, ?string $type = null): Response
     {
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
@@ -274,11 +274,17 @@ class TransactionsController extends ContributionsController
                 );
 
                 //get back to transactions list
+                $redirect_url = $this->routeparser->urlFor('contributions', ['type' => 'transactions']);
+                if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+                    //or slash URL for non staff nor admin
+                    $redirect_url = $this->routeparser->urlFor('slash');
+                }
+
                 return $response
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->routeparser->urlFor('contributions', ['type' => 'transactions'])
+                        $redirect_url
                     );
             }
         } else {

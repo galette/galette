@@ -61,7 +61,7 @@ trait Socials
      *
      * @return bool
      */
-    protected function storeSocials(int $id = null): bool
+    protected function storeSocials(?int $id = null): bool
     {
         $existings = Social::getListForMember($id);
         foreach ($this->socials_input as $key => $value) {

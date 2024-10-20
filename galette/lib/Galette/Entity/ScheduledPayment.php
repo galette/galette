@@ -64,7 +64,7 @@ class ScheduledPayment
      * @param Db                                      $zdb  Database instance
      * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
-    public function __construct(Db $zdb, ArrayObject|int $args = null)
+    public function __construct(Db $zdb, ArrayObject|int|null $args = null)
     {
         $this->zdb = $zdb;
         $now = new DateTime();
@@ -150,7 +150,7 @@ class ScheduledPayment
         if (!isset($data[Contribution::PK]) || !is_numeric($data[Contribution::PK])) {
             $this->errors[] = _T('Contribution is required');
         } else {
-            if (!$this->contribution->load($data[Contribution::PK])) {
+            if (!$this->contribution->load((int)$data[Contribution::PK])) {
                 $this->errors[] = _T('Unable to load contribution');
             } else {
                 if (isset($data['amount'])) {
@@ -177,10 +177,10 @@ class ScheduledPayment
             $this->errors[] = _T('Payment type is required');
         } else {
             //no schedule inception allowed!
-            if ($data['id_paymenttype'] === PaymentType::SCHEDULED) {
+            if ((int)$data['id_paymenttype'] === PaymentType::SCHEDULED) {
                 $this->errors[] = _T('Cannot schedule a scheduled payment!');
             } else {
-                $this->payment_type = new PaymentType($this->zdb, $data['id_paymenttype']);
+                $this->payment_type = new PaymentType($this->zdb, (int)$data['id_paymenttype']);
             }
         }
 
@@ -193,12 +193,12 @@ class ScheduledPayment
         }
 
         $this
-            ->setContribution($data[Contribution::PK])
-            ->setPaymentType($data['id_paymenttype'])
+            ->setContribution((int)$data[Contribution::PK])
+            ->setPaymentType((int)$data['id_paymenttype'])
             ->setCreationDate($data['creation_date'] ?? date('Y-m-d'))
             ->setScheduledDate($data['scheduled_date'])
-            ->setAmount($data['amount'] ?? $this->contribution->amount)
-            ->setPaid($data['is_paid'] ?? false)
+            ->setAmount(isset($data['amount']) ? (float)$data['amount'] : $this->contribution->amount)
+            ->setPaid(isset($data['paid']) ? (bool)$data['paid'] : false)
             ->setComment($data['comment'] ?? null);
 
         return count($this->errors) === 0;

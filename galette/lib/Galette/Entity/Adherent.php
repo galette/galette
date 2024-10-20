@@ -213,7 +213,7 @@ class Adherent
      *                                                              member, or null to just instantiate object
      * @param false|array<string,bool>|null                   $deps Dependencies configuration, see Adherent::$_deps
      */
-    public function __construct(Db $zdb, ArrayObject|int|string $args = null, array|false $deps = null)
+    public function __construct(Db $zdb, ArrayObject|int|string|null $args = null, array|false|null $deps = null)
     {
         /** @var I18n $i18n */
         global $i18n;
@@ -2149,7 +2149,7 @@ class Adherent
      *
      * @return array<string>|true
      */
-    public function handleFiles(array $files, array $cropping = null): array|bool
+    public function handleFiles(array $files, ?array $cropping = null): array|bool
     {
         $this->errors = [];
         // picture upload

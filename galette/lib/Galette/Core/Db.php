@@ -78,7 +78,7 @@ class Db
      *                                   If not set, database constants will be used.
      * @throws Throwable
      */
-    public function __construct(array $dsn = null)
+    public function __construct(?array $dsn = null)
     {
         $_type = null;
 
@@ -270,11 +270,11 @@ class Db
      */
     public static function testConnectivity(
         string $type,
-        string $user = null,
-        string $pass = null,
-        string $host = null,
-        string $port = null,
-        string $db = null
+        ?string $user = null,
+        ?string $pass = null,
+        ?string $host = null,
+        ?string $port = null,
+        ?string $db = null
     ): bool {
         try {
             if ($type === self::MYSQL) {
@@ -500,7 +500,7 @@ class Db
      *
      * @return array<int, string>
      */
-    public function getTables(string $prefix = null): array
+    public function getTables(?string $prefix = null): array
     {
         $metadata = Factory::createSourceFromAdapter($this->db);
         $tmp_tables_list = $metadata->getTableNames();
@@ -541,7 +541,7 @@ class Db
      *
      * @return void
      */
-    public function convertToUTF(string $prefix = null, bool $content_only = false): void
+    public function convertToUTF(?string $prefix = null, bool $content_only = false): void
     {
         if ($this->isPostgres()) {
             Analog::log(
@@ -705,7 +705,7 @@ class Db
      *
      * @return Select
      */
-    public function select(string $table, string $alias = null): Select
+    public function select(string $table, ?string $alias = null): Select
     {
         if ($alias === null) {
             return $this->sql->select(

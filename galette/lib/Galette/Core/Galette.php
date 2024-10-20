@@ -216,11 +216,16 @@ class Galette
                 ];
             }
 
-            if ($login->isAdmin() || $login->isStaff()) {
+            // Contributions
+            if ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) {
                 $menus['contributions'] = [
                     'title' => _T('Contributions'),
                     'icon' => 'receipt',
-                    'items' => [
+                    'items' => []
+                ];
+
+                if ($preferences->pref_bool_groupsmanagers_see_contributions || $login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("List of contributions"),
                             'title' => _T("View and filter contributions"),
@@ -229,7 +234,12 @@ class Galette
                                 'args' => ['type' => 'contributions'],
                                 'aliases' => ['editContribution']
                             ]
-                        ],
+                        ]
+                    ]);
+                }
+
+                if ($login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("List of scheduled payments"),
                             'title' => _T("View and filter scheduled payments"),
@@ -237,7 +247,12 @@ class Galette
                                 'name' => 'scheduledPayments',
                                 'aliases' => ['addScheduledPayment', 'editScheduledPayment']
                             ]
-                        ],
+                        ]
+                    ]);
+                }
+
+                if ($preferences->pref_bool_groupsmanagers_see_transactions || $login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("List of transactions"),
                             'title' => _T("View and filter transactions"),
@@ -246,7 +261,12 @@ class Galette
                                 'args' => ['type' => 'transactions'],
                                 'aliases' => ['editTransaction']
                             ]
-                        ],
+                        ]
+                    ]);
+                }
+
+                if ($preferences->pref_bool_groupsmanagers_create_contributions || $login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("Add a membership fee"),
                             'title' => _T("Add new membership fee in database"),
@@ -262,14 +282,24 @@ class Galette
                                 'name' => 'addContribution',
                                 'args' => ['type' => \Galette\Entity\Contribution::TYPE_DONATION]
                             ]
-                        ],
+                        ]
+                    ]);
+                }
+
+                if ($preferences->pref_bool_groupsmanagers_create_transactions || $login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("Add a transaction"),
                             'title' => _T("Add new transaction in database"),
                             'route' => [
                                 'name' => 'addTransaction'
                             ]
-                        ],
+                        ]
+                    ]);
+                }
+
+                if ($login->isAdmin() || $login->isStaff()) {
+                    $menus['contributions']['items'] = array_merge($menus['contributions']['items'], [
                         [
                             'label' => _T("Reminders"),
                             'title' => _T("Send reminders to late members"),
@@ -277,9 +307,9 @@ class Galette
                                 'name' => 'reminders'
                             ]
                         ]
-                    ]
-                ];
-            } //admin or staff
+                    ]);
+                }
+            } // /Contributions
 
             if ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) {
                 $menus['management'] = [
@@ -556,6 +586,73 @@ class Galette
     }
 
     /**
+     * Get current logged-in user dashboards
+     *
+     * @return array<string, string|array<string,mixed>>
+     */
+    public static function getMyDashboards(): array
+    {
+        /**
+         * @var Login $login
+         * @var Plugins $plugins
+         * @var Db $zdb
+         * @var Preferences $preferences
+         */
+        global $login, $plugins, $zdb, $preferences;
+
+        $dashboards = [];
+        if ($login->isLogged() && !$login->isSuperAdmin()) {
+            // Single member
+            $dashboards = array_merge(
+                $dashboards,
+                [
+                    [
+                        'label' => _T("My information"),
+                        'title' => _T("View my member card"),
+                        'route' => [
+                            'name' => 'me'
+                        ],
+                        'icon' => 'bust_in_silhouette'
+                    ],
+                    [
+                        'label' => _T("My contributions"),
+                        'title' => _T("View and filter all my contributions"),
+                        'route' => [
+                            'name' => 'myContributions',
+                            'args' => ['type' => 'contributions']
+                        ],
+                        'icon' => 'receipt'
+                    ],
+                    [
+                        'label' => _T("My transactions"),
+                        'title' => _T("View and filter all my transactions"),
+                        'route' => [
+                            'name' => 'myContributions',
+                            'args' => ['type' => 'transactions']
+                        ],
+                        'icon' => 'book'
+                    ]
+                ]
+            );
+        }
+
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class) && method_exists($plugin_class, 'getMyDashboards')) {
+                /** @var GalettePlugin $plugin */
+                $plugin = new $plugin_class();
+                $dashboards = array_merge_recursive(
+                    $dashboards,
+                    $plugin->getMyDashboards()
+                );
+            }
+        }
+
+        return $dashboards;
+    }
+
+    /**
      * Get dashboards
      *
      * @return array<string, string|array<string,mixed>>
@@ -677,41 +774,6 @@ class Galette
                         ],
                         'icon' => 'package'
                     ],
-                ]
-            );
-        }
-
-        if ($login->isLogged() && !$login->isSuperAdmin()) {
-            // Single member
-            $dashboards = array_merge(
-                $dashboards,
-                [
-                    [
-                        'label' => _T("My information"),
-                        'title' => _T("View my member card"),
-                        'route' => [
-                            'name' => 'me'
-                        ],
-                        'icon' => 'bust_in_silhouette'
-                    ],
-                    [
-                        'label' => _T("My contributions"),
-                        'title' => _T("View and filter all my contributions"),
-                        'route' => [
-                            'name' => 'myContributions',
-                            'args' => ['type' => 'contributions']
-                        ],
-                        'icon' => 'receipt'
-                    ],
-                    [
-                        'label' => _T("My transactions"),
-                        'title' => _T("View and filter all my transactions"),
-                        'route' => [
-                            'name' => 'myContributions',
-                            'args' => ['type' => 'transactions']
-                        ],
-                        'icon' => 'book'
-                    ]
                 ]
             );
         }

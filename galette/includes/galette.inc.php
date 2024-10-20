@@ -52,7 +52,7 @@ if (!isset($installer)) {
 // test if galette is already installed or if we're form installer
 // and redirect to install page if not
 $installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
-if (!$installed && !$installer) {
+if (!$installed && !$installer && (!defined('GALETTE_ENV') || GALETTE_ENV != 'CLI')) {
     header('location: ./installer.php');
     die();
 }
@@ -96,6 +96,10 @@ if (!defined('GALETTE_MODE')) {
 }
 if (!defined('GALETTE_DEBUG')) {
     define('GALETTE_DEBUG', false);
+}
+
+if (!defined('GALETTE_ADAPTATIVE_CARDS')) {
+    define('GALETTE_ADAPTATIVE_CARDS', false);
 }
 
 if (!isset($_COOKIE['show_galette_dashboard'])) {
@@ -159,8 +163,6 @@ if (defined('GALETTE_TESTS')) {
 }
 
 Analog::handler($galette_run_log);
-
-require_once GALETTE_ROOT . 'includes/functions.inc.php';
 
 if (!$installer and !defined('GALETTE_TESTS')) {
     //If we're not working from installer nor from tests

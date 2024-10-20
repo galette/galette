@@ -46,9 +46,9 @@ class File implements FileInterface
      */
     public function __construct(
         string $dest,
-        array $extensions = null,
-        array $mimes = null,
-        int $maxlenght = null
+        ?array $extensions = null,
+        ?array $mimes = null,
+        ?int $maxlenght = null
     ) {
         $this->init(
             $dest,

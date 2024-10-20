@@ -71,7 +71,7 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    abstract public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response;
+    abstract public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response;
 
     /**
      * List filtering
@@ -177,10 +177,19 @@ abstract class CrudController extends AbstractController
             $ids = $args['id'];
         }
 
-        if ($ids === null && method_exists($this, 'getFilterName')) {
-            $filter_name = $this->getFilterName($args);
-            $filters = $this->session->$filter_name;
-            $ids = $filters->selected;
+        if ($ids === null) {
+            $filter_name = null;
+            $filter_args = ['suffix' => 'delete'];
+            if (isset($args['type'])) {
+                $filter_args['type'] = $args['type'];
+                $filter_name = $this->getFilterName($args['type'], $filter_args);
+            } elseif (method_exists($this, 'getDefaultFilterName')) {
+                $filter_name = $this->getFilterName($this->getDefaultFilterName(), $filter_args);
+            }
+            if ($filter_name !== null) {
+                $filters = $this->session->$filter_name;
+                $ids = $filters->selected;
+            }
         }
 
         //type

@@ -45,7 +45,7 @@ class TextController extends AbstractController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, string $lang = null, string $ref = null): Response
+    public function list(Request $request, Response $response, ?string $lang = null, ?string $ref = null): Response
     {
         if ($lang === null) {
             $lang = $this->preferences->pref_lang;

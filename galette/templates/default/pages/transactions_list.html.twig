@@ -204,7 +204,7 @@
             <td data-col-label="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
             <td data-col-label="{{ _T("Amount") }}">{{ transaction.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ transaction.getPaymentType() }}</td>
-            {% if login.isAdmin() or login.isStaff() %}
+            {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
             <td class="center actions_row">
                 <a
                     href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
@@ -213,6 +213,7 @@
                     <i class="ui edit icon tooltip" aria-hidden="true"></i>
                     <span class="ui special popup">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
                 </a>
+                {% if login.isAdmin() or login.isStaff() %}
                 <a
                     href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
                     class="delete"
@@ -220,6 +221,7 @@
                     <i class="ui trash red icon tooltip" aria-hidden="true"></i>
                     <span class="ui special popup">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
                 </a>
+                {% endif %}
             </td>
         {% endif %}
         </tr>

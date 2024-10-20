@@ -35,7 +35,8 @@ if (!$phpok) {
     $cm->doCheck(false); //do not load with translations!
 }
 ?>
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>Galette compatibility tests</title>
         <link rel="stylesheet" type="text/css" href="./assets/css/galette-main.bundle.min.css" />

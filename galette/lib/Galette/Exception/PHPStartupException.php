@@ -21,27 +21,13 @@
 
 declare(strict_types=1);
 
-namespace Galette\Features;
-
-use Galette\Entity\Adherent;
-use Galette\Entity\Social;
-use Slim\Psr7\Request;
-use Slim\Psr7\Response;
+namespace Galette\Exception;
 
 /**
- * Batch list feature
+ * PHP startup exception
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-
-trait BatchList
+class PHPStartupException extends \OverflowException
 {
-    /**
-     * Get filter name in session
-     *
-     * @param array|null $args Route arguments
-     *
-     * @return string
-     */
-    abstract public function getFilterName(array $args = null): string;
 }

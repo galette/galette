@@ -22,6 +22,10 @@
 
 {% set basic_table = true %}
 
+{% if not login.isAdmin() and not login.isStaff() and login.isGroupManager() %}
+    {% set no_action = true %}
+{% endif %}
+
 {% set form = {
     'route': {
         'name': "batch-contributionslist",
@@ -326,7 +330,7 @@
             <td data-col-label="{{ _T("Amount") }}">{{ contribution.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ contribution.getPaymentType() }}</td>
             <td data-col-label="{{ _T("Duration") }}">{{ contribution.duration }}</td>
-            {% if mode != 'ajax' %}
+            {% if mode != 'ajax' and (login.isAdmin() or login.isStaff()) %}
                 <td class="actions_row center">
                     <a
                             href="{{ url_for("printContribution", {"id": contribution.id}) }}"

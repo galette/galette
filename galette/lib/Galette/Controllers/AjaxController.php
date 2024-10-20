@@ -364,8 +364,7 @@ class AjaxController extends AbstractController
      */
     public function telemetryRegistered(Request $request, Response $response): Response
     {
-        $this->preferences->pref_registration_date = date('Y-m-d H:i:s');
-        $this->preferences->store();
+        $this->preferences->updateRegistrationDate();
         return $this->withJson($response, ['message' => _T('Thank you for registering!')]);
     }
 
@@ -409,7 +408,7 @@ class AjaxController extends AbstractController
      *
      * @return Response
      */
-    public function contributionMembers(Request $request, Response $response, int $page = null, string $search = null): Response
+    public function contributionMembers(Request $request, Response $response, ?int $page = null, ?string $search = null): Response
     {
         $post = $request->getParsedBody();
         $filters = new MembersList();

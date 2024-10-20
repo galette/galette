@@ -71,4 +71,21 @@ trait PluginControllerTrait
     {
         return sprintf('@%s/%s.html.twig', $this->plugins->getClassName($this->getModuleId()), $name);
     }
+
+    /**
+     * Get filter name in session
+     *
+     * @param string                   $filter_name Filter name
+     * @param array<string,mixed>|null $args        Arguments
+     *
+     * @return string
+     */
+    public function getFilterName(string $filter_name, ?array $args = null): string
+    {
+        if (!isset($args['prefix'])) {
+            $args['prefix'] = 'plugin_' . $this->module_info['module']['route'];
+        }
+
+        return parent::getFilterName($filter_name, $args);
+    }
 }

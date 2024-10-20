@@ -22,7 +22,7 @@
 
 {% block content %}
 {% if members.list is defined %}
-    <form action="{% if transaction.id %}{{ url_for("editTransaction", {"id": transaction.id}) }}{% else %}{{ url_for("addTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
+    <form action="{% if transaction.id %}{{ url_for("doEditTransaction", {"id": transaction.id}) }}{% else %}{{ url_for("doAddTransaction") }}{% endif %}" enctype="multipart/form-data" method="post" class="ui form">
         <div class="ui styled fluid accordion field">
             <div class="active title">
                 <i class="jsonly displaynone icon dropdown" aria-hidden="true"></i>
@@ -88,30 +88,30 @@
                                     <th class="left date_row">{{ _T("Begin") }}</th>
                                     <th class="left date_row">{{ _T("End") }}</th>
                                     <th class="left">{{ _T("Duration") }}</th>
-            {% if login.isAdmin() or login.isStaff() %}
+            {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
                                     <th class="left">{{ _T("Member") }}</th>
             {% endif %}
                                     <th class="left">{{ _T("Type") }}</th>
                                     <th class="left">{{ _T("Amount") }}</th>
-            {% if login.isAdmin() or login.isStaff() %}
+            {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
                                     <th class="actions_row">{{ _T("Actions") }}</th>
             {% endif %}
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() %}7{% else %}5{% endif %}">{{ _T("Dispatched amount:") }}</th>
+                                    <th class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Dispatched amount:") }}</th>
                                     <th class="right bgfree">{{ transaction.getDispatchedAmount() }}</th>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() %}7{% else %}5{% endif %}">{{ _T("Not dispatched amount:") }}</th>
+                                    <th class="right bgfree" colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}7{% else %}5{% endif %}">{{ _T("Not dispatched amount:") }}</th>
                                     <th class="right bgfree">{{ transaction.getMissingAmount() }}</th>
                                     <td></td>
                                 </tr>
             {% if transaction.getMissingAmount() > 0 %}
                                 <tr>
-                                    <th colspan="{% if login.isAdmin() or login.isStaff() %}9{% else %}7{% endif %}">
+                                    <th colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}9{% else %}7{% endif %}">
                                         <div class="ui basic fitted right aligned segment">
                                             <a
                                                 href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ transaction.id }}"
@@ -156,12 +156,12 @@
                                     <td class="center">{{ contrib.begin_date }}</td>
                                     <td class="center">{{ contrib.end_date }}</td>
                                     <td>{{ contrib.duration }}</td>
-                {% if login.isAdmin() or login.isStaff() %}
+                {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
                                     <td>{{ memberName({'id': mid}) }}</td>
                 {% endif %}
                                     <td>{{ contrib.type.libelle }}</td>
                                     <td class="right">{{ contrib.amount }}</td>
-                {% if login.isAdmin() or login.isStaff() %}
+                {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
                                     <td class="actions_row">
                                         <a
                                             href="{{ url_for("detach_contribution", {"id": transaction.id, "cid": contrib.id}) }}"
@@ -174,7 +174,7 @@
                 {% endif %}
                                 </tr>
             {% else %}
-                                <tr><td colspan="{% if login.isAdmin() or login.isStaff() %}9{% else %}7{% endif %}" class="emptylist">{{ _T("no contribution") }}</td></tr>
+                                <tr><td colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}9{% else %}7{% endif %}" class="emptylist">{{ _T("no contribution") }}</td></tr>
             {% endfor %}
                             </tbody>
                         </table>

@@ -57,12 +57,12 @@
                 </div>
             </div>
             <div class="required field">
-                <label>{{ _T("Permissions") }}</label>
-                    <select name="visible" id="visible" class="ui dropdown">
-                        {% for key, value in perm_names %}
-                            <option value="{{ key }}"{% if key == document.getPermission() %} selected="selected"{% endif %}>{{ value }}</option>
-                        {% endfor %}
-                    </select>
+                <label for="visible">{{ _T("Permissions") }}</label>
+                <select name="visible" id="visible" class="ui dropdown">
+                    {% for key, value in perm_names %}
+                        <option value="{{ key }}"{% if key == document.getPermission() %} selected="selected"{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="field">
                 <label for="field_information">{{ _T("Comment") }}</label>

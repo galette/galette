@@ -35,6 +35,7 @@
             <strong>{{ _T("Message:") }}</strong>
             {{ exception.getMessage() }}
         </p>
+        {% if constant('class', exception) != 'Galette\\Exception\\PHPStartupException' %}
         <p>
             <strong>{{ _T("File:") }}</strong>
             {{ exception.getFile() }}
@@ -43,11 +44,14 @@
             <strong>{{ _T("Line:") }}</strong>
             {{ exception.getLine() }}
         </p>
+        {% endif %}
     </div>
+    {% if constant('class', exception) != 'Galette\\Exception\\PHPStartupException' %}
     <div class="ui segment error-trace">
         <h3>{{ _T("Trace") }}</h3>
         <pre>{{ exception.getTraceAsString() }}</pre>
     </div>
+    {% endif %}
     {% if exception.getPrevious() %}
         {{ _self.render_ex(exception.getPrevious()) }}
     {% endif %}

@@ -38,6 +38,7 @@ use Galette\IO\PdfAttendanceSheet;
 use Galette\IO\PdfContribution;
 use Galette\IO\PdfGroups;
 use Galette\IO\PdfMembersCards;
+use Galette\IO\PdfMembersCardsAdaptative;
 use Galette\IO\PdfMembersLabels;
 use Galette\Repository\Members;
 use Galette\Repository\Groups;
@@ -77,10 +78,10 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function membersCards(Request $request, Response $response, int $id_adh = null): Response
+    public function membersCards(Request $request, Response $response, ?int $id_adh = null): Response
     {
-        if ($this->session->filter_members) {
-            $filters = $this->session->filter_members;
+        if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())}) {
+            $filters = $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())};
         } else {
             $filters = new MembersList();
         }
@@ -169,7 +170,12 @@ class PdfController extends AbstractController
                 ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
-        $pdf = new PdfMembersCards($this->preferences);
+        $class = PdfMembersCards::class;
+        /** @phpstan-ignore-next-line */
+        if (GALETTE_ADAPTATIVE_CARDS === true) {
+            $class = PdfMembersCardsAdaptative::class;
+        }
+        $pdf = new $class($this->preferences);
         $pdf->drawCards($members);
 
         return $this->sendResponse($response, $pdf);
@@ -188,7 +194,7 @@ class PdfController extends AbstractController
         $post = $request->getParsedBody();
         $get = $request->getQueryParams();
 
-        $session_var = $post['session_var'] ?? $get['session_var'] ?? 'filter_members';
+        $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\MembersController::getDefaultFilterName());
 
         if (isset($this->session->$session_var)) {
             $filters = $this->session->$session_var;
@@ -256,7 +262,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function adhesionForm(Request $request, Response $response, int $id_adh = null): Response
+    public function adhesionForm(Request $request, Response $response, ?int $id_adh = null): Response
     {
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
 
@@ -291,8 +297,8 @@ class PdfController extends AbstractController
     {
         $post = $request->getParsedBody();
 
-        if ($this->session->filter_members !== null) {
-            $filters = $this->session->filter_members;
+        if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} !== null) {
+            $filters = $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())};
         } else {
             $filters = new MembersList();
         }
@@ -310,7 +316,7 @@ class PdfController extends AbstractController
             $data = $post['selection'] ?? array();
 
             $filters->selected = $data;
-            $this->session->filter_members = $filters;
+            $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
         } else {
             $data = $filters->selected;
         }
@@ -340,8 +346,8 @@ class PdfController extends AbstractController
     {
         $post = $request->getParsedBody();
 
-        if ($this->session->filter_members !== null) {
-            $filters = $this->session->filter_members;
+        if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} !== null) {
+            $filters = $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())};
         } else {
             $filters = new MembersList();
         }
@@ -350,7 +356,7 @@ class PdfController extends AbstractController
         $selection = (isset($post['selection'])) ? $post['selection'] : array();
 
         $filters->selected = $selection;
-        $this->session->filter_members = $filters;
+        $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
 
         if (count($filters->selected) == 0) {
             Analog::log('No member selected to generate attendance sheet', Analog::INFO);
@@ -447,7 +453,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function group(Request $request, Response $response, int $id = null): Response
+    public function group(Request $request, Response $response, ?int $id = null): Response
     {
         $groups = new Groups($this->zdb, $this->login);
 
@@ -489,7 +495,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function models(Request $request, Response $response, int $id = null): Response
+    public function models(Request $request, Response $response, ?int $id = null): Response
     {
         $mid = 1;
         if (isset($_POST[PdfModel::PK])) {

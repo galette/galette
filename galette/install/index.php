@@ -24,7 +24,8 @@ if (version_compare(PHP_VERSION, '5.3', '>')) {
     die();
 }
 ?>
- <html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>Galette compatibility check</title>
     </head>

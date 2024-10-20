@@ -60,7 +60,7 @@ class Reminders
      *
      * @param ?array<int> $selected Selected types for sending
      */
-    public function __construct(array $selected = null)
+    public function __construct(?array $selected = null)
     {
         if (isset($selected)) {
             $this->selected = array_map('intval', $selected);

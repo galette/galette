@@ -40,7 +40,7 @@ class Separator extends DynamicField
      * @param Db   $zdb Database instance
      * @param ?int $id  Optional field id to load data
      */
-    public function __construct(Db $zdb, int $id = null)
+    public function __construct(Db $zdb, ?int $id = null)
     {
         parent::__construct($zdb, $id);
         $this->has_permissions = false;

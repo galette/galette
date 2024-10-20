@@ -990,6 +990,21 @@ class Members extends GaletteTestCase
         //cannot be parent of itself
         $this->expectExceptionMessage('Group `World` cannot be set as parent!');
         $world_group->setParentGroup($world_group->getId());
+
+        //test addMember
+        $world_group = new \Galette\Entity\Group($world);
+        $this->assertCount(2, $world_group->getMembers());
+        //add member for a new user
+        $world_group->addMember($list[2]);
+        $this->assertCount(3, $world_group->getMembers());
+
+        //add same mmeber, again
+        //add member for a new user
+        $world_group->addMember($list[2]);
+        $this->assertCount(3, $world_group->getMembers());
+
+        $world_group = new \Galette\Entity\Group($world);
+        $this->assertCount(3, $world_group->getMembers());
     }
 
     /**

@@ -23,6 +23,7 @@
 
     "// Galette constants (not detected as they are dynamically declared)",
     "GALETTE_ATTACHMENTS_PATH",
+    "GALETTE_ADAPTATIVE_CARDS",
     "GALETTE_BASE_PATH",
     "GALETTE_CACHE_DIR",
     "GALETTE_CARD_COLS",
@@ -45,6 +46,7 @@
     "GALETTE_DEBUG",
     "GALETTE_NIGHTLY",
     "GALETTE_PHOTOS_PATH",
+    "GALETTE_PHP_MIN",
     "GALETTE_DOCUMENTS_PATH",
     "GALETTE_PLUGINS_PATH",
     "GALETTE_ROOT",
@@ -74,14 +76,7 @@
 
     "//know but not detected Galette function,",
     "remove_remarks",
-    "isValidWebUrl",
-    "remove_remarks",
     "split_sql_file",
-    "_T",
-    "__",
-    "_Tn",
-    "_Tx",
-    "_Tnx",
 
     "// XHProf PECL extension",
     "XHProfRuns_Default",

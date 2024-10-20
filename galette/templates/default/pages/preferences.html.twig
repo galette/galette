@@ -189,7 +189,6 @@
                             <label for="pref_noindex">{{ _T("Prevent search engines indexation") }}</label>
                         </div>
                     </div>
-
                 </div>{# /column #}
             </div>{# /column grid #}
         </div>{# /tab segment #}
@@ -253,6 +252,14 @@
                         <select name="pref_default_paymenttype" id="pref_default_paymenttype" class="ui search dropdown">
                             {% for key, value in paymenttypes %}
                                 <option value="{{ key }}"{% if key == pref.pref_default_paymenttype %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field{% if required.pref_statut is defined and required.pref_statut == 1 %} required{% endif %}">
+                        <label for="pref_statut">{{ _T("Default membership status:") }}</label>
+                        <select name="pref_statut" id="pref_statut" class="ui search dropdown"{% if required.pref_statut is defined and required.pref_statut == 1 %} required="required"{% endif %}>
+                            {% for key, value in statuts %}
+                                <option value="{{ key }}"{% if key == pref.pref_statut %} selected="selected"{% endif %}>{{ value }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -337,43 +344,39 @@
                     </div>
                 </div>{# /column #}
             </div>{# /column grid #}
-            <div class="ui stackable two column grid">
-                <div class="column">
-                    <div class="field{% if required.pref_statut is defined and required.pref_statut == 1 %} required{% endif %}">
-                        <label for="pref_statut">{{ _T("Default membership status:") }}</label>
-                        <select name="pref_statut" id="pref_statut" class="ui search dropdown"{% if required.pref_statut is defined and required.pref_statut == 1 %} required="required"{% endif %}>
-                            {% for key, value in statuts %}
-                                <option value="{{ key }}"{% if key == pref.pref_statut %} selected="selected"{% endif %}>{{ value }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label for="pref_membership_ext">{{ _T("Default membership extension:") }}</label>
-                        <div class="ui right labeled input">
-                            <input type="text" name="pref_membership_ext" id="pref_membership_ext" value="{{ pref.pref_membership_ext }}" maxlength="2"/>
-                            <div class="ui basic label">
-                                {{ _T("(Months)") }}
+            <div class="ui segment">
+                <div class="ui two column stackable grid">
+                    <div class="ui vertical divider">{{ __('or') }}</div>
+                    <div class="middle aligned row">
+                        <div class="column">
+                            <div class="field">
+                                <label for="pref_membership_ext">{{ _T("Default membership extension:") }}</label>
+                                <div class="ui right labeled input">
+                                    <input type="text" name="pref_membership_ext" id="pref_membership_ext" value="{{ pref.pref_membership_ext }}" maxlength="2"/>
+                                    <div class="ui basic label">
+                                        {{ _T("(Months)") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <label for="pref_beg_membership">{{ _T("Beginning of membership:") }}</label>
+                                <input type="text" name="pref_beg_membership" id="pref_beg_membership" value="{{ pref.pref_beg_membership }}" maxlength="5" placeholder="{{ _T("(dd/mm)") }}"/>
+                            </div>
+                            <div class="field">
+                                <label for="pref_membership_offermonths">{{ _T("Number of months offered:") }}</label>
+                                <div class="ui right corner labeled input">
+                                    <div class="ui corner label">
+                                        <i class="circular inverted primary icon info tooltip" data-html="{{ _T("When using the beginning of membership option; you can offer the last months of the year.") }}<br/>{{ _T("Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year.") }}" aria-hidden="true"></i>
+                                    </div>
+                                    <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{{ pref.pref_membership_offermonths }}" maxlength="5"/>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>{# /column #}
-                <div class="column">
-                    <div class="field">
-                        <label for="pref_beg_membership">{{ _T("Beginning of membership:") }}</label>
-                        <input type="text" name="pref_beg_membership" id="pref_beg_membership" value="{{ pref.pref_beg_membership }}" maxlength="5"/>
-                        <span class="exemple">{{ _T("(dd/mm)") }}</span>
-                    </div>
-                    <div class="field">
-                        <label for="pref_membership_offermonths">{{ _T("Number of months offered:") }}</label>
-                        <div class="ui right corner labeled input">
-                            <div class="ui corner label">
-                                <i class="circular inverted primary icon info tooltip" data-html="{{ _T("When using the beginning of membership option; you can offer the last months of the year.") }}<br/>{{ _T("Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year.") }}" aria-hidden="true"></i>
-                            </div>
-                            <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{{ pref.pref_membership_offermonths }}" maxlength="5"/>
-                        </div>
-                    </div>
-                </div>{# /column #}
-            </div>{# /column grid #}
+                </div>
+            </div>{# /ui segment #}
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'rights' ? ' active' }} tab segment" data-tab="rights">
             <div class="ui stackable two column grid">
@@ -414,6 +417,30 @@
                             <label for="pref_bool_groupsmanagers_exports">{{ _T("Can group managers do exports?") }}</label>
                         </div>
                         <i class="circular small inverted primary icon info tooltip" title="{{ _T("Groups managers will be allowed to export members as csv, pdf cards, attendence sheetss and groups pdf") }}" aria-hidden="true"></i>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_see_contributions" id="pref_bool_groupsmanagers_see_contributions" value="1" {% if pref.pref_bool_groupsmanagers_see_contributions == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_see_contributions">{{ _T("Can group managers see contributions?") }}</label>
+                        </div>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_create_contributions" id="pref_bool_groupsmanagers_create_contributions" value="1" {% if pref.pref_bool_groupsmanagers_create_contributions == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_create_contributions">{{ _T("Can group managers create contributions?") }}</label>
+                        </div>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_see_transactions" id="pref_bool_groupsmanagers_see_transactions" value="1" {% if pref.pref_bool_groupsmanagers_see_transactions == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_see_transactions">{{ _T("Can group managers see transactions?") }}</label>
+                        </div>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_create_transactions" id="pref_bool_groupsmanagers_create_transactions" value="1" {% if pref.pref_bool_groupsmanagers_create_transactions == 1 %}checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_create_transactions">{{ _T("Can group managers create transactions?") }}</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -810,6 +837,7 @@
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
+{% if constant('GALETTE_ADAPTATIVE_CARDS') is same as true %}
                     <div class="{% if required.pref_card_hsize is defined and required.pref_card_hsize == 1 %}required {% endif %}field">
                         <label for="pref_card_hsize">{{ _T("Card width from 70 to 95mm:") }}</label>
                         <div class="ui right labeled input">
@@ -824,6 +852,7 @@
                             <div class="ui basic label">mm</div>
                         </div>
                     </div>
+{% endif %}
                 </div>{# /column #}
             </div>{# /column grid #}
         </div>{# /tab segment #}

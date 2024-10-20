@@ -91,8 +91,8 @@ class MailingsController extends CrudController
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
         } else {
-            if (isset($this->session->filter_members_sendmail)) {
-                $filters = $this->session->filter_members_sendmail;
+            if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
+                $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
             } else {
                 $filters = new MembersList();
             }
@@ -217,8 +217,8 @@ class MailingsController extends CrudController
             unset($this->session->mailing);
             $this->session->redirect_mailing = null;
             unset($this->session->redirect_mailing);
-            $this->session->filter_members_sendmail = null;
-            unset($this->session->filter_members_sendmail);
+            $this->session->{$this->getFilterName($this->getDefaultFilterName())} = null;
+            unset($this->session->{$this->getFilterName($this->getDefaultFilterName())});
 
             return $response
                 ->withStatus(301)
@@ -235,7 +235,7 @@ class MailingsController extends CrudController
             $error_detected[] = _T("Trying to load mailing while email is disabled in preferences.");
             $goto = $this->routeparser->urlFor('slash');
         } else {
-            $filters = $this->session->filter_members_sendmail ?? new MembersList();
+            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())} ?? new MembersList();
 
             if (
                 $this->session->mailing !== null
@@ -368,7 +368,7 @@ class MailingsController extends CrudController
                     );
                     $mailing->current_step = Mailing::STEP_SENT;
                     //cleanup
-                    $this->session->filter_members_sendmail = null;
+                    $this->session->{$this->getFilterName($this->getDefaultFilterName())} = null;
                     $this->session->mailing = null;
                     $this->session->redirect_mailing = null;
                     $success_detected[] = _T("Mailing has been successfully sent!");
@@ -432,10 +432,10 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
+    public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
-        if (isset($this->session->filter_mailings)) {
-            $filters = $this->session->filter_mailings;
+        if (isset($this->session->{$this->getFilterName('mailings')})) {
+            $filters = $this->session->{$this->getFilterName('mailings')};
         } else {
             $filters = new MailingsList();
         }
@@ -463,7 +463,7 @@ class MailingsController extends CrudController
             }
         }
 
-        $this->session->filter_mailings = $filters;
+        $this->session->{$this->getFilterName('mailings')} = $filters;
 
         //assign pagination variables to the template and add pagination links
         $mailhist->filters->setViewPagination($this->routeparser, $this->view);
@@ -497,8 +497,8 @@ class MailingsController extends CrudController
     {
         $post = $request->getParsedBody();
 
-        if ($this->session->filter_mailings !== null) {
-            $filters = $this->session->filter_mailings;
+        if ($this->session->{$this->getFilterName('mailings')} !== null) {
+            $filters = $this->session->{$this->getFilterName('mailings')};
         } else {
             $filters = new MailingsList();
         }
@@ -535,7 +535,7 @@ class MailingsController extends CrudController
             }
         }
 
-        $this->session->filter_mailings = $filters;
+        $this->session->{$this->getFilterName('mailings')} = $filters;
 
         return $response
             ->withStatus(301)
@@ -628,7 +628,7 @@ class MailingsController extends CrudController
     protected function doDelete(array $args, array $post): bool
     {
         $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences);
-        return $mailhist->removeEntries($args['id'], $this->history);
+        return $mailhist->removeEntries((int)$args['id'], $this->history);
     }
     // /CRUD - Delete
     // /CRUD
@@ -642,7 +642,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function preview(Request $request, Response $response, int $id = null): Response
+    public function preview(Request $request, Response $response, ?int $id = null): Response
     {
         $post = $request->getParsedBody();
         // check for ajax mode
@@ -773,5 +773,15 @@ class MailingsController extends CrudController
             ]
         );
         return $response;
+    }
+
+    /**
+     * Get default filter name
+     *
+     * @return string
+     */
+    public function getDefaultFilterName(): string
+    {
+        return 'members_sendmail';
     }
 }

@@ -83,7 +83,7 @@ class Mailing extends GaletteMail
      * @param array<int, Adherent> $members     An array of members
      * @param ?integer             $id          Identifier, defaults to null
      */
-    public function __construct(Preferences $preferences, array $members = [], int $id = null)
+    public function __construct(Preferences $preferences, array $members = [], ?int $id = null)
     {
         parent::__construct($preferences);
         $this->id = $id ?? $this->generateNewId();
@@ -128,7 +128,7 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    private function generateTmpPath(string $id = null): void
+    private function generateTmpPath(?string $id = null): void
     {
         if ($id === null) {
             $id = $this->generateNewId();

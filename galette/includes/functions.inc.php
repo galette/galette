@@ -21,9 +21,10 @@
 
 declare(strict_types=1);
 
-if (!defined('GALETTE_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
+use Analog\Analog;
+use Galette\Core\Galette;
+
+const NOT_TRANSLATED = ' (not translated)';
 
 /**
  * Check URL validity
@@ -38,4 +39,216 @@ function isValidWebUrl(string $url): bool
         '#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i',
         $url
     ) === 1);
+}
+
+/**
+ * Translate a string, or return original one
+ *
+ * @param string  $string The string to translate
+ * @param string  $domain Translation domain. Default to galette
+ * @param boolean $nt     Indicate not translated strings; defaults to true
+ *
+ * @return string
+ */
+function _T(string $string, string $domain = 'galette', bool $nt = true): string
+{
+    global $language, $installer, $translator, $l10n;
+
+    if (
+        empty($string) //cannot translate an empty string
+        || str_contains($domain, 'route') //routes are no longer translated
+    ) {
+        return $string;
+    }
+
+    if ($translator->translationExists($string, $domain)) {
+        return $translator->translate($string, $domain);
+    }
+
+    $trans = false;
+    if (!isset($installer) || $installer !== true) {
+        $trans = $l10n->getDynamicTranslation(
+            $string,
+            $language
+        );
+    }
+
+    if (!$trans) {
+        $trans = $string;
+
+        if (Galette::isDebugEnabled() && $nt === true) {
+            $trans .= NOT_TRANSLATED;
+        }
+    }
+    return $trans;
+}
+
+/**
+ * Pluralized translation
+ *
+ * @param string  $singular Singular form of the string to translate
+ * @param string  $plural   Plural form of the string to translate
+ * @param integer $count    Number for count
+ * @param string  $domain   Translation domain. Default to galette
+ * @param boolean $nt       Indicate not translated strings; defaults to true
+ *
+ * @return string
+ */
+function _Tn(string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
+{
+    global $language, $installer, $translator, $l10n;
+
+    if (empty($singular) || empty($plural)) {
+        Analog::log(
+            'Cannot translate empty strings..',
+            Analog::INFO
+        );
+        return $count > 1 ? $plural : $singular;
+    }
+
+    if (
+        $translator->translationExists($singular, $domain)
+        && $translator->translationExists($plural, $domain)
+    ) {
+        return $translator->translatePlural(
+            $singular,
+            $plural,
+            $count,
+            $domain
+        );
+    }
+
+    if (!isset($installer) || $installer !== true) {
+        $trans = $l10n->getDynamicTranslation(
+            ($count > 1 ? $plural : $singular),
+            $language
+        );
+    }
+
+    if (!$trans) {
+        $trans = ($count > 1 ? $plural : $singular);
+
+        if (Galette::isDebugEnabled() && $nt === true) {
+            $trans .= NOT_TRANSLATED;
+        }
+    }
+    return $trans;
+}
+
+/**
+ * Contextualized translation
+ *
+ * @param string  $context Context
+ * @param string  $string  The string to translate
+ * @param string  $domain  Translation domain (defaults to galette)
+ * @param boolean $nt      Indicate not translated strings; defaults to true
+ *
+ * @return string
+ */
+function _Tx(string $context, string $string, string $domain = 'galette', bool $nt = true): string
+{
+    global $language, $installer, $translator, $l10n;
+
+    $cstring = contextualizedString($string, $context);
+    $ret = _T($cstring, $domain);
+    if ($ret == $cstring) {
+        $ret = $string;
+    }
+
+    $trans = false;
+    if (!isset($installer) || $installer !== true) {
+        $trans = $l10n->getDynamicTranslation(
+            $cstring,
+            $language
+        );
+    }
+
+    if (!$trans) {
+        $trans = $ret;
+
+        if (Galette::isDebugEnabled() && $nt === true) {
+            $trans .= NOT_TRANSLATED;
+        }
+    }
+    return $trans;
+}
+
+/**
+ * Pluralized and contextualized translation
+ *
+ * @param string  $context  Context
+ * @param string  $singular Singular form of the string to translate
+ * @param string  $plural   Plural form of the string to translate
+ * @param integer $count    Number for count
+ * @param string  $domain   Translation domain. Default to galette
+ * @param boolean $nt       Indicate not translated strings; defaults to true
+ *
+ * @return string
+ */
+function _Tnx(string $context, string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
+{
+    global $language, $installer, $translator, $l10n;
+
+    $csingular = contextualizedString($singular, $context);
+    $cplural = contextualizedString($plural, $context);
+    $ret = _Tn(
+        $csingular,
+        $cplural,
+        $count,
+        $domain
+    );
+
+    if ($ret == $csingular) {
+        // No translation
+        $ret = $singular;
+    }
+
+    if ($ret == $cplural) {
+        // No translation
+        $ret = $plural;
+    }
+
+    $trans = false;
+    if (!isset($installer) || $installer !== true) {
+        $trans = $l10n->getDynamicTranslation(
+            ($count > 1 ? $cplural : $csingular),
+            $language
+        );
+    }
+
+    if (!$trans) {
+        $trans = $ret;
+
+        if (Galette::isDebugEnabled() && $nt === true) {
+            $trans .= NOT_TRANSLATED;
+        }
+    }
+
+    return $trans;
+}
+
+/**
+ * Get contextualized string (simulates pgettext)
+ *
+ * @param string $string  The string to translate
+ * @param string $context The context
+ *
+ * @return string
+ */
+function contextualizedString(string $string, string $context): string
+{
+    return "{$string}\004{$context}";
+}
+
+/**
+ * Translate a string, without displaying not translated
+ *
+ * @param string $string The string to translate
+ * @param string $domain Translation domain. Default to false (will take default domain)
+ *
+ * @return string
+ */
+function __(string $string, string $domain = 'galette'): string
+{
+    return _T($string, $domain, false);
 }

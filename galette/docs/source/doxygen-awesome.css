@@ -1013,7 +1013,6 @@ blockquote {
     border-left: 0;
     overflow: visible;
     border-radius: var(--border-radius-medium);
-    overflow: visible;
     position: relative;
 }
 
@@ -1142,7 +1141,6 @@ div.toc li a.aboveActive {
         margin: 0 0 var(--spacing-medium) 0;
         position: relative;
         top: 0;
-        position: relative;
         border: 1px solid var(--separator-color);
         border-radius: var(--border-radius-medium);
         background-color: var(--toc-background);
@@ -2148,7 +2146,6 @@ div.qindex {
 }
 
 #nav-path ul {
-    background-image: none;
     background: var(--page-background-color);
     border: none;
     border-top: 1px solid var(--separator-color);
@@ -2343,7 +2340,6 @@ doxygen-awesome-dark-mode-toggle {
     text-align: center;
     line-height: var(--searchbar-height);
     font-size: 22px;
-    display: flex;
     align-items: center;
     justify-content: center;
     user-select: none;

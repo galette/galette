@@ -42,7 +42,7 @@ class PdfReceipt extends PdfContribution
      * @param Preferences                             $preferences Galette preferences
      * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
-    public function __construct(Db $zdb, Preferences $preferences, ArrayObject|int $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, ArrayObject|int|null $args = null)
     {
         parent::__construct($zdb, $preferences, self::RECEIPT_MODEL, $args);
     }

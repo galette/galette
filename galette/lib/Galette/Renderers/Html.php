@@ -23,7 +23,9 @@ declare(strict_types=1);
 
 namespace Galette\Renderers;
 
+use Galette\Exception\PHPStartupException;
 use Slim\Exception\HttpNotFoundException;
+use Slim\Flash\Messages;
 use Slim\Interfaces\ErrorRendererInterface;
 use Slim\Views\Twig;
 use Throwable;
@@ -36,15 +38,18 @@ use Throwable;
 class Html implements ErrorRendererInterface
 {
     protected Twig $view;
+    protected Messages $flash;
 
     /**
      * Constructor
      *
-     * @param Twig $view View instance
+     * @param Twig     $view  View instance
+     * @param Messages $flash Flash messages
      */
-    public function __construct(Twig $view)
+    public function __construct(Twig $view, Messages $flash)
     {
         $this->view = $view;
+        $this->flash = $flash;
     }
 
     /**
@@ -62,6 +67,12 @@ class Html implements ErrorRendererInterface
         if ($exception instanceof HttpNotFoundException) {
             $code = 404;
             $title = __('Page not found');
+        }
+
+        $php_error = error_get_last();
+        if ($php_error !== null) {
+            $this->flash->addMessageNow('error', $php_error['message']);
+            $exception = new PHPStartupException($php_error['message'], $php_error['type'], $exception);
         }
 
         $response = (new \Slim\Psr7\Response())->withStatus($code);

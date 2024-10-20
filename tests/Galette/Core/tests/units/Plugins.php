@@ -185,7 +185,7 @@ class Plugins extends TestCase
         $plugins = $this->getPlugins();
         $modules = $plugins->getModules();
         $this->assertCount(2, $modules);
-        $this->assertFalse(isset($module['plugin-test2']));
+        $this->assertFalse(isset($modules['plugin-test2']));
         $plugins->activateModule('plugin-test2');
 
         $plugins = $this->getPlugins();

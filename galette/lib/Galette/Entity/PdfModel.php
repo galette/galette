@@ -87,7 +87,7 @@ abstract class PdfModel
      * @param int                                     $type        Model type
      * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
-    public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int|null $args = null)
     {
         global $container, $login;
         $this->routeparser = $container->get(RouteParser::class);

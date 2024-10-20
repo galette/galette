@@ -150,7 +150,7 @@ abstract class Pagination
                 $direction . '`). Reverting to default value.',
                 Analog::WARNING
             );
-            $this->ordered == self::ORDER_ASC;
+            $this->ordered = self::ORDER_ASC;
         }
     }
 

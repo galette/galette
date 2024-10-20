@@ -121,20 +121,21 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
+    public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         $get = $request->getQueryParams();
         $ajax = false;
-        $session_varname = $this->getFilterName();
 
+        $filter_args = [];
         if (
             ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')
             || isset($get['ajax'])
             && $get['ajax'] == 'true'
         ) {
             $ajax = true;
-            $session_varname = 'ajax_' . $session_varname;
+            $filter_args['suffix'] = 'ajax';
         }
+        $session_varname = $this->getFilterName($this->getDefaultFilterName(), $filter_args);
 
         if (isset($this->session->$session_varname)) {
             $filters = $this->session->$session_varname;
@@ -165,9 +166,7 @@ class ScheduledPaymentController extends CrudController
         $list = $scheduled->getList();
 
         //store filters into session
-        if ($ajax === false) {
-            $this->session->$session_varname = $filters;
-        }
+        $this->session->$session_varname = $filters;
 
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view);
@@ -197,7 +196,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
-    public function myList(Request $request, Response $response, string $type = null): Response
+    public function myList(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->list(
             $request->withQueryParams(
@@ -220,11 +219,12 @@ class ScheduledPaymentController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         $ajax = false;
-        $filter_name = $this->getFilterName();
+        $filter_args = [];
         if ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') {
             $ajax = true;
-            $filter_name = 'ajax_' . $filter_name;
+            $filter_args['suffix'] = 'ajax';
         }
+        $filter_name = $this->getFilterName($this->getDefaultFilterName(), $filter_args);
 
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -302,21 +302,22 @@ class ScheduledPaymentController extends CrudController
      */
     public function handleBatch(Request $request, Response $response): Response
     {
-        $filter_name = $this->getFilterName();
+        $filter_name = $this->getFilterName($this->getDefaultFilterName());
         $post = $request->getParsedBody();
 
         if (isset($post['entries_sel'])) {
             $filters = $this->session->$filter_name ?? new ScheduledPaymentsList();
             $filters->selected = $post['entries_sel'];
-            $this->session->$filter_name = $filters;
 
             if (isset($post['csv'])) {
+                $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'csvexport'])} = $filters;
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->routeparser->urlFor('csv-scheduledPaymentslist'));
             }
 
             if (isset($post['delete'])) {
+                $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])} = $filters;
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->routeparser->urlFor('removeScheduledPayments'));
@@ -393,7 +394,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, int $id = null): Response
+    public function store(Request $request, Response $response, ?int $id = null): Response
     {
         $post = $request->getParsedBody();
 
@@ -527,14 +528,12 @@ class ScheduledPaymentController extends CrudController
     // CRUD - Delete
 
     /**
-     * Get filter name in session4
-     *
-     * @param array<string,mixed>|null $args Route arguments
+     * Get default filter name
      *
      * @return string
      */
-    public function getFilterName(array $args = null): string
+    public static function getDefaultFilterName(): string
     {
-        return 'filter_scheduled_payments';
+        return 'scheduled_payments';
     }
 }

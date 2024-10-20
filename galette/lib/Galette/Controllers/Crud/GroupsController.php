@@ -66,7 +66,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, string $name = null): Response
+    public function doAdd(Request $request, Response $response, ?string $name = null): Response
     {
         $group = new Group();
         $group->setLogin($this->login);
@@ -133,9 +133,9 @@ class GroupsController extends CrudController
     public function list(
         Request $request,
         Response $response,
-        string $option = null,
-        int|string $value = null,
-        int $id = null
+        ?string $option = null,
+        int|string|null $value = null,
+        ?int $id = null
     ): Response {
         $groups = new Groups($this->zdb, $this->login);
         $group = new Group();

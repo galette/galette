@@ -232,7 +232,7 @@
             function activateHtmlEditor(elt, basic) {
                 if (basic === true) {
                     var _toolbar = [
-                        ['font', ['bold', 'italic', 'strikethrough', 'clear']],
+                        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
                         ['para', ['ul', 'ol']],
                         ['insert', ['link']],
                         ['view', ['codeview']]
@@ -240,7 +240,7 @@
                 } else {
                     var _toolbar = [
                         ['style', ['style']],
-                        ['font', ['bold', 'italic', 'strikethrough', 'clear']],
+                        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
                         ['para', ['ul', 'ol', 'paragraph']],
                         ['insert', ['link', 'picture']],
                         ['view', ['codeview']]
@@ -254,12 +254,7 @@
                     styleTags: [
                         'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
                     ],
-                    callbacks: {
-                        onImageUpload: function (data) {
-                            //prevent image copypaste
-                            data.pop();
-                        }
-                    }
+                    allowClipboardImagePasting: false,
                 });
                 elt.summernote('focus');
             }

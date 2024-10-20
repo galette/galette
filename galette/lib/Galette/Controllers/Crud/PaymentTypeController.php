@@ -80,7 +80,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, string $option = null, int|string $value = null): Response
+    public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         $ptypes = new PaymentTypes(
             $this->zdb,
@@ -169,7 +169,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, int $id = null): Response
+    public function store(Request $request, Response $response, ?int $id = null): Response
     {
         $post = $request->getParsedBody();
 

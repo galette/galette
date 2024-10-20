@@ -148,30 +148,7 @@ class GaletteController extends AbstractController
     public function preferences(Request $request, Response $response): Response
     {
         // flagging required fields
-        $required = array(
-            'pref_nom'              => 1,
-            'pref_lang'             => 1,
-            'pref_numrows'          => 1,
-            'pref_log'              => 1,
-            'pref_statut'           => 1,
-            'pref_etiq_marges_v'    => 1,
-            'pref_etiq_marges_h'    => 1,
-            'pref_etiq_hspace'      => 1,
-            'pref_etiq_vspace'      => 1,
-            'pref_etiq_hsize'       => 1,
-            'pref_etiq_vsize'       => 1,
-            'pref_etiq_cols'        => 1,
-            'pref_etiq_rows'        => 1,
-            'pref_etiq_corps'       => 1,
-            'pref_card_marges_v'    => 1,
-            'pref_card_marges_h'    => 1,
-            'pref_card_hspace'      => 1,
-            'pref_card_vspace'      => 1
-        );
-
-        if ($this->login->isSuperAdmin() && !Galette::isDemo()) {
-            $required['pref_admin_login'] = 1;
-        }
+        $required = $this->preferences->getRequiredFields($this->login);
 
         $prefs_fields = $this->preferences->getFieldsNames();
         // collect data
@@ -718,7 +695,7 @@ class GaletteController extends AbstractController
 
             if ($labels === true) {
                 if (count($labels_members) > 0) {
-                    $session_var = 'filters_reminders_labels';
+                    $session_var = $this->getFilterName('reminders_labels');
                     $labels_filters = new MembersList();
                     $labels_filters->selected = $labels_members;
                     $this->session->$session_var = $labels_filters;
@@ -794,7 +771,7 @@ class GaletteController extends AbstractController
             Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
         $filters->email_filter = $mail;
 
-        $this->session->filter_members = $filters;
+        $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
 
         return $response
             ->withStatus(301)

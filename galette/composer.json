@@ -22,6 +22,9 @@
         }
     ],
     "autoload": {
+        "files": [
+            "includes/functions.inc.php"
+        ],
         "psr-4": {
             "Galette\\": "lib/Galette"
         }
@@ -53,7 +56,8 @@
         "slim/psr7": "^1.6",
         "symfony/yaml": "^6.2",
         "guzzlehttp/guzzle": "^7.8",
-        "twig/string-extra": "^3.8"
+        "twig/string-extra": "^3.8",
+        "symfony/console": "^7.1"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.7",

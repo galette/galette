@@ -534,7 +534,7 @@ class Install
      *
      * @return array<string, string>
      */
-    public function getScripts(string $path = null): array
+    public function getScripts(?string $path = null): array
     {
         if ($path === null) {
             $path = GALETTE_ROOT . '/install';
@@ -569,7 +569,7 @@ class Install
     public static function getUpdateScripts(
         string $path,
         string $db_type = 'mysql',
-        string $version = null
+        ?string $version = null
     ): array {
         $dh = opendir($path . '/scripts');
         $php_update_scripts = array();
@@ -617,7 +617,7 @@ class Install
      *
      * @return bool
      */
-    public function executeScripts(Db $zdb, string $spath = null): bool
+    public function executeScripts(Db $zdb, ?string $spath = null): bool
     {
         $fatal_error = false;
         $update_scripts = $this->getScripts($spath);
@@ -1093,15 +1093,7 @@ class Install
             && (!file_exists($conffile) || is_writable($conffile))
             && $fd = @fopen($conffile, 'w')
         ) {
-                $data = "<?php
-define('TYPE_DB', '" . $this->db_type . "');
-define('HOST_DB', '" . $this->db_host . "');
-define('PORT_DB', '" . $this->db_port . "');
-define('USER_DB', '" . $this->db_user . "');
-define('PWD_DB', '" . $this->db_pass . "');
-define('NAME_DB', '" . $this->db_name . "');
-define('PREFIX_DB', '" . $this->db_prefix . "');
-";
+            $data = $this->getConfigFileContents();
             fwrite($fd, $data);
             fclose($fd);
             $ret['res'] = true;
@@ -1121,6 +1113,24 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
     }
 
     /**
+     * Get configuration file contents
+     *
+     * @return string
+     */
+    public function getConfigFileContents(): string
+    {
+        return "<?php
+define('TYPE_DB', '" . $this->db_type . "');
+define('HOST_DB', '" . $this->db_host . "');
+define('PORT_DB', '" . $this->db_port . "');
+define('USER_DB', '" . $this->db_user . "');
+define('PWD_DB', '" . $this->db_pass . "');
+define('NAME_DB', '" . $this->db_name . "');
+define('PREFIX_DB', '" . $this->db_prefix . "');
+";
+    }
+
+    /**
      * Initialize Galette relevant objects
      *
      * @param I18n  $i18n  I18n
@@ -1135,8 +1145,8 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $preferences = new Preferences($zdb, false);
             $ct = new \Galette\Entity\ContributionsTypes($zdb);
             $status = new \Galette\Entity\Status($zdb);
-            include_once '../includes/fields_defs/members_fields.php';
-            include_once '../includes/fields_defs/members_fields_cats.php';
+            include_once __DIR__ . '/../../../includes/fields_defs/members_fields.php';
+            include_once __DIR__ . '/../../../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
                 $zdb,
                 \Galette\Entity\Adherent::TABLE,
@@ -1147,9 +1157,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
                 true
             );
 
-            global $login;
-            $login = new \Galette\Core\Login($zdb, $i18n);
-            //$fc = new \Galette\Entity\FieldsCategories();
             $texts = new \Galette\Entity\Texts($preferences);
             $titles = new \Galette\Repository\Titles($zdb);
 

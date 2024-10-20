@@ -50,7 +50,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function login(Request $request, Response $response, string $r = null): Response
+    public function login(Request $request, Response $response, ?string $r = null): Response
     {
         //store redirect path if any
         if (
@@ -312,7 +312,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function retrievePassword(Request $request, Response $response, int $id_adh = null): Response
+    public function retrievePassword(Request $request, Response $response, ?int $id_adh = null): Response
     {
         $from_admin = false;
         $redirect_url = $this->routeparser->urlFor('slash');

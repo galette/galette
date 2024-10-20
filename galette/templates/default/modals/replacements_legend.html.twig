@@ -32,7 +32,7 @@
             {% if loop.index0 % 2 == 0 %}
                 <tr>
             {% endif %}
-            <th><tt>{{ pattern.pattern|trim('/') }}</tt></th>
+            <th><code>{{ pattern.pattern|trim('/') }}</code></th>
             <td class="back">
                 {% if pattern.title is defined %}{{ pattern.title }}{% endif %}
             </td>

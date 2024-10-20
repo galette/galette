@@ -419,7 +419,7 @@ class Picture implements FileInterface
      *
      * @return bool|int
      */
-    public function store(array $file, bool $ajax = false, array $cropping = null): bool|int
+    public function store(array $file, bool $ajax = false, ?array $cropping = null): bool|int
     {
         $this->cropping = $cropping;
         return $this->trait_store($file, $ajax);
@@ -662,7 +662,7 @@ class Picture implements FileInterface
      *
      * @return boolean
      */
-    private function resizeImage(string $source, string $ext, string $dest = null, array $cropping = null): bool
+    private function resizeImage(string $source, string $ext, ?string $dest = null, ?array $cropping = null): bool
     {
         $class = get_class($this);
 
@@ -792,7 +792,7 @@ class Picture implements FileInterface
                     break;
             }
             // Cropped image.
-            $thumb_cropped = imagecreatetruecolor($crop_width, $crop_height);
+            $thumb_cropped = imagecreatetruecolor((int)$crop_width, (int)$crop_height);
             // Cropped ratio.
             $ratio = $crop_width / $crop_height;
         // Otherwise, calculate image size according to the source's ratio.
@@ -804,8 +804,15 @@ class Picture implements FileInterface
             }
         }
 
+        //fix typehints
         $h = (int)$h;
         $w = (int)$w;
+        $crop_x = (int)$crop_x;
+        $crop_y = (int)$crop_y;
+        $crop_width = (int)$crop_width;
+        $crop_height = (int)$crop_height;
+        $cur_width = (int)$cur_width;
+        $cur_height = (int)$cur_height;
 
         // Resized image.
         $thumb = imagecreatetruecolor($w, $h);

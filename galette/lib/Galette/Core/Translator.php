@@ -43,7 +43,7 @@ class Translator extends ZTranslator
      *
      * @return boolean
      */
-    public function translationExists(string $message, string $textDomain = 'default', string $locale = null): bool
+    public function translationExists(string $message, string $textDomain = 'default', ?string $locale = null): bool
     {
         $locale = ($locale ?: $this->getLocale());
 
