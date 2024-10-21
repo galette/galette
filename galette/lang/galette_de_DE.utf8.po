@@ -37,10 +37,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-15 14:43+0200\n"
-"PO-Revision-Date: 2024-07-18 14:09+0000\n"
-"Last-Translator: rabbitmc <weblate@sternwelt.org>\n"
+"PO-Revision-Date: 2024-10-22 10:15+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -48,7 +48,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7-dev\n"
+"X-Generator: Weblate 5.8-rc\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -6916,7 +6916,7 @@ msgstr[1] "%count Mitglieder"
 
 #: ../../tempcache/pages/members_list.html.twig:145
 msgid "Mbr id"
-msgstr "Datenträgerpartitionstyp"
+msgstr "Mitglieder ID"
 
 #: ../../tempcache/pages/members_list.html.twig:202
 #: ../../tempcache/pages/advanced_search.html.twig:75
