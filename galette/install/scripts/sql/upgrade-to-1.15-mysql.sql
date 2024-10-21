@@ -7,16 +7,24 @@ ALTER TABLE galette_adherents CHANGE titre_adh titre_adh INT UNSIGNED DEFAULT NU
 ALTER TABLE galette_adherents CHANGE parent_id parent_id INT UNSIGNED DEFAULT NULL;
 ALTER TABLE galette_adherents CHANGE sexe_adh sexe_adh SMALLINT NOT NULL;
 ALTER TABLE galette_adherents CHANGE pref_lang preg_lang varchar(20);
+ALTER TABLE galette_adherents CHANGE ddn_adh ddn_adh DATE;
+ALTER TABLE galette_adherents CHANGE date_crea_adh date_crea_adh DATE NOT NULL;
+ALTER TABLE galette_adherents CHANGE date_modif_adh date_modif_adh DATE NOT NULL;
+
 
 ALTER TABLE galette_cotisations CHANGE id_cotis id_cotis INT UNSIGNED AUTO_INCREMENT;
 ALTER TABLE galette_cotisations CHANGE id_adh id_adh INT UNSIGNED NOT NULL; -- also remove default value here
 ALTER TABLE galette_cotisations CHANGE id_type_cotis id_type_cotis INT UNSIGNED NOT NULL; -- also remove default value here
 ALTER TABLE galette_cotisations CHANGE type_paiement_cotis type_paiement_cotis INT UNSIGNED NOT NULL; -- also remove default value here
 ALTER TABLE galette_cotisations CHANGE trans_id trans_id INT UNSIGNED NOT NULL;
+ALTER TABLE galette_cotisations CHANGE date_enreg date_enreg DATE NOT NULL;
+ALTER TABLE galette_cotisations CHANGE date_debut_cotis date_debut_cotis DATE NOT NULL;
+ALTER TABLE galette_cotisations CHANGE date_fin_cotis date_fin_cotis DATE NOT NULL;
 
 ALTER TABLE galette_transactions CHANGE trans_id trans_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE galette_transactions CHANGE id_adh id_adh INT UNSIGNED DEFAULT NULL;
 ALTER TABLE galette_transactions CHANGE type_paiement_trans type_paiement_trans INT UNSIGNED DEFAULT NULL;
+ALTER TABLE galette_transactions CHANGE trans_date trans_date DATE NOT NULL;
 
 ALTER TABLE galette_statuts CHANGE id_statut id_statut INT UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE galette_titles CHANGE id_title id_title INT UNSIGNED NOT NULL AUTO_INCREMENT;
