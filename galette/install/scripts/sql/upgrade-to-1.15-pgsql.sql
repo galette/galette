@@ -120,5 +120,7 @@ ALTER TABLE galette_adherents ALTER COLUMN date_echeance SET DEFAULT NULL;
 ALTER TABLE galette_adherents ALTER COLUMN tel_adh SET DEFAULT NULL;
 ALTER TABLE galette_adherents ALTER COLUMN gsm_adh SET DEFAULT NULL;
 ALTER TABLE galette_adherents ALTER COLUMN email_adh SET DEFAULT NULL;
+ALTER TABLE galette_adherents ALTER COLUMN sexe_adh DROP DEFAULT;
+ALTER TABLE galette_adherents ALTER COLUMN pref_lang DROP DEFAULT;
 
 ALTER TABLE galette_pdfmodels ALTER COLUMN model_type TYPE smallint;
