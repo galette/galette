@@ -19,7 +19,7 @@ ALTER TABLE galette_cotisations CHANGE type_paiement_cotis type_paiement_cotis I
 ALTER TABLE galette_cotisations CHANGE trans_id trans_id INT UNSIGNED NOT NULL;
 ALTER TABLE galette_cotisations CHANGE date_enreg date_enreg DATE NOT NULL;
 ALTER TABLE galette_cotisations CHANGE date_debut_cotis date_debut_cotis DATE NOT NULL;
-ALTER TABLE galette_cotisations CHANGE date_fin_cotis date_fin_cotis DATE NOT NULL;
+ALTER TABLE galette_cotisations CHANGE date_fin_cotis date_fin_cotis DATE;
 
 ALTER TABLE galette_transactions CHANGE trans_id trans_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE galette_transactions CHANGE id_adh id_adh INT UNSIGNED DEFAULT NULL;

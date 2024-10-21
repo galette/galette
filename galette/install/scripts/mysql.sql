@@ -57,7 +57,7 @@ CREATE TABLE galette_cotisations (
   info_cotis text,
   date_enreg date NOT NULL,
   date_debut_cotis date NOT NULL,
-  date_fin_cotis date NOT NULL,
+  date_fin_cotis date,
   trans_id int unsigned default NULL,
   PRIMARY KEY (id_cotis),
   FOREIGN KEY (id_type_cotis) REFERENCES galette_types_cotisation (id_type_cotis) ON DELETE RESTRICT ON UPDATE CASCADE,

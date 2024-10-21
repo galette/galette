@@ -133,3 +133,4 @@ ALTER TABLE galette_transactions ALTER COLUMN trans_date DROP DEFAULT;
 ALTER TABLE galette_cotisations ALTER column date_enreg DROP DEFAULT;
 ALTER TABLE galette_cotisations ALTER column date_debut_cotis DROP DEFAULT;
 ALTER TABLE galette_cotisations ALTER column date_fin_cotis DROP DEFAULT;
+ALTER TABLE galette_cotisations ALTER column date_fin_cotis DROP NOT NULL;
