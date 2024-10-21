@@ -5,6 +5,7 @@ ALTER TABLE galette_adherents CHANGE id_adh id_adh INT UNSIGNED NOT NULL AUTO_IN
 ALTER TABLE galette_adherents CHANGE id_statut id_statut INT UNSIGNED NOT NULL; -- also remove default value here
 ALTER TABLE galette_adherents CHANGE titre_adh titre_adh INT UNSIGNED DEFAULT NULL;
 ALTER TABLE galette_adherents CHANGE parent_id parent_id INT UNSIGNED DEFAULT NULL;
+ALTER TABLE galette_adherents CHANGE sexe_adh sexe_adh SMALLINT NOT NULL default '0';
 
 ALTER TABLE galette_cotisations CHANGE id_cotis id_cotis INT UNSIGNED AUTO_INCREMENT;
 ALTER TABLE galette_cotisations CHANGE id_adh id_adh INT UNSIGNED NOT NULL; -- also remove default value here
@@ -61,6 +62,7 @@ ALTER TABLE galette_reminders CHANGE reminder_dest reminder_dest INT unsigned;
 
 ALTER TABLE galette_pdfmodels CHANGE model_id model_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE galette_pdfmodels CHANGE model_parent model_parent INT UNSIGNED DEFAULT NULL;
+ALTER TABLE galette_pdfmodels CHANGE model_type model_type SMALLINT;
 
 ALTER TABLE galette_import_model CHANGE model_id model_id INT UNSIGNED NOT NULL AUTO_INCREMENT;
 
@@ -79,5 +81,17 @@ ALTER TABLE galette_documents CHANGE id_document id_document INT UNSIGNED NOT NU
 ALTER TABLE galette_payments_schedules CHANGE id_schedule id_schedule INT UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE galette_payments_schedules CHANGE id_cotis id_cotis INT UNSIGNED NOT NULL;
 ALTER TABLE galette_payments_schedules CHANGE id_paymenttype id_paymenttype INT UNSIGNED NOT NULL;
+
+ALTER TABLE galette_texts CHANGE tid tid INT UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE galette_fields_categories CHANGE id_field_category id_field_category INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_fields_categories CHANGE position position SMALLINT NOT NULL;
+
+ALTER TABLE galette_fields_config CHANGE position position SMALLINT NOT NULL;
+ALTER TABLE galette_fields_config CHANGE id_field_category id_field_category INT UNSIGNED NOT NULL;
+ALTER TABLE galette_fields_config CHANGE list_position list_position SMALLINT NOT NULL;
+ALTER TABLE galette_fields_config CHANGE width_in_forms width_in_forms SMALLINT NOT NULL;
+
+ALTER TABLE galette_statuts CHANGE priorite_statut priorite_statut SMALLINT NOT NULL default '0';
 
 SET FOREIGN_KEY_CHECKS = 1;

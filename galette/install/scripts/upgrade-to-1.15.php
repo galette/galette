@@ -38,7 +38,7 @@ use Laminas\Db\Metadata\Source\Factory;
 class UpgradeTo115 extends AbstractUpdater
 {
     protected ?string $db_version = '1.15';
-    protected array $groups_fkeys = [];
+    protected array $reworked_fkeys = [];
 
     /**
      * Main constructor
@@ -62,11 +62,17 @@ class UpgradeTo115 extends AbstractUpdater
         }
         $tables = $this->zdb->getTables();
         $metadata = Factory::createSourceFromAdapter($this->zdb->db);
-        $groups_table = PREFIX_DB . 'groups';
+        $fkeys_tables = [
+            PREFIX_DB . 'groups',
+            PREFIX_DB . 'fields_categories'
+        ];
         foreach ($tables as $table) {
             foreach ($metadata->getConstraints($table) as $constraint) {
-                if ($constraint->isForeignKey() && $constraint->getReferencedTableName() == $groups_table) {
-                    $this->groups_fkeys[] = $constraint;
+                if (
+                    $constraint->isForeignKey()
+                    && in_array($constraint->getReferencedTableName(), $fkeys_tables, true)
+                ) {
+                    $this->reworked_fkeys[] = $constraint;
                 }
             }
         }
@@ -81,12 +87,12 @@ class UpgradeTo115 extends AbstractUpdater
      */
     protected function update(): bool
     {
-        foreach ($this->groups_fkeys as $group_fkey) {
+        foreach ($this->reworked_fkeys as $reworked_fkey) {
             $this->zdb->db->query(
                 sprintf(
                     'ALTER TABLE %s DROP FOREIGN KEY %s;',
-                    $group_fkey->getTableName(),
-                    $group_fkey->getName()
+                    $reworked_fkey->getTableName(),
+                    $reworked_fkey->getName()
                 ),
                 Adapter::QUERY_MODE_EXECUTE
             );
@@ -102,16 +108,16 @@ class UpgradeTo115 extends AbstractUpdater
      */
     protected function postUpdate(): bool
     {
-        foreach ($this->groups_fkeys as $group_fkey) {
+        foreach ($this->reworked_fkeys as $reworked_fkey) {
             $this->zdb->db->query(
                 sprintf(
                     'ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s;',
-                    $group_fkey->getTableName(),
-                    $group_fkey->getColumns()[0],
+                    $reworked_fkey->getTableName(),
+                    $reworked_fkey->getColumns()[0],
                     PREFIX_DB . 'groups',
                     \Galette\Entity\Group::PK,
-                    $group_fkey->getDeleteRule(),
-                    $group_fkey->getUpdateRule()
+                    $reworked_fkey->getDeleteRule(),
+                    $reworked_fkey->getUpdateRule()
                 ),
                 Adapter::QUERY_MODE_EXECUTE
             );

@@ -109,3 +109,16 @@ SELECT pg_get_serial_sequence('galette_payments_schedules', 'id_schedule'), max(
 
 ALTER TABLE galette_adherents ALTER COLUMN id_statut DROP DEFAULT;
 ALTER TABLE galette_adherents ALTER COLUMN id_statut SET NOT NULL;
+
+ALTER TABLE galette_fields_categories ALTER COLUMN position TYPE smallint;
+
+ALTER TABLE galette_fields_config ALTER COLUMN position TYPE smallint;
+ALTER TABLE galette_fields_config ALTER COLUMN list_position TYPE smallint;
+ALTER TABLE galette_fields_config ALTER COLUMN width_in_forms TYPE smallint;
+
+ALTER TABLE galette_adherents ALTER COLUMN date_echeance SET DEFAULT NULL;
+ALTER TABLE galette_adherents ALTER COLUMN tel_adh SET DEFAULT NULL;
+ALTER TABLE galette_adherents ALTER COLUMN gsm_adh SET DEFAULT NULL;
+ALTER TABLE galette_adherents ALTER COLUMN email_adh SET DEFAULT NULL;
+
+ALTER TABLE galette_pdfmodels ALTER COLUMN model_type TYPE smallint;

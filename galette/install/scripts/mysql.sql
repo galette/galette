@@ -13,7 +13,7 @@ CREATE TABLE galette_adherents (
   societe_adh varchar(200) default NULL,
   titre_adh int unsigned default NULL,
   ddn_adh date default '1901-01-01',
-  sexe_adh tinyint(1) NOT NULL default '0',
+  sexe_adh smallint NOT NULL default '0',
   adresse_adh text NOT NULL,
   cp_adh varchar(10) NOT NULL default '',
   ville_adh varchar(200) NOT NULL default '',
@@ -83,7 +83,7 @@ DROP TABLE IF EXISTS galette_statuts;
 CREATE TABLE galette_statuts (
   id_statut int unsigned NOT NULL auto_increment,
   libelle_statut varchar(255) NOT NULL default '',
-  priorite_statut tinyint(4) NOT NULL default '0',
+  priorite_statut smallint NOT NULL default '0',
   PRIMARY KEY (id_statut)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
@@ -191,7 +191,7 @@ CREATE TABLE galette_tmppasswds (
 -- Add new table for automatic mails and their translations;
 DROP TABLE IF EXISTS galette_texts;
 CREATE TABLE galette_texts (
-  tid smallint(6) NOT NULL auto_increment,
+  tid int unsigned NOT NULL auto_increment,
   tref varchar(20) NOT NULL,
   tsubject varchar(256) NOT NULL,
   tbody text NOT NULL,
@@ -203,10 +203,10 @@ CREATE TABLE galette_texts (
 
 DROP TABLE IF EXISTS galette_fields_categories;
 CREATE TABLE galette_fields_categories (
-  id_field_category int(2) NOT NULL AUTO_INCREMENT,
+  id_field_category int unsigned NOT NULL AUTO_INCREMENT,
   table_name varchar(30) NOT NULL,
   category varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  position int(2) NOT NULL,
+  position smallint NOT NULL,
   PRIMARY KEY (id_field_category)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
@@ -216,11 +216,11 @@ CREATE TABLE galette_fields_config (
   field_id varchar(30) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   required tinyint(1) NOT NULL,
   visible tinyint(1) NOT NULL,
-  position int(2) NOT NULL,
-  id_field_category int(2) NOT NULL,
+  position smallint NOT NULL,
+  id_field_category int unsigned NOT NULL,
   list_visible tinyint(1) NOT NULL,
-  list_position int(2) NOT NULL,
-  width_in_forms tinyint(1) NOT NULL DEFAULT 1,
+  list_position smallint NOT NULL,
+  width_in_forms smallint NOT NULL DEFAULT 1,
   PRIMARY KEY (table_name, field_id),
   FOREIGN KEY (id_field_category) REFERENCES galette_fields_categories (id_field_category) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -291,7 +291,7 @@ DROP TABLE IF EXISTS galette_pdfmodels;
 CREATE TABLE galette_pdfmodels (
   model_id int unsigned NOT NULL auto_increment,
   model_name varchar(50) NOT NULL,
-  model_type tinyint(2) NOT NULL,
+  model_type smallint NOT NULL,
   model_header text,
   model_footer text,
   model_body text,
