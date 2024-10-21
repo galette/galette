@@ -5,7 +5,8 @@ ALTER TABLE galette_adherents CHANGE id_adh id_adh INT UNSIGNED NOT NULL AUTO_IN
 ALTER TABLE galette_adherents CHANGE id_statut id_statut INT UNSIGNED NOT NULL; -- also remove default value here
 ALTER TABLE galette_adherents CHANGE titre_adh titre_adh INT UNSIGNED DEFAULT NULL;
 ALTER TABLE galette_adherents CHANGE parent_id parent_id INT UNSIGNED DEFAULT NULL;
-ALTER TABLE galette_adherents CHANGE sexe_adh sexe_adh SMALLINT NOT NULL default '0';
+ALTER TABLE galette_adherents CHANGE sexe_adh sexe_adh SMALLINT NOT NULL;
+ALTER TABLE galette_adherents CHANGE pref_lang preg_lang varchar(20);
 
 ALTER TABLE galette_cotisations CHANGE id_cotis id_cotis INT UNSIGNED AUTO_INCREMENT;
 ALTER TABLE galette_cotisations CHANGE id_adh id_adh INT UNSIGNED NOT NULL; -- also remove default value here
