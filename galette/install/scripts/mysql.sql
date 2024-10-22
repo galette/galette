@@ -83,7 +83,7 @@ DROP TABLE IF EXISTS galette_statuts;
 CREATE TABLE galette_statuts (
   id_statut int unsigned NOT NULL auto_increment,
   libelle_statut varchar(255) NOT NULL default '',
-  priorite_statut smallint NOT NULL default '0',
+  priorite_statut smallint NOT NULL default 0,
   PRIMARY KEY (id_statut)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
@@ -130,19 +130,19 @@ DROP TABLE IF EXISTS galette_field_types;
 CREATE TABLE galette_field_types (
     field_id int unsigned NOT NULL auto_increment,
     field_form varchar(10) NOT NULL,
-    field_index int NOT NULL default '0',
+    field_index int NOT NULL default 0,
     field_name varchar(255) NOT NULL default '',
     field_perm int NOT NULL default 1,
-    field_type int NOT NULL default '0',
+    field_type int NOT NULL default 0,
     field_required tinyint(1) NOT NULL default 0,
-    field_pos int NOT NULL default '0',
+    field_pos int NOT NULL default 0,
     field_width int default NULL,
     field_height int default NULL,
     field_min_size int default NULL,
     field_size int default NULL,
     field_repeat int default NULL,
     field_information TEXT default NULL,
-    field_width_in_forms tinyint(1) NOT NULL default 1,
+    field_width_in_forms smallint NOT NULL default 1,
     field_information_above tinyint(1) NOT NULL default 0,
     PRIMARY KEY (field_id),
     INDEX (field_form)
@@ -151,10 +151,10 @@ CREATE TABLE galette_field_types (
 -- Table for dynamic fields data;
 DROP TABLE IF EXISTS galette_dynamic_fields;
 CREATE TABLE galette_dynamic_fields (
-    item_id int NOT NULL default '0',
-    field_id int unsigned NOT NULL default '0',
+    item_id int NOT NULL default 0,
+    field_id int unsigned NOT NULL default 0,
     field_form varchar(10) NOT NULL,
-    val_index int NOT NULL default '0',
+    val_index int NOT NULL default 0,
     field_val text,
     PRIMARY KEY (item_id, field_id, field_form, val_index),
     FOREIGN KEY (field_id) REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -162,7 +162,7 @@ CREATE TABLE galette_dynamic_fields (
 
 DROP TABLE IF EXISTS galette_pictures;
 CREATE TABLE galette_pictures (
-    id_adh int unsigned NOT NULL default '0',
+    id_adh int unsigned NOT NULL default 0,
     picture mediumblob NOT NULL,
     format varchar(10) NOT NULL default '',
     PRIMARY KEY (id_adh)
@@ -173,7 +173,7 @@ DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
     text_orig varchar(255) NOT NULL,
     text_locale varchar(15) NOT NULL,
-    text_nref int NOT NULL default '1',
+    text_nref int NOT NULL default 1,
     text_trans varchar(255) NOT NULL default '',
     PRIMARY KEY (text_orig, text_locale)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;

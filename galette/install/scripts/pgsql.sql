@@ -139,7 +139,7 @@ CREATE TABLE galette_field_types (
   field_size integer DEFAULT NULL,
   field_repeat integer DEFAULT NULL,
   field_information text DEFAULT NULL,
-  field_width_in_forms integer DEFAULT '1' NOT NULL,
+  field_width_in_forms smallint DEFAULT '1' NOT NULL,
   field_information_above boolean DEFAULT FALSE,
   PRIMARY KEY (field_id)
 );

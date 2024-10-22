@@ -134,3 +134,5 @@ ALTER TABLE galette_cotisations ALTER column date_enreg DROP DEFAULT;
 ALTER TABLE galette_cotisations ALTER column date_debut_cotis DROP DEFAULT;
 ALTER TABLE galette_cotisations ALTER column date_fin_cotis DROP DEFAULT;
 ALTER TABLE galette_cotisations ALTER column date_fin_cotis DROP NOT NULL;
+
+ALTER TABLE galette_field_types ALTER COLUMN field_width_in_forms TYPE smallint;
