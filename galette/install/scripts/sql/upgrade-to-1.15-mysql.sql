@@ -101,6 +101,7 @@ ALTER TABLE galette_fields_config CHANGE id_field_category id_field_category INT
 ALTER TABLE galette_fields_config CHANGE list_position list_position SMALLINT NOT NULL;
 ALTER TABLE galette_fields_config CHANGE width_in_forms width_in_forms SMALLINT NOT NULL;
 
-ALTER TABLE galette_statuts CHANGE priorite_statut priorite_statut SMALLINT NOT NULL default '0';
+ALTER TABLE galette_statuts CHANGE priorite_statut priorite_statut SMALLINT NOT NULL default 0;
 
+ALTER TABLE galette_field_types CHANGE field_width_in_forms field_width_in_forms SMALLINT NOT NULL default 1;
 SET FOREIGN_KEY_CHECKS = 1;
