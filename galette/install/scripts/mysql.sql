@@ -25,7 +25,7 @@ CREATE TABLE galette_adherents (
   info_adh text,
   info_public_adh text,
   prof_adh varchar(150) default NULL,
-  login_adh varchar(200) NOT NULL default '',
+  login_adh varchar(255) NOT NULL default '',
   mdp_adh varchar(255) NOT NULL default '',
   date_crea_adh date NOT NULL,
   date_modif_adh date NOT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE galette_types_cotisation (
   id_type_cotis int unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(255) NOT NULL default '',
   amount decimal(15,2) DEFAULT NULL,
-  cotis_extension tinyint NOT NULL default 0,
+  cotis_extension smallint NOT NULL default 0,
   PRIMARY KEY (id_type_cotis)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
@@ -336,7 +336,7 @@ CREATE TABLE galette_searches (
 DROP TABLE IF EXISTS galette_tmplinks;
 CREATE TABLE galette_tmplinks (
   hash varchar(250) NOT NULL,
-  target smallint(1) NOT NULL,
+  target smallint NOT NULL,
   id int unsigned,
   creation_date datetime NOT NULL,
   PRIMARY KEY (target, id)
@@ -359,7 +359,7 @@ DROP TABLE IF EXISTS galette_documents;
 CREATE TABLE galette_documents (
   id_document int unsigned NOT NULL auto_increment,
   type varchar(250) NOT NULL,
-  visible tinyint(1) NOT NULL,
+  visible smallint NOT NULL,
   filename varchar(255) DEFAULT NULL,
   comment text,
   creation_date datetime NOT NULL,

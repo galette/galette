@@ -10,7 +10,7 @@ ALTER TABLE galette_adherents CHANGE pref_lang preg_lang varchar(20);
 ALTER TABLE galette_adherents CHANGE ddn_adh ddn_adh DATE;
 ALTER TABLE galette_adherents CHANGE date_crea_adh date_crea_adh DATE NOT NULL;
 ALTER TABLE galette_adherents CHANGE date_modif_adh date_modif_adh DATE NOT NULL;
-
+ALTER TABLE galette_adherents CHANGE login_adh login_adh VARCHAR(255) NOT NULL DEFAULT '';
 
 ALTER TABLE galette_cotisations CHANGE id_cotis id_cotis INT UNSIGNED AUTO_INCREMENT;
 ALTER TABLE galette_cotisations CHANGE id_adh id_adh INT UNSIGNED NOT NULL; -- also remove default value here
@@ -86,6 +86,7 @@ ALTER TABLE galette_socials CHANGE id_social id_social INT UNSIGNED NOT NULL AUT
 ALTER TABLE galette_socials CHANGE id_adh id_adh INT UNSIGNED DEFAULT NULL;
 
 ALTER TABLE galette_documents CHANGE id_document id_document INT UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE galette_documents CHANGE visible visible smallint NOT NULL;
 
 ALTER TABLE galette_payments_schedules CHANGE id_schedule id_schedule INT UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE galette_payments_schedules CHANGE id_cotis id_cotis INT UNSIGNED NOT NULL;
@@ -104,4 +105,9 @@ ALTER TABLE galette_fields_config CHANGE width_in_forms width_in_forms SMALLINT 
 ALTER TABLE galette_statuts CHANGE priorite_statut priorite_statut SMALLINT NOT NULL default 0;
 
 ALTER TABLE galette_field_types CHANGE field_width_in_forms field_width_in_forms SMALLINT NOT NULL default 1;
+
+ALTER TABLE galette_types_cotisation CHANGE cotis_extension cotis_extension SMALLINT NOT NULL default 0;
+
+ALTER TABLE galette_pictures CHANGE format format VARCHAR(30) NOT NULL default '';
+
 SET FOREIGN_KEY_CHECKS = 1;
