@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-15 14:43+0200\n"
-"PO-Revision-Date: 2024-10-15 19:28+0000\n"
+"PO-Revision-Date: 2024-10-24 10:16+0000\n"
 "Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8-rc\n"
+"X-Generator: Weblate 5.8.2-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -8449,7 +8449,7 @@ msgstr "Particulars e Entrepresas"
 
 #: ../../tempcache/pages/charts.html.twig:111
 msgid "Contributions over time"
-msgstr "Contribuccions per edat"
+msgstr "Contribucions dins lo temps"
 
 #: ../../tempcache/pages/charts.html.twig:417
 msgid "Total contributions for the month"
