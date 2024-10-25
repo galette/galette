@@ -22,10 +22,6 @@
 
 {% set basic_table = true %}
 
-{% if not login.isAdmin() and not login.isStaff() and login.isGroupManager() %}
-    {% set no_action = true %}
-{% endif %}
-
 {% set form = {
     'route': {
         'name': "batch-contributionslist",
@@ -242,9 +238,9 @@
 {% endblock %}
 
 {% block footer %}
-    {% if nb != 0 %}
+    {% if mode != 'ajax' and nb != 0 %}
         <tr>
-            <th class="right aligned" colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}10{% else %}9{% endif %}">
+            <th class="right aligned" colspan="10">
                 {{ _T("Found contributions total %f")|replace({"%f": contribs.getSum()}) }}
             </th>
         </tr>
@@ -330,7 +326,7 @@
             <td data-col-label="{{ _T("Amount") }}">{{ contribution.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ contribution.getPaymentType() }}</td>
             <td data-col-label="{{ _T("Duration") }}">{{ contribution.duration }}</td>
-            {% if mode != 'ajax' and (login.isAdmin() or login.isStaff()) %}
+            {% if mode != 'ajax' %}
                 <td class="actions_row center">
                     <a
                             href="{{ url_for("printContribution", {"id": contribution.id}) }}"
