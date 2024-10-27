@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-15 14:43+0200\n"
-"PO-Revision-Date: 2024-10-24 10:16+0000\n"
+"PO-Revision-Date: 2024-10-28 15:00+0000\n"
 "Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -1223,7 +1223,7 @@ msgstr "Ren"
 
 #: ../lib/Galette/Core/Install.php:104 ../webroot/installer.php:274
 msgid "Checks"
-msgstr "Verificacions"
+msgstr "Chèc"
 
 #: ../lib/Galette/Core/Install.php:107 ../webroot/installer.php:280
 #: ../../tempcache/modals/plugin_initdb.html.twig:434
@@ -3401,7 +3401,7 @@ msgstr "Carta de crèdit"
 
 #: ../lib/Galette/Entity/PaymentType.php:284
 msgid "Check"
-msgstr "Verificacion"
+msgstr "Chèc"
 
 #: ../lib/Galette/Entity/PaymentType.php:285
 msgid "Transfer"
