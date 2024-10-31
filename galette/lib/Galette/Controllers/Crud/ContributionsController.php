@@ -169,6 +169,15 @@ class ContributionsController extends CrudController
 
             $ct = new ContributionsTypes($this->zdb);
             $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
+            if (!count($contributions_types)) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T('No related contribution type available, please create a new one.')
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->routeparser->urlFor('contributions', ['type' => 'contributions']));
+            }
 
             $cparams = ['type' => array_keys($contributions_types)[0]];
 
