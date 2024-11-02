@@ -29,9 +29,9 @@
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-15 14:43+0200\n"
-"PO-Revision-Date: 2024-09-30 18:16+0000\n"
+"PO-Revision-Date: 2024-11-03 13:00+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -39,7 +39,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8-dev\n"
+"X-Generator: Weblate 5.8.2\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -7240,7 +7240,7 @@ msgstr "Ha pagamenti previsti"
 
 #: ../../tempcache/pages/contribution_form.html.twig:229
 msgid "Switch to fee"
-msgstr ""
+msgstr "Passare al pagamento"
 
 #: ../../tempcache/pages/contribution_form.html.twig:232
 #, fuzzy
