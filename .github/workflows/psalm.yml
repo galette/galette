@@ -30,6 +30,16 @@ jobs:
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
 
     steps:
+      - name: PHP
+        if: env.skip != 'true'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: composer, pecl
+          coverage: none
+          extensions: apcu
+          ini-values: apc.enable_cli=1
+
       - name: Checkout code
         uses: actions/checkout@v4
 
