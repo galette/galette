@@ -14,7 +14,7 @@ CREATE TABLE galette_adherents (
   titre_adh int unsigned default NULL,
   ddn_adh date,
   sexe_adh smallint NOT NULL,
-  adresse_adh text NOT NULL,
+  adresse_adh LONGTEXT NOT NULL,
   cp_adh varchar(10) NOT NULL default '',
   ville_adh varchar(200) NOT NULL default '',
   region_adh varchar(200) NOT NULL default '',
@@ -22,8 +22,8 @@ CREATE TABLE galette_adherents (
   tel_adh varchar(50) default NULL,
   gsm_adh varchar(50) default NULL,
   email_adh varchar(255) default NULL,
-  info_adh text,
-  info_public_adh text,
+  info_adh longtext,
+  info_public_adh longtext,
   prof_adh varchar(150) default NULL,
   login_adh varchar(255) NOT NULL default '',
   mdp_adh varchar(255) NOT NULL default '',
@@ -35,8 +35,8 @@ CREATE TABLE galette_adherents (
   bool_display_info tinyint(1) NOT NULL default 0,
   date_echeance date default NULL,
   pref_lang varchar(20),
-  lieu_naissance text,
-  gpgid text DEFAULT NULL,
+  lieu_naissance varchar(255),
+  gpgid longtext DEFAULT NULL,
   fingerprint varchar(255) DEFAULT NULL,
   parent_id int unsigned DEFAULT NULL,
   num_adh varchar(255) DEFAULT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE galette_cotisations (
   id_type_cotis int unsigned NOT NULL,
   montant_cotis decimal(15, 2) NOT NULL,
   type_paiement_cotis int unsigned NOT NULL,
-  info_cotis text,
+  info_cotis longtext,
   date_enreg date NOT NULL,
   date_debut_cotis date NOT NULL,
   date_fin_cotis date,
@@ -119,9 +119,9 @@ CREATE TABLE galette_logs (
   date_log datetime NOT NULL,
   ip_log varchar(46) NOT NULL default '',
   adh_log varchar(255) NOT NULL default '', -- see galette_adherents.login_adh
-  text_log text,
-  action_log text,
-  sql_log text,
+  text_log longtext,
+  action_log longtext,
+  sql_log longtext,
   PRIMARY KEY (id_log)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
@@ -141,7 +141,7 @@ CREATE TABLE galette_field_types (
     field_min_size int default NULL,
     field_size int default NULL,
     field_repeat int default NULL,
-    field_information TEXT default NULL,
+    field_information longtext default NULL,
     field_width_in_forms smallint NOT NULL default 1,
     field_information_above tinyint(1) NOT NULL default 0,
     PRIMARY KEY (field_id),
@@ -155,7 +155,7 @@ CREATE TABLE galette_dynamic_fields (
     field_id int unsigned NOT NULL default 0,
     field_form varchar(10) NOT NULL,
     val_index int NOT NULL default 0,
-    field_val text,
+    field_val longtext,
     PRIMARY KEY (item_id, field_id, field_form, val_index),
     FOREIGN KEY (field_id) REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
@@ -164,7 +164,7 @@ DROP TABLE IF EXISTS galette_pictures;
 CREATE TABLE galette_pictures (
     id_adh int unsigned NOT NULL default 0,
     picture mediumblob NOT NULL,
-    format varchar(10) NOT NULL default '',
+    format varchar(30) NOT NULL default '',
     PRIMARY KEY (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
@@ -194,7 +194,7 @@ CREATE TABLE galette_texts (
   tid int unsigned NOT NULL auto_increment,
   tref varchar(20) NOT NULL,
   tsubject varchar(256) NOT NULL,
-  tbody text NOT NULL,
+  tbody longtext NOT NULL,
   tlang varchar(16) NOT NULL,
   tcomment varchar(255) NOT NULL,
   PRIMARY KEY (tid),
@@ -228,12 +228,12 @@ CREATE TABLE galette_fields_config (
 -- Table for mailing history storage;
 DROP TABLE IF EXISTS galette_mailing_history;
 CREATE TABLE galette_mailing_history (
-  mailing_id int NOT NULL auto_increment,
+  mailing_id int unsigned NOT NULL auto_increment,
   mailing_sender int unsigned,
   mailing_subject varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  mailing_body text NOT NULL,
+  mailing_body longtext NOT NULL,
   mailing_date datetime NOT NULL,
-  mailing_recipients text NOT NULL,
+  mailing_recipients longtext NOT NULL,
   mailing_sent tinyint(1) NOT NULL,
   mailing_sender_name varchar(255) DEFAULT NULL,
   mailing_sender_address varchar(255) DEFAULT NULL,
@@ -281,7 +281,7 @@ CREATE TABLE galette_reminders (
   reminder_date datetime NOT NULL,
   reminder_success tinyint(1) NOT NULL DEFAULT 0,
   reminder_nomail tinyint(1) NOT NULL DEFAULT 1,
-  reminder_comment text,
+  reminder_comment longtext,
   PRIMARY KEY (reminder_id),
   FOREIGN KEY (reminder_dest) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -292,10 +292,10 @@ CREATE TABLE galette_pdfmodels (
   model_id int unsigned NOT NULL auto_increment,
   model_name varchar(50) NOT NULL,
   model_type smallint NOT NULL,
-  model_header text,
-  model_footer text,
-  model_body text,
-  model_styles text,
+  model_header longtext,
+  model_footer longtext,
+  model_body longtext,
+  model_styles longtext,
   model_title varchar(250),
   model_subtitle varchar(250),
   model_parent int unsigned DEFAULT NULL REFERENCES galette_pdfmodels (model_id) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -306,7 +306,7 @@ CREATE TABLE galette_pdfmodels (
 DROP TABLE IF EXISTS galette_import_model;
 CREATE TABLE galette_import_model (
   model_id int unsigned NOT NULL auto_increment,
-  model_fields text,
+  model_fields longtext,
   model_creation_date datetime NOT NULL,
   PRIMARY KEY (model_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -325,7 +325,7 @@ CREATE TABLE galette_searches (
   search_id int unsigned NOT NULL auto_increment,
   name varchar(100) DEFAULT NULL,
   form varchar(50) NOT NULL,
-  parameters text NOT NULL,
+  parameters longtext NOT NULL,
   id_adh int unsigned,
   creation_date datetime NOT NULL,
   PRIMARY KEY (search_id),
@@ -361,7 +361,7 @@ CREATE TABLE galette_documents (
   type varchar(250) NOT NULL,
   visible smallint NOT NULL,
   filename varchar(255) DEFAULT NULL,
-  comment text,
+  comment longtext,
   creation_date datetime NOT NULL,
   PRIMARY KEY (id_document),
   KEY (type)
@@ -377,7 +377,7 @@ CREATE TABLE galette_payments_schedules (
   scheduled_date datetime NOT NULL,
   amount decimal(15, 2) NOT NULL,
   paid tinyint(1) DEFAULT FALSE,
-  comment text,
+  comment longtext,
   PRIMARY KEY (id_schedule),
   FOREIGN KEY (id_cotis) REFERENCES galette_cotisations (id_cotis) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_paymenttype) REFERENCES galette_paymenttypes (type_id) ON DELETE CASCADE ON UPDATE CASCADE

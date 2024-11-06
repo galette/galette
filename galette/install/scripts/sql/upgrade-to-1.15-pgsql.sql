@@ -116,6 +116,7 @@ ALTER TABLE galette_fields_categories ALTER COLUMN position TYPE smallint;
 
 ALTER TABLE galette_fields_config ALTER COLUMN position TYPE smallint;
 ALTER TABLE galette_fields_config ALTER COLUMN list_position TYPE smallint;
+ALTER TABLE galette_fields_config ALTER COLUMN list_position SET NOT NULL;
 ALTER TABLE galette_fields_config ALTER COLUMN width_in_forms TYPE smallint;
 
 ALTER TABLE galette_adherents ALTER COLUMN date_echeance SET DEFAULT NULL;
@@ -123,6 +124,7 @@ ALTER TABLE galette_adherents ALTER COLUMN tel_adh SET DEFAULT NULL;
 ALTER TABLE galette_adherents ALTER COLUMN gsm_adh SET DEFAULT NULL;
 ALTER TABLE galette_adherents ALTER COLUMN email_adh SET DEFAULT NULL;
 ALTER TABLE galette_adherents ALTER COLUMN sexe_adh DROP DEFAULT;
+ALTER TABLE galette_adherents ALTER COLUMN sexe_adh SET NOT NULL;
 ALTER TABLE galette_adherents ALTER COLUMN pref_lang DROP DEFAULT;
 ALTER TABLE galette_adherents ALTER COLUMN ddn_adh DROP DEFAULT;
 ALTER TABLE galette_adherents ALTER COLUMN date_crea_adh DROP DEFAULT;
@@ -130,6 +132,11 @@ ALTER TABLE galette_adherents ALTER COLUMN date_modif_adh DROP DEFAULT;
 ALTER TABLE galette_adherents ALTER COLUMN adresse_adh DROP DEFAULT;
 ALTER TABLE galette_adherents ALTER COLUMN prof_adh SET DEFAULT NULL;
 ALTER TABLE galette_adherents ALTER COLUMN lieu_naissance DROP DEFAULT;
+ALTER TABLE galette_adherents ALTER COLUMN lieu_naissance TYPE character varying(255);
+ALTER TABLE galette_adherents ALTER COLUMN fingerprint SET DEFAULT NULL;
+ALTER TABLE galette_adherents ALTER COLUMN mdp_adh SET DEFAULT '';
+ALTER TABLE galette_adherents ALTER COLUMN mdp_adh SET NOT NULL;
+ALTER TABLE galette_adherents ALTER COLUMN activite_adh SET NOT NULL;
 
 ALTER TABLE galette_pdfmodels ALTER COLUMN model_type TYPE smallint;
 
@@ -139,9 +146,15 @@ ALTER TABLE galette_cotisations ALTER column date_enreg DROP DEFAULT;
 ALTER TABLE galette_cotisations ALTER column date_debut_cotis DROP DEFAULT;
 ALTER TABLE galette_cotisations ALTER column date_fin_cotis DROP DEFAULT;
 ALTER TABLE galette_cotisations ALTER column date_fin_cotis DROP NOT NULL;
+ALTER TABLE galette_cotisations ALTER column id_adh SET NOT NULL;
+ALTER TABLE galette_cotisations ALTER column id_adh DROP DEFAULT;
+ALTER TABLE galette_cotisations ALTER column id_type_cotis DROP DEFAULT;
 
 ALTER TABLE galette_field_types ALTER COLUMN field_width_in_forms TYPE smallint;
 
 ALTER TABLE galette_paymenttypes ALTER COLUMN type_name TYPE character varying(255);
 
 ALTER TABLE galette_dynamic_fields ALTER COLUMN field_val DROP DEFAULT;
+ALTER TABLE galette_dynamic_fields ALTER COLUMN field_id DROP DEFAULT;
+
+ALTER TABLE galette_types_cotisation ALTER COLUMN libelle_type_cotis TYPE character varying(255);
