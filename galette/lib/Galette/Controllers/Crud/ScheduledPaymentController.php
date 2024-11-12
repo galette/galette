@@ -76,7 +76,7 @@ class ScheduledPaymentController extends CrudController
                         'editContribution',
                         [
                             'type' => ($scheduled->getContribution()->isFee() ? Contribution::TYPE_FEE : Contribution::TYPE_DONATION),
-                            'id' => $id_cotis
+                            'id' => (string)$id_cotis
                         ]
                     )
                 );

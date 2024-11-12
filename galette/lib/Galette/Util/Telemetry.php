@@ -79,7 +79,7 @@ class Telemetry
     /**
      * Grab Galette part information
      *
-     * @return array<string, string|array<string, string>>
+     * @return array<string, array<int<0, max>|string, array<string, mixed>|string>|string>
      */
     public function grabGaletteInfos(): array
     {
@@ -137,8 +137,8 @@ class Telemetry
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->prefs->getURL());
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
 
         // disable SSL certificate validation (wildcard, self-signed)
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -159,7 +159,7 @@ class Telemetry
     /**
      * Grab PHP part information
      *
-     * @return array<string, string|array<string, string>>
+     * @return array<string, array<int<0, max>|string, string|false>|string>
      */
     public function grabPhpInfos(): array
     {

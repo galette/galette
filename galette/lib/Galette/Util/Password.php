@@ -87,7 +87,7 @@ class Password
         if (mb_strlen($password) < $this->preferences->pref_password_length) {
             $this->errors[] = str_replace(
                 ['%length', '%count'],
-                [$this->preferences->pref_password_length, mb_strlen($password)],
+                [(string)$this->preferences->pref_password_length, (string)mb_strlen($password)],
                 _T('Too short (%length characters minimum, %count found)')
             );
         }
@@ -229,7 +229,7 @@ class Password
         $this->personal_infos = array_merge(
             $this->personal_infos,
             array_map(
-                function ($info) {
+                function (?string $info) {
                     if ($info !== null) {
                         $info = mb_strtolower($info);
                     }

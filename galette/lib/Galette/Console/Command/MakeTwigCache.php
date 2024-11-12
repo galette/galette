@@ -171,9 +171,9 @@ class MakeTwigCache extends AbstractCommand
              *
              * @param string $name Function name
              *
-             * @return ?TwigFunction
+             * @return TwigFunction
              */
-            public function getFunction(string $name): ?TwigFunction
+            public function getFunction(string $name): TwigFunction
             {
                 $translation_functions = [
                     '__',
@@ -197,9 +197,9 @@ class MakeTwigCache extends AbstractCommand
              *
              * @param string $name Filter name
              *
-             * @return ?TwigFilter
+             * @return TwigFilter
              */
-            public function getFilter(string $name): ?TwigFilter
+            public function getFilter(string $name): TwigFilter
             {
                 return parent::getFilter($name) ?? new TwigFilter($name, function (): void {
                 });

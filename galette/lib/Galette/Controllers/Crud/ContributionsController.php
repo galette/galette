@@ -825,7 +825,7 @@ class ContributionsController extends CrudController
             'type'      => $type
         ];
         if ($id !== null) {
-            $url_args['id'] = $id;
+            $url_args['id'] = (string)$id;
         }
 
         if ($action == 'edit' && isset($post['btnreload'])) {

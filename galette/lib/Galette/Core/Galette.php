@@ -78,7 +78,7 @@ class Galette
     /**
      * Get Galette new release
      *
-     * @return array<string, string|array<string,mixed>>
+     * @return array<string, bool|string|null>
      */
     public static function getNewRelease(): array
     {

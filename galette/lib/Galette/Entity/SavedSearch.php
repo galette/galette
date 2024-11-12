@@ -37,7 +37,7 @@ use Analog\Analog;
  *
  * @property integer $id
  * @property string $name
- * @property array $parameters
+ * @property array<string, mixed> $parameters
  * @property integer $author_id
  * @property string $creation_date
  * @property string $form

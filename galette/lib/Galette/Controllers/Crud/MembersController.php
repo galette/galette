@@ -731,7 +731,7 @@ class MembersController extends CrudController
                 Analog::log(
                     str_replace(
                         ['%id', '%login'],
-                        [$this->login->id, $this->login->login],
+                        [(string)$this->login->id, $this->login->login],
                         'Trying to list group members without access from #%id (%login)'
                     ),
                     Analog::ERROR
@@ -1468,7 +1468,7 @@ class MembersController extends CrudController
             }
         }
 
-        $real_requireds = array_diff(array_keys($required), array_values($disabled));
+        $real_requireds = array_diff(array_keys($required), $disabled);
 
         // send email to member
         if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {

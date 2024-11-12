@@ -44,7 +44,7 @@ trait EntityHelper
      *   (string)property name
      * )
      *
-     * @var array<string, array<string, string>>
+     * @var array<string, array<string, string|null>>
      */
     protected array $fields;
 

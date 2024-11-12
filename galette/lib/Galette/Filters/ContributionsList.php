@@ -45,7 +45,7 @@ use Galette\Core\Pagination;
  * @property ?integer $max_amount
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
- * @property array $selected
+ * @property integer[] $selected
  */
 
 class ContributionsList extends Pagination
@@ -67,16 +67,16 @@ class ContributionsList extends Pagination
 
     //filters
     private ?int $date_field = null;
-    private ?string $start_date_filter = null;
-    private ?string $end_date_filter = null;
-    private ?int $payment_type_filter = null;
-    private ?int $contrib_type_filter = null;
+    private ?string $start_date_filter = null; //@phpstan-ignore-line
+    private ?string $end_date_filter = null; //@phpstan-ignore-line
+    private ?int $payment_type_filter = null; //@phpstan-ignore-line
+    private ?int $contrib_type_filter = null; //@phpstan-ignore-line
 
     private ?int $filtre_cotis_adh = null;
-    private int|false $filtre_cotis_children = false;
+    private int|false $filtre_cotis_children = false; //@phpstan-ignore-line
     private bool $filtre_transactions = false;
-    private int|false $from_transaction = false;
-    private ?int $max_amount = null;
+    private int|false $from_transaction = false; //@phpstan-ignore-line
+    private ?int $max_amount = null; //@phpstan-ignore-line
 
     /** @var array<int> */
     private array $selected = [];

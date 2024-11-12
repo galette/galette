@@ -235,7 +235,7 @@ class StatusController extends CrudController
                     'error_detected',
                     str_replace(
                         ['%id'],
-                        [$id],
+                        [(string)$id],
                         $error
                     )
                 );
@@ -245,7 +245,7 @@ class StatusController extends CrudController
                 'success_detected',
                 str_replace(
                     ['%id'],
-                    [$id],
+                    [(string)$id],
                     $msg
                 )
             );

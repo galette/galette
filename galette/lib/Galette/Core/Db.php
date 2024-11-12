@@ -61,7 +61,7 @@ class Db
     private Adapter $db;
     private string $type_db;
     private Sql $sql;
-    /** @var array<string,string> */
+    /** @var array<string, array<int, bool>|string> */
     private array $options;
     private string $last_query;
 
@@ -853,7 +853,7 @@ class Db
     /**
      * Get database information
      *
-     * @return array<string, string>
+     * @return array<string, string|null>
      */
     public function getInfos(): array
     {

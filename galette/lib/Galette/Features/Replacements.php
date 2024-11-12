@@ -50,7 +50,7 @@ use DI\Attribute\Inject;
 
 trait Replacements
 {
-    /** @var array<string,array<string,string>> */
+    /** @var array<string> */
     private array $patterns = [];
     /** @var array<string,?string> */
     private array $replaces = [];
@@ -151,7 +151,7 @@ trait Replacements
     /**
      * Set replacements
      *
-     * @param array<string,?string> $replaces Replacements to add
+     * @param array<string,?mixed> $replaces Replacements to add
      *
      * @return void
      */
@@ -628,10 +628,10 @@ trait Replacements
             $gender = _T("Unspecified");
         }
 
-        $member_groups = $member->groups;
+        $member_groups = $member->getGroups();
         $main_group = _T("None");
         $group_list = _T("None");
-        if (is_array($member_groups) && count($member_groups) > 0) {
+        if (count($member_groups) > 0) {
             $main_group = current($member_groups)->getName();
             $group_list = '<ul>';
             foreach ($member_groups as $group) {
@@ -766,10 +766,10 @@ trait Replacements
                                     'getDynamicFile',
                                     [
                                         'form_name' => $form_name,
-                                        'id' => $object->id,
-                                        'fid' => $field_id,
-                                        'pos' => ++$pos,
-                                        'name' => $field_value
+                                        'id' => (string)$object->id,
+                                        'fid' => (string)$field_id,
+                                        'pos' => (string)++$pos,
+                                        'name' => (string)$field_value
                                     ]
                                 ),
                                 $field_value
@@ -794,7 +794,7 @@ trait Replacements
     /**
      * Build legend array
      *
-     * @return array<string,array<string,string>>
+     * @return array<string, array<string, array<string, array<string, string>>|string>>
      */
     public function getLegend(): array
     {
@@ -929,7 +929,7 @@ trait Replacements
     /**
      * Get patterns
      *
-     * @return array<string,array<string,string>>
+     * @return array<string>
      */
     public function getPatterns(): array
     {

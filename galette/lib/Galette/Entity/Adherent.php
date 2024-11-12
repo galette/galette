@@ -82,10 +82,10 @@ use Galette\Features\Dynamics;
  * @property string $others_infos
  * @property string $others_infos_admin
  * @property Picture $picture
- * @property array $groups
- * @property array $managed_groups
+ * @property Group[] $groups
+ * @property Group[] $managed_groups
  * @property integer|Adherent|null $parent Parent id if parent dep is not loaded, Adherent instance otherwise
- * @property array $children
+ * @property Adherent[] $children
  * @property boolean $admin better to rely on isAdmin()
  * @property boolean $staff better to rely on isStaff()
  * @property boolean $due_free better to rely on isDueFree()
@@ -130,7 +130,7 @@ class Adherent
 
     private ?int $id;
     //Identity
-    private Title|string|null $title = null;
+    private Title|string|null $title = null; //@phpstan-ignore-line
     private ?string $company_name;
     private ?string $name;
     private ?string $surname;
@@ -173,7 +173,7 @@ class Adherent
     private array $managed_groups = [];
     private int|Adherent|null $parent;
     /** @var array<int, Adherent>|null */
-    private ?array $children = [];
+    private ?array $children = []; //@phpstan-ignore-line
     private bool $duplicate = false;
     /** @var array<int,Social> */
     private array $socials;
@@ -220,18 +220,12 @@ class Adherent
 
         $this->zdb = $zdb;
 
-        if ($deps !== null) {
-            if (is_array($deps)) {
-                $this->setDeps($deps);
-            } elseif ($deps === false) {
-                //no dependencies
-                $this->disableAllDeps();
-            } else {
-                Analog::log(
-                    '$deps should be an array, ' . gettype($deps) . ' given!',
-                    Analog::WARNING
-                );
-            }
+        if ($deps === false) {
+            $this->disableAllDeps();
+        }
+
+        if (is_array($deps)) {
+            $this->setDeps($deps);
         }
 
         $this
@@ -2204,7 +2198,7 @@ class Adherent
         $infos = $this->others_infos_admin;
         $this->others_infos_admin = str_replace(
             ['%name', '%id'],
-            [$this->sname, $this->id],
+            [$this->sname, (string)$this->id],
             _T('Duplicated from %name (%id)')
         );
         if (!empty($infos)) {

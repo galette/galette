@@ -201,7 +201,7 @@ class ScheduledPayment
             ->setPaid(isset($data['paid']) ? (bool)$data['paid'] : false)
             ->setComment($data['comment'] ?? null);
 
-        return count($this->errors) === 0;
+        return true;
     }
 
     /**

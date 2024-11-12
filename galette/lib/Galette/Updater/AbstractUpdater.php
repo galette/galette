@@ -176,9 +176,11 @@ abstract class AbstractUpdater
             @filesize($script)
         ) . "\n";
 
-        if ($sql_query !== '') {
+        if (trim($sql_query) !== '') {
             return $installer->executeSql($zdb, $sql_query);
         }
+
+        return false;
     }
 
     /**
@@ -203,8 +205,7 @@ abstract class AbstractUpdater
     {
         $scripts = $this->getSqlScripts($version);
         if (
-            is_array($scripts)
-            && count($scripts) === count($this->engines)
+            count($scripts) === count($this->engines)
             && count(array_diff(array_keys($scripts), $this->engines)) == 0
         ) {
             $checked = false;

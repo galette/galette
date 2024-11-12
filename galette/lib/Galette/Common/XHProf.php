@@ -110,8 +110,8 @@ class XHProf
             $data = xhprof_disable();
 
             $incl = (defined('GALETTE_XHPROF_PATH') ? GALETTE_XHPROF_PATH : self::XHPROF_PATH);
-            include_once $incl . '/utils/xhprof_lib.php';
-            include_once $incl . '/utils/xhprof_runs.php';
+            include_once $incl . '/utils/xhprof_lib.php'; // @phpstan-ignore-line
+            include_once $incl . '/utils/xhprof_runs.php'; // @phpstan-ignore-line
 
             $runs = new \XHProfRuns_Default();
             // @phpstan-ignore-next-line

@@ -53,11 +53,11 @@ class TransactionsList extends Pagination
     public const ORDERBY_ID = 8;
 
     //filters
-    private ?string $start_date_filter = null;
-    private ?string $end_date_filter = null;
+    private ?string $start_date_filter = null; //@phpstan-ignore-line
+    private ?string $end_date_filter = null; //@phpstan-ignore-line
     private ?int $filtre_cotis_adh = null;
-    private int|false $filtre_cotis_children = false;
-    private ?int $max_amount = null;
+    private int|false $filtre_cotis_children = false; //@phpstan-ignore-line
+    private ?int $max_amount = null; //@phpstan-ignore-line
 
     /** @var array<string> */
     protected array $list_fields = array(

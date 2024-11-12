@@ -141,7 +141,7 @@ use Galette\Repository\Members;
  * @property boolean $pref_bool_groupsmanagers_create_transactions
  * @property boolean $pref_bool_groupsmanagers_see_contributions
  * @property boolean $pref_bool_groupsmanagers_see_transactions
- * @property-read array $vpref_email_newadh list of mail senders
+ * @property-read string[] $vpref_email_newadh list of mail senders
  * @property boolean $pref_noindex
  */
 class Preferences
@@ -1085,10 +1085,8 @@ class Preferences
                     $this->prefs[$name] = self::$defaults['pref_adhesion_form'];
                 }
                 $value = $this->prefs[$name];
-                if (TYPE_DB === Db::PGSQL) {
-                    if ($value === 'f') {
-                        $value = false;
-                    }
+                if ($this->zdb->isPostgres() && $value === 'f') {
+                    $value = false;
                 }
 
                 if ($name === 'pref_email_newadh') {
@@ -1322,7 +1320,7 @@ class Preferences
     /**
      * Build legend array
      *
-     * @return array<string, array<string, string>>
+     * @return array<string, array<string, array<string, array<string, string>>|string>>
      */
     public function getLegend(): array
     {

@@ -146,7 +146,7 @@ class ExternalScript
                     $uri .= '?' . $url_params;
                 }
                 curl_setopt($ch, CURLOPT_URL, $uri);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $this->output = curl_exec($ch);
                 if ($this->output !== false) {
                     $result = true;
@@ -159,8 +159,8 @@ class ExternalScript
             case 'post':
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $this->uri);
-                curl_setopt($ch, CURLOPT_POST, count($params));
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_POST, (bool)count($params));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 if ($this->as_json === true) {
                     curl_setopt(
                         $ch,

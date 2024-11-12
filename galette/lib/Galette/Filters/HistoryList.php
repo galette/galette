@@ -51,10 +51,10 @@ class HistoryList extends Pagination
     public const ORDERBY_ACTION = 3;
 
     //filters
-    private ?string $start_date_filter = null;
-    private ?string $end_date_filter = null;
-    private ?string $user_filter = null;
-    private ?string $action_filter = null;
+    private ?string $start_date_filter = null; //@phpstan-ignore-line
+    private ?string $end_date_filter = null; //@phpstan-ignore-line
+    private ?string $user_filter = null; //@phpstan-ignore-line
+    private ?string $action_filter = null; //@phpstan-ignore-line
 
     /** @var array<string>  */
     protected array $list_fields = array(

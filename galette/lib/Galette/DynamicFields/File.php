@@ -83,9 +83,9 @@ class File extends DynamicField
             ],
             [
                 $prefix ?? $form_name,
-                $id,
-                $this->id,
-                $pos
+                (string)$id,
+                (string)$this->id,
+                (string)$pos
             ],
             '%form_%oid_field_%fid_value_%pos'
         );

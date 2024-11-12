@@ -72,9 +72,9 @@ class ClassLoader
     protected string $fileExtension = '.php';
 
     /**
-     * @var string Current namespace
+     * @var ?string Current namespace
      */
-    protected string $namespace;
+    protected ?string $namespace;
 
     /**
      * @var ?string Current include path

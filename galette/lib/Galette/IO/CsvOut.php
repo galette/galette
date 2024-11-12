@@ -399,7 +399,7 @@ class CsvOut extends Csv
     {
         //try first to run from YAML configuration file
         $run = $this->runYamlParametedExport($id);
-        if ($run !== null && $run !== false) {
+        if ($run !== false) {
             return $run;
         }
 
