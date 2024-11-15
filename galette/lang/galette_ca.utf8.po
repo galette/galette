@@ -2312,9 +2312,9 @@ msgstr "La contrasenya és a la llista negra!"
 
 #: ../lib/Galette/Util/Password.php:91
 #, fuzzy, php-format
-msgid "Too short (%lenght characters minimum, %count found)"
+msgid "Too short (%length characters minimum, %count found)"
 msgstr ""
-"Massa curt (s'han trobat caràcters&lt;unk&gt;lenght mínim de percentatge)"
+"Massa curt (s'han trobat %count caràcters %length mínima)"
 
 #: ../lib/Galette/Util/Password.php:103
 #, fuzzy

@@ -2065,8 +2065,8 @@ msgstr "Le mot de passe est sur liste noire !"
 
 #: ../lib/Galette/Util/Password.php:91
 #, php-format
-msgid "Too short (%lenght characters minimum, %count found)"
-msgstr "Trop court (%lenght caractères minimum, %count trouvés)"
+msgid "Too short (%length characters minimum, %count found)"
+msgstr "Trop court (%length caractères minimum, %count trouvés)"
 
 #: ../lib/Galette/Util/Password.php:103
 msgid "Do not use any of your personal information as password!"

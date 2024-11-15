@@ -1996,7 +1996,7 @@ msgstr ""
 
 #: ../lib/Galette/Util/Password.php:91
 #, php-format
-msgid "Too short (%lenght characters minimum, %count found)"
+msgid "Too short (%length characters minimum, %count found)"
 msgstr ""
 
 #: ../lib/Galette/Util/Password.php:103

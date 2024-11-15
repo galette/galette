@@ -2087,8 +2087,8 @@ msgstr "Password en cuarentena!"
 
 #: ../lib/Galette/Util/Password.php:91
 #, php-format
-msgid "Too short (%lenght characters minimum, %count found)"
-msgstr "Longitud muy corta (%lenght characters minimum, %count found)"
+msgid "Too short (%length characters minimum, %count found)"
+msgstr "Longitud muy corta (%length characters minimum, %count found)"
 
 #: ../lib/Galette/Util/Password.php:103
 msgid "Do not use any of your personal information as password!"

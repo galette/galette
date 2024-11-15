@@ -79,16 +79,16 @@ class Password
 
         if ($this->isBlacklisted($password)) {
             $this->errors[] = _T('Password is blacklisted!');
-            //no need here to check lenght/strength
+            //no need here to check length/strength
             $this->strength = 0;
             return false;
         }
 
         if (mb_strlen($password) < $this->preferences->pref_password_length) {
             $this->errors[] = str_replace(
-                ['%lenght', '%count'],
+                ['%length', '%count'],
                 [$this->preferences->pref_password_length, mb_strlen($password)],
-                _T('Too short (%lenght characters minimum, %count found)')
+                _T('Too short (%length characters minimum, %count found)')
             );
         }
 

@@ -2063,8 +2063,8 @@ msgstr "La password è nella blacklist!"
 
 #: ../lib/Galette/Util/Password.php:91
 #, php-format
-msgid "Too short (%lenght characters minimum, %count found)"
-msgstr "Troppo corto (almeno %lenght caratteri, trovati: %count)"
+msgid "Too short (%length characters minimum, %count found)"
+msgstr "Troppo corto (almeno %length caratteri, trovati: %count)"
 
 #: ../lib/Galette/Util/Password.php:103
 msgid "Do not use any of your personal information as password!"
