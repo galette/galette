@@ -37,7 +37,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-15 14:43+0200\n"
 "PO-Revision-Date: 2024-10-22 10:15+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
