@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-10-15 14:43+0200\n"
-"PO-Revision-Date: 2024-10-28 15:00+0000\n"
+"PO-Revision-Date: 2024-12-22 08:00+0000\n"
 "Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8.2-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -4369,31 +4369,32 @@ msgstr ""
 #: ../install/scripts/upgrade-to-0.8.php:88
 #, php-format
 msgid "Unable to create datadir in %dir!"
-msgstr ""
+msgstr "Impossible de crear lo dorsier dins %dir !"
 
 #: ../install/scripts/upgrade-to-0.8.php:166
 #, php-format
 msgid "File %file has not been moved :-/"
-msgstr ""
+msgstr "Lo fichier %file es pas estat desplaçat :-/"
 
 #: ../install/scripts/upgrade-to-0.8.php:179
 #, php-format
 msgid "Directory %dir has been moved!"
-msgstr ""
+msgstr "Lo repertòri %dir es pas estat desplaçat !"
 
 #: ../install/scripts/upgrade-to-0.8.php:191
 #, php-format
 msgid "Directory %dir has not been moved :("
-msgstr ""
+msgstr "Lo repertòri %dir es pas estat desplaçat :("
 
 #: ../install/scripts/upgrade-to-0.8.php:200
 #, php-format
 msgid "Directory %dir is not in its original path and will not be moved."
 msgstr ""
+"Lo repertòri %dir es pas a son emplaçament per defaut e serà pas desplaçat."
 
 #: ../install/steps/end.php:29
 msgid "Galette has been successfully installed!"
-msgstr ""
+msgstr "L’installacion de Galette a bèn capitat !"
 
 #: ../install/steps/end.php:32
 msgid "Galette has been successfully updated!"
@@ -4406,6 +4407,7 @@ msgstr "Pagina d'acuèlh"
 #: ../install/steps/admin.php:25
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
+"Siatz pregat de chausir lei paramètres dau còmpte administrator de Galette"
 
 #: ../install/steps/admin.php:35
 #: ../../tempcache/pages/preferences.html.twig:2601
@@ -4429,15 +4431,15 @@ msgstr "Lei senhaus correspòndon pas !"
 
 #: ../install/steps/db_install.php:28
 msgid "Database has not been installed!"
-msgstr ""
+msgstr "La basa de donadas es pas estat installada !"
 
 #: ../install/steps/db_install.php:30
 msgid "Database has not been upgraded!"
-msgstr ""
+msgstr "La basa de donadas es pas estat actualizada !"
 
 #: ../install/steps/db_install.php:34
 msgid "Database has been installed :)"
-msgstr ""
+msgstr "La basa de donadas es estat installada :)"
 
 #: ../install/steps/db_install.php:36
 msgid "Database has been upgraded :)"
@@ -4480,22 +4482,28 @@ msgstr "Actualizar"
 #: ../install/steps/db_select_version.php:53
 msgid "Select your previous Galette version below, and then click next."
 msgstr ""
+"Chausissètz vòstra version de Galette precedenta çai-sota, e clicatz puei "
+"sus seguent."
 
 #: ../install/steps/db_select_version.php:57
 msgid "No update script found!"
-msgstr ""
+msgstr "Ges d’escript d’actualizacion trobat !"
 
 #: ../install/steps/db_select_version.php:63
 msgid ""
 "Previous version is older than 0.7. <strong>Make sure you select the right "
 "version</strong>."
 msgstr ""
+"La version precedenta es anteriora a 0.7. <strong>Avisatz-vos ben de "
+"seleccionar la bòna version</strong>."
 
 #: ../install/steps/db_select_version.php:67
 msgid ""
 "Your previous version should be selected and <strong>displayed in bold</"
 "strong>."
 msgstr ""
+"Vòstra version precedenta deuriá èstre seleccionada e <strong>marcada de "
+"gras</strong>."
 
 #: ../install/steps/db_select_version.php:72
 msgid "Your current Galette version is..."
@@ -4504,12 +4512,12 @@ msgstr "La version actuala de Galeta es..."
 #: ../install/steps/db_select_version.php:93
 #: ../../tempcache/modals/plugin_initdb.html.twig:226
 msgid "older than %version"
-msgstr ""
+msgstr "anteriora a la %version"
 
 #: ../install/steps/db_select_version.php:96
 #: ../../tempcache/modals/plugin_initdb.html.twig:233
 msgid "comprised between"
-msgstr ""
+msgstr "compresa entre"
 
 #: ../install/steps/db_select_version.php:97
 #: ../../tempcache/modals/plugin_initdb.html.twig:237
@@ -4612,15 +4620,15 @@ msgstr "La basa existís e lei paramètres de connexion son corrèctes."
 
 #: ../install/steps/db_checks.php:174
 msgid "Incompatible database version."
-msgstr ""
+msgstr "Version de basa de donadas incompatibla."
 
 #: ../install/steps/db_checks.php:178
 msgid "Connection to database successfull"
-msgstr ""
+msgstr "La connexion a la basa de donadas a ben capitat"
 
 #: ../install/steps/db_checks.php:179 ../install/steps/db_checks.php:182
 msgid "Permissions to database are OK."
-msgstr ""
+msgstr "Lei drechs d’accès a la basa son corrèctes."
 
 #: ../install/steps/db_checks.php:188
 msgid "Unable to connect to the database"
@@ -4636,26 +4644,30 @@ msgstr ""
 
 #: ../install/steps/db_checks.php:200
 msgid "Permissions on the base"
-msgstr ""
+msgstr "Permissions sus la basa"
 
 #: ../install/steps/db_checks.php:207
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the "
 "installation."
 msgstr ""
+"GALETTE a pas lei drechs suffisents sus la basa de donadas per contuniar "
+"l’installacion."
 
 #: ../install/steps/db_checks.php:209
 msgid ""
 "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
+"GALETTE a pas lei drechs suffisents sus la basa de donadas per contuniar "
+"l’actualisacion."
 
 #: ../install/steps/galette.php:34
 msgid "Configuration file created!"
-msgstr ""
+msgstr "Fichier de configuracion creat !"
 
 #: ../install/steps/galette.php:35
 msgid "Data initialized."
-msgstr ""
+msgstr "Donadas actualizadas."
 
 #: ../install/steps/galette.php:37
 #: ../../tempcache/elements/js/modal_action.js.twig:143
@@ -4721,7 +4733,7 @@ msgstr "Version PHP"
 
 #: ../install/steps/check.php:85
 msgid "Date settings"
-msgstr ""
+msgstr "Paramètres de data"
 
 #: ../install/steps/check.php:90
 msgid "PHP Modules"
@@ -4739,11 +4751,15 @@ msgstr "Lei permissions de fichiers son pas corrèctas !"
 msgid ""
 "To work as excpected, Galette needs write permission on files listed above."
 msgstr ""
+"Per fonccionar correctament, Galette a besonh d’aver lei drechs d’escritura "
+"sus lei fichiers listats çai-sota."
 
 #: ../install/steps/check.php:124
 msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
+"Per èstre actualisada, Galette a besonh dau permés d’escritura sus lei "
+"fichiers enonciats çai-sota."
 
 #: ../install/steps/check.php:128
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
@@ -4783,16 +4799,19 @@ msgstr ""
 #: ../install/steps/db.php:40
 msgid "Enter connection data for the existing database."
 msgstr ""
+"Siatz pregats d’inserir lei paramètres de connexion a la basa existenta."
 
 #: ../install/steps/db.php:44
 msgid ""
 "It seems that you have already installed Galette once.<br/>All existing data "
 "will be removed if you keep going on using existing database!"
 msgstr ""
+"Sembla qu’aguetz agut installat Galette un còp !<br>Totei lei donadas "
+"existentas seràn escafadas se contuniatz amb la basa existenta !"
 
 #: ../install/steps/db.php:50
 msgid "Database type:"
-msgstr ""
+msgstr "Mena de basa de donadas :"
 
 #: ../install/steps/db.php:58
 msgid "Host:"
@@ -4808,15 +4827,15 @@ msgstr "Utilizaire:"
 
 #: ../install/steps/db.php:74
 msgid "Database:"
-msgstr ""
+msgstr "Nom de la basa :"
 
 #: ../install/steps/db.php:78
 msgid "Table prefix:"
-msgstr ""
+msgstr "Prefix de taula :"
 
 #: ../install/steps/db.php:83
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
-msgstr ""
+msgstr "(Indicatz lo prefix ACTUAU de vòstrei taulas de Galette)"
 
 #: ../install/steps/type.php:29
 #: ../../tempcache/modals/plugin_initdb.html.twig:129
@@ -4847,6 +4866,7 @@ msgstr "Avís : pensatz ben de sauvar la basa de donadas correnta."
 #: ../install/steps/telemetry.php:35 ../../tempcache/pages/desktop.html.twig:89
 msgid "Send anonymous and imprecise data about your Galette instance"
 msgstr ""
+"Mandar de donadas anonimas e foscas a prepaus de vòstra instància de Galette"
 
 #: ../install/steps/telemetry.php:37
 #: ../../tempcache/modals/telemetry.html.twig:71
@@ -4856,7 +4876,7 @@ msgstr "Mandar leis informacions de telemetria"
 #: ../install/steps/telemetry.php:44
 #: ../../tempcache/pages/desktop.html.twig:108
 msgid "Register your organization as a Galette user"
-msgstr ""
+msgstr "Enregistratz vòstra associacion per utilisatritz de Galette"
 
 #: ../install/steps/telemetry.php:46
 #: ../../tempcache/pages/preferences.html.twig:498
@@ -4879,6 +4899,8 @@ msgid ""
 "Also note that all data are sent over a <strong>HTTPS secured connection</"
 "strong>."
 msgstr ""
+"Remarcaretz que totei lei donadas se trasmeton per una "
+"connexion<strong>HTTPS segura</strong>."
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:98
 msgid "Contribution type"
@@ -4892,12 +4914,12 @@ msgstr "D’ACÒRDI"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:135
 msgid "you're installing %name for the first time"
-msgstr ""
+msgstr "installatz %name per premier còp"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:139
 msgid ""
 "you wish to erase an older version of of %name without keeping your data"
-msgstr ""
+msgstr "volètz escafar una version vièlha de %name sensa conservar sei donadas"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:163
 msgid ""
@@ -5752,7 +5774,7 @@ msgstr ""
 #: ../../tempcache/elements/scripts.html.twig:396
 #: ../../tempcache/pages/mailing_form.html.twig:346
 msgid "Activate HTML editor"
-msgstr ""
+msgstr "Activar l’editor HTML"
 
 #: ../../tempcache/elements/list.html.twig:275
 msgid "Records per page:"
@@ -5790,7 +5812,7 @@ msgstr ""
 
 #: ../../tempcache/elements/modes.html.twig:64
 msgid "Demonstration"
-msgstr ""
+msgstr "Demostracion"
 
 #: ../../tempcache/elements/group_persons.html.twig:212
 #: ../../tempcache/pages/groups_list.html.twig:371
@@ -5937,19 +5959,19 @@ msgstr "Data de sortida"
 
 #: ../../tempcache/pages/plugins.html.twig:166
 msgid "Click here to deactivate plugin '%name'"
-msgstr ""
+msgstr "Clicatz aicí per desactivar l’ajuston '%name'"
 
 #: ../../tempcache/pages/plugins.html.twig:187
 msgid "Initialize '%name' database"
-msgstr ""
+msgstr "Inicializar la basa de donadas '%name'"
 
 #: ../../tempcache/pages/plugins.html.twig:215
 msgid "No active plugin."
-msgstr ""
+msgstr "Ges d’ajuston actiu."
 
 #: ../../tempcache/pages/plugins.html.twig:227
 msgid "Inactive plugins"
-msgstr ""
+msgstr "Ajustons inactius"
 
 #: ../../tempcache/pages/plugins.html.twig:238
 #: ../../tempcache/pages/plugins.html.twig:257
@@ -5962,11 +5984,11 @@ msgstr "Un fichier reclamat manca"
 
 #: ../../tempcache/pages/plugins.html.twig:271
 msgid "Incompatible with current version"
-msgstr ""
+msgstr "Incompatible amb la version correnta"
 
 #: ../../tempcache/pages/plugins.html.twig:278
 msgid "Explicitely disabled"
-msgstr ""
+msgstr "Explicitament desactivat"
 
 #: ../../tempcache/pages/plugins.html.twig:284
 msgid "Unknown"
@@ -5974,11 +5996,11 @@ msgstr "Desconeguda"
 
 #: ../../tempcache/pages/plugins.html.twig:301
 msgid "Activate plugin '%name'"
-msgstr ""
+msgstr "Activar l’ajuston '%name'"
 
 #: ../../tempcache/pages/plugins.html.twig:315
 msgid "No inactive plugin."
-msgstr ""
+msgstr "Ges d’ajuston inactiu."
 
 #: ../../tempcache/pages/plugins.html.twig:347
 #: ../../tempcache/pages/preferences.html.twig:1293
@@ -5986,6 +6008,8 @@ msgstr ""
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
+"O planhèm, l’aplicacion vira en mòde demostracion. Aquesta fonccionalitat es "
+"pas activada."
 
 #: ../../tempcache/pages/plugins.html.twig:373
 #: ../../tempcache/pages/plugins.html.twig:421
@@ -6032,15 +6056,15 @@ msgstr "Mesura :"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:225
 msgid "Maximum file size, in Ko."
-msgstr ""
+msgstr "Mesura maximala dau fichier, en Ko."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:231
 msgid "Maximum number of characters."
-msgstr ""
+msgstr "Nombre maximau de caractèrs."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:246
 msgid "Repeat:"
-msgstr ""
+msgstr "Repeticion :"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:254
 msgid "Number of values or zero if infinite."
