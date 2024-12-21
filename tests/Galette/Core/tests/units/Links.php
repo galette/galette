@@ -291,7 +291,7 @@ class Links extends GaletteTestCase
      *
      * @return void
      */
-    protected function checkContribExpected(\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
+    protected function checkContribExpected(?\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
     {
         if ($contrib === null) {
             $contrib = $this->contrib;

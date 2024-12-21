@@ -39,7 +39,7 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): v
 
     $app->get(
         '/members[/{option:page|order}/{value:\d+|\w+}]',
-        function ($request, $response, string $option = null, string $value = null) use ($routeparser) {
+        function ($request, $response, ?string $option = null, ?string $value = null) use ($routeparser) {
             $args = ['type' => 'list'];
             if ($option !== null && $value !== null) {
                 $args['option'] = $option;

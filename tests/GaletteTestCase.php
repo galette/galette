@@ -270,12 +270,12 @@ abstract class GaletteTestCase extends TestCase
     /**
      * Check members expected
      *
-     * @param \Galette\Entity\Adherent $adh           Member instance, if any
-     * @param array                    $new_expecteds Changes on expected values
+     * @param ?\Galette\Entity\Adherent $adh           Member instance, if any
+     * @param array<string, mixed>      $new_expecteds Changes on expected values
      *
      * @return void
      */
-    protected function checkMemberOneExpected(\Galette\Entity\Adherent $adh = null, array $new_expecteds = []): void
+    protected function checkMemberOneExpected(?\Galette\Entity\Adherent $adh = null, array $new_expecteds = []): void
     {
         if ($adh === null) {
             $adh = $this->adh;
@@ -373,12 +373,12 @@ abstract class GaletteTestCase extends TestCase
     /**
      * Check members expecteds
      *
-     * @param \Galette\Entity\Adherent $adh           Member instance, if any
-     * @param array                    $new_expecteds Changes on expected values
+     * @param ?\Galette\Entity\Adherent $adh           Member instance, if any
+     * @param array<string, mixed>      $new_expecteds Changes on expected values
      *
      * @return void
      */
-    protected function checkMemberTwoExpected(\Galette\Entity\Adherent $adh = null, array $new_expecteds = []): void
+    protected function checkMemberTwoExpected(?\Galette\Entity\Adherent $adh = null, array $new_expecteds = []): void
     {
         if ($adh === null) {
             $adh = $this->adh;
@@ -560,7 +560,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return \Galette\Entity\Contribution
      */
-    public function createContrib(array $data, \Galette\Entity\Contribution $contrib = null): \Galette\Entity\Contribution
+    public function createContrib(array $data, ?\Galette\Entity\Contribution $contrib = null): \Galette\Entity\Contribution
     {
         if ($contrib === null) {
             $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
@@ -617,7 +617,7 @@ abstract class GaletteTestCase extends TestCase
      *
      * @return void
      */
-    protected function checkContribExpected(\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
+    protected function checkContribExpected(?\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
     {
         if ($contrib === null) {
             $contrib = $this->contrib;

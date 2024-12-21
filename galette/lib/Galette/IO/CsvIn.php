@@ -265,7 +265,8 @@ class CsvIn extends Csv implements FileInterface
                 $handle,
                 1000,
                 self::DEFAULT_SEPARATOR,
-                self::DEFAULT_QUOTE
+                self::DEFAULT_QUOTE,
+                self::DEFAULT_ESCAPE
             )) !== false
         ) {
             //check fields count
@@ -468,7 +469,8 @@ class CsvIn extends Csv implements FileInterface
                     $handle,
                     1000,
                     self::DEFAULT_SEPARATOR,
-                    self::DEFAULT_QUOTE
+                    self::DEFAULT_QUOTE,
+                    self::DEFAULT_ESCAPE
                 )) !== false
             ) {
                 if ($row > 0) {

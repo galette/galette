@@ -51,7 +51,7 @@ use Galette\Features\Dynamics;
  *
  * @property ?integer $id
  * @property integer|Title|null $title Either a title id or an instance of Title
- * @property string $stitle Title label
+ * @property ?string $stitle Title label
  * @property string $company_name
  * @property string $name
  * @property ?string $surname
@@ -75,6 +75,7 @@ use Galette\Features\Dynamics;
  * @property string $gnupgid
  * @property string $fingerprint
  * @property ?string $login
+ * @property ?string $password Encrypted password
  * @property string $creation_date Localized creation date
  * @property string $modification_date Localized modification date
  * @property string $due_date Localized due date

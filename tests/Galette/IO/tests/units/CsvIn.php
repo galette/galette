@@ -83,13 +83,13 @@ class CsvIn extends GaletteTestCase
     /**
      * Import text CSV file
      *
-     * @param array   $fields         Fields name to use at import
-     * @param string  $file_name      File name
-     * @param array   $flash_messages Expected flash messages from doImport route
-     * @param array   $members_list   List of faked members data
-     * @param integer $count_before   Count before insertions. Defaults to 0 if null.
-     * @param integer $count_after    Count after insertions. Default to $count_before + count $members_list
-     * @param array   $values         Textual values for dynamic choices fields
+     * @param array    $fields         Fields name to use at import
+     * @param string   $file_name      File name
+     * @param array    $flash_messages Expected flash messages from doImport route
+     * @param array    $members_list   List of faked members data
+     * @param ?integer $count_before   Count before insertions. Defaults to 0 if null.
+     * @param ?integer $count_after    Count after insertions. Default to $count_before + count $members_list
+     * @param array    $values         Textual values for dynamic choices fields
      *
      * @return void
      */
@@ -98,8 +98,8 @@ class CsvIn extends GaletteTestCase
         string $file_name,
         array $flash_messages,
         array $members_list,
-        int $count_before = null,
-        int $count_after = null,
+        ?int $count_before = null,
+        ?int $count_after = null,
         array $values = []
     ): void {
         if ($count_before === null) {
