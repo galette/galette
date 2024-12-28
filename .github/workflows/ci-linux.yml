@@ -176,9 +176,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - { php-version: "8.3", db-image: "postgres:10", always: true}
-          - { php-version: "8.3", db-image: "mysql:5.6", always: false}
-          - { php-version: "8.3", db-image: "mariadb:10.3", always: false}
+          - { php-version: "8.4", db-image: "postgres:10", always: true}
+          - { php-version: "8.4", db-image: "mysql:5.6", always: false}
+          - { php-version: "8.4", db-image: "mariadb:10.3", always: false}
       fail-fast: false
 
     env:
@@ -261,7 +261,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: [ '8.1', '8.3', '8.4' ]
+        php-versions: [ '8.1', '8.4' ]
 
     steps:
       - name: PHP
