@@ -61,7 +61,7 @@ use Galette\Features\Dynamics;
  * @property string $birth_place
  * @property integer $gender
  * @property string $sgender Gender label
- * @property string $job
+ * @property ?string $job
  * @property string $language
  * @property integer $status
  * @property string $sstatus Status label
@@ -80,8 +80,8 @@ use Galette\Features\Dynamics;
  * @property string $modification_date Localized modification date
  * @property string $due_date Localized due date
  * @property string $rdue_date Due date
- * @property string $others_infos
- * @property string $others_infos_admin
+ * @property ?string $others_infos
+ * @property ?string $others_infos_admin
  * @property Picture $picture
  * @property Group[] $groups
  * @property Group[] $managed_groups
@@ -139,7 +139,7 @@ class Adherent
     private ?string $birthdate;
     private ?string $birth_place;
     private int $gender;
-    private string $job;
+    private ?string $job;
     private string $language;
     private bool $active;
     private int $status;
