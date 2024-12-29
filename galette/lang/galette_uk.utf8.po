@@ -10,9 +10,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-12-29 09:48+0100\n"
-"PO-Revision-Date: 2024-11-20 12:00+0000\n"
+"PO-Revision-Date: 2024-12-30 11:00+0000\n"
 "Last-Translator: Максим Горпиніч <mgorpinic2005@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.9-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -375,17 +375,13 @@ msgstr "Масові зміни не підтверджено!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1158
 #: ../../tempcache/components/forms/mass_groups.html.twig:73
-#, fuzzy
-#| msgid "Add a new group"
 msgid "Add to group"
-msgstr "Додати нову групу"
+msgstr "Додати до групи"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1168
 #: ../../tempcache/components/forms/mass_groups.html.twig:80
-#, fuzzy
-#| msgid "Remove group %1$s"
 msgid "Remove from group"
-msgstr "Вилучити групу %1$s"
+msgstr "Видалити з групи"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1221
 #, php-format
@@ -545,10 +541,8 @@ msgid "Donation"
 msgstr "Пожертва"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:175
-#, fuzzy
-#| msgid "No contribution was selected, please check at least one."
 msgid "No related contribution type available, please create a new one."
-msgstr "Жодного внеску не вибрано. Помітьте принаймні один."
+msgstr "Немає пов’язаних типів внесків, створіть новий."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:251
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:299
@@ -8920,16 +8914,12 @@ msgid "Captcha"
 msgstr "CAPTCHA"
 
 #: ../../tempcache/components/forms/mass_groups.html.twig:73
-#, fuzzy
-#| msgid "Click on a row to select a member"
 msgid "Select a group to add selected members to"
-msgstr "Натисніть рядок, щоб вибрати учасника"
+msgstr "Виберіть групу, до якої потрібно додати вибраних учасників"
 
 #: ../../tempcache/components/forms/mass_groups.html.twig:80
-#, fuzzy
-#| msgid "You are about to remove %count members."
 msgid "Select a group to remove selected members from"
-msgstr "Ви збираєтеся видалити %count членів."
+msgstr "Виберіть групу, з якої потрібно видалити вибраних учасників"
 
 #: ../../tempcache/components/forms/member_dropdown.html.twig:77
 msgid "Load previous members..."
