@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-12-29 09:48+0100\n"
-"PO-Revision-Date: 2024-10-15 12:48+0000\n"
+"PO-Revision-Date: 2024-12-29 08:52+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8-rc\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -381,17 +381,13 @@ msgstr "Les modifications n’ont pas été confirmées !"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1158
 #: ../../tempcache/components/forms/mass_groups.html.twig:73
-#, fuzzy
-#| msgid "Add a new group"
 msgid "Add to group"
-msgstr "Ajouter un nouveau groupe"
+msgstr "Ajouter au groupe"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1168
 #: ../../tempcache/components/forms/mass_groups.html.twig:80
-#, fuzzy
-#| msgid "Remove group %1$s"
 msgid "Remove from group"
-msgstr "Supprimer le groupe %1$s"
+msgstr "Supprimer du groupe"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1221
 #, php-format
@@ -551,10 +547,8 @@ msgid "Donation"
 msgstr "Don"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:175
-#, fuzzy
-#| msgid "No contribution was selected, please check at least one."
 msgid "No related contribution type available, please create a new one."
-msgstr "Veuillez sélectionner au moins une contribution."
+msgstr "Aucun type de contribution relatif disponible, veuillez en créer un."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:251
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:299
@@ -9018,16 +9012,12 @@ msgid "Captcha"
 msgstr "Captcha"
 
 #: ../../tempcache/components/forms/mass_groups.html.twig:73
-#, fuzzy
-#| msgid "Click on a row to select a member"
 msgid "Select a group to add selected members to"
-msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
+msgstr "Sélectionnez un groupe auquel ajouter l'adhérent"
 
 #: ../../tempcache/components/forms/mass_groups.html.twig:80
-#, fuzzy
-#| msgid "You are about to remove %count members."
 msgid "Select a group to remove selected members from"
-msgstr "Vous êtes sur le point de supprimer %count adhérents."
+msgstr "Sélectionnez un groupe duquel supprimer l'adhérent"
 
 #: ../../tempcache/components/forms/member_dropdown.html.twig:77
 msgid "Load previous members..."
