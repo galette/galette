@@ -163,7 +163,7 @@ class Adherent
     private string $creation_date;
     private string $modification_date;
     private ?string $due_date;
-    private string $others_infos;
+    private ?string $others_infos;
     private ?string $others_infos_admin;
     private ?Picture $picture = null;
     private int $oldness;
