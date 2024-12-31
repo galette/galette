@@ -292,7 +292,7 @@ abstract class PdfModel
                 throw new \LengthException(
                     str_replace(
                         array('%field', '%chars'),
-                        array($field, $chars),
+                        array($field, (string)$chars),
                         _T("%field should be less than %chars characters long.")
                     )
                 );

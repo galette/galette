@@ -47,8 +47,8 @@ class Charts
     public const COMPANIES_OR_NOT = 'CompaniesOrNot';
     public const CONTRIBS_ALLTIME = 'ContribsAllTime';
 
-    /** @var array<string>|null  */
-    private ?array $types;
+    /** @var array<string>  */
+    private array $types;
     /** @var array<string> */
     private array $charts;
 
@@ -59,15 +59,10 @@ class Charts
      */
     public function __construct(?array $types = null)
     {
-        if ($types !== null) {
-            if (!is_array($types)) {
-                $types = array($types);
-            }
-            $this->types = $types;
-        } else {
-            $this->types = array(self::DEFAULT_CHART);
+        if ($types === null) {
+            $types = [self::DEFAULT_CHART];
         }
-
+        $this->types = $types;
         $this->load();
     }
 

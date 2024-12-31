@@ -731,7 +731,7 @@ class MembersController extends CrudController
                 Analog::log(
                     str_replace(
                         ['%id', '%login'],
-                        [$this->login->id, $this->login->login],
+                        [(string)$this->login->id, $this->login->login],
                         'Trying to list group members without access from #%id (%login)'
                     ),
                     Analog::ERROR
@@ -1085,6 +1085,10 @@ class MembersController extends CrudController
         //Titles
         $titles = new Titles($this->zdb);
 
+        //Groups
+        $groups = new Groups($this->zdb, $this->login);
+        $groups_list = $groups->getList();
+
         // display page
         $this->view->render(
             $response,
@@ -1103,7 +1107,8 @@ class MembersController extends CrudController
                 'fieldsets'     => $form_elements['fieldsets'],
                 'titles_list'   => $titles->getList(),
                 'statuts'       => $statuts->getList(),
-                'require_mass'  => true
+                'require_mass'  => true,
+                'groups'        => $groups_list
             )
         );
         return $response;
@@ -1146,6 +1151,26 @@ class MembersController extends CrudController
                 }
             }
 
+            //handle groups to add
+            if (isset($post['mass_group_to_add'])) {
+                $group = new Group((int)$post['group_to_add']);
+                $changes['group_to_add'] = [
+                    'label' => _T('Add to group'),
+                    'value' => (int)$post['group_to_add'],
+                    'display_value' => $group->getFullName()
+                ];
+            }
+
+            //handle groups to remove
+            if (isset($post['mass_group_to_remove'])) {
+                $group = new Group((int)$post['group_to_remove']);
+                $changes['group_to_remove'] = [
+                    'label' => _T('Remove from group'),
+                    'value' => (int)$post['group_to_remove'],
+                    'display_value' => $group->getFullName()
+                ];
+            }
+
             //handle dynamic fields
             $member = new Adherent($this->zdb);
             $member
@@ -1181,6 +1206,8 @@ class MembersController extends CrudController
         $statuts = new Status($this->zdb);
         //Titles
         $titles = new Titles($this->zdb);
+        //Groups
+        $groups = new Groups($this->zdb, $this->login);
 
         // display page
         $this->view->render(
@@ -1198,6 +1225,7 @@ class MembersController extends CrudController
                 'data'          => $data,
                 'titles_list'   => $titles->getList(),
                 'statuts'       => $statuts->getList(),
+                'groups'        => $groups->getSimpleList(),
                 'changes'       => $changes
             )
         );
@@ -1241,6 +1269,16 @@ class MembersController extends CrudController
                 }
 
                 if (!$found) {
+                    //try to check group to add or remove
+                    if ($key == 'group_to_add' || $key == 'group_to_remove') {
+                        $post[$key] = (int)$post[$key];
+                        if ($this->login->isGroupManager($post[$key])) {
+                            $found = true;
+                        }
+                    }
+                }
+
+                if (!$found) {
                     //try on dynamic fields
                     if ($dynamic_fields === null) {
                         //handle dynamic fields
@@ -1277,10 +1315,8 @@ class MembersController extends CrudController
             if (!count($post)) {
                 $error_detected[] = _T("Nothing to do!");
             } else {
+                $is_manager = $this->login->isGroupManager();
                 foreach ($ids as $id) {
-                    $is_manager = !$this->login->isAdmin()
-                        && !$this->login->isStaff()
-                        && $this->login->isGroupManager();
                     $member = new Adherent($this->zdb);
                     $member
                         ->disableAllDeps()
@@ -1304,6 +1340,32 @@ class MembersController extends CrudController
                         if (!$done) {
                             $error_detected[] = _T("An error occurred while storing the member.");
                         } else {
+                            if (
+                                isset($post['group_to_add'])
+                                && $this->login->isGroupManager((int)$post['group_to_add'])
+                                || isset($post['group_to_remove'])
+                                && $this->login->isGroupManager((int)$post['group_to_remove'])
+                            ) {
+                                $current_groups = $member->getGroups();
+                                $groups_adh = [];
+                                foreach ($current_groups as $group) {
+                                    if ($group->getId() !== (int)$post['group_to_remove']) {
+                                        $groups_adh[] = $group->getId() . '|' . $group->getName();
+                                    }
+                                }
+                                if (isset($post['group_to_add'])) {
+                                    $new_group = new Group((int)$post['group_to_add']);
+                                    $groups_adh[] = $new_group->getId() . '|' . $new_group->getName();
+                                }
+
+                                $add_groups = Groups::addMemberToGroups(
+                                    $member,
+                                    $groups_adh
+                                );
+                                if (!$add_groups) {
+                                    $error_detected[] = _T("An error occurred adding member to its groups.");
+                                }
+                            }
                             ++$mass;
                         }
                     } else {
@@ -1468,7 +1530,7 @@ class MembersController extends CrudController
             }
         }
 
-        $real_requireds = array_diff(array_keys($required), array_values($disabled));
+        $real_requireds = array_diff(array_keys($required), $disabled);
 
         // send email to member
         if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {

@@ -60,7 +60,7 @@ trait FileTrait
     protected array $allowed_extensions = array();
     /** @var array<string,string> */
     protected array $allowed_mimes = array();
-    protected int $maxlenght;
+    protected int $maxlength;
     protected int $mincropsize;
 
     /** @var array<string,string> */
@@ -171,7 +171,7 @@ trait FileTrait
      * @param ?string               $dest        File destination directory
      * @param ?array<int,string>    $extensions  Array of permitted extensions
      * @param ?array<string,string> $mimes       Array of permitted mime types
-     * @param ?int                  $maxlenght   Maximum length for each file
+     * @param ?int                  $maxlength   Maximum length for each file
      * @param ?int                  $mincropsize Minimum image side size required for cropping
      *
      * @return void
@@ -180,7 +180,7 @@ trait FileTrait
         ?string $dest = null,
         ?array $extensions = null,
         ?array $mimes = null,
-        ?int $maxlenght = null,
+        ?int $maxlength = null,
         ?int $mincropsize = null
     ): void {
         if ($dest !== null && !str_ends_with($dest, '/')) {
@@ -194,10 +194,10 @@ trait FileTrait
         if ($mimes !== null) {
             $this->allowed_mimes = $mimes;
         }
-        if ($maxlenght !== null) {
-            $this->maxlenght = $maxlenght;
+        if ($maxlength !== null) {
+            $this->maxlength = $maxlength;
         } else {
-            $this->maxlenght = self::MAX_FILE_SIZE;
+            $this->maxlength = self::MAX_FILE_SIZE;
         }
         if ($mincropsize !== null) {
             $this->mincropsize = $mincropsize;
@@ -287,10 +287,10 @@ trait FileTrait
         }
 
         //Second, let's check file size
-        if ($file['size'] > ($this->maxlenght * 1024)) {
+        if ($file['size'] > ($this->maxlength * 1024)) {
             Analog::log(
                 '[' . $class . '] File is too big (' . ($file['size'] * 1024) .
-                'Ko for maximum authorized ' . ($this->maxlenght * 1024) .
+                'Ko for maximum authorized ' . ($this->maxlength * 1024) .
                 'Ko',
                 Analog::ERROR
             );
@@ -512,7 +512,7 @@ trait FileTrait
             case self::FILE_TOO_BIG:
                 $error = preg_replace(
                     '|%d|',
-                    (string)$this->maxlenght,
+                    (string)$this->maxlength,
                     _T("File is too big. Maximum allowed size is %dKo")
                 );
                 break;

@@ -40,7 +40,7 @@ use Galette\Core\Pagination;
  * @property integer|false $from_contribution
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
- * @property array $selected
+ * @property integer[] $selected
  */
 
 class ScheduledPaymentsList extends Pagination
@@ -61,10 +61,10 @@ class ScheduledPaymentsList extends Pagination
 
     //filters
     private ?int $date_field = null;
-    private ?string $start_date_filter = null;
-    private ?string $end_date_filter = null;
-    private ?int $payment_type_filter = null;
-    private int|false $from_contribution = false;
+    private ?string $start_date_filter = null; //@phpstan-ignore-line
+    private ?string $end_date_filter = null; //@phpstan-ignore-line
+    private ?int $payment_type_filter = null; //@phpstan-ignore-line
+    private int|false $from_contribution = false; //@phpstan-ignore-line
 
 
     /** @var array<int> */

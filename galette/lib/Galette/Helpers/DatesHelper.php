@@ -56,6 +56,7 @@ trait DatesHelper
                 }
             }
 
+            /** @phpstan-ignore-next-line */
             if (method_exists($this, 'getFieldPropertyName')) {
                 $fieldPropertyName = $this->getFieldPropertyName($field);
             } else {
@@ -70,6 +71,7 @@ trait DatesHelper
                 Analog::INFO
             );
 
+            /** @phpstan-ignore-next-line */
             if (method_exists($this, 'getFieldLabel')) {
                 $fieldLabel = $this->getFieldLabel($field);
             } else {
@@ -170,6 +172,7 @@ trait DatesHelper
                 Analog::INFO
             );
 
+            /** @phpstan-ignore-next-line */
             if (method_exists($this, 'getFieldLabel')) {
                 $fieldLabel = $this->getFieldLabel($field);
             } else {
@@ -200,6 +203,7 @@ trait DatesHelper
      */
     public function getDate(string $field, bool $formatted = true, bool $translated = true): string|DateTime|null
     {
+        /** @phpstan-ignore-next-line */
         if (method_exists($this, 'getFieldPropertyName')) {
             $fieldPropertyName = $this->getFieldPropertyName($field);
         } else {

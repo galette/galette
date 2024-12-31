@@ -54,7 +54,7 @@ class Texts
 
     /** @var array<int, mixed> */
     private array $defaults;
-    private ?string $current;
+    private ?string $current; //@phpstan-ignore-line
 
     /**
      * Main constructor
@@ -96,7 +96,7 @@ class Texts
      *
      * @param boolean $legacy Whether to load legacy patterns
      *
-     * @return array<string, array<string, string>>
+     * @return array<string, array<string, list<string>|string>>
      */
     protected function getMailPatterns(bool $legacy = true): array
     {
@@ -409,7 +409,6 @@ class Texts
             //first of all, let's check if data seem to have already
             //been initialized
             $this->defaults = $this->getAllDefaults(); //load defaults
-            $proceed = false;
             if ($check_first === true) {
                 $select = $this->zdb->select(self::TABLE);
                 $select->columns(
@@ -421,36 +420,26 @@ class Texts
                 $results = $this->zdb->execute($select);
                 $result = $results->current();
                 $count = $result->counter;
-                if ($count == 0) {
-                    //if we got no values in texts table, let's proceed
-                    $proceed = true;
-                } else {
-                    if ($count < count($this->defaults)) {
-                        return $this->checkUpdate();
-                    }
-                    return false;
+                if ($count < count($this->defaults)) {
+                    return $this->checkUpdate();
                 }
-            } else {
-                $proceed = true;
             }
 
-            if ($proceed === true) {
-                //first, we drop all values
-                $delete = $this->zdb->delete(self::TABLE);
-                $this->zdb->execute($delete);
+            //first, we drop all values
+            $delete = $this->zdb->delete(self::TABLE);
+            $this->zdb->execute($delete);
 
-                $this->zdb->handleSequence(
-                    self::TABLE,
-                    count($this->defaults)
-                );
+            $this->zdb->handleSequence(
+                self::TABLE,
+                count($this->defaults)
+            );
 
-                $this->insert($this->defaults);
+            $this->insert($this->defaults);
 
-                Analog::log(
-                    'Default texts were successfully stored into database.',
-                    Analog::INFO
-                );
-            }
+            Analog::log(
+                'Default texts were successfully stored into database.',
+                Analog::INFO
+            );
             return true;
         } catch (Throwable $e) {
             Analog::log(

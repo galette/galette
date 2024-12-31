@@ -457,14 +457,13 @@ class PdfController extends AbstractController
     {
         $groups = new Groups($this->zdb, $this->login);
 
-        $groups_list = null;
         if ($id !== null) {
             $groups_list = $groups->getList(true, $id);
         } else {
             $groups_list = $groups->getList();
         }
 
-        if (!is_array($groups_list) || count($groups_list) < 1) {
+        if (count($groups_list) < 1) {
             Analog::log(
                 'An error has occurred, unable to get groups list.',
                 Analog::ERROR

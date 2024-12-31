@@ -79,7 +79,6 @@ class PdfModels extends Repository
             $ent = $this->entity;
             //first of all, let's check if data seem to have already
             //been initialized
-            $proceed = false;
             if ($check_first === true) {
                 $select = $this->zdb->select(PdfModel::TABLE);
                 $select->columns(
@@ -91,40 +90,30 @@ class PdfModels extends Repository
                 $results = $this->zdb->execute($select);
                 $result = $results->current();
                 $count = $result->counter;
-                if ($count == 0) {
-                    //if we got no values in texts table, let's proceed
-                    $proceed = true;
-                } else {
-                    if ($count < count($this->defaults)) {
-                        return $this->checkUpdate();
-                    }
-                    return false;
+                if ($count < count($this->defaults)) {
+                    return $this->checkUpdate();
                 }
-            } else {
-                $proceed = true;
             }
 
-            if ($proceed === true) {
-                $this->zdb->connection->beginTransaction();
+            $this->zdb->connection->beginTransaction();
 
-                //first, we drop all values
-                $update = $this->zdb->update($ent::TABLE);
-                $update->set(['model_parent' => null]);
-                $this->zdb->execute($update);
+            //first, we drop all values
+            $update = $this->zdb->update($ent::TABLE);
+            $update->set(['model_parent' => null]);
+            $this->zdb->execute($update);
 
-                $delete = $this->zdb->delete($ent::TABLE);
-                $this->zdb->execute($delete);
+            $delete = $this->zdb->delete($ent::TABLE);
+            $this->zdb->execute($delete);
 
-                $this->zdb->handleSequence(
-                    $ent::TABLE,
-                    count($this->defaults)
-                );
+            $this->zdb->handleSequence(
+                $ent::TABLE,
+                count($this->defaults)
+            );
 
-                $this->insert($ent::TABLE, $this->defaults);
+            $this->insert($ent::TABLE, $this->defaults);
 
-                $this->zdb->connection->commit();
-                return true;
-            }
+            $this->zdb->connection->commit();
+            return true;
         } catch (Throwable $e) {
             if ($this->zdb->connection->inTransaction()) {
                 $this->zdb->connection->rollBack();

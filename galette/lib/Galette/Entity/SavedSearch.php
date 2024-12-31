@@ -37,7 +37,7 @@ use Analog\Analog;
  *
  * @property integer $id
  * @property string $name
- * @property array $parameters
+ * @property array<string, mixed> $parameters
  * @property integer $author_id
  * @property string $creation_date
  * @property string $form
@@ -125,7 +125,7 @@ class SavedSearch
     {
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
-        $this->name = $rs->name;
+        $this->name = $rs->name ?? '';
         try {
             $this->parameters = Galette::jsonDecode($rs->parameters);
         } catch (\RuntimeException $e) {

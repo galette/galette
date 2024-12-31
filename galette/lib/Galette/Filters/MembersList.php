@@ -41,8 +41,8 @@ use Slim\Views\Twig;
  * @property ?integer $filter_account
  * @property ?integer $email_filter
  * @property ?integer $group_filter
- * @property array $selected
- * @property array $unreachable
+ * @property integer[] $selected
+ * @property integer[] $unreachable
  * @property string $query
  */
 

@@ -95,7 +95,7 @@ class Login extends Authentication
             $this->i18n->changeLanguage($this->lang);
             return true;
         } else {
-            trigger_error('Not authorized!', E_USER_ERROR);
+            throw new \RuntimeException('Not authorized!');
         }
     }
 

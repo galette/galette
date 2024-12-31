@@ -38,6 +38,7 @@ abstract class Csv
 
     public const DEFAULT_SEPARATOR = ';';
     public const DEFAULT_QUOTE = '"';
+    public const DEFAULT_ESCAPE = '\\';
 
     public const FILE_NOT_WRITABLE = -1;
     public const DB_ERROR = -2;

@@ -163,22 +163,33 @@ class Contribution
             }
             $this->setContributionType((int)$args['type']);
             //calculate begin date for membership fee
-            $this->begin_date = $this->date;
-            if ($this->is_cotis) {
-                $due_date = self::getDueDate($this->zdb, $this->member);
-                if ($due_date != '') {
-                    $now = new \DateTime();
-                    $due_date = new \DateTime($due_date);
-                    if ($due_date < $now) {
-                        // Member didn't renew on time
-                        $this->begin_date = $now->format('Y-m-d');
-                    } else {
-                        // Caution : the next_begin_date is the day after the due_date.
-                        $next_begin_date = clone $due_date;
-                        $next_begin_date->add(new DateInterval('P1D'));
-                        $this->begin_date = $next_begin_date->format('Y-m-d');
+            if ($preferences->pref_membership_ext != '') {
+                $this->begin_date = $this->date;
+                if ($this->is_cotis) {
+                    $due_date = self::getDueDate($this->zdb, $this->member);
+                    if ($due_date != '') {
+                        $now = new \DateTime();
+                        $due_date = new \DateTime($due_date);
+                        if ($due_date < $now) {
+                            // Member didn't renew on time
+                            $this->begin_date = $now->format('Y-m-d');
+                        } else {
+                            // Caution : the next_begin_date is the day after the due_date.
+                            $next_begin_date = clone $due_date;
+                            $next_begin_date->add(new DateInterval('P1D'));
+                            $this->begin_date = $next_begin_date->format('Y-m-d');
+                        }
                     }
+                    $this->retrieveEndDate();
                 }
+            } else {
+                $begin_date = new \DateTime();
+                list($j, $m) = explode('/', $preferences->pref_beg_membership);
+                $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
+                while ($next_begin_date >= $begin_date) {
+                    $next_begin_date->add(new DateInterval('P1Y'));
+                }
+                $this->begin_date = $next_begin_date->format('Y-m-d');
                 $this->retrieveEndDate();
             }
             if (isset($args['payment_type'])) {

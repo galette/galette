@@ -265,7 +265,8 @@ class CsvIn extends Csv implements FileInterface
                 $handle,
                 1000,
                 self::DEFAULT_SEPARATOR,
-                self::DEFAULT_QUOTE
+                self::DEFAULT_QUOTE,
+                self::DEFAULT_ESCAPE
             )) !== false
         ) {
             //check fields count
@@ -274,7 +275,7 @@ class CsvIn extends Csv implements FileInterface
                 $this->addError(
                     str_replace(
                         array('%should_count', '%count', '%row'),
-                        array($cnt_fields, $count, $row),
+                        array((string)$cnt_fields, (string)$count, (string)$row),
                         _T("Fields count mismatch... There should be %should_count fields and there are %count (row %row)")
                     )
                 );
@@ -296,7 +297,7 @@ class CsvIn extends Csv implements FileInterface
                         $this->addError(
                             str_replace(
                                 array('%field', '%row'),
-                                array($this->fields[$col], $row),
+                                array($this->fields[$col], (string)$row),
                                 _T("Field %field is required, but missing in row %row")
                             )
                         );
@@ -468,7 +469,8 @@ class CsvIn extends Csv implements FileInterface
                     $handle,
                     1000,
                     self::DEFAULT_SEPARATOR,
-                    self::DEFAULT_QUOTE
+                    self::DEFAULT_QUOTE,
+                    self::DEFAULT_ESCAPE
                 )) !== false
             ) {
                 if ($row > 0) {
@@ -530,7 +532,7 @@ class CsvIn extends Csv implements FileInterface
                                 $this->addError(
                                     str_replace(
                                         array('%row', '%name'),
-                                        array($row, $member->sname),
+                                        array((string)$row, $member->sname),
                                         _T("An error occurred storing member at row %row (%name):")
                                     )
                                 );
@@ -541,14 +543,12 @@ class CsvIn extends Csv implements FileInterface
                         $this->addError(
                             str_replace(
                                 array('%row', '%name'),
-                                array($row, $member->sname),
+                                array((string)$row, $member->sname),
                                 _T("An error occurred storing member at row %row (%name):")
                             )
                         );
-                        if (is_array($valid)) {
-                            foreach ($valid as $e) {
-                                $this->addError($e);
-                            }
+                        foreach ($valid as $e) {
+                            $this->addError($e);
                         }
                         return false;
                     }

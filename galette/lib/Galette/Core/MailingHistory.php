@@ -55,8 +55,8 @@ class MailingHistory extends History
     /** @var array<int, mixed> */
     private array $recipients;
     private int $sender;
-    private ?string $sender_name;
-    private ?string $sender_address;
+    private ?string $sender_name; //@phpstan-ignore-line
+    private ?string $sender_address; //@phpstan-ignore-line
     private bool $sent = false;
 
     /**
@@ -125,7 +125,7 @@ class MailingHistory extends History
                         }
                     }
                 }
-                $r['attachments'] = $attachments;
+                $r['attachments'] = $attachments; //@phpstan-ignore-line
                 $ret[] = $r;
             }
             return $ret;

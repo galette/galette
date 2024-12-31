@@ -46,20 +46,20 @@ use Galette\Repository\PaymentTypes;
  * @property ?string $birth_date_begin
  * @property ?string $birth_date_end
  * @property int $show_public_infos
- * @property array|integer $status
+ * @property integer[]|integer $status
  * @property ?string $contrib_creation_date_begin
  * @property ?string $contrib_creation_date_end
  * @property ?string $contrib_begin_date_begin
  * @property ?string $contrib_begin_date_end
  * @property ?string $contrib_end_date_begin
  * @property ?string $contrib_end_date_end
- * @property array $contributions_types
- * @property array $payments_types
+ * @property integer[] $contributions_types
+ * @property integer[] $payments_types
  * @property ?float $contrib_min_amount
  * @property ?float $contrib_max_amount
- * @property array $contrib_dynamic
- * @property array $free_search
- * @property array $groups_search
+ * @property array<int, mixed> $contrib_dynamic
+ * @property array<mixed, mixed> $free_search
+ * @property array<mixed, mixed> $groups_search
  * @property integer $groups_search_log_op
  *
  * @property-read ?string $rcreation_date_begin
@@ -76,7 +76,7 @@ use Galette\Repository\PaymentTypes;
  * @property-read ?string $rcontrib_begin_date_end
  * @property-read ?string $rcontrib_end_date_begin
  * @property-read ?string $rcontrib_end_date_end
- * @property-read array $search_fields
+ * @property-read string[] $search_fields
  */
 
 class AdvancedMembersList extends MembersList
@@ -95,23 +95,23 @@ class AdvancedMembersList extends MembersList
     public const OP_BEFORE = 6;
     public const OP_AFTER = 7;
 
-    private ?string $creation_date_begin = null;
-    private ?string $creation_date_end = null;
-    private ?string $modif_date_begin = null;
-    private ?string $modif_date_end = null;
-    private ?string $due_date_begin = null;
-    private ?string $due_date_end = null;
-    private ?string $birth_date_begin = null;
-    private ?string $birth_date_end = null;
+    private ?string $creation_date_begin = null; //@phpstan-ignore-line
+    private ?string $creation_date_end = null; //@phpstan-ignore-line
+    private ?string $modif_date_begin = null; //@phpstan-ignore-line
+    private ?string $modif_date_end = null; //@phpstan-ignore-line
+    private ?string $due_date_begin = null; //@phpstan-ignore-line
+    private ?string $due_date_end = null; //@phpstan-ignore-line
+    private ?string $birth_date_begin = null; //@phpstan-ignore-line
+    private ?string $birth_date_end = null; //@phpstan-ignore-line
     private int $show_public_infos = Members::FILTER_DC_PUBINFOS;
     /** @var array<int> */
     private array $status = array();
-    private ?string $contrib_creation_date_begin = null;
-    private ?string $contrib_creation_date_end = null;
-    private ?string $contrib_begin_date_begin = null;
-    private ?string $contrib_begin_date_end = null;
-    private ?string $contrib_end_date_begin = null;
-    private ?string $contrib_end_date_end = null;
+    private ?string $contrib_creation_date_begin = null; //@phpstan-ignore-line
+    private ?string $contrib_creation_date_end = null; //@phpstan-ignore-line
+    private ?string $contrib_begin_date_begin = null; //@phpstan-ignore-line
+    private ?string $contrib_begin_date_end = null; //@phpstan-ignore-line
+    private ?string $contrib_end_date_begin = null; //@phpstan-ignore-line
+    private ?string $contrib_end_date_end = null; //@phpstan-ignore-line
     /** @var array<int> */
     private array $contributions_types = array();
     /** @var array<int> */

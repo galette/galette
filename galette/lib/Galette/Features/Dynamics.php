@@ -215,6 +215,7 @@ trait Dynamics
             $this->loadDynamicFields();
         }
         $return = $this->dynamics->storeValues($this->id, $transaction);
+        //@phpstan-ignore-next-line
         if (method_exists($this, 'updateModificationDate') && $this->dynamics->hasChanged()) {
             $this->updateModificationDate();
         }

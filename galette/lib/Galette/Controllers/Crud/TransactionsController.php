@@ -253,7 +253,7 @@ class TransactionsController extends ContributionsController
                 ];
 
                 if (isset($trans->member)) {
-                    $rparams['id_adh'] = $trans->member;
+                    $rparams['id_adh'] = (string)$trans->member;
                 }
 
                 return $response

@@ -277,14 +277,12 @@ class Reminders
         }
 
         foreach ($this->toremind as $type => $members) {
-            if (is_array($members)) {
-                foreach ($members as $member) {
-                    $reminder = new Reminder();
-                    $reminder->type = $type;
-                    $reminder->dest = $member;
+            foreach ($members as $member) {
+                $reminder = new Reminder();
+                $reminder->type = $type;
+                $reminder->dest = $member;
 
-                    $reminders[] = $reminder;
-                }
+                $reminders[] = $reminder;
             }
         }
 

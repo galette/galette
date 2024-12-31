@@ -124,6 +124,175 @@ class Contribution extends GaletteTestCase
     }
 
     /**
+     * Test empty donation
+     *
+     * @return void
+     */
+    public function testEmptyDonation(): void
+    {
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 4] //donation in kind
+        );
+        $this->assertNull($contrib->id);
+        $this->assertEquals(date('Y-m-d'), $contrib->date);
+        $this->assertEquals(date('Y-m-d'), $contrib->begin_date);
+        $this->assertNull($contrib->end_date);
+        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertEquals(date('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
+        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertEquals(date('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
+        $this->assertNull($contrib->raw_end_date);
+        $this->assertEmpty($contrib->duration);
+        $this->assertSame((int)$this->preferences->pref_default_paymenttype, $contrib->payment_type);
+        $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PdfModel::RECEIPT_MODEL, $contrib->model);
+        $this->assertNull($contrib->member);
+        $this->assertInstanceOf(\Galette\Entity\ContributionsTypes::class, $contrib->type);
+        $this->assertSame(4, $contrib->type->id);
+        $this->assertNull($contrib->amount);
+        $this->assertNull($contrib->orig_amount);
+        $this->assertNull($contrib->info);
+        $this->assertNull($contrib->transaction);
+        $this->assertCount(11, $contrib->fields);
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\Contribution::PK]));
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\Adherent::PK]));
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\ContributionsTypes::PK]));
+        $this->assertTrue(isset($contrib->fields['montant_cotis']));
+        $this->assertTrue(isset($contrib->fields['type_paiement_cotis']));
+        $this->assertTrue(isset($contrib->fields['info_cotis']));
+        $this->assertTrue(isset($contrib->fields['date_debut_cotis']));
+
+        $this->assertSame('cotis-give', $contrib->getRowClass());
+        $this->assertNull($contrib::getDueDate($this->zdb, 1));
+        $this->assertFalse($contrib->isTransactionPart());
+        $this->assertFalse($contrib->isTransactionPartOf(1));
+        $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertNull($contrib->unknown_property);
+    }
+
+    /**
+     * Test empty fee
+     *
+     * @return void
+     */
+    public function testEmptyFee(): void
+    {
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] //annual fee
+        );
+        $this->assertNull($contrib->id);
+        $this->assertEquals(date('Y-m-d'), $contrib->date);
+        $this->assertEquals(date('Y-m-d'), $contrib->begin_date);
+        $end_date = new \DateTime();
+        $end_date->sub(new \DateInterval('P1D'));
+        $end_date->add(new \DateInterval('P1Y'));
+        $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertEquals(date('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
+        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertEquals(date('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
+        $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
+        $this->assertEquals($end_date->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
+        $this->assertSame(12, $contrib->duration);
+        $this->assertSame($this->preferences->pref_default_paymenttype, $contrib->payment_type);
+        $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PdfModel::INVOICE_MODEL, $contrib->model);
+        $this->assertNull($contrib->member);
+        $this->assertInstanceOf(\Galette\Entity\ContributionsTypes::class, $contrib->type);
+        $this->assertSame(1, $contrib->type->id);
+        $this->assertNull($contrib->amount);
+        $this->assertNull($contrib->orig_amount);
+        $this->assertNull($contrib->info);
+        $this->assertNull($contrib->transaction);
+        $this->assertCount(11, $contrib->fields);
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\Contribution::PK]));
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\Adherent::PK]));
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\ContributionsTypes::PK]));
+        $this->assertTrue(isset($contrib->fields['montant_cotis']));
+        $this->assertTrue(isset($contrib->fields['type_paiement_cotis']));
+        $this->assertTrue(isset($contrib->fields['info_cotis']));
+        $this->assertTrue(isset($contrib->fields['date_debut_cotis']));
+
+        $this->assertSame('cotis-normal', $contrib->getRowClass());
+        $this->assertNull($contrib::getDueDate($this->zdb, 1));
+        $this->assertFalse($contrib->isTransactionPart());
+        $this->assertFalse($contrib->isTransactionPartOf(1));
+        $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertNull($contrib->unknown_property);
+    }
+
+    /**
+     * Test empty fee with begin of membership set in preferences
+     *
+     * @return void
+     */
+    public function testBeginMembershipEmptyFee(): void
+    {
+        global $preferences;
+        $orig_pref_beg_membership = $preferences->pref_beg_membership;
+        $orig_pref_membership_ext = $preferences->pref_membership_ext;
+
+        $preferences->pref_beg_membership = '01/09';
+        $preferences->pref_membership_ext = '';
+
+        $this->assertTrue($preferences->store());
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] //annual fee
+        );
+
+        $preferences->pref_beg_membership = $orig_pref_beg_membership;
+        $preferences->pref_membership_ext = $orig_pref_membership_ext;
+        $this->assertTrue($preferences->store());
+
+        $this->assertNull($contrib->id);
+        $this->assertEquals(date('Y-m-d'), $contrib->date);
+        $this->assertEquals(date('Y-09-01'), $contrib->begin_date);
+        $end_date = $contrib->raw_begin_date;
+        $end_date->add(new \DateInterval('P1Y'));
+        $end_date->sub(new \DateInterval('P1D'));
+        $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertEquals(date('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
+        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertEquals(date('Y-09-01'), $contrib->raw_begin_date->format('Y-m-d'));
+        $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
+        $this->assertEquals($end_date->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
+        $this->assertSame(12, $contrib->duration);
+        $this->assertSame($this->preferences->pref_default_paymenttype, $contrib->payment_type);
+        $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PdfModel::INVOICE_MODEL, $contrib->model);
+        $this->assertNull($contrib->member);
+        $this->assertInstanceOf(\Galette\Entity\ContributionsTypes::class, $contrib->type);
+        $this->assertSame(1, $contrib->type->id);
+        $this->assertNull($contrib->amount);
+        $this->assertNull($contrib->orig_amount);
+        $this->assertNull($contrib->info);
+        $this->assertNull($contrib->transaction);
+        $this->assertCount(11, $contrib->fields);
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\Contribution::PK]));
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\Adherent::PK]));
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\ContributionsTypes::PK]));
+        $this->assertTrue(isset($contrib->fields['montant_cotis']));
+        $this->assertTrue(isset($contrib->fields['type_paiement_cotis']));
+        $this->assertTrue(isset($contrib->fields['info_cotis']));
+        $this->assertTrue(isset($contrib->fields['date_debut_cotis']));
+
+        $this->assertSame('cotis-normal', $contrib->getRowClass());
+        $this->assertNull($contrib::getDueDate($this->zdb, 1));
+        $this->assertFalse($contrib->isTransactionPart());
+        $this->assertFalse($contrib->isTransactionPartOf(1));
+        $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertNull($contrib->unknown_property);
+    }
+
+    /**
      * Test getter and setter special cases
      *
      * @return void

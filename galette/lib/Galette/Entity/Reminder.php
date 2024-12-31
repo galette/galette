@@ -245,7 +245,7 @@ class Reminder
                 array(
                     $this->dest->sname,
                     $this->dest->getEmail(),
-                    $days_remaining
+                    (string)$days_remaining
                 ),
                 _T("%name <%mail> (%days days)")
             );
@@ -284,8 +284,8 @@ class Reminder
                 ),
                 array(
                     $this->dest->sname,
-                    $this->dest->id,
-                    $days_remaining
+                    (string)$this->dest->id,
+                    (string)$days_remaining
                 ),
                 _T("%name (#%id - %days days)")
             );

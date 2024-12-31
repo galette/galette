@@ -146,6 +146,7 @@ class Document implements FileInterface
                 // skip entries according to access control
                 if (
                     $r->visible == FieldsConfig::NOBODY &&
+                    //@phpstan-ignore-next-line
                     ($this->public_list === true || ($this->public_list === false && !$login->isAdmin())) ||
                     ($r->visible == FieldsConfig::ADMIN &&
                         $access_level < Authentication::ACCESS_ADMIN) ||

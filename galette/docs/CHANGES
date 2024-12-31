@@ -1,6 +1,15 @@
 Changes
 -------
 
+1.1.4 -> 1.1.5
+
+- Fixes for PHP 8.4 compatibility
+- Members cannot access their invoices/receipts
+- Fatal error adding contribution when no type is present
+- Fix few typehint issues
+- Mass add/remove members from groups
+- Use previous begin of membership date for new contributions
+
 1.1.3 -> 1.1.4
 
 - Groups managers can add or list contributions and transactions (from a preference)

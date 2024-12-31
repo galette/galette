@@ -414,8 +414,6 @@ class Transaction
     {
         global $emitter;
 
-        $event = null;
-
         try {
             $this->zdb->connection->beginTransaction();
             $values = array();
@@ -471,9 +469,7 @@ class Transaction
             $this->zdb->connection->commit();
 
             //send event at the end of process, once all has been stored
-            if ($event !== null) {
-                $emitter->dispatch(new GaletteEvent($event, $this));
-            }
+            $emitter->dispatch(new GaletteEvent($event, $this));
 
             return true;
         } catch (Throwable $e) {

@@ -42,19 +42,19 @@ class File implements FileInterface
      * @param string                $dest       File destination directory
      * @param ?array<int,string>    $extensions Array of permitted extensions
      * @param ?array<string,string> $mimes      Array of permitted mime types
-     * @param ?int                  $maxlenght  Maximum length for each file
+     * @param ?int                  $maxlength  Maximum length for each file
      */
     public function __construct(
         string $dest,
         ?array $extensions = null,
         ?array $mimes = null,
-        ?int $maxlenght = null
+        ?int $maxlength = null
     ) {
         $this->init(
             $dest,
             $extensions,
             $mimes,
-            $maxlenght
+            $maxlength
         );
     }
 }

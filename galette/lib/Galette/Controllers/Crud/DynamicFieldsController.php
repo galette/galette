@@ -166,7 +166,7 @@ class DynamicFieldsController extends CrudController
                             'editDynamicField',
                             [
                                 'form_name' => $form_name,
-                                'id'        => $df->getId()
+                                'id'        => (string)$df->getId()
                             ]
                         )
                     );
@@ -517,7 +517,7 @@ class DynamicFieldsController extends CrudController
                         'editDynamicField',
                         [
                             'form_name' => $form_name,
-                            'id'        => $id
+                            'id'        => (string)$id
                         ]
                     )
                 );

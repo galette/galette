@@ -72,6 +72,6 @@ class SlimApp
      */
     public function getApp(): App
     {
-        return $this->app;
+        return $this->app; //@phpstan-ignore-line
     }
 }

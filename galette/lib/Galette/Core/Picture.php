@@ -94,7 +94,7 @@ class Picture implements FileInterface
         );
 
         // '!==' needed, otherwise ''==0
-        if (!empty($id_adh) && $id_adh !== '') {
+        if (!empty($id_adh)) {
             $this->id = $id_adh;
             if (!isset($this->db_id)) {
                 $this->db_id = (int)$id_adh;

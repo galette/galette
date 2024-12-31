@@ -27,7 +27,6 @@ use Analog\Analog;
 use ArrayObject;
 use Galette\Entity\Adherent;
 use Galette\IO\File;
-use Laminas\Db\ResultSet\ResultSet;
 
 /**
  * Mailing features
@@ -42,12 +41,12 @@ use Laminas\Db\ResultSet\ResultSet;
  * @property integer|string $id
  * @property-read string $alt_message
  * @property-read string $wrapped_message
- * @property-read PHPMailer\PHPMailer\PHPMailer $mail
- * @property-read array $errors
- * @property-read array $recipients
- * @property-read array $unreachables
+ * @property-read \PHPMailer\PHPMailer\PHPMailer $mail
+ * @property-read string[] $errors
+ * @property-read Adherent[] $recipients
+ * @property-read Adherent[] $unreachables
  * @property-read string|false $tmp_path
- * @property array $attachments
+ * @property File[] $attachments
  * @property-read string $sender_name
  * @property-read string $sender_address
  * @property integer $history_id
@@ -280,12 +279,12 @@ class Mailing extends GaletteMail
     /**
      * Set mailing recipients
      *
-     * @phpstan-ignore-next-line
      * @param array<int, Adherent> $members Array of Adherent objects
      *
      * @return bool
+     * FIXME: same name as parent method, but different arguments
      */
-    public function setRecipients(array $members): bool
+    public function setRecipients(array $members): bool //@phpstan-ignore-line
     {
         $m = array();
         $this->mrecipients = array();
@@ -309,7 +308,7 @@ class Mailing extends GaletteMail
     }
 
     /**
-     * Store maling attachments
+     * Store mailing attachments
      *
      * @param array<string, string|int> $files Array of uploaded files to store
      *

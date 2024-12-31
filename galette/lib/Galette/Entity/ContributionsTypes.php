@@ -56,7 +56,7 @@ class ContributionsTypes
 
     private int $id;
     private string $label;
-    private ?float $amount;
+    private ?float $amount; //@phpstan-ignore-line
     private int $extension;
 
     public const ID_NOT_EXITS = -1;

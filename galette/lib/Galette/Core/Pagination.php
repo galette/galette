@@ -348,7 +348,7 @@ abstract class Pagination
     {
         $args = [
             'option'    => 'page',
-            'value'     => $page
+            'value'     => (string)$page
         ];
 
         if ($this->view->getEnvironment()->mergeGlobals([])['cur_subroute']) {

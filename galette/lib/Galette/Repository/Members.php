@@ -590,10 +590,14 @@ class Members
      */
     private function buildSelect(int $mode, ?array $fields, bool $photos, bool $count = false): Select
     {
+        /**
+         * @var Db $zdb
+         * @var Login $login
+         */
         global $zdb, $login;
 
         try {
-            if ($fields != null && is_array($fields) && !in_array('id_adh', $fields)) {
+            if ($fields != null && !in_array('id_adh', $fields)) {
                 $fields[] = 'id_adh';
             }
 
@@ -707,7 +711,6 @@ class Members
             ) {
                 if (
                     count($this->filters->contrib_dynamic) > 0
-                    && !isset($this->filters->contrib_dynamic['empty'])
                 ) {
                     $hasDfc = true;
 
@@ -760,7 +763,7 @@ class Members
                         $zdb->platform->quoteIdentifier('cdfc' . $cdf),
                         $zdb->platform->quoteIdentifier('id')
                     );
-                    if (TYPE_DB === 'pgsql') {
+                    if ($zdb->isPostgres()) {
                         $rcdf_field = $rcdf_field . '::text';
                     }
 
@@ -979,8 +982,6 @@ class Members
     {
         if ($fields === null) {
             return true;
-        } elseif (!is_array($fields)) {
-            return false;
         } elseif (in_array($field_name, $fields)) {
             return true;
         } else {
@@ -1364,7 +1365,6 @@ class Members
 
         if (
             count($this->filters->contrib_dynamic) > 0
-            && !isset($this->filters->contrib_dynamic['empty'])
         ) {
             foreach ($this->filters->contrib_dynamic as $k => $cd) {
                 $qop = ' LIKE ';
