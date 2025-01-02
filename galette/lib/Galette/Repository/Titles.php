@@ -115,6 +115,7 @@ class Titles
 
             $this->zdb->handleSequence(
                 self::TABLE,
+                self::PK,
                 count(self::$defaults)
             );
 

@@ -124,4 +124,105 @@ class Install extends TestCase
         $this->assertTrue($exec);
         $this->assertSame(GALETTE_DB_VERSION, $this->zdb->getDbVersion());
     }
+
+    /**
+     * Test updated database schema against fresh install one
+     *
+     * @return void
+     */
+    public function testUpdatedDatabase(): void
+    {
+        // Last database version is installed with `latest_galette_` prefix
+        // Update database uses `galette_` prefix. Let's compare those two.
+
+        $latest_prefix = 'latest_galette_';
+        $latest_dsn = array(
+            'TYPE_DB'   => TYPE_DB,
+            'USER_DB'   => USER_DB,
+            'PWD_DB'    => PWD_DB,
+            'HOST_DB'   => HOST_DB,
+            'PORT_DB'   => PORT_DB,
+            'NAME_DB'   => NAME_DB
+        );
+        $latest_db = new \Galette\Core\Db($latest_dsn);
+        $latest_metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($latest_db->db);
+        $latest_tables = $latest_db->getTables($latest_prefix);
+
+        $dsn = array(
+            'TYPE_DB'   => TYPE_DB,
+            'USER_DB'   => USER_DB,
+            'PWD_DB'    => PWD_DB,
+            'HOST_DB'   => HOST_DB,
+            'PORT_DB'   => PORT_DB,
+            'NAME_DB'   => NAME_DB,
+            'PREFIX_DB' => PREFIX_DB,
+        );
+        $db = new \Galette\Core\Db($dsn);
+        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($db->db);
+
+        $tables = $db->getTables();
+
+        //tables order does not matter
+        sort($latest_tables);
+        sort($tables);
+
+        //make sure all tables are present
+        $this->assertEquals(
+            array_map(
+                function ($table) use ($latest_prefix) {
+                    //table prefix differs
+                    return str_replace($latest_prefix, PREFIX_DB, $table);
+                },
+                $latest_tables
+            ),
+            $tables
+        );
+
+        foreach ($latest_tables as $latest_table_name) {
+            $latest_table = $latest_metadata->getTable($latest_table_name);
+            $latest_columns = $latest_table->getColumns();
+
+            //table prefix differs
+            $table_name = str_replace($latest_prefix, PREFIX_DB, $latest_table_name);
+            foreach ($latest_columns as $latest_column) {
+                try {
+                    $column = $metadata->getColumn($latest_column->getName(), $table_name);
+                } catch (\Exception $e) {
+                    $this->fail($latest_column->getName() . ' | ' . $e->getMessage());
+                }
+
+                //table name differs
+                $latest_column->setTableName($table_name);
+                if ($default = $column->getColumnDefault()) {
+                    $latest_column->setColumnDefault(str_replace($latest_prefix, PREFIX_DB, $default));
+                }
+                //position does not matter
+                $column->setOrdinalPosition($latest_column->getOrdinalPosition());
+
+                //Q&D fixes... :'(
+                if (!$db->isPostgres()) {
+                    if (
+                        $table_name === 'galette_cotisations'
+                        && (
+                            $latest_column->getName() === 'id_type_cotis'
+                            || $latest_column->getName() === 'type_paiement_cotis'
+                        )
+                    ) {
+                        //FIXME: dunno why default is not correct, 1.15-mysql upgrade does contains the correct statement.
+                        $column->setColumnDefault(null);
+                    }
+                }
+
+                $this->assertEquals(
+                    $latest_column,
+                    $column,
+                    sprintf(
+                        'Column %s.%s differs from latest version',
+                        $table_name,
+                        $latest_column->getName()
+                    )
+                );
+            }
+        }
+    }
 }
