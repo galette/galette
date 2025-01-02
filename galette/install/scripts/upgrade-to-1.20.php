@@ -31,13 +31,13 @@ use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Metadata\Source\Factory;
 
 /**
- * Galette 1.1.0 upgrade script
+ * Galette 1.2.0 upgrade script
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class UpgradeTo115 extends AbstractUpdater
+class UpgradeTo120 extends AbstractUpdater
 {
-    protected ?string $db_version = '1.15';
+    protected ?string $db_version = '1.20';
     protected array $reworked_fkeys = [];
 
     /**
