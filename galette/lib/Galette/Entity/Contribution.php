@@ -186,7 +186,7 @@ class Contribution
                 $begin_date = new \DateTime();
                 list($j, $m) = explode('/', $preferences->pref_beg_membership);
                 $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
-                while ($next_begin_date >= $begin_date) {
+                while ($next_begin_date <= $begin_date) {
                     $next_begin_date->add(new DateInterval('P1Y'));
                 }
                 $this->begin_date = $next_begin_date->format('Y-m-d');
