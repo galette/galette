@@ -12,12 +12,12 @@
 # Menna Ebraheam & Jana hesham <monymenna62@gmail.com>, 2022.
 # Hothaifa Jaber <i74ifa@icloud.com>, 2022.
 # AOSUS <aosus@protonmail.com>, 2022.
-# ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>, 2023, 2024.
+# ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>, 2023, 2024, 2025.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-12-29 09:48+0100\n"
-"PO-Revision-Date: 2024-09-14 15:09+0000\n"
+"PO-Revision-Date: 2025-01-04 16:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.8-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -1408,7 +1408,7 @@ msgstr ""
 #: ../lib/Galette/Core/Gaptcha.php:78
 #, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr ""
+msgstr "كم يساوي %1$s زائد %2$s؟"
 
 #: ../lib/Galette/Core/Gaptcha.php:79
 #, php-format
@@ -1425,7 +1425,7 @@ msgstr ""
 #: ../lib/Galette/Core/Gaptcha.php:83
 #, php-format
 msgid "How much is %1$s minus %2$s?"
-msgstr ""
+msgstr "كم يساوي %1$s ناقص %2$s؟"
 
 #: ../lib/Galette/Core/Gaptcha.php:84
 #, php-format
