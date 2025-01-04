@@ -1,6 +1,11 @@
 Changes
 -------
 
+1.1.5 -> 1.1.5.1
+
+- Loop issue on new contributions when using begin of membership date
+- Update TCPDF to latest version
+
 1.1.4 -> 1.1.5
 
 - Fixes for PHP 8.4 compatibility

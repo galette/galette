@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git.tuxfamily.org/gitroot/galette/galette.git"
+    "url": "git@github.com:galette/galette.git"
   },
   "author": "Johan Cwiklinski <johan AT x-tnd DOT be>",
   "license": "GPL-3.0-or-later",

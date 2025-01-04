@@ -36,15 +36,14 @@
 
     <programming-language>PHP</programming-language>
 
-    <mailing-list rdf:resource="https://mail.gna.org/listinfo/galette-devel/" />
-    <mailing-list rdf:resource="https://mail.gna.org/listinfo/galette-discussion/" />
+    <mailing-list rdf:resource="https://lists.mailman3.com/postorius/lists/galette-devel.mailman3.com/" />
+    <mailing-list rdf:resource="https://lists.mailman3.com/postorius/lists/galette-users.mailman3.com/" />
 
-    <download-page rdf:resource="http://download.tuxfamily.org/galette/" />
+    <download-page rdf:resource="https://galette.eu/download/" />
 
     <maintainer>
         <foaf:Person>
             <foaf:name>Johan Cwiklinski</foaf:name>
-            <foaf:homepage rdf:resource="http://ulysses.fr" />
         </foaf:Person>
     </maintainer>
 
@@ -58,12 +57,12 @@
 
     <license rdf:resource="http://spdx.org/licenses/GPL-3.0+" />
 
-    <bug-database rdf:resource="http://redmine.ulysses.fr/projects/galette/issues" />
+    <bug-database rdf:resource="https://bugs.galette.eu/projects/galette/issues" />
 
     <repository>
         <GitRepository>
-            <location rdf:resource="git://git.tuxfamily.org/gitroot/galette/galette.git"/>
-            <browse rdf:resource="http://git.tuxfamily.org/galette/galette"/>
+            <location rdf:resource="https://github.com/galette/galette.git"/>
+            <browse rdf:resource="https://github.com/galette/galette/"/>
         </GitRepository>
     </repository>
 

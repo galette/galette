@@ -16,8 +16,8 @@ You'll find a [detailled description on Galette's website](https://galette.eu/si
 * website: https://galette.eu
 * bugs and features: https://bugs.galette.eu/projects/galette
 * mailing lists:
-  * users: https://listengine.tuxfamily.org/lists.galette.eu/users/
-  * developpers: https://listengine.tuxfamily.org/lists.galette.eu/devel/
+  * users: https://lists.mailman3.com/postorius/lists/galette-users.mailman3.com/
+  * developpers: https://lists.mailman3.com/postorius/lists/galette-devel.mailman3.com/
 * documentation: https://doc.galette.eu/en/develop
 * translation: https://hosted.weblate.org/engage/galette/ - https://hosted.weblate.org/projects/galette/
 
@@ -40,8 +40,8 @@ Vous trouverez une [description détaillée sur le site web de Galette](https://
 * site web : https://galette.eu
 * bogues et fonctionnalités : https://bugs.galette.eu/projects/galette
 * liste de diffusion :
-  * utilisateurs : https://listengine.tuxfamily.org/lists.galette.eu/users/
-  * développeurs : https://listengine.tuxfamily.org/lists.galette.eu/devel/
+  * utilisateurs : https://lists.mailman3.com/postorius/lists/galette-users.mailman3.com/
+  * développeurs : https://lists.mailman3.com/postorius/lists/galette-devel.mailman3.com/
 * documentation : https://doc.galette.eu/fr/develop
 * traduction : https://hosted.weblate.org/engage/galette/ - https://hosted.weblate.org/projects/galette/
 

@@ -6,10 +6,9 @@ from datetime import datetime
 from termcolor import colored
 from urllib.parse import urlparse
 
-# on Tuxfamily
-ssh_path = 'galette/galette-repository/'
-ssh_host = 'ssh.tuxfamily.org'
-galette_dl_repo = 'http://download.tuxfamily.org/galette/'
+ssh_path = '/var/www/galette.eu/download/'
+ssh_host = 'galette.eu'
+galette_dl_repo = 'https://galette.eu/download/'
 is_local = False
 
 local_dl_repo = os.path.join(

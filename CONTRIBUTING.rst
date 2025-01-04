@@ -13,7 +13,7 @@ You can Use, Test and Report:
 - You can use the regular `Galette` for your own needs,
 
 - You can test new features, or regularly try the `nightly version 
-  <http://download.tuxfamily.org/galette/galette-dev.tar.bz2>`_,
+  <https://galette.eu/download/galette-dev.tar.bz2>`_,
 
 - If you encouter a bug, you should open a ticket on the `Galette tracker 
   <https://bugs.galette.eu/projects/galette>`_, with as much informations as
