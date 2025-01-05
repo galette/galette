@@ -1348,9 +1348,11 @@ class MembersController extends CrudController
                             ) {
                                 $current_groups = $member->getGroups();
                                 $groups_adh = [];
-                                foreach ($current_groups as $group) {
-                                    if ($group->getId() !== (int)$post['group_to_remove']) {
-                                        $groups_adh[] = $group->getId() . '|' . $group->getName();
+                                if (isset($post['group_to_remove'])) {
+                                    foreach ($current_groups as $group) {
+                                        if ($group->getId() !== (int)$post['group_to_remove']) {
+                                            $groups_adh[] = $group->getId() . '|' . $group->getName();
+                                        }
                                     }
                                 }
                                 if (isset($post['group_to_add'])) {
