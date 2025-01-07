@@ -34,13 +34,14 @@
 # CryptKid <CryptKiddie@chaospott.de>, 2023.
 # Dynnammo <baptiste.thivend@protonmail.com>, 2024.
 # rabbitmc <weblate@sternwelt.org>, 2024.
+# Niklas Meyer <email@quotermusic.de>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-12-29 09:48+0100\n"
-"PO-Revision-Date: 2024-10-22 10:15+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2025-01-07 16:14+0000\n"
+"Last-Translator: Niklas Meyer <email@quotermusic.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -48,7 +49,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8-rc\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -135,16 +136,12 @@ msgid "Contribution is fully scheduled!"
 msgstr "Datum für Beitragszahlung"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:90
-#, fuzzy
-#| msgid "Add attachment"
 msgid "Add scheduled payment"
-msgstr "Anhang hinzufügen"
+msgstr "Geplante Zahlung hinzufügen"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:179
-#, fuzzy
-#| msgid "Payment types management"
 msgid "Scheduled payments management"
-msgstr "Verwaltung von Zahlungsarten"
+msgstr "Verwaltung geplanter Zahlungen"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:273
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:671
@@ -159,10 +156,8 @@ msgstr "Kein Mitglied gewählt, bitte wählen Sie mindestens einen Namen."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:366
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:424
-#, fuzzy
-#| msgid "Edit '%s' payment type"
 msgid "Edit scheduled payment"
-msgstr "Bearbeite die Zahlungsart '%s'"
+msgstr "Geplante Zahlung bearbeiten"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:436
 #, fuzzy
@@ -383,7 +378,7 @@ msgstr "Beim Verschieben des Feldes ist ein Fehler aufgetreten :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:146
 msgid "Subscription"
-msgstr "Abonnement"
+msgstr "Mitgliedschaft"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:251
 msgid "No member #%id."
@@ -1551,7 +1546,7 @@ msgstr "Meine Beitrage anzeigen und filtern"
 
 #: ../lib/Galette/Core/Galette.php:136
 msgid "My scheduled payments"
-msgstr ""
+msgstr "Meine geplanten Zahlungen"
 
 #: ../lib/Galette/Core/Galette.php:137
 #, fuzzy
@@ -1626,7 +1621,7 @@ msgstr "Beiträge anzeigen und filtern"
 
 #: ../lib/Galette/Core/Galette.php:244
 msgid "List of scheduled payments"
-msgstr ""
+msgstr "Liste der geplanten Zahlungen"
 
 #: ../lib/Galette/Core/Galette.php:245
 #, fuzzy
@@ -1734,6 +1729,8 @@ msgid ""
 "Add documents to share related to your association (status, rules of "
 "procedure, ...)"
 msgstr ""
+"Fügen Sie Dokumente hinzu, die Sie im Zusammenhang mit Ihrem Verein "
+"freigeben möchten (Status, Geschäftsordnung, ...)"
 
 #: ../lib/Galette/Core/Galette.php:379 ../install/steps/check.php:52
 msgid "Configuration"
@@ -1836,7 +1833,7 @@ msgstr "Öffentliche Seiten"
 
 #: ../lib/Galette/Core/Galette.php:564 ../lib/Galette/Core/Galette.php:747
 msgid "View documents related to your association"
-msgstr ""
+msgstr "Dokumente im Zusammenhang mit Ihrem Verein anzeigen"
 
 #: ../lib/Galette/Core/Galette.php:718
 #: ../lib/Galette/DynamicFields/DynamicField.php:548
@@ -1897,7 +1894,7 @@ msgstr "Als CSV exportieren"
 
 #: ../lib/Galette/Core/Preferences.php:554
 msgid "- Only SMTP and GMail are allowed on hosted instances."
-msgstr ""
+msgstr "- Nur SMTP und G-Mail sind auf gehosteten Instanzen erlaubt."
 
 #: ../lib/Galette/Core/Preferences.php:560
 msgid "- You must indicate a sender name for emails!"
@@ -1978,11 +1975,11 @@ msgstr "- Die Zahlen und Einheiten müssen ganze Zahlen sein!"
 
 #: ../lib/Galette/Core/Preferences.php:741
 msgid "- The card height have to be an integer between 40 and 55!"
-msgstr ""
+msgstr "- Die Kartenhöhe muss eine ganze Zahl zwischen 40 und 55 sein!"
 
 #: ../lib/Galette/Core/Preferences.php:746
 msgid "- The card width have to be an integer between 70 and 95!"
-msgstr ""
+msgstr "- Die Kartenbreite muss eine ganze Zahl zwischen 70 und 95 sein!"
 
 #: ../lib/Galette/Core/Preferences.php:780
 msgid "- Invalid number of months of membership extension."
@@ -2006,7 +2003,7 @@ msgstr "- Ungültiges Jahr für Karte."
 
 #: ../lib/Galette/Core/Preferences.php:809
 msgid "- Invalid website URL."
-msgstr ""
+msgstr "- Ungültige Website-URL."
 
 #: ../lib/Galette/Core/Preferences.php:933
 msgid "%name association's %status"
@@ -2065,9 +2062,9 @@ msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr "entweder 'mysql' oder 'pqsql' PDO Treiber"
 
 #: ../lib/Galette/Core/Db.php:1079
-#, php-format
+#, fuzzy, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
-msgstr ""
+msgstr "Die Mindestversion für %1$s Engine ist %2$s, %1$s %3$s gefunden!"
 
 #: ../lib/Galette/Core/Plugins.php:259 ../lib/Galette/Core/Plugins.php:282
 msgid "No such module."
@@ -2254,7 +2251,7 @@ msgstr "- Die Dauer muss eine positive Zahl sein!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:700
 msgid "- Min size must be lower than size!"
-msgstr ""
+msgstr "- Die Mindestgröße muss kleiner als die Größe sein!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:706
 #, fuzzy
@@ -2626,7 +2623,7 @@ msgstr "Die Datei ist zu groß. Die maximale Dateigröße beträgt %dKo"
 #: ../lib/Galette/IO/FileTrait.php:521
 #, php-format
 msgid "Image is too small. The minimum image side size allowed is %spx"
-msgstr ""
+msgstr "Das Bild ist zu klein. Die mindest Bildgröße beträgt %spx"
 
 #: ../lib/Galette/IO/FileTrait.php:527
 msgid "Mime-Type not allowed"
@@ -3362,8 +3359,11 @@ msgid "Membership"
 msgstr "Mitgliedschaft"
 
 #: ../lib/Galette/Entity/Contribution.php:1470
+#, fuzzy
 msgid "Cannot change payment type if there is an attached scheduled payment"
 msgstr ""
+"Die Zahlungsart kann nicht geändert werden, wenn eine geplante Zahlung "
+"angehängt ist"
 
 #: ../lib/Galette/Entity/Document.php:463
 #, fuzzy
@@ -3373,7 +3373,7 @@ msgstr "Verband %s"
 
 #: ../lib/Galette/Entity/Document.php:464
 msgid "Rules of procedure"
-msgstr ""
+msgstr "Geschäftsordnung"
 
 #: ../lib/Galette/Entity/Document.php:465
 #: ../../tempcache/elements/edit_pdf_models.html.twig:194
@@ -3383,11 +3383,11 @@ msgstr "Beitrittsformular"
 
 #: ../lib/Galette/Entity/Document.php:466
 msgid "Meeting minutes"
-msgstr ""
+msgstr "Sitzungsprotokoll"
 
 #: ../lib/Galette/Entity/Document.php:467
 msgid "Votes results"
-msgstr ""
+msgstr "Ergebnisse der Abstimmung"
 
 #: ../lib/Galette/Entity/Title.php:171
 msgid "You cannot delete Mr. or Mrs. titles!"
@@ -3442,11 +3442,13 @@ msgstr "- Die Dauer muss eine positive Zahl sein!"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:166
 msgid "Amount cannot be greater than non allocated amount"
-msgstr ""
+msgstr "Der Betrag darf nicht größer sein als der nicht zugeordnete Betrag"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:171
+#, fuzzy
 msgid "Payment type for contribution must be set to scheduled"
 msgstr ""
+"Die Zahlungsart für den Beitrag muss auf \"Terminplan\" eingestellt werden."
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:177
 #, fuzzy
@@ -3456,11 +3458,12 @@ msgstr "Zahlungsarten"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:181
 msgid "Cannot schedule a scheduled payment!"
-msgstr ""
+msgstr "Eine geplante Zahlung kann nicht geplant werden!"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:188
+#, fuzzy
 msgid "Scheduled date is required"
-msgstr ""
+msgstr "Geplanter Termin ist erforderlich"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:362
 #, fuzzy
@@ -3493,7 +3496,7 @@ msgstr "Fälligkeitsdatum"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:644
 msgid "Paid"
-msgstr ""
+msgstr "Bezahlt"
 
 #: ../lib/Galette/Entity/Social.php:341
 msgid "Mastodon"
@@ -5483,10 +5486,8 @@ msgstr "Benötigt"
 #: ../../tempcache/elements/edit_core_fields.html.twig:231
 #: ../../tempcache/elements/edit_core_fields.html.twig:235
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:325
-#, fuzzy
-#| msgid "Adhesion form"
 msgid "Width in forms"
-msgstr "Beitrittsformular"
+msgstr "Breite auf dem Mitgliedsformular"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:89
 #: ../../tempcache/elements/list.html.twig:411
@@ -5505,7 +5506,7 @@ msgstr "Aktionen"
 #: ../../tempcache/elements/edit_core_fields.html.twig:270
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:353
 msgid "Half"
-msgstr ""
+msgstr "Hälfte"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:160
 #: ../../tempcache/elements/edit_core_fields.html.twig:259
@@ -5521,10 +5522,8 @@ msgstr "Vollständiges Datum"
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:334
 #: ../../tempcache/pages/contributions_types_list.html.twig:125
 #: ../../tempcache/pages/contributions_types_list.html.twig:199
-#, fuzzy
-#| msgid "Default fields"
 msgid "Default"
-msgstr "Standardfelder"
+msgstr "Standard"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:186
 #: ../../tempcache/pages/contributions_types_list.html.twig:229
@@ -5572,7 +5571,7 @@ msgstr "Zurück zur Galette Startseite"
 
 #: ../../tempcache/elements/navigation/navigation_topbar.html.twig:47
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:74
 #: ../../tempcache/elements/logged_user.html.twig:272
@@ -5590,14 +5589,12 @@ msgstr "Haupt"
 
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:143
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:150
-#, fuzzy
-#| msgid "Company name"
 msgid "Compact menu"
-msgstr "Firmenname"
+msgstr "Kompaktes Menü"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:98
 msgid "Subscribe"
-msgstr "Abonnieren"
+msgstr "Mitglied werden"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:149
 #: ../../tempcache/elements/navigation/public_pages.html.twig:159
@@ -5606,10 +5603,8 @@ msgstr "Abonnieren"
 #: ../../tempcache/elements/logged_user.html.twig:171
 #: ../../tempcache/elements/logged_user.html.twig:329
 #: ../../tempcache/elements/logged_user.html.twig:340
-#, fuzzy
-#| msgid "Disabled"
 msgid "Disable dark mode"
-msgstr "Deaktiviert"
+msgstr "Dunkel Modus deaktivieren"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:151
 #: ../../tempcache/elements/navigation/public_pages.html.twig:161
@@ -5618,10 +5613,8 @@ msgstr "Deaktiviert"
 #: ../../tempcache/elements/logged_user.html.twig:173
 #: ../../tempcache/elements/logged_user.html.twig:331
 #: ../../tempcache/elements/logged_user.html.twig:342
-#, fuzzy
-#| msgid "Table name"
 msgid "Enable dark mode"
-msgstr "Tabellenname"
+msgstr "Dunkel Modus aktivieren"
 
 #: ../../tempcache/elements/logged_user.html.twig:122
 #: ../../tempcache/elements/logged_user.html.twig:197
@@ -5832,24 +5825,25 @@ msgstr "Speichern"
 #: ../../tempcache/pages/preferences.html.twig:923
 #: ../../tempcache/components/forms/picture.html.twig:91
 msgid "Square (1:1)"
-msgstr ""
+msgstr "Quadratisch (1:1)"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:80
 #: ../../tempcache/pages/preferences.html.twig:931
 #: ../../tempcache/components/forms/picture.html.twig:91
 msgid "Portrait (3:4)"
-msgstr ""
+msgstr "Porträt (3:4)"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:80
 #: ../../tempcache/pages/preferences.html.twig:939
 #: ../../tempcache/components/forms/picture.html.twig:91
+#, fuzzy
 msgid "Landscape (4:3)"
-msgstr ""
+msgstr "Landschaft (4:3)"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:91
 #: ../../tempcache/components/forms/picture.html.twig:102
 msgid "Center"
-msgstr ""
+msgstr "Mitte"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:95
 #: ../../tempcache/components/forms/picture.html.twig:106
@@ -5861,12 +5855,12 @@ msgstr "An:"
 #: ../../tempcache/elements/js/photo_dnd.js.twig:99
 #: ../../tempcache/components/forms/picture.html.twig:110
 msgid "Bottom"
-msgstr ""
+msgstr "Unten"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:103
 #: ../../tempcache/components/forms/picture.html.twig:114
 msgid "Left"
-msgstr ""
+msgstr "Links"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:107
 #: ../../tempcache/components/forms/picture.html.twig:118
@@ -5878,7 +5872,7 @@ msgstr "Rechte"
 #: ../../tempcache/elements/js/photo_dnd.js.twig:114
 #: ../../tempcache/components/forms/picture.html.twig:97
 msgid "Cropping focus"
-msgstr ""
+msgstr "Fokusbereich"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:114
 #: ../../tempcache/components/forms/picture.html.twig:123
@@ -5886,6 +5880,9 @@ msgid ""
 "Choose the area of the original image to preserve after cropping to the "
 "final ratio defined in the settings : %ratio"
 msgstr ""
+"Wählen Sie den Bereich des Originalbildes aus, der nach dem Zuschneiden auf "
+"das in den Einstellungen definierte endgültige Verhältnis beibehalten werden "
+"soll: %-Verhältnis"
 
 #: ../../tempcache/elements/js/photo_dnd.js.twig:164
 msgid "An error occurred sending photo :("
@@ -6085,8 +6082,9 @@ msgid "Mark '%field' as (not) required"
 msgstr "Das Feld '%field' als (nicht) notwendig kennzeichnen"
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:237
+#, fuzzy
 msgid "Change field's width with in forms"
-msgstr ""
+msgstr "Ändern der Feldbreite in Formularen"
 
 #: ../../tempcache/elements/member_card.html.twig:64
 msgid "Picture"
@@ -6094,7 +6092,7 @@ msgstr "Bild"
 
 #: ../../tempcache/elements/member_card.html.twig:73
 msgid "Drag and drop an image file to change the picture"
-msgstr ""
+msgstr "Ziehen Sie eine Bilddatei per Drag &amp; Drop, um das Bild zu ändern"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:55
 #, php-format
@@ -6132,7 +6130,7 @@ msgstr ""
 
 #: ../../tempcache/elements/edit_socials.html.twig:66
 msgid "Disable social networks on member form"
-msgstr ""
+msgstr "Deaktivieren Sie soziale Netzwerke im Mitgliederformular"
 
 #: ../../tempcache/elements/edit_socials.html.twig:127
 #: ../../tempcache/elements/edit_socials.html.twig:132
@@ -6341,8 +6339,9 @@ msgstr ""
 "Zusätzliche Informationen werden zusammen mit dem dynamischen Feld angezeigt."
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:297
+#, fuzzy
 msgid "Display information above input"
-msgstr ""
+msgstr "Informationen über Eingabe anzeigen"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:399
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:408
@@ -7419,7 +7418,7 @@ msgstr "Transaktionsbezogen"
 
 #: ../../tempcache/pages/contribution_form.html.twig:110
 msgid "Has scheduled payments"
-msgstr ""
+msgstr "Hat geplante Zahlungen"
 
 #: ../../tempcache/pages/contribution_form.html.twig:229
 msgid "Switch to fee"
@@ -7447,7 +7446,7 @@ msgstr "Nicht der geschickte Betrag"
 
 #: ../../tempcache/pages/contribution_form.html.twig:455
 msgid "View scheduled payments"
-msgstr ""
+msgstr "Geplante Zahlungen anzeigen"
 
 #: ../../tempcache/pages/contribution_form.html.twig:460
 #: ../../tempcache/pages/contribution_form.html.twig:994
@@ -7461,7 +7460,7 @@ msgstr "Anhänge auswählen"
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:245
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:252
 msgid "Create a new scheduled payment"
-msgstr ""
+msgstr "Neue geplante Zahlung erstellen"
 
 #: ../../tempcache/pages/contribution_form.html.twig:536
 msgid "Details of membership fee"
@@ -7760,7 +7759,7 @@ msgstr "Nicht angemeldet"
 
 #: ../../tempcache/pages/preferences.html.twig:525
 msgid "Prevent search engines indexation"
-msgstr ""
+msgstr "Verhindern Sie die Indexierung durch Suchmaschinen"
 
 #: ../../tempcache/pages/preferences.html.twig:554
 msgid "Default language:"
@@ -7856,6 +7855,8 @@ msgid ""
 "If checked, the members's picture will be resized and cropped to the ratio "
 "selected below."
 msgstr ""
+"Wenn diese Option aktiviert ist, wird das Bild des Mitglieds in der Größe "
+"geändert und auf das unten ausgewählte Verhältnis zugeschnitten."
 
 #: ../../tempcache/pages/preferences.html.twig:914
 #, fuzzy
@@ -7869,7 +7870,7 @@ msgstr "Selbstabonnement aktiviert?"
 
 #: ../../tempcache/pages/preferences.html.twig:960
 msgid "Number of columns on the member form"
-msgstr ""
+msgstr "Anzahl der Spalten des Mitgliederformulars"
 
 #: ../../tempcache/pages/preferences.html.twig:986
 msgid "Post new contribution script URI"
@@ -8243,7 +8244,7 @@ msgstr "Schriftgröße:"
 #: ../../tempcache/pages/preferences.html.twig:1911
 #, php-format
 msgid "Each page contains %1$s columns and  %2$s rows."
-msgstr ""
+msgstr "Jede Seite enthält %1$s Spalten und %2$s Zeilen."
 
 #: ../../tempcache/pages/preferences.html.twig:1920
 msgid "Short Text (Card Center):"
@@ -8323,11 +8324,11 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:2327
 msgid "Card width from 70 to 95mm:"
-msgstr ""
+msgstr "Kartenbreite von 70 bis 95 mm:"
 
 #: ../../tempcache/pages/preferences.html.twig:2349
 msgid "Card height from 40 to 55mm:"
-msgstr ""
+msgstr "Kartenhöhe von 40 bis 55 mm:"
 
 #: ../../tempcache/pages/preferences.html.twig:2383
 msgid "Password length:"
@@ -8521,6 +8522,8 @@ msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
 "the list."
 msgstr ""
+"Das Löschen des letzten Feldes ist nicht möglich. Die Liste muss mindestens "
+"ein Feld enthalten."
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:62
 #, php-format
@@ -8658,9 +8661,9 @@ msgstr[0] "%count Eintrag"
 msgstr[1] "%count Einträge"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:268
-#, php-format
+#, fuzzy, php-format
 msgid "Found total scheduled %f"
-msgstr ""
+msgstr "Insgesamt geplant %f"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:437
 #, fuzzy
@@ -9228,7 +9231,7 @@ msgstr "Suche nach Namen oder Kennung und wähle ein Mitglied aus"
 
 #: ../../tempcache/components/forms/titles.html.twig:75
 msgid "Not supplied"
-msgstr "Nicht geliefert"
+msgstr "Bitte auswählen"
 
 #: ../../tempcache/components/forms/picture.html.twig:45
 msgid "Picture:"
