@@ -40,7 +40,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-12-29 09:48+0100\n"
-"PO-Revision-Date: 2025-01-07 16:14+0000\n"
+"PO-Revision-Date: 2025-01-09 12:33+0000\n"
 "Last-Translator: Niklas Meyer <email@quotermusic.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -710,10 +710,8 @@ msgstr "Modell wurde erfolgreich gespeichert!"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:197
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:232
-#, fuzzy
-#| msgid "Documentation"
 msgid "Documents list"
-msgstr "Dokumentation"
+msgstr "Dokumente"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:352
 #: ../../tempcache/pages/documents_list.html.twig:223
@@ -1719,10 +1717,8 @@ msgstr "Verschiedene Grafiken"
 
 #: ../lib/Galette/Core/Galette.php:367 ../lib/Galette/Core/Galette.php:563
 #: ../lib/Galette/Core/Galette.php:746
-#, fuzzy
-#| msgid "Documentation"
 msgid "Documents"
-msgstr "Dokumentation"
+msgstr "Dokumente"
 
 #: ../lib/Galette/Core/Galette.php:368
 msgid ""
@@ -1813,11 +1809,11 @@ msgstr "Zahlungsarten verwalten"
 
 #: ../lib/Galette/Core/Galette.php:471
 msgid "Empty adhesion form"
-msgstr "Leeres Beitrittsformular"
+msgstr "Leeres Mitgliedsformular"
 
 #: ../lib/Galette/Core/Galette.php:472
 msgid "Download empty adhesion form"
-msgstr "Leeres Beitrittsformular herunterladen"
+msgstr "Leeres Mitgliedsformular herunterladen"
 
 #: ../lib/Galette/Core/Galette.php:482
 msgid "Admin tools"
@@ -2681,7 +2677,7 @@ msgstr "Unbekannten Fehler beim Hochladen"
 
 #: ../lib/Galette/IO/PdfAdhesionForm.php:66
 msgid "adherent_form"
-msgstr "Haftungsformular"
+msgstr "Mitgliedsformular"
 
 #: ../lib/Galette/IO/PdfContribution.php:68
 msgid "receipt"
@@ -4081,7 +4077,7 @@ msgstr "* Nur für Firmen"
 #: ../includes/i18n.inc.php:82
 #, php-format
 msgid "Hereby, I agree to comply to %s association statutes and its rules."
-msgstr "Hiermit stimme ich den Bestimmungen und Regeln von %s zu."
+msgstr "Hiermit stimme ich den Bestimmungen und Regeln des %s zu."
 
 #: ../includes/i18n.inc.php:83
 msgid "At ................................................"
@@ -4119,7 +4115,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:92
 msgid "Required membership:"
-msgstr "Benötigte Mitgliedschaft:"
+msgstr "Art der Mitgliedschaft:"
 
 #: ../includes/i18n.inc.php:93
 msgid ""
@@ -7826,7 +7822,7 @@ msgstr "Standard-Zahlungsart:"
 
 #: ../../tempcache/pages/preferences.html.twig:797
 msgid "Default membership status:"
-msgstr "Default Mitgliedsstatus:"
+msgstr "Standard Mitgliedsstatus:"
 
 #: ../../tempcache/pages/preferences.html.twig:841
 msgid "Public pages enabled?"
@@ -7845,10 +7841,8 @@ msgid "Admin and staff only"
 msgstr "Nur für Administratoren und Mitarbeiter"
 
 #: ../../tempcache/pages/preferences.html.twig:898
-#, fuzzy
-#| msgid "After member creation:"
 msgid "Force member picture ratio"
-msgstr "Nach Mitgliedserstellung:"
+msgstr "Bildverhältnis erzwingen"
 
 #: ../../tempcache/pages/preferences.html.twig:903
 msgid ""
@@ -7859,10 +7853,8 @@ msgstr ""
 "geändert und auf das unten ausgewählte Verhältnis zugeschnitten."
 
 #: ../../tempcache/pages/preferences.html.twig:914
-#, fuzzy
-#| msgid "Select an action"
 msgid "Select a ratio"
-msgstr "Wähle eine Aktion"
+msgstr "Verhältnis"
 
 #: ../../tempcache/pages/preferences.html.twig:953
 msgid "Self subscription enabled?"
@@ -7967,19 +7959,19 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:1143
 msgid "Can members create child?"
-msgstr "Können Mitglieder einen Untergeordneten hinzufügen?"
+msgstr "Dürfen Mitglieder einen Untergeordneten hinzufügen?"
 
 #: ../../tempcache/pages/preferences.html.twig:1157
 msgid "Can group managers edit their groups?"
-msgstr "Können Gruppenmanager ihre Gruppen bearbeiten?"
+msgstr "Dürfen Gruppenmanager ihre Gruppen bearbeiten?"
 
 #: ../../tempcache/pages/preferences.html.twig:1171
 msgid "Can group managers create members?"
-msgstr "Können Gruppenmanager neue Mitglieder erstellen?"
+msgstr "Dürfen Gruppenmanager neue Mitglieder erstellen?"
 
 #: ../../tempcache/pages/preferences.html.twig:1185
 msgid "Can group managers edit members?"
-msgstr "Können Gruppenmanager Mitglieder bearbeiten?"
+msgstr "Dürfen Gruppenmanager Mitglieder bearbeiten?"
 
 #: ../../tempcache/pages/preferences.html.twig:1199
 msgid "Can group managers send mailings?"
@@ -7994,32 +7986,24 @@ msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
-"Gruppenmanager dürfen Mitglieder in verschiedenen Formaten exportieren (z."
-"B. .csv, PDF-Cards, usw.)"
+"Dürfen Gruppenmanager Mitglieder in verschiedenen Formaten exportieren (z.B. "
+".csv, PDF-Cards, usw.)"
 
 #: ../../tempcache/pages/preferences.html.twig:1231
-#, fuzzy
-#| msgid "Can group managers send mailings?"
 msgid "Can group managers see contributions?"
-msgstr "Dürfen Gruppenmanager Mails verschicken?"
+msgstr "Dürfen Gruppenmanager Mitglieder sehen?"
 
 #: ../../tempcache/pages/preferences.html.twig:1245
-#, fuzzy
-#| msgid "Can group managers create members?"
 msgid "Can group managers create contributions?"
-msgstr "Können Gruppenmanager neue Mitglieder erstellen?"
+msgstr "Dürfen Gruppenmanager Mitglieder erstellen?"
 
 #: ../../tempcache/pages/preferences.html.twig:1259
-#, fuzzy
-#| msgid "Can group managers send mailings?"
 msgid "Can group managers see transactions?"
-msgstr "Dürfen Gruppenmanager Mails verschicken?"
+msgstr "Dürfen Gruppenmanager Transaktionen sehen?"
 
 #: ../../tempcache/pages/preferences.html.twig:1273
-#, fuzzy
-#| msgid "Can group managers create members?"
 msgid "Can group managers create transactions?"
-msgstr "Können Gruppenmanager neue Mitglieder erstellen?"
+msgstr "Dürfen Gruppenmanager Transaktionen erstellen?"
 
 #: ../../tempcache/pages/preferences.html.twig:1305
 msgid "Sender name:"
