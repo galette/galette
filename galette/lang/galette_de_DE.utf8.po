@@ -35,13 +35,14 @@
 # Dynnammo <baptiste.thivend@protonmail.com>, 2024.
 # rabbitmc <weblate@sternwelt.org>, 2024.
 # Niklas Meyer <email@quotermusic.de>, 2025.
+# Zeik0s <zeik0s@zeik0s.at>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-12-29 09:48+0100\n"
-"PO-Revision-Date: 2025-01-09 12:33+0000\n"
-"Last-Translator: Niklas Meyer <email@quotermusic.de>\n"
+"PO-Revision-Date: 2025-01-11 07:42+0000\n"
+"Last-Translator: Zeik0s <zeik0s@zeik0s.at>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -130,10 +131,8 @@ msgid "Remove payment type %1$s"
 msgstr "Zahlungsart %1$s entfernen"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:69
-#, fuzzy
-#| msgid "Contribution full date"
 msgid "Contribution is fully scheduled!"
-msgstr "Datum für Beitragszahlung"
+msgstr "Beitrag ist vorgemerkt!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:90
 msgid "Add scheduled payment"
@@ -149,10 +148,8 @@ msgid "- Unknown payment type!"
 msgstr "- Unbekannte Zahlungsmethode!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:330
-#, fuzzy
-#| msgid "No member was selected, please check at least one name."
 msgid "No scheduled payment was selected, please check at least one."
-msgstr "Kein Mitglied gewählt, bitte wählen Sie mindestens einen Namen."
+msgstr "Keine vorgemerkte Zahlung ausgewählt, bitte wählen Sie mindestens eine."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:366
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:424
@@ -160,36 +157,26 @@ msgid "Edit scheduled payment"
 msgstr "Geplante Zahlung bearbeiten"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:436
-#, fuzzy
-#| msgid "Payment type '%s' has not been added!"
 msgid "Scheduled payment has not been added!"
-msgstr "Zahlungsart „%s“ wurde nicht hinzugefügt!"
+msgstr "Vorgemerkte Zahlung wurde nicht hinzugefügt!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:438
-#, fuzzy
-#| msgid "Payment type '%s' has not been modified!"
 msgid "Scheduled payment has not been modified!"
-msgstr "Zahlungsart „%s“ wurde nicht geändert!"
+msgstr "Vorgemerkte Zahlung wurde nicht geändert!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:444
-#, fuzzy
-#| msgid "New member has been successfully added."
 msgid "Scheduled payment has been successfully added."
-msgstr "Das neue Mitglied wurde erfolgreich hinzugefügt."
+msgstr "Vorgemerkte Zahlung wurde erfolgreich hinzugefügt."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:446
-#, fuzzy
-#| msgid "Payment type '%s' has been successfully modified."
 msgid "Scheduled payment has been successfully modified."
-msgstr "Zahlungsart „%s“ wurde erfolgreich geändert."
+msgstr "Vorgemerkte Zahlung wurde erfolgreich geändert."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:510
-#, fuzzy
-#| msgid "Remove attachment"
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
-msgstr[0] "Anhang entfernen"
-msgstr[1] "Anhang entfernen"
+msgstr[0] "Vorgemerkte Zahlung entfernen"
+msgstr[1] "Vorgemerkte Zahlungen entfernen"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:106
 msgid "Group name is missing!"
@@ -278,40 +265,28 @@ msgid "Edit contribution type"
 msgstr "Beitragsarten editieren"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:212
-#, fuzzy
-#| msgid "Missing required field name!"
 msgid "Missing required contribution type name!"
-msgstr "Erforderlicher Feldname fehlt!"
+msgstr "Erforderliche Beitragsart fehlt!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:218
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Contribution type has not been added :("
-msgstr "%type wurde nicht hinzugefügt :("
+msgstr "Beitragsart wurde nicht hinzugefügt :("
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:218
-#, fuzzy
-#| msgid "%type #%id has not been updated"
 msgid "Contribution type #%id has not been updated"
-msgstr "%type '%id wurde nicht geändert"
+msgstr "Beitragsart '%id wurde nicht geändert"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:224
-#, fuzzy
-#| msgid "Contribution has been successfully stored"
 msgid "Contribution type has been successfully added!"
-msgstr "Der Beitrag wurde erfolgreich gespeichert"
+msgstr "Beitragsart wurde erfolgreich gespeichert!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:224
-#, fuzzy
-#| msgid "%type #%id has been successfully updated!"
 msgid "Contribution type #%id has been successfully updated!"
-msgstr "%type #%id wurde erfolgreich geändert!"
+msgstr "Beitragsart #%id wurde erfolgreich geändert!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:302
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove contribution type '%label'"
-msgstr "%type '%label' entfernen"
+msgstr "Beitragsart '%label' entfernen"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:58
 msgid "Add field"
@@ -427,17 +402,13 @@ msgstr "Massenänderungen sind nicht bestätigt worden!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1158
 #: ../../tempcache/components/forms/mass_groups.html.twig:73
-#, fuzzy
-#| msgid "Add a new group"
 msgid "Add to group"
-msgstr "Neue Gruppe hinzufügen"
+msgstr "Zur Gruppe hinzufügen"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1168
 #: ../../tempcache/components/forms/mass_groups.html.twig:80
-#, fuzzy
-#| msgid "Remove group %1$s"
 msgid "Remove from group"
-msgstr "Gruppe %1$s entfernen"
+msgstr "Von der Gruppe entfernen"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1221
 #, php-format
@@ -464,12 +435,11 @@ msgid "Something went wrong during mass edition!"
 msgstr "Beim Massenbearbeiten ist etwas fehlgeschlagen!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1386
-#, fuzzy, php-format
-#| msgid "%count members has been changed successfully!"
+#, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] "%count Mitglieder wurden erfolgreich geändert!"
-msgstr[1] "%count Mitglieder wurden erfolgreich geändert!"
+msgstr[0] "%1$s Mitglied wurden erfolgreich geändert!"
+msgstr[1] "%1$s Mitglieder wurden erfolgreich geändert!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1455
 msgid "Invalid captcha"
@@ -525,10 +495,8 @@ msgid "Edit title"
 msgstr "Titel editieren"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:186
-#, fuzzy
-#| msgid "Missing required form!"
 msgid "Missing required title's short or long form!"
-msgstr "Erforderliches Formular fehlt!"
+msgstr "Erforderliche Kurz- oder Langform des Titels fehlt!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:195
 #, php-format
@@ -565,40 +533,28 @@ msgid "Edit status"
 msgstr "Status bearbeiten"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:217
-#, fuzzy
-#| msgid "Missing required field name!"
 msgid "Missing required status name!"
-msgstr "Erforderlicher Feldname fehlt!"
+msgstr "Erforderlicher Statusname fehlt!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:223
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Status has not been added :("
-msgstr "%type wurde nicht hinzugefügt :("
+msgstr "Status wurde nicht hinzugefügt :("
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:223
-#, fuzzy
-#| msgid "%type #%id has not been updated"
 msgid "Status #%id has not been updated"
-msgstr "%type '%id wurde nicht geändert"
+msgstr "Status #%id wurde nicht aktualisiert"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:229
-#, fuzzy
-#| msgid "%type has been successfully added!"
 msgid "Status has been successfully added!"
-msgstr "%type wurde erfolgreich hinzugefügt!"
+msgstr "Status wurde erfolgreich hinzugefügt!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:229
-#, fuzzy
-#| msgid "%type #%id has been successfully updated!"
 msgid "Status #%id has been successfully updated!"
-msgstr "%type #%id wurde erfolgreich geändert!"
+msgstr "Status #%id wurde erfolgreich aktualisiert!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:307
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove status '%label'"
-msgstr "%type '%label' entfernen"
+msgstr "Status '%label' entfernen"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:89
 #: ../../tempcache/pages/transaction_form.html.twig:188
@@ -616,11 +572,8 @@ msgid "Donation"
 msgstr "Spende"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:175
-#, fuzzy
-#| msgid "No contribution was selected, please check at least one."
 msgid "No related contribution type available, please create a new one."
-msgstr ""
-"Es wurde kein Beitrag ausgewählt, bitte kreuzen Sie mindestens einen an."
+msgstr "Es ist kein Beitrag verfügbar, bitte erstellen Sie einen neuen."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:251
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:299
@@ -637,10 +590,8 @@ msgid "Transactions management"
 msgstr "Transaktionsverwaltung"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:684
-#, fuzzy
-#| msgid "New contribution type"
 msgid "- Unknown contribution type!"
-msgstr "Neuer Beitragstyp"
+msgstr "- Unbekannter Beitragstyp!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:743
 msgid "No contribution was selected, please check at least one."
@@ -689,24 +640,18 @@ msgid "transaction"
 msgstr "Transaktion"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:66
-#, fuzzy
-#| msgid "Add attachment"
 msgid "Add document"
-msgstr "Anhang hinzufügen"
+msgstr "Dokument hinzufügen"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:122
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:408
-#, fuzzy
-#| msgid "An error occurred adding dynamic field :("
 msgid "An error occurred adding document :("
-msgstr "Beim Hinzufügen des dynamischen Feldes ist ein Fehler aufgetreten :("
+msgstr "Ein Fehler ist beim Hinzufügen des Dokuments passiert :("
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:136
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:422
-#, fuzzy
-#| msgid "Model has been successfully stored!"
 msgid "Document has been successfully stored!"
-msgstr "Modell wurde erfolgreich gespeichert!"
+msgstr "Dokument wurde erfolgreich gespeichert!"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:197
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:232
@@ -715,17 +660,13 @@ msgstr "Dokumente"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:352
 #: ../../tempcache/pages/documents_list.html.twig:223
-#, fuzzy
-#| msgid "Get my document"
 msgid "Edit document"
-msgstr "Mein Dokument erhalten"
+msgstr "Dokument bearbeiten"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:494
 #: ../../tempcache/pages/documents_list.html.twig:236
-#, fuzzy
-#| msgid "Get my document"
 msgid "Delete document"
-msgstr "Mein Dokument erhalten"
+msgstr "Dokument löschen"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:104
 msgid "This search is already saved."
@@ -1547,10 +1488,8 @@ msgid "My scheduled payments"
 msgstr "Meine geplanten Zahlungen"
 
 #: ../lib/Galette/Core/Galette.php:137
-#, fuzzy
-#| msgid "View and filter all my transactions"
 msgid "View and filter all my scheduled payments"
-msgstr "Meine Transaktionen anzeigen und filtern"
+msgstr "Meine vorgemerkten Zahlungen anzeigen und filtern"
 
 #: ../lib/Galette/Core/Galette.php:143 ../lib/Galette/Core/Galette.php:627
 msgid "My transactions"
@@ -1622,10 +1561,8 @@ msgid "List of scheduled payments"
 msgstr "Liste der geplanten Zahlungen"
 
 #: ../lib/Galette/Core/Galette.php:245
-#, fuzzy
-#| msgid "View and filter transactions"
 msgid "View and filter scheduled payments"
-msgstr "Transaktionen ansehen und filtern"
+msgstr "Geplante Zahlungen ansehen und filtern"
 
 #: ../lib/Galette/Core/Galette.php:257
 msgid "List of transactions"
@@ -1914,15 +1851,11 @@ msgid "- You must provide a password for SMTP authentication."
 msgstr "- Sie müssen ein Passwort für die SMTP Anmeldung eingeben."
 
 #: ../lib/Galette/Core/Preferences.php:600
-#, fuzzy
-#| msgid ""
-#| "- Default membership extension and beginning of membership are mutually "
-#| "exclusive."
 msgid ""
 "- You must indicate a membership extension or a beginning of membership."
 msgstr ""
-"- Standardverlängerung der Mitgliedschaft und Beginn der Mitgliedschaft "
-"schließen sich gegenseitig aus."
+"- Sie müssen eine Verlängerung der Mitgliedschaft oder den Beginn einer "
+"Mitgliedschaft angeben."
 
 #: ../lib/Galette/Core/Preferences.php:605
 msgid ""
@@ -2058,7 +1991,7 @@ msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr "entweder 'mysql' oder 'pqsql' PDO Treiber"
 
 #: ../lib/Galette/Core/Db.php:1079
-#, fuzzy, php-format
+#, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
 msgstr "Die Mindestversion für %1$s Engine ist %2$s, %1$s %3$s gefunden!"
 
@@ -2147,10 +2080,8 @@ msgid "Searches deleted (%list)"
 msgstr "Suchanfragen gelöscht (%list)"
 
 #: ../lib/Galette/Repository/ScheduledPayments.php:436
-#, fuzzy
-#| msgid "Searches deleted (%list)"
 msgid "Scheduled payments deleted (%list)"
-msgstr "Suchanfragen gelöscht (%list)"
+msgstr "Vorgemerkte Zahlungen gelöscht (%list)"
 
 #: ../lib/Galette/Repository/Contributions.php:539
 msgid "Contributions deleted (%list)"
@@ -2222,38 +2153,28 @@ msgid "- Field name already used."
 msgstr "- der Feldname existiert schon."
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:657
-#, fuzzy
-#| msgid "- The duration must be a positive integer!"
 msgid "- Width must be a positive integer!"
-msgstr "- Die Dauer muss eine positive Zahl sein!"
+msgstr "- Die Weite muss eine positive Zahl sein!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:667
-#, fuzzy
-#| msgid "- The duration must be a positive integer!"
 msgid "- Height must be a positive integer!"
-msgstr "- Die Dauer muss eine positive Zahl sein!"
+msgstr "- Die Höhe muss eine positive Zahl sein!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:677
-#, fuzzy
-#| msgid "- The duration must be a positive integer!"
 msgid "- Size must be a positive integer!"
-msgstr "- Die Dauer muss eine positive Zahl sein!"
+msgstr "- Die Größe muss eine positive Zahl sein!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:687
-#, fuzzy
-#| msgid "- The duration must be a positive integer!"
 msgid "- Min size must be a positive integer!"
-msgstr "- Die Dauer muss eine positive Zahl sein!"
+msgstr "- Die Mindestgröße muss eine positive Zahl sein!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:700
 msgid "- Min size must be lower than size!"
 msgstr "- Die Mindestgröße muss kleiner als die Größe sein!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:706
-#, fuzzy
-#| msgid "- The amount must be an integer!"
 msgid "- Repeat must be an integer!"
-msgstr "- Der Wert muss eine ganze Zahl sein!"
+msgstr "- Wiederholen muss eine ganze Zahl sein!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:817
 msgid "An error occurred storing the field."
@@ -2471,7 +2392,7 @@ msgstr "Teilnehmer_Seite"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:149
 msgid "MMMM, EEEE d y"
-msgstr ""
+msgstr "MMMM, EEEE d y"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:168
 msgid "Signature"
@@ -2805,10 +2726,8 @@ msgid "Your organisation logo"
 msgstr "Logo ihrer Organisation"
 
 #: ../lib/Galette/Features/Replacements.php:199
-#, fuzzy
-#| msgid "Your organisation logo"
 msgid "Your organisation logo (print specific)"
-msgstr "Logo ihrer Organisation"
+msgstr "Ihr Organisationslogo (druckspezifisch)"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 #: ../lib/Galette/Features/Replacements.php:204
@@ -3144,10 +3063,8 @@ msgid "Gender %gender does not exists!"
 msgstr "Geschlecht %gender existiert nicht!"
 
 #: ../lib/Galette/Entity/Adherent.php:1552
-#, fuzzy
-#| msgid "File %filename cannot be open!"
 msgid "A member cannot be its own parent!"
-msgstr "Die Datei %filename kann nicht geöffnet werden!"
+msgstr "Ein Mitglied kann nicht sein eigener Elternteil sein!"
 
 #: ../lib/Galette/Entity/Adherent.php:1676
 msgid "Self_subscription as a member: "
@@ -3355,17 +3272,14 @@ msgid "Membership"
 msgstr "Mitgliedschaft"
 
 #: ../lib/Galette/Entity/Contribution.php:1470
-#, fuzzy
 msgid "Cannot change payment type if there is an attached scheduled payment"
 msgstr ""
-"Die Zahlungsart kann nicht geändert werden, wenn eine geplante Zahlung "
-"angehängt ist"
+"Die Zahlungsart kann nicht geändert werden, wenn eine geplante Zahlung damit "
+"verknüpft ist"
 
 #: ../lib/Galette/Entity/Document.php:463
-#, fuzzy
-#| msgid "Association %s"
 msgid "Association status"
-msgstr "Verband %s"
+msgstr "Verbundsstatus"
 
 #: ../lib/Galette/Entity/Document.php:464
 msgid "Rules of procedure"
@@ -3418,23 +3332,17 @@ msgid "Mail specific"
 msgstr "E-Mail-Spezifisch"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:151
-#, fuzzy
-#| msgid "Contribution id"
 msgid "Contribution is required"
-msgstr "Beitrags-ID"
+msgstr "Beitrag ist erforderlich"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:154
 #: ../lib/Galette/Entity/ScheduledPayment.php:320
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load contribution"
-msgstr "Der Beitrag #%id konnte nicht geladen werden!"
+msgstr "Der Beitrag konnte nicht geladen werden!"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:159
-#, fuzzy
-#| msgid "- The duration must be a positive integer!"
 msgid "Amount must be a positive number"
-msgstr "- Die Dauer muss eine positive Zahl sein!"
+msgstr "Der Betrag muss eine positive Zahl sein"
 
 #: ../lib/Galette/Entity/ScheduledPayment.php:166
 msgid "Amount cannot be greater than non allocated amount"
@@ -7418,7 +7326,7 @@ msgstr "Hat geplante Zahlungen"
 
 #: ../../tempcache/pages/contribution_form.html.twig:229
 msgid "Switch to fee"
-msgstr ""
+msgstr "zu Gebühr wechseln"
 
 #: ../../tempcache/pages/contribution_form.html.twig:232
 #, fuzzy
