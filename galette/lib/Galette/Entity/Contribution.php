@@ -184,6 +184,7 @@ class Contribution
                 }
             } else {
                 $begin_date = new \DateTime();
+                $begin_date->sub(new DateInterval('P1Y'));
                 list($j, $m) = explode('/', $preferences->pref_beg_membership);
                 $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
                 while ($next_begin_date <= $begin_date) {
