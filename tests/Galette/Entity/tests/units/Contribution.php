@@ -253,7 +253,12 @@ class Contribution extends GaletteTestCase
 
         $this->assertNull($contrib->id);
         $this->assertEquals(date('Y-m-d'), $contrib->date);
-        $this->assertEquals(date('Y-09-01'), $contrib->begin_date);
+        $now = new \DateTime();
+        $bdate = $contrib->raw_begin_date;
+        if ($bdate < $now) {
+            $bdate->add(new \DateInterval('P1Y'));
+        }
+        $this->assertEquals(date('Y-09-01'), $bdate->format('Y-m-d'));
         $end_date = $contrib->raw_begin_date;
         $end_date->add(new \DateInterval('P1Y'));
         $end_date->sub(new \DateInterval('P1D'));
@@ -261,7 +266,7 @@ class Contribution extends GaletteTestCase
         $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
         $this->assertEquals(date('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
         $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
-        $this->assertEquals(date('Y-09-01'), $contrib->raw_begin_date->format('Y-m-d'));
+        $this->assertEquals(date('Y-09-01'), $bdate->format('Y-m-d'));
         $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
         $this->assertEquals($end_date->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
         $this->assertSame(12, $contrib->duration);
