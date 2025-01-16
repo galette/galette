@@ -381,7 +381,7 @@ CREATE TABLE galette_payments_schedules (
   PRIMARY KEY (id_schedule),
   FOREIGN KEY (id_cotis) REFERENCES galette_cotisations (id_cotis) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_paymenttype) REFERENCES galette_paymenttypes (type_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 -- table for database version
 DROP TABLE IF EXISTS galette_database;

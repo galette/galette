@@ -82,7 +82,7 @@ CREATE TABLE galette_payments_schedules (
   PRIMARY KEY (id_schedule),
   FOREIGN KEY (id_cotis) REFERENCES galette_cotisations (id_cotis) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_paymenttype) REFERENCES galette_paymenttypes (type_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 ALTER TABLE galette_types_cotisation CHANGE cotis_extension cotis_extension TINYINT NOT NULL DEFAULT '0';
 UPDATE galette_types_cotisation SET cotis_extension=-1 WHERE cotis_extension=1;
