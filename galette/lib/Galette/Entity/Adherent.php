@@ -400,6 +400,7 @@ class Adherent
         $this->others_infos_admin = $r->info_adh;
         $this->number = $r->num_adh;
 
+        $this->parent = null;
         if ($r->parent_id !== null) {
             $this->parent = (int)$r->parent_id;
             if ($this->deps['parent'] === true) {
