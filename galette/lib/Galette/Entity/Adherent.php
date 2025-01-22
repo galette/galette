@@ -1360,6 +1360,10 @@ class Adherent
                             throw new \Exception('Incorrect format');
                         }
                     }
+                    $derrors = DateTime::getLastErrors();
+                    if (!empty($derrors['warning_count'])) {
+                        throw new \Exception(implode("\n", $derrors['warnings']));
+                    }
 
                     if ($field === 'ddn_adh') {
                         $now = new DateTime();
@@ -2115,6 +2119,14 @@ class Adherent
         if ($d === false) {
             Analog::log(
                 'Invalid birthdate: ' . $this->birthdate,
+                Analog::ERROR
+            );
+            return '';
+        }
+        $derrors = DateTime::getLastErrors();
+        if (!empty($derrors['warning_count'])) {
+            Analog::log(
+                'Invalid birthdate: ' . $this->birthdate . ' ' . implode(' ', $derrors['warnings']),
                 Analog::ERROR
             );
             return '';

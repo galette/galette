@@ -569,7 +569,15 @@ class AdvancedMembersList extends MembersList
                                         try {
                                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value['search']);
                                             if ($d === false) {
-                                                throw new \Exception('Incorrect format');
+                                                //try with non localized date
+                                                $d = \DateTime::createFromFormat("Y-m-d", $value['search']);
+                                                if ($d === false) {
+                                                    throw new \Exception('Incorrect format');
+                                                }
+                                            }
+                                            $derrors = \DateTime::getLastErrors();
+                                            if (!empty($derrors['warning_count'])) {
+                                                throw new \Exception('Incorrect date: ' . implode("\n", $derrors['warnings']));
                                             }
                                             $value['search'] = $d->format('Y-m-d');
                                         } catch (Throwable $e) {

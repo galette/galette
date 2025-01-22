@@ -55,6 +55,10 @@ trait DatesHelper
                     throw new \Exception('Incorrect format');
                 }
             }
+            $derrors = \DateTime::getLastErrors();
+            if (!empty($derrors['warning_count'])) {
+                throw new \Exception('Incorrect date ' . implode("\n", $derrors['warnings']));
+            }
 
             /** @phpstan-ignore-next-line */
             if (method_exists($this, 'getFieldPropertyName')) {
@@ -127,23 +131,39 @@ trait DatesHelper
 
                 $ym = \DateTime::createFromFormat(__("Y-m"), $value);
                 if ($ym !== false) {
-                    $day = 1;
-                    if ($start === false) {
-                        $day = (int)$ym->format('t');
+                    $derrors = \DateTime::getLastErrors();
+                    if (!empty($derrors['warning_count'])) {
+                        Analog::log(
+                            'Invalid date: ' . implode("\n", $derrors['warnings']),
+                            Analog::ERROR
+                        );
+                    } else {
+                        $day = 1;
+                        if ($start === false) {
+                            $day = (int)$ym->format('t');
+                        }
+                        $ym->setDate(
+                            (int)$ym->format('Y'),
+                            (int)$ym->format('m'),
+                            $day
+                        );
+                        $this->$field = $ym->format('Y-m-d');
+                        return $this;
                     }
-                    $ym->setDate(
-                        (int)$ym->format('Y'),
-                        (int)$ym->format('m'),
-                        $day
-                    );
-                    $this->$field = $ym->format('Y-m-d');
-                    return $this;
                 }
 
                 $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
                 if ($d !== false) {
-                    $this->$field = $d->format('Y-m-d');
-                    return $this;
+                    $derrors = \DateTime::getLastErrors();
+                    if (!empty($derrors['warning_count'])) {
+                        Analog::log(
+                            'Invalid date: ' . implode("\n", $derrors['warnings']),
+                            Analog::ERROR
+                        );
+                    } else {
+                        $this->$field = $d->format('Y-m-d');
+                        return $this;
+                    }
                 }
 
                 $field = null;

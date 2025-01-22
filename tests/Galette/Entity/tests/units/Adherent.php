@@ -1405,9 +1405,8 @@ class Adherent extends GaletteTestCase
             ],
             $dynamics->getValues($ddate->getId())
         );
-        $this->i18n->changeLanguage('en_US');
 
-        //TODO: test with wrong date. Will pass for now, but should fail
+        //still localized, but using raw format is also OK
         $adh = new \Galette\Entity\Adherent(
             $this->zdb,
             $this->adh->id,
@@ -1420,8 +1419,8 @@ class Adherent extends GaletteTestCase
         );
 
         $data = $this->dataAdherentOne() + [
-                'info_field_' . $ddate->getId() . '_1'   => '2025-13-13'
-            ];
+            'info_field_' . $ddate->getId() . '_1'   => date('Y-m-d')
+        ];
 
         $check = $adh->check($data, [], []);
         if (is_array($check)) {
@@ -1454,10 +1453,32 @@ class Adherent extends GaletteTestCase
                     'item_id'       => "$adh->id",
                     'field_form'    => 'adh',
                     'val_index'     => "1",
-                    'field_val'     => '2026-01-13', //surprisingly :/
+                    'field_val'     => date('Y-m-d'),
                 ]
             ],
             $dynamics->getValues($ddate->getId())
         );
+
+        $this->i18n->changeLanguage('en_US');
+
+        //test with wrong date should fail
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $data = $this->dataAdherentOne() + [
+                'info_field_' . $ddate->getId() . '_1'   => '2025-13-13'
+            ];
+
+        $check = $adh->check($data, [], []);
+        $this->assertIsArray($check);
+        $this->assertContains('- Wrong date format (Y-m-d) for Dynamic date field!', $check);
     }
 }

@@ -167,6 +167,10 @@ trait Dynamics
                                         throw new \Exception('Incorrect format');
                                     }
                                 }
+                                $derrors = \DateTime::getLastErrors();
+                                if (!empty($derrors['warning_count'])) {
+                                    throw new \Exception(implode("\n", $derrors['warnings']));
+                                }
                                 //always store date with default format
                                 $value = $d->format('Y-m-d');
                             } catch (Throwable $e) {
