@@ -265,8 +265,6 @@
     {% if login.isAdmin() or login.isStaff() or login.login == member.login %}
     <script type="text/javascript">
         $(function() {
-            {% include "elements/js/photo_dnd.js.twig" %}
-
             $('.notmanaged').click(function(){
                 {% include "elements/js/modal.js.twig" with {
                     modal_title_twig: _T("Not managed group")|e("js"),

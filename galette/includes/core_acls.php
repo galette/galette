@@ -74,7 +74,6 @@ $core_acls = [
     'payments_filter'                   => 'member',
     'adhesionForm'                      => 'member',
     'getDynamicFile'                    => 'member',
-    'photoDnd'                          => 'staff',
     // /Members rules
     // Groups rules
     '/(.+)?group(.+)?/i'                => 'groupmanager',
