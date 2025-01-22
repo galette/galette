@@ -37,16 +37,20 @@
         </div>
         <div class="center aligned content">
             <div class="header">{{ member.sfullname }}</div>
-            <a class="ui label">
-    {% if staff %}
-                <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
+    {% if member.nickname != '' %}
+            <div class="meta">
+                {{ member.nickname|escape }}
+            </div>
     {% endif %}
-                {% if member.nickname != '' %}{{ member.nickname|escape }}{% endif %}
-    {% if staff %}
-                <div class="detail">{{ member.sstatus }}</div>
-    {% endif %}
-            </a>
         </div>
+    {% if staff %}
+        <div class="extra content">
+            <span class="right floated">
+                <i class="ui user tie orange icon" aria-hidden="true"></i>
+                {{ member.sstatus }}
+            </span>
+        </div>
+    {% endif %}
     </div>
 {% endmacro %}
 
