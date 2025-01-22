@@ -167,6 +167,8 @@ trait Dynamics
                                         throw new \Exception('Incorrect format');
                                     }
                                 }
+                                //always store date with default format
+                                $value = $d->format('Y-m-d');
                             } catch (Throwable $e) {
                                 $valid = false;
                                 Analog::log(

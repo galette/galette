@@ -64,7 +64,8 @@ class Adherent extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
         $delete->where([
             'text_orig' => [
-                'Dynamic boolean field'
+                'Dynamic boolean field',
+                'Dynamic date field'
             ]
         ]);
         $this->zdb->execute($delete);
@@ -1154,6 +1155,309 @@ class Adherent extends GaletteTestCase
                 ]
             ],
             $dynamics->getValues($dboolean->getId())
+        );
+    }
+
+    /**
+     * Test dynamic dates
+     * @see https://bugs.galette.eu/issues/1881
+     *
+     * @return void
+     */
+    public function testDynamicDates(): void
+    {
+        $this->logSuperAdmin();
+        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $this->zdb->execute($delete);
+
+        //new dynamic field, of type date.
+        $cfield_data = [
+            'form_name'         => 'adh',
+            'field_name'        => 'Dynamic date field',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::DATE,
+            'field_required'    => 0,
+            'field_repeat'      => 1
+        ];
+
+        $cdf = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $cfield_data['field_type']);
+
+        $stored = $cdf->store($cfield_data);
+        $error_detected = $cdf->getErrors();
+        $warning_detected = $cdf->getWarnings();
+        $this->assertTrue(
+            $stored,
+            implode(
+                ' ',
+                $cdf->getErrors() + $cdf->getWarnings()
+            )
+        );
+        $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
+
+        //create/load member
+        $this->getMemberOne();
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $dynamics = $adh->getDynamicFields();
+        $dfields = $dynamics->getFields();
+        $this->assertCount(1, $dfields);
+        $ddate = array_pop($dfields);
+        $this->assertSame(
+            [
+                0 => [
+                    'item_id'       => $adh->id,
+                    'field_form'    => 'adh',
+                    'val_index'     => 1,
+                    'field_val'     => '',
+                    'is_new'        => true,
+                ]
+            ],
+            $dynamics->getValues($ddate->getId())
+        );
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $data = $this->dataAdherentOne() + [
+            'info_field_' . $ddate->getId() . '_1'   => date('Y-m-d')
+        ];
+
+        $check = $adh->check($data, [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+
+        $store = $adh->store();
+        $this->assertTrue($store);
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $dynamics = $adh->getDynamicFields();
+        $dfields = $dynamics->getFields();
+        $this->assertCount(1, $dfields);
+        $this->assertArrayHasKey($ddate->getId(), $dfields);
+        $ddate = $dfields[$ddate->getId()];
+        $this->assertSame(
+            [
+                0 => [
+                    'item_id'       => "$adh->id",
+                    'field_form'    => 'adh',
+                    'val_index'     => "1",
+                    'field_val'     => date('Y-m-d'),
+                ]
+            ],
+            $dynamics->getValues($ddate->getId())
+        );
+
+        //remove date value
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $data = $this->dataAdherentOne() + [
+            'info_field_' . $ddate->getId() . '_1'   => ''
+        ];
+
+        $check = $adh->check($data, [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+
+        $store = $adh->store();
+        $this->assertTrue($store);
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $dynamics = $adh->getDynamicFields();
+        $dfields = $dynamics->getFields();
+        $this->assertCount(1, $dfields);
+        $this->assertArrayHasKey($ddate->getId(), $dfields);
+        $ddate = $dfields[$ddate->getId()];
+        $this->assertSame(
+            [
+                0 => [
+                    'item_id'       => $adh->id,
+                    'field_form'    => 'adh',
+                    'val_index'     => 1,
+                    'field_val'     => '',
+                    'is_new'        => true
+                ]
+            ],
+            $dynamics->getValues($ddate->getId())
+        );
+
+        //test with wrong date format
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $data = $this->dataAdherentOne() + [
+                'info_field_' . $ddate->getId() . '_1'   => date('d/m/Y')
+            ];
+
+        $check = $adh->check($data, [], []);
+        $this->assertIsArray($check);
+        $this->assertContains('- Wrong date format (Y-m-d) for Dynamic date field!', $check);
+
+        //test with localized date. Will be stored as default date format (Y-m-d)
+        $this->i18n->changeLanguage('fr_FR');
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $data = $this->dataAdherentOne() + [
+                'info_field_' . $ddate->getId() . '_1'   => date('d/m/Y')
+            ];
+
+        $check = $adh->check($data, [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+
+        $store = $adh->store();
+        $this->assertTrue($store);
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $dynamics = $adh->getDynamicFields();
+        $dfields = $dynamics->getFields();
+        $this->assertCount(1, $dfields);
+        $this->assertArrayHasKey($ddate->getId(), $dfields);
+        $ddate = $dfields[$ddate->getId()];
+        $this->assertSame(
+            [
+                0 => [
+                    'item_id'       => "$adh->id",
+                    'field_form'    => 'adh',
+                    'val_index'     => "1",
+                    'field_val'     => date('Y-m-d'),
+                ]
+            ],
+            $dynamics->getValues($ddate->getId())
+        );
+        $this->i18n->changeLanguage('en_US');
+
+        //TODO: test with wrong date. Will pass for now, but should fail
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $data = $this->dataAdherentOne() + [
+                'info_field_' . $ddate->getId() . '_1'   => '2025-13-13'
+            ];
+
+        $check = $adh->check($data, [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+
+        $store = $adh->store();
+        $this->assertTrue($store);
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $dynamics = $adh->getDynamicFields();
+        $dfields = $dynamics->getFields();
+        $this->assertCount(1, $dfields);
+        $this->assertArrayHasKey($ddate->getId(), $dfields);
+        $ddate = $dfields[$ddate->getId()];
+        $this->assertSame(
+            [
+                0 => [
+                    'item_id'       => "$adh->id",
+                    'field_form'    => 'adh',
+                    'val_index'     => "1",
+                    'field_val'     => '2026-01-13', //surprisingly :/
+                ]
+            ],
+            $dynamics->getValues($ddate->getId())
         );
     }
 }
