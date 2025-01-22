@@ -36,11 +36,6 @@ $app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate): vo
     )->setName('ajaxMessages');
 
     $app->post(
-        'photo',
-        [AjaxController::class, 'photo']
-    )->setName('photoDnd');
-
-    $app->post(
         '/suggest/towns/{term}',
         [AjaxController::class, 'suggestTowns']
     )->setName('suggestTown');

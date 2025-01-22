@@ -22,21 +22,12 @@
     {% if not (member.picture.path ends with '/default/images/default.png') %}
     <div class="image">
         <img
-                id="photo_adh"
-                src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
-                width="{{ member.picture.getOptimalWidth() }}"
-                height="{{ member.picture.getOptimalHeight() }}"
-                alt="{{ _T("Picture") }}"
-                class="green tooltip"
-        {# Drag'n drop is disabled on member form #}
-        {% if (hidden_elements is not defined) %}
-                data-html="{{ _T("Drag and drop an image file to change the picture") }}">
-        <span class="ui bottom left corner tiny label">
-            <i class="download icon" aria-hidden="true"></i>
-        </span>
-        {% else %}
+            id="photo_adh"
+            src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
+            width="{{ member.picture.getOptimalWidth() }}"
+            height="{{ member.picture.getOptimalHeight() }}"
+            alt="{{ _T("Picture") }}"
         >
-        {% endif %}
     </div>
     {% endif %}
     <div class="content">
