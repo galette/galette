@@ -1,6 +1,13 @@
 Changes
 -------
 
+1.1.5.2 -> 1.2.0
+
+- Rework/harmonize SQL scripts - review some data types and defaults values
+- Dynamic dates are now stored using Y-m-d format only
+- Dates validation is a bit stricter
+- Remove photo drag'n drop
+
 1.1.5.1 -> 1.1.5.2
 
 - Wrong year on new contributions when using begin of membership date
