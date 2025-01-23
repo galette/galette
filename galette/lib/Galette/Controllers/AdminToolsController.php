@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\DynamicFields\Date;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\CheckModules;
@@ -122,7 +123,7 @@ class AdminToolsController extends AbstractController
 
         if (isset($post['emptylogins'])) {
             //proceed empty logins and passwords
-            //those ones cannot be null
+            //those cannot be null
             $members = new Members();
             $res = $members->emptylogins();
             if ($res === true) {
@@ -133,6 +134,16 @@ class AdminToolsController extends AbstractController
                 );
             } else {
                 $error_detected[] = _T("An error occurred filling empty logins and passwords :(");
+            }
+        }
+
+        if (isset($post['dynamicdates'])) {
+            //proceed dynamic dates fix
+            $res = Date::resetLocalizedFormats($this->zdb);
+            if ($res === true) {
+                $success_detected[] = _T("Dynamic dates has been fixed.");
+            } else {
+                $error_detected[] = _T("An error occurred fixing dynamic dates :(");
             }
         }
 

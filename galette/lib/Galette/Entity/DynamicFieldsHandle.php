@@ -45,6 +45,7 @@ use Galette\Repository\DynamicFieldsSet;
 class DynamicFieldsHandle
 {
     public const TABLE = 'dynamic_fields';
+    public const PK = 'item_id';
 
     /** @var DynamicField[] */
     private array $dynamic_fields = [];
