@@ -536,20 +536,17 @@ class Contribution
 
         // missing required fields?
         foreach ($required as $key => $val) {
-            if ($val === 1) {
-                $prop = $this->fields[$key]['propname'];
-                if (
-                    !isset($disabled[$key])
-                    && (!isset($this->$prop)
-                    || (!is_object($this->$prop) && empty($this->$prop))
-                    || (is_object($this->$prop) && empty($this->$prop->id)))
-                ) {
-                    $this->errors[] = str_replace(
-                        '%field',
-                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
-                        _T("- Mandatory field %field empty.")
-                    );
-                }
+            if ($val == 0) {
+                continue;
+            }
+            $prop = $this->fields[$key]['propname'];
+
+            if (!isset($disabled[$key]) && (!isset($this->$prop) || $this->$prop == '')) {
+                $this->errors[] = str_replace(
+                    '%field',
+                    '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
+                    _T("- Mandatory field %field empty.")
+                );
             }
         }
 

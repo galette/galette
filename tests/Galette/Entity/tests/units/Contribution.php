@@ -377,6 +377,54 @@ class Contribution extends GaletteTestCase
     }
 
     /**
+     * Test contributions can have an amount equals to zero
+     *
+     * @return void
+     */
+    public function testZeroAmountContribution(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            [
+                'type' => 1 //annual fee
+            ]
+        );
+
+        //create contribution for member
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 1, //annual fee
+            'montant_cotis' => 0,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $contrib->date,
+            'date_debut_cotis' => $contrib->begin_date,
+            'date_fin_cotis' => $contrib->end_date,
+        ];
+
+        $check = $contrib->check($data, $contrib->getRequired(), []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+
+        $store = $contrib->store();
+        $this->assertTrue($store);
+        $this->assertSame(0.0, $contrib->amount);
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            $contrib->id
+        );
+        $this->assertSame(0.0, $contrib->amount);
+    }
+
+    /**
      * Test donation update
      *
      * @return void
