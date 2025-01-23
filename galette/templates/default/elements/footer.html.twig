@@ -19,8 +19,8 @@
  */
 #}
 {% set new_release = callstatic('\\Galette\\Core\\Galette', 'getNewRelease') %}
-    <footer class="page-footer{% if login.getCompactMenu() %} extended"{% endif %}">
-        <div class="ui center aligned basic padded segment footer-wrapper">
+    <footer class="page-footer">
+        <div class="ui center aligned basic padded segment footer-wrapper{% if login.getCompactMenu() %} extended"{% endif %}">
             <div class="row">
                 <div class="ui horizontal bulleted link list">
                     <a id="copyright" href="https://galette.eu/" class="item{% if new_release.new and login.isLogged() and (login.isAdmin() or login.isStaff()) %} tooltip" data-title="{{ _T("A new Galette release is available.") }}" data-content="{{ _T("You currently use Galette %1$s, and %2$s is available.")|replace({"%1$s": constant('GALETTE_DISPLAY_VERSION'), "%2$s": new_release.version}) }}"{% else %}"{% endif %}>
