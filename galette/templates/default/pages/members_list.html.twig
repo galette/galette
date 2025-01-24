@@ -210,7 +210,7 @@
 {% endblock %}
 
 {% block legend %}
-    {% if nb_members != 0 %}
+    {% if mode != 'ajax' %}
         <div id="legende" title="{{ _T('Legend') }}" class="ui modal">
             <div class="header">{{ _T('Legend') }}</div>
             <div class="content">
@@ -253,6 +253,7 @@
                                 <i class="ui user edit blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Modification') }}</td>
+        {% if login.isAdmin() or login.isStaff() %}
                             <th>
                                 <i class="ui receipt green icon" aria-hidden="true"></i>
                             </th>
@@ -263,6 +264,13 @@
                                 <i class="ui user times red icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Deletion') }}</td>
+        {% endif %}
+        {% if login.isSuperAdmin() %}
+                            <th class="delete">
+                                <i class="ui user secret grey icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T('Log in as %membername')|replace({'%membername': _T('Member')}) }}</td>
+        {% endif %}
                         </tr>
                     </tbody>
                 </table>
@@ -295,6 +303,10 @@
                         <tr>
                             <th><i class="ui users cog orange icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Group manager') }}</td>
+        {% if login.isAdmin() or login.isStaff() %}
+                            <th><i class="ui donate green icon" aria-hidden="true"></i></th>
+                            <td class="back">{{ _T('Is a sponsor') }}</td>
+        {% endif %}
 
                         </tr>
                     </tbody>

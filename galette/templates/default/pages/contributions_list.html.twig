@@ -359,34 +359,68 @@
 {% endblock %}
 
 {% block legend %}
-    <div id="legende" title="{{ _T("Legend") }}" class="ui modal">
-        <div class="header">{{ _T("Legend") }}</div>
-        <div class="content">
-            <table class="ui stripped table">
-                {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
-                    <tr>
-                        <th class="action">
-                            <i class="ui edit blue icon" aria-hidden="true"></i>
-                        </th>
-                        <td class="back">{{ _T("Modification") }}</td>
-                    </tr>
-                    <tr>
-                        <th class="delete">
-                            <i class="ui trash red icon" aria-hidden="true"></i>
-                        </th>
-                        <td class="back">{{ _T("Deletion") }}</td>
-                    </tr>
-                {% endif %}
-                <tr>
-                    <th class="cotis-normal color-sample">&nbsp;</th>
-                    <td class="back">{{ _T("Contribution") }}</td>
-                </tr>
-                <tr>
-                    <th class="cotis-give color-sample">&nbsp;</th>
-                    <td class="back">{{ _T("Gift") }}</td>
-                </tr>
-            </table>
+    {% if mode != 'ajax' %}
+        <div id="legende" title="{{ _T("Legend") }}" class="ui modal">
+            <div class="header">{{ _T("Legend") }}</div>
+            <div class="content">
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th class="" colspan="4">{{ _T('Reading the list') }}</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        <tr>
+                            <th class="cotis-normal color-sample">&nbsp;</th>
+                            <td class="back">{{ _T("Contribution") }}</td>
+                            <th class="cotis-give color-sample">&nbsp;</th>
+                            <td class="back">{{ _T("Gift") }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th class="" colspan="4">{{ _T('Actions') }}</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        <tr>
+        {% if login.isAdmin() or login.isStaff() %}
+                            <th class="action">
+                                <i class="ui linkify blue icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Edit the attached transaction") }}</td>
+        {% endif %}
+                            <th class="action">
+                                <i class="ui filter grey small icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Show only '%name' contributions")|replace({"%name": _T("Member")}) }}</td>
+        {% if login.isAdmin() or login.isStaff() %}
+                        </tr>
+                        <tr>
+        {% endif %}
+                            <th class="action">
+                                <i class="ui file pdf green icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</td>
+        {% if login.isAdmin() or login.isStaff() %}
+                            <th class="action">
+                                <i class="ui edit blue icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Modification") }}</td>
+                        </tr>
+                        <tr>
+                            <th class="action">
+                                <i class="ui trash red icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Deletion") }}</td>
+        {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
         </div>
-        <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
-    </div>
+    {% endif %}
 {% endblock %}

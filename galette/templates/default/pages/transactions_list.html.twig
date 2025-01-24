@@ -235,22 +235,56 @@
 {% endblock %}
 
 {% block legend %}
-        <div id="legende" title="{{ _T("Legend") }}" class="ui modal">
-            <div class="header">{{ _T("Legend") }}</div>
-            <div class="content">
-                <table class="ui stripped table">
+    <div id="legende" title="{{ _T("Legend") }}" class="ui modal">
+        <div class="header">{{ _T("Legend") }}</div>
+        <div class="content">
+            <table class="ui stripped table">
+                <thead>
+                    <tr>
+                        <th class="" colspan="4">{{ _T("Reading the list") }}</th>
+                    </tr>
+                <thead>
+                <tbody>
                     <tr>
                         <th class="transaction-normal color-sample"><i class="ui icon">&nbsp;</i></th>
                         <td class="back">{{ _T("Completely dispatched transaction") }}</td>
-                    </tr>
-                    <tr>
                         <th class="transaction-uncomplete color-sample"><i class="ui icon">&nbsp;</i></th>
                         <td class="back">{{ _T("Uncomplete dispatched transaction") }}</td>
                     </tr>
-                </table>
-            </div>
-            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
+                </tbody>
+            </table>
+            <table class="ui stripped table">
+                <thead>
+                    <tr>
+                        <th class="" colspan="4">{{ _T("Actions") }}</th>
+                    </tr>
+                <thead>
+                <tbody>
+                    <tr>
+                        <th class="action">
+                            <i class="ui filter grey small icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Show only '%name' transactions")|replace({"%name": _T("Originator")}) }}</td>
+    {% if login.isGroupManager() %}
+                        <th class="action">
+                            <i class="ui edit blue icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Modification") }}</td>
+    {% endif %}
+                    <tr>
+    {% if login.isAdmin() or login.isStaff() %}
+                    </tr>
+                        <th class="action">
+                            <i class="ui trash red icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Deletion") }}</td>
+                    </tr>
+    {% endif %}
+                </tbody>
+            </table>
         </div>
+        <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
