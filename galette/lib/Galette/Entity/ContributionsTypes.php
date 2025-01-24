@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\Db;
 use ArrayObject;
 use Galette\Features\I18n;
@@ -42,6 +44,8 @@ use Throwable;
  * @property int $extension
  */
 
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_types_cotisation')]
 class ContributionsTypes
 {
     use I18n;
@@ -54,9 +58,15 @@ class ContributionsTypes
 
     private Db $zdb;
 
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: self::PK, type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
+    #[ORM\Column(name: 'libelle_type_cotis', type: Types::STRING, length: 255, options: ['default' => ''])]
     private string $label;
+    #[ORM\Column(name: 'amount', type: Types::DECIMAL, precision: 15, scale: 2, nullable: true)]
     private ?float $amount; //@phpstan-ignore-line
+    #[ORM\Column(name: 'cotis_extension', type: Types::INTEGER, options: ['default' => 0])]
     private int $extension;
 
     public const ID_NOT_EXITS = -1;

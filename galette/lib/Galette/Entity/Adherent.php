@@ -26,6 +26,8 @@ namespace Galette\Entity;
 use ArrayObject;
 use DateInterval;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
@@ -109,6 +111,8 @@ use Galette\Features\Dynamics;
  * @property-read bool $self_adh
  * @property ?string $region
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_adherents')]
 class Adherent
 {
     use Dynamics;
@@ -129,41 +133,96 @@ class Adherent
     public const AFTER_ADD_LIST = 4;
     public const AFTER_ADD_HOME = 5;
 
+    #[ORM\Id]
+    #[ORM\Column(name: 'id_adh', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private ?int $id;
     //Identity
-    private Title|string|null $title = null; //@phpstan-ignore-line
+    #[ORM\ManyToOne(targetEntity: Title::class)]
+    #[ORM\JoinColumn(
+        name: 'titre_adh',
+        referencedColumnName: Title::PK,
+        nullable: true,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
+    private Title|string|null $title = null;
+    #[ORM\Column(name: 'societe_adh', type: Types::STRING, length: 200, nullable: true)]
     private ?string $company_name;
+    #[ORM\Column(name: 'nom_adh', type: Types::STRING, length: 50, options: ['default' => ''])]
     private ?string $name;
+    #[ORM\Column(name: 'prenom_adh', type: Types::STRING, length: 50, options: ['default' => ''])]
     private ?string $surname;
+    #[ORM\Column(name: 'pseudo_adh', type: Types::STRING, length: 20, options: ['default' => ''])]
     private ?string $nickname;
+    #[ORM\Column(name: 'ddn_adh', type: Types::DATE_MUTABLE)]
     private ?string $birthdate;
+    #[ORM\Column(name: 'lieu_naissance', type: Types::TEXT)]
     private ?string $birth_place;
+    #[ORM\Column(name: 'sexe_adh', type: Types::SMALLINT)]
     private int $gender;
+    #[ORM\Column(name: 'prof_adh', type: Types::STRING, length: 150, nullable: true)]
     private ?string $job;
+    #[ORM\Column(name: 'pref_lang', type: Types::STRING, length: 20)]
     private string $language;
+    #[ORM\Column(name: 'activite_adh', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $active;
+    #[ORM\ManyToOne(targetEntity: Status::class)]
+    #[ORM\JoinColumn(
+        name: Status::PK,
+        referencedColumnName: Status::PK,
+        nullable: false,
+        onDelete: 'restrict',
+        options: [
+            'default' => 4,
+            'unsigned' => true
+        ]
+    )]
     private int $status;
     //Contact information
+    #[ORM\Column(name: 'adresse_adh', type: Types::TEXT)]
     private ?string $address = null;
+    #[ORM\Column(name: 'cp_adh', type: Types::STRING, length: 10, options: ['default' => ''])]
     private ?string $zipcode = null;
+    #[ORM\Column(name: 'ville_adh', type: Types::STRING, length: 200, options: ['default' => ''])]
     private ?string $town = null;
+    #[ORM\Column(name: 'region_adh', type: Types::STRING, length: 200, options: ['default' => ''])]
+    private ?string $region = null;
+    #[ORM\Column(name: 'pays_adh', type: Types::STRING, length: 200, nullable: true)]
     private ?string $country = null;
+    #[ORM\Column(name: 'tel_adh', type: Types::STRING, length: 50, nullable: true)]
     private ?string $phone;
+    #[ORM\Column(name: 'gsm_adh', type: Types::STRING, length: 50, nullable: true)]
     private ?string $gsm;
+    #[ORM\Column(name: 'email_adh', type: Types::STRING, length: 255, nullable: true)]
     private ?string $email;
+    #[ORM\Column(name: 'gpgid', type: Types::TEXT, nullable: true)]
     private ?string $gnupgid;
+    #[ORM\Column(name: 'fingerprint', type: Types::STRING, length: 255, nullable: true)]
     private ?string $fingerprint;
     //Galette relative information
+    #[ORM\Column(name: 'bool_display_info', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $appears_in_list;
+    #[ORM\Column(name: 'bool_admin_adh', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $admin;
     private bool $staff = false;
+    #[ORM\Column(name: 'bool_exempt_adh', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $due_free;
+    #[ORM\Column(name: 'login_adh', type: Types::STRING, length: 200, options: ['default' => ''])]
     private ?string $login;
+    #[ORM\Column(name: 'mdp_adh', type: Types::STRING, length: 255, options: ['default' => ''])]
     private ?string $password;
+    #[ORM\Column(name: 'date_crea_adh', type: Types::DATE_MUTABLE)]
     private string $creation_date;
+    #[ORM\Column(name: 'date_modif_adh', type: Types::DATE_MUTABLE)]
     private string $modification_date;
+    #[ORM\Column(name: 'date_echeance', type: Types::DATE_MUTABLE, nullable: true)]
     private ?string $due_date;
+    #[ORM\Column(name: 'info_public_adh', type: Types::TEXT)]
     private ?string $others_infos;
+    #[ORM\Column(name: 'info_adh', type: Types::TEXT)]
     private ?string $others_infos_admin;
     private ?Picture $picture = null;
     private int $oldness;
@@ -172,14 +231,16 @@ class Adherent
     private array $groups = [];
     /** @var array<int, Group> */
     private array $managed_groups = [];
+    #[ORM\OneToOne(targetEntity: self::class)]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: self::PK)]
     private int|Adherent|null $parent;
     /** @var array<int, Adherent>|null */
     private ?array $children = []; //@phpstan-ignore-line
     private bool $duplicate = false;
     /** @var array<int,Social> */
     private array $socials;
+    #[ORM\Column(name: 'num_adh', type: Types::STRING, length: 255, nullable: true)]
     private ?string $number = null;
-    private ?string $region = null;
 
     private string $row_classes;
 
@@ -402,10 +463,7 @@ class Adherent
 
         $this->parent = null;
         if ($r->parent_id !== null) {
-            $this->parent = (int)$r->parent_id;
-            if ($this->deps['parent'] === true) {
-                $this->loadParent();
-            }
+            $this->setParent((int)$r->parent_id);
         }
 
         if ($this->deps['children'] === true) {
@@ -1256,7 +1314,7 @@ class Adherent
 
         //attach to/detach from parent
         if (isset($values['detach_parent'])) {
-            $this->parent = null;
+            $this->setParent(null);
         }
 
         if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && $this->parent_id !== $login->id) {
@@ -1454,7 +1512,7 @@ class Adherent
                     );
                 } else {
                     //check if login does not contain the @ character
-                    if (strpos($value, '@') != false) {
+                    if (strpos($value, '@')) {
                         $this->errors[] = _T("- The username cannot contain the @ character");
                     } else {
                         //check if login is already taken
@@ -1586,7 +1644,7 @@ class Adherent
 
         if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '') {
             if ($this->preferences->pref_bool_create_member) {
-                $this->parent = $login->id;
+                $this->setParent($login->id);
             }
         }
 
@@ -1910,7 +1968,7 @@ class Adherent
                 }
                 return null;
             case 'parent_id':
-                return ($this->parent instanceof Adherent) ? $this->parent->id : (int)$this->parent;
+                return ($this->parent instanceof Adherent) ? $this->parent->id : $this->parent;
             default:
                 if (!property_exists($this, $name)) {
                     Analog::log(
@@ -2390,14 +2448,22 @@ class Adherent
     /**
      * Set member parent
      *
-     * @param integer $id Parent identifier
+     * @param ?integer $id Parent identifier
      *
      * @return $this
      */
-    public function setParent(int $id): self
+    public function setParent(?int $id): self
     {
+        if ($id === null) {
+            $this->parent = null;
+            return $this;
+        }
+
         $this->parent = $id;
-        $this->loadParent();
+        if ($this->deps['parent'] === true) {
+            $this->loadParent();
+        }
+
         return $this;
     }
 
