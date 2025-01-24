@@ -2883,7 +2883,7 @@ msgstr "மாற்றியமைக்கப்பட்ட"
 
 #: ../lib/Galette/Entity/Reminder.php:250
 msgid "%name <%mail> (%days days)"
-msgstr "%பெயர் &lt;%அஞ்சல்&gt; (%நாட்கள்)"
+msgstr "%பெயர் <%அஞ்சல்> (%நாட்கள்)"
 
 #: ../lib/Galette/Entity/Reminder.php:257
 msgid "Sent reminder email for late membership"

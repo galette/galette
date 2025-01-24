@@ -3314,7 +3314,7 @@ msgstr "Modificat"
 
 #: ../lib/Galette/Entity/Reminder.php:250
 msgid "%name <%mail> (%days days)"
-msgstr "%name &lt;%mail&gt; (%days dies)"
+msgstr "%name <%mail> (%days dies)"
 
 #: ../lib/Galette/Entity/Reminder.php:257
 #, fuzzy

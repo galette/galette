@@ -2938,7 +2938,7 @@ msgstr "Modificato"
 
 #: ../lib/Galette/Entity/Reminder.php:250
 msgid "%name <%mail> (%days days)"
-msgstr "%name &lt;%mail&gt; (%giorni giorni)"
+msgstr "%name <%mail> (%giorni giorni)"
 
 #: ../lib/Galette/Entity/Reminder.php:257
 msgid "Sent reminder email for late membership"
@@ -7994,7 +7994,7 @@ msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
 msgstr ""
-"Usare le funzionalità TLS del server?&lt; br / &gt;Per GMail, questa "
+"Usare le funzionalità TLS del server?<br/>Per GMail, questa "
 "impostazione sarà sempre attiva."
 
 #: ../../tempcache/pages/preferences.html.twig:1641

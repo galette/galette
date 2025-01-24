@@ -2890,7 +2890,7 @@ msgstr "Змінено"
 
 #: ../lib/Galette/Entity/Reminder.php:250
 msgid "%name <%mail> (%days days)"
-msgstr "%name &lt;%mail&gt; (%days днів)"
+msgstr "%name <%mail> (%days днів)"
 
 #: ../lib/Galette/Entity/Reminder.php:257
 msgid "Sent reminder email for late membership"
