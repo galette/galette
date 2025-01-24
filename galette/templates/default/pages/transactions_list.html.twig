@@ -286,21 +286,3 @@
         <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
     </div>
 {% endblock %}
-
-{% block javascripts %}
-        <script type="text/javascript">
-            $(function(){
-                var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic right aligned fitted segment"><a href="#" class="show_legend  ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
-                $('.listing').before(_checklinks);
-                $('.listing').after(_checklinks);
-
-                //$('#table_footer').parent().before('<td class="right" colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}9{% elseif login.isAdmin() or login.isStaff() %}8{% else %}7{% endif %}"><a href="#" class="show_legend">{{ _T("Show legend") }}</a></td>');
-
-                _bind_legend();
-
-                {% include "elements/js/removal.js.twig" with {
-                    single_action: "true"
-                } %}
-            });
-        </script>
-{% endblock %}

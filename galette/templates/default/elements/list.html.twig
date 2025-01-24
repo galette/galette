@@ -165,15 +165,15 @@
         }
     {% endif %}
         $(function(){
+    {% if _legend_block is not empty %}
+            var _legendlink = '<div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
+    {% endif %}
     {% if batch is defined and batch_actions is defined and batch_actions|length > 0 %}
             var _init_page = function(res){
         {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
                 {# Use of Javascript to draw specific elements that are not relevant if JS is inactive #}
                 var _checklinks = '<a href="#" class="checkall ui blue tertiary button">{{ _T("(Un)Check all")|e('js') }}</a>' +
                     ' | <a href="#" class="checkinvert ui blue tertiary button">{{ _T("Invert selection")|e('js') }}</a> | ';
-            {% if _legend_block is not empty %}
-                var _legendlink = '<div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
-            {% endif %}
                 $('.batch-select-action').before(_checklinks);
                 $('.batch-select-action').dropdown({
                     action: function(text, value, element) {
@@ -220,6 +220,11 @@
         {% endif %}
             }
             _init_page();
+    {% else %}
+        {% if _legend_block is not empty %}
+            $('.listing').after(_legendlink);
+            $('.listing').before(_legendlink);
+        {% endif %}
     {% endif %}
     {% if _legend_block is not empty %}
             _bind_legend();
