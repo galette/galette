@@ -217,26 +217,26 @@
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th class="" colspan="4">{{ _T('Reading the list') }}</th>
+                            <th scope="colgroup" colspan="4">{{ _T('Reading the list') }}</th>
                         </tr>
                     <thead>
                     <tbody>
                         <tr>
-                            <th class="back">{{ _T('Name') }}</th>
+                            <th scope="row"  class="back">{{ _T('Name') }}</th>
                             <td class="back">{{ _T('Active account') }}</td>
-                            <th class="inactive-account back">{{ _T('Name') }}</th>
+                            <th scope="row"  class="inactive-account back">{{ _T('Name') }}</th>
                             <td class="back">{{ _T('Inactive account') }}</td>
                         </tr>
                         <tr>
-                            <th class="cotis-ok color-sample">&nbsp;</th>
+                            <th scope="row"  class="cotis-ok color-sample">&nbsp;</th>
                             <td class="back">{{ _T('Membership in order') }}</td>
-                            <th class="cotis-soon color-sample">&nbsp;</th>
+                            <th scope="row"  class="cotis-soon color-sample">&nbsp;</th>
                             <td class="back">{{ _T('Membership will expire soon (<30d)') }}</td>
                         </tr>
                         <tr>
-                            <th class="cotis-never color-sample">&nbsp;</th>
+                            <th scope="row"  class="cotis-never color-sample">&nbsp;</th>
                             <td class="back">{{ _T('Never contributed') }}</td>
-                            <th class="cotis-late color-sample">&nbsp;</th>
+                            <th scope="row"  class="cotis-late color-sample">&nbsp;</th>
                             <td class="back">{{ _T('Lateness in fee') }}</td>
                         </tr>
                     </tbody>
@@ -244,29 +244,29 @@
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th class="" colspan="4">{{ _T('Actions') }}</th>
+                            <th scope="colgroup" colspan="4">{{ _T('Actions') }}</th>
                         </tr>
                     <thead>
                     <tbody>
                         <tr>
-                            <th class="action">
+                            <th scope="row"  class="action">
                                 <i class="ui user edit blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Modification') }}</td>
         {% if login.isAdmin() or login.isStaff() %}
-                            <th>
+                            <th scope="row" >
                                 <i class="ui receipt green icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Contributions') }}</td>
                         </tr>
                         <tr>
-                            <th class="delete">
+                            <th scope="row"  class="delete">
                                 <i class="ui user times red icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Deletion') }}</td>
         {% endif %}
         {% if login.isSuperAdmin() %}
-                            <th class="delete">
+                            <th scope="row"  class="delete">
                                 <i class="ui user secret grey icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Log in as %membername')|replace({'%membername': _T('Member')}) }}</td>
@@ -277,37 +277,36 @@
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th colspan="4">{{ _T('User status/interactions') }}</th>
+                            <th scope="colgroup" colspan="4">{{ _T('User status/interactions') }}</th>
                         </tr>
-                    <thead>
+                    </thead>
                     <tbody>
                         <tr>
-                            <th><i class="ui envelope outline teal icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui envelope outline teal icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Send an email') }}</td>
-                            <th><i class="ui building icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui building icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a company') }}</td>
                         </tr>
 
                         <tr>
-                            <th><i class="ui male icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui male icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a man') }}</td>
-                            <th><i class="ui female icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui female icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a woman') }}</td>
                         </tr>
                         <tr>
-                            <th><i class="ui user shield red icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui user shield red icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Admin') }}</td>
-                            <th><i class="ui user tie orange icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui user tie orange icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Staff member') }}</td>
                         </tr>
                         <tr>
-                            <th><i class="ui users cog orange icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui users cog orange icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Group manager') }}</td>
         {% if login.isAdmin() or login.isStaff() %}
-                            <th><i class="ui donate green icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui donate green icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a sponsor') }}</td>
         {% endif %}
-
                         </tr>
                     </tbody>
                 </table>

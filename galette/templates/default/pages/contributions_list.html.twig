@@ -366,14 +366,14 @@
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th class="" colspan="4">{{ _T('Reading the list') }}</th>
+                            <th scope="colgroup" colspan="4">{{ _T('Reading the list') }}</th>
                         </tr>
                     <thead>
                     <tbody>
                         <tr>
-                            <th class="cotis-normal color-sample">&nbsp;</th>
+                            <th scope="row" class="cotis-normal color-sample">&nbsp;</th>
                             <td class="back">{{ _T("Contribution") }}</td>
-                            <th class="cotis-give color-sample">&nbsp;</th>
+                            <th scope="row"  class="cotis-give color-sample">&nbsp;</th>
                             <td class="back">{{ _T("Gift") }}</td>
                         </tr>
                     </tbody>
@@ -381,18 +381,18 @@
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th class="" colspan="4">{{ _T('Actions') }}</th>
+                            <th scope="colgroup" colspan="4">{{ _T('Actions') }}</th>
                         </tr>
-                    <thead>
+                    </thead>
                     <tbody>
                         <tr>
         {% if login.isAdmin() or login.isStaff() %}
-                            <th class="action">
+                            <th scope="row"  class="action">
                                 <i class="ui linkify blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Edit the attached transaction") }}</td>
         {% endif %}
-                            <th class="action">
+                            <th scope="row"  class="action">
                                 <i class="ui filter grey small icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Show only '%name' contributions")|replace({"%name": _T("Member")}) }}</td>
@@ -400,18 +400,18 @@
                         </tr>
                         <tr>
         {% endif %}
-                            <th class="action">
+                            <th scope="row"  class="action">
                                 <i class="ui file pdf green icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</td>
         {% if login.isAdmin() or login.isStaff() %}
-                            <th class="action">
+                            <th scope="row"  class="action">
                                 <i class="ui edit blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Modification") }}</td>
                         </tr>
                         <tr>
-                            <th class="action">
+                            <th scope="row"  class="action">
                                 <i class="ui trash red icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Deletion") }}</td>

@@ -241,14 +241,14 @@
             <table class="ui stripped table">
                 <thead>
                     <tr>
-                        <th class="" colspan="4">{{ _T("Reading the list") }}</th>
+                        <th scope="colgroup" colspan="4">{{ _T("Reading the list") }}</th>
                     </tr>
                 <thead>
                 <tbody>
                     <tr>
-                        <th class="transaction-normal color-sample"><i class="ui icon">&nbsp;</i></th>
+                        <th scope="row"  class="transaction-normal color-sample"><i class="ui icon">&nbsp;</i></th>
                         <td class="back">{{ _T("Completely dispatched transaction") }}</td>
-                        <th class="transaction-uncomplete color-sample"><i class="ui icon">&nbsp;</i></th>
+                        <th scope="row"  class="transaction-uncomplete color-sample"><i class="ui icon">&nbsp;</i></th>
                         <td class="back">{{ _T("Uncomplete dispatched transaction") }}</td>
                     </tr>
                 </tbody>
@@ -256,25 +256,25 @@
             <table class="ui stripped table">
                 <thead>
                     <tr>
-                        <th class="" colspan="4">{{ _T("Actions") }}</th>
+                        <th scope="colgroup" colspan="4">{{ _T("Actions") }}</th>
                     </tr>
-                <thead>
+                </thead>
                 <tbody>
                     <tr>
-                        <th class="action">
+                        <th scope="row"  class="action">
                             <i class="ui filter grey small icon" aria-hidden="true"></i>
                         </th>
                         <td class="back">{{ _T("Show only '%name' transactions")|replace({"%name": _T("Originator")}) }}</td>
     {% if login.isGroupManager() %}
-                        <th class="action">
+                        <th scope="row"  class="action">
                             <i class="ui edit blue icon" aria-hidden="true"></i>
                         </th>
                         <td class="back">{{ _T("Modification") }}</td>
     {% endif %}
-                    <tr>
-    {% if login.isAdmin() or login.isStaff() %}
                     </tr>
-                        <th class="action">
+    {% if login.isAdmin() or login.isStaff() %}
+                    <tr>
+                        <th scope="row"  class="action">
                             <i class="ui trash red icon" aria-hidden="true"></i>
                         </th>
                         <td class="back">{{ _T("Deletion") }}</td>
