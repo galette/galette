@@ -39,7 +39,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-29 09:48+0100\n"
 "PO-Revision-Date: 2025-01-11 07:42+0000\n"
 "Last-Translator: Zeik0s <zeik0s@zeik0s.at>\n"
@@ -149,7 +149,8 @@ msgstr "- Unbekannte Zahlungsmethode!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:330
 msgid "No scheduled payment was selected, please check at least one."
-msgstr "Keine vorgemerkte Zahlung ausgewählt, bitte wählen Sie mindestens eine."
+msgstr ""
+"Keine vorgemerkte Zahlung ausgewählt, bitte wählen Sie mindestens eine."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:366
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:424
@@ -7894,8 +7895,8 @@ msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
-"Dürfen Gruppenmanager Mitglieder in verschiedenen Formaten exportieren (z.B. "
-".csv, PDF-Cards, usw.)"
+"Dürfen Gruppenmanager Mitglieder in verschiedenen Formaten exportieren (z."
+"B. .csv, PDF-Cards, usw.)"
 
 #: ../../tempcache/pages/preferences.html.twig:1231
 msgid "Can group managers see contributions?"

@@ -7994,8 +7994,8 @@ msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
 msgstr ""
-"Usare le funzionalità TLS del server?<br/>Per GMail, questa "
-"impostazione sarà sempre attiva."
+"Usare le funzionalità TLS del server?<br/>Per GMail, questa impostazione "
+"sarà sempre attiva."
 
 #: ../../tempcache/pages/preferences.html.twig:1641
 msgid "Allow unsecure TLS?"

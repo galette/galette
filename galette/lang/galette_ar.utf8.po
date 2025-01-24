@@ -15,7 +15,7 @@
 # ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>, 2023, 2024, 2025.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-29 09:48+0100\n"
 "PO-Revision-Date: 2025-01-04 16:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
