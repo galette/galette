@@ -1768,7 +1768,7 @@ msgstr "%membername : supprimer de la base"
 
 #: ../lib/Galette/Core/Galette.php:885 ../lib/Galette/Core/Galette.php:890
 #: ../../tempcache/elements/group_persons.html.twig:187
-msgid "Log in in as %membername"
+msgid "Log in as %membername"
 msgstr "Se connecter en tant que %membername"
 
 #: ../lib/Galette/Core/Galette.php:976
@@ -6893,8 +6893,8 @@ msgid "Membership in order"
 msgstr "Adhésion en règle"
 
 #: ../../tempcache/pages/members_list.html.twig:544
-msgid "Membership will expire soon (&lt;30d)"
-msgstr "Adhésion à échéance (&lt;30j)"
+msgid "Membership will expire soon (<30d)"
+msgstr "Adhésion à échéance (<30j)"
 
 #: ../../tempcache/pages/members_list.html.twig:556
 msgid "Lateness in fee"

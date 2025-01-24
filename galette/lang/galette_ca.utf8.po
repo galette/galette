@@ -1982,7 +1982,7 @@ msgstr "Elimina de la base de dades el nom d'un membre de la base de dades"
 #: ../lib/Galette/Core/Galette.php:885 ../lib/Galette/Core/Galette.php:890
 #: ../../tempcache/elements/group_persons.html.twig:187
 #, fuzzy
-msgid "Log in in as %membername"
+msgid "Log in as %membername"
 msgstr "Inicia sessió com a nomdepermembre"
 
 #: ../lib/Galette/Core/Galette.php:976
@@ -7874,8 +7874,8 @@ msgstr "Pertinença en ordre"
 
 #: ../../tempcache/pages/members_list.html.twig:544
 #, fuzzy
-msgid "Membership will expire soon (&lt;30d)"
-msgstr "La pertinença caducarà aviat (lt;30d)"
+msgid "Membership will expire soon (<30d)"
+msgstr "La pertinença caducarà aviat (<30d)"
 
 #: ../../tempcache/pages/members_list.html.twig:556
 #, fuzzy

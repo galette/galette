@@ -882,12 +882,12 @@ class Galette
                 'label' => str_replace(
                     "%membername",
                     $member->sname,
-                    _T("Log in in as %membername")
+                    _T("Log in as %membername")
                 ),
                 'title' => str_replace(
                     "%membername",
                     $member->sname,
-                    _T("Log in in as %membername")
+                    _T("Log in as %membername")
                 ),
                 'route' => [
                     'name' => 'impersonate',
