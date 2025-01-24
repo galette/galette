@@ -100,7 +100,8 @@ class Transaction extends GaletteTestCase
             'id_adh' => $this->adh->id,
             'trans_date' => $date->format('Y-m-d'),
             'trans_amount' => 92,
-            'trans_desc' => 'FAKER' . $this->seed
+            'trans_desc' => 'FAKER' . $this->seed,
+            'type_paiement_trans' => 6,
         ];
 
         $this->transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
@@ -440,11 +441,22 @@ class Transaction extends GaletteTestCase
             'date_fin_cotis' => $edate->format('Y-m-d'),
             \Galette\Entity\Transaction::PK => $tid
         ];
-        $contrib = $this->createContrib($data);
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            [
+                'type' => $data['id_type_cotis'],
+                'trans' => $tid
+            ]
+        );
+        $this->assertSame($this->transaction->payment_type, $contrib->payment_type);
+
+        $contrib = $this->createContrib($data, $contrib);
         $contribs_ids[] = $contrib->id;
 
         $this->assertTrue($contrib->isTransactionPart());
         $this->assertTrue($contrib->isTransactionPartOf($this->transaction->id));
+        $this->assertNotEquals($this->transaction->payment_type, $contrib->payment_type);
 
         $this->assertSame(
             (double)25,
@@ -461,7 +473,6 @@ class Transaction extends GaletteTestCase
             'id_adh' => $this->adh->id,
             'id_type_cotis' => 4, //donation
             'montant_cotis' => 67,
-            'type_paiement_cotis' => 3,
             'info_cotis' => 'FAKER' . $this->seed,
             'date_enreg' => $bdate->format('Y-m-d'),
             'date_debut_cotis' => $bdate->format('Y-m-d'),
@@ -476,7 +487,7 @@ class Transaction extends GaletteTestCase
         $this->assertFalse($contrib->isFee());
         $this->assertSame('Donation', $contrib->getTypeLabel());
         $this->assertSame('donation', $contrib->getRawType());
-
+        $this->assertSame($this->transaction->payment_type, $contrib->payment_type);
 
         $this->assertSame(
             (double)92,

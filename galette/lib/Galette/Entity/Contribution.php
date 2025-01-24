@@ -160,6 +160,7 @@ class Contribution
                     $this->member = $this->transaction->member;
                 }
                 $this->amount = $this->transaction->getMissingAmount();
+                $this->payment_type = $this->transaction->payment_type;
             }
             $this->setContributionType((int)$args['type']);
             //calculate begin date for membership fee
@@ -518,6 +519,9 @@ class Contribution
                     case Transaction::PK:
                         if ($value != '') {
                             $this->transaction = new Transaction($this->zdb, $this->login, (int)$value);
+                            if (!isset($values['type_paiement_cotis']) && isset($this->transaction->payment_type)) {
+                                $this->payment_type = $this->transaction->payment_type;
+                            }
                         }
                         break;
                     case 'duree_mois_cotis':
