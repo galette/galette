@@ -114,8 +114,8 @@ class UpgradeTo120 extends AbstractUpdater
                     'ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s;',
                     $reworked_fkey->getTableName(),
                     $reworked_fkey->getColumns()[0],
-                    PREFIX_DB . 'groups',
-                    \Galette\Entity\Group::PK,
+                    $reworked_fkey->getReferencedTableName(),
+                    $reworked_fkey->getReferencedColumns()[0],
                     $reworked_fkey->getDeleteRule(),
                     $reworked_fkey->getUpdateRule()
                 ),
