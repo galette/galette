@@ -184,6 +184,7 @@ class Install extends TestCase
 
             //table prefix differs
             $table_name = str_replace($latest_prefix, PREFIX_DB, $latest_table_name);
+
             foreach ($latest_columns as $latest_column) {
                 try {
                     $column = $metadata->getColumn($latest_column->getName(), $table_name);
@@ -222,6 +223,49 @@ class Install extends TestCase
                         $latest_column->getName()
                     )
                 );
+            }
+
+            //check constraints
+            $latest_constraints = $latest_metadata->getConstraints($latest_table_name);
+            $constraints = $metadata->getConstraints($table_name);
+            $this->assertSame(
+                count($latest_constraints),
+                count($constraints),
+                'Constraints count differs!'
+            );
+            foreach ($latest_constraints as $latest_constraint) {
+                $constraint_name = str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getName());
+                $constraint = $metadata->getConstraint(
+                    $constraint_name,
+                    $table_name
+                );
+                $this->assertSame($constraint->getType(), $latest_constraint->getType());
+                $this->assertSame($constraint->getColumns(), $latest_constraint->getColumns());
+                $this->assertSame(
+                    $constraint->getReferencedTableName() ?? '',
+                    str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getReferencedTableName() ?? '')
+                );
+                $this->assertSame($constraint->getReferencedColumns(), $latest_constraint->getReferencedColumns());
+                /*$this->assertSame(
+                    $constraint->getDeleteRule(),
+                    $latest_constraint->getDeleteRule(),
+                    sprintf(
+                        'Delete constraint %s differs: %s - %s',
+                        $constraint_name,
+                        $constraint->getDeleteRule(),
+                        $latest_constraint->getDeleteRule()
+                    )
+                );*/
+                /*$this->assertSame(
+                    $constraint->getUpdateRule(),
+                    $latest_constraint->getUpdateRule(),
+                    sprintf(
+                        'Update rule %s differs',
+                        $constraint_name
+                    )
+                );*/
+                $this->assertSame($constraint->getMatchOption(), $latest_constraint->getMatchOption());
+                $this->assertSame($constraint->getCheckClause(), $latest_constraint->getCheckClause());
             }
         }
     }
