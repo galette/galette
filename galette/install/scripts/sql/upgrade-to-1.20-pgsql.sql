@@ -158,3 +158,6 @@ ALTER TABLE galette_dynamic_fields ALTER COLUMN field_val DROP DEFAULT;
 ALTER TABLE galette_dynamic_fields ALTER COLUMN field_id DROP DEFAULT;
 
 ALTER TABLE galette_types_cotisation ALTER COLUMN libelle_type_cotis TYPE character varying(255);
+
+ALTER TABLE galette_adherents DROP CONSTRAINT galette_adherents_id_statut_fkey,
+   ADD CONSTRAINT galette_adherents_id_statut_fkey FOREIGN KEY (id_statut) REFERENCES galette_statuts(id_statut) ON DELETE RESTRICT ON UPDATE CASCADE;
