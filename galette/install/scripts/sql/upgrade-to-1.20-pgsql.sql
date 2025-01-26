@@ -176,4 +176,4 @@ ALTER TABLE galette_tmppasswds DROP CONSTRAINT galette_tmppasswds_id_adh_fkey,
    ADD CONSTRAINT galette_tmppasswds_id_adh_fkey FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE galette_transactions ADD CONSTRAINT galette_transactions_id_adh_fkey FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE galette_transactions ADD CONSTRAINT galette_transactions_type_paiement_trans_fkey FOREIGN KEY (type_paiement_trans) REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE galette_transactions DROP CONSTRAINT type_paiement_trans_fkey, ADD CONSTRAINT galette_transactions_type_paiement_trans_fkey FOREIGN KEY (type_paiement_trans) REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE;
