@@ -234,43 +234,56 @@ class Install extends TestCase
                 'Constraints count differs!'
             );
 
-            if (!$this->zdb->isPostgres()) {
+            $knownfails = [];
+            if ($this->zdb->isPostgres()) {
                 //FIXME: query to retrieve FKEY from information schema fails on updated database (while everything is OK looking at "\d table" command... :/
-                foreach ($latest_constraints as $latest_constraint) {
-                    $constraint_name = str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getName());
-                    $constraint = $metadata->getConstraint(
-                        $constraint_name,
-                        $table_name
-                    );
-                    $this->assertSame($constraint->getType(), $latest_constraint->getType());
-                    $this->assertSame($constraint->getColumns(), $latest_constraint->getColumns());
+                $knownfails = [
+                    'galette_adherents_id_statut_fkey',
+                    'galette_adherents_parent_id_fkey'
+                ];
+            }
+            foreach ($latest_constraints as $latest_constraint) {
+                $constraint_name = str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getName());
+                $constraint = $metadata->getConstraint(
+                    $constraint_name,
+                    $table_name
+                );
+                $this->assertSame($constraint->getType(), $latest_constraint->getType());
+                $this->assertSame($constraint->getColumns(), $latest_constraint->getColumns());
+                if (!in_array($constraint_name, $knownfails)) {
                     $this->assertSame(
                         $constraint->getReferencedTableName() ?? '',
-                        str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getReferencedTableName() ?? '')
-                    );
-                    $this->assertSame($constraint->getReferencedColumns(), $latest_constraint->getReferencedColumns());
-                    /*$this->assertSame(
-                        $constraint->getDeleteRule(),
-                        $latest_constraint->getDeleteRule(),
+                        str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getReferencedTableName() ?? ''),
                         sprintf(
-                            'Delete constraint %s differs: %s - %s',
-                            $constraint_name,
-                            $constraint->getDeleteRule(),
-                            $latest_constraint->getDeleteRule()
-                        )
-                    );*/
-                    /*$this->assertSame(
-                        $constraint->getUpdateRule(),
-                        $latest_constraint->getUpdateRule(),
-                        sprintf(
-                            'Update rule %s differs',
+                            'Constraint %1$s incorrect',
                             $constraint_name
                         )
-                    );*/
-                    $this->assertSame($constraint->getMatchOption(), $latest_constraint->getMatchOption());
-                    $this->assertSame($constraint->getCheckClause(), $latest_constraint->getCheckClause());
+                    );
+                    $this->assertSame($constraint->getReferencedColumns(), $latest_constraint->getReferencedColumns());
                 }
+                //TODO: several FKEY do not have update/cascade instructions
+                /*$this->assertSame(
+                    $constraint->getDeleteRule(),
+                    $latest_constraint->getDeleteRule(),
+                    sprintf(
+                        'Delete constraint %s differs: %s - %s',
+                        $constraint_name,
+                        $constraint->getDeleteRule(),
+                        $latest_constraint->getDeleteRule()
+                    )
+                );*/
+                /*$this->assertSame(
+                    $constraint->getUpdateRule(),
+                    $latest_constraint->getUpdateRule(),
+                    sprintf(
+                        'Update rule %s differs',
+                        $constraint_name
+                    )
+                );*/
+                $this->assertSame($constraint->getMatchOption(), $latest_constraint->getMatchOption());
+                $this->assertSame($constraint->getCheckClause(), $latest_constraint->getCheckClause());
             }
+
         }
     }
 }
