@@ -262,7 +262,7 @@ class Install extends TestCase
                     $this->assertSame($constraint->getReferencedColumns(), $latest_constraint->getReferencedColumns());
                 }
                 //TODO: several FKEY do not have update/cascade instructions
-                /*$this->assertSame(
+                $this->assertSame(
                     $constraint->getDeleteRule(),
                     $latest_constraint->getDeleteRule(),
                     sprintf(
@@ -271,15 +271,15 @@ class Install extends TestCase
                         $constraint->getDeleteRule(),
                         $latest_constraint->getDeleteRule()
                     )
-                );*/
-                /*$this->assertSame(
+                );
+                $this->assertSame(
                     $constraint->getUpdateRule(),
                     $latest_constraint->getUpdateRule(),
                     sprintf(
                         'Update rule %s differs',
                         $constraint_name
                     )
-                );*/
+                );
                 $this->assertSame($constraint->getMatchOption(), $latest_constraint->getMatchOption());
                 $this->assertSame($constraint->getCheckClause(), $latest_constraint->getCheckClause());
             }
