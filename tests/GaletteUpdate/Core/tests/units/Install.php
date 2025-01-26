@@ -228,26 +228,43 @@ class Install extends TestCase
             //check constraints
             $latest_constraints = $latest_metadata->getConstraints($latest_table_name);
             $constraints = $metadata->getConstraints($table_name);
-            $this->assertSame(
-                count($latest_constraints),
-                count($constraints),
-                'Constraints count differs!'
-            );
 
             $knownfails = [];
             if ($this->zdb->isPostgres()) {
-                //FIXME: query to retrieve FKEY from information schema fails on updated database (while everything is OK looking at "\d table" command... :/
+                //query to retrieve FKEY from information schema fails on updated database (while everything is OK looking at "\d table" command... :/
                 $knownfails = [
                     'galette_adherents_id_statut_fkey',
-                    'galette_adherents_parent_id_fkey'
+                    'galette_adherents_parent_id_fkey',
+                    'galette_cotisations_id_adh_fkey',
+                    'galette_cotisations_id_type_cotis_fkey',
+                    'galette_cotisations_trans_id_fkey',
+                    'galette_dynamic_fields_field_id_fkey',
+                    'galette_groups_managers_id_adh_fkey',
+                    'galette_groups_members_id_adh_fkey',
+                    'galette_mailing_history_mailing_sender_fkey',
+                    'galette_payments_schedules_id_cotis_fkey',
+                    'galette_reminders_reminder_dest_fkey',
+                    'galette_searches_id_adh_fkey',
+                    'galette_socials_id_adh_fkey',
+                    'galette_tmppasswds_id_adh_fkey',
+                    'galette_transactions_id_adh_fkey'
                 ];
             }
             foreach ($latest_constraints as $latest_constraint) {
                 $constraint_name = str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getName());
-                $constraint = $metadata->getConstraint(
-                    $constraint_name,
-                    $table_name
-                );
+                //not null postgresql constraints name may change - nullable is checked from DB column anyway.
+                if ($this->zdb->isPostgres() && str_ends_with($constraint_name, '_not_null')) {
+                    continue;
+                }
+                try {
+                    $constraint = $metadata->getConstraint(
+                        $constraint_name,
+                        $table_name
+                    );
+                } catch (\Exception $e) {
+                    $this->fail($table_name . ' ' . $constraint_name . ' | ' . $e->getMessage());
+                }
+
                 $this->assertSame($constraint->getType(), $latest_constraint->getType());
                 $this->assertSame($constraint->getColumns(), $latest_constraint->getColumns());
                 if (!in_array($constraint_name, $knownfails)) {
@@ -269,7 +286,7 @@ class Install extends TestCase
                         'Delete constraint %s (%s.%s) differs: %s - %s',
                         $constraint_name,
                         $table_name,
-                        print_r($constraint->getColumns(), true),
+                        implode('|', $constraint->getColumns()),
                         $constraint->getDeleteRule(),
                         $latest_constraint->getDeleteRule()
                     )
@@ -286,6 +303,11 @@ class Install extends TestCase
                 $this->assertSame($constraint->getCheckClause(), $latest_constraint->getCheckClause());
             }
 
+            $this->assertSame(
+                count($latest_constraints),
+                count($constraints),
+                sprintf('Constraints count differs on %s!', $table_name)
+            );
         }
     }
 }
