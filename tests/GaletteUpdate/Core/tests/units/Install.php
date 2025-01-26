@@ -266,8 +266,10 @@ class Install extends TestCase
                     $constraint->getDeleteRule(),
                     $latest_constraint->getDeleteRule(),
                     sprintf(
-                        'Delete constraint %s differs: %s - %s',
+                        'Delete constraint %s (%s.%s) differs: %s - %s',
                         $constraint_name,
+                        $table_name,
+                        print_r($constraint->getColumns(), true),
                         $constraint->getDeleteRule(),
                         $latest_constraint->getDeleteRule()
                     )
