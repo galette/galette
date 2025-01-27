@@ -138,7 +138,7 @@ ALTER TABLE galette_types_cotisation CHANGE libelle_type_cotis libelle_type_coti
 ALTER TABLE galette_pictures CHANGE format format VARCHAR(30) NOT NULL default '';
 
 -- adherents <=> status relation
-ALTER TABLE galette_adherents DROP CONSTRAINT galette_adherents_ibfk_1;
+ALTER TABLE galette_adherents DROP FOREIGN KEY galette_adherents_ibfk_1;
 ALTER TABLE galette_adherents ADD FOREIGN KEY galette_adherents_ibfk_1 (id_statut) REFERENCES galette_statuts (id_statut) ON DELETE RESTRICT ON UPDATE CASCADE;
 -- adherents <=> titles relation
 ALTER TABLE galette_adherents DROP CONSTRAINT galette_adherents_ibfk_2;
