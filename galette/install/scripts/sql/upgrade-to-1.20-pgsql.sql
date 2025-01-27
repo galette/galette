@@ -158,3 +158,22 @@ ALTER TABLE galette_dynamic_fields ALTER COLUMN field_val DROP DEFAULT;
 ALTER TABLE galette_dynamic_fields ALTER COLUMN field_id DROP DEFAULT;
 
 ALTER TABLE galette_types_cotisation ALTER COLUMN libelle_type_cotis TYPE character varying(255);
+
+ALTER TABLE galette_adherents DROP CONSTRAINT galette_adherents_id_statut_fkey,
+   ADD CONSTRAINT galette_adherents_id_statut_fkey FOREIGN KEY (id_statut) REFERENCES galette_statuts(id_statut) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE galette_adherents DROP CONSTRAINT galette_adherents_parent_id_fkey,
+   ADD CONSTRAINT galette_adherents_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES galette_adherents(id_adh) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE galette_adherents DROP CONSTRAINT galette_adherents_titre_adh_fkey,
+   ADD CONSTRAINT galette_adherents_titre_adh_fkey FOREIGN KEY (titre_adh) REFERENCES galette_titles(id_title) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE galette_cotisations RENAME CONSTRAINT galette_cotisation_pkey TO galette_cotisations_pkey;
+ALTER TABLE galette_cotisations ADD CONSTRAINT galette_cotisations_id_adh_fkey FOREIGN KEY (id_adh) REFERENCES galette_adherents(id_adh)  ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE galette_cotisations ADD CONSTRAINT galette_cotisations_id_type_cotis_fkey FOREIGN KEY (id_type_cotis) REFERENCES galette_types_cotisation (id_type_cotis) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE galette_cotisations ADD CONSTRAINT galette_cotisations_trans_id_fkey FOREIGN KEY (trans_id) REFERENCES galette_transactions (trans_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE galette_dynamic_fields ADD CONSTRAINT galette_dynamic_fields_field_id_fkey FOREIGN KEY (field_id) REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE galette_tmppasswds DROP CONSTRAINT galette_tmppasswds_id_adh_fkey,
+   ADD CONSTRAINT galette_tmppasswds_id_adh_fkey FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE galette_transactions ADD CONSTRAINT galette_transactions_id_adh_fkey FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE galette_transactions DROP CONSTRAINT type_paiement_trans_fkey, ADD CONSTRAINT galette_transactions_type_paiement_trans_fkey FOREIGN KEY (type_paiement_trans) REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE;
