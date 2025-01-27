@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\GaletteMail;
 use Galette\Features\I18n;
 use Laminas\Db\Sql\Expression;
@@ -40,7 +42,8 @@ use Analog\Analog;
  * @property string $type
  * @property int $id
  */
-
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_socials')]
 class Social
 {
     use I18n;
@@ -60,9 +63,25 @@ class Social
     public const DISCORD = 'discord';
 
     private Db $zdb;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'id_social', type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
+    #[ORM\Column(type: Types::STRING, length: 250)]
     private string $type;
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $url;
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    #[ORM\JoinColumn(
+        name: 'id_adh',
+        referencedColumnName: 'id_adh',
+        nullable: true,
+        onDelete: 'restrict',
+        options: [
+            'default' => null,
+            'unsigned' => true
+        ]
+    )]
     private ?int $id_adh;
     private ?Adherent $member = null;
 

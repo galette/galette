@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Core\Db;
 use Throwable;
 use Analog\Analog;
@@ -39,14 +41,20 @@ use Analog\Analog;
  * @property-read string $tshort
  * @property-read string $tlong
  */
-
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_titles')]
 class Title
 {
     public const TABLE = 'titles';
     public const PK = 'id_title';
 
+    #[ORM\Id]
+    #[ORM\Column(name: 'id_title', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private int $id;
+    #[ORM\Column(name: 'short_label', type: Types::STRING, length: 10)]
     private string $short;
+    #[ORM\Column(name: 'long_label', type: Types::STRING, length: 100, nullable: true)]
     private ?string $long;
 
     public const MR = 1;
