@@ -278,10 +278,20 @@ class Install extends TestCase
                     );
                     $this->assertSame($constraint->getReferencedColumns(), $latest_constraint->getReferencedColumns());
                 }
-                //TODO: several FKEY do not have update/cascade instructions
+
+                $drule = $constraint->getDeleteRule();
+                $latest_drule = $latest_constraint->getDeleteRule();
+                if (!$db->isPostgres()) {
+                    if ($drule === 'RESTRICT') {
+                        $drule = 'NO ACTION';
+                    }
+                    if ($latest_drule === 'RESTRICT') {
+                        $latest_drule = 'NO ACTION';
+                    }
+                }
                 $this->assertSame(
-                    $constraint->getDeleteRule(),
-                    $latest_constraint->getDeleteRule(),
+                    $drule,
+                    $latest_drule,
                     sprintf(
                         'Delete constraint %s (%s.%s) differs: %s - %s',
                         $constraint_name,
@@ -291,9 +301,20 @@ class Install extends TestCase
                         $latest_constraint->getDeleteRule()
                     )
                 );
+
+                $urule = $constraint->getUpdateRule();
+                $latest_urule = $latest_constraint->getUpdateRule();
+                if (!$db->isPostgres()) {
+                    if ($urule === 'RESTRICT') {
+                        $urule = 'NO ACTION';
+                    }
+                    if ($latest_urule === 'RESTRICT') {
+                        $latest_urule = 'NO ACTION';
+                    }
+                }
                 $this->assertSame(
-                    $constraint->getUpdateRule(),
-                    $latest_constraint->getUpdateRule(),
+                    $urule,
+                    $latest_urule,
                     sprintf(
                         'Update constraint %s (%s.%s) differs: %s - %s',
                         $constraint_name,
