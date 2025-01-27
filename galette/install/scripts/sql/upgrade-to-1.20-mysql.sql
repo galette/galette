@@ -162,7 +162,7 @@ ALTER TABLE galette_cotisations ADD FOREIGN KEY galette_cotisations_ibfk_4 (type
 ALTER TABLE galette_dynamic_fields DROP CONSTRAINT galette_dynamic_fields_ibfk_1;
 ALTER TABLE galette_dynamic_fields ADD FOREIGN KEY galette_dynamic_fields_ibfk_1 (field_id) REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE;
 -- fields config <=> categories relation
--- ALTER TABLE galette_fields_config DROP CONSTRAINT galette_fields_config_ibfk_1;
+ALTER TABLE galette_fields_config DROP CONSTRAINT galette_fields_config_ibfk_1;
 ALTER TABLE galette_fields_config ADD FOREIGN KEY galette_fields_config_ibfk_1 (id_field_category) REFERENCES galette_fields_categories (id_field_category) ON DELETE RESTRICT ON UPDATE CASCADE;
 -- groups <=> parent relation
 -- ALTER TABLE galette_groups DROP CONSTRAINT galette_groups_ibfk_1;
