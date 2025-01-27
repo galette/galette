@@ -28,19 +28,19 @@ jobs:
           #always tests higher stable php version with lower db version
           #enable coverage on higher stable php version with higher PostgreSQL version
           #higher stable php version
-          - { php-version: "8.4", db-image: "postgres:11", coverage: none, always: true }
-          - { php-version: "8.4", db-image: "postgres:16", coverage: 'pcov', always: true }
-          - { php-version: "8.4", db-image: "mysql:5.7", coverage: none, always: true }
-          - { php-version: "8.4", db-image: "mysql:8.1", coverage: none, always: false }
-          - { php-version: "8.4", db-image: "mariadb:10.4", coverage: none, always: true }
-          - { php-version: "8.4", db-image: "mariadb:11.3", coverage: none, always: false }
+          - { php-version: "8.4", db-image: "postgres:13", coverage: none, always: true }
+          - { php-version: "8.4", db-image: "postgres:17", coverage: 'pcov', always: true }
+          - { php-version: "8.4", db-image: "mysql:8.0", coverage: none, always: true }
+          - { php-version: "8.4", db-image: "mysql:9.1", coverage: none, always: false }
+          - { php-version: "8.4", db-image: "mariadb:10.5", coverage: none, always: true }
+          - { php-version: "8.4", db-image: "mariadb:11.6", coverage: none, always: false }
           #lower php version
-          - { php-version: "8.1", db-image: "postgres:11", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "postgres:16", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "mysql:5.7", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "mysql:8.1", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "mariadb:10.4", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "mariadb:11.3", coverage: none, always: false }
+          - { php-version: "8.1", db-image: "postgres:13", coverage: none, always: false }
+          - { php-version: "8.1", db-image: "postgres:17", coverage: none, always: false }
+          - { php-version: "8.1", db-image: "mysql:8.0", coverage: none, always: false }
+          - { php-version: "8.1", db-image: "mysql:9.1", coverage: none, always: false }
+          - { php-version: "8.1", db-image: "mariadb:10.5", coverage: none, always: false }
+          - { php-version: "8.1", db-image: "mariadb:11.6", coverage: none, always: false }
       fail-fast: false
 
     env:
@@ -178,9 +178,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - { php-version: "8.4", db-image: "postgres:10", always: true}
-          - { php-version: "8.4", db-image: "mysql:5.6", always: false}
-          - { php-version: "8.4", db-image: "mariadb:10.3", always: false}
+          - { php-version: "8.4", db-image: "postgres:12", always: true}
+          - { php-version: "8.4", db-image: "mysql:5.7", always: false}
+          - { php-version: "8.4", db-image: "mariadb:10.4", always: false}
       fail-fast: false
 
     env:
