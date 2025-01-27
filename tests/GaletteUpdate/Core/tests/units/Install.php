@@ -295,8 +295,12 @@ class Install extends TestCase
                     $constraint->getUpdateRule(),
                     $latest_constraint->getUpdateRule(),
                     sprintf(
-                        'Update rule %s differs',
-                        $constraint_name
+                        'Update constraint %s (%s.%s) differs: %s - %s',
+                        $constraint_name,
+                        $table_name,
+                        implode('|', $constraint->getColumns()),
+                        $constraint->getUpdateRule(),
+                        $latest_constraint->getUpdateRule()
                     )
                 );
                 $this->assertSame($constraint->getMatchOption(), $latest_constraint->getMatchOption());
