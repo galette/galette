@@ -8,16 +8,16 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023, 2024.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # anonymous <noreply@weblate.org>, 2020.
-# Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020.
+# Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020, 2025.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020, 2021.
 # Nathan <bonnemainsnathan@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2024-12-29 09:48+0100\n"
-"PO-Revision-Date: 2024-12-29 08:52+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2025-01-29 09:02+0000\n"
+"Last-Translator: Fredericos Tezorc <fredericos.tezorc@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -1643,7 +1643,7 @@ msgid ""
 "Add documents to share related to your association (status, rules of "
 "procedure, ...)"
 msgstr ""
-"Ajouter des documents relatifs à votre association à partager (status, "
+"Ajouter des documents relatifs à votre association à partager (statuts, "
 "règlement intérieur, ...)"
 
 #: ../lib/Galette/Core/Galette.php:379 ../install/steps/check.php:52
