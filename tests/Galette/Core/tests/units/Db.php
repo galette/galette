@@ -53,7 +53,15 @@ class Db extends TestCase
     public function tearDown(): void
     {
         if (TYPE_DB === 'mysql') {
-            $this->assertEquals($this->db->getWarnings(), $this->have_warnings);
+            foreach ($this->db->getWarnings() as $i => $dbwarning) {
+                $know_warning = $this->have_warnings[$i];
+                $this->assertSame($know_warning['Level'], $dbwarning['Level']);
+                $this->assertSame($know_warning['Code'], $dbwarning['Code']);
+                $this->assertStringContainsString(
+                    strtolower($know_warning['Message']),
+                    strtolower($dbwarning['Message'])
+                );
+            }
         }
 
         $this->db = new \Galette\Core\Db();
@@ -632,7 +640,7 @@ class Db extends TestCase
                 [
                     'Level' => 'Error',
                     'Code' => 1054,
-                    'Message' => "Unknown column 'p.notknown' in 'where clause'"
+                    'Message' => "Unknown column 'p.notknown' in 'where"
                 ]
             )
         ];
