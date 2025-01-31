@@ -421,8 +421,8 @@ class PdfController extends AbstractController
      */
     public function contribution(Request $request, Response $response, int $id): Response
     {
-        $contribution = new Contribution($this->zdb, $this->login, $id);
-        if ($contribution->id == '') {
+        $contribution = new Contribution($this->zdb, $this->login);
+        if (!$contribution->load($id)) {
             //not possible to load contribution, exit
             $this->flash->addMessage(
                 'error_detected',
@@ -689,8 +689,8 @@ class PdfController extends AbstractController
             $pdf = new PdfMembersCards($this->preferences);
             $pdf->drawCards($members);
         } else {
-            $contribution = new Contribution($this->zdb, $login, $id);
-            if ($contribution->id == '') {
+            $contribution = new Contribution($this->zdb, $login);
+            if (!$contribution->load($id)) {
                 //not possible to load contribution, exit
                 $this->flash->addMessage(
                     'error_detected',

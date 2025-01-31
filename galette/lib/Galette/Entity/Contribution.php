@@ -688,7 +688,7 @@ class Contribution
                 $values['date_fin_cotis'] = new Expression('NULL');
             }
 
-            if (!isset($this->id) || $this->id == '') {
+            if (!isset($this->id)) {
                 //we're inserting a new contribution
                 unset($values[self::PK]);
 

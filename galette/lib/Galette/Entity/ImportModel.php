@@ -137,7 +137,7 @@ class ImportModel
                 'model_fields'  => Galette::jsonEncode($this->fields)
             );
 
-            if (!isset($this->id) || $this->id == '') {
+            if (!isset($this->id)) {
                 //we're inserting a new model
                 $this->creation_date = date("Y-m-d H:i:s");
                 $values['model_creation_date'] = $this->creation_date;

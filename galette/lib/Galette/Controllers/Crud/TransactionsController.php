@@ -189,12 +189,6 @@ class TransactionsController extends ContributionsController
             $trans_id = $id;
         }
 
-        $transaction['trans_id'] = $trans_id;
-        $transaction['trans_amount'] = $post['trans_amount'];
-        $transaction['trans_date'] = $post['trans_date'];
-        $transaction['trans_desc'] = $post['trans_desc'];
-        $transaction['id_adh'] = $post['id_adh'];
-
         // flagging required fields
         $required = array(
             'trans_amount'  =>  1,
@@ -204,13 +198,10 @@ class TransactionsController extends ContributionsController
         );
         $disabled = array();
 
-        if ($action === 'edit') {
-            // initialize transactions structure with database values
-            $trans->load($trans_id);
-            if ($trans->id == '') {
-                //not possible to load transaction, exit
-                throw new \RuntimeException('Transaction does not exists!');
-            }
+        // initialize transactions structure with database values
+        if ($action === 'edit' && !$trans->load($trans_id)) {
+            //not possible to load transaction, exit
+            throw new \RuntimeException('Transaction does not exists!');
         }
 
         $error_detected = [];
@@ -220,23 +211,10 @@ class TransactionsController extends ContributionsController
             $error_detected = array_merge($error_detected, $valid);
         }
 
-        if (count($error_detected) == 0) {
-            //all goes well, we can proceed
-            $new = false;
-            if ($trans->id == '') {
-                $new = true;
-            }
-
-            $store = $trans->store($this->history);
-            if ($store === true) {
-                //transaction has been stored :)
-                if ($new) {
-                    $transaction['trans_id'] = $trans->id;
-                }
-            } else {
-                //something went wrong :'(
-                $error_detected[] = _T("An error occurred while storing the transaction.");
-            }
+        //all goes well, we can proceed
+        if (count($error_detected) == 0 && !$trans->store($this->history)) {
+            //something went wrong :'(
+            $error_detected[] = _T("An error occurred while storing the transaction.");
         }
 
         if (count($error_detected) === 0) {

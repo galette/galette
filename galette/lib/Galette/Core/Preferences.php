@@ -913,7 +913,7 @@ class Preferences
 
         if ($this->prefs['pref_postal_address'] == self::POSTAL_ADDRESS_FROM_PREFS) {
             $_address = $this->prefs['pref_adresse'];
-            if ($this->prefs['pref_adresse2'] && $this->prefs['pref_adresse2'] != '') {
+            if ($this->prefs['pref_adresse2']) {
                 $_address .= "\n" . $this->prefs['pref_adresse2'];
             }
             $replacements = array(

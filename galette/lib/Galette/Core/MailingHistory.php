@@ -191,7 +191,7 @@ class MailingHistory extends History
                 );
             }
 
-            if ($this->filters->sender_filter != null && $this->filters->sender_filter != '0') {
+            if ($this->filters->sender_filter) {
                 $sender = $this->filters->sender_filter;
                 if ($sender == '-1') {
                     $select->where('mailing_sender IS NULL');

@@ -91,7 +91,7 @@ class ContributionsController extends CrudController
             $title = _T("Donation");
         }
 
-        if ($contrib->id != '') {
+        if ($contrib->id) {
             $title .= ' (' . _T("modification") . ')';
         } else {
             $title .= ' (' . _T("creation") . ')';
@@ -99,7 +99,6 @@ class ContributionsController extends CrudController
                 $contrib->amount = $contributions_types[array_key_first($contributions_types)]['amount'];
             }
         }
-
 
         $params = [
             'page_title'        => $title,
@@ -112,7 +111,7 @@ class ContributionsController extends CrudController
         // contribution types
         $params['type_cotis_options'] = $contributions_types;
 
-        if ($contrib->id != '') {
+        if ($contrib->id) {
             $params['scheduled'] = new ScheduledPayment($this->zdb, $contrib->id);
         }
 
@@ -768,8 +767,8 @@ class ContributionsController extends CrudController
             $contrib = $this->session->contribution;
             $this->session->contribution = null;
         } else {
-            $contrib = new Contribution($this->zdb, $this->login, $id);
-            if ($contrib->id == '') {
+            $contrib = new Contribution($this->zdb, $this->login);
+            if (!$contrib->load($id)) {
                 //not possible to load contribution, exit
                 $this->flash->addMessage(
                     'error_detected',

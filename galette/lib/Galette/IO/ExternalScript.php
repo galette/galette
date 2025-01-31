@@ -148,7 +148,7 @@ class ExternalScript
                 curl_setopt($ch, CURLOPT_URL, $uri);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $this->output = curl_exec($ch);
-                if ($this->output !== false) {
+                if ($this->output) {
                     $result = true;
                 } else {
                     $result = false;
@@ -173,7 +173,7 @@ class ExternalScript
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
                 }
                 $this->output = curl_exec($ch);
-                if ($this->output !== false) {
+                if ($this->output) {
                     $result = true;
                 } else {
                     $result = false;

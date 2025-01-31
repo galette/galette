@@ -426,7 +426,7 @@ class Transaction
                 }
             }
 
-            if (!isset($this->id) || $this->id == '') {
+            if (!isset($this->id)) {
                 //we're inserting a new transaction
                 unset($values[self::PK]);
                 $insert = $this->zdb->insert(self::TABLE);
