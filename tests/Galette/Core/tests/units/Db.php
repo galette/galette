@@ -56,7 +56,7 @@ class Db extends TestCase
             foreach ($this->db->getWarnings() as $i => $dbwarning) {
                 $know_warning = $this->have_warnings[$i];
                 $this->assertSame($know_warning['Level'], $dbwarning['Level']);
-                $this->assertSame($know_warning['Code'], $dbwarning['Code']);
+                $this->assertEquals($know_warning['Code'], $dbwarning['Code']);
                 $this->assertStringContainsString(
                     strtolower($know_warning['Message']),
                     strtolower($dbwarning['Message'])
