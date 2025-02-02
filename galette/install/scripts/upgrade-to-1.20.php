@@ -108,7 +108,28 @@ class UpgradeTo120 extends AbstractUpdater
      */
     protected function postUpdate(): bool
     {
+        $metadata = Factory::createSourceFromAdapter($this->zdb->db);
         foreach ($this->reworked_fkeys as $reworked_fkey) {
+            //core tables should be OK at this point, but plugin ones may have references with old datatype, they must be updated.
+            $column = $metadata->getColumn($reworked_fkey->getColumns()[0], $reworked_fkey->getTableName());
+            if (!$column->isNumericUnsigned()) {
+                $query = sprintf(
+                    'ALTER TABLE %1$s CHANGE %2$s %2$s INT UNSIGNED',
+                    $reworked_fkey->getTableName(),
+                    $column->getName()
+                );
+                if (!$column->isNullable()) {
+                    $query .= ' NOT NULL';
+                }
+                if ($column->getColumnDefault()) {
+                    $query .= ' DEFAULT ' . $column->getColumnDefault();
+                }
+                Analog::log(
+                    'Updating column ' . $column->getName() . ' in table ' . $reworked_fkey->getTableName(),
+                    Analog::WARNING
+                );
+                $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
+            }
             $this->zdb->db->query(
                 sprintf(
                     'ALTER TABLE %s ADD FOREIGN KEY (%s) REFERENCES %s (%s) ON DELETE %s ON UPDATE %s;',
