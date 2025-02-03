@@ -68,6 +68,7 @@ class Members
     public const SHOW_STAFF = 3;
     public const SHOW_MANAGED = 4;
     public const SHOW_EXPORT = 5;
+    public const SHOW_STAFF_PUBLIC_LIST = 6;
 
     public const FILTER_NAME = 0;
     public const FILTER_ADDRESS = 1;
@@ -495,6 +496,71 @@ class Members
     }
 
     /**
+     * Get members list with public information available
+     *
+     * @param boolean $with_photos get only members which have uploaded a
+     *                             photo (for gallery)
+     *
+     * @return array<string, Adherent[]>
+     */
+    public function getPublicStaffList(bool $with_photos): array
+    {
+        global $zdb;
+
+        try {
+            $this->extra_order = ['priorite_statut ASC'];
+            $select = $this->buildSelect(
+                self::SHOW_STAFF_PUBLIC_LIST,
+                null,
+                $with_photos,
+                true
+            );
+
+            $select->join(
+                array('status' => PREFIX_DB . Status::TABLE),
+                'a.' . Status::PK . '=status.' . Status::PK,
+                array('priorite_statut')
+            );
+
+            //TODO: only if groups managers should not be displayed
+            $select->where->lessThan(
+                'status.priorite_statut',
+                self::NON_STAFF_MEMBERS
+            );
+            $this->filters->setLimits($select);
+
+            $results = $zdb->execute($select);
+            $deps = array(
+                'groups'    => false,
+                'dues'      => false,
+                'picture'   => $with_photos
+            );
+
+            $staff = [];
+            $members = [];
+            foreach ($results as $row) {
+                $member = new Adherent($zdb, $row, $deps);
+                if ($row->priorite_statut < self::NON_STAFF_MEMBERS) {
+                    $staff[] = $member;
+                } else {
+                    $members[] = $member;
+                }
+            }
+            return [
+                'staff'     => $staff,
+                'members'   => $members
+            ];
+        } catch (Throwable $e) {
+            Analog::log(
+                'Cannot list staff with public information (photos: '
+                . $with_photos . ') | ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            throw $e;
+        }
+    }
+
+    /**
      * Get list of members that has been selected
      *
      * @param int|array<int> $ids         an array of members id that has been selected
@@ -658,6 +724,7 @@ class Members
                         array()
                     )->where(['m.' . Adherent::PK => $login->id]);
                     break;
+                case self::SHOW_STAFF_PUBLIC_LIST:
             }
 
             //check for contributions filtering
@@ -812,6 +879,8 @@ class Members
                         )
                     )
                 );
+            } elseif ($mode === self::SHOW_STAFF_PUBLIC_LIST) {
+                $select->where->equalTo('a.bool_display_info', true);
             }
 
             if ($mode === self::SHOW_STAFF) {

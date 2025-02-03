@@ -549,6 +549,13 @@ class Galette
                             'name' => 'publicMembersGallery'
                         ],
                         'icon' => 'user friends'
+                    ],
+                    [
+                        'label' => _T('Staff gallery'),
+                        'route' => [
+                            'name' => 'publicStaffGallery'
+                        ],
+                        'icon' => 'user cog'
                     ]
                 ]
             ];

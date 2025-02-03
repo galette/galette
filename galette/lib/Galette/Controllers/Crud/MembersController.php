@@ -362,6 +362,37 @@ class MembersController extends CrudController
     }
 
     /**
+     * Public staff gallery
+     *
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
+     *
+     * @return Response
+     */
+    public function publicStaffGallery(
+        Request $request,
+        Response $response,
+        ?string $option = null,
+        string|int|null $value = null,
+    ): Response {
+        return $this->publicList(
+            $request,
+            $response,
+            [
+                'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafftrombi']),
+                'with_photos' => true,
+                'page_title' => _T("Staff members"),
+                'template' => 'pages/staff_public_gallery.html.twig',
+                'html_class' => 'gallery',
+            ],
+            $option,
+            $value
+        );
+    }
+
+    /**
      * Public pages (gallery, list)
      *
      * @param Request              $request  PSR Request
