@@ -461,11 +461,6 @@ class Members
                 true
             );
 
-            $select->join(
-                array('status' => PREFIX_DB . Status::TABLE),
-                'a.' . Status::PK . '=status.' . Status::PK
-            );
-
             $this->filters->setLimits($select);
 
             $results = $zdb->execute($select);
@@ -475,14 +470,11 @@ class Members
                 'picture'   => $with_photos
             );
 
-            $status = new Status($zdb);
-            $status_list = $status->getCompleteList();
-
             $staff = [];
             $members = [];
             foreach ($results as $row) {
                 $member = new Adherent($zdb, $row, $deps);
-                if ($status_list[$row->id_statut]['extra'] < self::NON_STAFF_MEMBERS) {
+                if ($row->priorite_statut < self::NON_STAFF_MEMBERS) {
                     $staff[] = $member;
                 } else {
                     $members[] = $member;
@@ -630,6 +622,15 @@ class Members
                 case self::SHOW_STAFF:
                 case self::SHOW_LIST:
                 case self::SHOW_ARRAY_LIST:
+                case self::SHOW_PUBLIC_LIST:
+                    if ($photos) {
+                        $select->join(
+                            array('picture' => PREFIX_DB . Picture::TABLE),
+                            'a.' . self::PK . '= picture.' . self::PK,
+                            array()
+                        );
+                    }
+
                     $select->join(
                         array('status' => PREFIX_DB . Status::TABLE),
                         'a.' . Status::PK . '=status.' . Status::PK,
@@ -656,15 +657,6 @@ class Members
                         'gr.' . Group::PK . '=m.' . Group::PK,
                         array()
                     )->where(['m.' . Adherent::PK => $login->id]);
-                    break;
-                case self::SHOW_PUBLIC_LIST:
-                    if ($photos) {
-                        $select->join(
-                            array('picture' => PREFIX_DB . Picture::TABLE),
-                            'a.' . self::PK . '= picture.' . self::PK,
-                            array()
-                        );
-                    }
                     break;
             }
 
