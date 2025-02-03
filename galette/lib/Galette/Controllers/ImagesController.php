@@ -105,15 +105,14 @@ class ImagesController extends AbstractController
         }
         $adh->load($id);
 
-        $picture = null;
+        $picture = new Picture();
         if (
             $adh->canEdit($this->login)
-            || $this->preferences->showPublicPages($this->login)
+            || ($this->preferences->showPublicPage($this->login, 'pref_publicpages_visibility_membersgallery')
+                || $this->preferences->showPublicPage($this->login, 'pref_publicpages_visibility_staffgallery'))
             && $adh->appearsInMembersList()
         ) {
             $picture = $adh->picture;
-        } else {
-            $picture = new Picture();
         }
 
         return $this->sendResponse($response, $picture);

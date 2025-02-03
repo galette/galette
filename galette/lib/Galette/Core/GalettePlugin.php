@@ -65,7 +65,7 @@ abstract class GalettePlugin
         global $preferences, $login;
 
         $menus = [];
-        if ($preferences->showPublicPages($login)) {
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_plugins')) {
             $menus = static::getPublicMenusItemsList();
         }
 

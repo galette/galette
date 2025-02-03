@@ -34,7 +34,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="plugins">
+            <tr class="with-headers plugins">
                 <th colspan="6" class="center aligned"><strong>{{ _T('Active plugins') }}</strong></th>
             </tr>
 {% for name, plugin in plugins_list %}
@@ -71,7 +71,7 @@
                 <td colspan="6">{{ _T('No active plugin.') }}</td>
             </tr>
 {% endfor %}
-            <tr class="inactives plugins">
+            <tr class="with-headers inactives plugins">
                 <th colspan="6" class="center aligned"><strong>{{ _T('Inactive plugins') }}</strong></th>
             </tr>
             <thead>

@@ -72,7 +72,26 @@ class PublicPages
     {
         $response = new \Slim\Psr7\Response();
 
-        if (!$this->preferences->showPublicPages($this->login)) {
+        $right_pattern = 'pref_publicpages_visibility_%s%s';
+        $current_path = trim($request->getUri()->getPath(), '/');
+        $page = explode('/', $current_path);
+        if ($page[0] === 'plugins') {
+            $right_pattern .= '_%s';
+            $right = sprintf(
+                $right_pattern,
+                'plugin',
+                $page[1] ?? '',
+                $page[3] ?? ''
+            );
+        } else {
+            $right = sprintf(
+                $right_pattern,
+                $page[1] ?? '',
+                $page[2] ?? ''
+            );
+        }
+
+        if (!$this->preferences->showPublicPage($this->login, $right)) {
             $this->flash->addMessage('error_detected', _T("Unauthorized"));
             return $response
                 ->withHeader(

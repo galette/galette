@@ -139,10 +139,11 @@ class Galette extends GaletteTestCase
         $plugins = new \Galette\Core\Plugins($db);
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
             ->setConstructorArgs(array($db))
-            ->onlyMethods(array('showPublicPages'))
+            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
             ->getMock();
 
-        $preferences->method('showPublicPages')->willReturn(true);
+        $preferences->method('arePublicPagesEnabled')->willReturn(true);
+        $preferences->method('showPublicPage')->willReturn(true);
 
         $menus = \Galette\Core\Galette::getMenus();
         $this->assertIsArray($menus);
@@ -227,21 +228,38 @@ class Galette extends GaletteTestCase
         global $preferences;
 
         $db = new \Galette\Core\Db();
+
+        //public pages are disabled
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
             ->setConstructorArgs(array($db))
-            ->onlyMethods(array('showPublicPages'))
+            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
             ->getMock();
-        $preferences->method('showPublicPages')->willReturn(false);
+        $preferences->method('arePublicPagesEnabled')->willReturn(false);
+        $preferences->method('showPublicPage')->willReturn(true); //should not matter.
 
         $menus = \Galette\Core\Galette::getPublicMenus();
         $this->assertIsArray($menus);
-        $this->assertCount(0, $menus);
+        $this->assertCount(0, $menus, print_r($menus, true));
+
+        //public pages are enabled but not shown
+        $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
+            ->setConstructorArgs(array($db))
+            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
+            ->getMock();
+        $preferences->method('arePublicPagesEnabled')->willReturn(true);
+        $preferences->method('showPublicPage')->willReturn(false);
+
+        //public pages are enabled and shown
+        $menus = \Galette\Core\Galette::getPublicMenus();
+        $this->assertIsArray($menus);
+        $this->assertCount(0, $menus, print_r($menus, true));
 
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
             ->setConstructorArgs(array($db))
-            ->onlyMethods(array('showPublicPages'))
+            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
             ->getMock();
-        $preferences->method('showPublicPages')->willReturn(true);
+        $preferences->method('arePublicPagesEnabled')->willReturn(true);
+        $preferences->method('showPublicPage')->willReturn(true);
 
         $menus = \Galette\Core\Galette::getPublicMenus();
         $this->assertIsArray($menus);
