@@ -8854,8 +8854,8 @@ msgid ""
 "If you check this box (and if you are up to date with your contributions), "
 "your full name and other information will be publically visible on the "
 "members list.<br/>If you've uploaded a photo, it will be displayed on the "
-"gallery page.<br/>Note that administrators can disabled public pages, "
-"this setting will have no effect in that case."
+"gallery page.<br/>Note that administrators can disabled public pages, this "
+"setting will have no effect in that case."
 msgstr ""
 
 #: ../../tempcache/components/form.html.twig:358
