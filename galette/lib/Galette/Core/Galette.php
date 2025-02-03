@@ -531,33 +531,58 @@ class Galette
         global $preferences, $login, $plugins, $zdb;
 
         $menus = [];
-        if ($preferences->showPublicPages($login)) {
-            $menus['public'] = [
-                'title' => _T("Public pages"),
-                'icon' => 'eye outline',
-                'items' => [
-                    [
-                        'label' => _T("Members"),
-                        'route' => [
-                            'name' => 'publicMembersList'
-                        ],
-                        'icon' => 'address book'
+        if ($preferences->arePublicPagesEnabled()) {
+            $items = [];
+
+            if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_memberslist')) {
+                $items[] = [
+                    'label' => _T("Members"),
+                    'route' => [
+                        'name' => 'publicMembersList'
                     ],
-                    [
-                        'label' => _T("Gallery"),
-                        'route' => [
-                            'name' => 'publicMembersGallery'
-                        ],
-                        'icon' => 'user friends'
-                    ]
-                ]
-            ];
+                    'icon' => 'address book'
+                ];
+            }
+
+            if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_membersgallery')) {
+                $items[] = [
+                    'label' => _T('Gallery'),
+                    'route' => [
+                        'name' => 'publicMembersGallery'
+                    ],
+                    'icon' => 'user friends'
+                ];
+            }
+
+            if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_stafflist')) {
+                $items[] = [
+                    'label' => _T("Staff"),
+                    'route' => [
+                        'name' => 'publicStaffList'
+                    ],
+                    'icon' => 'address card'
+                ];
+            }
+
+            if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_staffgallery')) {
+                $items[] = [
+                    'label' => _T('Staff gallery'),
+                    'route' => [
+                        'name' => 'publicStaffGallery'
+                    ],
+                    'icon' => 'user cog'
+                ];
+            }
 
             //display documents menu if at least one document is present with current ACLs
             $document = new Document($zdb);
             $documents = $document->getList();
-            if ($login->isSuperAdmin() || count($documents)) {
-                $menus['public']['items'][] = [
+            if (
+                $login->isSuperAdmin()
+                || $preferences->showPublicPage($login, 'pref_publicpages_visibility_documents')
+                && count($documents)
+            ) {
+                $items[] = [
                     'label' => _T("Documents"),
                     'title' => _T("View documents related to your association"),
                     'route' => [
@@ -572,11 +597,19 @@ class Galette
                 $plugin_class = $plugins->getClassName($module_id, true);
                 if (class_exists($plugin_class)) {
                     $plugin = new $plugin_class();
-                    $menus['public']['items'] = array_merge(
-                        $menus['public']['items'],
+                    $items = array_merge(
+                        $items,
                         $plugin->getPublicMenuItems()
                     );
                 }
+            }
+
+            if (count($items)) {
+                $menus['public'] = [
+                    'title' => _T("Public pages"),
+                    'icon' => 'eye outline',
+                    'items' => $items
+                ];
             }
         }
 
@@ -736,7 +769,7 @@ class Galette
         //display documents menu if at least one document is present with current ACLs
         $document = new Document($zdb);
         $documents = $document->getList();
-        if ($preferences->showPublicPages($login) && ($login->isSuperAdmin() || count($documents))) {
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_documents') && ($login->isSuperAdmin() || count($documents))) {
             $dashboards = array_merge(
                 $dashboards,
                 [

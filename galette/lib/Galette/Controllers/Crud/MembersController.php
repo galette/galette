@@ -322,7 +322,7 @@ class MembersController extends CrudController
                 'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
                 'with_photos' => false,
                 'page_title' => _T("Members"),
-                'template' => 'pages/members_public_list.html.twig',
+                'template' => 'pages/public/members_list.html.twig',
                 'html_class' => '',
             ],
             $option,
@@ -353,8 +353,80 @@ class MembersController extends CrudController
                 'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
                 'with_photos' => true,
                 'page_title' => _T("Gallery"),
-                'template' => 'pages/members_public_gallery.html.twig',
+                'template' => 'pages/public/members_gallery.html.twig',
                 'html_class' => 'gallery',
+            ],
+            $option,
+            $value
+        );
+    }
+
+    /**
+     * Public members list
+     *
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
+     *
+     * @return Response
+     */
+    public function publicStaffList(
+        Request $request,
+        Response $response,
+        ?string $option = null,
+        string|int|null $value = null,
+    ): Response {
+        $filter_name = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafflist']);
+        $filters = new MembersList();
+        $this->session->$filter_name = $filters;
+
+        return $this->publicList(
+            $request,
+            $response,
+            [
+                'filter_name' => $filter_name,
+                'with_photos' => false,
+                'page_title' => _T("Staff"),
+                'template' => 'pages/public/staff_list.html.twig',
+                'html_class' => '',
+                'staff' => true,
+            ],
+            $option,
+            $value
+        );
+    }
+
+    /**
+     * Public staff gallery
+     *
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
+     *
+     * @return Response
+     */
+    public function publicStaffGallery(
+        Request $request,
+        Response $response,
+        ?string $option = null,
+        string|int|null $value = null,
+    ): Response {
+        $filter_name = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafftrombi']);
+        $filters = new MembersList();
+        $this->session->$filter_name = $filters;
+
+        return $this->publicList(
+            $request,
+            $response,
+            [
+                'filter_name' => $filter_name,
+                'with_photos' => true,
+                'page_title' => _T("Staff gallery"),
+                'template' => 'pages/public/staff_gallery.html.twig',
+                'html_class' => 'gallery',
+                'staff' => true,
             ],
             $option,
             $value
@@ -398,7 +470,11 @@ class MembersController extends CrudController
         }
 
         $m = new Members($filters);
-        $members = $m->getPublicList($args['with_photos'] ?? false);
+        if ($args['staff'] ?? false) {
+            $members = $m->getPublicStaffList($args['with_photos'] ?? false);
+        } else {
+            $members = $m->getPublicList($args['with_photos'] ?? false);
+        }
 
         $this->session->$varname = $filters;
 

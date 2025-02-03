@@ -18,49 +18,40 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 #}
-{% extends 'elements/list.html.twig' %}
+{% extends 'pages/public/list.html.twig' %}
 
-{% set nb = members|length %}
-{% set is_public = not login.isLogged() %}
-{% set list_type = nb_members > 0 ? 'cards' : 'empty' %}
-
-{% macro drawEntry(member, staff, time) %}
-    <div class="ui fluid card">
-        {% set mid = member.id %}
-        <div class="image">
-            <img
-                    src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
-                    width="{{ member.picture.getOptimalWidth() }}"
-                    height="{{ member.picture.getOptimalHeight() }}"
-                    alt="{{ member.sfullname }}{% if member.nickname != '' %} ({{ member.nickname|escape }}){% endif %}"
-            />
-        </div>
-        <div class="center aligned content">
-            <div class="header">{{ member.sfullname }}</div>
-    {% if member.nickname != '' %}
-            <div class="meta">
-                {{ member.nickname|escape }}
-            </div>
-    {% endif %}
-        </div>
-    {% if staff %}
-        <div class="extra content">
-            <span class="right floated">
-                <i class="ui user tie orange icon" aria-hidden="true"></i>
-                {{ member.sstatus }}
-            </span>
-        </div>
-    {% endif %}
-    </div>
-{% endmacro %}
+{% set form = {
+    'order': {
+        'name': 'publicMembersList'
+    }
+} %}
 
 {% block infoline %}
     {% set infoline = {
         'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
         'route': {
-            'name': 'filterPublicMembersGallery'
+            'name': 'filterPublicMembersList'
         }
     } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': _T('Name'), order: constant("Galette\\Repository\\Members::ORDERBY_NAME")},
+        {'label': _T("Nickname"), order: constant("Galette\\Repository\\Members::ORDERBY_NICKNAME")},
+    ] %}
+
+    {% if login.isLogged() %}
+        {% set columns = columns|merge([
+            {'label': _T("Email")}
+        ]) %}
+    {% endif %}
+
+    {% set columns = columns|merge([
+        {'label': _T("Information")}
+    ]) %}
+
     {{ parent() }}
 {% endblock %}
 
@@ -76,16 +67,17 @@
 {% block body %}
     {% if nb_members > 0 %}
         {% for member in members.staff %}
-            {{ _self.drawEntry(member, true, time) }}
+            {{ _self.drawEntry(member, true) }}
         {% endfor %}
+
         {% for member in members.members %}
-            {{ _self.drawEntry(member, false, time) }}
+            {{ _self.drawEntry(member, false) }}
         {% endfor %}
     {% else %}
-        <div class="ui small message">
-            <div class="content">
-                <em>{{ _T('No member') }}</em>
-            </div>
-        </div>
+        <tr>
+            <td class="emptylist" colspan="4">
+                {{ _T('No member') }}
+            </td>
+        </tr>
     {% endif %}
 {% endblock %}

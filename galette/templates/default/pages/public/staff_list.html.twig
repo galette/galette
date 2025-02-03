@@ -1,0 +1,77 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends 'pages/public/list.html.twig' %}
+
+{% set is_paginated = false %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members})
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': _T('Name'), order: constant("Galette\\Repository\\Members::ORDERBY_NAME")},
+        {'label': _T("Nickname"), order: constant("Galette\\Repository\\Members::ORDERBY_NICKNAME")},
+    ] %}
+
+    {% if login.isLogged() %}
+        {% set columns = columns|merge([
+            {'label': _T("Email")}
+        ]) %}
+    {% endif %}
+
+    {% set columns = columns|merge([
+        {'label': _T("Information")}
+    ]) %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% if nb_members > 0 %}
+        {% if members.groups|length > 0 %}
+        <tr class="with-headers">
+            <th scope="colgroup" colspan="4">{{ _T('Staff members') }}</th>
+        </tr>
+        {% endif %}
+        {% for member in members.staff %}
+            {{ _self.drawEntry(member, true) }}
+        {% endfor %}
+
+        {% for group, group_managers in members.groups %}
+            <tr class="with-headers">
+                <th scope="colgroup" colspan="4">{{ _T('"%1$s" group managers')|format(group) }}</th>
+            </tr>
+            {% for manager in group_managers %}
+                {{ _self.drawEntry(manager, false) }}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td class="emptylist" colspan="4">
+                {{ _T('No member') }}
+            </td>
+        </tr>
+    {% endif %}
+{% endblock %}

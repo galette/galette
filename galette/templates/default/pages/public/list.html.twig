@@ -20,7 +20,7 @@
 #}
 {% extends 'elements/list.html.twig' %}
 
-{% set nb = members|length %}
+{% set nb = nb_members %}
 {% set no_action = true %}
 {% set is_public = not login.isLogged() %}
 
@@ -66,22 +66,6 @@
     </tr>
 {% endmacro %}
 
-{% set form = {
-    'order': {
-        'name': 'publicMembersList'
-    }
-} %}
-
-{% block infoline %}
-    {% set infoline = {
-        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
-        'route': {
-            'name': 'filterPublicMembersList'
-        }
-    } %}
-    {{ parent() }}
-{% endblock %}
-
 {% block header %}
     {% set columns = [
         {'label': _T('Name'), order: constant("Galette\\Repository\\Members::ORDERBY_NAME")},
@@ -99,31 +83,4 @@
     ]) %}
 
     {{ parent() }}
-{% endblock %}
-
-{% block search %}
-    <div class="ui icon info visible message">
-        <i class="info circle blue icon" aria-hidden="true"></i>
-        <div class="content">
-            {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
-        </div>
-    </div>
-{% endblock %}
-
-{% block body %}
-    {% if nb_members > 0 %}
-        {% for member in members.staff %}
-            {{ _self.drawEntry(member, true) }}
-        {% endfor %}
-
-        {% for member in members.members %}
-            {{ _self.drawEntry(member, false) }}
-        {% endfor %}
-    {% else %}
-        <tr>
-            <td class="emptylist" colspan="4">
-                {{ _T('No member') }}
-            </td>
-        </tr>
-    {% endif %}
 {% endblock %}

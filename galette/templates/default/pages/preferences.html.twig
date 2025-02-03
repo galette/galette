@@ -327,12 +327,37 @@
                             <label for="pref_bool_publicpages">{{ _T("Public pages enabled?") }}</label>
                         </div>
                     </div>
-                    <div id="publicpages_visibility" class="field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
-                        <label for="pref_publicpages_visibility">{{ _T("Show public pages for") }}</label>
-                        <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="ui search dropdown">
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
+                    <div class="publicpages_visibility field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
+                        <label for="pref_publicpages_visibility_generic">
+                            {{ _T("Default") }}
+                            <i class="circular small inverted primary icon info tooltip" title="{{ _T("Will apply for all public pages that are not listed here, including plugin ones.") }}" aria-hidden="true"></i>
+                        </label>
+                        <select name="pref_publicpages_visibility_generic" id="pref_publicpages_visibility_generic" class="ui search dropdown">
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_generic == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_generic == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_generic == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_generic == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
+                        </select>
+                    </div>
+
+                    <div class="publicpages_visibility field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
+                        <label for="pref_publicpages_visibility_memberslist">{{ _T("Members list") }}</label>
+                        <select name="pref_publicpages_visibility_memberslist" id="pref_publicpages_visibility_memberslist" class="ui search dropdown">
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_memberslist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') %} selected="selected"{% endif %}>{{ _T("Inherit") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_memberslist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_memberslist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_memberslist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_memberslist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
+                        </select>
+                    </div>
+                    <div class="publicpages_visibility field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
+                        <label for="pref_publicpages_visibility_membersgallery">{{ _T("Members gallery") }}</label>
+                        <select name="pref_publicpages_visibility_membersgallery" id="pref_publicpages_visibility_membersgallery" class="ui search dropdown">
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_membersgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') %} selected="selected"{% endif %}>{{ _T("Inherit") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_membersgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_membersgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_membersgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_membersgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
                         </select>
                     </div>
                 </div>{# /column #}
@@ -341,6 +366,42 @@
                         <div class="ui right aligned toggle checkbox">
                             <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{% if pref.pref_bool_selfsubscribe %} checked="checked"{% endif %}/>
                             <label for="pref_bool_selfsubscribe">{{ _T("Self subscription enabled?") }}</label>
+                        </div>
+                    </div>
+                    <div class="publicpages_visibility field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
+                        <label for="pref_publicpages_visibility_documents">{{ _T("Documents") }}</label>
+                        <select name="pref_publicpages_visibility_documents" id="pref_publicpages_visibility_documents" class="ui search dropdown">
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_documents == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') %} selected="selected"{% endif %}>{{ _T("Inherit") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_documents == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_documents == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_documents == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_documents == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
+                        </select>
+                    </div>
+                    <div class="publicpages_visibility field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
+                        <label for="pref_publicpages_visibility_stafflist">{{ _T("Staff list") }}</label>
+                        <select name="pref_publicpages_visibility_stafflist" id="pref_publicpages_visibility_stafflist" class="ui search dropdown">
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') %} selected="selected"{% endif %}>{{ _T("Inherit") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
+                        </select>
+                    </div>
+                    <div class="publicpages_visibility field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
+                        <label for="pref_publicpages_visibility_staffgallery">{{ _T("Staff gallery") }}</label>
+                        <select name="pref_publicpages_visibility_staffgallery" id="pref_publicpages_visibility_staffgallery" class="ui search dropdown">
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_staffgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_INHERIT') %} selected="selected"{% endif %}>{{ _T("Inherit") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') }}"{% if pref.pref_publicpages_visibility_staffgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_HIDDEN') %} selected="selected"{% endif %}>{{ _T("Hidden") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility_staffgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility_staffgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_staffgallery == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
+                        </select>
+                    </div>
+                    <div class="publicpages_visibility field inline"{% if not pref.pref_bool_publicpages %} displaynone{% endif %}>
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_are_staff" id="pref_bool_groupsmanagers_are_staff" value="1" {% if pref.pref_bool_groupsmanagers_are_staff %} checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_are_staff">{{ _T("Include groups managers with staff?") }}</label>
                         </div>
                     </div>
                 </div>{# /column #}
@@ -1042,9 +1103,11 @@
                 });
 
                 let _publicpages_status = document.getElementById('pref_bool_publicpages');
-                let _publicpages_visibility = document.getElementById('publicpages_visibility');
+                let _publicpages_visibility = document.getElementsByClassName('publicpages_visibility');
                 _publicpages_status.addEventListener('change', function () {
-                    _publicpages_visibility.classList.toggle('displaynone');
+                    for (let i = 0; i < _publicpages_visibility.length; i++) {
+                        _publicpages_visibility[i].classList.toggle('displaynone');
+                    }
                     return;
                 });
 

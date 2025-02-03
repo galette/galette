@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Repository;
 
 use Galette\Core\Login;
+use Galette\Core\Preferences;
 use Galette\Entity\Social;
 use Galette\Events\GaletteEvent;
 use Laminas\Db\ResultSet\ResultSet;
@@ -68,6 +69,7 @@ class Members
     public const SHOW_STAFF = 3;
     public const SHOW_MANAGED = 4;
     public const SHOW_EXPORT = 5;
+    public const SHOW_STAFF_PUBLIC_LIST = 6;
 
     public const FILTER_NAME = 0;
     public const FILTER_ADDRESS = 1;
@@ -495,6 +497,64 @@ class Members
     }
 
     /**
+     * Get members list with public information available
+     *
+     * @param boolean $with_photos get only members which have uploaded a
+     *                             photo (for gallery)
+     *
+     * @return array<string, Adherent[]|array<string, Adherent[]>>
+     */
+    public function getPublicStaffList(bool $with_photos): array
+    {
+        global $zdb, $preferences;
+
+        try {
+            $this->extra_order = ['priorite_statut ASC'];
+            $select = $this->buildSelect(
+                self::SHOW_STAFF_PUBLIC_LIST,
+                null,
+                $with_photos,
+                true
+            );
+
+            $results = $zdb->execute($select);
+            $deps = array(
+                'groups'    => false,
+                'dues'      => false,
+                'picture'   => $with_photos
+            );
+
+            $staff = [];
+            $groups = [];
+            foreach ($results as $row) {
+                $member = new Adherent($zdb, $row, $deps);
+                if ($member->isStaff()) {
+                    $staff[$member->id] = $member;
+                }
+
+                if ($preferences->pref_bool_groupsmanagers_are_staff) {
+                    $managed_groups = $member->getManagedGroups();
+                    foreach ($managed_groups as $managed_group) {
+                        $groups[$managed_group->getName()][$member->id] = $member;
+                    }
+                }
+            }
+
+            return [
+                'staff' => $staff,
+                'groups' => $groups
+            ];
+        } catch (Throwable $e) {
+            Analog::log(
+                'Cannot list staff with public information (photos: '
+                . $with_photos . ') | ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            throw $e;
+        }
+    }
+
+    /**
      * Get list of members that has been selected
      *
      * @param int|array<int> $ids         an array of members id that has been selected
@@ -585,8 +645,9 @@ class Members
         /**
          * @var Db $zdb
          * @var Login $login
+         * @var Preferences $preferences
          */
-        global $zdb, $login;
+        global $zdb, $login, $preferences;
 
         try {
             if ($fields != null && !in_array('id_adh', $fields)) {
@@ -623,6 +684,7 @@ class Members
                 case self::SHOW_LIST:
                 case self::SHOW_ARRAY_LIST:
                 case self::SHOW_PUBLIC_LIST:
+                case self::SHOW_STAFF_PUBLIC_LIST:
                     if ($photos) {
                         $select->join(
                             array('picture' => PREFIX_DB . Picture::TABLE),
@@ -812,6 +874,30 @@ class Members
                         )
                     )
                 );
+            } elseif ($mode === self::SHOW_STAFF_PUBLIC_LIST) {
+                $select->where->equalTo('a.bool_display_info', true);
+
+                if ($preferences->pref_bool_groupsmanagers_are_staff) {
+                    $select->join(
+                        array('gr' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                        'a.' . Adherent::PK . '=gr.' . Adherent::PK,
+                        array(),
+                        $select::JOIN_LEFT
+                    );
+                    $select->where
+                        ->nest()
+                        ->lessThan(
+                            'status.priorite_statut',
+                            self::NON_STAFF_MEMBERS
+                        )
+                        ->or
+                        ->isNotNull('gr.' . Group::PK);
+                } else {
+                    $select->where->lessThan(
+                        'status.priorite_statut',
+                        self::NON_STAFF_MEMBERS
+                    );
+                }
             }
 
             if ($mode === self::SHOW_STAFF) {
