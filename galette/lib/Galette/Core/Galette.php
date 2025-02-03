@@ -544,7 +544,7 @@ class Galette
                         'icon' => 'address book'
                     ],
                     [
-                        'label' => _T("Trombinoscope"),
+                        'label' => _T("Gallery"),
                         'route' => [
                             'name' => 'publicMembersGallery'
                         ],

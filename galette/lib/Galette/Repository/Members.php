@@ -444,7 +444,7 @@ class Members
      * Get members list with public information available
      *
      * @param boolean $with_photos get only members which have uploaded a
-     *                             photo (for trombinoscope)
+     *                             photo (for gallery)
      *
      * @return array<string, Adherent[]>
      */

@@ -334,8 +334,8 @@ msgstr "Members list"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:351
 #: ../lib/Galette/Core/Galette.php:548
-msgid "Trombinoscope"
-msgstr "Trombinoscope"
+msgid "Gallery"
+msgstr "Gallery"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:453
 msgid "Members management"
@@ -8808,13 +8808,13 @@ msgid ""
 "If you check this box (and if you are up to date with your contributions), "
 "your full name and other information will be publically visible on the "
 "members list.<br/>If you've uploaded a photo, it will be displayed on the "
-"trombinoscope page.<br/>Note that administrators can disabled public pages, "
+"gallery page.<br/>Note that administrators can disabled public pages, "
 "this setting will have no effect in that case."
 msgstr ""
 "If you check this box (and if you are up to date with your contributions), "
 "your full name and other information will be publically visible on the "
 "members list.<br/>If you've uploaded a photo, it will be displayed on the "
-"trombinoscope page.<br/>Note that administrators can disabled public pages, "
+"gallery page.<br/>Note that administrators can disabled public pages, "
 "this setting will have no effect in that case."
 
 #: ../../tempcache/components/form.html.twig:358

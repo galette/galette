@@ -354,7 +354,7 @@ class MembersController extends CrudController
                 'with_photos' => true,
                 'page_title' => _T("Members list"),
                 'template' => 'pages/members_public_gallery.html.twig',
-                'html_class' => 'trombinoscope',
+                'html_class' => 'gallery',
             ],
             $option,
             $value
@@ -362,7 +362,7 @@ class MembersController extends CrudController
     }
 
     /**
-     * Public pages (trombinoscope, public list)
+     * Public pages (gallery, list)
      *
      * @param Request              $request  PSR Request
      * @param Response             $response PSR Response
@@ -449,7 +449,7 @@ class MembersController extends CrudController
     }
 
     /**
-     * Public pages filtering (trombinoscope, public list)
+     * Public pages filtering (gallery, list)
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response

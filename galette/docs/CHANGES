@@ -355,7 +355,7 @@ Bugfixes
 - fix blank page at install on some environments
 - fix javascript escaping on mailings
 - fix groups members removal error
-- fix pagination on trombinoscope
+- fix pagination on members gallery
 - fix logo path on some web server configurations
 - dynamic fields order was not stored
 - various fixes related to new dropdowns
@@ -953,7 +953,7 @@ Changes and additions
 - mailings history and management
 - groups management
 - add a dashboard (which displays latest news from the project
-- public pages (members list en trombinoscope)
+- public pages (members list and gallery)
 - handle plugins (see available plugins at https://doc.galette.eu/en/master/plugins/index.html)
 - CSV export of selected tables and/or parameted requests (https://mail.gna.org/public/galette-devel/2009-02/msg00006.html)
 - required fields management for members add/edition
