@@ -539,16 +539,14 @@ class Galette
                     [
                         'label' => _T("Members list"),
                         'route' => [
-                            'name' => 'publicList',
-                            'args' => ['type' => 'list']
+                            'name' => 'publicMembersList'
                         ],
                         'icon' => 'address book'
                     ],
                     [
                         'label' => _T("Trombinoscope"),
                         'route' => [
-                            'name' => 'publicList',
-                            'args' => ['type' => 'trombi']
+                            'name' => 'publicMembersGallery'
                         ],
                         'icon' => 'user friends'
                     ]

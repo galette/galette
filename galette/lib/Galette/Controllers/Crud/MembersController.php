@@ -300,24 +300,86 @@ class MembersController extends CrudController
     }
 
     /**
-     * Public pages (trombinoscope, public list)
+     * Public members list
      *
      * @param Request             $request  PSR Request
      * @param Response            $response PSR Response
      * @param string|null         $option   One of 'page' or 'order'
      * @param string|integer|null $value    Value of the option
-     * @param string|null         $type     List type (either list or trombi)
      *
      * @return Response
      */
-    public function publicList(
+    public function publicMembersList(
         Request $request,
         Response $response,
         ?string $option = null,
         string|int|null $value = null,
-        ?string $type = null
     ): Response {
-        $varname = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => $type]);
+        return $this->publicList(
+            $request,
+            $response,
+            [
+                'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
+                'with_photos' => false,
+                'page_title' => _T("Members list"),
+                'template' => 'pages/members_public_list.html.twig',
+                'html_class' => '',
+            ],
+            $option,
+            $value
+        );
+    }
+
+    /**
+     * Public members gallery
+     *
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
+     *
+     * @return Response
+     */
+    public function publicMembersGallery(
+        Request $request,
+        Response $response,
+        ?string $option = null,
+        string|int|null $value = null,
+    ): Response {
+        return $this->publicList(
+            $request,
+            $response,
+            [
+                'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
+                'with_photos' => true,
+                'page_title' => _T("Members list"),
+                'template' => 'pages/members_public_gallery.html.twig',
+                'html_class' => 'trombinoscope',
+            ],
+            $option,
+            $value
+        );
+    }
+
+    /**
+     * Public pages (trombinoscope, public list)
+     *
+     * @param Request              $request  PSR Request
+     * @param Response             $response PSR Response
+     * @param array<string, mixed> $args     Route arguments
+     * @param string|null          $option   One of 'page' or 'order'
+     * @param string|integer|null  $value    Value of the option
+     *
+     * @return Response
+     */
+    private function publicList(
+        Request $request,
+        Response $response,
+        array $args,
+        ?string $option = null,
+        string|int|null $value = null,
+    ): Response {
+        $varname = $args['filter_name'];
         if (isset($this->session->$varname)) {
             $filters = $this->session->$varname;
         } else {
@@ -336,7 +398,7 @@ class MembersController extends CrudController
         }
 
         $m = new Members($filters);
-        $members = $m->getPublicList($type === 'trombi');
+        $members = $m->getPublicList($args['with_photos'] ?? false);
 
         $this->session->$varname = $filters;
 
@@ -346,31 +408,57 @@ class MembersController extends CrudController
         // display page
         $this->view->render(
             $response,
-            ($type === 'list' ? 'pages/members_public_list' : 'pages/members_public_gallery') . '.html.twig',
+            $args['template'],
             array(
-                'page_title'    => ($type === 'list' ? _T("Members list") : _T('Trombinoscope')),
-                'additionnal_html_class'    => ($type === 'list' ? '' : 'trombinoscope'),
-                'type'          => $type,
-                'members'       => $members,
-                'nb_members'    => $m->getCount(),
-                'filters'       => $filters,
+                'page_title' => $args['page_title'],
+                'additionnal_html_class' => $args['html_class'] ?? '',
+                'members' => $members,
+                'nb_members' => $m->getCount(),
+                'filters' => $filters,
                 // pseudo random int
-                'time'              => time(),
+                'time' => time(),
             )
         );
         return $response;
     }
 
     /**
-     * Public pages (trombinoscope, public list)
+     * Public members list
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function filterPublicMembersList(Request $request, Response $response): Response
+    {
+        return $this->filterPublicList($request, $response, 'list', 'publicMembersList');
+    }
+
+    /**
+     * Public members list
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function filterPublicMembersGallery(Request $request, Response $response): Response
+    {
+        return $this->filterPublicList($request, $response, 'trombi', 'publicMembersGallery');
+    }
+
+    /**
+     * Public pages filtering (trombinoscope, public list)
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $type     Type
+     * @param string   $route    Filter route
      *
      * @return Response
      */
-    public function filterPublicList(Request $request, Response $response, string $type): Response
+    private function filterPublicList(Request $request, Response $response, string $type, string $route): Response
     {
         $post = $request->getParsedBody();
 
@@ -395,7 +483,7 @@ class MembersController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('publicList', ['type' => $type]));
+            ->withHeader('Location', $this->routeparser->urlFor($route));
     }
 
     /**

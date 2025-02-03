@@ -27,42 +27,58 @@ use Slim\Routing\RouteCollectorProxy;
 $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): void {
     //public members list
     $app->get(
-        '/{type:list|trombi}[/{option:page|order}/{value:\d+|\w+}]',
-        [Crud\MembersController::class, 'publicList']
-    )->setName('publicList');
+        '/members/list[/{option:page|order}/{value:\d+|\w+}]',
+        [Crud\MembersController::class, 'publicMembersList']
+    )->setName('publicMembersList');
 
     //members list filtering
     $app->post(
-        '/{type:list|trombi}/filter[/{from}]',
-        [Crud\MembersController::class, 'filterPublicList']
-    )->setName('filterPublicList');
+        '/members/list/filter[/{from}]',
+        [Crud\MembersController::class, 'filterPublicMembersList']
+    )->setName('filterPublicMembersList');
+
+    //public members gallery
+    $app->get(
+        '/members/gallery[/{option:page|order}/{value:\d+|\w+}]',
+        [Crud\MembersController::class, 'publicMembersGallery']
+    )->setName('publicMembersGallery');
+
+    //members list filtering
+    $app->post(
+        '/members/gallery/filter[/{from}]',
+        [Crud\MembersController::class, 'filterPublicMembersGallery']
+    )->setName('filterPublicMembersGallery');
+
 
     $app->get(
-        '/members[/{option:page|order}/{value:\d+|\w+}]',
+        '/documents[/{option:page|order}/{value:\d+|\w+}]',
+        [Crud\DocumentsController::class, 'publicList']
+    )->setName('documentsPublicList');
+
+    $app->get(
+        '/{list|members}[/{option:page|order}/{value:\d+|\w+}]',
         function ($request, $response, ?string $option = null, ?string $value = null) use ($routeparser) {
-            $args = ['type' => 'list'];
+            //list deprecated since 1.2.0
+            //members deprecated since 0.9.3
+            $args = [];
             if ($option !== null && $value !== null) {
                 $args['option'] = $option;
                 $args['value'] = $value;
             }
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $routeparser->urlFor('publicList', $args));
+                ->withHeader('Location', $routeparser->urlFor('publicMembersList', $args));
         }
     );
 
     $app->get(
-        '/trombinoscope',
+        '/{trombinoscope|trombi}',
         function ($request, $response) use ($routeparser) {
-            $args = ['type' => 'trombi'];
+            //trombi deprecated since 1.2.0
+            //trombinoscope deprecated since 0.9.3
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $routeparser->urlFor('publicList', $args));
+                ->withHeader('Location', $routeparser->urlFor('publicMembersGallery'));
         }
     );
-
-    $app->get(
-        '/documents[/{option:page|order}/{value:\d+|\w+}]',
-        [Crud\DocumentsController::class, 'publicList']
-    )->setName('documentsPublicList');
 })->add(\Galette\Middleware\PublicPages::class);

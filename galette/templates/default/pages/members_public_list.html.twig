@@ -68,10 +68,7 @@
 
 {% set form = {
     'order': {
-        'name': 'publicList',
-        'args': {
-            "type": "list"
-        }
+        'name': 'publicMembersList'
     }
 } %}
 
@@ -79,10 +76,7 @@
     {% set infoline = {
         'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
         'route': {
-            'name': 'filterPublicList',
-            'args': {
-                "type": "list"
-            }
+            'name': 'filterPublicMembersList'
         }
     } %}
     {{ parent() }}

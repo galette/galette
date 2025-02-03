@@ -58,10 +58,7 @@
     {% set infoline = {
         'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
         'route': {
-            'name': 'filterPublicList',
-            'args': {
-                "type": "trombi"
-            }
+            'name': 'filterPublicMembersGallery'
         }
     } %}
     {{ parent() }}
