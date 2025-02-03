@@ -411,7 +411,7 @@ class MembersController extends CrudController
             $args['template'],
             array(
                 'page_title' => $args['page_title'],
-                'additionnal_html_class' => $args['html_class'] ?? '',
+                'additional_html_class' => $args['html_class'] ?? '',
                 'members' => $members,
                 'nb_members' => $m->getCount(),
                 'filters' => $filters,

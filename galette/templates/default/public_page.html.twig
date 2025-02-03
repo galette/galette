@@ -20,7 +20,7 @@
 #}
 <!DOCTYPE html>
 
-<html lang="{{ galette_lang }}"{% if i18n.isRtl() %} dir="rtl"{% endif %} class="public_page{% if additionnal_html_class is defined %} {{ additionnal_html_class }}{% endif %}">
+<html lang="{{ galette_lang }}"{% if i18n.isRtl() %} dir="rtl"{% endif %} class="public_page{% if additional_html_class is defined %} {{ additional_html_class }}{% endif %}">
     <head>
         {% include 'elements/header.html.twig' with {
             galette_lang: galette_lang
