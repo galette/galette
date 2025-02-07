@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace Galette\Updates;
 
 use Analog\Analog;
+use Galette\Core\Preferences;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\ContributionsTypes;
 use Galette\Updater\AbstractUpdater;
@@ -143,6 +144,34 @@ class UpgradeTo120 extends AbstractUpdater
                 Adapter::QUERY_MODE_EXECUTE
             );
         }
+
+        //handle preferences
+        $preferences = new Preferences($this->zdb);
+
+        $delete_prefs = [];
+        if ($preferences->pref_log) { //@phpstan-ignore-line
+            $delete_prefs[] = 'pref_log';
+        }
+
+        if ($preferences->pref_publicpages_visibility) { //@phpstan-ignore-line
+            $pref_publicpages_visibility = $preferences->pref_publicpages_visibility;
+            $update = $this->zdb->update(Preferences::TABLE);
+            $update
+                ->set(['val_pref' => $pref_publicpages_visibility])
+                ->where->in(
+                    'nom_pref',
+                    ['pref_publicpages_visibility_memberslist', 'pref_publicpages_visibility_membersgallery']
+                );
+            $this->zdb->execute($update);
+            $delete_prefs[] = 'pref_publicpages_visibility';
+        }
+
+        if ($delete_prefs) {
+            $delete = $this->zdb->delete(Preferences::TABLE);
+            $delete->where->in('nom_pref', $delete_prefs);
+            $this->zdb->execute($delete);
+        }
+
         return true;
     }
 }

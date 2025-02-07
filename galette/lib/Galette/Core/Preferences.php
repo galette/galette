@@ -108,7 +108,10 @@ use Galette\Repository\Members;
  * @property integer $pref_card_rows
  * @property string $pref_theme Preferred theme
  * @property boolean $pref_bool_publicpages
- * @property integer $pref_publicpages_visibility
+ * @property integer $pref_publicpages_visibility_memberslist
+ * @property integer $pref_publicpages_visibility_membersgallery
+ * @property integer $pref_publicpages_visibility_stafflist
+ * @property integer $pref_publicpages_visibility_staffgallery
  * @property boolean $pref_bool_selfsubscribe
  * @property string $pref_member_form_grid
  * @property string $pref_mail_sign
@@ -163,12 +166,14 @@ class Preferences
     public const POSTAL_ADDRESS_FROM_STAFF = 1;
 
     /** Public pages stuff */
-    /** Public pages are publically visibles */
+    /** Public pages are publicly visibles */
     public const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
     /** Public pages are visibles for up-to-date members only */
     public const PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
     /** Public pages are visibles for admin and staff members only */
     public const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
+    /** Public pages are hidden */
+    public const PUBLIC_PAGES_VISIBILITY_HIDDEN = 3;
 
     /** No password strength */
     public const PWD_NONE = 0;
@@ -259,7 +264,10 @@ class Preferences
         'pref_card_self'    =>    1,
         'pref_theme'        =>    'default',
         'pref_bool_publicpages' => true,
-        'pref_publicpages_visibility' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_memberslist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_membersgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_stafflist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_staffgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
         'pref_mail_sign' => "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
         /* Preferences for member/subscribe form */
         'pref_bool_selfsubscribe' => true,
