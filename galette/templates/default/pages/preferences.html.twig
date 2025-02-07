@@ -232,13 +232,6 @@
                             <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') %} selected="selected"{% endif %}>{{ _T("go to main page") }}</option>
                         </select>
                     </div>
-                    <div class="{% if required.pref_log is defined and required.pref_log == 1 %}required {% endif %}field">
-                        <label for="pref_log">{{ _T("Logging level:") }}</label>
-                        <select name="pref_log" id="pref_log" class="ui search dropdown"{% if required.pref_log is defined and required.pref_log == 1 %} required="required"{% endif %}>
-                            <option value="{{ constant('Galette\\Core\\Preferences::LOG_DISABLED') }}" {% if pref.pref_log == constant('Galette\\Core\\Preferences::LOG_DISABLED') %}selected="selected"{% endif %}>{{ _T("Disabled") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::LOG_ENABLED') }}" {% if pref.pref_log == constant('Galette\\Core\\Preferences::LOG_ENABLED') %}selected="selected"{% endif %}>{{ _T("Enabled") }}</option>
-                        </select>
-                    </div>
                     <div class="field">
                         <label for="pref_filter_account">{{ _T("Default account filter:") }}</label>
                         <select name="pref_filter_account" id="pref_filter_account" class="ui search dropdown">

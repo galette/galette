@@ -7,6 +7,7 @@ Changes
 - Dynamic dates are now stored using Y-m-d format only
 - Dates validation is a bit stricter
 - Remove photo drag'n drop
+- Remove log preferences (logs are always enabled)
 
 1.1.5.1 -> 1.1.5.2
 

@@ -56,7 +56,6 @@ use Galette\Repository\Members;
  * @property boolean $pref_disable_members_socials Disable social networks for members
  * @property string $pref_lang Default instance language
  * @property integer $pref_numrows Default number of rows in lists
- * @property integer $pref_log History, one of self::LOG_*
  * @property integer $pref_statut Default status for new members
  * @property string $pref_email_nom
  * @property string $pref_email
@@ -171,9 +170,6 @@ class Preferences
     /** Public pages are visibles for admin and staff members only */
     public const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
 
-    public const LOG_DISABLED = 0;
-    public const LOG_ENABLED = 1;
-
     /** No password strength */
     public const PWD_NONE = 0;
     /** Weak password strength */
@@ -208,7 +204,6 @@ class Preferences
         'pref_disable_members_socials' => false,
         'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
-        'pref_log'        =>    self::LOG_ENABLED,
         'pref_statut'        =>    Status::DEFAULT_STATUS,
         /* Preferences for emails */
         'pref_email_nom'    =>    'Galette',
@@ -311,7 +306,6 @@ class Preferences
         'pref_nom' => 1,
         'pref_lang' => 1,
         'pref_numrows' => 1,
-        'pref_log' => 1,
         'pref_statut' => 1,
         'pref_etiq_marges_v' => 1,
         'pref_etiq_marges_h' => 1,
@@ -1032,7 +1026,6 @@ class Preferences
                 'pref_etiq_rows',
                 'pref_etiq_corps',
                 'pref_filter_account',
-                'pref_log',
                 'pref_mail_method',
                 'pref_membership_ext',
                 'pref_numrows',

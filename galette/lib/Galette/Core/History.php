@@ -120,11 +120,6 @@ class History
      */
     public function add(string $action, string $argument = '', string $query = ''): bool
     {
-        if ($this->preferences->pref_log == Preferences::LOG_DISABLED) {
-            //logs are disabled
-            return true;
-        }
-
         $ip = null;
         if (PHP_SAPI === 'cli') {
             $ip = '127.0.0.1';

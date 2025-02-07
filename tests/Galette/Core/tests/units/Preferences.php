@@ -906,7 +906,7 @@ class Preferences extends GaletteTestCase
             $preferences[$key] = $value;
         }
 
-        $count_required = 18;
+        $count_required = 17;
         $this->assertCount($count_required, $this->preferences->getRequiredFields($this->login));
 
         $post = array_merge($preferences, ['pref_admin_login' => null, 'pref_nom' => null]);
