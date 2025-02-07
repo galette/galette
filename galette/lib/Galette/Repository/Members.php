@@ -516,17 +516,10 @@ class Members
                 true
             );
 
-            $select->join(
-                array('status' => PREFIX_DB . Status::TABLE),
-                'a.' . Status::PK . '=status.' . Status::PK,
-                array('priorite_statut')
-            );
-
-            //TODO: only if groups managers should not be displayed
-            $select->where->lessThan(
+            /*$select->where->lessThan(
                 'status.priorite_statut',
                 self::NON_STAFF_MEMBERS
-            );
+            );*/
             $this->filters->setLimits($select);
 
             $results = $zdb->execute($select);
@@ -537,18 +530,18 @@ class Members
             );
 
             $staff = [];
-            $members = [];
             foreach ($results as $row) {
                 $member = new Adherent($zdb, $row, $deps);
-                if ($row->priorite_statut < self::NON_STAFF_MEMBERS) {
-                    $staff[] = $member;
-                } else {
-                    $members[] = $member;
-                }
+                $staff[] = $member;
             }
+
+            //TODO: get groups managers
+            $groups = [];
+            $managers = [];
+
             return [
-                'staff'     => $staff,
-                'members'   => $members
+                'staff' => $staff,
+                'groups' => $groups
             ];
         } catch (Throwable $e) {
             Analog::log(
@@ -689,6 +682,7 @@ class Members
                 case self::SHOW_LIST:
                 case self::SHOW_ARRAY_LIST:
                 case self::SHOW_PUBLIC_LIST:
+                case self::SHOW_STAFF_PUBLIC_LIST:
                     if ($photos) {
                         $select->join(
                             array('picture' => PREFIX_DB . Picture::TABLE),
@@ -724,7 +718,6 @@ class Members
                         array()
                     )->where(['m.' . Adherent::PK => $login->id]);
                     break;
-                case self::SHOW_STAFF_PUBLIC_LIST:
             }
 
             //check for contributions filtering
@@ -881,6 +874,10 @@ class Members
                 );
             } elseif ($mode === self::SHOW_STAFF_PUBLIC_LIST) {
                 $select->where->equalTo('a.bool_display_info', true);
+                $select->where->lessThan(
+                    'status.priorite_statut',
+                    self::NON_STAFF_MEMBERS
+                );
             }
 
             if ($mode === self::SHOW_STAFF) {

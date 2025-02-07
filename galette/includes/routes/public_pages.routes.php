@@ -49,6 +49,11 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): v
         [Crud\MembersController::class, 'filterPublicMembersGallery']
     )->setName('filterPublicMembersGallery');
 
+    $app->get(
+        '/staff/list[/{option:page|order}/{value:\d+|\w+}]',
+        [Crud\MembersController::class, 'publicStaffList']
+    )->setName('publicStaffList');
+
     //public staff members gallery
     $app->get(
         '/staff/gallery[/{option:page|order}/{value:\d+|\w+}]',

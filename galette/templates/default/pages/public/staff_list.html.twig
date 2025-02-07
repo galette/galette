@@ -1,0 +1,82 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends 'pages/public/list.html.twig' %}
+
+{% set form = {
+    'order': {
+        'name': 'publicMembersList'
+    }
+} %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
+        'route': {
+            'name': 'filterPublicMembersList'
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}
+    {% set columns = [
+        {'label': _T('Name'), order: constant("Galette\\Repository\\Members::ORDERBY_NAME")},
+        {'label': _T("Nickname"), order: constant("Galette\\Repository\\Members::ORDERBY_NICKNAME")},
+    ] %}
+
+    {% if login.isLogged() %}
+        {% set columns = columns|merge([
+            {'label': _T("Email")}
+        ]) %}
+    {% endif %}
+
+    {% set columns = columns|merge([
+        {'label': _T("Information")}
+    ]) %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% if nb_members > 0 %}
+        <tr>
+            <th scope="colgroup">{{ _T('Staff members') }}</th>
+        </tr>
+        {% for member in members.staff %}
+            {{ _self.drawEntry(member, true) }}
+        {% endfor %}
+
+        {% for group in members.groups %}
+            <tr>
+                <th scope="colgroup">{{ _T('Staff members') }}</th>
+            </tr>
+        {% endfor %}
+        {#% for member in members.members %}
+            {{ _self.drawEntry(member, false) }}
+        {% endfor %#}
+    {% else %}
+        <tr>
+            <td class="emptylist" colspan="4">
+                {{ _T('No member') }}
+            </td>
+        </tr>
+    {% endif %}
+{% endblock %}

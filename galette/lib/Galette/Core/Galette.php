@@ -537,7 +537,7 @@ class Galette
                 'icon' => 'eye outline',
                 'items' => [
                     [
-                        'label' => _T("Members list"),
+                        'label' => _T("Members"),
                         'route' => [
                             'name' => 'publicMembersList'
                         ],
@@ -549,6 +549,13 @@ class Galette
                             'name' => 'publicMembersGallery'
                         ],
                         'icon' => 'user friends'
+                    ],
+                    [
+                        'label' => _T("Staff"),
+                        'route' => [
+                            'name' => 'publicStaffList'
+                        ],
+                        'icon' => 'address card'
                     ],
                     [
                         'label' => _T('Staff gallery'),

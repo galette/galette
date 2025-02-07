@@ -1,0 +1,57 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends 'pages/public/gallery.html.twig' %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
+        'route': {
+            'name': 'filterPublicMembersGallery'
+        }
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block search %}
+    <div class="ui icon info visible message">
+        <i class="info circle blue icon" aria-hidden="true"></i>
+        <div class="content">
+            {{ _T("This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'") }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    {% if nb_members > 0 %}
+        {% for member in members.staff %}
+            {{ _self.drawEntry(member, true, time) }}
+        {% endfor %}
+        {% for member in members.members %}
+            {{ _self.drawEntry(member, false, time) }}
+        {% endfor %}
+    {% else %}
+        <div class="ui small message">
+            <div class="content">
+                <em>{{ _T('No member') }}</em>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
