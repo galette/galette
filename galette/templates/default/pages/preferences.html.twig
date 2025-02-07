@@ -205,19 +205,52 @@
         {% endfor %}
                         </select>
                     </div>
-                    {#<div class="field">
-                        <label for="pref_theme">{{ _T("Default theme:") }}</label>
-                        <select name="pref_theme" id="pref_theme" class="ui search dropdown">
-        {% for theme in themes %}
-                            <option value="{{ theme }}" {% if pref.pref_theme == theme %}selected="selected"{% endif %}>{{ theme|capitalize }}</option>
-        {% endfor %}
+                    <div class="field">
+                        <label for="pref_default_paymenttype">{{ _T("Default payment type:") }}</label>
+                        <select name="pref_default_paymenttype" id="pref_default_paymenttype" class="ui search dropdown">
+                            {% for key, value in paymenttypes %}
+                                <option value="{{ key }}"{% if key == pref.pref_default_paymenttype %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
                         </select>
-                    </div>#}
+                    </div>
+                    <div class="field">
+                        <label for="pref_filter_account">{{ _T("Default account filter:") }}</label>
+                        <select name="pref_filter_account" id="pref_filter_account" class="ui search dropdown">
+                            {% for key, value in accounts_options %}
+                                <option value="{{ key }}"{% if key == pref.pref_filter_account %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {% if pref.pref_show_id %} checked="checked"{% endif %}/>
+                            <label for="pref_show_id">{{ _T("Show identifiers") }}</label>
+                        </div>
+                        <i class="circular small inverted primary icon info tooltip" title="{{ _T("Display database identifiers in related windows") }}" aria-hidden="true"></i>
+                    </div>
+                    <div id="pref_member_form_grid_field" class="inline field">
+                        <label for="pref_member_form_grid">{{ _T("Number of columns on the member form") }}</label>
+                        <select name="pref_member_form_grid" id="pref_member_form_grid" class="ui dropdown">
+                            <option value="one"{% if pref.pref_member_form_grid == 'one' %} selected="selected"{% endif %}>1</option>
+                            <option value="two"{% if pref.pref_member_form_grid == 'two' %} selected="selected"{% endif %}>2</option>
+                            <option value="three"{% if pref.pref_member_form_grid == 'three' %} selected="selected"{% endif %}>3</option>
+                        </select>
+                    </div>
+                </div>{# /column #}
+                <div class="column">
                     <div class="{% if required.pref_numrows is defined and required.pref_numrows == 1 %}required {% endif %}field">
                         <label for="pref_numrows">{{ _T("Lines / Page:") }}</label>
                         <select name="pref_numrows" id="pref_numrows" class="ui search dropdown"{% if required.pref_numrows is defined and required.pref_numrows == 1 %} required="required"{% endif %}>
                             {% for key, value in pref_numrows_options %}
                                 <option value="{{ key }}"{% if key == pref.pref_numrows %} selected="selected"{% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field{% if required.pref_statut is defined and required.pref_statut == 1 %} required{% endif %}">
+                        <label for="pref_statut">{{ _T("Default membership status:") }}</label>
+                        <select name="pref_statut" id="pref_statut" class="ui search dropdown"{% if required.pref_statut is defined and required.pref_statut == 1 %} required="required"{% endif %}>
+                            {% for key, value in statuts %}
+                                <option value="{{ key }}"{% if key == pref.pref_statut %} selected="selected"{% endif %}>{{ value }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -230,46 +263,6 @@
                             <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_SHOW') %} selected="selected"{% endif %}>{{ _T("show member") }}</option>
                             <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_LIST') %} selected="selected"{% endif %}>{{ _T("go to members list") }}</option>
                             <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') %} selected="selected"{% endif %}>{{ _T("go to main page") }}</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label for="pref_filter_account">{{ _T("Default account filter:") }}</label>
-                        <select name="pref_filter_account" id="pref_filter_account" class="ui search dropdown">
-                            {% for key, value in accounts_options %}
-                                <option value="{{ key }}"{% if key == pref.pref_filter_account %} selected="selected"{% endif %}>{{ value }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label for="pref_default_paymenttype">{{ _T("Default payment type:") }}</label>
-                        <select name="pref_default_paymenttype" id="pref_default_paymenttype" class="ui search dropdown">
-                            {% for key, value in paymenttypes %}
-                                <option value="{{ key }}"{% if key == pref.pref_default_paymenttype %} selected="selected"{% endif %}>{{ value }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="field{% if required.pref_statut is defined and required.pref_statut == 1 %} required{% endif %}">
-                        <label for="pref_statut">{{ _T("Default membership status:") }}</label>
-                        <select name="pref_statut" id="pref_statut" class="ui search dropdown"{% if required.pref_statut is defined and required.pref_statut == 1 %} required="required"{% endif %}>
-                            {% for key, value in statuts %}
-                                <option value="{{ key }}"{% if key == pref.pref_statut %} selected="selected"{% endif %}>{{ value }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>{# /column #}
-                <div class="column">
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {% if pref.pref_bool_publicpages %} checked="checked"{% endif %}/>
-                            <label for="pref_bool_publicpages">{{ _T("Public pages enabled?") }}</label>
-                        </div>
-                    </div>
-                    <div id="publicpages_visibility" class="field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
-                        <label for="pref_publicpages_visibility">{{ _T("Show public pages for") }}</label>
-                        <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="ui search dropdown">
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
-                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
                         </select>
                     </div>
                     <div class="field inline">
@@ -286,54 +279,6 @@
                             <option value="portrait_ratio"{% if pref.pref_member_picture_ratio == 'portrait_ratio' %} selected="selected"{% endif %}>{{ _T("Portrait (3:4)") }}</option>
                             <option value="landscape_ratio"{% if pref.pref_member_picture_ratio == 'landscape_ratio' %} selected="selected"{% endif %}>{{ _T("Landscape (4:3)") }}</option>
                         </select>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{% if pref.pref_bool_selfsubscribe %} checked="checked"{% endif %}/>
-                            <label for="pref_bool_selfsubscribe">{{ _T("Self subscription enabled?") }}</label>
-                        </div>
-                    </div>
-                    <div id="pref_member_form_grid_field" class="inline field">
-                        <label for="pref_member_form_grid">{{ _T("Number of columns on the member form") }}</label>
-                        <select name="pref_member_form_grid" id="pref_member_form_grid" class="ui dropdown">
-                            <option value="one"{% if pref.pref_member_form_grid == 'one' %} selected="selected"{% endif %}>1</option>
-                            <option value="two"{% if pref.pref_member_form_grid == 'two' %} selected="selected"{% endif %}>2</option>
-                            <option value="three"{% if pref.pref_member_form_grid == 'three' %} selected="selected"{% endif %}>3</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label for="pref_new_contrib_script">{{ _T("Post new contribution script URI") }}</label>
-                        <div class="ui right corner labeled input">
-                            <div class="ui corner label">
-                                <i class="circular inverted primary icon info tooltip" data-html="{{ _T("Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases).") }}" aria-hidden="true"></i>
-                            </div>
-                            <input type="text" name="pref_new_contrib_script" id="pref_new_contrib_script" value="{{ pref.pref_new_contrib_script }}"/>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label for="pref_rss_url">{{ _T("RSS feed URL") }}</label>
-                        <div class="ui right corner labeled input">
-                            <div class="ui corner label">
-                                <i class="circular inverted primary icon info tooltip" title="{{ _T("Enter the full URL to the RSS feed. It will be displayed on Galette desktop.") }}" aria-hidden="true"></i>
-                            </div>
-                            <input type="text" name="pref_rss_url" id="pref_rss_url" value="{{ pref.pref_rss_url }}"/>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label for="pref_galette_url">{{ _T("Galette base URL") }}</label>
-                        <div class="ui right corner labeled input">
-                            <div class="ui corner label">
-                                <i class="circular inverted primary icon info tooltip" data-html="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({"%galette_url": preferences.getDefaultURL() ~ url_for('preferences')}) }}" aria-hidden="true"></i>
-                            </div>
-                            <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{{ preferences.getDefaultURL() }}" value="{{ pref.pref_galette_url }}"/>
-                        </div>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {% if pref.pref_show_id %} checked="checked"{% endif %}/>
-                            <label for="pref_show_id">{{ _T("Show identifiers") }}</label>
-                        </div>
-                        <i class="circular small inverted primary icon info tooltip" title="{{ _T("Display database identifiers in related windows") }}" aria-hidden="true"></i>
                     </div>
                 </div>{# /column #}
             </div>{# /column grid #}
@@ -370,6 +315,73 @@
                     </div>
                 </div>
             </div>{# /ui segment #}
+            <h4 class="ui horizontal divider header">
+                <i class="tag icon"></i>
+                {{ __('Public pages') }}
+            </h4>
+            <div class="ui stackable two column grid">
+                <div class="column">
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {% if pref.pref_bool_publicpages %} checked="checked"{% endif %}/>
+                            <label for="pref_bool_publicpages">{{ _T("Public pages enabled?") }}</label>
+                        </div>
+                    </div>
+                    <div id="publicpages_visibility" class="field{% if not pref.pref_bool_publicpages %} displaynone{% endif %}">
+                        <label for="pref_publicpages_visibility">{{ _T("Show public pages for") }}</label>
+                        <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="ui search dropdown">
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC') %} selected="selected"{% endif %}>{{ _T("Everyone") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED') %} selected="selected"{% endif %}>{{ _T("Up to date members") }}</option>
+                            <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
+                        </select>
+                    </div>
+                </div>{# /column #}
+                <div class="column">
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{% if pref.pref_bool_selfsubscribe %} checked="checked"{% endif %}/>
+                            <label for="pref_bool_selfsubscribe">{{ _T("Self subscription enabled?") }}</label>
+                        </div>
+                    </div>
+                </div>{# /column #}
+            </div>{# /column grid #}
+            <h4 class="ui horizontal divider header">
+                <i class="tag icon"></i>
+                {{ __('Advanced configuration') }}
+            </h4>
+            <div class="ui stackable two column grid">
+                <div class="column">
+                    <div class="field">
+                        <label for="pref_galette_url">{{ _T("Galette base URL") }}</label>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary icon info tooltip" data-html="{{ _T("Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url")|replace({"%galette_url": preferences.getDefaultURL() ~ url_for('preferences')}) }}" aria-hidden="true"></i>
+                            </div>
+                            <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{{ preferences.getDefaultURL() }}" value="{{ pref.pref_galette_url }}"/>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="pref_new_contrib_script">{{ _T("Post new contribution script URI") }}</label>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary icon info tooltip" data-html="{{ _T("Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases).") }}" aria-hidden="true"></i>
+                            </div>
+                            <input type="text" name="pref_new_contrib_script" id="pref_new_contrib_script" value="{{ pref.pref_new_contrib_script }}"/>
+                        </div>
+                    </div>
+                </div>{# /column #}
+                <div class="column">
+                    <div class="field">
+                        <label for="pref_rss_url">{{ _T("RSS feed URL") }}</label>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary icon info tooltip" title="{{ _T("Enter the full URL to the RSS feed. It will be displayed on Galette desktop.") }}" aria-hidden="true"></i>
+                            </div>
+                            <input type="text" name="pref_rss_url" id="pref_rss_url" value="{{ pref.pref_rss_url }}"/>
+                        </div>
+                    </div>
+                </div>{# /column #}
+            </div>{# /column grid #}
         </div>{# /tab segment #}
         <div class="ui{{ tab == 'rights' ? ' active' }} tab segment" data-tab="rights">
             <div class="ui stackable two column grid">
