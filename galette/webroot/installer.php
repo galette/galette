@@ -380,9 +380,9 @@ if ($install->isCheckStep()) {
                 <footer class="ui basic center aligned segment">
                     <div class="row">
                         <nav class="ui horizontal bulleted link list">
-                            <a href="https://galette.eu" class="item">
-                                <i class="icon globe europe"></i>
-                                <?php echo _T("Website"); ?>
+                            <a id="copyright" href="https://galette.eu/" class="item">
+                                <i class="icon cookie bite"></i>
+                                Galette <?php echo GALETTE_DISPLAY_VERSION; ?>
                             </a>
                             <a href="https://doc.galette.eu" class="item">
                                 <i class="icon book"></i>
@@ -391,14 +391,6 @@ if ($install->isCheckStep()) {
                             <a href="https://framapiaf.org/@galette" class="item">
                                 <i class="icon mastodon"></i>
                                 @galette
-                            </a>
-                        </nav>
-                    </div>
-                    <div class="row">
-                        <nav class="ui horizontal bulleted link list">
-                            <a id="copyright" href="https://galette.eu/" class="item">
-                                <i class="icon cookie bite"></i>
-                                Galette <?php echo GALETTE_DISPLAY_VERSION; ?>
                             </a>
                         </nav>
                     </div>
