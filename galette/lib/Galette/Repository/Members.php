@@ -516,10 +516,6 @@ class Members
                 true
             );
 
-            /*$select->where->lessThan(
-                'status.priorite_statut',
-                self::NON_STAFF_MEMBERS
-            );*/
             $this->filters->setLimits($select);
 
             $results = $zdb->execute($select);
