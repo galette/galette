@@ -20,18 +20,11 @@
 #}
 {% extends 'pages/public/list.html.twig' %}
 
-{% set form = {
-    'order': {
-        'name': 'publicMembersList'
-    }
-} %}
+{% set is_paginated = false %}
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
-        'route': {
-            'name': 'filterPublicMembersList'
-        }
+        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members})
     } %}
     {{ parent() }}
 {% endblock %}
@@ -58,20 +51,20 @@
 {% block body %}
     {% if nb_members > 0 %}
         <tr>
-            <th scope="colgroup">{{ _T('Staff members') }}</th>
+            <th scope="colgroup" colspan="4">{{ _T('Staff members') }}</th>
         </tr>
         {% for member in members.staff %}
             {{ _self.drawEntry(member, true) }}
         {% endfor %}
 
-        {% for group in members.groups %}
+        {% for group, group_managers in members.groups %}
             <tr>
-                <th scope="colgroup">{{ _T('Staff members') }}</th>
+                <th scope="colgroup" colspan="4">{{ _T('"%1$s" group managers')|format(group) }}</th>
             </tr>
+            {% for manager in group_managers %}
+                {{ _self.drawEntry(manager, false) }}
+            {% endfor %}
         {% endfor %}
-        {#% for member in members.members %}
-            {{ _self.drawEntry(member, false) }}
-        {% endfor %#}
     {% else %}
         <tr>
             <td class="emptylist" colspan="4">

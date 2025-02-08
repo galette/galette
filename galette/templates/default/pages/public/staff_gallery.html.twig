@@ -29,9 +29,11 @@
         {% for member in members.staff %}
             {{ _self.drawEntry(member, true, time) }}
         {% endfor %}
-        {#% for manager in members.managers %}
-            {{ _self.drawEntry(manager, false, time) }}
-        {% endfor %#}
+        {% for group_managers in members.groups %}
+            {% for manager in group_managers %}
+                {{ _self.drawEntry(manager, false, time) }}
+            {% endfor %}
+        {% endfor %}
     {% else %}
         <div class="ui small message">
             <div class="content">

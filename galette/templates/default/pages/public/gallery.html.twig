@@ -43,11 +43,25 @@
             </div>
     {% endif %}
         </div>
-    {% if staff %}
+
+    {%  set mgroups = member.getManagedGroups() %}
+    {% if staff or mgroups|length %}
         <div class="extra content">
             <span class="right floated">
+        {% if staff %}
                 <i class="ui user tie orange icon" aria-hidden="true"></i>
                 {{ member.sstatus }}
+        {% endif %}
+        {% if mgroups|length %}
+            {% if staff %}
+                <br />
+            {% endif %}
+            <i class="ui users cog orange icon" aria-hidden="true"></i>
+            {{ __('Manages:') }}
+            {% for group in mgroups %}
+                {{ group.getName() }}
+            {% endfor %}
+        {% endif %}
             </span>
         </div>
     {% endif %}

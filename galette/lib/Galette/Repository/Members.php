@@ -516,7 +516,6 @@ class Members
                 true
             );
 
-            $this->filters->setLimits($select);
 
             $results = $zdb->execute($select);
             $deps = array(
@@ -526,14 +525,18 @@ class Members
             );
 
             $staff = [];
+            $groups = [];
             foreach ($results as $row) {
                 $member = new Adherent($zdb, $row, $deps);
-                $staff[] = $member;
-            }
+                if ($member->isStaff()) {
+                    $staff[] = $member;
+                }
 
-            //TODO: get groups managers
-            $groups = [];
-            $managers = [];
+                $managed_groups = $member->getManagedGroups();
+                foreach ($managed_groups as $managed_group) {
+                    $groups[$managed_group->getName()][] = $member;
+                }
+            }
 
             return [
                 'staff' => $staff,

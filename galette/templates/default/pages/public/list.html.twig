@@ -66,22 +66,6 @@
     </tr>
 {% endmacro %}
 
-{% set form = {
-    'order': {
-        'name': 'publicMembersList'
-    }
-} %}
-
-{% block infoline %}
-    {% set infoline = {
-        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
-        'route': {
-            'name': 'filterPublicMembersList'
-        }
-    } %}
-    {{ parent() }}
-{% endblock %}
-
 {% block header %}
     {% set columns = [
         {'label': _T('Name'), order: constant("Galette\\Repository\\Members::ORDERBY_NAME")},
