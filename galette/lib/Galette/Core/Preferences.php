@@ -112,6 +112,7 @@ use Galette\Repository\Members;
  * @property integer $pref_publicpages_visibility_membersgallery
  * @property integer $pref_publicpages_visibility_stafflist
  * @property integer $pref_publicpages_visibility_staffgallery
+ * @property boolean $pref_bool_groupsmanagers_are_staff
  * @property boolean $pref_bool_selfsubscribe
  * @property string $pref_member_form_grid
  * @property string $pref_mail_sign
@@ -268,6 +269,7 @@ class Preferences
         'pref_publicpages_visibility_membersgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
         'pref_publicpages_visibility_stafflist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
         'pref_publicpages_visibility_staffgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_bool_groupsmanagers_are_staff' => false,
         'pref_mail_sign' => "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
         /* Preferences for member/subscribe form */
         'pref_bool_selfsubscribe' => true,

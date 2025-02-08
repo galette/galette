@@ -644,8 +644,9 @@ class Members
         /**
          * @var Db $zdb
          * @var Login $login
+         * @var Preferences $preferencess
          */
-        global $zdb, $login;
+        global $zdb, $login, $preferences;
 
         try {
             if ($fields != null && !in_array('id_adh', $fields)) {
@@ -874,10 +875,28 @@ class Members
                 );
             } elseif ($mode === self::SHOW_STAFF_PUBLIC_LIST) {
                 $select->where->equalTo('a.bool_display_info', true);
-                $select->where->lessThan(
-                    'status.priorite_statut',
-                    self::NON_STAFF_MEMBERS
-                );
+
+                if ($preferences->pref_bool_groupsmanagers_are_staff) {
+                    $select->join(
+                        array('gr' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                        'a.' . Adherent::PK . '=gr.' . Adherent::PK,
+                        array(),
+                        $select::JOIN_LEFT
+                    );
+                    $select->where
+                        ->nest()
+                        ->lessThan(
+                            'status.priorite_statut',
+                            self::NON_STAFF_MEMBERS
+                        )
+                        ->or
+                        ->isNotNull('gr.' . Group::PK);
+                } else {
+                    $select->where->lessThan(
+                        'status.priorite_statut',
+                        self::NON_STAFF_MEMBERS
+                    );
+                }
             }
 
             if ($mode === self::SHOW_STAFF) {

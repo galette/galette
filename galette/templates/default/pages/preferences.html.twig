@@ -345,6 +345,12 @@
                             <option value="{{ constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') }}"{% if pref.pref_publicpages_visibility_stafflist == constant('Galette\\Core\\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE') %} selected="selected"{% endif %}>{{ _T("Admin and staff only") }}</option>
                         </select>
                     </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_groupsmanagers_are_staff" id="pref_bool_groupsmanagers_are_staff" value="1" {% if pref.pref_bool_groupsmanagers_are_staff %} checked="checked"{% endif %}/>
+                            <label for="pref_bool_groupsmanagers_are_staff">{{ _T("Include groups managers with staff?") }}</label>
+                        </div>
+                    </div>
                 </div>{# /column #}
                 <div class="column">
                     <div class="field inline">
