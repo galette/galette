@@ -283,33 +283,33 @@
                 </div>{# /column #}
             </div>{# /column grid #}
             <div class="ui segment">
-                <div class="ui two column stackable grid">
-                    <div class="ui vertical divider">{{ __('or') }}</div>
-                    <div class="middle aligned row">
-                        <div class="column">
-                            <div class="field">
-                                <label for="pref_membership_ext">{{ _T("Default membership extension:") }}</label>
-                                <div class="ui right labeled input">
-                                    <input type="text" name="pref_membership_ext" id="pref_membership_ext" value="{{ pref.pref_membership_ext }}" maxlength="2"/>
-                                    <div class="ui basic label">
-                                        {{ _T("(Months)") }}
-                                    </div>
+                <div class="ui stackable grid">
+                    <div class="middle aligned left aligned seven wide column">
+                        <div class="field">
+                            <label for="pref_membership_ext">{{ _T("Default membership extension:") }}</label>
+                            <div class="ui right labeled input">
+                                <input type="text" name="pref_membership_ext" id="pref_membership_ext" value="{{ pref.pref_membership_ext }}" maxlength="2"/>
+                                <div class="ui basic label">
+                                    {{ _T("(Months)") }}
                                 </div>
                             </div>
                         </div>
-                        <div class="column">
-                            <div class="field">
-                                <label for="pref_beg_membership">{{ _T("Beginning of membership:") }}</label>
-                                <input type="text" name="pref_beg_membership" id="pref_beg_membership" value="{{ pref.pref_beg_membership }}" maxlength="5" placeholder="{{ _T("(dd/mm)") }}"/>
-                            </div>
-                            <div class="field">
-                                <label for="pref_membership_offermonths">{{ _T("Number of months offered:") }}</label>
-                                <div class="ui right corner labeled input">
-                                    <div class="ui corner label">
-                                        <i class="circular inverted primary icon info tooltip" data-html="{{ _T("When using the beginning of membership option; you can offer the last months of the year.") }}<br/>{{ _T("Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year.") }}" aria-hidden="true"></i>
-                                    </div>
-                                    <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{{ pref.pref_membership_offermonths }}" maxlength="5"/>
+                    </div>
+                    <div class="one wide column">
+                        <div class="ui vertical divider">{{ __('or') }}</div>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="field">
+                            <label for="pref_beg_membership">{{ _T("Beginning of membership:") }}</label>
+                            <input type="text" name="pref_beg_membership" id="pref_beg_membership" value="{{ pref.pref_beg_membership }}" maxlength="5" placeholder="{{ _T("(dd/mm)") }}"/>
+                        </div>
+                        <div class="field">
+                            <label for="pref_membership_offermonths">{{ _T("Number of months offered:") }}</label>
+                            <div class="ui right corner labeled input">
+                                <div class="ui corner label">
+                                    <i class="circular inverted primary icon info tooltip" data-html="{{ _T("When using the beginning of membership option; you can offer the last months of the year.") }}<br/>{{ _T("Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year.") }}" aria-hidden="true"></i>
                                 </div>
+                                <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{{ pref.pref_membership_offermonths }}" maxlength="5"/>
                             </div>
                         </div>
                     </div>
