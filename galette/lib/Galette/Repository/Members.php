@@ -505,7 +505,7 @@ class Members
      */
     public function getPublicStaffList(bool $with_photos): array
     {
-        global $zdb;
+        global $zdb, $preferences;
 
         try {
             $this->extra_order = ['priorite_statut ASC'];
@@ -515,7 +515,6 @@ class Members
                 $with_photos,
                 true
             );
-
 
             $results = $zdb->execute($select);
             $deps = array(
@@ -532,9 +531,11 @@ class Members
                     $staff[] = $member;
                 }
 
-                $managed_groups = $member->getManagedGroups();
-                foreach ($managed_groups as $managed_group) {
-                    $groups[$managed_group->getName()][] = $member;
+                if ($preferences->pref_bool_groupsmanagers_are_staff) {
+                    $managed_groups = $member->getManagedGroups();
+                    foreach ($managed_groups as $managed_group) {
+                        $groups[$managed_group->getName()][] = $member;
+                    }
                 }
             }
 

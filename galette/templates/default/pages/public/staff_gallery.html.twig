@@ -29,6 +29,7 @@
         {% for member in members.staff %}
             {{ _self.drawEntry(member, true, time) }}
         {% endfor %}
+        {# FIXME: find a way to separate groups display. If currently a staff memebr is alos group manager, he'll be displayed several times; like duplicated #}
         {% for group_managers in members.groups %}
             {% for manager in group_managers %}
                 {{ _self.drawEntry(manager, false, time) }}

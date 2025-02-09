@@ -108,6 +108,8 @@ use Galette\Repository\Members;
  * @property integer $pref_card_rows
  * @property string $pref_theme Preferred theme
  * @property boolean $pref_bool_publicpages
+ * @property integer $pref_publicpages_visibility_generic
+ * @property integer $pref_publicpages_visibility_documents
  * @property integer $pref_publicpages_visibility_memberslist
  * @property integer $pref_publicpages_visibility_membersgallery
  * @property integer $pref_publicpages_visibility_stafflist
@@ -175,6 +177,7 @@ class Preferences
     public const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
     /** Public pages are hidden */
     public const PUBLIC_PAGES_VISIBILITY_HIDDEN = 3;
+    public const PUBLIC_PAGES_VISIBILITY_INHERIT = 4;
 
     /** No password strength */
     public const PWD_NONE = 0;
@@ -265,6 +268,8 @@ class Preferences
         'pref_card_self'    =>    1,
         'pref_theme'        =>    'default',
         'pref_bool_publicpages' => true,
+        'pref_publicpages_visibility_generic' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_documents' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
         'pref_publicpages_visibility_memberslist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
         'pref_publicpages_visibility_membersgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
         'pref_publicpages_visibility_stafflist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
@@ -965,16 +970,53 @@ class Preferences
     /**
      * Are public pages visible?
      *
+     * @return boolean
+     */
+    public function arePublicPagesEnabled(): bool
+    {
+        return (bool)$this->prefs['pref_bool_publicpages'];
+    }
+
+    /**
+     * Are public pages visible?
+     *
      * @param Authentication $login Authentication instance
      *
      * @return boolean
+     *
+     * @deprecated 1.2.0
      */
     public function showPublicPages(Authentication $login): bool
     {
-        if ($this->prefs['pref_bool_publicpages']) {
+        Analog::log(
+            'Preferences::showPublicPages() is deprecated, use Preferences::showPublicPage() instead.',
+            Analog::WARNING
+        );
+        return $this->showPublicPage($login, 'pref_publicpages_visibility_memberslist')
+            || $this->showPublicPage($login, 'pref_publicpages_visibility_membersgallery');
+    }
+
+    /**
+     * Are public pages visible?
+     *
+     * @param Authentication $login Authentication instance
+     * @param string         $right Right to check
+     *
+     * @return boolean
+     */
+    public function showPublicPage(Authentication $login, string $right): bool
+    {
+        if ($this->arePublicPagesEnabled()) {
             //if public pages are actives, let's check if we
             //display them for curent call
-            switch ($this->prefs['pref_publicpages_visibility']) {
+            if (!isset($this->prefs[$right])) {
+                //Core does not handle plugins permission, just a global right.
+                $right = 'pref_publicpages_visibility_generic';
+            }
+            switch ($this->prefs[$right]) {
+                case self::PUBLIC_PAGES_VISIBILITY_INHERIT:
+                    //inherit from generic right
+                    return $this->showPublicPage($login, 'pref_publicpages_visibility_generic');
                 case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
                     //pages are publicly visibles
                     return true;
@@ -997,7 +1039,12 @@ class Preferences
                         return false;
                     }
                 default:
+                    throw new \RuntimeException('Unknown public pages right: ' . $this->prefs[$right]);
                     //should never be there
+                    Analog::log(
+                        'Unknown public pages right: ' . $this->prefs[$right],
+                        Analog::WARNING
+                    );
                     return false;
             }
         } else {
@@ -1043,7 +1090,12 @@ class Preferences
                 'pref_postal_staff_member',
                 'pref_password_length',
                 'pref_password_strength',
-                'pref_publicpages_visibility',
+                'pref_publicpages_visibility_generic',
+                'pref_publicpages_visibility_documents',
+                'pref_publicpages_visibility_memberslist',
+                'pref_publicpages_visibility_membersgallery',
+                'pref_publicpages_visibility_stafflist',
+                'pref_publicpages_visibility_staffgallery',
                 'pref_redirect_on_create',
                 'pref_statut'
             ],

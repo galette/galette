@@ -106,9 +106,12 @@ class ImagesController extends AbstractController
         $adh->load($id);
 
         $picture = null;
+        //TODO?: following check may be improved for staff part checking if member is
+        // staff or part of groups if pref_bool_groupsmanagers_are_staff is true. But it's maybe too much.
         if (
             $adh->canEdit($this->login)
-            || $this->preferences->showPublicPages($this->login)
+            || ($this->preferences->showPublicPage($this->login, 'pref_publicpages_visibility_membersgallery')
+                || $this->preferences->showPublicPage($this->login, 'pref_publicpages_visibility_staffgallery'))
             && $adh->appearsInMembersList()
         ) {
             $picture = $adh->picture;

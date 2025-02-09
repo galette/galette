@@ -50,9 +50,11 @@
 
 {% block body %}
     {% if nb_members > 0 %}
+        {% if members.groups|length > 0 %}
         <tr>
             <th scope="colgroup" colspan="4">{{ _T('Staff members') }}</th>
         </tr>
+        {% endif %}
         {% for member in members.staff %}
             {{ _self.drawEntry(member, true) }}
         {% endfor %}

@@ -160,7 +160,11 @@ class UpgradeTo120 extends AbstractUpdater
                 ->set(['val_pref' => $pref_publicpages_visibility])
                 ->where->in(
                     'nom_pref',
-                    ['pref_publicpages_visibility_memberslist', 'pref_publicpages_visibility_membersgallery']
+                    [
+                        'pref_publicpages_visibility_generic',
+                        'pref_publicpages_visibility_memberslist',
+                        'pref_publicpages_visibility_membersgallery'
+                    ]
                 );
             $this->zdb->execute($update);
             $delete_prefs[] = 'pref_publicpages_visibility';
