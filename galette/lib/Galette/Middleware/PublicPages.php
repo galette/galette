@@ -76,7 +76,7 @@ class PublicPages
         $current_path = trim($request->getUri()->getPath(), '/');
         $page = explode('/', $current_path);
         if ($page[0] === 'plugins') {
-            $right_pattern .='_%s';
+            $right_pattern .= '_%s';
             $right = sprintf(
                 $right_pattern,
                 'plugin',

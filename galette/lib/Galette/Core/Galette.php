@@ -582,7 +582,10 @@ class Galette
             //display documents menu if at least one document is present with current ACLs
             $document = new Document($zdb);
             $documents = $document->getList();
-            if ($login->isSuperAdmin() || $preferences->showPublicPage($login, 'pref_publicpages_visibility_documents') &&count($documents)) {
+            if ($login->isSuperAdmin()
+                || $preferences->showPublicPage($login, 'pref_publicpages_visibility_documents')
+                && count($documents)
+            ) {
                 $menus['public']['items'][] = [
                     'label' => _T("Documents"),
                     'title' => _T("View documents related to your association"),
