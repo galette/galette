@@ -122,7 +122,7 @@ abstract class GalettePlugin
      */
     public static function getMyDashboardsContents(): array
     {
-        //FIXME: should be abstract, but would require a Galette bump version in plugins
+        //FIXME: should be abstract since 1.1.4, but would require a Galette bump version in plugins
         return [];
     }
 
