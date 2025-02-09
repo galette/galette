@@ -44,7 +44,7 @@
     {% endif %}
         </div>
 
-    {%  set mgroups = member.getManagedGroups() %}
+    {% set mgroups = member.getManagedGroups() %}
     {% if staff or mgroups|length %}
         <div class="extra content">
             <span class="right floated">
