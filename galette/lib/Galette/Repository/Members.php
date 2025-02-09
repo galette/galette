@@ -1492,26 +1492,8 @@ class Members
                     $fs['qry_op'] === AdvancedMembersList::OP_BEFORE
                     || $fs['qry_op'] === AdvancedMembersList::OP_AFTER
                 ) {
-                    if ($prefix === 'a.') {
-                        //dates are OK in the main fields. no cast, just query!
-                        $qry .= $prefix . $fs['field'] . $qop . ' ' .
-                            $zdb->platform->quoteValue($fs['search']);
-                    } else {
-                        //dynamic dates are stored in their localized format :/
-                        //use current lang format to query for now
-                        //FIXME works with french formatted date only -_-
-                        if ($zdb->isPostgres()) {
-                            $store_fmt = __("Y-m-d") === 'Y-m-d' ? 'YYYY-MM-DD' : 'DD/MM/YYYY';
-                            $fs['search'] = "'" . $fs['search'] . "'";
-                            $qry .= "to_date(" . $prefix . $fs['field'] . ", '$store_fmt')";
-                        } else {
-                            $store_fmt = __("Y-m-d") === 'Y-m-d' ? '%Y-%m-%d' : '%d/%m/%Y';
-                            $fs['search'] = "STR_TO_DATE('" . $fs['search'] . "', '" . $store_fmt . "')";
-                            $qry .= 'STR_TO_DATE(' . $prefix . $fs['field'] . ', \'' . $store_fmt . '\') ';
-                        }
-
-                        $qry .= $qop . ' ' . $fs['search'];
-                    }
+                    $qry .= $prefix . $fs['field'] . $qop . ' ' .
+                        $zdb->platform->quoteValue($fs['search']);
                 } else {
                     $field = $prefix . $fs['field'];
                     if ($zdb->isPostgres()) {
