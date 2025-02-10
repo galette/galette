@@ -53,7 +53,8 @@ class DynamicTranslationsController extends AbstractController
         }
 
         $params = [
-            'page_title'    => _T("Translate labels")
+            'page_title'    => _T("Translate labels"),
+            'documentation' => 'usermanual/configuration.html#labels-translation'
         ];
 
         $nb_fields = 0;

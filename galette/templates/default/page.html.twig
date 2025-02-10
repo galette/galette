@@ -54,13 +54,6 @@
                     <h1 class="ui block center aligned header" style="position: relative">
 {% else %}
                     <div class="ui horizontal basic segments header">
-                        <div class="ui right aligned compact segment">
-                            <nav class="ui compact tiny menu" aria-label="{{ _T('Language menu') }}">
-                                {% include "elements/language.html.twig" with {
-                                        ui: "dropdown"
-                                } %}
-                            </nav>
-                        </div>
                         <a id="main-content" tabindex="-1"></a>
                         <div class="ui center aligned segment">
                             <h1>
@@ -68,6 +61,24 @@
                                 {% block page_title %}{{ page_title }}{% endblock %}
                             </h1>
 {% if login.isLogged() %}
+                        </div>
+    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+        {% set documentation_path = documentation ?? '' %}
+        {% if documentation_path is not empty %}
+                        <div class="ui compact segment">
+                            <a class="circular ui basic mini icon button" href="{{ i18n.getDocumentationBaseUrl() }}{{ documentation_path }}" target="_blank" data-position="left center" title="{{ _T("Read the manual") }}">
+                                <i class="question icon"></i>
+                                <span class="visually-hidden">{{ _T("Read the manual") }}</span>
+                            </a>
+                        </div>
+        {% endif %}
+    {% endif %}
+                        <div class="ui compact segment languages">
+                            <nav class="ui compact tiny menu" aria-label="{{ _T('Language menu') }}">
+                                {% include "elements/language.html.twig" with {
+                                        ui: "dropdown"
+                                } %}
+                            </nav>
                         </div>
                     </div>
 {% endif %}

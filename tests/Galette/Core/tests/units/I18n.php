@@ -34,6 +34,7 @@ class I18n extends TestCase
 {
     private \Galette\Core\Db $zdb;
     private ?\Galette\Core\I18n $i18n = null;
+    private \Galette\Core\Galette $galette;
 
     /**
      * Set up tests
@@ -46,6 +47,7 @@ class I18n extends TestCase
         $this->i18n = new \Galette\Core\I18n(
             \Galette\Core\I18n::DEFAULT_LANG
         );
+        $this->galette = new \Galette\Core\Galette();
     }
 
     /**
@@ -186,5 +188,33 @@ class I18n extends TestCase
 
         $this->assertTrue($is_utf);
         $this->assertFalse($is_iso);
+    }
+
+    /**
+     * Test getting online documentation base URL
+     *
+     * @return void
+     */
+    public function testGetDocumentationBaseUrl(): void
+    {
+        $docbaseurl = $this->i18n->getDocumentationBaseUrl();
+        $branch = (preg_match('(-git)', $this->galette->gitVersion()) ? 'develop' : 'master') . '/';
+
+        $this->assertSame('https://doc.galette.eu/en/' . $branch, $docbaseurl);
+
+        $this->i18n->changeLanguage('fr_FR');
+        $docbaseurl = $this->i18n->getDocumentationBaseUrl();
+
+        $this->assertSame('https://doc.galette.eu/fr/' . $branch, $docbaseurl);
+
+        $this->i18n->changeLanguage('si');
+        $docbaseurl = $this->i18n->getDocumentationBaseUrl();
+
+        $this->assertSame('https://doc.galette.eu/en/' . $branch, $docbaseurl);
+
+        $this->i18n->changeLanguage('nb_NO');
+        $docbaseurl = $this->i18n->getDocumentationBaseUrl();
+
+        $this->assertSame('https://doc.galette.eu/no/' . $branch, $docbaseurl);
     }
 }

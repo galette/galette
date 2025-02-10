@@ -545,7 +545,8 @@ class MembersController extends CrudController
                 'nb_members'            => $members->getCount(),
                 'filters'               => $filters,
                 'adv_filters'           => $filters instanceof AdvancedMembersList,
-                'galette_list'          => $this->lists_config->getDisplayElements($this->login)
+                'galette_list'          => $this->lists_config->getDisplayElements($this->login),
+                'documentation'         => 'usermanual/adherents.html#members-list'
             )
         );
         return $response;
@@ -780,7 +781,8 @@ class MembersController extends CrudController
                 'statuts'               => $statuts->getList(),
                 'contributions_types'   => $ct->getList(),
                 'filters'               => $filters,
-                'payments_types'        => $ptlist
+                'payments_types'        => $ptlist,
+                'documentation'         => 'usermanual/recherche.html#advanced-search'
             )
         );
         return $response;
@@ -1124,7 +1126,8 @@ class MembersController extends CrudController
                 'hidden_elements'   => $form_elements['hiddens'],
                 'parent_fields'     => $tpl_parent_fields,
                 'addchild'          => ($action === 'addchild'),
-                'osocials'          => new Social($this->zdb)
+                'osocials'          => new Social($this->zdb),
+                'documentation'     => 'usermanual/adherents.html'
             ) + $route_params
         );
         return $response;

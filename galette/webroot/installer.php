@@ -205,12 +205,12 @@ if (isset($_POST['stepback_btn'])) {
 header('Content-Type: text/html; charset=UTF-8');
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $i18n->getAbbrev(); ?>">
+<html lang="<?php echo $i18n->getAbbrev(); ?>"<?php if ($i18n->isRtl()) { ?> dir="rtl"<?php } ?>>
     <head>
-        <title><?php echo _T("Galette Installation") . ' - ' . $install->getStepTitle(); ?></title>
+        <title><?php echo _T("Galette Installation") . ' - ' . $install->getStepDetail('title'); ?></title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width" />
-        <link rel="stylesheet" type="text/css" href="./themes/default/ui/semantic.min.css" />
+        <link rel="stylesheet" type="text/css" href="./themes/default/ui/semantic<?php if ($i18n->isRtl()) { ?>.rtl<?php } ?>.min.css" />
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
         <script type="text/javascript" src="./assets/js/jquery.min.js"></script>
     </head>
@@ -221,7 +221,13 @@ header('Content-Type: text/html; charset=UTF-8');
                 <div class="header item">
                     <span><?php echo _T("Galette installation") ?></span>
                 </div>
-                <div class="language ui dropdown right item">
+                <div class="ui right item">
+                    <a class="circular ui basic mini icon button" href="<?php echo $i18n->getDocumentationBaseUrl(); ?><?php echo $install->getStepDetail('documentation'); ?>" target="_blank" data-position="left center" title="<?php echo _T("Read the manual"); ?>">
+                        <i class="question icon"></i>
+                        <span class="visually-hidden"><?php echo _T("Read the manual"); ?></span>
+                    </a>
+                </div>
+                <div class="language ui dropdown navigation item">
                     <i class="icon language" aria-hidden="true"></i>
                     <span><?php echo $i18n->getAbbrev(); ?></span>
                     <i class="icon dropdown" aria-hidden="true"></i>
@@ -245,7 +251,7 @@ foreach ($i18n->getList() as $langue) {
                     </div>
                     <a id="main-content" tabindex="-1"></a>
                     <h1 class="ui block center aligned header">
-                        <?php echo $install->getStepTitle(); ?>
+                        <?php echo $install->getStepDetail('title'); ?>
                     </h1>
 <?php
 if (count($error_detected) > 0) {

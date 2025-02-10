@@ -177,7 +177,8 @@ class SavedSearchesController extends CrudController
                 'page_title'        => _T("Saved searches"),
                 'searches'          => $list,
                 'nb'                => $searches->getCount(),
-                'filters'           => $filters
+                'filters'           => $filters,
+                'documentation'     => 'usermanual/recherche.html#saved-searches'
             )
         );
         return $response;

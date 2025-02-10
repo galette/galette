@@ -69,7 +69,8 @@ class DocumentsController extends CrudController
             'document'          => $document,
             'types'             => $document->getSystemTypes(),
             'perm_names'        => $document::getPermissionsList(true),
-            'html_editor'   => true,
+            'html_editor'       => true,
+            'documentation'     => 'usermanual/documents.html#management'
         ];
 
         // display page
@@ -197,7 +198,8 @@ class DocumentsController extends CrudController
             'page_title' => _T("Documents list"),
             'nb' => count($documents),
             'documents' => $documents,
-            'filters' => $filters
+            'filters' => $filters,
+            'documentation' => 'usermanual/documents.html'
         ];
 
         // display page
@@ -230,7 +232,8 @@ class DocumentsController extends CrudController
 
         $params = [
             'page_title' => _T("Documents list"),
-            'typed_documents' => $documents
+            'typed_documents' => $documents,
+            'documentation' => 'usermanual/documents.html#public-list'
         ];
 
         // display page
@@ -356,6 +359,7 @@ class DocumentsController extends CrudController
             'types'             => $document->getSystemTypes(),
             'perm_names'        => $document::getPermissionsList(true),
             'html_editor'       => true,
+            'documentation'     => 'usermanual/documents.html#management'
         ];
 
         // display page

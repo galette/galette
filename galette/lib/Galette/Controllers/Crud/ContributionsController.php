@@ -105,7 +105,8 @@ class ContributionsController extends CrudController
             'required'          => $contrib->getRequired(),
             'contribution'      => $contrib,
             'adh_selected'      => $contrib->member,
-            'type'              => $type
+            'type'              => $type,
+            'documentation'     => 'usermanual/contributions.html'
         ];
 
         // contribution types
@@ -405,9 +406,11 @@ class ContributionsController extends CrudController
         switch ($type) {
             case 'transactions':
                 $raw_type = 'transactions';
+                $documentation = 'usermanual/contributions.html#transactions';
                 break;
             case 'contributions':
                 $raw_type = 'contributions';
+                $documentation = 'usermanual/contributions.html';
                 break;
             default:
                 Analog::log(
@@ -532,7 +535,8 @@ class ContributionsController extends CrudController
             'list'              => $contribs_list,
             'nb'                => $contrib->getCount(),
             'filters'           => $filters,
-            'mode'              => ($ajax === true ? 'ajax' : 'std')
+            'mode'              => ($ajax === true ? 'ajax' : 'std'),
+            'documentation'     => $documentation
         ];
 
         if ($filters->filtre_cotis_adh != null) {

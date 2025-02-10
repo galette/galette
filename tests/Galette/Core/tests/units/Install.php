@@ -82,8 +82,11 @@ class Install extends TestCase
         $connected = $install->isDbConnected();
         $this->assertFalse($connected);
 
-        $title = $install->getStepTitle();
+        $title = $install->getStepDetail('title');
         $this->assertSame('Checks', $title);
+
+        $documentation = $this->install->getStepDetail('documentation');
+        $this->assertSame('installation/galette.html', $documentation);
     }
 
     /**
@@ -172,8 +175,11 @@ class Install extends TestCase
         $step = $this->install->isTypeStep();
         $this->assertTrue($step);
 
-        $title = $this->install->getStepTitle();
+        $title = $this->install->getStepDetail('title');
         $this->assertSame('Installation mode', $title);
+
+        $documentation = $this->install->getStepDetail('documentation');
+        $this->assertSame('installation/galette.html#installation-type', $documentation);
     }
 
     /**
@@ -192,8 +198,11 @@ class Install extends TestCase
         $this->assertTrue($is_install);
         $this->assertFalse($is_upgrade);
 
-        $title = $this->install->getStepTitle();
+        $title = $this->install->getStepDetail('title');
         $this->assertSame('Database', $title);
+
+        $documentation = $this->install->getStepDetail('documentation');
+        $this->assertSame('installation/galette.html#database', $documentation);
 
         $this->install->atPreviousStep();
         $step = $this->install->isTypeStep();
@@ -216,8 +225,11 @@ class Install extends TestCase
         $this->assertFalse($is_install);
         $this->assertTrue($is_upgrade);
 
-        $title = $this->install->getStepTitle();
+        $title = $this->install->getStepDetail('title');
         $this->assertSame('Database', $title);
+
+        $documentation = $this->install->getStepDetail('documentation');
+        $this->assertSame('installation/galette.html#database', $documentation);
 
         $this->install->atPreviousStep();
         $step = $this->install->isTypeStep();
@@ -292,8 +304,11 @@ class Install extends TestCase
         $step = $this->install->isDbCheckStep();
         $this->assertTrue($step);
 
-        $title = $this->install->getStepTitle();
+        $title = $this->install->getStepDetail('title');
         $this->assertSame('Database access and permissions', $title);
+
+        $documentation = $this->install->getStepDetail('documentation');
+        $this->assertSame('installation/galette.html#id1', $documentation);
 
         $connected = $this->install->testDbConnexion();
         $this->assertTrue($connected);
@@ -349,8 +364,11 @@ class Install extends TestCase
         $step = $this->install->isDbinstallStep();
         $this->assertTrue($step);
 
-        $title = $this->install->getStepTitle();
+        $title = $this->install->getStepDetail('title');
         $this->assertSame('Tables Creation', $title);
+
+        $documentation = $this->install->getStepDetail('documentation');
+        $this->assertSame('installation/galette.html#create-tables', $documentation);
 
         $post_check = $this->install->postCheckDb();
         $this->assertTrue($post_check);
@@ -372,8 +390,11 @@ class Install extends TestCase
         $step = $this->install->isAdminStep();
         $this->assertTrue($step);
 
-        $title = $this->install->getStepTitle();
+        $title = $this->install->getStepDetail('title');
         $this->assertSame('Admin parameters', $title);
+
+        $documentation = $this->install->getStepDetail('documentation');
+        $this->assertSame('installation/galette.html#admin-parameters', $documentation);
 
         $post_check = $this->install->postCheckDb();
         $this->assertTrue($post_check);
@@ -396,8 +417,11 @@ class Install extends TestCase
         $step = $this->install->isGaletteInitStep();
         $this->assertTrue($step);
 
-        $title = $this->install->getStepTitle();
+        $title = $this->install->getStepDetail('title');
         $this->assertSame('Galette initialization', $title);
+
+        $documentation = $this->install->getStepDetail('documentation');
+        $this->assertSame('installation/galette.html#initialize', $documentation);
 
         $post_check = $this->install->postCheckDb();
         $this->assertTrue($post_check);

@@ -92,49 +92,71 @@ class Install
     }
 
     /**
-     * Return current step title
+     * Return current step details
+     *
+     * @param string $detail Requested detail
      *
      * @return string
      */
-    public function getStepTitle(): string
+    public function getStepDetail(string $detail): string
     {
         $step_title = null;
+        $step_documentation = null;
         switch ($this->step) {
             case self::STEP_CHECK:
                 $step_title = _T("Checks");
+                $step_documentation = 'installation/galette.html';
                 break;
             case self::STEP_TYPE:
                 $step_title = _T("Installation mode");
+                $step_documentation = 'installation/galette.html#installation-type';
                 break;
             case self::STEP_DB:
                 $step_title = _T("Database");
+                $step_documentation = 'installation/galette.html#database';
                 break;
             case self::STEP_DB_CHECKS:
                 $step_title = _T("Database access and permissions");
+                $step_documentation = 'installation/galette.html#id1';
                 break;
             case self::STEP_VERSION:
                 $step_title = _T("Previous version selection");
+                $step_documentation = 'installation/update.html#previous-version-selection';
                 break;
             case self::STEP_DB_UPGRADE:
                 $step_title = _T("Datapase upgrade");
+                $step_documentation = 'installation/update.html#updating-database';
                 break;
             case self::STEP_DB_INSTALL:
                 $step_title = _T("Tables Creation");
+                $step_documentation = 'installation/galette.html#create-tables';
                 break;
             case self::STEP_ADMIN:
                 $step_title = _T("Admin parameters");
+                $step_documentation = 'installation/galette.html#admin-parameters';
                 break;
             case self::STEP_TELEMETRY:
                 $step_title = _T("Telemetry");
+                $step_documentation = 'installation/galette.html#telemetry';
                 break;
             case self::STEP_GALETTE_INIT:
                 $step_title = _T("Galette initialization");
+                $step_documentation = 'installation/galette.html#initialize';
                 break;
             case self::STEP_END:
                 $step_title = _T("End!");
+                $step_documentation = 'installation/galette.html#installation-end';
                 break;
         }
-        return $step_title;
+
+        $step_detail = null;
+        if ($detail == 'title') {
+            $step_detail = $step_title;
+        }
+        if ($detail == 'documentation') {
+            $step_detail = $step_documentation;
+        }
+        return $step_detail;
     }
 
     /**
