@@ -315,4 +315,26 @@ class I18n
             $this->rtl_langs
         );
     }
+
+    /**
+     * Get current online documentation base URL
+     *
+     * @return string current online documentation base URL (language and branch included)
+     */
+    public function getDocumentationBaseUrl(): string
+    {
+        $url = 'https://doc.galette.eu/';
+        $lang = $this->abbrev . '/';
+        $branch = (preg_match('(-git)', Galette::gitVersion()) ? 'develop' : 'master') . '/';
+        $not_translated = [
+            'ota',
+            'si'
+        ];
+        if (in_array($this->abbrev, $not_translated)) {
+            $lang = 'en/';
+        } elseif ($this->abbrev == 'nb') {
+            $lang = 'no/';
+        }
+        return $url . $lang . $branch;
+    }
 }

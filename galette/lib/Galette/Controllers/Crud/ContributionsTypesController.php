@@ -93,6 +93,8 @@ class ContributionsTypesController extends CrudController
         $list = $ctypes->getCompleteList();
         $params['entries'] = $list;
 
+        $params['documentation'] = 'usermanual/contributions.html#contributions-types';
+
         if (count($ctypes->getErrors()) > 0) {
             foreach ($ctypes->getErrors() as $error) {
                 $this->flash->addMessage(

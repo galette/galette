@@ -87,7 +87,8 @@ class GaletteController extends AbstractController
             'pages/sysinfos.html.twig',
             array(
                 'page_title'    => _T("System information"),
-                'rawinfos'      => $raw_infos
+                'rawinfos'      => $raw_infos,
+                'documentation' => 'usermanual/avancee.html#galette-modes'
             )
         );
         return $response;
@@ -109,7 +110,8 @@ class GaletteController extends AbstractController
             'page_title'        => _T("Dashboard"),
             'contentcls'        => 'desktop',
             'news'              => $news->getPosts(),
-            'show_dashboard'    => $_COOKIE['show_galette_dashboard']
+            'show_dashboard'    => $_COOKIE['show_galette_dashboard'],
+            'documentation'     => 'usermanual'
         ];
 
         $hide_telemetry = true;
@@ -219,7 +221,8 @@ class GaletteController extends AbstractController
                 ),
                 'paymenttypes'          => $ptlist,
                 'osocials'              => new Social($this->zdb),
-                'tab'                   => $tab
+                'tab'                   => $tab,
+                'documentation'         => 'usermanual/preferences.html'
             )
         );
         return $response;
@@ -460,7 +463,8 @@ class GaletteController extends AbstractController
             'categories'            => FieldsCategories::getList($this->zdb),
             'categorized_fields'    => $fc->getCategorizedFields(),
             'non_required'          => $fc->getNonRequired(),
-            'perm_names'            => FieldsConfig::getPermissionsList()
+            'perm_names'            => FieldsConfig::getPermissionsList(),
+            'documentation'         => 'usermanual/configuration.html#mandatory-fields-and-access-rights'
         ];
 
         // display page
@@ -555,7 +559,8 @@ class GaletteController extends AbstractController
             'time'          => time(),
             'listed_fields' => $lc->getListedFields(),
             'remaining_fields'  => $lc->getRemainingFields(),
-            'permissions' => $lc::getPermissionsList()
+            'permissions' => $lc::getPermissionsList(),
+            'documentation'  => 'usermanual/configuration.html#list-fields'
         ];
 
         // display page
@@ -633,7 +638,8 @@ class GaletteController extends AbstractController
                 'count_impending'           => $reminders['impending'],
                 'count_impending_nomail'    => $reminders['nomail']['impending'],
                 'count_late'                => $reminders['late'],
-                'count_late_nomail'         => $reminders['nomail']['late']
+                'count_late_nomail'         => $reminders['nomail']['late'],
+                'documentation'             => 'usermanual/contributions.html#reminders'
             ]
         );
         return $response;

@@ -110,7 +110,8 @@ class CsvController extends AbstractController
                 'tables_list'       => $tables_list,
                 'written'           => $this->flash->getMessage('written_exports'),
                 'existing'          => $existing,
-                'parameted'         => $parameted
+                'parameted'         => $parameted,
+                'documentation'     => 'usermanual/avancee.html#csv-exports'
             )
         );
         return $response;
@@ -248,7 +249,8 @@ class CsvController extends AbstractController
                 'page_title'        => _T("CSV members import"),
                 'existing'          => $existing,
                 'dryrun'            => true,
-                'import_file'       => $this->session->import_file
+                'import_file'       => $this->session->import_file,
+                'documentation'     => 'usermanual/adherents.html#csv-imports'
             )
         );
         return $response;
@@ -580,7 +582,8 @@ class CsvController extends AbstractController
                 'defaults'          => $defaults,
                 'members_fields'    => $import_fields,
                 'defaults_loaded'   => $defaults_loaded,
-                'tab'               => $tab
+                'tab'               => $tab,
+                'documentation'     => 'usermanual/adherents.html#model'
             )
         );
         return $response;

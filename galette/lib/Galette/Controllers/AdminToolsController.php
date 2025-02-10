@@ -50,7 +50,8 @@ class AdminToolsController extends AbstractController
     public function adminTools(Request $request, Response $response): Response
     {
         $params = [
-            'page_title'        => _T('Administration tools')
+            'page_title'        => _T('Administration tools'),
+            'documentation'     => 'usermanual/avancee.html#administration-tools'
         ];
 
         $cm = new CheckModules();

@@ -14,6 +14,10 @@
     background: transparent;
     border-left: none;
     padding: .8em;
+    
+    .mini.circular.icon.button {
+      margin-top: .3rem;
+    }
   }
 }
 

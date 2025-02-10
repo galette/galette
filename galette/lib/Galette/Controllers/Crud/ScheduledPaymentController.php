@@ -181,7 +181,8 @@ class ScheduledPaymentController extends CrudController
                 'list'              => $list,
                 'nb'                => $scheduled->getCount(),
                 'filters'           => $filters,
-                'mode'              => $ajax ? 'ajax' : ''
+                'mode'              => $ajax ? 'ajax' : '',
+                'documentation'     => 'usermanual/contributions.html#scheduled-payments'
             ]
         );
         return $response;

@@ -75,6 +75,7 @@ class TextController extends AbstractController
                 'cur_lang_name'     => $this->i18n->getNameFromId($lang),
                 'cur_ref'           => $ref,
                 'mtxt'              => $mtxt,
+                'documentation'     => 'usermanual/configuration.html#emails-contents'
             ]
         );
         return $response;

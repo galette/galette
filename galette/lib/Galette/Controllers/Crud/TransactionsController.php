@@ -132,7 +132,8 @@ class TransactionsController extends ContributionsController
         $params = [
             'page_title'        => $title,
             'required'          => $required,
-            'transaction'       => $trans
+            'transaction'       => $trans,
+            'documentation'     => 'usermanual/contributions.html#transactions'
         ];
 
         if ($trans->id != '') {

@@ -62,7 +62,8 @@ class PluginsController extends AbstractController
             array(
                 'page_title'            => _T("Plugins"),
                 'plugins_list'          => $plugins_list,
-                'plugins_disabled_list' => $disabled_plugins
+                'plugins_disabled_list' => $disabled_plugins,
+                'documentation'         => 'plugins/#plugins-management-interface'
             )
         );
         return $response;

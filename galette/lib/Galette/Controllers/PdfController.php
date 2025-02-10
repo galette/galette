@@ -532,6 +532,7 @@ class PdfController extends AbstractController
                 'page_title'        => _T("PDF models"),
                 'models'            => $models,
                 'html_editor'       => true,
+                'documentation'     => 'usermanual/pdf_models.html'
             ];
         }
 

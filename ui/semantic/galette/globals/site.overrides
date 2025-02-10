@@ -164,7 +164,7 @@ body.pushable:not(.loggedin) {
 }
 
 aside.toc,
-.ui.segments.header .compact.segment.right {
+.ui.segments.header .compact.segment.languages {
   display: none;
 }
 
@@ -175,12 +175,6 @@ aside .ui.vertical.menu {
 
 aside .ui.small.compact.fluid.menu .ui.item {
   max-width: 14.688rem;
-}
-
-.loggedin .content {
-  .ui.horizontal.segments.header {
-    flex-direction: row-reverse;
-  }
 }
 
 footer,
@@ -363,7 +357,7 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
     }
   }
 
-  .ui.segments.header .compact.segment.right {
+  .ui.segments.header .compact.segment.languages {
     display: block;
   }
 

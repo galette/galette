@@ -167,7 +167,8 @@ class MailingsController extends CrudController
                     'mailing'           => $mailing,
                     'attachments'       => $mailing->attachments,
                     'html_editor'       => true,
-                    'html_editor_active' => $this->preferences->pref_editor_enabled
+                    'html_editor_active' => $this->preferences->pref_editor_enabled,
+                    'documentation'     => 'usermanual/adherents.html#e-mailing'
                 )
             );
         }
@@ -479,7 +480,8 @@ class MailingsController extends CrudController
                 'page_title'        => _T("Mailings"),
                 'logs'              => $history_list,
                 'history'           => $mailhist,
-                'filters'           => $filters
+                'filters'           => $filters,
+                'documentation'     => 'usermanual/adherents.html#e-mailing'
             )
         );
         return $response;
