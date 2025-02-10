@@ -5,7 +5,7 @@
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023, 2024.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020, 2025.
@@ -14,10 +14,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-02-10 20:24+0100\n"
-"PO-Revision-Date: 2025-01-29 09:02+0000\n"
-"Last-Translator: Fredericos Tezorc <fredericos.tezorc@gmail.com>\n"
+"PO-Revision-Date: 2025-02-10 19:28+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -3757,10 +3757,8 @@ msgstr "Installation de Galette"
 
 #: ../webroot/installer.php:225 ../webroot/installer.php:227
 #: ../../tempcache/page.html.twig:198 ../../tempcache/page.html.twig:203
-#, fuzzy
-#| msgid "Reading the list"
 msgid "Read the manual"
-msgstr "Lire la liste"
+msgstr "Lire la documenntation"
 
 #: ../webroot/installer.php:307
 #: ../../tempcache/modals/plugin_initdb.html.twig:465
@@ -6493,10 +6491,8 @@ msgid "Gift"
 msgstr "Don"
 
 #: ../../tempcache/pages/contributions_list.html.twig:882
-#, fuzzy
-#| msgid "Completely dispatched transaction"
 msgid "Edit the attached transaction"
-msgstr "Transaction entièrement ventilée"
+msgstr "Modifier la transaction attachée"
 
 #: ../../tempcache/pages/contributions_list.html.twig:919
 #: ../../tempcache/pages/members_list.html.twig:577
@@ -7714,10 +7710,8 @@ msgid "Self subscription enabled?"
 msgstr "Auto-enregistrement actif ?"
 
 #: ../../tempcache/pages/preferences.html.twig:1051
-#, fuzzy
-#| msgid "Admin parameters"
 msgid "Advanced parameters"
-msgstr "Paramètres administrateur"
+msgstr "Paramètres avancés"
 
 #: ../../tempcache/pages/preferences.html.twig:1059
 msgid "Galette base URL"
