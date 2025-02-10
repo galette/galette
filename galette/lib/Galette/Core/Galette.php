@@ -531,16 +531,11 @@ class Galette
         global $preferences, $login, $plugins, $zdb;
 
         $menus = [];
-        if ($preferences->arePublicPagesEnabled($login)) {
-            $menus['public'] = [
-                'title' => _T("Public pages"),
-                'icon' => 'eye outline',
-                'items' => [
-                ]
-            ];
+        if ($preferences->arePublicPagesEnabled()) {
+            $items = [];
 
             if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_memberslist')) {
-                $menus['public']['items'][] = [
+                $items[] = [
                     'label' => _T("Members"),
                     'route' => [
                         'name' => 'publicMembersList'
@@ -550,7 +545,7 @@ class Galette
             }
 
             if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_membersgallery')) {
-                $menus['public']['items'][] = [
+                $items[] = [
                     'label' => _T('Gallery'),
                     'route' => [
                         'name' => 'publicMembersGallery'
@@ -560,7 +555,7 @@ class Galette
             }
 
             if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_stafflist')) {
-                $menus['public']['items'][] = [
+                $items[] = [
                     'label' => _T("Staff"),
                     'route' => [
                         'name' => 'publicStaffList'
@@ -570,7 +565,7 @@ class Galette
             }
 
             if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_staffgallery')) {
-                $menus['public']['items'][] = [
+                $items[] = [
                     'label' => _T('Staff gallery'),
                     'route' => [
                         'name' => 'publicStaffGallery'
@@ -586,7 +581,7 @@ class Galette
                 || $preferences->showPublicPage($login, 'pref_publicpages_visibility_documents')
                 && count($documents)
             ) {
-                $menus['public']['items'][] = [
+                $items[] = [
                     'label' => _T("Documents"),
                     'title' => _T("View documents related to your association"),
                     'route' => [
@@ -601,11 +596,19 @@ class Galette
                 $plugin_class = $plugins->getClassName($module_id, true);
                 if (class_exists($plugin_class)) {
                     $plugin = new $plugin_class();
-                    $menus['public']['items'] = array_merge(
-                        $menus['public']['items'],
+                    $items = array_merge(
+                        $items,
                         $plugin->getPublicMenuItems()
                     );
                 }
+            }
+
+            if (count($items)) {
+                $menus['public'] = [
+                    'title' => _T("Public pages"),
+                    'icon' => 'eye outline',
+                    'items' => $items
+                ];
             }
         }
 
