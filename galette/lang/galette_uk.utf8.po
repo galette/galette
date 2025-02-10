@@ -7,13 +7,14 @@
 # Ostap <ostapbataj79@gmail.com>, 2022.
 # Artem <artem@molotov.work>, 2022.
 # Максим Горпиніч <mgorpinic2005@gmail.com>, 2024.
+# Максим Горпиніч <maksimgorpinic2005a@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-02-10 20:24+0100\n"
-"PO-Revision-Date: 2024-12-30 11:00+0000\n"
-"Last-Translator: Максим Горпиніч <mgorpinic2005@gmail.com>\n"
+"PO-Revision-Date: 2025-02-11 20:02+0000\n"
+"Last-Translator: Максим Горпиніч <maksimgorpinic2005a@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -3709,10 +3710,8 @@ msgstr "Установлення Galette"
 
 #: ../webroot/installer.php:225 ../webroot/installer.php:227
 #: ../../tempcache/page.html.twig:198 ../../tempcache/page.html.twig:203
-#, fuzzy
-#| msgid "Reading the list"
 msgid "Read the manual"
-msgstr "Читання списку"
+msgstr "Прочитайте посібник"
 
 #: ../webroot/installer.php:307
 #: ../../tempcache/modals/plugin_initdb.html.twig:465
@@ -6409,10 +6408,8 @@ msgid "Gift"
 msgstr "Подарунок"
 
 #: ../../tempcache/pages/contributions_list.html.twig:882
-#, fuzzy
-#| msgid "Completely dispatched transaction"
 msgid "Edit the attached transaction"
-msgstr "Повністю надісланий переказ"
+msgstr "Відредагуйте вкладену транзакцію"
 
 #: ../../tempcache/pages/contributions_list.html.twig:919
 #: ../../tempcache/pages/members_list.html.twig:577
@@ -7623,10 +7620,8 @@ msgid "Self subscription enabled?"
 msgstr "Увімкнено самопідписку?"
 
 #: ../../tempcache/pages/preferences.html.twig:1051
-#, fuzzy
-#| msgid "Admin parameters"
 msgid "Advanced parameters"
-msgstr "Параметри адміністратора"
+msgstr "Розширені параметри"
 
 #: ../../tempcache/pages/preferences.html.twig:1059
 msgid "Galette base URL"
