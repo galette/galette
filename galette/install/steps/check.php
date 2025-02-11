@@ -146,7 +146,7 @@ if (!$perms_ok || !$modules_ok || !$php_ok || !$date_ok) {
 } else {
     ?>
         <form action="installer.php" method="POST" class="ui form">
-            <button type="submit" class="ui right labeled primary icon button"><i class="angle double right icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+            <button type="submit" class="ui right labeled primary icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
             <input type="hidden" name="install_permsok" value="1"/>
         </form>
     <?php
