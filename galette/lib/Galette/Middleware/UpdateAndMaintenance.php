@@ -99,12 +99,12 @@ class UpdateAndMaintenance
     /**
      * Renders the page
      *
-     * @param Request $request  PSR7 request
-     * @param string  $contents HTML page contents
+     * @param Request              $request  PSR7 request
+     * @param array<string, mixed> $contents HTML page contents
      *
      * @return string
      */
-    private function renderPage(Request $request, string $contents): string
+    private function renderPage(Request $request, array $contents): string
     {
         $path = $this->routeParser->urlFor('slash');
 
@@ -122,7 +122,7 @@ class UpdateAndMaintenance
         $body = "<!DOCTYPE html>
 <html class=\"public_page\" lang=\"" . $this->i18n->getAbbrev() . "\">
     <head>
-        <title>" . _T("Galette needs update!") . "</title>
+        <title>" . $contents['title'] . "</title>
         <meta charset=\"UTF-8\"/>
         <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $theme_path . "ui/semantic.min.css\"/>
         <link rel=\"shortcut icon\" href=\"" . $theme_path . "images/favicon.png\"/>
@@ -134,7 +134,7 @@ class UpdateAndMaintenance
                     <div class=\"ui basic center aligned fitted segment\">
                         <img src=\"" . $theme_path . "images/galette.png\" alt=\"[ Galette ]\"/>
                     </div>
-                    <div class=\"ui center aligned message\">" . $contents . "</div>
+                    <div class=\"ui center aligned message\">" . $contents['body'] . "</div>
                 </div>
             </div>
         </div>
@@ -152,7 +152,9 @@ class UpdateAndMaintenance
      */
     private function maintenancePage(Request $request): string
     {
-        $contents = "<div class=\"header\">" . _T("Galette is currently under maintenance!") . "</div>
+        $contents = [];
+        $contents['title'] = _T("Galette is currently under maintenance!");
+        $contents['body'] = "<h1>" . $contents['title'] . "</h1>
             <p>" . _T("The Galette instance you are requesting is currently under maintenance. Please come back later.") . "</p>";
         return $this->renderPage($request, $contents);
     }
@@ -166,7 +168,9 @@ class UpdateAndMaintenance
      */
     private function needsUpdatePage(Request $request): string
     {
-        $contents = "<h1>" . _T("Galette needs update!") . "</h1>
+        $contents = [];
+        $contents['title'] = _T("Galette needs update!");
+        $contents['body'] = "<h1>" . $contents['title'] . "</h1>
             <p>" . _T("Your Galette database is not present, or not up to date.") . "</p>
             <p><em>" . _T("Please run install or upgrade procedure (check the documentation)") . "</em></p>";
         return $this->renderPage($request, $contents);
