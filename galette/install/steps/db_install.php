@@ -59,11 +59,11 @@ foreach ($install->getDbInstallReport() as $r) {
 <?php
 if (!$db_installed) {
 ?>
-                <button type="submit" class="ui right labeled icon button"><i class="redo alternate double right icon" aria-hidden="true"></i> <?php echo _T("Retry"); ?></button>
+                <button type="submit" class="ui right labeled icon button"><i class="redo alternate double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Retry"); ?></button>
 <?php
 }
 ?>
-                <button type="submit" class="ui right labeled primary icon button"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>><i class="angle double right icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+                <button type="submit" class="ui right labeled primary icon button"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
 <?php
 if ($db_installed) {
 ?>
@@ -77,7 +77,7 @@ if (!$db_installed) {
     //once DB is installed, that does not make sense to go back
     ?>
                 <div class="column">
-                    <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon" aria-hidden="true"></i> <?php echo _T("Back"); ?></button>
+                    <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'right' : 'left'; ?> icon" aria-hidden="true"></i> <?php echo _T("Back"); ?></button>
                 </div>
     <?php
 }
