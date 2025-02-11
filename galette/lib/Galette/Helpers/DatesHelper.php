@@ -36,6 +36,32 @@ use Analog\Analog;
 trait DatesHelper
 {
     /**
+     * Builds a Date
+     *
+     * @param string $value Date to build
+     *
+     * @return string
+     */
+    protected function buildDate(string $value): string
+    {
+        //first, try with localized date
+        $date = DateTime::createFromFormat(__("Y-m-d"), $value);
+        if ($date === false) {
+            //try with non localized date
+            $date = DateTime::createFromFormat("Y-m-d", $value);
+            if ($date === false) {
+                throw new \Exception('Incorrect format');
+            }
+        }
+        $derrors = \DateTime::getLastErrors();
+        if (!empty($derrors['warning_count'])) {
+            throw new \Exception('Incorrect date ' . implode("\n", $derrors['warnings']));
+        }
+
+        return $date->format('Y-m-d');
+    }
+
+    /**
      * Set a Date
      *
      * @param string $field Field to store date
@@ -46,27 +72,13 @@ trait DatesHelper
     protected function setDate(string $field, string $value): self
     {
         try {
-            //first, try with localized date
-            $date = DateTime::createFromFormat(__("Y-m-d"), $value);
-            if ($date === false) {
-                //try with non localized date
-                $date = DateTime::createFromFormat("Y-m-d", $value);
-                if ($date === false) {
-                    throw new \Exception('Incorrect format');
-                }
-            }
-            $derrors = \DateTime::getLastErrors();
-            if (!empty($derrors['warning_count'])) {
-                throw new \Exception('Incorrect date ' . implode("\n", $derrors['warnings']));
-            }
-
             /** @phpstan-ignore-next-line */
             if (method_exists($this, 'getFieldPropertyName')) {
                 $fieldPropertyName = $this->getFieldPropertyName($field);
             } else {
                 $fieldPropertyName = $field;
             }
-            $this->$fieldPropertyName = $date->format('Y-m-d');
+            $this->$fieldPropertyName = $this->buildDate($value);
         } catch (Throwable $e) {
             Analog::log(
                 'Wrong date format. field: ' . $field .

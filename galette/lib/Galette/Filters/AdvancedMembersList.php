@@ -567,19 +567,7 @@ class AdvancedMembersList extends MembersList
                                 case DynamicField::DATE:
                                     if ($value['search'] !== null && trim($value['search']) !== '') {
                                         try {
-                                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value['search']);
-                                            if ($d === false) {
-                                                //try with non localized date
-                                                $d = \DateTime::createFromFormat("Y-m-d", $value['search']);
-                                                if ($d === false) {
-                                                    throw new \Exception('Incorrect format');
-                                                }
-                                            }
-                                            $derrors = \DateTime::getLastErrors();
-                                            if (!empty($derrors['warning_count'])) {
-                                                throw new \Exception('Incorrect date: ' . implode("\n", $derrors['warnings']));
-                                            }
-                                            $value['search'] = $d->format('Y-m-d');
+                                            $value['search'] = $this->buildDate($value['search']);
                                         } catch (Throwable $e) {
                                             Analog::log(
                                                 'Incorrect date format for ' . $value['field'] .
