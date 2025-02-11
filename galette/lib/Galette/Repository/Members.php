@@ -1384,21 +1384,7 @@ class Members
                         }
                         $select->where($qry);
                     } elseif ($dyn_field instanceof \Galette\DynamicFields\Date) {
-                        //dynamic dates are stored in their localized format :/
-                        //use current lang format to query for now
-                        //FIXME works with french formatted date only -_-
-                        if ($zdb->isPostgres()) {
-                            $qop = '=';
-                            $store_fmt = __("Y-m-d") === 'Y-m-d' ? 'YYYY-MM-DD' : 'DD/MM/YYYY';
-                            $cd = "to_date('" . $cd . "', '" . $store_fmt . "')";
-                            $qry .= "to_date(" . $prefix . $field . ", '$store_fmt')";
-                        } else {
-                            $store_fmt = __("Y-m-d") === 'Y-m-d' ? '%Y-%m-%d' : '%d/%m/%Y';
-                            $cd = "STR_TO_DATE('" . $cd . "', '" . $store_fmt . "')";
-                            $qry .= 'STR_TO_DATE(' . $prefix . $field . ', \'' . $store_fmt . '\') ';
-                        }
-                        $qry .= $qop . ' ' . $cd;
-                        $select->where($qry);
+                        $select->where->equalTo($prefix . $field, $cd);
                     } else {
                         $qry .= 'LOWER(' . $prefix . $field . ') ' . $qop . ' ';
                         $select->where($qry . $zdb->platform->quoteValue('%' . strtolower((string)$cd) . '%'));

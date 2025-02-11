@@ -648,6 +648,10 @@ class AdvancedMembersList extends MembersList
                             } else {
                                 $id = substr($name, 4, strlen($name));
                             }
+                            $dyn_field = DynamicField::loadFieldType($zdb, (int)$id);
+                            if ($dyn_field instanceof \Galette\DynamicFields\Date) {
+                                $value = $this->buildDate($value);
+                            }
                             $this->contrib_dynamic[$id] = $value;
                         }
                     } else {
