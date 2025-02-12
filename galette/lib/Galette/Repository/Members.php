@@ -1363,31 +1363,29 @@ class Members
 
                 if (is_array($cd)) {
                     //dynamic choice spotted!
-                    $prefix = 'cdfc' . $k . '.';
-                    $qry = 'dfc.field_form = \'contrib\' AND ' .
-                        'dfc.field_id = ' . $k;
-                    $field = 'id';
-                    $select->where($qry);
-                    $select->where->in($prefix . $field, $cd);
+                    $select->where
+                        ->equalTo('dfc.field_form', 'contrib')
+                        ->equalTo('dfc.field_id', $k)
+                        ->in('cdfc' . $k . '.id', $cd);
                 } else {
                     //dynamic field spotted!
                     $prefix = 'dfc.';
-                    $qry = 'dfc.field_form = \'contrib\' AND ' .
-                        'dfc.field_id = ' . $k . ' AND ';
                     $field = 'field_val';
+
+                    $select->where
+                        ->equalTo('dfc.field_form', 'contrib')
+                        ->equalTo('dfc.field_id', $k);
 
                     $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
 
                     if ($dyn_field instanceof \Galette\DynamicFields\Boolean) {
                         if ($cd == 1) {
-                            $qry .= $field . ' = ' . (int)$cd;
+                            $select->where->equalTo($field, (int)$cd);
                         }
-                        $select->where($qry);
                     } elseif ($dyn_field instanceof \Galette\DynamicFields\Date) {
-                        $qry .= $prefix . $field . ' = ' . $zdb->platform->quoteValue($cd);
-                        $select->where($qry);
+                        $select->where->equalTo($prefix . $field, $cd);
                     } else {
-                        $qry .= 'LOWER(' . $prefix . $field . ') ' . $qop . ' ';
+                        $qry = 'LOWER(' . $prefix . $field . ') ' . $qop . ' ';
                         $select->where($qry . $zdb->platform->quoteValue('%' . strtolower((string)$cd) . '%'));
                     }
                 }
