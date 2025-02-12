@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-02-12 10:48+0100\n"
-"PO-Revision-Date: 2025-02-10 19:28+0000\n"
+"PO-Revision-Date: 2025-02-12 09:57+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -1092,16 +1092,12 @@ msgstr ""
 "passe vides :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:144
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "Dynamic dates has been fixed."
-msgstr "Le compte de l’adhérent a été modifié avec succès."
+msgstr "Les dates dynamiques ont été corrigées."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:146
-#, fuzzy
-#| msgid "An error occurred editing dynamic field :("
 msgid "An error occurred fixing dynamic dates :("
-msgstr "Une erreur est survenue lors de la modification du champ dynamique :("
+msgstr "Une erreur est survenue lors de la correction des dates dynamiques :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:91
 #: ../lib/Galette/Core/Galette.php:332 ../install/steps/check.php:55
@@ -6578,10 +6574,8 @@ msgstr "Générer les login et mots de passe vides"
 #: ../../tempcache/pages/admintools.html.twig:169
 #: ../../tempcache/pages/admintools.html.twig:173
 #: ../../tempcache/pages/admintools.html.twig:177
-#, fuzzy
-#| msgid "Dynamic fields configuration"
 msgid "Fix dynamic fields dates format"
-msgstr "Configuration des champs dynamiques"
+msgstr "Correction des formats de dates des champs dynamiques"
 
 #: ../../tempcache/pages/admintools.html.twig:190
 msgid "Go"
