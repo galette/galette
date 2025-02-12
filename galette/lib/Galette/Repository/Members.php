@@ -1384,7 +1384,8 @@ class Members
                         }
                         $select->where($qry);
                     } elseif ($dyn_field instanceof \Galette\DynamicFields\Date) {
-                        $select->where->equalTo($prefix . $field, $cd);
+                        $qry .= $prefix . $field . ' = ' . $zdb->platform->quoteValue($cd);
+                        $select->where($qry);
                     } else {
                         $qry .= 'LOWER(' . $prefix . $field . ') ' . $qop . ' ';
                         $select->where($qry . $zdb->platform->quoteValue('%' . strtolower((string)$cd) . '%'));
