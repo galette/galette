@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-10 20:24+0100\n"
+"POT-Creation-Date: 2025-02-12 10:48+0100\n"
 "PO-Revision-Date: 2024-12-30 11:00+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -1022,11 +1022,11 @@ msgstr "உறுப்பினர்களுக்கான கடவுச�
 msgid "Your password has been changed!"
 msgstr "உங்கள் கடவுச்சொல் மாற்றப்பட்டுள்ளது!"
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:53
+#: ../lib/Galette/Controllers/AdminToolsController.php:54
 msgid "Administration tools"
 msgstr "நிர்வாக கருவிகள்"
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:62
+#: ../lib/Galette/Controllers/AdminToolsController.php:63
 #: ../install/steps/check.php:93
 msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
@@ -1035,38 +1035,50 @@ msgstr ""
 "சில பிஎச்பி தொகுதிகள் காணவில்லை. தயவுசெய்து அவற்றை நிறுவவும் அல்லது உங்கள் ஆதரவைத் "
 "தொடர்பு கொள்ளவும். <br> தேவையான தொகுதிகள் பற்றிய கூடுதல் தகவல்கள் ஆவணங்களில் காணப்படலாம்."
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:95
+#: ../lib/Galette/Controllers/AdminToolsController.php:96
 msgid "Texts has been successfully reinitialized."
 msgstr "நூல்கள் வெற்றிகரமாக மறுசீரமைக்கப்பட்டுள்ளன."
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:97
+#: ../lib/Galette/Controllers/AdminToolsController.php:98
 msgid "An error occurred reinitializing texts :("
 msgstr "ஒரு பிழை நூல்களை மறுசீரமைக்கும் :("
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:106
+#: ../lib/Galette/Controllers/AdminToolsController.php:107
 msgid "Fields configuration has been successfully reinitialized."
 msgstr "புலம் உள்ளமைவு வெற்றிகரமாக மறுசீரமைக்கப்பட்டுள்ளது."
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:108
+#: ../lib/Galette/Controllers/AdminToolsController.php:109
 msgid "An error occurred reinitializing fields configuration :("
 msgstr "புலங்கள் உள்ளமைவை மறுசீரமைத்தல் ஒரு பிழை ஏற்பட்டது :("
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:117
+#: ../lib/Galette/Controllers/AdminToolsController.php:118
 msgid "PDF models has been successfully reinitialized."
 msgstr "PDF மாதிரிகள் வெற்றிகரமாக மறுசீரமைக்கப்பட்டுள்ளன."
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:119
+#: ../lib/Galette/Controllers/AdminToolsController.php:120
 msgid "An error occurred reinitializing PDF models :("
 msgstr "பிழையில் PDF மாதிரிகளை மறுசீரமைத்தல் :("
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:132
+#: ../lib/Galette/Controllers/AdminToolsController.php:133
 msgid "Logins and passwords have been successfully filled (%i processed)."
 msgstr ""
 "உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் வெற்றிகரமாக நிரப்பப்பட்டுள்ளன (%நான் செயலாக்கினேன்)."
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:135
+#: ../lib/Galette/Controllers/AdminToolsController.php:136
 msgid "An error occurred filling empty logins and passwords :("
 msgstr "வெற்று உள்நுழைவுகள் மற்றும் கடவுச்சொற்களை நிரப்புவதில் பிழை ஏற்பட்டது :("
+
+#: ../lib/Galette/Controllers/AdminToolsController.php:144
+#, fuzzy
+#| msgid "Member account has been modified."
+msgid "Dynamic dates has been fixed."
+msgstr "உறுப்பினர் கணக்கு மாற்றியமைக்கப்பட்டுள்ளது."
+
+#: ../lib/Galette/Controllers/AdminToolsController.php:146
+#, fuzzy
+#| msgid "An error occurred editing dynamic field :("
+msgid "An error occurred fixing dynamic dates :("
+msgstr "மாறும் புலத்தைத் திருத்துவதற்கு பிழை ஏற்பட்டது :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:91
 #: ../lib/Galette/Core/Galette.php:332 ../install/steps/check.php:55
@@ -1973,46 +1985,6 @@ msgstr "உறுப்பினர்களின் அட்டைகள், 
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr "இன்னும் சார்புகளைக் கொண்ட ஒரு உறுப்பினரை அகற்ற முடியாது (அஞ்சல்கள், ...)"
 
-#. TRANS: see https://www.php.net/manual/datetime.format.php
-#: ../lib/Galette/Repository/Members.php:1392
-#: ../lib/Galette/Repository/Members.php:1396
-#: ../lib/Galette/Util/Password.php:270 ../lib/Galette/IO/MembersCsv.php:163
-#: ../lib/Galette/IO/MembersCsv.php:175 ../lib/Galette/IO/MembersCsv.php:187
-#: ../lib/Galette/IO/MembersCsv.php:199
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:68
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:100
-#: ../lib/Galette/IO/ScheduledPaymentsCsv.php:100
-#: ../lib/Galette/IO/ScheduledPaymentsCsv.php:112
-#: ../lib/Galette/IO/ContributionsCsv.php:115
-#: ../lib/Galette/IO/ContributionsCsv.php:127
-#: ../lib/Galette/IO/ContributionsCsv.php:139
-#: ../lib/Galette/Features/Replacements.php:512
-#: ../lib/Galette/Features/Dynamics.php:162
-#: ../lib/Galette/Features/Dynamics.php:181
-#: ../lib/Galette/Features/Dynamics.php:187
-#: ../lib/Galette/Entity/Adherent.php:804
-#: ../lib/Galette/Entity/Adherent.php:827
-#: ../lib/Galette/Entity/Adherent.php:840
-#: ../lib/Galette/Entity/Adherent.php:1355
-#: ../lib/Galette/Entity/Adherent.php:1393
-#: ../lib/Galette/Entity/Adherent.php:1399
-#: ../lib/Galette/Entity/Adherent.php:1900
-#: ../lib/Galette/Entity/Contribution.php:636
-#: ../lib/Galette/Entity/ImportModel.php:196
-#: ../lib/Galette/Entity/SavedSearch.php:269
-#: ../lib/Galette/Entity/Group.php:666
-#: ../lib/Galette/Filters/AdvancedMembersList.php:570
-#: ../lib/Galette/Helpers/DatesHelper.php:50
-#: ../lib/Galette/Helpers/DatesHelper.php:74
-#: ../lib/Galette/Helpers/DatesHelper.php:88
-#: ../lib/Galette/Helpers/DatesHelper.php:110
-#: ../lib/Galette/Helpers/DatesHelper.php:155
-#: ../lib/Galette/Helpers/DatesHelper.php:242
-#: ../../tempcache/pages/member_form.html.twig:899
-#: ../../tempcache/pages/advanced_search.html.twig:1394
-msgid "Y-m-d"
-msgstr "Y-m-d"
-
 #: ../lib/Galette/Repository/SavedSearches.php:244
 msgid "Searches deleted (%list)"
 msgstr "நீக்கப்பட்ட தேடல்கள் (%பட்டியல்)"
@@ -2057,6 +2029,43 @@ msgstr "எண்கள் இல்லை"
 #: ../lib/Galette/Util/Password.php:163
 msgid "Does not contains special characters"
 msgstr "சிறப்பு எழுத்துக்கள் இல்லை"
+
+#. TRANS: see https://www.php.net/manual/datetime.format.php
+#: ../lib/Galette/Util/Password.php:270 ../lib/Galette/IO/MembersCsv.php:163
+#: ../lib/Galette/IO/MembersCsv.php:175 ../lib/Galette/IO/MembersCsv.php:187
+#: ../lib/Galette/IO/MembersCsv.php:199
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:68
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:100
+#: ../lib/Galette/IO/ScheduledPaymentsCsv.php:100
+#: ../lib/Galette/IO/ScheduledPaymentsCsv.php:112
+#: ../lib/Galette/IO/ContributionsCsv.php:115
+#: ../lib/Galette/IO/ContributionsCsv.php:127
+#: ../lib/Galette/IO/ContributionsCsv.php:139
+#: ../lib/Galette/Features/Replacements.php:512
+#: ../lib/Galette/Features/Dynamics.php:162
+#: ../lib/Galette/Features/Dynamics.php:181
+#: ../lib/Galette/Features/Dynamics.php:187
+#: ../lib/Galette/Entity/Adherent.php:804
+#: ../lib/Galette/Entity/Adherent.php:827
+#: ../lib/Galette/Entity/Adherent.php:840
+#: ../lib/Galette/Entity/Adherent.php:1355
+#: ../lib/Galette/Entity/Adherent.php:1393
+#: ../lib/Galette/Entity/Adherent.php:1399
+#: ../lib/Galette/Entity/Adherent.php:1900
+#: ../lib/Galette/Entity/Contribution.php:636
+#: ../lib/Galette/Entity/ImportModel.php:196
+#: ../lib/Galette/Entity/SavedSearch.php:269
+#: ../lib/Galette/Entity/Group.php:666
+#: ../lib/Galette/Helpers/DatesHelper.php:48
+#: ../lib/Galette/Helpers/DatesHelper.php:86
+#: ../lib/Galette/Helpers/DatesHelper.php:100
+#: ../lib/Galette/Helpers/DatesHelper.php:122
+#: ../lib/Galette/Helpers/DatesHelper.php:167
+#: ../lib/Galette/Helpers/DatesHelper.php:254
+#: ../../tempcache/pages/member_form.html.twig:899
+#: ../../tempcache/pages/advanced_search.html.twig:1394
+msgid "Y-m-d"
+msgstr "Y-m-d"
 
 #: ../lib/Galette/Util/FakeData.php:86
 msgid "Photo has not been stored!"
@@ -2860,8 +2869,8 @@ msgstr "தேவையான புலம் %புலம் இல்லை"
 #. TRANS: %1$s is the date format, %2$s is the field name
 #: ../lib/Galette/Features/Dynamics.php:186
 #: ../lib/Galette/Entity/Adherent.php:1398
-#: ../lib/Galette/Helpers/DatesHelper.php:87
-#: ../lib/Galette/Helpers/DatesHelper.php:204
+#: ../lib/Galette/Helpers/DatesHelper.php:99
+#: ../lib/Galette/Helpers/DatesHelper.php:216
 #, php-format
 msgid "- Wrong date format (%1$s) for %2$s!"
 msgstr "- %2$s க்கு தவறான தேதி வடிவம் ( %1$s)!"
@@ -3467,16 +3476,11 @@ msgstr "அறியப்படாத ACL விதி '%ACL'!"
 msgid "Route '%name' is not registered in ACLs!"
 msgstr "பாதை '%பெயர்' ACLS இல் பதிவு செய்யப்படவில்லை!"
 
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:125
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:169
-msgid "Galette needs update!"
-msgstr "கேலட் புதுப்பிப்பு தேவை!"
-
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:155
+#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:156
 msgid "Galette is currently under maintenance!"
 msgstr "கேலட் தற்போது பராமரிப்பில் உள்ளது!"
 
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:156
+#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:158
 msgid ""
 "The Galette instance you are requesting is currently under maintenance. "
 "Please come back later."
@@ -3484,11 +3488,15 @@ msgstr ""
 "நீங்கள் கோரும் கேலட் நிகழ்வு தற்போது பராமரிப்பில் உள்ளது. தயவுசெய்து பின்னர் திரும்பி "
 "வாருங்கள்."
 
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:170
+#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:172
+msgid "Galette needs update!"
+msgstr "கேலட் புதுப்பிப்பு தேவை!"
+
+#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:174
 msgid "Your Galette database is not present, or not up to date."
 msgstr "உங்கள் கேலட் தரவுத்தளம் இல்லை, அல்லது புதுப்பித்த நிலையில் இல்லை."
 
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:171
+#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:175
 msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr ""
 "தயவுசெய்து நிறுவவும் அல்லது மேம்படுத்தவும் நடைமுறையை இயக்கவும் (ஆவணங்களை சரிபார்க்கவும்)"
@@ -3625,26 +3633,26 @@ msgstr "நிர்வாகிகள்"
 msgid "Non members"
 msgstr "உறுப்பினர்கள் அல்லாதவர்கள்"
 
-#: ../lib/Galette/Helpers/DatesHelper.php:108
-#: ../lib/Galette/Helpers/DatesHelper.php:115
+#: ../lib/Galette/Helpers/DatesHelper.php:120
+#: ../lib/Galette/Helpers/DatesHelper.php:127
 msgid "Y"
 msgstr "ஒய்"
 
-#: ../lib/Galette/Helpers/DatesHelper.php:109
-#: ../lib/Galette/Helpers/DatesHelper.php:132
+#: ../lib/Galette/Helpers/DatesHelper.php:121
+#: ../lib/Galette/Helpers/DatesHelper.php:144
 msgid "Y-m"
 msgstr "Y-m"
 
-#: ../lib/Galette/Helpers/DatesHelper.php:171
+#: ../lib/Galette/Helpers/DatesHelper.php:183
 msgid "start date filter"
 msgstr "தொடக்க தேதி வடிகட்டி"
 
-#: ../lib/Galette/Helpers/DatesHelper.php:173
+#: ../lib/Galette/Helpers/DatesHelper.php:185
 msgid "end date filter"
 msgstr "இறுதி தேதி வடிகட்டி"
 
 #. TRANS: %1$s is field name, %2$s is list of known date formats
-#: ../lib/Galette/Helpers/DatesHelper.php:179
+#: ../lib/Galette/Helpers/DatesHelper.php:191
 #, php-format
 msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
 msgstr "%1$s க்கான அறியப்படாத தேதி வடிவம். <br> வடிவங்கள்: %2$s"
@@ -6438,7 +6446,15 @@ msgstr "அனைத்து வெற்று உள்நுழைவு ம
 msgid "Generate empty logins and passwords"
 msgstr "வெற்று உள்நுழைவுகள் மற்றும் கடவுச்சொற்களை உருவாக்கவும்"
 
-#: ../../tempcache/pages/admintools.html.twig:171
+#: ../../tempcache/pages/admintools.html.twig:169
+#: ../../tempcache/pages/admintools.html.twig:173
+#: ../../tempcache/pages/admintools.html.twig:177
+#, fuzzy
+#| msgid "Dynamic fields configuration"
+msgid "Fix dynamic fields dates format"
+msgstr "மாறும் புலங்கள் உள்ளமைவு"
+
+#: ../../tempcache/pages/admintools.html.twig:190
 msgid "Go"
 msgstr "போ"
 

@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2025-02-10 20:24+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-12 10:48+0100\n"
 "PO-Revision-Date: 2025-02-11 20:02+0000\n"
 "Last-Translator: Максим Горпиніч <maksimgorpinic2005a@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -1028,11 +1028,11 @@ msgstr "Пароль для члена \"%s\" змінено."
 msgid "Your password has been changed!"
 msgstr "Ваш пароль було змінено!"
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:53
+#: ../lib/Galette/Controllers/AdminToolsController.php:54
 msgid "Administration tools"
 msgstr "Засоби адміністрування"
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:62
+#: ../lib/Galette/Controllers/AdminToolsController.php:63
 #: ../install/steps/check.php:93
 msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
@@ -1041,37 +1041,49 @@ msgstr ""
 "Деякі модулі PHP відсутні. Установіть їх або зв’яжіться зі службою підтримки."
 "<br>Докладніше про необхідні модулі можна знайти в документації."
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:95
+#: ../lib/Galette/Controllers/AdminToolsController.php:96
 msgid "Texts has been successfully reinitialized."
 msgstr "Тексти успішно перезапущено."
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:97
+#: ../lib/Galette/Controllers/AdminToolsController.php:98
 msgid "An error occurred reinitializing texts :("
 msgstr "Під час повторного започаткування текстів сталася помилка :("
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:106
+#: ../lib/Galette/Controllers/AdminToolsController.php:107
 msgid "Fields configuration has been successfully reinitialized."
 msgstr "Конфігурацію полів успішно перезапущено."
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:108
+#: ../lib/Galette/Controllers/AdminToolsController.php:109
 msgid "An error occurred reinitializing fields configuration :("
 msgstr "Сталася помилка перезапускання конфігурації полів :("
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:117
+#: ../lib/Galette/Controllers/AdminToolsController.php:118
 msgid "PDF models has been successfully reinitialized."
 msgstr "Моделі PDF успішно перезапущено."
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:119
+#: ../lib/Galette/Controllers/AdminToolsController.php:120
 msgid "An error occurred reinitializing PDF models :("
 msgstr "Сталася помилка під час перезапускання pdf-:("
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:132
+#: ../lib/Galette/Controllers/AdminToolsController.php:133
 msgid "Logins and passwords have been successfully filled (%i processed)."
 msgstr "Логіни та паролі успішно заповнено (оброблено %i)."
 
-#: ../lib/Galette/Controllers/AdminToolsController.php:135
+#: ../lib/Galette/Controllers/AdminToolsController.php:136
 msgid "An error occurred filling empty logins and passwords :("
 msgstr "Сталася помилка під час заповнення порожніх логінів та паролів :("
+
+#: ../lib/Galette/Controllers/AdminToolsController.php:144
+#, fuzzy
+#| msgid "Member account has been modified."
+msgid "Dynamic dates has been fixed."
+msgstr "Обліковий запис члена змінено."
+
+#: ../lib/Galette/Controllers/AdminToolsController.php:146
+#, fuzzy
+#| msgid "An error occurred editing dynamic field :("
+msgid "An error occurred fixing dynamic dates :("
+msgstr "Під час правки динамічного поля сталася помилка :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:91
 #: ../lib/Galette/Core/Galette.php:332 ../install/steps/check.php:55
@@ -1979,46 +1991,6 @@ msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
 "Не вдається видалити члена, який все ще має залежності (розсилання, ...)"
 
-#. TRANS: see https://www.php.net/manual/datetime.format.php
-#: ../lib/Galette/Repository/Members.php:1392
-#: ../lib/Galette/Repository/Members.php:1396
-#: ../lib/Galette/Util/Password.php:270 ../lib/Galette/IO/MembersCsv.php:163
-#: ../lib/Galette/IO/MembersCsv.php:175 ../lib/Galette/IO/MembersCsv.php:187
-#: ../lib/Galette/IO/MembersCsv.php:199
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:68
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:100
-#: ../lib/Galette/IO/ScheduledPaymentsCsv.php:100
-#: ../lib/Galette/IO/ScheduledPaymentsCsv.php:112
-#: ../lib/Galette/IO/ContributionsCsv.php:115
-#: ../lib/Galette/IO/ContributionsCsv.php:127
-#: ../lib/Galette/IO/ContributionsCsv.php:139
-#: ../lib/Galette/Features/Replacements.php:512
-#: ../lib/Galette/Features/Dynamics.php:162
-#: ../lib/Galette/Features/Dynamics.php:181
-#: ../lib/Galette/Features/Dynamics.php:187
-#: ../lib/Galette/Entity/Adherent.php:804
-#: ../lib/Galette/Entity/Adherent.php:827
-#: ../lib/Galette/Entity/Adherent.php:840
-#: ../lib/Galette/Entity/Adherent.php:1355
-#: ../lib/Galette/Entity/Adherent.php:1393
-#: ../lib/Galette/Entity/Adherent.php:1399
-#: ../lib/Galette/Entity/Adherent.php:1900
-#: ../lib/Galette/Entity/Contribution.php:636
-#: ../lib/Galette/Entity/ImportModel.php:196
-#: ../lib/Galette/Entity/SavedSearch.php:269
-#: ../lib/Galette/Entity/Group.php:666
-#: ../lib/Galette/Filters/AdvancedMembersList.php:570
-#: ../lib/Galette/Helpers/DatesHelper.php:50
-#: ../lib/Galette/Helpers/DatesHelper.php:74
-#: ../lib/Galette/Helpers/DatesHelper.php:88
-#: ../lib/Galette/Helpers/DatesHelper.php:110
-#: ../lib/Galette/Helpers/DatesHelper.php:155
-#: ../lib/Galette/Helpers/DatesHelper.php:242
-#: ../../tempcache/pages/member_form.html.twig:899
-#: ../../tempcache/pages/advanced_search.html.twig:1394
-msgid "Y-m-d"
-msgstr "d.m.Y"
-
 #: ../lib/Galette/Repository/SavedSearches.php:244
 msgid "Searches deleted (%list)"
 msgstr "Пошукові запити видалено (%list)"
@@ -2063,6 +2035,43 @@ msgstr "Не містить чисел"
 #: ../lib/Galette/Util/Password.php:163
 msgid "Does not contains special characters"
 msgstr "Не містить спеціальних знаків"
+
+#. TRANS: see https://www.php.net/manual/datetime.format.php
+#: ../lib/Galette/Util/Password.php:270 ../lib/Galette/IO/MembersCsv.php:163
+#: ../lib/Galette/IO/MembersCsv.php:175 ../lib/Galette/IO/MembersCsv.php:187
+#: ../lib/Galette/IO/MembersCsv.php:199
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:68
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:100
+#: ../lib/Galette/IO/ScheduledPaymentsCsv.php:100
+#: ../lib/Galette/IO/ScheduledPaymentsCsv.php:112
+#: ../lib/Galette/IO/ContributionsCsv.php:115
+#: ../lib/Galette/IO/ContributionsCsv.php:127
+#: ../lib/Galette/IO/ContributionsCsv.php:139
+#: ../lib/Galette/Features/Replacements.php:512
+#: ../lib/Galette/Features/Dynamics.php:162
+#: ../lib/Galette/Features/Dynamics.php:181
+#: ../lib/Galette/Features/Dynamics.php:187
+#: ../lib/Galette/Entity/Adherent.php:804
+#: ../lib/Galette/Entity/Adherent.php:827
+#: ../lib/Galette/Entity/Adherent.php:840
+#: ../lib/Galette/Entity/Adherent.php:1355
+#: ../lib/Galette/Entity/Adherent.php:1393
+#: ../lib/Galette/Entity/Adherent.php:1399
+#: ../lib/Galette/Entity/Adherent.php:1900
+#: ../lib/Galette/Entity/Contribution.php:636
+#: ../lib/Galette/Entity/ImportModel.php:196
+#: ../lib/Galette/Entity/SavedSearch.php:269
+#: ../lib/Galette/Entity/Group.php:666
+#: ../lib/Galette/Helpers/DatesHelper.php:48
+#: ../lib/Galette/Helpers/DatesHelper.php:86
+#: ../lib/Galette/Helpers/DatesHelper.php:100
+#: ../lib/Galette/Helpers/DatesHelper.php:122
+#: ../lib/Galette/Helpers/DatesHelper.php:167
+#: ../lib/Galette/Helpers/DatesHelper.php:254
+#: ../../tempcache/pages/member_form.html.twig:899
+#: ../../tempcache/pages/advanced_search.html.twig:1394
+msgid "Y-m-d"
+msgstr "d.m.Y"
 
 #: ../lib/Galette/Util/FakeData.php:86
 msgid "Photo has not been stored!"
@@ -2869,8 +2878,8 @@ msgstr "Відсутнє обов'язкове поле %field"
 #. TRANS: %1$s is the date format, %2$s is the field name
 #: ../lib/Galette/Features/Dynamics.php:186
 #: ../lib/Galette/Entity/Adherent.php:1398
-#: ../lib/Galette/Helpers/DatesHelper.php:87
-#: ../lib/Galette/Helpers/DatesHelper.php:204
+#: ../lib/Galette/Helpers/DatesHelper.php:99
+#: ../lib/Galette/Helpers/DatesHelper.php:216
 #, php-format
 msgid "- Wrong date format (%1$s) for %2$s!"
 msgstr "- Неправильний формат дати (%1$s) для %2$s!"
@@ -3481,16 +3490,11 @@ msgstr "Невідоме правило ACL \"%acl\"!"
 msgid "Route '%name' is not registered in ACLs!"
 msgstr "Маршрут '%name' не зареєстровано в ACL!"
 
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:125
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:169
-msgid "Galette needs update!"
-msgstr "Galette потребує оновлення!"
-
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:155
+#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:156
 msgid "Galette is currently under maintenance!"
 msgstr "Наразі в Galette проводиться техобслуговування!"
 
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:156
+#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:158
 msgid ""
 "The Galette instance you are requesting is currently under maintenance. "
 "Please come back later."
@@ -3498,11 +3502,15 @@ msgstr ""
 "Зразок Galette, який ви запитуєте, зараз перебуває на техобслуговуванні. "
 "Будь ласка, поверніться пізніше."
 
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:170
+#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:172
+msgid "Galette needs update!"
+msgstr "Galette потребує оновлення!"
+
+#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:174
 msgid "Your Galette database is not present, or not up to date."
 msgstr "Ваша база даних Galette відсутня або не оновлена."
 
-#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:171
+#: ../lib/Galette/Middleware/UpdateAndMaintenance.php:175
 msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr ""
 "Запустіть процедуру встановлення або оновлення (перегляньте документацію)"
@@ -3651,26 +3659,26 @@ msgstr "Адміністратори"
 msgid "Non members"
 msgstr "Не члени"
 
-#: ../lib/Galette/Helpers/DatesHelper.php:108
-#: ../lib/Galette/Helpers/DatesHelper.php:115
+#: ../lib/Galette/Helpers/DatesHelper.php:120
+#: ../lib/Galette/Helpers/DatesHelper.php:127
 msgid "Y"
 msgstr "РР"
 
-#: ../lib/Galette/Helpers/DatesHelper.php:109
-#: ../lib/Galette/Helpers/DatesHelper.php:132
+#: ../lib/Galette/Helpers/DatesHelper.php:121
+#: ../lib/Galette/Helpers/DatesHelper.php:144
 msgid "Y-m"
 msgstr "Y-m"
 
-#: ../lib/Galette/Helpers/DatesHelper.php:171
+#: ../lib/Galette/Helpers/DatesHelper.php:183
 msgid "start date filter"
 msgstr "добірка дати початку"
 
-#: ../lib/Galette/Helpers/DatesHelper.php:173
+#: ../lib/Galette/Helpers/DatesHelper.php:185
 msgid "end date filter"
 msgstr "добірка дати завершення"
 
 #. TRANS: %1$s is field name, %2$s is list of known date formats
-#: ../lib/Galette/Helpers/DatesHelper.php:179
+#: ../lib/Galette/Helpers/DatesHelper.php:191
 #, php-format
 msgid "Unknown date format for %1$s.<br/>Know formats are: %2$s"
 msgstr "Невідомий формат дати для %1$s.<br/>Відомі формати: %2$s"
@@ -6483,7 +6491,15 @@ msgstr "Заповніть всі порожні логіни та паролі"
 msgid "Generate empty logins and passwords"
 msgstr "Утворіть порожні логіни та паролі"
 
-#: ../../tempcache/pages/admintools.html.twig:171
+#: ../../tempcache/pages/admintools.html.twig:169
+#: ../../tempcache/pages/admintools.html.twig:173
+#: ../../tempcache/pages/admintools.html.twig:177
+#, fuzzy
+#| msgid "Dynamic fields configuration"
+msgid "Fix dynamic fields dates format"
+msgstr "Налаштування динамічних полів"
+
+#: ../../tempcache/pages/admintools.html.twig:190
 msgid "Go"
 msgstr "Перейти"
 
