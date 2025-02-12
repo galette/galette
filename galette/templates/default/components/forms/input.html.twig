@@ -79,7 +79,7 @@
         </div>
     {% elseif (tip is defined and tip != '') and (type is defined and type == 'text') %}
             <div class="ui corner label">
-                <i class="circular inverted primary small icon info tooltip" {% if tip_html is defined %}data-html{% else %}title{% endif %}="{{ tip }}" aria-hidden="true"></i>
+                <i class="circular small basic question icon tooltip" {% if tip_html is defined %}data-html{% else %}title{% endif %}="{{ tip }}" aria-hidden="true"></i>
             </div>
         </div>
     {% elseif type is defined and type == 'password' %}
@@ -97,7 +97,7 @@
     {% endblock %}
     </div>
     {% endif %}
-    {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}<i class="circular inverted primary small icon info tooltip" title="{{ tip }}" aria-hidden="true"></i>{% endif %}
+    {% if (tip is defined and tip != '') and (type is defined and type != 'text') %}<i class="circular small basic question icon tooltip" title="{{ tip }}" aria-hidden="true"></i>{% endif %}
     {% if example is defined %}
         <div class="exemple">{{ example|raw }}</div>
     {% endif %}
