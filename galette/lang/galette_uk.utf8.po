@@ -11,9 +11,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-02-12 10:48+0100\n"
-"PO-Revision-Date: 2025-02-11 20:02+0000\n"
+"PO-Revision-Date: 2025-02-13 11:02+0000\n"
 "Last-Translator: Максим Горпиніч <maksimgorpinic2005a@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -1074,16 +1074,12 @@ msgid "An error occurred filling empty logins and passwords :("
 msgstr "Сталася помилка під час заповнення порожніх логінів та паролів :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:144
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "Dynamic dates has been fixed."
-msgstr "Обліковий запис члена змінено."
+msgstr "Виправлено динамічні дати."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:146
-#, fuzzy
-#| msgid "An error occurred editing dynamic field :("
 msgid "An error occurred fixing dynamic dates :("
-msgstr "Під час правки динамічного поля сталася помилка :("
+msgstr "Під час виправлення динамічних дат сталася помилка :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:91
 #: ../lib/Galette/Core/Galette.php:332 ../install/steps/check.php:55
@@ -6494,10 +6490,8 @@ msgstr "Утворіть порожні логіни та паролі"
 #: ../../tempcache/pages/admintools.html.twig:169
 #: ../../tempcache/pages/admintools.html.twig:173
 #: ../../tempcache/pages/admintools.html.twig:177
-#, fuzzy
-#| msgid "Dynamic fields configuration"
 msgid "Fix dynamic fields dates format"
-msgstr "Налаштування динамічних полів"
+msgstr "Виправлення формату дат динамічних полів"
 
 #: ../../tempcache/pages/admintools.html.twig:190
 msgid "Go"
