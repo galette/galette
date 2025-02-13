@@ -195,7 +195,7 @@ class DocumentsController extends CrudController
         $filters->setViewPagination($this->routeparser, $this->view);
 
         $params = [
-            'page_title' => _T("Documents list"),
+            'page_title' => _T("Documents"),
             'nb' => count($documents),
             'documents' => $documents,
             'filters' => $filters,
@@ -231,7 +231,7 @@ class DocumentsController extends CrudController
         $documents = $document->getTypedList();
 
         $params = [
-            'page_title' => _T("Documents list"),
+            'page_title' => _T("Documents"),
             'typed_documents' => $documents,
             'documentation' => 'usermanual/documents.html#public-list'
         ];

@@ -458,7 +458,7 @@ class GaletteController extends AbstractController
         $fc = $this->fields_config;
 
         $params = [
-            'page_title'            => _T("Fields configuration"),
+            'page_title'            => _T("Core fields"),
             'time'                  => time(),
             'categories'            => FieldsCategories::getList($this->zdb),
             'categorized_fields'    => $fc->getCategorizedFields(),
@@ -554,7 +554,7 @@ class GaletteController extends AbstractController
         $lc = $this->lists_config;
 
         $params = [
-            'page_title'    => _T("Lists configuration"),
+            'page_title'    => _T("Core lists"),
             'table'         => $table,
             'time'          => time(),
             'listed_fields' => $lc->getListedFields(),

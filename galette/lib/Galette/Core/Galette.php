@@ -317,7 +317,7 @@ class Galette
                     'icon' => 'dharmachakra',
                     'items' => [
                         [
-                            'label' => _T("Manage groups"),
+                            'label' => _T("Groups"),
                             'title' => _T("View and manage groups"),
                             'route' => [
                                 'name' => 'groups'
@@ -336,7 +336,7 @@ class Galette
                             ]
                         ],
                         [
-                            'label' => _T("Manage mailings"),
+                            'label' => _T("Mailings"),
                             'title' => _T("Manage mailings that has been sent"),
                             'route' => [
                                 'name' => 'mailings'
@@ -424,7 +424,7 @@ class Galette
                                 ]
                             ],
                             [
-                                'label' => _T("Manage statuses"),
+                                'label' => _T("User statuses"),
                                 'route' => [
                                     'name' => 'status',
                                     'aliases' => ['editStatus']
@@ -479,7 +479,7 @@ class Galette
 
                     if ($login->isSuperAdmin()) {
                         $menus['configuration']['items'][] = [
-                            'label' => _T("Admin tools"),
+                            'label' => _T("Administration tools"),
                             'title' => _T("Various administrative tools"),
                             'route' => [
                                 'name' => 'adminTools'
@@ -537,7 +537,7 @@ class Galette
                 'icon' => 'eye outline',
                 'items' => [
                     [
-                        'label' => _T("Members list"),
+                        'label' => _T("Members"),
                         'route' => [
                             'name' => 'publicMembersList'
                         ],

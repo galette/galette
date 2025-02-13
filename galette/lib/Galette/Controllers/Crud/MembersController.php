@@ -321,7 +321,7 @@ class MembersController extends CrudController
             [
                 'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
                 'with_photos' => false,
-                'page_title' => _T("Members list"),
+                'page_title' => _T("Members"),
                 'template' => 'pages/members_public_list.html.twig',
                 'html_class' => '',
             ],
@@ -352,7 +352,7 @@ class MembersController extends CrudController
             [
                 'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
                 'with_photos' => true,
-                'page_title' => _T("Members list"),
+                'page_title' => _T("Gallery"),
                 'template' => 'pages/members_public_gallery.html.twig',
                 'html_class' => 'gallery',
             ],
@@ -538,7 +538,7 @@ class MembersController extends CrudController
             $response,
             'pages/members_list.html.twig',
             array(
-                'page_title'            => _T("Members management"),
+                'page_title'            => _T("List of members"),
                 'require_mass'          => true,
                 'members'               => $members_list,
                 'filter_groups_options' => $groups_list,

@@ -176,7 +176,7 @@ class ScheduledPaymentController extends CrudController
             $response,
             'pages/scheduledpayments_list.html.twig',
             [
-                'page_title'        => _T("Scheduled payments management"),
+                'page_title'        => _T("List of scheduled payments"),
                 'scheduled'         => $scheduled,
                 'list'              => $list,
                 'nb'                => $scheduled->getCount(),

@@ -215,7 +215,7 @@ class DynamicFieldsController extends CrudController
             'fields_list'       => $fields_list,
             'form_name'         => $form_name,
             'form_title'        => DynamicField::getFormTitle($form_name),
-            'page_title'        => _T("Dynamic fields configuration"),
+            'page_title'        => _T("Dynamic fields"),
             'html_editor'       => true,
             'html_editor_active' => $this->preferences->pref_editor_enabled,
             'documentation'     => 'usermanual/configuration.html#dynamic-fields'
