@@ -106,7 +106,7 @@ class CsvController extends AbstractController
             $response,
             'pages/export.html.twig',
             array(
-                'page_title'        => _T("CVS database Export"),
+                'page_title'        => _T("Exports"),
                 'tables_list'       => $tables_list,
                 'written'           => $this->flash->getMessage('written_exports'),
                 'existing'          => $existing,
@@ -246,7 +246,7 @@ class CsvController extends AbstractController
             $response,
             'pages/import.html.twig',
             array(
-                'page_title'        => _T("CSV members import"),
+                'page_title'        => _T("Imports"),
                 'existing'          => $existing,
                 'dryrun'            => true,
                 'import_file'       => $this->session->import_file,

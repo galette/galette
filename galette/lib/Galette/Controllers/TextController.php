@@ -67,7 +67,7 @@ class TextController extends AbstractController
             $response,
             'pages/configuration_texts.html.twig',
             [
-                'page_title'        => _T("Automatic emails texts edition"),
+                'page_title'        => _T("Emails content"),
                 'texts'             => $texts,
                 'reflist'           => $texts->getRefs($lang),
                 'langlist'          => $this->i18n->getList(),

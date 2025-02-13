@@ -94,7 +94,7 @@ class PaymentTypeController extends CrudController
             $response,
             'pages/configuration_payment_types.html.twig',
             [
-                'page_title'        => _T("Payment types management"),
+                'page_title'        => _T("Payment types"),
                 'list'              => $list
             ]
         );

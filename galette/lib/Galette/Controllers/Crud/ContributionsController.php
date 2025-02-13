@@ -530,7 +530,7 @@ class ContributionsController extends CrudController
 
         $tpl_vars = [
             'page_title'        => $raw_type === 'contributions' ?
-                                    _T("Contributions management") : _T("Transactions management"),
+                                    _T("List of contributions") : _T("List of transactions"),
             'contribs'          => $contrib,
             'list'              => $contribs_list,
             'nb'                => $contrib->getCount(),

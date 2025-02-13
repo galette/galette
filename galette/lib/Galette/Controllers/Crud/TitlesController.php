@@ -89,7 +89,7 @@ class TitlesController extends CrudController
             $response,
             'pages/configuration_titles.html.twig',
             [
-                'page_title'        => _T("Titles management"),
+                'page_title'        => _T("Titles"),
                 'titles_list'       => $titles->getList()
             ]
         );
