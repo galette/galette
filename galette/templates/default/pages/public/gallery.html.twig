@@ -22,7 +22,11 @@
 
 {% set nb = nb_members %}
 {% set is_public = not login.isLogged() %}
-{% set list_type = nb_members > 0 ? 'cards' : 'empty' %}
+{% if list_type_variant is defined and list_type_variant == 'grouped-lists' %}
+    {% set list_type = nb_members > 0 ? 'grouped-lists' : 'empty' %}
+{% else %}
+    {% set list_type = nb_members > 0 ? 'cards' : 'empty' %}
+{% endif %}
 
 {% macro drawEntry(member, staff, time) %}
     <div class="ui fluid card">
@@ -51,11 +55,7 @@
         {% if staff %}
                 <i class="ui user tie orange icon" aria-hidden="true"></i>
                 {{ member.sstatus }}
-        {% endif %}
-        {% if mgroups|length %}
-            {% if staff %}
-                <br />
-            {% endif %}
+        {% elseif mgroups|length %}
             <i class="ui users cog orange icon" aria-hidden="true"></i>
             {{ __('Manages:') }}
             {% for group in mgroups %}
