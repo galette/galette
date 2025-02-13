@@ -51,7 +51,7 @@
 {% block body %}
     {% if nb_members > 0 %}
         {% if members.groups|length > 0 %}
-        <tr>
+        <tr class="with-headers">
             <th scope="colgroup" colspan="4">{{ _T('Staff members') }}</th>
         </tr>
         {% endif %}
@@ -60,7 +60,7 @@
         {% endfor %}
 
         {% for group, group_managers in members.groups %}
-            <tr>
+            <tr class="with-headers">
                 <th scope="colgroup" colspan="4">{{ _T('"%1$s" group managers')|format(group) }}</th>
             </tr>
             {% for manager in group_managers %}

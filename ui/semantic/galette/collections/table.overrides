@@ -159,6 +159,14 @@ td.emptylist {
     }
 }
 
+/*-----------------------------
+     <th> outside <thead>
+------------------------------*/
+tr.with-headers th {
+    padding: @cellVerticalPadding @cellHorizontalPadding;
+    background: @lightSecondaryColor;
+}
+
 /*------------------
      Plugins list
 -------------------*/
@@ -174,6 +182,10 @@ tr.inactives.plugins th {
     border-bottom: @rowBorder;
 }
 @media only screen and (max-width: @largestMobileScreen) {
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.with-headers,
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.with-headers > th {
+        background: @lightSecondaryColor;
+    }
     .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.plugins,
     .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.plugins > th {
         background: @pluginsActiveBackground;
