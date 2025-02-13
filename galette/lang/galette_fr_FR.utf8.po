@@ -11,13 +11,14 @@
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020, 2025.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020, 2021.
 # Nathan <bonnemainsnathan@gmail.com>, 2020.
+# Guillaume AGNIERAY <dev@agnieray.net>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-02-12 10:48+0100\n"
-"PO-Revision-Date: 2025-02-12 09:57+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2025-02-13 13:56+0000\n"
+"Last-Translator: Guillaume AGNIERAY <dev@agnieray.net>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -3762,7 +3763,7 @@ msgstr "Installation de Galette"
 #: ../webroot/installer.php:225 ../webroot/installer.php:227
 #: ../../tempcache/page.html.twig:198 ../../tempcache/page.html.twig:203
 msgid "Read the manual"
-msgstr "Lire la documenntation"
+msgstr "Lire la documentation"
 
 #: ../webroot/installer.php:307
 #: ../../tempcache/modals/plugin_initdb.html.twig:465
