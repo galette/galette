@@ -352,7 +352,7 @@ class MembersController extends CrudController
             [
                 'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
                 'with_photos' => true,
-                'page_title' => _T("Members list"),
+                'page_title' => _T("Gallery"),
                 'template' => 'pages/members_public_gallery.html.twig',
                 'html_class' => 'gallery',
             ],
