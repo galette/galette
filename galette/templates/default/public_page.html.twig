@@ -26,7 +26,7 @@
             galette_lang: galette_lang
         } %}
     </head>
-    <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() and ext_auth is not defined %} loggedin{% endif %} nojs">
+    <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() and ext_auth is not defined %} loggedin{% endif %}{% if preferences.pref_enable_custom_colors %} custom-colors{% endif %}{{ (preferences.pref_hide_bg_image) ? ' without-bg' : ' with-bg' }} nojs">
         <a href="#main-content" class="skiptocontent visually-hidden focusable">{{ _T("Skip to content") }}</a>
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}

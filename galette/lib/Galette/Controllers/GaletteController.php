@@ -336,6 +336,9 @@ class GaletteController extends AbstractController
         } else {
             $tab = '';
         }
+
+        // Reset dark mode CSS file if required
+        $this->preferences->resetDarkCss($this->flash);
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->routeparser->urlFor('preferences') . $tab);

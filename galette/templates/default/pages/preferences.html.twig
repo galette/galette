@@ -346,6 +346,50 @@
                 </div>{# /column #}
             </div>{# /column grid #}
             <div class="ui horizontal divider small header">
+                <i class="palette icon"></i>
+                {{ __('Appearance') }}
+            </div>
+            <div class="ui stackable three column grid">
+                <div class="column">
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_hide_bg_image" id="pref_hide_bg_image" value="1"{% if pref.pref_hide_bg_image %} checked="checked"{% endif %}/>
+                            <label for="pref_hide_bg_image">{{ _T("Hide default background image") }}</label>
+                        </div>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_enable_custom_colors" id="pref_enable_custom_colors" value="1"{% if pref.pref_enable_custom_colors %} checked="checked"{% endif %}/>
+                            <label for="pref_enable_custom_colors">{{ _T("Apply custom colors") }}</label>
+                        </div>
+                    </div>
+                </div>{# /column #}
+                <div class="column">
+                    <div class="inline field">
+                        <label for="pref_cc_primary">{{ _T("Primary color") }}</label>
+                        <input type="color" name="pref_cc_primary" id="pref_cc_primary" value="{{ pref.pref_cc_primary }}" size="7" maxlength="7"/>
+                        <i class="circular small basic question icon tooltip" title="{{ _T("Color applied to primary buttons, checkboxes, labels, headers, borders, and menus.") }}" aria-hidden="true"></i>
+                    </div>
+                    <div class="inline field">
+                        <label for="pref_cc_primary_text">{{ _T("Text on primary color") }}</label>
+                        <input type="color" name="pref_cc_primary_text" id="pref_cc_primary_text" value="{{ pref.pref_cc_primary_text }}" size="7" maxlength="7"/>
+                        <i class="circular small basic question icon tooltip" title="{{ _T("Color applied to text displayed over the Primary color.") }}" aria-hidden="true"></i>
+                    </div>
+                </div>{# /column #}
+                <div class="column">
+                    <div class="inline field">
+                        <label for="pref_cc_secondary">{{ _T("Secondary color") }}</label>
+                        <input type="color" name="pref_cc_secondary" id="pref_cc_secondary" value="{{ pref.pref_cc_secondary }}" size="7" maxlength="7"/>
+                        <i class="circular small basic question icon tooltip" title="{{ _T("Color applied to active items in menus, paginations, and accordions views.") }}" aria-hidden="true"></i>
+                    </div>
+                    <div class="inline field">
+                        <label for="pref_cc_secondary_text">{{ _T("Text on secondary color") }}</label>
+                        <input type="color" name="pref_cc_secondary_text" id="pref_cc_secondary_text" value="{{ pref.pref_cc_secondary_text }}" size="7" maxlength="7"/>
+                        <i class="circular small basic question icon tooltip" title="{{ _T("Color applied to text displayed over the Secondary color.") }}" aria-hidden="true"></i>
+                    </div>
+                </div>{# /column #}
+            </div>{# /column grid #}
+            <div class="ui horizontal divider small header">
                 <i class="cogs icon"></i>
                 {{ __('Advanced parameters') }}
             </div>
@@ -1098,7 +1142,6 @@
 
                 {% include "modals/telemetry.html.twig" with {part: "jsdialog"} %}
                 {% include "modals/telemetry.html.twig" with {part: "jsregister"} %}
-
             });
         </script>
 {% endblock %}

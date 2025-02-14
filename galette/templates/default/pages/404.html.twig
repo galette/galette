@@ -23,7 +23,7 @@
     <head>
         {% include 'elements/header.html.twig' %}
     </head>
-    <body>
+    <body class="{% if preferences.pref_enable_custom_colors %}custom-colors{% endif %}">
         <div class="ui container">
             <header class="ui basic center aligned segment">
                 <img src="{{ url_for('logo') }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" />

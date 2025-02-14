@@ -20,6 +20,9 @@
     }
   }
 }
+.without-bg .ui.horizontal.segments.header {
+  background-color: @primaryColor;
+}
 
 /*--------------------------
      Ajax select members

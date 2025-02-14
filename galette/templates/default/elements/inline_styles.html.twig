@@ -1,0 +1,123 @@
+{#
+/**
+ * Copyright © 2003-2025 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+
+{% if preferences.pref_enable_custom_colors or preferences.pref_hide_bg_image %}
+    <style>
+    {% if preferences.pref_enable_custom_colors %}
+        {% set primarycolor = preferences.pref_cc_primary %}
+        {% set primarytextcolor = preferences.pref_cc_primary_text %}
+        {% set secondarycolor = preferences.pref_cc_secondary %}
+        {% set secondarytextcolor = preferences.pref_cc_secondary_text %}
+        :root {
+            --primaryColor: {{ primarycolor }};
+            --translucentPrimaryColor: {{ primarycolor }}b2;
+            --primaryTextColor: {{ primarytextcolor }};
+            --secondaryColor: {{ secondarycolor }};
+            --secondaryTextColor: {{ secondarytextcolor }};
+        }
+        .custom-colors .ui.primary.button,
+        .custom-colors .ui.primary.buttons .button,
+        .custom-colors .ui.toggle.checkbox input:checked ~ label::before,
+        .custom-colors .ui.link.menu .item:hover,
+        .custom-colors .ui.menu .dropdown.item:hover,
+        .custom-colors .ui.menu .link.item:hover,
+        .custom-colors .ui.menu a.item:hover,
+        .custom-colors .ui.styled.accordion:not(.basic) > .title:hover,
+        .custom-colors .ui.horizontal.segments.header,
+        .custom-colors .ui.block.header:not(.brand),
+        .custom-colors .ui.modal:not(.inverted):not(.redalert) > .header,
+        .custom-colors .ui.primary.labels .label,
+        .custom-colors .ui.ui.ui.primary.label,
+        .custom-colors .ui.primary.labels a.label:hover,
+        .custom-colors a.ui.ui.ui.primary.label:hover,
+        .custom-colors i.circular.basic.question.icon.tooltip:hover {
+            background-color: var(--primaryColor);
+            color: var(--primaryTextColor);
+        }
+        .custom-colors .ui.primary.button:hover,
+        .custom-colors .ui.primary.buttons .button:hover {
+            background: var(--primaryColor) linear-gradient(#0000001a, #0000001a);
+        }
+        .custom-colors .ui.primary.button:active,
+        .custom-colors .ui.primary.buttons .button:active {
+            background: var(--primaryColor) linear-gradient(#00000033, #00000033);
+        }
+        .custom-colors .ui.vertical.accordion.menu a.item:hover > .title {
+            color: var(--primaryTextColor);
+        }
+        .custom-colors .ui.attached.accordion-styled.segment,
+        .custom-colors .ui.attached.accordion-styled.header,
+        .custom-colors .ui.vertical.accordion.menu a.item:hover > .title,
+        .custom-colors .ui.primary.labels .label,
+        .custom-colors .ui.ui.ui.primary.label,
+        .custom-colors .ui.primary.labels a.label:hover,
+        .custom-colors a.ui.ui.ui.primary.label:hover {
+            border-color: var(--primaryColor);
+        }
+        .custom-colors .ui.ui.ui.ui.ui.yellow.segment:not(.inverted) {
+            border-top-color: var(--primaryColor);
+        }
+        .custom-colors .ui.styled.accordion:not(.basic),
+        .custom-colors .ui.styled.accordion:not(.basic) .accordion {
+            box-shadow: 0 1px 2px 0 var(--primaryColor), 0 0 0 1px var(--primaryColor);
+        }
+        .custom-colors .ui.horizontal.segments.header .ui.basic.button:not(:hover):not(:active):not(:focus),
+        .custom-colors .ui.horizontal.segments.header .ui.basic.buttons .button:not(:hover):not(:active):not(:focus) {
+            box-shadow: 0 0 0 1px var(--primaryTextColor) inset;
+            color: var(--primaryTextColor);
+        }
+        .custom-colors .ui.menu .active.item,
+        .custom-colors .ui.fixed.menu .item.active,
+        .custom-colors .ui.fixed.menu .item:active:not(.right):not(:hover),
+        .custom-colors .ui.inverted.menu .active.item,
+        .custom-colors .ui.vertical.menu .active.item,
+        .custom-colors .ui.vertical.menu .content.active .item:active:not(:hover),
+        .custom-colors .ui.vertical.accordion.menu a.item:active:not(:hover),
+        .custom-colors .ui.vertical.accordion.menu a.active.item > .title,
+        .custom-colors .ui.styled.accordion:not(.basic) .active.title,
+        .custom-colors .ui.attached.accordion-styled.header {
+            background-color: var(--secondaryColor);
+            color: var(--secondaryTextColor);
+        }
+        .custom-colors .ui.inverted.menu .active.item,
+        .custom-colors .ui.inverted.menu .active.item .disabled {
+            color: var(--secondaryTextColor) !important;
+        }
+        @media only screen and (min-width: 992px) {
+            .custom-colors aside.toc.compact_menu .ui.menu .dropdown.item.active-menu {
+                background: var(--secondaryColor);
+                color: var(--secondaryTextColor);
+            }
+        }
+    {% endif %}
+    {% if preferences.pref_hide_bg_image %}
+        .without-bg.loggedin #main,
+        .without-bg .ui.block.header,
+        .without-bg .ui.modal:not(.inverted) > .header {
+            background-image: none;
+        }
+    {% elseif preferences.pref_enable_custom_colors %}
+        .custom-colors.with-bg .ui.horizontal.segments.header {
+            background-color: var(--translucentPrimaryColor);
+        }
+    {% endif %}
+    </style>
+{% endif %}

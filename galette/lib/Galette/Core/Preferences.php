@@ -107,6 +107,12 @@ use Galette\Repository\Members;
  * @property integer $pref_card_cols
  * @property integer $pref_card_rows
  * @property string $pref_theme Preferred theme
+ * @property boolean $pref_hide_bg_image
+ * @property boolean $pref_enable_custom_colors
+ * @property string $pref_cc_primary
+ * @property string $pref_cc_primary_text
+ * @property string $pref_cc_secondary
+ * @property string $pref_cc_secondary_text
  * @property boolean $pref_bool_publicpages
  * @property integer $pref_publicpages_visibility
  * @property boolean $pref_bool_selfsubscribe
@@ -181,6 +187,8 @@ class Preferences
     /** Very strong password strength */
     public const PWD_VERY_STRONG = 4;
 
+    /** Dark mode CSS file should be deleted from cache */
+    private bool $delete_dark_css = false;
     /** @var array<string> */
     private static array $fields = array(
         'nom_pref',
@@ -205,6 +213,13 @@ class Preferences
         'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
         'pref_statut'        =>    Status::DEFAULT_STATUS,
+        /* Appearance */
+        'pref_hide_bg_image'    =>    false,
+        'pref_enable_custom_colors'    =>    false,
+        'pref_cc_primary'    =>    '#ffb619',
+        'pref_cc_primary_text'    =>    '#000000',
+        'pref_cc_secondary'    =>    '#ffda89',
+        'pref_cc_secondary_text'    =>    '#1b1c1d',
         /* Preferences for emails */
         'pref_email_nom'    =>    'Galette',
         'pref_email'        =>    'mail@domain.com',
@@ -507,6 +522,8 @@ class Preferences
         $this->errors = [];
         $insert_values = array();
         $this->getRequiredFields($login); //make sure required are all set
+
+        $this->checkCssImpacted($values);
 
         // obtain fields
         foreach ($this->getFieldsNames() as $fieldname) {
@@ -1062,6 +1079,8 @@ class Preferences
                 'pref_mail_allow_unsecure',
                 'pref_password_blacklist',
                 'pref_show_id',
+                'pref_hide_bg_image',
+                'pref_enable_custom_colors'
             ]
         ];
 
@@ -1567,5 +1586,56 @@ class Preferences
             $this->required['pref_admin_login'] = 1;
         }
         return $this->required;
+    }
+
+    /**
+     * Check if CSS is impacted when storing preferences
+     *
+     * @param array<string, mixed> $values Values to check
+     *
+     * @return void
+     */
+    protected function checkCssImpacted(array $values): void
+    {
+        //check if custom css is enabled
+        if (($values['pref_enable_custom_colors'] ?? '') != $this->pref_enable_custom_colors) {
+            $this->delete_dark_css = true;
+            return;
+        }
+
+        $css_fields = array_filter(
+            array_keys($this->prefs),
+            fn($field) => str_starts_with($field, 'pref_cc_')
+        );
+        foreach ($css_fields as $css_field) {
+            if ($values[$css_field] != $this->$css_field) {
+                $this->delete_dark_css = true;
+                return;
+            }
+        }
+    }
+
+    /**
+     * Reset dark mode CSS file
+     *
+     * @param \Slim\Flash\Messages $flash Flash messages instance
+     *
+     * @return void
+     */
+    public function resetDarkCss(\Slim\Flash\Messages $flash): void
+    {
+        if (!$this->delete_dark_css) {
+            return;
+        }
+
+        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
+        if (file_exists($cssfile)) {
+            unlink($cssfile);
+            // Inform user when the dark mode CSS file has been reset
+            $flash->addMessage(
+                'info_detected',
+                _T("Dark mode CSS file has been reset.")
+            );
+        }
     }
 }

@@ -28,7 +28,7 @@
         <link rel="stylesheet" type="text/css" href="{{ base_path() }}/assets/css/codemirror.css">
         <link rel="stylesheet" type="text/css" href="{{ base_path() }}/assets/css/summernote.min.css" />
     {% endif %}
-
+    {% include 'elements/inline_styles.html.twig' %}
     {# Let's see if a local CSS exists and include it #}
     {% set localstylesheet = constant('_CURRENT_THEME_PATH') ~ "galette_local.css" %}
     {% if file_exists(localstylesheet) %}
