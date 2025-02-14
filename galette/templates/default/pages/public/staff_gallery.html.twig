@@ -20,40 +20,20 @@
 #}
 {% extends 'pages/public/gallery.html.twig' %}
 
-{% set list_type_variant = 'grouped-lists' %}
-
 {% block infoline %}
     {# Empty this block #}
 {% endblock %}
 
-{% block groups_menu %}
-    {% if nb_members > 0 %}
-        <div class="ui stackable pointing inverted wrapping centered fluid menu tabbed">
-            <a href="{{ url_for('publicStaffGallery') }}?tab=staff" class="item" data-tab="staff">{{ _T('Staff members') }}</a>
-        {% for group, group_managers in members.groups %}
-            <a href="{{ url_for('publicStaffGallery') }}?tab=group-{{ loop.index }}" class="item" data-tab="group-{{ loop.index }}">{{ group }}</a>
-        {% endfor %}
-        </div>
-    {% endif %}
-{% endblock %}
-
 {% block body %}
     {% if nb_members > 0 %}
-        <div class="ui active basic fitted tab segment" data-tab="staff">
-            <div class="{% if nb %}ui doubling {% if cards_columns is defined %}{{ cards_columns }}{% else %}six{% endif %} column cards loader_selector{% endif %}">
-                {% for member in members.staff %}
-                    {{ _self.drawEntry(member, true, time) }}
-                {% endfor %}
-            </div>
-        </div>
-        {% for group, group_managers in members.groups %}
-        <div class="ui basic fitted tab segment" data-tab="group-{{ loop.index }}">
-            <div class="{% if nb %}ui doubling {% if cards_columns is defined %}{{ cards_columns }}{% else %}six{% endif %} column cards loader_selector{% endif %}">
+        {% for member in members.staff %}
+            {{ _self.drawEntry(member, true, time) }}
+        {% endfor %}
+        {# FIXME: find a way to separate groups display. If currently a staff memebr is alos group manager, he'll be displayed several times; like duplicated #}
+        {% for group_managers in members.groups %}
             {% for manager in group_managers %}
                 {{ _self.drawEntry(manager, false, time) }}
             {% endfor %}
-            </div>
-        </div>
         {% endfor %}
     {% else %}
         <div class="ui small message">

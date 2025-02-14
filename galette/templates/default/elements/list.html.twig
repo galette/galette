@@ -71,10 +71,6 @@
             {% endif %}
     {% endif %}
 
-    {% if list_type is defined and list_type == 'grouped-lists' %}
-        {% block groups_menu %}{% endblock %}
-    {% endif %}
-
     {% if list_type is defined and list_type == 'cards' %}
                 <div class="{% if nb %}ui doubling {% if cards_columns is defined %}{{ cards_columns }}{% else %}six{% endif %} column cards loader_selector{% endif %}">
     {% elseif list_type is not defined %}
@@ -118,9 +114,7 @@
                     </table>
     {% endif %}
 
-    {% if list_type is defined and list_type != 'grouped-lists' %}
             </div>
-    {% endif %}
 
             {% if form is defined and mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
                 {{ macros.drawBatchActionsList(batch_actions) }}
