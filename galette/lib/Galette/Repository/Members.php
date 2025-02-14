@@ -528,13 +528,13 @@ class Members
             foreach ($results as $row) {
                 $member = new Adherent($zdb, $row, $deps);
                 if ($member->isStaff()) {
-                    $staff[] = $member;
+                    $staff[$member->id] = $member;
                 }
 
                 if ($preferences->pref_bool_groupsmanagers_are_staff) {
                     $managed_groups = $member->getManagedGroups();
                     foreach ($managed_groups as $managed_group) {
-                        $groups[$managed_group->getName()][] = $member;
+                        $groups[$managed_group->getName()][$member->id] = $member;
                     }
                 }
             }
