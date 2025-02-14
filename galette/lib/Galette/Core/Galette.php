@@ -207,13 +207,22 @@ class Galette
                 || $login->isStaff()
                 || ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_create_member)
             ) {
-                $menus['members']['items'][] = [
-                    'label' => _T("Add a member"),
-                    'title' => _T("Add new member in database"),
-                    'route' => [
-                        'name' => 'addMember'
+                $menus['members']['items'] = array_merge($menus['members']['items'], [
+                    [
+                        'label' => _T("Add a member"),
+                        'title' => _T("Add new member in database"),
+                        'route' => [
+                            'name' => 'addMember'
+                        ]
+                    ],
+                    [
+                        'label' => _T("Empty adhesion form"),
+                        'title' => _T("Download empty adhesion form"),
+                        'route' => [
+                            'name' => 'emptyAdhesionForm'
+                        ]
                     ]
-                ];
+                ]);
             }
 
             // Contributions
@@ -329,10 +338,11 @@ class Galette
                 if ($login->isAdmin() || $login->isStaff()) {
                     $menus['management']['items'] = array_merge($menus['management']['items'], [
                         [
-                            'label' => _T("Logs"),
-                            'title' => _T("View application's logs"),
+                            'label' => _T("Documents"),
+                            'title' => _T("Add documents to share related to your association (status, rules of procedure, ...)"),
                             'route' => [
-                                'name' => 'history'
+                                'name' => 'documentsList',
+                                'aliases' => ['editDocument', 'addDocument']
                             ]
                         ],
                         [
@@ -340,6 +350,13 @@ class Galette
                             'title' => _T("Manage mailings that has been sent"),
                             'route' => [
                                 'name' => 'mailings'
+                            ]
+                        ],
+                        [
+                            'label' => _T("Charts"),
+                            'title' => _T("Various charts"),
+                            'route' => [
+                                'name' => 'charts'
                             ]
                         ],
                         [
@@ -358,17 +375,10 @@ class Galette
                             ]
                         ],
                         [
-                            'label' => _T("Charts"),
-                            'title' => _T("Various charts"),
+                            'label' => _T("Logs"),
+                            'title' => _T("View application's logs"),
                             'route' => [
-                                'name' => 'charts'
-                            ]
-                        ], [
-                            'label' => _T("Documents"),
-                            'title' => _T("Add documents to share related to your association (status, rules of procedure, ...)"),
-                            'route' => [
-                                'name' => 'documentsList',
-                                'aliases' => ['editDocument', 'addDocument']
+                                'name' => 'history'
                             ]
                         ]
                     ]);
@@ -424,13 +434,6 @@ class Galette
                                 ]
                             ],
                             [
-                                'label' => _T("User statuses"),
-                                'route' => [
-                                    'name' => 'status',
-                                    'aliases' => ['editStatus']
-                                ]
-                            ],
-                            [
                                 'label' => _T("Contributions types"),
                                 'title' => _T("Manage contributions types"),
                                 'route' => [
@@ -438,10 +441,18 @@ class Galette
                                 ]
                             ],
                             [
-                                'label' => _T("Emails content"),
-                                'title' => _T("Manage emails texts and subjects"),
+                                'label' => _T("Payment types"),
+                                'title' => _T("Manage payment types"),
                                 'route' => [
-                                    'name' => 'texts'
+                                    'name' => 'paymentTypes',
+                                    'aliases' => ['editPaymentType']
+                                ]
+                            ],
+                            [
+                                'label' => _T("User statuses"),
+                                'route' => [
+                                    'name' => 'status',
+                                    'aliases' => ['editStatus']
                                 ]
                             ],
                             [
@@ -460,18 +471,10 @@ class Galette
                                 ]
                             ],
                             [
-                                'label' => _T("Payment types"),
-                                'title' => _T("Manage payment types"),
+                                'label' => _T("Emails content"),
+                                'title' => _T("Manage emails texts and subjects"),
                                 'route' => [
-                                    'name' => 'paymentTypes',
-                                    'aliases' => ['editPaymentType']
-                                ]
-                            ],
-                            [
-                                'label' => _T("Empty adhesion form"),
-                                'title' => _T("Download empty adhesion form"),
-                                'route' => [
-                                    'name' => 'emptyAdhesionForm'
+                                    'name' => 'texts'
                                 ]
                             ]
                         ]
