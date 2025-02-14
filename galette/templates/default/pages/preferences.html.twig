@@ -319,7 +319,7 @@
                 <i class="eye outline icon"></i>
                 {{ __('Public pages') }}
             </div>
-            <div class="ui stackable two column grid">
+            <div class="ui stackable three column grid">
                 <div class="column">
                     <div class="field inline">
                         <div class="ui right aligned toggle checkbox">
@@ -341,6 +341,14 @@
                         <div class="ui right aligned toggle checkbox">
                             <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{% if pref.pref_bool_selfsubscribe %} checked="checked"{% endif %}/>
                             <label for="pref_bool_selfsubscribe">{{ _T("Self subscription enabled?") }}</label>
+                        </div>
+                    </div>
+                </div>{# /column #}
+                <div class="column">
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_bool_empty_form_link" id="pref_bool_empty_form_link" value="1"{% if pref.pref_bool_empty_form_link %} checked="checked"{% endif %}/>
+                            <label for="pref_bool_empty_form_link">{{ _T("Link empty adhesion form on public pages") }}</label>
                         </div>
                     </div>
                 </div>{# /column #}
