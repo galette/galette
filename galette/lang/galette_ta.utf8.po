@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-12 10:48+0100\n"
+"POT-Creation-Date: 2025-02-15 09:59+0100\n"
 "PO-Revision-Date: 2024-12-30 11:00+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -60,8 +60,9 @@ msgid "Contribution has been successfully detached from current transaction"
 msgstr "தற்போதைய பரிவர்த்தனையிலிருந்து பங்களிப்பு வெற்றிகரமாக பிரிக்கப்பட்டுள்ளது"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:97
-msgid "Payment types management"
-msgstr "கட்டண வகைகள் மேலாண்மை"
+#: ../lib/Galette/Core/Galette.php:463
+msgid "Payment types"
+msgstr "கட்டண வகைகள்"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:141
 #: ../../tempcache/pages/configuration_payment_types.html.twig:255
@@ -106,8 +107,9 @@ msgid "Add scheduled payment"
 msgstr "திட்டமிடப்பட்ட கட்டணத்தைச் சேர்க்கவும்"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:179
-msgid "Scheduled payments management"
-msgstr "திட்டமிடப்பட்ட கொடுப்பனவு மேலாண்மை"
+#: ../lib/Galette/Core/Galette.php:244
+msgid "List of scheduled payments"
+msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகளின் பட்டியல்"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:274
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:674
@@ -152,7 +154,7 @@ msgid "Group name is missing!"
 msgstr "குழு பெயர் காணவில்லை!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:186
-#: ../lib/Galette/Core/Galette.php:683
+#: ../lib/Galette/Core/Galette.php:320 ../lib/Galette/Core/Galette.php:683
 msgid "Groups"
 msgstr "குழுக்கள்"
 
@@ -207,7 +209,7 @@ msgid "Mailing has been successfully saved."
 msgstr "அஞ்சல் வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:480
-#: ../lib/Galette/Core/Galette.php:699
+#: ../lib/Galette/Core/Galette.php:339 ../lib/Galette/Core/Galette.php:699
 msgid "Mailings"
 msgstr "அஞ்சல்கள்"
 
@@ -270,8 +272,9 @@ msgid "Dynamic field has been successfully stored!"
 msgstr "மாறும் புலம் வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:218
-msgid "Dynamic fields configuration"
-msgstr "மாறும் புலங்கள் உள்ளமைவு"
+#: ../lib/Galette/Core/Galette.php:412
+msgid "Dynamic fields"
+msgstr "மாறும் புலங்கள்"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:311
 #: ../lib/Galette/Controllers/Crud/MembersController.php:236
@@ -333,14 +336,22 @@ msgid "Member Profile"
 msgstr "உறுப்பினர் சுயவிவரம்"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:324
+#: ../lib/Galette/Core/Galette.php:174 ../lib/Galette/Core/Galette.php:540
+#: ../lib/Galette/Core/Galette.php:675
+#: ../lib/Galette/DynamicFields/DynamicField.php:546
+#: ../../tempcache/elements/group.html.twig:100
+msgid "Members"
+msgstr "உறுப்பினர்கள்"
+
 #: ../lib/Galette/Controllers/Crud/MembersController.php:355
-#: ../lib/Galette/Core/Galette.php:540
-msgid "Members list"
-msgstr "உறுப்பினர்கள் பட்டியல்"
+#: ../lib/Galette/Core/Galette.php:547
+msgid "Gallery"
+msgstr "டிராம்பினோச்கோப்"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:541
-msgid "Members management"
-msgstr "உறுப்பினர்கள் மேலாண்மை"
+#: ../lib/Galette/Core/Galette.php:182
+msgid "List of members"
+msgstr "உறுப்பினர்களின் பட்டியல்"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:775
 #: ../lib/Galette/Core/Galette.php:190
@@ -447,8 +458,9 @@ msgid "You are about to remove %count members."
 msgstr "நீங்கள் %எண்ணிக்கை உறுப்பினர்களை அகற்ற உள்ளீர்கள்."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:92
-msgid "Titles management"
-msgstr "தலைப்புகள் மேலாண்மை"
+#: ../lib/Galette/Core/Install.php:1215 ../lib/Galette/Core/Galette.php:448
+msgid "Titles"
+msgstr "தலைப்புகள்"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:135
 #: ../../tempcache/pages/configuration_titles.html.twig:262
@@ -485,6 +497,7 @@ msgid "Remove title %1$s"
 msgstr "தலைப்பு %1$s ஐ அகற்று"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:97
+#: ../lib/Galette/Core/Galette.php:427
 msgid "User statuses"
 msgstr "பயனர் நிலைகள்"
 
@@ -544,12 +557,14 @@ msgid "Mass add contribution on %count members"
 msgstr "%எண்ணிக்கை உறுப்பினர்களுக்கு வெகுசன சேர்க்கவும் பங்களிப்பு"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
-msgid "Contributions management"
-msgstr "பங்களிப்பு மேலாண்மை"
+#: ../lib/Galette/Core/Galette.php:230
+msgid "List of contributions"
+msgstr "பங்களிப்புகளின் பட்டியல்"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
-msgid "Transactions management"
-msgstr "பரிவர்த்தனை மேலாண்மை"
+#: ../lib/Galette/Core/Galette.php:257
+msgid "List of transactions"
+msgstr "பரிவர்த்தனைகளின் பட்டியல்"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:687
 msgid "- Unknown contribution type!"
@@ -617,8 +632,10 @@ msgstr "ஆவணம் வெற்றிகரமாக சேமிக்க�
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:198
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:234
-msgid "Documents list"
-msgstr "ஆவணங்கள் பட்டியல்"
+#: ../lib/Galette/Core/Galette.php:367 ../lib/Galette/Core/Galette.php:561
+#: ../lib/Galette/Core/Galette.php:744
+msgid "Documents"
+msgstr "ஆவணங்கள்"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:355
 #: ../../tempcache/pages/documents_list.html.twig:223
@@ -705,7 +722,7 @@ msgstr ""
 msgid "Preferences has been saved."
 msgstr "விருப்பத்தேர்வுகள் சேமிக்கப்பட்டுள்ளன."
 
-#: ../lib/Galette/Controllers/GaletteController.php:358
+#: ../lib/Galette/Controllers/GaletteController.php:361
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
@@ -713,83 +730,85 @@ msgstr ""
 "சோதனை மின்னஞ்சலை அனுப்ப நீங்கள் கேலட்டைக் கேட்டீர்கள், ஆனால் விருப்பங்களில் மின்னஞ்சல் "
 "முடக்கப்பட்டுள்ளது."
 
-#: ../lib/Galette/Controllers/GaletteController.php:365
+#: ../lib/Galette/Controllers/GaletteController.php:368
 msgid "Test message"
 msgstr "சோதனை செய்தி"
 
-#: ../lib/Galette/Controllers/GaletteController.php:368
+#: ../lib/Galette/Controllers/GaletteController.php:371
 msgid "Galette admin"
 msgstr "கேலட் நிர்வாகி"
 
-#: ../lib/Galette/Controllers/GaletteController.php:371
+#: ../lib/Galette/Controllers/GaletteController.php:374
 msgid "Test message."
 msgstr "சோதனை செய்தி."
 
-#: ../lib/Galette/Controllers/GaletteController.php:380
+#: ../lib/Galette/Controllers/GaletteController.php:383
 #, php-format
 msgid "An email has been sent to %email"
 msgstr "ஒரு மின்னஞ்சல் %மின்னஞ்சலுக்கு அனுப்பப்பட்டுள்ளது"
 
-#: ../lib/Galette/Controllers/GaletteController.php:389
+#: ../lib/Galette/Controllers/GaletteController.php:392
 #, php-format
 msgid "No email sent to %email"
 msgstr "%மின்னஞ்சலுக்கு மின்னஞ்சல் அனுப்பப்படவில்லை"
 
-#: ../lib/Galette/Controllers/GaletteController.php:396
+#: ../lib/Galette/Controllers/GaletteController.php:399
 msgid "Invalid email adress!"
 msgstr "தவறான மின்னஞ்சல் முகவரி!"
 
-#: ../lib/Galette/Controllers/GaletteController.php:440
+#: ../lib/Galette/Controllers/GaletteController.php:443
 #: ../lib/Galette/Core/Galette.php:361
 msgid "Charts"
 msgstr "விளக்கப்படங்கள்"
 
-#: ../lib/Galette/Controllers/GaletteController.php:461
-msgid "Fields configuration"
-msgstr "புலங்கள் உள்ளமைவு"
+#: ../lib/Galette/Controllers/GaletteController.php:464
+#: ../lib/Galette/Core/Galette.php:405
+msgid "Core fields"
+msgstr "முக்கிய புலங்கள்"
 
-#: ../lib/Galette/Controllers/GaletteController.php:527
+#: ../lib/Galette/Controllers/GaletteController.php:530
 msgid "Fields configuration has been successfully stored"
 msgstr "புலம் உள்ளமைவு வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது"
 
-#: ../lib/Galette/Controllers/GaletteController.php:532
+#: ../lib/Galette/Controllers/GaletteController.php:535
 msgid "An error occurred while storing fields configuration :("
 msgstr "புலங்கள் உள்ளமைவை சேமிக்கும் போது பிழை ஏற்பட்டது :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:557
-msgid "Lists configuration"
-msgstr "உள்ளமைவை பட்டியலிடுகிறது"
+#: ../lib/Galette/Controllers/GaletteController.php:560
+#: ../lib/Galette/Core/Galette.php:397
+msgid "Core lists"
+msgstr "கோர் பட்டியல்கள்"
 
-#: ../lib/Galette/Controllers/GaletteController.php:597
+#: ../lib/Galette/Controllers/GaletteController.php:600
 msgid "List configuration has been successfully stored"
 msgstr "பட்டியல் உள்ளமைவு வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது"
 
-#: ../lib/Galette/Controllers/GaletteController.php:602
+#: ../lib/Galette/Controllers/GaletteController.php:605
 msgid "An error occurred while storing list configuration :("
 msgstr "பட்டியல் உள்ளமைவை சேமிக்கும் போது பிழை ஏற்பட்டது :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:636
+#: ../lib/Galette/Controllers/GaletteController.php:639
 #: ../lib/Galette/Core/Galette.php:304 ../lib/Galette/Core/Galette.php:725
 msgid "Reminders"
 msgstr "நினைவூட்டல்கள்"
 
-#: ../lib/Galette/Controllers/GaletteController.php:678
+#: ../lib/Galette/Controllers/GaletteController.php:681
 msgid "No reminder to send for now."
 msgstr "இப்போது அனுப்ப நினைவூட்டல் இல்லை."
 
-#: ../lib/Galette/Controllers/GaletteController.php:715
+#: ../lib/Galette/Controllers/GaletteController.php:718
 msgid "There are no member to proceed."
 msgstr "தொடர உறுப்பினர் இல்லை."
 
-#: ../lib/Galette/Controllers/GaletteController.php:722
+#: ../lib/Galette/Controllers/GaletteController.php:725
 msgid "Reminder has not been sent:"
 msgstr "நினைவூட்டல் அனுப்பப்படவில்லை:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:729
+#: ../lib/Galette/Controllers/GaletteController.php:732
 msgid "Sent reminders:"
 msgstr "நினைவூட்டல்களை அனுப்பியது:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:804
+#: ../lib/Galette/Controllers/GaletteController.php:807
 msgid "Download document"
 msgstr "ஆவணத்தைப் பதிவிறக்கவும்"
 
@@ -1023,6 +1042,7 @@ msgid "Your password has been changed!"
 msgstr "உங்கள் கடவுச்சொல் மாற்றப்பட்டுள்ளது!"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:54
+#: ../lib/Galette/Core/Galette.php:482
 msgid "Administration tools"
 msgstr "நிர்வாக கருவிகள்"
 
@@ -1136,8 +1156,9 @@ msgid "Labels has been sucessfully translated!"
 msgstr "சிட்டை வெற்றிகரமாக மொழிபெயர்க்கப்பட்டுள்ளது!"
 
 #: ../lib/Galette/Controllers/CsvController.php:109
-msgid "CVS database Export"
-msgstr "சி.வி.எச் தரவுத்தள ஏற்றுமதி"
+#: ../lib/Galette/Core/Galette.php:346 ../install/steps/check.php:53
+msgid "Exports"
+msgstr "ஏற்றுமதி"
 
 #: ../lib/Galette/Controllers/CsvController.php:163
 msgid "Table %table is empty, and has not been exported."
@@ -1164,8 +1185,9 @@ msgid ""
 msgstr "அளவுரு ஏற்றுமதி '%ஏற்றுமதி' இயங்கும் பிழை ஏற்பட்டது. பதிவுகளை சரிபார்க்கவும்."
 
 #: ../lib/Galette/Controllers/CsvController.php:249
-msgid "CSV members import"
-msgstr "சி.எச்.வி உறுப்பினர்கள் இறக்குமதி செய்கிறார்கள்"
+#: ../lib/Galette/Core/Galette.php:353 ../install/steps/check.php:54
+msgid "Imports"
+msgstr "இறக்குமதிகள்"
 
 #: ../lib/Galette/Controllers/CsvController.php:302
 msgid "An error occurred importing the file :("
@@ -1219,8 +1241,9 @@ msgid "Import model has not been stored :("
 msgstr "இறக்குமதி மாதிரி சேமிக்கப்படவில்லை :("
 
 #: ../lib/Galette/Controllers/TextController.php:70
-msgid "Automatic emails texts edition"
-msgstr "தானியங்கி மின்னஞ்சல்கள் உரைகள் பதிப்பு"
+#: ../lib/Galette/Core/Galette.php:441
+msgid "Emails content"
+msgstr "மின்னஞ்சல்கள் உள்ளடக்கம்"
 
 #: ../lib/Galette/Controllers/TextController.php:141
 #, php-format
@@ -1238,7 +1261,7 @@ msgstr "மின்னஞ்சல்: '%s' வெற்றிகரமாக �
 #: ../../tempcache/elements/group.html.twig:207
 #: ../../tempcache/elements/group.html.twig:250
 #: ../../tempcache/pages/transaction_form.html.twig:166
-#: ../../tempcache/pages/preferences.html.twig:2482
+#: ../../tempcache/pages/preferences.html.twig:2585
 msgid "None"
 msgstr "எதுவுமில்லை"
 
@@ -1334,10 +1357,6 @@ msgstr "புலங்கள் கட்டமைப்பு மற்று�
 #: ../lib/Galette/Core/Install.php:1211 ../lib/Galette/Core/Install.php:1233
 msgid "Mails texts"
 msgstr "அஞ்சல் நூல்கள்"
-
-#: ../lib/Galette/Core/Install.php:1215 ../lib/Galette/Core/Galette.php:448
-msgid "Titles"
-msgstr "தலைப்புகள்"
 
 #: ../lib/Galette/Core/Install.php:1225
 msgid "Update preferences"
@@ -1470,16 +1489,6 @@ msgstr "ஒரு குழந்தை உறுப்பினரைச் ச
 msgid "Add new child member in database"
 msgstr "தரவுத்தளத்தில் புதிய குழந்தை உறுப்பினரைச் சேர்க்கவும்"
 
-#: ../lib/Galette/Core/Galette.php:174 ../lib/Galette/Core/Galette.php:675
-#: ../lib/Galette/DynamicFields/DynamicField.php:546
-#: ../../tempcache/elements/group.html.twig:100
-msgid "Members"
-msgstr "உறுப்பினர்கள்"
-
-#: ../lib/Galette/Core/Galette.php:182
-msgid "List of members"
-msgstr "உறுப்பினர்களின் பட்டியல்"
-
 #: ../lib/Galette/Core/Galette.php:183 ../lib/Galette/Core/Galette.php:676
 msgid "View, search into and filter member's list"
 msgstr "உறுப்பினரின் பட்டியலைக் காண்க, தேடுங்கள் மற்றும் வடிகட்டவும்"
@@ -1503,25 +1512,13 @@ msgstr "தரவுத்தளத்தில் புதிய உறுப�
 msgid "Contributions"
 msgstr "பங்களிப்புகள்"
 
-#: ../lib/Galette/Core/Galette.php:230
-msgid "List of contributions"
-msgstr "பங்களிப்புகளின் பட்டியல்"
-
 #: ../lib/Galette/Core/Galette.php:231 ../lib/Galette/Core/Galette.php:708
 msgid "View and filter contributions"
 msgstr "பங்களிப்புகளைக் காணவும் வடிகட்டவும்"
 
-#: ../lib/Galette/Core/Galette.php:244
-msgid "List of scheduled payments"
-msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகளின் பட்டியல்"
-
 #: ../lib/Galette/Core/Galette.php:245
 msgid "View and filter scheduled payments"
 msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகளைக் காணவும் வடிகட்டவும்"
-
-#: ../lib/Galette/Core/Galette.php:257
-msgid "List of transactions"
-msgstr "பரிவர்த்தனைகளின் பட்டியல்"
 
 #: ../lib/Galette/Core/Galette.php:258 ../lib/Galette/Core/Galette.php:717
 msgid "View and filter transactions"
@@ -1567,10 +1564,6 @@ msgstr "தாமதமான உறுப்பினர்களுக்க�
 msgid "Management"
 msgstr "மேலாண்மை"
 
-#: ../lib/Galette/Core/Galette.php:320
-msgid "Manage groups"
-msgstr "குழுக்களை நிர்வகிக்கவும்"
-
 #: ../lib/Galette/Core/Galette.php:321 ../lib/Galette/Core/Galette.php:684
 msgid "View and manage groups"
 msgstr "குழுக்களைக் காணலாம் மற்றும் நிர்வகிக்கவும்"
@@ -1579,25 +1572,13 @@ msgstr "குழுக்களைக் காணலாம் மற்று�
 msgid "View application's logs"
 msgstr "பயன்பாட்டின் பதிவுகளைக் காண்க"
 
-#: ../lib/Galette/Core/Galette.php:339
-msgid "Manage mailings"
-msgstr "அஞ்சல்களை நிர்வகிக்கவும்"
-
 #: ../lib/Galette/Core/Galette.php:340 ../lib/Galette/Core/Galette.php:700
 msgid "Manage mailings that has been sent"
 msgstr "அனுப்பப்பட்ட அஞ்சல்களை நிர்வகிக்கவும்"
 
-#: ../lib/Galette/Core/Galette.php:346 ../install/steps/check.php:53
-msgid "Exports"
-msgstr "ஏற்றுமதி"
-
 #: ../lib/Galette/Core/Galette.php:347
 msgid "Export some data in various formats"
 msgstr "சில தரவை பல்வேறு வடிவங்களில் ஏற்றுமதி செய்யுங்கள்"
-
-#: ../lib/Galette/Core/Galette.php:353 ../install/steps/check.php:54
-msgid "Imports"
-msgstr "இறக்குமதிகள்"
 
 #: ../lib/Galette/Core/Galette.php:354
 msgid "Import members from CSV files"
@@ -1606,11 +1587,6 @@ msgstr "காபிம கோப்புகளிலிருந்து உ�
 #: ../lib/Galette/Core/Galette.php:362
 msgid "Various charts"
 msgstr "பல்வேறு விளக்கப்படங்கள்"
-
-#: ../lib/Galette/Core/Galette.php:367 ../lib/Galette/Core/Galette.php:561
-#: ../lib/Galette/Core/Galette.php:744
-msgid "Documents"
-msgstr "ஆவணங்கள்"
 
 #: ../lib/Galette/Core/Galette.php:368
 msgid ""
@@ -1634,17 +1610,9 @@ msgstr ""
 msgid "Information about available plugins"
 msgstr "கிடைக்கக்கூடிய செருகுநிரல்கள் பற்றிய செய்தி"
 
-#: ../lib/Galette/Core/Galette.php:397
-msgid "Core lists"
-msgstr "கோர் பட்டியல்கள்"
-
 #: ../lib/Galette/Core/Galette.php:398
 msgid "Customize lists fields and order"
 msgstr "பட்டியல்கள் புலங்கள் மற்றும் ஆர்டர் தனிப்பயனாக்கவும்"
-
-#: ../lib/Galette/Core/Galette.php:405
-msgid "Core fields"
-msgstr "முக்கிய புலங்கள்"
 
 #: ../lib/Galette/Core/Galette.php:406
 msgid ""
@@ -1652,10 +1620,6 @@ msgid ""
 msgstr ""
 "ஃபீல்ட்ச் ஆர்டர், தேவைப்படும் தொகுப்பு, மற்றும் அவை யாரைக் காணக்கூடியவை என்பதைத் "
 "தனிப்பயனாக்குங்கள்"
-
-#: ../lib/Galette/Core/Galette.php:412
-msgid "Dynamic fields"
-msgstr "மாறும் புலங்கள்"
 
 #: ../lib/Galette/Core/Galette.php:413
 msgid "Manage additional fields for various forms"
@@ -1665,17 +1629,9 @@ msgstr "பல்வேறு வடிவங்களுக்கான கூ�
 msgid "Translate additional fields labels"
 msgstr "கூடுதல் புலங்கள் லேபிள்களை மொழிபெயர்க்கவும்"
 
-#: ../lib/Galette/Core/Galette.php:427
-msgid "Manage statuses"
-msgstr "நிலைகளை நிர்வகிக்கவும்"
-
 #: ../lib/Galette/Core/Galette.php:435
 msgid "Manage contributions types"
 msgstr "பங்களிப்பு வகைகளை நிர்வகிக்கவும்"
-
-#: ../lib/Galette/Core/Galette.php:441
-msgid "Emails content"
-msgstr "மின்னஞ்சல்கள் உள்ளடக்கம்"
 
 #: ../lib/Galette/Core/Galette.php:442
 msgid "Manage emails texts and subjects"
@@ -1689,10 +1645,6 @@ msgstr "தலைப்புகளை நிர்வகிக்கவும�
 msgid "Manage PDF models"
 msgstr "PDF மாதிரிகளை நிர்வகிக்கவும்"
 
-#: ../lib/Galette/Core/Galette.php:463
-msgid "Payment types"
-msgstr "கட்டண வகைகள்"
-
 #: ../lib/Galette/Core/Galette.php:464
 msgid "Manage payment types"
 msgstr "கட்டண வகைகளை நிர்வகிக்கவும்"
@@ -1705,10 +1657,6 @@ msgstr "வெற்று ஒட்டுதல் வடிவம்"
 msgid "Download empty adhesion form"
 msgstr "வெற்று ஒட்டுதல் படிவத்தைப் பதிவிறக்கவும்"
 
-#: ../lib/Galette/Core/Galette.php:482
-msgid "Admin tools"
-msgstr "நிர்வாக கருவிகள்"
-
 #: ../lib/Galette/Core/Galette.php:483
 msgid "Various administrative tools"
 msgstr "பல்வேறு நிர்வாக கருவிகள்"
@@ -1717,10 +1665,6 @@ msgstr "பல்வேறு நிர்வாக கருவிகள்"
 #: ../../tempcache/pages/preferences.html.twig:964
 msgid "Public pages"
 msgstr "பொது பக்கங்கள்"
-
-#: ../lib/Galette/Core/Galette.php:547
-msgid "Gallery"
-msgstr "டிராம்பினோச்கோப்"
 
 #: ../lib/Galette/Core/Galette.php:562 ../lib/Galette/Core/Galette.php:745
 msgid "View documents related to your association"
@@ -1784,49 +1728,49 @@ msgstr "உறுப்பினர் அட்டைகளை உருவா�
 msgid "Export as CSV"
 msgstr "காபிம ஆக ஏற்றுமதி"
 
-#: ../lib/Galette/Core/Preferences.php:548
+#: ../lib/Galette/Core/Preferences.php:565
 msgid "- Only SMTP and GMail are allowed on hosted instances."
 msgstr ""
 "- புரவலன் செய்யப்பட்ட நிகழ்வுகளில் SMTP மற்றும் சிமெயில் மட்டுமே அனுமதிக்கப்படுகின்றன."
 
-#: ../lib/Galette/Core/Preferences.php:554
+#: ../lib/Galette/Core/Preferences.php:571
 msgid "- You must indicate a sender name for emails!"
 msgstr "- மின்னஞ்சல்களுக்கு அனுப்புநரின் பெயரைக் குறிக்க வேண்டும்!"
 
-#: ../lib/Galette/Core/Preferences.php:560
+#: ../lib/Galette/Core/Preferences.php:577
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- மின்னஞ்சல்களை அனுப்ப கேலட் பயன்படுத்த வேண்டிய மின்னஞ்சல் முகவரியை நீங்கள் குறிப்பிட "
 "வேண்டும்!"
 
-#: ../lib/Galette/Core/Preferences.php:567
+#: ../lib/Galette/Core/Preferences.php:584
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr "- நீங்கள் பயன்படுத்த விரும்பும் SMTP சேவையகத்தை நீங்கள் குறிக்க வேண்டும்!"
 
-#: ../lib/Galette/Core/Preferences.php:579
+#: ../lib/Galette/Core/Preferences.php:596
 msgid "- You must provide a login for SMTP authentication."
 msgstr "- நீங்கள் SMTP அங்கீகாரத்திற்கு உள்நுழைவை வழங்க வேண்டும்."
 
-#: ../lib/Galette/Core/Preferences.php:585
+#: ../lib/Galette/Core/Preferences.php:602
 msgid "- You must provide a password for SMTP authentication."
 msgstr "- SMTP அங்கீகாரத்திற்கு நீங்கள் கடவுச்சொல்லை வழங்க வேண்டும்."
 
-#: ../lib/Galette/Core/Preferences.php:594
+#: ../lib/Galette/Core/Preferences.php:611
 msgid ""
 "- You must indicate a membership extension or a beginning of membership."
 msgstr "- நீங்கள் உறுப்பினர் நீட்டிப்பு அல்லது உறுப்பினரின் தொடக்கத்தைக் குறிக்க வேண்டும்."
 
-#: ../lib/Galette/Core/Preferences.php:599
+#: ../lib/Galette/Core/Preferences.php:616
 msgid ""
 "- Default membership extension and beginning of membership are mutually "
 "exclusive."
 msgstr "- இயல்புநிலை உறுப்பினர் நீட்டிப்பு மற்றும் உறுப்பினரின் துவக்கம் இருவழி."
 
-#: ../lib/Galette/Core/Preferences.php:608
+#: ../lib/Galette/Core/Preferences.php:625
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- மாதங்கள் வழங்குவது உறுப்பினரின் தொடக்கத்துடன் மட்டுமே ஒத்துப்போகும்."
 
-#: ../lib/Galette/Core/Preferences.php:617
+#: ../lib/Galette/Core/Preferences.php:634
 #: ../lib/Galette/Entity/Adherent.php:1251
 #: ../lib/Galette/Entity/Transaction.php:375
 #: ../lib/Galette/Entity/Contribution.php:552
@@ -1834,102 +1778,106 @@ msgstr "- மாதங்கள் வழங்குவது உறுப்�
 msgid "- Mandatory field %field empty."
 msgstr "- கட்டாய புலம் %புலம் காலியாக உள்ளது."
 
-#: ../lib/Galette/Core/Preferences.php:625 ../webroot/installer.php:176
+#: ../lib/Galette/Core/Preferences.php:642 ../webroot/installer.php:176
 msgid "Passwords mismatch"
 msgstr "கடவுச்சொற்கள் பொருந்தவில்லை"
 
-#: ../lib/Galette/Core/Preferences.php:638
+#: ../lib/Galette/Core/Preferences.php:655
 msgid "You have to select a staff member"
 msgstr "நீங்கள் ஒரு ஊழியரைத் தேர்ந்தெடுக்க வேண்டும்"
 
-#: ../lib/Galette/Core/Preferences.php:692
+#: ../lib/Galette/Core/Preferences.php:709
 #, php-format
 msgid "Invalid E-Mail address: %s"
 msgstr "தவறான மின்னஞ்சல் முகவரி: %s"
 
-#: ../lib/Galette/Core/Preferences.php:706
+#: ../lib/Galette/Core/Preferences.php:723
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- பயனர்பெயர் குறைந்தது 4 எழுத்துக்களால் ஆனதாக இருக்க வேண்டும்!"
 
-#: ../lib/Galette/Core/Preferences.php:710
+#: ../lib/Galette/Core/Preferences.php:727
 msgid "- This username is already used by another member !"
 msgstr "- இந்த பயனர்பெயர் ஏற்கனவே மற்றொரு உறுப்பினரால் பயன்படுத்தப்படுகிறது!"
 
-#: ../lib/Galette/Core/Preferences.php:730
+#: ../lib/Galette/Core/Preferences.php:747
 msgid "- The numbers and measures have to be integers!"
 msgstr "- எண்கள் மற்றும் நடவடிக்கைகள் முழு எண்களாக இருக்க வேண்டும்!"
 
-#: ../lib/Galette/Core/Preferences.php:735
+#: ../lib/Galette/Core/Preferences.php:752
 msgid "- The card height have to be an integer between 40 and 55!"
 msgstr "- அட்டை உயரம் 40 முதல் 55 வரை ஒரு முழு எண்ணாக இருக்க வேண்டும்!"
 
-#: ../lib/Galette/Core/Preferences.php:740
+#: ../lib/Galette/Core/Preferences.php:757
 msgid "- The card width have to be an integer between 70 and 95!"
 msgstr "- அட்டை அகலம் 70 முதல் 95 வரை ஒரு முழு எண்ணாக இருக்க வேண்டும்!"
 
-#: ../lib/Galette/Core/Preferences.php:774
+#: ../lib/Galette/Core/Preferences.php:791
 msgid "- Invalid number of months of membership extension."
 msgstr "- உறுப்பினர் நீட்டிப்பின் தவறான மாதங்களின் எண்ணிக்கை."
 
-#: ../lib/Galette/Core/Preferences.php:780
+#: ../lib/Galette/Core/Preferences.php:797
 msgid "- Invalid format of beginning of membership."
 msgstr "- உறுப்பினரின் தொடக்கத்தின் தவறான வடிவம்."
 
-#: ../lib/Galette/Core/Preferences.php:784
+#: ../lib/Galette/Core/Preferences.php:801
 msgid "- Invalid date for beginning of membership."
 msgstr "- உறுப்பினர் தொடக்கத்திற்கான தவறான தேதி."
 
-#: ../lib/Galette/Core/Preferences.php:790
+#: ../lib/Galette/Core/Preferences.php:807
 msgid "- Invalid number of offered months."
 msgstr "- வழங்கப்பட்ட மாதங்களின் தவறான எண்ணிக்கை."
 
-#: ../lib/Galette/Core/Preferences.php:795
+#: ../lib/Galette/Core/Preferences.php:812
 msgid "- Invalid year for cards."
 msgstr "- அட்டைகளுக்கு தவறான ஆண்டு."
 
-#: ../lib/Galette/Core/Preferences.php:803
+#: ../lib/Galette/Core/Preferences.php:820
 msgid "- Invalid website URL."
 msgstr "- தவறான வலைத்தள முகவரி."
 
-#: ../lib/Galette/Core/Preferences.php:927
+#: ../lib/Galette/Core/Preferences.php:944
 msgid "%name association's %status"
 msgstr "%பெயர் சங்கத்தின் %நிலை"
 
-#: ../lib/Galette/Core/Preferences.php:1227
+#: ../lib/Galette/Core/Preferences.php:1246
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr "உங்கள் நிகழ்வுக்கான பாதையுடன் நிலையான \"கேலட்_ரி\" ஐ வரையறுக்கவும்."
 
-#: ../lib/Galette/Core/Preferences.php:1246
-#: ../lib/Galette/Core/Preferences.php:1262 ../lib/Galette/IO/Csv.php:100
+#: ../lib/Galette/Core/Preferences.php:1265
+#: ../lib/Galette/Core/Preferences.php:1281 ../lib/Galette/IO/Csv.php:100
 #: ../lib/Galette/Entity/Document.php:447 ../lib/Galette/Entity/Texts.php:195
 #: ../../tempcache/pages/history.html.twig:343
 #: ../../tempcache/pages/mailings_list.html.twig:326
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d h: i: s"
 
-#: ../lib/Galette/Core/Preferences.php:1248
+#: ../lib/Galette/Core/Preferences.php:1267
 msgid "Never"
 msgstr "ஒருபோதும்"
 
-#: ../lib/Galette/Core/Preferences.php:1286
+#: ../lib/Galette/Core/Preferences.php:1305
 msgid "Current cards configuration may exceed page width!"
 msgstr "தற்போதைய அட்டைகள் உள்ளமைவு பக்க அகலத்தை விட அதிகமாக இருக்கலாம்!"
 
-#: ../lib/Galette/Core/Preferences.php:1297
+#: ../lib/Galette/Core/Preferences.php:1316
 msgid "Current cards configuration may exceed page height!"
 msgstr "தற்போதைய அட்டைகள் உள்ளமைவு பக்க உயரத்தை விட அதிகமாக இருக்கலாம்!"
 
-#: ../lib/Galette/Core/Preferences.php:1323
+#: ../lib/Galette/Core/Preferences.php:1342
 #: ../lib/Galette/Features/Replacements.php:804
 msgid "Main information"
 msgstr "முக்கிய செய்தி"
 
-#: ../lib/Galette/Core/Preferences.php:1330
+#: ../lib/Galette/Core/Preferences.php:1349
 #: ../../tempcache/elements/display_socials.html.twig:50
 #: ../../tempcache/elements/edit_socials.html.twig:81
 #: ../../tempcache/pages/preferences.html.twig:77
 msgid "Social networks"
 msgstr "சமூக வலைப்பின்னல்கள்"
+
+#: ../lib/Galette/Core/Preferences.php:1637
+msgid "Dark mode CSS file has been reset."
+msgstr ""
 
 #: ../lib/Galette/Core/I18n.php:212
 msgid "Unknown lang (%lang)"
@@ -2167,7 +2115,7 @@ msgstr "கோப்பு"
 msgid "Galette error"
 msgstr "கேலட் பிழை"
 
-#: ../lib/Galette/Renderers/Html.php:69 ../../tempcache/pages/404.html.twig:68
+#: ../lib/Galette/Renderers/Html.php:69 ../../tempcache/pages/404.html.twig:73
 msgid "Page not found"
 msgstr "பக்கம் கிடைக்கவில்லை"
 
@@ -2230,7 +2178,7 @@ msgstr "பெயர்"
 #: ../lib/Galette/Features/Replacements.php:306
 #: ../lib/Galette/Features/Replacements.php:354
 #: ../../tempcache/elements/member_card.html.twig:134
-#: ../../tempcache/pages/preferences.html.twig:2163
+#: ../../tempcache/pages/preferences.html.twig:2266
 #: ../../tempcache/pages/members_public_list.html.twig:98
 #: ../../tempcache/pages/members_public_list.html.twig:312
 msgid "Email"
@@ -2696,7 +2644,7 @@ msgstr "உறுப்பினரின் ஐடி"
 
 #: ../lib/Galette/Features/Replacements.php:238
 #: ../lib/Galette/Filters/MembersList.php:275
-#: ../../tempcache/pages/preferences.html.twig:2195
+#: ../../tempcache/pages/preferences.html.twig:2298
 msgid "Member number"
 msgstr "உறுப்பினர் எண்"
 
@@ -2712,7 +2660,7 @@ msgstr "முதல் பெயர்"
 
 #: ../lib/Galette/Features/Replacements.php:254
 #: ../../tempcache/elements/group_persons.html.twig:55
-#: ../../tempcache/pages/preferences.html.twig:2179
+#: ../../tempcache/pages/preferences.html.twig:2282
 #: ../../tempcache/pages/members_public_list.html.twig:90
 #: ../../tempcache/pages/members_public_list.html.twig:301
 msgid "Nickname"
@@ -2732,7 +2680,7 @@ msgid "Birth place"
 msgstr "பிறந்த இடம்"
 
 #: ../lib/Galette/Features/Replacements.php:270
-#: ../../tempcache/pages/preferences.html.twig:2187
+#: ../../tempcache/pages/preferences.html.twig:2290
 msgid "Profession"
 msgstr "தொழில்"
 
@@ -3681,8 +3629,8 @@ msgstr "பயனர்பெயரில் @ எழுத்துக்கு
 msgid "Galette Installation"
 msgstr "கேலட் நிறுவல்"
 
-#: ../webroot/installer.php:218 ../../tempcache/public_page.html.twig:78
-#: ../../tempcache/page.html.twig:70
+#: ../webroot/installer.php:218 ../../tempcache/public_page.html.twig:82
+#: ../../tempcache/page.html.twig:74
 msgid "Skip to content"
 msgstr "உள்ளடக்கத்தைத் தவிர்க்கவும்"
 
@@ -3691,7 +3639,7 @@ msgid "Galette installation"
 msgstr "கேலட் நிறுவல்"
 
 #: ../webroot/installer.php:225 ../webroot/installer.php:227
-#: ../../tempcache/page.html.twig:198 ../../tempcache/page.html.twig:203
+#: ../../tempcache/page.html.twig:202 ../../tempcache/page.html.twig:207
 #, fuzzy
 #| msgid "Reading the list"
 msgid "Read the manual"
@@ -4063,14 +4011,14 @@ msgstr "தொழில்:"
 #: ../includes/fields_defs/members_fields.php:195 ../install/steps/admin.php:27
 #: ../../tempcache/pages/index.html.twig:89
 #: ../../tempcache/pages/index.html.twig:93
-#: ../../tempcache/pages/preferences.html.twig:2571
+#: ../../tempcache/pages/preferences.html.twig:2674
 msgid "Username:"
 msgstr "பயனர்பெயர்:"
 
 #: ../includes/fields_defs/members_fields.php:203 ../install/steps/admin.php:31
 #: ../install/steps/db.php:70 ../../tempcache/pages/index.html.twig:101
 #: ../../tempcache/pages/index.html.twig:105
-#: ../../tempcache/pages/preferences.html.twig:2585
+#: ../../tempcache/pages/preferences.html.twig:2688
 msgid "Password:"
 msgstr "கடவுச்சொல்:"
 
@@ -4415,7 +4363,7 @@ msgid "Please chose the parameters of the admin account on Galette"
 msgstr "கேலட்டில் நிர்வாகக் கணக்கின் அளவுருக்களைத் தேர்வுசெய்க"
 
 #: ../install/steps/admin.php:35
-#: ../../tempcache/pages/preferences.html.twig:2594
+#: ../../tempcache/pages/preferences.html.twig:2697
 msgid "Retype password:"
 msgstr "கடவுச்சொல்லை மீண்டும் தட்டச்சு செய்க:"
 
@@ -4475,7 +4423,7 @@ msgstr "நீங்கள் மேம்படுத்த விரும்�
 
 #: ../install/steps/db_select_version.php:41
 #: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:54
-#: ../../tempcache/pages/404.html.twig:85
+#: ../../tempcache/pages/404.html.twig:90
 msgid "Home"
 msgstr "வீடு"
 
@@ -4550,7 +4498,7 @@ msgstr "மற்றும்"
 #: ../../tempcache/pages/mailing_form.html.twig:733
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:334
 #: ../../tempcache/pages/configuration_title_form.html.twig:102
-#: ../../tempcache/pages/preferences.html.twig:2790
+#: ../../tempcache/pages/preferences.html.twig:2893
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:102
 #: ../../tempcache/pages/document_form.html.twig:209
 msgid "Cancel"
@@ -5152,7 +5100,7 @@ msgstr "தற்போதுள்ள மாறிகள்"
 #: ../../tempcache/pages/mailing_form.html.twig:608
 #: ../../tempcache/pages/mailing_form.html.twig:642
 #: ../../tempcache/pages/mailing_form.html.twig:711
-#: ../../tempcache/pages/preferences.html.twig:2775
+#: ../../tempcache/pages/preferences.html.twig:2878
 #: ../../tempcache/pages/mailings_list.html.twig:510
 #: ../../tempcache/pages/mailings_list.html.twig:520
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:184
@@ -5190,7 +5138,7 @@ msgstr "டெலிமெட்ரி தகவல்களை அனுப்�
 #: ../../tempcache/pages/reminder.html.twig:170
 #: ../../tempcache/pages/mailing_form.html.twig:381
 #: ../../tempcache/pages/mailing_form.html.twig:472
-#: ../../tempcache/pages/preferences.html.twig:2783
+#: ../../tempcache/pages/preferences.html.twig:2886
 msgid "Send"
 msgstr "அனுப்பு"
 
@@ -5348,7 +5296,7 @@ msgstr "பட்டியல்"
 #: ../../tempcache/elements/navigation/navigation_aside.html.twig:74
 #: ../../tempcache/elements/logged_user.html.twig:272
 #: ../../tempcache/elements/display_dynamic_fields.html.twig:175
-#: ../../tempcache/public_page.html.twig:139 ../../tempcache/page.html.twig:130
+#: ../../tempcache/public_page.html.twig:143 ../../tempcache/page.html.twig:134
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "புதிய சாளரத்தில் '%s' ஐத் திறக்கவும்"
@@ -5400,7 +5348,7 @@ msgid "User menu"
 msgstr "பயனர் பட்டியல்"
 
 #: ../../tempcache/elements/ajax_members.html.twig:62
-#: ../../tempcache/pages/preferences.html.twig:2171
+#: ../../tempcache/pages/preferences.html.twig:2274
 msgid "Zip - Town"
 msgstr "சிப் - பேரூர்"
 
@@ -5579,7 +5527,7 @@ msgstr "ஏற்றுகிறது ..."
 #: ../../tempcache/pages/mailing_form.html.twig:369
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:329
 #: ../../tempcache/pages/configuration_title_form.html.twig:97
-#: ../../tempcache/pages/preferences.html.twig:2630
+#: ../../tempcache/pages/preferences.html.twig:2733
 #: ../../tempcache/pages/configuration_core_lists.html.twig:224
 #: ../../tempcache/pages/member_form.html.twig:101
 #: ../../tempcache/pages/member_form.html.twig:451
@@ -5938,8 +5886,8 @@ msgid "No inactive plugin."
 msgstr "செயலற்ற சொருகி இல்லை."
 
 #: ../../tempcache/pages/plugins.html.twig:349
-#: ../../tempcache/pages/preferences.html.twig:1286
-#: ../../tempcache/pages/preferences.html.twig:2557
+#: ../../tempcache/pages/preferences.html.twig:1389
+#: ../../tempcache/pages/preferences.html.twig:2660
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
@@ -6608,7 +6556,7 @@ msgstr "(அதிகபட்சம் 255 எழுத்துக்கள்
 msgid "Email Body:"
 msgstr "மின்னஞ்சல் உடல்:"
 
-#: ../../tempcache/pages/404.html.twig:74
+#: ../../tempcache/pages/404.html.twig:79
 msgid "Sorry, the page you are looking for could not be found."
 msgstr "மன்னிக்கவும், நீங்கள் தேடும் பக்கத்தைக் கண்டுபிடிக்க முடியவில்லை."
 
@@ -6963,7 +6911,7 @@ msgstr "புதிய கோப்பைப் பதிவேற்றவு�
 
 #: ../../tempcache/pages/import.html.twig:267
 #: ../../tempcache/pages/preferences.html.twig:253
-#: ../../tempcache/pages/preferences.html.twig:2091
+#: ../../tempcache/pages/preferences.html.twig:2194
 #: ../../tempcache/pages/document_form.html.twig:109
 #: ../../tempcache/components/forms/picture.html.twig:80
 #: ../../tempcache/components/dynamic_fields.html.twig:762
@@ -7019,10 +6967,10 @@ msgstr "'%s' கட்டண வகையைத் திருத்து"
 #: ../../tempcache/pages/configuration_payment_types.html.twig:180
 #: ../../tempcache/pages/preferences.html.twig:194
 #: ../../tempcache/pages/preferences.html.twig:200
-#: ../../tempcache/pages/preferences.html.twig:1933
-#: ../../tempcache/pages/preferences.html.twig:1939
-#: ../../tempcache/pages/preferences.html.twig:1971
-#: ../../tempcache/pages/preferences.html.twig:1977
+#: ../../tempcache/pages/preferences.html.twig:2036
+#: ../../tempcache/pages/preferences.html.twig:2042
+#: ../../tempcache/pages/preferences.html.twig:2074
+#: ../../tempcache/pages/preferences.html.twig:2080
 #, php-format
 msgid "Translate '%s'"
 msgstr "'%s' என்று மொழிபெயர்க்கவும்"
@@ -7335,7 +7283,7 @@ msgstr ""
 "பக்கங்களின் தலைப்பிலும் காண்பிக்கப்படும்."
 
 #: ../../tempcache/pages/preferences.html.twig:210
-#: ../../tempcache/pages/preferences.html.twig:2048
+#: ../../tempcache/pages/preferences.html.twig:2151
 msgid "Logo:"
 msgstr "லோகோ:"
 
@@ -7344,7 +7292,7 @@ msgid "Current logo"
 msgstr "தற்போதைய லோகோ"
 
 #: ../../tempcache/pages/preferences.html.twig:251
-#: ../../tempcache/pages/preferences.html.twig:2089
+#: ../../tempcache/pages/preferences.html.twig:2192
 #: ../../tempcache/pages/document_form.html.twig:107
 #: ../../tempcache/components/forms/picture.html.twig:78
 #: ../../tempcache/components/dynamic_fields.html.twig:760
@@ -7352,7 +7300,7 @@ msgid "Choose another file"
 msgstr "மற்றொரு கோப்பைத் தேர்வுசெய்க"
 
 #: ../../tempcache/pages/preferences.html.twig:268
-#: ../../tempcache/pages/preferences.html.twig:2106
+#: ../../tempcache/pages/preferences.html.twig:2209
 #: ../../tempcache/components/forms/picture.html.twig:58
 msgid "Delete image"
 msgstr "படத்தை நீக்கு"
@@ -7587,16 +7535,63 @@ msgid "Self subscription enabled?"
 msgstr "தன்வய சந்தா இயக்கப்பட்டதா?"
 
 #: ../../tempcache/pages/preferences.html.twig:1051
+msgid "Appearance"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1066
+msgid "Hide default background image"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1080
+msgid "Apply custom colors"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1090
+msgid "Primary color"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1098
+msgid ""
+"Color applied to primary buttons, checkboxes, labels, headers, borders, and "
+"menus."
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1104
+msgid "Text on primary color"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1112
+msgid "Color applied to text displayed over the Primary color."
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1121
+msgid "Secondary color"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1129
+msgid ""
+"Color applied to active items in menus, paginations, and accordions views."
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1135
+msgid "Text on secondary color"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1143
+msgid "Color applied to text displayed over the Secondary color."
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:1154
 #, fuzzy
 #| msgid "Admin parameters"
 msgid "Advanced parameters"
 msgstr "நிர்வாக அளவுருக்கள்"
 
-#: ../../tempcache/pages/preferences.html.twig:1059
+#: ../../tempcache/pages/preferences.html.twig:1162
 msgid "Galette base URL"
 msgstr "கேலட் அடிப்படை முகவரி"
 
-#: ../../tempcache/pages/preferences.html.twig:1065
+#: ../../tempcache/pages/preferences.html.twig:1168
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%galette_url"
@@ -7604,11 +7599,11 @@ msgstr ""
 "உங்கள் கேலட் நிகழ்வுக்கு அடிப்படை முகவரி ஐ உள்ளிடவும். தற்போதைய பக்க முகவரி இல்லாவிட்டால் "
 "மட்டுமே இந்த அளவுருவை மாற்ற வேண்டும்: <br>%கேலட்_ஆர்ல்"
 
-#: ../../tempcache/pages/preferences.html.twig:1079
+#: ../../tempcache/pages/preferences.html.twig:1182
 msgid "Post new contribution script URI"
 msgstr "புதிய பங்களிப்பு ச்கிரிப்ட் யூரி ஐ இடுங்கள்"
 
-#: ../../tempcache/pages/preferences.html.twig:1085
+#: ../../tempcache/pages/preferences.html.twig:1188
 msgid ""
 "Enter a script URI that would be called after adding a new contribution.<br/"
 ">Script URI must be prefixed by one of '<em>galette://</em>' for Galette "
@@ -7620,41 +7615,41 @@ msgstr ""
 "கோப்பு: // </em>' ஒரு நேரடி கோப்பு அழைப்பிற்கு, '<em> பெறு: // </em>' அல்லது "
 "'<em> இடுகை: // </em>' ' முன்னொட்டு அந்த சந்தர்ப்பங்களில் http: // ஆல் மாற்றப்படும்)."
 
-#: ../../tempcache/pages/preferences.html.twig:1100
+#: ../../tempcache/pages/preferences.html.twig:1203
 msgid "RSS feed URL"
 msgstr "RSS ஊட்ட முகவரி"
 
-#: ../../tempcache/pages/preferences.html.twig:1106
+#: ../../tempcache/pages/preferences.html.twig:1209
 msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr ""
 "RSS ஊட்டத்திற்கு முழு முகவரி ஐ உள்ளிடவும். இது கேலட் டெச்க்டாப்பில் காண்பிக்கப்படும்."
 
-#: ../../tempcache/pages/preferences.html.twig:1136
+#: ../../tempcache/pages/preferences.html.twig:1239
 msgid "Can members create child?"
 msgstr "உறுப்பினர்கள் குழந்தையை உருவாக்க முடியுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1150
+#: ../../tempcache/pages/preferences.html.twig:1253
 msgid "Can group managers edit their groups?"
 msgstr "குழு மேலாளர்கள் தங்கள் குழுக்களைத் திருத்த முடியுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1164
+#: ../../tempcache/pages/preferences.html.twig:1267
 msgid "Can group managers create members?"
 msgstr "குழு மேலாளர்கள் உறுப்பினர்களை உருவாக்க முடியுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1178
+#: ../../tempcache/pages/preferences.html.twig:1281
 msgid "Can group managers edit members?"
 msgstr "குழு மேலாளர்கள் உறுப்பினர்களைத் திருத்த முடியுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1192
+#: ../../tempcache/pages/preferences.html.twig:1295
 msgid "Can group managers send mailings?"
 msgstr "குழு மேலாளர்கள் அஞ்சல்களை அனுப்ப முடியுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1206
+#: ../../tempcache/pages/preferences.html.twig:1309
 msgid "Can group managers do exports?"
 msgstr "குழு மேலாளர்கள் ஏற்றுமதி செய்ய முடியுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1211
+#: ../../tempcache/pages/preferences.html.twig:1314
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
@@ -7662,47 +7657,47 @@ msgstr ""
 "சி.எச்.வி, பி.டி.எஃப் அட்டை, வருகை தாள் மற்றும் குழுக்கள் பி.டி.எஃப் என உறுப்பினர்களை "
 "ஏற்றுமதி செய்ய குழுக்கள் மேலாளர்கள் அனுமதிக்கப்படுவார்கள்"
 
-#: ../../tempcache/pages/preferences.html.twig:1224
+#: ../../tempcache/pages/preferences.html.twig:1327
 msgid "Can group managers see contributions?"
 msgstr "குழு மேலாளர்கள் பங்களிப்புகளைக் காண முடியுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1238
+#: ../../tempcache/pages/preferences.html.twig:1341
 msgid "Can group managers create contributions?"
 msgstr "குழு மேலாளர்கள் பங்களிப்புகளை உருவாக்க முடியுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1252
+#: ../../tempcache/pages/preferences.html.twig:1355
 msgid "Can group managers see transactions?"
 msgstr "குழு மேலாளர்கள் பரிவர்த்தனைகளைப் பார்க்க முடியுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1266
+#: ../../tempcache/pages/preferences.html.twig:1369
 msgid "Can group managers create transactions?"
 msgstr "குழு மேலாளர்கள் பரிவர்த்தனைகளை உருவாக்க முடியுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1298
+#: ../../tempcache/pages/preferences.html.twig:1401
 msgid "Sender name:"
 msgstr "அனுப்புநரின் பெயர்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1308
+#: ../../tempcache/pages/preferences.html.twig:1411
 msgid "Sender Email:"
 msgstr "அனுப்புநர் மின்னஞ்சல்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1318
+#: ../../tempcache/pages/preferences.html.twig:1421
 msgid "Reply-To Email:"
 msgstr "மின்னஞ்சல்-க்கு மின்னஞ்சல்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1324
+#: ../../tempcache/pages/preferences.html.twig:1427
 msgid "Leave empty to use Sender Email as reply address"
 msgstr "அனுப்புநர் மின்னஞ்சலை பதில் முகவரியாகப் பயன்படுத்த காலியாக விடவும்"
 
-#: ../../tempcache/pages/preferences.html.twig:1339
+#: ../../tempcache/pages/preferences.html.twig:1442
 msgid "Members administrator's Email:"
 msgstr "உறுப்பினர்கள் நிர்வாகியின் மின்னஞ்சல்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1345
+#: ../../tempcache/pages/preferences.html.twig:1448
 msgid "Recipient of new online registation and edition emails"
 msgstr "புதிய நிகழ்நிலை பதிவு மற்றும் பதிப்பு மின்னஞ்சல்களைப் பெறுபவர்"
 
-#: ../../tempcache/pages/preferences.html.twig:1355
+#: ../../tempcache/pages/preferences.html.twig:1458
 msgid ""
 "(You can enter several emails separated with a comma. First address will be "
 "the default one.)"
@@ -7710,11 +7705,11 @@ msgstr ""
 "(நீங்கள் கமாவுடன் பிரிக்கப்பட்ட பல மின்னஞ்சல்களை உள்ளிடலாம். முதல் முகவரி இயல்புநிலையாக "
 "இருக்கும்.)"
 
-#: ../../tempcache/pages/preferences.html.twig:1368
+#: ../../tempcache/pages/preferences.html.twig:1471
 msgid "Send email to administrators?"
 msgstr "நிர்வாகிகளுக்கு மின்னஞ்சல் அனுப்பவா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1373
+#: ../../tempcache/pages/preferences.html.twig:1476
 msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
@@ -7722,11 +7717,11 @@ msgstr ""
 "ஒவ்வொரு முறையும் ஒரு புதிய உறுப்பினர் பதிவு ஆன்லைனில் ஒரு மின்னஞ்சலை அனுப்பவும் அல்லது "
 "அவரது/அவள் கணக்கைத் திருத்தவும்"
 
-#: ../../tempcache/pages/preferences.html.twig:1386
+#: ../../tempcache/pages/preferences.html.twig:1489
 msgid "Wrap emails text?"
 msgstr "மின்னஞ்சல்கள் உரையை மடக்கவா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1391
+#: ../../tempcache/pages/preferences.html.twig:1494
 msgid ""
 "Automatically wrap emails texts before sending. Make sure to wrap yourself "
 "if you disable that. Please note that current editing mailing will not be "
@@ -7736,11 +7731,11 @@ msgstr ""
 "மூடிக்கொண்டிருப்பதை உறுதிப்படுத்திக் கொள்ளுங்கள். தற்போது திருத்துதல் அஞ்சல் மாற்றத்தால் "
 "பாதிக்கப்படாது என்பதை நினைவில் கொள்க."
 
-#: ../../tempcache/pages/preferences.html.twig:1404
+#: ../../tempcache/pages/preferences.html.twig:1507
 msgid "Send email to members?"
 msgstr "உறுப்பினர்களுக்கு மின்னஞ்சல் அனுப்பவா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1409
+#: ../../tempcache/pages/preferences.html.twig:1512
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
@@ -7748,63 +7743,63 @@ msgstr ""
 "ஒவ்வொரு முறையும் உறுப்பினர் அட்டை அல்லது பங்களிப்பு சேர்க்கப்பட்டால் அல்லது திருத்தப்பட்ட "
 "ஒவ்வொரு முறையும் ஒரு மின்னஞ்சலை அனுப்புகிறது. ஒவ்வொரு வழக்குக்கும் இது முடக்கப்படலாம்."
 
-#: ../../tempcache/pages/preferences.html.twig:1422
+#: ../../tempcache/pages/preferences.html.twig:1525
 msgid "Activate HTML editor?"
 msgstr "உஉகுமொ எடிட்டரை செயல்படுத்தவா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1427
+#: ../../tempcache/pages/preferences.html.twig:1530
 msgid "Should HTML editor be activated on page load ?"
 msgstr "பக்க சுமையில் உஉகுமொ எடிட்டரை செயல்படுத்த வேண்டுமா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1433
+#: ../../tempcache/pages/preferences.html.twig:1536
 msgid "Mail signature"
 msgstr "அஞ்சல் கையொப்பம்"
 
-#: ../../tempcache/pages/preferences.html.twig:1450
+#: ../../tempcache/pages/preferences.html.twig:1553
 msgid "Emailing method:"
 msgstr "மின்னஞ்சல் முறை:"
 
-#: ../../tempcache/pages/preferences.html.twig:1462
+#: ../../tempcache/pages/preferences.html.twig:1565
 msgid "Emailing disabled"
 msgstr "முடக்கப்பட்ட மின்னஞ்சல்"
 
-#: ../../tempcache/pages/preferences.html.twig:1480
+#: ../../tempcache/pages/preferences.html.twig:1583
 msgid "PHP mail() function"
 msgstr "பிஎச்பி அஞ்சல் () செயல்பாடு"
 
-#: ../../tempcache/pages/preferences.html.twig:1497
+#: ../../tempcache/pages/preferences.html.twig:1600
 msgid "Using a SMTP server (slower)"
 msgstr "SMTP சேவையகத்தைப் பயன்படுத்துதல் (மெதுவாக)"
 
-#: ../../tempcache/pages/preferences.html.twig:1511
+#: ../../tempcache/pages/preferences.html.twig:1614
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr "Gmail ஐ SMTP சேவையகமாகப் பயன்படுத்துதல் (மெதுவாக)"
 
-#: ../../tempcache/pages/preferences.html.twig:1529
+#: ../../tempcache/pages/preferences.html.twig:1632
 msgid "Using Sendmail server"
 msgstr "SendMail சேவையகத்தைப் பயன்படுத்துதல்"
 
-#: ../../tempcache/pages/preferences.html.twig:1543
+#: ../../tempcache/pages/preferences.html.twig:1646
 msgid "Using QMAIL server"
 msgstr "QMail சேவையகத்தைப் பயன்படுத்துதல்"
 
-#: ../../tempcache/pages/preferences.html.twig:1562
+#: ../../tempcache/pages/preferences.html.twig:1665
 msgid "Test email settings"
 msgstr "மின்னஞ்சல் அமைப்புகளை சோதிக்கவும்"
 
-#: ../../tempcache/pages/preferences.html.twig:1570
+#: ../../tempcache/pages/preferences.html.twig:1673
 msgid "SMTP server:"
 msgstr "SMTP சேவையகம்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1580
+#: ../../tempcache/pages/preferences.html.twig:1683
 msgid "SMTP port:"
 msgstr "SMTP போர்ட்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1598
+#: ../../tempcache/pages/preferences.html.twig:1701
 msgid "Use SMTP authentication?"
 msgstr "SMTP அங்கீகாரத்தைப் பயன்படுத்தவா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1603
+#: ../../tempcache/pages/preferences.html.twig:1706
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
@@ -7812,11 +7807,11 @@ msgstr ""
 "மின்னஞ்சல் அனுப்புவது ஏதேனும் SMTP அங்கீகாரத்தைப் பயன்படுத்துமா? நீங்கள் கீழே பயனர்பெயர் "
 "மற்றும் கடவுச்சொல்லை வழங்க வேண்டும். சிமெயிலைப் பொறுத்தவரை, ஏற்பு எப்போதும் இருக்கும்."
 
-#: ../../tempcache/pages/preferences.html.twig:1616
+#: ../../tempcache/pages/preferences.html.twig:1719
 msgid "Use TLS for SMTP?"
 msgstr "SMTP க்கு TLS ஐப் பயன்படுத்தவா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1621
+#: ../../tempcache/pages/preferences.html.twig:1724
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
@@ -7824,11 +7819,11 @@ msgstr ""
 "சேவையகத்தின் டி.எல்.எச் திறன்களைப் பயன்படுத்த விரும்புகிறீர்களா? <br> சிமெயிலுக்கு, இது "
 "எப்போதும் இருக்கும்."
 
-#: ../../tempcache/pages/preferences.html.twig:1634
+#: ../../tempcache/pages/preferences.html.twig:1737
 msgid "Allow unsecure TLS?"
 msgstr "பாதுகாப்பற்ற TLS ஐ அனுமதிக்கவா?"
 
-#: ../../tempcache/pages/preferences.html.twig:1639
+#: ../../tempcache/pages/preferences.html.twig:1742
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
@@ -7837,135 +7832,135 @@ msgstr ""
 "கையொப்பமிடப்பட்ட சான்றிதழைப் பயன்படுத்தினால், வேறு சில சந்தர்ப்பங்களில் இது பயனுள்ளதாக "
 "இருக்கும்."
 
-#: ../../tempcache/pages/preferences.html.twig:1648
+#: ../../tempcache/pages/preferences.html.twig:1751
 msgid "SMTP (or GMail) user:"
 msgstr "SMTP (அல்லது சிமெயில்) பயனர்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1658
+#: ../../tempcache/pages/preferences.html.twig:1761
 msgid "SMTP (or GMail) password:"
 msgstr "SMTP (அல்லது gmail) கடவுச்சொல்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1688
-#: ../../tempcache/pages/preferences.html.twig:2229
+#: ../../tempcache/pages/preferences.html.twig:1791
+#: ../../tempcache/pages/preferences.html.twig:2332
 msgid "Vertical margins:"
 msgstr "செங்குத்து விளிம்புகள்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1710
-#: ../../tempcache/pages/preferences.html.twig:2251
+#: ../../tempcache/pages/preferences.html.twig:1813
+#: ../../tempcache/pages/preferences.html.twig:2354
 msgid "Horizontal margins:"
 msgstr "கிடைமட்ட விளிம்புகள்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1732
-#: ../../tempcache/pages/preferences.html.twig:2295
+#: ../../tempcache/pages/preferences.html.twig:1835
+#: ../../tempcache/pages/preferences.html.twig:2398
 msgid "Horizontal spacing:"
 msgstr "கிடைமட்ட இடைவெளி:"
 
-#: ../../tempcache/pages/preferences.html.twig:1754
-#: ../../tempcache/pages/preferences.html.twig:2273
+#: ../../tempcache/pages/preferences.html.twig:1857
+#: ../../tempcache/pages/preferences.html.twig:2376
 msgid "Vertical spacing:"
 msgstr "செங்குத்து இடைவெளி:"
 
-#: ../../tempcache/pages/preferences.html.twig:1778
+#: ../../tempcache/pages/preferences.html.twig:1881
 msgid "Print border"
 msgstr "எல்லை அச்சு"
 
-#: ../../tempcache/pages/preferences.html.twig:1783
+#: ../../tempcache/pages/preferences.html.twig:1886
 msgid "Check this box to print a grey border around each label."
 msgstr "ஒவ்வொரு லேபிளையும் சுற்றி சாம்பல் எல்லையை அச்சிட இந்த பெட்டியை சரிபார்க்கவும்."
 
-#: ../../tempcache/pages/preferences.html.twig:1797
+#: ../../tempcache/pages/preferences.html.twig:1900
 msgid "Label width:"
 msgstr "சிட்டை அகலம்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1819
+#: ../../tempcache/pages/preferences.html.twig:1922
 msgid "Label height:"
 msgstr "சிட்டை உயரம்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1841
+#: ../../tempcache/pages/preferences.html.twig:1944
 msgid "Number of label columns:"
 msgstr "சிட்டை நெடுவரிசைகளின் எண்ணிக்கை:"
 
-#: ../../tempcache/pages/preferences.html.twig:1860
+#: ../../tempcache/pages/preferences.html.twig:1963
 msgid "Number of label lines:"
 msgstr "சிட்டை வரிகளின் எண்ணிக்கை:"
 
-#: ../../tempcache/pages/preferences.html.twig:1879
+#: ../../tempcache/pages/preferences.html.twig:1982
 msgid "Font size:"
 msgstr "எழுத்துரு அளவு:"
 
-#: ../../tempcache/pages/preferences.html.twig:1904
+#: ../../tempcache/pages/preferences.html.twig:2007
 #, php-format
 msgid "Each page contains %1$s columns and  %2$s rows."
 msgstr "ஒவ்வொரு பக்கத்திலும் %1$s நெடுவரிசைகள் மற்றும் %2$s வரிசைகள் உள்ளன."
 
-#: ../../tempcache/pages/preferences.html.twig:1913
+#: ../../tempcache/pages/preferences.html.twig:2016
 msgid "Short Text (Card Center):"
 msgstr "குறுகிய உரை (அட்டை மையம்):"
 
-#: ../../tempcache/pages/preferences.html.twig:1945
+#: ../../tempcache/pages/preferences.html.twig:2048
 msgid "(10 characters max)"
 msgstr "(10 எழுத்துக்கள் அதிகபட்சம்)"
 
-#: ../../tempcache/pages/preferences.html.twig:1951
+#: ../../tempcache/pages/preferences.html.twig:2054
 msgid "Long Text (Bottom Line):"
 msgstr "நீண்ட உரை (கீழ்நிலை):"
 
-#: ../../tempcache/pages/preferences.html.twig:1983
+#: ../../tempcache/pages/preferences.html.twig:2086
 msgid "(65 characters max)"
 msgstr "(65 எழுத்துக்கள் அதிகபட்சம்)"
 
-#: ../../tempcache/pages/preferences.html.twig:1990
+#: ../../tempcache/pages/preferences.html.twig:2093
 msgid "Strip Text Color:"
 msgstr "உரி உரை நிறம்:"
 
-#: ../../tempcache/pages/preferences.html.twig:1998
-#: ../../tempcache/pages/preferences.html.twig:2012
-#: ../../tempcache/pages/preferences.html.twig:2026
-#: ../../tempcache/pages/preferences.html.twig:2040
+#: ../../tempcache/pages/preferences.html.twig:2101
+#: ../../tempcache/pages/preferences.html.twig:2115
+#: ../../tempcache/pages/preferences.html.twig:2129
+#: ../../tempcache/pages/preferences.html.twig:2143
 msgid "Hexadecimal color notation: #RRGGBB"
 msgstr "எக்சாடெசிமல் வண்ண குறியீடு: #RRGGBB"
 
-#: ../../tempcache/pages/preferences.html.twig:2004
+#: ../../tempcache/pages/preferences.html.twig:2107
 msgid "Active Member Color:"
 msgstr "செயலில் உறுப்பினர் நிறம்:"
 
-#: ../../tempcache/pages/preferences.html.twig:2018
+#: ../../tempcache/pages/preferences.html.twig:2121
 msgid "Board Members Color:"
 msgstr "வாரிய உறுப்பினர்கள் நிறம்:"
 
-#: ../../tempcache/pages/preferences.html.twig:2032
+#: ../../tempcache/pages/preferences.html.twig:2135
 msgid "Honor Members Color:"
 msgstr "ஆனர் உறுப்பினர்கள் வண்ணம்:"
 
-#: ../../tempcache/pages/preferences.html.twig:2064
+#: ../../tempcache/pages/preferences.html.twig:2167
 msgid "Current logo for printing"
 msgstr "அச்சிடுவதற்கான தற்போதைய லோகோ"
 
-#: ../../tempcache/pages/preferences.html.twig:2129
+#: ../../tempcache/pages/preferences.html.twig:2232
 msgid "Allow members to print card ?"
 msgstr "அட்டையை அச்சிட உறுப்பினர்களை அனுமதிக்கவா?"
 
-#: ../../tempcache/pages/preferences.html.twig:2143
+#: ../../tempcache/pages/preferences.html.twig:2246
 msgid "Show title ?"
 msgstr "தலைப்பைக் காட்டவா?"
 
-#: ../../tempcache/pages/preferences.html.twig:2148
+#: ../../tempcache/pages/preferences.html.twig:2251
 msgid "(Show or not title in front of name)"
 msgstr "(பெயருக்கு முன்னால் தலைப்பு அல்லது தலைப்பு இல்லை)"
 
-#: ../../tempcache/pages/preferences.html.twig:2154
+#: ../../tempcache/pages/preferences.html.twig:2257
 msgid "Address type:"
 msgstr "முகவரி வகை:"
 
-#: ../../tempcache/pages/preferences.html.twig:2200
+#: ../../tempcache/pages/preferences.html.twig:2303
 msgid "(Choose address printed below name)"
 msgstr "(பெயருக்கு கீழே அச்சிடப்பட்ட முகவரியைத் தேர்வுசெய்க)"
 
-#: ../../tempcache/pages/preferences.html.twig:2206
+#: ../../tempcache/pages/preferences.html.twig:2309
 msgid "Year:"
 msgstr "ஆண்டு:"
 
-#: ../../tempcache/pages/preferences.html.twig:2212
+#: ../../tempcache/pages/preferences.html.twig:2315
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
@@ -7973,31 +7968,31 @@ msgstr ""
 "நீங்கள் நுழையலாம்: <br>- ஒரு வருடம், <br>- பிரிப்பானாக ஒரு குறைப்புடன் இரண்டு ஆண்டுகள், "
 "<br>- உறுப்பினர் காலக்கெடுவைப் பயன்படுத்த 'காலக்கெடு' என்ற சரம்"
 
-#: ../../tempcache/pages/preferences.html.twig:2320
+#: ../../tempcache/pages/preferences.html.twig:2423
 msgid "Card width from 70 to 95mm:"
 msgstr "அட்டை அகலம் 70 முதல் 95 மிமீ வரை:"
 
-#: ../../tempcache/pages/preferences.html.twig:2342
+#: ../../tempcache/pages/preferences.html.twig:2445
 msgid "Card height from 40 to 55mm:"
 msgstr "அட்டை உயரம் 40 முதல் 55 மிமீ வரை:"
 
-#: ../../tempcache/pages/preferences.html.twig:2376
+#: ../../tempcache/pages/preferences.html.twig:2479
 msgid "Password length:"
 msgstr "கடவுச்சொல் நீளம்:"
 
-#: ../../tempcache/pages/preferences.html.twig:2382
+#: ../../tempcache/pages/preferences.html.twig:2485
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr "அனைத்து கணக்குகளுக்கும் குறைந்தபட்ச கடவுச்சொல் நீளம் தேவை. குறைந்தபட்ச அளவு 6."
 
-#: ../../tempcache/pages/preferences.html.twig:2401
+#: ../../tempcache/pages/preferences.html.twig:2504
 msgid "Enable password blacklists"
 msgstr "கடவுச்சொல் தடுப்புப்பட்டியல்களை இயக்கவும்"
 
-#: ../../tempcache/pages/preferences.html.twig:2403
+#: ../../tempcache/pages/preferences.html.twig:2506
 msgid "Enable blacklists:"
 msgstr "தடுப்புப்பட்டியல்களை இயக்கு:"
 
-#: ../../tempcache/pages/preferences.html.twig:2408
+#: ../../tempcache/pages/preferences.html.twig:2511
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
@@ -8005,69 +8000,69 @@ msgstr ""
 "நீங்கள் தடுப்புப்பட்டியல்களை இயக்கினால்; தடுப்புப்பட்டியல் கடவுச்சொற்களை பயன்படுத்த முடியாது. "
 "கேலட்டுடன் ஒரு பட்டியல் வழங்கப்படுகிறது, ஆனால் நீங்கள் சொந்தமாக சேர்க்கலாம்."
 
-#: ../../tempcache/pages/preferences.html.twig:2414
+#: ../../tempcache/pages/preferences.html.twig:2517
 msgid "Enforce password strength"
 msgstr "கடவுச்சொல் வலிமையை செயல்படுத்தவும்"
 
-#: ../../tempcache/pages/preferences.html.twig:2416
+#: ../../tempcache/pages/preferences.html.twig:2519
 msgid "Password strength:"
 msgstr "கடவுச்சொல் வலிமை:"
 
-#: ../../tempcache/pages/preferences.html.twig:2427
+#: ../../tempcache/pages/preferences.html.twig:2530
 msgid "None (default)"
 msgstr "எதுவுமில்லை (இயல்புநிலை)"
 
-#: ../../tempcache/pages/preferences.html.twig:2437
-#: ../../tempcache/pages/preferences.html.twig:2488
+#: ../../tempcache/pages/preferences.html.twig:2540
+#: ../../tempcache/pages/preferences.html.twig:2591
 msgid "Weak"
 msgstr "மென்"
 
-#: ../../tempcache/pages/preferences.html.twig:2447
-#: ../../tempcache/pages/preferences.html.twig:2494
+#: ../../tempcache/pages/preferences.html.twig:2550
+#: ../../tempcache/pages/preferences.html.twig:2597
 msgid "Medium"
 msgstr "சராசரி"
 
-#: ../../tempcache/pages/preferences.html.twig:2457
-#: ../../tempcache/pages/preferences.html.twig:2500
+#: ../../tempcache/pages/preferences.html.twig:2560
+#: ../../tempcache/pages/preferences.html.twig:2603
 msgid "Strong"
 msgstr "வலுவான"
 
-#: ../../tempcache/pages/preferences.html.twig:2467
-#: ../../tempcache/pages/preferences.html.twig:2506
+#: ../../tempcache/pages/preferences.html.twig:2570
+#: ../../tempcache/pages/preferences.html.twig:2609
 msgid "Very strong"
 msgstr "மிகவும் வலுவானது"
 
-#: ../../tempcache/pages/preferences.html.twig:2473
+#: ../../tempcache/pages/preferences.html.twig:2576
 msgid "Enforce minimal password strength for all password."
 msgstr "அனைத்து கடவுச்சொல்லுக்கும் குறைந்தபட்ச கடவுச்சொல் வலிமையை செயல்படுத்தவும்."
 
-#: ../../tempcache/pages/preferences.html.twig:2477
+#: ../../tempcache/pages/preferences.html.twig:2580
 msgid "Levels are:"
 msgstr "நிலைகள்:"
 
-#: ../../tempcache/pages/preferences.html.twig:2484
+#: ../../tempcache/pages/preferences.html.twig:2587
 msgid "for no strength enforcement"
 msgstr "எந்த வலிமை அமலாக்கமும் இல்லை"
 
-#: ../../tempcache/pages/preferences.html.twig:2490
+#: ../../tempcache/pages/preferences.html.twig:2593
 msgid "require at least one matched rule"
 msgstr "பொருந்திய ஒரு விதி தேவை"
 
-#: ../../tempcache/pages/preferences.html.twig:2496
+#: ../../tempcache/pages/preferences.html.twig:2599
 msgid "require at least two matched rules"
 msgstr "பொருந்திய இரண்டு விதிகள் தேவை"
 
-#: ../../tempcache/pages/preferences.html.twig:2502
+#: ../../tempcache/pages/preferences.html.twig:2605
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 "குறைந்தது மூன்று பொருந்தக்கூடிய விதிகள் தேவை (பெரும்பாலான பயன்பாடுகளுக்கு "
 "பரிந்துரைக்கப்படுகிறது)"
 
-#: ../../tempcache/pages/preferences.html.twig:2508
+#: ../../tempcache/pages/preferences.html.twig:2611
 msgid "requires all rules."
 msgstr "அனைத்து விதிகளும் தேவை."
 
-#: ../../tempcache/pages/preferences.html.twig:2513
+#: ../../tempcache/pages/preferences.html.twig:2616
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
@@ -8075,7 +8070,7 @@ msgstr ""
 "விதிகளில் சிறிய எழுத்துக்கள், மேல் வழக்கு எழுத்துக்கள், எண்கள் மற்றும் சிறப்பு எழுத்துக்கள் "
 "அடங்கும்."
 
-#: ../../tempcache/pages/preferences.html.twig:2517
+#: ../../tempcache/pages/preferences.html.twig:2620
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
@@ -8083,24 +8078,24 @@ msgstr ""
 "எந்தவொரு அமலாக்க மட்டத்திலும், பயனர் தனது தனிப்பட்ட தகவல்களை (பெயர், உள்நுழைவு, ...) "
 "கடவுச்சொல்லாகப் பயன்படுத்த முடியாது என்பதை நினைவில் கொள்க."
 
-#: ../../tempcache/pages/preferences.html.twig:2525
+#: ../../tempcache/pages/preferences.html.twig:2628
 msgid "Test a password:"
 msgstr "கடவுச்சொல்லை சோதிக்கவும்:"
 
-#: ../../tempcache/pages/preferences.html.twig:2531
+#: ../../tempcache/pages/preferences.html.twig:2634
 msgid "Test a password with current selected values."
 msgstr "தற்போதைய தேர்ந்தெடுக்கப்பட்ட மதிப்புகளுடன் கடவுச்சொல்லை சோதிக்கவும்."
 
-#: ../../tempcache/pages/preferences.html.twig:2533
+#: ../../tempcache/pages/preferences.html.twig:2636
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr "முடிவில் நீங்கள் மகிழ்ச்சியாக இருந்தால் உங்கள் விருப்பங்களைச் சேமிக்க மறக்காதீர்கள்;)"
 
-#: ../../tempcache/pages/preferences.html.twig:2724
+#: ../../tempcache/pages/preferences.html.twig:2827
 msgid "Enter the email adress"
 msgstr "மின்னஞ்சல் முகவரியை உள்ளிடவும்"
 
-#: ../../tempcache/pages/preferences.html.twig:2775
+#: ../../tempcache/pages/preferences.html.twig:2878
 msgid "An error occurred sending test email :("
 msgstr "சோதனை மின்னஞ்சலை அனுப்பும் பிழை ஏற்பட்டது :("
 
@@ -8897,11 +8892,11 @@ msgstr "ஒரு விருப்பத்தைத் தேர்ந்த�
 msgid "delete"
 msgstr "நீக்கு"
 
-#: ../../tempcache/public_page.html.twig:212 ../../tempcache/page.html.twig:245
+#: ../../tempcache/public_page.html.twig:216 ../../tempcache/page.html.twig:249
 msgid "Back to top"
 msgstr "மீண்டும் மேலே"
 
-#: ../../tempcache/public_page.html.twig:236
+#: ../../tempcache/public_page.html.twig:240
 msgid "Public page content"
 msgstr "பொது பக்க உள்ளடக்கம்"
 
@@ -8909,13 +8904,67 @@ msgstr "பொது பக்க உள்ளடக்கம்"
 msgid "Ajax page content"
 msgstr "அசாக்ச் பக்க உள்ளடக்கம்"
 
-#: ../../tempcache/page.html.twig:216
+#: ../../tempcache/page.html.twig:220
 msgid "Language menu"
 msgstr "மொழி பட்டியல்"
 
-#: ../../tempcache/page.html.twig:280
+#: ../../tempcache/page.html.twig:284
 msgid "Page content"
 msgstr "பக்க உள்ளடக்கம்"
+
+#~ msgid "Payment types management"
+#~ msgstr "கட்டண வகைகள் மேலாண்மை"
+
+#~ msgid "Scheduled payments management"
+#~ msgstr "திட்டமிடப்பட்ட கொடுப்பனவு மேலாண்மை"
+
+#~ msgid "Dynamic fields configuration"
+#~ msgstr "மாறும் புலங்கள் உள்ளமைவு"
+
+#~ msgid "Members list"
+#~ msgstr "உறுப்பினர்கள் பட்டியல்"
+
+#~ msgid "Members management"
+#~ msgstr "உறுப்பினர்கள் மேலாண்மை"
+
+#~ msgid "Titles management"
+#~ msgstr "தலைப்புகள் மேலாண்மை"
+
+#~ msgid "Contributions management"
+#~ msgstr "பங்களிப்பு மேலாண்மை"
+
+#~ msgid "Transactions management"
+#~ msgstr "பரிவர்த்தனை மேலாண்மை"
+
+#~ msgid "Documents list"
+#~ msgstr "ஆவணங்கள் பட்டியல்"
+
+#~ msgid "Fields configuration"
+#~ msgstr "புலங்கள் உள்ளமைவு"
+
+#~ msgid "Lists configuration"
+#~ msgstr "உள்ளமைவை பட்டியலிடுகிறது"
+
+#~ msgid "CVS database Export"
+#~ msgstr "சி.வி.எச் தரவுத்தள ஏற்றுமதி"
+
+#~ msgid "CSV members import"
+#~ msgstr "சி.எச்.வி உறுப்பினர்கள் இறக்குமதி செய்கிறார்கள்"
+
+#~ msgid "Automatic emails texts edition"
+#~ msgstr "தானியங்கி மின்னஞ்சல்கள் உரைகள் பதிப்பு"
+
+#~ msgid "Manage groups"
+#~ msgstr "குழுக்களை நிர்வகிக்கவும்"
+
+#~ msgid "Manage mailings"
+#~ msgstr "அஞ்சல்களை நிர்வகிக்கவும்"
+
+#~ msgid "Manage statuses"
+#~ msgstr "நிலைகளை நிர்வகிக்கவும்"
+
+#~ msgid "Admin tools"
+#~ msgstr "நிர்வாக கருவிகள்"
 
 #~ msgid "Required argument not present!"
 #~ msgstr "தேவையான உரையாடல் இல்லை!"
