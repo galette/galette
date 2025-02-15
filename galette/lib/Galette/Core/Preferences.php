@@ -122,6 +122,7 @@ use Galette\Repository\Members;
  * @property integer $pref_publicpages_visibility_staffgallery
  * @property boolean $pref_bool_groupsmanagers_are_staff
  * @property boolean $pref_bool_selfsubscribe
+ * @property boolean $pref_bool_empty_form_link
  * @property string $pref_member_form_grid
  * @property string $pref_mail_sign
  * @property string $pref_new_contrib_script
@@ -294,6 +295,7 @@ class Preferences
         /* Preferences for member/subscribe form */
         'pref_bool_selfsubscribe' => true,
         'pref_member_form_grid' => 'one',
+        'pref_bool_empty_form_link' => false,
         /* New contribution script */
         'pref_new_contrib_script' => '',
         'pref_bool_wrap_mails' => true,
@@ -1119,6 +1121,7 @@ class Preferences
                 'pref_bool_mailowner',
                 'pref_bool_publicpages',
                 'pref_bool_selfsubscribe',
+                'pref_bool_empty_form_link',
                 'pref_bool_wrap_mails',
                 'pref_disable_members_socials',
                 'pref_editor_enabled',
