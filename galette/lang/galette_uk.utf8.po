@@ -11,9 +11,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-02-15 09:59+0100\n"
-"PO-Revision-Date: 2025-02-13 11:02+0000\n"
+"PO-Revision-Date: 2025-02-16 08:29+0000\n"
 "Last-Translator: Максим Горпиніч <maksimgorpinic2005a@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.10\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -1878,7 +1878,7 @@ msgstr "Соціальні мережі"
 
 #: ../lib/Galette/Core/Preferences.php:1637
 msgid "Dark mode CSS file has been reset."
-msgstr ""
+msgstr "Файл CSS темного режиму скинуто."
 
 #: ../lib/Galette/Core/I18n.php:212
 msgid "Unknown lang (%lang)"
@@ -6712,7 +6712,7 @@ msgstr "Членство в порядку"
 
 #: ../../tempcache/pages/members_list.html.twig:544
 msgid "Membership will expire soon (<30d)"
-msgstr "Строк дії членства скоро закінчиться (<30d)"
+msgstr "Членство скоро закінчиться (&lt;30 днів)"
 
 #: ../../tempcache/pages/members_list.html.twig:556
 msgid "Lateness in fee"
@@ -7579,50 +7579,56 @@ msgstr "Увімкнено самопідписку?"
 
 #: ../../tempcache/pages/preferences.html.twig:1051
 msgid "Appearance"
-msgstr ""
+msgstr "Зовнішній вигляд"
 
 #: ../../tempcache/pages/preferences.html.twig:1066
 msgid "Hide default background image"
-msgstr ""
+msgstr "Приховати фонове зображення за умовчанням"
 
 #: ../../tempcache/pages/preferences.html.twig:1080
 msgid "Apply custom colors"
-msgstr ""
+msgstr "Застосувати власні кольори"
 
 #: ../../tempcache/pages/preferences.html.twig:1090
 msgid "Primary color"
-msgstr ""
+msgstr "Основний колір"
 
 #: ../../tempcache/pages/preferences.html.twig:1098
 msgid ""
 "Color applied to primary buttons, checkboxes, labels, headers, borders, and "
 "menus."
 msgstr ""
+"Колір, застосований до основних кнопок, прапорців, міток, заголовків, рамок "
+"і меню."
 
 #: ../../tempcache/pages/preferences.html.twig:1104
 msgid "Text on primary color"
-msgstr ""
+msgstr "Текст на основному кольорі"
 
 #: ../../tempcache/pages/preferences.html.twig:1112
 msgid "Color applied to text displayed over the Primary color."
 msgstr ""
+"Колір, застосований до тексту, що відображається поверх основного кольору."
 
 #: ../../tempcache/pages/preferences.html.twig:1121
 msgid "Secondary color"
-msgstr ""
+msgstr "Вторинний колір"
 
 #: ../../tempcache/pages/preferences.html.twig:1129
 msgid ""
 "Color applied to active items in menus, paginations, and accordions views."
 msgstr ""
+"Колір, застосований до активних елементів у меню, розбиття на сторінки та "
+"переглядах акордеонів."
 
 #: ../../tempcache/pages/preferences.html.twig:1135
 msgid "Text on secondary color"
-msgstr ""
+msgstr "Текст на вторинному кольорі"
 
 #: ../../tempcache/pages/preferences.html.twig:1143
 msgid "Color applied to text displayed over the Secondary color."
 msgstr ""
+"Колір, застосований до тексту, що відображається поверх додаткового кольору."
 
 #: ../../tempcache/pages/preferences.html.twig:1154
 msgid "Advanced parameters"
