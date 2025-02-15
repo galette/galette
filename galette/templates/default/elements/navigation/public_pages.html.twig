@@ -39,6 +39,14 @@
             'icon': 'add user',
             'class': 'ui basic button'
         }]) %}
+    {% elseif (not is_current_url("subscribe") and ext_auth is not defined) and preferences.pref_bool_empty_form_link %}
+        {% set public_items = public_items|merge([{
+            'label': _T("Empty adhesion form"),
+            'title': _T("Download empty adhesion form"),
+            'route': {'name': 'emptyAdhesionForm'},
+            'icon': 'red file pdf outline',
+            'class': 'ui basic button'
+        }]) %}
     {% endif %}
     {% if not is_current_url("login") and ext_auth is not defined %}
         {% set public_items = public_items|merge([{
