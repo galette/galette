@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-02-15 09:59+0100\n"
-"PO-Revision-Date: 2025-02-13 13:56+0000\n"
+"PO-Revision-Date: 2025-02-16 08:29+0000\n"
 "Last-Translator: Guillaume AGNIERAY <dev@agnieray.net>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.10\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -1912,7 +1912,7 @@ msgstr "Réseaux sociaux"
 
 #: ../lib/Galette/Core/Preferences.php:1637
 msgid "Dark mode CSS file has been reset."
-msgstr ""
+msgstr "Le fichier CSS du mode sombre a été réinitialisé."
 
 #: ../lib/Galette/Core/I18n.php:212
 msgid "Unknown lang (%lang)"
@@ -7670,50 +7670,54 @@ msgstr "Auto-enregistrement actif ?"
 
 #: ../../tempcache/pages/preferences.html.twig:1051
 msgid "Appearance"
-msgstr ""
+msgstr "Apparence"
 
 #: ../../tempcache/pages/preferences.html.twig:1066
 msgid "Hide default background image"
-msgstr ""
+msgstr "Masquer l'image d'arrière-plan par défaut"
 
 #: ../../tempcache/pages/preferences.html.twig:1080
 msgid "Apply custom colors"
-msgstr ""
+msgstr "Appliquer les couleurs personnalisées"
 
 #: ../../tempcache/pages/preferences.html.twig:1090
 msgid "Primary color"
-msgstr ""
+msgstr "Couleur principale"
 
 #: ../../tempcache/pages/preferences.html.twig:1098
 msgid ""
 "Color applied to primary buttons, checkboxes, labels, headers, borders, and "
 "menus."
 msgstr ""
+"Couleur appliquée aux boutons principaux, cases à cocher, étiquettes, en-"
+"têtes, bordures et menus."
 
 #: ../../tempcache/pages/preferences.html.twig:1104
 msgid "Text on primary color"
-msgstr ""
+msgstr "Texte sur la couleur principale"
 
 #: ../../tempcache/pages/preferences.html.twig:1112
 msgid "Color applied to text displayed over the Primary color."
-msgstr ""
+msgstr "Couleur appliquée au texte affiché par dessus la couleur primaire."
 
 #: ../../tempcache/pages/preferences.html.twig:1121
 msgid "Secondary color"
-msgstr ""
+msgstr "Couleur secondaire"
 
 #: ../../tempcache/pages/preferences.html.twig:1129
 msgid ""
 "Color applied to active items in menus, paginations, and accordions views."
 msgstr ""
+"Couleur appliquée aux éléments actifs dans les menus, les paginations et les "
+"vues en accordéons."
 
 #: ../../tempcache/pages/preferences.html.twig:1135
 msgid "Text on secondary color"
-msgstr ""
+msgstr "Texte sur la couleur secondaire"
 
 #: ../../tempcache/pages/preferences.html.twig:1143
 msgid "Color applied to text displayed over the Secondary color."
-msgstr ""
+msgstr "Couleur appliquée au texte affiché par dessus la couleur secondaire."
 
 #: ../../tempcache/pages/preferences.html.twig:1154
 msgid "Advanced parameters"
