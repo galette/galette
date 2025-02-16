@@ -103,7 +103,7 @@ class ContributionsCsv extends CsvOut
             }
 
             //add textual type
-            $contribution->id_type_cotis = $ctype->getLabel($contribution->id_type_cotis);
+            $contribution->id_type_cotis = $ctype->getLabel((int)$contribution->id_type_cotis);
 
             //handle dates
             if (isset($contribution->date)) {
