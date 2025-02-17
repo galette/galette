@@ -1026,42 +1026,34 @@ class Preferences
     public function showPublicPage(Authentication $login, string $right): bool
     {
         if ($this->arePublicPagesEnabled()) {
-            //if public pages are actives, let's check if we
-            //display them for curent call
-            if (!isset($this->prefs[$right])) {
-                //Core does not handle plugins permission, just a global right.
-                $right = 'pref_publicpages_visibility_generic';
-            }
-            switch ($this->prefs[$right]) {
-                case self::PUBLIC_PAGES_VISIBILITY_INHERIT:
-                    //inherit from generic right
-                    return $this->showPublicPage($login, 'pref_publicpages_visibility_generic');
-                case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
-                    //pages are publicly visibles
-                    return true;
-                case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
-                    //pages should be displayed only for up-to-date members
-                    if (
-                        $login->isUp2Date()
-                        || $login->isAdmin()
-                        || $login->isStaff()
-                    ) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
-                    //pages should be displayed only for staff and admins
-                    if ($login->isAdmin() || $login->isStaff()) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                default:
-                    throw new \RuntimeException('Unknown public pages right: ' . $this->prefs[$right]);
-            }
-        } else {
             return false;
+        }
+
+        //if public pages are actives, let's check if we
+        //display them for curent call
+        if (!isset($this->prefs[$right])) {
+            //Core does not handle plugins permission, just a global right.
+            $right = 'pref_publicpages_visibility_generic';
+        }
+        switch ($this->prefs[$right]) {
+            case self::PUBLIC_PAGES_VISIBILITY_INHERIT:
+                //inherit from generic right
+                return $this->showPublicPage($login, 'pref_publicpages_visibility_generic');
+            case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
+                //pages are publicly visibles
+                return true;
+            case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
+                //pages should be displayed only for up-to-date members
+                return
+                    $login->isUp2Date()
+                    || $login->isAdmin()
+                    || $login->isStaff()
+                ;
+            case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
+                //pages should be displayed only for staff and admins
+                return $login->isAdmin() || $login->isStaff();
+            default:
+                throw new \RuntimeException('Unknown public pages right: ' . $this->prefs[$right]);
         }
     }
 

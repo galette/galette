@@ -530,87 +530,89 @@ class Galette
          */
         global $preferences, $login, $plugins, $zdb;
 
-        $menus = [];
         if ($preferences->arePublicPagesEnabled()) {
-            $items = [];
+            return [];
+        }
 
-            if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_memberslist')) {
-                $items[] = [
-                    'label' => _T("Members"),
-                    'route' => [
-                        'name' => 'publicMembersList'
-                    ],
-                    'icon' => 'address book'
-                ];
-            }
+        $menus = [];
+        $items = [];
 
-            if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_membersgallery')) {
-                $items[] = [
-                    'label' => _T('Gallery'),
-                    'route' => [
-                        'name' => 'publicMembersGallery'
-                    ],
-                    'icon' => 'user friends'
-                ];
-            }
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_memberslist')) {
+            $items[] = [
+                'label' => _T("Members"),
+                'route' => [
+                    'name' => 'publicMembersList'
+                ],
+                'icon' => 'address book'
+            ];
+        }
 
-            if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_stafflist')) {
-                $items[] = [
-                    'label' => _T("Staff"),
-                    'route' => [
-                        'name' => 'publicStaffList'
-                    ],
-                    'icon' => 'address card'
-                ];
-            }
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_membersgallery')) {
+            $items[] = [
+                'label' => _T('Gallery'),
+                'route' => [
+                    'name' => 'publicMembersGallery'
+                ],
+                'icon' => 'user friends'
+            ];
+        }
 
-            if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_staffgallery')) {
-                $items[] = [
-                    'label' => _T('Staff gallery'),
-                    'route' => [
-                        'name' => 'publicStaffGallery'
-                    ],
-                    'icon' => 'user cog'
-                ];
-            }
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_stafflist')) {
+            $items[] = [
+                'label' => _T("Staff"),
+                'route' => [
+                    'name' => 'publicStaffList'
+                ],
+                'icon' => 'address card'
+            ];
+        }
 
-            //display documents menu if at least one document is present with current ACLs
-            $document = new Document($zdb);
-            $documents = $document->getList();
-            if (
-                $login->isSuperAdmin()
-                || $preferences->showPublicPage($login, 'pref_publicpages_visibility_documents')
-                && count($documents)
-            ) {
-                $items[] = [
-                    'label' => _T("Documents"),
-                    'title' => _T("View documents related to your association"),
-                    'route' => [
-                        'name' => 'documentsPublicList'
-                    ],
-                    'icon' => 'file alternate'
-                ];
-            }
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_staffgallery')) {
+            $items[] = [
+                'label' => _T('Staff gallery'),
+                'route' => [
+                    'name' => 'publicStaffGallery'
+                ],
+                'icon' => 'user cog'
+            ];
+        }
 
-            foreach (array_keys($plugins->getModules()) as $module_id) {
-                //get plugins public menus entries
-                $plugin_class = $plugins->getClassName($module_id, true);
-                if (class_exists($plugin_class)) {
-                    $plugin = new $plugin_class();
-                    $items = array_merge(
-                        $items,
-                        $plugin->getPublicMenuItems()
-                    );
-                }
-            }
+        //display documents menu if at least one document is present with current ACLs
+        $document = new Document($zdb);
+        $documents = $document->getList();
+        if (
+            $login->isSuperAdmin()
+            || $preferences->showPublicPage($login, 'pref_publicpages_visibility_documents')
+            && count($documents)
+        ) {
+            $items[] = [
+                'label' => _T("Documents"),
+                'title' => _T("View documents related to your association"),
+                'route' => [
+                    'name' => 'documentsPublicList'
+                ],
+                'icon' => 'file alternate'
+            ];
+        }
 
-            if (count($items)) {
-                $menus['public'] = [
-                    'title' => _T("Public pages"),
-                    'icon' => 'eye outline',
-                    'items' => $items
-                ];
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins public menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class)) {
+                $plugin = new $plugin_class();
+                $items = array_merge(
+                    $items,
+                    $plugin->getPublicMenuItems()
+                );
             }
+        }
+
+        if (count($items)) {
+            $menus['public'] = [
+                'title' => _T("Public pages"),
+                'icon' => 'eye outline',
+                'items' => $items
+            ];
         }
 
         return $menus;
