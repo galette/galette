@@ -21,7 +21,14 @@
 {% macro renderMenu(title, icon, items, mode) %}
     {% set my_routes = [] %}
     {% for item in items %}
-        {% set my_routes = my_routes|merge([item.route.name])|merge(item.route.aliases ?? []) %}
+        {% if item.route is defined %}
+            {% set my_routes = my_routes|merge([item.route.name])|merge(item.route.aliases ?? []) %}
+            {% if item.children is defined %}
+                {% for child in item.children %}
+                    {% set my_routes = my_routes|merge([child.route.name])|merge(child.route.aliases ?? []) %}
+                {% endfor %}
+            {% endif %}
+        {% endif %}
     {% endfor %}
     {% if mode == "compact" %}
         <div class="ui{% if cur_route in my_routes %} active-menu{% endif %} dropdown navigation item tooltip" data-html="{{ title }}" data-position="right center">
@@ -30,7 +37,7 @@
             <i class="dropdown icon" aria-hidden="true"></i>
             <div class="menu">
                 {% for item in items %}
-                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, item.icon ?? null, null, 'right center') }}
+                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route ?? null, null, null, 'right center', mode, item.children ?? null) }}
                 {% endfor %}
             </div>
         </div>
@@ -43,34 +50,70 @@
             </div>
             <div class="content{% if cur_route in my_routes %} active{% endif %}">
                 {% for item in items %}
-                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, item.icon ?? null, null, null, mode) }}
+                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route ?? null, item.icon ?? null, null, null, mode, item.children ?? null) }}
                 {% endfor %}
             </div>
         </div>
     {% endif %}
 {% endmacro %}
 
-{% macro renderMenuItem(label, title, route, icon, class, tips_position, mode) %}
+{% macro renderMenuItem(label, title, route, icon, class, tips_position, mode, children) %}
     {% if class is empty %}
-        {% set my_routes = [route.name]|merge(route.aliases ?? []) %}
-        {% if is_current_url(route.name, route.args ?? [] + cur_route_args ?? []) %}
-            {% set class = "active item" %}
+        {% if route is not null %}
+            {% set my_routes = [route.name]|merge(route.aliases ?? []) %}
+            {% if is_current_url(route.name, route.args ?? [] + cur_route_args ?? []) %}
+                {% set class = "active item" %}
+            {% else %}
+                {% set class = "item" %}
+            {% endif %}
         {% else %}
             {% set class = "item" %}
         {% endif %}
     {% endif %}
-    <a
-            href="{{ url_for(route.name, route.args|default([])) }}"
-            class="{{ class }}"
-            {% if title %}title="{{ title }}"{% endif %}
-            {% if tips_position %}data-position="{{ tips_position }}"{% endif %}
-            {% if mode != "default" %}tabindex="-1"{% endif %}
-    >
-        {% if icon %}
+    {% if children is empty %}
+        <a
+                href="{{ url_for(route.name, route.args|default([])) }}"
+                class="{{ class }}"
+                {% if title %}title="{{ title }}"{% endif %}
+                {% if tips_position %}data-position="{{ tips_position }}"{% endif %}
+                {% if mode == "compact" %}tabindex="-1"{% endif %}
+        >
+        {% if icon and mode != 'compact' %}
             <i class="{{ icon }} icon" aria-hidden="true"></i>
         {% endif %}
-        {{ label }}
-    </a>
+            {{ label }}
+        </a>
+    {% elseif (mode != 'topbar') and login.isLogged() %}
+        {% for item in children %}
+            {% set icon = mode == "compact" ? null : item.icon %}
+            {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, icon, null, item.tips_position ?? null) }}
+        {% endfor %}
+    {% else %}
+        {{ _self.renderMenuDropdown(label, title ?? null, icon ?? null, tips_position ?? null, mode, children) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro renderMenuDropdown(label, title, icon, tips_position, mode, children) %}
+    {% set my_routes = [] %}
+    {% for item in children %}
+        {% set my_routes = my_routes|merge([item.route.name])|merge(item.route.aliases ?? []) %}
+    {% endfor %}
+    <div class="{{ mode != 'sidebar' ? 'focus-visible ui dropdown navigation ' }}{% if cur_route in my_routes %} active-menu {% endif %}item">
+    {% if mode == 'sidebar' %}
+        <div class="image header title" data-fold="fold-{{ icon|replace({' ': '-'}) }}">
+    {% endif %}
+            <i class="{{ icon }} icon" aria-hidden="true"></i>
+            <span>{{ label }}</span>
+            <i class="dropdown icon" aria-hidden="true"></i>
+    {% if mode == 'sidebar' %}
+        </div>
+    {% endif %}
+        <div class="{{ mode != 'sidebar' ? 'menu' : 'content' }}{{ mode == 'sidebar' and cur_route in my_routes ?? ' active' }}">
+            {% for item in children %}
+                {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, null, null, null, mode) }}
+            {% endfor %}
+        </div>
+    </div>
 {% endmacro %}
 
 {% macro dashboardCard(label, title, route, icon) %}

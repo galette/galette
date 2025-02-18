@@ -537,8 +537,11 @@ class Galette
         $menus = [];
         $items = [];
 
+        $galleries = [];
+        $lists = [];
+
         if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_memberslist')) {
-            $items[] = [
+            $lists[] = [
                 'label' => _T("Members"),
                 'route' => [
                     'name' => 'publicMembersList'
@@ -548,33 +551,55 @@ class Galette
         }
 
         if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_membersgallery')) {
-            $items[] = [
+            $galleries[] = [
                 'label' => _T('Gallery'),
                 'route' => [
                     'name' => 'publicMembersGallery'
                 ],
-                'icon' => 'user friends'
+                'icon' => 'images'
             ];
         }
 
         if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_stafflist')) {
-            $items[] = [
+            $lists[] = [
                 'label' => _T("Staff"),
                 'route' => [
                     'name' => 'publicStaffList'
                 ],
-                'icon' => 'address card'
+                'icon' => 'address book outline'
             ];
         }
 
         if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_staffgallery')) {
-            $items[] = [
+            $galleries[] = [
                 'label' => _T('Staff gallery'),
                 'route' => [
                     'name' => 'publicStaffGallery'
                 ],
-                'icon' => 'user cog'
+                'icon' => 'images outline'
             ];
+        }
+
+        if (count($lists) > 1) {
+            //handle multiple lists
+            $items[] = [
+                'label' => _T("Directories"),
+                'icon' => 'address book',
+                'children' => $lists
+            ];
+        } else {
+            $items = array_merge($items, $lists);
+        }
+
+        if (count($galleries) > 1) {
+            //handle multiple galleries
+            $items[] = [
+                'label' => _T("Galleries"),
+                'icon' => 'images',
+                'children' => $galleries
+            ];
+        } else {
+            $items = array_merge($items, $galleries);
         }
 
         if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_documents')) {

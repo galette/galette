@@ -25,7 +25,7 @@
         {% set public_menus = callstatic('\\Galette\\Core\\Galette', 'getPublicMenus') %}
         {% for public_menu in public_menus %}
             {% for public_item in public_menu.items %}
-                {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route, public_item.icon ?? null, null, tips_position, mode) }}
+                {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route ?? null, public_item.icon ?? null, null, tips_position, mode, public_item.children ?? null) }}
             {% endfor %}
         {% endfor %}
     {% endif %}
