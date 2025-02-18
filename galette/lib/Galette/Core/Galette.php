@@ -537,43 +537,93 @@ class Galette
         $menus = [];
         $items = [];
 
-        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_memberslist')) {
+        $label_members = _T("Members");
+        $label_staff = _T("Staff");
+        $children = [];
+
+        if (
+            $preferences->showPublicPage($login, 'pref_publicpages_visibility_memberslist')
+            || $preferences->showPublicPage($login, 'pref_publicpages_visibility_stafflist')
+        ) {
+            $label = _T("Directories");
+            $route = ['name' => 'publicMembersList'];
+            $route_staff = ['name' => 'publicStaffList'];
+            $icon = 'address book';
+            if (
+                $preferences->showPublicPage($login, 'pref_publicpages_visibility_memberslist')
+                && $preferences->showPublicPage($login, 'pref_publicpages_visibility_stafflist')
+            ) {
+                $children = [
+                    [
+                        'label' => $label_members,
+                        'route' => $route,
+                        'alternative_menu_label' => $label_members,
+                        'alternative_menu_icon' => $icon
+                    ],
+                    [
+                        'label' => $label_staff,
+                        'route' => $route_staff,
+                        'alternative_menu_label' => $label_staff,
+                        'alternative_menu_icon' => $icon . ' outline'
+                    ]
+                ];
+            } elseif (!$preferences->showPublicPage($login, 'pref_publicpages_visibility_memberslist')) {
+                $label = $label_staff;
+                $route = $route_staff;
+                $icon = $icon . ' outline';
+            } elseif (!$preferences->showPublicPage($login, 'pref_publicpages_visibility_stafflist')) {
+                $label = $label_members;
+            }
+
             $items[] = [
-                'label' => _T("Members"),
-                'route' => [
-                    'name' => 'publicMembersList'
-                ],
-                'icon' => 'address book'
+                'label' => $label,
+                'route' => $route,
+                'icon' => $icon,
+                'children' => $children
             ];
         }
 
-        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_membersgallery')) {
-            $items[] = [
-                'label' => _T('Gallery'),
-                'route' => [
-                    'name' => 'publicMembersGallery'
-                ],
-                'icon' => 'user friends'
-            ];
-        }
+        if (
+            $preferences->showPublicPage($login, 'pref_publicpages_visibility_membersgallery')
+            || $preferences->showPublicPage($login, 'pref_publicpages_visibility_staffgallery')
+        ) {
+            $label = _T("Galleries");
+            $label_members_gallery = _T("Gallery");
+            $label_staff_gallery = _T("Staff gallery");
+            $route = ['name' => 'publicMembersGallery'];
+            $route_staff = ['name' => 'publicStaffGallery'];
+            $icon = 'user friends';
+            if (
+                $preferences->showPublicPage($login, 'pref_publicpages_visibility_membersgallery')
+                && $preferences->showPublicPage($login, 'pref_publicpages_visibility_staffgallery')
+            ) {
+                $children = [
+                    [
+                        'label' => $label_members,
+                        'route' => $route,
+                        'alternative_menu_label' => $label_members_gallery,
+                        'alternative_menu_icon' => $icon
+                    ],
+                    [
+                        'label' => $label_staff,
+                        'route' => $route_staff,
+                        'alternative_menu_label' => $label_staff_gallery,
+                        'alternative_menu_icon' => 'users cog'
+                    ]
+                ];
+            } elseif (!$preferences->showPublicPage($login, 'pref_publicpages_visibility_membersgallery')) {
+                $label = $label_staff_gallery;
+                $route = $route_staff;
+                $icon = 'users cog';
+            } elseif (!$preferences->showPublicPage($login, 'pref_publicpages_visibility_staffgallery')) {
+                $label = $label_members_gallery;
+            }
 
-        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_stafflist')) {
             $items[] = [
-                'label' => _T("Staff"),
-                'route' => [
-                    'name' => 'publicStaffList'
-                ],
-                'icon' => 'address card'
-            ];
-        }
-
-        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_staffgallery')) {
-            $items[] = [
-                'label' => _T('Staff gallery'),
-                'route' => [
-                    'name' => 'publicStaffGallery'
-                ],
-                'icon' => 'user cog'
+                'label' => $label,
+                'route' => $route,
+                'icon' => $icon,
+                'children' => $children
             ];
         }
 

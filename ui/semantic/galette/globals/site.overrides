@@ -58,7 +58,7 @@
 a,
 .ui.button:not(.tertiary),
 .compact_menu .ui.dropdown.item,
-.ui.dropdown.language,
+.ui.dropdown.focus-visible,
 .infoline .ui.dropdown:not(.tertiary) {
     &:focus-visible {
         outline: 3px solid @blueFocus;
