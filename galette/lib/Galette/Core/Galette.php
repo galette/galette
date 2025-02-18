@@ -530,7 +530,7 @@ class Galette
          */
         global $preferences, $login, $plugins, $zdb;
 
-        if ($preferences->arePublicPagesEnabled()) {
+        if (!$preferences->arePublicPagesEnabled()) {
             return [];
         }
 
@@ -771,7 +771,7 @@ class Galette
         //display documents menu if at least one document is present with current ACLs
         $document = new Document($zdb);
         $documents = $document->getList();
-        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_documents') && ($login->isSuperAdmin() || count($documents))) {
+        if ($login->isSuperAdmin() || count($documents)) {
             $dashboards = array_merge(
                 $dashboards,
                 [

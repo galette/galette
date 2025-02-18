@@ -139,9 +139,10 @@ class Galette extends GaletteTestCase
         $plugins = new \Galette\Core\Plugins($db);
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
             ->setConstructorArgs(array($db))
-            ->onlyMethods(array('showPublicPage'))
+            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
             ->getMock();
 
+        $preferences->method('arePublicPagesEnabled')->willReturn(true);
         $preferences->method('showPublicPage')->willReturn(true);
 
         $menus = \Galette\Core\Galette::getMenus();
@@ -229,8 +230,9 @@ class Galette extends GaletteTestCase
         $db = new \Galette\Core\Db();
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
             ->setConstructorArgs(array($db))
-            ->onlyMethods(array('showPublicPage'))
+            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
             ->getMock();
+        $preferences->method('arePublicPagesEnabled')->willReturn(true);
         $preferences->method('showPublicPage')->willReturn(false);
 
         $menus = \Galette\Core\Galette::getPublicMenus();
@@ -239,8 +241,9 @@ class Galette extends GaletteTestCase
 
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
             ->setConstructorArgs(array($db))
-            ->onlyMethods(array('showPublicPage'))
+            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
             ->getMock();
+        $preferences->method('arePublicPagesEnabled')->willReturn(true);
         $preferences->method('showPublicPage')->willReturn(true);
 
         $menus = \Galette\Core\Galette::getPublicMenus();
