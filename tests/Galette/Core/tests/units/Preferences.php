@@ -188,16 +188,23 @@ class Preferences extends GaletteTestCase
     {
         $this->preferences->load();
 
-        $visibility = $this->preferences->pref_publicpages_visibility;
-        $this->assertEquals(
-            \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
-            $visibility
-        );
+        $visibilities = [
+            'pref_publicpages_visibility_memberslist',
+            'pref_publicpages_visibility_membersgallery',
+            'pref_publicpages_visibility_stafflist',
+            'pref_publicpages_visibility_staffgallery'
+        ];
+
+        foreach ($visibilities as $visibility) {
+            $this->preferences->$visibility = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED;
+        }
 
         $anon_login = new \Galette\Core\Login(
             $this->zdb,
             new \Galette\Core\I18n()
         );
+
+        $this->preferences->pref_bool_publicpages = true;
 
         $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
@@ -211,38 +218,42 @@ class Preferences extends GaletteTestCase
             ->getMock();
         $user_login->method('isUp2Date')->willReturn(true);
 
-        $visible = $this->preferences->showPublicPages($anon_login);
-        $this->assertFalse($visible);
+        foreach ($visibilities as $visibility) {
+            $visible = $this->preferences->showPublicPage($anon_login, $visibility);
+            $this->assertFalse($visible);
 
-        $visible = $this->preferences->showPublicPages($admin_login);
-        $this->assertTrue($visible);
+            $visible = $this->preferences->showPublicPage($admin_login, $visibility);
+            $this->assertTrue($visible);
 
-        $visible = $this->preferences->showPublicPages($user_login);
-        $this->assertTrue($visible);
+            $visible = $this->preferences->showPublicPage($user_login, $visibility);
+            $this->assertTrue($visible);
+        }
 
-        $this->preferences->pref_publicpages_visibility
-            = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;
+        foreach ($visibilities as $visibility) {
+            $this->preferences->$visibility = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;
 
-        $visible = $this->preferences->showPublicPages($anon_login);
-        $this->assertTrue($visible);
+            $visible = $this->preferences->showPublicPage($anon_login, $visibility);
+            $this->assertTrue($visible);
 
-        $visible = $this->preferences->showPublicPages($admin_login);
-        $this->assertTrue($visible);
+            $visible = $this->preferences->showPublicPage($admin_login, $visibility);
+            $this->assertTrue($visible);
 
-        $visible = $this->preferences->showPublicPages($user_login);
-        $this->assertTrue($visible);
+            $visible = $this->preferences->showPublicPage($user_login, $visibility);
+            $this->assertTrue($visible);
+        }
 
-        $this->preferences->pref_publicpages_visibility
-            = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE;
+        foreach ($visibilities as $visibility) {
+            $this->preferences->$visibility = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE;
 
-        $visible = $this->preferences->showPublicPages($anon_login);
-        $this->assertFalse($visible);
+            $visible = $this->preferences->showPublicPage($anon_login, $visibility);
+            $this->assertFalse($visible);
 
-        $visible = $this->preferences->showPublicPages($admin_login);
-        $this->assertTrue($visible);
+            $visible = $this->preferences->showPublicPage($admin_login, $visibility);
+            $this->assertTrue($visible);
 
-        $visible = $this->preferences->showPublicPages($user_login);
-        $this->assertFalse($visible);
+            $visible = $this->preferences->showPublicPage($user_login, $visibility);
+            $this->assertFalse($visible);
+        }
     }
 
     /**

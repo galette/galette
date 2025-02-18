@@ -1025,7 +1025,7 @@ class Preferences
      */
     public function showPublicPage(Authentication $login, string $right): bool
     {
-        if ($this->arePublicPagesEnabled()) {
+        if (!$this->arePublicPagesEnabled()) {
             return false;
         }
 
