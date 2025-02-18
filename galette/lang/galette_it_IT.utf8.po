@@ -24,14 +24,14 @@
 # Gerardo <gerardo.zinno@aol.com>, 2021.
 # Antonio Bifulco <gighen11@gmail.com>, 2022.
 # Paolo Mauri <paolo@paolomauri.it>, 2023.
-# Marco Ciampa <ciampix@posteo.net>, 2024.
+# Marco Ciampa <ciampix@posteo.net>, 2024, 2025.
 # Roberto Resoli <roberto@resolutions.it>, 2024.
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-02-15 09:59+0100\n"
-"PO-Revision-Date: 2024-11-03 13:00+0000\n"
+"PO-Revision-Date: 2025-02-18 13:46+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -39,7 +39,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.2\n"
+"X-Generator: Weblate 5.10.1-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -347,7 +347,7 @@ msgstr "Si è verificato un errore nel muovere il campo :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:146
 msgid "Subscription"
-msgstr "Abbonamento"
+msgstr "Iscrizione"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:251
 msgid "No member #%id."
@@ -400,17 +400,13 @@ msgstr "La modifica di massa non è stata confermata!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1249
 #: ../../tempcache/components/forms/mass_groups.html.twig:73
-#, fuzzy
-#| msgid "Add a new group"
 msgid "Add to group"
-msgstr "Aggiungi un nuovo gruppo"
+msgstr "Aggiungi a un gruppo"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1259
 #: ../../tempcache/components/forms/mass_groups.html.twig:80
-#, fuzzy
-#| msgid "Remove group %1$s"
 msgid "Remove from group"
-msgstr "Rimuovi il gruppo %1$s"
+msgstr "Rimuovi da un gruppo"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1312
 #, php-format
@@ -573,11 +569,8 @@ msgid "Donation"
 msgstr "Donazione"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:175
-#, fuzzy
-#| msgid "No contribution was selected, please check at least one."
 msgid "No related contribution type available, please create a new one."
-msgstr ""
-"Non è stato selezionato nessun contribuo, per favore selezionane almeno uno."
+msgstr "Nessun tipo di contributo correlato disponibile, creane uno nuovo."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:251
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:299
@@ -1122,16 +1115,12 @@ msgid "An error occurred filling empty logins and passwords :("
 msgstr "Si è verificato un errore nel compilare login e password mancanti :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:144
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "Dynamic dates has been fixed."
-msgstr "L'account socio è stato modificato."
+msgstr "Le date dinamiche sono stare fissate."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:146
-#, fuzzy
-#| msgid "An error occurred editing dynamic field :("
 msgid "An error occurred fixing dynamic dates :("
-msgstr "Si è verificato un errore modificando il campo dinamico :("
+msgstr "Si è verificato un errore fissando le date dinamiche :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:91
 #: ../lib/Galette/Core/Galette.php:332 ../install/steps/check.php:55
@@ -1923,7 +1912,7 @@ msgstr "Social network"
 
 #: ../lib/Galette/Core/Preferences.php:1637
 msgid "Dark mode CSS file has been reset."
-msgstr ""
+msgstr "Il file CSS in modalità scura è stato reimpostato."
 
 #: ../lib/Galette/Core/I18n.php:212
 msgid "Unknown lang (%lang)"
@@ -2567,7 +2556,7 @@ msgstr "fattura"
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:377
 #: ../../tempcache/pages/transactions_list.html.twig:406
 msgid "Member"
-msgstr "Socio"
+msgstr "Membro"
 
 #: ../lib/Galette/Features/Permissions.php:62
 msgid "Inaccessible"
@@ -3719,10 +3708,8 @@ msgstr "Installazione di Galette"
 
 #: ../webroot/installer.php:225 ../webroot/installer.php:227
 #: ../../tempcache/page.html.twig:202 ../../tempcache/page.html.twig:207
-#, fuzzy
-#| msgid "Reading the list"
 msgid "Read the manual"
-msgstr "Lettura elenco"
+msgstr "Leggi il manuale"
 
 #: ../webroot/installer.php:307
 #: ../../tempcache/modals/plugin_initdb.html.twig:465
@@ -6442,10 +6429,8 @@ msgid "Gift"
 msgstr "Dono"
 
 #: ../../tempcache/pages/contributions_list.html.twig:882
-#, fuzzy
-#| msgid "Completely dispatched transaction"
 msgid "Edit the attached transaction"
-msgstr "Transazione completamente completata"
+msgstr "Modifica la transazione allegata"
 
 #: ../../tempcache/pages/contributions_list.html.twig:919
 #: ../../tempcache/pages/members_list.html.twig:577
@@ -6522,10 +6507,8 @@ msgstr "Genera login e password vuoti"
 #: ../../tempcache/pages/admintools.html.twig:169
 #: ../../tempcache/pages/admintools.html.twig:173
 #: ../../tempcache/pages/admintools.html.twig:177
-#, fuzzy
-#| msgid "Dynamic fields configuration"
 msgid "Fix dynamic fields dates format"
-msgstr "Configurazione del campo dinamico"
+msgstr "Correggi il formato delle date dei campi dinamici"
 
 #: ../../tempcache/pages/admintools.html.twig:190
 msgid "Go"
@@ -7177,10 +7160,8 @@ msgid "Switch to fee"
 msgstr "Passare al pagamento"
 
 #: ../../tempcache/pages/contribution_form.html.twig:232
-#, fuzzy
-#| msgid "Details of donation"
 msgid "Switch to donation"
-msgstr "Dettagli della donazione"
+msgstr "Passa alla donazione"
 
 #: ../../tempcache/pages/contribution_form.html.twig:284
 msgid "View transaction"
@@ -7668,56 +7649,58 @@ msgstr "Autoiscrizione abilitata?"
 
 #: ../../tempcache/pages/preferences.html.twig:1051
 msgid "Appearance"
-msgstr ""
+msgstr "Aspetto"
 
 #: ../../tempcache/pages/preferences.html.twig:1066
 msgid "Hide default background image"
-msgstr ""
+msgstr "Nascondi l'immagine di sfondo predefinita"
 
 #: ../../tempcache/pages/preferences.html.twig:1080
 msgid "Apply custom colors"
-msgstr ""
+msgstr "Applica colori personalizzati"
 
 #: ../../tempcache/pages/preferences.html.twig:1090
 msgid "Primary color"
-msgstr ""
+msgstr "Colore primario"
 
 #: ../../tempcache/pages/preferences.html.twig:1098
 msgid ""
 "Color applied to primary buttons, checkboxes, labels, headers, borders, and "
 "menus."
 msgstr ""
+"Colore applicato ai pulsanti principali, alle caselle di controllo, alle "
+"etichette, alle intestazioni, ai bordi e ai menu."
 
 #: ../../tempcache/pages/preferences.html.twig:1104
 msgid "Text on primary color"
-msgstr ""
+msgstr "Testo su colore primario"
 
 #: ../../tempcache/pages/preferences.html.twig:1112
 msgid "Color applied to text displayed over the Primary color."
-msgstr ""
+msgstr "Colore applicato al testo visualizzato sul colore primario."
 
 #: ../../tempcache/pages/preferences.html.twig:1121
 msgid "Secondary color"
-msgstr ""
+msgstr "Colore secondario"
 
 #: ../../tempcache/pages/preferences.html.twig:1129
 msgid ""
 "Color applied to active items in menus, paginations, and accordions views."
 msgstr ""
+"Colore applicato agli elementi attivi nelle viste menu, impaginazioni e a "
+"fisarmonica."
 
 #: ../../tempcache/pages/preferences.html.twig:1135
 msgid "Text on secondary color"
-msgstr ""
+msgstr "Testo su colore secondario"
 
 #: ../../tempcache/pages/preferences.html.twig:1143
 msgid "Color applied to text displayed over the Secondary color."
-msgstr ""
+msgstr "Colore applicato al testo visualizzato sopra il colore secondario."
 
 #: ../../tempcache/pages/preferences.html.twig:1154
-#, fuzzy
-#| msgid "Admin parameters"
 msgid "Advanced parameters"
-msgstr "Parametri amministratore"
+msgstr "Parametri avanzati"
 
 #: ../../tempcache/pages/preferences.html.twig:1162
 msgid "Galette base URL"
@@ -7793,28 +7776,20 @@ msgstr ""
 "presenza e gruppi pdf"
 
 #: ../../tempcache/pages/preferences.html.twig:1327
-#, fuzzy
-#| msgid "Can group managers send mailings?"
 msgid "Can group managers see contributions?"
-msgstr "I gestori dei gruppi possono inviare email?"
+msgstr "I gestori dei gruppi possono vedere i contributi?"
 
 #: ../../tempcache/pages/preferences.html.twig:1341
-#, fuzzy
-#| msgid "Can group managers create members?"
 msgid "Can group managers create contributions?"
-msgstr "I gestori dei gruppi possono creare membri?"
+msgstr "I gestori dei gruppi possono creare contributi?"
 
 #: ../../tempcache/pages/preferences.html.twig:1355
-#, fuzzy
-#| msgid "Can group managers send mailings?"
 msgid "Can group managers see transactions?"
-msgstr "I gestori dei gruppi possono inviare email?"
+msgstr "I gestori dei gruppi possono vedere le transazioni?"
 
 #: ../../tempcache/pages/preferences.html.twig:1369
-#, fuzzy
-#| msgid "Can group managers create members?"
 msgid "Can group managers create transactions?"
-msgstr "I gestori dei gruppi possono creare membri?"
+msgstr "I gestori dei gruppi possono creare transazioni?"
 
 #: ../../tempcache/pages/preferences.html.twig:1401
 msgid "Sender name:"
@@ -8886,10 +8861,8 @@ msgid "Hide this panel"
 msgstr "Nascondi questo pannello"
 
 #: ../../tempcache/pages/desktop.html.twig:157
-#, fuzzy
-#| msgid "Activities"
 msgid "My activities"
-msgstr "Attività"
+msgstr "Mie attività"
 
 #: ../../tempcache/pages/desktop.html.twig:196
 msgid "Activities"
@@ -8981,16 +8954,12 @@ msgid "Captcha"
 msgstr "Captcha"
 
 #: ../../tempcache/components/forms/mass_groups.html.twig:73
-#, fuzzy
-#| msgid "Click on a row to select a member"
 msgid "Select a group to add selected members to"
-msgstr "Fare clic su una riga per selezionare un socio"
+msgstr "Seleziona un gruppo a cui aggiungere i membri selezionati"
 
 #: ../../tempcache/components/forms/mass_groups.html.twig:80
-#, fuzzy
-#| msgid "You are about to remove %count members."
 msgid "Select a group to remove selected members from"
-msgstr "Stai per rimuovere %count membri."
+msgstr "Seleziona un gruppo da cui rimuovere i membri selezionati"
 
 #: ../../tempcache/components/forms/member_dropdown.html.twig:77
 msgid "Load previous members..."
