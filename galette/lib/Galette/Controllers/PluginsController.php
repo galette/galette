@@ -263,7 +263,7 @@ class PluginsController extends AbstractController
         $this->session->$mdplugin = $install;
 
         $params += [
-            'page_title'    => $install->getStepTitle(),
+            'page_title'    => $install->getStepDetail('title'),
             'step'          => $step,
             'istep'         => $istep,
             'plugid'        => $plugid,
