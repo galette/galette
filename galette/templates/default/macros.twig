@@ -23,11 +23,10 @@
     {% for item in items %}
         {% if item.route is defined %}
             {% set my_routes = my_routes|merge([item.route.name])|merge(item.route.aliases ?? []) %}
-            {% if item.children is defined %}
-                {% for child in item.children %}
-                    {% set my_routes = my_routes|merge([child.route.name])|merge(child.route.aliases ?? []) %}
-                {% endfor %}
-            {% endif %}
+        {% elseif item.children is defined %}
+            {% for child in item.children %}
+                {% set my_routes = my_routes|merge([child.route.name])|merge(child.route.aliases ?? []) %}
+            {% endfor %}
         {% endif %}
     {% endfor %}
     {% if mode == "compact" %}
