@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-02-15 09:59+0100\n"
 "PO-Revision-Date: 2025-02-26 12:57+0000\n"
-"Last-Translator: Guillaume AGNIERAY <dev@agnieray.net>\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -7592,7 +7592,7 @@ msgstr "Sélectionnez un ratio"
 #: ../../tempcache/pages/preferences.html.twig:871
 #: ../../tempcache/components/forms/picture.html.twig:91
 msgid "Square (1:1)"
-msgstr "Original (1:1)"
+msgstr "Carré (1:1)"
 
 #: ../../tempcache/pages/preferences.html.twig:879
 #: ../../tempcache/components/forms/picture.html.twig:91
