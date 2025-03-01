@@ -280,9 +280,9 @@ class CsvOut extends Csv
             $fp = fopen($filename, 'w');
             if ($fp) {
                 $separator = ($export->separator)
-                    ? $export->separator
+                    ? (string)$export->separator
                     : self::DEFAULT_SEPARATOR;
-                $quote = ($export->quote) ? $export->quote : self::DEFAULT_QUOTE;
+                $quote = ($export->quote) ? (string)$export->quote : self::DEFAULT_QUOTE;
                 if ($export->headers->none) {
                     //No title
                     $title = false;
