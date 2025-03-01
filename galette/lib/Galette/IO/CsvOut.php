@@ -311,7 +311,7 @@ class CsvOut extends Csv
             return (string)$export['filename'];
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred while exporting | ' . $e->getMessage(),
+                'An error occurred while exporting | ' . $e->getMessage() . "\n" . $e->getTraceAsString(),
                 Analog::ERROR
             );
             return self::DB_ERROR;
@@ -341,7 +341,7 @@ class CsvOut extends Csv
             }
         }
 
-        if ($export['inactive'] ?? false) {
+        if (!count($export) || ($export['inactive'] ?? false)) {
             return false;
         }
 
@@ -381,7 +381,7 @@ class CsvOut extends Csv
             return $export['filename'];
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred while exporting | ' . $e->getMessage(),
+                'An error occurred while exporting | ' . $e->getMessage() . "\n" . $e->getTraceAsString(),
                 Analog::ERROR
             );
             return self::DB_ERROR;
