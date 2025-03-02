@@ -58,11 +58,11 @@
 {% block body %}
     {% if nb_members > 0 %}
         {% for member in members.staff %}
-            {{ _self.drawEntry(member, true) }}
+            {{ _self.drawEntry(member) }}
         {% endfor %}
 
         {% for member in members.members %}
-            {{ _self.drawEntry(member, false) }}
+            {{ _self.drawEntry(member) }}
         {% endfor %}
     {% else %}
         <tr>

@@ -33,10 +33,10 @@
 {% block body %}
     {% if nb_members > 0 %}
         {% for member in members.staff %}
-            {{ _self.drawEntry(member, true, time) }}
+            {{ _self.drawEntry(member) }}
         {% endfor %}
         {% for member in members.members %}
-            {{ _self.drawEntry(member, false, time) }}
+            {{ _self.drawEntry(member) }}
         {% endfor %}
     {% else %}
         <div class="ui small message">

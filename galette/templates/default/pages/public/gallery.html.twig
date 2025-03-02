@@ -24,12 +24,12 @@
 {% set is_public = not login.isLogged() %}
 {% set list_type = nb_members > 0 ? 'cards' : 'empty' %}
 
-{% macro drawEntry(member, staff, time) %}
+{% macro drawEntry(member) %}
     <div class="ui fluid card">
         {% set mid = member.id %}
         <div class="image">
             <img
-                src="{{ url_for("photo", {"id": member.id, "rand": time}) }}"
+                src="{{ url_for("photo", {"id": member.id, "rand": random()}) }}"
                 width="{{ member.picture.getOptimalWidth() }}"
                 height="{{ member.picture.getOptimalHeight() }}"
                 alt="{{ member.sfullname }}{% if member.nickname != '' %} ({{ member.nickname|escape }}){% endif %}"
@@ -45,15 +45,15 @@
         </div>
 
     {% set mgroups = member.getManagedGroups() %}
-    {% if staff or mgroups|length %}
+    {% if member.isStaff() or mgroups|length %}
         <div class="extra content">
             <span class="right floated">
-        {% if staff %}
+        {% if member.isStaff() %}
                 <i class="ui user tie orange icon" aria-hidden="true"></i>
                 {{ member.sstatus }}
         {% endif %}
         {% if mgroups|length %}
-            {% if staff %}
+            {% if member.isStaff() %}
                 <br />
             {% endif %}
             <i class="ui users cog orange icon" aria-hidden="true"></i>

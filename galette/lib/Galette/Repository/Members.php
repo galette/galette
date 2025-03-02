@@ -530,6 +530,7 @@ class Members
                 $member = new Adherent($zdb, $row, $deps);
                 if ($member->isStaff()) {
                     $staff[$member->id] = $member;
+                    continue 1;
                 }
 
                 if ($preferences->pref_bool_groupsmanagers_are_staff) {

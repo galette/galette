@@ -24,7 +24,7 @@
 {% set no_action = true %}
 {% set is_public = not login.isLogged() %}
 
-{% macro drawEntry(member, staff) %}
+{% macro drawEntry(member) %}
     {% set rclass = member.getRowClass() %}
     <tr>
         <td class="{{ rclass }} username_row" data-scope="row">
@@ -51,7 +51,7 @@
             {% else %}
                 {{ member.sfullname }}
             {% endif %}
-            {% if staff %}
+            {% if member.isStaff() %}
                 <span class="ui horizontal label">
                     <i class="ui user tie orange icon" aria-hidden="true"></i>
                     {{ member.sstatus }}

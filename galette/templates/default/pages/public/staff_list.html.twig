@@ -56,7 +56,7 @@
         </tr>
         {% endif %}
         {% for member in members.staff %}
-            {{ _self.drawEntry(member, true) }}
+            {{ _self.drawEntry(member) }}
         {% endfor %}
 
         {% for group, group_managers in members.groups %}
@@ -64,7 +64,7 @@
                 <th scope="colgroup" colspan="4">{{ _T('"%1$s" group managers')|format(group) }}</th>
             </tr>
             {% for manager in group_managers %}
-                {{ _self.drawEntry(manager, false) }}
+                {{ _self.drawEntry(manager) }}
             {% endfor %}
         {% endfor %}
     {% else %}

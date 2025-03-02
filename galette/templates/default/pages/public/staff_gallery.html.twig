@@ -30,14 +30,7 @@
 {% block body %}
     {% if nb_members > 0 %}
         {% for member in members.staff %}
-            {{ _self.drawEntry(member, true, time) }}
-        {% endfor %}
-        {% for group_managers in members.groups %}
-            {% for manager in group_managers %}
-                {% if members.staff[manager.id] is not defined %}
-                    {{ _self.drawEntry(manager, false, time) }}
-                {% endif %}
-            {% endfor %}
+            {{ _self.drawEntry(member) }}
         {% endfor %}
     {% else %}
         <div class="ui small message">
