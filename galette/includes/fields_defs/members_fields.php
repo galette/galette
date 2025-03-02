@@ -250,7 +250,7 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
     'bool_display_info' => array(
-        'label'    => _T("Be visible in the members list:"),
+        'label'    => _T("Be visible on public pages:"),
         'propname' => 'appears_in_list',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
