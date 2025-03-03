@@ -60,6 +60,8 @@
                                 <a href="mailto:{{ value }}">{{ value }}</a>
                             {% elseif get_class(field) == 'Galette\\DynamicFields\\Line' and callstatic("Galette\\Core\\GaletteMail", "isUrl", value) %}
                                 <a href="{{ value }}" target="_blank" title="{{ _T("Open '%s' in a new window")|replace({"%s": value}) }}">{{ value }}</a>
+                            {% elseif get_class(field) == 'Galette\\DynamicFields\\Date' %}
+                                {{ value|date(_T("Y-m-d")) }}
                             {% else %}
                                 {{ value|raw }}
                             {% endif %}
