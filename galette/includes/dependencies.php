@@ -144,6 +144,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('logo', $c->get('logo'));
 
     $view->getEnvironment()->addGlobal('plugin_headers', $c->get('plugins')->getTplHeaders());
+    $view->getEnvironment()->addGlobal('plugin_scripts', $c->get('plugins')->getTplScripts());
 
     // galette_lang should be removed and languages used instead
     $view->getEnvironment()->addGlobal('galette_lang', $c->get('i18n')->getAbbrev());
