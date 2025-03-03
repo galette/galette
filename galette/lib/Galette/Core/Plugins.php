@@ -487,6 +487,23 @@ class Plugins
     }
 
     /**
+     * For each module, returns the scripts template file namespaced path, if present.
+     *
+     * @return array<string> of scripts to include for all modules
+     */
+    public function getTplScripts(): array
+    {
+        $_scripts = array();
+        foreach ($this->modules as $key => $module) {
+            $scripts_path = $this->getTemplatesPath($key) . '/scripts.html.twig';
+            if (file_exists($scripts_path)) {
+                $_scripts[$key] = sprintf('@%s/%s.html.twig', $this->getClassName($key), 'scripts');
+            }
+        }
+        return $_scripts;
+    }
+
+    /**
      * Does module need a database?
      *
      * @param string $id Module's ID
