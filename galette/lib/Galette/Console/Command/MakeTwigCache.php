@@ -27,6 +27,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Twig\Environment;
@@ -54,6 +55,18 @@ use SplFileInfo;
 class MakeTwigCache extends AbstractCommand
 {
     /**
+     * Configure command
+     *
+     * @return void
+     */
+    protected function configure(): void
+    {
+        $this
+            ->addArgument('plugin', InputArgument::OPTIONAL, 'Extract string from Twig templates of specified plugin directory')
+        ;
+    }
+
+    /**
      * Command execution
      *
      * @param InputInterface  $input  Input interface
@@ -63,8 +76,43 @@ class MakeTwigCache extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $directory = sprintf('%s/../../../../templates/default', __DIR__);
-        $cache_dir = sprintf('%s/../../../../../tempcache', __DIR__);
+        $directory_path = sprintf(
+            '%s/../../../../templates/default',
+            __DIR__,
+        );
+        $cache_dir_path = sprintf(
+            '%s/../../../../..',
+            __DIR__,
+        );
+
+        $plugin = $input->getArgument('plugin');
+        if ($plugin) {
+            $directory_path = sprintf(
+                '%s/../../../../plugins/%s/templates/default',
+                __DIR__,
+                $plugin
+            );
+            $cache_dir_path = sprintf(
+                '%s/../../../../plugins/%s',
+                __DIR__,
+                $plugin
+            );
+        }
+
+        $directory = realpath($directory_path);
+        if (!is_dir($directory) || !is_readable($directory)) {
+            throw new InvalidOptionException(
+                sprintf('Unable to read templates directory "%s"', $directory_path)
+            );
+        }
+
+        $cache_dir = realpath($cache_dir_path);
+        if (!is_dir($cache_dir) || !is_readable($cache_dir)) {
+            throw new InvalidOptionException(
+                sprintf('Unable to read cache directory "%s"', $cache_dir_path)
+            );
+        }
+        $cache_dir .= '/tempcache';
 
         if (file_exists($cache_dir)) {
             $this->rmdirRecursive($cache_dir);
@@ -125,14 +173,6 @@ class MakeTwigCache extends AbstractCommand
      */
     private function getTemplatesFiles(string $directory): array
     {
-        $directory = realpath($directory);
-
-        if (!is_dir($directory) || !is_readable($directory)) {
-            throw new InvalidOptionException(
-                sprintf('Unable to read directory "%s"', $directory)
-            );
-        }
-
         $dir_iterator = new RecursiveDirectoryIterator($directory);
         $recursive_iterator = new RecursiveIteratorIterator(
             $dir_iterator,
