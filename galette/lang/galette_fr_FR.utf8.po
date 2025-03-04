@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-02-15 09:59+0100\n"
-"PO-Revision-Date: 2025-02-26 12:57+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2025-03-05 06:32+0000\n"
+"Last-Translator: Fredericos Tezorc <fredericos.tezorc@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10.2-dev\n"
+"X-Generator: Weblate 5.10.3-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -8353,7 +8353,7 @@ msgstr "Détacher ?"
 
 #: ../../tempcache/pages/member_form.html.twig:205
 msgid "Attach member"
-msgstr "Attacher un adhérent"
+msgstr "Attacher à un adhérent"
 
 #: ../../tempcache/pages/member_form.html.twig:212
 msgid "Parent member"
