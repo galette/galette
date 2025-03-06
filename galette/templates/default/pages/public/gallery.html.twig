@@ -47,22 +47,30 @@
     {% set mgroups = member.getManagedGroups() %}
     {% if member.isStaff() or mgroups|length %}
         <div class="extra content">
-            <span class="right floated">
+            <div class="ui labels">
         {% if member.isStaff() %}
-                <i class="ui user tie orange icon" aria-hidden="true"></i>
-                {{ member.sstatus }}
+                <div class="ui fluid label">
+                    <i class="ui user tie orange icon" aria-hidden="true"></i>
+                    {{ member.sstatus }}
+                </div>
         {% endif %}
         {% if mgroups|length %}
-            {% if member.isStaff() %}
-                <br />
-            {% endif %}
-            <i class="ui users cog orange icon" aria-hidden="true"></i>
-            {{ __('Manages:') }}
-            {% for group in mgroups %}
-                {{ group.getName() }}
-            {% endfor %}
+                <div class="ui fluid label inline-tooltip" data-position="top right">
+                    <i class="ui users cog orange icon" aria-hidden="true"></i>
+                    {{ __('Group manager') }}
+                </div>
+                <div class="ui popup">
+                    <div class="header">{{ __('Manages:') }}</div>
+                    <div class="content">
+                        <div class="ui bulleted list">
+                        {% for group in mgroups %}
+                            <div class="item">{{ group.getName() }}</div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
         {% endif %}
-            </span>
+            </div>
         </div>
     {% endif %}
     </div>
