@@ -1,6 +1,6 @@
 {
   "name": "Galette",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "[Galette](https://galette.eu) is a Free/Libre Open Source membership management web application dedicated towards non profit organizations.",
   "main": "galette-main.js",
   "directories": {
@@ -38,14 +38,14 @@
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
-    "chart.js": "^4.4.4",
+    "chart.js": "^4.4.8",
     "chartjs-plugin-autocolors": "^0.3.1",
     "chartjs-plugin-datalabels": "^2.2.0",
-    "darkreader": "^4.9.95",
-    "fomantic-ui": "^2.9.3",
+    "darkreader": "^4.9.105",
+    "fomantic-ui": "^2.9.4",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
-    "sortablejs": "^1.15.3",
+    "sortablejs": "^1.15.6",
     "summernote": "^0.9.1",
     "twemoji-emojis": "^14.1.0"
   }
