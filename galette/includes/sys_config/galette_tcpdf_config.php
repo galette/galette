@@ -48,7 +48,6 @@
 // See LICENSE.TXT file for more information.
 //============================================================+
 
-
 declare(strict_types=1);
 
 /**
