@@ -15,10 +15,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-03-10 18:38+0100\n"
-"PO-Revision-Date: 2025-03-05 06:32+0000\n"
-"Last-Translator: Fredericos Tezorc <fredericos.tezorc@gmail.com>\n"
+"PO-Revision-Date: 2025-03-10 17:48+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -362,18 +362,14 @@ msgstr "Trombinoscope"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:390
 #: ../lib/Galette/Core/Galette.php:568
-#, fuzzy
-#| msgid "[staff]"
 msgid "Staff"
-msgstr "[staff]"
+msgstr "Bureau"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:426
 #: ../lib/Galette/Core/Galette.php:578
 #: ../../tempcache/pages/preferences.html.twig:1319
-#, fuzzy
-#| msgid "Staff member"
 msgid "Staff gallery"
-msgstr "Membre du bureau"
+msgstr "Trombinoscope bureau"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:617
 #: ../lib/Galette/Core/Galette.php:182
@@ -1707,16 +1703,12 @@ msgid "Various administrative tools"
 msgstr "Outils d’administration variés"
 
 #: ../lib/Galette/Core/Galette.php:589
-#, fuzzy
-#| msgid "entries"
 msgid "Directories"
-msgstr "entrées"
+msgstr "Répertoires"
 
 #: ../lib/Galette/Core/Galette.php:600
-#, fuzzy
-#| msgid "Gallery"
 msgid "Galleries"
-msgstr "Trombinoscope"
+msgstr "Trombinoscopes"
 
 #: ../lib/Galette/Core/Galette.php:611 ../lib/Galette/Core/Galette.php:801
 msgid "View documents related to your association"
@@ -4161,10 +4153,8 @@ msgid "Freed of dues:"
 msgstr "Exempt de cotisation :"
 
 #: ../includes/fields_defs/members_fields.php:253
-#, fuzzy
-#| msgid "Be visible in the members list:"
 msgid "Be visible on public pages:"
-msgstr "Apparaître dans la liste des membres :"
+msgstr "Apparaître sur les pages publiques :"
 
 #: ../includes/fields_defs/members_fields.php:261
 msgid "Due date:"
@@ -6197,10 +6187,9 @@ msgid "No member"
 msgstr "Aucun adhérent"
 
 #: ../../tempcache/pages/public/staff_list.html.twig:157
-#, fuzzy, php-format
-#| msgid "Group manager"
+#, php-format
 msgid "\"%1$s\" group managers"
-msgstr "Responsable de groupe"
+msgstr "Responsables du groupe « %1$s »"
 
 #: ../../tempcache/pages/public/list.html.twig:121
 #: ../../tempcache/pages/public/list.html.twig:125
@@ -6224,10 +6213,8 @@ msgid "Is a woman"
 msgstr "Est une femme"
 
 #: ../../tempcache/pages/public/gallery.html.twig:155
-#, fuzzy
-#| msgid "Managers:"
 msgid "Manages:"
-msgstr "Responsables :"
+msgstr "Gère :"
 
 #: ../../tempcache/pages/transaction_form.html.twig:73
 msgid "Transaction details"
@@ -7720,10 +7707,8 @@ msgid "Self subscription enabled?"
 msgstr "Auto-enregistrement actif ?"
 
 #: ../../tempcache/pages/preferences.html.twig:996
-#, fuzzy
-#| msgid "Download empty adhesion form"
 msgid "Display the link to download the empty adhesion form"
-msgstr "Télécharger un formulaire d’adhésion vierge"
+msgstr "Afficher le lien pour télécharger le formulaire d’adhésion vierge"
 
 #: ../../tempcache/pages/preferences.html.twig:1013
 msgid "Public pages enabled?"
@@ -7734,6 +7719,8 @@ msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
 msgstr ""
+"S'appliquera à toutes les pages publiques qui ne sont pas listées ici, y-"
+"compris celles des plugins."
 
 #: ../../tempcache/pages/preferences.html.twig:1047
 #: ../../tempcache/pages/preferences.html.twig:1105
@@ -7742,7 +7729,7 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:1282
 #: ../../tempcache/pages/preferences.html.twig:1340
 msgid "Hidden"
-msgstr ""
+msgstr "Caché"
 
 #: ../../tempcache/pages/preferences.html.twig:1057
 #: ../../tempcache/pages/preferences.html.twig:1115
@@ -7772,25 +7759,19 @@ msgstr "Liste des membres"
 #: ../../tempcache/pages/preferences.html.twig:1272
 #: ../../tempcache/pages/preferences.html.twig:1330
 msgid "Inherit"
-msgstr ""
+msgstr "Hérite"
 
 #: ../../tempcache/pages/preferences.html.twig:1142
-#, fuzzy
-#| msgid "Member's name"
 msgid "Members gallery"
-msgstr "Nom de l’adhérent"
+msgstr "Trombinoscope adhérents"
 
 #: ../../tempcache/pages/preferences.html.twig:1261
-#, fuzzy
-#| msgid "Staff members"
 msgid "Staff list"
-msgstr "Membres du bureau"
+msgstr "Liste bureau"
 
 #: ../../tempcache/pages/preferences.html.twig:1384
-#, fuzzy
-#| msgid "Can group managers edit members?"
 msgid "Include groups managers with staff?"
-msgstr "Les responsables de groupe peuvent éditer les adhérents ?"
+msgstr "Inclure les responsables de groupes avec le bureau ?"
 
 #: ../../tempcache/pages/preferences.html.twig:1396
 msgid "Appearance"
@@ -8492,6 +8473,8 @@ msgstr "Parent de :"
 msgid ""
 "If you'd rather not subscribe online, you can download an empty adhesion form"
 msgstr ""
+"Si vous préférez ne pas souscrire en ligne, vous pouvez télécharger un "
+"formulaire d'adhésion vide"
 
 #: ../../tempcache/pages/member_form.html.twig:445
 msgid "Notify member his account has been modified"
