@@ -11,9 +11,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-03-10 18:38+0100\n"
-"PO-Revision-Date: 2025-02-16 08:29+0000\n"
+"PO-Revision-Date: 2025-03-11 13:52+0000\n"
 "Last-Translator: Максим Горпиніч <maksimgorpinic2005a@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.10\n"
+"X-Generator: Weblate 5.10.3-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -356,18 +356,14 @@ msgstr "Дошка членів"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:390
 #: ../lib/Galette/Core/Galette.php:568
-#, fuzzy
-#| msgid "[staff]"
 msgid "Staff"
-msgstr "[співробітник]"
+msgstr "Персонал"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:426
 #: ../lib/Galette/Core/Galette.php:578
 #: ../../tempcache/pages/preferences.html.twig:1319
-#, fuzzy
-#| msgid "Staff member"
 msgid "Staff gallery"
-msgstr "Співробітник"
+msgstr "Галерея персоналу"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:617
 #: ../lib/Galette/Core/Galette.php:182
@@ -1682,16 +1678,12 @@ msgid "Various administrative tools"
 msgstr "Різні адміністративні засоби"
 
 #: ../lib/Galette/Core/Galette.php:589
-#, fuzzy
-#| msgid "directory_name"
 msgid "Directories"
-msgstr "directory_name"
+msgstr "Довідники"
 
 #: ../lib/Galette/Core/Galette.php:600
-#, fuzzy
-#| msgid "Gallery"
 msgid "Galleries"
-msgstr "Дошка членів"
+msgstr "Галереї"
 
 #: ../lib/Galette/Core/Galette.php:611 ../lib/Galette/Core/Galette.php:801
 msgid "View documents related to your association"
@@ -4110,10 +4102,8 @@ msgid "Freed of dues:"
 msgstr "Звільнено від внесків:"
 
 #: ../includes/fields_defs/members_fields.php:253
-#, fuzzy
-#| msgid "Be visible in the members list:"
 msgid "Be visible on public pages:"
-msgstr "Видимий у списку учасників:"
+msgstr "Бути видимим на публічних сторінках:"
 
 #: ../includes/fields_defs/members_fields.php:261
 msgid "Due date:"
@@ -6118,10 +6108,9 @@ msgid "No member"
 msgstr "Немає учасників"
 
 #: ../../tempcache/pages/public/staff_list.html.twig:157
-#, fuzzy, php-format
-#| msgid "Group manager"
+#, php-format
 msgid "\"%1$s\" group managers"
-msgstr "Менеджер групи"
+msgstr "Керівники групи \"%1$s\""
 
 #: ../../tempcache/pages/public/list.html.twig:121
 #: ../../tempcache/pages/public/list.html.twig:125
@@ -6145,10 +6134,8 @@ msgid "Is a woman"
 msgstr "Є жінкою"
 
 #: ../../tempcache/pages/public/gallery.html.twig:155
-#, fuzzy
-#| msgid "Managers:"
 msgid "Manages:"
-msgstr "Менеджери:"
+msgstr "Керує:"
 
 #: ../../tempcache/pages/transaction_form.html.twig:73
 msgid "Transaction details"
@@ -7629,10 +7616,8 @@ msgid "Self subscription enabled?"
 msgstr "Увімкнено самопідписку?"
 
 #: ../../tempcache/pages/preferences.html.twig:996
-#, fuzzy
-#| msgid "Download empty adhesion form"
 msgid "Display the link to download the empty adhesion form"
-msgstr "Завантажити порожню форму зчіпляння"
+msgstr "Показати посилання для завантаження порожньої форми приєднання"
 
 #: ../../tempcache/pages/preferences.html.twig:1013
 msgid "Public pages enabled?"
@@ -7643,6 +7628,8 @@ msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
 msgstr ""
+"Застосовуватиметься до всіх загальнодоступних сторінок, яких тут немає, "
+"включно з додатковими."
 
 #: ../../tempcache/pages/preferences.html.twig:1047
 #: ../../tempcache/pages/preferences.html.twig:1105
@@ -7651,7 +7638,7 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:1282
 #: ../../tempcache/pages/preferences.html.twig:1340
 msgid "Hidden"
-msgstr ""
+msgstr "Прихований"
 
 #: ../../tempcache/pages/preferences.html.twig:1057
 #: ../../tempcache/pages/preferences.html.twig:1115
@@ -7681,25 +7668,19 @@ msgstr "Список членів"
 #: ../../tempcache/pages/preferences.html.twig:1272
 #: ../../tempcache/pages/preferences.html.twig:1330
 msgid "Inherit"
-msgstr ""
+msgstr "Успадкувати"
 
 #: ../../tempcache/pages/preferences.html.twig:1142
-#, fuzzy
-#| msgid "Member's name"
 msgid "Members gallery"
-msgstr "Ім'я члена"
+msgstr "Галерея учасників"
 
 #: ../../tempcache/pages/preferences.html.twig:1261
-#, fuzzy
-#| msgid "Staff members"
 msgid "Staff list"
-msgstr "Співробітники"
+msgstr "Штатний розпис"
 
 #: ../../tempcache/pages/preferences.html.twig:1384
-#, fuzzy
-#| msgid "Can group managers edit members?"
 msgid "Include groups managers with staff?"
-msgstr "Чи можуть менеджери груп редагувати учасників?"
+msgstr "Включати менеджерів груп до персоналу?"
 
 #: ../../tempcache/pages/preferences.html.twig:1396
 msgid "Appearance"
@@ -8400,6 +8381,8 @@ msgstr "Є батьком:"
 msgid ""
 "If you'd rather not subscribe online, you can download an empty adhesion form"
 msgstr ""
+"Якщо ви не хочете підписуватися онлайн, ви можете завантажити порожню форму "
+"приєднання"
 
 #: ../../tempcache/pages/member_form.html.twig:445
 msgid "Notify member his account has been modified"
