@@ -437,9 +437,7 @@ class Contribution extends GaletteTestCase
         $begin_date->sub(new \DateInterval('P5M')); // 2020-06-07
         $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
-        $due_date = clone $begin_date;
-        $due_date->add(new \DateInterval('P1Y'));
-        $due_date->sub(new \DateInterval('P1D'));
+        $due_date = new \DateTime(); //fake due date; not kept for donations.
 
         $data = [
             'id_adh' => $this->adh->id,
@@ -451,7 +449,7 @@ class Contribution extends GaletteTestCase
             'date_debut_cotis' => $begin_date->format('Y-m-d'),
             'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
-        $this->createContrib($data);
+        $contrib = $this->createContrib($data);
         $this->assertSame(
             [
                 'id_type_cotis'     => 1,
@@ -465,6 +463,9 @@ class Contribution extends GaletteTestCase
         );
 
         $this->logSuperAdmin();
+        $this->assertTrue($contrib->load($contrib->id));
+        $this->assertNull($contrib->end_date);
+
         $data = [
             'id_adh' => $this->adh->id,
             'id_type_cotis' => 4, //donation
@@ -479,6 +480,7 @@ class Contribution extends GaletteTestCase
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
         $this->assertSame(1280.00, $contrib->amount);
+        $this->assertNull($contrib->end_date);
 
         //empty amount
         $data = [
@@ -495,6 +497,7 @@ class Contribution extends GaletteTestCase
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
         $this->assertSame(0.00, $contrib->amount);
+        $this->assertNull($contrib->end_date);
     }
 
     /**

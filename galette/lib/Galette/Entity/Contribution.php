@@ -683,8 +683,8 @@ class Contribution
                 }
             }
 
-            //no end date, let's take database defaults
-            if (!$this->isFee() && !$this->end_date) {
+            //no end date for donation
+            if (!$this->isFee()) {
                 $values['date_fin_cotis'] = new Expression('NULL');
             }
 
