@@ -65,8 +65,13 @@
     {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
         {% set documentation_path = documentation ?? '' %}
         {% if documentation_path is not empty %}
+            {% if documentation_path starts with 'https' %}
+                {% set documentation_url = documentation_path %}
+            {% else %}
+                {% set documentation_url = i18n.getDocumentationBaseUrl() ~ documentation_path %}
+            {% endif %}
                         <div class="ui compact segment">
-                            <a class="circular ui basic mini icon button" href="{{ i18n.getDocumentationBaseUrl() }}{{ documentation_path }}" target="_blank" data-position="left center" title="{{ _T("Read the manual") }}">
+                            <a class="circular ui basic mini icon button" href="{{ documentation_url }}" target="_blank" data-position="left center" title="{{ _T("Read the manual") }}">
                                 <i class="question icon"></i>
                                 <span class="visually-hidden">{{ _T("Read the manual") }}</span>
                             </a>
