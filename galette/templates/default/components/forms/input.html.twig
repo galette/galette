@@ -30,7 +30,12 @@
         <div class="ui toggle{% if checked is defined and checked == true %} checked{% endif %} right aligned checkbox">
     {% elseif nolabel is not defined or nolabel != true %}
     {% block label %}
-        <label for="{{ id }}"{% if title is defined %} title="{{ title }}"{% endif %}{% if labelclass is defined %} class="{% if labelclass is defined %}{{ labelclass }}{% endif %}"{% endif %}>
+        <label
+            {% if labelid is defined %} id="{{ labelid }}"{% endif %}
+            for="{{ id }}"
+            {% if title is defined %} title="{{ title }}"{% endif %}
+            {% if labelclass is defined %} class="{{ labelclass }}"{% endif %}
+        >
         {% if masschange ?? false %}
             {# Add a checkbox for fields to change on mass edition #}
             <input type="checkbox" name="mass_{{ id }}" class="mass_checkbox"/>
@@ -43,6 +48,9 @@
         <div class="ui input">
     {% elseif (tip is defined and tip != '') and (type is defined and type == 'text') %}
         <div class="ui corner labeled input">
+    {% elseif (withlegend is defined) %}
+        <div class="ui corner labeled input">
+            <div class="ui corner label"></div>
     {% elseif (rightlabel is defined and rightlabel != '') and (type is defined and type == 'text') %}
         <div class="ui right labeled input">
     {% elseif search_id is defined %}
@@ -82,7 +90,7 @@
                 <i class="circular basic question icon tooltip" {% if tip_html is defined %}data-html{% else %}title{% endif %}="{{ tip }}" aria-hidden="true"></i>
             </div>
         </div>
-    {% elseif type is defined and type == 'password' %}
+    {% elseif (type is defined and type == 'password') or (withlegend is defined) %}
         </div>
     {% endif %}
     {% if type is defined and type == 'checkbox' %}
