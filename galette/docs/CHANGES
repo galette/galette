@@ -8,6 +8,13 @@ Changes
 - Dates validation is a bit stricter
 - Remove photo drag'n drop
 - Remove log preferences (logs are always enabled)
+- Fix several typehint issues
+- Use transaction payment type as default on new contributions
+- Contributions amount no longer can be zero
+- Add links to relevant parts of the documentation
+- Add few parameters to customize appearance
+- Plugins can now add Javascript just before the closing body tag
+- Add staff public pages (list and gallery)
 
 1.1.5.1 -> 1.1.5.2
 
