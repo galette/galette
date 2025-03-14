@@ -121,7 +121,7 @@ body.pushable:not(.loggedin) {
   footer.page-footer {
     position: relative;
     z-index: 2;
-    margin-top: -120px;
+    margin-top: -115px;
   }
 }
 
