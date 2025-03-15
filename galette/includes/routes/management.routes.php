@@ -325,6 +325,11 @@ $app->post(
 )->setName('doRemoveStatus')->add($authenticate);
 
 $app->get(
+    '/dynamic-translation/{text_orig_sum}',
+    [DynamicTranslationsController::class, 'dynamicTranslation']
+)->setName('dynamicTranslation')->add($authenticate);
+
+$app->get(
     '/dynamic-translations[/{text_orig}]',
     [DynamicTranslationsController::class, 'dynamicTranslations']
 )->setName('dynamicTranslations')->add($authenticate);

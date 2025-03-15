@@ -48,77 +48,19 @@ trait I18n
      */
     protected function addTranslation(string $text_orig): bool
     {
-        global $i18n;
+        /** @var \Galette\Core\L10n $l10n */
+        global $l10n;
 
-        try {
-            foreach ($i18n->getList() as $lang) {
-                //check if translation already exists
-                $select = $this->zdb->select(L10n::TABLE);
-                $select->columns(array('text_nref'))
-                    ->where(
-                        array(
-                            'text_orig'     => $text_orig,
-                            'text_locale'   => $lang->getLongID()
-                        )
-                    );
-
-                $results = $this->zdb->execute($select);
-                $result = $results->current();
-                $nref = 0;
-                if ($result) {
-                    $nref = $result->text_nref;
-                }
-
-                if (is_numeric($nref) && $nref > 0) {
-                    //already existing, update
-                    $values = array(
-                        'text_nref' => new Expression('text_nref+1')
-                    );
-                    Analog::log(
-                        'Entry for `' . $text_orig .
-                        '` dynamic translation already exists.',
-                        Analog::INFO
-                    );
-
-                    $owhere = $select->where;
-
-                    $update = $this->zdb->update(L10n::TABLE);
-                    $update->set($values)->where($owhere);
-                    $this->zdb->execute($update);
-                } else {
-                    //add new entry
-                    // User is supposed to use current language as original text.
-                    $text_trans = $text_orig;
-                    if ($lang->getLongID() != $i18n->getLongID()) {
-                        $text_trans = '';
-                    }
-                    $values = array(
-                        'text_orig' => $text_orig,
-                        'text_locale' => $lang->getLongID(),
-                        'text_trans' => $text_trans
-                    );
-
-                    $insert = $this->zdb->insert(L10n::TABLE);
-                    $insert->values($values);
-                    $this->zdb->execute($insert);
-                }
-            }
-            return true;
-        } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred adding dynamic translation for `' .
-                $text_orig . '` | ' . $e->getMessage(),
-                Analog::ERROR
-            );
-
+        $result = $l10n->addDynamicTranslation($text_orig);
+        if ($result === false) {
             $this->warnings[] = str_replace(
                 '%field',
                 $text_orig,
                 _T('Unable to add dynamic translation for %field :(')
             );
+        };
 
-            return false;
-        }
+        return $result;
     }
 
     /**
@@ -132,59 +74,19 @@ trait I18n
      */
     protected function updateTranslation(string $text_orig, string $text_locale, string $text_trans): bool
     {
-        try {
-            //check if translation already exists
-            $select = $this->zdb->select(L10n::TABLE);
-            $select->columns(array('text_nref'))->where(
-                array(
-                    'text_orig'     => $text_orig,
-                    'text_locale'   => $text_locale
-                )
-            );
+        /** @var \Galette\Core\L10n $l10n */
+        global $l10n;
 
-            $results = $this->zdb->execute($select);
-            $result = $results->current();
-
-            $exists = false;
-            if ($result) {
-                $nref = $result->text_nref;
-                $exists = (is_numeric($nref) && $nref > 0);
-            }
-
-            $values = array(
-                'text_trans' => $text_trans
-            );
-
-            if ($exists) {
-                $owhere = $select->where;
-
-                $update = $this->zdb->update(L10n::TABLE);
-                $update->set($values)->where($owhere);
-                $this->zdb->execute($update);
-            } else {
-                $values['text_orig'] = $text_orig;
-                $values['text_locale'] = $text_locale;
-
-                $insert = $this->zdb->insert(L10n::TABLE);
-                $insert->values($values);
-                $this->zdb->execute($insert);
-            }
-            return true;
-        } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred updating dynamic translation for `' .
-                $text_orig . '` | ' . $e->getMessage(),
-                Analog::ERROR
-            );
-
+        $result = $l10n->updateDynamicTranslation($text_orig, $text_locale, $text_trans);
+        if ($result === false) {
             $this->warnings[] = str_replace(
                 '%field',
                 $text_orig,
                 _T('Unable to update dynamic translation for %field :(')
             );
+        };
 
-            return false;
-        }
+        return $result;
     }
 
     /**
@@ -196,30 +98,19 @@ trait I18n
      */
     protected function deleteTranslation(string $text_orig): bool
     {
-        try {
-            $delete = $this->zdb->delete(L10n::TABLE);
-            $delete->where(
-                array(
-                    'text_orig'     => $text_orig
-                )
-            );
-            $this->zdb->execute($delete);
-            return true;
-        } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred deleting dynamic translation for `' .
-                $text_orig . ' | ' . $e->getMessage(),
-                Analog::ERROR
-            );
+        /** @var \Galette\Core\L10n $l10n */
+        global $l10n;
 
+        $result = $l10n->deleteDynamicTranslation($text_orig);
+        if ($result === false) {
             $this->warnings[] = str_replace(
                 '%field',
                 $text_orig,
                 _T('Unable to remove old dynamic translation for %field :(')
             );
-
-            return false;
         }
+
+        return $result;
     }
 
     /**

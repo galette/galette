@@ -63,6 +63,9 @@ ALTER TABLE galette_pictures CHANGE id_adh id_adh INT UNSIGNED NOT NULL DEFAULT 
 
 ALTER TABLE galette_l10n CHANGE text_nref text_nref INT NOT NULL DEFAULT 1;
 ALTER TABLE galette_l10n CHANGE text_trans text_trans varchar(255) NOT NULL DEFAULT '';
+ALTER TABLE galette_l10n ADD text_orig_sum varchar(40) NOT NULL;
+UPDATE galette_l10n SET text_orig_sum = MD5(text_orig);
+ALTER TABLE galette_l10n DROP PRIMARY KEY, ADD PRIMARY KEY (text_orig_sum, text_locale);
 
 ALTER TABLE galette_tmppasswds CHANGE id_adh id_adh INT UNSIGNED NOT NULL;
 

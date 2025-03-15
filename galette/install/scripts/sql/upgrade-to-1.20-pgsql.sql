@@ -177,3 +177,9 @@ ALTER TABLE galette_tmppasswds DROP CONSTRAINT galette_tmppasswds_id_adh_fkey,
 
 ALTER TABLE galette_transactions ADD CONSTRAINT galette_transactions_id_adh_fkey FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE galette_transactions DROP CONSTRAINT type_paiement_trans_fkey, ADD CONSTRAINT galette_transactions_type_paiement_trans_fkey FOREIGN KEY (type_paiement_trans) REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE galette_l10n ADD COLUMN text_orig_sum character varying(40);
+UPDATE galette_l10n SET text_orig_sum = MD5(text_orig);
+ALTER TABLE galette_l10n ALTER COLUMN text_orig_sum SET NOT NULL;
+ALTER TABLE galette_l10n DROP CONSTRAINT galette_l10n_pkey;
+ALTER TABLE galette_l10n ADD CONSTRAINT galette_l10n_pkey PRIMARY KEY (text_orig_sum, text_locale);

@@ -172,10 +172,11 @@ CREATE TABLE galette_pictures (
 DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
     text_orig varchar(255) NOT NULL,
+    text_orig_sum varchar(40) NOT NULL,
     text_locale varchar(15) NOT NULL,
     text_nref int NOT NULL default 1,
     text_trans varchar(255) NOT NULL default '',
-    PRIMARY KEY (text_orig, text_locale)
+    PRIMARY KEY (text_orig_sum, text_locale)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 -- new table for temporary passwords 2006-02-18;

@@ -169,10 +169,11 @@ CREATE TABLE galette_pictures (
 DROP TABLE IF EXISTS galette_l10n CASCADE;
 CREATE TABLE galette_l10n (
   text_orig character varying(255) NOT NULL,
+  text_orig_sum character varying(40) NOT NULL,
   text_locale character varying(15) NOT NULL,
   text_nref integer DEFAULT 1 NOT NULL,
   text_trans character varying(255) DEFAULT '' NOT NULL,
-  PRIMARY KEY (text_orig, text_locale)
+  PRIMARY KEY (text_orig_sum, text_locale)
 );
 
 -- new table for temporary passwords  2006-02-18;

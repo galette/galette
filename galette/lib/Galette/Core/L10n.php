@@ -70,7 +70,7 @@ class L10n
                 $select->columns(array('text_nref'))
                     ->where(
                         array(
-                            'text_orig'     => $text_orig,
+                            'text_orig_sum' => md5($text_orig),
                             'text_locale'   => $lang->getLongID()
                         )
                     );
@@ -107,6 +107,7 @@ class L10n
                     }
                     $values = array(
                         'text_orig' => $text_orig,
+                        'text_orig_sum' => md5($text_orig),
                         'text_locale' => $lang->getLongID(),
                         'text_trans' => $text_trans
                     );
@@ -140,19 +141,10 @@ class L10n
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
                 array(
-                    'text_orig'     => $text_orig,
-                    'text_locale'   => ':lang_id'
+                    'text_orig_sum' => md5($text_orig),
                 )
             );
-            $stmt = $this->zdb->sql->prepareStatementForSqlObject($delete);
-
-            foreach ($this->i18n->getList() as $lang) {
-                $stmt->execute(
-                    array(
-                        'text_locale' => $lang->getLongID()
-                    )
-                );
-            }
+            $this->zdb->execute($delete);
             return true;
         } catch (Throwable $e) {
             Analog::log(
@@ -181,7 +173,7 @@ class L10n
             $select = $this->zdb->select(self::TABLE);
             $select->columns(array('text_nref'))->where(
                 array(
-                    'text_orig'     => $text_orig,
+                    'text_orig_sum' => md5($text_orig),
                     'text_locale'   => $text_locale
                 )
             );
@@ -207,6 +199,7 @@ class L10n
                 $this->zdb->execute($update);
             } else {
                 $values['text_orig'] = $text_orig;
+                $values['text_orig_sum'] = md5($text_orig);
                 $values['text_locale'] = $text_locale;
 
                 $insert = $this->zdb->insert(self::TABLE);
@@ -240,7 +233,7 @@ class L10n
                 array('text_trans')
             )->where(
                 array(
-                    'text_orig'     => $text_orig,
+                    'text_orig_sum' => md5($text_orig),
                     'text_locale'   => $text_locale
                 )
             );
@@ -259,5 +252,74 @@ class L10n
             );
             throw $e;
         }
+    }
+
+    /**
+     * Get a translation stored in the database
+     *
+     * @param string $text_orig_sum Original text hash
+     *
+     * @return array<int, array{key: string, name: string, text: string}>
+     */
+    public function getDynamicTranslations(string $text_orig_sum): array
+    {
+        try {
+            $select = $this->zdb->select(self::TABLE);
+            $select->where(
+                array(
+                    'text_orig_sum' => $text_orig_sum
+                )
+            );
+
+            $results = $this->zdb->execute($select);
+            $existing_translations = array();
+            foreach ($results as $row) {
+                $existing_translations[$row->text_locale] = $row->text_trans;
+            }
+
+            if (!count($existing_translations)) {
+                $existing_translations[$this->i18n->getLongID()] = $text_orig_sum;
+            }
+
+            $results = array();
+            foreach ($this->i18n->getList() as $l) {
+                $results[] = array(
+                    'key'  => $l->getLongID(),
+                    'name' => ucwords($l->getName()),
+                    'text' => $existing_translations[$l->getLongID()] ?? ''
+                );
+            }
+            return $results;
+        } catch (Throwable $e) {
+            Analog::log(
+                'An error occurred retrieving l10n entries. text_orig_sum=' . $text_orig_sum .
+                ' | ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            throw $e;
+        }
+    }
+
+    /**
+     * Get existing translations from database
+     *
+     * @return array<string, string>
+     *
+     * @throws Throwable
+     */
+    public function getStringsToTranslate(): array
+    {
+        $select = $this->zdb->select(self::TABLE);
+        $select->quantifier('DISTINCT')->columns(
+            array('text_orig', 'text_orig_sum')
+        )->order('text_orig');
+
+        $all_texts = $this->zdb->execute($select);
+
+        $translations = array();
+        foreach ($all_texts as $row) {
+            $translations[$row->text_orig_sum] = $row->text_orig;
+        }
+        return $translations;
     }
 }
