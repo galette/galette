@@ -649,7 +649,7 @@ class Preferences extends GaletteTestCase
     {
         $legend = $this->preferences->getLegend();
         $this->assertCount(2, $legend);
-        $this->assertCount(10, $legend['main']['patterns']);
+        $this->assertCount(12, $legend['main']['patterns']);
         $this->assertCount(10, $legend['socials']['patterns']);
         $this->assertSame(
             [
@@ -1066,7 +1066,7 @@ class Preferences extends GaletteTestCase
 
         $post = array_merge($preferences, ['pref_postal_address' => \Galette\Core\Preferences::POSTAL_ADDRESS_FROM_STAFF]);
         $this->assertFalse($this->preferences->check($post, $this->login));
-        $this->assertSame(['You have to select a staff member'], $this->preferences->getErrors());
+        $this->assertSame(['You have to select a staff member to retrieve its address'], $this->preferences->getErrors());
 
         $memberOne = $this->getMemberOne();
         $post = array_merge(
@@ -1082,6 +1082,48 @@ class Preferences extends GaletteTestCase
         );
         $expected = "DURAND René\nGalette association's Non-member\n66, boulevard De Oliveira\n39 069 Martel - Antarctique";
         $this->assertSame($expected, $this->preferences->getPostalAddress());
+    }
+
+    /**
+     * Test phone number
+     *
+     * @return void
+     */
+    public function testOrgPhone(): void
+    {
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        $post = array_merge($preferences, ['pref_org_phone' => \Galette\Core\Preferences::PHONE_NUMBER_FROM_PREFS]);
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+
+        $post = array_merge($preferences, ['pref_org_phone' => \Galette\Core\Preferences::PHONE_NUMBER_FROM_STAFF]);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['You have to select a staff member to retrieve its phone number'], $this->preferences->getErrors());
+
+        $post = array_merge($preferences, ['pref_org_phone' => \Galette\Core\Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF]);
+        $this->assertFalse($this->preferences->check($post, $this->login));
+        $this->assertSame(['You have to select a staff member to retrieve its phone number'], $this->preferences->getErrors());
+
+        $memberOne = $this->getMemberOne();
+        $post = array_merge(
+            $preferences,
+            [
+                'pref_org_phone' => \Galette\Core\Preferences::PHONE_NUMBER_FROM_STAFF,
+                'pref_org_phone_staff_member' => $memberOne->id
+            ]
+        );
+        $this->assertTrue(
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
+        );
+        $expected = '0439153432';
+        $this->assertSame($expected, $this->preferences->getPhoneNumber());
     }
 
     /**

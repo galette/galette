@@ -103,51 +103,105 @@
                         <label for="pref_adresse2" class="libelle">{{ _T("Address:") }} {{ _T(" (continuation)") }}</label>
                         <input type="text" name="pref_adresse2" id="pref_adresse2" value="{{ pref.pref_adresse2 }}" maxlength="190"/>
                     </div>
-                    <div class="field">
-                        <label for="pref_cp">{{ _T("Zip Code:") }}</label>
-                        <input type="text" name="pref_cp" id="pref_cp" value="{{ pref.pref_cp }}" maxlength="10"/>
+                    <div class="two fields">
+                        <div class="field">
+                            <label for="pref_cp">{{ _T("Zip Code:") }}</label>
+                            <input type="text" name="pref_cp" id="pref_cp" value="{{ pref.pref_cp }}" maxlength="10"/>
+                        </div>
+                        <div class="field">
+                            <label for="pref_ville">{{ _T("City:") }}</label>
+                            <input type="text" name="pref_ville" id="pref_ville" value="{{ pref.pref_ville }}" maxlength="100"/>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label for="pref_region">{{ _T("Region:") }}</label>
+                            <input type="text" name="pref_region" id="pref_region" value="{{ pref.pref_region }}" maxlength="100"/>
+                        </div>
+                        <div class="field">
+                            <label for="pref_pays">{{ _T("Country:") }}</label>
+                            <input type="text" name="pref_pays" id="pref_pays" value="{{ pref.pref_pays }}" maxlength="50"/>
+                        </div>
                     </div>
                     <div class="field">
-                        <label for="pref_ville">{{ _T("City:") }}</label>
-                        <input type="text" name="pref_ville" id="pref_ville" value="{{ pref.pref_ville }}" maxlength="100"/>
+                        <label>
+                            {{ _T("Postal address:") }}
+                            <i class="circular small basic question icon tooltip" title="{{ _T("Use either the address set above or select a staff member to retrieve its address.") }}" aria-hidden="true"></i>
+                        </label>
+                        <div id="postal_reference" class="inline fields">
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <label for="pref_postal_address_0">{{ _T("from preferences") }}</label>
+                                    <input type="radio" name="pref_postal_address" id="pref_postal_address_0" value="{{ constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_PREFS') }}" {% if pref.pref_postal_address == constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_PREFS') %}checked="checked"{% endif %}/>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <label for="pref_postal_address_1">{{ _T("from a staff user") }}</label>
+                                    <input type="radio" name="pref_postal_address" id="pref_postal_address_1" value="{{ constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_STAFF') }}" {% if pref.pref_postal_address == constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_STAFF') %}checked="checked"{% endif %}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="postal_staff_member" class="field">
+                            <label for="pref_postal_staff_member">{{ _T("Staff member whose address needs to be retrieved") }}</label>
+                            <select name="pref_postal_staff_member" id="pref_postal_staff_member" class="ui search dropdown">
+                                <option value="-1">{{ _T("-- Choose a staff member --") }}</option>
+                            {% for staff in staff_members %}
+                                <option value="{{ staff.id }}"{% if staff.id == pref.pref_postal_staff_member %} selected="selected"{% endif %}>{{ staff.name }} ({{ staff.sstatus }})</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>{# /column #}
+                <div class="column">
+                    <div class="field">
+                        <label for="pref_org_phone_number">
+                            {{ _T("Phone:") }}
+                            <i class="circular small basic question icon tooltip" title="{{ _T("Either use the phone number set below or select a staff member to retrieve its phone number.") }}" aria-hidden="true"></i>
+                        </label>
+                        <input type="text" name="pref_org_phone_number" id="pref_org_phone_number" value="{{ pref.pref_org_phone_number }}" maxlength="100"/>
+                        <div id="phone_reference" class="inline fields">
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <label for="pref_org_phone_0">{{ _T("from preferences") }}</label>
+                                    <input type="radio" name="pref_org_phone" id="pref_org_phone_0" value="{{ constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_PREFS') }}" {% if pref.pref_org_phone == constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_PREFS') %}checked="checked"{% endif %}/>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <label for="pref_org_phone_1">{{ _T("phone from a staff user") }}</label>
+                                    <input type="radio" name="pref_org_phone" id="pref_org_phone_1" value="{{ constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_STAFF') }}" {% if pref.pref_org_phone == constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_STAFF') %}checked="checked"{% endif %}/>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <label for="pref_org_phone_2">{{ _T("mobile phone from a staff user") }}</label>
+                                    <input type="radio" name="pref_org_phone" id="pref_org_phone_2" value="{{ constant('Galette\\Core\\Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF') }}" {% if pref.pref_org_phone == constant('Galette\\Core\\Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF') %}checked="checked"{% endif %}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="phone_staff_member" class="field">
+                            <label for="pref_org_phone_staff_member">{{ _T("Staff member whose phone number needs to be retrieved") }}</label>
+                            <select name="pref_org_phone_staff_member" id="pref_org_phone_staff_member" class="ui search dropdown">
+                                <option value="-1">{{ _T("-- Choose a staff member --") }}</option>
+                            {% for staff in staff_members %}
+                                <option value="{{ staff.id }}"{% if staff.id == pref.pref_org_phone_staff_member %} selected="selected"{% endif %}>{{ staff.name }} ({{ staff.sstatus }})</option>
+                            {% endfor %}
+                            </select>
+                        </div>
                     </div>
                     <div class="field">
-                        <label for="pref_region">{{ _T("Region:") }}</label>
-                        <input type="text" name="pref_region" id=pref_region" value="{{ pref.pref_region }}" maxlength="100"/>
-                    </div>
-                    <div class="field">
-                        <label for="pref_pays">{{ _T("Country:") }}</label>
-                        <input type="text" name="pref_pays" id="pref_pays" value="{{ pref.pref_pays }}" maxlength="50"/>
+                        <label for="pref_org_email">{{ _T("E-Mail:") }}</label>
+                        <input type="text" name="pref_org_email" id="pref_org_email" value="{{ pref.pref_org_email }}" maxlength="100"/>
                     </div>
                     <div class="field">
                         <label for="pref_website">{{ _T("Website:") }}</label>
                         <input type="text" name="pref_website" id="pref_website" value="{{ pref.pref_website }}" maxlength="100"/>
                     </div>
                 </div>{# /column #}
+            </div>
+            <div class="ui stackable two column grid">
                 <div class="column">
-                    <div class="field">
-                        <label>
-                            {{ _T("Postal address:") }}
-                            <i class="circular small basic question icon tooltip" title="{{ _T("Use either the address setted below or select a staff member to retrieve he's address.") }}" aria-hidden="true"></i>
-                        </label>
-                        <div class="inline fields">
-                            <div class="field">
-                                <label for="pref_postal_address_0">{{ _T("from preferences") }}</label>
-                                <input type="radio" name="pref_postal_address" id="pref_postal_address_0" value="{{ constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_PREFS') }}" {% if pref.pref_postal_address == constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_PREFS') %}checked="checked"{% endif %}/>
-                            </div>
-                            <div class="field">
-                                <label for="pref_postal_address_1">{{ _T("from a staff user") }}</label>
-                                <input type="radio" name="pref_postal_address" id="pref_postal_address_1" value="{{ constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_STAFF') }}" {% if pref.pref_postal_address == constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_STAFF') %}checked="checked"{% endif %}/>
-                            </div>
-                        </div>
-                        <label for="pref_postal_staff_member">{{ _T("Staff member") }}</label>
-                        <select name="pref_postal_staff_member" id="pref_postal_staff_member" class="ui search dropdown">
-                            <option value="-1">{{ _T("-- Choose a staff member --") }}</option>
-                        {% for staff in staff_members %}
-                            <option value="{{ staff.id }}"{% if staff.id == pref.pref_postal_staff_member %} selected="selected"{% endif %}>{{ staff.name }} ({{ staff.sstatus }})</option>
-                        {% endfor %}
-                        </select>
-                    </div>
                     <div class="field">
                         <label for="pref_footer">{{ _T("Footer text:") }}</label>
                         <div class="ui right corner labeled input">
@@ -157,6 +211,14 @@
                             <textarea name="pref_footer" id="pref_footer" rows="2">{{ pref.pref_footer }}</textarea>
                         </div>
                     </div>
+                    <div class="field inline">
+                        <div class="ui right aligned toggle checkbox">
+                            <input type="checkbox" name="pref_noindex" id="pref_noindex" value="1"{% if pref.pref_noindex %} checked="checked"{% endif %}/>
+                            <label for="pref_noindex">{{ _T("Prevent search engines indexation") }}</label>
+                        </div>
+                    </div>
+                </div>{# /column #}
+                <div class="column">
                     <div class="field">
                         <label>
                             {{ _T("Telemetry date:") }}
@@ -182,12 +244,6 @@
                             {% endif %}
                             - <a href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ pref.pref_registration_uuid }}" id="register" target="_blank" class="ui labeled icon button"><i class="pen alternate icon" aria-hidden="true"></i>{{ regtxt }}</a>
                         </span>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_noindex" id="pref_noindex" value="1"{% if pref.pref_noindex %} checked="checked"{% endif %}/>
-                            <label for="pref_noindex">{{ _T("Prevent search engines indexation") }}</label>
-                        </div>
                     </div>
                 </div>{# /column #}
             </div>{# /column grid #}
@@ -645,7 +701,7 @@
                     </div>
                 </div>{# /column #}
                 <div class="column">
-                    <div class="grouped fields">
+                    <div id="emailing_method" class="grouped fields">
                         <label>{{ _T("Emailing method:") }}</label>
                         <div class="field">
                             <div class="ui radio checkbox">
@@ -1091,11 +1147,11 @@
     {% if pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_SMTP') and pref.pref_mail_method != constant('Galette\\Core\\GaletteMail::METHOD_GMAIL') %}
                 $('#smtp_auth').addClass('displaynone');
     {% endif %}
-                $('.ui.radio.checkbox').checkbox({
+                $('#emailing_method .ui.radio.checkbox').checkbox({
                     onChange: function() {
                         var _checked = $(this).closest('input').attr('id');
-                        var _smtp_parameters = $(this).closest('.checkbox').parent().parent().siblings('#smtp_parameters');
-                        var _smtp_auth = $(this).closest('.checkbox').parent().parent().siblings('#smtp_auth');
+                        var _smtp_parameters = $('#smtp_parameters');
+                        var _smtp_auth = $('#smtp_auth');
                         if ( _checked == 'smtp' ) {
                             _smtp_parameters.removeClass('displaynone');
                             _smtp_auth.removeClass('displaynone');
@@ -1105,6 +1161,36 @@
                         } else {
                             _smtp_parameters.addClass('displaynone');
                             _smtp_auth.addClass('displaynone');
+                        }
+                    }
+                });
+
+    {% if pref.pref_postal_address == constant('Galette\\Core\\Preferences::POSTAL_ADDRESS_FROM_PREFS') %}
+                $('#postal_staff_member').addClass('displaynone');
+    {% endif %}
+                $('#postal_reference .ui.radio.checkbox').checkbox({
+                    onChange: function() {
+                        var _checked = $(this).closest('input').attr('id');
+                        var _postal_staff = $('#postal_staff_member');
+                        if ( _checked == 'pref_postal_address_1' ) {
+                            _postal_staff.removeClass('displaynone');
+                        } else {
+                            _postal_staff.addClass('displaynone');
+                        }
+                    }
+                });
+
+    {% if pref.pref_org_phone == constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_PREFS') %}
+                $('#phone_staff_member').addClass('displaynone');
+    {% endif %}
+                $('#phone_reference .ui.radio.checkbox').checkbox({
+                    onChange: function() {
+                        var _checked = $(this).closest('input').attr('id');
+                        var _phone_staff = $('#phone_staff_member');
+                        if ( _checked == 'pref_org_phone_1' || _checked == 'pref_org_phone_2' ) {
+                            _phone_staff.removeClass('displaynone');
+                        } else {
+                            _phone_staff.addClass('displaynone');
                         }
                     }
                 });
