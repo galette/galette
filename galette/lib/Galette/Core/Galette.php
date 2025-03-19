@@ -430,7 +430,8 @@ class Galette
                                 'label' => _T("Translate labels"),
                                 'title' => _T("Translate additional fields labels"),
                                 'route' => [
-                                    'name' => 'dynamicTranslations'
+                                    'name' => 'dynamicTranslations',
+                                    'aliases' => ['dynamicTranslation']
                                 ]
                             ],
                             [
