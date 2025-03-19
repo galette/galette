@@ -104,6 +104,8 @@ class PdfModel extends GaletteTestCase
             'asso_slogan'        => '/{ASSO_SLOGAN}/',
             'asso_address'       => '/{ASSO_ADDRESS}/',
             'asso_address_multi' => '/{ASSO_ADDRESS_MULTI}/',
+            'asso_phone_number'  => '/{ASSO_PHONE}/',
+            'asso_email'         => '/{ASSO_EMAIL}/',
             'asso_website'       => '/{ASSO_WEBSITE}/',
             'asso_logo'          => '/{ASSO_LOGO}/',
             'asso_print_logo'    => '/{ASSO_PRINT_LOGO}/',
@@ -345,7 +347,7 @@ Au milieu
         $this->assertArrayHasKey('member', $legend);
         $this->assertArrayHasKey('contribution', $legend);
 
-        $this->assertCount(10, $legend['main']['patterns']);
+        $this->assertCount(12, $legend['main']['patterns']);
         $this->assertCount(28, $legend['member']['patterns']);
         $this->assertTrue(isset($legend['member']['patterns']['label_dynfield_' . $adf->getId() . '_adh']));
         $this->assertCount(14, $legend['contribution']['patterns']);

@@ -187,6 +187,14 @@ trait Replacements
                 'title'     => sprintf('%s (%s)', _T('Your organisation address'), _T('with break lines')),
                 'pattern'   => '/{ASSO_ADDRESS_MULTI}/',
             ],
+            'asso_phone_number' => [
+                'title'     => _T('Your organisation phone number'),
+                'pattern'   => '/{ASSO_PHONE}/'
+            ],
+            'asso_email' => [
+                'title'     => _T('Your organisation email address'),
+                'pattern'   => '/{ASSO_EMAIL}/'
+            ],
             'asso_website'          => [
                 'title'     => _T('Your organisation website'),
                 'pattern'   => '/{ASSO_WEBSITE}/',
@@ -505,6 +513,8 @@ trait Replacements
                 'asso_slogan'        => $this->preferences->pref_slogan,
                 'asso_address'       => $address,
                 'asso_address_multi' => $address_multi,
+                'asso_phone_number'  => $this->preferences->getPhoneNumber(),
+                'asso_email'         => $this->preferences->pref_org_email,
                 'asso_website'       => $website,
                 'asso_logo'          => $logo_elt,
                 'asso_print_logo'    => $print_logo_elt,

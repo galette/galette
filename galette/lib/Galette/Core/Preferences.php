@@ -53,6 +53,10 @@ use Galette\Repository\Members;
  * @property string $pref_pays Country
  * @property integer $pref_postal_address Postal address to use, one of self::POSTAL_ADDRESS*
  * @property integer $pref_postal_staff_member Staff member ID from which retrieve postal address
+ * @property string $pref_org_phone_number Phone number
+ * @property integer $pref_org_phone Phone number to use, one of self::PHONE_NUMBER*
+ * @property integer $pref_org_phone_staff_member Staff member ID from which retrieve phone number
+ * @property string $pref_org_email Email address
  * @property boolean $pref_disable_members_socials Disable social networks for members
  * @property string $pref_lang Default instance language
  * @property integer $pref_numrows Default number of rows in lists
@@ -175,6 +179,13 @@ class Preferences
     /** Postal address will be the one of the selected staff member */
     public const POSTAL_ADDRESS_FROM_STAFF = 1;
 
+    /** Phone number will be the one given in the preferences */
+    public const PHONE_NUMBER_FROM_PREFS = 0;
+    /** Phone number will be the one of the selected staff member */
+    public const PHONE_NUMBER_FROM_STAFF = 1;
+    /** Phone number will be the GSM of the selected staff member */
+    public const PHONE_NUMBER_MOBILE_FROM_STAFF = 2;
+
     /** Public pages stuff */
     /** Public pages are publicly visibles */
     public const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
@@ -219,6 +230,10 @@ class Preferences
         'pref_pays'        =>    '',
         'pref_postal_address'  => self::POSTAL_ADDRESS_FROM_PREFS,
         'pref_postal_staff_member' => '',
+        'pref_org_phone_number' => '',
+        'pref_org_phone' => self::PHONE_NUMBER_FROM_PREFS,
+        'pref_org_phone_staff_member' => '',
+        'pref_org_email' => '',
         'pref_disable_members_socials' => false,
         'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
@@ -669,7 +684,21 @@ class Preferences
                 }
             } elseif ($value == Preferences::POSTAL_ADDRESS_FROM_STAFF) {
                 if (!isset($insert_values['pref_postal_staff_member']) || $insert_values['pref_postal_staff_member'] < 1) {
-                    $this->errors[] = _T("You have to select a staff member");
+                    $this->errors[] = _T("You have to select a staff member to retrieve its address");
+                }
+            }
+        }
+
+        //phone number
+        if (isset($insert_values['pref_org_phone'])) {
+            $value = $insert_values['pref_org_phone'];
+            if ($value == Preferences::PHONE_NUMBER_FROM_PREFS) {
+                if (isset($insert_values['pref_org_phone_staff_member'])) {
+                    unset($insert_values['pref_org_phone_staff_member']);
+                }
+            } elseif ($value == Preferences::PHONE_NUMBER_FROM_STAFF || $value == Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF) {
+                if (!isset($insert_values['pref_org_phone_staff_member']) || $insert_values['pref_org_phone_staff_member'] < 1) {
+                    $this->errors[] = _T("You have to select a staff member to retrieve its phone number");
                 }
             }
         }
@@ -710,6 +739,7 @@ class Preferences
             case 'pref_email':
             case 'pref_email_newadh':
             case 'pref_email_reply_to':
+            case 'pref_org_email':
                 //check emails validity
                 //may be a comma separated list of valid emails:
                 //"mail@domain.com,other@mail.com" only for pref_email_newadh.
@@ -944,13 +974,14 @@ class Preferences
             if ($this->prefs['pref_adresse2']) {
                 $_address .= "\n" . $this->prefs['pref_adresse2'];
             }
+            $_country = $this->prefs['pref_pays'] != '' ? '- ' . $this->prefs['pref_pays'] : '';
             $replacements = array(
                 $this->prefs['pref_nom'],
                 "\n",
                 $_address,
                 $this->prefs['pref_cp'],
                 $this->prefs['pref_ville'],
-                $this->prefs['pref_pays']
+                $_country
             );
         } else {
             //get selected staff member address
@@ -961,6 +992,7 @@ class Preferences
                 _T("%name association's %status")
             ) . "\n";
             $_address = $adh->address;
+            $_country = $adh->country != '' ? '- ' . $adh->country : '';
 
             $replacements = array(
                 $adh->sfullname . "\n",
@@ -968,7 +1000,7 @@ class Preferences
                 $_address,
                 $adh->zipcode,
                 $adh->town,
-                $adh->country
+                $_country
             );
         }
 
@@ -976,14 +1008,37 @@ class Preferences
         /*$r = preg_replace(
             $regs,
             $replacements,
-            _T("%name\n%complement\n%address\n%zip %town - %country")
+            _T("%name\n%complement\n%address\n%zip %town %country")
         );*/
         $r = preg_replace(
             $regs,
             $replacements,
-            "%name%complement%address\n%zip %town - %country"
+            "%name%complement%address\n%zip %town %country"
         );
         return $r;
+    }
+
+    /**
+     * Returns phone number
+     *
+     * @return string phone number
+     */
+    public function getPhoneNumber(): string
+    {
+        $_phone = '';
+        if ($this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_PREFS) {
+            $_phone = $this->prefs['pref_org_phone_number'];
+        } else {
+            //get selected staff phone number
+            $adh = new Adherent($this->zdb, (int)$this->prefs['pref_org_phone_staff_member']);
+            if ($this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_STAFF) {
+                $_phone = $adh->phone;
+            } else {
+                $_phone = $adh->gsm;
+            }
+        }
+
+        return $_phone;
     }
 
     /**
@@ -1095,6 +1150,8 @@ class Preferences
                 'pref_numrows',
                 'pref_postal_address',
                 'pref_postal_staff_member',
+                'pref_org_phone',
+                'pref_org_phone_staff',
                 'pref_password_length',
                 'pref_password_strength',
                 'pref_publicpages_visibility_generic',
