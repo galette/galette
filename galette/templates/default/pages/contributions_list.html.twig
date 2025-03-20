@@ -109,15 +109,41 @@
             </div>
         </div>
 
-        <div class="ui right aligned basic fitted segment field flexend">
-            <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
-                <i class="search icon" aria-hidden="true"></i>
-                {{ _T("Filter") }}
-            </button>
-            <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
-                <i class="trash alt red icon" aria-hidden="true"></i>
-                {{ _T("Clear filter") }}
-            </button>
+        <div class="two fields">
+            <div class="field">
+                <div class="inline fields">
+                    <label for="paid_filter">{{ _T('Paid contributions:') }}</label>
+                    <div class="field inline">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="paid_filter" id="filter_dc_paid" value="{{ constant('Galette\\Filters\\ContributionsList::PAID_DC') }}"{% if filters.paid == constant('Galette\\Filters\\ContributionsList::PAID_DC') %} checked="checked"{% endif %}>
+                            <label for="filter_dc_paid">{{ _T("Don't care") }}</label>
+                        </div>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="paid_filter" id="filter_paid" value="{{ constant('Galette\\Filters\\ContributionsList::PAID_YES') }}"{% if filters.paid == constant('Galette\\Filters\\ContributionsList::PAID_YES') %} checked="checked"{% endif %}>
+                            <label for="filter_paid">{{ _Tx('contribution', 'Paid') }}</label>
+                        </div>
+                    </div>
+                    <div class="field inline">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="paid_filter" id="filter_not_paid" value="{{ constant('Galette\\Filters\\ContributionsList::PAID_NO') }}"{% if filters.paid == constant('Galette\\Filters\\ContributionsList::PAID_NO') %} checked="checked"{% endif %}>
+                            <label for="filter_not_paid">{{ _Tx('contribution', 'Not paid') }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui right aligned basic fitted segment field flexend">
+                <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
+                    <i class="search icon" aria-hidden="true"></i>
+                    {{ _T("Filter") }}
+                </button>
+                <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
+                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    {{ _T("Clear filter") }}
+                </button>
+            </div>
         </div>
     </div>
     {% if member is defined and mode != 'ajax' %}
@@ -218,19 +244,23 @@
 {% block header %}
     {% set columns = [
         {
-            'label': '#', 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_ID"),
+            'label': '#',
+            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_ID"),
             'collapse': true
         },
         {
-            'label': _T("Date"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_DATE"),
+            'label': _T("Date"),
+            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_DATE"),
             'collapse': true
         },
         {
-            'label': _T("Begin"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_BEGIN_DATE"),
+            'label': _T("Begin"),
+            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_BEGIN_DATE"),
             'collapse': true
         },
         {
-            'label': _T("End"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_END_DATE"),
+            'label': _T("End"),
+            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_END_DATE"),
             'collapse': true
         }
     ] %}
@@ -240,12 +270,22 @@
     {% endif %}
 
     {% set columns = columns|merge([
-        {'label': _T('Type'), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_TYPE")},
         {
-            'label': _T('Amount'), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_AMOUNT"),
+            'label': _T('Type'),
+            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_TYPE")},
+        {
+            'label': _T('Amount'),
+            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_AMOUNT"),
             'collapse': true
         },
-        {'label': _T("Payment type"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_PAYMENT_TYPE")},
+        {
+            'label': _Tx('contribution', 'Paid'),
+            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_PAID"),
+            'collapse': true
+        },
+        {
+            'label': _T("Payment type"),
+            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_PAYMENT_TYPE")},
         {
             'label': _T("Duration"),
             'collapse': true
@@ -344,6 +384,16 @@
             {% endif %}
             <td data-col-label="{{ _T("Type") }}">{{ contribution.type.libelle }}</td>
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ contribution.amount }}</td>
+            <td class="center collapsing" data-col-label="{{ _Tx("contribution", "Paid") }}">
+                <i class="money bill wave {% if not contribution.isPaid() %}red{% else %}green{% endif %} icon tooltip" data-html="{% if contribution.isPaid() %}{{ _Tx("contribution", "Paid") }}{% else %}{{ _Tx("contribution", "Not paid") }}{% endif %}"></i>
+                <span class="visually-hidden">
+                    {% if contribution.isPaid() %}
+                        {{ _Tx("contribution", "Paid") }}
+                    {% else %}
+                        {{ _Tx("contribution", "Not paid") }}"
+                    {% endif %}
+                </span>
+            </td>
             <td data-col-label="{{ _T("Payment type") }}">{{ contribution.getPaymentType() }}</td>
             <td class="collapsing" data-col-label="{{ _T("Duration") }}">{{ contribution.duration }}</td>
             {% if mode != 'ajax' %}

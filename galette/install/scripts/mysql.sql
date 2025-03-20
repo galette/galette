@@ -59,6 +59,7 @@ CREATE TABLE galette_cotisations (
   date_debut_cotis date NOT NULL,
   date_fin_cotis date,
   trans_id int unsigned default NULL,
+  paid tinyint(1) DEFAULT FALSE,
   PRIMARY KEY (id_cotis),
   FOREIGN KEY (id_type_cotis) REFERENCES galette_types_cotisation (id_type_cotis) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,

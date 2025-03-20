@@ -423,6 +423,10 @@ trait Replacements
             'contrib_info'      => [
                 'title'     => _T('Contribution information'),
                 'pattern'   => '/{CONTRIB_INFO}/'
+            ],
+            'contrib_paid'      => [
+                'title'     => _T('Paid contribution'),
+                'pattern'   => '/{CONTRIB_PAID}/'
             ]
         ];
 
@@ -548,7 +552,8 @@ trait Replacements
             'contrib_edate'     => null,
             'contrib_id'        => null,
             'contrib_payment'   => null,
-            'contrib_info'      => null
+            'contrib_info'      => null,
+            'contrib_paid'      => null
         ];
 
         foreach ($c_replacements as $key => $replacement) {
@@ -594,7 +599,8 @@ trait Replacements
             'contrib_edate'     => $contrib->end_date,
             'contrib_id'        => $contrib->id,
             'contrib_payment'   => $contrib->getPaymentType(),
-            'contrib_info'      => $contrib->info
+            'contrib_info'      => $contrib->info,
+            'contrib_paid'      => $contrib->isPaid() ? _T("Yes") : _T("No")
         ];
 
         foreach ($c_replacements as $key => $replacement) {

@@ -106,7 +106,7 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib->orig_amount);
         $this->assertNull($contrib->info);
         $this->assertNull($contrib->transaction);
-        $this->assertCount(11, $contrib->fields);
+        $this->assertCount(12, $contrib->fields);
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\Contribution::PK]));
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\Adherent::PK]));
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\ContributionsTypes::PK]));
@@ -121,6 +121,7 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->unknown_property);
+        $this->assertFalse($contrib->isPaid());
     }
 
     /**
@@ -155,7 +156,7 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib->orig_amount);
         $this->assertNull($contrib->info);
         $this->assertNull($contrib->transaction);
-        $this->assertCount(11, $contrib->fields);
+        $this->assertCount(12, $contrib->fields);
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\Contribution::PK]));
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\Adherent::PK]));
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\ContributionsTypes::PK]));
@@ -170,6 +171,7 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->unknown_property);
+        $this->assertFalse($contrib->isPaid());
     }
 
     /**
@@ -208,7 +210,7 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib->orig_amount);
         $this->assertNull($contrib->info);
         $this->assertNull($contrib->transaction);
-        $this->assertCount(11, $contrib->fields);
+        $this->assertCount(12, $contrib->fields);
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\Contribution::PK]));
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\Adherent::PK]));
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\ContributionsTypes::PK]));
@@ -223,6 +225,7 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->unknown_property);
+        $this->assertFalse($contrib->isPaid());
     }
 
     /**
@@ -280,7 +283,7 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib->orig_amount);
         $this->assertNull($contrib->info);
         $this->assertNull($contrib->transaction);
-        $this->assertCount(11, $contrib->fields);
+        $this->assertCount(12, $contrib->fields);
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\Contribution::PK]));
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\Adherent::PK]));
         $this->assertTrue(isset($contrib->fields[\Galette\Entity\ContributionsTypes::PK]));
@@ -362,6 +365,15 @@ class Contribution extends GaletteTestCase
 
         $contrib->payment_type = \Galette\Entity\PaymentType::PAYPAL;
         $this->assertSame('Paypal', $contrib->getPaymentType());
+
+        $contrib->setPaid(true);
+        $this->assertTrue($contrib->isPaid());
+
+        $contrib->setPaid(false);
+        $this->assertFalse($contrib->isPaid());
+
+        $contrib->paid = true;
+        $this->assertTrue($contrib->isPaid());
     }
 
     /**
@@ -475,12 +487,14 @@ class Contribution extends GaletteTestCase
             'date_enreg' => $begin_date->format('Y-m-d'),
             'date_debut_cotis' => $begin_date->format('Y-m-d'),
             'date_fin_cotis' => $due_date->format('Y-m-d'),
+            'paid' => true
         ];
         $this->createContrib($data);
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
         $this->assertSame(1280.00, $contrib->amount);
         $this->assertNull($contrib->end_date);
+        $this->assertTrue($contrib->isPaid());
 
         //empty amount
         $data = [
@@ -492,12 +506,14 @@ class Contribution extends GaletteTestCase
             'date_enreg' => $begin_date->format('Y-m-d'),
             'date_debut_cotis' => $begin_date->format('Y-m-d'),
             'date_fin_cotis' => $due_date->format('Y-m-d'),
+            'paid' => false
         ];
         $this->createContrib($data);
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
         $this->assertSame(0.00, $contrib->amount);
         $this->assertNull($contrib->end_date);
+        $this->assertFalse($contrib->isPaid());
     }
 
     /**
@@ -555,9 +571,11 @@ class Contribution extends GaletteTestCase
         $this->assertSame(0.0, $this->contrib->amount);
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
         $this->assertSame(0.0, $contrib->amount);
+        $this->assertFalse($contrib->isPaid());
 
         //change amount
         $data['montant_cotis'] = 42;
+        $data['paid'] = 1;
         $check = $contrib->check($data, [], []);
         if (is_array($check)) {
             var_dump($check);
@@ -569,9 +587,11 @@ class Contribution extends GaletteTestCase
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
         $this->assertSame(42.0, $contrib->amount);
+        $this->assertTrue($contrib->isPaid());
 
         //change amount back to 0
         $data['montant_cotis'] = 0;
+        $data['paid'] = 0;
         $check = $contrib->check($data, [], []);
         if (is_array($check)) {
             var_dump($check);
@@ -583,6 +603,7 @@ class Contribution extends GaletteTestCase
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
         $this->assertSame(0.0, $contrib->amount);
+        $this->assertFalse($contrib->isPaid());
     }
 
     /**

@@ -180,3 +180,5 @@ UPDATE galette_l10n SET text_orig_sum = MD5(text_orig);
 ALTER TABLE galette_l10n ALTER COLUMN text_orig_sum SET NOT NULL;
 ALTER TABLE galette_l10n DROP CONSTRAINT galette_l10n_pkey;
 ALTER TABLE galette_l10n ADD CONSTRAINT galette_l10n_pkey PRIMARY KEY (text_orig_sum, text_locale);
+
+ALTER TABLE galette_cotisations ADD COLUMN paid boolean DEFAULT false;

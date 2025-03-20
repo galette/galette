@@ -46,6 +46,7 @@ use Galette\Core\Pagination;
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
  * @property integer[] $selected
+ * @property integer $paid
  */
 
 class ContributionsList extends Pagination
@@ -60,6 +61,11 @@ class ContributionsList extends Pagination
     public const ORDERBY_AMOUNT = 5;
     public const ORDERBY_PAYMENT_TYPE = 6;
     public const ORDERBY_ID = 7;
+    public const ORDERBY_PAID = 8;
+
+    public const PAID_DC = 2;
+    public const PAID_YES = 1;
+    public const PAID_NO = 0;
 
     public const DATE_BEGIN = 0;
     public const DATE_END = 1;
@@ -77,6 +83,7 @@ class ContributionsList extends Pagination
     private bool $filtre_transactions = false;
     private int|false $from_transaction = false; //@phpstan-ignore-line
     private ?int $max_amount = null; //@phpstan-ignore-line
+    private int $paid = self::PAID_DC;
 
     /** @var array<int> */
     private array $selected = [];
@@ -93,7 +100,8 @@ class ContributionsList extends Pagination
         'filtre_transactions',
         'from_transaction',
         'max_amount',
-        'selected'
+        'selected',
+        'paid'
     );
 
     /** @var array<string>  */
@@ -139,6 +147,7 @@ class ContributionsList extends Pagination
         $this->filtre_cotis_children = false;
         $this->from_transaction = false;
         $this->selected = [];
+        $this->paid = self::PAID_DC;
 
         if ($ajax === false) {
             $this->max_amount = null;

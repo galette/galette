@@ -97,6 +97,7 @@ CREATE TABLE galette_cotisations (
     date_debut_cotis date NOT NULL,
     date_fin_cotis date,
     trans_id integer DEFAULT NULL REFERENCES galette_transactions (trans_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    paid boolean DEFAULT FALSE,
     PRIMARY KEY (id_cotis)
 );
 

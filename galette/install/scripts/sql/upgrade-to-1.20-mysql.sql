@@ -198,4 +198,6 @@ ALTER TABLE galette_transactions ADD FOREIGN KEY galette_transactions_ibfk_1 (id
 ALTER TABLE galette_transactions DROP CONSTRAINT galette_transactions_ibfk_2;
 ALTER TABLE galette_transactions ADD FOREIGN KEY galette_transactions_ibfk_2 (type_paiement_trans) REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
+ALTER TABLE galette_cotisations ADD paid tinyint(1) DEFAULT FALSE;
+
 SET FOREIGN_KEY_CHECKS = 1;

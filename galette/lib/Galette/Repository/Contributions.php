@@ -299,6 +299,9 @@ class Contributions
             case ContributionsList::ORDERBY_PAYMENT_TYPE:
                 $order[] = 'type_paiement_cotis ' . $this->filters->ordered;
                 break;
+            case ContributionsList::ORDERBY_PAID:
+                $order[] = 'paid ' . $this->filters->ordered;
+                break;
         }
 
         return $order;
@@ -314,20 +317,12 @@ class Contributions
     private function buildWhereClause(Select $select): void
     {
         global $preferences;
-        $field = 'date_debut_cotis';
 
-        switch ($this->filters->date_field) {
-            case ContributionsList::DATE_RECORD:
-                $field = 'date_enreg';
-                break;
-            case ContributionsList::DATE_END:
-                $field = 'date_fin_cotis';
-                break;
-            case ContributionsList::DATE_BEGIN:
-            default:
-                $field = 'date_debut_cotis';
-                break;
-        }
+        $field = match ($this->filters->date_field) {
+            ContributionsList::DATE_RECORD => 'date_enreg',
+            ContributionsList::DATE_END => 'date_fin_cotis',
+            default => 'date_debut_cotis',
+        };
 
         if (isset($this->current_selection)) {
             $select->where->in('c.' . self::PK, $this->current_selection);
@@ -468,6 +463,17 @@ class Contributions
             if ($this->filters->filtre_transactions === true) {
                 $select->where('c.trans_id IS NULL');
             }
+
+            if ($this->filters->paid != ContributionsList::PAID_DC) {
+                if ($this->zdb->isPostgres()) {
+                    $paid = $this->filters->paid == ContributionsList::PAID_YES ?
+                        $this->zdb->platform->quoteValue('true') :
+                        $this->zdb->platform->quoteValue('false');
+                } else {
+                    $paid = $this->filters->paid;
+                }
+                $select->where(['c.paid' => $paid]);
+            }
         } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
@@ -508,10 +514,8 @@ class Contributions
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
-        $list = array();
-        if (is_array($ids)) {
-            $list = $ids;
-        } else {
+        $list = $ids;
+        if (!is_array($ids)) {
             $list = [$ids];
         }
 
