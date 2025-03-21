@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-10 18:38+0100\n"
+"POT-Creation-Date: 2025-03-21 11:55+0100\n"
 "PO-Revision-Date: 2024-12-22 08:00+0000\n"
 "Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -60,7 +60,7 @@ msgstr ""
 "La contribucion es estat separada correctament de la transaccion correnta"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:97
-#: ../lib/Galette/Core/Galette.php:444
+#: ../lib/Galette/Core/Galette.php:445
 msgid "Payment types"
 msgstr "Mòdes de pagament"
 
@@ -152,7 +152,7 @@ msgid "Group name is missing!"
 msgstr "Manca lo nom dau grope !"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:186
-#: ../lib/Galette/Core/Galette.php:329 ../lib/Galette/Core/Galette.php:739
+#: ../lib/Galette/Core/Galette.php:329 ../lib/Galette/Core/Galette.php:740
 msgid "Groups"
 msgstr "Gropes"
 
@@ -210,7 +210,7 @@ msgid "Mailing has been successfully saved."
 msgstr "Lo mandadís es estat enregistrat correctament."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:480
-#: ../lib/Galette/Core/Galette.php:349 ../lib/Galette/Core/Galette.php:755
+#: ../lib/Galette/Core/Galette.php:349 ../lib/Galette/Core/Galette.php:756
 msgid "Mailings"
 msgstr "Corriers electronics"
 
@@ -226,7 +226,7 @@ msgid "Mailing preview"
 msgstr "Veire lo corrier avans d'o mandar"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:91
-#: ../lib/Galette/Core/Install.php:1199 ../lib/Galette/Core/Galette.php:437
+#: ../lib/Galette/Core/Install.php:1199 ../lib/Galette/Core/Galette.php:438
 msgid "Contributions types"
 msgstr "Menas de contribucions"
 
@@ -337,26 +337,26 @@ msgid "Member Profile"
 msgstr "Ficha dau membre"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:324
-#: ../lib/Galette/Core/Galette.php:174 ../lib/Galette/Core/Galette.php:548
-#: ../lib/Galette/Core/Galette.php:731
+#: ../lib/Galette/Core/Galette.php:174 ../lib/Galette/Core/Galette.php:549
+#: ../lib/Galette/Core/Galette.php:732
 #: ../lib/Galette/DynamicFields/DynamicField.php:546
 #: ../../tempcache/elements/group.html.twig:100
 msgid "Members"
 msgstr "Membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:355
-#: ../lib/Galette/Core/Galette.php:558
+#: ../lib/Galette/Core/Galette.php:559
 msgid "Gallery"
 msgstr "Trombinoscòpi"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:390
-#: ../lib/Galette/Core/Galette.php:568
+#: ../lib/Galette/Core/Galette.php:569
 msgid "Staff"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:426
-#: ../lib/Galette/Core/Galette.php:578
-#: ../../tempcache/pages/preferences.html.twig:1319
+#: ../lib/Galette/Core/Galette.php:579
+#: ../../tempcache/pages/preferences.html.twig:1448
 #, fuzzy
 #| msgid "Staff member"
 msgid "Staff gallery"
@@ -474,7 +474,7 @@ msgid "You are about to remove %count members."
 msgstr "Siatz a mand d'escafar %count membres."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:92
-#: ../lib/Galette/Core/Install.php:1215 ../lib/Galette/Core/Galette.php:459
+#: ../lib/Galette/Core/Install.php:1215 ../lib/Galette/Core/Galette.php:460
 msgid "Titles"
 msgstr "Títols"
 
@@ -513,7 +513,7 @@ msgid "Remove title %1$s"
 msgstr "Escafar lo títol %1$s"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:97
-#: ../lib/Galette/Core/Galette.php:452
+#: ../lib/Galette/Core/Galette.php:453
 msgid "User statuses"
 msgstr "Estatut de l'utilizator"
 
@@ -648,9 +648,9 @@ msgstr "L'enregistrament dau document a ben capitat !"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:198
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:234
-#: ../lib/Galette/Core/Galette.php:341 ../lib/Galette/Core/Galette.php:610
-#: ../lib/Galette/Core/Galette.php:800
-#: ../../tempcache/pages/preferences.html.twig:1203
+#: ../lib/Galette/Core/Galette.php:341 ../lib/Galette/Core/Galette.php:611
+#: ../lib/Galette/Core/Galette.php:801
+#: ../../tempcache/pages/preferences.html.twig:1332
 msgid "Documents"
 msgstr "Documents"
 
@@ -708,7 +708,7 @@ msgstr "Tablèu de bòrd"
 
 #: ../lib/Galette/Controllers/GaletteController.php:203
 #: ../lib/Galette/Core/Install.php:1195 ../lib/Galette/Core/Galette.php:393
-#: ../lib/Galette/Core/Galette.php:816
+#: ../lib/Galette/Core/Galette.php:817
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -803,7 +803,7 @@ msgid "An error occurred while storing list configuration :("
 msgstr "I a agut una error dau temps de la sauvagarda de la lista :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:639
-#: ../lib/Galette/Core/Galette.php:313 ../lib/Galette/Core/Galette.php:781
+#: ../lib/Galette/Core/Galette.php:313 ../lib/Galette/Core/Galette.php:782
 msgid "Reminders"
 msgstr "Remembre"
 
@@ -876,7 +876,7 @@ msgid "No member selected to generate attendance sheet"
 msgstr "Ges de membre seleccionat per generar la lista de preséncia"
 
 #: ../lib/Galette/Controllers/PdfController.php:392
-#: ../lib/Galette/Core/Galette.php:1072
+#: ../lib/Galette/Core/Galette.php:1073
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:122
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:112
 msgid "Attendance sheet"
@@ -887,7 +887,7 @@ msgid "Unable to get groups list."
 msgstr "Impossible de recuperar la lista dei gropes."
 
 #: ../lib/Galette/Controllers/PdfController.php:532
-#: ../lib/Galette/Core/Install.php:1219 ../lib/Galette/Core/Galette.php:467
+#: ../lib/Galette/Core/Install.php:1219 ../lib/Galette/Core/Galette.php:468
 msgid "PDF models"
 msgstr "Modèles PDF"
 
@@ -909,8 +909,8 @@ msgstr "Ligam invalide !"
 
 #: ../lib/Galette/Controllers/AuthController.php:70
 #: ../lib/Galette/Controllers/AuthController.php:187
-#: ../lib/Galette/Features/Replacements.php:310
-#: ../lib/Galette/Features/Replacements.php:350
+#: ../lib/Galette/Features/Replacements.php:318
+#: ../lib/Galette/Features/Replacements.php:358
 #: ../../tempcache/elements/navigation/public_pages.html.twig:113
 #: ../../tempcache/pages/index.html.twig:111
 msgid "Login"
@@ -1059,7 +1059,7 @@ msgid "Your password has been changed!"
 msgstr "Vòstre senhau es estat cambiat !"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:54
-#: ../lib/Galette/Core/Galette.php:485
+#: ../lib/Galette/Core/Galette.php:486
 msgid "Administration tools"
 msgstr "Instruments d'administracion"
 
@@ -1133,7 +1133,7 @@ msgid "Flush the logs"
 msgstr "Escafar l'istoric"
 
 #: ../lib/Galette/Controllers/PluginsController.php:63
-#: ../lib/Galette/Core/Galette.php:400 ../lib/Galette/Core/Galette.php:824
+#: ../lib/Galette/Core/Galette.php:400 ../lib/Galette/Core/Galette.php:825
 msgid "Plugins"
 msgstr "Ajustons"
 
@@ -1145,27 +1145,19 @@ msgstr "L'ajuston %name es estat activat"
 msgid "Plugin %name has been disabled"
 msgstr "L'ajuston %name es estat desactivat"
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:56
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:70
 #: ../lib/Galette/Core/Galette.php:430
 #: ../../tempcache/pages/configuration_payment_types.html.twig:294
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:262
 msgid "Translate labels"
 msgstr "Traduccion d'etiquetas"
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:100
-#, php-format
-msgid ""
-"No translation for '%s'!<br/>Please fill and submit above form to create it."
-msgstr ""
-"Ges de traduccion per '%s'!<br>Se vos platz emplissètz lo formulari çai-sota "
-"per o crear."
-
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:183
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:208
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:143
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:168
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:224
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:184
 msgid "Labels has been sucessfully translated!"
 msgstr "Leis etiquetas son estadas traduchas !"
 
@@ -1255,7 +1247,7 @@ msgid "Import model has not been stored :("
 msgstr "Lo modèle d'impòrt es pas estat enregistrat :("
 
 #: ../lib/Galette/Controllers/TextController.php:70
-#: ../lib/Galette/Core/Galette.php:474
+#: ../lib/Galette/Core/Galette.php:475
 msgid "Emails content"
 msgstr "Contengut dei messatges electronics"
 
@@ -1270,12 +1262,12 @@ msgid "Email: '%s' has been successfully modified."
 msgstr "Lo corrier electronic '%s' es estat modificat."
 
 #: ../lib/Galette/Core/History.php:235 ../lib/Galette/Core/History.php:324
-#: ../lib/Galette/Features/Replacements.php:632
-#: ../lib/Galette/Features/Replacements.php:633
+#: ../lib/Galette/Features/Replacements.php:642
+#: ../lib/Galette/Features/Replacements.php:643
 #: ../../tempcache/elements/group.html.twig:207
 #: ../../tempcache/elements/group.html.twig:250
 #: ../../tempcache/pages/transaction_form.html.twig:166
-#: ../../tempcache/pages/preferences.html.twig:2930
+#: ../../tempcache/pages/preferences.html.twig:3059
 msgid "None"
 msgstr "Ren"
 
@@ -1460,11 +1452,11 @@ msgstr "Escafar leis intradas mandadas"
 msgid "My Account"
 msgstr "Mon còmpte"
 
-#: ../lib/Galette/Core/Galette.php:128 ../lib/Galette/Core/Galette.php:672
+#: ../lib/Galette/Core/Galette.php:128 ../lib/Galette/Core/Galette.php:673
 msgid "My contributions"
 msgstr "Mei contribucions"
 
-#: ../lib/Galette/Core/Galette.php:129 ../lib/Galette/Core/Galette.php:673
+#: ../lib/Galette/Core/Galette.php:129 ../lib/Galette/Core/Galette.php:674
 msgid "View and filter all my contributions"
 msgstr "Consultar e filtrar totei mei contribucions"
 
@@ -1476,19 +1468,19 @@ msgstr "Mei pagaments a escasenças"
 msgid "View and filter all my scheduled payments"
 msgstr "Consultar e filtrar totei lei pagaments a escasenças"
 
-#: ../lib/Galette/Core/Galette.php:143 ../lib/Galette/Core/Galette.php:681
+#: ../lib/Galette/Core/Galette.php:143 ../lib/Galette/Core/Galette.php:682
 msgid "My transactions"
 msgstr "Mei transaccions"
 
-#: ../lib/Galette/Core/Galette.php:144 ../lib/Galette/Core/Galette.php:682
+#: ../lib/Galette/Core/Galette.php:144 ../lib/Galette/Core/Galette.php:683
 msgid "View and filter all my transactions"
 msgstr "Consultar e filtrar totei mei transaccions"
 
-#: ../lib/Galette/Core/Galette.php:151 ../lib/Galette/Core/Galette.php:664
+#: ../lib/Galette/Core/Galette.php:151 ../lib/Galette/Core/Galette.php:665
 msgid "My information"
 msgstr "Meis informacions"
 
-#: ../lib/Galette/Core/Galette.php:152 ../lib/Galette/Core/Galette.php:665
+#: ../lib/Galette/Core/Galette.php:152 ../lib/Galette/Core/Galette.php:666
 msgid "View my member card"
 msgstr "Veire ma ficha de membre"
 
@@ -1500,7 +1492,7 @@ msgstr "Ajustar un membre ligat (enfant)"
 msgid "Add new child member in database"
 msgstr "Ajustar un membre-enfant novèu a la basa"
 
-#: ../lib/Galette/Core/Galette.php:183 ../lib/Galette/Core/Galette.php:732
+#: ../lib/Galette/Core/Galette.php:183 ../lib/Galette/Core/Galette.php:733
 msgid "View, search into and filter member's list"
 msgstr "Consultar, recercar dedins e filtrar la lista dei membres"
 
@@ -1529,13 +1521,13 @@ msgstr "Formulari d'adesion vuege"
 msgid "Download empty adhesion form"
 msgstr "Teledescargar un formulari d'adesion vuege"
 
-#: ../lib/Galette/Core/Galette.php:231 ../lib/Galette/Core/Galette.php:763
+#: ../lib/Galette/Core/Galette.php:231 ../lib/Galette/Core/Galette.php:764
 #: ../lib/Galette/DynamicFields/DynamicField.php:547
 #: ../../tempcache/pages/members_list.html.twig:588
 msgid "Contributions"
 msgstr "Contribucions"
 
-#: ../lib/Galette/Core/Galette.php:240 ../lib/Galette/Core/Galette.php:764
+#: ../lib/Galette/Core/Galette.php:240 ../lib/Galette/Core/Galette.php:765
 msgid "View and filter contributions"
 msgstr "Consultar e filtrar lei contribucions"
 
@@ -1543,7 +1535,7 @@ msgstr "Consultar e filtrar lei contribucions"
 msgid "View and filter scheduled payments"
 msgstr "Consultar e filtrar lei pagaments a escasenças"
 
-#: ../lib/Galette/Core/Galette.php:267 ../lib/Galette/Core/Galette.php:773
+#: ../lib/Galette/Core/Galette.php:267 ../lib/Galette/Core/Galette.php:774
 msgid "View and filter transactions"
 msgstr "Consultar e filtrar lei transaccions"
 
@@ -1579,7 +1571,7 @@ msgstr "Ajustar una transaccion"
 msgid "Add new transaction in database"
 msgstr "Ajustar una transaccion novèla dins la basa de donadas"
 
-#: ../lib/Galette/Core/Galette.php:314 ../lib/Galette/Core/Galette.php:782
+#: ../lib/Galette/Core/Galette.php:314 ../lib/Galette/Core/Galette.php:783
 msgid "Send reminders to late members"
 msgstr "Mandar un corriel per rampelar lei tardiers"
 
@@ -1587,7 +1579,7 @@ msgstr "Mandar un corriel per rampelar lei tardiers"
 msgid "Management"
 msgstr "Administracion"
 
-#: ../lib/Galette/Core/Galette.php:330 ../lib/Galette/Core/Galette.php:740
+#: ../lib/Galette/Core/Galette.php:330 ../lib/Galette/Core/Galette.php:741
 msgid "View and manage groups"
 msgstr "Veire e governar lei gropes"
 
@@ -1599,7 +1591,7 @@ msgstr ""
 "Ajustar de documents relatius a vòstra associacion per partejar ( estatuts, "
 "reglament interior, …)"
 
-#: ../lib/Galette/Core/Galette.php:350 ../lib/Galette/Core/Galette.php:756
+#: ../lib/Galette/Core/Galette.php:350 ../lib/Galette/Core/Galette.php:757
 msgid "Manage mailings that has been sent"
 msgstr "Governar lei messatges mandats"
 
@@ -1623,7 +1615,7 @@ msgstr "Veire l'istoric de l'aplicacion"
 msgid "Configuration"
 msgstr "Configuracion"
 
-#: ../lib/Galette/Core/Galette.php:394 ../lib/Galette/Core/Galette.php:817
+#: ../lib/Galette/Core/Galette.php:394 ../lib/Galette/Core/Galette.php:818
 msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
@@ -1631,7 +1623,7 @@ msgstr ""
 "Definir lei preferéncias de l’aplicacion (adreiça, site, cartas de membre, "
 "paramètres,…)"
 
-#: ../lib/Galette/Core/Galette.php:401 ../lib/Galette/Core/Galette.php:825
+#: ../lib/Galette/Core/Galette.php:401 ../lib/Galette/Core/Galette.php:826
 msgid "Information about available plugins"
 msgstr "Informacion a prepaus deis ajustons disponibles"
 
@@ -1654,141 +1646,141 @@ msgstr "Governar lei camps suplementaris per lei formularis"
 msgid "Translate additional fields labels"
 msgstr "Traduccion deis etiquetas per lei camps suplementaris"
 
-#: ../lib/Galette/Core/Galette.php:438
+#: ../lib/Galette/Core/Galette.php:439
 msgid "Manage contributions types"
 msgstr "Governar lei sòrtas de contribucions"
 
-#: ../lib/Galette/Core/Galette.php:445
+#: ../lib/Galette/Core/Galette.php:446
 msgid "Manage payment types"
 msgstr "Governar lei mòdes de pagament"
 
-#: ../lib/Galette/Core/Galette.php:460
+#: ../lib/Galette/Core/Galette.php:461
 msgid "Manage titles"
 msgstr "Governar lei títols"
 
-#: ../lib/Galette/Core/Galette.php:468
+#: ../lib/Galette/Core/Galette.php:469
 msgid "Manage PDF models"
 msgstr "Governar lei modèles PDF"
 
-#: ../lib/Galette/Core/Galette.php:475
+#: ../lib/Galette/Core/Galette.php:476
 msgid "Manage emails texts and subjects"
 msgstr "Reglar lo tèxte dei messatges electronics e lei sujèctes"
 
-#: ../lib/Galette/Core/Galette.php:486
+#: ../lib/Galette/Core/Galette.php:487
 msgid "Various administrative tools"
 msgstr "Instruments d'administracion divèrs"
 
-#: ../lib/Galette/Core/Galette.php:589
+#: ../lib/Galette/Core/Galette.php:590
 msgid "Directories"
 msgstr ""
 
-#: ../lib/Galette/Core/Galette.php:600
+#: ../lib/Galette/Core/Galette.php:601
 #, fuzzy
 #| msgid "Gallery"
 msgid "Galleries"
 msgstr "Trombinoscòpi"
 
-#: ../lib/Galette/Core/Galette.php:611 ../lib/Galette/Core/Galette.php:801
+#: ../lib/Galette/Core/Galette.php:612 ../lib/Galette/Core/Galette.php:802
 msgid "View documents related to your association"
 msgstr "Veire lei documents relatius a vòstra associacion"
 
-#: ../lib/Galette/Core/Galette.php:633
-#: ../../tempcache/pages/preferences.html.twig:964
+#: ../lib/Galette/Core/Galette.php:634
+#: ../../tempcache/pages/preferences.html.twig:1093
 msgid "Public pages"
 msgstr "Paginas publicas"
 
-#: ../lib/Galette/Core/Galette.php:772
+#: ../lib/Galette/Core/Galette.php:773
 #: ../lib/Galette/DynamicFields/DynamicField.php:548
 msgid "Transactions"
 msgstr "Transaccions"
 
-#: ../lib/Galette/Core/Galette.php:873 ../lib/Galette/Core/Galette.php:878
+#: ../lib/Galette/Core/Galette.php:874 ../lib/Galette/Core/Galette.php:879
 msgid "%membername: edit information"
 msgstr "%membername : modificar leis informacions"
 
-#: ../lib/Galette/Core/Galette.php:894 ../lib/Galette/Core/Galette.php:899
+#: ../lib/Galette/Core/Galette.php:895 ../lib/Galette/Core/Galette.php:900
 msgid "%membername: contributions"
 msgstr "%membername : contribucions"
 
-#: ../lib/Galette/Core/Galette.php:915 ../lib/Galette/Core/Galette.php:920
+#: ../lib/Galette/Core/Galette.php:916 ../lib/Galette/Core/Galette.php:921
 msgid "%membername: remove from database"
 msgstr "%membername: levar de la basa"
 
-#: ../lib/Galette/Core/Galette.php:939 ../lib/Galette/Core/Galette.php:944
+#: ../lib/Galette/Core/Galette.php:940 ../lib/Galette/Core/Galette.php:945
 #: ../../tempcache/elements/group_persons.html.twig:187
 #: ../../tempcache/pages/members_list.html.twig:610
 msgid "Log in as %membername"
 msgstr "Se connectar per %membername"
 
-#: ../lib/Galette/Core/Galette.php:1030
+#: ../lib/Galette/Core/Galette.php:1031
 msgid "Mass change"
 msgstr "Modificacion en massa"
 
-#: ../lib/Galette/Core/Galette.php:1035
+#: ../lib/Galette/Core/Galette.php:1036
 msgid "Mass add contributions"
 msgstr "Ajustament en massa de contribucions"
 
-#: ../lib/Galette/Core/Galette.php:1040
+#: ../lib/Galette/Core/Galette.php:1041
 #: ../../tempcache/elements/group.html.twig:379
 #: ../../tempcache/pages/contributions_list.html.twig:61
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:57
 msgid "Delete"
 msgstr "Suprimir"
 
-#: ../lib/Galette/Core/Galette.php:1056
+#: ../lib/Galette/Core/Galette.php:1057
 #: ../../tempcache/pages/members_list.html.twig:798
 msgid "Mail"
 msgstr "Corriel"
 
-#: ../lib/Galette/Core/Galette.php:1077
+#: ../lib/Galette/Core/Galette.php:1078
 #: ../../tempcache/elements/mailing_recipients.html.twig:111
 msgid "Generate labels"
 msgstr "Generar d'etiquetas"
 
-#: ../lib/Galette/Core/Galette.php:1082
+#: ../lib/Galette/Core/Galette.php:1083
 msgid "Generate Member Cards"
 msgstr "Generar lei Cartas de Membres"
 
-#: ../lib/Galette/Core/Galette.php:1087
+#: ../lib/Galette/Core/Galette.php:1088
 #: ../../tempcache/pages/contributions_list.html.twig:61
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:57
 msgid "Export as CSV"
 msgstr "Teledescargar en CSV"
 
-#: ../lib/Galette/Core/Preferences.php:582
+#: ../lib/Galette/Core/Preferences.php:597
 msgid "- Only SMTP and GMail are allowed on hosted instances."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:588
+#: ../lib/Galette/Core/Preferences.php:603
 msgid "- You must indicate a sender name for emails!"
 msgstr "- Vos fau definir l’expeditor dau messatge electronic !"
 
-#: ../lib/Galette/Core/Preferences.php:594
+#: ../lib/Galette/Core/Preferences.php:609
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- Vos fau indicar l’adreiça qu’emplegarà Galeta per mandar lei messatges "
 "electronics !"
 
-#: ../lib/Galette/Core/Preferences.php:601
+#: ../lib/Galette/Core/Preferences.php:616
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr "- Vos fau indicar lo servidor SMTP d’emplegar !"
 
-#: ../lib/Galette/Core/Preferences.php:613
+#: ../lib/Galette/Core/Preferences.php:628
 msgid "- You must provide a login for SMTP authentication."
 msgstr "- Vos fau donar un identificant per l'autentificacion SMTP."
 
-#: ../lib/Galette/Core/Preferences.php:619
+#: ../lib/Galette/Core/Preferences.php:634
 msgid "- You must provide a password for SMTP authentication."
 msgstr "- Per l’identificacion SMTP, fornir un senhau es necessari."
 
-#: ../lib/Galette/Core/Preferences.php:628
+#: ../lib/Galette/Core/Preferences.php:643
 msgid ""
 "- You must indicate a membership extension or a beginning of membership."
 msgstr ""
 "- Vos fau definir la durada de l’adesion ò donar una data de començament de "
 "l’exercici, mai pas lei dos."
 
-#: ../lib/Galette/Core/Preferences.php:633
+#: ../lib/Galette/Core/Preferences.php:648
 msgid ""
 "- Default membership extension and beginning of membership are mutually "
 "exclusive."
@@ -1796,13 +1788,13 @@ msgstr ""
 "- Vos fau definir la durada que vau l’adesion ò donar una data de "
 "començament de l’exercici, mai pas lei dos."
 
-#: ../lib/Galette/Core/Preferences.php:642
+#: ../lib/Galette/Core/Preferences.php:657
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr ""
 "- L’ofèrta de mes es compatibla ren qu’amb una data de començament de "
 "l’exercici."
 
-#: ../lib/Galette/Core/Preferences.php:651
+#: ../lib/Galette/Core/Preferences.php:666
 #: ../lib/Galette/Entity/Adherent.php:1251
 #: ../lib/Galette/Entity/Transaction.php:375
 #: ../lib/Galette/Entity/Contribution.php:552
@@ -1810,105 +1802,113 @@ msgstr ""
 msgid "- Mandatory field %field empty."
 msgstr "- Lo camp obligatòri %field es vuege."
 
-#: ../lib/Galette/Core/Preferences.php:659 ../webroot/installer.php:176
+#: ../lib/Galette/Core/Preferences.php:674 ../webroot/installer.php:176
 msgid "Passwords mismatch"
 msgstr "Lei senhaus fornits correspòndon pas"
 
-#: ../lib/Galette/Core/Preferences.php:672
-msgid "You have to select a staff member"
+#: ../lib/Galette/Core/Preferences.php:687
+#, fuzzy
+#| msgid "You have to select a staff member"
+msgid "You have to select a staff member to retrieve its address"
 msgstr "Avètz de seleccionar un membre dau burèu"
 
-#: ../lib/Galette/Core/Preferences.php:726
+#: ../lib/Galette/Core/Preferences.php:701
+#, fuzzy
+#| msgid "You have to select a staff member"
+msgid "You have to select a staff member to retrieve its phone number"
+msgstr "Avètz de seleccionar un membre dau burèu"
+
+#: ../lib/Galette/Core/Preferences.php:756
 #, php-format
 msgid "Invalid E-Mail address: %s"
 msgstr "Adreiça electronica non valida: %s"
 
-#: ../lib/Galette/Core/Preferences.php:740
+#: ../lib/Galette/Core/Preferences.php:770
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- L’IDentificant deu comptar aumens 4 caractèrs !"
 
-#: ../lib/Galette/Core/Preferences.php:744
+#: ../lib/Galette/Core/Preferences.php:774
 msgid "- This username is already used by another member !"
 msgstr "- Aquest IDentificant es ja atribuït a un autre membre !"
 
-#: ../lib/Galette/Core/Preferences.php:764
+#: ../lib/Galette/Core/Preferences.php:794
 msgid "- The numbers and measures have to be integers!"
 msgstr "- Lei nombres e mesuras se devon definir per d’entiers !"
 
-#: ../lib/Galette/Core/Preferences.php:769
+#: ../lib/Galette/Core/Preferences.php:799
 msgid "- The card height have to be an integer between 40 and 55!"
 msgstr "- L’autor de la carta deu èstre unentier entre 40 e 55 !"
 
-#: ../lib/Galette/Core/Preferences.php:774
+#: ../lib/Galette/Core/Preferences.php:804
 msgid "- The card width have to be an integer between 70 and 95!"
 msgstr "- La largor de la carta deu èstre un entier entre 70 e 95 !"
 
-#: ../lib/Galette/Core/Preferences.php:808
+#: ../lib/Galette/Core/Preferences.php:838
 msgid "- Invalid number of months of membership extension."
 msgstr "- Lo nombre de mes definit per l’extension de l’adesion es invalide."
 
-#: ../lib/Galette/Core/Preferences.php:814
+#: ../lib/Galette/Core/Preferences.php:844
 msgid "- Invalid format of beginning of membership."
 msgstr "- Lo format de la data de començament d’exercici convèn pas"
 
-#: ../lib/Galette/Core/Preferences.php:818
+#: ../lib/Galette/Core/Preferences.php:848
 msgid "- Invalid date for beginning of membership."
 msgstr "- Marrit format de data per lo començament."
 
-#: ../lib/Galette/Core/Preferences.php:824
+#: ../lib/Galette/Core/Preferences.php:854
 msgid "- Invalid number of offered months."
 msgstr "- Lo nombre de mes ofèrts convèn pas."
 
-#: ../lib/Galette/Core/Preferences.php:829
+#: ../lib/Galette/Core/Preferences.php:859
 msgid "- Invalid year for cards."
 msgstr "- L’an per lei cartas convèn pas."
 
-#: ../lib/Galette/Core/Preferences.php:837
+#: ../lib/Galette/Core/Preferences.php:867
 msgid "- Invalid website URL."
 msgstr "- URL dau site invalide."
 
-#: ../lib/Galette/Core/Preferences.php:961
+#: ../lib/Galette/Core/Preferences.php:992
 msgid "%name association's %status"
 msgstr "%estatuts de l’associacion %name"
 
-#: ../lib/Galette/Core/Preferences.php:1299
+#: ../lib/Galette/Core/Preferences.php:1356
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:1318
-#: ../lib/Galette/Core/Preferences.php:1334 ../lib/Galette/IO/Csv.php:100
+#: ../lib/Galette/Core/Preferences.php:1375
+#: ../lib/Galette/Core/Preferences.php:1391 ../lib/Galette/IO/Csv.php:100
 #: ../lib/Galette/Entity/Document.php:447 ../lib/Galette/Entity/Texts.php:195
 #: ../../tempcache/pages/history.html.twig:343
 #: ../../tempcache/pages/mailings_list.html.twig:326
 msgid "Y-m-d H:i:s"
 msgstr "d/m/Y H:i:s"
 
-#: ../lib/Galette/Core/Preferences.php:1320
+#: ../lib/Galette/Core/Preferences.php:1377
 msgid "Never"
 msgstr "Jamai"
 
-#: ../lib/Galette/Core/Preferences.php:1358
+#: ../lib/Galette/Core/Preferences.php:1415
 msgid "Current cards configuration may exceed page width!"
 msgstr ""
 "La configuracion correnta dei cartas pòt passar la largor de la pagina !"
 
-#: ../lib/Galette/Core/Preferences.php:1369
+#: ../lib/Galette/Core/Preferences.php:1426
 msgid "Current cards configuration may exceed page height!"
 msgstr "La configuracion correnta dei cartas pòt passar l’autor de la pagina !"
 
-#: ../lib/Galette/Core/Preferences.php:1395
-#: ../lib/Galette/Features/Replacements.php:804
+#: ../lib/Galette/Core/Preferences.php:1452
+#: ../lib/Galette/Features/Replacements.php:814
 msgid "Main information"
 msgstr "Informacions generalas"
 
-#: ../lib/Galette/Core/Preferences.php:1402
+#: ../lib/Galette/Core/Preferences.php:1459
 #: ../../tempcache/elements/display_socials.html.twig:50
 #: ../../tempcache/elements/edit_socials.html.twig:81
 #: ../../tempcache/pages/preferences.html.twig:77
 msgid "Social networks"
 msgstr "Malhums sociaus"
 
-#: ../lib/Galette/Core/Preferences.php:1690
+#: ../lib/Galette/Core/Preferences.php:1747
 msgid "Dark mode CSS file has been reset."
 msgstr ""
 
@@ -2022,7 +2022,7 @@ msgstr "Conten ges de caractèr particular"
 #: ../lib/Galette/IO/ContributionsCsv.php:115
 #: ../lib/Galette/IO/ContributionsCsv.php:127
 #: ../lib/Galette/IO/ContributionsCsv.php:139
-#: ../lib/Galette/Features/Replacements.php:512
+#: ../lib/Galette/Features/Replacements.php:522
 #: ../lib/Galette/Features/Dynamics.php:162
 #: ../lib/Galette/Features/Dynamics.php:181
 #: ../lib/Galette/Features/Dynamics.php:187
@@ -2175,7 +2175,7 @@ msgstr "Gestionaris :"
 
 #: ../lib/Galette/IO/PdfGroups.php:156
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:167
-#: ../lib/Galette/Features/Replacements.php:242
+#: ../lib/Galette/Features/Replacements.php:250
 #: ../lib/Galette/Entity/PdfModel.php:446
 #: ../lib/Galette/Filters/MembersList.php:274
 #: ../includes/fields_defs/members_fields.php:317
@@ -2212,26 +2212,26 @@ msgid "Name"
 msgstr "Nom"
 
 #: ../lib/Galette/IO/PdfGroups.php:157
-#: ../lib/Galette/Features/Replacements.php:306
-#: ../lib/Galette/Features/Replacements.php:354
+#: ../lib/Galette/Features/Replacements.php:314
+#: ../lib/Galette/Features/Replacements.php:362
 #: ../../tempcache/elements/member_card.html.twig:134
 #: ../../tempcache/pages/public/members_list.html.twig:91
 #: ../../tempcache/pages/public/staff_list.html.twig:91
 #: ../../tempcache/pages/public/list.html.twig:74
 #: ../../tempcache/pages/public/list.html.twig:209
-#: ../../tempcache/pages/preferences.html.twig:2611
+#: ../../tempcache/pages/preferences.html.twig:2740
 msgid "Email"
 msgstr "Adreiça electronica"
 
 #: ../lib/Galette/IO/PdfGroups.php:158
-#: ../lib/Galette/Features/Replacements.php:298
+#: ../lib/Galette/Features/Replacements.php:306
 #: ../lib/Galette/Entity/ListsConfig.php:200
 #: ../../tempcache/elements/member_card.html.twig:94
 msgid "Phone"
 msgstr "Telefòn"
 
 #: ../lib/Galette/IO/PdfGroups.php:159
-#: ../lib/Galette/Features/Replacements.php:302
+#: ../lib/Galette/Features/Replacements.php:310
 msgid "GSM"
 msgstr "GSM"
 
@@ -2240,7 +2240,7 @@ msgid "filtered_memberslist"
 msgstr "lista de membres filtrada"
 
 #: ../lib/Galette/IO/MembersCsv.php:209
-#: ../lib/Galette/Features/Replacements.php:624
+#: ../lib/Galette/Features/Replacements.php:634
 #: ../lib/Galette/Entity/Adherent.php:1866
 #: ../../tempcache/modals/mass_change_members.html.twig:187
 #: ../../tempcache/elements/ajax_members.html.twig:105
@@ -2252,7 +2252,7 @@ msgid "Man"
 msgstr "Òme"
 
 #: ../lib/Galette/IO/MembersCsv.php:212
-#: ../lib/Galette/Features/Replacements.php:626
+#: ../lib/Galette/Features/Replacements.php:636
 #: ../lib/Galette/Entity/Adherent.php:1868
 #: ../../tempcache/modals/mass_change_members.html.twig:178
 #: ../../tempcache/elements/ajax_members.html.twig:116
@@ -2264,7 +2264,7 @@ msgid "Woman"
 msgstr "Femna"
 
 #: ../lib/Galette/IO/MembersCsv.php:215
-#: ../lib/Galette/Features/Replacements.php:628
+#: ../lib/Galette/Features/Replacements.php:638
 #: ../lib/Galette/Entity/Adherent.php:1870
 #: ../../tempcache/modals/mass_change_members.html.twig:169
 #: ../../tempcache/pages/advanced_search.html.twig:1162
@@ -2275,7 +2275,7 @@ msgstr "Non indicat"
 
 #: ../lib/Galette/IO/MembersCsv.php:223 ../lib/Galette/IO/MembersCsv.php:227
 #: ../lib/Galette/IO/MembersCsv.php:231 ../lib/Galette/IO/MembersCsv.php:235
-#: ../lib/Galette/Features/Replacements.php:749
+#: ../lib/Galette/Features/Replacements.php:759
 #: ../lib/Galette/Entity/Adherent.php:1831
 #: ../lib/Galette/Entity/Adherent.php:1833
 #: ../lib/Galette/Entity/Adherent.php:1835
@@ -2297,7 +2297,7 @@ msgstr "Òc"
 
 #: ../lib/Galette/IO/MembersCsv.php:223 ../lib/Galette/IO/MembersCsv.php:227
 #: ../lib/Galette/IO/MembersCsv.php:231 ../lib/Galette/IO/MembersCsv.php:235
-#: ../lib/Galette/Features/Replacements.php:749
+#: ../lib/Galette/Features/Replacements.php:759
 #: ../lib/Galette/Entity/Adherent.php:1831
 #: ../lib/Galette/Entity/Adherent.php:1833
 #: ../lib/Galette/Entity/Adherent.php:1835
@@ -2590,7 +2590,6 @@ msgstr "Gestionari de gropes"
 #: ../../tempcache/pages/members_list.html.twig:662
 #: ../../tempcache/pages/members_list.html.twig:827
 #: ../../tempcache/pages/status_list.html.twig:156
-#: ../../tempcache/pages/preferences.html.twig:400
 msgid "Staff member"
 msgstr "Membre dau burèu"
 
@@ -2600,17 +2599,17 @@ msgstr "Membre dau burèu"
 msgid "Administrator"
 msgstr "Administrator -tritz"
 
-#: ../lib/Galette/Features/I18n.php:117
+#: ../lib/Galette/Features/I18n.php:59
 #, php-format
 msgid "Unable to add dynamic translation for %field :("
 msgstr "Impossible d’ajustar la traduccion dinamica per %field :("
 
-#: ../lib/Galette/Features/I18n.php:183
+#: ../lib/Galette/Features/I18n.php:85
 #, php-format
 msgid "Unable to update dynamic translation for %field :("
 msgstr "Impossible d’actualizar la traduccion dinamica per %field :("
 
-#: ../lib/Galette/Features/I18n.php:218
+#: ../lib/Galette/Features/I18n.php:109
 #, php-format
 msgid "Unable to remove old dynamic translation for %field :("
 msgstr "Impossible de levar l’anciana traduccion dinamica per %field :("
@@ -2644,141 +2643,153 @@ msgid "Your organisation address"
 msgstr "Adreiça de vòstra associacion"
 
 #: ../lib/Galette/Features/Replacements.php:187
-#: ../lib/Galette/Features/Replacements.php:282
+#: ../lib/Galette/Features/Replacements.php:290
 msgid "with break lines"
 msgstr "amb retorns a la linha"
 
 #: ../lib/Galette/Features/Replacements.php:191
+#, fuzzy
+#| msgid "Your organisation name"
+msgid "Your organisation phone number"
+msgstr "Nom de vòstra associacion"
+
+#: ../lib/Galette/Features/Replacements.php:195
+#, fuzzy
+#| msgid "Your organisation address"
+msgid "Your organisation email address"
+msgstr "Adreiça de vòstra associacion"
+
+#: ../lib/Galette/Features/Replacements.php:199
 msgid "Your organisation website"
 msgstr "Site web de vòstra associacion"
 
-#: ../lib/Galette/Features/Replacements.php:195
+#: ../lib/Galette/Features/Replacements.php:203
 msgid "Your organisation logo"
 msgstr "Lògo de vòstra associacion"
 
-#: ../lib/Galette/Features/Replacements.php:199
+#: ../lib/Galette/Features/Replacements.php:207
 msgid "Your organisation logo (print specific)"
 msgstr "Lo lògo de vòstra associacion particular per estampar"
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
-#: ../lib/Galette/Features/Replacements.php:204
+#: ../lib/Galette/Features/Replacements.php:212
 msgid "Current date (Y-m-d)"
 msgstr "Data correnta (j/m/a)"
 
-#: ../lib/Galette/Features/Replacements.php:208
+#: ../lib/Galette/Features/Replacements.php:216
 msgid "Galette's login URI"
 msgstr "L'URL de connexion de Galeta"
 
-#: ../lib/Galette/Features/Replacements.php:212
-#: ../../tempcache/pages/preferences.html.twig:435
+#: ../lib/Galette/Features/Replacements.php:220
+#: ../../tempcache/pages/preferences.html.twig:561
 msgid "Footer text:"
 msgstr "Tèxte dau pè de pagina :"
 
-#: ../lib/Galette/Features/Replacements.php:230
+#: ../lib/Galette/Features/Replacements.php:238
 #: ../lib/Galette/Entity/PdfModel.php:455
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:118
 #: ../../tempcache/elements/edit_pdf_models.html.twig:55
 msgid "Title"
 msgstr "Títol"
 
-#: ../lib/Galette/Features/Replacements.php:234
+#: ../lib/Galette/Features/Replacements.php:242
 msgid "Member's ID"
 msgstr "ID dau membre"
 
-#: ../lib/Galette/Features/Replacements.php:238
+#: ../lib/Galette/Features/Replacements.php:246
 #: ../lib/Galette/Filters/MembersList.php:275
-#: ../../tempcache/pages/preferences.html.twig:2643
+#: ../../tempcache/pages/preferences.html.twig:2772
 msgid "Member number"
 msgstr "Numèro de membre"
 
-#: ../lib/Galette/Features/Replacements.php:246
-#: ../lib/Galette/Features/Replacements.php:342
+#: ../lib/Galette/Features/Replacements.php:254
+#: ../lib/Galette/Features/Replacements.php:350
 msgid "Last name"
 msgstr "Prenom"
 
-#: ../lib/Galette/Features/Replacements.php:250
-#: ../lib/Galette/Features/Replacements.php:346 ../includes/i18n.inc.php:90
+#: ../lib/Galette/Features/Replacements.php:258
+#: ../lib/Galette/Features/Replacements.php:354 ../includes/i18n.inc.php:90
 msgid "First name"
 msgstr "Prenom"
 
-#: ../lib/Galette/Features/Replacements.php:254
+#: ../lib/Galette/Features/Replacements.php:262
 #: ../../tempcache/elements/group_persons.html.twig:55
 #: ../../tempcache/pages/public/members_list.html.twig:83
 #: ../../tempcache/pages/public/staff_list.html.twig:83
 #: ../../tempcache/pages/public/list.html.twig:66
 #: ../../tempcache/pages/public/list.html.twig:198
-#: ../../tempcache/pages/preferences.html.twig:2627
+#: ../../tempcache/pages/preferences.html.twig:2756
 msgid "Nickname"
 msgstr "Escais"
 
-#: ../lib/Galette/Features/Replacements.php:258
+#: ../lib/Galette/Features/Replacements.php:266
 msgid "Gender"
 msgstr "Genre"
 
-#: ../lib/Galette/Features/Replacements.php:262
+#: ../lib/Galette/Features/Replacements.php:270
 #: ../../tempcache/pages/advanced_search.html.twig:274
 msgid "Birth date"
 msgstr "Data de naissença"
 
-#: ../lib/Galette/Features/Replacements.php:266
+#: ../lib/Galette/Features/Replacements.php:274
 msgid "Birth place"
 msgstr "Luòc de naissença"
 
-#: ../lib/Galette/Features/Replacements.php:270
-#: ../../tempcache/pages/preferences.html.twig:2635
+#: ../lib/Galette/Features/Replacements.php:278
+#: ../../tempcache/pages/preferences.html.twig:2764
 msgid "Profession"
 msgstr "Profession"
 
-#: ../lib/Galette/Features/Replacements.php:274
-#: ../lib/Galette/Features/Replacements.php:338
+#: ../lib/Galette/Features/Replacements.php:282
+#: ../lib/Galette/Features/Replacements.php:346
 #: ../lib/Galette/Filters/MembersList.php:276
 msgid "Company name"
 msgstr "Rason sociala"
 
-#: ../lib/Galette/Features/Replacements.php:278
-#: ../lib/Galette/Features/Replacements.php:282
+#: ../lib/Galette/Features/Replacements.php:286
+#: ../lib/Galette/Features/Replacements.php:290
 #: ../lib/Galette/Filters/MembersList.php:277
 #: ../../tempcache/pages/mailing_form.html.twig:132
 msgid "Address"
 msgstr "Adreiça"
 
-#: ../lib/Galette/Features/Replacements.php:286
+#: ../lib/Galette/Features/Replacements.php:294
 msgid "Zipcode"
 msgstr "Còde postau"
 
-#: ../lib/Galette/Features/Replacements.php:290
+#: ../lib/Galette/Features/Replacements.php:298
 msgid "Town"
 msgstr "Vila"
 
-#: ../lib/Galette/Features/Replacements.php:294 ../includes/i18n.inc.php:87
+#: ../lib/Galette/Features/Replacements.php:302 ../includes/i18n.inc.php:87
 msgid "Country"
 msgstr "País"
 
-#: ../lib/Galette/Features/Replacements.php:314
+#: ../lib/Galette/Features/Replacements.php:322
 msgid "Member's main group"
 msgstr "Grope principau dau membre"
 
-#: ../lib/Galette/Features/Replacements.php:318
+#: ../lib/Galette/Features/Replacements.php:326
 msgid "Member's groups (as list)"
 msgstr "Gropes dau membre (lista)"
 
-#: ../lib/Galette/Features/Replacements.php:322
+#: ../lib/Galette/Features/Replacements.php:330
 msgid "Member state of dues"
 msgstr "Estatut de l'adesion"
 
-#: ../lib/Galette/Features/Replacements.php:326
+#: ../lib/Galette/Features/Replacements.php:334
 msgid "Membership remaining days"
 msgstr "Jorns d'adesion que demòran"
 
-#: ../lib/Galette/Features/Replacements.php:330
+#: ../lib/Galette/Features/Replacements.php:338
 msgid "Membership expired since"
 msgstr "Adesion acabada despuei"
 
-#: ../lib/Galette/Features/Replacements.php:376
+#: ../lib/Galette/Features/Replacements.php:384
 msgid "Contribution label"
 msgstr "Designacion de la contribucion"
 
-#: ../lib/Galette/Features/Replacements.php:380
+#: ../lib/Galette/Features/Replacements.php:388
 #: ../../tempcache/pages/transaction_form.html.twig:245
 #: ../../tempcache/pages/contributions_list.html.twig:462
 #: ../../tempcache/pages/contributions_list.html.twig:723
@@ -2797,39 +2808,39 @@ msgstr "Designacion de la contribucion"
 msgid "Amount"
 msgstr "Soma"
 
-#: ../lib/Galette/Features/Replacements.php:384
+#: ../lib/Galette/Features/Replacements.php:392
 msgid "Amount (in letters)"
 msgstr "Soma (en letras)"
 
-#: ../lib/Galette/Features/Replacements.php:388
+#: ../lib/Galette/Features/Replacements.php:396
 msgid "Full date"
 msgstr "Data"
 
-#: ../lib/Galette/Features/Replacements.php:392
+#: ../lib/Galette/Features/Replacements.php:400
 msgid "Contribution year"
 msgstr "An de la contribucion"
 
-#: ../lib/Galette/Features/Replacements.php:396
+#: ../lib/Galette/Features/Replacements.php:404
 #: ../../tempcache/pages/document_form.html.twig:184
 msgid "Comment"
 msgstr "Comentari"
 
-#: ../lib/Galette/Features/Replacements.php:400
+#: ../lib/Galette/Features/Replacements.php:408
 #: ../../tempcache/pages/advanced_search.html.twig:711
 msgid "Begin date"
 msgstr "Data de començament"
 
-#: ../lib/Galette/Features/Replacements.php:404
+#: ../lib/Galette/Features/Replacements.php:412
 #: ../../tempcache/pages/advanced_search.html.twig:755
 msgid "End date"
 msgstr "Data de fin"
 
-#: ../lib/Galette/Features/Replacements.php:408
+#: ../lib/Galette/Features/Replacements.php:416
 #: ../lib/Galette/Entity/Contribution.php:216
 msgid "Contribution id"
 msgstr "ID de la contribucion"
 
-#: ../lib/Galette/Features/Replacements.php:412
+#: ../lib/Galette/Features/Replacements.php:420
 #: ../../tempcache/pages/contributions_list.html.twig:462
 #: ../../tempcache/pages/contributions_list.html.twig:729
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:224
@@ -2841,14 +2852,14 @@ msgstr "ID de la contribucion"
 msgid "Payment type"
 msgstr "Mòde de pagament"
 
-#: ../lib/Galette/Features/Replacements.php:416
+#: ../lib/Galette/Features/Replacements.php:424
 #: ../lib/Galette/Entity/Contribution.php:1118
 #: ../lib/Galette/Entity/Texts.php:615
 #: ../lib/Galette/Entity/PdfContribution.php:67
 msgid "Contribution information"
 msgstr "Informacions sus la contribucion"
 
-#: ../lib/Galette/Features/Replacements.php:809
+#: ../lib/Galette/Features/Replacements.php:819
 msgid "Member information"
 msgstr "Informacions dau membre"
 
@@ -3216,7 +3227,7 @@ msgid "Rules of procedure"
 msgstr "Reglament interior"
 
 #: ../lib/Galette/Entity/Document.php:465
-#: ../../tempcache/elements/edit_pdf_models.html.twig:194
+#: ../../tempcache/elements/edit_pdf_models.html.twig:143
 #: ../../tempcache/pages/member_show.html.twig:160
 msgid "Adhesion form"
 msgstr "Formulari d'adesion"
@@ -3615,12 +3626,12 @@ msgid "All members"
 msgstr "Totei lei membres"
 
 #: ../lib/Galette/Filters/MembersList.php:296
-#: ../../tempcache/pages/preferences.html.twig:1067
-#: ../../tempcache/pages/preferences.html.twig:1125
-#: ../../tempcache/pages/preferences.html.twig:1183
-#: ../../tempcache/pages/preferences.html.twig:1244
-#: ../../tempcache/pages/preferences.html.twig:1302
-#: ../../tempcache/pages/preferences.html.twig:1360
+#: ../../tempcache/pages/preferences.html.twig:1196
+#: ../../tempcache/pages/preferences.html.twig:1254
+#: ../../tempcache/pages/preferences.html.twig:1312
+#: ../../tempcache/pages/preferences.html.twig:1373
+#: ../../tempcache/pages/preferences.html.twig:1431
+#: ../../tempcache/pages/preferences.html.twig:1489
 msgid "Up to date members"
 msgstr "Menbres a son corrent"
 
@@ -3698,7 +3709,7 @@ msgid "Galette installation"
 msgstr "Installacion de Galette"
 
 #: ../webroot/installer.php:225 ../webroot/installer.php:227
-#: ../../tempcache/page.html.twig:202 ../../tempcache/page.html.twig:207
+#: ../../tempcache/page.html.twig:216 ../../tempcache/page.html.twig:221
 #, fuzzy
 #| msgid "Reading the list"
 msgid "Read the manual"
@@ -4023,26 +4034,27 @@ msgid "Address:"
 msgstr "Adreiça :"
 
 #: ../includes/fields_defs/members_fields.php:115
-#: ../../tempcache/pages/preferences.html.twig:307
+#: ../../tempcache/pages/preferences.html.twig:308
 msgid "Zip Code:"
 msgstr "Còde postal :"
 
 #: ../includes/fields_defs/members_fields.php:123
-#: ../../tempcache/pages/preferences.html.twig:317
+#: ../../tempcache/pages/preferences.html.twig:318
 msgid "City:"
 msgstr "Vila :"
 
 #: ../includes/fields_defs/members_fields.php:131
-#: ../../tempcache/pages/preferences.html.twig:327
+#: ../../tempcache/pages/preferences.html.twig:330
 msgid "Region:"
 msgstr "Region:"
 
 #: ../includes/fields_defs/members_fields.php:139
-#: ../../tempcache/pages/preferences.html.twig:337
+#: ../../tempcache/pages/preferences.html.twig:340
 msgid "Country:"
 msgstr "País :"
 
 #: ../includes/fields_defs/members_fields.php:147
+#: ../../tempcache/pages/preferences.html.twig:436
 msgid "Phone:"
 msgstr "Telefòn :"
 
@@ -4051,6 +4063,7 @@ msgid "Mobile phone:"
 msgstr "Telefonet :"
 
 #: ../includes/fields_defs/members_fields.php:163
+#: ../../tempcache/pages/preferences.html.twig:536
 msgid "E-Mail:"
 msgstr "Corrier electronic:"
 
@@ -4069,14 +4082,14 @@ msgstr "Profession :"
 #: ../includes/fields_defs/members_fields.php:195 ../install/steps/admin.php:27
 #: ../../tempcache/pages/index.html.twig:89
 #: ../../tempcache/pages/index.html.twig:93
-#: ../../tempcache/pages/preferences.html.twig:3019
+#: ../../tempcache/pages/preferences.html.twig:3148
 msgid "Username:"
 msgstr "Identificant :"
 
 #: ../includes/fields_defs/members_fields.php:203 ../install/steps/admin.php:31
 #: ../install/steps/db.php:70 ../../tempcache/pages/index.html.twig:101
 #: ../../tempcache/pages/index.html.twig:105
-#: ../../tempcache/pages/preferences.html.twig:3033
+#: ../../tempcache/pages/preferences.html.twig:3162
 msgid "Password:"
 msgstr "Senhau :"
 
@@ -4431,7 +4444,7 @@ msgstr ""
 "Siatz pregat de chausir lei paramètres dau còmpte administrator de Galette"
 
 #: ../install/steps/admin.php:35
-#: ../../tempcache/pages/preferences.html.twig:3042
+#: ../../tempcache/pages/preferences.html.twig:3171
 msgid "Retype password:"
 msgstr "Confirmacion dau senhau :"
 
@@ -4569,7 +4582,7 @@ msgstr "e"
 #: ../../tempcache/pages/mailing_form.html.twig:733
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:334
 #: ../../tempcache/pages/configuration_title_form.html.twig:102
-#: ../../tempcache/pages/preferences.html.twig:3238
+#: ../../tempcache/pages/preferences.html.twig:3407
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:102
 #: ../../tempcache/pages/document_form.html.twig:209
 msgid "Cancel"
@@ -4900,7 +4913,7 @@ msgid "Register your organization as a Galette user"
 msgstr "Enregistratz vòstra associacion per utilisatritz de Galette"
 
 #: ../install/steps/telemetry.php:46
-#: ../../tempcache/pages/preferences.html.twig:498
+#: ../../tempcache/pages/preferences.html.twig:641
 #: ../../tempcache/pages/desktop.html.twig:113
 msgid "Register"
 msgstr "S'enregistrar"
@@ -5177,7 +5190,7 @@ msgstr ""
 #: ../../tempcache/pages/mailing_form.html.twig:608
 #: ../../tempcache/pages/mailing_form.html.twig:642
 #: ../../tempcache/pages/mailing_form.html.twig:711
-#: ../../tempcache/pages/preferences.html.twig:3223
+#: ../../tempcache/pages/preferences.html.twig:3392
 #: ../../tempcache/pages/mailings_list.html.twig:510
 #: ../../tempcache/pages/mailings_list.html.twig:520
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:184
@@ -5213,7 +5226,7 @@ msgstr "Capitèt una error per lo mandadís deis informacions de telemetria :("
 #: ../../tempcache/pages/reminder.html.twig:170
 #: ../../tempcache/pages/mailing_form.html.twig:381
 #: ../../tempcache/pages/mailing_form.html.twig:472
-#: ../../tempcache/pages/preferences.html.twig:3231
+#: ../../tempcache/pages/preferences.html.twig:3400
 msgid "Send"
 msgstr "Mandar"
 
@@ -5253,7 +5266,7 @@ msgstr "Permissions"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:72
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:118
-#: ../../tempcache/elements/edit_pdf_models.html.twig:168
+#: ../../tempcache/elements/edit_pdf_models.html.twig:117
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:472
 #: ../../tempcache/pages/transaction_form.html.twig:241
 #: ../../tempcache/pages/contributions_list.html.twig:462
@@ -5317,7 +5330,7 @@ msgstr "Completa"
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:334
 #: ../../tempcache/pages/contributions_types_list.html.twig:125
 #: ../../tempcache/pages/contributions_types_list.html.twig:199
-#: ../../tempcache/pages/preferences.html.twig:1031
+#: ../../tempcache/pages/preferences.html.twig:1160
 msgid "Default"
 msgstr "Per defaut"
 
@@ -5424,7 +5437,7 @@ msgid "User menu"
 msgstr "Menú utilizator"
 
 #: ../../tempcache/elements/ajax_members.html.twig:62
-#: ../../tempcache/pages/preferences.html.twig:2619
+#: ../../tempcache/pages/preferences.html.twig:2748
 msgid "Zip - Town"
 msgstr "CP - Vila"
 
@@ -5588,12 +5601,12 @@ msgid "Loading..."
 msgstr "Telecargament..."
 
 #: ../../tempcache/elements/js/modal_action.js.twig:75
-#: ../../tempcache/elements/edit_pdf_models.html.twig:221
+#: ../../tempcache/elements/edit_pdf_models.html.twig:170
 #: ../../tempcache/elements/group.html.twig:335
 #: ../../tempcache/pages/contribution_type_form.html.twig:127
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:373
 #: ../../tempcache/pages/transaction_form.html.twig:486
-#: ../../tempcache/pages/configuration_texts.html.twig:225
+#: ../../tempcache/pages/configuration_texts.html.twig:217
 #: ../../tempcache/pages/members_list.html.twig:406
 #: ../../tempcache/pages/members_list.html.twig:436
 #: ../../tempcache/pages/members_list.html.twig:1225
@@ -5603,12 +5616,12 @@ msgstr "Telecargament..."
 #: ../../tempcache/pages/mailing_form.html.twig:369
 #: ../../tempcache/pages/scheduledpayment_form.html.twig:329
 #: ../../tempcache/pages/configuration_title_form.html.twig:97
-#: ../../tempcache/pages/preferences.html.twig:3078
+#: ../../tempcache/pages/preferences.html.twig:3207
 #: ../../tempcache/pages/configuration_core_lists.html.twig:224
 #: ../../tempcache/pages/member_form.html.twig:101
 #: ../../tempcache/pages/member_form.html.twig:486
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:97
-#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:193
+#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:186
 #: ../../tempcache/pages/document_form.html.twig:204
 msgid "Save"
 msgstr "Enregistrar"
@@ -5664,23 +5677,23 @@ msgstr "Precedent"
 msgid "Next"
 msgstr "Seguent"
 
-#: ../../tempcache/elements/edit_pdf_models.html.twig:92
+#: ../../tempcache/elements/edit_pdf_models.html.twig:90
 msgid "Header"
 msgstr "Bandièra"
 
-#: ../../tempcache/elements/edit_pdf_models.html.twig:109
+#: ../../tempcache/elements/edit_pdf_models.html.twig:95
 msgid "Footer"
 msgstr "Pè de pagina"
 
-#: ../../tempcache/elements/edit_pdf_models.html.twig:130
+#: ../../tempcache/elements/edit_pdf_models.html.twig:102
 msgid "Body"
 msgstr "Còrs"
 
-#: ../../tempcache/elements/edit_pdf_models.html.twig:150
+#: ../../tempcache/elements/edit_pdf_models.html.twig:108
 msgid "CSS styles"
 msgstr ""
 
-#: ../../tempcache/elements/edit_pdf_models.html.twig:176
+#: ../../tempcache/elements/edit_pdf_models.html.twig:125
 #: ../../tempcache/pages/contributions_list.html.twig:159
 #: ../../tempcache/pages/contributions_list.html.twig:170
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:145
@@ -5688,11 +5701,11 @@ msgstr ""
 msgid "Select"
 msgstr "Seleccionar"
 
-#: ../../tempcache/elements/edit_pdf_models.html.twig:182
+#: ../../tempcache/elements/edit_pdf_models.html.twig:131
 msgid "Invoice"
 msgstr "Factura"
 
-#: ../../tempcache/elements/edit_pdf_models.html.twig:188
+#: ../../tempcache/elements/edit_pdf_models.html.twig:137
 msgid "Receipt"
 msgstr "Recebut"
 
@@ -5963,8 +5976,8 @@ msgid "No inactive plugin."
 msgstr "Ges d’ajuston inactiu."
 
 #: ../../tempcache/pages/plugins.html.twig:349
-#: ../../tempcache/pages/preferences.html.twig:1734
-#: ../../tempcache/pages/preferences.html.twig:3005
+#: ../../tempcache/pages/preferences.html.twig:1863
+#: ../../tempcache/pages/preferences.html.twig:3134
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
@@ -7008,7 +7021,7 @@ msgstr "Telecargar un fichier novèu"
 
 #: ../../tempcache/pages/import.html.twig:267
 #: ../../tempcache/pages/preferences.html.twig:253
-#: ../../tempcache/pages/preferences.html.twig:2539
+#: ../../tempcache/pages/preferences.html.twig:2668
 #: ../../tempcache/pages/document_form.html.twig:109
 #: ../../tempcache/components/forms/picture.html.twig:80
 #: ../../tempcache/components/dynamic_fields.html.twig:762
@@ -7064,10 +7077,10 @@ msgstr "Modificar lo mòde de pagament « %s »"
 #: ../../tempcache/pages/configuration_payment_types.html.twig:180
 #: ../../tempcache/pages/preferences.html.twig:194
 #: ../../tempcache/pages/preferences.html.twig:200
-#: ../../tempcache/pages/preferences.html.twig:2381
-#: ../../tempcache/pages/preferences.html.twig:2387
-#: ../../tempcache/pages/preferences.html.twig:2419
-#: ../../tempcache/pages/preferences.html.twig:2425
+#: ../../tempcache/pages/preferences.html.twig:2510
+#: ../../tempcache/pages/preferences.html.twig:2516
+#: ../../tempcache/pages/preferences.html.twig:2548
+#: ../../tempcache/pages/preferences.html.twig:2554
 #, php-format
 msgid "Translate '%s'"
 msgstr ""
@@ -7220,7 +7233,8 @@ msgid "Sender"
 msgstr "Expeditor"
 
 #: ../../tempcache/pages/mailing_form.html.twig:98
-#: ../../tempcache/pages/preferences.html.twig:372
+#: ../../tempcache/pages/preferences.html.twig:364
+#: ../../tempcache/pages/preferences.html.twig:452
 msgid "from preferences"
 msgstr "segon lei preferéncias"
 
@@ -7376,7 +7390,7 @@ msgid ""
 msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:210
-#: ../../tempcache/pages/preferences.html.twig:2496
+#: ../../tempcache/pages/preferences.html.twig:2625
 msgid "Logo:"
 msgstr ""
 
@@ -7385,7 +7399,7 @@ msgid "Current logo"
 msgstr "Lògo actual"
 
 #: ../../tempcache/pages/preferences.html.twig:251
-#: ../../tempcache/pages/preferences.html.twig:2537
+#: ../../tempcache/pages/preferences.html.twig:2666
 #: ../../tempcache/pages/document_form.html.twig:107
 #: ../../tempcache/components/forms/picture.html.twig:78
 #: ../../tempcache/components/dynamic_fields.html.twig:760
@@ -7393,7 +7407,7 @@ msgid "Choose another file"
 msgstr "Chausissètz un autre fichier"
 
 #: ../../tempcache/pages/preferences.html.twig:268
-#: ../../tempcache/pages/preferences.html.twig:2554
+#: ../../tempcache/pages/preferences.html.twig:2683
 #: ../../tempcache/components/forms/picture.html.twig:58
 msgid "Delete image"
 msgstr "Suprimir imatge"
@@ -7402,190 +7416,223 @@ msgstr "Suprimir imatge"
 msgid " (continuation)"
 msgstr " (seguida)"
 
-#: ../../tempcache/pages/preferences.html.twig:347
-msgid "Website:"
-msgstr ""
-
-#: ../../tempcache/pages/preferences.html.twig:361
+#: ../../tempcache/pages/preferences.html.twig:352
 msgid "Postal address:"
 msgstr "Adreiça postala :"
 
-#: ../../tempcache/pages/preferences.html.twig:365
+#: ../../tempcache/pages/preferences.html.twig:356
+#, fuzzy
+#| msgid ""
+#| "Use either the address setted below or select a staff member to retrieve "
+#| "he's address."
 msgid ""
-"Use either the address setted below or select a staff member to retrieve "
-"he's address."
+"Use either the address set above or select a staff member to retrieve its "
+"address."
 msgstr ""
 "Emplegar l'adreiça donada çai-sus ò chausissètz un membre dau burèu e se "
 "servir de la sieuna."
 
-#: ../../tempcache/pages/preferences.html.twig:386
+#: ../../tempcache/pages/preferences.html.twig:380
 msgid "from a staff user"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:405
+#: ../../tempcache/pages/preferences.html.twig:396
+msgid "Staff member whose address needs to be retrieved"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:401
+#: ../../tempcache/pages/preferences.html.twig:505
 msgid "-- Choose a staff member --"
 msgstr "-- Chausissètz un membre dau burèu --"
 
-#: ../../tempcache/pages/preferences.html.twig:441
+#: ../../tempcache/pages/preferences.html.twig:440
+#, fuzzy
+#| msgid ""
+#| "Use either the address setted below or select a staff member to retrieve "
+#| "he's address."
+msgid ""
+"Either use the phone number set below or select a staff member to retrieve "
+"its phone number."
+msgstr ""
+"Emplegar l'adreiça donada çai-sus ò chausissètz un membre dau burèu e se "
+"servir de la sieuna."
+
+#: ../../tempcache/pages/preferences.html.twig:468
+msgid "phone from a staff user"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:484
+msgid "mobile phone from a staff user"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:500
+msgid "Staff member whose phone number needs to be retrieved"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:546
+msgid "Website:"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:567
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "
 "page"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:454
-msgid "Telemetry date:"
-msgstr "Data de telemetria :"
-
-#: ../../tempcache/pages/preferences.html.twig:458
-msgid "Last telemetry sent date."
-msgstr "Data dau darrier mandadís de la telemetria."
-
-#: ../../tempcache/pages/preferences.html.twig:468
-msgid "send"
-msgstr "mandar"
-
-#: ../../tempcache/pages/preferences.html.twig:476
-msgid "Registration date:"
-msgstr ""
-
-#: ../../tempcache/pages/preferences.html.twig:480
-msgid "Date on which you registered your Galette instance."
-msgstr ""
-
-#: ../../tempcache/pages/preferences.html.twig:489
-msgid "Update your information"
-msgstr "Actualizar leis informacions"
-
-#: ../../tempcache/pages/preferences.html.twig:501
-msgid "Not registered"
-msgstr "Non enregistrat"
-
-#: ../../tempcache/pages/preferences.html.twig:525
+#: ../../tempcache/pages/preferences.html.twig:586
 msgid "Prevent search engines indexation"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:554
+#: ../../tempcache/pages/preferences.html.twig:597
+msgid "Telemetry date:"
+msgstr "Data de telemetria :"
+
+#: ../../tempcache/pages/preferences.html.twig:601
+msgid "Last telemetry sent date."
+msgstr "Data dau darrier mandadís de la telemetria."
+
+#: ../../tempcache/pages/preferences.html.twig:611
+msgid "send"
+msgstr "mandar"
+
+#: ../../tempcache/pages/preferences.html.twig:619
+msgid "Registration date:"
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:623
+msgid "Date on which you registered your Galette instance."
+msgstr ""
+
+#: ../../tempcache/pages/preferences.html.twig:632
+msgid "Update your information"
+msgstr "Actualizar leis informacions"
+
+#: ../../tempcache/pages/preferences.html.twig:644
+msgid "Not registered"
+msgstr "Non enregistrat"
+
+#: ../../tempcache/pages/preferences.html.twig:683
 msgid "Default language:"
 msgstr "Lenga per defaut :"
 
-#: ../../tempcache/pages/preferences.html.twig:588
+#: ../../tempcache/pages/preferences.html.twig:717
 msgid "Default payment type:"
 msgstr "Mòde de pagament per defaut :"
 
-#: ../../tempcache/pages/preferences.html.twig:617
+#: ../../tempcache/pages/preferences.html.twig:746
 msgid "Default account filter:"
 msgstr "Filtre de còmpte per defaut :"
 
-#: ../../tempcache/pages/preferences.html.twig:653
+#: ../../tempcache/pages/preferences.html.twig:782
 msgid "Show identifiers"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:658
+#: ../../tempcache/pages/preferences.html.twig:787
 msgid "Display database identifiers in related windows"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:664
+#: ../../tempcache/pages/preferences.html.twig:793
 msgid "Number of columns on the member form"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:698
+#: ../../tempcache/pages/preferences.html.twig:827
 msgid "Lines / Page:"
 msgstr "Linhas / Pagina :"
 
-#: ../../tempcache/pages/preferences.html.twig:737
+#: ../../tempcache/pages/preferences.html.twig:866
 msgid "Default membership status:"
 msgstr "Estatut d'adesion per defaut :"
 
-#: ../../tempcache/pages/preferences.html.twig:771
+#: ../../tempcache/pages/preferences.html.twig:900
 #: ../../tempcache/pages/member_form.html.twig:332
 msgid "After member creation:"
 msgstr "Après la creacion dau membre :"
 
-#: ../../tempcache/pages/preferences.html.twig:782
+#: ../../tempcache/pages/preferences.html.twig:911
 #: ../../tempcache/pages/member_form.html.twig:346
 msgid "create a new contribution (default action)"
 msgstr "crear una contribucion nòva (per defaut)"
 
-#: ../../tempcache/pages/preferences.html.twig:792
+#: ../../tempcache/pages/preferences.html.twig:921
 #: ../../tempcache/pages/member_form.html.twig:361
 msgid "create a new transaction"
 msgstr "crear una transaccion novèla"
 
-#: ../../tempcache/pages/preferences.html.twig:802
+#: ../../tempcache/pages/preferences.html.twig:931
 #: ../../tempcache/pages/member_form.html.twig:373
 msgid "create another new member"
 msgstr "crear un membre novèu"
 
-#: ../../tempcache/pages/preferences.html.twig:812
+#: ../../tempcache/pages/preferences.html.twig:941
 #: ../../tempcache/pages/member_form.html.twig:383
 msgid "show member"
 msgstr "mostrar la ficha dau membre"
 
-#: ../../tempcache/pages/preferences.html.twig:822
+#: ../../tempcache/pages/preferences.html.twig:951
 #: ../../tempcache/pages/member_form.html.twig:393
 msgid "go to members list"
 msgstr "anar a la lista dei membres"
 
-#: ../../tempcache/pages/preferences.html.twig:832
+#: ../../tempcache/pages/preferences.html.twig:961
 #: ../../tempcache/pages/member_form.html.twig:403
 msgid "go to main page"
 msgstr "tornar a la pagina principala"
 
-#: ../../tempcache/pages/preferences.html.twig:846
+#: ../../tempcache/pages/preferences.html.twig:975
 msgid "Force member picture ratio"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:851
+#: ../../tempcache/pages/preferences.html.twig:980
 msgid ""
 "If checked, the members's picture will be resized and cropped to the ratio "
 "selected below."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:862
+#: ../../tempcache/pages/preferences.html.twig:991
 msgid "Select a ratio"
 msgstr "Seleccionatz una rataporcion"
 
-#: ../../tempcache/pages/preferences.html.twig:871
+#: ../../tempcache/pages/preferences.html.twig:1000
 #: ../../tempcache/components/forms/picture.html.twig:91
 msgid "Square (1:1)"
 msgstr "Cairat (1:1)"
 
-#: ../../tempcache/pages/preferences.html.twig:879
+#: ../../tempcache/pages/preferences.html.twig:1008
 #: ../../tempcache/components/forms/picture.html.twig:91
 msgid "Portrait (3:4)"
 msgstr "Retrach (3:4)"
 
-#: ../../tempcache/pages/preferences.html.twig:887
+#: ../../tempcache/pages/preferences.html.twig:1016
 #: ../../tempcache/components/forms/picture.html.twig:91
 msgid "Landscape (4:3)"
 msgstr "Païsatge (4:3)"
 
-#: ../../tempcache/pages/preferences.html.twig:901
+#: ../../tempcache/pages/preferences.html.twig:1030
 msgid "Default membership extension:"
 msgstr "Durada d'adesion per defaut :"
 
-#: ../../tempcache/pages/preferences.html.twig:911
+#: ../../tempcache/pages/preferences.html.twig:1040
 msgid "(Months)"
 msgstr "(Mes)"
 
-#: ../../tempcache/pages/preferences.html.twig:920
+#: ../../tempcache/pages/preferences.html.twig:1049
 #: ../../tempcache/pages/advanced_search.html.twig:1111
 msgid "or"
 msgstr "ò"
 
-#: ../../tempcache/pages/preferences.html.twig:927
+#: ../../tempcache/pages/preferences.html.twig:1056
 msgid "Beginning of membership:"
 msgstr "Data de començament de l'exerçici :"
 
-#: ../../tempcache/pages/preferences.html.twig:933
+#: ../../tempcache/pages/preferences.html.twig:1062
 msgid "(dd/mm)"
 msgstr "(jj/mm)"
 
-#: ../../tempcache/pages/preferences.html.twig:939
+#: ../../tempcache/pages/preferences.html.twig:1068
 msgid "Number of months offered:"
 msgstr "Nombre de mes ofèrts :"
 
-#: ../../tempcache/pages/preferences.html.twig:945
+#: ../../tempcache/pages/preferences.html.twig:1074
 msgid ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
@@ -7593,7 +7640,7 @@ msgstr ""
 "Quand definissètz un començament d'exercici, podètz ofrir lei darriers mes "
 "de l'an."
 
-#: ../../tempcache/pages/preferences.html.twig:947
+#: ../../tempcache/pages/preferences.html.twig:1076
 msgid ""
 "Let's say you offer last 2 months, and have a renewal on 31th of December. "
 "All created contributions in current year will be valid until this date, but "
@@ -7603,149 +7650,149 @@ msgstr ""
 "Totei lei contribucions creadas l'annada correnta vaudràn fins a aquesta "
 "data, mai partent d'octòbre vaudràn per l'an que vèn."
 
-#: ../../tempcache/pages/preferences.html.twig:979
+#: ../../tempcache/pages/preferences.html.twig:1108
 msgid "Self subscription enabled?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:996
+#: ../../tempcache/pages/preferences.html.twig:1125
 #, fuzzy
 #| msgid "Download empty adhesion form"
 msgid "Display the link to download the empty adhesion form"
 msgstr "Teledescargar un formulari d'adesion vuege"
 
-#: ../../tempcache/pages/preferences.html.twig:1013
+#: ../../tempcache/pages/preferences.html.twig:1142
 msgid "Public pages enabled?"
 msgstr "Paginas publicas activadas ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1035
+#: ../../tempcache/pages/preferences.html.twig:1164
 msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1047
-#: ../../tempcache/pages/preferences.html.twig:1105
-#: ../../tempcache/pages/preferences.html.twig:1163
-#: ../../tempcache/pages/preferences.html.twig:1224
-#: ../../tempcache/pages/preferences.html.twig:1282
-#: ../../tempcache/pages/preferences.html.twig:1340
+#: ../../tempcache/pages/preferences.html.twig:1176
+#: ../../tempcache/pages/preferences.html.twig:1234
+#: ../../tempcache/pages/preferences.html.twig:1292
+#: ../../tempcache/pages/preferences.html.twig:1353
+#: ../../tempcache/pages/preferences.html.twig:1411
+#: ../../tempcache/pages/preferences.html.twig:1469
 msgid "Hidden"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1057
-#: ../../tempcache/pages/preferences.html.twig:1115
-#: ../../tempcache/pages/preferences.html.twig:1173
-#: ../../tempcache/pages/preferences.html.twig:1234
-#: ../../tempcache/pages/preferences.html.twig:1292
-#: ../../tempcache/pages/preferences.html.twig:1350
+#: ../../tempcache/pages/preferences.html.twig:1186
+#: ../../tempcache/pages/preferences.html.twig:1244
+#: ../../tempcache/pages/preferences.html.twig:1302
+#: ../../tempcache/pages/preferences.html.twig:1363
+#: ../../tempcache/pages/preferences.html.twig:1421
+#: ../../tempcache/pages/preferences.html.twig:1479
 msgid "Everyone"
 msgstr "Tot lo monde"
 
-#: ../../tempcache/pages/preferences.html.twig:1077
-#: ../../tempcache/pages/preferences.html.twig:1135
-#: ../../tempcache/pages/preferences.html.twig:1193
-#: ../../tempcache/pages/preferences.html.twig:1254
-#: ../../tempcache/pages/preferences.html.twig:1312
-#: ../../tempcache/pages/preferences.html.twig:1370
+#: ../../tempcache/pages/preferences.html.twig:1206
+#: ../../tempcache/pages/preferences.html.twig:1264
+#: ../../tempcache/pages/preferences.html.twig:1322
+#: ../../tempcache/pages/preferences.html.twig:1383
+#: ../../tempcache/pages/preferences.html.twig:1441
+#: ../../tempcache/pages/preferences.html.twig:1499
 msgid "Admin and staff only"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1084
+#: ../../tempcache/pages/preferences.html.twig:1213
 msgid "Members list"
 msgstr "Lista dei membres"
 
-#: ../../tempcache/pages/preferences.html.twig:1095
-#: ../../tempcache/pages/preferences.html.twig:1153
-#: ../../tempcache/pages/preferences.html.twig:1214
-#: ../../tempcache/pages/preferences.html.twig:1272
-#: ../../tempcache/pages/preferences.html.twig:1330
+#: ../../tempcache/pages/preferences.html.twig:1224
+#: ../../tempcache/pages/preferences.html.twig:1282
+#: ../../tempcache/pages/preferences.html.twig:1343
+#: ../../tempcache/pages/preferences.html.twig:1401
+#: ../../tempcache/pages/preferences.html.twig:1459
 msgid "Inherit"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1142
+#: ../../tempcache/pages/preferences.html.twig:1271
 #, fuzzy
 #| msgid "Member's Cards"
 msgid "Members gallery"
 msgstr "Cartas de Membres"
 
-#: ../../tempcache/pages/preferences.html.twig:1261
+#: ../../tempcache/pages/preferences.html.twig:1390
 #, fuzzy
 #| msgid "Staff members"
 msgid "Staff list"
 msgstr "Membres dau burèu"
 
-#: ../../tempcache/pages/preferences.html.twig:1384
+#: ../../tempcache/pages/preferences.html.twig:1513
 msgid "Include groups managers with staff?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1396
+#: ../../tempcache/pages/preferences.html.twig:1525
 msgid "Appearance"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1411
+#: ../../tempcache/pages/preferences.html.twig:1540
 msgid "Hide default background image"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1425
+#: ../../tempcache/pages/preferences.html.twig:1554
 msgid "Apply custom colors"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1435
+#: ../../tempcache/pages/preferences.html.twig:1564
 msgid "Primary color"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1443
+#: ../../tempcache/pages/preferences.html.twig:1572
 msgid ""
 "Color applied to primary buttons, checkboxes, labels, headers, borders, and "
 "menus."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1449
+#: ../../tempcache/pages/preferences.html.twig:1578
 msgid "Text on primary color"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1457
+#: ../../tempcache/pages/preferences.html.twig:1586
 msgid "Color applied to text displayed over the Primary color."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1466
+#: ../../tempcache/pages/preferences.html.twig:1595
 msgid "Secondary color"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1474
+#: ../../tempcache/pages/preferences.html.twig:1603
 msgid ""
 "Color applied to active items in menus, paginations, and accordions views."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1480
+#: ../../tempcache/pages/preferences.html.twig:1609
 msgid "Text on secondary color"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1488
+#: ../../tempcache/pages/preferences.html.twig:1617
 msgid "Color applied to text displayed over the Secondary color."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1499
+#: ../../tempcache/pages/preferences.html.twig:1628
 #, fuzzy
 #| msgid "Admin parameters"
 msgid "Advanced parameters"
 msgstr "Paramètres administrator"
 
-#: ../../tempcache/pages/preferences.html.twig:1507
+#: ../../tempcache/pages/preferences.html.twig:1636
 msgid "Galette base URL"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1513
+#: ../../tempcache/pages/preferences.html.twig:1642
 msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%galette_url"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1527
+#: ../../tempcache/pages/preferences.html.twig:1656
 msgid "Post new contribution script URI"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1533
+#: ../../tempcache/pages/preferences.html.twig:1662
 msgid ""
 "Enter a script URI that would be called after adding a new contribution.<br/"
 ">Script URI must be prefixed by one of '<em>galette://</em>' for Galette "
@@ -7754,40 +7801,40 @@ msgid ""
 "those cases)."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1548
+#: ../../tempcache/pages/preferences.html.twig:1677
 msgid "RSS feed URL"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1554
+#: ../../tempcache/pages/preferences.html.twig:1683
 msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1584
+#: ../../tempcache/pages/preferences.html.twig:1713
 msgid "Can members create child?"
 msgstr "Lei membres pòdon crear de parentèla ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1598
+#: ../../tempcache/pages/preferences.html.twig:1727
 msgid "Can group managers edit their groups?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1612
+#: ../../tempcache/pages/preferences.html.twig:1741
 msgid "Can group managers create members?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1626
+#: ../../tempcache/pages/preferences.html.twig:1755
 msgid "Can group managers edit members?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1640
+#: ../../tempcache/pages/preferences.html.twig:1769
 msgid "Can group managers send mailings?"
 msgstr "Lei responsables de grope pòdon mandar en nombre ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1654
+#: ../../tempcache/pages/preferences.html.twig:1783
 msgid "Can group managers do exports?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1659
+#: ../../tempcache/pages/preferences.html.twig:1788
 msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
@@ -7796,57 +7843,57 @@ msgstr ""
 "(format CSV), lei cartas (pdf), lei listas de preséncia e lei listas pdf dei "
 "gropes"
 
-#: ../../tempcache/pages/preferences.html.twig:1672
+#: ../../tempcache/pages/preferences.html.twig:1801
 msgid "Can group managers see contributions?"
 msgstr "Lei responsables de grope pòdon veire lei contribucions ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1686
+#: ../../tempcache/pages/preferences.html.twig:1815
 msgid "Can group managers create contributions?"
 msgstr "Lei responsables de grope pòdon crear de contribucion ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1700
+#: ../../tempcache/pages/preferences.html.twig:1829
 msgid "Can group managers see transactions?"
 msgstr "Lei responsables de grope pòdon veire lei transaccions ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1714
+#: ../../tempcache/pages/preferences.html.twig:1843
 msgid "Can group managers create transactions?"
 msgstr "Lei responsables de grope pòdon crear de transaccions ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1746
+#: ../../tempcache/pages/preferences.html.twig:1875
 msgid "Sender name:"
 msgstr "Nom de l'expeditor :"
 
-#: ../../tempcache/pages/preferences.html.twig:1756
+#: ../../tempcache/pages/preferences.html.twig:1885
 msgid "Sender Email:"
 msgstr "Corriel expeditor :"
 
-#: ../../tempcache/pages/preferences.html.twig:1766
+#: ../../tempcache/pages/preferences.html.twig:1895
 msgid "Reply-To Email:"
 msgstr "Corriel de respònsa:"
 
-#: ../../tempcache/pages/preferences.html.twig:1772
+#: ../../tempcache/pages/preferences.html.twig:1901
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1787
+#: ../../tempcache/pages/preferences.html.twig:1916
 msgid "Members administrator's Email:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1793
+#: ../../tempcache/pages/preferences.html.twig:1922
 msgid "Recipient of new online registation and edition emails"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1803
+#: ../../tempcache/pages/preferences.html.twig:1932
 msgid ""
 "(You can enter several emails separated with a comma. First address will be "
 "the default one.)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1816
+#: ../../tempcache/pages/preferences.html.twig:1945
 msgid "Send email to administrators?"
 msgstr "Mandar lo corriel ais administrators ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1821
+#: ../../tempcache/pages/preferences.html.twig:1950
 msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
@@ -7854,22 +7901,22 @@ msgstr ""
 "Manda un corrier electronic a cada còp qu'un membre s'enregistra ò modifica "
 "sa ficha"
 
-#: ../../tempcache/pages/preferences.html.twig:1834
+#: ../../tempcache/pages/preferences.html.twig:1963
 msgid "Wrap emails text?"
 msgstr "Partejar lei tèxtes dei corriels ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1839
+#: ../../tempcache/pages/preferences.html.twig:1968
 msgid ""
 "Automatically wrap emails texts before sending. Make sure to wrap yourself "
 "if you disable that. Please note that current editing mailing will not be "
 "affected by a change."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1852
+#: ../../tempcache/pages/preferences.html.twig:1981
 msgid "Send email to members?"
 msgstr "Mandar un corriel ai membres ?"
 
-#: ../../tempcache/pages/preferences.html.twig:1857
+#: ../../tempcache/pages/preferences.html.twig:1986
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
 "edited. This can be disabled for each case."
@@ -7877,249 +7924,249 @@ msgstr ""
 "Manda un corrier electronic a cada còp qu'un membre s'enregistra en linha ò "
 "modifica son còmpte. Aiçò se pòt desactivar per cas."
 
-#: ../../tempcache/pages/preferences.html.twig:1870
+#: ../../tempcache/pages/preferences.html.twig:1999
 msgid "Activate HTML editor?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1875
+#: ../../tempcache/pages/preferences.html.twig:2004
 msgid "Should HTML editor be activated on page load ?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1881
+#: ../../tempcache/pages/preferences.html.twig:2010
 msgid "Mail signature"
 msgstr "Signatura dau messatge"
 
-#: ../../tempcache/pages/preferences.html.twig:1898
+#: ../../tempcache/pages/preferences.html.twig:2027
 msgid "Emailing method:"
 msgstr "Metòde de mandadís :"
 
-#: ../../tempcache/pages/preferences.html.twig:1910
+#: ../../tempcache/pages/preferences.html.twig:2039
 msgid "Emailing disabled"
 msgstr "Mandadís desactivat"
 
-#: ../../tempcache/pages/preferences.html.twig:1928
+#: ../../tempcache/pages/preferences.html.twig:2057
 msgid "PHP mail() function"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1945
+#: ../../tempcache/pages/preferences.html.twig:2074
 msgid "Using a SMTP server (slower)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1959
+#: ../../tempcache/pages/preferences.html.twig:2088
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1977
+#: ../../tempcache/pages/preferences.html.twig:2106
 msgid "Using Sendmail server"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:1991
+#: ../../tempcache/pages/preferences.html.twig:2120
 msgid "Using QMAIL server"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2010
+#: ../../tempcache/pages/preferences.html.twig:2139
 msgid "Test email settings"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2018
+#: ../../tempcache/pages/preferences.html.twig:2147
 msgid "SMTP server:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2028
+#: ../../tempcache/pages/preferences.html.twig:2157
 msgid "SMTP port:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2046
+#: ../../tempcache/pages/preferences.html.twig:2175
 msgid "Use SMTP authentication?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2051
+#: ../../tempcache/pages/preferences.html.twig:2180
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2064
+#: ../../tempcache/pages/preferences.html.twig:2193
 msgid "Use TLS for SMTP?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2069
+#: ../../tempcache/pages/preferences.html.twig:2198
 msgid ""
 "Do you want to use server's TLS capabilities?<br/>For GMail, this will "
 "always be on."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2082
+#: ../../tempcache/pages/preferences.html.twig:2211
 msgid "Allow unsecure TLS?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2087
+#: ../../tempcache/pages/preferences.html.twig:2216
 msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2096
+#: ../../tempcache/pages/preferences.html.twig:2225
 msgid "SMTP (or GMail) user:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2106
+#: ../../tempcache/pages/preferences.html.twig:2235
 msgid "SMTP (or GMail) password:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2136
-#: ../../tempcache/pages/preferences.html.twig:2677
+#: ../../tempcache/pages/preferences.html.twig:2265
+#: ../../tempcache/pages/preferences.html.twig:2806
 msgid "Vertical margins:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2158
-#: ../../tempcache/pages/preferences.html.twig:2699
+#: ../../tempcache/pages/preferences.html.twig:2287
+#: ../../tempcache/pages/preferences.html.twig:2828
 msgid "Horizontal margins:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2180
-#: ../../tempcache/pages/preferences.html.twig:2743
+#: ../../tempcache/pages/preferences.html.twig:2309
+#: ../../tempcache/pages/preferences.html.twig:2872
 msgid "Horizontal spacing:"
 msgstr "Espaçament orizontau :"
 
-#: ../../tempcache/pages/preferences.html.twig:2202
-#: ../../tempcache/pages/preferences.html.twig:2721
+#: ../../tempcache/pages/preferences.html.twig:2331
+#: ../../tempcache/pages/preferences.html.twig:2850
 msgid "Vertical spacing:"
 msgstr "Espaçament verticau :"
 
-#: ../../tempcache/pages/preferences.html.twig:2226
+#: ../../tempcache/pages/preferences.html.twig:2355
 msgid "Print border"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2231
+#: ../../tempcache/pages/preferences.html.twig:2360
 msgid "Check this box to print a grey border around each label."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2245
+#: ../../tempcache/pages/preferences.html.twig:2374
 msgid "Label width:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2267
+#: ../../tempcache/pages/preferences.html.twig:2396
 msgid "Label height:"
 msgstr "Autor d'etiqueta :"
 
-#: ../../tempcache/pages/preferences.html.twig:2289
+#: ../../tempcache/pages/preferences.html.twig:2418
 msgid "Number of label columns:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2308
+#: ../../tempcache/pages/preferences.html.twig:2437
 msgid "Number of label lines:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2327
+#: ../../tempcache/pages/preferences.html.twig:2456
 msgid "Font size:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2352
+#: ../../tempcache/pages/preferences.html.twig:2481
 #, php-format
 msgid "Each page contains %1$s columns and  %2$s rows."
 msgstr "Cada pagina contèn %1$s colonas e %2$s linhas."
 
-#: ../../tempcache/pages/preferences.html.twig:2361
+#: ../../tempcache/pages/preferences.html.twig:2490
 msgid "Short Text (Card Center):"
 msgstr "Tèxte cort (centre de la carta) :"
 
-#: ../../tempcache/pages/preferences.html.twig:2393
+#: ../../tempcache/pages/preferences.html.twig:2522
 msgid "(10 characters max)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2399
+#: ../../tempcache/pages/preferences.html.twig:2528
 msgid "Long Text (Bottom Line):"
 msgstr "Tèxte lòng (linha dau bas) :"
 
-#: ../../tempcache/pages/preferences.html.twig:2431
+#: ../../tempcache/pages/preferences.html.twig:2560
 msgid "(65 characters max)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2438
+#: ../../tempcache/pages/preferences.html.twig:2567
 msgid "Strip Text Color:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2446
-#: ../../tempcache/pages/preferences.html.twig:2460
-#: ../../tempcache/pages/preferences.html.twig:2474
-#: ../../tempcache/pages/preferences.html.twig:2488
+#: ../../tempcache/pages/preferences.html.twig:2575
+#: ../../tempcache/pages/preferences.html.twig:2589
+#: ../../tempcache/pages/preferences.html.twig:2603
+#: ../../tempcache/pages/preferences.html.twig:2617
 msgid "Hexadecimal color notation: #RRGGBB"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2452
+#: ../../tempcache/pages/preferences.html.twig:2581
 msgid "Active Member Color:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2466
+#: ../../tempcache/pages/preferences.html.twig:2595
 msgid "Board Members Color:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2480
+#: ../../tempcache/pages/preferences.html.twig:2609
 msgid "Honor Members Color:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2512
+#: ../../tempcache/pages/preferences.html.twig:2641
 msgid "Current logo for printing"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2577
+#: ../../tempcache/pages/preferences.html.twig:2706
 msgid "Allow members to print card ?"
 msgstr "Permetre ai membres d'estampar sa carta ?"
 
-#: ../../tempcache/pages/preferences.html.twig:2591
+#: ../../tempcache/pages/preferences.html.twig:2720
 msgid "Show title ?"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2596
+#: ../../tempcache/pages/preferences.html.twig:2725
 msgid "(Show or not title in front of name)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2602
+#: ../../tempcache/pages/preferences.html.twig:2731
 msgid "Address type:"
 msgstr "Mena d'adreiça :"
 
-#: ../../tempcache/pages/preferences.html.twig:2648
+#: ../../tempcache/pages/preferences.html.twig:2777
 msgid "(Choose address printed below name)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2654
+#: ../../tempcache/pages/preferences.html.twig:2783
 msgid "Year:"
 msgstr "An :"
 
-#: ../../tempcache/pages/preferences.html.twig:2660
+#: ../../tempcache/pages/preferences.html.twig:2789
 msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2768
+#: ../../tempcache/pages/preferences.html.twig:2897
 msgid "Card width from 70 to 95mm:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2790
+#: ../../tempcache/pages/preferences.html.twig:2919
 msgid "Card height from 40 to 55mm:"
 msgstr "Autor de la carta de 40 a 55mm :"
 
-#: ../../tempcache/pages/preferences.html.twig:2824
+#: ../../tempcache/pages/preferences.html.twig:2953
 msgid "Password length:"
 msgstr "Longor dau senhau :"
 
-#: ../../tempcache/pages/preferences.html.twig:2830
+#: ../../tempcache/pages/preferences.html.twig:2959
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
 "Un longor minimala dau senhau se reclama per tot còmpte. Lo nombre minimau "
 "es 6."
 
-#: ../../tempcache/pages/preferences.html.twig:2849
+#: ../../tempcache/pages/preferences.html.twig:2978
 msgid "Enable password blacklists"
 msgstr "Activar la lista negra dei senhaus"
 
-#: ../../tempcache/pages/preferences.html.twig:2851
+#: ../../tempcache/pages/preferences.html.twig:2980
 msgid "Enable blacklists:"
 msgstr "Activar la lista negra :"
 
-#: ../../tempcache/pages/preferences.html.twig:2856
+#: ../../tempcache/pages/preferences.html.twig:2985
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
@@ -8127,96 +8174,96 @@ msgstr ""
 "S'activatz la lista negra, serà pas possible d'emplegar lei senhaus que "
 "contèn. Una lista es fornida per Galeta, mai podètz ajustar lei vòstres."
 
-#: ../../tempcache/pages/preferences.html.twig:2862
+#: ../../tempcache/pages/preferences.html.twig:2991
 msgid "Enforce password strength"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2864
+#: ../../tempcache/pages/preferences.html.twig:2993
 msgid "Password strength:"
 msgstr "Complexitat dau senhau :"
 
-#: ../../tempcache/pages/preferences.html.twig:2875
+#: ../../tempcache/pages/preferences.html.twig:3004
 msgid "None (default)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2885
-#: ../../tempcache/pages/preferences.html.twig:2936
+#: ../../tempcache/pages/preferences.html.twig:3014
+#: ../../tempcache/pages/preferences.html.twig:3065
 msgid "Weak"
 msgstr "Feble"
 
-#: ../../tempcache/pages/preferences.html.twig:2895
-#: ../../tempcache/pages/preferences.html.twig:2942
+#: ../../tempcache/pages/preferences.html.twig:3024
+#: ../../tempcache/pages/preferences.html.twig:3071
 msgid "Medium"
 msgstr "Mejan"
 
-#: ../../tempcache/pages/preferences.html.twig:2905
-#: ../../tempcache/pages/preferences.html.twig:2948
+#: ../../tempcache/pages/preferences.html.twig:3034
+#: ../../tempcache/pages/preferences.html.twig:3077
 msgid "Strong"
 msgstr "Fòrt"
 
-#: ../../tempcache/pages/preferences.html.twig:2915
-#: ../../tempcache/pages/preferences.html.twig:2954
+#: ../../tempcache/pages/preferences.html.twig:3044
+#: ../../tempcache/pages/preferences.html.twig:3083
 msgid "Very strong"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2921
+#: ../../tempcache/pages/preferences.html.twig:3050
 msgid "Enforce minimal password strength for all password."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2925
+#: ../../tempcache/pages/preferences.html.twig:3054
 msgid "Levels are:"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2932
+#: ../../tempcache/pages/preferences.html.twig:3061
 msgid "for no strength enforcement"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2938
+#: ../../tempcache/pages/preferences.html.twig:3067
 msgid "require at least one matched rule"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2944
+#: ../../tempcache/pages/preferences.html.twig:3073
 msgid "require at least two matched rules"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2950
+#: ../../tempcache/pages/preferences.html.twig:3079
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2956
+#: ../../tempcache/pages/preferences.html.twig:3085
 msgid "requires all rules."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2961
+#: ../../tempcache/pages/preferences.html.twig:3090
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2965
+#: ../../tempcache/pages/preferences.html.twig:3094
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:2973
+#: ../../tempcache/pages/preferences.html.twig:3102
 msgid "Test a password:"
 msgstr "Assajat lo senhau :"
 
-#: ../../tempcache/pages/preferences.html.twig:2979
+#: ../../tempcache/pages/preferences.html.twig:3108
 msgid "Test a password with current selected values."
 msgstr "Assajar lo senhau ambe lei valors qu'avètz chausidas."
 
-#: ../../tempcache/pages/preferences.html.twig:2981
+#: ../../tempcache/pages/preferences.html.twig:3110
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:3172
+#: ../../tempcache/pages/preferences.html.twig:3341
 msgid "Enter the email adress"
 msgstr ""
 
-#: ../../tempcache/pages/preferences.html.twig:3223
+#: ../../tempcache/pages/preferences.html.twig:3392
 msgid "An error occurred sending test email :("
 msgstr ""
 
@@ -8550,21 +8597,30 @@ msgstr "Transaccion ventilada completament"
 msgid "Uncomplete dispatched transaction"
 msgstr "La transaccion es pas ventilada en plen"
 
-#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:65
+#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:71
+#, fuzzy, php-format
+#| msgid ""
+#| "No translation for '%s'!<br/>Please fill and submit above form to create "
+#| "it."
+msgid ""
+"No translation for '%s'!<br/>Please fill and submit the form below to create "
+"it."
+msgstr ""
+"Ges de traduccion per '%s'!<br>Se vos platz emplissètz lo formulari çai-sota "
+"per o crear."
+
+#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:86
+#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:128
+#, fuzzy
+#| msgid "Originator:"
+msgid "Original text:"
+msgstr "Emetor :"
+
+#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:90
 msgid "Choose label to translate"
 msgstr ""
 
-#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:130
-#, php-format
-msgid "Original text: '%s'"
-msgstr ""
-
-#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:140
-#, php-format
-msgid "Translation of '%s' label"
-msgstr ""
-
-#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:213
+#: ../../tempcache/pages/configuration_dynamic_translations.html.twig:206
 msgid "No fields to translate."
 msgstr ""
 
@@ -9009,7 +9065,7 @@ msgstr ""
 msgid "delete"
 msgstr "suprimir"
 
-#: ../../tempcache/public_page.html.twig:216 ../../tempcache/page.html.twig:249
+#: ../../tempcache/public_page.html.twig:216 ../../tempcache/page.html.twig:263
 msgid "Back to top"
 msgstr ""
 
@@ -9021,13 +9077,13 @@ msgstr ""
 msgid "Ajax page content"
 msgstr ""
 
-#: ../../tempcache/page.html.twig:220
+#: ../../tempcache/page.html.twig:234
 #, fuzzy
 #| msgid "Language:"
 msgid "Language menu"
 msgstr "Lenga :"
 
-#: ../../tempcache/page.html.twig:327
+#: ../../tempcache/page.html.twig:341
 msgid "Page content"
 msgstr ""
 
