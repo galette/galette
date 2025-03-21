@@ -147,11 +147,11 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
  */
 function _Tx(string $context, string $string, string $domain = 'galette', bool $nt = true): string
 {
-    global $language, $installer, $translator, $l10n;
+    global $language, $installer, $l10n;
 
     $cstring = contextualizedString($string, $context);
     $ret = _T($cstring, $domain);
-    if ($ret == $cstring) {
+    if ($ret == $cstring || $ret == $cstring . NOT_TRANSLATED) {
         $ret = $string;
     }
 
