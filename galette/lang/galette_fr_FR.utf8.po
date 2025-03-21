@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-03-21 11:55+0100\n"
-"PO-Revision-Date: 2025-03-10 17:48+0000\n"
+"PO-Revision-Date: 2025-03-21 11:04+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -1829,16 +1829,14 @@ msgid "Passwords mismatch"
 msgstr "Les mots de passe ne correspondent pas"
 
 #: ../lib/Galette/Core/Preferences.php:687
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a staff member to retrieve its address"
-msgstr "Vous devez sélectionner un membre du bureau"
+msgstr "Vous devez sélectionner un membre du bureau pour récupérer son adresse"
 
 #: ../lib/Galette/Core/Preferences.php:701
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a staff member to retrieve its phone number"
-msgstr "Vous devez sélectionner un membre du bureau"
+msgstr ""
+"Vous devez sélectionner un membre du bureau pour récupérer son numéro de "
+"téléphone"
 
 #: ../lib/Galette/Core/Preferences.php:756
 #, php-format
@@ -2684,16 +2682,12 @@ msgid "with break lines"
 msgstr "avec retours à la ligne"
 
 #: ../lib/Galette/Features/Replacements.php:191
-#, fuzzy
-#| msgid "Your organisation name"
 msgid "Your organisation phone number"
-msgstr "Nom de votre association"
+msgstr "Numéro de téléphone de votre association"
 
 #: ../lib/Galette/Features/Replacements.php:195
-#, fuzzy
-#| msgid "Your organisation address"
 msgid "Your organisation email address"
-msgstr "Adresse de votre association"
+msgstr "Adresse de courriel de votre association"
 
 #: ../lib/Galette/Features/Replacements.php:199
 msgid "Your organisation website"
@@ -7516,15 +7510,11 @@ msgid "Postal address:"
 msgstr "Adresse postale :"
 
 #: ../../tempcache/pages/preferences.html.twig:356
-#, fuzzy
-#| msgid ""
-#| "Use either the address setted below or select a staff member to retrieve "
-#| "he's address."
 msgid ""
 "Use either the address set above or select a staff member to retrieve its "
 "address."
 msgstr ""
-"Utiliser l’adresse renseignée ci-dessus ou choisissez un membre du bureau "
+"Utiliser l’adresse renseignée ci-dessous ou choisissez un membre du bureau "
 "pour utiliser la sienne."
 
 #: ../../tempcache/pages/preferences.html.twig:380
@@ -7533,7 +7523,7 @@ msgstr "depuis un membre du bureau"
 
 #: ../../tempcache/pages/preferences.html.twig:396
 msgid "Staff member whose address needs to be retrieved"
-msgstr ""
+msgstr "Membre du bureau pour duquel l'adresse doit être récupérée"
 
 #: ../../tempcache/pages/preferences.html.twig:401
 #: ../../tempcache/pages/preferences.html.twig:505
@@ -7541,32 +7531,24 @@ msgid "-- Choose a staff member --"
 msgstr "-- Choisissez un membre du bureau --"
 
 #: ../../tempcache/pages/preferences.html.twig:440
-#, fuzzy
-#| msgid ""
-#| "Use either the address setted below or select a staff member to retrieve "
-#| "he's address."
 msgid ""
 "Either use the phone number set below or select a staff member to retrieve "
 "its phone number."
 msgstr ""
-"Utiliser l’adresse renseignée ci-dessus ou choisissez un membre du bureau "
-"pour utiliser la sienne."
+"Utiliser le numéro de téléphone renseigné ci-dessus ou choisissez un membre "
+"du bureau pour utiliser le sien."
 
 #: ../../tempcache/pages/preferences.html.twig:468
-#, fuzzy
-#| msgid "from a staff user"
 msgid "phone from a staff user"
-msgstr "depuis un membre du bureau"
+msgstr "téléphone depuis un membre du bureau"
 
 #: ../../tempcache/pages/preferences.html.twig:484
-#, fuzzy
-#| msgid "from a staff user"
 msgid "mobile phone from a staff user"
-msgstr "depuis un membre du bureau"
+msgstr "téléphone mobile depuis un membre du bureau"
 
 #: ../../tempcache/pages/preferences.html.twig:500
 msgid "Staff member whose phone number needs to be retrieved"
-msgstr ""
+msgstr "Membre du bureau duquel le numéro de téléphone doit être récupéré"
 
 #: ../../tempcache/pages/preferences.html.twig:546
 msgid "Website:"
@@ -8740,23 +8722,18 @@ msgid "Uncomplete dispatched transaction"
 msgstr "La transaction n’est pas entièrement ventilée"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:71
-#, fuzzy, php-format
-#| msgid ""
-#| "No translation for '%s'!<br/>Please fill and submit above form to create "
-#| "it."
+#, php-format
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit the form below to create "
 "it."
 msgstr ""
-"Aucune traduction pour « %s » !<br/>Remplissez et soumettez le formulaire ci-"
-"dessous pour la créer."
+"Aucune traduction pour « %s » !<br>Remplissez et soumettez le formulaire ci-"
+"dessus pour la créer."
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:86
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:128
-#, fuzzy
-#| msgid "Original text: '%s'"
 msgid "Original text:"
-msgstr "Texte original : « %s »"
+msgstr "Texte original :"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:90
 msgid "Choose label to translate"
