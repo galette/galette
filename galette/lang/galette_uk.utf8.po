@@ -11,9 +11,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-03-21 11:55+0100\n"
-"PO-Revision-Date: 2025-03-11 13:52+0000\n"
+"PO-Revision-Date: 2025-03-21 19:14+0000\n"
 "Last-Translator: Максим Горпиніч <maksimgorpinic2005a@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -1798,16 +1798,12 @@ msgid "Passwords mismatch"
 msgstr "Невідповідність паролів"
 
 #: ../lib/Galette/Core/Preferences.php:687
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a staff member to retrieve its address"
-msgstr "Ви повинні вибрати співробітника"
+msgstr "Ви повинні вибрати співробітника, щоб отримати його адресу"
 
 #: ../lib/Galette/Core/Preferences.php:701
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a staff member to retrieve its phone number"
-msgstr "Ви повинні вибрати співробітника"
+msgstr "Ви повинні вибрати співробітника, щоб отримати його номер телефону"
 
 #: ../lib/Galette/Core/Preferences.php:756
 #, php-format
@@ -2641,16 +2637,12 @@ msgid "with break lines"
 msgstr "з лініями розриву"
 
 #: ../lib/Galette/Features/Replacements.php:191
-#, fuzzy
-#| msgid "Your organisation name"
 msgid "Your organisation phone number"
-msgstr "Назва вашої організації"
+msgstr "Номер телефону вашої організації"
 
 #: ../lib/Galette/Features/Replacements.php:195
-#, fuzzy
-#| msgid "Your organisation address"
 msgid "Your organisation email address"
-msgstr "Адреса вашої організації"
+msgstr "Адреса електронної пошти вашої організації"
 
 #: ../lib/Galette/Features/Replacements.php:199
 msgid "Your organisation website"
@@ -7424,16 +7416,12 @@ msgid "Postal address:"
 msgstr "Поштова адреса:"
 
 #: ../../tempcache/pages/preferences.html.twig:356
-#, fuzzy
-#| msgid ""
-#| "Use either the address setted below or select a staff member to retrieve "
-#| "he's address."
 msgid ""
 "Use either the address set above or select a staff member to retrieve its "
 "address."
 msgstr ""
-"Скористайтеся вказаною нижче адресою або виберіть співробітника, щоб "
-"отримати його адресу."
+"Використовуйте вказану вище адресу або виберіть співробітника, щоб отримати "
+"його адресу."
 
 #: ../../tempcache/pages/preferences.html.twig:380
 msgid "from a staff user"
@@ -7441,7 +7429,7 @@ msgstr "від співробітника"
 
 #: ../../tempcache/pages/preferences.html.twig:396
 msgid "Staff member whose address needs to be retrieved"
-msgstr ""
+msgstr "Співробітник, адресу якого потрібно відновити"
 
 #: ../../tempcache/pages/preferences.html.twig:401
 #: ../../tempcache/pages/preferences.html.twig:505
@@ -7449,32 +7437,24 @@ msgid "-- Choose a staff member --"
 msgstr "-- Виберіть співробітника --"
 
 #: ../../tempcache/pages/preferences.html.twig:440
-#, fuzzy
-#| msgid ""
-#| "Use either the address setted below or select a staff member to retrieve "
-#| "he's address."
 msgid ""
 "Either use the phone number set below or select a staff member to retrieve "
 "its phone number."
 msgstr ""
-"Скористайтеся вказаною нижче адресою або виберіть співробітника, щоб "
-"отримати його адресу."
+"Скористайтеся наведеним нижче номером телефону або виберіть співробітника, "
+"щоб отримати його номер телефону."
 
 #: ../../tempcache/pages/preferences.html.twig:468
-#, fuzzy
-#| msgid "from a staff user"
 msgid "phone from a staff user"
-msgstr "від співробітника"
+msgstr "телефон від штатного користувача"
 
 #: ../../tempcache/pages/preferences.html.twig:484
-#, fuzzy
-#| msgid "from a staff user"
 msgid "mobile phone from a staff user"
-msgstr "від співробітника"
+msgstr "мобільний телефон від штатного користувача"
 
 #: ../../tempcache/pages/preferences.html.twig:500
 msgid "Staff member whose phone number needs to be retrieved"
-msgstr ""
+msgstr "Співробітник, номер телефону якого потрібно відновити"
 
 #: ../../tempcache/pages/preferences.html.twig:546
 msgid "Website:"
@@ -8649,23 +8629,18 @@ msgid "Uncomplete dispatched transaction"
 msgstr "Не повністю надісланий переказ"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:71
-#, fuzzy, php-format
-#| msgid ""
-#| "No translation for '%s'!<br/>Please fill and submit above form to create "
-#| "it."
+#, php-format
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit the form below to create "
 "it."
 msgstr ""
-"Немає перекладу для '%s'!<br>Будь ласка, заповніть та надішліть вищезгадану "
-"форму, щоб створити його."
+"Немає перекладу для «%s»!<br>Будь ласка, заповніть і надішліть форму нижче, "
+"щоб створити її."
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:86
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:128
-#, fuzzy
-#| msgid "Original text: '%s'"
 msgid "Original text:"
-msgstr "Вихідний текст: '%s'"
+msgstr "Оригінальний текст:"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:90
 msgid "Choose label to translate"
