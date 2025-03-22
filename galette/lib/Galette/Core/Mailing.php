@@ -206,7 +206,7 @@ class Mailing extends GaletteMail
         //if mailing has already been sent, generate a new id and copy attachments
         if ($rs->mailing_sent && $new) {
             $this->generateNewId();
-            $this->copyAttachments($rs->mailing_id);
+            $this->copyAttachments((int)$rs->mailing_id);
         } else {
             $this->tmp_path = null;
             $this->id = (int)$rs->mailing_id;
