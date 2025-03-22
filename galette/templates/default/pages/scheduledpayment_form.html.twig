@@ -49,8 +49,10 @@
         'required': true
     } %}
                         <div class="inline field">
-                            <label for="paid">{{ scheduled.getFieldLabel('paid') }}</label>
-                            <input type="checkbox" name="paid" id="paid" value="1"{% if scheduled.isPaid() %} checked="checked"{% endif %}/>
+                            <div class="ui right aligned toggle checkbox">
+                                <label for="paid">{{ scheduled.getFieldLabel('paid') }}</label>
+                                <input type="checkbox" name="paid" id="paid" value="1"{% if scheduled.isPaid() %} checked="checked"{% endif %}/>
+                            </div>
                         </div>
                     </div>
                     <div class="ten wide column">

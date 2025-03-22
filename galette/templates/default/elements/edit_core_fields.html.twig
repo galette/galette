@@ -57,10 +57,20 @@
                     </td>
                     <td class="required_cell" data-col-label="{{ _T("Required") }}">
                         <span data-prop-label="{{ _T("Required") }}" class="required" title="{% if fid in non_required %}{{ _T("Field '%field' cannot be set as required.")|replace({'%field': field.label}) }}{% else %}{{ _T("Mark '%field' as (not) required")|replace({'%field': field.label}) }}{% endif %}">
-                            <label for="{{ fid }}_required_yes">{{ _T("Yes") }}</label>
-                            <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_yes" value="1"{% if field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
-                            <label for="{{ fid }}_required_no">{{ _T("No") }}</label>
-                            <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_no" value="0"{% if not field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
+                            <div class="inline fields">
+                                <div class="field inline">
+                                    <div class="ui radio checkbox">
+                                        <label for="{{ fid }}_required_yes">{{ _T("Yes") }}</label>
+                                        <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_yes" value="1"{% if field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
+                                    </div>
+                                </div>
+                                <div class="field inline">
+                                    <div class="ui radio checkbox">
+                                        <label for="{{ fid }}_required_no">{{ _T("No") }}</label>
+                                        <input type="radio" name="{{ fid }}_required" id="{{ fid }}_required_no" value="0"{% if not field.required %} checked="checked"{% endif %}{% if fid in non_required %} disabled="disabled"{% endif %}/>
+                                    </div>
+                                </div>
+                            </div>
                         </span>
                     </td>
         {% if preferences.pref_member_form_grid != 'one' %}

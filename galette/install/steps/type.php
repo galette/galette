@@ -24,10 +24,12 @@ use Galette\Core\Install as GaletteInstall;
     <div class="ui two stackable cards">
             <div class="ui fluid card">
                 <div class="content">
-                    <h2>
-                        <input type="radio" name="install_type" value="<?php echo GaletteInstall::INSTALL; ?>"<?php if ($install->isInstall() || !$install->isUpgrade()) { echo ' checked="checked"'; } ?> id="install"/>
-                        <label for="install"><?php echo _T("New installation"); ?></label>
-                    </h2>
+                    <div class="ui medium header">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="install_type" value="<?php echo GaletteInstall::INSTALL; ?>"<?php if ($install->isInstall() || !$install->isUpgrade()) { echo ' checked="checked"'; } ?> id="install"/>
+                            <label for="install"><?php echo _T("New installation"); ?></label>
+                        </div>
+                    </div>
                     <ul>
                         <li><?php echo _T("you're installing Galette for the first time"); ?>,</li>
                         <li><?php echo _T("you wish to erase an older version of Galette without keeping your data"); ?>.</li>
@@ -36,10 +38,12 @@ use Galette\Core\Install as GaletteInstall;
             </div>
             <div class="ui fluid card">
                 <div class="content">
-                    <h2>
-                        <input type="radio" name="install_type" value="<?php echo GaletteInstall::UPDATE; ?>"<?php if ($install->isUpgrade()) { echo ' checked="checked"'; } ?> id="update"/>
-                        <label for="update"><?php echo _T("Update"); ?></label>
-                    </h2>
+                    <div class="ui medium header">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="install_type" value="<?php echo GaletteInstall::UPDATE; ?>"<?php if ($install->isUpgrade()) { echo ' checked="checked"'; } ?> id="update"/>
+                            <label for="update"><?php echo _T("Update"); ?></label>
+                        </div>
+                    </div>
                     <ul>
                     <li><?php echo _T("you already have installed Galette, and you want to upgrade to the latest version"); ?>.</li>
                     </ul>

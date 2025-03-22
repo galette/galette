@@ -469,7 +469,7 @@ ul.sortable-items {
 ---------------------*/
 ul.leaders {
   display: block!important;
-  padding: 0;
+  padding: 0 0 .3rem 0;
   overflow-x: hidden;
   list-style: none;
   overflow: hidden;
@@ -484,17 +484,23 @@ ul.leaders li:before {
   height: 1rem;
   position: absolute;
   bottom: .5rem;
-  z-index: -1;
 }
 ul.leaders span:first-child {
   padding-right: 0.33em;
-  background: white
+  background: white;
+  position: relative;
+  z-index: 1;
 }
 ul.leaders span + span {
   padding-left: 0.33em;
   position: absolute;
   background: white;
   right: 0;
+  
+  &.ui.radio.checkbox {
+    position: absolute;
+    top: .3rem;
+  }
 }
 
 /*-------------------------

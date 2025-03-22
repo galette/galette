@@ -36,7 +36,12 @@
     {% endif %}
             <form action="{{ form_url }}" method="post" class="ui form">
             {% if changes is not defined %}
-                <p>{{ _T("Only checked fields will be updated.") }}</p>
+                <div class="ui icon info visible message">
+                    <i class="info circle blue icon" aria-hidden="true"></i>
+                    <div class="content">
+                        {{ _T("Only checked fields will be updated.") }}
+                    </div>
+                </div>
                 {# Form entries #}
                 {% include "components/form.html.twig" with {masschange: true} %}
                 {# Groups #}

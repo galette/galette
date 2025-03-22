@@ -26,6 +26,12 @@
 {% if notag is not defined %}
 <div{% if component_id is defined %} id="{{ component_id }}"{% endif %} class="{{ component_class ?? 'field' }}{% if required is defined and required == true %} required{% endif %}">
 {% endif %}
+    {% if masschange ?? false %}
+        {# Add a checkbox for fields to change on mass edition #}
+        <span class="ui checkbox masschange">
+            <input type="checkbox" name="mass_{{ id }}" class="mass_checkbox"/>
+        </span>
+    {% endif %}
     {% if type is defined and type == 'checkbox' %}
         <div class="ui toggle{% if checked is defined and checked == true %} checked{% endif %} right aligned checkbox">
     {% elseif nolabel is not defined or nolabel != true %}
@@ -36,10 +42,6 @@
             {% if title is defined %} title="{{ title }}"{% endif %}
             {% if labelclass is defined %} class="{{ labelclass }}"{% endif %}
         >
-        {% if masschange ?? false %}
-            {# Add a checkbox for fields to change on mass edition #}
-            <input type="checkbox" name="mass_{{ id }}" class="mass_checkbox"/>
-        {% endif %}
             {{ label }}
         </label>
     {% endblock %}
@@ -96,10 +98,6 @@
     {% if type is defined and type == 'checkbox' %}
     {% block label_after %}
         <label for="{{ id }}"{% if title is defined %} title="{{ title }}"{% endif %}{% if labelclass is defined %} class="{% if labelclass is defined %}{{ labelclass }}{% endif %}"{% endif %}>
-        {% if masschange ?? false %}
-            {# Add a checkbox for fields to change on mass edition #}
-            <input type="checkbox" name="mass_{{ id }}" class="mass_checkbox"/>
-        {% endif %}
             {{ label }}
         </label>
     {% endblock %}

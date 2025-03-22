@@ -47,6 +47,10 @@
   margin-bottom: 0;
 }
 
+.ui.ui.form .field .fields.inline .field:not(:only-child) .ui.checkbox {
+  margin-top: 0;
+}
+
 /*-------------------------
       Filters' fields
 --------------------------*/
@@ -64,6 +68,16 @@
 ---------------------------*/
 .ui.form .data.inline.fields {
   margin-bottom: 0;
+}
+
+/*--------------------------
+      Mass change + label
+---------------------------*/
+.ui.checkbox.masschange {
+  padding-top: .2rem;
+}
+.ui.checkbox.masschange + label {
+  display: inline-block;
 }
 
 /*--------------------------
