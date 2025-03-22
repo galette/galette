@@ -36,7 +36,7 @@
 } %}
 
 {% macro draw_actions(member, login) %}
-                    <td class="center actions_row">
+                    <td class="center actions_row collapsing">
     {% set actions = callstatic('\\Galette\\Core\\Galette', 'getListActions', member) %}
     {% for action in actions %}
         {{ macros.drawListAction(action.label, action.route, action.icon, action.extra_class ?? null) }}
@@ -330,7 +330,9 @@
                         </td>
         {% elseif column.field_id == 'list_adh_name' %}
                         <td class="username_row" data-scope="row">
-                            <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
+                            <span class="ui checkbox">
+                                <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
+                            </span>
             {% if member.isCompany() %}
                             <span>
                                 <i class="ui building outline icon tooltip" aria-hidden="true"></i>

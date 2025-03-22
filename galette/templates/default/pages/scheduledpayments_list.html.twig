@@ -161,8 +161,10 @@
         {% endif %}
 
         <tr class="{% if mode == 'ajax' %}schedule_row {% endif %}" id="row_{{ scheduled.getId() }}">
-            <td data-scope="row">
-                <input type="checkbox" name="entries_sel[]" value="{{ scheduled.getId() }}"/>
+            <td class="collapsing" data-scope="row">
+                <span class="ui checkbox">
+                    <input type="checkbox" name="entries_sel[]" value="{{ scheduled.getId() }}"/>
+                </span>
                 {% if preferences.pref_show_id %}
                     {{ scheduled.getId() }}
                 {% else %}
@@ -186,7 +188,7 @@
             <td data-col-label="{{ _T("Amount") }}">{{ scheduled.getAmount() }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ scheduled.getPaymentType() }}</td>
             {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
-                <td class="actions_row center">
+                <td class="actions_row center collapsing">
                     {% if (login.isAdmin() or login.isStaff()) %}
                         <a
                             href="{{ url_for("editScheduledPayment", {"id": scheduled.getId()}) }}"

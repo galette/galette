@@ -67,7 +67,7 @@
                             <tbody>
         {% for export in existing %}
                                 <tr>
-                                    <td data-scope="id">
+                                    <td data-scope="id" class="collapsing">
                                         {{ loop.index }}
                                     </td>
                                     <td data-scope="row">
@@ -79,7 +79,7 @@
                                     <td data-col-label="{{ _T('Size') }}">
                                         {{ export.size }}
                                     </td>
-                                    <td class="actions_row">
+                                    <td class="actions_row collapsing">
                                         <a
                                             href="{{ url_for("removeCsv", {"type": "export", "file": export.name}) }}"
                                             class="delete "
@@ -117,7 +117,9 @@
     {% for param in parameted %}
                                 <tr>
                                     <td class="collapsing" data-scope="id">
-                                        <input type="checkbox" name="export_parameted[]" id="{{ param.id }}" value="{{ param.id }}"/>
+                                        <span class="ui checkbox">
+                                            <input type="checkbox" name="export_parameted[]" id="{{ param.id }}" value="{{ param.id }}"/>
+                                        </span>
                                     </td>
                                     <td data-scope="row">
                                         <label for="{{ param.id }}">{{ param.name }}</label>
@@ -154,7 +156,9 @@
     {% for table in tables_list %}
                                 <tr>
                                     <td class="collapsing">
-                                        <input type="checkbox" name="export_tables[]" id="{{ table }}" value="{{ table }}"/>
+                                        <span class="ui checkbox">
+                                            <input type="checkbox" name="export_tables[]" id="{{ table }}" value="{{ table }}"/>
+                                        </span>
                                     </td>
                                     <td class="left">
                                         <label for="{{ table }}">{{ table }}</label>

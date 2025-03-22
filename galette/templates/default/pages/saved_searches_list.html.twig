@@ -40,7 +40,7 @@
 {% block body %}
     {% for search in searches %}
         <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
-            <td data-scope="row">
+            <td class="collapsing" data-scope="row">
                 {% if preferences.pref_show_id %}
                     {{ search.id }}
                 {% else %}
@@ -61,7 +61,7 @@
                     </div>
                 </details>
             </td>
-            <td class="center actions_row">
+            <td class="center actions_row collapsing">
                 <a
                         href="{{ url_for("loadSearch", {"id": search.id}) }}"
                 >

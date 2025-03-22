@@ -82,8 +82,10 @@
             <tbody>
         {% for k, field in members_fields %}
                 <tr>
-                    <td>
-                        <input type="checkbox" name="fields[]" id="field_{{ k }}" value="{{ k }}"{% if k in fields %} checked="checked"{% endif %}/>
+                    <td class="collapsing">
+                        <span class="ui checkbox">
+                            <input type="checkbox" name="fields[]" id="field_{{ k }}" value="{{ k }}"{% if k in fields %} checked="checked"{% endif %}/>
+                        </span>
                     </td>
                     <td>
                         <label for="field_{{ k }}">{{ field['label']|replace({':': ''}) }}</label>

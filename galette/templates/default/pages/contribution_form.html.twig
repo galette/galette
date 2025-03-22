@@ -163,11 +163,23 @@
             {% endif %}
                                     </div>
             {% if contribution.id == '' %}
-                                    <div class="inline field">
-                                        <label>{{ _T("Dispatch type:") }}</label>
-                                        <i class="circular small basic question icon tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>
-                                        <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %} checked="checked"{% endif %}/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
-                                        <input type="radio" name="contrib_type" id="contrib_type_donation" value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_DONATION') %} checked="checked"{% endif %}/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
+                                    <div class="inline fields">
+                                        <label>
+                                            {{ _T("Dispatch type:") }}
+                                            <i class="circular small basic question icon tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>
+                                        </label>
+                                        <div class="field inline">
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %} checked="checked"{% endif %}/>
+                                                <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="field inline">
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="contrib_type" id="contrib_type_donation" value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_DONATION') %} checked="checked"{% endif %}/>
+                                                <label for="contrib_type_donation">{{ _T("Donation") }}</label>
+                                            </div>
+                                        </div>
                                     </div>
             {% endif %}
                                 </div>

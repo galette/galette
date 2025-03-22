@@ -257,9 +257,11 @@
         {% endif %}
 
         <tr class="{% if mode == 'ajax' %}contribution_row {% endif %}{{ contribution.getRowClass() }}" id="row_{{ contribution.id }}">
-            <td data-scope="row">
+            <td data-scope="row" class="collapsing">
                 {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
-                    <input type="checkbox" name="entries_sel[]" value="{{ contribution.id }}"/>
+                    <span class="ui checkbox">
+                        <input type="checkbox" name="entries_sel[]" value="{{ contribution.id }}"/>
+                    </span>
                 {% else %}
                     <input type="hidden" name="contrib_id" value="{{ contribution.id }}"/>
                 {% endif %}
@@ -327,7 +329,7 @@
             <td data-col-label="{{ _T("Payment type") }}">{{ contribution.getPaymentType() }}</td>
             <td data-col-label="{{ _T("Duration") }}">{{ contribution.duration }}</td>
             {% if mode != 'ajax' %}
-                <td class="actions_row center">
+                <td class="actions_row center collapsing">
                     <a
                             href="{{ url_for("printContribution", {"id": contribution.id}) }}"
                     >

@@ -95,7 +95,7 @@
                         {{ _T('Unknown') }}
                     {% endif %}
                 </td>
-                <td class="actions_row">
+                <td class="actions_row collapsing">
                     <a
                         href="{{ url_for("pluginsActivation", {"action": "activate", "module_id": name}) }}"
                         class="toggleActivation delete"
@@ -210,6 +210,7 @@
                         }
                     });
                 });
+                $('.ui.radio.checkbox').checkbox();
             };
 
             $('.info-plugin').click(function(event){
