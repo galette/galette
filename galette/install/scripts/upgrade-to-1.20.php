@@ -24,10 +24,7 @@ namespace Galette\Updates;
 
 use Analog\Analog;
 use Galette\Core\Preferences;
-use Galette\DynamicFields\DynamicField;
-use Galette\Entity\ContributionsTypes;
 use Galette\Updater\AbstractUpdater;
-use GalettePaypal\Paypal;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Metadata\Source\Factory;
 
@@ -98,6 +95,61 @@ class UpgradeTo120 extends AbstractUpdater
                 Adapter::QUERY_MODE_EXECUTE
             );
         }
+
+        if ($this->zdb->isPostgres()) {
+            //some FKEY are missing on CI, but seem present on standard updated databases.
+            //I've not been able to find why, and already spent too much time on this - this is a workaround
+            $fkeys = [
+                'cotisations_id_adh_fkey' => [
+                    'table' => \Galette\Entity\Contribution::TABLE,
+                    'fktable' => \Galette\Entity\Adherent::TABLE,
+                    'fkcolumn' => \Galette\Entity\Adherent::PK,
+                ],
+                'cotisations_id_type_cotis_fkey' => [
+                    'table' => \Galette\Entity\Contribution::TABLE,
+                    'fktable' => \Galette\Entity\ContributionsTypes::TABLE,
+                    'fkcolumn' => \Galette\Entity\ContributionsTypes::PK,
+                ],
+                'cotisations_trans_id_fkey' => [
+                    'table' => \Galette\Entity\Contribution::TABLE,
+                    'fktable' => \Galette\Entity\Transaction::TABLE,
+                    'fkcolumn' => \Galette\Entity\Transaction::PK,
+                ],
+                'dynamic_fields_field_id_fkey' => [
+                    'table' => \Galette\Entity\DynamicFieldsHandle::TABLE,
+                    'fktable' => \Galette\DynamicFields\DynamicField::TABLE,
+                    'fkcolumn' => \Galette\DynamicFields\DynamicField::PK,
+                ]
+            ];
+            foreach ($fkeys as $fkey => $params) {
+                $query = sprintf(
+                    'ALTER TABLE %1$s ADD CONSTRAINT %2$s FOREIGN KEY (%3$s) REFERENCES %4$s(%5$s)  ON DELETE RESTRICT ON UPDATE CASCADE;',
+                    //ALTER TABLE galette_cotisations ADD CONSTRAINT galette_cotisations_id_adh_fkey FOREIGN KEY (id_adh) REFERENCES galette_adherents(id_adh)  ON DELETE RESTRICT ON UPDATE CASCADE;
+                    PREFIX_DB . $params['table'],
+                    PREFIX_DB . $fkey,
+                    $params['fkcolumn'],
+                    PREFIX_DB . $params['fktable'],
+                    $params['fkcolumn']
+                );
+                Analog::log(
+                    'Adding missing foreign key ' . $query,
+                    Analog::WARNING
+                );
+                try {
+                    $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
+                } catch (\PDOException $e) {
+                    if ($e->getCode() == 42710) { // duplicate object: constraint already exists; ignore.
+                        Analog::log(
+                            $e->getMessage(),
+                            Analog::INFO
+                        );
+                    } else {
+                        throw $e;
+                    }
+                }
+            }
+        }
+
         return true;
     }
 
