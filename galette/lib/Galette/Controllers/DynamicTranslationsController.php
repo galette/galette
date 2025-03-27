@@ -73,15 +73,25 @@ class DynamicTranslationsController extends AbstractController
 
         try {
             $orig = $this->l10n->getStringsToTranslate();
+            $text_exists = false;
 
             if ($text_orig_sum === '') {
                 $text_orig_sum = array_key_first($orig);
             }
-            $text_orig = $orig[$text_orig_sum] ?? $text_orig_sum;
 
-            $params['exists'] = isset($orig[$text_orig_sum]);
+            if (isset($orig[$text_orig_sum]) || isset($orig[md5($text_orig_sum)])) {
+                $sum = isset($orig[$text_orig_sum]) ? $text_orig_sum : md5($text_orig_sum);
+                $text_exists = true;
+                $text_trans = $this->l10n->getDynamicTranslations($sum);
+                $text_orig = $orig[$sum];
+            } else {
+                $text_trans = $this->l10n->getDynamicTranslations($text_orig_sum);
+                $text_orig = $text_orig_sum;
+            }
+
+            $params['exists'] = $text_exists;
             $params['orig'] = $orig;
-            $params['trans'] = $this->l10n->getDynamicTranslations($text_orig_sum);
+            $params['trans'] = $text_trans;
             $params['text_orig'] = $text_orig;
         } catch (Throwable $e) {
             Analog::log(
