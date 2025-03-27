@@ -162,9 +162,29 @@ td.emptylist {
 /*-----------------------------
      <th> outside <thead>
 ------------------------------*/
-tr.with-headers th {
+.ui.table > tbody > tr > th {
     padding: @cellVerticalPadding @cellHorizontalPadding;
+    text-align: @cellTextAlign;
+}
+tr.with-headers th {
     background: @lightSecondaryColor;
+}
+
+.ui.definition.table tr th.definition,
+.ui.definition.table > tbody > tr > th:first-child:not(.ignored),
+.ui.definition.table > tr > th:first-child:not(.ignored) {
+    background: @definitionColumnBackground;
+    font-weight: @definitionColumnFontWeight;
+    color: @definitionColumnColor;
+    font-size: @definitionColumnFontSize;
+}
+.ui.definition.table > tbody > tr > th,
+.ui.definition.table > tr > th {
+  border-top: @rowBorder;
+}
+.ui.definition.table > tbody > tr:first-child > th,
+.ui.definition.table > tr:first-child > th {
+    border-top: none;
 }
 
 /*------------------
