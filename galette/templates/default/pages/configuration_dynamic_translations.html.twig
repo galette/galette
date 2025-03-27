@@ -32,13 +32,12 @@
                 <input type="hidden" name="new" value="true"/>
             </div>
     {% endif %}
-
-            <div class="ui top attached accordion-styled header">
     {% if exists and mode != 'ajax' %}
-                {{ _T("Original text:") }}
-                <div id="label-selection" class="ui basic labeled icon dropdown button tooltip" title="{{ _T("Choose label to translate") }}">
+            <div class="ui basic fitted segment">
+                <strong>{{ _T("Original text:") }}</strong>
+                <div id="label-selection" class="ui right labeled basic icon dropdown button tooltip" title="{{ _T("Choose label to translate") }}">
                     <input type="hidden" name="filters">
-                    <i class="language icon"></i>
+                    <i class="dropdown icon"></i>
                     <span class="text">{{ text_orig }}</span>
                     <div class="menu">
                         <div class="ui icon search input">
@@ -52,25 +51,21 @@
                         </div>
                     </div>
                 </div>
+            </div>
     {% else %}
-                {{ _T("Original text:") }} {{ text_orig }}
+            <strong>{{ _T("Original text:") }} {{ text_orig }}</strong>
     {% endif %}
-            </div>
-            <div class="ui bottom attached accordion-styled segment">
-                <div class="active content field">
-                    <table class="ui striped table">
+            <table class="ui striped definition table">
     {% for k, text in trans %}
-                        <tr>
-                            <td class="three wide"><label for="text_trans_{{ text.key }}">{{ text.name }}</label></td>
-                            <td class="thirteen wide">
-                                <input type="text" name="text_trans_{{ text.key }}" id="text_trans_{{ text.key }}" value="{% if text.text %}{{ text.text|escape }}{% endif %}"/>
-                            </td>
-                        </tr>
+                <tr>
+                    <th class="collapsing"><label for="text_trans_{{ text.key }}">{{ text.name }}</label></th>
+                    <td>
+                        <input type="text" name="text_trans_{{ text.key }}" id="text_trans_{{ text.key }}" value="{% if text.text %}{{ text.text|escape }}{% endif %}"/>
+                    </td>
+                </tr>
     {% endfor %}
-                    </table>
-                    <input type=hidden name="text_orig" value="{{ text_orig|escape }}"/>
-                </div>
-            </div>
+            </table>
+            <input type=hidden name="text_orig" value="{{ text_orig|escape }}"/>
     {% if mode != 'ajax' %}
             <div class="ui basic center aligned segment">
                 <button type="submit" name="trans" class="ui labeled icon primary button action">
