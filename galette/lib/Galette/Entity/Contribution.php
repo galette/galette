@@ -26,6 +26,8 @@ namespace Galette\Entity;
 use ArrayObject;
 use DateInterval;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
 use Throwable;
@@ -64,6 +66,8 @@ use Galette\Helpers\EntityHelper;
  * @property integer $model
  * @property array<string, array<string, string>> $fields
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orm_cotisations')]
 class Contribution
 {
     use Dynamics;
@@ -87,16 +91,46 @@ class Contribution
     public const STATUS_LATE = 4;
     public const STATUS_OLD = 5;
 
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: self::PK, type: Types::INTEGER, options: ['unsigned' => true])]
     private int $id;
+    #[ORM\Column(name: 'date_enreg', type: Types::DATE_MUTABLE)]
     private ?string $date = null;
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    #[ORM\JoinColumn(onDelete: 'restrict')]
     private ?int $member = null;
+    #[ORM\ManyToOne(targetEntity: ContributionsTypes::class)]
+    #[ORM\JoinColumn(onDelete: 'restrict')]
     private ?ContributionsTypes $type = null;
+    #[ORM\Column(name: 'montant_cotis', type: Types::DECIMAL, precision: 15, scale: 2)]
     private ?float $amount = null;
+    #[ORM\ManyToOne(targetEntity: PaymentType::class)]
+    #[ORM\JoinColumn(
+        name: 'type_paiement_cotis',
+        referencedColumnName: PaymentType::PK,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
     private ?int $payment_type;
     private ?float $orig_amount = null;
+    #[ORM\Column(name: 'info_cotis', type: Types::TEXT)]
     private ?string $info = null;
+    #[ORM\Column(name: 'date_debut_cotis', type: Types::DATE_MUTABLE)]
     private ?string $begin_date = null;
+    #[ORM\Column(name: 'date_fin_cotis', type: Types::DATE_MUTABLE)]
     private ?string $end_date = null;
+    #[ORM\ManyToOne(targetEntity: Transaction::class)]
+    #[ORM\JoinColumn(
+        name: Transaction::PK,
+        referencedColumnName: Transaction::PK,
+        onDelete: 'restrict',
+        options: [
+            'unsigned' => true
+        ]
+    )]
     private ?Transaction $transaction = null;
     private bool $is_cotis;
     private ?int $extension = null;
