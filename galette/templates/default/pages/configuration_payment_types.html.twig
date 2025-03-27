@@ -73,7 +73,7 @@
                                     <span class="ui special popup">{{ _T("Edit '%s' payment type")|replace({'%s': ptype.getName()}) }}</span>
                                 </a>
                                 <a
-                                    href="{{ url_for('dynamicTranslations', {'text_orig': ptype.getName(false)|escape}) }}"
+                                    href="{{ url_for('dynamicTranslations', {'text_orig': ptype.getName(false)}) }}"
                                     class="action single-translate"
                                 >
                                     <i class="ui language grey icon tooltip" aria-hidden="true"></i>

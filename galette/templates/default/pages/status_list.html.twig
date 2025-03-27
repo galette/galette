@@ -92,6 +92,13 @@
                                 <span class="ui special popup">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
                             </a>
                             <a
+                                href="{{ url_for('dynamicTranslations', {'text_orig': entry.name}) }}"
+                                class="action single-translate"
+                            >
+                                <i class="ui language grey icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">{{ _T("Translate '%s'")|replace({'%s': entry.name|escape}) }}</span>
+                            </a>
+                            <a
                                     href="{{ url_for('removeStatus', {'id': eid}) }}"
                                     class="delete"
                             >
@@ -121,6 +128,44 @@
                 selector: ".single-edit",
                 modal_title_twig: modal_title_twig,
                 modal_class: "mini",
+                modal_onapprove: modal_onapprove
+            } %}
+
+            {% set extra_success = "
+                $('.modal-form form').on('submit', function(event) {
+                    event.preventDefault();
+                    var _form = $(this);
+                    var _data = _form.serialize();
+                    $.ajax({
+                        url: _form.attr('action'),
+                        type: 'POST',
+                        datatype: 'json',
+                        data: _data,
+                        error: function() {
+                            $.modal({
+                                title: '%error%',
+                                class: 'mini',
+                                actions: [{
+                                    text: '%close%',
+                                    icon: 'times',
+                                    class: 'icon labeled cancel'
+                                }],
+                                className: {
+                                    modal: 'ui redalert modal',
+                                    title: 'center aligned header',
+                                    content: 'center aligned content',
+                                    actions: 'center aligned actions'
+                                }
+                            }).modal('show');
+                        }
+                    });
+                });
+            " %}
+            {% include "elements/js/modal_action.js.twig" with {
+                selector: ".single-translate",
+                extra_success: extra_success|replace({'%error%': _T("An error occurred :(")|e("js"), '%close%': _T("Close")|e("js")}),
+                modal_title_twig: _T("Translate labels")|e("js"),
+                modal_content_class: "scrolling",
                 modal_onapprove: modal_onapprove
             } %}
 
