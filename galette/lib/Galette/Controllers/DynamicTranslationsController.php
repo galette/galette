@@ -73,15 +73,25 @@ class DynamicTranslationsController extends AbstractController
 
         try {
             $orig = $this->l10n->getStringsToTranslate();
+            $text_exists = false;
 
             if ($text_orig_sum === '') {
                 $text_orig_sum = array_key_first($orig);
             }
-            $text_orig = $orig[$text_orig_sum] ?? $text_orig_sum;
 
-            $params['exists'] = isset($orig[$text_orig_sum]);
+            if (isset($orig[$text_orig_sum]) || isset($orig[md5($text_orig_sum)])) {
+                $sum = isset($orig[$text_orig_sum]) ? $text_orig_sum : md5($text_orig_sum);
+                $text_exists = true;
+                $text_trans = $this->l10n->getDynamicTranslations($sum);
+                $text_orig = $orig[$sum];
+            } else {
+                $text_trans = $this->l10n->getDynamicTranslations($text_orig_sum);
+                $text_orig = $text_orig_sum;
+            }
+
+            $params['exists'] = $text_exists;
             $params['orig'] = $orig;
-            $params['trans'] = $this->l10n->getDynamicTranslations($text_orig_sum);
+            $params['trans'] = $text_trans;
             $params['text_orig'] = $text_orig;
         } catch (Throwable $e) {
             Analog::log(
@@ -184,6 +194,46 @@ class DynamicTranslationsController extends AbstractController
                     _T("Labels has been sucessfully translated!")
                 );
             }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $redirect_url);
+    }
+
+    /**
+     * Undo dynamic field translations
+     *
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param string   $text_orig Original text
+     *
+     * @return Response
+     */
+    public function undoDynamicTranslation(Request $request, Response $response, string $text_orig): Response
+    {
+        $redirect_url = $this->routeparser->urlFor(
+            'dynamicTranslations'
+        );
+        $error_detected = [];
+
+        $res = $this->l10n->deleteDynamicTranslation($text_orig);
+        if (!$res) {
+            $error_detected[] = str_replace('%t', $text_orig, _T("An error occurred removing translations of «%t»"));
+        }
+
+        if (count($error_detected)) {
+            foreach ($error_detected as $err) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $err
+                );
+            }
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                str_replace('%t', $text_orig, _T("Translations of «%t» have been sucessfully removed!"))
+            );
         }
 
         return $response

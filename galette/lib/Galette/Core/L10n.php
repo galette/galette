@@ -102,14 +102,18 @@ class L10n
                     //add new entry
                     // User is supposed to use current language as original text.
                     $text_trans = $text_orig;
+                    $text_is_source = 0;
                     if ($lang->getLongID() != $this->i18n->getLongID()) {
                         $text_trans = '';
+                    } else {
+                        $text_is_source = 1;
                     }
                     $values = array(
                         'text_orig' => $text_orig,
                         'text_orig_sum' => md5($text_orig),
                         'text_locale' => $lang->getLongID(),
-                        'text_trans' => $text_trans
+                        'text_trans' => $text_trans,
+                        'text_is_source' => $text_is_source
                     );
 
                     $insert = $this->zdb->insert(self::TABLE);
@@ -274,11 +278,17 @@ class L10n
             $results = $this->zdb->execute($select);
             $existing_translations = array();
             foreach ($results as $row) {
-                $existing_translations[$row->text_locale] = $row->text_trans;
+                $existing_translations[$row->text_locale] = [
+                    'text_trans' => $row->text_trans,
+                    'text_is_source' => $row->text_is_source,
+                ];
             }
 
             if (!count($existing_translations)) {
-                $existing_translations[$this->i18n->getLongID()] = $text_orig_sum;
+                $existing_translations[$this->i18n->getLongID()] = [
+                    'text_trans' => $text_orig_sum,
+                    'text_is_source' => 1
+                ];
             }
 
             $results = array();

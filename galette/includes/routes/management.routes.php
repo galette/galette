@@ -340,6 +340,11 @@ $app->post(
 )->setName('editDynamicTranslation')->add($authenticate);
 
 $app->get(
+    '/dynamic-translation/remove/{text_orig}',
+    [DynamicTranslationsController::class, 'undoDynamicTranslation']
+)->setName('removeDynamicTranslation')->add($authenticate);
+
+$app->get(
     '/lists/{table}/configure',
     [GaletteController::class, 'configureListFields']
 )->setName('configureListFields')->add($authenticate);

@@ -183,3 +183,6 @@ UPDATE galette_l10n SET text_orig_sum = MD5(text_orig);
 ALTER TABLE galette_l10n ALTER COLUMN text_orig_sum SET NOT NULL;
 ALTER TABLE galette_l10n DROP CONSTRAINT galette_l10n_pkey;
 ALTER TABLE galette_l10n ADD CONSTRAINT galette_l10n_pkey PRIMARY KEY (text_orig_sum, text_locale);
+ALTER TABLE galette_l10n ADD COLUMN text_is_source integer;
+UPDATE galette_l10n SET text_is_source = CASE WHEN galette_l10n.text_locale LIKE CONCAT(galette_preferences.val_pref, '%') AND galette_preferences.nom_pref = 'pref_lang' THEN 1 ELSE 0 END FROM galette_preferences WHERE galette_preferences.nom_pref = 'pref_lang';
+ALTER TABLE galette_l10n ALTER COLUMN text_is_source SET NOT NULL;

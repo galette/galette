@@ -176,6 +176,7 @@ CREATE TABLE galette_l10n (
     text_locale varchar(15) NOT NULL,
     text_nref int NOT NULL default 1,
     text_trans varchar(255) NOT NULL default '',
+    text_is_source int NOT NULL,
     PRIMARY KEY (text_orig_sum, text_locale)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 

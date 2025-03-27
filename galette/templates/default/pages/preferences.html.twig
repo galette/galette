@@ -51,8 +51,8 @@
                         <div class="ui action input">
                             <input type="text" name="pref_slogan" id="pref_slogan" value="{{ pref.pref_slogan }}"/>
                             <a
-                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_slogan|escape}) }}"
-                                class="tooltip ui icon button"
+                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_slogan}) }}"
+                                class="single-translate tooltip ui icon button{% if pref.pref_slogan is empty %} disabled{% endif %}"
                                 title="{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}"
                             >
                                 <i class="language icon" aria-hidden="true"></i>
@@ -881,8 +881,8 @@
                         <div class="ui action input">
                             <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" maxlength="10"/>
                             <a
-                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_abrev|escape}) }}"
-                                class="tooltip ui icon button{% if pref.pref_card_abrev is empty %} disabled{% endif %}"
+                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_abrev}) }}"
+                                class="single-translate tooltip ui icon button{% if pref.pref_card_abrev is empty %} disabled{% endif %}"
                                 title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_abrev}) }}"
                             >
                                 <i class="language icon" aria-hidden="true"></i>
@@ -896,8 +896,8 @@
                         <div class="ui action input">
                             <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" maxlength="65"/>
                             <a
-                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_strip|escape}) }}"
-                                class="tooltip ui icon button{% if pref.pref_card_strip is empty %} disabled{% endif %}"
+                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_strip}) }}"
+                                class="single-translate tooltip ui icon button{% if pref.pref_card_strip is empty %} disabled{% endif %}"
                                 title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_strip}) }}"
                             >
                                 <i class="language icon" aria-hidden="true"></i>
@@ -1306,6 +1306,51 @@
 
                 {% include "modals/telemetry.html.twig" with {part: "jsdialog"} %}
                 {% include "modals/telemetry.html.twig" with {part: "jsregister"} %}
+
+                {% set modal_onapprove = "
+                    $('.modal-form form #redirect_uri').val(window.location.href);
+                    $('.modal-form form').submit();
+                " %}
+                {% set extra_success = "
+                    $('.modal-form form').on('submit', function(event) {
+                        event.preventDefault();
+                        var _form = $(this);
+                        var _data = _form.serialize();
+                        $.ajax({
+                            url: _form.attr('action'),
+                            type: 'POST',
+                            datatype: 'json',
+                            data: _data,
+                            error: function() {
+                                $.modal({
+                                    title: '%error%',
+                                    class: 'mini',
+                                    actions: [{
+                                        text: '%close%',
+                                        icon: 'times',
+                                        class: 'icon labeled cancel'
+                                    }],
+                                    className: {
+                                        modal: 'ui redalert modal',
+                                        title: 'center aligned header',
+                                        content: 'center aligned content',
+                                        actions: 'center aligned actions'
+                                    }
+                                }).modal('show');
+                            }
+                        });
+                    });
+                " %}
+                var _transDynField = function() {
+                    {% include "elements/js/modal_action.js.twig" with {
+                        selector: ".single-translate",
+                        extra_success: extra_success|replace({'%error%': _T("An error occurred :(")|e("js"), '%close%': _T("Close")|e("js")}),
+                        modal_title_twig: _T("Translate labels")|e("js"),
+                        modal_content_class: "scrolling",
+                        modal_onapprove: modal_onapprove
+                    } %}
+                }
+                _transDynField();
             });
         </script>
 {% endblock %}

@@ -173,6 +173,7 @@ CREATE TABLE galette_l10n (
   text_locale character varying(15) NOT NULL,
   text_nref integer DEFAULT 1 NOT NULL,
   text_trans character varying(255) DEFAULT '' NOT NULL,
+  text_is_source integer NOT NULL,
   PRIMARY KEY (text_orig_sum, text_locale)
 );
 

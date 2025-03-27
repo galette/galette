@@ -32,45 +32,52 @@
                 <input type="hidden" name="new" value="true"/>
             </div>
     {% endif %}
-
-            <div class="ui top attached accordion-styled header">
     {% if exists and mode != 'ajax' %}
-                {{ _T("Original text:") }}
-                <div id="label-selection" class="ui basic labeled icon dropdown button tooltip" title="{{ _T("Choose label to translate") }}">
-                    <input type="hidden" name="filters">
-                    <i class="language icon"></i>
-                    <span class="text">{{ text_orig }}</span>
-                    <div class="menu">
-                        <div class="ui icon search input">
-                            <i class="search icon"></i>
-                            <input type="text"/>
-                        </div>
-                        <div class="scrolling menu">
-                            {% for sum, value in orig %}
-                                <a class="item" href="{{ url_for('dynamicTranslation', {"text_orig_sum": sum}) }}">{{ value }}</a>
-                            {% endfor %}
+            <div class="ui basic fitted segment">
+                <strong>{{ _T("Choose label to translate") }} : </strong>
+                <div class="ui buttons">
+                    <div id="label-selection" class="ui left labeled basic icon dropdown button">
+                        <input type="hidden" name="filters">
+                        <i class="dropdown icon"></i>
+                        <span class="text">{{ text_orig }}</span>
+                        <div class="menu">
+                            <div class="ui icon search input">
+                                <i class="search icon"></i>
+                                <input type="text"/>
+                            </div>
+                            <div class="scrolling menu">
+                                {% for sum, value in orig %}
+                                    <a class="item" href="{{ url_for('dynamicTranslation', {"text_orig_sum": sum}) }}">{{ value }}</a>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
+                    <div class="or" data-text="{{ _T("or") }}"></div>
+                    <a class="ui right labeled icon button delete" href="{{ url_for('removeDynamicTranslation', {"text_orig": text_orig}) }}">
+                        <i class="trash red icon"></i>
+                        {{ _T("Delete") }}
+                    </a>
                 </div>
-    {% else %}
-                {{ _T("Original text:") }} {{ text_orig }}
+            </div>
     {% endif %}
-            </div>
-            <div class="ui bottom attached accordion-styled segment">
-                <div class="active content field">
-                    <table class="ui striped table">
+            <table class="ui striped definition table">
     {% for k, text in trans %}
-                        <tr>
-                            <td class="three wide"><label for="text_trans_{{ text.key }}">{{ text.name }}</label></td>
-                            <td class="thirteen wide">
-                                <input type="text" name="text_trans_{{ text.key }}" id="text_trans_{{ text.key }}" value="{% if text.text %}{{ text.text|escape }}{% endif %}"/>
-                            </td>
-                        </tr>
+                <tr>
+                    <th class="collapsing"><label for="text_trans_{{ text.key }}">{{ text.name }}</label></th>
+                    <td>
+        {% if not text.text is empty and text.text.text_is_source == 1 %}
+                        <div class="ui fluid left labeled disabled input">
+        {% endif %}
+                            <input type="text" name="text_trans_{{ text.key }}" id="text_trans_{{ text.key }}" value="{% if text.text %}{{ text.text.text_trans|escape }}{% endif %}"/>
+        {% if not text.text is empty and text.text.text_is_source == 1 %}
+                            <div class="ui tag black label">{{ _T("Original text") }}</div>
+                        </div>
+        {% endif %}
+                    </td>
+                </tr>
     {% endfor %}
-                    </table>
-                    <input type=hidden name="text_orig" value="{{ text_orig|escape }}"/>
-                </div>
-            </div>
+            </table>
+            <input type=hidden name="text_orig" value="{{ text_orig|escape }}"/>
     {% if mode != 'ajax' %}
             <div class="ui basic center aligned segment">
                 <button type="submit" name="trans" class="ui labeled icon primary button action">
@@ -86,4 +93,29 @@
 {% else %}
         <p>{{ _T("No fields to translate.") }}</p>
 {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {% if text_orig|default %}
+        <script type="text/javascript">
+            $(function(){
+                $('.delete').click(function(event){
+                    event.preventDefault();
+                    var _href = this.getAttribute('href');
+                    {% set modal_content = _T("Are you sure you want to remove translations of «%t»?")|replace({"%t": text_orig}) ~ '<br/>' ~ _T("This can't be undone.") %}
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("Remove translations")|e("js"),
+                        modal_content_twig: modal_content|e("js"),
+                        modal_class: "tiny",
+                        modal_onapprove: "window.location.href = _href;",
+                        modal_approve_text: _T("Remove")|e('js'),
+                        modal_approve_icon: "trash",
+                        modal_approve_color: "red",
+                        modal_cancel_text: _T("Cancel")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                });
+            });
+        </script>
+    {% endif %}
 {% endblock %}

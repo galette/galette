@@ -66,6 +66,8 @@ ALTER TABLE galette_l10n CHANGE text_trans text_trans varchar(255) NOT NULL DEFA
 ALTER TABLE galette_l10n ADD text_orig_sum varchar(40) NOT NULL;
 UPDATE galette_l10n SET text_orig_sum = MD5(text_orig);
 ALTER TABLE galette_l10n DROP PRIMARY KEY, ADD PRIMARY KEY (text_orig_sum, text_locale);
+ALTER TABLE galette_l10n ADD text_is_source INT NOT NULL;
+UPDATE galette_l10n SET text_is_source = CASE WHEN text_locale LIKE CONCAT((SELECT val_pref FROM galette_preferences WHERE nom_pref = 'pref_lang'), '%') THEN 1 ELSE 0 END;
 
 ALTER TABLE galette_tmppasswds CHANGE id_adh id_adh INT UNSIGNED NOT NULL;
 
