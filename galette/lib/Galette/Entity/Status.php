@@ -247,7 +247,8 @@ class Status
             } else {
                 foreach ($results as $r) {
                     $list[$r->{self::PK}] = array(
-                        'name'  => _T($r->libelle_statut),
+                        'text_orig' => $r->libelle_statut,
+                        'name' => _T($r->libelle_statut),
                         'extra' => $r->priorite_statut
                     );
                 }
