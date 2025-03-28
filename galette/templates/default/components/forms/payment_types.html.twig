@@ -25,7 +25,7 @@
         id="{{ varname }}"
         {% if required is defined and required == true %} required="required"{% endif %}
         {% if disabled is defined and disabled == true %} disabled="disabled"{% endif %}
-        class="ui search dropdown"
+        class="ui{% if compact is defined and compact == true %} compact{% endif %} search dropdown"
     >
 {% if empty is defined %}
         <option value="{{ empty.value }}">{{ empty.label }}</option>

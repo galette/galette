@@ -67,7 +67,7 @@ class DynamicTranslationsController extends AbstractController
     public function dynamicTranslation(Request $request, Response $response, string $text_orig_sum): Response
     {
         $params = [
-            'page_title'    => _T("Translate labels"),
+            'page_title'    => _T("Labels translation"),
             'documentation' => 'usermanual/configuration.html#labels-translation'
         ];
 

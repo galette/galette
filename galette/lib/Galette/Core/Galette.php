@@ -427,14 +427,6 @@ class Galette
                                 ]
                             ],
                             [
-                                'label' => _T("Translate labels"),
-                                'title' => _T("Translate additional fields labels"),
-                                'route' => [
-                                    'name' => 'dynamicTranslations',
-                                    'aliases' => ['dynamicTranslation']
-                                ]
-                            ],
-                            [
                                 'label' => _T("Contributions types"),
                                 'title' => _T("Manage contributions types"),
                                 'route' => [
@@ -476,6 +468,14 @@ class Galette
                                 'title' => _T("Manage emails texts and subjects"),
                                 'route' => [
                                     'name' => 'texts'
+                                ]
+                            ],
+                            [
+                                'label' => _T("Labels translation"),
+                                'title' => _T("Manage translatable labels"),
+                                'route' => [
+                                    'name' => 'dynamicTranslations',
+                                    'aliases' => ['dynamicTranslation']
                                 ]
                             ]
                         ]
