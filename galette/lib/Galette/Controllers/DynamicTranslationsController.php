@@ -129,6 +129,7 @@ class DynamicTranslationsController extends AbstractController
         } else {
             $redirect_url = $this->routeparser->urlFor(
                 'dynamicTranslations',
+                [],
                 ['text_orig' => $post['text_orig']]
             );
         }

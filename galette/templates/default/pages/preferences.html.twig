@@ -51,8 +51,8 @@
                         <div class="ui action input">
                             <input type="text" name="pref_slogan" id="pref_slogan" value="{{ pref.pref_slogan }}"/>
                             <a
-                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_slogan|escape}) }}"
-                                class="tooltip ui icon button"
+                                href="{{ url_for("dynamicTranslations", {}, {"text_orig": pref.pref_slogan}) }}"
+                                class="tooltip ui icon button{% if pref.pref_slogan is empty %} disabled{% endif %}"
                                 title="{{ _T("Translate '%s'")|replace({'%s': pref.pref_slogan}) }}"
                             >
                                 <i class="language icon" aria-hidden="true"></i>
@@ -881,7 +881,7 @@
                         <div class="ui action input">
                             <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{{ pref.pref_card_abrev }}" maxlength="10"/>
                             <a
-                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_abrev|escape}) }}"
+                                href="{{ url_for("dynamicTranslations", {}, {"text_orig": pref.pref_card_abrev}) }}"
                                 class="tooltip ui icon button{% if pref.pref_card_abrev is empty %} disabled{% endif %}"
                                 title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_abrev}) }}"
                             >
@@ -896,7 +896,7 @@
                         <div class="ui action input">
                             <input type="text" name="pref_card_strip" id="pref_card_strip" value="{{ pref.pref_card_strip }}" maxlength="65"/>
                             <a
-                                href="{{ url_for("dynamicTranslations", {"text_orig": pref.pref_card_strip|escape}) }}"
+                                href="{{ url_for("dynamicTranslations", {}, {"text_orig": pref.pref_card_strip}) }}"
                                 class="tooltip ui icon button{% if pref.pref_card_strip is empty %} disabled{% endif %}"
                                 title="{{ _T("Translate '%s'")|replace({"%s": pref.pref_card_strip}) }}"
                             >
