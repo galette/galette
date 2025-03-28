@@ -288,7 +288,8 @@ class ContributionsTypes
             } else {
                 foreach ($results as $r) {
                     $list[$r->{self::PK}] = array(
-                        'name'  => _T($r->libelle_type_cotis),
+                        'text_orig' => $r->libelle_type_cotis,
+                        'name' => _T($r->libelle_type_cotis),
                         'amount' => $r->amount,
                         'extra' => $r->cotis_extension
                     );
