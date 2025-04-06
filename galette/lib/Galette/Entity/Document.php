@@ -431,7 +431,17 @@ class Document implements FileInterface
      */
     public function getType(): string
     {
-        return $this->type ?? '';
+        $type = $this->type ?? '';
+        switch ($type) {
+            case self::STATUS:
+            case self::RULES:
+            case self::ADHESION:
+            case self::MINUTES:
+            case self::VOTES:
+                $type = $this->getSystemType($type);
+                break;
+        }
+        return $type;
     }
 
     /**
