@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-03-21 11:55+0100\n"
-"PO-Revision-Date: 2025-03-21 11:04+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2025-04-08 17:00+0000\n"
+"Last-Translator: Guillaume AGNIERAY <dev@agnieray.net>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -3255,7 +3255,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Document.php:463
 msgid "Association status"
-msgstr "Status de l'association"
+msgstr "Statuts de l'association"
 
 #: ../lib/Galette/Entity/Document.php:464
 msgid "Rules of procedure"
@@ -7514,7 +7514,7 @@ msgid ""
 "Use either the address set above or select a staff member to retrieve its "
 "address."
 msgstr ""
-"Utiliser l’adresse renseignée ci-dessous ou choisissez un membre du bureau "
+"Utiliser l’adresse renseignée ci-dessus ou choisissez un membre du bureau "
 "pour utiliser la sienne."
 
 #: ../../tempcache/pages/preferences.html.twig:380
@@ -7535,7 +7535,7 @@ msgid ""
 "Either use the phone number set below or select a staff member to retrieve "
 "its phone number."
 msgstr ""
-"Utiliser le numéro de téléphone renseigné ci-dessus ou choisissez un membre "
+"Utiliser le numéro de téléphone renseigné ci-dessous ou choisissez un membre "
 "du bureau pour utiliser le sien."
 
 #: ../../tempcache/pages/preferences.html.twig:468
@@ -8728,7 +8728,7 @@ msgid ""
 "it."
 msgstr ""
 "Aucune traduction pour « %s » !<br>Remplissez et soumettez le formulaire ci-"
-"dessus pour la créer."
+"dessous pour la créer."
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:86
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:128
