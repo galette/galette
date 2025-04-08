@@ -156,7 +156,7 @@ class Document extends GaletteTestCase
 
         $entry = array_pop($list);
         $this->assertSame('status.pdf', $entry->getDocumentFilename());
-        $this->assertSame('Association status', $entry->getType());
+        $this->assertSame(\Galette\Entity\Document::STATUS, $entry->getType());
         $this->assertSame('Status of the association', $entry->getComment());
         $this->assertSame(\Galette\Entity\FieldsConfig::ALL, $entry->getPermission());
         $this->assertSame('Public', $entry->getPermissionName());
@@ -164,8 +164,8 @@ class Document extends GaletteTestCase
         //test list by type (for public pages)
         $tlist = $document->getTypedList();
         $this->assertCount(1, $tlist);
-        $this->assertArrayHasKey('Association status', $tlist);
-        $this->assertCount(1, $tlist['Association status']);
+        $this->assertArrayHasKey(\Galette\Entity\Document::STATUS, $tlist);
+        $this->assertCount(1, $tlist[\Galette\Entity\Document::STATUS]);
 
         //"upload" another document
         $document = $this->getDocumentInstance();
@@ -195,9 +195,9 @@ class Document extends GaletteTestCase
         //test list by type (for public pages)
         $tlist = $document->getTypedList();
         $this->assertCount(2, $tlist);
-        $this->assertArrayHasKey('Association status', $tlist);
+        $this->assertArrayHasKey(\Galette\Entity\Document::STATUS, $tlist);
         $this->assertArrayHasKey('An other document type', $tlist);
-        $this->assertCount(1, $tlist['Association status']);
+        $this->assertCount(1, $tlist[\Galette\Entity\Document::STATUS]);
         $this->assertCount(1, $tlist['An other document type']);
         $this->assertTrue($this->login->logOut());
 
@@ -243,10 +243,10 @@ class Document extends GaletteTestCase
         //test list by type (for public pages) - noaccess doc should not be present.
         $tlist = $document->getTypedList();
         $this->assertCount(3, $tlist);
-        $this->assertArrayHasKey('Association status', $tlist);
-        $this->assertCount(1, $tlist['Association status']);
+        $this->assertArrayHasKey(\Galette\Entity\Document::STATUS, $tlist);
+        $this->assertCount(1, $tlist[\Galette\Entity\Document::STATUS]);
         $this->assertCount(1, $tlist['An other document type']);
-        $this->assertCount(1, $tlist['Meeting minutes']);
+        $this->assertCount(1, $tlist[\Galette\Entity\Document::MINUTES]);
         $this->login->logOut();
 
         global $login;
