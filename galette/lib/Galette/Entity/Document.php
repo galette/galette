@@ -508,7 +508,7 @@ class Document implements FileInterface
         $results = $this->zdb->execute($select);
 
         foreach ($results as $r) {
-            $types[$r->type] = $r->type;
+            $types[$r->type] = _T($r->type);
         }
 
         return $types;

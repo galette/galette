@@ -72,7 +72,7 @@
                     {{ document.getDocumentFilename() }}
                 </a>
             </td>
-            <td data-col-label="{{ _T("Type") }}">{{ document.getType() }}</td>
+            <td data-col-label="{{ _T("Type") }}">{{ _T(document.getType()) }}</td>
             <td data-col-label="{{ _T("Visibility") }}">{{ document.getPermissionName() }}</td>
             <td data-col-label="{{ _T("Creation date") }}">{{ document.getCreationDate() }}</td>
             {% if mode != 'ajax' %}
