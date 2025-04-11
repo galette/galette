@@ -53,8 +53,14 @@
 
 {% block header %}
     {% set columns = [
-        {'label': '#'},
-        {'label': _T("Date"), 'order': constant("Galette\\Filters\\HistoryList::ORDERBY_DATE")},
+        {
+            'label': '#',
+            'collapse': true
+        },
+        {
+            'label': _T("Date"), 'order': constant("Galette\\Filters\\HistoryList::ORDERBY_DATE"),
+            'collapse': true
+        },
         {'label': _T("IP"), 'order': constant("Galette\\Filters\\HistoryList::ORDERBY_IP")},
         {'label': _T("User"), 'order': constant("Galette\\Filters\\HistoryList::ORDERBY_USER")},
         {'label': _T('Action'), 'order': constant("Galette\\Filters\\HistoryList::ORDERBY_ACTION")},
@@ -130,13 +136,13 @@
 {% block body %}
     {% for log in logs %}
         <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
-            <td data-scope="row">
+            <td class="collapsing" data-scope="row">
                 {{ loop.index }}
                 <span class="visually-hidden">
                         {{ _T("History entry %id")|replace({"%id": loop.index}) }}
                     </span>
             </td>
-            <td data-col-label="{{ _T("Date") }}">{{ log.date_log|date(_T("Y-m-d H:i:s")) }}</td>
+            <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ log.date_log|date(_T("Y-m-d H:i:s")) }}</td>
             <td data-col-label="{{ _T("IP") }}">{{ log.ip_log }}</td>
             <td data-col-label="{{ _T("User") }}">{{ log.adh_log }}</td>
             <td data-col-label="{{ _T("Action") }}">{{ log.action_log|escape }}</td>

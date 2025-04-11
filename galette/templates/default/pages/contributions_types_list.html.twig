@@ -26,16 +26,16 @@
         <table class="listing ui celled striped table">
             <thead>
                 <tr>
-                    <th class="id_row">#</th>
+                    <th class="id_row collapsing">#</th>
                     <th>{{ _T("Name") }}</th>
                     <th>{{ _T('Amount') }}</th>
                     <th>{{ _T("Membership extension") }}</th>
-                    <th>{{ _T("Actions") }}</th>
+                    <th class="collapsing">{{ _T("Actions") }}</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <td data-scope="row">
+                    <td data-scope="row collapsing">
                         <span class="visually-hidden">
                             {{ _T("New contribution type") }}
                         </span>
@@ -68,7 +68,7 @@
                             nolabel: true
                         } %}
                     </td>
-                    <td class="center actions_row">
+                    <td class="center actions_row collapsing">
                         <input type="hidden" name="new" value="1" />
                         <button type="submit" name="valid" class="ui labeled icon button">
                             <i class="plus green icon" aria-hidden="true"></i>
@@ -80,7 +80,7 @@
             <tbody>
 {% for eid, entry in entries %}
                 <tr>
-                    <td data-scope="id" class="collapsing">
+                    <td class="collapsing" data-scope="id">
                         {{ eid }}
                     </td>
                     <td class="left" data-col-label="{{ _T("Name") }}">
@@ -98,7 +98,7 @@
                         {{ _Tn('%1$s month', '%1$s months', entry.extra)|format(entry.extra) }}
     {% endif %}
                     </td>
-                    <td class="center actions_row">
+                    <td class="center actions_row collapsing">
                         <a
                             href="{{ url_for('editContributionType', {'id': eid}) }}"
                             class="action single-edit"

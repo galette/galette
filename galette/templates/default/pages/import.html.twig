@@ -40,26 +40,29 @@
                             <table class="listing ui celled striped table">
                                 <thead>
                                     <tr>
+                                        <th class="small_head collapsing"></th>
                                         <th>{{ _T('Name') }}</th>
-                                        <th>{{ _T('Date') }}</th>
-                                        <th>{{ _T('Size') }}</th>
-                                        <th class="actions_row">{{ _T('Actions') }}</th>
+                                        <th class="collapsing">{{ _T('Date') }}</th>
+                                        <th class="collapsing">{{ _T('Size') }}</th>
+                                        <th class="actions_row collapsing">{{ _T('Actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
     {% for import in existing %}
                                     <tr>
-                                        <td data-scope="row">
+                                        <td class="collapsing" data-scope="id">
                                             <span class="ui radio checkbox">
                                                 <input type="radio" name="import_file" id="file{{ loop.index }}" value="{{ import.name }}"{% if import_file is defined and import_file == import.name %} checked="checked"{% endif %}/>
-                                                <label for="file{{ loop.index }}">{{ import.name }}</label>
                                             </span>
+                                        </td>
+                                        <td data-scope="row">
+                                            <label for="file{{ loop.index }}">{{ import.name }}</label>
                                             (<a href="{{ url_for("getCsv", {"type": "import", "file": import.name}) }}">{{ _T('see') }}</a>)
                                         </td>
-                                        <td data-col-label="{{ _T('Date') }}">
+                                        <td class="collapsing" data-col-label="{{ _T('Date') }}">
                                             {{ import.date }}
                                         </td>
-                                        <td data-col-label="{{ _T('Size') }}">
+                                        <td class="collapsing" data-col-label="{{ _T('Size') }}">
                                             {{ import.size }}
                                         </td>
                                         <td class="actions_row collapsing">

@@ -47,11 +47,17 @@
 
 {% block header %}
     {% set columns = [
-        {'label': '#'},
+        {
+            'label': '#',
+            'collapse': true
+        },
         {'label': _T("Filename")},
         {'label': _T('Type')},
         {'label': _T('Visibility')},
-        {'label': _T("Creation date")}
+        {
+            'label': _T("Creation date"),
+            'collapse': true
+        }
     ] %}
 
     {{ parent() }}
@@ -60,7 +66,7 @@
 {% block body %}
     {% for document in documents %}
         <tr class="" id="row_{{ document.id }}">
-            <td data-scope="id" class="collapsing">
+            <td class="collapsing" data-scope="id">
                 {% if preferences.pref_show_id %}
                     {{ document.id }}
                 {% else %}
@@ -74,9 +80,9 @@
             </td>
             <td data-col-label="{{ _T("Type") }}">{{ _T(document.getType()) }}</td>
             <td data-col-label="{{ _T("Visibility") }}">{{ document.getPermissionName() }}</td>
-            <td data-col-label="{{ _T("Creation date") }}">{{ document.getCreationDate() }}</td>
+            <td class="collapsing" data-col-label="{{ _T("Creation date") }}">{{ document.getCreationDate() }}</td>
             {% if mode != 'ajax' %}
-                <td class="actions_row center">
+                <td class="actions_row center collapsing">
                     {% if (login.isAdmin() or login.isStaff()) %}
                         <a
                                 href="{{ url_for("editDocument", {"id": document.getID()}) }}"

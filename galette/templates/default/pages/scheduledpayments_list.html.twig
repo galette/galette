@@ -126,11 +126,23 @@
 
 {% block header %}
     {% set columns = [
-        {'label': '#', 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID")},
+        {
+            'label': '#', 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID"),
+            'collapse': true
+        },
         {'label': _T("Member"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")},
-        {'label': _T("Date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_DATE")},
-        {'label': _T("Scheduled date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE")},
-        {'label': _T('Amount'), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_AMOUNT")},
+        {
+            'label': _T("Date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_DATE"),
+            'collapse': true
+        },
+        {
+            'label': _T("Scheduled date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE"),
+            'collapse': true
+        },
+        {
+            'label': _T('Amount'), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_AMOUNT"),
+            'collapse': true
+        },
         {'label': _T("Payment type"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE")}
     ] %}
 
@@ -183,9 +195,9 @@
                 {% endif %}
             </td>
             <td data-col-label="{{ _T("Member") }}">{{ memberName({id: scheduled.getContribution().member}) }}</td>
-            <td data-col-label="{{ _T("Date") }}">{{ scheduled.getCreationDate() }}</td>
-            <td data-col-label="{{ _T("Scheduled date") }}">{{ scheduled.getScheduledDate() }}</td>
-            <td data-col-label="{{ _T("Amount") }}">{{ scheduled.getAmount() }}</td>
+            <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ scheduled.getCreationDate() }}</td>
+            <td class="collapsing" data-col-label="{{ _T("Scheduled date") }}">{{ scheduled.getScheduledDate() }}</td>
+            <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ scheduled.getAmount() }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ scheduled.getPaymentType() }}</td>
             {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
                 <td class="actions_row center collapsing">

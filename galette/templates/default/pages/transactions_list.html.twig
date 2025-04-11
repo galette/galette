@@ -141,8 +141,14 @@
 
 {% block header %}
     {% set columns = [
-        {'label': '#', 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID")},
-        {'label': _T("Date"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE")}
+        {
+            'label': '#', 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID"),
+            'collapse': true
+        },
+        {
+            'label': _T("Date"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE"),
+            'collapse': true
+        }
     ] %}
 
     {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
@@ -154,7 +160,10 @@
     ]) %}
 
     {% set columns = columns|merge([
-        {'label': _T('Amount'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT")}
+        {
+            'label': _T('Amount'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT"),
+            'collapse': true
+        }
     ]) %}
 
     {% set columns = columns|merge([
@@ -174,7 +183,7 @@
         {% endif %}
 
         <tr class="{{ transaction.getRowClass() }}">
-            <td data-scope="row">
+            <td class="collapsing" data-scope="row">
                 {% if preferences.pref_show_id %}
                     {{ transaction.id }}
                 {% else %}
@@ -186,7 +195,7 @@
                             </a>
                         </span>
             </td>
-            <td data-col-label="{{ _T("Date") }}">{{ transaction.date }}</td>
+            <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ transaction.date }}</td>
         {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
             <td data-col-label="{{ _T("Member") }}">
             {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
@@ -206,7 +215,7 @@
             </td>
         {% endif %}
             <td data-col-label="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
-            <td data-col-label="{{ _T("Amount") }}">{{ transaction.amount }}</td>
+            <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ transaction.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ transaction.getPaymentType() }}</td>
             {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
             <td class="center actions_row">

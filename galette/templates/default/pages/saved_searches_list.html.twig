@@ -29,8 +29,14 @@
 
 {% block header %}
     {% set columns = [
-        {'label': '#'},
-        {'label': _T("Creation date")},
+        {
+            'label': '#',
+            collapse: true
+        },
+        {
+            'label': _T("Creation date"),
+            collapse: true
+        },
         {'label': _T("Name")},
         {'label': _T("Parameters")}
     ] %}
@@ -47,7 +53,7 @@
                     {{ loop.index }}
                 {% endif %}
             </td>
-            <td class="left" data-col-label="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
+            <td class="left collapsing" data-col-label="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
             <td class="left" data-col-label="{{ _T("Name") }}">{{ search.name|default("-") }}</td>
             <td class="left" data-col-label="{{ _T("Search parameters") }}">
                 <details class="ui basic styled accordion">

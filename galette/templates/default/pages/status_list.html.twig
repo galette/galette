@@ -32,15 +32,15 @@
             <table class="listing ui celled striped table">
                 <thead>
                 <tr>
-                    <th class="id_row">#</th>
+                    <th class="id_row collapsing">#</th>
                     <th>{{ _T("Name") }}</th>
                     <th>{{ _T("Priority") }}</th>
-                    <th>{{ _T("Actions") }}</th>
+                    <th class="collapsing">{{ _T("Actions") }}</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <td data-scope="row">
+                    <td class="collapsing" data-scope="row">
                         <span class="visually-hidden">
                             {{ _T("New status") }}
                         </span>
@@ -54,7 +54,7 @@
                     <td class="left" data-col-label="{{ _T("Priority") }}">
                         <input size="4" type="text" name="priorite_statut" value="99" />
                     </td>
-                    <td class="center actions_row">
+                    <td class="center actions_row collapsing">
                         <input type="hidden" name="new" value="1" />
                         <button type="submit" name="valid" class="ui labeled icon button">
                             <i class="plus green icon" aria-hidden="true"></i>
@@ -66,7 +66,7 @@
                 <tbody>
                 {% for eid, entry in entries %}
                     <tr>
-                        <td data-scope="id" class="collapsing">
+                        <td class="collapsing" data-scope="id">
                             {{ eid }}
                         </td>
                         <td class="left" data-col-label="{{ _T("Name") }}">
@@ -83,7 +83,7 @@
                         <td data-col-label="{{ _T("Priority") }}">
                             {{ entry.extra }}
                         </td>
-                        <td class="center actions_row">
+                        <td class="center actions_row collapsing">
                             <a
                                     href="{{ url_for('editStatus', {'id': eid}) }}"
                                     class="action single-edit"

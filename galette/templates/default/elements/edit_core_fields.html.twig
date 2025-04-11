@@ -22,12 +22,12 @@
         <table class="listing ui celled striped table">
             <thead>
                 <tr>
-                    <th class="id_row">#</th>
+                    <th class="id_row collapsing">#</th>
                     <th>{{ _T("Name") }}</th>
                     <th>{{ _T("Permissions") }}</th>
-                    <th class="date_row">{{ _T("Required") }}</th>
+                    <th class="date_row{% if preferences.pref_member_form_grid == 'one' %} collapsing{% endif %}">{{ _T("Required") }}</th>
 {% if preferences.pref_member_form_grid != 'one' %}
-                    <th class="date_row">{{ _T("Width in forms") }}</th>
+                    <th class="date_row collapsing">{{ _T("Width in forms") }}</th>
 {% endif %}
                 </tr>
             </thead>
@@ -55,7 +55,7 @@
                             </select>
                         </span>
                     </td>
-                    <td class="required_cell" data-col-label="{{ _T("Required") }}">
+                    <td class="required_cell{% if preferences.pref_member_form_grid == 'one' %} collapsing{% endif %}" data-col-label="{{ _T("Required") }}">
                         <span data-prop-label="{{ _T("Required") }}" class="required" title="{% if fid in non_required %}{{ _T("Field '%field' cannot be set as required.")|replace({'%field': field.label}) }}{% else %}{{ _T("Mark '%field' as (not) required")|replace({'%field': field.label}) }}{% endif %}">
                             <div class="inline fields">
                                 <div class="field inline">
@@ -74,7 +74,7 @@
                         </span>
                     </td>
         {% if preferences.pref_member_form_grid != 'one' %}
-                    <td class="left" data-col-label="{{ _T("Width in forms") }}">
+                    <td class="left collapsing" data-col-label="{{ _T("Width in forms") }}">
                         <span data-prop-label="{{ _T("Width in forms") }}" title="{{ _T("Change field's width with in forms") }}">
                             <select name="{{ fid }}_width_in_forms" id="{{ fid }}_width_in_forms" class="ui dropdown">
                                 <option value="1"{% if field.width_in_forms == 1 or (preferences.pref_member_form_grid == 'two' and field.width_in_forms == 3) %} selected="selected"{% endif %}>{{ _T("Default") }}</option>

@@ -74,14 +74,26 @@
                 {% set columns = columns|merge([
                     {
                         label: _T('Mbr id'),
-                        order: constant("Galette\\Repository\\Members::ORDERBY_ID")
+                        order: constant("Galette\\Repository\\Members::ORDERBY_ID"),
+                        collapse: true
                     }
                 ]) %}
             {% else %}
                 {% set columns = columns|merge([
-                    {label: '#'}
+                    {
+                        label: '#',
+                        collapse: true
+                    }
                 ]) %}
             {% endif %}
+        {% elseif column.field_id starts with 'date_' %}
+            {% set columns = columns|merge([
+                {
+                    label: column.label,
+                    order: column.field_id,
+                    collapse: true
+                }
+            ]) %}
         {% else %}
             {% set columns = columns|merge([
                 {
@@ -321,7 +333,7 @@
                     <tr class="{{ member.getRowClass() }}">
     {% for column in galette_list %}
         {% if column.field_id == 'id_adh' %}
-                        <td class="right" data-scope="id">
+                        <td class="right collapsing" data-scope="id">
             {% if preferences.pref_show_id %}
                         {{ member.id }}
             {% else %}
@@ -435,7 +447,7 @@
                 {% set value = value|e('html') %}
             {% endif %}
 
-                        <td data-col-label="{{ column.label }}">
+                        <td{% if column.field_id starts with 'date_' %} class="collapsing"{% endif %} data-col-label="{{ column.label }}">
             {# Display column.
                 A check is done here to adapt display, this is may not the best way to go
                 but for now, that works as expected.

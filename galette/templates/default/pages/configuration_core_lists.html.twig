@@ -31,15 +31,15 @@
             <table id="listed_fields_table" class="listing ui celled striped table">
                 <thead>
                     <tr>
-                        <th class="id_row">#</th>
+                        <th class="id_row collapsing">#</th>
                         <th>{{ _T("Field name") }}</th>
                         <th>{{ _T("Permissions") }}</th>
-                        <th>{{ _T("Actions") }}</th>
+                        <th class="collapsing">{{ _T("Actions") }}</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <td data-scope="row"></td>
+                        <td class="collapsing" data-scope="row"></td>
                         <td class="left" data-col-label="{{ _T("Available fields") }}" colspan="2">
                             <div id="remaining_fields_dropdown" class="ui fluid search clearable selection dropdown">
                                 <i class="dropdown icon"></i>
@@ -56,7 +56,7 @@
     {% endfor %}
                                 </div>
                         </td>
-                        <td class="collapsing actions_row">
+                        <td class="actions_row collapsing">
                             <input type="hidden" name="new" value="1" />
                             <a href="#" id="addfield" class="ui labeled icon button">
                                 <i class="plus green icon" aria-hidden="true"></i>
@@ -70,7 +70,7 @@
         {% set fid = field.field_id %}
         {% set permission = permissions[field.visible] %}
                     <tr data-fid="{{ fid }}" data-label="{{ field.label }}" data-permission="{{ permission }}">
-                        <td data-scope="row" class="collapsing">
+                        <td class="collapsing" data-scope="row">
                             <i class="arrows alternate icon" aria-hidden="true"></i>
                         </td>
                         <td class="left" data-col-label="{{ _T("Field name") }}">
@@ -80,7 +80,7 @@
                         <td class="left" data-col-label="{{ _T("Permissions") }}">
                             {{ permission }}
                         </td>
-                        <td class="center actions_row">
+                        <td class="center actions_row collapsing">
                             <a href="#" class="delete">
                                 <i class="ui trash red icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': field.label}) }}</span>

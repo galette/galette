@@ -96,18 +96,18 @@
                         <table class="listing ui very compact small celled yellow table">
                             <thead>
                                 <tr>
-                                    <th class="id_row">#</th>
-                                    <th class="left date_row">{{ _T("Date") }}</th>
-                                    <th class="left date_row">{{ _T("Begin") }}</th>
-                                    <th class="left date_row">{{ _T("End") }}</th>
-                                    <th class="left">{{ _T("Duration") }}</th>
+                                    <th class="id_row collapsing">#</th>
+                                    <th class="left date_row collapsing">{{ _T("Date") }}</th>
+                                    <th class="left date_row collapsing">{{ _T("Begin") }}</th>
+                                    <th class="left date_row collapsing">{{ _T("End") }}</th>
+                                    <th class="left collapsing">{{ _T("Duration") }}</th>
             {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
                                     <th class="left">{{ _T("Member") }}</th>
             {% endif %}
                                     <th class="left">{{ _T("Type") }}</th>
-                                    <th class="left">{{ _T("Amount") }}</th>
+                                    <th class="left collapsing">{{ _T("Amount") }}</th>
             {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-                                    <th class="actions_row">{{ _T("Actions") }}</th>
+                                    <th class="actions_row collapsing">{{ _T("Actions") }}</th>
             {% endif %}
                                 </tr>
                             </thead>
@@ -162,20 +162,20 @@
             {% for ordre, contrib in contribs %}
                 {% set mid = contrib.member %}
                                 <tr class="{{ contrib.getRowClass() }}">
-                                    <td class="center">
+                                    <td class="center collapsing">
                                         {{ ordre + 1 }}
                                     </td>
-                                    <td class="center">{{ contrib.date }}</td>
-                                    <td class="center">{{ contrib.begin_date }}</td>
-                                    <td class="center">{{ contrib.end_date }}</td>
-                                    <td>{{ contrib.duration }}</td>
+                                    <td class="center collapsing">{{ contrib.date }}</td>
+                                    <td class="center collapsing">{{ contrib.begin_date }}</td>
+                                    <td class="center collapsing">{{ contrib.end_date }}</td>
+                                    <td class="collapsing">{{ contrib.duration }}</td>
                 {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
                                     <td>{{ memberName({'id': mid}) }}</td>
                 {% endif %}
                                     <td>{{ contrib.type.libelle }}</td>
-                                    <td class="right">{{ contrib.amount }}</td>
+                                    <td class="right collapsing">{{ contrib.amount }}</td>
                 {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-                                    <td class="actions_row">
+                                    <td class="actions_row collapsing">
                                         <a
                                             href="{{ url_for("detach_contribution", {"id": transaction.id, "cid": contrib.id}) }}"
                                             class="delete"

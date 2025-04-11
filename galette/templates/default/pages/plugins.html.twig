@@ -28,9 +28,9 @@
                 <th class="listing">{{ _T('Name') }}</th>
                 <th class="listing">{{ _T('Description') }}</th>
                 <th class="listing">{{ _T('Author') }}</th>
-                <th class="listing">{{ _T('Version') }}</th>
-                <th class="listing">{{ _T('Release date') }}</th>
-                <th class="listing actions_row"></th>
+                <th class="listing collapsing">{{ _T('Version') }}</th>
+                <th class="listing collapsing">{{ _T('Release date') }}</th>
+                <th class="listing actions_row collapsing"></th>
             </tr>
         </thead>
         <tbody>
@@ -42,9 +42,9 @@
                 <td data-scope="row"><a href="{{ url_for(plugin.route ~ "Info", {"plugin": name}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a></td>
                 <td data-col-label="{{ _T('Description') }}">{{ plugin.desc }}</td>
                 <td data-col-label="{{ _T('Author') }}">{{ plugin.author }}</td>
-                <td data-col-label="{{ _T('Version') }}">{{ plugin.version }}</td>
-                <td data-col-label="{{ _T('Release date') }}">{{ plugin.date }}</td>
-                <td class="actions_row">
+                <td class="collapsing" data-col-label="{{ _T('Version') }}">{{ plugin.version }}</td>
+                <td class="collapsing" data-col-label="{{ _T('Release date') }}">{{ plugin.date }}</td>
+                <td class="actions_row collapsing">
                     <a
                         href="{{ url_for("pluginsActivation", {"action": "deactivate", "module_id": name}) }}"
                         class="toggleActivation use"
@@ -78,7 +78,7 @@
             <tr>
                 <th class="listing">{{ _T('Name') }}</th>
                 <th class="listing" colspan="4">{{ _T('Cause') }}</th>
-                <th class="listing actions_row"></th>
+                <th class="listing actions_row collapsing"></th>
             </tr>
             </thead>
 {% for name, plugin in plugins_disabled_list %}

@@ -26,14 +26,14 @@
                 <table class="listing ui celled striped table">
                     <thead>
                         <tr>
-                            <th class="id_row">#</th>
+                            <th class="id_row collapsing">#</th>
                             <th>{{ _T("Name") }}</th>
-                            <th>{{ _T("Actions") }}</th>
+                            <th class="collapsing">{{ _T("Actions") }}</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <td data-scope="row">
+                            <td class="collapsing" data-scope="row">
                                 <span class="visually-hidden">
                                     {{ _T("Add payment type") }}
                                 </span>
@@ -44,7 +44,7 @@
                                     <input size="20" type="text" name="name" required="required"/>
                                 </div>
                             </td>
-                            <td class="center actions_row">
+                            <td class="center actions_row collapsing">
                                 <input type="hidden" name="new" value="1" />
                                 <button type="submit" name="valid" class="ui labeled icon button">
                                     <i class="plus green icon" aria-disabled="true"></i>
@@ -56,7 +56,7 @@
                     <tbody>
             {% for ptype in list %}
                         <tr>
-                            <td data-scope="id" class="collapsing">
+                            <td class="collapsing" data-scope="id">
                 {% if preferences.pref_show_id %}
                                 {{ ptype.__get('id') }}
                 {% else %}
@@ -64,7 +64,7 @@
                 {% endif %}
                             </td>
                             <td class="left" data-col-label="{{ _T("Name") }}">{{ ptype.getName() }}</td>
-                            <td class="center actions_row">
+                            <td class="center actions_row collapsing">
                                 <a
                                     href="{{ url_for('editPaymentType', {'id': ptype.__get('id')}) }}"
                                     class="action single-edit"

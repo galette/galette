@@ -80,7 +80,7 @@
                             <tr>
                         {% block header %}
                             {% for column in columns %}
-                                <th class="left">
+                                <th class="left{% if column.collapse is defined %} collapsing{% endif %}">
                                     {% if form is defined and column.order is defined %}
                                     <a href="{{ url_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
                                         {{ column.label }}
@@ -98,7 +98,7 @@
                                 </th>
                             {% endfor %}
                             {% if mode != 'ajax' and (no_action is not defined or no_action == false) %}
-                                <th class="actions_row">{{ _T('Actions') }}</th>
+                                <th class="actions_row collapsing">{{ _T('Actions') }}</th>
                             {% endif %}
                         {% endblock %}
                             </tr>
