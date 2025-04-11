@@ -130,7 +130,7 @@
                             {{ _T("Family") }}
                         </div>
                         <div class="active content field">
-                            <table class="ui very basic striped collapsing stackable padded table">
+                            <table class="ui very basic definition striped collapsing stackable padded table">
                 {% if member.hasParent() %}
                                 <tr>
                                     <th>{{ _T("Attached to:") }}</th>
@@ -166,7 +166,7 @@
                         {{ _T(display_element.label) }}
                     </div>
                     <div class="active content field">
-                        <table class="ui very basic striped stackable padded table">
+                        <table class="ui very basic definition striped stackable padded table">
     {% for element in elements %}
                 {% if element.field_id == 'parent_id' %}
                     {continue}

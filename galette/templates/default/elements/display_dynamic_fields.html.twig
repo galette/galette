@@ -26,7 +26,7 @@
             {{ _T("Additionnal fields:") }}
         </div>
         <div class="active content field">
-            <table class="ui very basic striped stackable padded table">
+            <table class="ui very basic definition striped stackable padded table">
                 {% for field in object.getDynamicFields().getFields() %}
                     {% if get_class(field) == 'Galette\\DynamicFields\\Separator' %}
                 <tr>
