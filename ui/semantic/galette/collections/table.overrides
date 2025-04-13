@@ -175,7 +175,7 @@ tr.with-headers th {
 .ui.definition.table > tr > th:first-child:not(.ignored) {
     background: @definitionColumnBackground;
     font-weight: @definitionColumnFontWeight;
-    color: @definitionColumnColor;
+    color: @headerColor;
     font-size: @definitionColumnFontSize;
 }
 .ui.definition.table > tbody > tr > th,
