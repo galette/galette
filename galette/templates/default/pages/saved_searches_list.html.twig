@@ -45,7 +45,7 @@
 
 {% block body %}
     {% for search in searches %}
-        <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
+        <tr>
             <td class="collapsing" data-scope="row">
                 {% if preferences.pref_show_id %}
                     {{ search.id }}

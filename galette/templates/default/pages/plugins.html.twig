@@ -38,7 +38,7 @@
                 <th colspan="6" class="center aligned"><strong>{{ _T('Active plugins') }}</strong></th>
             </tr>
 {% for name, plugin in plugins_list %}
-            <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}">
+            <tr>
                 <td data-scope="row"><a href="{{ url_for(plugin.route ~ "Info", {"plugin": name}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a></td>
                 <td data-col-label="{{ _T('Description') }}">{{ plugin.desc }}</td>
                 <td data-col-label="{{ _T('Author') }}">{{ plugin.author }}</td>

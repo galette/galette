@@ -135,7 +135,7 @@
 
 {% block body %}
     {% for log in logs %}
-        <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
+        <tr>
             <td class="collapsing" data-scope="row">
                 {{ loop.index }}
                 <span class="visually-hidden">
