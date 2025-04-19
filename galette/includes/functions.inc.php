@@ -147,12 +147,12 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
  */
 function _Tx(string $context, string $string, string $domain = 'galette', bool $nt = true): string
 {
-    global $language, $installer, $l10n;
+    global $language, $installer, $l10n, $translator;
 
     $cstring = contextualizedString($string, $context);
-    $ret = _T($cstring, $domain);
-    if ($ret == $cstring || $ret == $cstring . NOT_TRANSLATED) {
-        $ret = $string;
+
+    if ($translator->translationExists($cstring, $domain)) {
+        return $translator->translate($cstring, $domain);
     }
 
     $trans = false;
@@ -164,7 +164,7 @@ function _Tx(string $context, string $string, string $domain = 'galette', bool $
     }
 
     if (!$trans) {
-        $trans = $ret;
+        $trans = $string;
 
         if (Galette::isDebugEnabled() && $nt === true) {
             $trans .= NOT_TRANSLATED;
@@ -237,7 +237,7 @@ function _Tnx(string $context, string $singular, string $plural, int $count, str
  */
 function contextualizedString(string $string, string $context): string
 {
-    return "{$string}\004{$context}";
+    return "{$context}\004{$string}";
 }
 
 /**
