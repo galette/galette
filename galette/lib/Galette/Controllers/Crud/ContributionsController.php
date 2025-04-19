@@ -450,25 +450,23 @@ class ContributionsController extends CrudController
             $filters->filtre_cotis_adh = (int)$get[Adherent::PK];
         }
 
-        if ($type === 'contributions') {
-            if (isset($request->getQueryParams()['max_amount'])) {
-                $filters->filtre_transactions = true;
-                $filters->max_amount = (int)$request->getQueryParams()['max_amount'];
-            }
+        if ($type === 'contributions' && isset($request->getQueryParams()['max_amount'])) {
+            $filters->filtre_transactions = true;
+            $filters->max_amount = (int)$request->getQueryParams()['max_amount'];
         }
 
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-                case 'member':
-                    $filters->filtre_cotis_adh = ($value === 'all' ? null : (int)$value);
-                    break;
-            }
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            case 'member':
+                $filters->filtre_cotis_adh = ($value === 'all' ? null : (int)$value);
+                break;
+            default:
+                break;
         }
 
         if (!$this->login->isAdmin() && !$this->login->isStaff() && $value != $this->login->id) {
@@ -639,9 +637,7 @@ class ContributionsController extends CrudController
                 $filters->max_amount = null;
             }
 
-            if (
-                (isset($post['nbshow']) && is_numeric($post['nbshow']))
-            ) {
+            if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
                 $filters->show = $post['nbshow'];
             }
 

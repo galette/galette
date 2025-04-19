@@ -316,7 +316,7 @@ class AuthController extends AbstractController
     {
         $from_admin = false;
         $redirect_url = $this->routeparser->urlFor('slash');
-        if ((($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null)) {
+        if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
             $from_admin = true;
             $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$id_adh]);
         }

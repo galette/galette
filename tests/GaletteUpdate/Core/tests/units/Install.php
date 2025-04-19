@@ -183,17 +183,16 @@ class Install extends TestCase
                 $column->setOrdinalPosition($latest_column->getOrdinalPosition());
 
                 //Q&D fixes... :'(
-                if (!$db->isPostgres()) {
-                    if (
-                        $table_name === 'galette_cotisations'
-                        && (
-                            $latest_column->getName() === 'id_type_cotis'
-                            || $latest_column->getName() === 'type_paiement_cotis'
-                        )
-                    ) {
-                        //FIXME: dunno why default is not correct, 1.15-mysql upgrade does contains the correct statement.
-                        $column->setColumnDefault(null);
-                    }
+                if (
+                    !$db->isPostgres() &&
+                    $table_name === 'galette_cotisations' &&
+                    (
+                        $latest_column->getName() === 'id_type_cotis' ||
+                        $latest_column->getName() === 'type_paiement_cotis'
+                    )
+                ) {
+                    //dunno why default is not correct, 1.15-mysql upgrade does contain the correct statement.
+                    $column->setColumnDefault(null);
                 }
 
                 $this->assertEquals(

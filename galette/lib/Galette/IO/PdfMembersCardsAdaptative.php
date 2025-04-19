@@ -78,7 +78,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
                 // Convert original pixels size to millimeters
                 $this->hlogo = $print_logo->getHeight() / 3.78;
             }
-            $this->wlogo = round($this->hlogo *  $this->ratio);
+            $this->wlogo = round($this->hlogo * $this->ratio);
         } else {
             if ($print_logo->getWidth() > 0.33 * $this->wi * 3.78) {
                 $this->wlogo = round(0.33 * $this->wi, 0, PHP_ROUND_HALF_DOWN);
@@ -88,7 +88,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
             }
             $this->hlogo = round($this->wlogo / $this->ratio);
             // check if the logo height is greater than 42%
-            if ($this->hlogo  > 0.42 * $this->he) {
+            if ($this->hlogo > 0.42 * $this->he) {
                 $this->hlogo = round(0.42 * $this->he, 0, PHP_ROUND_HALF_DOWN);
                 $this->wlogo = round($this->hlogo * $this->ratio);
             }
@@ -177,13 +177,13 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
 
 
             // Photo 100x130 (Add a mask to crop 1/1.3)
-            $this->hphoto =  round($this->he * 0.75);
-            $this->wphoto =  $this->hphoto / 1.30;
+            $this->hphoto = round($this->he * 0.75);
+            $this->wphoto = $this->hphoto / 1.30;
             if ($this->wphoto > $this->wi / 3) {
-                    $this->wphoto = $this->wi / 3 ;
+                    $this->wphoto = $this->wi / 3;
                     $this->hphoto = $this->wphoto * 1.3;
             }
-            $this->Rect($x0 + 1, $y0 + 1, $this->wphoto, $this->hphoto, 'F', array('width' => 0.0, 'cap' => 'butt', 'join' => 'miter', 'dash' => 4, 'color' => array(255, 255, 255)), array(255,255,255));
+            $this->Rect($x0 + 1, $y0 + 1, $this->wphoto, $this->hphoto, 'F', array('width' => 0.0, 'cap' => 'butt', 'join' => 'miter', 'dash' => 4, 'color' => array(255, 255, 255)), array(255, 255, 255));
             $this->Image($photofile, $x0 + 1, $y0 + 1, $this->wphoto, $this->hphoto, '', '', '', false, 300, '', false, false, 0, 'T', false, false);
 
             // Logo
@@ -214,7 +214,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
                 self::FONT,
                 'B',
                 $this->year_font_size
-            ) / 2 ;
+            ) / 2;
             $this->SetXY($xan_cot, $y0 + 1);
             $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
 
@@ -233,7 +233,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
             $this->ratio = $this->wlogo / $this->hlogo;
             if (!empty($this->preferences->pref_show_id) || !empty($member->number)) {
                 $member_id = (!empty($member->number)) ? $member->number : $member->id;
-                $this->adh_nbr = _T("Member") . ' n° : ' . $member_id ;
+                $this->adh_nbr = _T("Member") . ' n° : ' . $member_id;
                 if ($this->hlogo + 1 > 7) {
                     $this->fixSize(
                         $this->adh_nbr,
@@ -241,9 +241,9 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
                         8,
                         'B'
                     );
-                     $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
-                     $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->adh_nbr, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2 - $this->wlogo / 2;
-                     $this->SetXY($xid, $y0 + 8) ;
+                    $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
+                    $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->adh_nbr, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2 - $this->wlogo / 2;
+                    $this->SetXY($xid, $y0 + 8);
                 } else {
                     $this->fixSize(
                         $this->adh_nbr,
@@ -252,7 +252,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
                         'B'
                     );
                     $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->adh_nbr, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2;
-                    $this->SetXY($xid, $y0 + 8) ;
+                    $this->SetXY($xid, $y0 + 8);
                 }
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
                 $this->writeHTML('<strong>' . $this->adh_nbr . '  </strong>', false, false);
@@ -267,8 +267,8 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
                     'B'
                 );
 
-                $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN)) ;
-                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->abrev, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2 - $this->wlogo / 2  ;
+                $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
+                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->abrev, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2 - $this->wlogo / 2;
             } else {
                 $this->fixSize(
                     $this->abrev,
@@ -277,7 +277,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
                     'B'
                 );
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
-                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->abrev, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2 ;
+                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->abrev, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2;
             }
             $this->SetXY($xid, $y0 + 13);
             $this->writeHTML('<strong>' . $this->abrev . '</strong>', true, false);
@@ -323,7 +323,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
                 $this->writeHTML('<strong>' . $member->surname . '</strong>', true, false);
                 if ($this->he < 44) {
-                    $this->ban_max_he = 10 ;
+                    $this->ban_max_he = 10;
                 }
             } else {
                 $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', true, false);
@@ -342,7 +342,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
 
             // Lower colored strip with long text
             if ($this->wi < 73) {
-                $this->max_text_size_full =  intval(round($this->max_text_size_full * 0.95, PHP_ROUND_HALF_DOWN));
+                $this->max_text_size_full = (int)round($this->max_text_size_full * 0.95, PHP_ROUND_HALF_DOWN);
             }
             $this->SetFont(self::FONT, 'B');
             $this->fixSize(
@@ -364,11 +364,11 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
             //Set strip 20% height
             $this->cell_he = round($this->he * 0.20);
             if ($this->cell_he >= $this->ban_max_he) {
-                $this->cell_he = $this->ban_max_he ;
+                $this->cell_he = $this->ban_max_he;
             }
             //Verify if strip is not over the last writen line
             if ($y0 + $this->he - $this->cell_he - 2.5 <= $this->email_y) {
-                $this->cell_he =  $y0 + $this->he - $this->email_y - 3 ;
+                $this->cell_he = $y0 + $this->he - $this->email_y - 3;
             }
             //In case of a small strip adapt font size
             if ($this->cell_he < $this->FontSize) {
@@ -413,7 +413,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
     {
         global $preferences;
 
-        return $preferences->pref_card_vsize ;
+        return $preferences->pref_card_vsize;
     }
 
     /**
@@ -432,7 +432,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
             0,
             PHP_ROUND_HALF_DOWN
         );
-        if ((($nbcols - 1) * $preferences->pref_card_hspace + $margins + $preferences->pref_card_hsize *  $nbcols) > self::PAGE_WIDTH) {
+        if ((($nbcols - 1) * $preferences->pref_card_hspace + $margins + $preferences->pref_card_hsize * $nbcols) > self::PAGE_WIDTH) {
             --$nbcols;
         }
 
@@ -455,11 +455,11 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
             0,
             PHP_ROUND_HALF_DOWN
         );
-        if ((($nbrows - 1) * $preferences->pref_card_vspace + $margins + $preferences->pref_card_vsize *  $nbrows) > self::PAGE_HEIGHT) {
+        if ((($nbrows - 1) * $preferences->pref_card_vspace + $margins + $preferences->pref_card_vsize * $nbrows) > self::PAGE_HEIGHT) {
             --$nbrows;
         }
         // Put two times in case of sum of the pref_card_vspace is greater than a pref_card_vsize
-        if ((($nbrows - 1) * $preferences->pref_card_vspace + $margins + $preferences->pref_card_vsize *  $nbrows) > self::PAGE_HEIGHT) {
+        if ((($nbrows - 1) * $preferences->pref_card_vspace + $margins + $preferences->pref_card_vsize * $nbrows) > self::PAGE_HEIGHT) {
             --$nbrows;
         }
 

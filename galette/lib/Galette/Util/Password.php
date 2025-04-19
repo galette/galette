@@ -104,7 +104,7 @@ class Password
             }
         }
 
-        return (count($this->errors) === 0);
+        return count($this->errors) === 0;
     }
 
     /**

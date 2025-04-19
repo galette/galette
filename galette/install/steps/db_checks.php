@@ -173,7 +173,7 @@ if (!isset($install_plugin)) {
 if ($supported_db === false) {
     echo '<p class="ui red message">' . _T("Incompatible database version.") .
         '<br/>' . $zdb->getUnsupportedMessage() . '</p>';
-} else if ($db_connected === true && $permsdb_ok === true) {
+} elseif ($db_connected === true && $permsdb_ok === true) {
     if (!isset($install_plugin)) {
         echo '<p class="ui green message">' . _T("Connection to database successfull") .
             '<br/>' . _T("Permissions to database are OK.") . '</p>';

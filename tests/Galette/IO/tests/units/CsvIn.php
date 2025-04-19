@@ -191,7 +191,7 @@ class CsvIn extends GaletteTestCase
                     if (property_exists($member, $field)) {
                         if ($field === \Galette\Entity\Status::PK && $created[$field] === null) {
                             $this->assertNotNull($member->$field);
-                        } else if ($field === 'pref_lang' && $created[$field] === null) {
+                        } elseif ($field === 'pref_lang' && $created[$field] === null) {
                             $this->assertNotNull($member->$field);
                         } else {
                             $this->assertEquals($created[$field], $member->$field);

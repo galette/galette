@@ -79,11 +79,11 @@ if (!$date_ok) {
     <ul class="leaders">
         <li>
             <span><?php echo _T("PHP version"); ?> (<?php echo PHP_VERSION . ' >= ' . GALETTE_PHP_MIN; ?>)</span>
-            <span><?php echo $install->getValidationImage($php_ok == true); ?></span>
+            <span><?php echo $install->getValidationImage($php_ok); ?></span>
         </li>
         <li>
             <span><?php echo _T("Date settings"); ?></span>
-            <span><?php echo $install->getValidationImage($date_ok == true); ?></span>
+            <span><?php echo $install->getValidationImage($date_ok); ?></span>
         </li>
     </ul>
 
@@ -120,7 +120,7 @@ if (!$perms_ok) {
     <?php
     if ($install->isInstall()) {
         echo _T("To work as excpected, Galette needs write permission on files listed above.");
-    } else if ($install->isUpgrade()) {
+    } elseif ($install->isUpgrade()) {
         echo _T("In order to be updated, Galette needs write permission on files listed above.");
     }
     ?>

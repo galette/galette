@@ -103,7 +103,7 @@ if (count($versions) == 0) {
                     </label>
                 </span>
                 <span class="ui radio checkbox">
-                    <input type="radio" name="previous_version" value="<?php echo $previous ?? 0; ?>" id="upgrade-<?php echo $version; ?>"<?php if ($is_current) { echo ' checked="checked"'; }; ?> required/>
+                    <input type="radio" name="previous_version" value="<?php echo $previous ?? 0; ?>" id="upgrade-<?php echo $version; ?>"<?php if ($is_current) { echo ' checked="checked"'; } ?> required/>
                 </span>
         <?php
         if ($is_current) {

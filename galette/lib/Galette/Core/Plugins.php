@@ -218,7 +218,7 @@ class Plugins
                 Analog::WARNING
             );
             $this->setDisabled(self::DISABLED_COMPAT);
-        } else if ($this->id) {
+        } elseif ($this->id) {
             $this->modules[$this->id] = array(
                 'root'          => $this->mroot,
                 'name'          => $name,

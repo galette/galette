@@ -89,7 +89,7 @@ trait EntityHelper
         if (isset($this->virtual_fields)) {
             $virtual_fields = $this->virtual_fields;
         }
-        return (in_array($name, $virtual_fields) || property_exists($this, $name));
+        return in_array($name, $virtual_fields) || property_exists($this, $name);
     }
 
     /**

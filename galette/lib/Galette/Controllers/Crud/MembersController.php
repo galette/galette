@@ -458,15 +458,15 @@ class MembersController extends CrudController
             $filters = new MembersList();
         }
 
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            default:
+                break;
         }
 
         $m = new Members($filters);
@@ -661,23 +661,16 @@ class MembersController extends CrudController
                 $filters->filter_str = $post['filter_str'];
             }
             //field to filter
-            if (isset($post['field_filter'])) {
-                if (is_numeric($post['field_filter'])) {
-                    $filters->field_filter = $post['field_filter'];
-                }
+            if (isset($post['field_filter']) && is_numeric($post['field_filter'])) {
+                $filters->field_filter = $post['field_filter'];
             }
             //membership to filter
-            if (isset($post['membership_filter'])) {
-                if (is_numeric($post['membership_filter'])) {
-                    $filters->membership_filter
-                        = $post['membership_filter'];
-                }
+            if (isset($post['membership_filter']) && is_numeric($post['membership_filter'])) {
+                $filters->membership_filter = $post['membership_filter'];
             }
             //account status to filter
-            if (isset($post['filter_account'])) {
-                if (is_numeric($post['filter_account'])) {
-                    $filters->filter_account = $post['filter_account'];
-                }
+            if (isset($post['filter_account']) && is_numeric($post['filter_account'])) {
+                $filters->filter_account = $post['filter_account'];
             }
             //email filter
             if (isset($post['email_filter'])) {
@@ -1435,13 +1428,11 @@ class MembersController extends CrudController
                     }
                 }
 
-                if (!$found) {
+                if (!$found && ($key == 'group_to_add' || $key == 'group_to_remove')) {
                     //try to check group to add or remove
-                    if ($key == 'group_to_add' || $key == 'group_to_remove') {
-                        $post[$key] = (int)$post[$key];
-                        if ($this->login->isGroupManager($post[$key])) {
-                            $found = true;
-                        }
+                    $post[$key] = (int)$post[$key];
+                    if ($this->login->isGroupManager($post[$key])) {
+                        $found = true;
                     }
                 }
 

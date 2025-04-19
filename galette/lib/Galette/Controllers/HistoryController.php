@@ -64,15 +64,15 @@ class HistoryController extends AbstractController
             $filters->show = $request->getQueryParams()['nbshow'];
         }
 
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            default:
+                break;
         }
 
         $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;

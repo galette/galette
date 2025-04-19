@@ -183,8 +183,7 @@ abstract class AbstractController
     {
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
-        $args = $route->getArguments();
-        return $args;
+        return $route->getArguments();
     }
 
     /**

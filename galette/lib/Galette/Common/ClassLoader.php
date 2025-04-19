@@ -247,7 +247,7 @@ class ClassLoader
             return file_exists($this->includePath . DIRECTORY_SEPARATOR . $file);
         }
 
-        return (false !== stream_resolve_include_path($file));
+        return false !== stream_resolve_include_path($file);
     }
 
     /**

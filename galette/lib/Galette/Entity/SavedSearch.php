@@ -177,7 +177,7 @@ class SavedSearch
             $this->author_id = $this->login->id;
         }
 
-        return (count($this->errors) === 0);
+        return count($this->errors) === 0;
     }
 
     /**

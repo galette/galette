@@ -74,7 +74,6 @@ class PluginDisable extends AbstractPlugins
      */
     protected function getRelevantPlugins(SymfonyStyle $io): array
     {
-        $enabled_plugins = $this->plugins->getModules();
-        return $enabled_plugins;
+        return $this->plugins->getModules();
     }
 }

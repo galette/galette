@@ -150,15 +150,15 @@ class SavedSearchesController extends CrudController
             $filters = new SavedSearchesList();
         }
 
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            default:
+                break;
         }
 
         $searches = new SavedSearches($this->zdb, $this->login, $filters);

@@ -1175,7 +1175,7 @@ class Galette
      */
     public static function isSerialized(string $string): bool
     {
-        return (@unserialize($string) !== false);
+        return @unserialize($string) !== false;
     }
 
     /**

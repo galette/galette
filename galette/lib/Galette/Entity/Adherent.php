@@ -1828,15 +1828,15 @@ class Adherent
         if (in_array($name, $virtuals)) {
             switch ($name) {
                 case 'sadmin':
-                    return (($this->isAdmin()) ? _T("Yes") : _T("No"));
+                    return ($this->isAdmin()) ? _T("Yes") : _T("No");
                 case 'sdue_free':
-                    return (($this->isDueFree()) ? _T("Yes") : _T("No"));
+                    return ($this->isDueFree()) ? _T("Yes") : _T("No");
                 case 'sappears_in_list':
-                    return (($this->appearsInMembersList()) ? _T("Yes") : _T("No"));
+                    return ($this->appearsInMembersList()) ? _T("Yes") : _T("No");
                 case 'sstaff':
-                    return (($this->isStaff()) ? _T("Yes") : _T("No"));
+                    return ($this->isStaff()) ? _T("Yes") : _T("No");
                 case 'sactive':
-                    return (($this->isActive()) ? _T("Active") : _T("Inactive"));
+                    return ($this->isActive()) ? _T("Active") : _T("Inactive");
                 case 'stitle':
                     if (isset($this->title) && $this->title instanceof Title) {
                         return $this->title->tshort;

@@ -447,21 +447,21 @@ class MailingsController extends CrudController
 
         $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
 
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-                case 'reset':
-                    $mailhist->clean();
-                    //reinitialize object after flush
-                    $filters = new MailingsList();
-                    $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
-                    break;
-            }
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            case 'reset':
+                $mailhist->clean();
+                //reinitialize object after flush
+                $filters = new MailingsList();
+                $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
+                break;
+            default:
+                break;
         }
 
         $this->session->{$this->getFilterName('mailings')} = $filters;
@@ -508,9 +508,7 @@ class MailingsController extends CrudController
         if (isset($post['clear_filter'])) {
             $filters->reinit();
         } else {
-            if (
-                (isset($post['nbshow']) && is_numeric($post['nbshow']))
-            ) {
+            if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
                 $filters->show = $post['nbshow'];
             }
 

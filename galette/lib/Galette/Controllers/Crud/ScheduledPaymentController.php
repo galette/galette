@@ -147,15 +147,15 @@ class ScheduledPaymentController extends CrudController
             $filters->from_contribution = (int)$get[Contribution::PK];
         }
 
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            default:
+                break;
         }
 
         $scheduled = new ScheduledPayments(
@@ -239,9 +239,7 @@ class ScheduledPaymentController extends CrudController
         if (isset($post['clear_filter'])) {
             $filters->reinit($ajax);
         } else {
-            if (
-                (isset($post['nbshow']) && is_numeric($post['nbshow']))
-            ) {
+            if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
                 $filters->show = $post['nbshow'];
             }
 
@@ -522,8 +520,7 @@ class ScheduledPaymentController extends CrudController
     protected function doDelete(array $args, array $post): bool
     {
         $scheduleds = new ScheduledPayments($this->zdb, $this->login);
-        $rm = $scheduleds->remove($args['ids'] ?? $args['id'], $this->history);
-        return $rm;
+        return $scheduleds->remove($args['ids'] ?? $args['id'], $this->history);
     }
 
     // CRUD - Delete

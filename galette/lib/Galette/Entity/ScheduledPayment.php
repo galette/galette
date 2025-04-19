@@ -501,7 +501,7 @@ class ScheduledPayment
         $select->limit(1)->where([Contribution::PK => $id_cotis]);
 
         $results = $this->zdb->execute($select);
-        return ($results->count() > 0);
+        return $results->count() > 0;
     }
 
     /**

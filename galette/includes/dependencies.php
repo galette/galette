@@ -216,11 +216,10 @@ $container->set('Galette\Core\I18n', function (ContainerInterface $c) {
 });
 
 $container->set('l10n', function (ContainerInterface $c) {
-    $l10n = new Galette\Core\L10n(
+    return new Galette\Core\L10n(
         $c->get('zdb'),
         $c->get('i18n')
     );
-    return $l10n;
 });
 
 //TODO: old way - to drop
@@ -294,12 +293,12 @@ $container->set('acls', function (ContainerInterface $c) {
     return $acls;
 });
 
-$container->set('texts_fields', function (ContainerInterface $c) {
+$container->set('texts_fields', function () {
     include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
     return $texts_fields;
 });
 
-$container->set('members_fields', function (ContainerInterface $c) {
+$container->set('members_fields', function () {
     include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
     return $members_fields;
 });
@@ -314,7 +313,7 @@ $container->set('members_form_fields', function (ContainerInterface $c) {
     return $fields;
 });
 
-$container->set('members_fields_cats', function (ContainerInterface $c) {
+$container->set('members_fields_cats', function () {
     include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
     return $members_fields_cats;
 });
@@ -338,13 +337,12 @@ $container->set(
     DI\get('Galette\Entity\FieldsConfig')
 );
 $container->set('Galette\Entity\FieldsConfig', function (ContainerInterface $c) {
-    $fc = new Galette\Entity\FieldsConfig(
+    return new Galette\Entity\FieldsConfig(
         $c->get('zdb'),
         Galette\Entity\Adherent::TABLE,
         $c->get('members_fields'),
         $c->get('members_fields_cats')
     );
-    return $fc;
 });
 
 //TODO: old way - to drop
@@ -353,13 +351,12 @@ $container->set(
     DI\get('Galette\Entity\ListsConfig')
 );
 $container->set('Galette\Entity\ListsConfig', function (ContainerInterface $c) {
-    $fc = new Galette\Entity\ListsConfig(
+    return new Galette\Entity\ListsConfig(
         $c->get('zdb'),
         Galette\Entity\Adherent::TABLE,
         $c->get('members_fields'),
         $c->get('members_fields_cats')
     );
-    return $fc;
 });
 
 //TODO: old way - to drop

@@ -41,7 +41,7 @@ $internal = false;
 if (defined('STDIN')) {
     //we're called from command line
     $args = stream_get_contents(STDIN);
-} else if (count($_POST) > 0) {
+} elseif (count($_POST) > 0) {
     //we're called from HTTP POST
     $args = $_POST;
     //check if we're called from galette internal
@@ -56,7 +56,7 @@ if (defined('STDIN')) {
     } else {
         echo 'Requested as HTTP POST with parameters:<br/>';
     }
-} else if (count($_GET) > 0) {
+} elseif (count($_GET) > 0) {
     //we're called from HTTP GET
     echo 'Requested as HTTP GET with parameters:<br/>';
     $args = $_GET;
