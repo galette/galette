@@ -971,9 +971,7 @@ class Members
             $results = $zdb->execute($countSelect);
 
             $this->count = (int)$results->current()->count;
-            if (isset($this->filters)) {
-                $this->filters->setCounter($this->count);
-            }
+            $this->filters->setCounter($this->count);
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot count members | ' . $e->getMessage(),
