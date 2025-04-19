@@ -15,10 +15,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-04-19 12:01+0200\n"
-"PO-Revision-Date: 2025-04-08 17:00+0000\n"
-"Last-Translator: Guillaume AGNIERAY <dev@agnieray.net>\n"
+"PO-Revision-Date: 2025-04-19 10:07+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.11-dev\n"
+"X-Generator: Weblate 5.11.1-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -1165,10 +1165,8 @@ msgstr "Le plugin %name a été désactivé"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:70
 #: ../lib/Galette/Core/Galette.php:474
-#, fuzzy
-#| msgid "View transaction"
 msgid "Labels translation"
-msgstr "Voir la transaction"
+msgstr "Traduction des étiquettes"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:154
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:179
@@ -1687,10 +1685,8 @@ msgid "Manage emails texts and subjects"
 msgstr "Gestion des textes et sujets des courriels"
 
 #: ../lib/Galette/Core/Galette.php:475
-#, fuzzy
-#| msgid "Translate labels"
 msgid "Manage translatable labels"
-msgstr "Traduction de libellés"
+msgstr "Gérer les traductions des étiquettes"
 
 #: ../lib/Galette/Core/Galette.php:487
 msgid "Various administrative tools"
@@ -2894,10 +2890,8 @@ msgid "Contribution information"
 msgstr "Informations sur la contribution"
 
 #: ../lib/Galette/Features/Replacements.php:428
-#, fuzzy
-#| msgid "contribution"
 msgid "Paid contribution"
-msgstr "contribution"
+msgstr "Contribution payée"
 
 #: ../lib/Galette/Features/Replacements.php:825
 msgid "Member information"
@@ -3235,11 +3229,9 @@ msgstr "Extension d’adhésion :"
 #: ../../tempcache/pages/contributions_list.html.twig:802
 #: ../../tempcache/pages/contributions_list.html.twig:813
 #: ../../tempcache/pages/contribution_form.html.twig:606
-#, fuzzy
-#| msgid "Paid"
 msgctxt "contribution"
 msgid "Paid"
-msgstr "Payé"
+msgstr "Payée"
 
 #: ../lib/Galette/Entity/Contribution.php:536
 msgid "- The duration must be a positive integer!"
@@ -6447,10 +6439,8 @@ msgid "until"
 msgstr "au"
 
 #: ../../tempcache/pages/contributions_list.html.twig:202
-#, fuzzy
-#| msgid "contributions"
 msgid "Paid contributions:"
-msgstr "contributions"
+msgstr "Contributions payées"
 
 #: ../../tempcache/pages/contributions_list.html.twig:216
 #: ../../tempcache/pages/members_list.html.twig:358
@@ -6463,11 +6453,9 @@ msgstr "Sans importance"
 #: ../../tempcache/pages/contributions_list.html.twig:248
 #: ../../tempcache/pages/contributions_list.html.twig:804
 #: ../../tempcache/pages/contributions_list.html.twig:819
-#, fuzzy
-#| msgid "Not supplied"
 msgctxt "contribution"
 msgid "Not paid"
-msgstr "Non renseigné"
+msgstr "Non payée"
 
 #: ../../tempcache/pages/contributions_list.html.twig:258
 #: ../../tempcache/pages/history.html.twig:263
