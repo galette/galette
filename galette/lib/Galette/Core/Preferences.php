@@ -1010,12 +1010,11 @@ class Preferences
             $replacements,
             _T("%name\n%complement\n%address\n%zip %town %country")
         );*/
-        $r = preg_replace(
+        return preg_replace(
             $regs,
             $replacements,
             "%name%complement%address\n%zip %town %country"
         );
-        return $r;
     }
 
     /**
@@ -1358,8 +1357,7 @@ class Preferences
         }
 
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
-        $uri = $scheme . '://' . $_SERVER['HTTP_HOST'];
-        return $uri;
+        return $scheme . '://' . $_SERVER['HTTP_HOST'];
     }
 
     /**

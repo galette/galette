@@ -306,8 +306,7 @@ class SavedSearchesController extends CrudController
             $ids = $post['id'];
         }
 
-        $del = $searches->remove($ids, $this->history);
-        return $del;
+        return $searches->remove($ids, $this->history);
     }
 
     // CRUD - Delete

@@ -1454,7 +1454,7 @@ class Adherent
                     );
                 } else {
                     //check if login does not contain the @ character
-                    if (strpos($value, '@') != false) {
+                    if (str_contains($value, '@')) {
                         $this->errors[] = _T("- The username cannot contain the @ character");
                     } else {
                         //check if login is already taken

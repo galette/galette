@@ -157,14 +157,6 @@ class Pdf extends TCPDF
     }
 
     /**
-     * Destructor
-     */
-    public function __destruct()
-    {
-        parent::__destruct();
-    }
-
-    /**
      * This method is automatically called in case of fatal error;
      * it simply outputs the message and halts the execution.
      * An inherited class may override it to customize the error
@@ -210,12 +202,11 @@ class Pdf extends TCPDF
      */
     public function colorHex2Dec(string $hex6): array
     {
-        $dec = array(
+        return array(
             "R" => hexdec(substr($hex6, 1, 2)),
             "G" => hexdec(substr($hex6, 3, 2)),
             "B" => hexdec(substr($hex6, 5, 2))
         );
-        return $dec;
     }
 
     /**
@@ -367,7 +358,6 @@ class Pdf extends TCPDF
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);
         $this->SetTextColor(0, 0, 0);
 
-        $y = $this->GetY();
         $this->Ln(2);
         $ystart = $this->GetY();
 

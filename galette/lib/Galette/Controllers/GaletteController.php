@@ -495,7 +495,7 @@ class GaletteController extends AbstractController
         $pos = 0;
         $current_cat = 0;
         $res = array();
-        foreach ($post['fields'] as $abs_pos => $field) {
+        foreach ($post['fields'] as $field) {
             if ($current_cat != $post[$field . '_category']) {
                 //reset position when category has changed
                 $pos = 0;

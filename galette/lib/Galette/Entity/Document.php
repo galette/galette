@@ -187,7 +187,7 @@ class Document implements FileInterface
         $sys_types = $this->getSystemTypes(false);
 
         $typed_list = array_fill_keys($sys_types, []);
-        foreach ($list as $doc_id => $document) {
+        foreach ($list as $document) {
             $typed_list[$document->getType()][] = $document;
         }
 

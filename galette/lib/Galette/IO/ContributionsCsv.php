@@ -81,7 +81,7 @@ class ContributionsCsv extends CsvOut
         unset($fields['duree_mois_cotis']);
         $labels = array();
 
-        foreach ($fields as $k => $f) {
+        foreach ($fields as $f) {
             $label = $f['label'];
             if (isset($f['cotlabel'])) {
                 $label = $f['cotlabel'] . ' / ' . $label;

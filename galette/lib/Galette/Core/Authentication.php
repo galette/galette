@@ -335,11 +335,7 @@ abstract class Authentication
     public function __isset(string $name): bool
     {
         $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
-        if (isset($this->$name) && !in_array($name, $forbidden)) {
-            return true;
-        } else {
-            return false;
-        }
+        return isset($this->$name) && !in_array($name, $forbidden);
     }
 
 

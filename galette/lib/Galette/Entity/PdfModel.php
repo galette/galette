@@ -364,8 +364,7 @@ abstract class PdfModel
                     $prop_value = $this->parent->$pname;
                 }
 
-                $value = $this->proceedReplacements($prop_value);
-                return $value;
+            return $this->proceedReplacements($prop_value);
         }
 
         throw new \RuntimeException(
@@ -441,12 +440,8 @@ abstract class PdfModel
                 }
                 break;
             case 'name':
-                try {
-                    $this->checkChars($value, 50, _T("Name"));
-                    $this->$name = $value;
-                } catch (Throwable $e) {
-                    throw $e;
-                }
+                $this->checkChars($value, 50, _T("Name"));
+                $this->$name = $value;
                 break;
             case 'title':
             case 'subtitle':
@@ -455,12 +450,8 @@ abstract class PdfModel
                 } else {
                     $field = _T("Subtitle");
                 }
-                try {
-                    $this->checkChars($value, 100, $field, true);
-                    $this->$name = $value;
-                } catch (Throwable $e) {
-                    throw $e;
-                }
+                $this->checkChars($value, 100, $field, true);
+                $this->$name = $value;
                 break;
             case 'header':
             case 'footer':

@@ -150,7 +150,7 @@ class Login extends Authentication
                 $row = $results->current();
 
                 //check if member is active
-                if (!$row->activite_adh == true) {
+                if (!($row->activite_adh == true)) {
                     Analog::log(
                         'Member `' . $user . ' is inactive!`' . $log_suffix,
                         Analog::WARNING
@@ -324,14 +324,8 @@ class Login extends Authentication
             $select = $this->zdb->select(self::TABLE);
             $select->where(array(self::PK => $user));
             $results = $this->zdb->execute($select);
-
-            if ($results->count() > 0) {
-                /* We got results, user already exists */
-                return true;
-            } else {
-                /* No results, user does not exist yet :) */
-                return false;
-            }
+            /* We got results: user already exists */
+            return $results->count() > 0;
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot check if login exists | ' . $e->getMessage(),

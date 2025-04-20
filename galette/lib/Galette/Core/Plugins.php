@@ -514,11 +514,7 @@ class Plugins
     {
         if (isset($this->modules[$id])) {
             $d = $this->modules[$id]['root'] . '/scripts/';
-            if (file_exists($d)) {
-                return true;
-            } else {
-                return false;
-            }
+            return file_exists($d);
         } else {
             throw new Exception(_T("Module does not exists!"));
         }

@@ -1081,7 +1081,7 @@ abstract class DynamicField
      */
     public static function getFieldsTypesNames(): array
     {
-        $names = [
+        return [
             self::SEPARATOR => _T("separator"),
             self::TEXT      => _T("free text"),
             self::LINE      => _T("single line"),
@@ -1090,7 +1090,6 @@ abstract class DynamicField
             self::BOOLEAN   => _T("boolean"),
             self::FILE      => _T("file")
         ];
-        return $names;
     }
 
     /**

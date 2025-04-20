@@ -87,8 +87,7 @@ class Gaptcha
         ];
 
         $questions = ($this->current_op === self::OP_ADD) ? $add_questions : $sub_questions;
-        $question = $questions[rand(0, (count($questions) - 1))];
-        return $question;
+        return $questions[rand(0, (count($questions) - 1))];
     }
 
 

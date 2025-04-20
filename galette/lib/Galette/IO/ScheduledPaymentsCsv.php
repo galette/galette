@@ -74,7 +74,7 @@ class ScheduledPaymentsCsv extends CsvOut
         $fields = $scheduled->getFields();
         $labels = array();
 
-        foreach ($fields as $k => $f) {
+        foreach ($fields as $f) {
             $label = $f['label'];
             $labels[] = $label;
         }

@@ -332,8 +332,7 @@ trait Dynamics
             );
             $this->loadDynamicFields();
         }
-        $return = $this->dynamics->removeValues($this->id, $transaction);
-        return $return;
+        return $this->dynamics->removeValues($this->id, $transaction);
     }
 
     /**

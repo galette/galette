@@ -310,7 +310,7 @@ class Status
         if ($res === false) {
             //get() already logged
             return self::ID_NOT_EXITS;
-        };
+        }
         return ($translated) ? _T($res->libelle_statut) : $res->libelle_statut;
     }
 

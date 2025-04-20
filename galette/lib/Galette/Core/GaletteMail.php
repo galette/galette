@@ -387,8 +387,7 @@ class GaletteMail
     protected function cleanedHtml(): string
     {
         $html = $this->message;
-        $txt = Html2Text::convert($html);
-        return $txt;
+        return Html2Text::convert($html);
     }
 
     /**

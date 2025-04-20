@@ -51,8 +51,7 @@ abstract class GalettePlugin
      */
     public static function getMenus(bool $public = false): array
     {
-        $menus = static::getMenusContents();
-        return $menus;
+        return static::getMenusContents();
     }
 
     /**
@@ -79,8 +78,7 @@ abstract class GalettePlugin
      */
     public static function getDashboards(): array
     {
-        $dashboards = static::getDashboardsContents();
-        return $dashboards;
+        return static::getDashboardsContents();
     }
 
     /**
@@ -90,8 +88,7 @@ abstract class GalettePlugin
      */
     public static function getMyDashboards(): array
     {
-        $dashboards = static::getMyDashboardsContents();
-        return $dashboards;
+        return static::getMyDashboardsContents();
     }
 
     /**
@@ -135,8 +132,7 @@ abstract class GalettePlugin
      */
     public static function getListActions(Adherent $member): array
     {
-        $actions = static::getListActionsContents($member);
-        return $actions;
+        return static::getListActionsContents($member);
     }
 
     /**
@@ -148,8 +144,7 @@ abstract class GalettePlugin
      */
     public static function getDetailedActions(Adherent $member): array
     {
-        $actions = static::getDetailedActionsContents($member);
-        return $actions;
+        return static::getDetailedActionsContents($member);
     }
 
     /**
@@ -159,8 +154,7 @@ abstract class GalettePlugin
      */
     public static function getBatchActions(): array
     {
-        $actions = static::getBatchActionsContents();
-        return $actions;
+        return static::getBatchActionsContents();
     }
 
     /**

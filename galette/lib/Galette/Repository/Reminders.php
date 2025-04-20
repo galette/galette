@@ -266,7 +266,6 @@ class Reminders
         $this->select_stmt = $this->zdb->sql->prepareStatementForSqlObject($select);
 
         $reminders = array();
-        $m = new Members();
 
         if (in_array(Reminder::LATE, $this->selected)) {
             $this->loadLate($nomail);
