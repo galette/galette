@@ -305,7 +305,6 @@ class Transaction
         foreach ($fields as $key) {
             //first, let's sanitize values
             $key = strtolower($key);
-            $prop = $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
                 $value = $values[$key];

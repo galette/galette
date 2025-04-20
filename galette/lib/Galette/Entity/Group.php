@@ -587,7 +587,7 @@ class Group
      */
     public function getIndentName(): ?string
     {
-        if (($level = $this->getLevel())) {
+        if ($level = $this->getLevel()) {
             return str_repeat("&nbsp;", 3 * $level) . '&raquo; ' . $this->group_name;
         }
         return $this->group_name ?? null;

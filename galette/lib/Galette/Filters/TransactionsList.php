@@ -39,7 +39,6 @@ use Galette\Core\Pagination;
  * @property integer|false $filtre_cotis_children
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
- * @property ?integer $max_amount
  */
 
 class TransactionsList extends Pagination
@@ -57,7 +56,6 @@ class TransactionsList extends Pagination
     private ?string $end_date_filter = null; //@phpstan-ignore-line
     private ?int $filtre_cotis_adh = null;
     private int|false $filtre_cotis_children = false; //@phpstan-ignore-line
-    private ?int $max_amount = null; //@phpstan-ignore-line
 
     /** @var array<string> */
     protected array $list_fields = array(
