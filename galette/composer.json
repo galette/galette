@@ -65,7 +65,8 @@
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^10.0",
         "malukenho/docheader": "^1.0",
-        "slevomat/coding-standard": "^8.14"
+        "slevomat/coding-standard": "^8.14",
+        "alisqi/twigqi": "^3.0"
     },
     "config": {
         "optimize-autoloader": true,

@@ -71,6 +71,8 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->addExtension(new StringExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
         $view->addExtension(new \Twig\Extension\DebugExtension());
+        global $logger;
+        $view->addExtension(new AlisQI\TwigQI\Extension($logger));
     }
     //End Twig extensions
 

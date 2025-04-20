@@ -194,7 +194,8 @@ $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(
     Galette::isDebugEnabled(),
     true,
-    true
+    true,
+    $logger
 );
 
 $errorHandler = $errorMiddleware->getDefaultErrorHandler();

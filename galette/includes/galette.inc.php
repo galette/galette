@@ -162,7 +162,9 @@ if (defined('GALETTE_TESTS')) {
     }
 }
 
-Analog::handler($galette_run_log);
+$handler = Analog::handler($galette_run_log);
+$logger = new \Analog\Logger();
+$logger->handler($handler);
 
 if (!$installer && !defined('GALETTE_TESTS')) {
     //If we're not working from installer nor from tests
