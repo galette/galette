@@ -364,7 +364,7 @@ abstract class PdfModel
                     $prop_value = $this->parent->$pname;
                 }
 
-            return $this->proceedReplacements($prop_value);
+                return $this->proceedReplacements($prop_value);
         }
 
         throw new \RuntimeException(
