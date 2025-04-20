@@ -181,7 +181,6 @@ abstract class PdfModel
         $this->styles .= $rs->model_styles;
 
         if ($this->id > self::MAIN_MODEL) {
-            //FIXME: for now, parent will always be a PdfMain
             $this->parent = new PdfMain(
                 $this->zdb,
                 $this->preferences,

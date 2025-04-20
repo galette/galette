@@ -1361,7 +1361,6 @@ class Members
             }
         }
 
-        //FIXME: should be retrieved from members_fields
         $dates = [
             'a.ddn_adh'               => 'birth_date',
             'a.date_crea_adh'         => 'creation_date',

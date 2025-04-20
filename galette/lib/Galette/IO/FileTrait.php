@@ -523,7 +523,6 @@ trait FileTrait
                 );
                 break;
             case self::MIME_NOT_ALLOWED:
-                /** FIXME: should be more descriptive */
                 $error = _T("Mime-Type not allowed");
                 break;
             case self::NEW_FILE_EXISTS:

@@ -36,7 +36,7 @@ class ExternalScript
     private string $protocol;
     private string $method;
     private string $uri;
-    private bool $as_json = true; //TODO: parametize?
+    private bool $as_json = true;
     private string $output;
 
     /**

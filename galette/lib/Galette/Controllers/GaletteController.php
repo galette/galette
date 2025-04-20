@@ -552,8 +552,6 @@ class GaletteController extends AbstractController
      */
     public function configureListFields(Request $request, Response $response, string $table): Response
     {
-        //TODO: check if type table exists
-
         $lc = $this->lists_config;
 
         $params = [

@@ -418,7 +418,6 @@ class Transaction
             $this->zdb->connection->beginTransaction();
             $values = array();
             $fields = $this->getDbFields($this->zdb);
-            /** FIXME: quote? */
             foreach ($fields as $field) {
                 $prop = $this->fields[$field]['propname'];
                 if (isset($this->$prop)) {

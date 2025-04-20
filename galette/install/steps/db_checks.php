@@ -44,7 +44,7 @@ if ($db_connected === true) {
     }
 
     if ($supported_db) {
-        /** FIXME: when tables already exists and DROP not allowed at this time
+        /** When tables already exists and DROP not allowed at this time
          * the showed error is about CREATE, whenever CREATE is allowed */
         //We delete the table if exists, no error at this time
         $zdb->dropTestTable();
