@@ -40,5 +40,3 @@ define("PWD_DB", "demo");
 define("NAME_DB", "galette");
 /* tables name prefix (default is galette_) */
 define("PREFIX_DB", "galette_");
-/* FIXME will disappear soon */
-define("STOCK_FILES", "tempimages");
