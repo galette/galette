@@ -39,7 +39,7 @@
         {% for type, documents in typed_documents %}
                     <a class="{% if loop.index == 1 %}active {% endif %}item" data-tab="{{ _self.getSlug(type) }}">
                         {{ _T(type) }}
-                        <p class="ui small disabled text">({{ _Tn("%count document", "%count documents", documents|length)|replace({"%count": documents|length}) }})</p>
+                        <p class="ui small disabled text">({{ _Tn("%1$s document", "%1$s documents", documents|length)|format(documents|length) }})</p>
                     </a>
         {% endfor %}
                 </div>

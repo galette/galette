@@ -245,10 +245,9 @@ class ContributionsController extends CrudController
             'modals/mass_choose_contributions_type.html.twig',
             array(
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
-                'page_title'    => str_replace(
-                    '%count',
-                    (string)count($data['id']),
-                    _T('Mass add contribution on %count members')
+                'page_title'   => sprintf(
+                    _T('Mass add contribution on %1$s members'),
+                    (string)count($data['id'])
                 ),
                 'data'          => $data,
                 'form_url'      => $this->routeparser->urlFor('massAddContributions'),
@@ -293,10 +292,9 @@ class ContributionsController extends CrudController
             'modals/mass_add_contributions.html.twig',
             array(
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
-                'page_title'    => str_replace(
-                    '%count',
-                    (string)count($data['id']),
-                    _T('Mass add contribution on %count members')
+                'page_title'    => sprintf(
+                    _T('Mass add contribution on %1$s members'),
+                    (string)count($data['id'])
                 ),
                 'form_url'      => $this->routeparser->urlFor('doMassAddContributions'),
                 'cancel_uri'    => $this->routeparser->urlFor('members'),

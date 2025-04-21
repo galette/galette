@@ -210,7 +210,7 @@
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count contribution", "%count contributions", nb)|replace({"%count": nb}),
+        'label': _Tn("%1$s contribution", "%1$s contributions", nb)|format(nb),
         'route': {
             'name': 'payments_filter',
             'args': {

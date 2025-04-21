@@ -22,7 +22,7 @@
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members})
+        'label': _Tn("%1$s member", "%1$s members", nb_members)|format(nb_members)
     } %}
     {{ parent() }}
 {% endblock %}

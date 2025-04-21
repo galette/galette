@@ -28,7 +28,7 @@
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count document", "%count documents", nb)|replace({"%count": nb})
+        'label': _Tn("%1$s document", "%1$s documents", nb)|format(nb)
     } %}
     {{ parent() }}
 {% endblock %}

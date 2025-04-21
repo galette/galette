@@ -30,7 +30,7 @@
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count entry", "%count entries", history.getCount())|replace({"%count": history.getCount()}),
+        'label': _Tn("%1$s entry", "%1$s entries", history.getCount())|format(history.getCount()),
         'route': {
             'name': 'mailings_filter'
         }

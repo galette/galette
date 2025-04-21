@@ -194,32 +194,28 @@ class PaymentTypeController extends CrudController
 
         if (!$res) {
             if ($id === null) {
-                $error_detected[] = preg_replace(
-                    '(%s)',
-                    $ptype->getName(),
-                    _T("Payment type '%s' has not been added!")
+                $error_detected[] = sprintf(
+                    _T('Payment type \'%1$s\' has not been added!'),
+                    $ptype->getName()
                 );
             } else {
-                $error_detected[] = preg_replace(
-                    '(%s)',
-                    $ptype->getName(),
-                    _T("Payment type '%s' has not been modified!")
+                $error_detected[] = sprintf(
+                    _T('Payment type \'%1$s\' has not been modified!'),
+                    $ptype->getName()
                 );
                 //redirect to payment type edition
                 $redirect_uri = $this->routeparser->urlFor('editPaymentType', ['id' => (string)$id]);
             }
         } else {
             if ($id === null) {
-                $msg = preg_replace(
-                    '(%s)',
-                    $ptype->getName(),
-                    _T("Payment type '%s' has been successfully added.")
+                $msg = sprintf(
+                    _T('Payment type \'%1$s\' has been successfully added.'),
+                    $ptype->getName()
                 );
             } else {
-                $msg = preg_replace(
-                    '(%s)',
-                    $ptype->getName(),
-                    _T("Payment type '%s' has been successfully modified.")
+                $msg = sprintf(
+                    _T('Payment type \'%1$s\' has been successfully modified.'),
+                    $ptype->getName()
                 );
             }
         }

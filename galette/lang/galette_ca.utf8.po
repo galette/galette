@@ -84,23 +84,23 @@ msgstr "Falta el nom de camp requerit!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:200
 #, php-format
-msgid "Payment type '%s' has not been added!"
-msgstr "No s'ha afegit el tipus de pagament «%s»!"
+msgid "Payment type '%1$s' has not been added!"
+msgstr "No s'ha afegit el tipus de pagament «%1$s»!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:206
 #, php-format
-msgid "Payment type '%s' has not been modified!"
-msgstr "El tipus de pagament «%s» no s'ha modificat!"
+msgid "Payment type '%1$s' has not been modified!"
+msgstr "El tipus de pagament «%1$s» no s'ha modificat!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:216
 #, php-format
-msgid "Payment type '%s' has been successfully added."
-msgstr "El tipus de pagament «%s» s'ha afegit amb èxit."
+msgid "Payment type '%1$s' has been successfully added."
+msgstr "El tipus de pagament «%1$s» s'ha afegit amb èxit."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
 #, php-format
-msgid "Payment type '%s' has been successfully modified."
-msgstr "El tipus de pagament «%s» s'ha modificat amb èxit."
+msgid "Payment type '%1$s' has been successfully modified."
+msgstr "El tipus de pagament «%1$s» s'ha modificat amb èxit."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:298
 #, php-format
@@ -143,13 +143,13 @@ msgstr "Edita el tipus de pagament «%s»"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:437
 #, fuzzy
-#| msgid "Payment type '%s' has not been added!"
+#| msgid "Payment type '%1$s' has not been added!"
 msgid "Scheduled payment has not been added!"
 msgstr "No s'ha afegit el tipus de pagament «%s»!"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:439
 #, fuzzy
-#| msgid "Payment type '%s' has not been modified!"
+#| msgid "Payment type '%1$s' has not been modified!"
 msgid "Scheduled payment has not been modified!"
 msgstr "El tipus de pagament «%s» no s'ha modificat!"
 
@@ -161,7 +161,7 @@ msgstr "El nou membre s'ha afegit exitosament."
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:447
 #, fuzzy
-#| msgid "Payment type '%s' has been successfully modified."
+#| msgid "Payment type '%1$s' has been successfully modified."
 msgid "Scheduled payment has been successfully modified."
 msgstr "El tipus de pagament «%s» s'ha modificat amb èxit."
 
@@ -421,8 +421,8 @@ msgstr "No s'ha seleccionat cap membre. Seleccioneu almenys un nom."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1268
 #, php-format
-msgid "Mass change %count members"
-msgstr "Canvi massiu %count membres"
+msgid "Mass change %1$s members"
+msgstr "Canvi massiu %1$s membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1300
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1420
@@ -444,8 +444,8 @@ msgstr "Elimina el grup %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1388
 #, php-format
-msgid "Review mass change %count members"
-msgstr "Revisar el canvi massiu %count membres"
+msgid "Review mass change %1$s members"
+msgstr "Revisar el canvi massiu %1$s membres"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1483
 msgid "Nothing to do!"
@@ -470,8 +470,8 @@ msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
 #| msgid "%count members has been changed successfully!"
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] "%count membres han estat canviats satisfactoriament!"
-msgstr[1] "%count membres han estat canviats satisfactoriament!"
+msgstr[0] "%1$s membres han estat canviats satisfactoriament!"
+msgstr[1] "%1$s membres han estat canviats satisfactoriament!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1625
 msgid "Invalid captcha"
@@ -510,8 +510,8 @@ msgstr "Elimina el membre %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1940
 #, php-format
-msgid "You are about to remove %count members."
-msgstr "Esteu a punt d'eliminar %count membres."
+msgid "You are about to remove %1$s members."
+msgstr "Esteu a punt d'eliminar %1$s membres."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:92
 #: ../lib/Galette/Core/Install.php:1215 ../lib/Galette/Core/Galette.php:452
@@ -624,8 +624,8 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:251
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:299
 #, php-format
-msgid "Mass add contribution on %count members"
-msgstr "Canvi massiu de %count membres"
+msgid "Mass add contribution on %1$s members"
+msgstr "Canvi massiu de %1$s membres"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
 #: ../lib/Galette/Core/Galette.php:239
@@ -749,8 +749,8 @@ msgstr "Elimina la cerca desada"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:281
 #, php-format
-msgid "You are about to remove %count searches."
-msgstr "Esteu a punt d'eliminar %count cerques."
+msgid "You are about to remove %1$s searches."
+msgstr "Esteu a punt d'eliminar %1$s cerques."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:330
 msgid "Saved search loaded"
@@ -1549,7 +1549,7 @@ msgstr "Actualitza els models"
 #: ../lib/Galette/Core/Gaptcha.php:78
 #, fuzzy, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr "Quant és el %1$s més el 2%$s?"
+msgstr "Quant és el %1$s més el %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:79
 #, fuzzy, php-format
@@ -2254,8 +2254,8 @@ msgstr "La contrasenya és a la llista negra!"
 
 #: ../lib/Galette/Util/Password.php:91
 #, fuzzy, php-format
-msgid "Too short (%length characters minimum, %count found)"
-msgstr "Massa curt (s'han trobat %count caràcters %length mínima)"
+msgid "Too short (%1$s characters minimum, %2$s found)"
+msgstr "Massa curt (s'han trobat %2$s caràcters %1$s mínima)"
 
 #: ../lib/Galette/Util/Password.php:103
 #, fuzzy
@@ -2713,11 +2713,11 @@ msgstr "El nom del fitxer del 5% no pot ser obert!"
 
 #: ../lib/Galette/IO/CsvIn.php:279
 msgid ""
-"Fields count mismatch... There should be %should_count fields and there are "
-"%count (row %row)"
+"Fields count mismatch... There should be %1$s fields and there are "
+"%2$s (row %3$s)"
 msgstr ""
-"El nombre de camps no coincideix… Hi hauria d’haver %should_count camps però "
-"n’hi ha %count (fila %row)"
+"El nombre de camps no coincideix… Hi hauria d’haver %1$s camps però "
+"n’hi ha %2$s (fila %3$s)"
 
 #: ../lib/Galette/IO/CsvIn.php:301
 msgid "Field %field is required, but missing in row %row"
@@ -7060,10 +7060,10 @@ msgstr "Descarrega el document"
 #, fuzzy, php-format
 #| msgid "%count entry"
 #| msgid_plural "%count entries"
-msgid "%count document"
-msgid_plural "%count documents"
-msgstr[0] "%count entrada"
-msgstr[1] "%count entrades"
+msgid "%1$s document"
+msgid_plural "%1$s documents"
+msgstr[0] "%1$s entrada"
+msgstr[1] "%1$s entrades"
 
 #: ../../tempcache/pages/public/members_list.html.twig:64
 #: ../../tempcache/pages/public/members_gallery.html.twig:60
@@ -7071,10 +7071,10 @@ msgstr[1] "%count entrades"
 #: ../../tempcache/pages/public/staff_gallery.html.twig:60
 #: ../../tempcache/pages/members_list.html.twig:82
 #, php-format
-msgid "%count member"
-msgid_plural "%count members"
-msgstr[0] "%count membre"
-msgstr[1] "%count membres"
+msgid "%1$s member"
+msgid_plural "%1$s members"
+msgstr[0] "%1$s membre"
+msgstr[1] "%1$s membres"
 
 #: ../../tempcache/pages/public/members_list.html.twig:158
 #: ../../tempcache/pages/public/members_gallery.html.twig:116
@@ -7429,10 +7429,10 @@ msgstr "Vegeu el perfil de membre"
 
 #: ../../tempcache/pages/contributions_list.html.twig:443
 #, php-format
-msgid "%count contribution"
-msgid_plural "%count contributions"
-msgstr[0] "%count contribució"
-msgstr[1] "%count contribucions"
+msgid "%1$s contribution"
+msgid_plural "%1$s contributions"
+msgstr[0] "%1$s contribució"
+msgstr[1] "%1$s contribucions"
 
 #: ../../tempcache/pages/contributions_list.html.twig:547
 #, fuzzy, php-format
@@ -7644,10 +7644,10 @@ msgstr "Suprimeix el títol '%s'"
 #: ../../tempcache/pages/history.html.twig:73
 #: ../../tempcache/pages/mailings_list.html.twig:69
 #, php-format
-msgid "%count entry"
-msgid_plural "%count entries"
-msgstr[0] "%count entrada"
-msgstr[1] "%count entrades"
+msgid "%1$s entry"
+msgid_plural "%1$s entries"
+msgstr[0] "%1$s entrada"
+msgstr[1] "%1$s entrades"
 
 #: ../../tempcache/pages/history.html.twig:118
 #: ../../tempcache/pages/history.html.twig:341
@@ -9730,10 +9730,10 @@ msgstr ""
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:62
 #, php-format
-msgid "%count search"
-msgid_plural "%count searches"
-msgstr[0] "%count cerques"
-msgstr[1] "%count cerca"
+msgid "%1$s search"
+msgid_plural "%1$s searches"
+msgstr[0] "%1$s cerques"
+msgstr[1] "%1$s cerca"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:150
 #, fuzzy
@@ -9873,10 +9873,10 @@ msgstr "Data de venciment tardana"
 #, fuzzy, php-format
 #| msgid "%count entry"
 #| msgid_plural "%count entries"
-msgid "%count shceduled payment"
-msgid_plural "%count scheduled payments"
-msgstr[0] "%count entrada"
-msgstr[1] "%count entrades"
+msgid "%1$s shceduled payment"
+msgid_plural "%1$s scheduled payments"
+msgstr[0] "%1$s entrada"
+msgstr[1] "%1$s entrades"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:268
 #, php-format
@@ -9999,8 +9999,8 @@ msgstr "Mostra totes les transaccions dels membres"
 
 #: ../../tempcache/pages/transactions_list.html.twig:244
 #, php-format
-msgid "%count transaction"
-msgid_plural "%count transactions"
+msgid "%1$s transaction"
+msgid_plural "%1$s transactions"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -10580,8 +10580,8 @@ msgstr "Introduïu tantes ocurrències que vulgueu."
 #: ../../tempcache/components/dynamic_fields.html.twig:256
 #: ../../tempcache/components/dynamic_fields.html.twig:318
 #, fuzzy, php-format
-msgid "Enter up to %count more occurrences."
-msgstr "Introduïu fins %count més d'aparició."
+msgid "Enter up to %1$s more occurrences."
+msgstr "Introduïu fins %1$s més d'aparició."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:587
 #, fuzzy

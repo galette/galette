@@ -85,10 +85,10 @@ class Password
         }
 
         if (mb_strlen($password) < $this->preferences->pref_password_length) {
-            $this->errors[] = str_replace(
-                ['%length', '%count'],
-                [(string)$this->preferences->pref_password_length, (string)mb_strlen($password)],
-                _T('Too short (%length characters minimum, %count found)')
+            $this->errors[] = sprintf(
+                _T('Too short (%1$s characters minimum, %2$s found)'),
+                (string)$this->preferences->pref_password_length,
+                (string)mb_strlen($password)
             );
         }
 

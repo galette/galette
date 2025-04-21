@@ -208,7 +208,7 @@
                                         {% set current_count = 1 %}
                                     {% endif %}
                                     {% set remaining = field.getRepeat() - current_count %}
-                                    <p class="exemple" id="repeat_msg">{{ _T("Enter up to %count more occurrences.")|replace({"%count": remaining}) }}</p>
+                                    <p class="exemple" id="repeat_msg">{{ _T("Enter up to %1$s more occurrences.")|format(remaining) }}</p>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -250,7 +250,7 @@
                             _lnkEvent(_b, _new, _parent);
                             _parent.append(_b);
                             if (_current < _total) {
-                                $('#repeat_msg').html('{{ _T("Enter up to %count more occurrences.")|replace({"%count": "COUNT"})|e('js') }}'.replace(/COUNT/, _total - _current));
+                                $('#repeat_msg').html('{{ _T("Enter up to %1$s more occurrences.")|format("COUNT")|e('js') }}'.replace(/COUNT/, _total - _current));
                             }
                         } else if (_current == _total) {
                             $('#repeat_msg').remove();

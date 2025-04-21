@@ -116,7 +116,7 @@
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count shceduled payment", "%count scheduled payments", nb)|replace({"%count": nb}),
+        'label': _Tn("%1$s shceduled payment", "%1$s scheduled payments", nb)|format(nb),
         'route': {
             'name': 'filterScheduledPayments'
         }

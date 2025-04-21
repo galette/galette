@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-19 12:01+0200\n"
-"PO-Revision-Date: 2025-04-19 12:01+0200\n"
+"POT-Creation-Date: 2025-04-21 16:48+0200\n"
+"PO-Revision-Date: 2025-04-21 16:48+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -22,13 +22,13 @@ msgid "Transaction"
 msgstr "Transaction"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:127
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1142
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1135
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:95
 msgid "modification"
 msgstr "modification"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:129
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1144
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1137
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:97
 msgid "creation"
 msgstr "creation"
@@ -71,27 +71,27 @@ msgstr "Edit payment type"
 msgid "Missing required payment type's name!"
 msgstr "Missing required payment type's name!"
 
-#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:200
+#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:198
 #, php-format
-msgid "Payment type '%s' has not been added!"
-msgstr "Payment type '%s' has not been added!"
+msgid "Payment type '%1$s' has not been added!"
+msgstr "Payment type '%1$s' has not been added!"
 
-#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:206
+#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:203
 #, php-format
-msgid "Payment type '%s' has not been modified!"
-msgstr "Payment type '%s' has not been modified!"
+msgid "Payment type '%1$s' has not been modified!"
+msgstr "Payment type '%1$s' has not been modified!"
 
-#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:216
+#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:212
 #, php-format
-msgid "Payment type '%s' has been successfully added."
-msgstr "Payment type '%s' has been successfully added."
+msgid "Payment type '%1$s' has been successfully added."
+msgstr "Payment type '%1$s' has been successfully added."
 
-#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
+#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:217
 #, php-format
-msgid "Payment type '%s' has been successfully modified."
-msgstr "Payment type '%s' has been successfully modified."
+msgid "Payment type '%1$s' has been successfully modified."
+msgstr "Payment type '%1$s' has been successfully modified."
 
-#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:298
+#: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:294
 #, php-format
 msgid "Remove payment type %1$s"
 msgstr "Remove payment type %1$s"
@@ -109,37 +109,37 @@ msgstr "Add scheduled payment"
 msgid "List of scheduled payments"
 msgstr "List of scheduled payments"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:274
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:674
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:272
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:668
 msgid "- Unknown payment type!"
 msgstr "- Unknown payment type!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:331
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:329
 msgid "No scheduled payment was selected, please check at least one."
 msgstr "No scheduled payment was selected, please check at least one."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:367
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:365
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:426
 msgid "Edit scheduled payment"
 msgstr "Edit scheduled payment"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:437
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:435
 msgid "Scheduled payment has not been added!"
 msgstr "Scheduled payment has not been added!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:439
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:437
 msgid "Scheduled payment has not been modified!"
 msgstr "Scheduled payment has not been modified!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:445
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:443
 msgid "Scheduled payment has been successfully added."
 msgstr "Scheduled payment has been successfully added."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:447
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:445
 msgid "Scheduled payment has been successfully modified."
 msgstr "Scheduled payment has been successfully modified."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:511
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:509
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
 msgstr[0] "Remove scheduled payment"
@@ -208,12 +208,12 @@ msgstr "Mailing has been successfully saved."
 msgid "Mailings"
 msgstr "Mailings"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:617
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:615
 #, php-format
 msgid "Remove mailing #%1$s"
 msgstr "Remove mailing #%1$s"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:697
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:695
 #: ../../tempcache/pages/mailing_form.html.twig:571
 #: ../../tempcache/pages/mailings_list.html.twig:520
 msgid "Mailing preview"
@@ -273,7 +273,7 @@ msgstr "Dynamic fields"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:311
 #: ../lib/Galette/Controllers/Crud/MembersController.php:236
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1098
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1091
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:281
 #: ../lib/Galette/Controllers/PdfController.php:100
 #: ../lib/Galette/Controllers/PdfController.php:272
@@ -326,7 +326,7 @@ msgid "No member #%id."
 msgstr "No member #%id."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:270
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1140
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1133
 msgid "Member Profile"
 msgstr "Member Profile"
 
@@ -359,107 +359,107 @@ msgstr "Staff gallery"
 msgid "List of members"
 msgstr "List of members"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:851
+#: ../lib/Galette/Controllers/Crud/MembersController.php:844
 #: ../lib/Galette/Core/Galette.php:190
 #: ../../tempcache/pages/advanced_search.html.twig:266
 msgid "Advanced search"
 msgstr "Advanced search"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1048
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1041
 #: ../lib/Galette/Controllers/PdfController.php:133
 #: ../lib/Galette/Controllers/PdfController.php:219
 msgid "No member was selected, please check at least one name."
 msgstr "No member was selected, please check at least one name."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1268
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1259
 #, php-format
-msgid "Mass change %count members"
-msgstr "Mass change %count members"
+msgid "Mass change %1$s members"
+msgstr "Mass change %1$s members"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1300
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1420
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1292
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1411
 msgid "Mass changes has not been confirmed!"
 msgstr "Mass changes has not been confirmed!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1325
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1317
 #: ../../tempcache/components/forms/mass_groups.html.twig:73
 msgid "Add to group"
 msgstr "Add to group"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1335
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1327
 #: ../../tempcache/components/forms/mass_groups.html.twig:80
 msgid "Remove from group"
 msgstr "Remove from group"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1388
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1378
 #, php-format
-msgid "Review mass change %count members"
-msgstr "Review mass change %count members"
+msgid "Review mass change %1$s members"
+msgstr "Review mass change %1$s members"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1483
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1472
 msgid "Nothing to do!"
 msgstr "Nothing to do!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1508
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1774
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1497
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1763
 msgid "An error occurred while storing the member."
 msgstr "An error occurred while storing the member."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1536
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1755
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1525
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1744
 msgid "An error occurred adding member to its groups."
 msgstr "An error occurred adding member to its groups."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1549
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1538
 msgid "Something went wrong during mass edition!"
 msgstr "Something went wrong during mass edition!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1556
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1545
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s member has been changed successfully!"
 msgstr[1] "%1$s members has been changed successfully!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1625
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1614
 msgid "Invalid captcha"
 msgstr "Invalid captcha"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1732
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1721
 msgid "Your account has been created!"
 msgstr "Your account has been created!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1737
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1726
 msgid "An email has been sent to you, check your inbox."
 msgstr "An email has been sent to you, check your inbox."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1740
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1729
 msgid "New member has been successfully added."
 msgstr "New member has been successfully added."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1743
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1732
 msgid "Member account has been modified."
 msgstr "Member account has been modified."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1769
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1758
 msgid "An error occurred adding member to its groups as manager."
 msgstr "An error occurred adding member to its groups as manager."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1792
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1781
 #: ../lib/Galette/Controllers/GaletteController.php:282
 #: ../lib/Galette/Controllers/GaletteController.php:314
 msgid "Delete failed"
 msgstr "Delete failed"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1930
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1919
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Remove member %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1940
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1927
 #, php-format
-msgid "You are about to remove %count members."
-msgstr "You are about to remove %count members."
+msgid "You are about to remove %1$s members."
+msgstr "You are about to remove %1$s members."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:92
 #: ../lib/Galette/Core/Install.php:1215 ../lib/Galette/Core/Galette.php:452
@@ -553,68 +553,68 @@ msgstr "Donation"
 msgid "No related contribution type available, please create a new one."
 msgstr "No related contribution type available, please create a new one."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:251
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:299
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:249
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:296
 #, php-format
-msgid "Mass add contribution on %count members"
-msgstr "Mass add contribution on %count members"
+msgid "Mass add contribution on %1$s members"
+msgstr "Mass add contribution on %1$s members"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:529
 #: ../lib/Galette/Core/Galette.php:239
 msgid "List of contributions"
 msgstr "List of contributions"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:529
 #: ../lib/Galette/Core/Galette.php:266
 msgid "List of transactions"
 msgstr "List of transactions"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:687
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:681
 msgid "- Unknown contribution type!"
 msgstr "- Unknown contribution type!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:750
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:744
 msgid "No contribution was selected, please check at least one."
 msgstr "No contribution was selected, please check at least one."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:786
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:780
 #: ../lib/Galette/Controllers/PdfController.php:432
 #: ../lib/Galette/Controllers/PdfController.php:701
 msgid "Unable to load contribution #%id!"
 msgstr "Unable to load contribution #%id!"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:884
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:878
 msgid "Contribution has been successfully stored"
 msgstr "Contribution has been successfully stored"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:888
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:882
 msgid "An error occurred while storing the contribution."
 msgstr "An error occurred while storing the contribution."
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:1002
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:996
 #, php-format
 msgid "Remove %1$s %2$s"
 msgstr "Remove %1$s %2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:1004
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:998
 msgid "contributions"
 msgstr "contributions"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:1004
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:998
 msgid "transactions"
 msgstr "transactions"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:1008
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:1002
 #, php-format
 msgid "Remove %1$s #%2$s"
 msgstr "Remove %1$s #%2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:1009
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:1003
 #: ../lib/Galette/IO/PdfContribution.php:64
 msgid "contribution"
 msgstr "contribution"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:1009
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:1003
 msgid "transaction"
 msgstr "transaction"
 
@@ -668,16 +668,16 @@ msgstr "Saved searches"
 msgid "Remove saved search"
 msgstr "Remove saved search"
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:281
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:279
 #, php-format
-msgid "You are about to remove %count searches."
-msgstr "You are about to remove %count searches."
+msgid "You are about to remove %1$s searches."
+msgstr "You are about to remove %1$s searches."
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:330
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:328
 msgid "Saved search loaded"
 msgstr "Saved search loaded"
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:349
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:347
 msgid "An SQL error has occurred while loading search."
 msgstr "An SQL error has occurred while loading search."
 
@@ -777,41 +777,41 @@ msgstr "Fields configuration has been successfully stored"
 msgid "An error occurred while storing fields configuration :("
 msgstr "An error occurred while storing fields configuration :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:560
+#: ../lib/Galette/Controllers/GaletteController.php:558
 #: ../lib/Galette/Core/Galette.php:407
 msgid "Core lists"
 msgstr "Core lists"
 
-#: ../lib/Galette/Controllers/GaletteController.php:600
+#: ../lib/Galette/Controllers/GaletteController.php:598
 msgid "List configuration has been successfully stored"
 msgstr "List configuration has been successfully stored"
 
-#: ../lib/Galette/Controllers/GaletteController.php:605
+#: ../lib/Galette/Controllers/GaletteController.php:603
 msgid "An error occurred while storing list configuration :("
 msgstr "An error occurred while storing list configuration :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:639
+#: ../lib/Galette/Controllers/GaletteController.php:637
 #: ../lib/Galette/Core/Galette.php:313 ../lib/Galette/Core/Galette.php:782
 msgid "Reminders"
 msgstr "Reminders"
 
-#: ../lib/Galette/Controllers/GaletteController.php:681
+#: ../lib/Galette/Controllers/GaletteController.php:679
 msgid "No reminder to send for now."
 msgstr "No reminder to send for now."
 
-#: ../lib/Galette/Controllers/GaletteController.php:718
+#: ../lib/Galette/Controllers/GaletteController.php:716
 msgid "There are no member to proceed."
 msgstr "There are no member to proceed."
 
-#: ../lib/Galette/Controllers/GaletteController.php:725
+#: ../lib/Galette/Controllers/GaletteController.php:723
 msgid "Reminder has not been sent:"
 msgstr "Reminder has not been sent:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:732
+#: ../lib/Galette/Controllers/GaletteController.php:730
 msgid "Sent reminders:"
 msgstr "Sent reminders:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:807
+#: ../lib/Galette/Controllers/GaletteController.php:805
 msgid "Download document"
 msgstr "Download document"
 
@@ -835,7 +835,7 @@ msgid "Thank you for registering!"
 msgstr "Thank you for registering!"
 
 #: ../lib/Galette/Controllers/CrudController.php:272
-#: ../lib/Galette/Controllers/HistoryController.php:171
+#: ../lib/Galette/Controllers/HistoryController.php:169
 #: ../lib/Galette/Controllers/CsvController.php:480
 msgid "Removal has not been confirmed!"
 msgstr "Removal has not been confirmed!"
@@ -1102,15 +1102,15 @@ msgstr "An error occurred fixing dynamic dates :("
 msgid "Logs"
 msgstr "Logs"
 
-#: ../lib/Galette/Controllers/HistoryController.php:183
+#: ../lib/Galette/Controllers/HistoryController.php:181
 msgid "Logs have been flushed!"
 msgstr "Logs have been flushed!"
 
-#: ../lib/Galette/Controllers/HistoryController.php:195
+#: ../lib/Galette/Controllers/HistoryController.php:193
 msgid "An error occurred trying to flush logs :("
 msgstr "An error occurred trying to flush logs :("
 
-#: ../lib/Galette/Controllers/HistoryController.php:234
+#: ../lib/Galette/Controllers/HistoryController.php:232
 #: ../../tempcache/pages/history.html.twig:102
 msgid "Flush the logs"
 msgstr "Flush the logs"
@@ -1773,7 +1773,7 @@ msgstr "- Offering months is only compatible with beginning of membership."
 
 #: ../lib/Galette/Core/Preferences.php:666
 #: ../lib/Galette/Entity/Adherent.php:1251
-#: ../lib/Galette/Entity/Transaction.php:375
+#: ../lib/Galette/Entity/Transaction.php:374
 #: ../lib/Galette/Entity/Contribution.php:561
 #, php-format
 msgid "- Mandatory field %field empty."
@@ -1844,47 +1844,47 @@ msgstr "- Invalid website URL."
 msgid "%name association's %status"
 msgstr "%name association's %status"
 
-#: ../lib/Galette/Core/Preferences.php:1356
+#: ../lib/Galette/Core/Preferences.php:1355
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr "Please define constant \"GALETTE_URI\" with the path to your instance."
 
-#: ../lib/Galette/Core/Preferences.php:1375
-#: ../lib/Galette/Core/Preferences.php:1391 ../lib/Galette/IO/Csv.php:100
+#: ../lib/Galette/Core/Preferences.php:1373
+#: ../lib/Galette/Core/Preferences.php:1389 ../lib/Galette/IO/Csv.php:100
 #: ../lib/Galette/Entity/Document.php:447 ../lib/Galette/Entity/Texts.php:195
 #: ../../tempcache/pages/history.html.twig:337
 #: ../../tempcache/pages/mailings_list.html.twig:326
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d H:i:s"
 
-#: ../lib/Galette/Core/Preferences.php:1377
+#: ../lib/Galette/Core/Preferences.php:1375
 msgid "Never"
 msgstr "Never"
 
-#: ../lib/Galette/Core/Preferences.php:1415
+#: ../lib/Galette/Core/Preferences.php:1413
 msgid "Current cards configuration may exceed page width!"
 msgstr "Current cards configuration may exceed page width!"
 
-#: ../lib/Galette/Core/Preferences.php:1426
+#: ../lib/Galette/Core/Preferences.php:1424
 msgid "Current cards configuration may exceed page height!"
 msgstr "Current cards configuration may exceed page height!"
 
-#: ../lib/Galette/Core/Preferences.php:1452
+#: ../lib/Galette/Core/Preferences.php:1450
 #: ../lib/Galette/Features/Replacements.php:820
 msgid "Main information"
 msgstr "Main information"
 
-#: ../lib/Galette/Core/Preferences.php:1459
+#: ../lib/Galette/Core/Preferences.php:1457
 #: ../../tempcache/elements/display_socials.html.twig:50
 #: ../../tempcache/elements/edit_socials.html.twig:81
 #: ../../tempcache/pages/preferences.html.twig:77
 msgid "Social networks"
 msgstr "Social networks"
 
-#: ../lib/Galette/Core/Preferences.php:1747
+#: ../lib/Galette/Core/Preferences.php:1745
 msgid "Dark mode CSS file has been reset."
 msgstr "Dark mode CSS file has been reset."
 
-#: ../lib/Galette/Core/I18n.php:212
+#: ../lib/Galette/Core/I18n.php:207
 msgid "Unknown lang (%lang)"
 msgstr "Unknown lang (%lang)"
 
@@ -1914,11 +1914,11 @@ msgstr "Cannot deactivate plugin."
 msgid "Cannot activate plugin."
 msgstr "Cannot activate plugin."
 
-#: ../lib/Galette/Core/Plugins.php:523 ../lib/Galette/Core/Plugins.php:583
+#: ../lib/Galette/Core/Plugins.php:519 ../lib/Galette/Core/Plugins.php:579
 msgid "Module does not exists!"
 msgstr "Module does not exists!"
 
-#: ../lib/Galette/Core/Plugins.php:580
+#: ../lib/Galette/Core/Plugins.php:576
 msgid "File not found!"
 msgstr "File not found!"
 
@@ -1954,10 +1954,10 @@ msgstr "Contributions deleted (%list)"
 msgid "Password is blacklisted!"
 msgstr "Password is blacklisted!"
 
-#: ../lib/Galette/Util/Password.php:91
+#: ../lib/Galette/Util/Password.php:89
 #, php-format
-msgid "Too short (%length characters minimum, %count found)"
-msgstr "Too short (%length characters minimum, %count found)"
+msgid "Too short (%1$s characters minimum, %2$s found)"
+msgstr "Too short (%1$s characters minimum, %2$s found)"
 
 #: ../lib/Galette/Util/Password.php:103
 msgid "Do not use any of your personal information as password!"
@@ -2147,7 +2147,7 @@ msgstr "Managers:"
 #: ../lib/Galette/IO/PdfGroups.php:156
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:167
 #: ../lib/Galette/Features/Replacements.php:250
-#: ../lib/Galette/Entity/PdfModel.php:446
+#: ../lib/Galette/Entity/PdfModel.php:443
 #: ../lib/Galette/Filters/MembersList.php:274
 #: ../includes/fields_defs/members_fields.php:317
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:64
@@ -2263,7 +2263,7 @@ msgstr "Unspecified"
 #: ../../tempcache/pages/mailings_list.html.twig:243
 #: ../../tempcache/pages/advanced_search.html.twig:477
 #: ../../tempcache/pages/advanced_search.html.twig:1420
-#: ../../tempcache/pages/advanced_search.html.twig:1774
+#: ../../tempcache/pages/advanced_search.html.twig:1773
 msgid "Yes"
 msgstr "Yes"
 
@@ -2289,7 +2289,7 @@ msgstr "Yes"
 #: ../../tempcache/pages/mailings_list.html.twig:259
 #: ../../tempcache/pages/advanced_search.html.twig:493
 #: ../../tempcache/pages/advanced_search.html.twig:1428
-#: ../../tempcache/pages/advanced_search.html.twig:1776
+#: ../../tempcache/pages/advanced_search.html.twig:1775
 msgid "No"
 msgstr "No"
 
@@ -2357,52 +2357,53 @@ msgstr "Labels"
 msgid "File %filename cannot be open!"
 msgstr "File %filename cannot be open!"
 
-#: ../lib/Galette/IO/CsvIn.php:279
+#: ../lib/Galette/IO/CsvIn.php:277
+#, php-format
 msgid ""
-"Fields count mismatch... There should be %should_count fields and there are "
-"%count (row %row)"
+"Fields count mismatch... There should be %1$s fields and there are %2$s (row "
+"%3$s)"
 msgstr ""
-"Fields count mismatch... There should be %should_count fields and there are "
-"%count (row %row)"
+"Fields count mismatch... There should be %1$s fields and there are %2$s (row "
+"%3$s)"
 
-#: ../lib/Galette/IO/CsvIn.php:301
+#: ../lib/Galette/IO/CsvIn.php:302
 msgid "Field %field is required, but missing in row %row"
 msgstr "Field %field is required, but missing in row %row"
 
-#: ../lib/Galette/IO/CsvIn.php:323
+#: ../lib/Galette/IO/CsvIn.php:324
 #, php-format
 msgid "Status %status does not exists!"
 msgstr "Status %status does not exists!"
 
-#: ../lib/Galette/IO/CsvIn.php:343
+#: ../lib/Galette/IO/CsvIn.php:344
 msgid "Title %title does not exists!"
 msgstr "Title %title does not exists!"
 
-#: ../lib/Galette/IO/CsvIn.php:359
+#: ../lib/Galette/IO/CsvIn.php:360
 msgid "from another member in import"
 msgstr "from another member in import"
 
-#: ../lib/Galette/IO/CsvIn.php:359
+#: ../lib/Galette/IO/CsvIn.php:360
 msgid "from member %id_adh"
 msgstr "from member %id_adh"
 
-#: ../lib/Galette/IO/CsvIn.php:365
+#: ../lib/Galette/IO/CsvIn.php:366
 msgid "Email address %address is already used! (%extra)"
 msgstr "Email address %address is already used! (%extra)"
 
-#: ../lib/Galette/IO/CsvIn.php:391
+#: ../lib/Galette/IO/CsvIn.php:392
 msgid "Lang %lang does not exists!"
 msgstr "Lang %lang does not exists!"
 
-#: ../lib/Galette/IO/CsvIn.php:444
+#: ../lib/Galette/IO/CsvIn.php:445
 msgid "File is empty!"
 msgstr "File is empty!"
 
-#: ../lib/Galette/IO/CsvIn.php:536 ../lib/Galette/IO/CsvIn.php:547
+#: ../lib/Galette/IO/CsvIn.php:537 ../lib/Galette/IO/CsvIn.php:548
 msgid "An error occurred storing member at row %row (%name):"
 msgstr "An error occurred storing member at row %row (%name):"
 
-#: ../lib/Galette/IO/CsvIn.php:580
+#: ../lib/Galette/IO/CsvIn.php:581
 msgid "An error occurred while importing members"
 msgstr "An error occurred while importing members"
 
@@ -2449,27 +2450,27 @@ msgstr "File is too big. Maximum allowed size is %dKo"
 msgid "Image is too small. The minimum image side size allowed is %spx"
 msgstr "Image is too small. The minimum image side size allowed is %spx"
 
-#: ../lib/Galette/IO/FileTrait.php:527
+#: ../lib/Galette/IO/FileTrait.php:526
 msgid "Mime-Type not allowed"
 msgstr "Mime-Type not allowed"
 
-#: ../lib/Galette/IO/FileTrait.php:530
+#: ../lib/Galette/IO/FileTrait.php:529
 msgid "A file with that name already exists!"
 msgstr "A file with that name already exists!"
 
-#: ../lib/Galette/IO/FileTrait.php:533
+#: ../lib/Galette/IO/FileTrait.php:532
 msgid "File does not comply with requirements."
 msgstr "File does not comply with requirements."
 
-#: ../lib/Galette/IO/FileTrait.php:536
+#: ../lib/Galette/IO/FileTrait.php:535
 msgid "Unable to write file or temporary file"
 msgstr "Unable to write file or temporary file"
 
-#: ../lib/Galette/IO/FileTrait.php:566
+#: ../lib/Galette/IO/FileTrait.php:565
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 
-#: ../lib/Galette/IO/FileTrait.php:568
+#: ../lib/Galette/IO/FileTrait.php:567
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
@@ -2477,27 +2478,27 @@ msgstr ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 
-#: ../lib/Galette/IO/FileTrait.php:570
+#: ../lib/Galette/IO/FileTrait.php:569
 msgid "The uploaded file was only partially uploaded"
 msgstr "The uploaded file was only partially uploaded"
 
-#: ../lib/Galette/IO/FileTrait.php:572
+#: ../lib/Galette/IO/FileTrait.php:571
 msgid "No file was uploaded"
 msgstr "No file was uploaded"
 
-#: ../lib/Galette/IO/FileTrait.php:574
+#: ../lib/Galette/IO/FileTrait.php:573
 msgid "Missing a temporary folder"
 msgstr "Missing a temporary folder"
 
-#: ../lib/Galette/IO/FileTrait.php:576
+#: ../lib/Galette/IO/FileTrait.php:575
 msgid "Failed to write file to disk"
 msgstr "Failed to write file to disk"
 
-#: ../lib/Galette/IO/FileTrait.php:578
+#: ../lib/Galette/IO/FileTrait.php:577
 msgid "File upload stopped by extension"
 msgstr "File upload stopped by extension"
 
-#: ../lib/Galette/IO/FileTrait.php:580
+#: ../lib/Galette/IO/FileTrait.php:579
 msgid "Unknown upload error"
 msgstr "Unknown upload error"
 
@@ -2655,7 +2656,7 @@ msgid "Footer text:"
 msgstr "Footer text:"
 
 #: ../lib/Galette/Features/Replacements.php:238
-#: ../lib/Galette/Entity/PdfModel.php:455
+#: ../lib/Galette/Entity/PdfModel.php:449
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:118
 #: ../../tempcache/elements/edit_pdf_models.html.twig:55
 msgid "Title"
@@ -3049,34 +3050,34 @@ msgstr "Originator:"
 msgid "Payment type:"
 msgstr "Payment type:"
 
-#: ../lib/Galette/Entity/Transaction.php:336
+#: ../lib/Galette/Entity/Transaction.php:335
 #: ../lib/Galette/Entity/Contribution.php:514
 msgid "- The amount must be an integer!"
 msgstr "- The amount must be an integer!"
 
-#: ../lib/Galette/Entity/Transaction.php:343
+#: ../lib/Galette/Entity/Transaction.php:342
 msgid "- Transaction description must be 150 characters long maximum."
 msgstr "- Transaction description must be 150 characters long maximum."
 
-#: ../lib/Galette/Entity/Transaction.php:359
+#: ../lib/Galette/Entity/Transaction.php:358
 #: ../lib/Galette/Entity/Contribution.php:1509
 msgid "- Unknown payment type"
 msgstr "- Unknown payment type"
 
-#: ../lib/Galette/Entity/Transaction.php:384
+#: ../lib/Galette/Entity/Transaction.php:383
 #: ../lib/Galette/Entity/Contribution.php:571
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr "- Sum of all contributions exceed corresponding transaction amount."
 
-#: ../lib/Galette/Entity/Transaction.php:440
+#: ../lib/Galette/Entity/Transaction.php:438
 msgid "Transaction added"
 msgstr "Transaction added"
 
-#: ../lib/Galette/Entity/Transaction.php:445
+#: ../lib/Galette/Entity/Transaction.php:443
 msgid "Fail to add new transaction."
 msgstr "Fail to add new transaction."
 
-#: ../lib/Galette/Entity/Transaction.php:459
+#: ../lib/Galette/Entity/Transaction.php:457
 msgid "Transaction updated"
 msgstr "Transaction updated"
 
@@ -3349,31 +3350,31 @@ msgstr "Blog"
 msgid "Discord"
 msgstr "Discord"
 
-#: ../lib/Galette/Entity/PdfModel.php:296
+#: ../lib/Galette/Entity/PdfModel.php:295
 #, php-format
 msgid "%field should be less than %chars characters long."
 msgstr "%field should be less than %chars characters long."
 
-#: ../lib/Galette/Entity/PdfModel.php:306
+#: ../lib/Galette/Entity/PdfModel.php:305
 #, php-format
 msgid "%field should not be empty!"
 msgstr "%field should not be empty!"
 
-#: ../lib/Galette/Entity/PdfModel.php:439
+#: ../lib/Galette/Entity/PdfModel.php:437
 msgid "Unknown type %type!"
 msgstr "Unknown type %type!"
 
-#: ../lib/Galette/Entity/PdfModel.php:457
+#: ../lib/Galette/Entity/PdfModel.php:451
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:125
 #: ../../tempcache/elements/edit_pdf_models.html.twig:72
 msgid "Subtitle"
 msgstr "Subtitle"
 
-#: ../lib/Galette/Entity/PdfModel.php:472
+#: ../lib/Galette/Entity/PdfModel.php:462
 msgid "header and footer should not be empty!"
 msgstr "header and footer should not be empty!"
 
-#: ../lib/Galette/Entity/PdfModel.php:476
+#: ../lib/Galette/Entity/PdfModel.php:466
 msgid "body should not be empty!"
 msgstr "body should not be empty!"
 
@@ -3951,11 +3952,11 @@ msgid "Association"
 msgstr "Association"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
-#: ../includes/dependencies.php:177
+#: ../includes/dependencies.php:179
 msgid "YYYY-MM-DD"
 msgstr "YYYY-MM-DD"
 
-#: ../includes/dependencies.php:448
+#: ../includes/dependencies.php:447
 msgid "Failed CSRF check!"
 msgstr "Failed CSRF check!"
 
@@ -5084,7 +5085,7 @@ msgstr "Sheet type"
 #: ../../tempcache/pages/advanced_search.html.twig:787
 #: ../../tempcache/pages/advanced_search.html.twig:1033
 #: ../../tempcache/pages/advanced_search.html.twig:1396
-#: ../../tempcache/pages/advanced_search.html.twig:1806
+#: ../../tempcache/pages/advanced_search.html.twig:1805
 #: ../../tempcache/components/forms/date.html.twig:63
 #: ../../tempcache/components/dynamic_fields.html.twig:634
 msgid "yyyy-mm-dd format"
@@ -6075,10 +6076,10 @@ msgstr "No document"
 #: ../../tempcache/pages/documents_public_list.html.twig:109
 #: ../../tempcache/pages/documents_list.html.twig:65
 #, php-format
-msgid "%count document"
-msgid_plural "%count documents"
-msgstr[0] "%count document"
-msgstr[1] "%count documents"
+msgid "%1$s document"
+msgid_plural "%1$s documents"
+msgstr[0] "%1$s document"
+msgstr[1] "%1$s documents"
 
 #: ../../tempcache/pages/public/members_list.html.twig:64
 #: ../../tempcache/pages/public/members_gallery.html.twig:60
@@ -6086,10 +6087,10 @@ msgstr[1] "%count documents"
 #: ../../tempcache/pages/public/staff_gallery.html.twig:60
 #: ../../tempcache/pages/members_list.html.twig:82
 #, php-format
-msgid "%count member"
-msgid_plural "%count members"
-msgstr[0] "%count member"
-msgstr[1] "%count members"
+msgid "%1$s member"
+msgid_plural "%1$s members"
+msgstr[0] "%1$s member"
+msgstr[1] "%1$s members"
 
 #: ../../tempcache/pages/public/members_list.html.twig:158
 #: ../../tempcache/pages/public/members_gallery.html.twig:116
@@ -6392,10 +6393,10 @@ msgstr "See member profile"
 
 #: ../../tempcache/pages/contributions_list.html.twig:443
 #, php-format
-msgid "%count contribution"
-msgid_plural "%count contributions"
-msgstr[0] "%count contribution"
-msgstr[1] "%count contributions"
+msgid "%1$s contribution"
+msgid_plural "%1$s contributions"
+msgstr[0] "%1$s contribution"
+msgstr[1] "%1$s contributions"
 
 #: ../../tempcache/pages/contributions_list.html.twig:547
 #, php-format
@@ -6578,10 +6579,10 @@ msgstr "Delete '%s' title"
 #: ../../tempcache/pages/history.html.twig:73
 #: ../../tempcache/pages/mailings_list.html.twig:69
 #, php-format
-msgid "%count entry"
-msgid_plural "%count entries"
-msgstr[0] "%count entry"
-msgstr[1] "%count entries"
+msgid "%1$s entry"
+msgid_plural "%1$s entries"
+msgstr[0] "%1$s entry"
+msgstr[1] "%1$s entries"
 
 #: ../../tempcache/pages/history.html.twig:118
 #: ../../tempcache/pages/history.html.twig:341
@@ -8356,10 +8357,10 @@ msgstr ""
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:62
 #, php-format
-msgid "%count search"
-msgid_plural "%count searches"
-msgstr[0] "%count search"
-msgstr[1] "%count searches"
+msgid "%1$s search"
+msgid_plural "%1$s searches"
+msgstr[0] "%1$s search"
+msgstr[1] "%1$s searches"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:150
 msgid "Search parameters"
@@ -8474,10 +8475,10 @@ msgstr "Scheduled date"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:205
 #, php-format
-msgid "%count shceduled payment"
-msgid_plural "%count scheduled payments"
-msgstr[0] "%count shceduled payment"
-msgstr[1] "%count scheduled payments"
+msgid "%1$s shceduled payment"
+msgid_plural "%1$s scheduled payments"
+msgstr[0] "%1$s shceduled payment"
+msgstr[1] "%1$s scheduled payments"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:268
 #, php-format
@@ -8580,10 +8581,10 @@ msgstr "Show all members transactions"
 
 #: ../../tempcache/pages/transactions_list.html.twig:244
 #, php-format
-msgid "%count transaction"
-msgid_plural "%count transactions"
-msgstr[0] "%count transaction"
-msgstr[1] "%count transactions"
+msgid "%1$s transaction"
+msgid_plural "%1$s transactions"
+msgstr[0] "%1$s transaction"
+msgstr[1] "%1$s transactions"
 
 #: ../../tempcache/pages/transactions_list.html.twig:300
 #: ../../tempcache/pages/transactions_list.html.twig:585
@@ -8760,7 +8761,7 @@ msgid "Add new free search criteria"
 msgstr "Add new free search criteria"
 
 #: ../../tempcache/pages/advanced_search.html.twig:1122
-#: ../../tempcache/pages/advanced_search.html.twig:1832
+#: ../../tempcache/pages/advanced_search.html.twig:1831
 msgid "Select a field"
 msgstr "Select a field"
 
@@ -9070,8 +9071,8 @@ msgstr "Enter as many occurrences you want."
 #: ../../tempcache/components/dynamic_fields.html.twig:256
 #: ../../tempcache/components/dynamic_fields.html.twig:318
 #, php-format
-msgid "Enter up to %count more occurrences."
-msgstr "Enter up to %count more occurrences."
+msgid "Enter up to %1$s more occurrences."
+msgstr "Enter up to %1$s more occurrences."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:587
 msgid "Select an option"

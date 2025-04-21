@@ -77,23 +77,23 @@ msgstr "Falta o nome do tipo de pagamento obrigatório!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:200
 #, php-format
-msgid "Payment type '%s' has not been added!"
-msgstr "O tipo de pagamento '%s' não foi adicionado!"
+msgid "Payment type '%1$s' has not been added!"
+msgstr "O tipo de pagamento '%1$s' não foi adicionado!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:206
 #, php-format
-msgid "Payment type '%s' has not been modified!"
-msgstr "O tipo de pagamento '%s' não foi modificado!"
+msgid "Payment type '%1$s' has not been modified!"
+msgstr "O tipo de pagamento '%1$s' não foi modificado!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:216
 #, php-format
-msgid "Payment type '%s' has been successfully added."
-msgstr "O tipo de pagamento '%s' foi adicionado com sucesso."
+msgid "Payment type '%1$s' has been successfully added."
+msgstr "O tipo de pagamento '%1$s' foi adicionado com sucesso."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
 #, php-format
-msgid "Payment type '%s' has been successfully modified."
-msgstr "O tipo de pagamento '%s' foi modificado com sucesso."
+msgid "Payment type '%1$s' has been successfully modified."
+msgstr "O tipo de pagamento '%1$s' foi modificado com sucesso."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:298
 #, php-format
@@ -383,8 +383,8 @@ msgstr "Nenhum membro foi selecionado, marque pelo menos um nome."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1268
 #, php-format
-msgid "Mass change %count members"
-msgstr "Mudança em massa de %count membros"
+msgid "Mass change %1$s members"
+msgstr "Mudança em massa de %1$s membros"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1300
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1420
@@ -405,8 +405,8 @@ msgstr "Remover grupo %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1388
 #, php-format
-msgid "Review mass change %count members"
-msgstr "Revisar alteração em massa de %count membros"
+msgid "Review mass change %1$s members"
+msgstr "Revisar alteração em massa de %1$s membros"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1483
 msgid "Nothing to do!"
@@ -470,8 +470,8 @@ msgstr "Remover membro %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1940
 #, php-format
-msgid "You are about to remove %count members."
-msgstr "Está prestes a remover %count membro(s)."
+msgid "You are about to remove %1$s members."
+msgstr "Está prestes a remover %1$s membro(s)."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:92
 #: ../lib/Galette/Core/Install.php:1215 ../lib/Galette/Core/Galette.php:452
@@ -570,8 +570,8 @@ msgstr "Nenhuma contribuição foi selecionada, marque pelo menos uma."
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:251
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:299
 #, php-format
-msgid "Mass add contribution on %count members"
-msgstr "Adicionar contribuição em massa em %count membros"
+msgid "Mass add contribution on %1$s members"
+msgstr "Adicionar contribuição em massa em %1$s membros"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
 #: ../lib/Galette/Core/Galette.php:239
@@ -684,8 +684,8 @@ msgstr "Remover pesquisa guardada"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:281
 #, php-format
-msgid "You are about to remove %count searches."
-msgstr "Está prestes a remover %count pesquisa(s)."
+msgid "You are about to remove %1$s searches."
+msgstr "Está prestes a remover %1$s pesquisa(s)."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:330
 msgid "Saved search loaded"
@@ -1975,7 +1975,7 @@ msgstr ""
 
 #: ../lib/Galette/Util/Password.php:91
 #, php-format
-msgid "Too short (%length characters minimum, %count found)"
+msgid "Too short (%1$s characters minimum, %2$s found)"
 msgstr ""
 
 #: ../lib/Galette/Util/Password.php:103
@@ -2378,8 +2378,8 @@ msgstr ""
 
 #: ../lib/Galette/IO/CsvIn.php:279
 msgid ""
-"Fields count mismatch... There should be %should_count fields and there are "
-"%count (row %row)"
+"Fields count mismatch... There should be %1$s fields and there are "
+"%2$s (row %3$s)"
 msgstr ""
 
 #: ../lib/Galette/IO/CsvIn.php:301
@@ -5996,8 +5996,8 @@ msgstr ""
 #: ../../tempcache/pages/documents_public_list.html.twig:109
 #: ../../tempcache/pages/documents_list.html.twig:65
 #, php-format
-msgid "%count document"
-msgid_plural "%count documents"
+msgid "%1$s document"
+msgid_plural "%1$s documents"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -6007,8 +6007,8 @@ msgstr[1] ""
 #: ../../tempcache/pages/public/staff_gallery.html.twig:60
 #: ../../tempcache/pages/members_list.html.twig:82
 #, php-format
-msgid "%count member"
-msgid_plural "%count members"
+msgid "%1$s member"
+msgid_plural "%1$s members"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -6311,8 +6311,8 @@ msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:443
 #, php-format
-msgid "%count contribution"
-msgid_plural "%count contributions"
+msgid "%1$s contribution"
+msgid_plural "%1$s contributions"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -6495,8 +6495,8 @@ msgstr ""
 #: ../../tempcache/pages/history.html.twig:73
 #: ../../tempcache/pages/mailings_list.html.twig:69
 #, php-format
-msgid "%count entry"
-msgid_plural "%count entries"
+msgid "%1$s entry"
+msgid_plural "%1$s entries"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -8206,8 +8206,8 @@ msgstr ""
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:62
 #, php-format
-msgid "%count search"
-msgid_plural "%count searches"
+msgid "%1$s search"
+msgid_plural "%1$s searches"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -8320,8 +8320,8 @@ msgstr ""
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:205
 #, php-format
-msgid "%count shceduled payment"
-msgid_plural "%count scheduled payments"
+msgid "%1$s shceduled payment"
+msgid_plural "%1$s scheduled payments"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -8424,8 +8424,8 @@ msgstr ""
 
 #: ../../tempcache/pages/transactions_list.html.twig:244
 #, php-format
-msgid "%count transaction"
-msgid_plural "%count transactions"
+msgid "%1$s transaction"
+msgid_plural "%1$s transactions"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -8902,7 +8902,7 @@ msgstr ""
 #: ../../tempcache/components/dynamic_fields.html.twig:256
 #: ../../tempcache/components/dynamic_fields.html.twig:318
 #, php-format
-msgid "Enter up to %count more occurrences."
+msgid "Enter up to %1$s more occurrences."
 msgstr ""
 
 #: ../../tempcache/components/dynamic_fields.html.twig:587
