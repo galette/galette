@@ -273,10 +273,11 @@ class CsvIn extends Csv implements FileInterface
             $count = count($data);
             if ($count != $cnt_fields) {
                 $this->addError(
-                    str_replace(
-                        array('%should_count', '%count', '%row'),
-                        array((string)$cnt_fields, (string)$count, (string)$row),
-                        _T("Fields count mismatch... There should be %should_count fields and there are %count (row %row)")
+                    sprintf(
+                        _T('Fields count mismatch... There should be %1$s fields and there are %2$s (row %3$s)'),
+                        (string)$cnt_fields,
+                        (string)$count,
+                        (string)$row
                     )
                 );
                 return false;

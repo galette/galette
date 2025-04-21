@@ -1255,10 +1255,9 @@ class MembersController extends CrudController
             'modals/mass_change_members.html.twig',
             array(
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
-                'page_title'    => str_replace(
-                    '%count',
-                    (string)count($data['id']),
-                    _T('Mass change %count members')
+                'page_title'    => sprintf(
+                    _T('Mass change %1$s members'),
+                    (string)count($data['id'])
                 ),
                 'form_url'      => $this->routeparser->urlFor('masschangeMembersReview'),
                 'cancel_uri'    => $this->routeparser->urlFor('members'),
@@ -1375,10 +1374,9 @@ class MembersController extends CrudController
             'modals/mass_change_members.html.twig',
             array(
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
-                'page_title'    => str_replace(
-                    '%count',
-                    (string)count($data['id']),
-                    _T('Review mass change %count members')
+                'page_title'    => sprintf(
+                    _T('Review mass change %1$s members'),
+                    (string)count($data['id'])
                 ),
                 'form_url'      => $this->routeparser->urlFor('massstoremembers'),
                 'cancel_uri'    => $this->routeparser->urlFor('members'),
@@ -1925,10 +1923,9 @@ class MembersController extends CrudController
             //batch members removal
             $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
             $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])} = $filters;
-            return str_replace(
-                '%count',
-                (string)count($filters->selected),
-                _T('You are about to remove %count members.')
+            return sprintf(
+                _T('You are about to remove %1$s members.'),
+                (string)count($filters->selected)
             );
         }
     }

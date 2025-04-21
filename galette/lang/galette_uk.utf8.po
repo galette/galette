@@ -81,23 +81,23 @@ msgstr "Відсутня назва необхідного типу платеж
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:200
 #, php-format
-msgid "Payment type '%s' has not been added!"
-msgstr "Вид оплати \"%s\" не додано!"
+msgid "Payment type '%1$s' has not been added!"
+msgstr "Вид оплати \"%1$s\" не додано!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:206
 #, php-format
-msgid "Payment type '%s' has not been modified!"
-msgstr "Вид оплати \"%s\" не змінено!"
+msgid "Payment type '%1$s' has not been modified!"
+msgstr "Вид оплати \"%1$s\" не змінено!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:216
 #, php-format
-msgid "Payment type '%s' has been successfully added."
-msgstr "Вид оплати \"%s\" успішно додано."
+msgid "Payment type '%1$s' has been successfully added."
+msgstr "Вид оплати \"%1$s\" успішно додано."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
 #, php-format
-msgid "Payment type '%s' has been successfully modified."
-msgstr "Вид оплати \"%s\" успішно змінено."
+msgid "Payment type '%1$s' has been successfully modified."
+msgstr "Вид оплати \"%1$s\" успішно змінено."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:298
 #, php-format
@@ -384,8 +384,8 @@ msgstr "Жодного члена не вибрано. Будь ласка, пе
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1268
 #, php-format
-msgid "Mass change %count members"
-msgstr "Масова зміна %count членів"
+msgid "Mass change %1$s members"
+msgstr "Масова зміна %1$s членів"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1300
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1420
@@ -404,8 +404,8 @@ msgstr "Видалити з групи"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1388
 #, php-format
-msgid "Review mass change %count members"
-msgstr "Перегляньте масові зміни %count членів"
+msgid "Review mass change %1$s members"
+msgstr "Перегляньте масові зміни %1$s членів"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1483
 msgid "Nothing to do!"
@@ -470,8 +470,8 @@ msgstr "Видалити члена %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1940
 #, php-format
-msgid "You are about to remove %count members."
-msgstr "Ви збираєтеся видалити %count членів."
+msgid "You are about to remove %1$s members."
+msgstr "Ви збираєтеся видалити %1$s членів."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:92
 #: ../lib/Galette/Core/Install.php:1215 ../lib/Galette/Core/Galette.php:452
@@ -568,8 +568,8 @@ msgstr "Немає пов’язаних типів внесків, створі
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:251
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:299
 #, php-format
-msgid "Mass add contribution on %count members"
-msgstr "Масове додавання внесків %count членів"
+msgid "Mass add contribution on %1$s members"
+msgstr "Масове додавання внесків %1$s членів"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
 #: ../lib/Galette/Core/Galette.php:239
@@ -682,8 +682,8 @@ msgstr "Видалити збережений пошук"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:281
 #, php-format
-msgid "You are about to remove %count searches."
-msgstr "Ви збираєтеся видалити %count запит(ів)."
+msgid "You are about to remove %1$s searches."
+msgstr "Ви збираєтеся видалити %1$s запит(ів)."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:330
 msgid "Saved search loaded"
@@ -1971,8 +1971,8 @@ msgstr "Пароль у чорному списку!"
 
 #: ../lib/Galette/Util/Password.php:91
 #, php-format
-msgid "Too short (%length characters minimum, %count found)"
-msgstr "Закоротко (щонайменше %length знаків, %count наразі)"
+msgid "Too short (%1$s characters minimum, %2$s found)"
+msgstr "Закоротко (щонайменше %1$s знаків, %2$s наразі)"
 
 #: ../lib/Galette/Util/Password.php:103
 msgid "Do not use any of your personal information as password!"
@@ -2374,11 +2374,11 @@ msgstr "Не вдалося відкрити файл %filename!"
 
 #: ../lib/Galette/IO/CsvIn.php:279
 msgid ""
-"Fields count mismatch... There should be %should_count fields and there are "
-"%count (row %row)"
+"Fields count mismatch... There should be %1$s fields and there are "
+"%2$s (row %3$s)"
 msgstr ""
-"Невідповідність полів ... Поле має бути %should_count, а є %count (рядок "
-"%row)"
+"Невідповідність полів ... Поле має бути %1$s, а є %2$s (рядок "
+"%3$s)"
 
 #: ../lib/Galette/IO/CsvIn.php:301
 msgid "Field %field is required, but missing in row %row"
@@ -6108,11 +6108,11 @@ msgstr "Жодного документа"
 #: ../../tempcache/pages/documents_public_list.html.twig:109
 #: ../../tempcache/pages/documents_list.html.twig:65
 #, php-format
-msgid "%count document"
-msgid_plural "%count documents"
-msgstr[0] "%count документа"
-msgstr[1] "%count документів"
-msgstr[2] "%count документів"
+msgid "%1$s document"
+msgid_plural "%1$s documents"
+msgstr[0] "%1$s документа"
+msgstr[1] "%1$s документів"
+msgstr[2] "%1$s документів"
 
 #: ../../tempcache/pages/public/members_list.html.twig:64
 #: ../../tempcache/pages/public/members_gallery.html.twig:60
@@ -6120,11 +6120,11 @@ msgstr[2] "%count документів"
 #: ../../tempcache/pages/public/staff_gallery.html.twig:60
 #: ../../tempcache/pages/members_list.html.twig:82
 #, php-format
-msgid "%count member"
-msgid_plural "%count members"
-msgstr[0] "%count член"
-msgstr[1] "%count члени"
-msgstr[2] "%count членів"
+msgid "%1$s member"
+msgid_plural "%1$s members"
+msgstr[0] "%1$s член"
+msgstr[1] "%1$s члени"
+msgstr[2] "%1$s членів"
 
 #: ../../tempcache/pages/public/members_list.html.twig:158
 #: ../../tempcache/pages/public/members_gallery.html.twig:116
@@ -6426,11 +6426,11 @@ msgstr "Див. профіль члена"
 
 #: ../../tempcache/pages/contributions_list.html.twig:443
 #, php-format
-msgid "%count contribution"
-msgid_plural "%count contributions"
-msgstr[0] "%count внесок"
-msgstr[1] "%count внески"
-msgstr[2] "%count внесків"
+msgid "%1$s contribution"
+msgid_plural "%1$s contributions"
+msgstr[0] "%1$s внесок"
+msgstr[1] "%1$s внески"
+msgstr[2] "%1$s внесків"
 
 #: ../../tempcache/pages/contributions_list.html.twig:547
 #, php-format
@@ -6613,11 +6613,11 @@ msgstr "Видалити заголовок \"%s\""
 #: ../../tempcache/pages/history.html.twig:73
 #: ../../tempcache/pages/mailings_list.html.twig:69
 #, php-format
-msgid "%count entry"
-msgid_plural "%count entries"
-msgstr[0] "%count запис"
-msgstr[1] "%count записи"
-msgstr[2] "%count записів"
+msgid "%1$s entry"
+msgid_plural "%1$s entries"
+msgstr[0] "%1$s запис"
+msgstr[1] "%1$s записи"
+msgstr[2] "%1$s записів"
 
 #: ../../tempcache/pages/history.html.twig:118
 #: ../../tempcache/pages/history.html.twig:341
@@ -8404,11 +8404,11 @@ msgstr ""
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:62
 #, php-format
-msgid "%count search"
-msgid_plural "%count searches"
-msgstr[0] "%count пошук"
-msgstr[1] "%count пошуки"
-msgstr[2] "%count пошуків"
+msgid "%1$s search"
+msgid_plural "%1$s searches"
+msgstr[0] "%1$s пошук"
+msgstr[1] "%1$s пошуки"
+msgstr[2] "%1$s пошуків"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:150
 msgid "Search parameters"
@@ -8524,11 +8524,11 @@ msgstr "Запланована дата"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:205
 #, php-format
-msgid "%count shceduled payment"
-msgid_plural "%count scheduled payments"
-msgstr[0] "%count запланований платіж"
-msgstr[1] "%count заплановані платежі"
-msgstr[2] "%count заплановані платежі"
+msgid "%1$s shceduled payment"
+msgid_plural "%1$s scheduled payments"
+msgstr[0] "%1$s запланований платіж"
+msgstr[1] "%1$s заплановані платежі"
+msgstr[2] "%1$s заплановані платежі"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:268
 #, php-format
@@ -8632,11 +8632,11 @@ msgstr "Показати всі перекази членів"
 
 #: ../../tempcache/pages/transactions_list.html.twig:244
 #, php-format
-msgid "%count transaction"
-msgid_plural "%count transactions"
-msgstr[0] "%count переказ"
-msgstr[1] "%count перекази"
-msgstr[2] "%count переказів"
+msgid "%1$s transaction"
+msgid_plural "%1$s transactions"
+msgstr[0] "%1$s переказ"
+msgstr[1] "%1$s перекази"
+msgstr[2] "%1$s переказів"
 
 #: ../../tempcache/pages/transactions_list.html.twig:300
 #: ../../tempcache/pages/transactions_list.html.twig:585
@@ -9122,8 +9122,8 @@ msgstr "Уведіть скільки завгодно випадків."
 #: ../../tempcache/components/dynamic_fields.html.twig:256
 #: ../../tempcache/components/dynamic_fields.html.twig:318
 #, php-format
-msgid "Enter up to %count more occurrences."
-msgstr "Уведіть до %count зустрічей."
+msgid "Enter up to %1$s more occurrences."
+msgstr "Уведіть до %1$s зустрічей."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:587
 msgid "Select an option"
@@ -9253,8 +9253,8 @@ msgstr "Вміст сторінки"
 #~ msgstr "(принаймні 4 знаки)"
 
 #, php-format
-#~ msgid "Enter up to %count more occurences."
-#~ msgstr "Уведіть до %count зустрічей."
+#~ msgid "Enter up to %1$s more occurences."
+#~ msgstr "Уведіть до %1$s зустрічей."
 
 #~ msgid "An error has occurred while looking if status does exists."
 #~ msgstr "Під час перевірки наявності стану сталася помилка."
@@ -9639,8 +9639,8 @@ msgstr "Вміст сторінки"
 #~ msgid "Generate fake data"
 #~ msgstr "Створення підроблених даних"
 
-#~ msgid "%count transactions created"
-#~ msgstr "%count транзакцій створено"
+#~ msgid "%1$s transactions created"
+#~ msgstr "%1$s транзакцій створено"
 
 #~ msgid "Transaction ID cannot ben set while adding!"
 #~ msgstr "ID транзакції неможливо встановити під час додавання!"

@@ -84,23 +84,23 @@ msgstr "Nom du type de paiement manquant !"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:200
 #, php-format
-msgid "Payment type '%s' has not been added!"
-msgstr "Le type de paiement « %s » n'a pas été ajouté !"
+msgid "Payment type '%1$s' has not been added!"
+msgstr "Le type de paiement « %1$s » n'a pas été ajouté !"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:206
 #, php-format
-msgid "Payment type '%s' has not been modified!"
-msgstr "Le type de paiement « %s » n'a pas été modifié !"
+msgid "Payment type '%1$s' has not been modified!"
+msgstr "Le type de paiement « %1$s » n'a pas été modifié !"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:216
 #, php-format
-msgid "Payment type '%s' has been successfully added."
-msgstr "Le type de paiement « %s » a été ajouté avec succès."
+msgid "Payment type '%1$s' has been successfully added."
+msgstr "Le type de paiement « %1$s » a été ajouté avec succès."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
 #, php-format
-msgid "Payment type '%s' has been successfully modified."
-msgstr "Le type de paiement « %s » a été modifié avec succès."
+msgid "Payment type '%1$s' has been successfully modified."
+msgstr "Le type de paiement « %1$s » a été modifié avec succès."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:298
 #, php-format
@@ -390,8 +390,8 @@ msgstr "Veuillez sélectionner au moins un adhérent."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1268
 #, php-format
-msgid "Mass change %count members"
-msgstr "Modification en masse de %count adhérents"
+msgid "Mass change %1$s members"
+msgstr "Modification en masse de %1$s adhérents"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1300
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1420
@@ -410,8 +410,8 @@ msgstr "Supprimer du groupe"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1388
 #, php-format
-msgid "Review mass change %count members"
-msgstr "Revue des modifications pour %count adhérents"
+msgid "Review mass change %1$s members"
+msgstr "Revue des modifications pour %1$s adhérents"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1483
 msgid "Nothing to do!"
@@ -476,8 +476,8 @@ msgstr "Supprimer l’adhérent %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1940
 #, php-format
-msgid "You are about to remove %count members."
-msgstr "Vous êtes sur le point de supprimer %count adhérents."
+msgid "You are about to remove %1$s members."
+msgstr "Vous êtes sur le point de supprimer %1$s adhérents."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:92
 #: ../lib/Galette/Core/Install.php:1215 ../lib/Galette/Core/Galette.php:452
@@ -574,8 +574,8 @@ msgstr "Aucun type de contribution relatif disponible, veuillez en créer un."
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:251
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:299
 #, php-format
-msgid "Mass add contribution on %count members"
-msgstr "Ajout de contribution en masse sur %count adhérents"
+msgid "Mass add contribution on %1$s members"
+msgstr "Ajout de contribution en masse sur %1$s adhérents"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
 #: ../lib/Galette/Core/Galette.php:239
@@ -688,8 +688,8 @@ msgstr "Supprimer la recherche"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:281
 #, php-format
-msgid "You are about to remove %count searches."
-msgstr "Vous êtes sur le point de supprimer %count recherches."
+msgid "You are about to remove %1$s searches."
+msgstr "Vous êtes sur le point de supprimer %1$s recherches."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:330
 msgid "Saved search loaded"
@@ -2008,8 +2008,8 @@ msgstr "Le mot de passe est sur liste noire !"
 
 #: ../lib/Galette/Util/Password.php:91
 #, php-format
-msgid "Too short (%length characters minimum, %count found)"
-msgstr "Trop court (%length caractères minimum, %count trouvés)"
+msgid "Too short (%1$s characters minimum, %2$s found)"
+msgstr "Trop court (%1$s caractères minimum, %2$s trouvés)"
 
 #: ../lib/Galette/Util/Password.php:103
 msgid "Do not use any of your personal information as password!"
@@ -2418,11 +2418,11 @@ msgstr "Le fichier %filename ne peut être ouvert !"
 
 #: ../lib/Galette/IO/CsvIn.php:279
 msgid ""
-"Fields count mismatch... There should be %should_count fields and there are "
-"%count (row %row)"
+"Fields count mismatch... There should be %1$s fields and there are "
+"%2$s (row %3$s)"
 msgstr ""
-"Le nombre de champs ne correspond pas... Il devrait y avoir %should_count "
-"champs mais il y en a %count (ligne %row)"
+"Le nombre de champs ne correspond pas... Il devrait y avoir %1$s "
+"champs mais il y en a %2$s (ligne %3$s)"
 
 #: ../lib/Galette/IO/CsvIn.php:301
 msgid "Field %field is required, but missing in row %row"
@@ -6191,10 +6191,10 @@ msgstr "Aucun document"
 #: ../../tempcache/pages/documents_public_list.html.twig:109
 #: ../../tempcache/pages/documents_list.html.twig:65
 #, php-format
-msgid "%count document"
-msgid_plural "%count documents"
-msgstr[0] "%count document"
-msgstr[1] "%count documents"
+msgid "%1$s document"
+msgid_plural "%1$s documents"
+msgstr[0] "%1$s document"
+msgstr[1] "%1$s documents"
 
 #: ../../tempcache/pages/public/members_list.html.twig:64
 #: ../../tempcache/pages/public/members_gallery.html.twig:60
@@ -6202,10 +6202,10 @@ msgstr[1] "%count documents"
 #: ../../tempcache/pages/public/staff_gallery.html.twig:60
 #: ../../tempcache/pages/members_list.html.twig:82
 #, php-format
-msgid "%count member"
-msgid_plural "%count members"
-msgstr[0] "%count membre"
-msgstr[1] "%count membres"
+msgid "%1$s member"
+msgid_plural "%1$s members"
+msgstr[0] "%1$s membre"
+msgstr[1] "%1$s membres"
 
 #: ../../tempcache/pages/public/members_list.html.twig:158
 #: ../../tempcache/pages/public/members_gallery.html.twig:116
@@ -6512,10 +6512,10 @@ msgstr "Voir la fiche adhérent"
 
 #: ../../tempcache/pages/contributions_list.html.twig:443
 #, php-format
-msgid "%count contribution"
-msgid_plural "%count contributions"
-msgstr[0] "%count contribution"
-msgstr[1] "%count contributions"
+msgid "%1$s contribution"
+msgid_plural "%1$s contributions"
+msgstr[0] "%1$s contribution"
+msgstr[1] "%1$s contributions"
 
 #: ../../tempcache/pages/contributions_list.html.twig:547
 #, php-format
@@ -6699,10 +6699,10 @@ msgstr "Supprimer le titre « %s »"
 #: ../../tempcache/pages/history.html.twig:73
 #: ../../tempcache/pages/mailings_list.html.twig:69
 #, php-format
-msgid "%count entry"
-msgid_plural "%count entries"
-msgstr[0] "%count entrée"
-msgstr[1] "%count entrées"
+msgid "%1$s entry"
+msgid_plural "%1$s entries"
+msgstr[0] "%1$s entrée"
+msgstr[1] "%1$s entrées"
 
 #: ../../tempcache/pages/history.html.twig:118
 #: ../../tempcache/pages/history.html.twig:341
@@ -8499,10 +8499,10 @@ msgstr ""
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:62
 #, php-format
-msgid "%count search"
-msgid_plural "%count searches"
-msgstr[0] "%count recherche"
-msgstr[1] "%count recherches"
+msgid "%1$s search"
+msgid_plural "%1$s searches"
+msgstr[0] "%1$s recherche"
+msgstr[1] "%1$s recherches"
 
 #: ../../tempcache/pages/saved_searches_list.html.twig:150
 msgid "Search parameters"
@@ -8620,10 +8620,10 @@ msgstr "Date de planification"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:205
 #, php-format
-msgid "%count shceduled payment"
-msgid_plural "%count scheduled payments"
-msgstr[0] "%count paiement planifié"
-msgstr[1] "%count paiements planifiés"
+msgid "%1$s shceduled payment"
+msgid_plural "%1$s scheduled payments"
+msgstr[0] "%1$s paiement planifié"
+msgstr[1] "%1$s paiements planifiés"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:268
 #, php-format
@@ -8726,10 +8726,10 @@ msgstr "Voir les transactions de tous les membres"
 
 #: ../../tempcache/pages/transactions_list.html.twig:244
 #, php-format
-msgid "%count transaction"
-msgid_plural "%count transactions"
-msgstr[0] "%count transaction"
-msgstr[1] "%count transactions"
+msgid "%1$s transaction"
+msgid_plural "%1$s transactions"
+msgstr[0] "%1$s transaction"
+msgstr[1] "%1$s transactions"
 
 #: ../../tempcache/pages/transactions_list.html.twig:300
 #: ../../tempcache/pages/transactions_list.html.twig:585
@@ -9220,8 +9220,8 @@ msgstr "Entrez autant d’occurrences que souhaité."
 #: ../../tempcache/components/dynamic_fields.html.twig:256
 #: ../../tempcache/components/dynamic_fields.html.twig:318
 #, php-format
-msgid "Enter up to %count more occurrences."
-msgstr "Entrez encore jusque %count occurrences."
+msgid "Enter up to %1$s more occurrences."
+msgstr "Entrez encore jusque %1$s occurrences."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:587
 msgid "Select an option"
@@ -9351,8 +9351,8 @@ msgstr "Contenu de la page"
 #~ msgstr "(au moins 4 caractères)"
 
 #, php-format
-#~ msgid "Enter up to %count more occurences."
-#~ msgstr "Entrez encore jusque %count occurrences."
+#~ msgid "Enter up to %1$s more occurences."
+#~ msgstr "Entrez encore jusque %1$s occurrences."
 
 #~ msgid "An error has occurred while looking if status does exists."
 #~ msgstr ""
@@ -9845,10 +9845,10 @@ msgstr "Contenu de la page"
 #~ msgid "Generate fake data"
 #~ msgstr "Générer les données factices"
 
-#~ msgid "%count groups created"
-#~ msgstr "%count groupes créés"
+#~ msgid "%1$s groups created"
+#~ msgstr "%1$s groupes créés"
 
-#~ msgid "%count groups requested, and %done created"
+#~ msgid "%1$s groups requested, and %done created"
 #~ msgstr "%count groupes demandés et %done créés"
 
 #~ msgid "%count members requested, and %done created"

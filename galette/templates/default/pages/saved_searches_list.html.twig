@@ -22,7 +22,7 @@
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count search", "%count searches", nb)|replace({"%count": nb}),
+        'label': _Tn("%1$s search", "%1$s searches", nb)|format(nb),
     } %}
     {{ parent() }}
 {% endblock %}

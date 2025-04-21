@@ -75,23 +75,23 @@ msgstr "தேவையான கட்டண வகையின் பெயர
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:200
 #, php-format
-msgid "Payment type '%s' has not been added!"
-msgstr "கட்டண வகை '%s' சேர்க்கப்படவில்லை!"
+msgid "Payment type '%1$s' has not been added!"
+msgstr "கட்டண வகை '%1$s' சேர்க்கப்படவில்லை!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:206
 #, php-format
-msgid "Payment type '%s' has not been modified!"
-msgstr "கட்டண வகை '%s' மாற்றியமைக்கப்படவில்லை!"
+msgid "Payment type '%1$s' has not been modified!"
+msgstr "கட்டண வகை '%1$s' மாற்றியமைக்கப்படவில்லை!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:216
 #, php-format
-msgid "Payment type '%s' has been successfully added."
-msgstr "கட்டண வகை '%s' வெற்றிகரமாக சேர்க்கப்பட்டுள்ளது."
+msgid "Payment type '%1$s' has been successfully added."
+msgstr "கட்டண வகை '%1$s' வெற்றிகரமாக சேர்க்கப்பட்டுள்ளது."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
 #, php-format
-msgid "Payment type '%s' has been successfully modified."
-msgstr "கட்டண வகை '%s' வெற்றிகரமாக மாற்றப்பட்டுள்ளது."
+msgid "Payment type '%1$s' has been successfully modified."
+msgstr "கட்டண வகை '%1$s' வெற்றிகரமாக மாற்றப்பட்டுள்ளது."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:298
 #, php-format
