@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Console\Command\Plugins;
 
 use Galette\Console\Command\AbstractCommand;
+use Galette\Core\Plugins;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -74,54 +75,17 @@ class PluginsList extends AbstractCommand
             ''
         ]);
 
-        /** @var \Galette\Core\Plugins $plugins */
+        /** @var Plugins $plugins */
         $plugins = $container->get('plugins');
         $io = new SymfonyStyle($input, $output);
 
         $definitions = [];
         if (!$input->getOption('enabled') && !$input->getOption('disabled') || $input->getOption('enabled')) {
-            foreach ($plugins->getModules() as $module_id => $module) {
-                if ($input->getOption('complete')) {
-                    $io->definitionList(
-                        sprintf('%s (%s)', $module['name'], $module_id),
-                        ['Active' => 'Yes'],
-                        ['ID' => $module_id],
-                        ['Name' => $module['name']],
-                        ['Description' => $module['desc']],
-                        ['Version' => $module['version']],
-                        ['Author' => $module['author']],
-                        ['Date' => $module['date']],
-                        ['Has database' => $plugins->needsDatabase($module_id) ? 'Yes' : 'No']
-                    );
-                } else {
-                    $definitions[] = sprintf('%s (%s)', $module['name'], $module['version']);
-                }
-            }
+            $this->listEnabledPlugins($plugins, $input, $io, $definitions);
         }
 
         if (!$input->getOption('disabled') && !$input->getOption('enabled') || $input->getOption('disabled')) {
-            foreach ($plugins->getDisabledModules() as $module_id => $module) {
-                if ($input->getOption('complete')) {
-                    switch ($module['cause']) {
-                        case \Galette\Core\Plugins::DISABLED_COMPAT:
-                            $module['cause'] = 'Not compatible';
-                            break;
-                        case \Galette\Core\Plugins::DISABLED_MISS:
-                            $module['cause'] = 'Miss a required file';
-                            break;
-                        case \Galette\Core\Plugins::DISABLED_EXPLICIT:
-                            $module['cause'] = 'Explicitly disabled';
-                            break;
-                    }
-                    $io->definitionList(
-                        $module_id,
-                        ['Active' => 'No'],
-                        ['Cause' => $module['cause']]
-                    );
-                } else {
-                    $definitions[] = sprintf('%s (disabled)', $module_id);
-                }
-            }
+            $this->listDisabledPlugins($plugins, $input, $io, $definitions);
         }
 
         if (!$input->getOption('complete')) {
@@ -129,5 +93,80 @@ class PluginsList extends AbstractCommand
         }
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * List of enabled plugins
+     *
+     * @param Plugins        $plugins     Plugins instance
+     * @param InputInterface $input       Console input
+     * @param SymfonyStyle   $io          Console style
+     * @param string[]       $definitions Definitions (for simple output)
+     *
+     * @return void
+     */
+    private function listEnabledPlugins(
+        Plugins $plugins,
+        InputInterface $input,
+        SymfonyStyle $io,
+        array &$definitions
+    ): void {
+        foreach ($plugins->getModules() as $module_id => $module) {
+            if ($input->getOption('complete')) {
+                $io->definitionList(
+                    sprintf('%s (%s)', $module['name'], $module_id),
+                    ['Active' => 'Yes'],
+                    ['ID' => $module_id],
+                    ['Name' => $module['name']],
+                    ['Description' => $module['desc']],
+                    ['Version' => $module['version']],
+                    ['Author' => $module['author']],
+                    ['Date' => $module['date']],
+                    ['Has database' => $plugins->needsDatabase($module_id) ? 'Yes' : 'No']
+                );
+            } else {
+                $definitions[] = sprintf('%s (%s)', $module['name'], $module['version']);
+            }
+        }
+    }
+
+    /**
+     * List of disabled plugins
+     *
+     * @param Plugins        $plugins     Plugins instance
+     * @param InputInterface $input       Console input
+     * @param SymfonyStyle   $io          Console style
+     * @param string[]       $definitions Definitions (for simple output)
+     *
+     * @return void
+     */
+    private function listDisabledPlugins(
+        Plugins $plugins,
+        InputInterface $input,
+        SymfonyStyle $io,
+        array &$definitions
+    ): void {
+        foreach ($plugins->getDisabledModules() as $module_id => $module) {
+            if ($input->getOption('complete')) {
+                switch ($module['cause']) {
+                    case Plugins::DISABLED_COMPAT:
+                        $module['cause'] = 'Not compatible';
+                        break;
+                    case Plugins::DISABLED_MISS:
+                        $module['cause'] = 'Miss a required file';
+                        break;
+                    case Plugins::DISABLED_EXPLICIT:
+                        $module['cause'] = 'Explicitly disabled';
+                        break;
+                }
+                $io->definitionList(
+                    $module_id,
+                    ['Active' => 'No'],
+                    ['Cause' => $module['cause']]
+                );
+            } else {
+                $definitions[] = sprintf('%s (disabled)', $module_id);
+            }
+        }
     }
 }
