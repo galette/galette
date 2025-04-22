@@ -733,11 +733,11 @@ class Install
         $queries_results = [];
         $fatal_error = false;
 
-        // begin : copyright (2002) the phpbb group (support@phpbb.com)
-        // load in the sql parser
+        // begin: copyright (2002) the phpbb group (support@phpbb.com)
+        // load in the SQL parser
         include_once GALETTE_ROOT . 'includes/sql_parse.php';
 
-        $sql_query = preg_replace('/galette_/', $this->db_prefix, $sql_query);
+        $sql_query = str_replace('galette_', $this->db_prefix, $sql_query);
         $sql_query = remove_remarks($sql_query);
 
         $sql_query = split_sql_file($sql_query, ';');
