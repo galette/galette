@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-21 16:48+0200\n"
+"POT-Creation-Date: 2025-04-22 17:26+0200\n"
 "PO-Revision-Date: 2024-12-30 11:00+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -487,27 +487,27 @@ msgstr "தலைப்பைத் திருத்து"
 msgid "Missing required title's short or long form!"
 msgstr "தேவையான தலைப்பின் குறுகிய அல்லது நீண்ட வடிவத்தைக் காணவில்லை!"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:195
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:193
 #, php-format
 msgid "Title '%1$s' has not been added!"
 msgstr "'%1$s' தலைப்பு சேர்க்கப்படவில்லை!"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:201
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:198
 #, php-format
 msgid "Title '%1$s' has not been modified!"
 msgstr "'%1$s' தலைப்பு மாற்றப்படவில்லை!"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:211
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:208
 #, php-format
 msgid "Title '%1$s' has been successfully added."
 msgstr "'%1$s' தலைப்பு வெற்றிகரமாக சேர்க்கப்பட்டுள்ளது."
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:217
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:213
 #, php-format
 msgid "Title '%1$s' has been successfully modified."
 msgstr "'%1$s' தலைப்பு வெற்றிகரமாக மாற்றப்பட்டுள்ளது."
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:282
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:279
 #, php-format
 msgid "Remove title %1$s"
 msgstr "தலைப்பு %1$s ஐ அகற்று"
@@ -851,7 +851,7 @@ msgid "Thank you for registering!"
 msgstr "பதிவு செய்ததற்கு நன்றி!"
 
 #: ../lib/Galette/Controllers/CrudController.php:272
-#: ../lib/Galette/Controllers/HistoryController.php:169
+#: ../lib/Galette/Controllers/HistoryController.php:168
 #: ../lib/Galette/Controllers/CsvController.php:480
 msgid "Removal has not been confirmed!"
 msgstr "அகற்றுதல் உறுதிப்படுத்தப்படவில்லை!"
@@ -1124,15 +1124,15 @@ msgstr "மாறும் புலத்தைத் திருத்து�
 msgid "Logs"
 msgstr "பதிவுகள்"
 
-#: ../lib/Galette/Controllers/HistoryController.php:181
+#: ../lib/Galette/Controllers/HistoryController.php:180
 msgid "Logs have been flushed!"
 msgstr "பதிவுகள் சுத்தப்படுத்தப்பட்டுள்ளன!"
 
-#: ../lib/Galette/Controllers/HistoryController.php:193
+#: ../lib/Galette/Controllers/HistoryController.php:192
 msgid "An error occurred trying to flush logs :("
 msgstr "பதிவுகளை பறிக்க முயற்சிக்கும் பிழை ஏற்பட்டது :("
 
-#: ../lib/Galette/Controllers/HistoryController.php:232
+#: ../lib/Galette/Controllers/HistoryController.php:231
 #: ../../tempcache/pages/history.html.twig:102
 msgid "Flush the logs"
 msgstr "பதிவுகளை பறிக்கவும்"
@@ -1256,14 +1256,16 @@ msgstr "இறக்குமதி மாதிரி சேமிக்கப�
 msgid "Emails content"
 msgstr "மின்னஞ்சல்கள் உள்ளடக்கம்"
 
-#: ../lib/Galette/Controllers/TextController.php:141
-#, php-format
-msgid "Email: '%s' has not been modified!"
+#: ../lib/Galette/Controllers/TextController.php:139
+#, fuzzy, php-format
+#| msgid "Email: '%s' has not been modified!"
+msgid "Email: '%1$s' has not been modified!"
 msgstr "மின்னஞ்சல்: '%s' மாற்றியமைக்கப்படவில்லை!"
 
-#: ../lib/Galette/Controllers/TextController.php:150
-#, php-format
-msgid "Email: '%s' has been successfully modified."
+#: ../lib/Galette/Controllers/TextController.php:148
+#, fuzzy, php-format
+#| msgid "Email: '%s' has been successfully modified."
+msgid "Email: '%1$s' has been successfully modified."
 msgstr "மின்னஞ்சல்: '%s' வெற்றிகரமாக மாற்றியமைக்கப்பட்டுள்ளது."
 
 #: ../lib/Galette/Core/History.php:235 ../lib/Galette/Core/History.php:324
@@ -1423,26 +1425,31 @@ msgid "First page"
 msgstr "முதல் பக்கம்"
 
 #: ../lib/Galette/Core/Pagination.php:252
+#, php-format
 msgid "Previous page (%1$s)"
 msgstr "முந்தைய பக்கம் (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:264
+#: ../lib/Galette/Core/Pagination.php:261
+#, php-format
 msgid "Current page (%1$s)"
 msgstr "தற்போதைய பக்கம் (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:272
+#: ../lib/Galette/Core/Pagination.php:268
+#, php-format
 msgid "Page %1$s"
 msgstr "பக்கம் %1$s"
 
-#: ../lib/Galette/Core/Pagination.php:280
+#: ../lib/Galette/Core/Pagination.php:276
+#, php-format
 msgid "Next page (%1$s)"
 msgstr "அடுத்த பக்கம் (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:286
+#: ../lib/Galette/Core/Pagination.php:282
+#, php-format
 msgid "Last page (%1$s)"
 msgstr "கடைசி பக்கம் (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:301
+#: ../lib/Galette/Core/Pagination.php:297
 #: ../../tempcache/elements/list.html.twig:286
 msgid "All"
 msgstr "அனைத்தும்"
@@ -1901,7 +1908,7 @@ msgid "Current cards configuration may exceed page height!"
 msgstr "தற்போதைய அட்டைகள் உள்ளமைவு பக்க உயரத்தை விட அதிகமாக இருக்கலாம்!"
 
 #: ../lib/Galette/Core/Preferences.php:1450
-#: ../lib/Galette/Features/Replacements.php:820
+#: ../lib/Galette/Features/Replacements.php:821
 msgid "Main information"
 msgstr "முக்கிய செய்தி"
 
@@ -1954,7 +1961,7 @@ msgstr "தொகுதி இல்லை!"
 msgid "File not found!"
 msgstr "கோப்பு கிடைக்கவில்லை!"
 
-#: ../lib/Galette/Core/Picture.php:984
+#: ../lib/Galette/Core/Picture.php:981
 msgid "An SQL error has occurred."
 msgstr "ஒரு கவிமொ பிழை ஏற்பட்டது."
 
@@ -2037,7 +2044,7 @@ msgstr "சிறப்பு எழுத்துக்கள் இல்ல�
 #: ../lib/Galette/Entity/Adherent.php:1355
 #: ../lib/Galette/Entity/Adherent.php:1393
 #: ../lib/Galette/Entity/Adherent.php:1399
-#: ../lib/Galette/Entity/Adherent.php:1900
+#: ../lib/Galette/Entity/Adherent.php:1903
 #: ../lib/Galette/Entity/Contribution.php:645
 #: ../lib/Galette/Entity/ImportModel.php:196
 #: ../lib/Galette/Entity/SavedSearch.php:269
@@ -2229,7 +2236,7 @@ msgstr "மின்னஞ்சல்"
 
 #: ../lib/Galette/IO/PdfGroups.php:158
 #: ../lib/Galette/Features/Replacements.php:306
-#: ../lib/Galette/Entity/ListsConfig.php:200
+#: ../lib/Galette/Entity/ListsConfig.php:198
 #: ../../tempcache/elements/member_card.html.twig:94
 msgid "Phone"
 msgstr "தொலைபேசி"
@@ -2245,7 +2252,7 @@ msgstr "வடிகட்டப்பட்ட_மெம்பர்ச்ல�
 
 #: ../lib/Galette/IO/MembersCsv.php:209
 #: ../lib/Galette/Features/Replacements.php:640
-#: ../lib/Galette/Entity/Adherent.php:1866
+#: ../lib/Galette/Entity/Adherent.php:1867
 #: ../../tempcache/modals/mass_change_members.html.twig:193
 #: ../../tempcache/elements/ajax_members.html.twig:105
 #: ../../tempcache/elements/group_persons.html.twig:103
@@ -2257,7 +2264,7 @@ msgstr "மனிதன்"
 
 #: ../lib/Galette/IO/MembersCsv.php:212
 #: ../lib/Galette/Features/Replacements.php:642
-#: ../lib/Galette/Entity/Adherent.php:1868
+#: ../lib/Galette/Entity/Adherent.php:1869
 #: ../../tempcache/modals/mass_change_members.html.twig:184
 #: ../../tempcache/elements/ajax_members.html.twig:116
 #: ../../tempcache/elements/group_persons.html.twig:114
@@ -2269,7 +2276,7 @@ msgstr "பெண்"
 
 #: ../lib/Galette/IO/MembersCsv.php:215
 #: ../lib/Galette/Features/Replacements.php:644
-#: ../lib/Galette/Entity/Adherent.php:1870
+#: ../lib/Galette/Entity/Adherent.php:1871
 #: ../../tempcache/modals/mass_change_members.html.twig:175
 #: ../../tempcache/pages/advanced_search.html.twig:1162
 #: ../../tempcache/pages/advanced_search.html.twig:1681
@@ -2415,31 +2422,31 @@ msgstr "நிலை %நிலை இல்லை!"
 msgid "Title %title does not exists!"
 msgstr "தலைப்பு %தலைப்பு இல்லை!"
 
-#: ../lib/Galette/IO/CsvIn.php:360
+#: ../lib/Galette/IO/CsvIn.php:361
 msgid "from another member in import"
 msgstr "இறக்குமதியில் உள்ள மற்றொரு உறுப்பினரிடமிருந்து"
 
-#: ../lib/Galette/IO/CsvIn.php:360
+#: ../lib/Galette/IO/CsvIn.php:361
 msgid "from member %id_adh"
 msgstr "உறுப்பினரிடமிருந்து %id_adh"
 
-#: ../lib/Galette/IO/CsvIn.php:366
+#: ../lib/Galette/IO/CsvIn.php:367
 msgid "Email address %address is already used! (%extra)"
 msgstr "மின்னஞ்சல் முகவரி %முகவரி ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது! (%கூடுதல்)"
 
-#: ../lib/Galette/IO/CsvIn.php:392
+#: ../lib/Galette/IO/CsvIn.php:393
 msgid "Lang %lang does not exists!"
 msgstr "லாங் %லாங் இல்லை!"
 
-#: ../lib/Galette/IO/CsvIn.php:445
+#: ../lib/Galette/IO/CsvIn.php:446
 msgid "File is empty!"
 msgstr "கோப்பு காலியாக உள்ளது!"
 
-#: ../lib/Galette/IO/CsvIn.php:537 ../lib/Galette/IO/CsvIn.php:548
+#: ../lib/Galette/IO/CsvIn.php:538 ../lib/Galette/IO/CsvIn.php:549
 msgid "An error occurred storing member at row %row (%name):"
 msgstr "வரிசை %வரிசையில் ( %பெயர்) உறுப்பினரை சேமிக்கும் பிழை ஏற்பட்டது:"
 
-#: ../lib/Galette/IO/CsvIn.php:581
+#: ../lib/Galette/IO/CsvIn.php:582
 msgid "An error occurred while importing members"
 msgstr "உறுப்பினர்களை இறக்குமதி செய்யும் போது பிழை ஏற்பட்டது"
 
@@ -2568,7 +2575,7 @@ msgid "Inaccessible"
 msgstr "அணுக முடியாத"
 
 #: ../lib/Galette/Features/Permissions.php:66
-#: ../lib/Galette/Entity/ListsConfig.php:203
+#: ../lib/Galette/Entity/ListsConfig.php:201
 msgid "Public"
 msgstr "பொது"
 
@@ -2873,7 +2880,7 @@ msgstr "பங்களிப்பு செய்தி"
 msgid "Paid contribution"
 msgstr "பங்களிப்பு"
 
-#: ../lib/Galette/Features/Replacements.php:825
+#: ../lib/Galette/Features/Replacements.php:826
 msgid "Member information"
 msgstr "உறுப்பினர் செய்தி"
 
@@ -2893,11 +2900,11 @@ msgstr "தேவையான புலம் %புலம் இல்லை"
 msgid "- Wrong date format (%1$s) for %2$s!"
 msgstr "- %2$s க்கு தவறான தேதி வடிவம் ( %1$s)!"
 
-#: ../lib/Galette/Entity/ListsConfig.php:194
+#: ../lib/Galette/Entity/ListsConfig.php:192
 msgid "Is admin"
 msgstr "நிர்வாகி"
 
-#: ../lib/Galette/Entity/ListsConfig.php:197
+#: ../lib/Galette/Entity/ListsConfig.php:195
 msgid "Modified"
 msgstr "மாற்றியமைக்கப்பட்ட"
 
@@ -3048,12 +3055,12 @@ msgstr "செயலில்"
 msgid "Inactive"
 msgstr "செயலற்றது"
 
-#: ../lib/Galette/Entity/Adherent.php:2138
+#: ../lib/Galette/Entity/Adherent.php:2141
 #: ../../tempcache/pages/member_form.html.twig:948
 msgid " (%age years old)"
 msgstr " (%வயது)"
 
-#: ../lib/Galette/Entity/Adherent.php:2216
+#: ../lib/Galette/Entity/Adherent.php:2219
 msgid "Duplicated from %name (%id)"
 msgstr "%பெயரிலிருந்து ( %ஐடி) நகல்"
 
@@ -3100,7 +3107,7 @@ msgid "- Transaction description must be 150 characters long maximum."
 msgstr "- பரிவர்த்தனை விளக்கம் 150 எழுத்துக்கள் அதிகபட்சமாக இருக்க வேண்டும்."
 
 #: ../lib/Galette/Entity/Transaction.php:358
-#: ../lib/Galette/Entity/Contribution.php:1509
+#: ../lib/Galette/Entity/Contribution.php:1510
 msgid "- Unknown payment type"
 msgstr "- அறியப்படாத கட்டண வகை"
 
@@ -3236,7 +3243,7 @@ msgstr "ச்கிரிப்ட் வெளியீடு"
 msgid "Membership"
 msgstr "உறுப்பினர்"
 
-#: ../lib/Galette/Entity/Contribution.php:1500
+#: ../lib/Galette/Entity/Contribution.php:1501
 msgid "Cannot change payment type if there is an attached scheduled payment"
 msgstr "இணைக்கப்பட்ட திட்டமிடப்பட்ட கட்டணம் இருந்தால் கட்டண வகையை மாற்ற முடியாது"
 

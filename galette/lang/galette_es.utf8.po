@@ -42,7 +42,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-21 16:48+0200\n"
+"POT-Creation-Date: 2025-04-22 17:26+0200\n"
 "PO-Revision-Date: 2024-10-19 07:02+0000\n"
 "Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -526,27 +526,27 @@ msgstr "Editar título"
 msgid "Missing required title's short or long form!"
 msgstr "¡Falta la forma corta o larga del título obligatoria!"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:195
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:193
 #, php-format
 msgid "Title '%1$s' has not been added!"
 msgstr "¡No se ha añadido el título '%1$s'!"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:201
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:198
 #, php-format
 msgid "Title '%1$s' has not been modified!"
 msgstr "¡No se ha modificado el título '%1$s'!"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:211
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:208
 #, php-format
 msgid "Title '%1$s' has been successfully added."
 msgstr "Se ha añadido con éxito el título '%1$s'."
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:217
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:213
 #, php-format
 msgid "Title '%1$s' has been successfully modified."
 msgstr "Se ha modificado con éxito el título '%1$s'."
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:282
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:279
 #, php-format
 msgid "Remove title %1$s"
 msgstr "Eliminar título %1$s"
@@ -894,7 +894,7 @@ msgid "Thank you for registering!"
 msgstr "¡Gracias por registrarse!"
 
 #: ../lib/Galette/Controllers/CrudController.php:272
-#: ../lib/Galette/Controllers/HistoryController.php:169
+#: ../lib/Galette/Controllers/HistoryController.php:168
 #: ../lib/Galette/Controllers/CsvController.php:480
 msgid "Removal has not been confirmed!"
 msgstr "¡La eliminación no ha sido confirmada!"
@@ -1176,15 +1176,15 @@ msgstr "Se ha producido un error al editar el campo dinámico :("
 msgid "Logs"
 msgstr "Registros"
 
-#: ../lib/Galette/Controllers/HistoryController.php:181
+#: ../lib/Galette/Controllers/HistoryController.php:180
 msgid "Logs have been flushed!"
 msgstr "¡Los registros han sido limpiados!"
 
-#: ../lib/Galette/Controllers/HistoryController.php:193
+#: ../lib/Galette/Controllers/HistoryController.php:192
 msgid "An error occurred trying to flush logs :("
 msgstr "Se ha producido un error al intentar limpiar los registros :("
 
-#: ../lib/Galette/Controllers/HistoryController.php:232
+#: ../lib/Galette/Controllers/HistoryController.php:231
 #: ../../tempcache/pages/history.html.twig:102
 msgid "Flush the logs"
 msgstr "Limpiar los registros"
@@ -1314,12 +1314,12 @@ msgstr "El modelo importado no ha sido almacenado :("
 msgid "Emails content"
 msgstr "Contenido de los correos electrónicos"
 
-#: ../lib/Galette/Controllers/TextController.php:141
+#: ../lib/Galette/Controllers/TextController.php:139
 #, php-format
 msgid "Email: '%1$s' has not been modified!"
 msgstr "Correo: '%1$s' ¡no ha sido modificado!"
 
-#: ../lib/Galette/Controllers/TextController.php:150
+#: ../lib/Galette/Controllers/TextController.php:148
 #, php-format
 msgid "Email: '%1$s' has been successfully modified."
 msgstr "Correo: '%1$s' ha sido modificado con éxito."
@@ -1478,26 +1478,31 @@ msgid "First page"
 msgstr "Primera página"
 
 #: ../lib/Galette/Core/Pagination.php:252
+#, php-format
 msgid "Previous page (%1$s)"
 msgstr "Página anterior (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:264
+#: ../lib/Galette/Core/Pagination.php:261
+#, php-format
 msgid "Current page (%1$s)"
 msgstr "Página actual (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:272
+#: ../lib/Galette/Core/Pagination.php:268
+#, php-format
 msgid "Page %1$s"
 msgstr "Página %1$s"
 
-#: ../lib/Galette/Core/Pagination.php:280
+#: ../lib/Galette/Core/Pagination.php:276
+#, php-format
 msgid "Next page (%1$s)"
 msgstr "Página siguiente (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:286
+#: ../lib/Galette/Core/Pagination.php:282
+#, php-format
 msgid "Last page (%1$s)"
 msgstr "Última página (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:301
+#: ../lib/Galette/Core/Pagination.php:297
 #: ../../tempcache/elements/list.html.twig:286
 msgid "All"
 msgstr "Todo"
@@ -1966,7 +1971,7 @@ msgstr ""
 "de página!"
 
 #: ../lib/Galette/Core/Preferences.php:1450
-#: ../lib/Galette/Features/Replacements.php:820
+#: ../lib/Galette/Features/Replacements.php:821
 msgid "Main information"
 msgstr "Informacion principal"
 
@@ -2019,7 +2024,7 @@ msgstr "¡El módulo no existe!"
 msgid "File not found!"
 msgstr "¡No se encontró el archivo!"
 
-#: ../lib/Galette/Core/Picture.php:984
+#: ../lib/Galette/Core/Picture.php:981
 msgid "An SQL error has occurred."
 msgstr "Ha ocurrido un error de SQL."
 
@@ -2103,7 +2108,7 @@ msgstr "No contiene carácteres especiales"
 #: ../lib/Galette/Entity/Adherent.php:1355
 #: ../lib/Galette/Entity/Adherent.php:1393
 #: ../lib/Galette/Entity/Adherent.php:1399
-#: ../lib/Galette/Entity/Adherent.php:1900
+#: ../lib/Galette/Entity/Adherent.php:1903
 #: ../lib/Galette/Entity/Contribution.php:645
 #: ../lib/Galette/Entity/ImportModel.php:196
 #: ../lib/Galette/Entity/SavedSearch.php:269
@@ -2295,7 +2300,7 @@ msgstr "Correo electrónico"
 
 #: ../lib/Galette/IO/PdfGroups.php:158
 #: ../lib/Galette/Features/Replacements.php:306
-#: ../lib/Galette/Entity/ListsConfig.php:200
+#: ../lib/Galette/Entity/ListsConfig.php:198
 #: ../../tempcache/elements/member_card.html.twig:94
 msgid "Phone"
 msgstr "Teléfono"
@@ -2311,7 +2316,7 @@ msgstr "lista de socios_filtrada"
 
 #: ../lib/Galette/IO/MembersCsv.php:209
 #: ../lib/Galette/Features/Replacements.php:640
-#: ../lib/Galette/Entity/Adherent.php:1866
+#: ../lib/Galette/Entity/Adherent.php:1867
 #: ../../tempcache/modals/mass_change_members.html.twig:193
 #: ../../tempcache/elements/ajax_members.html.twig:105
 #: ../../tempcache/elements/group_persons.html.twig:103
@@ -2323,7 +2328,7 @@ msgstr "Hombre"
 
 #: ../lib/Galette/IO/MembersCsv.php:212
 #: ../lib/Galette/Features/Replacements.php:642
-#: ../lib/Galette/Entity/Adherent.php:1868
+#: ../lib/Galette/Entity/Adherent.php:1869
 #: ../../tempcache/modals/mass_change_members.html.twig:184
 #: ../../tempcache/elements/ajax_members.html.twig:116
 #: ../../tempcache/elements/group_persons.html.twig:114
@@ -2335,7 +2340,7 @@ msgstr "Mujer"
 
 #: ../lib/Galette/IO/MembersCsv.php:215
 #: ../lib/Galette/Features/Replacements.php:644
-#: ../lib/Galette/Entity/Adherent.php:1870
+#: ../lib/Galette/Entity/Adherent.php:1871
 #: ../../tempcache/modals/mass_change_members.html.twig:175
 #: ../../tempcache/pages/advanced_search.html.twig:1162
 #: ../../tempcache/pages/advanced_search.html.twig:1681
@@ -2478,32 +2483,32 @@ msgstr "¡El estado %status no existe!"
 msgid "Title %title does not exists!"
 msgstr "¡El título %title no existe!"
 
-#: ../lib/Galette/IO/CsvIn.php:360
+#: ../lib/Galette/IO/CsvIn.php:361
 msgid "from another member in import"
 msgstr "de otro miembro en la importación"
 
-#: ../lib/Galette/IO/CsvIn.php:360
+#: ../lib/Galette/IO/CsvIn.php:361
 msgid "from member %id_adh"
 msgstr "del miembro %id_adh"
 
-#: ../lib/Galette/IO/CsvIn.php:366
+#: ../lib/Galette/IO/CsvIn.php:367
 msgid "Email address %address is already used! (%extra)"
 msgstr "¡La dirección de correo electrónico %address ya está ocupada! {%extra}"
 
-#: ../lib/Galette/IO/CsvIn.php:392
+#: ../lib/Galette/IO/CsvIn.php:393
 msgid "Lang %lang does not exists!"
 msgstr "¡El lenguaje %lang no existe!"
 
-#: ../lib/Galette/IO/CsvIn.php:445
+#: ../lib/Galette/IO/CsvIn.php:446
 msgid "File is empty!"
 msgstr "¡El archivo está vacío!"
 
-#: ../lib/Galette/IO/CsvIn.php:537 ../lib/Galette/IO/CsvIn.php:548
+#: ../lib/Galette/IO/CsvIn.php:538 ../lib/Galette/IO/CsvIn.php:549
 msgid "An error occurred storing member at row %row (%name):"
 msgstr ""
 "Se ha producido un error al guardar el miembro en la fila %row {%name}:"
 
-#: ../lib/Galette/IO/CsvIn.php:581
+#: ../lib/Galette/IO/CsvIn.php:582
 msgid "An error occurred while importing members"
 msgstr "Se ha producido un error al importar los miembros"
 
@@ -2637,7 +2642,7 @@ msgid "Inaccessible"
 msgstr "No accesible"
 
 #: ../lib/Galette/Features/Permissions.php:66
-#: ../lib/Galette/Entity/ListsConfig.php:203
+#: ../lib/Galette/Entity/ListsConfig.php:201
 msgid "Public"
 msgstr "Público"
 
@@ -2942,7 +2947,7 @@ msgstr "Información sobre la contribución"
 msgid "Paid contribution"
 msgstr "contribución"
 
-#: ../lib/Galette/Features/Replacements.php:825
+#: ../lib/Galette/Features/Replacements.php:826
 msgid "Member information"
 msgstr "Información del miembro"
 
@@ -2962,11 +2967,11 @@ msgstr "Falta el campo requerido %field"
 msgid "- Wrong date format (%1$s) for %2$s!"
 msgstr "- ¡Formato de fecha incorrecto (%1$s) para %2$s!"
 
-#: ../lib/Galette/Entity/ListsConfig.php:194
+#: ../lib/Galette/Entity/ListsConfig.php:192
 msgid "Is admin"
 msgstr "Es administrador"
 
-#: ../lib/Galette/Entity/ListsConfig.php:197
+#: ../lib/Galette/Entity/ListsConfig.php:195
 msgid "Modified"
 msgstr "Modificado"
 
@@ -3125,12 +3130,12 @@ msgstr "Activa"
 msgid "Inactive"
 msgstr "Inactiva"
 
-#: ../lib/Galette/Entity/Adherent.php:2138
+#: ../lib/Galette/Entity/Adherent.php:2141
 #: ../../tempcache/pages/member_form.html.twig:948
 msgid " (%age years old)"
 msgstr " (%age años)"
 
-#: ../lib/Galette/Entity/Adherent.php:2216
+#: ../lib/Galette/Entity/Adherent.php:2219
 msgid "Duplicated from %name (%id)"
 msgstr "Duplicado de %name (%id)"
 
@@ -3179,7 +3184,7 @@ msgstr ""
 "caracteres."
 
 #: ../lib/Galette/Entity/Transaction.php:358
-#: ../lib/Galette/Entity/Contribution.php:1509
+#: ../lib/Galette/Entity/Contribution.php:1510
 msgid "- Unknown payment type"
 msgstr "- Tipo de pago desconocido"
 
@@ -3317,7 +3322,7 @@ msgstr "Salida del script"
 msgid "Membership"
 msgstr "Membresía"
 
-#: ../lib/Galette/Entity/Contribution.php:1500
+#: ../lib/Galette/Entity/Contribution.php:1501
 msgid "Cannot change payment type if there is an attached scheduled payment"
 msgstr "No se puede cambiar el tipo de pago si hay un pago programado adjunto"
 

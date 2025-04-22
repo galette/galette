@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-21 16:48+0200\n"
+"POT-Creation-Date: 2025-04-22 17:26+0200\n"
 "PO-Revision-Date: 2025-04-19 18:27+0000\n"
 "Last-Translator: Максим Горпиніч <maksimgorpinic2005a@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -487,27 +487,27 @@ msgstr "Правити заголовок"
 msgid "Missing required title's short or long form!"
 msgstr "Відсутня потрібна коротка або довга форма назви!"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:195
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:193
 #, php-format
 msgid "Title '%1$s' has not been added!"
 msgstr "Заголовок \"%1$s\" не додано!"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:201
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:198
 #, php-format
 msgid "Title '%1$s' has not been modified!"
 msgstr "Заголовок \"%1$s\" не змінено!"
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:211
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:208
 #, php-format
 msgid "Title '%1$s' has been successfully added."
 msgstr "Заголовок \"%1$s\" успішно додано."
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:217
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:213
 #, php-format
 msgid "Title '%1$s' has been successfully modified."
 msgstr "Заголовок \"%1$s\" успішно змінено."
 
-#: ../lib/Galette/Controllers/Crud/TitlesController.php:282
+#: ../lib/Galette/Controllers/Crud/TitlesController.php:279
 #, php-format
 msgid "Remove title %1$s"
 msgstr "Вилучити заголовок %1$s"
@@ -847,7 +847,7 @@ msgid "Thank you for registering!"
 msgstr "Дякуємо за реєстрацію!"
 
 #: ../lib/Galette/Controllers/CrudController.php:272
-#: ../lib/Galette/Controllers/HistoryController.php:169
+#: ../lib/Galette/Controllers/HistoryController.php:168
 #: ../lib/Galette/Controllers/CsvController.php:480
 msgid "Removal has not been confirmed!"
 msgstr "Видалення не підтверджено!"
@@ -1118,15 +1118,15 @@ msgstr "Під час виправлення динамічних дат ста�
 msgid "Logs"
 msgstr "Журнали"
 
-#: ../lib/Galette/Controllers/HistoryController.php:181
+#: ../lib/Galette/Controllers/HistoryController.php:180
 msgid "Logs have been flushed!"
 msgstr "Журнали очищено!"
 
-#: ../lib/Galette/Controllers/HistoryController.php:193
+#: ../lib/Galette/Controllers/HistoryController.php:192
 msgid "An error occurred trying to flush logs :("
 msgstr "Сталася помилка під час спроби очистити журнали :("
 
-#: ../lib/Galette/Controllers/HistoryController.php:232
+#: ../lib/Galette/Controllers/HistoryController.php:231
 #: ../../tempcache/pages/history.html.twig:102
 msgid "Flush the logs"
 msgstr "Очистити журнали"
@@ -1250,12 +1250,12 @@ msgstr "Модель імпорту не збережено :("
 msgid "Emails content"
 msgstr "Вміст е-пошти"
 
-#: ../lib/Galette/Controllers/TextController.php:141
+#: ../lib/Galette/Controllers/TextController.php:139
 #, php-format
 msgid "Email: '%1$s' has not been modified!"
 msgstr "Е-пошта: \"%1$s\" не було змінено!"
 
-#: ../lib/Galette/Controllers/TextController.php:150
+#: ../lib/Galette/Controllers/TextController.php:148
 #, php-format
 msgid "Email: '%1$s' has been successfully modified."
 msgstr "Е-пошта: \"%1$s\" успішно змінено."
@@ -1414,26 +1414,31 @@ msgid "First page"
 msgstr "Перша сторінка"
 
 #: ../lib/Galette/Core/Pagination.php:252
+#, php-format
 msgid "Previous page (%1$s)"
 msgstr "Попередня сторінка (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:264
+#: ../lib/Galette/Core/Pagination.php:261
+#, php-format
 msgid "Current page (%1$s)"
 msgstr "Поточна сторінка (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:272
+#: ../lib/Galette/Core/Pagination.php:268
+#, php-format
 msgid "Page %1$s"
 msgstr "Сторінка %1$s"
 
-#: ../lib/Galette/Core/Pagination.php:280
+#: ../lib/Galette/Core/Pagination.php:276
+#, php-format
 msgid "Next page (%1$s)"
 msgstr "Наступна сторінка (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:286
+#: ../lib/Galette/Core/Pagination.php:282
+#, php-format
 msgid "Last page (%1$s)"
 msgstr "Остання сторінка (%1$s)"
 
-#: ../lib/Galette/Core/Pagination.php:301
+#: ../lib/Galette/Core/Pagination.php:297
 #: ../../tempcache/elements/list.html.twig:286
 msgid "All"
 msgstr "Усе"
@@ -1883,7 +1888,7 @@ msgid "Current cards configuration may exceed page height!"
 msgstr "Поточна конфігурація карток може перевищувати висоту сторінки!"
 
 #: ../lib/Galette/Core/Preferences.php:1450
-#: ../lib/Galette/Features/Replacements.php:820
+#: ../lib/Galette/Features/Replacements.php:821
 msgid "Main information"
 msgstr "Контактні відомості"
 
@@ -1936,7 +1941,7 @@ msgstr "Модуль не існує!"
 msgid "File not found!"
 msgstr "Файл не знайдено!"
 
-#: ../lib/Galette/Core/Picture.php:984
+#: ../lib/Galette/Core/Picture.php:981
 msgid "An SQL error has occurred."
 msgstr "Сталася помилка SQL."
 
@@ -2019,7 +2024,7 @@ msgstr "Не містить спеціальних знаків"
 #: ../lib/Galette/Entity/Adherent.php:1355
 #: ../lib/Galette/Entity/Adherent.php:1393
 #: ../lib/Galette/Entity/Adherent.php:1399
-#: ../lib/Galette/Entity/Adherent.php:1900
+#: ../lib/Galette/Entity/Adherent.php:1903
 #: ../lib/Galette/Entity/Contribution.php:645
 #: ../lib/Galette/Entity/ImportModel.php:196
 #: ../lib/Galette/Entity/SavedSearch.php:269
@@ -2211,7 +2216,7 @@ msgstr "Е-пошта"
 
 #: ../lib/Galette/IO/PdfGroups.php:158
 #: ../lib/Galette/Features/Replacements.php:306
-#: ../lib/Galette/Entity/ListsConfig.php:200
+#: ../lib/Galette/Entity/ListsConfig.php:198
 #: ../../tempcache/elements/member_card.html.twig:94
 msgid "Phone"
 msgstr "Телефон"
@@ -2227,7 +2232,7 @@ msgstr "filtered memberslist"
 
 #: ../lib/Galette/IO/MembersCsv.php:209
 #: ../lib/Galette/Features/Replacements.php:640
-#: ../lib/Galette/Entity/Adherent.php:1866
+#: ../lib/Galette/Entity/Adherent.php:1867
 #: ../../tempcache/modals/mass_change_members.html.twig:193
 #: ../../tempcache/elements/ajax_members.html.twig:105
 #: ../../tempcache/elements/group_persons.html.twig:103
@@ -2239,7 +2244,7 @@ msgstr "Чоловік"
 
 #: ../lib/Galette/IO/MembersCsv.php:212
 #: ../lib/Galette/Features/Replacements.php:642
-#: ../lib/Galette/Entity/Adherent.php:1868
+#: ../lib/Galette/Entity/Adherent.php:1869
 #: ../../tempcache/modals/mass_change_members.html.twig:184
 #: ../../tempcache/elements/ajax_members.html.twig:116
 #: ../../tempcache/elements/group_persons.html.twig:114
@@ -2251,7 +2256,7 @@ msgstr "Жінка"
 
 #: ../lib/Galette/IO/MembersCsv.php:215
 #: ../lib/Galette/Features/Replacements.php:644
-#: ../lib/Galette/Entity/Adherent.php:1870
+#: ../lib/Galette/Entity/Adherent.php:1871
 #: ../../tempcache/modals/mass_change_members.html.twig:175
 #: ../../tempcache/pages/advanced_search.html.twig:1162
 #: ../../tempcache/pages/advanced_search.html.twig:1681
@@ -2392,31 +2397,31 @@ msgstr "Стану %status не існує!"
 msgid "Title %title does not exists!"
 msgstr "Заголовка %title не існує!"
 
-#: ../lib/Galette/IO/CsvIn.php:360
+#: ../lib/Galette/IO/CsvIn.php:361
 msgid "from another member in import"
 msgstr "від іншого члена в імпорті"
 
-#: ../lib/Galette/IO/CsvIn.php:360
+#: ../lib/Galette/IO/CsvIn.php:361
 msgid "from member %id_adh"
 msgstr "від члена %id_adh"
 
-#: ../lib/Galette/IO/CsvIn.php:366
+#: ../lib/Galette/IO/CsvIn.php:367
 msgid "Email address %address is already used! (%extra)"
 msgstr "Адреса е-пошти %address вже використовується! (%extra)"
 
-#: ../lib/Galette/IO/CsvIn.php:392
+#: ../lib/Galette/IO/CsvIn.php:393
 msgid "Lang %lang does not exists!"
 msgstr "Мови %lang не існує!"
 
-#: ../lib/Galette/IO/CsvIn.php:445
+#: ../lib/Galette/IO/CsvIn.php:446
 msgid "File is empty!"
 msgstr "Файл порожній!"
 
-#: ../lib/Galette/IO/CsvIn.php:537 ../lib/Galette/IO/CsvIn.php:548
+#: ../lib/Galette/IO/CsvIn.php:538 ../lib/Galette/IO/CsvIn.php:549
 msgid "An error occurred storing member at row %row (%name):"
 msgstr "Сталася помилка під час зберігання члена в рядку %row (%name):"
 
-#: ../lib/Galette/IO/CsvIn.php:581
+#: ../lib/Galette/IO/CsvIn.php:582
 msgid "An error occurred while importing members"
 msgstr "Під час імпортування членів сталася помилка"
 
@@ -2548,7 +2553,7 @@ msgid "Inaccessible"
 msgstr "Недоступно"
 
 #: ../lib/Galette/Features/Permissions.php:66
-#: ../lib/Galette/Entity/ListsConfig.php:203
+#: ../lib/Galette/Entity/ListsConfig.php:201
 msgid "Public"
 msgstr "Прилюдно"
 
@@ -2847,7 +2852,7 @@ msgstr "Відомості про внесок"
 msgid "Paid contribution"
 msgstr "Сплачений внесок"
 
-#: ../lib/Galette/Features/Replacements.php:825
+#: ../lib/Galette/Features/Replacements.php:826
 msgid "Member information"
 msgstr "Відомості про члена"
 
@@ -2867,11 +2872,11 @@ msgstr "Відсутнє обов'язкове поле %field"
 msgid "- Wrong date format (%1$s) for %2$s!"
 msgstr "- Неправильний формат дати (%1$s) для %2$s!"
 
-#: ../lib/Galette/Entity/ListsConfig.php:194
+#: ../lib/Galette/Entity/ListsConfig.php:192
 msgid "Is admin"
 msgstr "Є адміністратором"
 
-#: ../lib/Galette/Entity/ListsConfig.php:197
+#: ../lib/Galette/Entity/ListsConfig.php:195
 msgid "Modified"
 msgstr "Змінено"
 
@@ -3027,12 +3032,12 @@ msgstr "Діяльний"
 msgid "Inactive"
 msgstr "Незадіяний"
 
-#: ../lib/Galette/Entity/Adherent.php:2138
+#: ../lib/Galette/Entity/Adherent.php:2141
 #: ../../tempcache/pages/member_form.html.twig:948
 msgid " (%age years old)"
 msgstr " (вік: %age)"
 
-#: ../lib/Galette/Entity/Adherent.php:2216
+#: ../lib/Galette/Entity/Adherent.php:2219
 msgid "Duplicated from %name (%id)"
 msgstr "Повторюється з %name (%id)"
 
@@ -3079,7 +3084,7 @@ msgid "- Transaction description must be 150 characters long maximum."
 msgstr "- Опис переказу має містити не більше 150 знаків."
 
 #: ../lib/Galette/Entity/Transaction.php:358
-#: ../lib/Galette/Entity/Contribution.php:1509
+#: ../lib/Galette/Entity/Contribution.php:1510
 msgid "- Unknown payment type"
 msgstr "- Невідомий вид оплати"
 
@@ -3213,7 +3218,7 @@ msgstr "Вивід скрипту"
 msgid "Membership"
 msgstr "Членство"
 
-#: ../lib/Galette/Entity/Contribution.php:1500
+#: ../lib/Galette/Entity/Contribution.php:1501
 msgid "Cannot change payment type if there is an attached scheduled payment"
 msgstr "Неможливо змінити тип платежу, якщо є вкладений запланований платіж"
 
