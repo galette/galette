@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # தமிழ்நேரம் <anishprabu.t@gmail.com>, 2024.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2024, 2025.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-19 12:01+0200\n"
-"PO-Revision-Date: 2025-04-22 07:47+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2024-12-30 11:00+0000\n"
+"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
 ">\n"
 "Language: ta\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.1-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -160,7 +160,7 @@ msgstr "குழுக்கள்"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
 msgid "Group `%groupname` has been successfully saved."
-msgstr "குழு `%groupname` வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது."
+msgstr "குழு `%குழு பெயர்` வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:384
 msgid "An error occurred while storing the group."
@@ -244,7 +244,7 @@ msgstr "பங்களிப்பு வகை சேர்க்கப்ப�
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:220
 msgid "Contribution type #%id has not been updated"
-msgstr "பங்களிப்பு வகை #%id புதுப்பிக்கப்படவில்லை"
+msgstr "பங்களிப்பு வகை #%ஐடி புதுப்பிக்கப்படவில்லை"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:226
 msgid "Contribution type has been successfully added!"
@@ -252,11 +252,11 @@ msgstr "பங்களிப்பு வகை வெற்றிகரமா�
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:226
 msgid "Contribution type #%id has been successfully updated!"
-msgstr "பங்களிப்பு வகை #%id வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
+msgstr "பங்களிப்பு வகை #%ஐடி வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:304
 msgid "Remove contribution type '%label'"
-msgstr "பங்களிப்பு வகை '%label' வகையை அகற்று"
+msgstr "பங்களிப்பு வகை '%லேபிள்' வகையை அகற்று"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:58
 msgid "Add field"
@@ -328,7 +328,7 @@ msgstr "சந்தா"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:251
 msgid "No member #%id."
-msgstr "உறுப்பினர் #%id இல்லை."
+msgstr "உறுப்பினர் #%ஐடி இல்லை."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:270
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1140
@@ -383,7 +383,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1268
 #, php-format
 msgid "Mass change %count members"
-msgstr "வெகுசன மாற்றம் %count உறுப்பினர்கள்"
+msgstr "வெகுசன மாற்றம் %எண்ணிக்கை உறுப்பினர்கள்"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1300
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1420
@@ -403,7 +403,7 @@ msgstr "குழுவிலிருந்து அகற்று"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1388
 #, php-format
 msgid "Review mass change %count members"
-msgstr "வெகுசன மாற்றம் %count உறுப்பினர்களை மதிப்பாய்வு செய்யவும்"
+msgstr "வெகுசன மாற்றம் %எண்ணிக்கை உறுப்பினர்களை மதிப்பாய்வு செய்யவும்"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1483
 msgid "Nothing to do!"
@@ -468,7 +468,7 @@ msgstr "உறுப்பினர் %1$s ஐ அகற்று"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1940
 #, php-format
 msgid "You are about to remove %count members."
-msgstr "நீங்கள் %count உறுப்பினர்களை அகற்ற உள்ளீர்கள்."
+msgstr "நீங்கள் %எண்ணிக்கை உறுப்பினர்களை அகற்ற உள்ளீர்கள்."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:92
 #: ../lib/Galette/Core/Install.php:1215 ../lib/Galette/Core/Galette.php:452
@@ -529,7 +529,7 @@ msgstr "நிலை சேர்க்கப்படவில்லை :("
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:223
 msgid "Status #%id has not been updated"
-msgstr "நிலை #%id புதுப்பிக்கப்படவில்லை"
+msgstr "நிலை #%ஐடி புதுப்பிக்கப்படவில்லை"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:229
 msgid "Status has been successfully added!"
@@ -537,11 +537,11 @@ msgstr "நிலை வெற்றிகரமாக சேர்க்கப�
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:229
 msgid "Status #%id has been successfully updated!"
-msgstr "நிலை #%id வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
+msgstr "நிலை #%ஐடி வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:307
 msgid "Remove status '%label'"
-msgstr "நிலையை அகற்று '%label'"
+msgstr "நிலையை அகற்று '%லேபிள்'"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:89
 #: ../../tempcache/pages/transaction_form.html.twig:194
@@ -567,7 +567,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:299
 #, php-format
 msgid "Mass add contribution on %count members"
-msgstr "%count உறுப்பினர்களுக்கு வெகுசன சேர்க்கவும் பங்களிப்பு"
+msgstr "%எண்ணிக்கை உறுப்பினர்களுக்கு வெகுசன சேர்க்கவும் பங்களிப்பு"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
 #: ../lib/Galette/Core/Galette.php:239
@@ -592,7 +592,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/PdfController.php:432
 #: ../lib/Galette/Controllers/PdfController.php:701
 msgid "Unable to load contribution #%id!"
-msgstr "பங்களிப்பை ஏற்ற முடியவில்லை #%id!"
+msgstr "பங்களிப்பை ஏற்ற முடியவில்லை #%ஐடி!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:884
 msgid "Contribution has been successfully stored"
@@ -682,7 +682,7 @@ msgstr "சேமித்த தேடலை அகற்று"
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:281
 #, php-format
 msgid "You are about to remove %count searches."
-msgstr "நீங்கள் %count தேடல்களை அகற்ற உள்ளீர்கள்."
+msgstr "நீங்கள் %எண்ணிக்கை தேடல்களை அகற்ற உள்ளீர்கள்."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:330
 msgid "Saved search loaded"
@@ -759,12 +759,12 @@ msgstr "சோதனை செய்தி."
 #: ../lib/Galette/Controllers/GaletteController.php:383
 #, php-format
 msgid "An email has been sent to %email"
-msgstr "ஒரு மின்னஞ்சல் %email அனுப்பப்பட்டுள்ளது"
+msgstr "ஒரு மின்னஞ்சல் %மின்னஞ்சலுக்கு அனுப்பப்பட்டுள்ளது"
 
 #: ../lib/Galette/Controllers/GaletteController.php:392
 #, php-format
 msgid "No email sent to %email"
-msgstr "%email மின்னஞ்சல் அனுப்பப்படவில்லை"
+msgstr "%மின்னஞ்சலுக்கு மின்னஞ்சல் அனுப்பப்படவில்லை"
 
 #: ../lib/Galette/Controllers/GaletteController.php:399
 msgid "Invalid email adress!"
@@ -955,10 +955,9 @@ msgstr "உள்நுழைக"
 #: ../lib/Galette/Controllers/AuthController.php:232
 #, php-format
 msgid "Impersonating as %login"
-msgstr "%login ஆள்மாறாட்டம் செய்தல்"
+msgstr "%உள்நுழைவாக ஆள்மாறாட்டம் செய்தல்"
 
 #: ../lib/Galette/Controllers/AuthController.php:244
-#, fuzzy
 msgid "Unable to impersonate as %id"
 msgstr "%ஐடியாக ஆள்மாறாட்டம் செய்ய முடியவில்லை"
 
@@ -1013,7 +1012,7 @@ msgid "Your account (%s) do not contain any valid email address"
 msgstr "உங்கள் கணக்கில் (%s) எந்த சரியான மின்னஞ்சல் முகவரியும் இல்லை"
 
 #: ../lib/Galette/Controllers/AuthController.php:448
-#, fuzzy, php-format
+#, php-format
 msgid "Mails address %s does not exist"
 msgstr "மின்னஞ்சல் முகவரி இல்லை"
 
@@ -1048,7 +1047,7 @@ msgid "An error occurred while updating your password."
 msgstr "உங்கள் கடவுச்சொல்லைப் புதுப்பிக்கும்போது பிழை ஏற்பட்டது."
 
 #: ../lib/Galette/Controllers/AuthController.php:555
-#, fuzzy, php-format
+#, php-format
 msgid "Password changed for member '%s'."
 msgstr "உறுப்பினர்களுக்கான கடவுச்சொல் மாற்றம்."
 
@@ -1097,7 +1096,7 @@ msgstr "பிழையில் PDF மாதிரிகளை மறுசீ
 #: ../lib/Galette/Controllers/AdminToolsController.php:133
 msgid "Logins and passwords have been successfully filled (%i processed)."
 msgstr ""
-"உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் வெற்றிகரமாக நிரப்பப்பட்டுள்ளன (%i செயலாக்கினேன்)."
+"உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் வெற்றிகரமாக நிரப்பப்பட்டுள்ளன (%நான் செயலாக்கினேன்)."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:136
 msgid "An error occurred filling empty logins and passwords :("
@@ -1140,11 +1139,11 @@ msgstr "செருகுநிரல்கள்"
 
 #: ../lib/Galette/Controllers/PluginsController.php:95
 msgid "Plugin %name has been enabled"
-msgstr "சொருகி %name இயக்கப்பட்டது"
+msgstr "சொருகி %பெயர் இயக்கப்பட்டது"
 
 #: ../lib/Galette/Controllers/PluginsController.php:113
 msgid "Plugin %name has been disabled"
-msgstr "சொருகி %name முடக்கப்பட்டுள்ளது"
+msgstr "சொருகி %பெயர் முடக்கப்பட்டுள்ளது"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:70
 #: ../lib/Galette/Core/Galette.php:474
@@ -1155,9 +1154,8 @@ msgstr "பரிவர்த்தனையைக் காண்க"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:154
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:179
-#, fuzzy
 msgid "An error occurred saving label `%label` for language `%lang`"
-msgstr "மொழி `%label` லேபிள்`%lang` சேமிக்கும் பிழை ஏற்பட்டது"
+msgstr "மொழி `%லாங்` லேபிள்`%லேபிள்` சேமிக்கும் பிழை ஏற்பட்டது"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:195
 msgid "Labels has been sucessfully translated!"
@@ -1170,7 +1168,7 @@ msgstr "ஏற்றுமதி"
 
 #: ../lib/Galette/Controllers/CsvController.php:163
 msgid "Table %table is empty, and has not been exported."
-msgstr "அட்டவணை %table காலியாக உள்ளது, ஏற்றுமதி செய்யப்படவில்லை."
+msgstr "அட்டவணை %அட்டவணை காலியாக உள்ளது, ஏற்றுமதி செய்யப்படவில்லை."
 
 #: ../lib/Galette/Controllers/CsvController.php:181
 #, php-format
@@ -1178,20 +1176,19 @@ msgid ""
 "Export file could not be write on disk for '%export'. Make sure web server "
 "can write in the exports directory."
 msgstr ""
-"ஏற்றுமதி கோப்பை '%export' க்கு வட்டில் எழுத முடியாது. வலை சேவையகம் ஏற்றுமதி "
+"ஏற்றுமதி கோப்பை '%ஏற்றுமதி' க்கு வட்டில் எழுத முடியாது. வலை சேவையகம் ஏற்றுமதி "
 "கோப்பகத்தில் எழுத முடியும் என்பதை உறுதிப்படுத்தவும்."
 
 #: ../lib/Galette/Controllers/CsvController.php:191
 #, php-format
 msgid "An error occurred running parameted export '%export'."
-msgstr "அளவுரு ஏற்றுமதி '%export' இயங்கும் பிழை ஏற்பட்டது."
+msgstr "அளவுரு ஏற்றுமதி '%ஏற்றுமதி' இயங்கும் பிழை ஏற்பட்டது."
 
 #: ../lib/Galette/Controllers/CsvController.php:201
 #, php-format
 msgid ""
 "An error occurred running parameted export '%export'. Please check the logs."
-msgstr ""
-"அளவுரு ஏற்றுமதி '%export' இயங்கும் பிழை ஏற்பட்டது. பதிவுகளை சரிபார்க்கவும்."
+msgstr "அளவுரு ஏற்றுமதி '%ஏற்றுமதி' இயங்கும் பிழை ஏற்பட்டது. பதிவுகளை சரிபார்க்கவும்."
 
 #: ../lib/Galette/Controllers/CsvController.php:249
 #: ../lib/Galette/Core/Galette.php:370 ../install/steps/check.php:54
@@ -1204,7 +1201,7 @@ msgstr "கோப்பை இறக்குமதி செய்வதில�
 
 #: ../lib/Galette/Controllers/CsvController.php:314
 msgid "File '%filename%' has been successfully imported :)"
-msgstr "கோப்பு '%filename%' வெற்றிகரமாக இறக்குமதி செய்யப்பட்டது :)"
+msgstr "கோப்பு '%கோப்பு பெயர்%' வெற்றிகரமாக இறக்குமதி செய்யப்பட்டது :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:347
 msgid "Your file has been successfully uploaded!"
@@ -1226,12 +1223,12 @@ msgstr "%1$s கோப்பு %2$s ஐ அகற்று"
 #: ../lib/Galette/Controllers/CsvController.php:493
 #, php-format
 msgid "'%export' file has been removed from disk."
-msgstr "'%export' கோப்பு வட்டில் இருந்து அகற்றப்பட்டுள்ளது."
+msgstr "'%ஏற்றுமதி' கோப்பு வட்டில் இருந்து அகற்றப்பட்டுள்ளது."
 
 #: ../lib/Galette/Controllers/CsvController.php:503
 #, php-format
 msgid "Cannot remove '%export' from disk :/"
-msgstr "வட்டில் இருந்து '%export' அகற்ற முடியாது:/"
+msgstr "வட்டில் இருந்து '%ஏற்றுமதி' அகற்ற முடியாது:/"
 
 #: ../lib/Galette/Controllers/CsvController.php:579
 msgid "CSV import model"
@@ -1335,11 +1332,11 @@ msgstr "தரவுத்தள வகை தெரியவில்லை"
 
 #: ../lib/Galette/Core/Install.php:695
 msgid "%version script has been successfully executed :)"
-msgstr "%version ச்கிரிப்ட் வெற்றிகரமாக செயல்படுத்தப்பட்டுள்ளது :)"
+msgstr "%பதிப்பு ச்கிரிப்ட் வெற்றிகரமாக செயல்படுத்தப்பட்டுள்ளது :)"
 
 #: ../lib/Galette/Core/Install.php:707
 msgid "Unable to run %version update script :("
-msgstr "%version புதுப்பிப்பு ச்கிரிப்டை இயக்க முடியவில்லை :("
+msgstr "%பதிப்பு புதுப்பிப்பு ச்கிரிப்டை இயக்க முடியவில்லை :("
 
 #: ../lib/Galette/Core/Install.php:1077
 msgid "Write configuration file"
@@ -1351,7 +1348,7 @@ msgstr "கட்டமைப்பு கோப்பு ஏற்கனவே 
 
 #: ../lib/Galette/Core/Install.php:1127
 msgid "Unable to create configuration file (%path)"
-msgstr "உள்ளமைவு கோப்பை உருவாக்க முடியவில்லை (%path)"
+msgstr "உள்ளமைவு கோப்பை உருவாக்க முடியவில்லை (%பாதை)"
 
 #: ../lib/Galette/Core/Install.php:1203
 #: ../../tempcache/pages/advanced_search.html.twig:502
@@ -1448,7 +1445,7 @@ msgstr "அனைத்தும்"
 #: ../lib/Galette/Core/Authentication.php:286
 #, php-format
 msgid "Logged in as:<br/>%login"
-msgstr "உள்நுழைந்தது: <br>%login"
+msgstr "உள்நுழைந்தது: <br>%உள்நுழைவு"
 
 #: ../lib/Galette/Core/MailingHistory.php:481
 msgid "Delete mailing entries"
@@ -1704,21 +1701,21 @@ msgstr "பரிவர்த்தனைகள்"
 
 #: ../lib/Galette/Core/Galette.php:874 ../lib/Galette/Core/Galette.php:879
 msgid "%membername: edit information"
-msgstr "%membername: தகவலைத் திருத்தவும்"
+msgstr "%உறுப்பினர் பெயர்: தகவலைத் திருத்தவும்"
 
 #: ../lib/Galette/Core/Galette.php:895 ../lib/Galette/Core/Galette.php:900
 msgid "%membername: contributions"
-msgstr "%membername: பங்களிப்புகள்"
+msgstr "%உறுப்பினர் பெயர்: பங்களிப்புகள்"
 
 #: ../lib/Galette/Core/Galette.php:916 ../lib/Galette/Core/Galette.php:921
 msgid "%membername: remove from database"
-msgstr "%membername: தரவுத்தளத்திலிருந்து அகற்று"
+msgstr "%உறுப்பினர் பெயர்: தரவுத்தளத்திலிருந்து அகற்று"
 
 #: ../lib/Galette/Core/Galette.php:940 ../lib/Galette/Core/Galette.php:945
 #: ../../tempcache/elements/group_persons.html.twig:187
 #: ../../tempcache/pages/members_list.html.twig:618
 msgid "Log in as %membername"
-msgstr "%membername உள்நுழைக"
+msgstr "%உறுப்பினர் பெயரில் உள்நுழைக"
 
 #: ../lib/Galette/Core/Galette.php:1031
 msgid "Mass change"
@@ -1803,7 +1800,7 @@ msgstr "- மாதங்கள் வழங்குவது உறுப்�
 #: ../lib/Galette/Entity/Contribution.php:561
 #, php-format
 msgid "- Mandatory field %field empty."
-msgstr "- கட்டாய புலம் %field காலியாக உள்ளது."
+msgstr "- கட்டாய புலம் %புலம் காலியாக உள்ளது."
 
 #: ../lib/Galette/Core/Preferences.php:674 ../webroot/installer.php:176
 msgid "Passwords mismatch"
@@ -1872,7 +1869,7 @@ msgstr "- தவறான வலைத்தள முகவரி."
 
 #: ../lib/Galette/Core/Preferences.php:992
 msgid "%name association's %status"
-msgstr "%பெயர் சங்கத்தின் %status"
+msgstr "%பெயர் சங்கத்தின் %நிலை"
 
 #: ../lib/Galette/Core/Preferences.php:1356
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
@@ -1916,7 +1913,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/I18n.php:212
 msgid "Unknown lang (%lang)"
-msgstr "தெரியாத மட்டும் (%lang)"
+msgstr "தெரியாத மட்டும் (%மட்டும்)"
 
 #: ../lib/Galette/Core/CheckModules.php:80
 #, php-format
@@ -1970,15 +1967,15 @@ msgstr "இன்னும் சார்புகளைக் கொண்ட 
 
 #: ../lib/Galette/Repository/SavedSearches.php:244
 msgid "Searches deleted (%list)"
-msgstr "நீக்கப்பட்ட தேடல்கள் (%list)"
+msgstr "நீக்கப்பட்ட தேடல்கள் (%பட்டியல்)"
 
 #: ../lib/Galette/Repository/ScheduledPayments.php:436
 msgid "Scheduled payments deleted (%list)"
-msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகள் நீக்கப்பட்டன (%list)"
+msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகள் நீக்கப்பட்டன (%பட்டியல்)"
 
 #: ../lib/Galette/Repository/Contributions.php:543
 msgid "Contributions deleted (%list)"
-msgstr "பங்களிப்புகள் நீக்கப்பட்டன (%list)"
+msgstr "பங்களிப்புகள் நீக்கப்பட்டன (%பட்டியல்)"
 
 #: ../lib/Galette/Util/Password.php:81
 msgid "Password is blacklisted!"
@@ -1987,7 +1984,7 @@ msgstr "கடவுச்சொல் தடுப்புப்பட்ட�
 #: ../lib/Galette/Util/Password.php:91
 #, php-format
 msgid "Too short (%length characters minimum, %count found)"
-msgstr "மிகக் குறுகிய ( %length எழுத்துக்கள் குறைந்தபட்சம், %count கிடைத்தது)"
+msgstr "மிகக் குறுகிய ( %நீள எழுத்துக்கள் குறைந்தபட்சம், %எண்ணிக்கை கிடைத்தது)"
 
 #: ../lib/Galette/Util/Password.php:103
 msgid "Do not use any of your personal information as password!"
@@ -2383,30 +2380,30 @@ msgid "Labels"
 msgstr "சிட்டைகள்"
 
 #: ../lib/Galette/IO/CsvIn.php:182 ../lib/Galette/IO/CsvIn.php:230
-#, fuzzy, php-format
+#, php-format
 msgid "File %filename cannot be open!"
-msgstr "கோப்பு %filename பெயர் திறந்திருக்க முடியாது!"
+msgstr "கோப்பு %கோப்பு பெயர் திறந்திருக்க முடியாது!"
 
 #: ../lib/Galette/IO/CsvIn.php:279
 msgid ""
 "Fields count mismatch... There should be %should_count fields and there are "
 "%count (row %row)"
 msgstr ""
-"புலங்கள் பொருந்தாத தன்மையை எண்ணுகின்றன ... %should_count வேண்டிய_கவுண்ட் புலங்கள் இருக்க "
-"வேண்டும் மற்றும் %count (வரிசை %row) இருக்க வேண்டும்"
+"புலங்கள் பொருந்தாத தன்மையை எண்ணுகின்றன ... %செய்ய வேண்டிய_கவுண்ட் புலங்கள் இருக்க வேண்டும் "
+"மற்றும் %எண்ணிக்கை (வரிசை %வரிசை) இருக்க வேண்டும்"
 
 #: ../lib/Galette/IO/CsvIn.php:301
 msgid "Field %field is required, but missing in row %row"
-msgstr "புலம் %field தேவை, ஆனால் வரிசை %row காணவில்லை"
+msgstr "புலம் %புலம் தேவை, ஆனால் வரிசை %வரிசையில் காணவில்லை"
 
 #: ../lib/Galette/IO/CsvIn.php:323
 #, php-format
 msgid "Status %status does not exists!"
-msgstr "நிலை %status இல்லை!"
+msgstr "நிலை %நிலை இல்லை!"
 
 #: ../lib/Galette/IO/CsvIn.php:343
 msgid "Title %title does not exists!"
-msgstr "தலைப்பு %title இல்லை!"
+msgstr "தலைப்பு %தலைப்பு இல்லை!"
 
 #: ../lib/Galette/IO/CsvIn.php:359
 msgid "from another member in import"
@@ -2418,11 +2415,11 @@ msgstr "உறுப்பினரிடமிருந்து %id_adh"
 
 #: ../lib/Galette/IO/CsvIn.php:365
 msgid "Email address %address is already used! (%extra)"
-msgstr "மின்னஞ்சல் முகவரி %address ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது! (%extra)"
+msgstr "மின்னஞ்சல் முகவரி %முகவரி ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது! (%கூடுதல்)"
 
 #: ../lib/Galette/IO/CsvIn.php:391
 msgid "Lang %lang does not exists!"
-msgstr "லாங் %lang இல்லை!"
+msgstr "லாங் %லாங் இல்லை!"
 
 #: ../lib/Galette/IO/CsvIn.php:444
 msgid "File is empty!"
@@ -2430,7 +2427,7 @@ msgstr "கோப்பு காலியாக உள்ளது!"
 
 #: ../lib/Galette/IO/CsvIn.php:536 ../lib/Galette/IO/CsvIn.php:547
 msgid "An error occurred storing member at row %row (%name):"
-msgstr "வரிசை %row ( %name) உறுப்பினரை சேமிக்கும் பிழை ஏற்பட்டது:"
+msgstr "வரிசை %வரிசையில் ( %பெயர்) உறுப்பினரை சேமிக்கும் பிழை ஏற்பட்டது:"
 
 #: ../lib/Galette/IO/CsvIn.php:580
 msgid "An error occurred while importing members"
@@ -2603,17 +2600,17 @@ msgstr "நிர்வாகி"
 #: ../lib/Galette/Features/I18n.php:59
 #, php-format
 msgid "Unable to add dynamic translation for %field :("
-msgstr "%field மாறும் மொழிபெயர்ப்பைச் சேர்க்க முடியவில்லை :("
+msgstr "%புலத்திற்கு மாறும் மொழிபெயர்ப்பைச் சேர்க்க முடியவில்லை :("
 
 #: ../lib/Galette/Features/I18n.php:85
 #, php-format
 msgid "Unable to update dynamic translation for %field :("
-msgstr "%field மாறும் மொழிபெயர்ப்பைப் புதுப்பிக்க முடியவில்லை :("
+msgstr "%புலத்திற்கான மாறும் மொழிபெயர்ப்பைப் புதுப்பிக்க முடியவில்லை :("
 
 #: ../lib/Galette/Features/I18n.php:109
 #, php-format
 msgid "Unable to remove old dynamic translation for %field :("
-msgstr "%field பழைய மாறும் மொழிபெயர்ப்பை அகற்ற முடியவில்லை :("
+msgstr "%புலத்திற்கான பழைய மாறும் மொழிபெயர்ப்பை அகற்ற முடியவில்லை :("
 
 #: ../lib/Galette/Features/Replacements.php:103
 #, php-format
@@ -2873,7 +2870,7 @@ msgstr "உறுப்பினர் செய்தி"
 #: ../lib/Galette/Features/Dynamics.php:143
 #, php-format
 msgid "Missing required field %field"
-msgstr "தேவையான புலம் %field இல்லை"
+msgstr "தேவையான புலம் %புலம் இல்லை"
 
 #. TRANS: %1$s date format, %2$s is the field name
 #. TRANS %1$s is the expected dat format, %2$s the field label
@@ -2896,7 +2893,7 @@ msgstr "மாற்றியமைக்கப்பட்ட"
 
 #: ../lib/Galette/Entity/Reminder.php:250
 msgid "%name <%mail> (%days days)"
-msgstr "%name <%mail> (%days நாட்கள்)"
+msgstr "%பெயர் <%அஞ்சல்> (%நாட்கள்)"
 
 #: ../lib/Galette/Entity/Reminder.php:257
 msgid "Sent reminder email for late membership"
@@ -2915,23 +2912,21 @@ msgid "A problem happened while sending impending membership email"
 msgstr "வரவிருக்கும் உறுப்பினர் மின்னஞ்சலை அனுப்பும் போது ஒரு சிக்கல் நடந்தது"
 
 #: ../lib/Galette/Entity/Reminder.php:277
-#, fuzzy
 msgid "Unable to send %membership reminder (no email address)."
-msgstr "%membership நினைவூட்டலை அனுப்ப முடியவில்லை (மின்னஞ்சல் முகவரி இல்லை)."
+msgstr "%உறுப்பினர் நினைவூட்டலை அனுப்ப முடியவில்லை (மின்னஞ்சல் முகவரி இல்லை)."
 
 #: ../lib/Galette/Entity/Reminder.php:290
 msgid "%name (#%id - %days days)"
-msgstr "%name (#%id - %days நாட்கள்)"
+msgstr "%பெயர் (# %ஐடி - %நாட்கள்)"
 
 #: ../lib/Galette/Entity/Adherent.php:794
 msgid "Freed of dues"
 msgstr "நிலுவைத் தொகையிலிருந்து விடுபடுகிறது"
 
 #: ../lib/Galette/Entity/Adherent.php:810
-#, fuzzy, php-format
+#, php-format
 msgid "Never contributed: Registered %days days ago (since %date)"
-msgstr ""
-"ஒருபோதும் பங்களிக்கவில்லை: பதிவுசெய்யப்பட்ட %days நாட்கள் முன்பு ( %date)"
+msgstr "ஒருபோதும் பங்களிக்கவில்லை: பதிவுசெய்யப்பட்ட %நாட்கள் முன்பு ( %தேதியிலிருந்து)"
 
 #: ../lib/Galette/Entity/Adherent.php:813
 #: ../lib/Galette/Filters/MembersList.php:299
@@ -2950,12 +2945,12 @@ msgstr "இன்று முதல் தாமதமாக!"
 #: ../lib/Galette/Entity/Adherent.php:832
 #, php-format
 msgid "%days days remaining (ending on %date)"
-msgstr "%days நாட்கள் மீதமுள்ள ( %date முடிவடையும்)"
+msgstr "%நாட்கள் மீதமுள்ள ( %தேதியில் முடிவடையும்)"
 
 #: ../lib/Galette/Entity/Adherent.php:846
-#, fuzzy, php-format
+#, php-format
 msgid "Late of %days days (since %date)"
-msgstr "%days நாட்களின் பிற்பகுதியில் ( %date)"
+msgstr "%நாட்களின் பிற்பகுதியில் ( %தேதியிலிருந்து)"
 
 #: ../lib/Galette/Entity/Adherent.php:849
 msgid "No longer member"
@@ -2972,7 +2967,7 @@ msgstr "- பிறந்த தேதி கடந்த காலத்தி�
 
 #: ../lib/Galette/Entity/Adherent.php:1384
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr "- உறுப்பினர்கள் 200 வயதுக்கு குறைவாக இருக்க வேண்டும் (தற்போது %years)!"
+msgstr "- உறுப்பினர்கள் 200 வயதுக்கு குறைவாக இருக்க வேண்டும் (தற்போது %ஆண்டுகள்)!"
 
 #: ../lib/Galette/Entity/Adherent.php:1418
 msgid "- Non-valid E-Mail address!"
@@ -3005,11 +3000,11 @@ msgstr "கடவுச்சொல் தவறாகப் பயன்பட�
 
 #: ../lib/Galette/Entity/Adherent.php:1535
 msgid "Status #%id does not exists in database."
-msgstr "நிலை #%id தரவுத்தளத்தில் இல்லை."
+msgstr "நிலை #%ஐடி தரவுத்தளத்தில் இல்லை."
 
 #: ../lib/Galette/Entity/Adherent.php:1551
 msgid "Gender %gender does not exists!"
-msgstr "பாலின %gender இல்லை!"
+msgstr "பாலின %பாலினம் இல்லை!"
 
 #: ../lib/Galette/Entity/Adherent.php:1557
 msgid "A member cannot be its own parent!"
@@ -3045,12 +3040,10 @@ msgstr "செயலற்றது"
 
 #: ../lib/Galette/Entity/Adherent.php:2138
 #: ../../tempcache/pages/member_form.html.twig:948
-#, fuzzy
 msgid " (%age years old)"
-msgstr " (%age வயது)"
+msgstr " (%வயது)"
 
 #: ../lib/Galette/Entity/Adherent.php:2216
-#, fuzzy
 msgid "Duplicated from %name (%id)"
 msgstr "%பெயரிலிருந்து ( %ஐடி) நகல்"
 
@@ -3390,18 +3383,18 @@ msgid "Discord"
 msgstr "முரண்பாடு"
 
 #: ../lib/Galette/Entity/PdfModel.php:296
-#, fuzzy, php-format
+#, php-format
 msgid "%field should be less than %chars characters long."
-msgstr "%field %chars கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
+msgstr "%புலம் %கரிச் கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
 
 #: ../lib/Galette/Entity/PdfModel.php:306
 #, php-format
 msgid "%field should not be empty!"
-msgstr "%field காலியாக இருக்கக்கூடாது!"
+msgstr "%புலம் காலியாக இருக்கக்கூடாது!"
 
 #: ../lib/Galette/Entity/PdfModel.php:439
 msgid "Unknown type %type!"
-msgstr "தெரியாத வகை %type!"
+msgstr "தெரியாத வகை %வகை!"
 
 #: ../lib/Galette/Entity/PdfModel.php:457
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:125
@@ -3460,7 +3453,7 @@ msgstr "படிவம் கட்டாயமாகும்!"
 #: ../lib/Galette/Entity/SavedSearch.php:351
 #, php-format
 msgid "Unknown form %form!"
-msgstr "அறியப்படாத வடிவம் %form!"
+msgstr "அறியப்படாத வடிவம் %வடிவம்!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:366
 msgid "Name cannot be empty!"
@@ -3498,11 +3491,11 @@ msgstr "உள்நுழைவு தேவை"
 
 #: ../lib/Galette/Middleware/Authenticate.php:148
 msgid "Unknown ACL rule '%acl'!"
-msgstr "அறியப்படாத ACL விதி '%acl'!"
+msgstr "அறியப்படாத ACL விதி '%ACL'!"
 
 #: ../lib/Galette/Middleware/Authenticate.php:198
 msgid "Route '%name' is not registered in ACLs!"
-msgstr "பாதை '%name' ACLS இல் பதிவு செய்யப்படவில்லை!"
+msgstr "பாதை '%பெயர்' ACLS இல் பதிவு செய்யப்படவில்லை!"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:156
 msgid "Galette is currently under maintenance!"
@@ -3551,24 +3544,23 @@ msgstr ""
 
 #: ../lib/Galette/Events/ContribListener.php:206
 msgid "Email sent to user %name (%email)"
-msgstr "மின்னஞ்சல் பயனர் %name அனுப்பப்பட்டது ( %email)"
+msgstr "மின்னஞ்சல் பயனர் %பெயருக்கு அனுப்பப்பட்டது ( %மின்னஞ்சல்)"
 
 #: ../lib/Galette/Events/ContribListener.php:213
 msgid ""
 "A problem happened while sending contribution receipt to user %name (%email)"
-msgstr ""
-"பயனர் %name ( %email) பங்களிப்பு ரசீதை அனுப்பும் போது ஒரு சிக்கல் நடந்தது"
+msgstr "பயனர் %பெயருக்கு ( %மின்னஞ்சல்) பங்களிப்பு ரசீதை அனுப்பும் போது ஒரு சிக்கல் நடந்தது"
 
 #: ../lib/Galette/Events/ContribListener.php:278
 msgid "Email sent to admin for user %name (%email)"
-msgstr "பயனர் %name நிர்வாகிக்கு அனுப்பப்பட்ட மின்னஞ்சல் ( %email)"
+msgstr "பயனர் %பெயருக்காக நிர்வாகிக்கு அனுப்பப்பட்ட மின்னஞ்சல் ( %மின்னஞ்சல்)"
 
 #: ../lib/Galette/Events/ContribListener.php:285
 msgid ""
 "A problem happened while sending to admin notification for user %name "
 "(%email) contribution"
 msgstr ""
-"பயனர் %name ( %email) பங்களிப்புக்கான நிர்வாக அறிவிப்பை அனுப்பும்போது ஒரு சிக்கல் "
+"பயனர் %பெயர் ( %மின்னஞ்சல்) பங்களிப்புக்கான நிர்வாக அறிவிப்பை அனுப்பும்போது ஒரு சிக்கல் "
 "நடந்தது"
 
 #: ../lib/Galette/Events/ContribListener.php:314
@@ -4409,7 +4401,7 @@ msgstr "இழந்த கடவுச்சொல் மின்னஞ்ச�
 
 #: ../install/scripts/upgrade-to-0.8.php:72
 msgid "Unable to create main datadir in %path!"
-msgstr "%path முதன்மையான டேட்டாடரை உருவாக்க முடியவில்லை!"
+msgstr "%பாதையில் முதன்மையான டேட்டாடரை உருவாக்க முடியவில்லை!"
 
 #: ../install/scripts/upgrade-to-0.8.php:88
 #, php-format
@@ -4419,7 +4411,7 @@ msgstr "%dir இல் டேட்டாடரை உருவாக்க ம�
 #: ../install/scripts/upgrade-to-0.8.php:166
 #, php-format
 msgid "File %file has not been moved :-/"
-msgstr "கோப்பு %file நகர்த்தப்படவில்லை:-/"
+msgstr "கோப்பு %கோப்பு நகர்த்தப்படவில்லை:-/"
 
 #: ../install/scripts/upgrade-to-0.8.php:179
 #, php-format
@@ -4552,7 +4544,7 @@ msgstr "உங்கள் தற்போதைய கேலட் பதிப
 #: ../install/steps/db_select_version.php:93
 #: ../../tempcache/modals/plugin_initdb.html.twig:230
 msgid "older than %version"
-msgstr "%version விட பழையது"
+msgstr "%பதிப்பை விட பழையது"
 
 #: ../install/steps/db_select_version.php:96
 #: ../../tempcache/modals/plugin_initdb.html.twig:237
@@ -4951,24 +4943,24 @@ msgstr "சரி"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:137
 msgid "you're installing %name for the first time"
-msgstr "நீங்கள் முதல் முறையாக %name நிறுவுகிறீர்கள்"
+msgstr "நீங்கள் முதல் முறையாக %பெயரை நிறுவுகிறீர்கள்"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:141
 msgid ""
 "you wish to erase an older version of of %name without keeping your data"
-msgstr "உங்கள் தரவை வைத்திருக்காமல் %name பழைய பதிப்பை அழிக்க விரும்புகிறீர்கள்"
+msgstr "உங்கள் தரவை வைத்திருக்காமல் %பெயரின் பழைய பதிப்பை அழிக்க விரும்புகிறீர்கள்"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:167
 msgid ""
 "you already have installed %name, and you want to upgrade to the latest "
 "version"
 msgstr ""
-"நீங்கள் ஏற்கனவே %name நிறுவியுள்ளீர்கள், மேலும் அண்மைக் கால பதிப்பிற்கு மேம்படுத்த "
+"நீங்கள் ஏற்கனவே %பெயரை நிறுவியுள்ளீர்கள், மேலும் அண்மைக் கால பதிப்பிற்கு மேம்படுத்த "
 "விரும்புகிறீர்கள்"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:204
 msgid "You current %name version is..."
-msgstr "நீங்கள் தற்போதைய %name பதிப்பு ..."
+msgstr "நீங்கள் தற்போதைய %பெயர் பதிப்பு ..."
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:286
 msgid "(Errors on DROP and RENAME operations can be ignored)"
@@ -4989,11 +4981,11 @@ msgstr "உங்கள் தரவுத்தளம் பயன்படு�
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:330
 msgid "Plugin '%name' has been successfully installed!"
-msgstr "சொருகி '%name' வெற்றிகரமாக நிறுவப்பட்டுள்ளது!"
+msgstr "சொருகி '%பெயர்' வெற்றிகரமாக நிறுவப்பட்டுள்ளது!"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:336
 msgid "Plugin '%name' has been successfully updated!"
-msgstr "சொருகி '%name' வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
+msgstr "சொருகி '%பெயர்' வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:407
 msgid "Back to plugins managment page"
@@ -5069,7 +5061,7 @@ msgid "Some details about your attendance sheet..."
 msgstr "உங்கள் வருகை தாள் பற்றிய சில விவரங்கள் ..."
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:100
-#, fuzzy, php-format
+#, php-format
 msgid "%s attendees"
 msgstr "எச் பங்கேற்பாளர்கள்"
 
@@ -5245,7 +5237,7 @@ msgstr "உங்கள் மொழியைத் தேர்வுசெய�
 #: ../../tempcache/elements/language.html.twig:125
 #, php-format
 msgid "Switch locale to '%locale'"
-msgstr "இருப்பிடத்தை '%locale' க்கு மாற்றவும்"
+msgstr "இருப்பிடத்தை '%லோகேல்' க்கு மாற்றவும்"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:53
 #: ../../tempcache/elements/edit_socials.html.twig:191
@@ -5362,7 +5354,7 @@ msgstr "'%s' புலம் மொழிபெயர்க்கவும்"
 #: ../../tempcache/pages/configuration_core_lists.html.twig:323
 #, php-format
 msgid "Delete '%s' field"
-msgstr "'%s' புலத்தை நீக்கு"
+msgstr "'%A' புலத்தை நீக்கு"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:240
 #, php-format
@@ -5377,7 +5369,7 @@ msgstr "'%s' புலத்தை நகர்த்தவும்"
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:280
 #, php-format
 msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "'%formname' க்கு இன்னும் எந்த மாறும் புலம் கட்டமைக்கப்படவில்லை"
+msgstr "'%Formname' க்கு இன்னும் எந்த மாறும் புலம் கட்டமைக்கப்படவில்லை"
 
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:59
 msgid "Go to Galette's dashboard"
@@ -5815,17 +5807,17 @@ msgstr "மேலாளர் இணைக்கப்படவில்லை"
 #: ../../tempcache/elements/edit_core_fields.html.twig:144
 #, php-format
 msgid "Change '%field' permissions"
-msgstr "'%field' அனுமதிகளை மாற்றவும்"
+msgstr "'%புலம்' அனுமதிகளை மாற்றவும்"
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:189
 #, php-format
 msgid "Field '%field' cannot be set as required."
-msgstr "புலம் '%field' தேவைக்கேற்ப அமைக்க முடியாது."
+msgstr "புலம் '%புலம்' தேவைக்கேற்ப அமைக்க முடியாது."
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:191
 #, php-format
 msgid "Mark '%field' as (not) required"
-msgstr "'%field' தேவை (இல்லை) தேவை"
+msgstr "'%புலம்' தேவை (இல்லை) தேவை"
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:255
 msgid "Change field's width with in forms"
@@ -5838,8 +5830,7 @@ msgstr "படம்"
 #: ../../tempcache/elements/mailing_recipients.html.twig:55
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
-msgstr ""
-"உங்கள் செய்தி <strong>%s உறுப்பினர்கள் </strong> க்கு அனுப்பப்பட்டுள்ளது"
+msgstr "உங்கள் செய்தி <strong>%உறுப்பினர்கள் </strong> க்கு அனுப்பப்பட்டுள்ளது"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:61
 #, php-format
@@ -5877,7 +5868,7 @@ msgstr "உறுப்பினர் வடிவத்தில் சமூ�
 #: ../../tempcache/elements/edit_socials.html.twig:127
 #: ../../tempcache/elements/edit_socials.html.twig:132
 msgid "Remove %type"
-msgstr "%type அகற்று"
+msgstr "%வகையை அகற்று"
 
 #: ../../tempcache/elements/edit_socials.html.twig:151
 msgid "Add new social network"
@@ -5943,11 +5934,11 @@ msgstr "வெளியீட்டு தேதி"
 
 #: ../../tempcache/pages/plugins.html.twig:147
 msgid "Click here to deactivate plugin '%name'"
-msgstr "சொருகி '%name' ஐ செயலிழக்க இங்கே சொடுக்கு செய்க"
+msgstr "சொருகி '%பெயர்' ஐ செயலிழக்க இங்கே சொடுக்கு செய்க"
 
 #: ../../tempcache/pages/plugins.html.twig:168
 msgid "Initialize '%name' database"
-msgstr "'%name' தரவுத்தளத்தைத் தொடங்கவும்"
+msgstr "'%பெயர்' தரவுத்தளத்தைத் தொடங்கவும்"
 
 #: ../../tempcache/pages/plugins.html.twig:189
 msgid "No active plugin."
@@ -5980,7 +5971,7 @@ msgstr "தெரியவில்லை"
 
 #: ../../tempcache/pages/plugins.html.twig:275
 msgid "Activate plugin '%name'"
-msgstr "சொருகி '%name' செயல்படுத்தவும்"
+msgstr "சொருகி '%பெயர்' செயல்படுத்தவும்"
 
 #: ../../tempcache/pages/plugins.html.twig:290
 msgid "No inactive plugin."
@@ -6002,12 +5993,12 @@ msgstr "சொருகி தரவுத்தள துவக்க இடை
 
 #: ../../tempcache/pages/plugins.html.twig:360
 msgid "Plugin database initialization: %name"
-msgstr "சொருகி தரவுத்தள துவக்கம்: %name"
+msgstr "சொருகி தரவுத்தள துவக்கம்: %பெயர்"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:70
-#, fuzzy, php-format
+#, php-format
 msgid "Edit field %field"
-msgstr "புலம் %field புலத்தைத் திருத்து"
+msgstr "புலம் %புலத்தைத் திருத்து"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:99
 msgid "Permissions:"
@@ -6102,19 +6093,19 @@ msgstr "ஆவணம் இல்லை"
 #, php-format
 msgid "%count document"
 msgid_plural "%count documents"
-msgstr[0] "%count ஆவணம்"
-msgstr[1] "%count எண்ணுங்கள்"
+msgstr[0] "%எண்ணிக்கை ஆவணம்"
+msgstr[1] "%ஆவணங்களை எண்ணுங்கள்"
 
 #: ../../tempcache/pages/public/members_list.html.twig:64
 #: ../../tempcache/pages/public/members_gallery.html.twig:60
 #: ../../tempcache/pages/public/staff_list.html.twig:64
 #: ../../tempcache/pages/public/staff_gallery.html.twig:60
 #: ../../tempcache/pages/members_list.html.twig:82
-#, fuzzy, php-format
+#, php-format
 msgid "%count member"
 msgid_plural "%count members"
-msgstr[0] "உறுப்பினரை %count"
-msgstr[1] "உறுப்பினர்களை %count"
+msgstr[0] "உறுப்பினரை எண்ணுங்கள்"
+msgstr[1] "உறுப்பினர்களை எண்ணுங்கள்"
 
 #: ../../tempcache/pages/public/members_list.html.twig:158
 #: ../../tempcache/pages/public/members_gallery.html.twig:116
@@ -6273,7 +6264,7 @@ msgstr "தற்போதைய பரிவர்த்தனையுடன�
 
 #: ../../tempcache/pages/plugin_info.html.twig:70
 msgid "By %name"
-msgstr ""
+msgstr "%பெயர்"
 
 #: ../../tempcache/pages/plugin_info.html.twig:97
 msgid "Version:"
@@ -9122,7 +9113,7 @@ msgstr "நீங்கள் விரும்பும் பல நிகழ
 #: ../../tempcache/components/dynamic_fields.html.twig:318
 #, php-format
 msgid "Enter up to %count more occurrences."
-msgstr "%count அதிக நிகழ்வுகளை உள்ளிடவும்."
+msgstr "%எண்ணிக்கை அதிக நிகழ்வுகளை உள்ளிடவும்."
 
 #: ../../tempcache/components/dynamic_fields.html.twig:587
 msgid "Select an option"
