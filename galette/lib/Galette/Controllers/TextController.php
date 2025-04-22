@@ -135,19 +135,17 @@ class TextController extends AbstractController
         if (!$res) {
             $this->flash->addMessage(
                 'error_detected',
-                preg_replace(
-                    '(%s)',
+                sprintf(
+                    _T('Email: \'%1$s\' has not been modified!'),
                     $mtxt->tcomment,
-                    _T("Email: '%s' has not been modified!")
                 )
             );
         } else {
             $this->flash->addMessage(
                 'success_detected',
-                preg_replace(
-                    '(%s)',
-                    $mtxt->tcomment,
-                    _T("Email: '%s' has been successfully modified.")
+                sprintf(
+                    _T('Email: \'%1$s\' has been successfully modified.'),
+                    $mtxt->tcomment
                 )
             );
         }

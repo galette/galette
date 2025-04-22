@@ -243,13 +243,13 @@ abstract class Pagination
             $paginate .= $this->getLink(
                 '<i class="fast backward small icon" aria-hidden="true"></i>',
                 $this->getHref(1),
-                preg_replace("(%i)", (string)$next, _T("First page"))
+                _T('First page')
             );
 
             $paginate .= $this->getLink(
                 '<i class="step backward small icon" aria-hidden="true"></i>',
                 $this->getHref($previous),
-                preg_replace("(%i)", (string)$previous, _T("Previous page (%i)"))
+                sprintf(_T('Previous page (%1$s)'), (string)$previous)
             );
         }
 
@@ -258,18 +258,14 @@ abstract class Pagination
                 $paginate .= $this->getLink(
                     "$i",
                     $this->getHref($this->current_page),
-                    preg_replace(
-                        "(%i)",
-                        (string)$this->current_page,
-                        _T("Current page (%i)")
-                    ),
+                    sprintf(_T('Current page (%1$s)'), (string)$this->current_page),
                     true
                 );
             } else {
                 $paginate .= $this->getLink(
                     (string)$i,
                     $this->getHref($i),
-                    preg_replace("(%i)", (string)$i, _T("Page %i"))
+                    sprintf(_T('Page %1$s'), (string)$i)
                 );
             }
         }
@@ -277,13 +273,13 @@ abstract class Pagination
             $paginate .= $this->getLink(
                 '<i class="step forward small icon" aria-hidden="true"></i>',
                 $this->getHref($next),
-                preg_replace("(%i)", (string)$next, _T("Next page (%i)"))
+                sprintf(_T('Next page (%1$s)'), (string)$next)
             );
 
             $paginate .= $this->getLink(
                 '<i class="fast forward small icon" aria-hidden="true"></i>',
                 $this->getHref($this->pages),
-                preg_replace("(%i)", (string)$this->pages, _T("Last page (%i)"))
+                sprintf(_T('Last page (%1$s)'), (string)$this->pages)
             );
         }
         if ($this->current_page == 1 && $this->current_page == $this->pages) {

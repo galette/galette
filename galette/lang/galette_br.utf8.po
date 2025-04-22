@@ -523,23 +523,23 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:195
 #, php-format
-msgid "Title '%s' has not been added!"
-msgstr "N'eo ket bet ouzhpennet an titl \"%s\"!"
+msgid "Title '%1$s' has not been added!"
+msgstr "N'eo ket bet ouzhpennet an titl \"%1$s\"!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:201
 #, php-format
-msgid "Title '%s' has not been modified!"
-msgstr "N'eo ket bet kemmet an titl \"%s\"!"
+msgid "Title '%1$s' has not been modified!"
+msgstr "N'eo ket bet kemmet an titl \"%1$s\"!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:211
 #, php-format
-msgid "Title '%s' has been successfully added."
-msgstr "An titl \"%s\" a zo bet ouzhpennet gant berzh."
+msgid "Title '%1$s' has been successfully added."
+msgstr "An titl \"%1$s\" a zo bet ouzhpennet gant berzh."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:217
 #, php-format
-msgid "Title '%s' has been successfully modified."
-msgstr "Kemmet eo bet an titl \"%s\" gant berzh."
+msgid "Title '%1$s' has been successfully modified."
+msgstr "Kemmet eo bet an titl \"%1$s\" gant berzh."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:282
 #, php-format
@@ -1457,24 +1457,24 @@ msgid "First page"
 msgstr "Pajenn gentañ"
 
 #: ../lib/Galette/Core/Pagination.php:252
-msgid "Previous page (%i)"
-msgstr "Pajenn a-raok (%i)"
+msgid "Previous page (%1$s)"
+msgstr "Pajenn a-raok (%1$s)"
 
 #: ../lib/Galette/Core/Pagination.php:264
-msgid "Current page (%i)"
+msgid "Current page (%1$s)"
 msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:272
-msgid "Page %i"
-msgstr "Pajenn %i"
+msgid "Page %1$s"
+msgstr "Pajenn %1$s"
 
 #: ../lib/Galette/Core/Pagination.php:280
-msgid "Next page (%i)"
-msgstr "Pajenn da-heul (%i)"
+msgid "Next page (%1$s)"
+msgstr "Pajenn da-heul (%1$s)"
 
 #: ../lib/Galette/Core/Pagination.php:286
-msgid "Last page (%i)"
-msgstr "Pajenn diwezhañ (%i)"
+msgid "Last page (%1$s)"
+msgstr "Pajenn diwezhañ (%1$s)"
 
 #: ../lib/Galette/Core/Pagination.php:301
 #: ../../tempcache/elements/list.html.twig:286

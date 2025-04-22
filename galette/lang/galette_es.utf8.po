@@ -528,23 +528,23 @@ msgstr "¡Falta la forma corta o larga del título obligatoria!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:195
 #, php-format
-msgid "Title '%s' has not been added!"
-msgstr "¡No se ha añadido el título '%s'!"
+msgid "Title '%1$s' has not been added!"
+msgstr "¡No se ha añadido el título '%1$s'!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:201
 #, php-format
-msgid "Title '%s' has not been modified!"
-msgstr "¡No se ha modificado el título '%s'!"
+msgid "Title '%1$s' has not been modified!"
+msgstr "¡No se ha modificado el título '%1$s'!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:211
 #, php-format
-msgid "Title '%s' has been successfully added."
-msgstr "Se ha añadido con éxito el título '%s'."
+msgid "Title '%1$s' has been successfully added."
+msgstr "Se ha añadido con éxito el título '%1$s'."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:217
 #, php-format
-msgid "Title '%s' has been successfully modified."
-msgstr "Se ha modificado con éxito el título '%s'."
+msgid "Title '%1$s' has been successfully modified."
+msgstr "Se ha modificado con éxito el título '%1$s'."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:282
 #, php-format
@@ -1316,13 +1316,13 @@ msgstr "Contenido de los correos electrónicos"
 
 #: ../lib/Galette/Controllers/TextController.php:141
 #, php-format
-msgid "Email: '%s' has not been modified!"
-msgstr "Correo: '%s' ¡no ha sido modificado!"
+msgid "Email: '%1$s' has not been modified!"
+msgstr "Correo: '%1$s' ¡no ha sido modificado!"
 
 #: ../lib/Galette/Controllers/TextController.php:150
 #, php-format
-msgid "Email: '%s' has been successfully modified."
-msgstr "Correo: '%s' ha sido modificado con éxito."
+msgid "Email: '%1$s' has been successfully modified."
+msgstr "Correo: '%1$s' ha sido modificado con éxito."
 
 #: ../lib/Galette/Core/History.php:235 ../lib/Galette/Core/History.php:324
 #: ../lib/Galette/Features/Replacements.php:648
@@ -1478,24 +1478,24 @@ msgid "First page"
 msgstr "Primera página"
 
 #: ../lib/Galette/Core/Pagination.php:252
-msgid "Previous page (%i)"
-msgstr "Página anterior (%i)"
+msgid "Previous page (%1$s)"
+msgstr "Página anterior (%1$s)"
 
 #: ../lib/Galette/Core/Pagination.php:264
-msgid "Current page (%i)"
-msgstr "Página actual (%i)"
+msgid "Current page (%1$s)"
+msgstr "Página actual (%1$s)"
 
 #: ../lib/Galette/Core/Pagination.php:272
-msgid "Page %i"
-msgstr "Página %i"
+msgid "Page %1$s"
+msgstr "Página %1$s"
 
 #: ../lib/Galette/Core/Pagination.php:280
-msgid "Next page (%i)"
-msgstr "Página siguiente (%i)"
+msgid "Next page (%1$s)"
+msgstr "Página siguiente (%1$s)"
 
 #: ../lib/Galette/Core/Pagination.php:286
-msgid "Last page (%i)"
-msgstr "Última página (%i)"
+msgid "Last page (%1$s)"
+msgstr "Última página (%1$s)"
 
 #: ../lib/Galette/Core/Pagination.php:301
 #: ../../tempcache/elements/list.html.twig:286
