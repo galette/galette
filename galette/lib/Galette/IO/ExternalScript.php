@@ -47,7 +47,7 @@ class ExternalScript
     public function __construct(Preferences $pref)
     {
         $uri = $pref->pref_new_contrib_script;
-        list($protocol,) = explode('://', $uri);
+        [$protocol, ] = explode('://', $uri);
 
         if ($protocol == $uri) {
             Analog::log(
@@ -165,9 +165,9 @@ class ExternalScript
                     curl_setopt(
                         $ch,
                         CURLOPT_POSTFIELDS,
-                        array(
+                        [
                             'params' => json_encode($params)
-                        )
+                        ]
                     );
                 } else {
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
@@ -192,11 +192,11 @@ class ExternalScript
                     $params = $imploded;
                 }
 
-                $descriptors = array(
-                    0   => array('pipe', 'r'),
-                    1   => array('pipe', 'w'),
-                    2   => array('pipe', 'w')
-                );
+                $descriptors = [
+                    0   => ['pipe', 'r'],
+                    1   => ['pipe', 'w'],
+                    2   => ['pipe', 'w']
+                ];
 
                 $process = proc_open(
                     $uri,

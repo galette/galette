@@ -242,12 +242,12 @@ class Members
             $rows = $zdb->execute($select);
             $this->filters->query = $zdb->query_string;
 
-            $members = array();
+            $members = [];
             if ($as_members) {
-                $deps = array(
+                $deps = [
                     'picture'   => false,
                     'groups'    => false
-                );
+                ];
                 foreach ($rows as $row) {
                     $members[] = new Adherent($zdb, $row, $deps);
                 }
@@ -275,7 +275,7 @@ class Members
     {
         global $zdb, $hist, $emitter;
 
-        $processed = array();
+        $processed = [];
         $list = (is_array($ids) ? $ids : [$ids]);
 
         try {
@@ -284,7 +284,7 @@ class Members
             //Retrieve some information
             $select = $zdb->select(self::TABLE);
             $select->columns(
-                array(self::PK, 'nom_adh', 'prenom_adh', 'email_adh')
+                [self::PK, 'nom_adh', 'prenom_adh', 'email_adh']
             )->where->in(self::PK, $list);
 
             $results = $zdb->execute($select);
@@ -466,11 +466,11 @@ class Members
             $this->filters->setLimits($select);
 
             $results = $zdb->execute($select);
-            $deps = array(
+            $deps = [
                 'groups'    => false,
                 'dues'      => false,
                 'picture'   => $with_photos
-            );
+            ];
 
             $staff = [];
             $members = [];
@@ -518,11 +518,11 @@ class Members
             );
 
             $results = $zdb->execute($select);
-            $deps = array(
+            $deps = [
                 'groups'    => false,
                 'dues'      => false,
                 'picture'   => $with_photos
-            );
+            ];
 
             $staff = [];
             $groups = [];
@@ -610,13 +610,13 @@ class Members
 
             $results = $zdb->execute($select);
 
-            $members = array();
-            $deps = array(
+            $members = [];
+            $deps = [
                 'picture'   => $with_photos,
                 'groups'    => false,
                 'dues'      => $dues,
                 'parent'    => $parent
-            );
+            ];
             foreach ($results as $o) {
                 if ($as_members === true) {
                     $members[] = new Adherent($zdb, $o, $deps);
@@ -671,16 +671,16 @@ class Members
             $select->quantifier('DISTINCT');
 
             $select->join(
-                array('so' => PREFIX_DB . Social::TABLE),
+                ['so' => PREFIX_DB . Social::TABLE],
                 'a.' . Adherent::PK . '=so.' . Adherent::PK,
-                array(),
+                [],
                 $select::JOIN_LEFT
             );
 
             $select->join(
-                array('parent' => PREFIX_DB . self::TABLE),
+                ['parent' => PREFIX_DB . self::TABLE],
                 'a.parent_id=parent.' . self::PK,
-                array(),
+                [],
                 $select::JOIN_LEFT
             );
 
@@ -692,37 +692,37 @@ class Members
                 case self::SHOW_STAFF_PUBLIC_LIST:
                     if ($photos) {
                         $select->join(
-                            array('picture' => PREFIX_DB . Picture::TABLE),
+                            ['picture' => PREFIX_DB . Picture::TABLE],
                             'a.' . self::PK . '= picture.' . self::PK,
-                            array()
+                            []
                         );
                     }
 
                     $select->join(
-                        array('status' => PREFIX_DB . Status::TABLE),
+                        ['status' => PREFIX_DB . Status::TABLE],
                         'a.' . Status::PK . '=status.' . Status::PK,
-                        array('priorite_statut')
+                        ['priorite_statut']
                     );
                     break;
                 case self::SHOW_EXPORT:
                     $select->join(
-                        array('status' => PREFIX_DB . Status::TABLE),
+                        ['status' => PREFIX_DB . Status::TABLE],
                         'a.' . Status::PK . '=status.' . Status::PK,
-                        array()
+                        []
                     );
                     break;
                 case self::SHOW_MANAGED:
                     $select->join(
-                        array('status' => PREFIX_DB . Status::TABLE),
+                        ['status' => PREFIX_DB . Status::TABLE],
                         'a.' . Status::PK . '=status.' . Status::PK
                     )->join(
-                        array('gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                        ['gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                         'a.' . Adherent::PK . '=gr.' . Adherent::PK,
-                        array()
+                        []
                     )->join(
-                        array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                        ['m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
                         'gr.' . Group::PK . '=m.' . Group::PK,
-                        array()
+                        []
                     )->where(['m.' . Adherent::PK => $login->id]);
                     break;
             }
@@ -733,16 +733,16 @@ class Members
                 && $this->filters->withinContributions()
             ) {
                 $select->join(
-                    array('ct' => PREFIX_DB . Contribution::TABLE),
+                    ['ct' => PREFIX_DB . Contribution::TABLE],
                     'ct.' . self::PK . '=a.' . self::PK,
-                    array(),
+                    [],
                     $select::JOIN_LEFT
                 );
             }
 
             //check if there are dynamic fields in filter
             $hasDf = false;
-            $dfs = array();
+            $dfs = [];
             if ($this->filters instanceof AdvancedMembersList) {
                 if (
                     (bool)count($this->filters->free_search)
@@ -762,7 +762,7 @@ class Members
             //check if there are dynamic fields for contributions in filter
             $hasDfc = false;
             $hasCdfc = false;
-            $cdfcs = array();
+            $cdfcs = [];
 
             if (
                 $this->filters instanceof AdvancedMembersList
@@ -786,9 +786,9 @@ class Members
 
             if ($hasDfc === true || $hasCdfc === true) {
                 $select->join(
-                    array('dfc' => PREFIX_DB . DynamicFieldsHandle::TABLE),
+                    ['dfc' => PREFIX_DB . DynamicFieldsHandle::TABLE],
                     'dfc.item_id=ct.' . Contribution::PK,
-                    array(),
+                    [],
                     $select::JOIN_LEFT
                 );
             }
@@ -806,9 +806,9 @@ class Members
                     $subselect->where(['df.field_form' => 'adh']);
                     $subselect->where(['df.field_id' => $df]);
                     $select->join(
-                        array('df' . $df => $subselect),
+                        ['df' . $df => $subselect],
                         'a.id_adh = df' . $df . '.item_id',
-                        array(),
+                        [],
                         $select::JOIN_LEFT
                     );
                 }
@@ -827,7 +827,7 @@ class Members
                     }
 
                     $select->join(
-                        array('cdfc' . $cdf => DynamicField::getFixedValuesTableName($cdf, true)),
+                        ['cdfc' . $cdf => DynamicField::getFixedValuesTableName($cdf, true)],
                         new Expression(
                             sprintf(
                                 '%s = %s.%s',
@@ -836,7 +836,7 @@ class Members
                                 $zdb->platform->quoteIdentifier('field_val')
                             )
                         ),
-                        array(),
+                        [],
                         $select::JOIN_LEFT
                     );
                 }
@@ -846,9 +846,9 @@ class Members
                 $this->buildWhereClause($select);
             } elseif ($mode == self::SHOW_PUBLIC_LIST) {
                 $select->where(
-                    array(
+                    [
                         new PredicateSet(
-                            array(
+                            [
                                 new Operator(
                                     'a.date_echeance',
                                     '>=',
@@ -859,11 +859,11 @@ class Members
                                     '=',
                                     new Expression('true')
                                 )
-                            ),
+                            ],
                             PredicateSet::OP_OR
                         ),
                         new PredicateSet(
-                            array(
+                            [
                                 new Operator(
                                     'a.bool_display_info',
                                     '=',
@@ -874,19 +874,19 @@ class Members
                                     '=',
                                     new Expression('true')
                                 )
-                            ),
+                            ],
                             PredicateSet::OP_AND
                         )
-                    )
+                    ]
                 );
             } elseif ($mode === self::SHOW_STAFF_PUBLIC_LIST) {
                 $select->where->equalTo('a.bool_display_info', true);
 
                 if ($preferences->pref_bool_groupsmanagers_are_staff) {
                     $select->join(
-                        array('gr' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                        ['gr' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
                         'a.' . Adherent::PK . '=gr.' . Adherent::PK,
-                        array(),
+                        [],
                         $select::JOIN_LEFT
                     );
                     $select->where
@@ -956,9 +956,9 @@ class Members
                 unset($join['columns']);
             }
             $countSelect->columns(
-                array(
+                [
                     'count' => new Expression('count(DISTINCT a.' . self::PK . ')')
-                )
+                ]
             );
 
             $have = $select->having;
@@ -1240,14 +1240,14 @@ class Members
 
             if ($this->filters->group_filter) {
                 $select->join(
-                    array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    ['g' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                     'a.' . Adherent::PK . '=g.' . Adherent::PK,
-                    array(),
+                    [],
                     $select::JOIN_LEFT
                 )->join(
-                    array('gs' => PREFIX_DB . Group::TABLE),
+                    ['gs' => PREFIX_DB . Group::TABLE],
                     'gs.' . Group::PK . '=g.' . Group::PK,
-                    array(),
+                    [],
                     $select::JOIN_LEFT
                 )->where(
                     '(g.' . Group::PK . ' = ' . $zdb->platform->quoteValue((string)$this->filters->group_filter) .
@@ -1300,17 +1300,17 @@ class Members
 
             $gselect = $zdb->select(Group::GROUPSUSERS_TABLE, 'gu');
             $gselect->columns(
-                array('id_adh')
+                ['id_adh']
             )->join(
-                array('g' => PREFIX_DB . Group::TABLE),
+                ['g' => PREFIX_DB . Group::TABLE],
                 'gu.id_group=g.' . Group::PK,
-                array(),
+                [],
                 $select::JOIN_LEFT
             )->where(
-                array(
+                [
                     'g.id_group'        => ':group',
                     'g.parent_group'    => ':pgroup'
-                ),
+                ],
                 PredicateSet::OP_OR
             );
             $gselect->group(['gu.id_adh']);
@@ -1321,10 +1321,10 @@ class Members
             $ids = [];
             foreach ($this->filters->groups_search as $gs) { // then add a row for each ig/searched group pair
                 $gresults = $stmt->execute(
-                    array(
+                    [
                         'group'    => $gs['group'],
                         'pgroup'   => $gs['group']
-                    )
+                    ]
                 );
 
                 switch ($this->filters->groups_search_log_op) {
@@ -1601,10 +1601,10 @@ class Members
             $zdb->connection->beginTransaction();
             $select = $zdb->select(Adherent::TABLE);
             $select->columns(
-                array('id_adh', 'login_adh', 'mdp_adh')
+                ['id_adh', 'login_adh', 'mdp_adh']
             )->where(
                 new PredicateSet(
-                    array(
+                    [
                         new Operator(
                             'login_adh',
                             '=',
@@ -1617,7 +1617,7 @@ class Members
                             ''
                         ),
                         new IsNull('mdp_adh'),
-                    ),
+                    ],
                     PredicateSet::OP_OR
                 )
             );
@@ -1628,10 +1628,10 @@ class Members
             if ($results->count() > 0) {
                 $update = $zdb->update(Adherent::TABLE);
                 $update->set(
-                    array(
+                    [
                         'login_adh' => ':login',
                         'mdp_adh'   => ':pass'
-                    )
+                    ]
                 )->where->equalTo(Adherent::PK, ':id');
 
                 $stmt = $zdb->sql->prepareStatementForSqlObject($update);
@@ -1664,11 +1664,11 @@ class Members
 
                     if ($dirty === true) {
                         $stmt->execute(
-                            array(
+                            [
                                 'login' => $m->login_adh,
                                 'pass'  => $m->mdp_adh,
                                 'id'    => $m->id_adh
-                            )
+                            ]
                         );
                         $processed++;
                     }
@@ -1697,20 +1697,20 @@ class Members
     {
         global $zdb;
 
-        $reminders = array();
+        $reminders = [];
 
         // Count close to be expired reminders
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'cnt' => new Expression('count(a.' . Adherent::PK . ')')
-            )
+            ]
         );
 
         $select->join(
-            array('parent' => PREFIX_DB . self::TABLE),
+            ['parent' => PREFIX_DB . self::TABLE],
             'a.parent_id=parent.' . self::PK,
-            array(),
+            [],
             $select::JOIN_LEFT
         );
 
@@ -1746,15 +1746,15 @@ class Members
         // Count late reminders
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'cnt' => new Expression('count(a.' . Adherent::PK . ')')
-            )
+            ]
         );
 
         $select->join(
-            array('parent' => PREFIX_DB . self::TABLE),
+            ['parent' => PREFIX_DB . self::TABLE],
             'a.parent_id=parent.' . self::PK,
-            array(),
+            [],
             $select::JOIN_LEFT
         );
 
@@ -1850,12 +1850,12 @@ class Members
     public function getDropdownMembers(Db $zdb, Login $login, ?int $current = null): array
     {
         $members = [];
-        $required_fields = array(
+        $required_fields = [
             'id_adh',
             'nom_adh',
             'prenom_adh',
             'pseudo_adh'
-        );
+        ];
 
         $list_members = [];
         if ($login->isAdmin() || $login->isStaff()) {

@@ -299,7 +299,7 @@ abstract class Authentication
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
+        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate'];
         if (in_array($name, $forbidden)) {
             throw new \RuntimeException('Property ' . $name . ' is forbidden!');
         }
@@ -334,7 +334,7 @@ abstract class Authentication
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
+        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate'];
         return isset($this->$name) && !in_array($name, $forbidden);
     }
 

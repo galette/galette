@@ -70,7 +70,8 @@
         "phpunit/phpunit": "^10.0",
         "malukenho/docheader": "^1.0",
         "slevomat/coding-standard": "^8.14",
-        "alisqi/twigqi": "^3.0"
+        "alisqi/twigqi": "^3.0",
+        "friendsofphp/php-cs-fixer": "^3.75"
     },
     "config": {
         "optimize-autoloader": true,

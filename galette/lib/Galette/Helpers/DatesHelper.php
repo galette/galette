@@ -116,11 +116,11 @@ trait DatesHelper
      */
     protected function setFilterDate(string $field, string $value, bool $start): self
     {
-        $formats = array(
+        $formats = [
             __("Y"),
             __("Y-m"),
             __("Y-m-d"),
-        );
+        ];
 
         try {
             if ($value !== '') {
@@ -187,7 +187,7 @@ trait DatesHelper
 
                 throw new \Exception(
                     sprintf(
-                    //TRANS: %1$s is field name, %2$s is list of known date formats
+                        //TRANS: %1$s is field name, %2$s is list of known date formats
                         _T('Unknown date format for %1$s.<br/>Know formats are: %2$s'),
                         $field,
                         implode(', ', $formats)

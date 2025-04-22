@@ -123,7 +123,7 @@ trait Cacheable
         $cfile = $this->getCacheFilename();
         $cdir = dirname($cfile);
         if (!file_exists($cdir)) {
-            mkdir($cdir, 0755, true);
+            mkdir($cdir, 0o755, true);
         }
         $stream = fopen($cfile, 'w+');
         fwrite(

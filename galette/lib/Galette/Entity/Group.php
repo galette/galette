@@ -91,7 +91,7 @@ class Group
 
         try {
             $select = $zdb->select(self::TABLE);
-            $select->where(array(self::PK => $id));
+            $select->where([self::PK => $id]);
 
             $results = $zdb->execute($select);
 
@@ -123,7 +123,7 @@ class Group
 
         try {
             $select = $zdb->select(self::TABLE);
-            $select->where(array('group_name' => $group_name));
+            $select->where(['group_name' => $group_name]);
 
             $results = $zdb->execute($select);
 
@@ -188,14 +188,14 @@ class Group
 
                 $select = $zdb->select(Adherent::TABLE, 'a');
                 $select->join(
-                    array('status' => PREFIX_DB . Status::TABLE),
+                    ['status' => PREFIX_DB . Status::TABLE],
                     'a.' . Status::PK . '=status.' . Status::PK,
-                    array('priorite_statut')
+                    ['priorite_statut']
                 );
                 $select->join(
-                    array('g' => $join),
+                    ['g' => $join],
                     'g.' . Adherent::PK . '=a.' . Adherent::PK,
-                    array()
+                    []
                 )->where([
                     'g.' . self::PK => $this->id
                 ])->order(
@@ -204,13 +204,13 @@ class Group
                 );
 
                 $results = $zdb->execute($select);
-                $members = array();
+                $members = [];
 
-                $deps = array(
+                $deps = [
                     'picture'   => false,
                     'groups'    => false,
                     'dues'      => false
-                );
+                ];
 
                 foreach ($results as $m) {
                     $members[] = new Adherent($zdb, $m, $deps);
@@ -250,9 +250,9 @@ class Group
 
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 $select->join(
-                    array('b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE),
+                    ['b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE],
                     'a.' . self::PK . '=b.' . self::PK,
-                    array()
+                    []
                 )->where(['b.' . Adherent::PK => $this->login->id]);
             }
 
@@ -260,7 +260,7 @@ class Group
                 ->order('group_name ASC');
 
             $results = $zdb->execute($select);
-            $groups = array();
+            $groups = [];
             $grppk = self::PK;
             foreach ($results as $m) {
                 $group = new Group((int)$m->$grppk);
@@ -385,7 +385,7 @@ class Group
         try {
             $update = $zdb->update(self::TABLE);
             $update->set(
-                array('parent_group' => new Expression('NULL'))
+                ['parent_group' => new Expression('NULL')]
             )->where(
                 [self::PK => $this->id]
             );
@@ -439,9 +439,9 @@ class Group
         }
 
         try {
-            $values = array(
+            $values = [
                 'group_name' => $this->group_name
-            );
+            ];
 
             if ($this->parent_group) {
                 $values['parent_group'] = $parent_group;
@@ -761,10 +761,10 @@ class Group
         try {
             $insert = $zdb->insert(self::GROUPSUSERS_TABLE);
             $insert->values(
-                array(
+                [
                     self::PK => $this->getId(),
                     Adherent::PK => $member->id
-                )
+                ]
             );
             $zdb->execute($insert);
             $this->members[] = $member;
@@ -813,20 +813,20 @@ class Group
 
             $insert = $zdb->insert(self::GROUPSUSERS_TABLE);
             $insert->values(
-                array(
+                [
                     self::PK        => ':group',
                     Adherent::PK    => ':adh'
-                )
+                ]
             );
 
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ($members as $m) {
                 $result = $stmt->execute(
-                    array(
+                    [
                         'group' => $this->id,
                         'adh'   => $m->id
-                    )
+                    ]
                 );
 
                 if ($result) {
@@ -861,7 +861,7 @@ class Group
         } catch (Throwable $e) {
             $te = clone $e;
             $zdb->connection->rollBack();
-            $messages = array();
+            $messages = [];
             do {
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
@@ -902,20 +902,20 @@ class Group
 
             $insert = $zdb->insert(self::GROUPSMANAGERS_TABLE);
             $insert->values(
-                array(
+                [
                     self::PK        => ':group',
                     Adherent::PK    => ':adh'
-                )
+                ]
             );
 
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ($members as $m) {
                 $result = $stmt->execute(
-                    array(
+                    [
                         'group' => $this->id,
                         'adh'   => $m->id
-                    )
+                    ]
                 );
 
                 if ($result) {
@@ -950,7 +950,7 @@ class Group
         } catch (Throwable $e) {
             $te = clone $e;
             $zdb->connection->rollBack();
-            $messages = array();
+            $messages = [];
             do {
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());

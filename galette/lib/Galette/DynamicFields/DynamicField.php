@@ -291,13 +291,13 @@ abstract class DynamicField
             );
 
             $val_select->columns(
-                array(
+                [
                     'val'
-                )
+                ]
             )->order('id');
 
             $results = $this->zdb->execute($val_select);
-            $this->values = array();
+            $this->values = [];
             if ($results->count() > 0) {
                 foreach ($results as $val) {
                     $this->values[] = $val->val;
@@ -767,7 +767,7 @@ abstract class DynamicField
         }
 
         try {
-            $values = array(
+            $values = [
                 'field_name'              => strip_tags($this->name),
                 'field_perm'              => $this->permission,
                 'field_required'          => $this->required,
@@ -781,7 +781,7 @@ abstract class DynamicField
                 'field_index'             => $this->index,
                 'field_information'       => ($this->information === null ? new Expression('NULL') : $this->information),
                 'field_information_above' => $this->information_above,
-            );
+            ];
 
             if ($this->required === false) {
                 //Handle booleans for postgres ; bugs #18899 and #19354
@@ -845,20 +845,20 @@ abstract class DynamicField
 
                     $insert = $this->zdb->insert($contents_table);
                     $insert->values(
-                        array(
+                        [
                             'id'    => ':id',
                             'val'   => ':val'
-                        )
+                        ]
                     );
                     $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
                     $cnt_values = count($this->values);
                     for ($i = 0; $i < $cnt_values; $i++) {
                         $stmt->execute(
-                            array(
+                            [
                                 'id'    => $i,
                                 'val'   => $this->values[$i]
-                            )
+                            ]
                         );
                     }
                     $this->zdb->connection->commit();
@@ -890,9 +890,9 @@ abstract class DynamicField
     {
         $select = $this->zdb->select(self::TABLE);
         $select->columns(
-            array(
+            [
                 'idx' => new \Laminas\Db\Sql\Expression('COUNT(*) + 1')
-            )
+            ]
         );
         $select->where(['field_form' => $this->form]);
         $results = $this->zdb->execute($select);
@@ -913,21 +913,21 @@ abstract class DynamicField
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
-                array(
+                [
                     'cnt' => new \Laminas\Db\Sql\Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             )->where(
-                array(
+                [
                     'field_form' => $this->form,
                     'field_name' => $this->name
-                )
+                ]
             );
 
             if (isset($this->id)) {
                 $select->where->addPredicate(
                     new PredicateExpression(
                         'field_id NOT IN (?)',
-                        array($this->id)
+                        [$this->id]
                     )
                 );
             }
@@ -970,22 +970,22 @@ abstract class DynamicField
             $new_rank = $old_rank + $direction;
             $update = $this->zdb->update(self::TABLE);
             $update->set([
-                    'field_index' => $old_rank
+                'field_index' => $old_rank
             ])->where([
-                    'field_index'   => $new_rank,
-                    'field_form'    => $this->form
+                'field_index'   => $new_rank,
+                'field_form'    => $this->form
             ]);
             $this->zdb->execute($update);
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'field_index' => $new_rank
-                )
+                ]
             )->where(
-                array(
+                [
                     self::PK => $this->id
-                )
+                ]
             );
             $this->zdb->execute($update);
             $this->zdb->connection->commit();
@@ -1020,9 +1020,9 @@ abstract class DynamicField
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'field_index' => new \Laminas\Db\Sql\Expression('field_index-1')
-                )
+                ]
             )->where
                 ->greaterThan('field_index', $old_rank)
                 ->equalTo('field_form', $this->form);
@@ -1032,10 +1032,10 @@ abstract class DynamicField
             try {
                 $delete = $this->zdb->delete(DynamicFieldsHandle::TABLE);
                 $delete->where(
-                    array(
+                    [
                         'field_id'      => $this->id,
                         'field_form'    => $this->form
-                    )
+                    ]
                 );
                 $this->zdb->execute($delete);
             } catch (Throwable $e) {
@@ -1046,10 +1046,10 @@ abstract class DynamicField
             try {
                 $delete = $this->zdb->delete(self::TABLE);
                 $delete->where(
-                    array(
+                    [
                         'field_id'      => $this->id,
                         'field_form'    => $this->form
-                    )
+                    ]
                 );
                 $this->zdb->execute($delete);
             } catch (Throwable $e) {

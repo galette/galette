@@ -512,7 +512,7 @@ trait Replacements
         );
 
         $this->setReplacements(
-            array(
+            [
                 'asso_name'          => $this->preferences->pref_nom,
                 'asso_slogan'        => $this->preferences->pref_slogan,
                 'asso_address'       => $address,
@@ -526,7 +526,7 @@ trait Replacements
                 'date_now'           => date(_T('Y-m-d')),
                 'login_uri'          => $this->preferences->getURL() . $this->routeparser->urlFor('login'),
                 'asso_footer'        => $this->preferences->pref_footer
-            )
+            ]
         );
 
         return $this;
@@ -657,7 +657,7 @@ trait Replacements
         }
 
         $this->setReplacements(
-            array(
+            [
                 'adh_title'         => $member->stitle,
                 'adh_id'            => $member->id,
                 'adh_num'           => $member->number,
@@ -692,7 +692,7 @@ trait Replacements
                 '_adh_first_name'   => $member->surname,
                 '_adh_login'        => $member->login,
                 '_adh_email'        => $member->email
-            )
+            ]
         );
 
         /** the list of all dynamic fields */
@@ -771,7 +771,8 @@ trait Replacements
                             if (empty($field_value)) {
                                 continue;
                             }
-                            $spattern = (($this instanceof Texts) ?
+                            $spattern = (
+                                ($this instanceof Texts) ?
                                 '%3$s (%1$s%2$s)' :
                                 '<a href="%1$s%2$s">%3$s</a>'
                             );
@@ -800,7 +801,7 @@ trait Replacements
                 }
             }
 
-            $this->setReplacements(array($key => $value));
+            $this->setReplacements([$key => $value]);
             Analog::log("adding dynamic replacement $key => $value", Analog::DEBUG);
         }
 

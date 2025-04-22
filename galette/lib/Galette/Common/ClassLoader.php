@@ -192,7 +192,7 @@ class ClassLoader
      */
     public function unregister(): void
     {
-        spl_autoload_unregister(array($this, 'loadClass'));
+        spl_autoload_unregister([$this, 'loadClass']);
     }
 
     /**

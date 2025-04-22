@@ -140,7 +140,7 @@ class PdfController extends AbstractController
         }
 
         // Fill array $selected with selected ids
-        $selected = array();
+        $selected = [];
         if (isset($unique)) {
             $selected[] = $unique;
         } else {
@@ -150,7 +150,7 @@ class PdfController extends AbstractController
         $m = new Members();
         $members = $m->getArrayList(
             $selected,
-            array('nom_adh', 'prenom_adh'),
+            ['nom_adh', 'prenom_adh'],
             true
         );
 
@@ -227,7 +227,7 @@ class PdfController extends AbstractController
             $m = new Members();
             $members = $m->getArrayList(
                 $filters->selected,
-                array('nom_adh', 'prenom_adh')
+                ['nom_adh', 'prenom_adh']
             );
         }
 
@@ -313,7 +313,7 @@ class PdfController extends AbstractController
             $ajax = true;
 
             //retrieve selected members
-            $data = $post['selection'] ?? array();
+            $data = $post['selection'] ?? [];
 
             $filters->selected = $data;
             $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
@@ -353,7 +353,7 @@ class PdfController extends AbstractController
         }
 
         //retrieve selected members
-        $selection = (isset($post['selection'])) ? $post['selection'] : array();
+        $selection = (isset($post['selection'])) ? $post['selection'] : [];
 
         $filters->selected = $selection;
         $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
@@ -373,7 +373,7 @@ class PdfController extends AbstractController
         $m = new Members();
         $members = $m->getArrayList(
             $filters->selected,
-            array('nom_adh', 'prenom_adh'),
+            ['nom_adh', 'prenom_adh'],
             true
         );
 
@@ -667,7 +667,7 @@ class PdfController extends AbstractController
             $m = new Members();
             $members = $m->getArrayList(
                 [$id],
-                array('nom_adh', 'prenom_adh'),
+                ['nom_adh', 'prenom_adh'],
                 true
             );
 

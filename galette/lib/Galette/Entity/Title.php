@@ -126,10 +126,10 @@ class Title
      */
     public function store(Db $zdb): bool
     {
-        $data = array(
+        $data = [
             'short_label'   => strip_tags($this->short),
             'long_label'    => strip_tags($this->long)
-        );
+        ];
         try {
             if (isset($this->id) && $this->id > 0) {
                 $update = $zdb->update(self::TABLE);

@@ -51,13 +51,13 @@ class Install
 
     //db version/galette version mapper
     /** @var array<string, string> */
-    private array $versions_mapper = array(
+    private array $versions_mapper = [
         '0.700' => '0.70',
         '0.701' => '0.71',
         '0.702' => '0.74',
         '0.703' => '0.75',
         '0.704' => '0.76'
-    );
+    ];
 
     protected int $step;
     private ?string $mode;
@@ -561,7 +561,7 @@ class Install
         if ($path === null) {
             $path = GALETTE_ROOT . '/install';
         }
-        $update_scripts = array();
+        $update_scripts = [];
 
         if ($this->isUpgrade()) {
             $update_scripts = self::getUpdateScripts(
@@ -594,8 +594,8 @@ class Install
         ?string $version = null
     ): array {
         $dh = opendir($path . '/scripts');
-        $php_update_scripts = array();
-        $sql_update_scripts = array();
+        $php_update_scripts = [];
+        $sql_update_scripts = [];
         $update_scripts = [];
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
@@ -643,7 +643,7 @@ class Install
     {
         $fatal_error = false;
         $update_scripts = $this->getScripts($spath);
-        $this->report = array();
+        $this->report = [];
         $scripts_path = ($spath ?? GALETTE_ROOT . '/install') . '/scripts/';
 
         foreach ($update_scripts as $key => $val) {
@@ -671,10 +671,10 @@ class Install
                 include_once $scripts_path . $val;
                 $className = '\Galette\Updates\UpgradeTo' .
                     str_replace('.', '', $key);
-                $ret = array(
+                $ret = [
                     'message'   => null,
                     'res'       => false
-                );
+                ];
                 try {
                     $updater = new $className();
                     if ($updater instanceof \Galette\Updater\AbstractUpdater) {
@@ -730,7 +730,7 @@ class Install
      */
     public function executeSql(Db $zdb, string $sql_query): bool
     {
-        $queries_results = array();
+        $queries_results = [];
         $fatal_error = false;
 
         // begin : copyright (2002) the phpbb group (support@phpbb.com)
@@ -749,10 +749,10 @@ class Install
             $query = trim($sql_query[$i]);
             if ($query != '' && $query[0] != '-') {
                 //some output infos
-                $ret = array(
+                $ret = [
                     'message'   => $query,
                     'res'       => false
-                );
+                ];
 
                 try {
                     $zdb->db->query(
@@ -827,7 +827,7 @@ class Install
      */
     public function reinitReport(): void
     {
-        $this->report = array();
+        $this->report = [];
     }
 
     /**
@@ -972,16 +972,16 @@ class Install
      *
      * @return array<string, ?string>
      */
-    private function loadExistingConfigFile(array $post_data = array(), bool $pass = false): array
+    private function loadExistingConfigFile(array $post_data = [], bool $pass = false): array
     {
-        $existing = array(
+        $existing = [
             'db_type'   => null,
             'db_host'   => null,
             'db_port'   => null,
             'db_user'   => null,
             'db_name'   => null,
             'prefix'    => null
-        );
+        ];
 
         if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
             $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
@@ -1073,13 +1073,13 @@ class Install
     public function writeConfFile(): bool
     {
         $error = false;
-        $ret = array(
+        $ret = [
             'message'   => _T("Write configuration file"),
             'res'       => false
-        );
+        ];
 
         //if config file is already up-to-date, nothing to write
-        $existing = $this->loadExistingConfigFile(array(), true);
+        $existing = $this->loadExistingConfigFile([], true);
 
         if (
             isset($existing['db_type'])
@@ -1102,10 +1102,10 @@ class Install
                 Analog::INFO
             );
 
-            $this->report[] = array(
+            $this->report[] = [
                 'message'   => _T("Config file already exists and is up to date"),
                 'res'       => true
-            );
+            ];
             return true;
         }
 
@@ -1247,10 +1247,10 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      */
     private function proceedReport(string $msg, bool|Throwable $res): void
     {
-        $ret = array(
+        $ret = [
             'message'   => $msg,
             'res'       => false
-        );
+        ];
 
         if ($res instanceof \Exception) {
             $ret['debug'] = $res->getMessage();

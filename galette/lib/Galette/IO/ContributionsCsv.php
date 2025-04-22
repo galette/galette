@@ -79,7 +79,7 @@ class ContributionsCsv extends CsvOut
         $fields = $contrib->fields;
         //not a real data
         unset($fields['duree_mois_cotis']);
-        $labels = array();
+        $labels = [];
 
         foreach ($fields as $f) {
             $label = $f['label'];

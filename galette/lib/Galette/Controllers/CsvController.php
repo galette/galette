@@ -105,14 +105,14 @@ class CsvController extends AbstractController
         $this->view->render(
             $response,
             'pages/export.html.twig',
-            array(
+            [
                 'page_title'        => _T("Exports"),
                 'tables_list'       => $tables_list,
                 'written'           => $this->flash->getMessage('written_exports'),
                 'existing'          => $existing,
                 'parameted'         => $parameted,
                 'documentation'     => 'usermanual/avancee.html#csv-exports'
-            )
+            ]
         );
         return $response;
     }
@@ -245,13 +245,13 @@ class CsvController extends AbstractController
         $this->view->render(
             $response,
             'pages/import.html.twig',
-            array(
+            [
                 'page_title'        => _T("Imports"),
                 'existing'          => $existing,
                 'dryrun'            => true,
                 'import_file'       => $this->session->import_file,
                 'documentation'     => 'usermanual/adherents.html#csv-imports'
-            )
+            ]
         );
         return $response;
     }
@@ -435,7 +435,7 @@ class CsvController extends AbstractController
         $this->view->render(
             $response,
             'modals/confirm_removal.html.twig',
-            array(
+            [
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Remove %1$s file %2$s'),
@@ -451,7 +451,7 @@ class CsvController extends AbstractController
                 ),
                 'cancel_uri'    => $data['redirect_uri'],
                 'data'          => $data
-            )
+            ]
         );
         return $response;
     }
@@ -575,7 +575,7 @@ class CsvController extends AbstractController
         $this->view->render(
             $response,
             'pages/import_model.html.twig',
-            array(
+            [
                 'page_title'        => _T("CSV import model"),
                 'fields'            => $fields,
                 'model'             => $model,
@@ -584,7 +584,7 @@ class CsvController extends AbstractController
                 'defaults_loaded'   => $defaults_loaded,
                 'tab'               => $tab,
                 'documentation'     => 'usermanual/adherents.html#model'
-            )
+            ]
         );
         return $response;
     }

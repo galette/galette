@@ -59,13 +59,13 @@ class GaletteMail
     private int $timeout = 300;
 
     /** @var array<int, string> */
-    private array $errors = array();
+    private array $errors = [];
     /** @var array<string, string> */
-    private array $recipients = array();
+    private array $recipients = [];
 
     private PHPMailer $mail;
     /** @var array<int,File> */
-    protected array $attachments = array();
+    protected array $attachments = [];
 
     private Preferences $preferences;
 
@@ -124,13 +124,13 @@ class GaletteMail
                     if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
                         //Allow "unsecure" SMTP connections if user has asked fot it or
                         //if user did not request TLS explicitely
-                        $this->mail->SMTPOptions = array(
-                            'ssl' => array(
+                        $this->mail->SMTPOptions = [
+                            'ssl' => [
                                 'verify_peer' => false,
                                 'verify_peer_name' => false,
                                 'allow_self_signed' => true
-                            )
-                        );
+                            ]
+                        ];
                     }
 
                     if ($this->preferences->pref_mail_smtp_port) {
@@ -195,7 +195,7 @@ class GaletteMail
         }
 
         if (!empty($recipients)) {
-            $this->recipients = array();
+            $this->recipients = [];
             foreach ($recipients as $mail => $name) {
                 if (self::isValidEmail($mail)) {
                     $this->recipients[$mail] = $name;
@@ -302,7 +302,7 @@ class GaletteMail
 
         try {
             //reinit errors array
-            $this->errors = array();
+            $this->errors = [];
             //let's send the email
             if (!$this->mail->Send()) {
                 $this->errors[] = $this->mail->ErrorInfo;

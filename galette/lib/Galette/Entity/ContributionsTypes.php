@@ -62,18 +62,18 @@ class ContributionsTypes
     public const ID_NOT_EXITS = -1;
 
     /** @var array<string> */
-    private array $errors = array();
+    private array $errors = [];
 
     /** @var array<int, array<string, mixed>> */
-    protected static array $defaults = array(
-        array('id' => 1, 'libelle' => 'annual fee', 'extension' => self::DEFAULT_TYPE),
-        array('id' => 2, 'libelle' => 'reduced annual fee', 'extension' => self::DEFAULT_TYPE),
-        array('id' => 3, 'libelle' => 'company fee', 'extension' => self::DEFAULT_TYPE),
-        array('id' => 4, 'libelle' => 'donation in kind', 'extension' => self::DONATION_TYPE),
-        array('id' => 5, 'libelle' => 'donation in money', 'extension' => self::DONATION_TYPE),
-        array('id' => 6, 'libelle' => 'partnership', 'extension' => self::DONATION_TYPE),
-        array('id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => self::DEFAULT_TYPE)
-    );
+    protected static array $defaults = [
+        ['id' => 1, 'libelle' => 'annual fee', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 2, 'libelle' => 'reduced annual fee', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 3, 'libelle' => 'company fee', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 4, 'libelle' => 'donation in kind', 'extension' => self::DONATION_TYPE],
+        ['id' => 5, 'libelle' => 'donation in money', 'extension' => self::DONATION_TYPE],
+        ['id' => 6, 'libelle' => 'partnership', 'extension' => self::DONATION_TYPE],
+        ['id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => self::DEFAULT_TYPE]
+    ];
 
     /**
      * Default constructor
@@ -198,11 +198,11 @@ class ContributionsTypes
             $fnames = array_values($values);
             foreach (self::$defaults as $d) {
                 $stmt->execute(
-                    array(
+                    [
                         $fnames[0]  => $d['id'],
                         $fnames[1]  => $d['libelle'],
                         $fnames[2]  => $d['extension']
-                    )
+                    ]
                 );
             }
 
@@ -232,11 +232,11 @@ class ContributionsTypes
      */
     public function getList(?bool $extent = null): array
     {
-        $list = array();
+        $list = [];
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $fields = array(self::PK, 'libelle_type_cotis', 'amount');
+            $fields = [self::PK, 'libelle_type_cotis', 'amount'];
             $select->quantifier('DISTINCT');
             $select->columns($fields);
             $select->order(self::PK);
@@ -272,11 +272,11 @@ class ContributionsTypes
      */
     public function getCompleteList(): array
     {
-        $list = array();
+        $list = [];
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->order(array(self::PK));
+            $select->order([self::PK]);
 
             $results = $this->zdb->execute($select);
 
@@ -287,12 +287,12 @@ class ContributionsTypes
                 );
             } else {
                 foreach ($results as $r) {
-                    $list[$r->{self::PK}] = array(
+                    $list[$r->{self::PK}] = [
                         'text_orig' => $r->libelle_type_cotis,
                         'name' => _T($r->libelle_type_cotis),
                         'amount' => $r->amount,
                         'extra' => $r->cotis_extension
-                    );
+                    ];
                 }
             }
             return $list;
@@ -367,8 +367,8 @@ class ContributionsTypes
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->columns(array(self::PK))
-                ->where(array('libelle_type_cotis' => $label));
+            $select->columns([self::PK])
+                ->where(['libelle_type_cotis' => $label]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -412,11 +412,11 @@ class ContributionsTypes
 
         try {
             $this->zdb->connection->beginTransaction();
-            $values = array(
+            $values = [
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
                 'cotis_extension' => $extension
-            );
+            ];
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
@@ -471,11 +471,11 @@ class ContributionsTypes
         try {
             $oldlabel = $ret->libelle_type_cotis;
             $this->zdb->connection->beginTransaction();
-            $values = array(
+            $values = [
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
                 'cotis_extension' => $extension
-            );
+            ];
 
             $update = $this->zdb->update(self::TABLE);
             $update->set($values);
@@ -592,8 +592,8 @@ class ContributionsTypes
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array();
-        $virtuals = array('extension', 'libelle');
+        $forbidden = [];
+        $virtuals = ['extension', 'libelle'];
         if (
             in_array($name, $virtuals)
             || !in_array($name, $forbidden)
@@ -620,8 +620,8 @@ class ContributionsTypes
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array();
-        $virtuals = array('extension', 'libelle');
+        $forbidden = [];
+        $virtuals = ['extension', 'libelle'];
         if (
             in_array($name, $virtuals)
             || !in_array($name, $forbidden)

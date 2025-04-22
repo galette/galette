@@ -88,9 +88,9 @@ class MailingHistory extends History
         try {
             $select = $this->zdb->select($this->getTableName(), 'a');
             $select->join(
-                array('b' => PREFIX_DB . Adherent::TABLE),
+                ['b' => PREFIX_DB . Adherent::TABLE],
                 'a.mailing_sender=b.' . Adherent::PK,
-                array('nom_adh', 'prenom_adh'),
+                ['nom_adh', 'prenom_adh'],
                 $select::JOIN_LEFT
             );
             $this->buildWhereClause($select);
@@ -100,7 +100,7 @@ class MailingHistory extends History
             $this->filters->setLimits($select);
             $results = $this->zdb->execute($select);
 
-            $ret = array();
+            $ret = [];
             foreach ($results as $r) {
                 if ($r['mailing_sender'] !== null && $r['mailing_sender_name'] === null) {
                     $r['mailing_sender_name']
@@ -145,7 +145,7 @@ class MailingHistory extends History
      */
     protected function buildOrderClause(): array
     {
-        $order = array();
+        $order = [];
 
         switch ($this->filters->orderby) {
             case MailingsList::ORDERBY_DATE:
@@ -250,9 +250,9 @@ class MailingHistory extends History
             $countSelect->reset($countSelect::JOINS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     self::PK => new Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);
@@ -353,7 +353,7 @@ class MailingHistory extends History
     public function update(): bool
     {
         try {
-            $_recipients = array();
+            $_recipients = [];
             if ($this->recipients != null) {
                 foreach ($this->recipients as $_r) {
                     $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
@@ -367,7 +367,7 @@ class MailingHistory extends History
             $sender_address = ($this->sender_address === null) ?
                 new Expression('NULL') : $this->sender_address;
 
-            $values = array(
+            $values = [
                 'mailing_sender'            => $sender,
                 'mailing_sender_name'       => $sender_name,
                 'mailing_sender_address'    => $sender_address,
@@ -378,7 +378,7 @@ class MailingHistory extends History
                 'mailing_sent'              => ($this->sent) ?
                     true :
                     ($this->zdb->isPostgres() ? 'false' : 0)
-            );
+            ];
 
             $update = $this->zdb->update(self::TABLE);
             $update->set($values);
@@ -402,7 +402,7 @@ class MailingHistory extends History
     public function store(): bool
     {
         try {
-            $_recipients = array();
+            $_recipients = [];
             if ($this->recipients != null) {
                 foreach ($this->recipients as $_r) {
                     $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
@@ -420,7 +420,7 @@ class MailingHistory extends History
             $sender_address = ($this->sender_address === null) ?
                 new Expression('NULL') : $this->sender_address;
 
-            $values = array(
+            $values = [
                 'mailing_sender'            => $sender,
                 'mailing_sender_name'       => $sender_name,
                 'mailing_sender_address'    => $sender_address,
@@ -431,7 +431,7 @@ class MailingHistory extends History
                 'mailing_sent'              => ($this->sent) ?
                     true :
                     ($this->zdb->isPostgres() ? 'false' : 0)
-            );
+            ];
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);

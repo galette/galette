@@ -37,7 +37,7 @@ trait FileTrait
     //(to be used when showing an error).
     //Maybe is there a better way to handle this...
     /** @var array<string,string> */
-    protected array $bad_chars = array(
+    protected array $bad_chars = [
         '.'    =>    '\.',
         '\\'    =>    '\\\\',
         "'"    =>    "'",
@@ -50,21 +50,21 @@ trait FileTrait
         '<'    =>    '<',
         '>'    =>    '>',
         '|'    =>    '|'
-    );
+    ];
 
     protected ?string $name;
     protected ?string $name_wo_ext;
     protected ?string $extension;
     protected ?string $dest_dir;
     /** @var array<string> */
-    protected array $allowed_extensions = array();
+    protected array $allowed_extensions = [];
     /** @var array<string,string> */
-    protected array $allowed_mimes = array();
+    protected array $allowed_mimes = [];
     protected int $maxlength;
     protected int $mincropsize;
 
     /** @var array<string,string> */
-    public static array $mime_types = array(
+    public static array $mime_types = [
         'txt'       => 'text/plain',
         'htm'       => 'text/html',
         'html'      => 'text/html',
@@ -163,7 +163,7 @@ trait FileTrait
         'odb'       => 'application/vnd.oasis.opendocument.database',
         'odg'       => 'application/vnd.oasis.opendocument.graphics',
         'odp'       => 'application/vnd.oasis.opendocument.presentation',
-    );
+    ];
 
     /**
      * Initialization

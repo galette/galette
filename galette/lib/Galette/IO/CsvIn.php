@@ -51,12 +51,12 @@ class CsvIn extends Csv implements FileInterface
     public const DATA_IMPORT_ERROR = -10;
 
     /** @var array<string> */
-    protected array $extensions = array('csv', 'txt');
+    protected array $extensions = ['csv', 'txt'];
 
     /** @var array<string> */
     private array $fields;
     /** @var array<string> */
-    private array $default_fields = array(
+    private array $default_fields = [
         'nom_adh',
         'prenom_adh',
         'ddn_adh',
@@ -75,7 +75,7 @@ class CsvIn extends Csv implements FileInterface
         'id_statut',
         'info_public_adh',
         'info_adh'
-    );
+    ];
 
     private bool $dryrun = true;
 
@@ -108,10 +108,10 @@ class CsvIn extends Csv implements FileInterface
         $this->init(
             self::DEFAULT_DIRECTORY,
             $this->extensions,
-            array(
+            [
                 'csv'    =>    'text/csv',
                 'txt'    =>    'text/plain'
-            ),
+            ],
             2048
         );
 
@@ -243,7 +243,7 @@ class CsvIn extends Csv implements FileInterface
             $this->members_fields_cats
         );
         $config_required = $fc->getRequired();
-        $this->required = array();
+        $this->required = [];
 
         foreach (array_keys($config_required) as $field) {
             if (in_array($field, $this->fields)) {
@@ -297,8 +297,8 @@ class CsvIn extends Csv implements FileInterface
                     ) {
                         $this->addError(
                             str_replace(
-                                array('%field', '%row'),
-                                array($this->fields[$col], (string)$row),
+                                ['%field', '%row'],
+                                [$this->fields[$col], (string)$row],
                                 _T("Field %field is required, but missing in row %row")
                             )
                         );
@@ -356,7 +356,8 @@ class CsvIn extends Csv implements FileInterface
                         }
                         if (isset($this->emails[$column])) {
                             $existing = $this->emails[$column];
-                            $extra = ($existing == -1 ?
+                            $extra = (
+                                $existing == -1 ?
                                 _T("from another member in import") : str_replace('%id_adh', (string)$existing, _T("from member %id_adh"))
                             );
                             $this->addError(
@@ -476,7 +477,7 @@ class CsvIn extends Csv implements FileInterface
             ) {
                 if ($row > 0) {
                     $col = 0;
-                    $values = array();
+                    $values = [];
                     foreach ($data as $column) {
                         if (substr($this->fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
                             //dynamic field, keep to check later
@@ -532,8 +533,8 @@ class CsvIn extends Csv implements FileInterface
                             if ($store !== true) {
                                 $this->addError(
                                     str_replace(
-                                        array('%row', '%name'),
-                                        array((string)$row, $member->sname),
+                                        ['%row', '%name'],
+                                        [(string)$row, $member->sname],
                                         _T("An error occurred storing member at row %row (%name):")
                                     )
                                 );
@@ -543,8 +544,8 @@ class CsvIn extends Csv implements FileInterface
                     } else {
                         $this->addError(
                             str_replace(
-                                array('%row', '%name'),
-                                array((string)$row, $member->sname),
+                                ['%row', '%name'],
+                                [(string)$row, $member->sname],
                                 _T("An error occurred storing member at row %row (%name):")
                             )
                         );

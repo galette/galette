@@ -131,7 +131,7 @@ class ScheduledPayments
 
             $this->filters->setLimits($select);
 
-            $scheduleds = array();
+            $scheduleds = [];
             $results = $this->zdb->execute($select);
             if ($as_object) {
                 foreach ($results as $row) {
@@ -169,15 +169,15 @@ class ScheduledPayments
             $select->columns($fieldsList);
 
             $select->join(
-                array('c' => PREFIX_DB . Contribution::TABLE),
+                ['c' => PREFIX_DB . Contribution::TABLE],
                 's.' . Contribution::PK . '= c.' . Contribution::PK,
-                array()
+                []
             );
 
             $select->join(
-                array('a' => PREFIX_DB . Adherent::TABLE),
+                ['a' => PREFIX_DB . Adherent::TABLE],
                 'c.' . Adherent::PK . '= a.' . Adherent::PK,
-                array()
+                []
             );
 
             $this->buildWhereClause($select);
@@ -211,9 +211,9 @@ class ScheduledPayments
             $countSelect->reset($countSelect::COLUMNS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     self::PK => new Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);
@@ -245,9 +245,9 @@ class ScheduledPayments
             $sumSelect->reset($sumSelect::COLUMNS);
             $sumSelect->reset($sumSelect::ORDER);
             $sumSelect->columns(
-                array(
+                [
                     'scheduledsum' => new Expression('SUM(amount)')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($sumSelect);
@@ -271,7 +271,7 @@ class ScheduledPayments
      */
     private function buildOrderClause(): array
     {
-        $order = array();
+        $order = [];
 
         switch ($this->filters->orderby) {
             case ScheduledPaymentsList::ORDERBY_ID:
@@ -360,9 +360,9 @@ class ScheduledPayments
 
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 $select->where(
-                    array(
+                    [
                         'a.' . Adherent::PK => $this->login->id
-                    )
+                    ]
                 );
             }
         } catch (Throwable $e) {
@@ -405,7 +405,7 @@ class ScheduledPayments
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
-        $list = array();
+        $list = [];
         if (is_array($ids)) {
             $list = $ids;
         } else {

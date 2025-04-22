@@ -89,7 +89,7 @@ class ContributionsList extends Pagination
     private array $selected = [];
 
     /** @var array<string> */
-    protected array $list_fields = array(
+    protected array $list_fields = [
         'start_date_filter',
         'end_date_filter',
         'filtre_cotis_adh',
@@ -102,13 +102,13 @@ class ContributionsList extends Pagination
         'max_amount',
         'selected',
         'paid'
-    );
+    ];
 
     /** @var array<string>  */
-    protected array $virtuals_list_fields = array(
+    protected array $virtuals_list_fields = [
         'rstart_date_filter',
         'rend_date_filter'
-    );
+    ];
 
     /**
      * Default constructor

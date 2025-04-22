@@ -84,7 +84,7 @@ class Login extends Authentication
     public function logCron(string $name, Preferences $preferences): bool
     {
         //known cronable files
-        $ok = array('reminder');
+        $ok = ['reminder'];
 
         if (in_array($name, $ok)) {
             $this->logged = true;
@@ -195,7 +195,7 @@ class Login extends Authentication
     {
         $select = $this->zdb->select(self::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'id_adh',
                 'login_adh',
                 'bool_admin_adh',
@@ -206,11 +206,11 @@ class Login extends Authentication
                 'activite_adh',
                 'bool_exempt_adh',
                 'date_echeance'
-            )
+            ]
         )->join(
-            array('b' => PREFIX_DB . Status::TABLE),
+            ['b' => PREFIX_DB . Status::TABLE],
             'a.' . Status::PK . '=b.' . Status::PK,
-            array('priorite_statut')
+            ['priorite_statut']
         );
         return $select;
     }
@@ -284,7 +284,7 @@ class Login extends Authentication
         Analog::log('Impersonating `' . $id . '`...', Analog::INFO);
         try {
             $select = $this->select();
-            $select->where(array(Adherent::PK => $id));
+            $select->where([Adherent::PK => $id]);
 
             $results = $this->zdb->execute($select);
             if ($results->count() == 0) {
@@ -322,7 +322,7 @@ class Login extends Authentication
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->where(array(self::PK => $user));
+            $select->where([self::PK => $user]);
             $results = $this->zdb->execute($select);
             /* We got results: user already exists */
             return $results->count() > 0;

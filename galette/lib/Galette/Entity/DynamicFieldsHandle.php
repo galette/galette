@@ -55,7 +55,7 @@ class DynamicFieldsHandle
     private ?int $item_id;
 
     /** @var array<string> */
-    private array $errors = array();
+    private array $errors = [];
 
     private Db $zdb;
     private Login $login;
@@ -466,10 +466,10 @@ class DynamicFieldsHandle
 
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
-                array(
+                [
                     'item_id'       => $this->item_id,
                     'field_form'    => $this->form_name
-                )
+                ]
             );
             $this->zdb->execute($delete);
 
@@ -499,14 +499,14 @@ class DynamicFieldsHandle
     {
         $select = $this->zdb->select(self::TABLE, 'd');
         $select->join(
-            array('t' => PREFIX_DB . DynamicField::TABLE),
+            ['t' => PREFIX_DB . DynamicField::TABLE],
             'd.' . DynamicField::PK . '=t.' . DynamicField::PK,
-            array('field_id')
+            ['field_id']
         )->where(
-            array(
+            [
                 'item_id'       => $this->item_id,
                 'd.field_form'  => $this->form_name
-            )
+            ]
         );
 
         /** only load values for accessible fields*/

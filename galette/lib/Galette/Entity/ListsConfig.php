@@ -38,30 +38,30 @@ use Galette\Core\Authentication;
 class ListsConfig extends FieldsConfig
 {
     /** @var array<int,array<string,mixed>> */
-    protected array $listed_fields = array();
+    protected array $listed_fields = [];
 
     /**
      * Fields that are not part of lists
      *
      * @var array<string>
      */
-    private array $non_list_elements = array(
+    private array $non_list_elements = [
         'mdp_adh',
         'info_adh',
         'info_public_adh',
         'nom_adh',
         'prenom_adh'
-    );
+    ];
 
     /**
      * ACL mapping for list elements not present in form configuration
      *
      * @var array<string,string>
      */
-    private array $acl_mapping = array(
+    private array $acl_mapping = [
         'list_adh_name'             => 'nom_adh',
         'list_adh_contribstatus'    => 'id_statut'
-    );
+    ];
 
     /**
      * Prepare a field (required data, automation)
@@ -144,10 +144,8 @@ class ListsConfig extends FieldsConfig
 
                 if ($o->field_id == 'id_adh') {
                     // ignore access control, as member ID is always needed
-                    //if (!isset($preferences) || !$preferences->pref_show_id) {
-                        $o->type = self::TYPE_STR;
-                        $display_elements[] = $o;
-                    //}
+                    $o->type = self::TYPE_STR;
+                    $display_elements[] = $o;
                 } else {
                     // skip fields blacklisted for display
                     if (in_array($o->field_id, $this->non_list_elements)) {
@@ -276,37 +274,37 @@ class ListsConfig extends FieldsConfig
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'list_visible'          => ':list_visible',
                     'list_position'         => ':list_position',
                     'width_in_forms'        => ':width_in_forms'
-                )
+                ]
             )->where(
-                array(
+                [
                     'field_id'      => ':field_id',
                     'table_name'    => $this->table
-                )
+                ]
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             $params = null;
 
             foreach ($this->listed_fields as $pos => $field) {
-                $params = array(
+                $params = [
                     'list_visible'   => $field['list_visible'],
                     'list_position'  => $pos,
                     'field_id'       => $field['field_id'],
                     'width_in_forms' => $field['width_in_forms']
-                );
+                ];
                 $stmt->execute($params);
             }
 
             foreach (array_keys($this->getRemainingFields()) as $field) {
-                $params = array(
+                $params = [
                     'list_visible'  => $this->zdb->isPostgres() ? 'false' : 0,
                     'list_position' => -1,
                     'field_id'      => $field
-                );
+                ];
                 $stmt->execute($params);
             }
 

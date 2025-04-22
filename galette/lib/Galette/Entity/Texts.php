@@ -256,10 +256,10 @@ class Texts
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->where(
-                array(
+                [
                     'tref' => $ref,
                     'tlang' => $lang
-                )
+                ]
             );
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -277,13 +277,13 @@ class Texts
                     }
                 }
                 if ($default !== null) {
-                    $values = array(
+                    $values = [
                         'tref'      => $default['tref'],
                         'tsubject'  => $default['tsubject'],
                         'tbody'     => $default['tbody'],
                         'tlang'     => $default['tlang'],
                         'tcomment'  => $default['tcomment']
-                    );
+                    ];
 
                     try {
                         $this->insert([$values]);
@@ -339,17 +339,17 @@ class Texts
     public function setTexts(string $ref, string $lang, string $subject, string $body): bool
     {
         try {
-            $values = array(
+            $values = [
                 'tsubject' => $subject,
                 'tbody'    => $body,
-            );
+            ];
 
             $update = $this->zdb->update(self::TABLE);
             $update->set($values)->where(
-                array(
+                [
                     'tref'  => $ref,
                     'tlang' => $lang
-                )
+                ]
             );
             $this->zdb->execute($update);
 
@@ -376,8 +376,8 @@ class Texts
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
-                array('tref', 'tcomment')
-            )->where(array('tlang' => $lang));
+                ['tref', 'tcomment']
+            )->where(['tlang' => $lang]);
 
             $refs = [];
             $results = $this->zdb->execute($select);
@@ -412,9 +412,9 @@ class Texts
             if ($check_first === true) {
                 $select = $this->zdb->select(self::TABLE);
                 $select->columns(
-                    array(
+                    [
                         'counter' => new Expression('COUNT(' . self::PK . ')')
-                    )
+                    ]
                 );
 
                 $results = $this->zdb->execute($select);
@@ -467,7 +467,7 @@ class Texts
                 $list[] = $dbentry;
             }
 
-            $missing = array();
+            $missing = [];
             foreach ($this->defaults as $default) {
                 $exists = false;
                 foreach ($list as $text) {
@@ -536,13 +536,13 @@ class Texts
     {
         $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
-            array(
+            [
                 'tref'      => ':tref',
                 'tsubject'  => ':tsubject',
                 'tbody'     => ':tbody',
                 'tlang'     => ':tlang',
                 'tcomment'  => ':tcomment'
-            )
+            ]
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 

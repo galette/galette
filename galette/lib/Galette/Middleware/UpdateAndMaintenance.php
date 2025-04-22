@@ -66,9 +66,9 @@ class UpdateAndMaintenance
         $this->routeParser = $routeParser;
 
         if ($callback === self::MAINTENANCE) {
-            $this->callback = array($this, 'maintenancePage');
+            $this->callback = [$this, 'maintenancePage'];
         } elseif ($callback === self::NEED_UPDATE) {
-            $this->callback = array($this, 'needsUpdatePage');
+            $this->callback = [$this, 'needsUpdatePage'];
         } else {
             if (!is_callable($callback)) {
                 throw new \InvalidArgumentException('argument callback must be callable');

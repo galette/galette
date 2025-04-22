@@ -304,6 +304,11 @@ jobs:
         run: |
           galette/vendor/bin/phpcs
 
+      - name: CS Fixer
+        if: matrix.php-versions == '8.1'
+        run: |
+          galette/vendor/bin/php-cs-fixer check --show-progress=dots --verbose --diff
+
       - name: Twig CS
         run: |
           galette/vendor/bin/twigcs galette/templates/default --severity error --display blocking

@@ -128,14 +128,14 @@ class History
         }
 
         try {
-            $values = array(
+            $values = [
                 'date_log'   => date('Y-m-d H:i:s'),
                 'ip_log'     => $ip,
                 'adh_log'    => $this->login->login ?? '',
                 'action_log' => $action,
                 'text_log'   => $argument,
                 'sql_log'    => $query
-            );
+            ];
 
             $insert = $this->zdb->insert($this->getTableName());
             $insert->values($values);
@@ -272,7 +272,7 @@ class History
      */
     protected function buildOrderClause(): array
     {
-        $order = array();
+        $order = [];
 
         switch ($this->filters->orderby) {
             case HistoryList::ORDERBY_DATE:
@@ -360,9 +360,9 @@ class History
             $countSelect->reset($countSelect::JOINS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     $this->getPk() => new Expression('COUNT(' . $this->getPk() . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);

@@ -133,7 +133,7 @@ class Contributions
 
             $this->filters->setLimits($select);
 
-            $contributions = array();
+            $contributions = [];
             $results = $this->zdb->execute($select);
             if ($as_contrib) {
                 foreach ($results as $row) {
@@ -171,9 +171,9 @@ class Contributions
             $select->columns($fieldsList);
 
             $select->join(
-                array('a' => PREFIX_DB . Adherent::TABLE),
+                ['a' => PREFIX_DB . Adherent::TABLE],
                 'c.' . Adherent::PK . '= a.' . Adherent::PK,
-                array()
+                []
             );
 
             $this->buildWhereClause($select);
@@ -207,9 +207,9 @@ class Contributions
             $countSelect->reset($countSelect::COLUMNS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     self::PK => new Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);
@@ -245,9 +245,9 @@ class Contributions
             $sumSelect->reset($sumSelect::COLUMNS);
             $sumSelect->reset($sumSelect::ORDER);
             $sumSelect->columns(
-                array(
+                [
                     'contribsum' => new Expression('SUM(montant_cotis)')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($sumSelect);
@@ -271,7 +271,7 @@ class Contributions
      */
     private function buildOrderClause(): array
     {
-        $order = array();
+        $order = [];
 
         switch ($this->filters->orderby) {
             case ContributionsList::ORDERBY_ID:
@@ -437,9 +437,9 @@ class Contributions
                 $mgroups = $this->login->getManagedGroups();
 
                 $select->join(
-                    array('users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                     'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                    array(),
+                    [],
                     $select::JOIN_LEFT
                 );
                 $select->where->nest()
@@ -454,9 +454,9 @@ class Contributions
 
             if ($member_clause !== null) {
                 $select->where(
-                    array(
+                    [
                         'c.' . Adherent::PK => $member_clause
-                    )
+                    ]
                 );
             }
 

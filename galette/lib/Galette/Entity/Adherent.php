@@ -278,10 +278,10 @@ class Adherent
             $select = $this->zdb->select(self::TABLE, 'a');
 
             $select->join(
-                array('b' => PREFIX_DB . Status::TABLE),
+                ['b' => PREFIX_DB . Status::TABLE],
                 'a.' . Status::PK . '=b.' . Status::PK,
-                array('priorite_statut')
-            )->where(array(self::PK => $id));
+                ['priorite_statut']
+            )->where([self::PK => $id]);
 
             $results = $this->zdb->execute($select);
 
@@ -315,10 +315,10 @@ class Adherent
             $select = $this->zdb->select(self::TABLE);
             if (GaletteMail::isValidEmail($login)) {
                 //we got a valid email address, use it
-                $select->where(array('email_adh' => $login));
+                $select->where(['email_adh' => $login]);
             } else {
                 ///we did not get an email address, consider using login
-                $select->where(array('login_adh' => $login));
+                $select->where(['login_adh' => $login]);
             }
 
             $results = $this->zdb->execute($select);
@@ -453,12 +453,12 @@ class Adherent
      */
     private function loadChildren(): void
     {
-        $this->children = array();
+        $this->children = [];
         try {
             $id = self::PK;
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
-                array($id)
+                [$id]
             )->where(['parent_id' => $this->id]);
 
             $results = $this->zdb->execute($select);
@@ -544,8 +544,8 @@ class Adherent
                 $next_begin_date->add(new DateInterval('P1D'));
                 $date_diff = $now->diff($next_begin_date);
                 $this->days_remaining = $date_diff->days;
-                // Active
                 if ($date_diff->invert == 0 && $date_diff->days >= 0) {
+                    // Active
                     $this->days_remaining = $date_diff->days;
                     if ($this->days_remaining <= 30) {
                         if ($date_diff->days == 0) {
@@ -557,8 +557,8 @@ class Adherent
                         $this->row_classes .= ' cotis-ok';
                         $this->due_status = Contribution::STATUS_UPTODATE;
                     }
-                // Expired
                 } elseif ($date_diff->invert == 1 && $date_diff->days >= 0) {
+                    // Expired
                     $this->days_remaining = $date_diff->days;
                     //check if member is still active
                     if ($this->isActive()) {
@@ -794,15 +794,15 @@ class Adherent
             $ret = _T("Freed of dues");
         } elseif ($never_contributed === true) {
             if ($this->active) {
-                $patterns = array('/%days/', '/%date/');
+                $patterns = ['/%days/', '/%date/'];
                 $cdate = new DateTime($this->creation_date);
                 if (!isset($this->oldness)) {
                     $this->checkDues();
                 }
-                $replace = array(
+                $replace = [
                     $this->oldness,
                     $cdate->format(__("Y-m-d"))
-                );
+                ];
 
                 $ret = preg_replace(
                     $patterns,
@@ -812,33 +812,33 @@ class Adherent
             } else {
                 $ret = _T("Never contributed");
             }
-        // Last active or first expired day
         } elseif ($this->days_remaining === 0) {
+            // Last active or first expired day
             if ($date_diff->invert == 0) {
                 $ret = _T("Last day!");
             } else {
                 $ret = _T("Late since today!");
             }
-        // Active
         } elseif ($date_diff->invert == 0 && $this->days_remaining > 0) {
-            $patterns = array('/%days/', '/%date/');
-            $replace = array(
+            // Active
+            $patterns = ['/%days/', '/%date/'];
+            $replace = [
                 $this->days_remaining,
                 $due_date->format(__("Y-m-d"))
-            );
+            ];
             $ret = preg_replace(
                 $patterns,
                 $replace,
                 _T("%days days remaining (ending on %date)")
             );
-        // Expired
         } elseif ($date_diff->invert == 1 && $this->days_remaining > 0) {
-            $patterns = array('/%days/', '/%date/');
-            $replace = array(
+            // Expired
+            $patterns = ['/%days/', '/%date/'];
+            $replace = [
                 // We need the number of days expired, not the number of days remaining.
                 $this->days_remaining + 1,
                 $due_date->format(__("Y-m-d"))
-            );
+            ];
             if ($this->active) {
                 $ret = preg_replace(
                     $patterns,
@@ -866,7 +866,7 @@ class Adherent
 
         //calculate begin date of period
         if ($preferences->pref_beg_membership != '') { //classical membership date + 1 year
-            list($j, $m) = explode('/', $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', $preferences->pref_beg_membership);
             $sdate = new DateTime($date_now->format('Y') . '-' . $m . '-' . $j);
         } elseif ($preferences->pref_membership_ext != '') { //classical membership date + N months
             $dext = new DateInterval('P' . $preferences->pref_membership_ext . 'M');
@@ -881,15 +881,15 @@ class Adherent
         $select = $this->zdb->select(Contribution::TABLE, 'c');
         $select
             ->columns(
-                array(
+                [
                     'count' => new Expression('COUNT(*)')
-                )
+                ]
             )
             ->join(
-                array(
-                    'ct' => PREFIX_DB . ContributionsTypes::TABLE),
+                [
+                    'ct' => PREFIX_DB . ContributionsTypes::TABLE],
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
-                array()
+                []
             )
             ->where(
                 [
@@ -1004,7 +1004,7 @@ class Adherent
 
             $update = $zdb->update(self::TABLE);
             $update->set(
-                array('mdp_adh' => $cpass)
+                ['mdp_adh' => $cpass]
             )->where([self::PK => $id_adh]);
             $zdb->execute($update);
             Analog::log(
@@ -1049,7 +1049,7 @@ class Adherent
     public static function getDbFields(Db $zdb): array
     {
         $columns = $zdb->getColumns(self::TABLE);
-        $fields = array();
+        $fields = [];
         foreach ($columns as $col) {
             $fields[] = $col->getName();
         }
@@ -1126,7 +1126,7 @@ class Adherent
     {
         global $login;
 
-        $this->errors = array();
+        $this->errors = [];
 
         //Sanitize
         foreach ($values as &$rawvalue) {
@@ -1265,7 +1265,7 @@ class Adherent
             } else {
                 $owned_group = false;
                 foreach ($values['groups_adh'] as $group) {
-                    list($gid) = explode('|', (string)$group);
+                    [$gid] = explode('|', (string)$group);
                     if ($login->isGroupManager((int)$gid)) {
                         $owned_group = true;
                     }
@@ -1422,8 +1422,8 @@ class Adherent
                 try {
                     $select = $this->zdb->select(self::TABLE);
                     $select->columns(
-                        array(self::PK)
-                    )->where(array('email_adh' => $value));
+                        [self::PK]
+                    )->where(['email_adh' => $value]);
                     if (!empty($this->id)) {
                         $select->where->notEqualTo(
                             self::PK,
@@ -1461,8 +1461,8 @@ class Adherent
                         try {
                             $select = $this->zdb->select(self::TABLE);
                             $select->columns(
-                                array(self::PK)
-                            )->where(array('login_adh' => $value));
+                                [self::PK]
+                            )->where(['login_adh' => $value]);
                             if (!empty($this->id)) {
                                 $select->where->notEqualTo(
                                     self::PK,
@@ -1591,7 +1591,7 @@ class Adherent
         }
 
         try {
-            $values = array();
+            $values = [];
             $fields = self::getDbFields($this->zdb);
 
             foreach ($fields as $field) {
@@ -1758,7 +1758,7 @@ class Adherent
             $modif_date = date('Y-m-d');
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array('date_modif_adh' => $modif_date)
+                ['date_modif_adh' => $modif_date]
             )->where([self::PK => $this->id]);
 
             $this->zdb->execute($update);
@@ -1782,21 +1782,21 @@ class Adherent
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array(
+        $forbidden = [
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
             'row_classes', 'oldness', 'duplicate', 'groups', 'managed_groups'
-        );
+        ];
         if (!defined('GALETTE_TESTS')) {
             $forbidden[] = 'password'; //keep that for tests only
         }
 
-        $virtuals = array(
+        $virtuals = [
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
             'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
             'rbirthdate', 'sgender', 'contribstatus', 'rdue_date'
-        );
+        ];
 
-        $socials = array('website', 'msn', 'jabber', 'icq');
+        $socials = ['website', 'msn', 'jabber', 'icq'];
 
         if (in_array($name, $forbidden)) {
             Analog::log(
@@ -1843,6 +1843,7 @@ class Adherent
                     } else {
                         return null;
                     }
+                    // no break
                 case 'sstatus':
                     $status = new Status($this->zdb);
                     return $status->getLabel($this->status);
@@ -1869,6 +1870,7 @@ class Adherent
                         default:
                             return _T('Unspecified');
                     }
+                    // no break
                 case 'contribstatus':
                     return $this->getDues();
             }
@@ -1888,6 +1890,7 @@ class Adherent
                 } else {
                     return null;
                 }
+                // no break
             case 'address':
                 return $this->$name ?? '';
             case 'birthdate':
@@ -1937,21 +1940,21 @@ class Adherent
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array(
+        $forbidden = [
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
             'row_classes', 'oldness', 'duplicate', 'groups', 'managed_groups'
-        );
+        ];
         if (!defined('GALETTE_TESTS')) {
             $forbidden[] = 'password'; //keep that for tests only
         }
 
-        $virtuals = array(
+        $virtuals = [
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
             'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
             'rbirthdate', 'sgender', 'contribstatus',
-        );
+        ];
 
-        $socials = array('website', 'msn', 'jabber', 'icq');
+        $socials = ['website', 'msn', 'jabber', 'icq'];
 
         if (in_array($name, $forbidden)) {
             Analog::log(

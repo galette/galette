@@ -44,11 +44,11 @@ class Plugins
     /** @var array<string> */
     protected array $path;
     /** @var array<string, array<string, mixed>> */
-    protected array $modules = array();
+    protected array $modules = [];
     /** @var array<string, array<string, mixed>> */
-    protected array $disabled = array();
+    protected array $disabled = [];
     /** @var array<string> */
-    protected array $csrf_exclusions = array();
+    protected array $csrf_exclusions = [];
 
     protected ?string $id;
     protected ?string $mroot;
@@ -80,7 +80,7 @@ class Plugins
     {
         foreach ($this->path as $root) {
             if (!is_dir($root) || !is_readable($root)) {
-                    continue;
+                continue;
             }
 
             if (substr($root, -1) != '/') {
@@ -155,7 +155,7 @@ class Plugins
         $this->parseModules();
 
         // Sort plugins
-        uasort($this->modules, array($this, 'sortModules'));
+        uasort($this->modules, [$this, 'sortModules']);
 
         // Load translation, _prepend and ns_file
         foreach ($this->modules as $id => $m) {
@@ -219,7 +219,7 @@ class Plugins
             );
             $this->setDisabled(self::DISABLED_COMPAT);
         } elseif ($this->id) {
-            $this->modules[$this->id] = array(
+            $this->modules[$this->id] = [
                 'root'          => $this->mroot,
                 'name'          => $name,
                 'desc'          => $desc,
@@ -231,7 +231,7 @@ class Plugins
                                      1000 : (int)$priority,
                 'root_writable' => is_writable($this->mroot),
                 'route'         => $route
-            );
+            ];
         }
     }
 
@@ -242,7 +242,7 @@ class Plugins
      */
     public function resetModulesList(): void
     {
-        $this->modules = array();
+        $this->modules = [];
     }
 
     /**
@@ -476,7 +476,7 @@ class Plugins
      */
     public function getTplHeaders(): array
     {
-        $_headers = array();
+        $_headers = [];
         foreach ($this->modules as $key => $module) {
             $headers_path = $this->getTemplatesPath($key) . '/headers.html.twig';
             if (file_exists($headers_path)) {
@@ -493,7 +493,7 @@ class Plugins
      */
     public function getTplScripts(): array
     {
-        $_scripts = array();
+        $_scripts = [];
         foreach ($this->modules as $key => $module) {
             $scripts_path = $this->getTemplatesPath($key) . '/scripts.html.twig';
             if (file_exists($scripts_path)) {
@@ -589,11 +589,11 @@ class Plugins
      */
     private function setDisabled(int $cause): void
     {
-        $this->disabled[$this->id] = array(
+        $this->disabled[$this->id] = [
             'root'          => $this->mroot,
             'root_writable' => is_writable($this->mroot),
             'cause'         => $cause
-        );
+        ];
         $this->id = null;
         $this->mroot = null;
     }

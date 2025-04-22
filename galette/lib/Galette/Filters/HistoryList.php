@@ -57,14 +57,14 @@ class HistoryList extends Pagination
     private ?string $action_filter = null; //@phpstan-ignore-line
 
     /** @var array<string>  */
-    protected array $list_fields = array(
+    protected array $list_fields = [
         'start_date_filter',
         'raw_start_date_filter',
         'end_date_filter',
         'raw_end_date_filter',
         'user_filter',
         'action_filter'
-    );
+    ];
 
     /**
      * Default constructor

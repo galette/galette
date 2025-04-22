@@ -58,18 +58,18 @@ class TransactionsList extends Pagination
     private int|false $filtre_cotis_children = false; //@phpstan-ignore-line
 
     /** @var array<string> */
-    protected array $list_fields = array(
+    protected array $list_fields = [
         'start_date_filter',
         'end_date_filter',
         'filtre_cotis_adh',
         'filtre_cotis_children'
-    );
+    ];
 
     /** @var array<string> */
-    protected array $virtuals_list_fields = array(
+    protected array $virtuals_list_fields = [
         'rstart_date_filter',
         'rend_date_filter'
-    );
+    ];
 
     /**
      * Default constructor

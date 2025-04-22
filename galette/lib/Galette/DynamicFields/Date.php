@@ -81,7 +81,7 @@ class Date extends DynamicField
         //get all date dynamic fields
         $select = $zdb->select(DynamicFieldsHandle::TABLE, 'fields');
         $select->join(
-            array('def' => PREFIX_DB . DynamicField::TABLE),
+            ['def' => PREFIX_DB . DynamicField::TABLE],
             'fields.' . DynamicField::PK . '=def.' . DynamicField::PK,
             []
         );
@@ -135,9 +135,9 @@ class Date extends DynamicField
         $zdb->connection->beginTransaction();
         $update = $zdb->update(DynamicFieldsHandle::TABLE);
         $update->set(
-            array(
+            [
                 'field_val'  => ':field_val'
-            )
+            ]
         )->where
             ->equalTo(DynamicFieldsHandle::PK, ':' . DynamicFieldsHandle::PK)
             ->equalTo(DynamicField::PK, ':' . DynamicField::PK)
@@ -146,13 +146,13 @@ class Date extends DynamicField
         $stmt = $zdb->sql->prepareStatementForSqlObject($update);
         foreach ($updates as $update) {
             $stmt->execute(
-                array(
+                [
                     'field_val'  => $update['new_date'],
                     DynamicFieldsHandle::PK => $update['item']->{DynamicFieldsHandle::PK},
                     DynamicField::PK => $update['item']->{DynamicField::PK},
                     'field_form' => $update['item']->field_form,
                     'val_index' => $update['item']->val_index
-                )
+                ]
             );
         }
         $zdb->connection->commit();

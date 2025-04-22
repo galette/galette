@@ -124,9 +124,9 @@ class PaymentType
      */
     public function store(): bool
     {
-        $data = array(
+        $data = [
             'type_name' => $this->name
-        );
+        ];
         try {
             if (isset($this->id) && $this->id > 0) {
                 if ($this->old_name !== null) {

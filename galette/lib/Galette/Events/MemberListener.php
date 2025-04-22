@@ -210,9 +210,9 @@ class MemberListener implements ListenerSubscriber
         $mail = new GaletteMail($this->preferences);
         $mail->setSubject($texts->getSubject());
         $mail->setRecipients(
-            array(
+            [
                 $member->getEmail() => $member->sname
-            )
+            ]
         );
         $mail->setMessage($texts->getBody());
         $sent = $mail->send();

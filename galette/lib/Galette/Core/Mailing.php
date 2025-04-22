@@ -65,9 +65,9 @@ class Mailing extends GaletteMail
     private string|int $id;
 
     /** @var array<int, Adherent> */
-    private array $unreachables = array();
+    private array $unreachables = [];
     /** @var array<int, Adherent> */
-    private array $mrecipients = array();
+    private array $mrecipients = [];
     private int $current_step;
 
     private string $mime_type;
@@ -187,7 +187,7 @@ class Mailing extends GaletteMail
             $orig_recipients = [];
         }
 
-        $_recipients = array();
+        $_recipients = [];
         $mdeps = ['parent' => true];
         foreach ($orig_recipients as $k => $v) {
             $m = new Adherent($zdb, $k, $mdeps);
@@ -243,7 +243,7 @@ class Mailing extends GaletteMail
                 //create directory
                 mkdir($dest_dir);
                 //copy attachments from source mailing and populate attachments
-                $this->attachments = array();
+                $this->attachments = [];
                 $files = glob($source_dir . '*.*');
                 foreach ($files as $file) {
                     $f = new File($source_dir);
@@ -267,7 +267,7 @@ class Mailing extends GaletteMail
      */
     public function send(): int
     {
-        $m = array();
+        $m = [];
         foreach ($this->mrecipients as $member) {
             $email = $member->getEmail();
             $m[$email] = $member->sname;
@@ -286,9 +286,9 @@ class Mailing extends GaletteMail
      */
     public function setRecipients(array $members): bool //@phpstan-ignore-line
     {
-        $m = array();
-        $this->mrecipients = array();
-        $this->unreachables = array();
+        $m = [];
+        $this->mrecipients = [];
+        $this->unreachables = [];
 
         foreach ($members as $member) {
             $email = $member->getEmail();
@@ -505,7 +505,7 @@ class Mailing extends GaletteMail
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array('ordered');
+        $forbidden = ['ordered'];
         if (!in_array($name, $forbidden)) {
             switch ($name) {
                 case 'alt_message':
@@ -533,6 +533,7 @@ class Mailing extends GaletteMail
                         //no attachments
                         return false;
                     }
+                    // no break
                 case 'attachments':
                     return $this->attachments;
                 case 'sender_name':
@@ -567,7 +568,7 @@ class Mailing extends GaletteMail
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array('ordered');
+        $forbidden = ['ordered'];
         if (!in_array($name, $forbidden)) {
             switch ($name) {
                 case 'alt_message':

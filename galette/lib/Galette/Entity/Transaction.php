@@ -107,32 +107,32 @@ class Transaction
      */
     protected function setFields(): self
     {
-        $this->fields = array(
-            self::PK            => array(
+        $this->fields = [
+            self::PK            => [
                 'label'    => null, //not a field in the form
                 'propname' => 'id'
-            ),
-            'trans_date'          => array(
+            ],
+            'trans_date'          => [
                 'label'    => _T("Date:"), //not a field in the form
                 'propname' => 'date'
-            ),
-            'trans_amount'       => array(
+            ],
+            'trans_amount'       => [
                 'label'    => _T("Amount:"),
                 'propname' => 'amount'
-            ),
-            'trans_desc'          => array(
+            ],
+            'trans_desc'          => [
                 'label'    => _T("Description:"),
                 'propname' => 'description'
-            ),
-            Adherent::PK          => array(
+            ],
+            Adherent::PK          => [
                 'label'    => _T("Originator:"),
                 'propname' => 'member'
-            ),
-            'type_paiement_trans' => array(
+            ],
+            'type_paiement_trans' => [
                 'label'    => _T("Payment type:"),
                 'propname' => 'payment_type'
-            )
-        );
+            ]
+        ];
         return $this;
     }
 
@@ -157,9 +157,9 @@ class Transaction
             $select = $this->zdb->select(self::TABLE, 't');
             $select->where([self::PK => $id]);
             $select->join(
-                array('a' => PREFIX_DB . Adherent::TABLE),
+                ['a' => PREFIX_DB . Adherent::TABLE],
                 't.' . Adherent::PK . '=a.' . Adherent::PK,
-                array()
+                []
             );
 
             //restrict query on current member id if he's not admin nor staff member
@@ -221,7 +221,7 @@ class Transaction
             if ($this->getDispatchedAmount() > 0) {
                 $c = new Contributions($this->zdb, $this->login);
                 $clist = $c->getListFromTransaction($this->id);
-                $cids = array();
+                $cids = [];
                 foreach ($clist as $cid) {
                     $cids[] = $cid->id;
                 }
@@ -299,7 +299,7 @@ class Transaction
     public function check(array $values, array $required, array $disabled): bool|array
     {
         global $preferences;
-        $this->errors = array();
+        $this->errors = [];
 
         $fields = array_keys($this->fields);
         foreach ($fields as $key) {
@@ -330,7 +330,7 @@ class Transaction
                         case 'trans_amount':
                             //FIXME: this is a hack to allow comma as decimal separator
                             $value = strtr((string)$value, ',', '.');
-                            $this->amount = (double)$value;
+                            $this->amount = (float)$value;
                             if (!is_numeric($value)) {
                                 $this->errors[] = _T("- The amount must be an integer!");
                             }
@@ -415,7 +415,7 @@ class Transaction
 
         try {
             $this->zdb->connection->beginTransaction();
-            $values = array();
+            $values = [];
             $fields = $this->getDbFields($this->zdb);
             foreach ($fields as $field) {
                 $prop = $this->fields[$field]['propname'];
@@ -489,21 +489,21 @@ class Transaction
     public function getDispatchedAmount(): float
     {
         if (empty($this->id)) {
-            return (double)0;
+            return (float)0;
         }
 
         try {
             $select = $this->zdb->select(Contribution::TABLE);
             $select->columns(
-                array(
+                [
                     'sum' => new Expression('SUM(montant_cotis)')
-                )
+                ]
             )->where([self::PK => $this->id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $dispatched_amount = $result->sum;
-            return (double)$dispatched_amount;
+            return (float)$dispatched_amount;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred retrieving dispatched amounts | ' .
@@ -528,15 +528,15 @@ class Transaction
         try {
             $select = $this->zdb->select(Contribution::TABLE);
             $select->columns(
-                array(
+                [
                     'sum' => new Expression('SUM(montant_cotis)')
-                )
+                ]
             )->where([self::PK => $this->id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $dispatched_amount = $result->sum;
-            return (double)$this->amount - (double)$dispatched_amount;
+            return (float)$this->amount - (float)$dispatched_amount;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred retrieving missing amounts | ' .
@@ -572,7 +572,7 @@ class Transaction
     public function getDbFields(Db $zdb): array
     {
         $columns = $zdb->getColumns(self::TABLE);
-        $fields = array();
+        $fields = [];
         foreach ($columns as $col) {
             $fields[] = $col->getName();
         }
@@ -610,7 +610,7 @@ class Transaction
                     return null;
                 case 'amount':
                     if (isset($this->$name)) {
-                        return (double)$this->$name;
+                        return (float)$this->$name;
                     }
                     return null;
                 case 'fields':

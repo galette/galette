@@ -243,7 +243,7 @@ class ContributionsController extends CrudController
         $this->view->render(
             $response,
             'modals/mass_choose_contributions_type.html.twig',
-            array(
+            [
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'   => sprintf(
                     _T('Mass add contribution on %1$s members'),
@@ -252,7 +252,7 @@ class ContributionsController extends CrudController
                 'data'          => $data,
                 'form_url'      => $this->routeparser->urlFor('massAddContributions'),
                 'cancel_uri'    => $this->routeparser->urlFor('members')
-            )
+            ]
         );
         return $response;
     }
@@ -290,7 +290,7 @@ class ContributionsController extends CrudController
         $this->view->render(
             $response,
             'modals/mass_add_contributions.html.twig',
-            array(
+            [
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Mass add contribution on %1$s members'),
@@ -304,7 +304,7 @@ class ContributionsController extends CrudController
                 'require_mass'  => true,
                 'required'      => $contribution->getRequired(),
                 'type_cotis_options' => $contributions_types
-            )
+            ]
         );
         return $response;
     }

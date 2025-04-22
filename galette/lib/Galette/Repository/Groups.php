@@ -71,10 +71,10 @@ class Groups
             $select = $zdb->select(Group::TABLE);
             if ($as_groups === false) {
                 $select->columns(
-                    array(Group::PK, 'group_name')
+                    [Group::PK, 'group_name']
                 );
             }
-            $groups = array();
+            $groups = [];
             $gpk = Group::PK;
 
             $results = $zdb->execute($select);
@@ -111,16 +111,16 @@ class Groups
 
             if (!$this->login->isAdmin() && !$this->login->isStaff() && $full === true) {
                 $select->join(
-                    array('gmanagers' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                    ['gmanagers' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
                     'ggroup.' . Group::PK . '=gmanagers.' . Group::PK,
-                    array()
+                    []
                 )->where(['gmanagers.' . Adherent::PK => $this->login->id]);
             }
 
             $select->join(
-                array('gusers' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                ['gusers' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                 'ggroup.' . Group::PK . '=gusers.' . Group::PK,
-                array('members' => new Expression('count(gusers.' . Group::PK . ')')),
+                ['members' => new Expression('count(gusers.' . Group::PK . ')')],
                 $select::JOIN_LEFT
             );
 
@@ -144,7 +144,7 @@ class Groups
                 ->group('ggroup.parent_group')
                 ->order('ggroup.group_name ASC');
 
-            $groups = array();
+            $groups = [];
 
             $results = $this->zdb->execute($select);
 
@@ -198,16 +198,16 @@ class Groups
 
             $select = $zdb->select(Group::TABLE, 'group');
             $select->join(
-                array(
+                [
                     'b' => PREFIX_DB . $join_table
-                ),
+                ],
                 'group.' . Group::PK . '=b.' . Group::PK,
-                array()
-            )->where(array('b.' . Adherent::PK => $id));
+                []
+            )->where(['b.' . Adherent::PK => $id]);
 
             $results = $zdb->execute($select);
 
-            $groups = array();
+            $groups = [];
             $gpk = Group::PK;
             foreach ($results as $r) {
                 if ($as_group === true) {
@@ -284,25 +284,25 @@ class Groups
             if (count($groups)) {
                 $insert = $zdb->insert($table);
                 $insert->values(
-                    array(
+                    [
                         Group::PK       => ':group',
                         Adherent::PK    => ':adh'
-                    )
+                    ]
                 );
                 $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
                 foreach ($groups as $group) {
-                    list($gid, $gname) = explode('|', $group);
+                    [$gid, $gname] = explode('|', $group);
 
                     if (count($managed_groups) && !in_array($gid, $managed_groups)) {
                         continue;
                     }
 
                     $result = $stmt->execute(
-                        array(
+                        [
                             'group' => $gid,
                             'adh'   => $adh->id
-                        )
+                        ]
                     );
 
                     if ($result) {
@@ -456,18 +456,18 @@ class Groups
         $select->columns(
             [Adherent::PK]
         )->join(
-            array('status' => PREFIX_DB . Status::TABLE),
+            ['status' => PREFIX_DB . Status::TABLE],
             'adh.' . Status::PK . '=status.' . Status::PK,
-            array('priorite_statut')
+            ['priorite_statut']
         )->join(
-            array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+            ['b' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
             'adh.' . Adherent::PK . '=b.' . Adherent::PK,
             []
         )->where->in('b.' . Group::PK, $groups);
 
         $results = $this->zdb->execute($select);
 
-        $ids_adh = array();
+        $ids_adh = [];
         foreach ($results as $r) {
             $ids_adh[] = $r->id_adh;
         }

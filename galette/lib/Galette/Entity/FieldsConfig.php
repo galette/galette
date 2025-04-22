@@ -66,13 +66,13 @@ class FieldsConfig
 
     protected Db $zdb;
     /** @var array<string, array<string, mixed>> */
-    protected array $core_db_fields = array();
+    protected array $core_db_fields = [];
     /** @var array<string, bool> */
-    protected array $all_required = array();
+    protected array $all_required = [];
     /** @var array<string, int> */
-    protected array $all_visibles = array();
+    protected array $all_visibles = [];
     /** @var array<int, array<int, array<string, mixed>>> */
-    protected array $categorized_fields = array();
+    protected array $categorized_fields = [];
     protected string $table;
     /** @var array<string, mixed>|null  */
     protected ?array $defaults = null;
@@ -80,17 +80,17 @@ class FieldsConfig
     protected ?array $cats_defaults = null;
 
     /** @var array<string> */
-    private array $staff_fields = array(
+    private array $staff_fields = [
         'activite_adh',
         'id_statut',
         'bool_exempt_adh',
         'date_crea_adh',
         'info_adh'
-    );
+    ];
     /** @var array<string> */
-    private array $admin_fields = array(
+    private array $admin_fields = [
         'bool_admin_adh'
-    );
+    ];
 
     public const TABLE = 'fields_config';
 
@@ -100,7 +100,7 @@ class FieldsConfig
      *
      * @var array<string>
      */
-    private array $non_required = array(
+    private array $non_required = [
         'id_adh',
         'date_echeance',
         'bool_display_info',
@@ -115,22 +115,22 @@ class FieldsConfig
         'pref_lang',
         'sexe_adh',
         'parent_id'
-    );
+    ];
 
     /** @var array<string> */
-    private array $non_form_elements = array(
+    private array $non_form_elements = [
         'date_echeance',
         'date_modif_adh'
-    );
+    ];
 
     /** @var array<string> */
-    private array $non_display_elements = array(
+    private array $non_display_elements = [
         'date_echeance',
         'mdp_adh',
         'titre_adh',
         'sexe_adh',
         'prenom_adh'
-    );
+    ];
 
     /**
      * Default constructor
@@ -164,8 +164,8 @@ class FieldsConfig
         try {
             $select = $this->zdb->select(self::TABLE);
             $select
-                ->where(array('table_name' => $this->table))
-                ->order(array(FieldsCategories::PK, 'position ASC'));
+                ->where(['table_name' => $this->table])
+                ->order([FieldsCategories::PK, 'position ASC']);
 
             $results = $this->zdb->execute($select);
             $this->core_db_fields = [];
@@ -213,7 +213,7 @@ class FieldsConfig
     protected function buildField(ArrayObject $rset): array
     {
         $rset = $this->prepareField($rset);
-        $f = array(
+        $f = [
             'field_id'       => $rset->field_id,
             'label'          => $this->defaults[$rset->field_id]['label'],
             'category'       => (int)$rset->id_field_category,
@@ -223,7 +223,7 @@ class FieldsConfig
             'position'       => (int)$rset->position,
             'disabled'       => false,
             'width_in_forms' => (int)$rset->width_in_forms,
-        );
+        ];
         return $f;
     }
 
@@ -314,7 +314,7 @@ class FieldsConfig
         $class = get_class($this);
 
         try {
-            $_all_fields = array();
+            $_all_fields = [];
             if (count($this->core_db_fields)) {
                 array_walk(
                     $this->core_db_fields,
@@ -343,14 +343,14 @@ class FieldsConfig
                     Analog::WARNING
                 );
 
-                $params = array();
+                $params = [];
                 foreach ($this->defaults as $k => $f) {
                     if (!isset($_all_fields[$k])) {
                         Analog::log(
                             'Missing field configuration for field `' . $k . '`',
                             Analog::INFO
                         );
-                        $params[] = array(
+                        $params[] = [
                             'field_id'       => $k,
                             'table_name'     => $this->table,
                             'required'       => $f['required'],
@@ -360,7 +360,7 @@ class FieldsConfig
                             'list_visible'   => $f['list_visible'] ?? false,
                             'list_position'  => $f['list_position'] ?? null,
                             'width_in_forms' => $f['width_in_forms'] ?? 1
-                        );
+                        ];
                     }
                 }
 
@@ -396,7 +396,7 @@ class FieldsConfig
             //first, we drop all values
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
-                array('table_name' => $this->table)
+                ['table_name' => $this->table]
             );
             $this->zdb->execute($delete);
             //take care of fields categories, for db relations
@@ -405,7 +405,7 @@ class FieldsConfig
             $params = [];
             foreach ($fields as $f) {
                 //build default config for each field
-                $params[] = array(
+                $params[] = [
                     'field_id'       => $f,
                     'table_name'     => $this->table,
                     'required'       => $this->defaults[$f]['required'],
@@ -415,7 +415,7 @@ class FieldsConfig
                     'list_visible'   => $this->defaults[$f]['list_visible'] ?? false,
                     'list_position'  => $this->defaults[$f]['list_position'] ?? -1,
                     'width_in_forms' => $this->defaults[$f]['width_in_forms'] ?? 1
-                );
+                ];
             }
             $this->insert($params);
 
@@ -478,14 +478,14 @@ class FieldsConfig
                 if ($cat_label === null) {
                     $cat_label = $c->category;
                 }
-                $cat = (object)array(
+                $cat = (object)[
                     'id'        => (int)$c->$cpk,
                     'label'     => $cat_label,
-                    'elements'  => array()
-                );
+                    'elements'  => []
+                ];
 
                 $elements = $this->categorized_fields[$c->$cpk];
-                $cat->elements = array();
+                $cat->elements = [];
 
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
@@ -576,10 +576,10 @@ class FieldsConfig
                     $form_elements[] = $cat;
                 }
             }
-            return array(
+            return [
                 'fieldsets' => $form_elements,
                 'hiddens'   => $hidden_elements
-            );
+            ];
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred getting form elements',
@@ -616,14 +616,14 @@ class FieldsConfig
                 if ($cat_label === null) {
                     $cat_label = $c->category;
                 }
-                $cat = (object)array(
+                $cat = (object)[
                     'id'        => (int)$c->$cpk,
                     'label'     => $cat_label,
-                    'elements'  => array()
-                );
+                    'elements'  => []
+                ];
 
                 $elements = $this->categorized_fields[$c->$cpk];
-                $cat->elements = array();
+                $cat->elements = [];
 
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
@@ -742,18 +742,18 @@ class FieldsConfig
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'required'              => ':required',
                     'visible'               => ':visible',
                     'position'              => ':position',
                     FieldsCategories::PK    => ':' . FieldsCategories::PK,
                     'width_in_forms'          => ':width_in_forms'
-                )
+                ]
             )->where(
-                array(
+                [
                     'field_id'      => ':field_id',
                     'table_name'    => $this->table
-                )
+                ]
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
@@ -767,14 +767,14 @@ class FieldsConfig
                         $field['visible'] = 0;
                     }
 
-                    $params = array(
+                    $params = [
                         'required'              => $field['required'],
                         'visible'               => $field['visible'],
                         'position'              => $pos,
                         FieldsCategories::PK    => $field['category'],
                         'field_id'              => $field['field_id'],
                         'width_in_forms'          => $field['width_in_forms']
-                    );
+                    ];
 
                     $stmt->execute($params);
                 }
@@ -836,25 +836,25 @@ class FieldsConfig
         try {
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'required'  => ':required'
-                )
+                ]
             )->where(
-                array(
+                [
                     'field_id'      => ':field_id',
                     'table_name'    => $this->table
-                )
+                ]
             );
 
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             foreach ($old_required as $or) {
                 $stmt->execute(
-                    array(
+                    [
                         'required'  => ($or->required === false) ?
                             ($this->zdb->isPostgres() ? 'false' : 0) : true,
                         'field_id'  => $or->field_id
-                    )
+                    ]
                 );
             }
 
@@ -898,7 +898,7 @@ class FieldsConfig
     {
         $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
-            array(
+            [
                 'field_id'              => ':field_id',
                 'table_name'            => ':table_name',
                 'required'              => ':required',
@@ -908,7 +908,7 @@ class FieldsConfig
                 'list_visible'          => ':list_visible',
                 'list_position'         => ':list_position',
                 'width_in_forms'          => ':width_in_forms'
-            )
+            ]
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
         foreach ($values as $d) {
@@ -923,7 +923,7 @@ class FieldsConfig
             }
 
             $stmt->execute(
-                array(
+                [
                     'field_id'              => $d['field_id'],
                     'table_name'            => $d['table_name'],
                     'required'              => $required,
@@ -933,7 +933,7 @@ class FieldsConfig
                     'list_visible'          => $list_visible,
                     'list_position'         => $d['list_position'] ?? -1,
                     'width_in_forms'        => $d['width_in_forms'] ?? 1
-                )
+                ]
             );
         }
     }

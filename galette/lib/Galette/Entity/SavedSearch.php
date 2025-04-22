@@ -188,13 +188,13 @@ class SavedSearch
     public function store(): bool
     {
         $parameters = json_encode($this->parameters);
-        $data = array(
+        $data = [
             'name'              => $this->name,
             'parameters'        => $parameters,
             'id_adh'            => $this->author_id,
             'creation_date'     => ($this->creation_date !== null ? $this->creation_date : date('Y-m-d H:i:s')),
             'form'              => $this->form
-        );
+        ];
 
         try {
             $insert = $this->zdb->insert(self::TABLE);

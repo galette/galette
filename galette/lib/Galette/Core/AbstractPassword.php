@@ -54,7 +54,7 @@ abstract class AbstractPassword
      */
     public function makeRandomPassword(?int $size = null): string
     {
-        $size = $size ?? static::DEFAULT_SIZE;
+        $size ??= static::DEFAULT_SIZE;
         $pass = '';
         $i = 0;
         while ($i <= $size - 1) {

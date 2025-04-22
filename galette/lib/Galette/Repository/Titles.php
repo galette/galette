@@ -44,18 +44,18 @@ class Titles
     public const MISS = 3;
 
     /** @var array<array<string,mixed>> */
-    private static array $defaults = array(
-        array(
+    private static array $defaults = [
+        [
             'id_title'      => 1,
             'short_label'   => 'Mr.',
             'long_label'    => null
-        ),
-        array(
+        ],
+        [
             'id_title'      => 2,
             'short_label'   => 'Mrs.',
             'long_label'    => null
-        )
-    );
+        ]
+    ];
 
     private Db $zdb;
 
@@ -81,7 +81,7 @@ class Titles
 
         $results = $this->zdb->execute($select);
 
-        $pols = array();
+        $pols = [];
         foreach ($results as $r) {
             $pk = self::PK;
             $pols[$r->$pk] = new Title($r);
@@ -105,11 +105,11 @@ class Titles
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values(
-                array(
+                [
                     'id_title'      => ':id',
                     'short_label'   => ':short',
                     'long_label'    => ':long'
-                )
+                ]
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
@@ -126,11 +126,11 @@ class Titles
                     $long = _T($d['long_label']);
                 }
                 $stmt->execute(
-                    array(
+                    [
                         'id'    => $d['id_title'],
                         'short' => $short,
                         'long'  => $long
-                    )
+                    ]
                 );
             }
 

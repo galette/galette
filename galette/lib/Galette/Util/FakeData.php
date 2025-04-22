@@ -71,15 +71,15 @@ class FakeData
         }
 
         if (copy($url, $file)) {
-            $_FILES = array(
-                'photo' => array(
+            $_FILES = [
+                'photo' => [
                     'name'      => 'fakephoto.jpg',
                     'type'      => 'image/jpeg',
                     'size'      => filesize($file),
                     'tmp_name'  => $file,
                     'error'     => 0
-                )
-            );
+                ]
+            ];
             $res = $member->picture->store($_FILES['photo'], true);
             if ($res < 0) {
                 $this->addError(

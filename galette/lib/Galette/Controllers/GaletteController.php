@@ -85,11 +85,11 @@ class GaletteController extends AbstractController
         $this->view->render(
             $response,
             'pages/sysinfos.html.twig',
-            array(
+            [
                 'page_title'    => _T("System information"),
                 'rawinfos'      => $raw_infos,
                 'documentation' => 'usermanual/avancee.html#galette-modes'
-            )
+            ]
         );
         return $response;
     }
@@ -166,7 +166,7 @@ class GaletteController extends AbstractController
         }
 
         //List available themes
-        $themes = array();
+        $themes = [];
         $d = dir(GALETTE_THEMES_PATH);
         while (($entry = $d->read()) !== false) {
             $full_entry = GALETTE_THEMES_PATH . $entry;
@@ -199,31 +199,31 @@ class GaletteController extends AbstractController
         $this->view->render(
             $response,
             'pages/preferences.html.twig',
-            array(
+            [
                 'page_title'            => _T("Settings"),
                 'staff_members'         => $m->getStaffMembersList(true),
                 'time'                  => time(),
                 'pref'                  => $pref,
-                'pref_numrows_options'  => array(
+                'pref_numrows_options'  => [
                     10 => '10',
                     20 => '20',
                     50 => '50',
                     100 => '100'
-                ),
+                ],
                 'print_logo'            => $this->print_logo,
                 'required'              => $required,
                 'themes'                => $themes,
                 'statuts'               => $s->getList(),
-                'accounts_options'      => array(
+                'accounts_options'      => [
                     Members::ALL_ACCOUNTS       => _T("All accounts"),
                     Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
                     Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
-                ),
+                ],
                 'paymenttypes'          => $ptlist,
                 'osocials'              => new Social($this->zdb),
                 'tab'                   => $tab,
                 'documentation'         => 'usermanual/preferences.html'
-            )
+            ]
         );
         return $response;
     }
@@ -362,14 +362,14 @@ class GaletteController extends AbstractController
             );
         } else {
             $get = $request->getQueryParams();
-            $dest = (isset($get['adress']) ? $get['adress'] : $this->preferences->pref_email_newadh);
+            $dest = ($get['adress'] ?? $this->preferences->pref_email_newadh);
             if (GaletteMail::isValidEmail($dest)) {
                 $mail = new GaletteMail($this->preferences);
                 $mail->setSubject(_T('Test message'));
                 $mail->setRecipients(
-                    array(
+                    [
                         $dest => _T("Galette admin")
-                    )
+                    ]
                 );
                 $mail->setMessage(_T('Test message.'));
                 $sent = $mail->send();
@@ -426,24 +426,24 @@ class GaletteController extends AbstractController
     public function charts(Request $request, Response $response): Response
     {
         $charts = new Charts(
-            array(
+            [
                 Charts::MEMBERS_STATUS_PIE,
                 Charts::MEMBERS_STATEDUE_PIE,
                 Charts::CONTRIBS_TYPES_PIE,
                 Charts::COMPANIES_OR_NOT,
                 Charts::CONTRIBS_ALLTIME
-            )
+            ]
         );
 
         // display page
         $this->view->render(
             $response,
             'pages/charts.html.twig',
-            array(
+            [
                 'page_title'        => _T("Charts"),
                 'charts'            => $charts->getCharts(),
                 'require_charts'    => true
-            )
+            ]
         );
         return $response;
     }
@@ -494,7 +494,7 @@ class GaletteController extends AbstractController
 
         $pos = 0;
         $current_cat = 0;
-        $res = array();
+        $res = [];
         foreach ($post['fields'] as $field) {
             if ($current_cat != $post[$field . '_category']) {
                 //reset position when category has changed
@@ -510,14 +510,14 @@ class GaletteController extends AbstractController
                 $required = false;
             }
 
-            $res[$current_cat][] = array(
+            $res[$current_cat][] = [
                 'field_id'      =>  $field,
                 'label'         =>  htmlspecialchars($post[$field . '_label'], ENT_QUOTES),
                 'category'      =>  $post[$field . '_category'],
                 'visible'       =>  $post[$field . '_visible'],
                 'required'      =>  $required,
                 'width_in_forms'  =>  $post[$field . '_width_in_forms'] ?? 1
-            );
+            ];
             $pos++;
         }
         //okay, we've got the new array, we send it to the
@@ -621,10 +621,10 @@ class GaletteController extends AbstractController
     {
         $texts = new Texts($this->preferences, $this->routeparser);
 
-        $previews = array(
+        $previews = [
             'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
             'late'      => $texts->getTexts('lateduedate', $this->preferences->pref_lang)
-        );
+        ];
 
         $members = new Members();
         $reminders = $members->getRemindersCount();
@@ -669,7 +669,7 @@ class GaletteController extends AbstractController
         $reminders = new Reminders($selected);
 
         $labels = false;
-        $labels_members = array();
+        $labels_members = [];
         if (isset($post['reminder_wo_mail'])) {
             $labels = true;
         }
@@ -800,10 +800,10 @@ class GaletteController extends AbstractController
         $this->view->render(
             $response,
             'pages/directlink.html.twig',
-            array(
+            [
                 'hash'          => $hash,
                 'page_title'    => _T('Download document')
-            )
+            ]
         );
         return $response;
     }

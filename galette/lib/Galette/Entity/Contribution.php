@@ -187,7 +187,7 @@ class Contribution
             } else {
                 $begin_date = new \DateTime();
                 $begin_date->sub(new DateInterval('P1Y'));
-                list($j, $m) = explode('/', $preferences->pref_beg_membership);
+                [$j, $m] = explode('/', $preferences->pref_beg_membership);
                 $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
                 while ($next_begin_date <= $begin_date) {
                     $next_begin_date->add(new DateInterval('P1Y'));
@@ -212,59 +212,59 @@ class Contribution
      */
     protected function setFields(): self
     {
-        $this->fields = array(
-            'id_cotis'            => array(
+        $this->fields = [
+            'id_cotis'            => [
                 'label'    => _T('Contribution id'), //not a field in the form
                 'propname' => 'id'
-            ),
-            Adherent::PK          => array(
+            ],
+            Adherent::PK          => [
                 'label'    => _T("Contributor:"),
                 'propname' => 'member'
-            ),
-            ContributionsTypes::PK => array(
+            ],
+            ContributionsTypes::PK => [
                 'label'    => _T("Contribution type:"),
                 'propname' => 'type'
-            ),
-            'montant_cotis'       => array(
+            ],
+            'montant_cotis'       => [
                 'label'    => _T("Amount:"),
                 'propname' => 'amount'
-            ),
-            'type_paiement_cotis' => array(
+            ],
+            'type_paiement_cotis' => [
                 'label'    => _T("Payment type:"),
                 'propname' => 'payment_type'
-            ),
-            'info_cotis'          => array(
+            ],
+            'info_cotis'          => [
                 'label'    => _T("Comments:"),
                 'propname' => 'info'
-            ),
-            'date_enreg'          => array(
+            ],
+            'date_enreg'          => [
                 'label'    => _T('Date'), //not a field in the form
                 'propname' => 'date'
-            ),
-            'date_debut_cotis'    => array(
+            ],
+            'date_debut_cotis'    => [
                 'label'    => _T("Date of contribution:"),
                 'cotlabel' => _T("Start date of membership:"), //if contribution is a membership fee, label differs
                 'propname' => 'begin_date'
-            ),
-            'date_fin_cotis'      => array(
+            ],
+            'date_fin_cotis'      => [
                 'label'    => _T("End date of membership:"),
                 'propname' => 'end_date'
-            ),
-            Transaction::PK       => array(
+            ],
+            Transaction::PK       => [
                 'label'    => _T('Transaction ID'), //not a field in the form
                 'propname' => 'transaction'
-            ),
+            ],
             //this one is not really a field, but is required in some cases...
             //adding it here make more simple to check required fields
-            'duree_mois_cotis'    => array(
+            'duree_mois_cotis'    => [
                 'label'    => _T("Membership extension:"),
                 'propname' => 'extension'
-            ),
-            'paid' => array(
+            ],
+            'paid' => [
                 'label' => _Tx('contribution', 'Paid'),
                 'propname' => 'paid'
-            )
-        );
+            ]
+        ];
 
         return $this;
     }
@@ -286,7 +286,7 @@ class Contribution
             $end_date = $begin_date->add($dext);
         } elseif ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            list($j, $m) = explode('/', $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', $preferences->pref_beg_membership);
             $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
             while ($next_begin_date <= $begin_date) {
                 $next_begin_date->add(new DateInterval('P1Y'));
@@ -346,9 +346,9 @@ class Contribution
         try {
             $select = $this->zdb->select(self::TABLE, 'c');
             $select->join(
-                array('a' => PREFIX_DB . Adherent::TABLE),
+                ['a' => PREFIX_DB . Adherent::TABLE],
                 'c.' . Adherent::PK . '=a.' . Adherent::PK,
-                array()
+                []
             );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
@@ -356,9 +356,9 @@ class Contribution
                     //limit to managed members from managed groups
                     $mgroups = $this->login->getManagedGroups();
                     $select->join(
-                        array('users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                        ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                         'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                        array(),
+                        [],
                         $select::JOIN_LEFT
                     );
                     $select->where
@@ -421,9 +421,9 @@ class Contribution
         $pk = self::PK;
         $this->id = (int)$r->$pk;
         $this->date = $r->date_enreg;
-        $this->amount = (double)$r->montant_cotis;
+        $this->amount = (float)$r->montant_cotis;
         //save original amount, we need it for transactions parts calculations
-        $this->orig_amount = (double)$r->montant_cotis;
+        $this->orig_amount = (float)$r->montant_cotis;
         $this->payment_type = (int)$r->type_paiement_cotis;
         $this->setPaid((bool)$r->paid);
         $this->info = $r->info_cotis;
@@ -463,7 +463,7 @@ class Contribution
      */
     public function check(array $values, array $required, array $disabled): bool|array
     {
-        $this->errors = array();
+        $this->errors = [];
 
         $fields = array_keys($this->fields);
         foreach ($fields as $key) {
@@ -508,7 +508,7 @@ class Contribution
                         //FIXME: this is a hack to allow comma as decimal separator
                         $value = strtr((string)$value, ',', '.');
                         if (!empty($value) || $value === '0') {
-                            $this->amount = (double)$value;
+                            $this->amount = (float)$value;
                         }
                         if (!is_numeric($value) && $value !== '') {
                             $this->errors[] = _T("- The amount must be an integer!");
@@ -610,11 +610,11 @@ class Contribution
             $select = $this->zdb->select(self::TABLE, 'c');
             //@phpstan-ignore-next-line
             $select->columns(
-                array('date_debut_cotis', 'date_fin_cotis')
+                ['date_debut_cotis', 'date_fin_cotis']
             )->join(
-                array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
+                ['ct' => PREFIX_DB . ContributionsTypes::TABLE],
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
-                array()
+                []
             )->where([Adherent::PK => $this->member])
                 ->where->notEqualTo('cotis_extension', ContributionsTypes::DONATION_TYPE)
                 ->where->nest->nest
@@ -674,7 +674,7 @@ class Contribution
 
         try {
             $this->zdb->connection->beginTransaction();
-            $values = array();
+            $values = [];
             $fields = self::getDbFields($this->zdb);
             foreach ($fields as $field) {
                 $prop = $this->fields[$field]['propname'];
@@ -785,7 +785,7 @@ class Contribution
 
             $update = $this->zdb->update(Adherent::TABLE);
             $update->set(
-                array('date_echeance' => $due_date_update)
+                ['date_echeance' => $due_date_update]
             )->where(
                 [Adherent::PK => $this->member]
             );
@@ -875,7 +875,7 @@ class Contribution
     public static function getDbFields(Db $zdb): array
     {
         $columns = $zdb->getColumns(self::TABLE);
-        $fields = array();
+        $fields = [];
         foreach ($columns as $col) {
             $fields[] = $col->getName();
         }
@@ -909,13 +909,13 @@ class Contribution
         try {
             $select = $zdb->select(self::TABLE, 'c');
             $select->columns(
-                array(
+                [
                     'max_date' => new Expression('MAX(date_fin_cotis)')
-                )
+                ]
             )->join(
-                array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
+                ['ct' => PREFIX_DB . ContributionsTypes::TABLE],
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
-                array()
+                []
             )->where(
                 [Adherent::PK => $member_id]
             )
@@ -957,7 +957,7 @@ class Contribution
             if ($c->isTransactionPartOf($trans_id)) {
                 $update = $zdb->update(self::TABLE);
                 $update->set(
-                    array(Transaction::PK => null)
+                    [Transaction::PK => null]
                 )->where(
                     [self::PK => $contrib_id]
                 );
@@ -995,7 +995,7 @@ class Contribution
         try {
             $update = $zdb->update(self::TABLE);
             $update->set(
-                array(Transaction::PK => $trans_id)
+                [Transaction::PK => $trans_id]
             )->where([self::PK => $contrib_id]);
 
             $zdb->execute($update);
@@ -1064,9 +1064,9 @@ class Contribution
     ): string|bool {
         global $preferences;
 
-        $payment = array(
+        $payment = [
             'type'  => $this->getPaymentType()
-        );
+        ];
 
         if ($pextra !== null) {
             $payment = array_merge($payment, $pextra);
@@ -1083,32 +1083,32 @@ class Contribution
             $voucher_path = $voucher->getPath();
         }
 
-        $contrib = array(
+        $contrib = [
             'id'        => $this->id,
             'date'      => $this->date,
             'type'      => $this->getRawType(),
             'amount'    => $this->amount,
             'voucher'   => $voucher_path,
-            'category'  => array(
+            'category'  => [
                 'id'    => $this->type->id,
                 'label' => $this->type->libelle
-            ),
+            ],
             'payment'   => $payment
-        );
+        ];
 
         if ($this->member !== null) {
             $m = new Adherent($this->zdb, (int)$this->member);
-            $member = array(
+            $member = [
                 'id'            => (int)$this->member,
                 'name'          => $m->sfullname,
                 'email'         => $m->email,
                 'organization'  => ($m->isCompany() ? 1 : 0),
-                'status'        => array(
+                'status'        => [
                     'id'    => $m->status,
                     'label' => $m->sstatus
-                ),
+                ],
                 'country'       => $m->country
-            );
+            ];
 
             if ($m->isCompany()) {
                 $member['organization_name'] = $m->company_name;
@@ -1227,6 +1227,7 @@ class Contribution
                     } else {
                         return '';
                     }
+                    // no break
                 case 'model':
                     if (!isset($this->is_cotis)) {
                         return null;
@@ -1264,7 +1265,7 @@ class Contribution
      */
     public function __set(string $name, mixed $value): void
     {
-        $forbidden = array('fields', 'is_cotis', 'end_date');
+        $forbidden = ['fields', 'is_cotis', 'end_date'];
 
         if (!in_array($name, $forbidden)) {
             switch ($name) {

@@ -87,11 +87,11 @@ class HistoryController extends AbstractController
         $this->view->render(
             $response,
             'pages/history.html.twig',
-            array(
+            [
                 'page_title'        => _T("Logs"),
                 'logs'              => $logs,
                 'history'           => $this->history
-            )
+            ]
         );
         return $response;
     }
@@ -160,8 +160,7 @@ class HistoryController extends AbstractController
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;
 
-        $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] : $this->routeparser->urlFor('slash');
+        $uri = $post['redirect_uri'] ?? $this->routeparser->urlFor('slash');
 
         if (!isset($post['confirm'])) {
             $this->flash->addMessage(
@@ -227,13 +226,13 @@ class HistoryController extends AbstractController
         $this->view->render(
             $response,
             'modals/confirm_removal.html.twig',
-            array(
+            [
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => _T('Flush the logs'),
                 'form_url'      => $this->routeparser->urlFor('doFlushHistory'),
                 'cancel_uri'    => $data['redirect_uri'],
                 'data'          => $data
-            )
+            ]
         );
         return $response;
     }

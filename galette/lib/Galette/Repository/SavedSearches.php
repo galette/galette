@@ -86,7 +86,7 @@ class SavedSearches
             $select = $this->buildSelect($fields);
             $this->filters->setLimits($select);
 
-            $searches = array();
+            $searches = [];
             $results = $this->zdb->execute($select);
             if ($as_search) {
                 foreach ($results as $row) {
@@ -157,9 +157,9 @@ class SavedSearches
             $countSelect->reset($countSelect::JOINS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     self::PK => new Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);
@@ -184,7 +184,7 @@ class SavedSearches
      */
     private function buildOrderClause(): array
     {
-        $order = array();
+        $order = [];
         $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
 
         return $order;
@@ -211,7 +211,7 @@ class SavedSearches
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
-        $list = array();
+        $list = [];
         if (is_numeric($ids)) {
             //we've got only one identifier
             $list[] = $ids;

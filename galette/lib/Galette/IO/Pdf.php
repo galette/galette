@@ -186,8 +186,7 @@ class Pdf extends TCPDF
             $msg
         );
 
-        $redirect = (isset($_SERVER['HTTP_REFERER']) ?
-            $_SERVER['HTTP_REFERER'] : $container->get(RouteParser::class)->urlFor('slash'));
+        $redirect = ($_SERVER['HTTP_REFERER'] ?? $container->get(RouteParser::class)->urlFor('slash'));
         header('Location: ' . $redirect);
         die();
     }
@@ -202,11 +201,11 @@ class Pdf extends TCPDF
      */
     public function colorHex2Dec(string $hex6): array
     {
-        return array(
+        return [
             "R" => hexdec(substr($hex6, 1, 2)),
             "G" => hexdec(substr($hex6, 3, 2)),
             "B" => hexdec(substr($hex6, 5, 2))
-        );
+        ];
     }
 
     /**

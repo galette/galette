@@ -97,8 +97,8 @@ class MembersCsv extends CsvOut
             }
         }
         $access_level = $this->login->getAccessLevel();
-        $fields = array();
-        $labels = array();
+        $fields = [];
+        $labels = [];
         foreach ($this->members_fields as $k => $f) {
             // skip fields blacklisted for export
             if (

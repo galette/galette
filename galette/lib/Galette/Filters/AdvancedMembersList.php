@@ -105,7 +105,7 @@ class AdvancedMembersList extends MembersList
     private ?string $birth_date_end = null; //@phpstan-ignore-line
     private int $show_public_infos = Members::FILTER_DC_PUBINFOS;
     /** @var array<int> */
-    private array $status = array();
+    private array $status = [];
     private ?string $contrib_creation_date_begin = null; //@phpstan-ignore-line
     private ?string $contrib_creation_date_end = null; //@phpstan-ignore-line
     private ?string $contrib_begin_date_begin = null; //@phpstan-ignore-line
@@ -113,14 +113,14 @@ class AdvancedMembersList extends MembersList
     private ?string $contrib_end_date_begin = null; //@phpstan-ignore-line
     private ?string $contrib_end_date_end = null; //@phpstan-ignore-line
     /** @var array<int> */
-    private array $contributions_types = array();
+    private array $contributions_types = [];
     /** @var array<int> */
-    private array $payments_types = array();
+    private array $payments_types = [];
     private ?float $contrib_min_amount = null;
     private ?float $contrib_max_amount = null;
 
     /** @var array<string> */
-    protected array $advancedmemberslist_fields = array(
+    protected array $advancedmemberslist_fields = [
         'creation_date_begin',
         'creation_date_end',
         'modif_date_begin',
@@ -145,10 +145,10 @@ class AdvancedMembersList extends MembersList
         'free_search',
         'groups_search',
         'groups_search_log_op'
-    );
+    ];
 
     /** @var array<string> */
-    protected array $virtuals_advancedmemberslist_fields = array(
+    protected array $virtuals_advancedmemberslist_fields = [
         'rcreation_date_begin',
         'rcreation_date_end',
         'rmodif_date_begin',
@@ -164,32 +164,32 @@ class AdvancedMembersList extends MembersList
         'rcontrib_end_date_begin',
         'rcontrib_end_date_end',
         'search_fields'
-    );
+    ];
 
     /**
      * an empty free search criteria to begin
      *
      * @var array<string,mixed>
      */
-    private array $free_search = array(
-        'empty' => array(
+    private array $free_search = [
+        'empty' => [
             'field'     => '',
             'search'    => '',
             'log_op'    => self::OP_AND,
             'qry_op'    => self::OP_EQUALS
-        )
-    );
+        ]
+    ];
 
     /**
      * an empty group search criteria to begin
      *
      * @var array<string,mixed>
      */
-    private array $groups_search = array(
-        'empty' => array(
+    private array $groups_search = [
+        'empty' => [
             'group'    => '',
-        )
-    );
+        ]
+    ];
 
     //defaults to 'OR' for group search
     private int $groups_search_log_op = self::OP_OR;
@@ -199,7 +199,7 @@ class AdvancedMembersList extends MembersList
      *
      * @var array<string,mixed>
      */
-    private array $contrib_dynamic = array();
+    private array $contrib_dynamic = [];
 
     /**
      * Default constructor
@@ -263,7 +263,7 @@ class AdvancedMembersList extends MembersList
         $this->birth_date_begin = null;
         $this->birth_date_end = null;
         $this->show_public_infos = Members::FILTER_DC_PUBINFOS;
-        $this->status = array();
+        $this->status = [];
 
         $this->contrib_creation_date_begin = null;
         $this->contrib_creation_date_end = null;
@@ -271,25 +271,25 @@ class AdvancedMembersList extends MembersList
         $this->contrib_begin_date_end = null;
         $this->contrib_end_date_begin = null;
         $this->contrib_begin_date_end = null;
-        $this->contributions_types = array();
-        $this->payments_types = array();
+        $this->contributions_types = [];
+        $this->payments_types = [];
 
-        $this->free_search = array(
-            'empty' => array(
+        $this->free_search = [
+            'empty' => [
                 'field'     => '',
                 'search'    => '',
                 'log_op'    => self::OP_AND,
                 'qry_op'    => self::OP_EQUALS
-            )
-        );
+            ]
+        ];
 
-        $this->contrib_dynamic = array();
+        $this->contrib_dynamic = [];
 
-        $this->groups_search = array(
-            'empty' => array(
+        $this->groups_search = [
+            'empty' => [
                 'group'     => '',
-            )
-        );
+            ]
+        ];
 
         $this->groups_search_log_op = self::OP_OR;
     }
@@ -462,9 +462,9 @@ class AdvancedMembersList extends MembersList
                     break;
                 case 'status':
                     if (!is_array($value)) {
-                        $value = array($value);
+                        $value = [$value];
                     }
-                    $this->status = array();
+                    $this->status = [];
                     foreach ($value as $v) {
                         if (is_numeric($v)) {
                             //check status existence
@@ -489,9 +489,9 @@ class AdvancedMembersList extends MembersList
                     break;
                 case 'contributions_types':
                     if (!is_array($value)) {
-                        $value = array($value);
+                        $value = [$value];
                     }
-                    $this->contributions_types = array();
+                    $this->contributions_types = [];
                     foreach ($value as $v) {
                         if (is_numeric($v)) {
                             //check type existence
@@ -517,9 +517,9 @@ class AdvancedMembersList extends MembersList
                     break;
                 case 'payments_types':
                     if (!is_array($value)) {
-                        $value = array($value);
+                        $value = [$value];
                     }
-                    $this->payments_types = array();
+                    $this->payments_types = [];
                     $ptypes = new PaymentTypes(
                         $zdb,
                         $preferences,

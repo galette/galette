@@ -143,16 +143,16 @@ class News
                 throw new \Exception();
             }
 
-            $posts = array();
+            $posts = [];
 
             if (isset($xml->entry)) {
                 //Reading an atom feed
                 foreach ($xml->entry as $post) {
-                    $posts[] = array(
+                    $posts[] = [
                         'title' => (string)$post->title,
                         'url'   => (string)$post->link['href'],
                         'date'  => (string)$post->published
-                    );
+                    ];
                     if (count($posts) == $this->show) {
                         break;
                     }
@@ -160,11 +160,11 @@ class News
             } elseif (isset($xml->channel->item)) {
                 //Reading a RSS feed
                 foreach ($xml->channel->item as $post) {
-                    $posts[] = array(
+                    $posts[] = [
                         'title' => (string)$post->title,
                         'url'   => (string)$post->link,
                         'date'  => (string)$post->pubDate
-                    );
+                    ];
                     if (count($posts) == $this->show) {
                         break;
                     }

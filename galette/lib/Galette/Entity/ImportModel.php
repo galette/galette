@@ -133,9 +133,9 @@ class ImportModel
     public function store(Db $zdb): bool
     {
         try {
-            $values = array(
+            $values = [
                 'model_fields'  => Galette::jsonEncode($this->fields)
-            );
+            ];
 
             if (!isset($this->id)) {
                 //we're inserting a new model

@@ -107,7 +107,7 @@ trait Dynamics
                     continue;
                 }
 
-                list($field_id, $val_index) = explode('_', str_replace($this->name_pattern, '', $key));
+                [$field_id, $val_index] = explode('_', str_replace($this->name_pattern, '', $key));
                 if (!is_numeric($field_id) || !is_numeric($val_index)) {
                     continue;
                 }
@@ -246,7 +246,7 @@ trait Dynamics
                 continue;
             }
 
-            list($field_id, $val_index) = explode('_', str_replace($this->name_pattern, '', $key));
+            [$field_id, $val_index] = explode('_', str_replace($this->name_pattern, '', $key));
             if (!is_numeric($field_id) || !is_numeric($val_index)) {
                 continue;
             }

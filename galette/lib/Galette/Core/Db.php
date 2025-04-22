@@ -108,14 +108,14 @@ class Db
             }
 
             $this->type_db = $_type_db;
-            $this->options = array(
+            $this->options = [
                 'driver'   => $_type,
                 'hostname' => $_host_db,
                 'port'     => $_port_db,
                 'username' => $_user_db,
                 'password' => $_pwd_db,
                 'database' => $_name_db
-            );
+            ];
             if (defined('GALETTE_TESTS') && GALETTE_TESTS === true) {
                 $this->options['driver_options'] = [
                     \PDO::ATTR_STRINGIFY_FETCHES => true
@@ -194,7 +194,7 @@ class Db
             if ($exists === true) {
                 $select = $this->select('database');
                 $select->columns(
-                    array('version')
+                    ['version']
                 )->limit(1);
 
                 $results = $this->execute($select);
@@ -285,14 +285,14 @@ class Db
                 throw new Exception('Unknown database type');
             }
 
-            $_options = array(
+            $_options = [
                 'driver'   => $_type,
                 'hostname' => $host,
                 'port'     => $port,
                 'username' => $user,
                 'password' => $pass,
                 'database' => $db
-            );
+            ];
 
             $_db = new Adapter($_options);
             $_db->getDriver()->getConnection()->connect();
@@ -343,14 +343,14 @@ class Db
             Analog::DEBUG
         );
         $stop = false;
-        $results = array(
+        $results = [
             'create' => false,
             'insert' => false,
             'select' => false,
             'update' => false,
             'delete' => false,
             'drop'   => false
-        );
+        ];
         if ($mode === 'u') {
             $results['alter'] = false;
         }
@@ -391,10 +391,10 @@ class Db
             }
 
             //can Galette INSERT records ?
-            $values = array(
+            $values = [
                 'test_id'      => 1,
                 'test_text'    => 'a simple text'
-            );
+            ];
             try {
                 $insert = $this->sql->insert('galette_test');
                 $insert->values($values);
@@ -419,13 +419,13 @@ class Db
             //all those tests need that the first record exists
             if (!$stop) {
                 //can Galette UPDATE records ?
-                $values = array(
+                $values = [
                     'test_text' => 'another simple text'
-                );
+                ];
                 try {
                     $update = $this->sql->update('galette_test');
                     $update->set($values)->where(
-                        array('test_id' => 1)
+                        ['test_id' => 1]
                     );
                     $res = $this->execute($update);
                     if ($res->count() === 1) {
@@ -464,7 +464,7 @@ class Db
                 //can Galette DELETE records ?
                 try {
                     $delete = $this->sql->delete('galette_test');
-                    $delete->where(array('test_id' => 1));
+                    $delete->where(['test_id' => 1]);
                     $this->execute($delete);
                     $results['delete'] = true;
                 } catch (Throwable $e) {
@@ -509,7 +509,7 @@ class Db
             $prefix = PREFIX_DB;
         }
 
-        $tables_list = array();
+        $tables_list = [];
         //filter table_list: we only want PREFIX_DB tables
         foreach ($tmp_tables_list as $t) {
             if (preg_match('/^' . $prefix . '/', $t)) {
@@ -621,7 +621,7 @@ class Db
             $metadata = Factory::createSourceFromAdapter($this->db);
             $tbl = $metadata->getTable($table);
             $constraints = $tbl->getConstraints();
-            $pkeys = array();
+            $pkeys = [];
 
             foreach ($constraints as $constraint) {
                 if ($constraint->getType() === 'PRIMARY KEY') {
@@ -636,17 +636,17 @@ class Db
                 //_before_ the SQL upgrade, we'll have to manually
                 //check these ones
                 if (preg_match('/' . $prefix . 'dynamic_fields/', $table) !== 0) {
-                    $pkeys = array(
+                    $pkeys = [
                         'item_id',
                         'field_id',
                         'field_form',
                         'val_index'
-                    );
+                    ];
                 } elseif (preg_match('/' . $prefix . 'l10n/', $table) !== 0) {
-                    $pkeys = array(
+                    $pkeys = [
                         'text_orig',
                         'text_locale'
-                    );
+                    ];
                 } else {
                     //not a know case, we do not perform any update.
                     throw new Exception(
@@ -660,8 +660,8 @@ class Db
             $results = $this->execute($select);
 
             foreach ($results as $row) {
-                $data = array();
-                $where = array();
+                $data = [];
+                $where = [];
 
                 //build where
                 foreach ($pkeys as $k) {
@@ -714,9 +714,9 @@ class Db
         } else {
             return $this->sql->select(
                 //@phpstan-ignore-next-line
-                array(
+                [
                     $alias => PREFIX_DB . $table
-                )
+                ]
             );
         }
     }

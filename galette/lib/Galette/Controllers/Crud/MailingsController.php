@@ -74,7 +74,7 @@ class MailingsController extends CrudController
             unset($this->session->redirect_mailing);
         }
 
-        $params = array();
+        $params = [];
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
@@ -163,13 +163,13 @@ class MailingsController extends CrudController
 
             $params = array_merge(
                 $params,
-                array(
+                [
                     'mailing'           => $mailing,
                     'attachments'       => $mailing->attachments,
                     'html_editor'       => true,
                     'html_editor_active' => $this->preferences->pref_editor_enabled,
                     'documentation'     => 'usermanual/adherents.html#e-mailing'
-                )
+                ]
             );
         }
 
@@ -178,9 +178,9 @@ class MailingsController extends CrudController
             $response,
             'pages/mailing_form.html.twig',
             array_merge(
-                array(
+                [
                     'page_title' => _T("Mailing")
-                ),
+                ],
                 $params
             )
         );
@@ -310,7 +310,7 @@ class MailingsController extends CrudController
                         if ($_FILES['attachment']['error'][$i] === UPLOAD_ERR_OK) {
                             if ($_FILES['attachment']['tmp_name'][$i] != '') {
                                 if (is_uploaded_file($_FILES['attachment']['tmp_name'][$i])) {
-                                    $da_file = array();
+                                    $da_file = [];
                                     foreach (array_keys($_FILES['attachment']) as $key) {
                                         $da_file[$key] = $_FILES['attachment'][$key][$i];
                                     }
@@ -476,13 +476,13 @@ class MailingsController extends CrudController
         $this->view->render(
             $response,
             'pages/mailings_list.html.twig',
-            array(
+            [
                 'page_title'        => _T("Mailings"),
                 'logs'              => $history_list,
                 'history'           => $mailhist,
                 'filters'           => $filters,
                 'documentation'     => 'usermanual/adherents.html#e-mailing'
-            )
+            ]
         );
         return $response;
     }

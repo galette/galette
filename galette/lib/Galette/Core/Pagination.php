@@ -58,14 +58,14 @@ abstract class Pagination
     public const ORDER_DESC = 'DESC';
 
     /** @var array<string> */
-    protected array $pagination_fields = array(
+    protected array $pagination_fields = [
         'current_page',
         'orderby',
         'ordered',
         'show',
         'pages',
         'counter'
-    );
+    ];
 
     /**
      * Default constructor
@@ -290,12 +290,12 @@ abstract class Pagination
             $is_paginated = false;
         }
 
-        $options = array(
+        $options = [
             10 => "10",
             20 => "20",
             50 => "50",
             100 => "100"
-        );
+        ];
 
         if ($restricted === false) {
             $options[0] = _T("All");

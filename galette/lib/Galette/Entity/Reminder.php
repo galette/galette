@@ -143,7 +143,7 @@ class Reminder
     private function store(Db $zdb): bool
     {
         $now = new \DateTime();
-        $data = array(
+        $data = [
             'reminder_type'     => $this->type,
             'reminder_dest'     => $this->dest->id,
             'reminder_date'     => $now->format('Y-m-d'),
@@ -153,7 +153,7 @@ class Reminder
             'reminder_nomail'   => ($this->nomail) ?
                 true :
                 ($zdb->isPostgres() ? 'false' : 0)
-        );
+        ];
         try {
             $insert = $zdb->insert(self::TABLE);
             $insert->values($data);
@@ -229,24 +229,24 @@ class Reminder
             $mail = new GaletteMail($preferences);
             $mail->setSubject($texts->getSubject());
             $mail->setRecipients(
-                array(
+                [
                     $this->dest->getEmail() => $this->dest->sname
-                )
+                ]
             );
             $mail->setMessage($texts->getBody());
             $sent = $mail->send();
 
             $details = str_replace(
-                array(
+                [
                     '%name',
                     '%mail',
                     '%days'
-                ),
-                array(
+                ],
+                [
                     $this->dest->sname,
                     $this->dest->getEmail(),
                     (string)$days_remaining
-                ),
+                ],
                 _T("%name <%mail> (%days days)")
             );
 
@@ -277,16 +277,16 @@ class Reminder
                 _T("Unable to send %membership reminder (no email address).")
             );
             $details = str_replace(
-                array(
+                [
                     '%name',
                     '%id',
                     '%days'
-                ),
-                array(
+                ],
+                [
                     $this->dest->sname,
                     (string)$this->dest->id,
                     (string)$days_remaining
-                ),
+                ],
                 _T("%name (#%id - %days days)")
             );
             $hist->add($str, $details);

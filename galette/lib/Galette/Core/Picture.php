@@ -84,13 +84,13 @@ class Picture implements FileInterface
     {
         $this->init(
             null,
-            array('jpeg', 'jpg', 'png', 'gif', 'webp'),
-            array(
+            ['jpeg', 'jpg', 'png', 'gif', 'webp'],
+            [
                 'jpg'    =>    'image/jpeg',
                 'png'    =>    'image/png',
                 'gif'    =>    'image/gif',
                 'webp'   =>    'image/webp'
-            )
+            ]
         );
 
         // '!==' needed, otherwise ''==0
@@ -240,12 +240,12 @@ class Picture implements FileInterface
 
         $select = $zdb->select($this->tbl_prefix . $class::TABLE);
         $select->columns(
-            array(
+            [
                 'picture',
                 'format'
-            )
+            ]
         );
-        $select->where(array($class::PK => $this->db_id));
+        $select->where([$class::PK => $this->db_id]);
         return $select;
     }
 
@@ -269,7 +269,7 @@ class Picture implements FileInterface
      */
     private function setSizes(): void
     {
-        list($width, $height) = getimagesize($this->file_path);
+        [$width, $height] = getimagesize($this->file_path);
         $this->height = $height;
         $this->width = $width;
         $this->optimal_height = $height;
@@ -529,11 +529,11 @@ class Picture implements FileInterface
             } else {
                 $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
                 $insert->values(
-                    array(
+                    [
                         $class::PK  => ':' . $class::PK,
                         'picture'   => ':picture',
                         'format'    => ':format'
-                    )
+                    ]
                 );
                 $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
                 $container = $stmt->getParameterContainer();
@@ -547,11 +547,11 @@ class Picture implements FileInterface
             }
 
             $stmt->execute(
-                array(
+                [
                     $class::PK  => $id,
                     'picture'   => $picture,
                     'format'    => $ext
-                )
+                ]
             );
             $zdb->connection->commit();
             $this->has_picture = true;
@@ -577,7 +577,7 @@ class Picture implements FileInterface
      */
     public function missingInDb(Db $zdb): void
     {
-        $existing_disk = array();
+        $existing_disk = [];
 
         //retrieve files on disk
         if ($handle = opendir($this->store_path)) {
@@ -592,11 +592,11 @@ class Picture implements FileInterface
                         //but we change it to jpg to reduce further tests :)
                         $extension = 'jpg';
                     }
-                    $existing_disk[$id] = array(
+                    $existing_disk[$id] = [
                         'name'  => $entry,
                         'id'    => $id,
                         'ext'   => $extension
-                    );
+                    ];
                 }
             }
             closedir($handle);
@@ -610,12 +610,12 @@ class Picture implements FileInterface
             $class = get_class($this);
             $select = $zdb->select($this->tbl_prefix . $class::TABLE);
             $select
-                ->columns(array($class::PK))
+                ->columns([$class::PK])
                 ->where->in($class::PK, array_keys($existing_disk));
 
             $results = $zdb->execute($select);
 
-            $existing_db = array();
+            $existing_db = [];
             foreach ($results as $result) {
                 $existing_db[] = (int)$result[self::PK];
             }
@@ -629,7 +629,7 @@ class Picture implements FileInterface
                 null,
                 false,
                 false,
-                array(self::PK)
+                [self::PK]
             );
 
             foreach ($valids as $valid) {
@@ -728,7 +728,7 @@ class Picture implements FileInterface
                 return false;
         }
 
-        list($cur_width, $cur_height, $cur_type, $curattr)
+        [$cur_width, $cur_height, $cur_type, $curattr]
             = getimagesize($source);
 
         $ratio = $cur_width / $cur_height;
@@ -795,8 +795,8 @@ class Picture implements FileInterface
             $thumb_cropped = imagecreatetruecolor((int)$crop_width, (int)$crop_height);
             // Cropped ratio.
             $ratio = $crop_width / $crop_height;
-        // Otherwise, calculate image size according to the source's ratio.
         } else {
+            // Otherwise, calculate image size according to the source's ratio.
             if ($cur_width > $cur_height) {
                 $h = round($w / $ratio);
             } else {
@@ -821,14 +821,13 @@ class Picture implements FileInterface
         switch ($ext) {
             case 'jpg':
                 $image = imagecreatefromjpeg($source);
-                // Crop
                 if ($thumb_cropped !== false) {
-                    // First, crop.
+                    // Crop: first, crop.
                     imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
                     // Then, resize.
                     imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                // Resize
                 } else {
+                    // Resize
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                 }
                 imagejpeg($thumb, $dest);
@@ -841,44 +840,42 @@ class Picture implements FileInterface
                 imagesavealpha($image, true);
                 imagealphablending($thumb, false);
                 imagesavealpha($thumb, true);
-                // Crop
                 if ($thumb_cropped !== false) {
+                    // Crop
                     imagealphablending($thumb_cropped, false);
                     imagesavealpha($thumb_cropped, true);
                     // First, crop.
                     imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
                     // Then, resize.
                     imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                // Resize
                 } else {
+                    // Resize
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                 }
                 imagepng($thumb, $dest);
                 break;
             case 'gif':
                 $image = imagecreatefromgif($source);
-                // Crop
                 if ($thumb_cropped !== false) {
-                    // First, crop.
+                    // Crop: first, crop.
                     imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
                     // Then, resize.
                     imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                // Resize
                 } else {
+                    // Resize
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                 }
                 imagegif($thumb, $dest);
                 break;
             case 'webp':
                 $image = imagecreatefromwebp($source);
-                // Crop
                 if ($thumb_cropped !== false) {
-                    // First, crop.
+                    // Crop: first, crop.
                     imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
                     // Then, resize.
                     imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                // Resize
                 } else {
+                    // Resize
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                 }
                 imagewebp($thumb, $dest);

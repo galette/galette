@@ -167,9 +167,9 @@ class ContribListener implements ListenerSubscriber
         $mail = new GaletteMail($this->preferences);
         $mail->setSubject($texts->getSubject());
         $mail->setRecipients(
-            array(
+            [
                 $member->getEmail() => $member->sname
-            )
+            ]
         );
 
         $link_card = '';
@@ -201,15 +201,15 @@ class ContribListener implements ListenerSubscriber
         if ($sent) {
             $this->history->add(
                 preg_replace(
-                    array('/%name/', '/%email/'),
-                    array($member->sname, $member->getEmail()),
+                    ['/%name/', '/%email/'],
+                    [$member->sname, $member->getEmail()],
                     _T("Email sent to user %name (%email)")
                 )
             );
         } else {
             $txt = preg_replace(
-                array('/%name/', '/%email/'),
-                array($member->sname, $member->getEmail()),
+                ['/%name/', '/%email/'],
+                [$member->sname, $member->getEmail()],
                 _T("A problem happened while sending contribution receipt to user %name (%email)")
             );
             $this->history->add($txt);
@@ -273,15 +273,15 @@ class ContribListener implements ListenerSubscriber
         if ($sent) {
             $this->history->add(
                 preg_replace(
-                    array('/%name/', '/%email/'),
-                    array($member->sname, $member->getEmail()),
+                    ['/%name/', '/%email/'],
+                    [$member->sname, $member->getEmail()],
                     _T("Email sent to admin for user %name (%email)")
                 )
             );
         } else {
             $txt = preg_replace(
-                array('/%name/', '/%email/'),
-                array($member->sname, $member->getEmail()),
+                ['/%name/', '/%email/'],
+                [$member->sname, $member->getEmail()],
                 _T("A problem happened while sending to admin notification for user %name (%email) contribution")
             );
             $this->history->add($txt);

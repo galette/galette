@@ -31,11 +31,11 @@ namespace Galette\Core;
 class CheckModules
 {
     /** @var array<string,string> */
-    private array $good = array();
+    private array $good = [];
     /** @var array<int,string> */
-    private array $should = array();
+    private array $should = [];
     /** @var array<int,string> */
-    private array $missing = array();
+    private array $missing = [];
 
     /** @var array<string,bool> */
     private array $modules = [

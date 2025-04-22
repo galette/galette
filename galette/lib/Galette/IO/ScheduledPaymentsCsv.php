@@ -72,7 +72,7 @@ class ScheduledPaymentsCsv extends CsvOut
     {
         $scheduled = new ScheduledPayment($this->zdb);
         $fields = $scheduled->getFields();
-        $labels = array();
+        $labels = [];
 
         foreach ($fields as $f) {
             $label = $f['label'];

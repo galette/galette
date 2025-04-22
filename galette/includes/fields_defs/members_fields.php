@@ -24,8 +24,8 @@ declare(strict_types=1);
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\FieldsCategories;
 
-$members_fields = array(
-    'id_adh' => array(
+$members_fields = [
+    'id_adh' => [
         'label'    => _T("Member id:"),
         'propname' => 'id',
         'required' => false,
@@ -34,8 +34,8 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY,
         'list_visible'  => true,
         'list_position' => 0
-    ),
-    'id_statut' => array(
+    ],
+    'id_statut' => [
         'label'    => _T("Status:"),
         'propname' => 'status',
         'required' => false,
@@ -44,32 +44,32 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
         'list_visible'  => true,
         'list_position' => 3
-    ),
-    'nom_adh' => array(
+    ],
+    'nom_adh' => [
         'label'    => _T("Name:"),
         'propname' => 'name',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 3,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'prenom_adh' => array(
+    ],
+    'prenom_adh' => [
         'label'    => _T("First name:"),
         'propname' => 'surname',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 4,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'societe_adh' => array(
+    ],
+    'societe_adh' => [
         'label'    => _T("Company:"),
         'propname' => 'company_name',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 5,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'pseudo_adh' => array(
+    ],
+    'pseudo_adh' => [
         'label'    => _T("Nickname:"),
         'propname' => 'nickname',
         'required' => false,
@@ -78,144 +78,144 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY,
         'list_visible'  => true,
         'list_position' => 2
-    ),
-    'titre_adh' => array(
+    ],
+    'titre_adh' => [
         'label'    => _T("Title:"),
         'propname' => 'title',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 1,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'ddn_adh' => array(
+    ],
+    'ddn_adh' => [
         'label'    => _T("Birth date:"),
         'propname' => 'birthdate',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 7,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'sexe_adh' => array(
+    ],
+    'sexe_adh' => [
         'label'    => _T("Gender:"),
         'propname' => 'gender',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 2,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'adresse_adh' => array(
+    ],
+    'adresse_adh' => [
         'label'    => _T("Address:"),
         'propname' => 'address',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 11,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'cp_adh' => array(
+    ],
+    'cp_adh' => [
         'label'    => _T("Zip Code:"),
         'propname' => 'zipcode',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 13,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'ville_adh' => array(
+    ],
+    'ville_adh' => [
         'label'    => _T("City:"),
         'propname' => 'town',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 14,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'region_adh' => array(
+    ],
+    'region_adh' => [
         'label'    => _T("Region:"),
         'propname' => 'region',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 15,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'pays_adh' => array(
+    ],
+    'pays_adh' => [
         'label'    => _T("Country:"),
         'propname' => 'country',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 16,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'tel_adh' => array(
+    ],
+    'tel_adh' => [
         'label'    => _T("Phone:"),
         'propname' => 'phone',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 17,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'gsm_adh' => array(
+    ],
+    'gsm_adh' => [
         'label'    => _T("Mobile phone:"),
         'propname' => 'gsm',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 18,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'email_adh' => array(
+    ],
+    'email_adh' => [
         'label'    => _T("E-Mail:"),
         'propname' => 'email',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 19,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'info_adh' => array(
+    ],
+    'info_adh' => [
         'label'    => _T("Other information (admin):"),
         'propname' => 'others_infos_admin',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
         'position' => 33,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
-    ),
-    'info_public_adh' => array(
+    ],
+    'info_public_adh' => [
         'label'    => _T("Other information:"),
         'propname' => 'others_infos',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 34,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
-    ),
-    'prof_adh' => array(
+    ],
+    'prof_adh' => [
         'label'    => _T("Profession:"),
         'propname' => 'job',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 9,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'login_adh' => array(
+    ],
+    'login_adh' => [
         'label'    => _T("Username:"),
         'propname' => 'login',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 30,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
-    ),
-    'mdp_adh' => array(
+    ],
+    'mdp_adh' => [
         'label'    => _T("Password:"),
         'propname' => 'password',
         'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 31,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
-    ),
-    'date_crea_adh' => array(
+    ],
+    'date_crea_adh' => [
         'label'    => _T("Creation date:"),
         'propname' => 'creation_date',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
         'position' => 32,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
-    ),
-    'date_modif_adh' => array(
+    ],
+    'date_modif_adh' => [
         'label'    => _T("Modification date:"),
         'propname' => 'modification_date',
         'required' => false,
@@ -224,96 +224,96 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
         'list_visible'  => true,
         'list_position' => 5
-    ),
-    'activite_adh' => array(
+    ],
+    'activite_adh' => [
         'label'    => _T("Account:"),
         'propname' => 'active',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
         'position' => 26,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
-    ),
-    'bool_admin_adh' => array(
+    ],
+    'bool_admin_adh' => [
         'label'    => _T("Galette Admin:"),
         'propname' => 'admin',
         'required' => false,
         'visible'  => FieldsConfig::ADMIN,
         'position' => 28,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
-    ),
-    'bool_exempt_adh' => array(
+    ],
+    'bool_exempt_adh' => [
         'label'    => _T("Freed of dues:"),
         'propname' => 'due_free',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
         'position' => 29,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
-    ),
-    'bool_display_info' => array(
+    ],
+    'bool_display_info' => [
         'label'    => _T("Be visible on public pages:"),
         'propname' => 'appears_in_list',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 25,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
-    ),
-    'date_echeance' => array(
+    ],
+    'date_echeance' => [
         'label'    => _T("Due date:"),
         'propname' => 'due_date',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
         'position' => 36,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'pref_lang' => array(
+    ],
+    'pref_lang' => [
         'label'    => _T("Language:"),
         'propname' => 'language',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 10,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'lieu_naissance' => array(
+    ],
+    'lieu_naissance' => [
         'label'    => _T("Birthplace:"),
         'propname' => 'birth_place',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 8,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'gpgid' => array(
+    ],
+    'gpgid' => [
         'label'    => _T("Id GNUpg (GPG):"),
         'propname' => 'gnupgid',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 23,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'fingerprint' => array(
+    ],
+    'fingerprint' => [
         'label'    => _T("fingerprint:"),
         'propname' => 'fingerprint',
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,
         'position' => 24,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'parent_id'     => array(
+    ],
+    'parent_id'     => [
         'label'    => _T("Parent:"),
         'propname' => 'parent',
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,
         'position' => 25,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
-    ),
-    'num_adh'       => array(
+    ],
+    'num_adh'       => [
         'label'    => _T("Member number:"),
         'propname' => 'number',
         'required' => false,
         'visible'  => FieldsConfig::MANAGER,
         'position' => 26,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
-    ),
-    'list_adh_name' => array(
+    ],
+    'list_adh_name' => [
         'label'    => _T("Name"),
         'propname' => 'sname',
         'required' => false,
@@ -322,8 +322,8 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
         'list_visible'  => true,
         'list_position' => 1
-    ),
-    'list_adh_contribstatus' => array(
+    ],
+    'list_adh_contribstatus' => [
         'label'    => _T("State of dues"),
         'propname' => 'contribstatus',
         'required' => false,
@@ -332,5 +332,5 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
         'list_visible'  => true,
         'list_position' => 4
-    )
-);
+    ]
+];

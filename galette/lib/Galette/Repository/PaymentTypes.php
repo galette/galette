@@ -67,7 +67,7 @@ class PaymentTypes extends Repository
                 $select->where->notEqualTo('a.' . PaymentType::PK, PaymentType::SCHEDULED);
             }
 
-            $types = array();
+            $types = [];
             $results = $this->zdb->execute($select);
             foreach ($results as $row) {
                 $types[$row->type_id] = new PaymentType($this->zdb, $row);
@@ -98,9 +98,9 @@ class PaymentTypes extends Repository
             if ($check_first === true) {
                 $select = $this->zdb->select(PaymentType::TABLE);
                 $select->columns(
-                    array(
+                    [
                         'counter' => new Expression('COUNT(' . $ent::PK . ')')
-                    )
+                    ]
                 );
 
                 $results = $this->zdb->execute($select);
@@ -147,7 +147,7 @@ class PaymentTypes extends Repository
             $list = $this->zdb->execute($select);
             $list->buffer();
 
-            $missing = array();
+            $missing = [];
             foreach ($this->defaults as $key => $value) {
                 $exists = false;
                 foreach ($list as $type) {
@@ -194,10 +194,10 @@ class PaymentTypes extends Repository
     {
         $insert = $this->zdb->insert($table);
         $insert->values(
-            array(
+            [
                 'type_id'   => ':type_id',
                 'type_name' => ':type_name'
-            )
+            ]
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 

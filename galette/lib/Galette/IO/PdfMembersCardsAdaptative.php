@@ -180,10 +180,10 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
             $this->hphoto = round($this->he * 0.75);
             $this->wphoto = $this->hphoto / 1.30;
             if ($this->wphoto > $this->wi / 3) {
-                    $this->wphoto = $this->wi / 3;
-                    $this->hphoto = $this->wphoto * 1.3;
+                $this->wphoto = $this->wi / 3;
+                $this->hphoto = $this->wphoto * 1.3;
             }
-            $this->Rect($x0 + 1, $y0 + 1, $this->wphoto, $this->hphoto, 'F', array('width' => 0.0, 'cap' => 'butt', 'join' => 'miter', 'dash' => 4, 'color' => array(255, 255, 255)), array(255, 255, 255));
+            $this->Rect($x0 + 1, $y0 + 1, $this->wphoto, $this->hphoto, 'F', ['width' => 0.0, 'cap' => 'butt', 'join' => 'miter', 'dash' => 4, 'color' => [255, 255, 255]], [255, 255, 255]);
             $this->Image($photofile, $x0 + 1, $y0 + 1, $this->wphoto, $this->hphoto, '', '', '', false, 300, '', false, false, 0, 'T', false, false);
 
             // Logo
@@ -302,7 +302,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
                 if ($this->preferences->pref_bool_display_title) {
                     $nom_adh_ext .= $member->stitle . ' ';
                 }
-                    $nom_adh_ext .= mb_strtoupper($member->name);
+                $nom_adh_ext .= mb_strtoupper($member->name);
                 $this->fixSize(
                     $nom_adh_ext,
                     intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),

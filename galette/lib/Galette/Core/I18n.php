@@ -74,7 +74,7 @@ class I18n
                 $preferred_locales = array_reduce(
                     explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']),
                     function ($res, $el) {
-                        list($l, $q) = array_merge(explode(';q=', $el), [1]);
+                        [$l, $q] = array_merge(explode(';q=', $el), [1]);
                         $res[$l] = (float)$q;
                         return $res;
                     },
@@ -166,7 +166,7 @@ class I18n
      */
     public function getList(): array
     {
-        $result = array();
+        $result = [];
         foreach (array_keys($this->langs) as $id) {
             $result[] = new I18n((string)$id);
         }
@@ -182,7 +182,7 @@ class I18n
     public function getArrayList(): array
     {
         $list = $this->getList();
-        $al = array();
+        $al = [];
         foreach ($list as $l) {
             $al[$l->getID()] = $l->getName();
         }

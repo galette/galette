@@ -53,21 +53,21 @@ class Status
     public const ID_NOT_EXISTS = -1;
 
     /** @var array<string> */
-    private array $errors = array();
+    private array $errors = [];
 
     /** @var array<int, array<string, mixed>> */
-    protected static array $defaults = array(
-        array('id' => 1, 'libelle' => 'President', 'priority' => 0),
-        array('id' => 2, 'libelle' => 'Treasurer', 'priority' => 10),
-        array('id' => 3, 'libelle' => 'Secretary', 'priority' => 20),
-        array('id' => 4, 'libelle' => 'Active member', 'priority' => 30),
-        array('id' => 5, 'libelle' => 'Benefactor member', 'priority' => 40),
-        array('id' => 6, 'libelle' => 'Founder member', 'priority' => 50),
-        array('id' => 7, 'libelle' => 'Old-timer', 'priority' => 60),
-        array('id' => 8, 'libelle' => 'Society', 'priority' => 70),
-        array('id' => 9, 'libelle' => 'Non-member', 'priority' => 80),
-        array('id' => 10, 'libelle' => 'Vice-president', 'priority' => 5)
-    );
+    protected static array $defaults = [
+        ['id' => 1, 'libelle' => 'President', 'priority' => 0],
+        ['id' => 2, 'libelle' => 'Treasurer', 'priority' => 10],
+        ['id' => 3, 'libelle' => 'Secretary', 'priority' => 20],
+        ['id' => 4, 'libelle' => 'Active member', 'priority' => 30],
+        ['id' => 5, 'libelle' => 'Benefactor member', 'priority' => 40],
+        ['id' => 6, 'libelle' => 'Founder member', 'priority' => 50],
+        ['id' => 7, 'libelle' => 'Old-timer', 'priority' => 60],
+        ['id' => 8, 'libelle' => 'Society', 'priority' => 70],
+        ['id' => 9, 'libelle' => 'Non-member', 'priority' => 80],
+        ['id' => 10, 'libelle' => 'Vice-president', 'priority' => 5]
+    ];
 
     /**
      * Default constructor
@@ -168,11 +168,11 @@ class Status
             $fnames = array_values($values);
             foreach (self::$defaults as $d) {
                 $stmt->execute(
-                    array(
+                    [
                         $fnames[0]  => $d['id'],
                         $fnames[1]  => $d['libelle'],
                         $fnames[2]  => $d['priority']
-                    )
+                    ]
                 );
             }
 
@@ -200,11 +200,11 @@ class Status
      */
     public function getList(): array
     {
-        $list = array();
+        $list = [];
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $fields = array(self::PK, 'libelle_statut', 'priorite_statut');
+            $fields = [self::PK, 'libelle_statut', 'priorite_statut'];
             $select->quantifier('DISTINCT');
             $select->columns($fields);
             $select->order('priorite_statut');
@@ -231,11 +231,11 @@ class Status
      */
     public function getCompleteList(): array
     {
-        $list = array();
+        $list = [];
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->order(array('priorite_statut', self::PK));
+            $select->order(['priorite_statut', self::PK]);
 
             $results = $this->zdb->execute($select);
 
@@ -246,11 +246,11 @@ class Status
                 );
             } else {
                 foreach ($results as $r) {
-                    $list[$r->{self::PK}] = array(
+                    $list[$r->{self::PK}] = [
                         'text_orig' => $r->libelle_statut,
                         'name' => _T($r->libelle_statut),
                         'extra' => $r->priorite_statut
-                    );
+                    ];
                 }
             }
             return $list;
@@ -325,8 +325,8 @@ class Status
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->columns(array(self::PK))
-                ->where(array('libelle_statut' => $label));
+            $select->columns([self::PK])
+                ->where(['libelle_statut' => $label]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -370,10 +370,10 @@ class Status
 
         try {
             $this->zdb->connection->beginTransaction();
-            $values = array(
+            $values = [
                 'libelle_statut'  => $label,
                 'priorite_statut' => $extra
-            );
+            ];
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
@@ -428,10 +428,10 @@ class Status
         try {
             $oldlabel = $ret->libelle_statut;
             $this->zdb->connection->beginTransaction();
-            $values = array(
+            $values = [
                 'libelle_statut' => $label,
                 'priorite_statut' => $extra
-            );
+            ];
 
             $update = $this->zdb->update(self::TABLE);
             $update->set($values);
@@ -552,8 +552,8 @@ class Status
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array();
-        $virtuals = array('extension', 'libelle');
+        $forbidden = [];
+        $virtuals = ['extension', 'libelle'];
         if (
             in_array($name, $virtuals)
             || !in_array($name, $forbidden)
@@ -580,8 +580,8 @@ class Status
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array();
-        $virtuals = array('extension', 'libelle');
+        $forbidden = [];
+        $virtuals = ['extension', 'libelle'];
         if (
             in_array($name, $virtuals)
             || !in_array($name, $forbidden)

@@ -107,11 +107,11 @@ class Password extends AbstractPassword
         $hash = password_hash($password, PASSWORD_BCRYPT);
 
         try {
-            $values = array(
+            $values = [
                 self::PK               => $id_adh,
                 'tmp_passwd'           => $hash,
                 'date_crea_tmp_passwd' => date('Y-m-d H:i:s')
-            );
+            ];
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
@@ -178,8 +178,8 @@ class Password extends AbstractPassword
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
-                array(self::PK)
-            )->where(array('tmp_passwd' => $hash));
+                [self::PK]
+            )->where(['tmp_passwd' => $hash]);
 
             $results = $this->zdb->execute($select);
 
@@ -211,7 +211,7 @@ class Password extends AbstractPassword
         try {
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
-                array('tmp_passwd' => $hash)
+                ['tmp_passwd' => $hash]
             );
 
             $this->zdb->execute($delete);

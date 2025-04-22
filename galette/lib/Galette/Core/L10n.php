@@ -67,12 +67,12 @@ class L10n
             foreach ($this->i18n->getList() as $lang) {
                 //check if translation already exists
                 $select = $this->zdb->select(self::TABLE);
-                $select->columns(array('text_nref'))
+                $select->columns(['text_nref'])
                     ->where(
-                        array(
+                        [
                             'text_orig_sum' => md5($text_orig),
                             'text_locale'   => $lang->getLongID()
-                        )
+                        ]
                     );
 
                 $results = $this->zdb->execute($select);
@@ -84,9 +84,9 @@ class L10n
 
                 if (is_numeric($nref) && $nref > 0) {
                     //already existing, update
-                    $values = array(
+                    $values = [
                         'text_nref' => new Expression('text_nref+1')
-                    );
+                    ];
                     Analog::log(
                         'Entry for `' . $text_orig .
                         '` dynamic translation already exists.',
@@ -105,12 +105,12 @@ class L10n
                     if ($lang->getLongID() != $this->i18n->getLongID()) {
                         $text_trans = '';
                     }
-                    $values = array(
+                    $values = [
                         'text_orig' => $text_orig,
                         'text_orig_sum' => md5($text_orig),
                         'text_locale' => $lang->getLongID(),
                         'text_trans' => $text_trans
-                    );
+                    ];
 
                     $insert = $this->zdb->insert(self::TABLE);
                     $insert->values($values);
@@ -140,9 +140,9 @@ class L10n
         try {
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
-                array(
+                [
                     'text_orig_sum' => md5($text_orig),
-                )
+                ]
             );
             $this->zdb->execute($delete);
             return true;
@@ -171,11 +171,11 @@ class L10n
         try {
             //check if translation already exists
             $select = $this->zdb->select(self::TABLE);
-            $select->columns(array('text_nref'))->where(
-                array(
+            $select->columns(['text_nref'])->where(
+                [
                     'text_orig_sum' => md5($text_orig),
                     'text_locale'   => $text_locale
-                )
+                ]
             );
 
             $results = $this->zdb->execute($select);
@@ -187,9 +187,9 @@ class L10n
                 $exists = (is_numeric($nref) && $nref > 0);
             }
 
-            $values = array(
+            $values = [
                 'text_trans' => $text_trans
-            );
+            ];
 
             if ($exists) {
                 $owhere = $select->where;
@@ -230,12 +230,12 @@ class L10n
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->limit(1)->columns(
-                array('text_trans')
+                ['text_trans']
             )->where(
-                array(
+                [
                     'text_orig_sum' => md5($text_orig),
                     'text_locale'   => $text_locale
-                )
+                ]
             );
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
@@ -266,13 +266,13 @@ class L10n
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->where(
-                array(
+                [
                     'text_orig_sum' => $text_orig_sum
-                )
+                ]
             );
 
             $results = $this->zdb->execute($select);
-            $existing_translations = array();
+            $existing_translations = [];
             foreach ($results as $row) {
                 $existing_translations[$row->text_locale] = $row->text_trans;
             }
@@ -281,13 +281,13 @@ class L10n
                 $existing_translations[$this->i18n->getLongID()] = $text_orig_sum;
             }
 
-            $results = array();
+            $results = [];
             foreach ($this->i18n->getList() as $l) {
-                $results[] = array(
+                $results[] = [
                     'key'  => $l->getLongID(),
                     'name' => ucwords($l->getName()),
                     'text' => $existing_translations[$l->getLongID()] ?? ''
-                );
+                ];
             }
             return $results;
         } catch (Throwable $e) {
@@ -311,12 +311,12 @@ class L10n
     {
         $select = $this->zdb->select(self::TABLE);
         $select->quantifier('DISTINCT')->columns(
-            array('text_orig', 'text_orig_sum')
+            ['text_orig', 'text_orig_sum']
         )->order('text_orig');
 
         $all_texts = $this->zdb->execute($select);
 
-        $translations = array();
+        $translations = [];
         foreach ($all_texts as $row) {
             $translations[$row->text_orig_sum] = $row->text_orig;
         }

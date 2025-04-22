@@ -104,10 +104,10 @@ function split_sql_file(string $sql, string $delimiter): array
     $tokens = explode($delimiter, $sql);
 
     // try to save mem.
-    $output = array();
+    $output = [];
 
     // we don't actually care about the matches preg gives us.
-    $matches = array();
+    $matches = [];
 
     // this is faster than calling count($tokens) every time through the loop.
     $token_count = count($tokens);

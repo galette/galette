@@ -182,13 +182,13 @@ class GroupsController extends CrudController
         $this->view->render(
             $response,
             'pages/groups_list.html.twig',
-            array(
+            [
                 'page_title'            => _T("Groups"),
                 'groups_root'           => $groups_root,
                 'parent_groups'         => $parent_groups,
                 'group'                 => $group,
                 'tab'                   => $tab
-            )
+            ]
         );
         return $response;
     }
@@ -216,11 +216,11 @@ class GroupsController extends CrudController
         $this->view->render(
             $response,
             'elements/group.html.twig',
-            array(
+            [
                 'mode'      => 'ajax',
                 'groups'    => $groups->getList(),
                 'group'     => $group
-            )
+            ]
         );
         return $response;
     }
@@ -243,11 +243,11 @@ class GroupsController extends CrudController
         $this->view->render(
             $response,
             'elements/ajax_groups.html.twig',
-            array(
+            [
                 'mode'              => 'ajax',
                 'groups_list'       => $groups->getList(),
-                'selected_groups'   => (isset($post['groups']) ? $post['groups'] : [])
-            )
+                'selected_groups'   => ($post['groups'] ?? [])
+            ]
         );
         return $response;
     }

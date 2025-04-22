@@ -173,13 +173,13 @@ class SavedSearchesController extends CrudController
         $this->view->render(
             $response,
             'pages/saved_searches_list.html.twig',
-            array(
+            [
                 'page_title'        => _T("Saved searches"),
                 'searches'          => $list,
                 'nb'                => $searches->getCount(),
                 'filters'           => $filters,
                 'documentation'     => 'usermanual/recherche.html#saved-searches'
-            )
+            ]
         );
         return $response;
     }

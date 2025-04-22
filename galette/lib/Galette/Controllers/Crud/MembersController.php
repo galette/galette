@@ -142,7 +142,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/member_form.html.twig',
-            array(
+            [
                 'page_title'        => _T("Subscription"),
                 'parent_tpl'        => 'public_page.html.twig',
                 'member'            => $member,
@@ -156,7 +156,7 @@ class MembersController extends CrudController
                 'hidden_elements'   => $form_elements['hiddens'],
                 //self_adh specific
                 'gaptcha'           => $gaptcha
-            ) + $params
+            ] + $params
         );
         return $response;
     }
@@ -266,7 +266,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/member_show.html.twig',
-            array(
+            [
                 'page_title'        => _T("Member Profile"),
                 'member'            => $member,
                 'pref_lang'         => $this->i18n->getNameFromId($member->language),
@@ -276,7 +276,7 @@ class MembersController extends CrudController
                 'display_elements'  => $display_elements,
                 'osocials'          => new Social($this->zdb),
                 'navigate'          => $this->handleNavigationLinks($member->id)
-            )
+            ]
         );
         return $response;
     }
@@ -485,7 +485,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             $args['template'],
-            array(
+            [
                 'page_title' => $args['page_title'],
                 'additional_html_class' => $args['html_class'] ?? '',
                 'members' => $members,
@@ -493,7 +493,7 @@ class MembersController extends CrudController
                 'filters' => $filters,
                 // pseudo random int
                 'time' => time(),
-            )
+            ]
         );
         return $response;
     }
@@ -593,7 +593,7 @@ class MembersController extends CrudController
 
         $members = new Members($filters);
 
-        $members_list = array();
+        $members_list = [];
         if ($this->login->isAdmin() || $this->login->isStaff()) {
             $members_list = $members->getMembersList(true);
         } else {
@@ -613,7 +613,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/members_list.html.twig',
-            array(
+            [
                 'page_title'            => _T("List of members"),
                 'require_mass'          => true,
                 'members'               => $members_list,
@@ -623,7 +623,7 @@ class MembersController extends CrudController
                 'adv_filters'           => $filters instanceof AdvancedMembersList,
                 'galette_list'          => $this->lists_config->getDisplayElements($this->login),
                 'documentation'         => 'usermanual/adherents.html#members-list'
-            )
+            ]
         );
         return $response;
     }
@@ -712,14 +712,14 @@ class MembersController extends CrudController
                                     $qry_op
                                         = (int)$post['free_query_operator'][$i];
                                     $type = (int)$post['free_type'][$i];
-                                    $fs = array(
+                                    $fs = [
                                         'idx'       => $i,
                                         'field'     => $f,
                                         'type'      => $type,
                                         'search'    => $fs_search,
                                         'log_op'    => $log_op,
                                         'qry_op'    => $qry_op
-                                    );
+                                    ];
                                     $filters->free_search = $fs;
                                 }
                                 $i++;
@@ -731,10 +731,10 @@ class MembersController extends CrudController
                         $filters->groups_search_log_op = (int)$post['groups_logical_operator'];
                         foreach ($post['groups_search'] as $g) {
                             if (trim($g) !== '') {
-                                $gs = array(
+                                $gs = [
                                     'idx'       => $i,
                                     'group'     => $g
-                                );
+                                ];
                                 $filters->groups_search = $gs;
                             }
                             $i++;
@@ -840,7 +840,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/advanced_search.html.twig',
-            array(
+            [
                 'page_title'            => _T("Advanced search"),
                 'filter_groups_options' => $groups_list,
                 'search_fields'         => $fields,
@@ -852,7 +852,7 @@ class MembersController extends CrudController
                 'filters'               => $filters,
                 'payments_types'        => $ptlist,
                 'documentation'         => 'usermanual/recherche.html#advanced-search'
-            )
+            ]
         );
         return $response;
     }
@@ -932,7 +932,7 @@ class MembersController extends CrudController
                     }
                     if (!isset($post['members'])) {
                         $group = new Group((int)$post['gid']);
-                        $selected_members = array();
+                        $selected_members = [];
                         if (!isset($post['mode']) || $post['mode'] == 'members') {
                             $selected_members = $group->getMembers();
                         } elseif ($post['mode'] == 'managers') {
@@ -1180,7 +1180,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/member_form.html.twig',
-            array(
+            [
                 'parent_tpl'        => 'page.html.twig',
                 'autocomplete'      => true,
                 'page_title'        => $title,
@@ -1197,7 +1197,7 @@ class MembersController extends CrudController
                 'addchild'          => ($action === 'addchild'),
                 'osocials'          => new Social($this->zdb),
                 'documentation'     => 'usermanual/adherents.html'
-            ) + $route_params
+            ] + $route_params
         );
         return $response;
     }
@@ -1253,7 +1253,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'modals/mass_change_members.html.twig',
-            array(
+            [
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Mass change %1$s members'),
@@ -1268,7 +1268,7 @@ class MembersController extends CrudController
                 'statuts'       => $statuts->getList(),
                 'require_mass'  => true,
                 'groups'        => $groups_list
-            )
+            ]
         );
         return $response;
     }
@@ -1372,7 +1372,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'modals/mass_change_members.html.twig',
-            array(
+            [
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Review mass change %1$s members'),
@@ -1385,7 +1385,7 @@ class MembersController extends CrudController
                 'statuts'       => $statuts->getList(),
                 'groups'        => $groups->getSimpleList(),
                 'changes'       => $changes
-            )
+            ]
         );
         return $response;
     }
@@ -1666,8 +1666,8 @@ class MembersController extends CrudController
             $this->isSelfMembership()
         );
         $fieldsets     = $form_elements['fieldsets'];
-        $required      = array();
-        $disabled      = array();
+        $required      = [];
+        $disabled      = [];
 
         foreach ($fieldsets as $category) {
             foreach ($category->elements as $field) {
@@ -1768,8 +1768,8 @@ class MembersController extends CrudController
                 $cropping = null;
                 if ($this->preferences->pref_force_picture_ratio == 1) {
                     $cropping = [];
-                    $cropping['ratio'] = isset($this->preferences->pref_member_picture_ratio) ? $this->preferences->pref_member_picture_ratio : 'square_ratio';
-                    $cropping['focus'] = isset($post['crop_focus']) ? $post['crop_focus'] : 'center';
+                    $cropping['ratio'] = $this->preferences->pref_member_picture_ratio ?? 'square_ratio';
+                    $cropping['focus'] = $post['crop_focus'] ?? 'center';
                 }
                 $files_res = $member->handleFiles($_FILES, $cropping);
                 if (is_array($files_res)) {
@@ -1988,7 +1988,7 @@ class MembersController extends CrudController
      */
     private function handleNavigationLinks(int $id_adh): array
     {
-        $navigate = array();
+        $navigate = [];
 
         if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
             $filters = clone $this->session->{$this->getFilterName($this->getDefaultFilterName())};
@@ -2005,7 +2005,7 @@ class MembersController extends CrudController
         ) {
             $m = new Members($filters);
 
-            $ids = array();
+            $ids = [];
             $fields = [Adherent::PK, 'nom_adh', 'prenom_adh'];
             if ($this->login->isAdmin() || $this->login->isStaff()) {
                 $ids = $m->getMembersList(false, $fields);
@@ -2016,11 +2016,11 @@ class MembersController extends CrudController
             $ids = $ids->toArray();
             foreach ($ids as $k => $m) {
                 if ($m['id_adh'] == $id_adh) {
-                    $navigate = array(
+                    $navigate = [
                         'cur'  => $m['id_adh'],
                         'count' => $filters->counter,
                         'pos' => $k + 1
-                    );
+                    ];
                     if ($k > 0) {
                         $navigate['prev'] = $ids[$k - 1]['id_adh'];
                     }

@@ -105,12 +105,12 @@ class TransactionsController extends ContributionsController
         }
 
         // flagging required fields
-        $required = array(
+        $required = [
             'trans_amount'  =>  1,
             'trans_date'    =>  1,
             'trans_desc'    =>  1,
             'id_adh'        =>  1
-        );
+        ];
 
         if ($action === 'edit') {
             // initialize transactions structure with database values
@@ -191,13 +191,13 @@ class TransactionsController extends ContributionsController
         }
 
         // flagging required fields
-        $required = array(
+        $required = [
             'trans_amount'  =>  1,
             'trans_date'    =>  1,
             'trans_desc'    =>  1,
             'id_adh'        =>  1
-        );
-        $disabled = array();
+        ];
+        $disabled = [];
 
         // initialize transactions structure with database values
         if ($action === 'edit' && !$trans->load($trans_id)) {

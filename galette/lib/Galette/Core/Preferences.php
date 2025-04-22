@@ -211,13 +211,13 @@ class Preferences
     /** Dark mode CSS file should be deleted from cache */
     private bool $delete_dark_css = false;
     /** @var array<string> */
-    private static array $fields = array(
+    private static array $fields = [
         'nom_pref',
         'val_pref'
-    );
+    ];
 
     /** @var array<string, bool|int|string> */
-    private static array $defaults = array(
+    private static array $defaults = [
         'pref_admin_login'    =>    'admin',
         'pref_admin_pass'    =>    'admin',
         'pref_nom'        =>    'Galette',
@@ -342,14 +342,14 @@ class Preferences
         'pref_bool_groupsmanagers_see_contributions' => false,
         'pref_bool_groupsmanagers_see_transactions' => false,
         'pref_noindex' => false
-    );
+    ];
 
     /** @var Social[] */
     private array $socials;
 
     // flagging required fields
     /** @var array<string,int> */
-    private array $required = array(
+    private array $required = [
         'pref_nom' => 1,
         'pref_lang' => 1,
         'pref_numrows' => 1,
@@ -367,7 +367,7 @@ class Preferences
         'pref_card_marges_h' => 1,
         'pref_card_hspace' => 1,
         'pref_card_vspace' => 1
-    );
+    ];
 
     /**
      * Default constructor
@@ -395,7 +395,7 @@ class Preferences
     private function checkUpdate(): bool
     {
         $proceed = false;
-        $params = array();
+        $params = [];
         foreach (self::$defaults as $k => $v) {
             if (!isset($this->prefs[$k])) {
                 if ($k == 'pref_admin_pass' && $v == 'admin') {
@@ -407,29 +407,29 @@ class Preferences
                     Analog::INFO
                 );
                 $proceed = true;
-                $params[] = array(
+                $params[] = [
                     'nom_pref'  => $k,
                     'val_pref'  => $v
-                );
+                ];
             }
         }
         if ($proceed !== false) {
             try {
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values(
-                    array(
+                    [
                         'nom_pref'  => ':nom_pref',
                         'val_pref'  => ':val_pref'
-                    )
+                    ]
                 );
                 $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
                 foreach ($params as $p) {
                     $stmt->execute(
-                        array(
+                        [
                             'nom_pref' => $p['nom_pref'],
                             'val_pref' => $p['val_pref']
-                        )
+                        ]
                     );
                 }
             } catch (Throwable $e) {
@@ -456,7 +456,7 @@ class Preferences
      */
     public function load(): bool
     {
-        $this->prefs = array();
+        $this->prefs = [];
 
         try {
             $result = $this->zdb->selectAll(self::TABLE);
@@ -501,19 +501,19 @@ class Preferences
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values(
-                array(
+                [
                     'nom_pref'  => ':nom_pref',
                     'val_pref'  => ':val_pref'
-                )
+                ]
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ($values as $k => $v) {
                 $stmt->execute(
-                    array(
+                    [
                         'nom_pref' => $k,
                         'val_pref' => $v
-                    )
+                    ]
                 );
             }
 
@@ -552,7 +552,7 @@ class Preferences
     public function check(array $values, Login $login): bool
     {
         $this->errors = [];
-        $insert_values = array();
+        $insert_values = [];
         $this->getRequiredFields($login); //make sure required are all set
 
         $this->checkCssImpacted($values);
@@ -883,9 +883,9 @@ class Preferences
             $this->zdb->connection->beginTransaction();
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'val_pref'  => ':val_pref'
-                )
+                ]
             )->where->equalTo('nom_pref', ':nom_pref');
 
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
@@ -918,10 +918,10 @@ class Preferences
                 }
 
                 $stmt->execute(
-                    array(
+                    [
                         'val_pref'  => $value,
                         'nom_pref'  => $k
-                    )
+                    ]
                 );
             }
             $this->zdb->connection->commit();
@@ -938,7 +938,7 @@ class Preferences
                 $this->zdb->connection->rollBack();
             }
 
-            $messages = array();
+            $messages = [];
             do {
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
@@ -958,14 +958,14 @@ class Preferences
      */
     public function getPostalAddress(): string
     {
-        $regs = array(
+        $regs = [
             '/%name/',
             '/%complement/',
             '/%address/',
             '/%zip/',
             '/%town/',
             '/%country/',
-        );
+        ];
 
         $replacements = null;
 
@@ -975,33 +975,33 @@ class Preferences
                 $_address .= "\n" . $this->prefs['pref_adresse2'];
             }
             $_country = $this->prefs['pref_pays'] != '' ? '- ' . $this->prefs['pref_pays'] : '';
-            $replacements = array(
+            $replacements = [
                 $this->prefs['pref_nom'],
                 "\n",
                 $_address,
                 $this->prefs['pref_cp'],
                 $this->prefs['pref_ville'],
                 $_country
-            );
+            ];
         } else {
             //get selected staff member address
             $adh = new Adherent($this->zdb, (int)$this->prefs['pref_postal_staff_member']);
             $_complement = preg_replace(
-                array('/%name/', '/%status/'),
-                array($this->prefs['pref_nom'], $adh->sstatus),
+                ['/%name/', '/%status/'],
+                [$this->prefs['pref_nom'], $adh->sstatus],
                 _T("%name association's %status")
             ) . "\n";
             $_address = $adh->address;
             $_country = $adh->country != '' ? '- ' . $adh->country : '';
 
-            $replacements = array(
+            $replacements = [
                 $adh->sfullname . "\n",
                 $_complement,
                 $_address,
                 $adh->zipcode,
                 $adh->town,
                 $_country
-            );
+            ];
         }
 
         /*FIXME: i18n fails :/ */
@@ -1122,8 +1122,8 @@ class Preferences
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array('defaults');
-        $virtuals = array('vpref_email_newadh');
+        $forbidden = ['defaults'];
+        $virtuals = ['vpref_email_newadh'];
         $types = [
             'int' => [
                 'pref_card_address',
@@ -1249,8 +1249,8 @@ class Preferences
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array('defaults');
-        $virtuals = array('vpref_email_newadh');
+        $forbidden = ['defaults'];
+        $virtuals = ['vpref_email_newadh'];
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             return true;
@@ -1591,7 +1591,7 @@ class Preferences
         $config = \HTMLPurifier_Config::createDefault();
         $cache_dir = rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'htmlpurifier';
         if (!file_exists($cache_dir)) {
-            mkdir($cache_dir, 0755, true);
+            mkdir($cache_dir, 0o755, true);
         }
         $config->set('Cache.SerializerPath', $cache_dir);
         $purifier = new \HTMLPurifier($config);
@@ -1623,7 +1623,7 @@ class Preferences
             );
             return true;
         } catch (Throwable $e) {
-            $messages = array();
+            $messages = [];
             do {
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());

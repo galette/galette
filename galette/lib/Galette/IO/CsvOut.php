@@ -101,7 +101,7 @@ class CsvOut extends Csv
         $this->file = $file;
         $this->current_line = 0;
 
-        $fields = array();
+        $fields = [];
         if ($titles === true) {
             $row = $results[0];
             foreach (array_keys((array)$row) as $field) {
@@ -115,7 +115,7 @@ class CsvOut extends Csv
         } elseif (is_array($titles) && count($titles) > 1) {
             foreach ($titles as $field) {
                 $field = str_replace(
-                    array(':', '&nbsp;'),
+                    [':', '&nbsp;'],
                     '',
                     $field
                 );
@@ -129,7 +129,7 @@ class CsvOut extends Csv
         }
 
         foreach ($results as $row) {
-            $elts = array();
+            $elts = [];
 
             if (is_array($row) || is_object($row)) {
                 foreach ($row as $v) {
@@ -225,11 +225,11 @@ class CsvOut extends Csv
             foreach ($xml->export as $export) {
                 if (!($export['inactive'] == 'inactive')) {
                     $id = (string)$export['id'];
-                    $parameted[$id] = array(
+                    $parameted[$id] = [
                         'id' => $id,
                         'name' => (string)$export['name'],
                         'description' => (string)$export['description']
-                    );
+                    ];
                 }
             }
         }

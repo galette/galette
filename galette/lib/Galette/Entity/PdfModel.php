@@ -208,7 +208,7 @@ abstract class PdfModel
             $subtitle = new Expression('NULL');
         }
 
-        $data = array(
+        $data = [
             'model_header'      => $this->header,
             'model_footer'      => $this->footer,
             'model_type'        => $this->type,
@@ -216,7 +216,7 @@ abstract class PdfModel
             'model_subtitle'    => $subtitle,
             'model_body'        => $this->body,
             'model_styles'      => $this->styles
-        );
+        ];
 
         try {
             if ($this->id !== null) {
@@ -290,8 +290,8 @@ abstract class PdfModel
             if (mb_strlen($value) > $chars) {
                 throw new \LengthException(
                     str_replace(
-                        array('%field', '%chars'),
-                        array($field, (string)$chars),
+                        ['%field', '%chars'],
+                        [$field, (string)$chars],
                         _T("%field should be less than %chars characters long.")
                     )
                 );

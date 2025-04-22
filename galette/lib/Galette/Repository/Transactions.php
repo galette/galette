@@ -88,7 +88,7 @@ class Transactions
             $select = $this->buildSelect($fields);
             $this->filters->setLimits($select);
 
-            $transactions = array();
+            $transactions = [];
             $results = $this->zdb->execute($select);
             if ($as_trans) {
                 foreach ($results as $row) {
@@ -120,19 +120,19 @@ class Transactions
         try {
             $select = $this->zdb->select(self::TABLE, 't');
             if ($fields === null || !count($fields)) {
-                $fields = array(
+                $fields = [
                     'trans_date',
                     'trans_id',
                     'trans_desc',
                     'id_adh',
                     'trans_amount',
                     'type_paiement_trans'
-                );
+                ];
             }
             $select->columns($fields)->join(
-                array('a' => PREFIX_DB . Adherent::TABLE),
+                ['a' => PREFIX_DB . Adherent::TABLE],
                 't.' . Adherent::PK . '=' . 'a.' . Adherent::PK,
-                array()
+                []
             );
 
             $this->buildWhereClause($select);
@@ -164,9 +164,9 @@ class Transactions
             $countSelect->reset($countSelect::COLUMNS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     self::PK => new Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);
@@ -191,7 +191,7 @@ class Transactions
      */
     private function buildOrderClause(): array
     {
-        $order = array();
+        $order = [];
 
         switch ($this->filters->orderby) {
             case TransactionsList::ORDERBY_ID:
@@ -310,9 +310,9 @@ class Transactions
                 $mgroups = $this->login->getManagedGroups();
 
                 $select->join(
-                    array('users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                     't.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                    array(),
+                    [],
                     $select::JOIN_LEFT
                 );
                 $select->where->nest()
@@ -326,9 +326,9 @@ class Transactions
 
             if ($member_clause !== null) {
                 $select->where(
-                    array(
+                    [
                         't.' . Adherent::PK => $member_clause
-                    )
+                    ]
                 );
             }
         } catch (Throwable $e) {
@@ -359,7 +359,7 @@ class Transactions
      */
     public function remove(array|int $ids, History $hist): bool
     {
-        $list = array();
+        $list = [];
         if (is_numeric($ids)) {
             //we've got only one identifier
             $list[] = $ids;

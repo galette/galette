@@ -143,14 +143,14 @@ class DynamicTranslationsController extends AbstractController
                 );
                 if (!$res) {
                     $error_detected[] = preg_replace(
-                        array(
+                        [
                             '/%label/',
                             '/%lang/'
-                        ),
-                        array(
+                        ],
+                        [
                             $post['text_orig'],
                             $this->i18n->getLongID()
-                        ),
+                        ],
                         _T("An error occurred saving label `%label` for language `%lang`")
                     );
                 }
@@ -168,14 +168,14 @@ class DynamicTranslationsController extends AbstractController
                     );
                     if (!$res) {
                         $error_detected[] = preg_replace(
-                            array(
+                            [
                                 '/%label/',
                                 '/%lang/'
-                            ),
-                            array(
+                            ],
+                            [
                                 $post['text_orig'],
                                 $trans_lang
-                            ),
+                            ],
                             _T("An error occurred saving label `%label` for language `%lang`")
                         );
                     }

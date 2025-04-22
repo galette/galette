@@ -48,7 +48,7 @@ use Slim\Router;
 trait Dependencies
 {
     /** @var array<string, bool> */
-    protected array $deps = array(
+    protected array $deps = [
         'picture'   => true,
         'groups'    => true,
         'dues'      => true,
@@ -56,7 +56,7 @@ trait Dependencies
         'children'  => false,
         'dynamics'  => false,
         'socials'   => false
-    );
+    ];
 
     /**
      * Set dependencies

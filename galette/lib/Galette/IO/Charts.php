@@ -100,24 +100,24 @@ class Charts
 
         $select = $zdb->select(Status::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'cnt'       => new Expression('COUNT(a.' . Status::PK . ')'),
                 'status'    => 'libelle_statut',
                 'priority'  => 'priorite_statut'
-            )
+            ]
         )->join(
-            array('b' => PREFIX_DB . Adherent::TABLE),
+            ['b' => PREFIX_DB . Adherent::TABLE],
             'a.' . Status::PK . '=b.' . Status::PK,
-            array()
+            []
         )
-            ->where(array('b.activite_adh' => new Expression('true')))
+            ->where(['b.activite_adh' => new Expression('true')])
             ->order('a.priorite_statut')
             ->group('a.' . Status::PK);
 
         $results = $zdb->execute($select);
 
-        $chart_labels = array();
-        $chart_data = array();
+        $chart_labels = [];
+        $chart_data = [];
         $staff_label = _T("Staff members");
         $staff_data = 0;
         foreach ($results as $r) {
@@ -143,16 +143,16 @@ class Charts
     {
         global $zdb;
 
-        $chart_labels = array();
-        $chart_data = array();
+        $chart_labels = [];
+        $chart_data = [];
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
-            )
+            ]
         )
-            ->where(array('activite_adh' => new Expression('true')))
-            ->where(array('bool_exempt_adh' => new Expression('true')));
+            ->where(['activite_adh' => new Expression('true')])
+            ->where(['bool_exempt_adh' => new Expression('true')]);
 
         $results = $zdb->execute($select);
         $result = $results->current();
@@ -162,12 +162,12 @@ class Charts
 
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
-            )
+            ]
         )
-            ->where(array('activite_adh' => new Expression('true')))
-            ->where(array('bool_exempt_adh' => new Expression('false')))
+            ->where(['activite_adh' => new Expression('true')])
+            ->where(['bool_exempt_adh' => new Expression('false')])
             ->where('date_echeance IS NULL');
 
         $results = $zdb->execute($select);
@@ -183,12 +183,12 @@ class Charts
 
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
-            )
+            ]
         )
-            ->where(array('activite_adh' => new Expression('true')))
-            ->where(array('bool_exempt_adh' => new Expression('false')))
+            ->where(['activite_adh' => new Expression('true')])
+            ->where(['bool_exempt_adh' => new Expression('false')])
             ->where->lessThanOrEqualTo('date_echeance', $soon_date->format('Y-m-d'))
             ->where->greaterThanOrEqualTo('date_echeance', $now->format('Y-m-d'));
 
@@ -200,12 +200,12 @@ class Charts
 
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
-            )
+            ]
         )
-            ->where(array('activite_adh' => new Expression('true')))
-            ->where(array('bool_exempt_adh' => new Expression('false')))
+            ->where(['activite_adh' => new Expression('true')])
+            ->where(['bool_exempt_adh' => new Expression('false')])
             ->where->greaterThan('date_echeance', $now->format('Y-m-d'));
 
         $results = $zdb->execute($select);
@@ -216,12 +216,12 @@ class Charts
 
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'cnt' => new Expression('COUNT(a.' . Adherent::PK . ')')
-            )
+            ]
         )
-            ->where(array('activite_adh' => new Expression('true')))
-            ->where(array('bool_exempt_adh' => new Expression('false')))
+            ->where(['activite_adh' => new Expression('true')])
+            ->where(['bool_exempt_adh' => new Expression('false')])
             ->where->lessThan('date_echeance', $now->format('Y-m-d'));
 
         $results = $zdb->execute($select);
@@ -246,22 +246,22 @@ class Charts
         //non companies
         $select1 = $zdb->select(Adherent::TABLE);
         $select1->columns(
-            array(
+            [
                 'cnt' => new Expression('COUNT(' . Adherent::PK . ')')
-            )
+            ]
         )->where(
-            array(
+            [
                 'societe_adh IS NULL',
                 'societe_adh = \'\''
-            ),
+            ],
             PredicateSet::OP_OR
         );
 
         $select2 = $zdb->select(Adherent::TABLE);
         $select2->columns(
-            array(
+            [
                 'cnt' => new Expression('COUNT(' . Adherent::PK . ')')
-            )
+            ]
         )
             ->where('societe_adh IS NOT NULL')
             ->Where('societe_adh != \'\'');
@@ -304,23 +304,23 @@ class Charts
 
         $select = $zdb->select(ContributionsTypes::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'cnt'       => new Expression('COUNT(a.' . ContributionsTypes::PK . ')'),
                 'label'     => 'libelle_type_cotis',
                 'extends'   => 'cotis_extension'
-            )
+            ]
         )->join(
-            array('b' => PREFIX_DB . Contribution::TABLE),
+            ['b' => PREFIX_DB . Contribution::TABLE],
             'a.' . ContributionsTypes::PK . '=b.' . ContributionsTypes::PK,
-            array()
+            []
         )
             ->order('cotis_extension')
             ->group('a.' . ContributionsTypes::PK);
 
         $results = $zdb->execute($select);
 
-        $chart_labels = array();
-        $chart_data = array();
+        $chart_labels = [];
+        $chart_data = [];
         foreach ($results as $r) {
             $chart_labels[] = _T($r->label);
             $chart_data[] = (int)$r->cnt;
@@ -341,10 +341,10 @@ class Charts
 
         $select = $zdb->select(Contribution::TABLE);
 
-        $cols = array(
+        $cols = [
             'date'      => null,
             'amount'    => new Expression('SUM(montant_cotis)')
-        );
+        ];
         $groupby = null;
 
         if ($zdb->isPostgres()) {

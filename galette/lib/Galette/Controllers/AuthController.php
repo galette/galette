@@ -66,9 +66,9 @@ class AuthController extends AbstractController
             $this->view->render(
                 $response,
                 'pages/index.html.twig',
-                array(
+                [
                     'page_title'    => _T("Login"),
-                )
+                ]
             );
             return $response;
         } else {
@@ -296,9 +296,9 @@ class AuthController extends AbstractController
         $this->view->render(
             $response,
             'pages/password_lost.html.twig',
-            array(
+            [
                 'page_title'    => _T("Password recovery")
-            )
+            ]
         );
         return $response;
     }
@@ -375,9 +375,9 @@ class AuthController extends AbstractController
                     $mail = new GaletteMail($this->preferences);
                     $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
-                        array(
+                        [
                             $adh->email => $adh->sname
-                        )
+                        ]
                     );
 
                     $mail->setMessage($texts->getBody());
@@ -496,10 +496,10 @@ class AuthController extends AbstractController
         $this->view->render(
             $response,
             'pages/password_recover.html.twig',
-            array(
+            [
                 'hash'          => $hash,
                 'page_title'    => _T("Password recovery")
-            )
+            ]
         );
         return $response;
     }
