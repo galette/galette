@@ -24,7 +24,6 @@ declare(strict_types=1);
 use Galette\Middleware\Authenticate;
 use Galette\Middleware\Language;
 use Galette\Middleware\Telemetry;
-use Galette\Middleware\TrailingSlash;
 use Galette\Middleware\UpdateAndMaintenance;
 use RKA\SessionMiddleware;
 use Slim\Routing\RouteContext;
