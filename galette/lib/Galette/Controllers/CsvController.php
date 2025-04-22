@@ -59,22 +59,7 @@ class CsvController extends AbstractController
      */
     protected function sendResponse(Response $response, string $filepath, string $filename): Response
     {
-        if (file_exists($filepath)) {
-            $response = $response->withHeader('Content-Description', 'File Transfer')
-                ->withHeader('Content-Type', 'text/csv')
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
-                ->withHeader('Pragma', 'no-cache')
-                ->withHeader('Content-Transfer-Encoding', 'binary')
-                ->withHeader('Expires', '0')
-                ->withHeader('Cache-Control', 'must-revalidate')
-                ->withHeader('Pragma', 'public');
-
-            $stream = fopen('php://memory', 'r+');
-            fwrite($stream, file_get_contents($filepath));
-            rewind($stream);
-
-            return $response->withBody(new Stream($stream));
-        } else {
+        if (!file_exists($filepath)) {
             Analog::log(
                 'A request has been made to get a CSV file named `' .
                 $filename . '` that does not exists (' . $filepath . ').',
@@ -83,6 +68,21 @@ class CsvController extends AbstractController
             //FIXME: use a proper error page
             return $response->withStatus(404);
         }
+
+        $response = $response->withHeader('Content-Description', 'File Transfer')
+            ->withHeader('Content-Type', 'text/csv')
+            ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
+            ->withHeader('Pragma', 'no-cache')
+            ->withHeader('Content-Transfer-Encoding', 'binary')
+            ->withHeader('Expires', '0')
+            ->withHeader('Cache-Control', 'must-revalidate')
+            ->withHeader('Pragma', 'public');
+
+        $stream = fopen('php://memory', 'r+');
+        fwrite($stream, file_get_contents($filepath));
+        rewind($stream);
+
+        return $response->withBody(new Stream($stream));
     }
 
     /**
@@ -395,11 +395,6 @@ class CsvController extends AbstractController
         //Exports main contain user confidential data, they're accessible only for
         //admins or staff members
         if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $filepath = $type === 'export' ?
-                CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
-            $filepath .= $filename;
-            return $this->sendResponse($response, $filepath, $filename);
-        } else {
             Analog::log(
                 'A non authorized person asked to retrieve ' . $type . ' file named `' .
                 $filename . '`. Access has not been granted.',
@@ -407,6 +402,11 @@ class CsvController extends AbstractController
             );
             return $response->withStatus(403);
         }
+
+        $filepath = $type === 'export' ?
+            CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
+        $filepath .= $filename;
+        return $this->sendResponse($response, $filepath, $filename);
     }
 
     /**
