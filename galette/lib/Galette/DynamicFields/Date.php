@@ -25,7 +25,6 @@ namespace Galette\DynamicFields;
 
 use Analog\Analog;
 use Galette\Core\Db;
-use Galette\Core\Login;
 use Galette\Entity\DynamicFieldsHandle;
 
 /**

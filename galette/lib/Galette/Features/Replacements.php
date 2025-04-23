@@ -31,8 +31,6 @@ use Galette\DynamicFields\Choice;
 use Galette\DynamicFields\Separator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
-use Galette\Entity\PdfModel;
-use Galette\Entity\Reminder;
 use Galette\Entity\Texts;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\DynamicFields\DynamicField;

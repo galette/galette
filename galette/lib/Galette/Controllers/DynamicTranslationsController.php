@@ -26,7 +26,6 @@ namespace Galette\Controllers;
 use Throwable;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Galette\Core\L10n;
 use Analog\Analog;
 
 /**

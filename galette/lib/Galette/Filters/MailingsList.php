@@ -23,9 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Filters;
 
-use Throwable;
-use Analog\Analog;
-use Galette\Core\Pagination;
 use Galette\Core\MailingHistory;
 
 /**

@@ -23,10 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Filters;
 
-use Analog\Analog;
 use Galette\Core\Pagination;
-use Galette\Entity\Group;
-use Galette\Repository\Members;
 
 /**
  * Documents list filters and paginator

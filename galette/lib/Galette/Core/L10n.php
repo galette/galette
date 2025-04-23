@@ -25,8 +25,6 @@ namespace Galette\Core;
 
 use Throwable;
 use Analog\Analog;
-use Galette\Core\Db;
-use Galette\Core\I18n;
 use Laminas\Db\Sql\Expression;
 
 /**

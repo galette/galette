@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
-use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
@@ -32,7 +31,6 @@ use Galette\Entity\Transaction;
 use Galette\Repository\Contributions;
 use Galette\Repository\Members;
 use Galette\Repository\Transactions;
-use Analog\Analog;
 
 /**
  * Galette transactions controller

@@ -28,7 +28,6 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Repository\PaymentTypes;
 use Galette\Entity\PaymentType;
-use Analog\Analog;
 
 /**
  * Galette payment types controller

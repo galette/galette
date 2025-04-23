@@ -28,7 +28,6 @@ use Galette\Entity\Status;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
-use Laminas\Db\Sql\Predicate\PredicateSet;
 use Galette\Entity\Group;
 use Galette\Entity\Adherent;
 use Galette\Core\Login;

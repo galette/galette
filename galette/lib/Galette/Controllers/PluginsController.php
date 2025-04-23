@@ -29,7 +29,6 @@ use Slim\Psr7\Response;
 use Galette\Core\Galette;
 use Galette\Core\Install;
 use Galette\Core\PluginInstall;
-use Laminas\Db\Adapter\Adapter;
 use Analog\Analog;
 
 /**

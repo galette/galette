@@ -24,10 +24,8 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Exception;
-use Throwable;
 use Analog\Analog;
 use Galette\Common\ClassLoader;
-use Galette\Core\Preferences;
 
 /**
  * Plugins class for galette

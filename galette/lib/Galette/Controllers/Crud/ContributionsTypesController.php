@@ -27,9 +27,6 @@ use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\ContributionsTypes;
-use Galette\Entity\Status;
-use Galette\Repository\Members;
-use Analog\Analog;
 
 /**
  * Galette contributions types controller

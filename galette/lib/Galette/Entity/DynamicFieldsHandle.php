@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Entity;
 
-use ArrayObject;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Separator;
 use Laminas\Db\ResultSet\ResultSet;

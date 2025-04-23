@@ -25,9 +25,6 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use Analog\Analog;
-use Galette\Entity\Adherent;
-
 /**
  * Abstract password
  *

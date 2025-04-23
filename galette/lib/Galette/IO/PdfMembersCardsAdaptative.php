@@ -23,9 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
-use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
-use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Galette\Repository\Members;

@@ -23,20 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Util;
 
-use Analog\Analog;
-use Galette\Core\Db;
-use Galette\Core\I18n;
-use Galette\Core\Preferences;
-use Galette\Core\History;
-use Galette\Core\Login;
 use Galette\Entity\Adherent;
-use Galette\Entity\Contribution;
-use Galette\Repository\Titles;
-use Galette\Entity\Status;
-use Galette\Entity\ContributionsTypes;
-use Galette\Entity\Group;
-use Galette\Entity\Transaction;
-use Galette\Entity\PaymentType;
 
 /**
  * Generate random data

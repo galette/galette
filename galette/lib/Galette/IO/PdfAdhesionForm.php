@@ -28,7 +28,6 @@ use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\PdfModel;
 use Galette\Entity\PdfAdhesionFormModel;
-use Galette\IO\Pdf;
 use Analog\Analog;
 
 /**

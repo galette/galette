@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace Galette\Filters;
 
 use Galette\Helpers\DatesHelper;
-use Throwable;
 use Analog\Analog;
 use Galette\Core\Pagination;
 

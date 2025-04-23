@@ -24,8 +24,6 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use NumberFormatter;
-use Analog\Analog;
-use Galette\Entity\Adherent;
 
 /**
  * Password image (captcha) for galette.

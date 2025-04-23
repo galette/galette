@@ -30,7 +30,6 @@ use Galette\Core\CheckModules;
 use Galette\Entity\Texts;
 use Galette\Repository\Members;
 use Galette\Repository\PdfModels;
-use Analog\Analog;
 
 /**
  * Galette main controller

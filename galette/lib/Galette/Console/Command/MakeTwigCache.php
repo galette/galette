@@ -39,7 +39,6 @@ use Twig\Cache\FilesystemCache;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 use RecursiveDirectoryIterator;
-use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 

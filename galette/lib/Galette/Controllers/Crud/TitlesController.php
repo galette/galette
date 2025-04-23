@@ -28,7 +28,6 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Repository\Titles;
 use Galette\Entity\Title;
-use Analog\Analog;
 
 /**
  * Galette Titles controller

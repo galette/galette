@@ -27,12 +27,10 @@ use Galette\Core\Galette;
 use Galette\Entity\Document;
 use Galette\Filters\DocumentsList;
 use Galette\IO\File;
-use Galette\Repository\DynamicFieldsSet;
 use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 
 /**

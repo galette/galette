@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use DateTime;
-use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;

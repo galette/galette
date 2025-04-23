@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use Analog\Analog;
 use Laminas\I18n\Translator\Translator as ZTranslator;
 
 /**

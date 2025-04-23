@@ -23,9 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
-use Analog\Analog;
-use Galette\IO\FileTrait;
-
 /**
  * Files
  *

@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
-use ArrayObject;
 use Laminas\Db\ResultSet\ResultSet;
 use Symfony\Component\Yaml\Yaml;
 use Throwable;

@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Repository;
 
-use Analog\Analog;
 use ArrayObject;
 use Galette\Core\Db;
 use Galette\Core\Authentication;

@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Analog\Analog;
-use Laminas\Db\Adapter\Adapter;
 
 /**
  * Galette plugin installation

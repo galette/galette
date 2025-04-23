@@ -23,10 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Helpers;
 
-use DateTime;
-use Throwable;
-use Analog\Analog;
-
 /**
  * Entity helper trait
  *

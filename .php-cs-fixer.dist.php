@@ -17,7 +17,8 @@ return (new PhpCsFixer\Config())
         '@PHP82Migration' => true,
         'trailing_comma_in_multiline' => false,
         'cast_spaces' => false,
-        'single_line_empty_body' => false
+        'single_line_empty_body' => false,
+        'no_unused_imports' => true
     ])
     ->setFinder($finder)
 ;

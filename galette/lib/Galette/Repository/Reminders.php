@@ -27,13 +27,7 @@ use DateTime;
 use Galette\Core\Db;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
-use Analog\Analog;
 use Laminas\Db\Adapter\Driver\StatementInterface;
-use Laminas\Db\Sql\Expression;
-use Laminas\Db\Sql\Predicate\IsNull;
-use Laminas\Db\Sql\Predicate\Operator;
-use Laminas\Db\Sql\Predicate\PredicateSet;
-use Laminas\Db\Sql\Select;
 use Throwable;
 
 /**

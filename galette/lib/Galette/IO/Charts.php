@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
-use Analog\Analog;
 use Galette\Core\Db;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\PredicateSet;

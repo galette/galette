@@ -28,9 +28,6 @@ use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Entity\PdfModel;
-use Galette\Entity\PdfMain;
-use Galette\Entity\PdfInvoice;
-use Galette\Entity\PdfReceipt;
 
 /**
  * PDF models

@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Repository;
 
-use ArrayObject;
 use Galette\Entity\Group;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;

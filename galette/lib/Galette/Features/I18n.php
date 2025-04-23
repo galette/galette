@@ -23,11 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Features;
 
-use Throwable;
-use Analog\Analog;
-use Galette\Core\L10n;
-use Laminas\Db\Sql\Expression;
-
 /**
  * Files
  *

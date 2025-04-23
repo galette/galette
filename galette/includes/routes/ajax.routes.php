@@ -22,11 +22,6 @@
 declare(strict_types=1);
 
 use Galette\Controllers\AjaxController;
-use Galette\Entity\Adherent;
-use Galette\Entity\Contribution;
-use Galette\Entity\ContributionsTypes;
-use Galette\Repository\Members;
-use Galette\Filters\MembersList;
 use Slim\Routing\RouteCollectorProxy;
 
 $app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate): void {
