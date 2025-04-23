@@ -26,7 +26,7 @@ namespace Galette\Core;
 use Galette\Entity\Adherent;
 
 /**
- * Galette application instance
+ * Galette plugins
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */

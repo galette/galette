@@ -55,7 +55,7 @@ class Plugins
     protected bool $autoload = false;
 
     /**
-     * Register autoloaders for all plugins
+     * Register autoloader for all plugins
      *
      * @param string $path could be a separated list of paths
      *                     (path separator depends on your OS).
@@ -203,7 +203,7 @@ class Plugins
             //plugin compatibility missing!
             Analog::log(
                 'Plugin ' . $name . ' does not contains mandatory version ' .
-                'compatiblity information. Please contact the author.',
+                'compatibility information. Please contact the author.',
                 Analog::ERROR
             );
             $this->setDisabled(self::DISABLED_COMPAT);
@@ -426,7 +426,7 @@ class Plugins
      * @param array<string, mixed> $a A module
      * @param array<string, mixed> $b Another module
      *
-     * @return 1|-1 1 if a has the highest priority, -1 otherwise
+     * @return int 1|-1 1 if "a" has the highest priority, -1 otherwise
      */
     private function sortModules(array $a, array $b): int
     {

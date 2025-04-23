@@ -36,6 +36,7 @@ trait PluginControllerTrait
     /**
      * Something like:
      * #[Inject("Plugin Galette Name")]
+     * Do not forget the "use DI\Attribute\Inject;" instruction
      * @var array<string, mixed>
      */
     protected array $module_info;

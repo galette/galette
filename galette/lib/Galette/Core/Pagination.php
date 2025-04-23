@@ -213,7 +213,7 @@ abstract class Pagination
      *
      * @param RouteParser $routeparser Application instance
      * @param Twig        $view        View instance
-     * @param boolean     $restricted  Do not permit to display all
+     * @param boolean     $restricted  Do not permit displaying all
      *
      * @return void
      */

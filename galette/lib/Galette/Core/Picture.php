@@ -490,7 +490,7 @@ class Picture implements FileInterface
             return $result;
         }
 
-        // current[0] gives width ; current[1] gives height
+        // current[0] gives width; current[1] gives height
         if ($current[0] > $this->max_width || $current[1] > $this->max_height) {
             /** FIXME: what if image cannot be resized?
             Should'nt we want to stop the process here? */
@@ -936,7 +936,7 @@ class Picture implements FileInterface
     }
 
     /**
-     * Have we got a picture ?
+     * Have we got a picture?
      *
      * @return bool True if a picture matches adherent's id, false otherwise
      */

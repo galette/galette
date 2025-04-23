@@ -123,7 +123,7 @@ class GaletteMail
 
                     if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
                         //Allow "unsecure" SMTP connections if user has asked fot it or
-                        //if user did not request TLS explicitely
+                        //if user did not request TLS explicitly
                         $this->mail->SMTPOptions = [
                             'ssl' => [
                                 'verify_peer' => false,
@@ -179,7 +179,7 @@ class GaletteMail
 
     /**
      * Sets the recipients
-     * For mailing convenience, all recipients will be added as BCC,
+     * For mailing convenience; all recipients will be added as BCC,
      * regular recipient will be the sender.
      *
      * @param array<string, string> $recipients Array (mail=>name) of all recipients
@@ -201,7 +201,7 @@ class GaletteMail
                     $this->recipients[$mail] = $name;
                     $this->mail->AddBCC($mail, $name);
                 } else {
-                    //one of addresses is not valid :
+                    //one of addresses is not valid:
                     //- set $res to false
                     //- clear BCCs
                     //- log an INFO
@@ -278,10 +278,10 @@ class GaletteMail
         $signature = $this->preferences->getMailSignature($this->mail);
         if ($signature != '') {
             if ($this->html) {
-                //we are sending html message
+                //we are sending HTML message
                 //apply email sign to text version
                 $this->mail->AltBody .= $signature;
-                //then apply email sign to html version
+                //then apply email sign to HTML version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
                 $hsign = '<div style="' . $sign_style . '">' .
                     nl2br($signature) . '</div>';
@@ -357,9 +357,9 @@ class GaletteMail
     }
 
     /**
-     * Check if a string is an url
+     * Check if a string is a URL
      *
-     * @param string $url the url to check
+     * @param string $url the URL to check
      *
      * @return bool
      */
@@ -380,7 +380,7 @@ class GaletteMail
     }
 
     /**
-     * Clean a string embedding html, producing AltText for html emails
+     * Clean a string embedding HTML, producing AltText for HTML emails
      *
      * @return string current message in plaintext format
      */
@@ -446,7 +446,7 @@ class GaletteMail
     }
 
     /**
-     * Retrieve array of errors
+     * Retrieve errors
      *
      * @return array<int,string>
      */

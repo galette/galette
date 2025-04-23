@@ -34,8 +34,8 @@ use Laminas\Db\Sql\Select;
 class Logo extends Picture
 {
     protected string|int $id = 'custom_logo';
-    //database wants a member id (integer), not a string.
-    //  Will be used to query the correct id
+    // Database wants a member id (integer), not a string.
+    // Will be used to query the correct id
     protected int $db_id = 0;
     protected bool $custom = true;
 

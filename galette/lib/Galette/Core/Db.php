@@ -240,7 +240,7 @@ class Db
     }
 
     /**
-     * Peform a select query on the whole table
+     * Perform a select query on the whole table
      *
      * @param string $table Table name
      *
@@ -373,7 +373,7 @@ class Db
             $results['create'] = $e;
         }
 
-        //all those tests need the table to exists
+        //all those tests need the table to exist
         if (!$stop) {
             if ($mode == 'u') {
                 //can Galette ALTER tables? (only for update mode)
@@ -390,7 +390,7 @@ class Db
                 }
             }
 
-            //can Galette INSERT records ?
+            //can Galette INSERT records?
             $values = [
                 'test_id'      => 1,
                 'test_text'    => 'a simple text'
@@ -411,14 +411,14 @@ class Db
                     'Cannot INSERT records | ' . $e->getMessage(),
                     Analog::WARNING
                 );
-                //if we cannot insert records, some others tests cannot be done
+                //if we cannot insert records, some other tests cannot be done
                 $stop = true;
                 $results['insert'] = $e;
             }
 
             //all those tests need that the first record exists
             if (!$stop) {
-                //can Galette UPDATE records ?
+                //can Galette UPDATE records?
                 $values = [
                     'test_text' => 'another simple text'
                 ];
@@ -441,7 +441,7 @@ class Db
                     $results['update'] = $e;
                 }
 
-                //can Galette SELECT records ?
+                //can Galette SELECT records?
                 try {
                     $select = $this->sql->select('galette_test');
                     $select->where(['test_id' => 1]);
@@ -461,7 +461,7 @@ class Db
                     $results['select'] = $e;
                 }
 
-                //can Galette DELETE records ?
+                //can Galette DELETE records?
                 try {
                     $delete = $this->sql->delete('galette_test');
                     $delete->where(['test_id' => 1]);
@@ -476,7 +476,7 @@ class Db
                 }
             }
 
-            //can Galette DROP tables ?
+            //can Galette DROP tables?
             try {
                 $sql = 'DROP TABLE galette_test';
                 $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
@@ -593,7 +593,7 @@ class Db
     }
 
     /**
-     * Converts dtabase content to UTF-8
+     * Converts database content to UTF-8
      *
      * @param string $prefix Specified table prefix
      * @param string $table  the table we want to convert datas from
@@ -632,7 +632,7 @@ class Db
             if (count($pkeys) == 0) {
                 //no primary key! How to do an update without that?
                 //Prior to 0.7, l10n and dynamic_fields tables does not
-                //contains any primary key. Since encoding conversion is done
+                //contain any primary key. Since encoding conversion is done
                 //_before_ the SQL upgrade, we'll have to manually
                 //check these ones
                 if (preg_match('/' . $prefix . 'dynamic_fields/', $table) !== 0) {

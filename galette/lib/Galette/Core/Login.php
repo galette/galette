@@ -158,7 +158,7 @@ class Login extends Authentication
                     return false;
                 }
 
-                //check if passwords matches
+                //check if passwords match
                 $pw_checked = password_verify($passe, $row->mdp_adh);
                 if (!$pw_checked) {
                     //if password did not match, we try old md5 method
@@ -237,9 +237,9 @@ class Login extends Authentication
         if ((int)$row->priorite_statut < Members::NON_STAFF_MEMBERS) {
             $this->staff = true;
         }
-        //check if member is up-to-date
+        //check if member is up to date
         if ($row->bool_exempt_adh) {
-            //member is due free, he's up-to-date.
+            //member is due free, he's up to date.
             $this->uptodate = true;
         } else {
             //let's check from end date, if present
@@ -252,7 +252,7 @@ class Login extends Authentication
                 $this->uptodate = $ech >= $now;
             }
         }
-        //staff members and admins are de facto groups managers. For all
+        //Staff members and admins are de facto groups managers. For all
         //others, get managed groups
         if (
             !$this->isSuperAdmin()
@@ -311,8 +311,7 @@ class Login extends Authentication
     }
 
     /**
-     * Does this login already exists ?
-     * These function should be used for setting admin login into Preferences
+     * Does this login already exist?
      *
      * @param string $user the username
      *

@@ -66,7 +66,7 @@ class Gaptcha
     }
 
     /**
-     * Get questions phrase
+     * Get question phrase
      *
      * @return string
      */

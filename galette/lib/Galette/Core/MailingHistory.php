@@ -387,7 +387,7 @@ class MailingHistory extends History
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurend updating Mailing | ' . $e->getMessage(),
+                'An error occurred updating Mailing | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;

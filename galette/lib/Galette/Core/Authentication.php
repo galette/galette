@@ -73,12 +73,11 @@ abstract class Authentication
     abstract public function logIn(string $user, string $passe): bool;
 
     /**
-     * Does this login already exists ?
-     * These function should be used for setting admin login into Preferences
+     * Does this login already exist?
      *
      * @param string $user the username
      *
-     * @return boolean true if the username already exists, false otherwise
+     * @return boolean
      */
     abstract public function loginExists(string $user): bool;
 
@@ -88,7 +87,7 @@ abstract class Authentication
      * @param string      $login       name
      * @param Preferences $preferences Preferences instance
      *
-     * @return bool
+     * @return boolean
      */
     public function logAdmin(string $login, Preferences $preferences): bool
     {
@@ -137,7 +136,7 @@ abstract class Authentication
     }
 
     /**
-     * Is user logged-in?
+     * Is user logged in?
      *
      * @return bool
      */

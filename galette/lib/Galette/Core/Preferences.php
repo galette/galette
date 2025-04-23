@@ -1705,7 +1705,7 @@ class Preferences
      */
     protected function checkCssImpacted(array $values): void
     {
-        //check if custom css is enabled
+        //check if custom CSS is enabled
         if (($values['pref_enable_custom_colors'] ?? '') != $this->pref_enable_custom_colors) {
             $this->delete_dark_css = true;
             return;

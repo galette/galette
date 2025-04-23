@@ -250,7 +250,7 @@ class I18n
     }
 
     /**
-     * Is a string seem to be UTF-8 one ?
+     * Does string seem to be encoded as UTF-8?
      *
      * @param string $str string to analyze
      *
