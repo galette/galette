@@ -174,7 +174,7 @@ class Adherent
     private array $managed_groups = [];
     private int|Adherent|null $parent;
     /** @var array<int, Adherent>|null */
-    private ?array $children = []; //@phpstan-ignore-line
+    private ?array $children; //@phpstan-ignore-line
     private bool $duplicate = false;
     /** @var array<int,Social> */
     private array $socials;
@@ -197,6 +197,7 @@ class Adherent
         'adresse_adh',
         'cp_adh',
         'ville_adh',
+        'region_adh',
         'email_adh'
     ];
 
@@ -270,36 +271,28 @@ class Adherent
      *
      * @param int $id the identifier for the member to load
      *
-     * @return bool true if query succeed, false otherwise
+     * @return bool true if members has been found, false otherwise
      */
     public function load(int $id): bool
     {
-        try {
-            $select = $this->zdb->select(self::TABLE, 'a');
+        $select = $this->zdb->select(self::TABLE, 'a');
 
-            $select->join(
-                ['b' => PREFIX_DB . Status::TABLE],
-                'a.' . Status::PK . '=b.' . Status::PK,
-                ['priorite_statut']
-            )->where([self::PK => $id]);
+        $select->join(
+            ['b' => PREFIX_DB . Status::TABLE],
+            'a.' . Status::PK . '=b.' . Status::PK,
+            ['priorite_statut']
+        )->where([self::PK => $id]);
 
-            $results = $this->zdb->execute($select);
+        $results = $this->zdb->execute($select);
 
-            if ($results->count() === 0) {
-                return false;
-            }
-
-            /** @var ArrayObject<string, int|string> $result */
-            $result = $results->current();
-            $this->loadFromRS($result);
-            return true;
-        } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load member form id `' . $id . '` | ' . $e->getMessage(),
-                Analog::WARNING
-            );
-            throw $e;
+        if ($results->count() === 0) {
+            return false;
         }
+
+        /** @var ArrayObject<string, int|string> $result */
+        $result = $results->current();
+        $this->loadFromRS($result);
+        return true;
     }
 
     /**
@@ -311,31 +304,24 @@ class Adherent
      */
     public function loadFromLoginOrMail(string $login): bool
     {
-        try {
-            $select = $this->zdb->select(self::TABLE);
-            if (GaletteMail::isValidEmail($login)) {
-                //we got a valid email address, use it
-                $select->where(['email_adh' => $login]);
-            } else {
-                ///we did not get an email address, consider using login
-                $select->where(['login_adh' => $login]);
-            }
-
-            $results = $this->zdb->execute($select);
-            if ($results->count() > 0) {
-                /** @var ArrayObject<string, int|string> $result */
-                $result = $results->current();
-                $this->loadFromRS($result);
-            }
-            return true;
-        } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load member form login `' . $login . '` | ' .
-                $e->getMessage(),
-                Analog::WARNING
-            );
-            throw $e;
+        $select = $this->zdb->select(self::TABLE);
+        if (GaletteMail::isValidEmail($login)) {
+            //we got a valid email address, use it
+            $select->where(['email_adh' => $login]);
+        } else {
+            ///we did not get an email address, consider using login
+            $select->where(['login_adh' => $login]);
         }
+
+        $results = $this->zdb->execute($select);
+        if ($results->count() === 0) {
+            return false;
+        }
+
+        /** @var ArrayObject<string, int|string> $result */
+        $result = $results->current();
+        $this->loadFromRS($result);
+        return true;
     }
 
     /**
@@ -454,30 +440,21 @@ class Adherent
     private function loadChildren(): void
     {
         $this->children = [];
-        try {
-            $id = self::PK;
-            $select = $this->zdb->select(self::TABLE);
-            $select->columns(
-                [$id]
-            )->where(['parent_id' => $this->id]);
+        $id = self::PK;
+        $select = $this->zdb->select(self::TABLE);
+        $select->columns(
+            [$id]
+        )->where(['parent_id' => $this->id]);
 
-            $results = $this->zdb->execute($select);
+        $results = $this->zdb->execute($select);
 
-            if ($results->count() > 0) {
-                foreach ($results as $row) {
-                    $deps = $this->deps;
-                    $deps['children'] = false;
-                    $deps['parent'] = false;
-                    $this->children[] = new Adherent($this->zdb, (int)$row->$id, $deps);
-                }
+        if ($results->count() > 0) {
+            foreach ($results as $row) {
+                $deps = $this->deps;
+                $deps['children'] = false;
+                $deps['parent'] = false;
+                $this->children[] = new Adherent($this->zdb, (int)$row->$id, $deps);
             }
-        } catch (Throwable $e) {
-            Analog::log(
-                'Cannot load children for member #' . $this->id . ' | ' .
-                $e->getMessage(),
-                Analog::WARNING
-            );
-            throw $e;
         }
     }
 
@@ -696,7 +673,7 @@ class Adherent
 
 
     /**
-     * Can member appears in public members list?
+     * Can member appear in public members list?
      *
      * @return bool
      */
@@ -742,7 +719,7 @@ class Adherent
      */
     public function hasChildren(): bool
     {
-        if (!isset($this->children) || $this->children === null) {
+        if (!isset($this->children)) {
             if ($this->id) {
                 Analog::log(
                     'Children has not been loaded!',
@@ -920,27 +897,18 @@ class Adherent
      */
     public static function getSName(Db $zdb, int $id, bool $wid = false, bool $wnick = false): string
     {
-        try {
-            $select = $zdb->select(self::TABLE);
-            $select->where([self::PK => $id]);
+        $select = $zdb->select(self::TABLE);
+        $select->where([self::PK => $id]);
 
-            $results = $zdb->execute($select);
-            $row = $results->current();
-            return self::getNameWithCase(
-                $row->nom_adh,
-                $row->prenom_adh,
-                false,
-                ($wid === true ? (int)$row->id_adh : false),
-                ($wnick === true ? $row->pseudo_adh : false)
-            );
-        } catch (Throwable $e) {
-            Analog::log(
-                'Cannot get formatted name for member form id `' . $id . '` | ' .
-                $e->getMessage(),
-                Analog::WARNING
-            );
-            throw $e;
-        }
+        $results = $zdb->execute($select);
+        $row = $results->current();
+        return self::getNameWithCase(
+            $row->nom_adh,
+            $row->prenom_adh,
+            false,
+            ($wid === true ? (int)$row->id_adh : false),
+            ($wnick === true ? $row->pseudo_adh : false)
+        );
     }
 
     /**
@@ -999,27 +967,18 @@ class Adherent
      */
     public static function updatePassword(Db $zdb, int $id_adh, string $pass): bool
     {
-        try {
-            $cpass = password_hash($pass, PASSWORD_BCRYPT);
+        $cpass = password_hash($pass, PASSWORD_BCRYPT);
 
-            $update = $zdb->update(self::TABLE);
-            $update->set(
-                ['mdp_adh' => $cpass]
-            )->where([self::PK => $id_adh]);
-            $zdb->execute($update);
-            Analog::log(
-                'Password for `' . $id_adh . '` has been updated.',
-                Analog::DEBUG
-            );
-            return true;
-        } catch (Throwable $e) {
-            Analog::log(
-                'An error occurred while updating password for `' . $id_adh .
-                '` | ' . $e->getMessage(),
-                Analog::ERROR
-            );
-            throw $e;
-        }
+        $update = $zdb->update(self::TABLE);
+        $update->set(
+            ['mdp_adh' => $cpass]
+        )->where([self::PK => $id_adh]);
+        $zdb->execute($update);
+        Analog::log(
+            'Password for `' . $id_adh . '` has been updated.',
+            Analog::DEBUG
+        );
+        return true;
     }
 
     /**
@@ -1754,23 +1713,61 @@ class Adherent
      */
     private function updateModificationDate(): void
     {
-        try {
-            $modif_date = date('Y-m-d');
-            $update = $this->zdb->update(self::TABLE);
-            $update->set(
-                ['date_modif_adh' => $modif_date]
-            )->where([self::PK => $this->id]);
+        $modif_date = date('Y-m-d');
+        $update = $this->zdb->update(self::TABLE);
+        $update->set(
+            ['date_modif_adh' => $modif_date]
+        )->where([self::PK => $this->id]);
 
-            $this->zdb->execute($update);
-            $this->modification_date = $modif_date;
-        } catch (Throwable $e) {
-            Analog::log(
-                'Something went wrong updating modif date :\'( | ' .
-                $e->getMessage() . "\n" . $e->getTraceAsString(),
-                Analog::ERROR
-            );
-            throw $e;
+        $this->zdb->execute($update);
+        $this->modification_date = $modif_date;
+    }
+
+    /**
+     * Get deprecated properties (that should not be called directly)
+     *
+     * @return array<string, string>
+     */
+    public function getDeprecatedProperties(): array
+    {
+        return [
+            'admin' => 'isAdmin',
+            'staff' => 'isStaff',
+            'due_free' => 'isDueFree',
+            'appears_in_list' => 'appearsInMembersList',
+            'active' => 'isActive',
+            'duplicate' => 'isDuplicate',
+            'groups' => 'getGroups',
+            'managed_groups' => 'getManagedGroups',
+        ];
+    }
+
+    /**
+     * Get forbidden properties (that should not be called directly)
+     *
+     * @return string[]
+     */
+    public function getForbiddenProperties(): array
+    {
+        $forbidden = ['row_classes', 'oldness'];
+        if (!defined('GALETTE_TESTS')) {
+            $forbidden[] = 'password'; //keep that for tests only
         }
+        return $forbidden;
+    }
+
+    /**
+     * Get virtual properties
+     *
+     * @return string[]
+     */
+    public function getVirtualProperties(): array
+    {
+        return [
+            'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
+            'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
+            'rbirthdate', 'sgender', 'contribstatus', 'rdue_date'
+        ];
     }
 
     /**
@@ -1782,50 +1779,20 @@ class Adherent
      */
     public function __get(string $name): mixed
     {
-        $forbidden = [
-            'admin', 'staff', 'due_free', 'appears_in_list', 'active',
-            'row_classes', 'oldness', 'duplicate', 'groups', 'managed_groups'
-        ];
-        if (!defined('GALETTE_TESTS')) {
-            $forbidden[] = 'password'; //keep that for tests only
+        if (in_array($name, $this->getForbiddenProperties())) {
+            throw new \RuntimeException("Call to __get for '$name' is forbidden!");
         }
 
-        $virtuals = [
-            'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
-            'rbirthdate', 'sgender', 'contribstatus', 'rdue_date'
-        ];
-
-        $socials = ['website', 'msn', 'jabber', 'icq'];
-
-        if (in_array($name, $forbidden)) {
+        $deprecateds = $this->getDeprecatedProperties();
+        if (in_array($name, $deprecateds)) {
             Analog::log(
                 'Calling property "' . $name . '" directly is discouraged.',
                 Analog::WARNING
             );
-            switch ($name) {
-                case 'admin':
-                    return $this->isAdmin();
-                case 'staff':
-                    return $this->isStaff();
-                case 'due_free':
-                    return $this->isDueFree();
-                case 'appears_in_list':
-                    return $this->appearsInMembersList();
-                case 'active':
-                    return $this->isActive();
-                case 'duplicate':
-                    return $this->isDuplicate();
-                case 'groups':
-                    return $this->getGroups();
-                case 'managed_groups':
-                    return $this->getManagedGroups();
-                default:
-                    throw new \RuntimeException("Call to __get for '$name' is forbidden!");
-            }
+            return $this->{$deprecateds[$name]}();
         }
 
-        if (in_array($name, $virtuals)) {
+        if (in_array($name, $this->getVirtualProperties())) {
             switch ($name) {
                 case 'sadmin':
                     return ($this->isAdmin()) ? _T("Yes") : _T("No");
@@ -1843,7 +1810,7 @@ class Adherent
                     } else {
                         return null;
                     }
-                    // no break
+                    // no break - already returned
                 case 'sstatus':
                     $status = new Status($this->zdb);
                     return $status->getLabel($this->status);
@@ -1870,14 +1837,21 @@ class Adherent
                         default:
                             return _T('Unspecified');
                     }
-                    // no break
+                    // no break - already returned
                 case 'contribstatus':
                     return $this->getDues();
+                default:
+                    throw new \RuntimeException("Virtual property '$name' not handled!");
             }
         }
 
         //for backward compatibility
+        $socials = ['website', 'msn', 'jabber', 'icq'];
         if (in_array($name, $socials)) {
+            Analog::log(
+                'Calling property "' . $name . '" directly is deprecated.',
+                Analog::WARNING
+            );
             $values = Social::getListForMember($this->id, $name);
             return $values[0] ?? null;
         }
@@ -1890,7 +1864,7 @@ class Adherent
                 } else {
                     return null;
                 }
-                // no break
+                // no break - already returned
             case 'address':
                 return $this->$name ?? '';
             case 'birthdate':
@@ -1940,69 +1914,34 @@ class Adherent
      */
     public function __isset(string $name): bool
     {
-        $forbidden = [
-            'admin', 'staff', 'due_free', 'appears_in_list', 'active',
-            'row_classes', 'oldness', 'duplicate', 'groups', 'managed_groups'
-        ];
-        if (!defined('GALETTE_TESTS')) {
-            $forbidden[] = 'password'; //keep that for tests only
+        if (in_array($name, $this->getForbiddenProperties())) {
+            return false;
         }
 
-        $virtuals = [
-            'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
-            'rbirthdate', 'sgender', 'contribstatus',
-        ];
-
-        $socials = ['website', 'msn', 'jabber', 'icq'];
-
-        if (in_array($name, $forbidden)) {
+        if (in_array($name, array_keys($this->getDeprecatedProperties()))) {
             Analog::log(
                 'Calling property "' . $name . '" directly is discouraged.',
                 Analog::WARNING
             );
-            switch ($name) {
-                case 'admin':
-                case 'staff':
-                case 'due_free':
-                case 'appears_in_list':
-                case 'active':
-                case 'duplicate':
-                case 'groups':
-                case 'managed_groups':
-                    return true;
-            }
-
-            return false;
+            return true;
         }
 
-        if (in_array($name, $virtuals)) {
+        if (in_array($name, $this->getVirtualProperties())) {
             return true;
         }
 
         //for backward compatibility
+        $socials = ['website', 'msn', 'jabber', 'icq'];
         if (in_array($name, $socials)) {
             return true;
         }
 
-        switch ($name) {
-            case 'id':
-            case 'id_statut':
-            case 'address':
-            case 'birthdate':
-            case 'creation_date':
-            case 'modification_date':
-            case 'due_date':
-            case 'parent_id':
-                return true;
-            default:
-                return property_exists($this, $name);
-        }
+        return property_exists($this, $name);
     }
 
     /**
      * Get member email
-     * If member does not have an email address, but is attached to
+     * If member does not have an email address but is attached to
      * another member, we'll take information from its parent.
      *
      * @return string
@@ -2020,7 +1959,7 @@ class Adherent
 
     /**
      * Get member address.
-     * If member does not have an address, but is attached to another member, we'll take information from its parent.
+     * If member does not have an address but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -2037,7 +1976,7 @@ class Adherent
 
     /**
      * Get member zipcode.
-     * If member does not have an address, but is attached to another member, we'll take information from its parent.
+     * If member does not have an address but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -2055,7 +1994,7 @@ class Adherent
 
     /**
      * Get member town.
-     * If member does not have an address, but is attached to another member, we'll take information from its parent.
+     * If member does not have an address but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -2073,7 +2012,7 @@ class Adherent
 
     /**
      * Get member region.
-     * If member does not have an address, but is attached to another member, we'll take information from its parent.
+     * If member does not have an address but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -2091,7 +2030,7 @@ class Adherent
 
     /**
      * Get member country.
-     * If member does not have an address, but is attached to another member, we'll take information from its parent.
+     * If member does not have an address but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */

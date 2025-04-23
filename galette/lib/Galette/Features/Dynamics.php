@@ -89,8 +89,8 @@ trait Dynamics
     {
         if (!isset($this->dynamics)) {
             Analog::log(
-                'Dynamics fields have not been loaded, cannot be checked. (from: ' . __METHOD__ . ')',
-                Analog::WARNING
+                'Dynamics fields have not been explicitly loaded (from: ' . __METHOD__ . ')',
+                Analog::INFO
             );
             $this->loadDynamicFields();
         }
@@ -215,8 +215,8 @@ trait Dynamics
     {
         if (!isset($this->dynamics)) {
             Analog::log(
-                'Dynamics fields have not been loaded, cannot be stored. (from: ' . __METHOD__ . ')',
-                Analog::WARNING
+                'Dynamics fields have not been explicitly loaded (from: ' . __METHOD__ . ')',
+                Analog::INFO
             );
             $this->loadDynamicFields();
         }

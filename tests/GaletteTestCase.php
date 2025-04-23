@@ -187,6 +187,7 @@ abstract class GaletteTestCase extends TestCase
             'date_crea_adh' => '2020-06-10',
             'pref_lang' => 'en_US',
             'fingerprint' => 'FAKER' . $this->seed,
+            'region_adh' => 'Caribbean'
         ];
         return $data;
     }
@@ -281,47 +282,28 @@ abstract class GaletteTestCase extends TestCase
             $adh = $this->adh;
         }
 
-        $expecteds = [
-            'nom_adh' => 'Durand',
-            'prenom_adh' => 'René',
-            'ville_adh' => 'Martel',
-            'adresse_adh' => '66, boulevard De Oliveira',
-            'email_adh' => 'meunier.josephine' .  $this->seed . '@ledoux.com',
-            'login_adh' => 'arthur.hamon' .  $this->seed,
-            'mdp_adh' => 'J^B-()f',
-            'bool_admin_adh' => false,
-            'bool_exempt_adh' => false,
-            'bool_display_info' => true,
-            'sexe_adh' => 0,
-            'prof_adh' => 'Chef de fabrication',
-            'titre_adh' => null,
-            'ddn_adh' => 'NOT USED',
-            'lieu_naissance' => 'Gonzalez-sur-Meunier',
-            'pseudo_adh' => 'ubertrand',
-            'cp_adh' => '39 069',
-            'pays_adh' => 'Antarctique',
-            'tel_adh' => '0439153432',
-            'activite_adh' => true,
-            'id_statut' => 9,
-            'pref_lang' => 'en_US',
-            'fingerprint' => 'FAKER95842354',
-            'societe_adh' => ''
-        ];
+        $expecteds = $this->dataAdherentOne();
+        unset($expecteds['mdp_adh2']);
         $expecteds = array_merge($expecteds, $new_expecteds);
 
         foreach ($expecteds as $key => $value) {
             $property = $this->members_fields[$key]['propname'];
+            $this->assertTrue(isset($adh->$property));
             switch ($key) {
                 case 'bool_admin_adh':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->isAdmin());
                     break;
                 case 'bool_exempt_adh':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->isDueFree());
                     break;
                 case 'bool_display_info':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->appearsInMembersList());
                     break;
                 case 'activite_adh':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
@@ -339,12 +321,9 @@ abstract class GaletteTestCase extends TestCase
                         $adh->$property,
                         "$property expected {$value} got {$adh->$property}"
                     );
-
                     break;
             }
         }
-
-        $d = \DateTime::createFromFormat('Y-m-d', $expecteds['ddn_adh']);
 
         $this->assertFalse($adh->hasChildren());
         $this->assertFalse($adh->hasParent());
@@ -365,6 +344,7 @@ abstract class GaletteTestCase extends TestCase
         $this->assertSame($expecteds['cp_adh'], $adh->getZipcode());
         $this->assertSame($expecteds['ville_adh'], $adh->getTown());
         $this->assertSame($expecteds['pays_adh'], $adh->getCountry());
+        $this->assertSame($expecteds['region_adh'], $adh->getRegion());
 
         $this->assertSame('DURAND René', $adh::getSName($this->zdb, $adh->id));
         $this->assertSame('active-account cotis-never', $adh->getRowClass());
@@ -384,47 +364,28 @@ abstract class GaletteTestCase extends TestCase
             $adh = $this->adh;
         }
 
-        $expecteds = [
-            'nom_adh' => 'Hoarau',
-            'prenom_adh' => 'Lucas',
-            'ville_adh' => 'Reynaudnec',
-            'cp_adh' => '63077',
-            'adresse_adh' => '2, boulevard Legros',
-            'email_adh' => 'phoarau' .  $this->seed . '@tele2.fr',
-            'login_adh' => 'nathalie51' .  $this->seed,
-            'mdp_adh' => 'T.u!IbKOi|06',
-            'bool_admin_adh' => false,
-            'bool_exempt_adh' => false,
-            'bool_display_info' => false,
-            'sexe_adh' => 1,
-            'prof_adh' => 'Extraction',
-            'titre_adh' => null,
-            'ddn_adh' => 'NOT USED',
-            'lieu_naissance' => 'Fischer',
-            'pseudo_adh' => 'vallet.camille',
-            'pays_adh' => '',
-            'tel_adh' => '05 59 53 59 43',
-            'activite_adh' => true,
-            'id_statut' => 9,
-            'pref_lang' => 'ca',
-            'fingerprint' => 'FAKER' . $this->seed,
-            'societe_adh' => 'Philippe'
-        ];
+        $expecteds = $this->dataAdherentTwo();
+        unset($expecteds['mdp_adh2']);
         $expecteds = array_merge($expecteds, $new_expecteds);
 
         foreach ($expecteds as $key => $value) {
             $property = $this->members_fields[$key]['propname'];
+            $this->assertTrue(isset($adh->$property));
             switch ($key) {
                 case 'bool_admin_adh':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->isAdmin());
                     break;
                 case 'bool_exempt_adh':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->isDueFree());
                     break;
                 case 'bool_display_info':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->appearsInMembersList());
                     break;
                 case 'activite_adh':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
@@ -446,8 +407,6 @@ abstract class GaletteTestCase extends TestCase
             }
         }
 
-        $d = \DateTime::createFromFormat('Y-m-d', $expecteds['ddn_adh']);
-
         $this->assertFalse($adh->hasChildren());
         $this->assertFalse($adh->hasParent());
         $this->assertFalse($adh->hasPicture());
@@ -467,6 +426,7 @@ abstract class GaletteTestCase extends TestCase
         $this->assertSame($expecteds['cp_adh'], $adh->getZipcode());
         $this->assertSame($expecteds['ville_adh'], $adh->getTown());
         $this->assertSame($expecteds['pays_adh'], $adh->getCountry());
+        $this->assertSame('', $adh->getRegion());
 
         $this->assertSame('HOARAU Lucas', $adh::getSName($this->zdb, $adh->id));
         $this->assertSame('active-account cotis-never', $adh->getRowClass());

@@ -137,6 +137,15 @@ class Social extends GaletteTestCase
         $this->assertSame($this->adh->id, $social->id_adh);
         $this->assertSame('mastodon URL', $social->url);
 
+        //Same, from Adherent object
+        $adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id, ['socials' => true]);
+        $socials = $adh->socials;
+        $this->assertCount(1, $socials);
+        $social = array_pop($socials);
+        $this->assertSame(\Galette\Entity\Social::MASTODON, $social->type);
+        $this->assertSame($this->adh->id, $social->id_adh);
+        $this->assertSame('mastodon URL', $social->url);
+
         $social = new \Galette\Entity\Social($this->zdb);
         $this->assertTrue(
             $social

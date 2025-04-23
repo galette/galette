@@ -164,33 +164,16 @@ abstract class DynamicField
      */
     public static function getFieldType(Db $zdb, int $t, ?int $id = null): DynamicField
     {
-        $df = null;
-        switch ($t) {
-            case self::SEPARATOR:
-                $df = new Separator($zdb, $id);
-                break;
-            case self::TEXT:
-                $df = new Text($zdb, $id);
-                break;
-            case self::LINE:
-                $df = new Line($zdb, $id);
-                break;
-            case self::CHOICE:
-                $df = new Choice($zdb, $id);
-                break;
-            case self::DATE:
-                $df = new Date($zdb, $id);
-                break;
-            case self::BOOLEAN:
-                $df = new Boolean($zdb, $id);
-                break;
-            case self::FILE:
-                $df = new File($zdb, $id);
-                break;
-            default:
-                throw new \Exception('Unknown field type ' . $t . '!');
-        }
-        return $df;
+        return match ($t) {
+            self::SEPARATOR => new Separator($zdb, $id),
+            self::TEXT => new Text($zdb, $id),
+            self::LINE => new Line($zdb, $id),
+            self::CHOICE => new Choice($zdb, $id),
+            self::DATE => new Date($zdb, $id),
+            self::BOOLEAN => new Boolean($zdb, $id),
+            self::FILE => new File($zdb, $id),
+            default => throw new \Exception('Unknown field type ' . $t . '!'),
+        };
     }
 
     /**
