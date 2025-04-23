@@ -170,8 +170,7 @@ class Install
     {
         $img_name = ($arg === true) ? 'green check' : 'red times';
         $alt = ($arg === true) ? _T("Ok") : _T("Ko");
-        $img = '<i class="ui ' . $img_name . ' icon" aria-hidden="true"></i><span class="visually-hidden">' . $alt . '</span>';
-        return $img;
+        return '<i class="ui ' . $img_name . ' icon" aria-hidden="true"></i><span class="visually-hidden">' . $alt . '</span>';
     }
 
     /**
@@ -229,28 +228,30 @@ class Install
      */
     public function atPreviousStep(): void
     {
-        if ($this->step > 0) {
-            if (
-                $this->step - 1 !== self::STEP_DB_INSTALL
-                && $this->step !== self::STEP_END
-            ) {
-                if ($this->step === self::STEP_DB_INSTALL) {
-                    $this->step = self::STEP_DB_CHECKS;
-                } else {
-                    if ($this->step === self::STEP_DB_UPGRADE) {
-                        $this->setInstalledVersion(null);
-                    }
-                    $this->step = $this->step - 1;
-                }
+        if ($this->step <= self::STEP_CHECK) {
+            return;
+        }
+
+        if (
+            $this->step - 1 !== self::STEP_DB_INSTALL
+            && $this->step !== self::STEP_END
+        ) {
+            if ($this->step === self::STEP_DB_INSTALL) {
+                $this->step = self::STEP_DB_CHECKS;
             } else {
-                $msg = null;
-                if ($this->step === self::STEP_END) {
-                    $msg = 'Ok man, install is finished already!';
-                } else {
-                    $msg = 'It is forbidden to rerun database install!';
+                if ($this->step === self::STEP_DB_UPGRADE) {
+                    $this->setInstalledVersion(null);
                 }
-                Analog::log($msg, Analog::WARNING);
+                $this->step = $this->step - 1;
             }
+        } else {
+            $msg = null;
+            if ($this->step === self::STEP_END) {
+                $msg = 'Ok man, install is finished already!';
+            } else {
+                $msg = 'It is forbidden to rerun database install!';
+            }
+            Analog::log($msg, Analog::WARNING);
         }
     }
 

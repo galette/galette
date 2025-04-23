@@ -320,7 +320,7 @@ class I18n
     {
         $url = 'https://doc.galette.eu/';
         $lang = $this->abbrev . '/';
-        $branch = (preg_match('(-git)', Galette::gitVersion()) ? 'develop' : 'master') . '/';
+        $branch = (str_contains(Galette::gitVersion(), '-git') ? 'develop' : 'master') . '/';
         $not_translated = [
             'ota',
             'si'

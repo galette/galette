@@ -147,21 +147,18 @@ class AdminToolsController extends AbstractController
         }
 
         //flash messages
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
+        foreach ($error_detected as $error) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
         }
-        if (count($success_detected) > 0) {
-            foreach ($success_detected as $success) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    $success
-                );
-            }
+
+        foreach ($success_detected as $success) {
+            $this->flash->addMessage(
+                'success_detected',
+                $success
+            );
         }
 
         return $response

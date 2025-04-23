@@ -209,17 +209,17 @@ abstract class Authentication
         $manager = false;
         if ($this->isAdmin() || $this->isStaff()) {
             return true;
-        } else {
-            if ($id_group === null) {
-                $manager = count($this->managed_groups) > 0;
-            } else {
-                $groups = is_array($id_group) ? $id_group : (array)$id_group;
+        }
 
-                foreach ($groups as $group) {
-                    if (in_array($group, $this->managed_groups)) {
-                        $manager = true;
-                        break;
-                    }
+        if ($id_group === null) {
+            $manager = count($this->managed_groups) > 0;
+        } else {
+            $groups = is_array($id_group) ? $id_group : (array)$id_group;
+
+            foreach ($groups as $group) {
+                if (in_array($group, $this->managed_groups)) {
+                    $manager = true;
+                    break;
                 }
             }
         }

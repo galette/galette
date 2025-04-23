@@ -588,15 +588,6 @@ class Preferences
             && $insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED
         ) {
             if (
-                Galette::isHosted() &&
-                in_array(
-                    $insert_values['pref_mail_method'],
-                    [GaletteMail::METHOD_PHPMAIL, GaletteMail::METHOD_SENDMAIL, GaletteMail::METHOD_QMAIL]
-                )
-            ) {
-                $this->errors[] = _T("- Only SMTP and GMail are allowed on hosted instances.");
-            }
-            if (
                 !isset($insert_values['pref_email_nom'])
                 || $insert_values['pref_email_nom'] == ''
             ) {

@@ -81,7 +81,7 @@ class Plugins
                 continue;
             }
 
-            if (substr($root, -1) != '/') {
+            if (!str_ends_with($root, '/')) {
                 $root .= '/';
             }
 
@@ -225,8 +225,7 @@ class Plugins
                 'version'       => $version,
                 'acls'          => $acls,
                 'date'          => $date,
-                'priority'      => $priority === null ?
-                                     1000 : (int)$priority,
+                'priority'      => $priority === null ? 1000 : $priority,
                 'root_writable' => is_writable($this->mroot),
                 'route'         => $route
             ];

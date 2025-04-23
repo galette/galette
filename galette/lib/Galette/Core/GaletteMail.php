@@ -137,12 +137,15 @@ class GaletteMail
                         // set the SMTP port for the SMTP server
                         $this->mail->Port = $this->preferences->pref_mail_smtp_port;
                     } else {
+                        $this->mail->Port = $this->preferences->pref_mail_smtp_secure ? 587 : 25;
                         Analog::log(
-                            '[' . get_class($this) .
-                            ']No SMTP port provided. Switch to default (25).',
+                            sprintf(
+                                '[%1$s]No SMTP port provided. Switch to default (%2$s).',
+                                get_class($this),
+                                $this->mail->Port
+                            ),
                             Analog::INFO
                         );
-                        $this->mail->Port = $this->preferences->pref_mail_smtp_secure ? 587 : 25;
                     }
 
                     if ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 465) {

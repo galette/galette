@@ -54,7 +54,7 @@ class Galette
 
         //used for both git and nightly installs
         $version = str_replace('-dev', '-git', GALETTE_VERSION);
-        if (strstr($version, '-git') === false) {
+        if (!str_contains($version, '-git')) {
             $version .= '-git';
         }
 
@@ -1115,16 +1115,6 @@ class Galette
     public static function isDemo(): bool
     {
         return GALETTE_MODE === static::MODE_DEMO;
-    }
-
-    /**
-     * Is a hosted instance
-     *
-     * @return bool
-     */
-    public static function isHosted(): bool
-    {
-        return defined('GALETTE_HOSTED') && GALETTE_HOSTED === true;
     }
 
     /**

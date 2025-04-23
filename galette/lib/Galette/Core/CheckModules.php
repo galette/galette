@@ -119,25 +119,29 @@ class CheckModules
     {
         $html = null;
 
+        $html_elt = '<li><span>%1$s</span><span><i class="ui %2$s icon" aria-hidden="true"></i>' .
+            '<span class="visually-hidden">%3$s</span></span></li>';
         if (count($this->missing) > 0) {
             $ko = ($translated ? _T('Ko') : 'Ko');
             foreach ($this->missing as $m) {
-                $html .= '<li><span>' . $m . '</span><span><i class="ui red times icon" aria-hidden="true"></i><span class="visually-hidden">' .
-                    $ko . '</span></span></li>';
+                $html .= sprintf($html_elt, $m, 'red times', $ko);
             }
         }
 
         if (count($this->good) > 0) {
             $ok = ($translated ? _T('Ok') : 'Ok');
             foreach ($this->good as $m) {
-                $html .= '<li><span>' . $m . '</span><span><i class="ui green check icon" aria-hidden="true"></i><span class="visually-hidden">' .
-                    $ok . '</span></span></li>';
+                $html .= sprintf($html_elt, $m, 'green check', $ok);
             }
         }
 
         if (count($this->should) > 0) {
             foreach ($this->should as $m) {
-                $html .= '<li><span>' . $m . '</span><span><i class="ui yellow exclamation circle icon" aria-hidden="true"></i></span></li>';
+                $html .= sprintf(
+                    '<li><span>%1$s</span><span><i class="ui %2$s icon" aria-hidden="true"></i></span></li>',
+                    $m,
+                    'yellow exclamation circle'
+                );
             }
         }
 
