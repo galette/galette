@@ -288,6 +288,14 @@ class Group extends GaletteTestCase
         $this->logSuperAdmin();
         $group->setLogin($this->login);
         $this->assertFalse($group->remove()); //still have children, not removed
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Group "A parent group" still have members!'
+        );
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            'Query error: DELETE FROM ' . ($this->zdb->isPostgres() ? '"galette_groups"' : '`galette_groups`')
+        );
         $this->assertTrue($group->load($parent_id));
         $this->assertTrue($group->remove(true)); //cascade removal, all will be removed
         $this->assertFalse($group->load($parent_id));

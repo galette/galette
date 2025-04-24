@@ -189,7 +189,7 @@ class Contributions extends GaletteTestCase
         $this->assertCount(0, $list);
 
         $filters = new \Galette\Filters\ContributionsList();
-        $filters->contrib_type_filter = $this->contrib->id_type_cotis;
+        $filters->contrib_type_filter = $this->contrib->type->id;
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
         $list = $contributions->getList(true);
         $this->assertCount(1, $list);
@@ -237,6 +237,7 @@ class Contributions extends GaletteTestCase
         $contributions = new \Galette\Repository\Contributions($this->zdb, $login, $filters);
         $list = $contributions->getList(true);
         $this->assertCount(0, $list);
+        $this->expectLogEntry(\Analog::WARNING, "Trying to display contributions for member #{$this->adh->id} without appropriate ACLs");
     }
 
     /**

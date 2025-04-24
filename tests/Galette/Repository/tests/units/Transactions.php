@@ -215,6 +215,7 @@ class Transactions extends GaletteTestCase
         $transactions = new \Galette\Repository\Transactions($this->zdb, $login, $filters);
         $list = $transactions->getList(true);
         $this->assertCount(0, $list);
+        $this->expectLogEntry(\Analog::WARNING, "Trying to display transactions for member #{$this->adh->id} without appropriate ACLs");
     }
 
     /**

@@ -121,6 +121,10 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->unknown_property);
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            "Unknown property 'unknown_property'"
+        );
         $this->assertFalse($contrib->isPaid());
     }
 
@@ -171,6 +175,10 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->unknown_property);
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            "Unknown property 'unknown_property'"
+        );
         $this->assertFalse($contrib->isPaid());
     }
 
@@ -225,6 +233,10 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->unknown_property);
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            "Unknown property 'unknown_property'"
+        );
         $this->assertFalse($contrib->isPaid());
     }
 
@@ -298,6 +310,10 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
         $this->assertNull($contrib->unknown_property);
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            "Unknown property 'unknown_property'"
+        );
     }
 
     /**
@@ -319,15 +335,27 @@ class Contribution extends GaletteTestCase
         $this->assertSame('2017-06-17', $contrib->begin_date);
 
         $contrib->amount = 'not an amount';
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Trying to set an amount with a non numeric value, or with a zero value'
+        );
         $this->assertNull($contrib->amount);
         $contrib->amount = 0;
         $this->assertNull($contrib->amount);
         $contrib->amount = 42;
         $this->assertSame(42.0, $contrib->amount);
         $contrib->amount = '42';
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Trying to set an amount with a non numeric value, or with a zero value'
+        );
         $this->assertSame(42.0, $contrib->amount);
 
         $contrib->type = 156;
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            'Unknown ID 156'
+        );
         $this->assertInstanceOf('\Galette\Entity\ContributionsTypes', $contrib->type);
         $this->assertFalse($contrib->type->id);
         $contrib->type = 1;
@@ -335,8 +363,16 @@ class Contribution extends GaletteTestCase
         $this->assertEquals(1, $contrib->type->id);
 
         $contrib->transaction = 'not a transaction id';
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Trying to set a transaction from an id that is not an integer.'
+        );
         $this->assertNull($contrib->transaction);
         $contrib->transaction = 46;
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            'Non-logged-in users cannot load transaction id `46`'
+        );
         $this->assertInstanceOf('\Galette\Entity\Transaction', $contrib->transaction);
         $this->assertNull($contrib->transaction->id);
 
@@ -346,6 +382,10 @@ class Contribution extends GaletteTestCase
         $this->assertSame(118218, $contrib->member);
 
         $contrib->not_a_property = 'abcde';
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            '[Galette\Entity\Contribution]: Trying to set an unknown property (not_a_property)'
+        );
         $this->assertFalse(property_exists($contrib, 'not_a_property'));
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CASH;
@@ -791,10 +831,14 @@ class Contribution extends GaletteTestCase
             ],
             $check
         );
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            '- Membership period overlaps period starting at ' . $now->format('Y-m-d')
+        );
 
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Existing errors prevents storing contribution');
-        $store = $contrib->store();
+        $contrib->store();
     }
 
     /**
@@ -853,6 +897,10 @@ class Contribution extends GaletteTestCase
         $this->checkContribExpected($contrib);
 
         $this->assertFalse($contrib->load(1355522012));
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            'No contribution #1355522012 (user )'
+        );
     }
 
     /**
@@ -866,7 +914,12 @@ class Contribution extends GaletteTestCase
         $this->createContribution();
 
         $this->assertTrue($this->contrib->remove());
+        $this->expectNoLogEntry();
         $this->assertFalse($this->contrib->remove());
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Contribution has not been removed!'
+        );
     }
 
     /**

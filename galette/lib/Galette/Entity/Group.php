@@ -429,10 +429,6 @@ class Group
             $parent_group = $this->parent_group->getId();
         }
         if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->id ?? null)) {
-            Analog::log(
-                'Group name is not unique at requested level',
-                Analog::WARNING
-            );
             throw new \RuntimeException(
                 _T("The group name you have requested already exists in the database.")
             );

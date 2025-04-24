@@ -40,7 +40,6 @@ abstract class GaletteTestCase extends TestCase
     protected \RKA\Session $session;
     protected \Galette\Core\Login $login;
     protected \Galette\Core\History $history;
-    protected string $logger_storage = '';
 
     protected \Galette\Entity\Adherent $adh;
     protected \Galette\Entity\Contribution $contrib;
@@ -52,6 +51,22 @@ abstract class GaletteTestCase extends TestCase
     protected \DI\Container $container;
     protected int $seed;
     protected array $expected_mysql_warnings = [];
+    protected bool $check_logs = true;
+
+    /**
+     * @see see \Analog\Handler\Level::$log_levels
+     * @var string[]
+     */
+    private array $log_levels_names = [
+        \Analog\Analog::DEBUG    => 'DEBUG',
+        \Analog\Analog::INFO     => 'INFO',
+        \Analog\Analog::NOTICE   => 'NOTICE',
+        \Analog\Analog::WARNING  => 'WARNING',
+        \Analog\Analog::ERROR    => 'ERROR',
+        \Analog\Analog::CRITICAL => 'CRITICAL',
+        \Analog\Analog::ALERT    => 'ALERT',
+        \Analog\Analog::URGENT   => 'URGENT'
+    ];
 
     /**
      * Set up tests
@@ -94,7 +109,6 @@ abstract class GaletteTestCase extends TestCase
         $hist = $this->history;
         $i18n = $this->i18n;
         $container = $this->container;
-        $galette_log_var = $this->logger_storage;
         $routeparser = $container->get(\Slim\Routing\RouteParser::class);
 
         $this->initPaymentTypes();
@@ -123,10 +137,49 @@ abstract class GaletteTestCase extends TestCase
      */
     public function tearDown(): void
     {
+        if ($this->check_logs) {
+            $logs = $this->getCleanedLogs();
+            $this->assertCount(0, $logs, implode("\n", $logs));
+        }
+
         if (TYPE_DB === 'mysql') {
             $this->assertSame($this->expected_mysql_warnings, $this->zdb->getWarnings());
         }
         $this->cleanHistory();
+    }
+
+    /**
+     * Get logs as an array, cleaned of unwanted entries
+     *
+     * @return string[]
+     */
+    private function getCleanedLogs(): array
+    {
+        global $galette_log_var;
+        $logs = explode("localhost - ", $galette_log_var ?? '');
+
+        $excluded_logs = [
+            'WARNING - Plugin plugin-oldversion',
+            'ERROR - Plugin Galette Unversionned'
+        ];
+
+        foreach ($logs as $i => $log) {
+            foreach ($excluded_logs as $excluded_log) {
+                if (str_contains($log, $excluded_log)) {
+                    unset($logs[$i]);
+                }
+            }
+
+            if (
+                empty($log)
+                || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::DEBUG] . ' - ')
+                || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::INFO] . ' - ')
+                || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::NOTICE] . ' - ')
+            ) {
+                unset($logs[$i]);
+            }
+        }
+        return $logs;
     }
 
     /**
@@ -292,18 +345,22 @@ abstract class GaletteTestCase extends TestCase
             switch ($key) {
                 case 'bool_admin_adh':
                     $this->assertSame($value, $adh->$property);
+                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "admin" directly is discouraged.');
                     $this->assertSame($value, $adh->isAdmin());
                     break;
                 case 'bool_exempt_adh':
                     $this->assertSame($value, $adh->$property);
+                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "due_free" directly is discouraged.');
                     $this->assertSame($value, $adh->isDueFree());
                     break;
                 case 'bool_display_info':
                     $this->assertSame($value, $adh->$property);
+                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "appears_in_list" directly is discouraged.');
                     $this->assertSame($value, $adh->appearsInMembersList());
                     break;
                 case 'activite_adh':
                     $this->assertSame($value, $adh->$property);
+                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "active" directly is discouraged.');
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
@@ -326,6 +383,7 @@ abstract class GaletteTestCase extends TestCase
         }
 
         $this->assertFalse($adh->hasChildren());
+        $this->expectLogEntry(\Analog::WARNING, 'Children has not been loaded!');
         $this->assertFalse($adh->hasParent());
         $this->assertFalse($adh->hasPicture());
 
@@ -742,5 +800,45 @@ abstract class GaletteTestCase extends TestCase
         $this->login->logAdmin('superadmin', $this->preferences);
         $this->assertTrue($this->login->isLogged());
         $this->assertTrue($this->login->isSuperAdmin());
+    }
+
+    /**
+     * Check for expected log entry. If found, it will be removed from logs.
+     *
+     * @param int    $level   Log lovel
+     * @param string $message Log message
+     *
+     * @return void
+     */
+    protected function expectLogEntry(int $level, string $message): void
+    {
+        global $galette_log_var;
+        $this->assertNotEmpty($galette_log_var);
+
+        $logs = $this->getCleanedLogs();
+        $found = false;
+        foreach ($logs as $i => $log) {
+            if (str_contains($log, $this->log_levels_names[$level] . ' - ') && str_contains($log, $message)) {
+                $found = true;
+                unset($logs[$i]);
+            }
+        }
+
+        $galette_log_var = implode("\n", $logs);
+        $this->assertTrue(
+            $found,
+            "Log message '{$message}' not found in log storage for level '{$this->log_levels_names[$level]}'."
+        );
+    }
+
+    /**
+     * Check there is no log entry.
+     *
+     * @return void
+     */
+    protected function expectNoLogEntry(): void
+    {
+        $logs = $this->getCleanedLogs();
+        $this->assertCount(0, $logs, print_r($logs, true));
     }
 }

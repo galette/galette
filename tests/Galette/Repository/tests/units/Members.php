@@ -175,6 +175,7 @@ class Members extends GaletteTestCase
                     )
                 );
                 $this->assertGreaterThan(0, (int)$member->picture->store($_FILES['photo'], true));
+                $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for ' . $member->id);
             }
         }
 
@@ -478,6 +479,7 @@ class Members extends GaletteTestCase
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
         $this->assertSame(10, $list->count());
+        $this->expectLogEntry(\Analog::WARNING, 'Status #999 does not exists!');
 
         //search on status from free search
         $filters = new \Galette\Filters\AdvancedMembersList();
@@ -559,7 +561,7 @@ class Members extends GaletteTestCase
         $list = $members->getList();
 
         $this->assertSame(10, $list->count());
-
+        $this->expectLogEntry(\Analog::WARNING, 'Contribution type #999 does not exists!');
 
         //search on payment type
         $filters = new \Galette\Filters\AdvancedMembersList();
@@ -595,12 +597,13 @@ class Members extends GaletteTestCase
 
         //get list with specified fields
         $members = new \Galette\Repository\Members();
-        $list = $members->getList(false, ['nom_adh', 'ville_adh']);
+        $list = $members->getList(false, ['nom_adh', 'prenom_adh', 'ville_adh']);
         $this->assertSame(10, $list->count());
         $arraylist = $list->toArray();
         foreach ($arraylist as $array) {
-            $this->assertCount(4, $array);
+            $this->assertCount(5, $array);
             $this->assertArrayHasKey('nom_adh', $array);
+            $this->assertArrayHasKey('prenom_adh', $array);
             $this->assertArrayHasKey('ville_adh', $array);
             $this->assertArrayHasKey('id_adh', $array);
             $this->assertArrayHasKey('priorite_statut', $array);
@@ -608,12 +611,13 @@ class Members extends GaletteTestCase
 
         //get export list (no priorite_statut if not explicitely required)
         $members = new \Galette\Repository\Members();
-        $list = $members->getMembersList(false, ['nom_adh', 'ville_adh'], true, false, false, true, true);
+        $list = $members->getMembersList(false, ['nom_adh', 'prenom_adh', 'ville_adh'], true, false, false, true, true);
         $this->assertSame(10, $list->count());
         $arraylist = $list->toArray();
         foreach ($arraylist as $array) {
-            $this->assertCount(3, $array);
+            $this->assertCount(4, $array);
             $this->assertArrayHasKey('nom_adh', $array);
+            $this->assertArrayHasKey('prenom_adh', $array);
             $this->assertArrayHasKey('ville_adh', $array);
             $this->assertArrayHasKey('id_adh', $array);
         }
@@ -1252,6 +1256,12 @@ class Members extends GaletteTestCase
 
         $this->assertFalse($members->removeMembers($member->id));
         $this->assertSame(['Cannot remove a member who still have dependencies (mailings, ...)'], $members->getErrors());
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            'Query error: DELETE FROM ' . ($this->zdb->isPostgres() ? '"galette_adherents"' : '`galette_adherents`')
+        );
+        $this->expectLogEntry(\Analog::ERROR, 'Member still have existing dependencies in the database');
+
         //remove mailing so member can be removed
         $this->assertTrue($mailhist->removeEntries($mailing_id, $this->history));
         $this->assertTrue($members->removeMembers($member->id));

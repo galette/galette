@@ -75,6 +75,10 @@ class HistoryList extends GaletteTestCase
         $filters->setDirection('abcde');
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
         $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            '[Galette\Filters\HistoryList|Pagination] "abcde" is not a valid backing value for enum Galette\Enums\SQLOrder'
+        );
 
         //change direction only
         $filters->setDirection(\Galette\Enums\SQLOrder::DESC);
@@ -83,8 +87,16 @@ class HistoryList extends GaletteTestCase
 
         //change direction only - deprecated way
         $filters->ordered = \Galette\Enums\SQLOrder::DESC;
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            '[Galette\Filters\HistoryList|Pagination] ordered is deprecated, use setDirection() instead'
+        );
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
         $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->ordered);
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            '[Galette\Filters\HistoryList|Pagination] ordered is deprecated, use getDirection() instead'
+        );
 
         //set filter on user
         $filters->user_filter = '42';

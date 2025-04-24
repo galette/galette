@@ -74,6 +74,10 @@ class TransactionsList extends GaletteTestCase
         $filters->setDirection('abcde');
         $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
         $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            '[Galette\Filters\TransactionsList|Pagination] "abcde" is not a valid backing value for enum Galette\Enums\SQLOrder'
+        );
 
         //change direction only
         $filters->setDirection(\Galette\Enums\SQLOrder::ASC);
@@ -82,8 +86,17 @@ class TransactionsList extends GaletteTestCase
 
         //change direction only - deprecated way
         $filters->ordered = \Galette\Enums\SQLOrder::ASC;
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            '[Galette\Filters\TransactionsList|Pagination] ordered is deprecated, use setDirection() instead'
+        );
         $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
         $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->ordered);
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            '[Galette\Filters\TransactionsList|Pagination] ordered is deprecated, use getDirection() instead'
+        );
+
         //set filter on children
         $filters->filtre_cotis_children = 18;
         $this->assertSame(18, $filters->filtre_cotis_children);

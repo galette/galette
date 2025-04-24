@@ -142,7 +142,8 @@ if (!defined('GALETTE_LOG_LVL')) {
 
 if (defined('GALETTE_TESTS')) {
     $log_path = GALETTE_LOGS_PATH . 'tests.log';
-    $galette_run_log = LevelName::init(Handler\File::init($log_path));
+    $galette_log_var = null;
+    $galette_run_log = LevelName::init(Handler\Variable::init($galette_log_var));
 } else {
     $galette_log_var = null;
 

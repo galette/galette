@@ -248,8 +248,23 @@ class Links extends GaletteTestCase
             ]
         );
 
-        $this->expectExceptionMessage('Duplicate entry');
-        $this->zdb->execute($insert);
+        $exception_trhown = false;
+        try {
+            $this->zdb->execute($insert);
+        } catch (\Exception $e) {
+            $exception_trhown = true;
+            $this->expectLogEntry(
+                \Analog::ERROR,
+                $this->zdb->isPostgres() ?
+                    'duplicate key value violates unique constraint "galette_tmplinks_pkey"' :
+                    "Duplicate entry '1-1' for key"
+            );
+            $this->assertSame(
+                'Duplicate entry',
+                $e->getMessage()
+            );
+        }
+        $this->assertTrue($exception_trhown, 'No exception has been thrown');
     }
 
     /**

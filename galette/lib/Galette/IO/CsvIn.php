@@ -171,10 +171,6 @@ class CsvIn extends Csv implements FileInterface
             !file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
         ) {
-            Analog::log(
-                'File ' . $filename . ' does not exists or cannot be read.',
-                Analog::ERROR
-            );
             $this->addError(
                 str_replace(
                     '%filename',

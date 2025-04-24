@@ -141,6 +141,10 @@ class Transaction extends GaletteTestCase
         $this->assertArrayHasKey('type_paiement_trans', $this->transaction->fields);
 
         $this->assertEquals(false, $this->transaction->unknown_property);
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Property unknown_property does not exist for transaction'
+        );
     }
 
     /**
@@ -157,6 +161,7 @@ class Transaction extends GaletteTestCase
         $expected = ['- Wrong date format (Y-m-d) for Date!'];
         $check = $transaction->check($data, [], []);
         $this->assertSame($expected, $check);
+        $this->expectLogEntry(\Analog::WARNING, $expected[0]);
 
         //set a correct date
         $data = ['trans_date' => '1999-01-01'];
@@ -169,6 +174,7 @@ class Transaction extends GaletteTestCase
         $expected = ['- The amount must be an integer!'];
         $check = $transaction->check($data, [], []);
         $this->assertSame($expected, $check);
+        $this->expectLogEntry(\Analog::WARNING, $expected[0]);
 
         //set a correct amount
         $data = ['trans_amount' => 1256];
@@ -181,6 +187,7 @@ class Transaction extends GaletteTestCase
         $expected = ['- Transaction description must be 150 characters long maximum.'];
         $check = $transaction->check($data, [], []);
         $this->assertSame($expected, $check);
+        $this->expectLogEntry(\Analog::WARNING, $expected[0]);
     }
 
     /**
@@ -276,6 +283,10 @@ class Transaction extends GaletteTestCase
 
         $this->assertTrue($transaction->load((int)$id));
         $this->assertFalse($transaction->load(1355522012));
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Transaction id `1355522012` does not exist'
+        );
     }
 
     /**
@@ -294,7 +305,15 @@ class Transaction extends GaletteTestCase
         $this->assertTrue($this->transaction->load($tid));
         $this->assertTrue($this->transaction->remove($this->history));
         $this->assertFalse($this->transaction->load($tid));
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Transaction id `' . $tid . '` does not exist'
+        );
         $this->assertFalse($this->transaction->remove($this->history));
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Transaction has not been removed!'
+        );
     }
 
     /**
@@ -514,6 +533,10 @@ class Transaction extends GaletteTestCase
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $check = $contrib->check($data, [], []);
         $this->assertSame(['- Sum of all contributions exceed corresponding transaction amount.'], $check);
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            '- Sum of all contributions exceed corresponding transaction amount.'
+        );
 
         $contrib_id = $contribs_ids[0];
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $contrib_id);
@@ -543,9 +566,18 @@ class Transaction extends GaletteTestCase
 
         //delete transaction, and ensures all contributions has been removed as well
         $this->assertTrue($this->transaction->remove($this->history));
+        $this->expectNoLogEntry();
         $this->assertFalse($this->transaction->load($tid));
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Transaction id `' . $tid . '` does not exist'
+        );
         foreach ($contribs_ids as $contrib_id) {
             $this->assertFalse($this->contrib->load($contrib_id));
+            $this->expectLogEntry(
+                \Analog::ERROR,
+                'No contribution #' . $contrib_id
+            );
         }
     }
 }

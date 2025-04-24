@@ -108,6 +108,10 @@ class SavedSearches extends GaletteTestCase
         $this->assertSame(3, $searches->getCount());
 
         $this->assertFalse($searches->remove([], $this->history));
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Asking to remove searches, but without providing an array or a single numeric value.'
+        );
         $this->assertTrue($searches->remove($sid_2, $this->history));
         $list = $searches->getList(true);
         $this->assertCount(2, $list);

@@ -76,11 +76,11 @@ class MailingHistory extends GaletteTestCase
         $mailing = new \Galette\Core\Mailing($this->preferences, $members);
 
         $mailing->subject = 'Test mailing';
-        $mailing->body = 'This is a test mailing';
-        $mailing->sender = [
-            'name'  => 'Galette unit tests',
-            'email' => 'test@galette.eu'
-        ];
+        $mailing->message = 'This is a test mailing';
+        $mailing->setSender(
+            name: 'Galette unit tests',
+            address: 'test@galette.eu'
+        );
         $mailing->current_step = \Galette\Core\Mailing::STEP_SEND;
 
         $mh = new \Galette\Core\MailingHistory(
@@ -164,11 +164,11 @@ class MailingHistory extends GaletteTestCase
         $mailing = new \Galette\Core\Mailing($this->preferences, $members);
 
         $mailing->subject = 'Filter subject test';
-        $mailing->body = 'This is a test mailing for filters';
-        $mailing->sender = [
-            'name'  => 'Galette admin unit tests',
-            'email' => 'test+admin@galette.eu'
-        ];
+        $mailing->message = 'This is a test mailing for filters';
+        $mailing->setSender(
+            name: 'Galette admin unit tests',
+            address: 'test+admin@galette.eu'
+        );
         $mailing->current_step = \Galette\Core\Mailing::STEP_SEND;
 
         $filters = new \Galette\Filters\MailingsList();

@@ -78,6 +78,10 @@ class Preferences extends GaletteTestCase
 
         //tru to set and get a non existent value
         $prefs->doesnotexists = 'that *does* not exists.';
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            'Trying to set a preference value which does not seem to exist (doesnotexists)'
+        );
         $false_result = $prefs->doesnotexists;
         $this->assertFalse($false_result);
 
@@ -822,6 +826,7 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_email' => 'notvalid']);
         $this->assertFalse($this->preferences->check($post, $this->login));
         $this->assertSame(['Invalid E-Mail address: notvalid'], $this->preferences->getErrors());
+        $this->expectLogEntry(\Analog::WARNING, 'Invalid E-Mail address: notvalid');
 
         $post = array_merge($preferences, ['pref_email' => 'email@address.com']);
         $this->assertTrue(
@@ -851,11 +856,14 @@ class Preferences extends GaletteTestCase
         $post = array_merge($preferences, ['pref_email' => 'email@localhost']);
         $this->assertFalse($this->preferences->check($post, $this->login));
         $this->assertSame(['Invalid E-Mail address: email@localhost'], $this->preferences->getErrors());
+        $this->expectLogEntry(\Analog::WARNING, 'Invalid E-Mail address: email@localhost');
 
         //can be a coma separated value only for pref_email_newadh
         $post = array_merge($preferences, ['pref_email' => 'email@address.com,another@galette.eu']);
         $this->assertFalse($this->preferences->check($post, $this->login));
         $this->assertSame(['Invalid E-Mail address: email@address.com,another@galette.eu'], $this->preferences->getErrors());
+        $this->expectLogEntry(\Analog::WARNING, 'Invalid E-Mail address: email@address.com,another@galette.eu');
+
 
         $post = array_merge($preferences, ['pref_email_newadh' => 'email@address.com,another@galette.eu']);
         $this->assertTrue(

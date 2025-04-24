@@ -147,7 +147,7 @@ class Transaction
     {
         if (!$this->login->isLogged()) {
             Analog::log(
-                'Non-logged-in users cannot load transaction id `' . $id,
+                'Non-logged-in users cannot load transaction id `' . $id . '`',
                 Analog::ERROR
             );
             return false;
@@ -185,7 +185,7 @@ class Transaction
                 return true;
             } else {
                 Analog::log(
-                    'Transaction id `' . $id . '` does not exists',
+                    'Transaction id `' . $id . '` does not exist',
                     Analog::WARNING
                 );
                 return false;
@@ -390,7 +390,7 @@ class Transaction
             Analog::log(
                 'Some errors has been thew attempting to edit/store a transaction' .
                 print_r($this->errors, true),
-                Analog::DEBUG
+                Analog::WARNING
             );
             return $this->errors;
         } else {
@@ -621,7 +621,7 @@ class Transaction
         } else {
             Analog::log(
                 sprintf(
-                    'Property %1$s does not exists for transaction',
+                    'Property %1$s does not exist for transaction',
                     $name
                 ),
                 Analog::WARNING

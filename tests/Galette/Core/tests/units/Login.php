@@ -154,6 +154,8 @@ class Login extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(true);
 
         $this->assertFalse($login->impersonate(1));
+        $this->expectLogEntry(\Analog::WARNING, 'An error occurred: Error executing query!');
+        $this->expectLogEntry(\Analog::ERROR, 'Galette\Core\Login->impersonate()');
     }
 
     /**
@@ -170,8 +172,9 @@ class Login extends GaletteTestCase
 
         $login->method('isSuperAdmin')->willReturn(true);
 
-        ///We're faking, Impersonating won't work but will not throw any exception
+        //We're faking, Impersonating won't work but will not throw any exception
         $this->assertFalse($login->impersonate(1));
+        $this->expectLogEntry(\Analog::WARNING, 'No entry found for id `1`');
     }
 
     /**
@@ -219,6 +222,7 @@ class Login extends GaletteTestCase
 
         $login = new \Galette\Core\Login($zdb, $this->i18n);
         $this->assertTrue($login->loginExists('doesnotexists'));
+        $this->expectLogEntry(\Analog::WARNING, 'Cannot check if login exists | Error executing query!');
     }
 
     /**
@@ -337,6 +341,7 @@ class Login extends GaletteTestCase
         $this->createUser();
         $this->assertFalse($this->login->login('doenotexists', 'empty'));
         $this->assertTrue($this->login->login($this->login_adh, $this->mdp_adh));
+        $this->expectLogEntry(\Analog::WARNING, 'No entry found for login `doenotexists`');
     }
 
     /**
