@@ -1784,7 +1784,7 @@ class Adherent
         }
 
         $deprecateds = $this->getDeprecatedProperties();
-        if (in_array($name, $deprecateds)) {
+        if (in_array($name, array_keys($deprecateds))) {
             Analog::log(
                 'Calling property "' . $name . '" directly is discouraged.',
                 Analog::WARNING
