@@ -166,7 +166,6 @@ class PdfModel extends GaletteTestCase
             'contrib_id'        => '/{CONTRIB_ID}/',
             'contrib_payment'   => '/{CONTRIB_PAYMENT_TYPE}/',
             'contrib_info'       => '/{CONTRIB_INFO}/',
-            'contrib_paid'       => '/{CONTRIB_PAID}/',
             '_contrib_label'     => '/{CONTRIBUTION_LABEL}/',
             '_contrib_amount'    => '/{CONTRIBUTION_AMOUNT}/',
             '_contrib_amount_letters' => '/{CONTRIBUTION_AMOUNT_LETTERS}/',
@@ -178,7 +177,6 @@ class PdfModel extends GaletteTestCase
             '_contrib_id'        => '/{CONTRIBUTION_ID}/',
             '_contrib_payment'   => '/{CONTRIBUTION_PAYMENT_TYPE}/',
             '_contrib_info'      => '/{CONTRIBUTION_INFO}/',
-            '_contrib_paid'      => '/{CONTRIBUTION_PAID}/',
             '__contrib_label'    => '/{CONTRIB_TYPE}/',
             'deadline'           => '/{DEADLINE}/'
         ];
@@ -352,7 +350,7 @@ Au milieu
         $this->assertCount(12, $legend['main']['patterns']);
         $this->assertCount(28, $legend['member']['patterns']);
         $this->assertTrue(isset($legend['member']['patterns']['label_dynfield_' . $adf->getId() . '_adh']));
-        $this->assertCount(15, $legend['contribution']['patterns']);
+        $this->assertCount(14, $legend['contribution']['patterns']);
         $this->assertTrue(isset($legend['contribution']['patterns']['label_dynfield_' . $cdf->getId() . '_contrib']));
     }
 

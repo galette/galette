@@ -245,7 +245,7 @@
                 </div>
                 <div class="active content field">
                     <div id="contribdetails" class="ui basic fitted segment">
-                        <div class="three fields">
+                        <div class="two fields">
                             <div class="field{% if required.montant_cotis is defined and required.montant_cotis == 1 %} required{% endif %}">
                                 <label for="montant_cotis">{{ _T("Amount:") }}</label>
                                 <input type="text" name="montant_cotis" id="montant_cotis" value="{{ contribution.amount }}" maxlength="10"{% if required.montant_cotis is defined and required.montant_cotis == 1 %} required="required"{% endif %}/>
@@ -260,16 +260,6 @@
                                     'varname': 'type_paiement_cotis',
                                     'disabled': contribution.hasSchedule()
                             } %}
-
-                            {% include "components/forms/checkbox.html.twig" with {
-                                name: 'paid',
-                                id: 'paid',
-                                value: 1,
-                                label: _Tx('contribution', 'Paid'),
-                                checked: contribution.isPaid() ?? false,
-                                required: false
-                            } %}
-
                         </div>
                         <div class="{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}three{% else %}two{% endif %} fields">
                             <div class="field{% if required.date_enreg is defined and required.date_enreg == 1 %} required{% endif %}">

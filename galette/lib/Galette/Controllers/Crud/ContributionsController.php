@@ -681,10 +681,6 @@ class ContributionsController extends CrudController
                     $error_detected[] = _T("- Unknown contribution type!");
                 }
             }
-
-            if (isset($post['paid_filter'])) {
-                $filters->paid = (int)$post['paid_filter'];
-            }
         }
 
         $this->session->$filter_name = $filters;
