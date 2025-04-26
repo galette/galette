@@ -117,7 +117,7 @@ abstract class GalettePlugin
      *
      * @return array<int, string|array<string,mixed>>
      */
-    abstract static function getMyDashboardsContents(): array;
+    abstract public static function getMyDashboardsContents(): array;
 
     /**
      * Get member actions
