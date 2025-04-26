@@ -128,7 +128,7 @@ class AjaxController extends AbstractController
 
             $select = $this->zdb->sql->select();
             $select->from(['sub' => $select1])
-                ->order('ville_adh ASCC')
+                ->order('ville_adh ASC')
                 ->limit(10);
 
             $towns = $this->zdb->execute($select);
