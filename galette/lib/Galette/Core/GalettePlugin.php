@@ -117,11 +117,7 @@ abstract class GalettePlugin
      *
      * @return array<int, string|array<string,mixed>>
      */
-    public static function getMyDashboardsContents(): array
-    {
-        //FIXME: should be abstract since 1.1.4, but would require a Galette bump version in plugins
-        return [];
-    }
+    abstract static function getMyDashboardsContents(): array;
 
     /**
      * Get member actions

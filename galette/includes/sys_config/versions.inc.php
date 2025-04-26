@@ -22,8 +22,7 @@
 declare(strict_types=1);
 
 /**
- * External libraries versions
- * Defines various library versions, to avoid use of problematic symlinks under windows or via FTP.
+ * Components versions
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -34,5 +33,5 @@ define('GALETTE_MARIADB_MIN', '10.5');
 define('GALETTE_PGSQL_MIN', '13');
 define('GALETTE_NIGHTLY', false);
 define('GALETTE_VERSION', 'v1.2-dev');
-define('GALETTE_COMPAT_VERSION', '1.1.0');
+define('GALETTE_COMPAT_VERSION', '1.2.0');
 define('GALETTE_DB_VERSION', '1.200');
