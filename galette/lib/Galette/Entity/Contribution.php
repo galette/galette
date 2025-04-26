@@ -145,8 +145,8 @@ class Contribution
             ->withAddEvent()
             ->withEditEvent()
             ->withoutDeleteEvent()
-            ->activateEvents();
-
+            ->activateEvents()
+            ->handlePaid();
 
         if (is_int($args)) {
             $this->load($args);
@@ -1532,5 +1532,18 @@ class Contribution
     public function isPaid(): bool
     {
         return $this->paid;
+    }
+
+    /**
+     * Handle paid flag from preferences
+     *
+     * @return void
+     */
+    private function handlePaid(): void
+    {
+        global $preferences;
+        $this->setPaid(
+            $preferences->pref_use_paid_flag && $preferences->pref_paid_flag_default
+        );
     }
 }

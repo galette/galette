@@ -1130,4 +1130,45 @@ class Contribution extends GaletteTestCase
         $store = $contrib->store();
         $this->assertTrue($store);
     }
+
+    /**
+     * Test paid contribution
+     *
+     * @return void
+     */
+    public function testPaid(): void
+    {
+        global $preferences;
+
+        $preferences->pref_paid_flag_default = 0;
+        $preferences->pref_use_paid_flag = 0;
+        $this->assertTrue($preferences->store());
+
+        //by default, contributions are not paid
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $this->assertFalse($contrib->isPaid());
+
+        //change preferences to set paid contributions - but still unused
+        $preferences->pref_paid_flag_default = 1;
+        $this->assertTrue($preferences->store());
+        //still not paid
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $this->assertFalse($contrib->isPaid());
+
+        //enable paid flag usage
+        $preferences->pref_use_paid_flag = 1;
+        $this->assertTrue($preferences->store());
+        //contribution is now paid
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $this->assertTrue($contrib->isPaid());
+
+        $preferences->pref_paid_flag_default = 0;
+        $this->assertTrue($preferences->store());
+        //not paid
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $this->assertFalse($contrib->isPaid());
+
+        $preferences->pref_use_paid_flag = 1;
+        $this->assertTrue($preferences->store());
+    }
 }

@@ -277,12 +277,20 @@
             'label': _T('Amount'),
             'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_AMOUNT"),
             'collapse': true
-        },
-        {
-            'label': _Tx('contribution', 'Paid'),
-            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_PAID"),
-            'collapse': true
-        },
+        }
+    ]) %}
+
+    {% if preferences.pref_use_paid_flag %}
+        {% set columns = columns|merge([
+            {
+                'label': _Tx('contribution', 'Paid'),
+                'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_PAID"),
+                'collapse': true
+            }
+        ]) %}
+    {% endif %}
+
+    {% set columns = columns|merge([
         {
             'label': _T("Payment type"),
             'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_PAYMENT_TYPE")},
@@ -384,6 +392,7 @@
             {% endif %}
             <td data-col-label="{{ _T("Type") }}">{{ contribution.type.libelle }}</td>
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ contribution.amount }}</td>
+            {% if preferences.pref_use_paid_flag %}
             <td class="center collapsing" data-col-label="{{ _Tx("contribution", "Paid") }}">
                 <i class="money bill wave {% if not contribution.isPaid() %}red{% else %}green{% endif %} icon tooltip" data-html="{% if contribution.isPaid() %}{{ _Tx("contribution", "Paid") }}{% else %}{{ _Tx("contribution", "Not paid") }}{% endif %}"></i>
                 <span class="visually-hidden">
@@ -394,6 +403,7 @@
                     {% endif %}
                 </span>
             </td>
+            {% endif %}
             <td data-col-label="{{ _T("Payment type") }}">{{ contribution.getPaymentType() }}</td>
             <td class="collapsing" data-col-label="{{ _T("Duration") }}">{{ contribution.duration }}</td>
             {% if mode != 'ajax' %}

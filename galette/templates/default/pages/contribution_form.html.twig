@@ -260,16 +260,16 @@
                                     'varname': 'type_paiement_cotis',
                                     'disabled': contribution.hasSchedule()
                             } %}
-
-                            {% include "components/forms/checkbox.html.twig" with {
-                                name: 'paid',
-                                id: 'paid',
-                                value: 1,
-                                label: _Tx('contribution', 'Paid'),
-                                checked: contribution.isPaid() ?? false,
-                                required: false
-                            } %}
-
+                            {% if preferences.pref_use_paid_flag %}
+                                {% include "components/forms/checkbox.html.twig" with {
+                                    name: 'paid',
+                                    id: 'paid',
+                                    value: 1,
+                                    label: _Tx('contribution', 'Paid'),
+                                    checked: contribution.isPaid() ?? false,
+                                    required: false
+                                } %}
+                            {% endif %}
                         </div>
                         <div class="{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}three{% else %}two{% endif %} fields">
                             <div class="field{% if required.date_enreg is defined and required.date_enreg == 1 %} required{% endif %}">

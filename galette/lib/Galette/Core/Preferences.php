@@ -159,6 +159,8 @@ use Galette\Repository\Members;
  * @property boolean $pref_bool_groupsmanagers_see_transactions
  * @property-read string[] $vpref_email_newadh list of mail senders
  * @property boolean $pref_noindex
+ * @property boolean $pref_use_paid_flag
+ * @property boolean $pref_paid_flag_default
  */
 class Preferences
 {
@@ -341,7 +343,9 @@ class Preferences
         'pref_bool_groupsmanagers_create_transactions' => false,
         'pref_bool_groupsmanagers_see_contributions' => false,
         'pref_bool_groupsmanagers_see_transactions' => false,
-        'pref_noindex' => false
+        'pref_noindex' => false,
+        'pref_use_paid_flag' => false,
+        'pref_paid_flag_default' => false
     ];
 
     /** @var Social[] */
@@ -1180,7 +1184,9 @@ class Preferences
                 'pref_password_blacklist',
                 'pref_show_id',
                 'pref_hide_bg_image',
-                'pref_enable_custom_colors'
+                'pref_enable_custom_colors',
+                'pref_use_paid_flag',
+                'pref_paid_flag_default'
             ]
         ];
 
