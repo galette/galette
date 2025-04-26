@@ -275,29 +275,29 @@ class ScheduledPayments
 
         switch ($this->filters->orderby) {
             case ScheduledPaymentsList::ORDERBY_ID:
-                $order[] = ScheduledPayment::PK . ' ' . $this->filters->ordered;
+                $order[] = ScheduledPayment::PK . ' ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_MEMBER:
                 $order[] = 'a.nom_adh ' . $this->filters->getDirection();
                 $order[] = 'a.prenom_adh ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_DATE:
-                $order[] = 'creation_date ' . $this->filters->ordered;
+                $order[] = 'creation_date ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE:
-                $order[] = 'scheduled_date ' . $this->filters->ordered;
+                $order[] = 'scheduled_date ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_CONTRIBUTION:
-                $order[] = Contribution::PK . ' ' . $this->filters->ordered;
+                $order[] = Contribution::PK . ' ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_AMOUNT:
-                $order[] = 'amount ' . $this->filters->ordered;
+                $order[] = 'amount ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE:
-                $order[] = 'id_paymenttype ' . $this->filters->ordered;
+                $order[] = 'id_paymenttype ' . $this->filters->getDirection();
                 break;
             default:
-                $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
+                $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
                 break;
         }
 

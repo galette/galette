@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Filters\test\units;
 
+use Galette\Enums\SQLOrder;
 use Galette\GaletteTestCase;
 
 /**
@@ -42,7 +43,7 @@ class HistoryList extends GaletteTestCase
     protected function testDefaults(\Galette\Filters\HistoryList $filters): void
     {
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_DATE, $filters->orderby);
-        $this->assertSame(\Galette\Filters\HistoryList::ORDER_DESC, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
         $this->assertNull($filters->start_date_filter);
         $this->assertNull($filters->end_date_filter);
         $this->assertNull($filters->user_filter);
@@ -63,22 +64,27 @@ class HistoryList extends GaletteTestCase
         //change order field
         $filters->orderby = \Galette\Filters\HistoryList::ORDERBY_USER;
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
-        $this->assertSame(\Galette\Filters\HistoryList::ORDER_ASC, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
 
         //same order field again: direction inverted
         $filters->orderby = \Galette\Filters\HistoryList::ORDERBY_USER;
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
-        $this->assertSame(\Galette\Filters\HistoryList::ORDER_DESC, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
 
         //not existing order, same kept
-        $filters->ordered = 42;
+        $filters->setDirection('abcde');
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
-        $this->assertSame(\Galette\Filters\HistoryList::ORDER_DESC, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
 
         //change direction only
-        $filters->ordered = \Galette\Filters\HistoryList::ORDER_ASC;
+        $filters->setDirection(\Galette\Enums\SQLOrder::DESC);
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
-        $this->assertSame(\Galette\Filters\HistoryList::ORDER_ASC, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
+
+        //change direction only - deprecated way
+        $filters->ordered = \Galette\Enums\SQLOrder::DESC;
+        $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->ordered);
 
         //set filter on user
         $filters->user_filter = '42';

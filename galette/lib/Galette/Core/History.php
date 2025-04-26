@@ -276,16 +276,16 @@ class History
 
         switch ($this->filters->orderby) {
             case HistoryList::ORDERBY_DATE:
-                $order[] = 'date_log ' . $this->filters->ordered;
+                $order[] = 'date_log ' . $this->filters->getDirection();
                 break;
             case HistoryList::ORDERBY_IP:
-                $order[] = 'ip_log ' . $this->filters->ordered;
+                $order[] = 'ip_log ' . $this->filters->getDirection();
                 break;
             case HistoryList::ORDERBY_USER:
-                $order[] = 'adh_log ' . $this->filters->ordered;
+                $order[] = 'adh_log ' . $this->filters->getDirection();
                 break;
             case HistoryList::ORDERBY_ACTION:
-                $order[] = 'action_log ' . $this->filters->ordered;
+                $order[] = 'action_log ' . $this->filters->getDirection();
                 break;
         }
 

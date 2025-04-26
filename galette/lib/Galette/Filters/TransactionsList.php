@@ -39,7 +39,6 @@ use Galette\Core\Pagination;
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
  */
-
 class TransactionsList extends Pagination
 {
     use DatesHelper;

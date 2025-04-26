@@ -195,23 +195,23 @@ class Transactions
 
         switch ($this->filters->orderby) {
             case TransactionsList::ORDERBY_ID:
-                $order[] = Transaction::PK . ' ' . $this->filters->ordered;
+                $order[] = Transaction::PK . ' ' . $this->filters->getDirection();
                 break;
             case TransactionsList::ORDERBY_DATE:
-                $order[] = 'trans_date' . ' ' . $this->filters->ordered;
+                $order[] = 'trans_date' . ' ' . $this->filters->getDirection();
                 break;
             case TransactionsList::ORDERBY_MEMBER:
-                $order[] = 'nom_adh' . ' ' . $this->filters->ordered;
-                $order[] = 'prenom_adh' . ' ' . $this->filters->ordered;
+                $order[] = 'nom_adh' . ' ' . $this->filters->getDirection();
+                $order[] = 'prenom_adh' . ' ' . $this->filters->getDirection();
                 break;
             case TransactionsList::ORDERBY_AMOUNT:
-                $order[] = 'trans_amount' . ' ' . $this->filters->ordered;
+                $order[] = 'trans_amount' . ' ' . $this->filters->getDirection();
                 break;
             case TransactionsList::ORDERBY_PAYMENT_TYPE:
-                $order[] = 'type_paiement_trans' . ' ' . $this->filters->ordered;
+                $order[] = 'type_paiement_trans' . ' ' . $this->filters->getDirection();
                 break;
             default:
-                $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
+                $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
                 break;
         }
 

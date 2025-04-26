@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Filters;
 
 use Galette\Core\Pagination;
+use Galette\Enums\SQLOrder;
 
 /**
  * Saved searches list filters and paginator
@@ -48,10 +49,10 @@ class SavedSearchesList extends Pagination
     /**
      * Return the default direction for ordering
      *
-     * @return string ASC or DESC
+     * @return SQLOrder
      */
-    protected function getDefaultDirection(): string
+    protected function getDefaultDirection(): SQLOrder
     {
-        return self::ORDER_DESC;
+        return SQLOrder::DESC;
     }
 }

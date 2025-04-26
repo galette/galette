@@ -184,7 +184,7 @@ class SavedSearches
     private function buildOrderClause(): array
     {
         $order = [];
-        $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
+        $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
 
         return $order;
     }

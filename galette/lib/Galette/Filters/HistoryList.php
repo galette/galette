@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Filters;
 
+use Galette\Enums\SQLOrder;
 use Galette\Helpers\DatesHelper;
 use Analog\Analog;
 use Galette\Core\Pagination;
@@ -86,11 +87,11 @@ class HistoryList extends Pagination
     /**
      * Return the default direction for ordering
      *
-     * @return string ASC or DESC
+     * @return SQLOrder
      */
-    protected function getDefaultDirection(): string
+    protected function getDefaultDirection(): SQLOrder
     {
-        return self::ORDER_DESC;
+        return SQLOrder::DESC;
     }
 
     /**

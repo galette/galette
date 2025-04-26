@@ -149,16 +149,16 @@ class MailingHistory extends History
 
         switch ($this->filters->orderby) {
             case MailingsList::ORDERBY_DATE:
-                $order[] = 'mailing_date ' . $this->filters->ordered;
+                $order[] = 'mailing_date ' . $this->filters->getDirection();
                 break;
             case MailingsList::ORDERBY_SENDER:
-                $order[] = 'mailing_sender ' . $this->filters->ordered;
+                $order[] = 'mailing_sender ' . $this->filters->getDirection();
                 break;
             case MailingsList::ORDERBY_SUBJECT:
-                $order[] = 'mailing_subject ' . $this->filters->ordered;
+                $order[] = 'mailing_subject ' . $this->filters->getDirection();
                 break;
             case MailingsList::ORDERBY_SENT:
-                $order[] = 'mailing_sent ' . $this->filters->ordered;
+                $order[] = 'mailing_sent ' . $this->filters->getDirection();
                 break;
         }
 

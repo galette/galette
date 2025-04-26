@@ -42,7 +42,7 @@ class ContributionsList extends GaletteTestCase
     protected function testDefaults(\Galette\Filters\ContributionsList $filters): void
     {
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE, $filters->orderby);
-        $this->assertSame(\Galette\Filters\ContributionsList::ORDER_ASC, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
         $this->assertSame(\Galette\Filters\ContributionsList::DATE_BEGIN, $filters->date_field);
         $this->assertNull($filters->start_date_filter);
         $this->assertNull($filters->end_date_filter);
@@ -69,22 +69,27 @@ class ContributionsList extends GaletteTestCase
         //change order field
         $filters->orderby = \Galette\Filters\ContributionsList::ORDERBY_AMOUNT;
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Filters\ContributionsList::ORDER_ASC, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
 
         //same order field again: direction inverted
         $filters->orderby = \Galette\Filters\ContributionsList::ORDERBY_AMOUNT;
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Filters\ContributionsList::ORDER_DESC, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
 
         //not existing order, same kept
-        $filters->ordered = 42;
+        $filters->setDirection('abcde');
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Filters\ContributionsList::ORDER_DESC, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
 
         //change direction only
-        $filters->ordered = \Galette\Filters\ContributionsList::ORDER_ASC;
+        $filters->setDirection(\Galette\Enums\SQLOrder::ASC);
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Filters\ContributionsList::ORDER_ASC, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
+
+        //change direction only -- deprecated notation
+        $filters->ordered = \Galette\Enums\SQLOrder::ASC;
+        $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
+        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->ordered);
 
         //set filter on children
         $filters->filtre_cotis_children = 5;

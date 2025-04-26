@@ -274,32 +274,32 @@ class Contributions
 
         switch ($this->filters->orderby) {
             case ContributionsList::ORDERBY_ID:
-                $order[] = Contribution::PK . ' ' . $this->filters->ordered;
+                $order[] = Contribution::PK . ' ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_DATE:
-                $order[] = 'date_enreg ' . $this->filters->ordered;
+                $order[] = 'date_enreg ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_BEGIN_DATE:
-                $order[] = 'date_debut_cotis ' . $this->filters->ordered;
+                $order[] = 'date_debut_cotis ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_END_DATE:
-                $order[] = 'date_fin_cotis ' . $this->filters->ordered;
+                $order[] = 'date_fin_cotis ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_MEMBER:
-                $order[] = 'nom_adh ' . $this->filters->ordered;
-                $order[] = 'prenom_adh ' . $this->filters->ordered;
+                $order[] = 'nom_adh ' . $this->filters->getDirection();
+                $order[] = 'prenom_adh ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_TYPE:
                 $order[] = ContributionsTypes::PK;
                 break;
             case ContributionsList::ORDERBY_AMOUNT:
-                $order[] = 'montant_cotis ' . $this->filters->ordered;
+                $order[] = 'montant_cotis ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_PAYMENT_TYPE:
-                $order[] = 'type_paiement_cotis ' . $this->filters->ordered;
+                $order[] = 'type_paiement_cotis ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_PAID:
-                $order[] = 'paid ' . $this->filters->ordered;
+                $order[] = 'paid ' . $this->filters->getDirection();
                 break;
         }
 

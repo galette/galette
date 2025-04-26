@@ -21,41 +21,15 @@
 
 declare(strict_types=1);
 
-namespace Galette\Filters;
-
-use Galette\Core\Pagination;
-use Galette\Enums\SQLOrder;
+namespace Galette\Enums;
 
 /**
- * Documents list filters and paginator
+ * SQL Order
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-
-class DocumentsList extends Pagination
+enum SQLOrder: string
 {
-    public const ORDERBY_DATE = 0;
-    public const ORDERBY_TYPE = 1;
-    public const ORDERBY_NAME = 2;
-    public const ORDERBY_ID = 3;
-
-    /**
-     * Returns the field we want to default set order to
-     *
-     * @return int|string
-     */
-    protected function getDefaultOrder(): int|string
-    {
-        return 'creation_date';
-    }
-
-    /**
-     * Return the default direction for ordering
-     *
-     * @return SQLOrder
-     */
-    protected function getDefaultDirection(): SQLOrder
-    {
-        return SQLOrder::DESC;
-    }
+    case ASC = 'ASC';
+    case DESC = 'DESC';
 }

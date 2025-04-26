@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Galette\Enums\SQLOrder;
 use Slim\Routing\RouteParser;
 use Analog\Analog;
 use Laminas\Db\Sql\Select;
@@ -35,7 +36,7 @@ use Slim\Views\Twig;
  *
  * @property integer $current_page
  * @property string $orderby
- * @property string $ordered
+ * @property SQLOrder $ordered
  * @property integer $show
  * @property integer $pages
  * @property integer $counter
@@ -45,7 +46,7 @@ abstract class Pagination
 {
     private int $current_page;
     private int|string $orderby;
-    private string $ordered;
+    private SQLOrder $ordered;
     private int $show;
     private int $pages = 1;
     private ?int $counter = null;
@@ -53,9 +54,6 @@ abstract class Pagination
     protected ?RouteParser $routeparser;
     /** @var array<string> */
     protected array $errors = [];
-
-    public const ORDER_ASC = 'ASC';
-    public const ORDER_DESC = 'DESC';
 
     /** @var array<string> */
     protected array $pagination_fields = [
@@ -85,11 +83,11 @@ abstract class Pagination
     /**
      * Return the default direction for ordering
      *
-     * @return string ASC or DESC
+     * @return SQLOrder
      */
-    protected function getDefaultDirection(): string
+    protected function getDefaultDirection(): SQLOrder
     {
-        return self::ORDER_ASC;
+        return SQLOrder::ASC;
     }
 
     /**
@@ -115,43 +113,50 @@ abstract class Pagination
     public function invertorder(): void
     {
         $actual = $this->ordered;
-        if ($actual == self::ORDER_ASC) {
-            $this->ordered = self::ORDER_DESC;
+        if ($actual === SQLOrder::ASC) {
+            $this->ordered = SQLOrder::DESC;
         }
-        if ($actual == self::ORDER_DESC) {
-            $this->ordered = self::ORDER_ASC;
+        if ($actual === SQLOrder::DESC) {
+            $this->ordered = SQLOrder::ASC;
         }
     }
 
     /**
      * Get current sort direction
      *
-     * @return self::ORDER_ASC|self::ORDER_DESC
+     * @return string
      */
     public function getDirection(): string
     {
-        return $this->ordered;
+        return $this->ordered->value;
     }
 
     /**
      * Set sort direction
      *
-     * @param string $direction self::ORDER_ASC|self::ORDER_DESC
+     * @param SQLOrder|string|null $direction Order direction
      *
-     * @return void
+     * @return self
      */
-    public function setDirection(string $direction): void
+    public function setDirection(SQLOrder|string|null $direction): self
     {
-        if ($direction == self::ORDER_ASC || $direction == self::ORDER_DESC) {
+        if (($direction ?? $this->getDefaultDirection()) instanceof SQLOrder) {
             $this->ordered = $direction;
-        } else {
+            return $this;
+        }
+
+        try {
+            $odirection = SQLOrder::from($direction);
+            $this->ordered = $odirection;
+        } catch (\ValueError $e) {
             Analog::log(
-                'Trying to set a sort direction that is not know (`' .
-                $direction . '`). Reverting to default value.',
+                '[' . get_class($this) .
+                '|Pagination] ' . $e->getMessage(),
                 Analog::WARNING
             );
-            $this->ordered = self::ORDER_ASC;
         }
+
+        return $this;
     }
 
     /**
@@ -367,6 +372,15 @@ abstract class Pagination
      */
     public function __get(string $name): mixed
     {
+        if ($name === 'ordered') {
+            Analog::log(
+                '[' . get_class($this) .
+                '|Pagination] ' . $name . ' is deprecated, use getDirection() instead',
+                Analog::WARNING
+            );
+            return $this->getDirection();
+        }
+
         if (in_array($name, $this->pagination_fields)) {
             return $this->$name;
         }
@@ -408,24 +422,19 @@ abstract class Pagination
     {
         switch ($name) {
             case 'ordered':
-                if ($value == self::ORDER_ASC || $value == self::ORDER_DESC) {
-                    $this->$name = $value;
-                } else {
-                    Analog::log(
-                        '[' . get_class($this) .
-                        '|Pagination] Possibles values for field `' .
-                        $name . '` are: `' . self::ORDER_ASC . '` or `' .
-                        self::ORDER_DESC . '` - `' . $value . '` given',
-                        Analog::WARNING
-                    );
-                }
+                Analog::log(
+                    '[' . get_class($this) .
+                    '|Pagination] ' . $name . ' is deprecated, use setDirection() instead',
+                    Analog::WARNING
+                );
+                $this->setDirection($value);
                 break;
             case 'orderby':
                 if ($this->$name == $value) {
                     $this->invertorder();
                 } else {
                     $this->$name = $value;
-                    $this->setDirection(self::ORDER_ASC);
+                    $this->setDirection($this->getDefaultDirection());
                 }
                 break;
             case 'current_page':

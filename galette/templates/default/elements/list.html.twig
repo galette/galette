@@ -85,7 +85,7 @@
                                     <a href="{{ url_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
                                         {{ column.label }}
                                         {% if filters.orderby == column.order %}
-                                            {% if filters.ordered == constant('Galette\\Core\\Pagination::ORDER_ASC') %}
+                                            {% if filters.getDirection() == enum('Galette\\Enums\\SQLOrder').ASC.value %}
                                                 <i class="ui angle down icon tooltip" aria-hidden="true"></i>
                                             {% else %}
                                                 <i class="ui angle up icon tooltip" aria-hidden="true"></i>
