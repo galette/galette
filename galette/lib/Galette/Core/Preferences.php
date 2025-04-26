@@ -387,7 +387,7 @@ class Preferences
     }
 
     /**
-     * Check if all fields referenced in the default array does exists,
+     * Check if all fields referenced in the default array do exist,
      * create them if not
      *
      * @return boolean
@@ -476,7 +476,7 @@ class Preferences
     }
 
     /**
-     * Set default preferences at install time
+     * Set default preferences at installation time
      *
      * @param string $lang      language selected at install screen
      * @param string $adm_login admin login entered at install time
@@ -732,7 +732,7 @@ class Preferences
             case 'pref_email_reply_to':
             case 'pref_org_email':
                 //check emails validity
-                //may be a comma separated list of valid emails:
+                //may be a comma-separated list of valid emails:
                 //"mail@domain.com,other@mail.com" only for pref_email_newadh.
                 $addresses = [];
                 if (trim($value) != '') {
@@ -891,7 +891,7 @@ class Preferences
                 Analog::log('Storing ' . $k, Analog::DEBUG);
 
                 $value = $this->prefs[$k];
-                //do not store pdf_adhesion_form, it's designed to be overriden by plugin
+                //do not store pdf_adhesion_form, it's designed to be overridden by plugin
                 if ($k === 'pref_adhesion_form') {
                     if (trim($v) == '') {
                         //Reset to default, should not be empty
@@ -1278,7 +1278,7 @@ class Preferences
      */
     public function __set(string $name, mixed $value): void
     {
-        //does this pref exists ?
+        //does this pref exist?
         if (!array_key_exists($name, self::$defaults)) {
             Analog::log(
                 'Trying to set a preference value which does not seem to exist ('
@@ -1307,7 +1307,7 @@ class Preferences
             $value = $this->validateValue($name, $value);
         }
 
-        //some values need to be changed (eg. passwords)
+        //some values need to be changed (e.g., passwords)
         if ($name == 'pref_admin_pass') {
             $value = password_hash($value, PASSWORD_BCRYPT);
         }
