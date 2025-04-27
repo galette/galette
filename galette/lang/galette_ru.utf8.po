@@ -4,22 +4,24 @@
 # Andrei Guliaikin <like427@gmail.com>, 2022.
 # Evgeniy Khramov <thejenjagamertjg@gmail.com>, 2022.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2023.
+# Evgeniy Khramov <65224669+thejenja@users.noreply.github.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-04-22 17:26+0200\n"
-"PO-Revision-Date: 2023-10-04 07:18+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2025-04-28 14:50+0000\n"
+"Last-Translator: Evgeniy Khramov <65224669+thejenja@users.noreply.github.com>"
+"\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.1-dev\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:125
 msgid "Transaction"
@@ -1252,7 +1254,7 @@ msgstr ""
 #: ../../tempcache/pages/transaction_form.html.twig:166
 #: ../../tempcache/pages/preferences.html.twig:3070
 msgid "None"
-msgstr ""
+msgstr "Ничего"
 
 #: ../lib/Galette/Core/Install.php:107 ../webroot/installer.php:280
 msgid "Checks"
@@ -2527,7 +2529,7 @@ msgstr ""
 #: ../lib/Galette/Features/Permissions.php:66
 #: ../lib/Galette/Entity/ListsConfig.php:201
 msgid "Public"
-msgstr ""
+msgstr "Публично"
 
 #: ../lib/Galette/Features/Permissions.php:70
 msgid "User, read only"
@@ -2651,7 +2653,7 @@ msgstr ""
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:118
 #: ../../tempcache/elements/edit_pdf_models.html.twig:55
 msgid "Title"
-msgstr ""
+msgstr "Название"
 
 #: ../lib/Galette/Features/Replacements.php:242
 msgid "Member's ID"
@@ -2681,11 +2683,11 @@ msgstr ""
 #: ../../tempcache/pages/public/list.html.twig:198
 #: ../../tempcache/pages/preferences.html.twig:2767
 msgid "Nickname"
-msgstr ""
+msgstr "Никнейм"
 
 #: ../lib/Galette/Features/Replacements.php:266
 msgid "Gender"
-msgstr ""
+msgstr "Пол"
 
 #: ../lib/Galette/Features/Replacements.php:270
 #: ../../tempcache/pages/advanced_search.html.twig:274
@@ -2699,7 +2701,7 @@ msgstr ""
 #: ../lib/Galette/Features/Replacements.php:278
 #: ../../tempcache/pages/preferences.html.twig:2775
 msgid "Profession"
-msgstr ""
+msgstr "Профессия"
 
 #: ../lib/Galette/Features/Replacements.php:282
 #: ../lib/Galette/Features/Replacements.php:346
@@ -2712,7 +2714,7 @@ msgstr ""
 #: ../lib/Galette/Filters/MembersList.php:277
 #: ../../tempcache/pages/mailing_form.html.twig:132
 msgid "Address"
-msgstr ""
+msgstr "Адрес"
 
 #: ../lib/Galette/Features/Replacements.php:294
 msgid "Zipcode"
@@ -2720,11 +2722,11 @@ msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:298
 msgid "Town"
-msgstr ""
+msgstr "Город"
 
 #: ../lib/Galette/Features/Replacements.php:302 ../includes/i18n.inc.php:87
 msgid "Country"
-msgstr ""
+msgstr "Страна"
 
 #: ../lib/Galette/Features/Replacements.php:322
 msgid "Member's main group"
@@ -2767,7 +2769,7 @@ msgstr ""
 #: ../../tempcache/pages/transactions_list.html.twig:453
 #: ../../tempcache/pages/advanced_search.html.twig:797
 msgid "Amount"
-msgstr ""
+msgstr "Сумма"
 
 #: ../lib/Galette/Features/Replacements.php:392
 msgid "Amount (in letters)"
@@ -2784,7 +2786,7 @@ msgstr ""
 #: ../lib/Galette/Features/Replacements.php:404
 #: ../../tempcache/pages/document_form.html.twig:184
 msgid "Comment"
-msgstr ""
+msgstr "Комментарий"
 
 #: ../lib/Galette/Features/Replacements.php:408
 #: ../../tempcache/pages/advanced_search.html.twig:711
@@ -2852,7 +2854,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/ListsConfig.php:195
 msgid "Modified"
-msgstr ""
+msgstr "Изменено"
 
 #: ../lib/Galette/Entity/Reminder.php:250
 msgid "%name <%mail> (%days days)"
@@ -2992,14 +2994,14 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:1839
 #: ../../tempcache/components/forms/account.html.twig:72
 msgid "Active"
-msgstr ""
+msgstr "Активный"
 
 #: ../lib/Galette/Entity/Adherent.php:1839
 #: ../../tempcache/pages/contributions_list.html.twig:332
 #: ../../tempcache/pages/transactions_list.html.twig:192
 #: ../../tempcache/components/forms/account.html.twig:80
 msgid "Inactive"
-msgstr ""
+msgstr "Неактивен"
 
 #: ../lib/Galette/Entity/Adherent.php:2141
 #: ../../tempcache/pages/member_form.html.twig:948
@@ -3014,7 +3016,7 @@ msgstr ""
 #: ../../tempcache/pages/transaction_form.html.twig:116
 #: ../../tempcache/pages/plugin_info.html.twig:105
 msgid "Date:"
-msgstr ""
+msgstr "Дата:"
 
 #: ../lib/Galette/Entity/Transaction.php:120
 #: ../lib/Galette/Entity/Contribution.php:229
@@ -3023,13 +3025,13 @@ msgstr ""
 #: ../../tempcache/pages/transaction_form.html.twig:142
 #: ../../tempcache/pages/contribution_form.html.twig:573
 msgid "Amount:"
-msgstr ""
+msgstr "Сумма:"
 
 #: ../lib/Galette/Entity/Transaction.php:124
 #: ../../tempcache/pages/transaction_form.html.twig:92
 #: ../../tempcache/pages/plugin_info.html.twig:89
 msgid "Description:"
-msgstr ""
+msgstr "Описание:"
 
 #: ../lib/Galette/Entity/Transaction.php:128
 #: ../../tempcache/pages/transaction_form.html.twig:106
@@ -3087,7 +3089,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:221
 #: ../../tempcache/pages/contribution_form.html.twig:130
 msgid "Contributor:"
-msgstr ""
+msgstr "Контрибьютор:"
 
 #: ../lib/Galette/Entity/Contribution.php:225
 #: ../../tempcache/pages/contributions_list.html.twig:165
@@ -3099,7 +3101,7 @@ msgstr ""
 #: ../lib/Galette/Entity/ScheduledPayment.php:648
 #: ../../tempcache/pages/contribution_form.html.twig:752
 msgid "Comments:"
-msgstr ""
+msgstr "Комментарии:"
 
 #: ../lib/Galette/Entity/Contribution.php:241
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:132
@@ -3121,7 +3123,7 @@ msgstr ""
 #: ../../tempcache/pages/export.html.twig:140
 #: ../../tempcache/pages/export.html.twig:189
 msgid "Date"
-msgstr ""
+msgstr "Дата"
 
 #: ../lib/Galette/Entity/Contribution.php:245
 #: ../../tempcache/pages/contribution_form.html.twig:665
@@ -3311,39 +3313,39 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Social.php:341
 msgid "Mastodon"
-msgstr ""
+msgstr "Mastodon"
 
 #: ../lib/Galette/Entity/Social.php:342
 msgid "Twitter"
-msgstr ""
+msgstr "Twitter"
 
 #: ../lib/Galette/Entity/Social.php:343
 msgid "Facebook"
-msgstr ""
+msgstr "Facebook"
 
 #: ../lib/Galette/Entity/Social.php:344
 msgid "LinkedIn"
-msgstr ""
+msgstr "LinkedIn"
 
 #: ../lib/Galette/Entity/Social.php:345
 msgid "Viadeo"
-msgstr ""
+msgstr "Viadeo"
 
 #: ../lib/Galette/Entity/Social.php:346
 msgid "Jabber"
-msgstr ""
+msgstr "Jabber"
 
 #: ../lib/Galette/Entity/Social.php:347
 msgid "ICQ"
-msgstr ""
+msgstr "ICQ"
 
 #: ../lib/Galette/Entity/Social.php:348
 msgid "Website"
-msgstr ""
+msgstr "Сайт"
 
 #: ../lib/Galette/Entity/Social.php:349
 msgid "Blog"
-msgstr ""
+msgstr "Блог"
 
 #: ../lib/Galette/Entity/Social.php:350
 msgid "Discord"
@@ -3367,7 +3369,7 @@ msgstr ""
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:125
 #: ../../tempcache/elements/edit_pdf_models.html.twig:72
 msgid "Subtitle"
-msgstr ""
+msgstr "Субтитры"
 
 #: ../lib/Galette/Entity/PdfModel.php:462
 msgid "header and footer should not be empty!"
@@ -3383,7 +3385,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PaymentType.php:281
 msgid "Other"
-msgstr ""
+msgstr "Другие"
 
 #: ../lib/Galette/Entity/PaymentType.php:282
 msgid "Cash"
@@ -3399,11 +3401,11 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PaymentType.php:285
 msgid "Transfer"
-msgstr ""
+msgstr "Перевод"
 
 #: ../lib/Galette/Entity/PaymentType.php:286
 msgid "Paypal"
-msgstr ""
+msgstr "Paypal"
 
 #: ../lib/Galette/Entity/PaymentType.php:287
 msgid "Payment schedule"
@@ -3577,7 +3579,7 @@ msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:279
 msgid "Job"
-msgstr ""
+msgstr "Работа"
 
 #: ../lib/Galette/Filters/MembersList.php:280
 msgid "Infos"
@@ -3612,7 +3614,7 @@ msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:301
 msgid "Administrators"
-msgstr ""
+msgstr "Администраторы"
 
 #: ../lib/Galette/Filters/MembersList.php:302
 msgid "Non members"
@@ -3697,19 +3699,19 @@ msgstr ""
 
 #: ../webroot/installer.php:395 ../../tempcache/elements/footer.html.twig:94
 msgid "Documentation"
-msgstr ""
+msgstr "Документация"
 
 #: ../includes/i18n.inc.php:37
 msgid "Realization:"
-msgstr ""
+msgstr "Реализация:"
 
 #: ../includes/i18n.inc.php:38
 msgid "Graphics:"
-msgstr ""
+msgstr "Графика:"
 
 #: ../includes/i18n.inc.php:39
 msgid "Publisher:"
-msgstr ""
+msgstr "Издатель:"
 
 #: ../includes/i18n.inc.php:40
 msgid "President"
@@ -3717,7 +3719,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:41
 msgid "Vice-president"
-msgstr ""
+msgstr "Вице-президент"
 
 #: ../includes/i18n.inc.php:42
 msgid "Treasurer"
@@ -3729,11 +3731,11 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:44
 msgid "Secretary"
-msgstr ""
+msgstr "Секретарь"
 
 #: ../includes/i18n.inc.php:45
 msgid "Vice-secretary"
-msgstr ""
+msgstr "Заместитель секретаря"
 
 #: ../includes/i18n.inc.php:46
 msgid "Active member"
@@ -3821,7 +3823,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:67
 msgid "Identity"
-msgstr ""
+msgstr "Идентификация"
 
 #: ../includes/i18n.inc.php:68
 msgid "Galette-related data"
@@ -3857,7 +3859,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:76
 msgid "Society"
-msgstr ""
+msgstr "Общество"
 
 #: ../includes/i18n.inc.php:77
 msgid "Politeness"
@@ -3890,7 +3892,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:85
 msgid "Username"
-msgstr ""
+msgstr "Имя пользователя"
 
 #: ../includes/i18n.inc.php:86
 msgid "Email address"
@@ -3898,7 +3900,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:88
 msgid "City"
-msgstr ""
+msgstr "Город"
 
 #: ../includes/i18n.inc.php:89
 msgid "Zip Code"
@@ -3927,11 +3929,11 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:95
 msgid "from"
-msgstr ""
+msgstr "из"
 
 #: ../includes/i18n.inc.php:96
 msgid "to"
-msgstr ""
+msgstr "к"
 
 #: ../includes/i18n.inc.php:97
 msgid "Association"
@@ -3952,7 +3954,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:39
 msgid "Status:"
-msgstr ""
+msgstr "Статус:"
 
 #: ../includes/fields_defs/members_fields.php:49
 #: ../../tempcache/elements/group.html.twig:138
@@ -3963,7 +3965,7 @@ msgstr ""
 #: ../../tempcache/pages/status_form.html.twig:71
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:73
 msgid "Name:"
-msgstr ""
+msgstr "Имя:"
 
 #: ../includes/fields_defs/members_fields.php:57
 msgid "First name:"
@@ -3971,15 +3973,15 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:65
 msgid "Company:"
-msgstr ""
+msgstr "Компания:"
 
 #: ../includes/fields_defs/members_fields.php:73
 msgid "Nickname:"
-msgstr ""
+msgstr "Никнейм:"
 
 #: ../includes/fields_defs/members_fields.php:83
 msgid "Title:"
-msgstr ""
+msgstr "Название:"
 
 #: ../includes/fields_defs/members_fields.php:91
 msgid "Birth date:"
@@ -3987,13 +3989,13 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:99
 msgid "Gender:"
-msgstr ""
+msgstr "Пол:"
 
 #: ../includes/fields_defs/members_fields.php:107
 #: ../../tempcache/pages/preferences.html.twig:290
 #: ../../tempcache/pages/preferences.html.twig:300
 msgid "Address:"
-msgstr ""
+msgstr "Адрес:"
 
 #: ../includes/fields_defs/members_fields.php:115
 #: ../../tempcache/pages/preferences.html.twig:313
@@ -4003,7 +4005,7 @@ msgstr ""
 #: ../includes/fields_defs/members_fields.php:123
 #: ../../tempcache/pages/preferences.html.twig:323
 msgid "City:"
-msgstr ""
+msgstr "Город:"
 
 #: ../includes/fields_defs/members_fields.php:131
 #: ../../tempcache/pages/preferences.html.twig:335
@@ -4013,12 +4015,12 @@ msgstr ""
 #: ../includes/fields_defs/members_fields.php:139
 #: ../../tempcache/pages/preferences.html.twig:345
 msgid "Country:"
-msgstr ""
+msgstr "Страна:"
 
 #: ../includes/fields_defs/members_fields.php:147
 #: ../../tempcache/pages/preferences.html.twig:441
 msgid "Phone:"
-msgstr ""
+msgstr "Телефон:"
 
 #: ../includes/fields_defs/members_fields.php:155
 msgid "Mobile phone:"
@@ -4027,7 +4029,7 @@ msgstr ""
 #: ../includes/fields_defs/members_fields.php:163
 #: ../../tempcache/pages/preferences.html.twig:541
 msgid "E-Mail:"
-msgstr ""
+msgstr "Эл. почта:"
 
 #: ../includes/fields_defs/members_fields.php:171
 msgid "Other information (admin):"
@@ -4039,21 +4041,21 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:187
 msgid "Profession:"
-msgstr ""
+msgstr "Профессия:"
 
 #: ../includes/fields_defs/members_fields.php:195 ../install/steps/admin.php:27
 #: ../../tempcache/pages/index.html.twig:89
 #: ../../tempcache/pages/index.html.twig:93
 #: ../../tempcache/pages/preferences.html.twig:3159
 msgid "Username:"
-msgstr ""
+msgstr "Имя пользователя:"
 
 #: ../includes/fields_defs/members_fields.php:203 ../install/steps/admin.php:31
 #: ../install/steps/db.php:70 ../../tempcache/pages/index.html.twig:101
 #: ../../tempcache/pages/index.html.twig:105
 #: ../../tempcache/pages/preferences.html.twig:3173
 msgid "Password:"
-msgstr ""
+msgstr "Пароль:"
 
 #: ../includes/fields_defs/members_fields.php:211
 #: ../../tempcache/elements/group.html.twig:121
@@ -4066,7 +4068,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:229
 msgid "Account:"
-msgstr ""
+msgstr "Аккаунт:"
 
 #: ../includes/fields_defs/members_fields.php:237
 msgid "Galette Admin:"
@@ -4087,7 +4089,7 @@ msgstr ""
 #: ../includes/fields_defs/members_fields.php:269
 #: ../../tempcache/pages/configuration_texts.html.twig:74
 msgid "Language:"
-msgstr ""
+msgstr "Язык:"
 
 #: ../includes/fields_defs/members_fields.php:277
 msgid "Birthplace:"
@@ -4407,7 +4409,7 @@ msgstr ""
 #: ../install/steps/db_checks.php:250 ../install/steps/galette.php:79
 #: ../install/steps/db.php:95 ../install/steps/type.php:60
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 #: ../install/steps/db_select_version.php:35
 #: ../install/steps/db_select_version.php:49
@@ -4422,12 +4424,12 @@ msgstr ""
 #: ../../tempcache/elements/navigation/navigation_sidebar.html.twig:54
 #: ../../tempcache/pages/404.html.twig:90
 msgid "Home"
-msgstr ""
+msgstr "Главная"
 
 #: ../install/steps/db_select_version.php:42 ../install/steps/type.php:44
 #: ../../tempcache/modals/plugin_initdb.html.twig:160
 msgid "Update"
-msgstr ""
+msgstr "Обновить"
 
 #: ../install/steps/db_select_version.php:53
 msgid "Select your previous Galette version below, and then click next."
@@ -4475,7 +4477,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:813
 #: ../../tempcache/pages/advanced_search.html.twig:1101
 msgid "and"
-msgstr ""
+msgstr "и"
 
 #: ../install/steps/db_select_version.php:132
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:128
@@ -4496,7 +4498,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_payment_type_form.html.twig:102
 #: ../../tempcache/pages/document_form.html.twig:209
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #: ../install/steps/db_checks.php:60
 msgid "CREATE operation not allowed"
@@ -4638,7 +4640,7 @@ msgstr ""
 
 #: ../install/steps/check.php:50
 msgid "Cache"
-msgstr ""
+msgstr "Кэш"
 
 #: ../install/steps/check.php:51
 msgid "Temporary images"
@@ -4652,7 +4654,7 @@ msgstr ""
 
 #: ../install/steps/check.php:57
 msgid "Files"
-msgstr ""
+msgstr "Файлы"
 
 #: ../install/steps/check.php:69
 msgid "Welcome to the Galette Install!"
@@ -4745,19 +4747,19 @@ msgstr ""
 
 #: ../install/steps/db.php:58
 msgid "Host:"
-msgstr ""
+msgstr "Хост:"
 
 #: ../install/steps/db.php:62
 msgid "Port:"
-msgstr ""
+msgstr "Порт:"
 
 #: ../install/steps/db.php:66
 msgid "User:"
-msgstr ""
+msgstr "Пользователь:"
 
 #: ../install/steps/db.php:74
 msgid "Database:"
-msgstr ""
+msgstr "База данных:"
 
 #: ../install/steps/db.php:78
 msgid "Table prefix:"
@@ -4834,7 +4836,7 @@ msgstr ""
 #: ../../tempcache/modals/mass_add_contributions.html.twig:115
 #: ../../tempcache/modals/mass_change_members.html.twig:239
 msgid "OK"
-msgstr ""
+msgstr "ОК"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:137
 msgid "you're installing %name for the first time"
@@ -4908,12 +4910,12 @@ msgstr ""
 #: ../../tempcache/elements/js/removal.js.twig:192
 #: ../../tempcache/pages/mailing_form.html.twig:733
 msgid "Remove"
-msgstr ""
+msgstr "Убрать"
 
 #: ../../tempcache/modals/mass_add_contributions.html.twig:113
 #: ../../tempcache/modals/mass_change_members.html.twig:237
 msgid "Edit"
-msgstr ""
+msgstr "Редактировать"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:60
 msgid "Headers"
@@ -4921,17 +4923,17 @@ msgstr ""
 
 #: ../../tempcache/modals/mailing_preview.html.twig:69
 msgid "From:"
-msgstr ""
+msgstr "От:"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:81
 msgid "To:"
-msgstr ""
+msgstr "Кому:"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:125
 #: ../../tempcache/pages/reminder.html.twig:198
 #: ../../tempcache/pages/mailing_form.html.twig:414
 msgid "Subject:"
-msgstr ""
+msgstr "Объект:"
 
 #: ../../tempcache/modals/mailing_preview.html.twig:137
 msgid "Attachments:"
@@ -5007,7 +5009,7 @@ msgstr ""
 
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:183
 msgid "Generate"
-msgstr ""
+msgstr "Генерировать"
 
 #: ../../tempcache/modals/replacements_legend.html.twig:45
 #: ../../tempcache/modals/replacements_legend.html.twig:49
@@ -5092,7 +5094,7 @@ msgstr ""
 #: ../../tempcache/pages/member_show.html.twig:721
 #: ../../tempcache/pages/transactions_list.html.twig:623
 msgid "Close"
-msgstr ""
+msgstr "Закрыть"
 
 #: ../../tempcache/modals/replacements_legend.html.twig:144
 msgid "Show existing variables"
@@ -5119,7 +5121,7 @@ msgstr ""
 #: ../../tempcache/pages/mailing_form.html.twig:472
 #: ../../tempcache/pages/preferences.html.twig:3411
 msgid "Send"
-msgstr ""
+msgstr "Отправить"
 
 #: ../../tempcache/elements/language.html.twig:80
 msgid "Choose your language"
@@ -5141,7 +5143,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_core_lists.html.twig:150
 #: ../../tempcache/components/dynamic_fields.html.twig:285
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:68
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:116
@@ -5153,7 +5155,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_core_lists.html.twig:317
 #: ../../tempcache/pages/document_form.html.twig:155
 msgid "Permissions"
-msgstr ""
+msgstr "Разрешения"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:72
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:122
@@ -5168,7 +5170,7 @@ msgstr ""
 #: ../../tempcache/pages/advanced_search.html.twig:827
 #: ../../tempcache/pages/advanced_search.html.twig:832
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:80
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:132
@@ -5202,7 +5204,7 @@ msgstr ""
 #: ../../tempcache/pages/transactions_list.html.twig:574
 #: ../../tempcache/pages/export.html.twig:148
 msgid "Actions"
-msgstr ""
+msgstr "Действия"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:161
 #: ../../tempcache/elements/edit_core_fields.html.twig:288
@@ -5293,7 +5295,7 @@ msgstr ""
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:98
 msgid "Subscribe"
-msgstr ""
+msgstr "Подписаться"
 
 #: ../../tempcache/elements/navigation/public_pages.html.twig:155
 #: ../../tempcache/elements/navigation/public_pages.html.twig:165
@@ -5336,7 +5338,7 @@ msgstr ""
 #: ../../tempcache/elements/ajax_members.html.twig:94
 #: ../../tempcache/elements/group_persons.html.twig:92
 msgid "Company"
-msgstr ""
+msgstr "Компания"
 
 #: ../../tempcache/elements/ajax_members.html.twig:188
 msgid "no member"
@@ -5345,7 +5347,7 @@ msgstr ""
 #: ../../tempcache/elements/ajax_members.html.twig:211
 #: ../../tempcache/elements/list.html.twig:193
 msgid "Pages:"
-msgstr ""
+msgstr "Страницы:"
 
 #: ../../tempcache/elements/ajax_members.html.twig:237
 msgid "Selected members"
@@ -5506,7 +5508,7 @@ msgstr "Нет"
 #: ../../tempcache/elements/js/loader.js.twig:54
 #: ../../tempcache/elements/js/loader.js.twig:73
 msgid "Loading..."
-msgstr ""
+msgstr "Загрузка..."
 
 #: ../../tempcache/elements/js/modal_action.js.twig:75
 #: ../../tempcache/elements/edit_pdf_models.html.twig:170
@@ -5532,7 +5534,7 @@ msgstr ""
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:181
 #: ../../tempcache/pages/document_form.html.twig:204
 msgid "Save"
-msgstr ""
+msgstr "Сохранить"
 
 #: ../../tempcache/elements/js/pwdcheck.js.twig:104
 msgid "Password is valid :)"
@@ -5904,7 +5906,7 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:99
 msgid "Permissions:"
-msgstr ""
+msgstr "Разрешения:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:132
 msgid "Required:"
@@ -5912,11 +5914,11 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:162
 msgid "Width:"
-msgstr ""
+msgstr "Ширина:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:178
 msgid "Height:"
-msgstr ""
+msgstr "Высота:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:194
 msgid "Min Size:"
@@ -5928,7 +5930,7 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:214
 msgid "Size:"
-msgstr ""
+msgstr "Размер:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:225
 msgid "Maximum file size, in Ko."
@@ -5940,7 +5942,7 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:246
 msgid "Repeat:"
-msgstr ""
+msgstr "Повторить:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:254
 msgid "Number of values or zero if infinite."
@@ -5948,7 +5950,7 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:266
 msgid "Values:"
-msgstr ""
+msgstr "Значения:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:274
 msgid "Choice list (one entry per line)."
@@ -5956,7 +5958,7 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:283
 msgid "Information:"
-msgstr ""
+msgstr "Информация:"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:291
 msgid "Extra information displayed along with dynamic field."
@@ -5983,7 +5985,7 @@ msgstr ""
 #: ../../tempcache/pages/documents_list.html.twig:113
 #: ../../tempcache/pages/documents_list.html.twig:194
 msgid "Visibility"
-msgstr ""
+msgstr "Видимость"
 
 #: ../../tempcache/pages/documents_public_list.html.twig:67
 #: ../../tempcache/pages/documents_list.html.twig:268
@@ -7004,7 +7006,7 @@ msgstr ""
 #: ../../tempcache/pages/status_list.html.twig:114
 #: ../../tempcache/pages/status_list.html.twig:172
 msgid "Priority"
-msgstr ""
+msgstr "Приоритет"
 
 #: ../../tempcache/pages/status_list.html.twig:96
 msgid "New status"
