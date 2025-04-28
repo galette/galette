@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-04-22 17:26+0200\n"
-"PO-Revision-Date: 2025-04-28 14:50+0000\n"
+"PO-Revision-Date: 2025-04-28 23:23+0000\n"
 "Last-Translator: Sotski Eugene <jekakmail@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
@@ -6238,10 +6238,8 @@ msgid "until"
 msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:202
-#, fuzzy
-#| msgid "contributions"
 msgid "Paid contributions:"
-msgstr "вклады"
+msgstr "Оплата вкладов:"
 
 #: ../../tempcache/pages/contributions_list.html.twig:216
 #: ../../tempcache/pages/members_list.html.twig:358
