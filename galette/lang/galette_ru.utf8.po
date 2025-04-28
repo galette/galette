@@ -5,14 +5,14 @@
 # Evgeniy Khramov <thejenjagamertjg@gmail.com>, 2022.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2023.
 # Evgeniy Khramov <65224669+thejenja@users.noreply.github.com>, 2025.
+# Sotski Eugene <jekakmail@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-04-22 17:26+0200\n"
 "PO-Revision-Date: 2025-04-28 14:50+0000\n"
-"Last-Translator: Evgeniy Khramov <65224669+thejenja@users.noreply.github.com>"
-"\n"
+"Last-Translator: Sotski Eugene <jekakmail@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -582,10 +582,8 @@ msgid "List of transactions"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:681
-#, fuzzy
-#| msgid "contribution"
 msgid "- Unknown contribution type!"
-msgstr "вклад"
+msgstr "- Неизвестный способ вклада!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:744
 msgid "No contribution was selected, please check at least one."
