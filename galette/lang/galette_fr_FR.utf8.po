@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-05-07 08:55+0200\n"
-"PO-Revision-Date: 2025-04-19 10:07+0000\n"
+"PO-Revision-Date: 2025-05-07 07:04+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.11.1-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:123
 msgid "Transaction"
@@ -7667,17 +7667,15 @@ msgstr "Nombre de colonnes sur le formulaire adhérent"
 
 #: ../../tempcache/pages/preferences.html.twig:831
 msgid "Use paid flag"
-msgstr ""
+msgstr "Utiliser l'état payé"
 
 #: ../../tempcache/pages/preferences.html.twig:836
-#, fuzzy
-#| msgid "View and filter contributions"
 msgid "Use paid flag on contributions"
-msgstr "Consulter et filtrer les contributions"
+msgstr "Utiliser l'état payé pour les contributions"
 
 #: ../../tempcache/pages/preferences.html.twig:847
 msgid "Paid default value"
-msgstr ""
+msgstr "Valeur par défaut payé"
 
 #: ../../tempcache/pages/preferences.html.twig:879
 msgid "Lines / Page:"
