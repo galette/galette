@@ -141,7 +141,7 @@ class Login extends GaletteTestCase
 
         $zdb->method('execute')
             ->willReturnCallback(
-                function ($o): void {
+                function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
