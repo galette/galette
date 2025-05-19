@@ -43,6 +43,7 @@ abstract class GaletteTestCase extends TestCase
 
     protected \Galette\Entity\Adherent $adh;
     protected \Galette\Entity\Contribution $contrib;
+    protected \Galette\Core\Plugins $plugins;
     protected array $adh_ids = [];
     protected array $contrib_ids = [];
     /** @var array<string,array<string,array<int,string>> */
@@ -82,6 +83,7 @@ abstract class GaletteTestCase extends TestCase
         $gapp =  new \Galette\Core\SlimApp();
         $app = $gapp->getApp();
         $plugins = new \Galette\Core\Plugins();
+        $this->plugins = $plugins;
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
         /** @var \DI\Container $container */
         $container = $app->getContainer();

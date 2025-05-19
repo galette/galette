@@ -41,7 +41,6 @@ class Telemetry
     private Db $zdb;
     private Preferences $prefs;
     private Plugins $plugins;
-    private bool $quick = false;
 
     /**
      * Constructor
@@ -268,12 +267,6 @@ class Telemetry
             CURLOPT_POSTFIELDS      => $infos,
             CURLOPT_HTTPHEADER      => ['Content-Type:application/json']
         ];
-        if ($this->quick === true) {
-            //set entire curl call timeout
-            $opts[CURLOPT_TIMEOUT] = 3;
-            //set curl connection timeout
-            $opts[CURLOPT_CONNECTTIMEOUT] = 2;
-        }
 
         curl_setopt_array($ch, $opts);
         $content = json_decode(curl_exec($ch));
@@ -398,17 +391,5 @@ class Telemetry
             return true;
         }
         return false;
-    }
-
-    /**
-     * Set quick mode
-     * Will set a short timeout on curl calls
-     *
-     * @return self
-     */
-    public function setQuick(): self
-    {
-        $this->quick = true;
-        return $this;
     }
 }

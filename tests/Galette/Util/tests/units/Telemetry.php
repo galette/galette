@@ -250,6 +250,19 @@ class Telemetry extends TestCase
      */
     public function testGetTelemetryInfos(): void
     {
+        $this->plugins = $this->getMockBuilder(\Galette\Core\Plugins::class)
+            ->onlyMethods(['getModules'])
+            ->getMock();
+
+        $this->plugins->method('getModules')->willReturn([
+            'test_plugin' => [
+                'name' => 'A test plugin',
+                'version' => '1.0.0',
+                'description' => 'A test plugin description',
+                'author' => 'Test Author'
+            ]
+        ]);
+
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,
             $this->preferences,
@@ -273,6 +286,14 @@ class Telemetry extends TestCase
                 'plugins',
                 'default_language',
                 'usage'
+            ]
+        );
+
+        $this->assertSame(
+            $result['galette']['plugins'][0],
+            [
+                'key' => 'A test plugin',
+                'version' => '1.0.0'
             ]
         );
 

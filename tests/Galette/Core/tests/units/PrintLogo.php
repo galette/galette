@@ -26,7 +26,7 @@ namespace Galette\Core\test\units;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Picture tests class
+ * Print logo tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */

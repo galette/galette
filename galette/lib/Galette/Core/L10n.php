@@ -275,10 +275,6 @@ class L10n
                 $existing_translations[$row->text_locale] = $row->text_trans;
             }
 
-            if (!count($existing_translations)) {
-                $existing_translations[$this->i18n->getLongID()] = $text_orig_sum;
-            }
-
             $results = [];
             foreach ($this->i18n->getList() as $l) {
                 $results[] = [

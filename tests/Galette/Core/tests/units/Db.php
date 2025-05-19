@@ -332,6 +332,17 @@ class Db extends TestCase
     }
 
     /**
+     * Test getters with exception
+     *
+     * @return void
+     */
+    public function testGetterWException(): void
+    {
+        $this->expectExceptionMessage('Unknown property non_existing');
+        $this->db->non_existing;
+    }
+
+    /**
      * Test select
      *
      * @return void
@@ -665,5 +676,107 @@ class Db extends TestCase
 
         $unserialized = unserialize($serialized);
         $this->assertInstanceOf('Galette\Core\Db', $unserialized);
+    }
+
+    /**
+     * Test getSequenceName
+     *
+     * @return void
+     */
+    public function testSequenceName(): void
+    {
+        $this->assertSame('adherents_id_adherent_seq', $this->db->getSequenceName('adherents', 'id_adherent'));
+        $this->assertSame('galette_adherents_id_adherent_seq', $this->db->getSequenceName('adherents', 'id_adherent', true));
+        $this->assertSame('adherents_id_adherent_seq', $this->db->getSequenceName('adherents', 'id_adherent', false));
+    }
+
+    /**
+     * Test isset
+     *
+     * @return void
+     */
+    public function testIsset(): void
+    {
+        $this->assertTrue(isset($this->db->sql));
+        $this->assertTrue(isset($this->db->query_string));
+        $this->assertTrue(isset($this->db->db));
+        $this->assertFalse(isset($this->db->non_existing));
+    }
+
+    /**
+     * Test supported engine
+     *
+     * @return void
+     */
+    public function testSupportedEngine(): void
+    {
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->getMock();
+
+        $zdb->method('isPostgres')->willReturn(false);
+        $zdb->method('getInfos')->willReturnCallback(
+            function () {
+                return [
+                    'engine' => 'MariaDB Server',
+                    'version' => GALETTE_MARIADB_MIN
+                ];
+            }
+        );
+        $this->assertTrue($zdb->isEngineSUpported());
+
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->getMock();
+
+        $zdb->method('isPostgres')->willReturn(false);
+        $zdb->method('getInfos')->willReturnCallback(
+            function () {
+                return [
+                    'engine' => 'MariaDB Server',
+                    'version' => '10.4-MariaDB'
+                ];
+            }
+        );
+        $this->assertFalse($zdb->isEngineSUpported());
+        $this->assertSame(
+            sprintf('Minimum version for MariaDB engine is %s, MariaDB 10.4 found!', GALETTE_MARIADB_MIN),
+            $zdb->getUnsupportedMessage()
+        );
+
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->getMock();
+
+        $zdb->method('isPostgres')->willReturn(true);
+        $zdb->method('getInfos')->willReturnCallback(
+            function () {
+                return [
+                    'engine' => 'PostgreSQL',
+                    'version' => GALETTE_PGSQL_MIN
+                ];
+            }
+        );
+        $this->assertTrue($zdb->isEngineSUpported());
+
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->getMock();
+
+        $zdb->method('isPostgres')->willReturn(true);
+        $zdb->method('getInfos')->willReturnCallback(
+            function () {
+                return [
+                    'engine' => 'PostgreSQL',
+                    'version' => '12'
+                ];
+            }
+        );
+        $this->assertFalse($zdb->isEngineSUpported());
+        $this->assertFalse($zdb->isEngineSUpported());
+        $this->assertSame(
+            sprintf('Minimum version for PostgreSQL engine is %s, PostgreSQL 12 found!', GALETTE_PGSQL_MIN),
+            $zdb->getUnsupportedMessage()
+        );
     }
 }
