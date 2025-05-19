@@ -260,6 +260,18 @@ class Adherent extends GaletteTestCase
             'socials'   => false
         ];
         $this->assertSame($expected, $adh->deps);
+
+        $adh->enableAllDeps();
+        $expected = [
+            'picture'   => true,
+            'groups'    => true,
+            'dues'      => true,
+            'parent'    => true,
+            'children'  => true,
+            'dynamics'  => true,
+            'socials'   => true
+        ];
+        $this->assertSame($expected, $adh->deps);
     }
 
     /**

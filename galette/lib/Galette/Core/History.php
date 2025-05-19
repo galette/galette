@@ -418,11 +418,6 @@ class History
      */
     public function __set(string $name, mixed $value): void
     {
-        Analog::log(
-            '[History] Setting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
         $this->$name = $value;
     }
 

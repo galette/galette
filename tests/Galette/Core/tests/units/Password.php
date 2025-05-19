@@ -214,7 +214,7 @@ class Password extends TestCase
 
         $this->zdb->method('execute')
             ->willReturnCallback(
-                function ($o): void {
+                function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
@@ -237,7 +237,7 @@ class Password extends TestCase
 
         $this->zdb->method('execute')
             ->willReturnCallback(
-                function ($o): void {
+                function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
@@ -260,7 +260,7 @@ class Password extends TestCase
 
         $this->zdb->method('execute')
             ->willReturnCallback(
-                function ($o): void {
+                function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
@@ -282,7 +282,7 @@ class Password extends TestCase
 
         $this->zdb->method('execute')
             ->willReturnCallback(
-                function ($o): void {
+                function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
@@ -305,7 +305,7 @@ class Password extends TestCase
 
         $this->zdb->method('execute')
             ->willReturnCallback(
-                function ($o): void {
+                function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
