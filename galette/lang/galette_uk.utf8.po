@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-05-07 08:55+0200\n"
-"PO-Revision-Date: 2025-05-08 09:03+0000\n"
+"PO-Revision-Date: 2025-05-22 16:01+0000\n"
 "Last-Translator: Максим Горпиніч <maksimgorpinic4@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -2209,7 +2209,7 @@ msgstr "Ім'я"
 #: ../../tempcache/pages/public/list.html.twig:209
 #: ../../tempcache/pages/preferences.html.twig:2784
 msgid "Email"
-msgstr "Е-пошта"
+msgstr "Електронна пошта"
 
 #: ../lib/Galette/IO/PdfGroups.php:158
 #: ../lib/Galette/Features/Replacements.php:304
@@ -3062,7 +3062,7 @@ msgstr "Опис:"
 #: ../lib/Galette/Entity/Transaction.php:128
 #: ../../tempcache/pages/transaction_form.html.twig:106
 msgid "Originator:"
-msgstr "Автор:"
+msgstr "Оригінатор:"
 
 #: ../lib/Galette/Entity/Transaction.php:132
 #: ../lib/Galette/Entity/Contribution.php:233
@@ -5333,7 +5333,7 @@ msgstr "Дії"
 #: ../../tempcache/elements/edit_core_fields.html.twig:288
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:353
 msgid "Half"
-msgstr "половина"
+msgstr "Половина"
 
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:168
 #: ../../tempcache/elements/edit_core_fields.html.twig:277
@@ -5512,7 +5512,7 @@ msgstr "S,M,T,W,T,F,S"
 
 #: ../../tempcache/elements/js/calendar.js.twig:56
 msgid "January"
-msgstr "січня"
+msgstr "Січня"
 
 #: ../../tempcache/elements/js/calendar.js.twig:60
 msgid "February"
@@ -5520,24 +5520,24 @@ msgstr "Лютий"
 
 #: ../../tempcache/elements/js/calendar.js.twig:64
 msgid "March"
-msgstr "березень"
+msgstr "Березень"
 
 #: ../../tempcache/elements/js/calendar.js.twig:68
 msgid "April"
-msgstr "квітень"
+msgstr "Квітень"
 
 #: ../../tempcache/elements/js/calendar.js.twig:72
 #: ../../tempcache/elements/js/calendar.js.twig:122
 msgid "May"
-msgstr "травня"
+msgstr "Травень"
 
 #: ../../tempcache/elements/js/calendar.js.twig:76
 msgid "June"
-msgstr "червень"
+msgstr "Червень"
 
 #: ../../tempcache/elements/js/calendar.js.twig:80
 msgid "July"
-msgstr "липень"
+msgstr "Липень"
 
 #: ../../tempcache/elements/js/calendar.js.twig:84
 msgid "August"
@@ -5545,11 +5545,11 @@ msgstr "Серпень"
 
 #: ../../tempcache/elements/js/calendar.js.twig:88
 msgid "September"
-msgstr "вересень"
+msgstr "Вересень"
 
 #: ../../tempcache/elements/js/calendar.js.twig:92
 msgid "October"
-msgstr "жовтень"
+msgstr "Жовтень"
 
 #: ../../tempcache/elements/js/calendar.js.twig:96
 msgid "November"
@@ -5557,7 +5557,7 @@ msgstr "Листопад"
 
 #: ../../tempcache/elements/js/calendar.js.twig:100
 msgid "December"
-msgstr "грудень"
+msgstr "Грудень"
 
 #: ../../tempcache/elements/js/calendar.js.twig:106
 msgid "Jan"
