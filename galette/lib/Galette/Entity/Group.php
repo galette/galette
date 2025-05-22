@@ -696,7 +696,7 @@ class Group
      */
     public function setName(string $name): self
     {
-        $this->group_name = $name;
+        $this->group_name = strip_tags($name);
         return $this;
     }
 
