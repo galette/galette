@@ -99,58 +99,100 @@ class UpgradeTo120 extends AbstractUpdater
         if ($this->zdb->isPostgres()) {
             //some FKEY are missing on CI, but seem present on standard updated databases.
             //I've not been able to find why, and already spent too much time on this - this is a workaround
-            $fkeys = [
-                'cotisations_id_adh_fkey' => [
-                    'table' => \Galette\Entity\Contribution::TABLE,
-                    'fktable' => \Galette\Entity\Adherent::TABLE,
-                    'fkcolumn' => \Galette\Entity\Adherent::PK,
-                ],
-                'cotisations_id_type_cotis_fkey' => [
-                    'table' => \Galette\Entity\Contribution::TABLE,
-                    'fktable' => \Galette\Entity\ContributionsTypes::TABLE,
-                    'fkcolumn' => \Galette\Entity\ContributionsTypes::PK,
-                ],
-                'cotisations_trans_id_fkey' => [
-                    'table' => \Galette\Entity\Contribution::TABLE,
-                    'fktable' => \Galette\Entity\Transaction::TABLE,
-                    'fkcolumn' => \Galette\Entity\Transaction::PK,
-                ],
-                'dynamic_fields_field_id_fkey' => [
-                    'table' => \Galette\Entity\DynamicFieldsHandle::TABLE,
-                    'fktable' => \Galette\DynamicFields\DynamicField::TABLE,
-                    'fkcolumn' => \Galette\DynamicFields\DynamicField::PK,
-                ]
-            ];
-            foreach ($fkeys as $fkey => $params) {
-                $query = sprintf(
-                    'ALTER TABLE %1$s ADD CONSTRAINT %2$s FOREIGN KEY (%3$s) REFERENCES %4$s(%5$s)  ON DELETE RESTRICT ON UPDATE CASCADE;',
-                    //ALTER TABLE galette_cotisations ADD CONSTRAINT galette_cotisations_id_adh_fkey FOREIGN KEY (id_adh) REFERENCES galette_adherents(id_adh)  ON DELETE RESTRICT ON UPDATE CASCADE;
-                    PREFIX_DB . $params['table'],
-                    PREFIX_DB . $fkey,
-                    $params['fkcolumn'],
-                    PREFIX_DB . $params['fktable'],
-                    $params['fkcolumn']
-                );
-                Analog::log(
-                    'Adding missing foreign key ' . $query,
-                    Analog::WARNING
-                );
-                try {
-                    $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
-                } catch (\PDOException $e) {
-                    if ($e->getCode() == 42710) { // duplicate object: constraint already exists; ignore.
-                        Analog::log(
-                            $e->getMessage(),
-                            Analog::INFO
-                        );
-                    } else {
-                        throw $e;
-                    }
-                }
-            }
+            $this->deletePsqlFkeys();
+            $this->createMissingPsqlFkeys();
         }
 
         return true;
+    }
+
+    /**
+     * Handle PostgreSQL possible missing foreign keys
+     *
+     * @return void
+     */
+    private function deletePsqlFkeys(): void
+    {
+        try {
+            $query = sprintf(
+                'ALTER TABLE %s DROP CONSTRAINT IF EXISTS type_paiement_trans_fkey',
+                PREFIX_DB . \Galette\Entity\Transaction::TABLE
+            );
+            $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
+        } catch (\PDOException $e) {
+            Analog::log(
+                $e->getMessage(),
+                Analog::INFO
+            );
+        }
+    }
+
+    /**
+     * Handle PostgreSQL possible missing foreign keys
+     *
+     * @return void
+     */
+    private function createMissingPsqlFkeys(): void
+    {
+        $fkeys = [
+            'cotisations_id_adh_fkey' => [
+                'table' => \Galette\Entity\Contribution::TABLE,
+                'fktable' => \Galette\Entity\Adherent::TABLE,
+                'fkcolumn' => \Galette\Entity\Adherent::PK,
+            ],
+            'cotisations_id_type_cotis_fkey' => [
+                'table' => \Galette\Entity\Contribution::TABLE,
+                'fktable' => \Galette\Entity\ContributionsTypes::TABLE,
+                'fkcolumn' => \Galette\Entity\ContributionsTypes::PK,
+            ],
+            'cotisations_trans_id_fkey' => [
+                'table' => \Galette\Entity\Contribution::TABLE,
+                'fktable' => \Galette\Entity\Transaction::TABLE,
+                'fkcolumn' => \Galette\Entity\Transaction::PK,
+            ],
+            'dynamic_fields_field_id_fkey' => [
+                'table' => \Galette\Entity\DynamicFieldsHandle::TABLE,
+                'fktable' => \Galette\DynamicFields\DynamicField::TABLE,
+                'fkcolumn' => \Galette\DynamicFields\DynamicField::PK,
+            ],
+            'transactions_id_adh_fkey' => [
+                'table' => \Galette\Entity\Transaction::TABLE,
+                'fktable' => \Galette\Entity\Adherent::TABLE,
+                'fkcolumn' => \Galette\Entity\Adherent::PK,
+            ],
+            'transactions_type_paiement_trans_fkey' => [
+                'table' => \Galette\Entity\Transaction::TABLE,
+                'fktable' => \Galette\Entity\PaymentType::TABLE,
+                'tablefkcolumn' => 'type_paiement_trans',
+                'fkcolumn' => \Galette\Entity\PaymentType::PK,
+            ]
+        ];
+        foreach ($fkeys as $fkey => $params) {
+            $query = sprintf(
+                'ALTER TABLE %1$s ADD CONSTRAINT %2$s FOREIGN KEY (%3$s) REFERENCES %4$s(%5$s)  ON DELETE RESTRICT ON UPDATE CASCADE;',
+                PREFIX_DB . $params['table'],
+                PREFIX_DB . $fkey,
+                $params['tablefkcolumn'] ?? $params['fkcolumn'],
+                PREFIX_DB . $params['fktable'],
+                $params['fkcolumn']
+            );
+            Analog::log(
+                'Adding missing foreign key ' . $query,
+                Analog::WARNING
+            );
+            try {
+                $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
+            } catch (\PDOException $e) {
+                if ($e->getCode() == 42710) { // duplicate object: constraint already exists; ignore.
+                    Analog::log(
+                        $e->getMessage(),
+                        Analog::INFO
+                    );
+                } else {
+                    throw $e;
+                }
+            }
+        }
     }
 
     /**
