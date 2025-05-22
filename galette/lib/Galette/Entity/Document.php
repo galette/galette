@@ -420,7 +420,7 @@ class Document implements FileInterface
      */
     public function setType(string $type): self
     {
-        $this->type = $type;
+        $this->type = strip_tags($type);
         return $this;
     }
 
