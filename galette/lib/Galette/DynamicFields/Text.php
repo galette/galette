@@ -57,4 +57,16 @@ class Text extends DynamicField
     {
         return self::TEXT;
     }
+
+    /**
+     * Get value to display for a field
+     *
+     * @param mixed $value Raw value to get displayed
+     *
+     * @return string
+     */
+    public function getDisplayValue(mixed $value): string
+    {
+        return nl2br($value);
+    }
 }

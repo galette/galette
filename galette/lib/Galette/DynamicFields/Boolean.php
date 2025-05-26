@@ -55,4 +55,16 @@ class Boolean extends DynamicField
     {
         return self::BOOLEAN;
     }
+
+    /**
+     * Get value to display for a field
+     *
+     * @param mixed $value Raw value to get displayed
+     *
+     * @return string
+     */
+    public function getDisplayValue(mixed $value): string
+    {
+        return $value ? _T("Yes") : _T("No");
+    }
 }

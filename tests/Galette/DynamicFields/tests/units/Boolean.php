@@ -173,4 +173,29 @@ class Boolean extends GaletteTestCase
         //load from DB.
         $tdf = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type'], $id);
     }
+
+    /**
+     * Test displayed value
+     *
+     * @return void
+     */
+    public function testDisplayValue(): void
+    {
+        $this->assertSame(
+            'Yes',
+            $this->bool->getDisplayValue(1)
+        );
+        $this->assertSame(
+            'Yes',
+            $this->bool->getDisplayValue('azerty')
+        );
+        $this->assertSame(
+            'No',
+            $this->bool->getDisplayValue(0)
+        );
+        $this->assertSame(
+            'No',
+            $this->bool->getDisplayValue(null)
+        );
+    }
 }

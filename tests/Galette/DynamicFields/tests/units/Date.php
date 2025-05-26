@@ -121,4 +121,25 @@ class Date extends TestCase
 
         $this->assertTrue($this->date->hasPermissions());
     }
+
+    /**
+     * Test displayed value
+     *
+     * @return void
+     */
+    public function testDisplayValue(): void
+    {
+        $this->assertSame(
+            '2025-05-26',
+            $this->date->getDisplayValue('2025-05-26')
+        );
+        $this->assertSame(
+            '26/05/2025',
+            $this->date->getDisplayValue('26/05/2025')
+        );
+        $this->assertSame(
+            'notadate',
+            $this->date->getDisplayValue('notadate')
+        );
+    }
 }

@@ -300,7 +300,7 @@ class DynamicField extends TestCase
         );
         $this->assertTrue($stored);
 
-        $stored = $df->load($df->getId());
+        $df->load($df->getId());
         $this->assertSame(['One', 'Two', 'Three'], $df->getValues());
         $this->assertSame("One\nTwo\nThree", $df->getValues(true));
         $this->assertSame(1, $df->getIndex());

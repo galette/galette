@@ -55,4 +55,16 @@ class Choice extends DynamicField
     {
         return self::CHOICE;
     }
+
+    /**
+     * Get value to display for a field
+     *
+     * @param mixed $value Raw value to get displayed
+     *
+     * @return string
+     */
+    public function getDisplayValue(mixed $value): string
+    {
+        return $this->values[$value] ?? '';
+    }
 }

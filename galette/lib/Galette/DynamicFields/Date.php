@@ -24,8 +24,10 @@ declare(strict_types=1);
 namespace Galette\DynamicFields;
 
 use Analog\Analog;
+use DateTime;
 use Galette\Core\Db;
 use Galette\Entity\DynamicFieldsHandle;
+use Throwable;
 
 /**
  * Date field type
@@ -166,5 +168,28 @@ class Date extends DynamicField
         );
 
         return true;
+    }
+
+    /**
+     * Get value to display for a field
+     *
+     * @param mixed $value Raw value to get displayed
+     *
+     * @return string
+     */
+    public function getDisplayValue(mixed $value): string
+    {
+        try {
+            $date = new DateTime($value);
+            return $date->format(__('Y-m-d'));
+        } catch (Throwable $e) {
+            //oops, we've got a bad date :/
+            Analog::log(
+                'Bad date (' . $value . ') | ' .
+                $e->getMessage(),
+                Analog::INFO
+            );
+            return $value;
+        }
     }
 }

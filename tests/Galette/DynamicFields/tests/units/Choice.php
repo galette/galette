@@ -121,4 +121,40 @@ class Choice extends TestCase
 
         $this->assertTrue($this->choice->hasPermissions());
     }
+
+    /**
+     * Test displayed value
+     *
+     * @return void
+     */
+    public function testDisplayValue(): void
+    {
+        $checked = $this->choice->check([
+            'form_name' => 'adh',
+            'field_name' => 'test_choice',
+            'field_perm' => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'fixed_values' => "One\nTwo\nThree"
+        ]);
+        $this->assertTrue($checked, implode(', ', $this->choice->getErrors()));
+        $this->assertSame(
+            'One',
+            $this->choice->getDisplayValue(0)
+        );
+        $this->assertSame(
+            'Two',
+            $this->choice->getDisplayValue(1)
+        );
+        $this->assertSame(
+            'Three',
+            $this->choice->getDisplayValue(2)
+        );
+        $this->assertSame(
+            '',
+            $this->choice->getDisplayValue(4)
+        );
+        $this->assertSame(
+            '',
+            $this->choice->getDisplayValue(null)
+        );
+    }
 }

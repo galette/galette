@@ -176,4 +176,22 @@ class Line extends GaletteTestCase
         //load from DB.
         $tdf = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type'], $id);
     }
+
+    /**
+     * Test displayed value
+     *
+     * @return void
+     */
+    public function testDisplayValue(): void
+    {
+        $this->assertSame(
+            'anything',
+            $this->line->getDisplayValue('anything')
+        );
+
+        $this->assertSame(
+            'https://galette.eu',
+            $this->line->getDisplayValue('https://galette.eu')
+        );
+    }
 }

@@ -121,4 +121,17 @@ class File extends TestCase
 
         $this->assertTrue($this->file->hasPermissions());
     }
+
+    /**
+     * Test displayed value
+     *
+     * @return void
+     */
+    public function testDisplayValue(): void
+    {
+        $this->assertSame(
+            'anything',
+            $this->file->getDisplayValue('anything')
+        );
+    }
 }

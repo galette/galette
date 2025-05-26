@@ -121,4 +121,27 @@ class Text extends TestCase
 
         $this->assertTrue($this->text->hasPermissions());
     }
+
+    /**
+     * Test displayed value
+     *
+     * @return void
+     */
+    public function testDisplayValue(): void
+    {
+        $this->assertSame(
+            'anything',
+            $this->text->getDisplayValue('anything')
+        );
+
+        $this->assertSame(
+            'https://galette.eu',
+            $this->text->getDisplayValue('https://galette.eu')
+        );
+
+        $this->assertSame(
+            "Line 1<br />\nLine 2",
+            $this->text->getDisplayValue("Line 1\nLine 2")
+        );
+    }
 }
