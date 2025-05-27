@@ -394,7 +394,7 @@ class CsvController extends AbstractController
 
         //Exports main contain user confidential data, they're accessible only for
         //admins or staff members
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
             Analog::log(
                 'A non authorized person asked to retrieve ' . $type . ' file named `' .
                 $filename . '`. Access has not been granted.',
