@@ -141,5 +141,13 @@ class Date extends TestCase
             'notadate',
             $this->date->getDisplayValue('notadate')
         );
+        $this->assertSame(
+            '',
+            $this->date->getDisplayValue('')
+        );
+        $this->assertSame(
+            '',
+            $this->date->getDisplayValue(null)
+        );
     }
 }

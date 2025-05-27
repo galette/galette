@@ -179,6 +179,9 @@ class Date extends DynamicField
      */
     public function getDisplayValue(mixed $value): string
     {
+        if (empty($value)) {
+            return '';
+        }
         try {
             $date = new DateTime($value);
             return $date->format(__('Y-m-d'));
