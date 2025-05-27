@@ -870,9 +870,11 @@ class Preferences
     /**
      * Will store all preferences in the database
      *
+     * @param boolean $updating True if we're updating instance
+     *
      * @return boolean
      */
-    public function store(): bool
+    public function store(bool $updating = false): bool
     {
         try {
             $this->zdb->connection->beginTransaction();
@@ -925,7 +927,10 @@ class Preferences
                 Analog::INFO
             );
 
-            $this->storeSocials(null);
+            //prevent socials removal; see https://bugs.galette.eu/issues/1912
+            if ($updating === false) {
+                $this->storeSocials(null);
+            }
 
             return true;
         } catch (Throwable $e) {

@@ -1222,7 +1222,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             return !$this->error;
         } elseif ($this->isUpgrade()) {
             $preferences = new Preferences($zdb);
-            $preferences->store();
+            $preferences->store(true); //set update flags to prevent socials removal; see https://bugs.galette.eu/issues/1912
             $this->proceedReport(_T("Update preferences"), true);
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n));
