@@ -29,9 +29,9 @@
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-05-07 08:55+0200\n"
-"PO-Revision-Date: 2025-02-18 13:46+0000\n"
+"PO-Revision-Date: 2025-05-29 17:11+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -39,7 +39,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.1-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:123
 msgid "Transaction"
@@ -374,15 +374,13 @@ msgstr "Registro"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:390
 #: ../lib/Galette/Core/Galette.php:569
 msgid "Staff"
-msgstr ""
+msgstr "Personale"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:426
 #: ../lib/Galette/Core/Galette.php:579
 #: ../../tempcache/pages/preferences.html.twig:1506
-#, fuzzy
-#| msgid "Staff member"
 msgid "Staff gallery"
-msgstr "Membri dello staff"
+msgstr "Galleria del personale"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:617
 #: ../lib/Galette/Core/Galette.php:182
@@ -508,8 +506,7 @@ msgid "Missing required title's short or long form!"
 msgstr "Manca la forma breve o lunga del titolo richiesto!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:192
-#, fuzzy, php-format
-#| msgid "Title '%i1$s' has not been added!"
+#, php-format
 msgid "Title '%1$s' has not been added!"
 msgstr "Titolo '%1$s' non è stato aggiunto!"
 
@@ -1170,10 +1167,8 @@ msgstr "Il Plugin %name è stato disattivato"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:69
 #: ../lib/Galette/Core/Galette.php:474
-#, fuzzy
-#| msgid "View transaction"
 msgid "Labels translation"
-msgstr "Visualizza la transazione"
+msgstr "Traduzione etichette"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:153
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:178
@@ -1694,26 +1689,20 @@ msgid "Manage emails texts and subjects"
 msgstr "Gestione dei testi e degli oggetti delle email"
 
 #: ../lib/Galette/Core/Galette.php:475
-#, fuzzy
-#| msgid "Translate labels"
 msgid "Manage translatable labels"
-msgstr "Traduci etichette"
+msgstr "Gestisci etichette traducibili"
 
 #: ../lib/Galette/Core/Galette.php:487
 msgid "Various administrative tools"
 msgstr "Vari strumenti amministrativi"
 
 #: ../lib/Galette/Core/Galette.php:590
-#, fuzzy
-#| msgid "directory_name"
 msgid "Directories"
-msgstr "nome_cartella"
+msgstr "Cartelle"
 
 #: ../lib/Galette/Core/Galette.php:601
-#, fuzzy
-#| msgid "Gallery"
 msgid "Galleries"
-msgstr "Registro"
+msgstr "Gallerie"
 
 #: ../lib/Galette/Core/Galette.php:612 ../lib/Galette/Core/Galette.php:802
 msgid "View documents related to your association"
@@ -1835,16 +1824,15 @@ msgid "Passwords mismatch"
 msgstr "Password non corrispondenti"
 
 #: ../lib/Galette/Core/Preferences.php:682
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a staff member to retrieve its address"
-msgstr "Bisogna selezionare un elemento del personale"
+msgstr ""
+"Bisogna selezionare un elemento del personale per recuperarne l'indirizzo"
 
 #: ../lib/Galette/Core/Preferences.php:696
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a staff member to retrieve its phone number"
-msgstr "Bisogna selezionare un elemento del personale"
+msgstr ""
+"Bisogna selezionare un elemento del personale per recuperarne il numero di "
+"telefono"
 
 #: ../lib/Galette/Core/Preferences.php:751
 #, php-format
@@ -2694,16 +2682,12 @@ msgid "with break lines"
 msgstr "con linee di interruzione"
 
 #: ../lib/Galette/Features/Replacements.php:189
-#, fuzzy
-#| msgid "Your organisation name"
 msgid "Your organisation phone number"
-msgstr "Il nome della tua organizzazione"
+msgstr "Il numero di telefono della tua organizzazione"
 
 #: ../lib/Galette/Features/Replacements.php:193
-#, fuzzy
-#| msgid "Your organisation address"
 msgid "Your organisation email address"
-msgstr "L'indirizzo della tua organizzazione"
+msgstr "L'indirizzo email della tua organizzazione"
 
 #: ../lib/Galette/Features/Replacements.php:197
 msgid "Your organisation website"
@@ -2906,10 +2890,8 @@ msgid "Contribution information"
 msgstr "Informazioni sul contributo"
 
 #: ../lib/Galette/Features/Replacements.php:426
-#, fuzzy
-#| msgid "contribution"
 msgid "Paid contribution"
-msgstr "Contributo"
+msgstr "Contributo pagato"
 
 #: ../lib/Galette/Features/Replacements.php:824
 msgid "Member information"
@@ -3250,8 +3232,6 @@ msgstr "Estensione dell'iscrizione:"
 #: ../../tempcache/pages/contributions_list.html.twig:832
 #: ../../tempcache/pages/contribution_form.html.twig:607
 #: ../../tempcache/pages/preferences.html.twig:856
-#, fuzzy
-#| msgid "Paid"
 msgctxt "contribution"
 msgid "Paid"
 msgstr "Pagato"
@@ -4197,10 +4177,8 @@ msgid "Freed of dues:"
 msgstr "Esentasse:"
 
 #: ../includes/fields_defs/members_fields.php:253
-#, fuzzy
-#| msgid "Be visible in the members list:"
 msgid "Be visible on public pages:"
-msgstr "Visibilità nella lista soci:"
+msgstr "Visibilità nelle pagine pubbliche:"
 
 #: ../includes/fields_defs/members_fields.php:261
 msgid "Due date:"
@@ -6229,10 +6207,9 @@ msgid "No member"
 msgstr "Nessun membro"
 
 #: ../../tempcache/pages/public/staff_list.html.twig:157
-#, fuzzy, php-format
-#| msgid "Group manager"
+#, php-format
 msgid "\"%1$s\" group managers"
-msgstr "Gruppo manager"
+msgstr "Gruppo manager \"%1$s\""
 
 #: ../../tempcache/pages/public/list.html.twig:121
 #: ../../tempcache/pages/public/list.html.twig:125
@@ -6256,10 +6233,8 @@ msgid "Is a woman"
 msgstr "È una donna"
 
 #: ../../tempcache/pages/public/gallery.html.twig:155
-#, fuzzy
-#| msgid "Managers:"
 msgid "Manages:"
-msgstr "Gestori:"
+msgstr "Gestisce:"
 
 #: ../../tempcache/pages/transaction_form.html.twig:73
 msgid "Transaction details"
@@ -6453,10 +6428,8 @@ msgid "until"
 msgstr "fino a"
 
 #: ../../tempcache/pages/contributions_list.html.twig:202
-#, fuzzy
-#| msgid "contributions"
 msgid "Paid contributions:"
-msgstr "contributi"
+msgstr "Contributi pagati:"
 
 #: ../../tempcache/pages/contributions_list.html.twig:216
 #: ../../tempcache/pages/members_list.html.twig:358
@@ -6470,11 +6443,9 @@ msgstr "Non importa"
 #: ../../tempcache/pages/contributions_list.html.twig:823
 #: ../../tempcache/pages/contributions_list.html.twig:838
 #: ../../tempcache/pages/preferences.html.twig:864
-#, fuzzy
-#| msgid "Not supplied"
 msgctxt "contribution"
 msgid "Not paid"
-msgstr "Non fornito"
+msgstr "Non pagato"
 
 #: ../../tempcache/pages/contributions_list.html.twig:258
 #: ../../tempcache/pages/history.html.twig:263
@@ -6931,7 +6902,7 @@ msgstr "Iscrizione corretta"
 
 #: ../../tempcache/pages/members_list.html.twig:552
 msgid "Membership will expire soon (<30d)"
-msgstr "L'iscrizione scadrà presto (<30gg)"
+msgstr "L'iscrizione scadrà presto (&lt;30gg)"
 
 #: ../../tempcache/pages/members_list.html.twig:564
 msgid "Lateness in fee"
@@ -7566,16 +7537,12 @@ msgid "Postal address:"
 msgstr "Indirizzo postale:"
 
 #: ../../tempcache/pages/preferences.html.twig:361
-#, fuzzy
-#| msgid ""
-#| "Use either the address setted below or select a staff member to retrieve "
-#| "he's address."
 msgid ""
 "Use either the address set above or select a staff member to retrieve its "
 "address."
 msgstr ""
-"Utilizzare l'indirizzo di seguito o selezionare un membro del personale per "
-"recuperare l'indirizzo."
+"Usa l'indirizzo impostato sopra oppure seleziona un membro del personale per "
+"recuperarne l'indirizzo."
 
 #: ../../tempcache/pages/preferences.html.twig:385
 msgid "from a staff user"
@@ -7583,7 +7550,7 @@ msgstr "da un membro del personale"
 
 #: ../../tempcache/pages/preferences.html.twig:401
 msgid "Staff member whose address needs to be retrieved"
-msgstr ""
+msgstr "Membro del personale il cui indirizzo deve essere recuperato"
 
 #: ../../tempcache/pages/preferences.html.twig:406
 #: ../../tempcache/pages/preferences.html.twig:510
@@ -7591,32 +7558,24 @@ msgid "-- Choose a staff member --"
 msgstr "-- Scegliere un membro del personale --"
 
 #: ../../tempcache/pages/preferences.html.twig:445
-#, fuzzy
-#| msgid ""
-#| "Use either the address setted below or select a staff member to retrieve "
-#| "he's address."
 msgid ""
 "Either use the phone number set below or select a staff member to retrieve "
 "its phone number."
 msgstr ""
-"Utilizzare l'indirizzo di seguito o selezionare un membro del personale per "
-"recuperare l'indirizzo."
+"Usa il numero di telefono indicato di seguito oppure seleziona un membro del "
+"personale per recuperarne il numero."
 
 #: ../../tempcache/pages/preferences.html.twig:473
-#, fuzzy
-#| msgid "from a staff user"
 msgid "phone from a staff user"
-msgstr "da un membro del personale"
+msgstr "telefono da un membro del personale"
 
 #: ../../tempcache/pages/preferences.html.twig:489
-#, fuzzy
-#| msgid "from a staff user"
 msgid "mobile phone from a staff user"
-msgstr "da un membro del personale"
+msgstr "telefonino da un membro del personale"
 
 #: ../../tempcache/pages/preferences.html.twig:505
 msgid "Staff member whose phone number needs to be retrieved"
-msgstr ""
+msgstr "Membro dello personale il cui numero di telefono deve essere recuperato"
 
 #: ../../tempcache/pages/preferences.html.twig:551
 msgid "Website:"
@@ -7688,17 +7647,15 @@ msgstr "Numero di colonne sul modulo socio"
 
 #: ../../tempcache/pages/preferences.html.twig:831
 msgid "Use paid flag"
-msgstr ""
+msgstr "Usa l'indicatore pagato"
 
 #: ../../tempcache/pages/preferences.html.twig:836
-#, fuzzy
-#| msgid "View and filter contributions"
 msgid "Use paid flag on contributions"
-msgstr "Visualizza e filtra le contribuzioni"
+msgstr "Usa la segnalazione di pagamento sui contributi"
 
 #: ../../tempcache/pages/preferences.html.twig:847
 msgid "Paid default value"
-msgstr ""
+msgstr "Valore predefinito del pagato"
 
 #: ../../tempcache/pages/preferences.html.twig:879
 msgid "Lines / Page:"
@@ -7823,10 +7780,8 @@ msgid "Self subscription enabled?"
 msgstr "Autoiscrizione abilitata?"
 
 #: ../../tempcache/pages/preferences.html.twig:1177
-#, fuzzy
-#| msgid "Download empty adhesion form"
 msgid "Display the link to download the empty adhesion form"
-msgstr "Scarica il modulo di adesione vuoto"
+msgstr "Mostra il collegamento per scaricare il modulo di adesione vuoto"
 
 #: ../../tempcache/pages/preferences.html.twig:1194
 msgid "Public pages enabled?"
@@ -7837,6 +7792,8 @@ msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
 msgstr ""
+"Si applicherà a tutte le pagine pubbliche non elencate qui, comprese quelle "
+"dei plugin."
 
 #: ../../tempcache/pages/preferences.html.twig:1228
 #: ../../tempcache/pages/preferences.html.twig:1289
@@ -7845,7 +7802,7 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:1469
 #: ../../tempcache/pages/preferences.html.twig:1527
 msgid "Hidden"
-msgstr ""
+msgstr "Nascosto"
 
 #: ../../tempcache/pages/preferences.html.twig:1238
 #: ../../tempcache/pages/preferences.html.twig:1299
@@ -7871,29 +7828,23 @@ msgstr "Sono amministratore e membri del personale"
 #: ../../tempcache/pages/preferences.html.twig:1459
 #: ../../tempcache/pages/preferences.html.twig:1517
 msgid "Inherit"
-msgstr ""
+msgstr "Eredita"
 
 #: ../../tempcache/pages/preferences.html.twig:1329
 msgid "Members list"
 msgstr "Lista dei membri"
 
 #: ../../tempcache/pages/preferences.html.twig:1387
-#, fuzzy
-#| msgid "Member's Cards"
 msgid "Members gallery"
-msgstr "Tessere socio"
+msgstr "Galleria membri"
 
 #: ../../tempcache/pages/preferences.html.twig:1448
-#, fuzzy
-#| msgid "Staff members"
 msgid "Staff list"
-msgstr "Membri dello staff"
+msgstr "Elenco del personale"
 
 #: ../../tempcache/pages/preferences.html.twig:1571
-#, fuzzy
-#| msgid "Can group managers edit members?"
 msgid "Include groups managers with staff?"
-msgstr "I gestori dei gruppi possono modificare i membri?"
+msgstr "Includere i responsabili dei gruppi con il personale?"
 
 #: ../../tempcache/pages/preferences.html.twig:1583
 msgid "Appearance"
@@ -8594,6 +8545,8 @@ msgstr "Genitore di:"
 msgid ""
 "If you'd rather not subscribe online, you can download an empty adhesion form"
 msgstr ""
+"Se preferisci non iscriverti online, puoi scaricare un modulo di adesione "
+"vuoto"
 
 #: ../../tempcache/pages/member_form.html.twig:445
 msgid "Notify member his account has been modified"
@@ -8811,23 +8764,18 @@ msgid "Uncomplete dispatched transaction"
 msgstr "Transazione non completata"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:71
-#, fuzzy, php-format
-#| msgid ""
-#| "No translation for '%s'!<br/>Please fill and submit above form to create "
-#| "it."
+#, php-format
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit the form below to create "
 "it."
 msgstr ""
-"Nessuna traduzione per '%s'!<br>Per favore compila e invia il modulo qui "
+"Nessuna traduzione per '%s'!<br>Prego compilare e inviare il modulo qui "
 "sopra per crearla."
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:85
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:128
-#, fuzzy
-#| msgid "Original text: '%s'"
 msgid "Original text:"
-msgstr "Testo originale: '%s'"
+msgstr "Testo originale:"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:89
 msgid "Choose label to translate"
