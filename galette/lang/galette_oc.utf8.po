@@ -1,13 +1,13 @@
 # Quentin PAGÈS <quentinantonin@free.fr>, 2020, 2024.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2023.
 # Pèire Bréchet <charrar@free.fr>, 2022, 2024.
-# Pèire Bréchet <oxytanistzero@tutanota.com>, 2024.
+# Pèire Bréchet <oxytanistzero@tutanota.com>, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-05-07 08:55+0200\n"
-"PO-Revision-Date: 2024-12-22 08:00+0000\n"
+"PO-Revision-Date: 2025-06-02 18:46+0000\n"
 "Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
 "oc/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:123
 msgid "Transaction"
@@ -352,7 +352,7 @@ msgstr "Trombinoscòpi"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:390
 #: ../lib/Galette/Core/Galette.php:569
 msgid "Staff"
-msgstr ""
+msgstr "Bureu"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:426
 #: ../lib/Galette/Core/Galette.php:579
@@ -732,6 +732,9 @@ msgid ""
 "An SQL error has occurred while storing preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
+"Una error SQL a capitat au moment de l’enregistrament dei preferéncias. "
+"Saretz braves de tornar assajar. S’aquò va pas mielhs avisatz "
+"l’administrator."
 
 #: ../lib/Galette/Controllers/GaletteController.php:252
 msgid "Preferences has been saved."
@@ -1069,6 +1072,9 @@ msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
+"D’unei modules PHP mancan. Saretz braves de leis installar, o avisatz lo "
+"suspòrt.<br/> Mai d’informacions sus lei modules necessaris se tròba dins la "
+"documentacion."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:95
 msgid "Texts has been successfully reinitialized."
@@ -1156,6 +1162,7 @@ msgstr "Veire la transaccion"
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:178
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
+"Capitèt mau l’enregistrament de l’etiqueta `%label` per la lenga `%lang`"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:194
 msgid "Labels has been sucessfully translated!"
@@ -1679,7 +1686,7 @@ msgstr "Instruments d'administracion divèrs"
 
 #: ../lib/Galette/Core/Galette.php:590
 msgid "Directories"
-msgstr ""
+msgstr "Repertòris"
 
 #: ../lib/Galette/Core/Galette.php:601
 #, fuzzy
@@ -1877,6 +1884,7 @@ msgstr "%estatuts de l’associacion %name"
 #: ../lib/Galette/Core/Preferences.php:1352
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
+"Definissètz la constanta \"GALETTE_URI\" ambé lo camin de vòstra instància."
 
 #: ../lib/Galette/Core/Preferences.php:1370
 #: ../lib/Galette/Core/Preferences.php:1386 ../lib/Galette/IO/Csv.php:100
@@ -1947,7 +1955,7 @@ msgstr "Impossible d'activar l'ajuston."
 
 #: ../lib/Galette/Core/Plugins.php:516 ../lib/Galette/Core/Plugins.php:576
 msgid "Module does not exists!"
-msgstr ""
+msgstr "Lo module existís pas !"
 
 #: ../lib/Galette/Core/Plugins.php:573
 msgid "File not found!"
@@ -3526,6 +3534,8 @@ msgid ""
 "The Galette instance you are requesting is currently under maintenance. "
 "Please come back later."
 msgstr ""
+"L’instància de Galeta demandada es actualament en mantenença. Tòrna pus "
+"tard, seràs brave."
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:172
 msgid "Galette needs update!"
@@ -3534,10 +3544,14 @@ msgstr "Galeta reclama l'actualizacion !"
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:174
 msgid "Your Galette database is not present, or not up to date."
 msgstr ""
+"Vòstra basa de donadas Galeta se tròba pas enluec ò li fa besonh "
+"l’actualizacion."
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:175
 msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr ""
+"Lançatz la procedura d’installacion ò d’actualizacion (consultatz la "
+"documentacion)"
 
 #: ../lib/Galette/Middleware/PublicPages.php:95
 msgid "Unauthorized"
@@ -3549,6 +3563,8 @@ msgid ""
 "You asked Galette to send a confirmation email to the member, but email has "
 "been disabled in the preferences."
 msgstr ""
+"Avètz demandat a Galeta una confirmacion per corriel au membre, mai lo "
+"mandadís es estat desactivat dins lei preferéncias."
 
 #: ../lib/Galette/Events/ContribListener.php:148
 #: ../lib/Galette/Events/MemberListener.php:170
@@ -3940,6 +3956,8 @@ msgstr "* Per lei personas moralas solament"
 #, php-format
 msgid "Hereby, I agree to comply to %s association statutes and its rules."
 msgstr ""
+"Per ansin, prometi de respectar leis estatuts de l’associacion %s e lo "
+"reglament interior."
 
 #: ../includes/i18n.inc.php:83
 msgid "At ................................................"
@@ -4284,7 +4302,7 @@ msgstr "Contribucion nòva (mandat a l'administrator)"
 
 #: ../includes/fields_defs/texts_fields.php:67
 msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] auto inscripcion novèla de {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:68
 msgid ""
@@ -4365,6 +4383,9 @@ msgid ""
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Bonjorn,{NEWLINE}Lo don a {ASSO_NAME} es estat "
+"enregistrat.{NEWLINE}{CONTRIB_INFO}{NEWLINE} Grandmercé !{NEWLINE}(Aquest "
+"corriel es estat mandat automaticament)"
 
 #: ../includes/fields_defs/texts_fields.php:102
 msgid "Receipt send for new donations"
@@ -4372,7 +4393,7 @@ msgstr "Recebut de donacion"
 
 #: ../includes/fields_defs/texts_fields.php:107
 msgid "[{ASSO_NAME}] New donation for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Donacion novèla de {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:108
 msgid ""
@@ -4834,11 +4855,11 @@ msgstr ""
 
 #: ../install/steps/check.php:129
 msgid "file_name"
-msgstr ""
+msgstr "nom_fichier"
 
 #: ../install/steps/check.php:129
 msgid "directory_name"
-msgstr ""
+msgstr "nom_dorsier"
 
 #: ../install/steps/check.php:131
 msgid ""
@@ -5021,7 +5042,7 @@ msgstr ""
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:407
 msgid "Back to plugins managment page"
-msgstr ""
+msgstr "Tornar a la pagina d’administracion deis ajustons"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:452
 msgid "Access permissions to database"
@@ -5781,7 +5802,7 @@ msgstr "PDF dau grope"
 
 #: ../../tempcache/elements/scripts.html.twig:392
 msgid "Deactivate HTML editor"
-msgstr ""
+msgstr "Desactivar l’editor HTML"
 
 #: ../../tempcache/elements/scripts.html.twig:402
 #: ../../tempcache/pages/mailing_form.html.twig:346
@@ -6689,7 +6710,7 @@ msgstr "Cambiar lo modèle"
 
 #: ../../tempcache/pages/import_model.html.twig:88
 msgid "Default fields"
-msgstr ""
+msgstr "Camps predefinits"
 
 #: ../../tempcache/pages/import_model.html.twig:94
 #, php-format
@@ -6704,11 +6725,11 @@ msgstr "Camp"
 #: ../../tempcache/pages/import_model.html.twig:121
 #, php-format
 msgid "Missing field '%field'"
-msgstr ""
+msgstr "Manca lo camp \"%field\""
 
 #: ../../tempcache/pages/import_model.html.twig:149
 msgid "Generate empty CSV file"
-msgstr ""
+msgstr "Generar un fichier CSV vuege"
 
 #: ../../tempcache/pages/import_model.html.twig:165
 msgid "Remove model and back to defaults"
@@ -6742,7 +6763,7 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_texts.html.twig:114
 msgid "Reference:"
-msgstr ""
+msgstr "Referéncia :"
 
 #: ../../tempcache/pages/configuration_texts.html.twig:183
 msgid "Email Subject"
@@ -6762,7 +6783,7 @@ msgstr ""
 
 #: ../../tempcache/pages/members_list.html.twig:64
 msgid "No member selected"
-msgstr ""
+msgstr "Ges de membre seleccionat"
 
 #: ../../tempcache/pages/members_list.html.twig:64
 msgid ""
@@ -6824,15 +6845,15 @@ msgstr "Mòde de recèrca avançat"
 
 #: ../../tempcache/pages/members_list.html.twig:439
 msgid "Save current advanced search criteria"
-msgstr ""
+msgstr "Sauvagardar lei critèris de recèrca corrents"
 
 #: ../../tempcache/pages/members_list.html.twig:449
 msgid "Change search criteria"
-msgstr ""
+msgstr "Modificar lei critèris de recèrca"
 
 #: ../../tempcache/pages/members_list.html.twig:454
 msgid "Change criteria"
-msgstr ""
+msgstr "Modificar lei critèris"
 
 #: ../../tempcache/pages/members_list.html.twig:473
 msgid "Show/hide query"
@@ -6936,7 +6957,7 @@ msgstr "Mena de contribucion nòva"
 #: ../../tempcache/pages/preferences.html.twig:2598
 #, php-format
 msgid "Translate '%s'"
-msgstr ""
+msgstr "Tradurre '%s'"
 
 #: ../../tempcache/pages/contributions_types_list.html.twig:335
 #: ../../tempcache/pages/configuration_payment_types.html.twig:294
@@ -7158,7 +7179,7 @@ msgstr "Prioritat"
 
 #: ../../tempcache/pages/status_list.html.twig:96
 msgid "New status"
-msgstr ""
+msgstr "Estatut novèu"
 
 #: ../../tempcache/pages/reminder.html.twig:65
 msgid "Choose wich reminder(s) you want to send:"
@@ -7167,7 +7188,7 @@ msgstr ""
 #: ../../tempcache/pages/reminder.html.twig:92
 #: ../../tempcache/pages/reminder.html.twig:129
 msgid "preview"
-msgstr ""
+msgstr "previsualizar"
 
 #: ../../tempcache/pages/reminder.html.twig:98
 #: ../../tempcache/pages/reminder.html.twig:135
@@ -7751,7 +7772,7 @@ msgstr ""
 #: ../../tempcache/pages/preferences.html.twig:1469
 #: ../../tempcache/pages/preferences.html.twig:1527
 msgid "Hidden"
-msgstr ""
+msgstr "Escondut"
 
 #: ../../tempcache/pages/preferences.html.twig:1238
 #: ../../tempcache/pages/preferences.html.twig:1299
@@ -7854,7 +7875,7 @@ msgstr "Paramètres administrator"
 
 #: ../../tempcache/pages/preferences.html.twig:1694
 msgid "Galette base URL"
-msgstr ""
+msgstr "URL de Galeta"
 
 #: ../../tempcache/pages/preferences.html.twig:1700
 msgid ""
@@ -8286,7 +8307,7 @@ msgstr ""
 
 #: ../../tempcache/pages/preferences.html.twig:3098
 msgid "Levels are:"
-msgstr ""
+msgstr "Lei nivèus son :"
 
 #: ../../tempcache/pages/preferences.html.twig:3105
 msgid "for no strength enforcement"
