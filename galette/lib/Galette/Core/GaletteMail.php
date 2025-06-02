@@ -290,7 +290,7 @@ class GaletteMail
                     nl2br($signature) . '</div>';
                 $this->mail->Body .= $hsign;
             } else {
-                $this->mail->Body .= $signature;
+                $this->mail->Body .= Html2Text::convert($signature);
             }
         }
 
