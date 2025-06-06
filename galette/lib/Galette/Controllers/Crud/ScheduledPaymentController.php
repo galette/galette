@@ -520,7 +520,7 @@ class ScheduledPaymentController extends CrudController
     protected function doDelete(array $args, array $post): bool
     {
         $scheduleds = new ScheduledPayments($this->zdb, $this->login);
-        return $scheduleds->remove($args['ids'] ?? $args['id'], $this->history);
+        return $scheduleds->remove($args['ids'] ?? (int)$args['id'], $this->history);
     }
 
     // CRUD - Delete
