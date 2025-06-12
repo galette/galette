@@ -20,7 +20,7 @@
 #}
     <nav id="sidebarmenu" class="ui simple left vertical accordion menu sidebar">
 {% if not login.isLogged() or ext_auth is defined %}
-    {% if cur_route != "login" %}
+    {% if cur_route != "login" and ext_auth is not defined %}
         {% import "macros.twig" as menus_macros %}
         {% set item = {
             'label': _T("Home"),
