@@ -280,7 +280,7 @@ body:not(.loggedin) main.pusher.dimmed.closing ~ footer.page-footer {
       -webkit-overflow-scrolling: auto;
   }
   .loggedin .ui.top.menu:not(.vertical):not(.tabular):not(.tabs),
-  .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.header,
+  .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.header:not(.ext-auth),
   .ui.top.menu:not(.vertical):not(.tabular):not(.tabs) .item.toc {
     display: none;
   }
@@ -496,7 +496,7 @@ ul.leaders span + span {
   position: absolute;
   background: white;
   right: 0;
-  
+
   &.ui.radio.checkbox {
     position: absolute;
     top: .3rem;

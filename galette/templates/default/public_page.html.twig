@@ -31,25 +31,27 @@
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
         <main class="pusher">
-            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" %}text {% endif %}{% if not login.isLogged() or ext_auth is defined %}ui container{% else %}full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
+            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" or ext_auth is defined %}text {% endif %}{% if not login.isLogged() or ext_auth is defined %}ui container{% else %}full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
 {% if login.isLogged() and ext_auth is not defined %}
                 {% include "elements/navigation/navigation_aside.html.twig" %}
 {% endif %}
                 <section class="{% if login.isLogged() and ext_auth is not defined %}content{% else %}vertically centered{% endif %}">
 {% if not login.isLogged() or ext_auth is defined %}
+    {% if ext_auth is not defined %}
                     <div class="ui basic center aligned fitted segment">
-    {% if preferences.pref_website is not empty %}
+        {% if preferences.pref_website is not empty %}
                         <a href="{{ preferences.pref_website }}" target="_blank">
                             <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="logo" title="{{ _T("Open '%s' in a new window")|replace({"%s": preferences.pref_website}) }}"/>
                         </a>
-    {% else %}
+        {% else %}
                         <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="logo"/>
-    {% endif %}
+        {% endif %}
                         <div class="ui large header">
                             {{ preferences.pref_nom }}
                             <div class="sub header">{% if preferences.pref_slogan %}{{ __(preferences.pref_slogan) }}{% endif %}</div>
                         </div>
                     </div>
+    {% endif %}
                     <a id="main-content" tabindex="-1"></a>
                     <h1 class="ui block center aligned header" style="position: relative">
 {% else %}

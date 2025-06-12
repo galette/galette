@@ -23,9 +23,15 @@
         <i class="sidebar icon" aria-hidden="true"></i>
         <span class="visually-hidden">{{ _T("Menu") }}</span>
     </a>
-    <div class="header item">
+    <div class="header item{% if ext_auth is defined %} ext-auth{% endif %}">
         <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="[ Galette ]" class="logo" />
-        <span>{{ preferences.pref_nom }}</span>
+        <span>
+            {% if ext_auth is defined and sign_in_with is defined %}
+                {{ sign_in_with }}
+            {% else %}
+                {{ preferences.pref_nom }}
+            {% endif %}
+        </span>
     </div>
     <nav class="ui fluid container">
         {% include "elements/navigation/public_pages.html.twig" with {

@@ -23,8 +23,8 @@
         <div class="ui center aligned basic padded segment footer-wrapper{% if login.getCompactMenu() %} extended"{% endif %}">
             <div class="row">
                 <div class="ui horizontal bulleted link list">
-                    <a id="copyright" href="https://galette.eu/" class="item{% if new_release.new and login.isLogged() and (login.isAdmin() or login.isStaff()) %} tooltip" data-title="{{ _T("A new Galette release is available.") }}" data-content="{{ _T("You currently use Galette %1$s, and %2$s is available.")|replace({"%1$s": constant('GALETTE_DISPLAY_VERSION'), "%2$s": new_release.version}) }}"{% else %}"{% endif %}>
-{% if new_release.new and login.isLogged() and (login.isAdmin() or login.isStaff()) %}
+                    <a id="copyright" href="https://galette.eu/" class="item{% if new_release.new and login.isLogged() and (login.isAdmin() or login.isStaff()) and ext_auth is not defined %} tooltip" data-title="{{ _T("A new Galette release is available.") }}" data-content="{{ _T("You currently use Galette %1$s, and %2$s is available.")|replace({"%1$s": constant('GALETTE_DISPLAY_VERSION'), "%2$s": new_release.version}) }}"{% else %}"{% endif %}>
+{% if new_release.new and login.isLogged() and (login.isAdmin() or login.isStaff()) and ext_auth is not defined %}
                         <div class="ui transition looping pulsating blue circular horizontal icon label">
                             <i class="arrow alternate circle up icon" aria-hidden="true"></i>
                             <span class="visually-hidden">{{ _T("A new Galette release is available.") }}</span>
@@ -32,7 +32,7 @@
 {% else %}
                         <i class="icon cookie bite" aria-hidden="true"></i>
 {% endif %}
-                        Galette{% if login.isLogged() %} {{ constant('GALETTE_DISPLAY_VERSION') }}{% endif %}
+                        Galette{% if login.isLogged() and ext_auth is not defined %} {{ constant('GALETTE_DISPLAY_VERSION') }}{% endif %}
                     </a>
                     <a href="https://doc.galette.eu" class="item">
                         <i class="icon book" aria-hidden="true"></i>
@@ -42,7 +42,7 @@
                         <i class="icon mastodon" aria-hidden="true"></i>
                         @galette
                     </a>
-{% if login.isLogged() and (login.isAdmin() or login.isStaff()) %}
+{% if login.isLogged() and (login.isAdmin() or login.isStaff()) and ext_auth is not defined %}
                     <a id="sysinfos" href="{{ url_for('sysinfos') }}" class="item">
                         <i class="icon cogs" aria-hidden="true"></i>
                         {{ _T("System information") }}
