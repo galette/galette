@@ -160,35 +160,35 @@
                             <i class="circular small basic question icon tooltip" title="{{ _T("Either use the phone number set below or select a staff member to retrieve its phone number.") }}" aria-hidden="true"></i>
                         </label>
                         <input type="text" name="pref_org_phone_number" id="pref_org_phone_number" value="{{ pref.pref_org_phone_number }}" maxlength="100"/>
-                        <div id="phone_reference" class="inline fields">
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <label for="pref_org_phone_0">{{ _T("from preferences") }}</label>
-                                    <input type="radio" name="pref_org_phone" id="pref_org_phone_0" value="{{ constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_PREFS') }}" {% if pref.pref_org_phone == constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_PREFS') %}checked="checked"{% endif %}/>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <label for="pref_org_phone_1">{{ _T("phone from a staff user") }}</label>
-                                    <input type="radio" name="pref_org_phone" id="pref_org_phone_1" value="{{ constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_STAFF') }}" {% if pref.pref_org_phone == constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_STAFF') %}checked="checked"{% endif %}/>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <label for="pref_org_phone_2">{{ _T("mobile phone from a staff user") }}</label>
-                                    <input type="radio" name="pref_org_phone" id="pref_org_phone_2" value="{{ constant('Galette\\Core\\Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF') }}" {% if pref.pref_org_phone == constant('Galette\\Core\\Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF') %}checked="checked"{% endif %}/>
-                                </div>
+                    </div>
+                    <div id="phone_reference" class="inline fields">
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <label for="pref_org_phone_0">{{ _T("from preferences") }}</label>
+                                <input type="radio" name="pref_org_phone" id="pref_org_phone_0" value="{{ constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_PREFS') }}" {% if pref.pref_org_phone == constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_PREFS') %}checked="checked"{% endif %}/>
                             </div>
                         </div>
-                        <div id="phone_staff_member" class="field">
-                            <label for="pref_org_phone_staff_member">{{ _T("Staff member whose phone number needs to be retrieved") }}</label>
-                            <select name="pref_org_phone_staff_member" id="pref_org_phone_staff_member" class="ui search dropdown">
-                                <option value="-1">{{ _T("-- Choose a staff member --") }}</option>
-                            {% for staff in staff_members %}
-                                <option value="{{ staff.id }}"{% if staff.id == pref.pref_org_phone_staff_member %} selected="selected"{% endif %}>{{ staff.name }} ({{ staff.sstatus }})</option>
-                            {% endfor %}
-                            </select>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <label for="pref_org_phone_1">{{ _T("phone from a staff user") }}</label>
+                                <input type="radio" name="pref_org_phone" id="pref_org_phone_1" value="{{ constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_STAFF') }}" {% if pref.pref_org_phone == constant('Galette\\Core\\Preferences::PHONE_NUMBER_FROM_STAFF') %}checked="checked"{% endif %}/>
+                            </div>
                         </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <label for="pref_org_phone_2">{{ _T("mobile phone from a staff user") }}</label>
+                                <input type="radio" name="pref_org_phone" id="pref_org_phone_2" value="{{ constant('Galette\\Core\\Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF') }}" {% if pref.pref_org_phone == constant('Galette\\Core\\Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF') %}checked="checked"{% endif %}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="phone_staff_member" class="field">
+                        <label for="pref_org_phone_staff_member">{{ _T("Staff member whose phone number needs to be retrieved") }}</label>
+                        <select name="pref_org_phone_staff_member" id="pref_org_phone_staff_member" class="ui search dropdown">
+                            <option value="-1">{{ _T("-- Choose a staff member --") }}</option>
+                        {% for staff in staff_members %}
+                            <option value="{{ staff.id }}"{% if staff.id == pref.pref_org_phone_staff_member %} selected="selected"{% endif %}>{{ staff.name }} ({{ staff.sstatus }})</option>
+                        {% endfor %}
+                        </select>
                     </div>
                     <div class="field">
                         <label for="pref_org_email">{{ _T("E-Mail:") }}</label>
