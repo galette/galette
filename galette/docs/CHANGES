@@ -15,6 +15,12 @@ Changes
 - Add few parameters to customize appearance
 - Plugins can now add Javascript just before the closing body tag
 - Add staff public pages (list and gallery)
+- Add paid flag on contributions
+- Prevent main social networks to be removed on update
+- Fix mass changes on boolean fields
+- Add phone number and contact email in settings
+- Fix few dynamic translations issues
+- Fix stored XSS CVE-2025-48076 and reflected XSS CVE-2025-48884
 
 1.1.5.1 -> 1.1.5.2
 
