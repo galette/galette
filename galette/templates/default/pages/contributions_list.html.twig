@@ -306,7 +306,7 @@
 {% block footer %}
     {% if mode != 'ajax' and nb != 0 %}
         <tr>
-            <th class="right aligned" colspan="10">
+            <th class="right aligned" colspan="{{ preferences.pref_use_paid_flag ? '11' : '10' }}">
                 {{ _T("Found contributions total %f")|replace({"%f": contribs.getSum()}) }}
             </th>
         </tr>
