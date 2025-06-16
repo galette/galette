@@ -176,6 +176,9 @@ $app->add(function (Request $request, RequestHandler $handler) use ($container) 
     return $handler->handle($request);
 });
 
+// Add body parsing Middleware - required to parse posted json, form data and xml
+$app->addBodyParsingMiddleware();
+
 // Add Routing Middleware - required for ACLs to work
 $app->addRoutingMiddleware();
 
