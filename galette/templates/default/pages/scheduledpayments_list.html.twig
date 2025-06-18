@@ -195,8 +195,8 @@
 {% block footer %}
     {% if nb != 0 %}
         <tr>
-            <th class="right aligned" colspan="{{ columns_count }}">
-                {{ _T("Found total scheduled %f")|replace({"%f": scheduled.getSum()}) }}
+            <th class="right aligned" colspan="{{ columns_count }}" scope="colgroup">
+                {{ _T("Total scheduled payments found: %f")|replace({"%f": list|length}) }}
             </th>
         </tr>
     {% endif %}

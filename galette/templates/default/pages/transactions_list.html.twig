@@ -173,6 +173,16 @@
     {{ parent() }}
 {% endblock %}
 
+{% block footer %}
+    {% if nb != 0 %}
+        <tr>
+            <th class="right aligned" colspan="{{ columns_count }}" scope="colgroup">
+                {{ _T("Total transactions found: %f")|replace({"%f": list|length}) }}
+            </th>
+        </tr>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     {% for ordre, transaction in list %}
         {% set mid = transaction.member %}

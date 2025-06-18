@@ -328,6 +328,16 @@
     {% endif %}
 {% endblock %}
 
+{% block footer %}
+    {% if mode != 'ajax' and nb != 0 %}
+        <tr>
+            <th class="right aligned" colspan="{{ galette_list|length + 1 }}" scope="colgroup">
+                {{ _T("Total members found: %f")|replace({"%f": members|length}) }}
+            </th>
+        </tr>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
 {% for ordre, member in members %}
                     <tr class="{{ member.getRowClass() }}">

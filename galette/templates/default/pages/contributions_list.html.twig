@@ -267,8 +267,8 @@
 {% block footer %}
     {% if mode != 'ajax' and nb != 0 %}
         <tr>
-            <th class="right aligned" colspan="{{ columns_count }}">
-                {{ _T("Found contributions total %f")|replace({"%f": contribs.getSum()}) }}
+            <th class="right aligned" colspan="{{ columns_count }}" scope="colgroup">
+                {{ _T("Total contributions found: %f")|replace({"%f": list|length}) }}
             </th>
         </tr>
     {% endif %}
