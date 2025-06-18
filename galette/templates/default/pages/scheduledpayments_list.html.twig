@@ -88,7 +88,7 @@
 {% block search %}
     <form action="{{ url_for("filterScheduledPayments") }}" method="post" class="ui form filters">
     <div class="ui secondary yellow segment">
-        <div class="four fields">
+        <div class="three fields">
             <div class="field">
                 <label for="date_field">{{ _T("Show payments by") }}</label>
                 <select name="date_field" id="date_field" class="ui search dropdown">
@@ -124,16 +124,16 @@
                     empty: {'value': -1, 'label': _T("Select")}
                 } %}
             </div>
-                <div class="ui right aligned basic fitted segment field flexend">
-                    <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
-                        <i class="search icon" aria-hidden="true"></i>
-                        {{ _T("Filter") }}
-                    </button>
-                    <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
-                        <i class="trash alt red icon" aria-hidden="true"></i>
-                        {{ _T("Clear filter") }}
-                    </button>
-            </div>
+        </div>
+        <div class="ui right aligned basic fitted segment field">
+            <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
+                <i class="search icon" aria-hidden="true"></i>
+                {{ _T("Filter") }}
+            </button>
+            <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
+                <i class="trash alt red icon" aria-hidden="true"></i>
+                {{ _T("Clear filter") }}
+            </button>
         </div>
     </div>
 

@@ -72,7 +72,7 @@
 {% block search %}
 <form action="{{ url_for("history_filter") }}" method="post" class="ui form filters">
     <div class="ui secondary yellow segment">
-        <div class="four fields">
+        <div class="three fields">
             <div class="two fields">
                 <div class="field">
                     <label for="start_date_filter">{{ _T("since") }}</label>
@@ -117,16 +117,16 @@
                     </select>
                 {% endif %}
             </div>
-            <div class="ui right aligned basic fitted segment field flexend">
-                <button type="submit" class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
-                    <i class="search icon" aria-hidden="true"></i>
-                    {{ _T('Filter') }}
-                </button>
-                <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
-                    <i class="trash alt red icon" aria-hidden="true"></i>
-                    {{ _T('Clear filter') }}
-                </button>
-            </div>
+        </div>
+        <div class="ui right aligned basic fitted segment field">
+            <button type="submit" class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
+                <i class="search icon" aria-hidden="true"></i>
+                {{ _T('Filter') }}
+            </button>
+            <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                <i class="trash alt red icon" aria-hidden="true"></i>
+                {{ _T('Clear filter') }}
+            </button>
         </div>
     </div>
     {% include "components/forms/csrf.html.twig" %}
