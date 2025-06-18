@@ -21,6 +21,8 @@
 {% set mode = mode|default('') %}
 {% set is_paginated = is_paginated ?? (nb > 0) %}
 {% set is_public = is_public ?? false %}
+{% set columns = columns|default([]) %}
+{% set columns_count = mode != 'ajax' and (no_action is not defined or no_action == false) ? columns|length + 1 : columns|length %}
 
 {% extends (mode == 'ajax') ? "ajax.html.twig" : is_public ? "public_page.html.twig" : "page.html.twig" %}
 {% import "macros.twig" as macros %}

@@ -53,6 +53,38 @@
     ] %}
 {% endif %}
 
+{% set columns = [
+    {
+        'label': '#', 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID"),
+        'collapse': true
+    }
+] %}
+
+{% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+    {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")}]) %}
+{% endif %}
+
+{% set columns = columns|merge([
+    {
+        'label': _T("Date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_DATE"),
+        'collapse': true
+    },
+    {
+        'label': _T("Scheduled date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE"),
+        'collapse': true
+    },
+    {
+        'label': _T('Amount'), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_AMOUNT"),
+        'collapse': true
+    },
+    {'label': _T("Payment type"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE")}
+]) %}
+
+{% if (not login.isAdmin() and not login.isStaff()) or mode == 'ajax' %}
+    {% set no_action = true %}
+{% endif %}
+
+
 {% block search %}
     <form action="{{ url_for("filterScheduledPayments") }}" method="post" class="ui form filters">
     <div class="ui secondary yellow segment">
@@ -157,44 +189,13 @@
 {% endblock %}
 
 {% block header %}
-    {% set columns = [
-        {
-            'label': '#', 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID"),
-            'collapse': true
-        }
-    ] %}
-
-    {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-        {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")}]) %}
-    {% endif %}
-
-    {% set columns = columns|merge([
-        {
-            'label': _T("Date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_DATE"),
-            'collapse': true
-        },
-        {
-            'label': _T("Scheduled date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE"),
-            'collapse': true
-        },
-        {
-            'label': _T('Amount'), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_AMOUNT"),
-            'collapse': true
-        },
-        {'label': _T("Payment type"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE")}
-    ]) %}
-
-    {% if (not login.isAdmin() and not login.isStaff()) or mode == 'ajax' %}
-        {% set no_action = true %}
-    {% endif %}
-
     {{ parent() }}
 {% endblock %}
 
 {% block footer %}
     {% if nb != 0 %}
         <tr>
-            <th class="right aligned" colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}7{% else %}6{% endif %}">
+            <th class="right aligned" colspan="{{ columns_count }}">
                 {{ _T("Found total scheduled %f")|replace({"%f": scheduled.getSum()}) }}
             </th>
         </tr>
@@ -283,6 +284,6 @@
             {% endif %}
         </tr>
     {% else %}
-        <tr><td colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}7{% elseif login.isAdmin() or login.isStaff() %}6{% else %}5{% endif %}" class="emptylist">{{ _T("No scheduled payment") }}</td></tr>
+        <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("No scheduled payment") }}</td></tr>
     {% endfor %}
 {% endblock %}

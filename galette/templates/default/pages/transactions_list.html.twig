@@ -39,6 +39,30 @@
     }
 } %}
 
+{% set columns = [
+    {
+        'label': '#', 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID"),
+        'collapse': true
+    },
+    {
+        'label': _T("Date"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE"),
+        'collapse': true
+    }
+] %}
+
+{% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+    {% set columns = columns|merge([{'label': _T("Originator"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER")}]) %}
+{% endif %}
+
+{% set columns = columns|merge([
+    {'label': _T("Description")},
+    {
+        'label': _T('Amount'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT"),
+        'collapse': true
+    },
+    {'label': _T('Payment type'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_PAYMENT_TYPE")}
+]) %}
+
 {% block search %}
     <form action="{{ url_for("payments_filter", {"type": "transactions"}) }}" method="post" class="ui form filters">
         <div class="ui secondary yellow segment">
@@ -140,36 +164,6 @@
 {% endblock %}
 
 {% block header %}
-    {% set columns = [
-        {
-            'label': '#', 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID"),
-            'collapse': true
-        },
-        {
-            'label': _T("Date"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE"),
-            'collapse': true
-        }
-    ] %}
-
-    {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-        {% set columns = columns|merge([{'label': _T("Originator"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER")}]) %}
-    {% endif %}
-
-    {% set columns = columns|merge([
-        {'label': _T("Description")}
-    ]) %}
-
-    {% set columns = columns|merge([
-        {
-            'label': _T('Amount'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT"),
-            'collapse': true
-        }
-    ]) %}
-
-    {% set columns = columns|merge([
-        {'label': _T('Payment type'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_PAYMENT_TYPE")}
-    ]) %}
-
     {{ parent() }}
 {% endblock %}
 
@@ -239,7 +233,7 @@
         {% endif %}
         </tr>
     {% else %}
-        <tr><td colspan="{% if login.isAdmin() or login.isStaff() %}7{% else %}5{% endif %}" class="emptylist">{{ _T("no transaction") }}</td></tr>
+        <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("no transaction") }}</td></tr>
     {% endfor %}
 {% endblock %}
 

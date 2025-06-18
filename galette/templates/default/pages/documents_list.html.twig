@@ -26,6 +26,20 @@
     }
 } %}
 
+{% set columns = [
+    {
+        'label': '#',
+        'collapse': true
+    },
+    {'label': _T("Filename")},
+    {'label': _T('Type')},
+    {'label': _T('Visibility')},
+    {
+        'label': _T("Creation date"),
+        'collapse': true
+    }
+] %}
+
 {% block infoline %}
     {% set infoline = {
         'label': _Tn("%1$s document", "%1$s documents", nb)|format(nb)
@@ -46,20 +60,6 @@
 {% endblock %}
 
 {% block header %}
-    {% set columns = [
-        {
-            'label': '#',
-            'collapse': true
-        },
-        {'label': _T("Filename")},
-        {'label': _T('Type')},
-        {'label': _T('Visibility')},
-        {
-            'label': _T("Creation date"),
-            'collapse': true
-        }
-    ] %}
-
     {{ parent() }}
 {% endblock %}
 
@@ -103,6 +103,6 @@
             {% endif %}
         </tr>
     {% else %}
-        <tr><td colspan="{% if login.isAdmin() or login.isStaff() %}6{% else %}5{% endif %}" class="emptylist">{{ _T("No document") }}</td></tr>
+        <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("No document") }}</td></tr>
     {% endfor %}
 {% endblock %}

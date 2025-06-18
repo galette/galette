@@ -58,6 +58,51 @@
     ] %}
 {% endif %}
 
+{% set columns = [
+    {
+        'label': '#',
+        'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_ID"),
+        'collapse': true
+    },
+    {
+        'label': _T("Date"),
+        'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_DATE"),
+        'collapse': true
+    },
+    {
+        'label': _T("Begin"),
+        'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_BEGIN_DATE"),
+        'collapse': true
+    },
+    {
+        'label': _T("End"),
+        'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_END_DATE"),
+        'collapse': true
+    }
+] %}
+
+{% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+    {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_MEMBER")}]) %}
+{% endif %}
+
+{% set columns = columns|merge([
+    {
+        'label': _T('Type'),
+        'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_TYPE")},
+    {
+        'label': _T('Amount'),
+        'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_AMOUNT"),
+        'collapse': true
+    },
+    {
+        'label': _T("Payment type"),
+        'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_PAYMENT_TYPE")},
+    {
+        'label': _T("Duration"),
+        'collapse': true
+    }
+]) %}
+
 {% block search %}
     <form action="{{ url_for("payments_filter", {"type": "contributions"}) }}" method="post" class="ui form filters">
     <div class="ui secondary yellow segment">
@@ -216,60 +261,13 @@
 {% endblock %}
 
 {% block header %}
-    {% set columns = [
-        {
-            'label': '#',
-            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_ID"),
-            'collapse': true
-        },
-        {
-            'label': _T("Date"),
-            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_DATE"),
-            'collapse': true
-        },
-        {
-            'label': _T("Begin"),
-            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_BEGIN_DATE"),
-            'collapse': true
-        },
-        {
-            'label': _T("End"),
-            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_END_DATE"),
-            'collapse': true
-        }
-    ] %}
-
-    {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-        {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_MEMBER")}]) %}
-    {% endif %}
-
-    {% set columns = columns|merge([
-        {
-            'label': _T('Type'),
-            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_TYPE")
-        },
-        {
-            'label': _T('Amount'),
-            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_AMOUNT"),
-            'collapse': true
-        },
-        {
-            'label': _T("Payment type"),
-            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_PAYMENT_TYPE")
-        },
-        {
-            'label': _T("Duration"),
-            'collapse': true
-        }
-    ]) %}
-
     {{ parent() }}
 {% endblock %}
 
 {% block footer %}
     {% if mode != 'ajax' and nb != 0 %}
         <tr>
-            <th class="right aligned" colspan="10">
+            <th class="right aligned" colspan="{{ columns_count }}">
                 {{ _T("Found contributions total %f")|replace({"%f": contribs.getSum()}) }}
             </th>
         </tr>
@@ -385,7 +383,7 @@
             {% endif %}
         </tr>
     {% else %}
-        <tr><td colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}10{% elseif login.isAdmin() or login.isStaff() %}11{% else %}10{% endif %}" class="emptylist">{{ _T("no contribution") }}</td></tr>
+        <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("no contribution") }}</td></tr>
     {% endfor %}
 {% endblock %}
 
