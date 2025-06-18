@@ -125,10 +125,16 @@
             </span>
             {% if login.isAdmin() or login.isStaff() %}
                 <div class="item">
-                    <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny button">{{ _T("See member profile") }}</a>
+                    <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny labeled icon button">
+                        <i class="ui user blue icon" aria-hidden="true"></i>
+                        {{ _T("See member profile") }}
+                    </a>
                 </div>
                 <div class="item">
-                    <a href="{{ url_for("addTransaction") }}?id_adh={{ member.id }}" class="ui tiny button">{{ _T("Add a transaction") }}</a>
+                    <a href="{{ url_for("addTransaction") }}?id_adh={{ member.id }}" class="ui tiny labeled icon button">
+                        <i class="ui plus circle green icon" aria-hidden="true"></i>
+                        {{ _T("Add a transaction") }}
+                    </a>
                 </div>
             {% endif %}
             </div>
