@@ -193,7 +193,7 @@
 {% endblock %}
 
 {% block footer %}
-    {% if nb != 0 %}
+    {% if mode != 'ajax' and nb != 0 %}
         <tr>
             <th class="right aligned" colspan="{{ columns_count }}" scope="colgroup">
                 {{ _T("Total scheduled payments found: %f")|replace({"%f": list|length}) }}

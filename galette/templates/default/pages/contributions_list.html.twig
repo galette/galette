@@ -154,7 +154,7 @@
             </div>
         </div>
 
-        <div class="ui right aligned basic fitted segment field flexend">
+        <div class="ui right aligned basic fitted segment field">
             <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
                 <i class="search icon" aria-hidden="true"></i>
                 {{ _T("Filter") }}
@@ -335,7 +335,7 @@
                         {# FIXME #}
                         {% set mname = memberName({'id': mid}) %}
                     {% endif %}
-                    {% if filters.filtre_cotis_adh == "" %}
+                    {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
                         <a
                                 href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": mid}) }}"
                                 title="{{ _T("Show only '%name' contributions")|replace({"%name": mname}) }}"
@@ -355,7 +355,7 @@
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ contribution.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ contribution.getPaymentType() }}</td>
             <td class="collapsing" data-col-label="{{ _T("Duration") }}">{{ contribution.duration }}</td>
-            {% if mode != 'ajax' %}
+            {% if mode != 'ajax' and (login.isAdmin() or login.isStaff() or login.isGroupManager()) %}
                 <td class="actions_row center collapsing">
                     <a
                             href="{{ url_for("printContribution", {"id": contribution.id}) }}"

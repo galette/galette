@@ -156,7 +156,7 @@
 {% endblock %}
 
 {% block infoline_actions %}
-    {% if login.isAdmin() or login.isStaff() %}
+    {% if (login.isAdmin() or login.isStaff()) and member is not defined %}
         <a
                 class="ui tiny labeled icon button"
                 href="{{ url_for("addTransaction") }}"
@@ -172,7 +172,7 @@
 {% endblock %}
 
 {% block footer %}
-    {% if nb != 0 %}
+    {% if mode != 'ajax' and nb != 0 %}
         <tr>
             <th class="right aligned" colspan="{{ columns_count }}" scope="colgroup">
                 {{ _T("Total transactions found: %f")|replace({"%f": list|length}) }}
@@ -204,47 +204,47 @@
                         </span>
             </td>
             <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ transaction.date }}</td>
-        {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-            <td data-col-label="{{ _T("Member") }}">
-            {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
-                <a
-                    href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
-                    title="{{ _T("Show only '%name' transactions")|replace({"%name": mname}) }}"
-                >
-                    <i class="filter grey small icon" aria-hidden="true"></i>
-                </a>
+            {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+                <td data-col-label="{{ _T("Member") }}">
+                    {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
+                        <a
+                            href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": mid}) }}"
+                            title="{{ _T("Show only '%name' transactions")|replace({"%name": mname}) }}"
+                        >
+                            <i class="filter grey small icon" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}
+                    <a
+                        href="{{ url_for("member", {"id": mid}) }}"
+                        title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
+                    >
+                        {{ mname }}
+                    </a>
+                </td>
             {% endif %}
-                <a
-                    href="{{ url_for("member", {"id": mid}) }}"
-                    title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
-                >
-                    {{ mname }}
-                </a>
-            </td>
-        {% endif %}
             <td data-col-label="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ transaction.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ transaction.getPaymentType() }}</td>
-            {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
-            <td class="center actions_row">
-                <a
-                    href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
-                    class="action"
-                >
-                    <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
-                </a>
-                {% if login.isAdmin() or login.isStaff() %}
-                <a
-                    href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
-                    class="delete"
-                >
-                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
-                </a>
-                {% endif %}
-            </td>
-        {% endif %}
+            {% if mode != 'ajax' and (login.isAdmin() or login.isStaff() or login.isGroupManager()) %}
+                <td class="center actions_row collapsing">
+                    <a
+                        href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
+                        class="action"
+                    >
+                        <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Edit transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                    </a>
+                    {% if login.isAdmin() or login.isStaff() %}
+                    <a
+                        href="{{ url_for("removeContribution", {"type": "transactions", "id": transaction.id}) }}"
+                        class="delete"
+                    >
+                        <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Remove transaction #%id")|replace({"%id": transaction.id}) }}</span>
+                    </a>
+                    {% endif %}
+                </td>
+            {% endif %}
         </tr>
     {% else %}
         <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("no transaction") }}</td></tr>
