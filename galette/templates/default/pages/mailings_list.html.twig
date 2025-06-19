@@ -28,6 +28,31 @@
     }
 } %}
 
+{% set columns = [
+    {
+        'label': '#',
+        'collapse': true
+    },
+    {
+        'label': _T("Date"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_DATE"),
+        'collapse': true
+    },
+    {'label': _T('Sender'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENDER")},
+    {
+        'label': _T('Recipients'),
+        'collapse': true
+    },
+    {'label': _T('Subject'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT")},
+    {
+        'label': _T('Att.'),
+        'collapse': true
+    },
+    {
+        'label': _T("Sent"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENT"),
+        'collapse': true
+    }
+] %}
+
 {% block infoline %}
     {% set infoline = {
         'label': _Tn("%1$s entry", "%1$s entries", history.getCount())|format(history.getCount()),
@@ -61,30 +86,6 @@
 {% endblock %}
 
 {% block header %}
-    {% set columns = [
-        {
-            'label': '#',
-            'collapse': true
-        },
-        {
-            'label': _T("Date"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_DATE"),
-            'collapse': true
-        },
-        {'label': _T('Sender'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENDER")},
-        {
-            'label': _T('Recipients'),
-            'collapse': true
-        },
-        {'label': _T('Subject'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT")},
-        {
-            'label': _T('Att.'),
-            'collapse': true
-        },
-        {
-            'label': _T("Sent"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENT"),
-            'collapse': true
-        }
-    ] %}
     {{ parent() }}
 {% endblock %}
 
@@ -153,6 +154,16 @@
         </div>
         {% include "components/forms/csrf.html.twig" %}
     </form>
+{% endblock %}
+
+{% block footer %}
+    {% if mode != 'ajax' and nb != 0 %}
+        <tr>
+            <th class="right aligned" colspan="{{ columns_count }}" scope="colgroup">
+                {{ _T("Total mailings found: %f")|replace({"%f": logs|length}) }}
+            </th>
+        </tr>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
