@@ -160,7 +160,7 @@
     {% if mode != 'ajax' and nb != 0 %}
         <tr>
             <th class="right aligned" colspan="{{ columns_count }}" scope="colgroup">
-                {{ _T("Total mailings found: %f")|replace({"%f": logs|length}) }}
+                {{ _T("Number of mailings listed: %f")|replace({"%f": logs|length}) }}
             </th>
         </tr>
     {% endif %}

@@ -332,7 +332,7 @@
     {% if mode != 'ajax' and nb != 0 %}
         <tr>
             <th class="right aligned" colspan="{{ galette_list|length + 1 }}" scope="colgroup">
-                {{ _T("Total members found: %f")|replace({"%f": members|length}) }}
+                {{ _T("Number of members listed: %f")|replace({"%f": members|length}) }}
             </th>
         </tr>
     {% endif %}
