@@ -98,44 +98,42 @@
                 </button>
             </div>
         </div>
-        {% if member is defined %}
-            {% if login.isAdmin() or login.isStaff() or member.canShow(login) %}
-                <div class="ui compact vertically fitted segment">
+        {% if mode != 'ajax' and member is defined and (login.isAdmin() or login.isStaff() or member.canShow(login)) %}
+            <div class="ui segment member-filtered">
                 <div class="ui horizontal list">
-                <span class="ui primary ribbon label">
-                {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
-                {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
-                    <a
-                        href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": "all"}) }}"
-                    >
-                        <i class="icon times tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">
-                        {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
-                            {{ _T("Show all your transactions") }}
-                        {% else %}
-                            {{ _T("Show all members transactions") }}
+                    <span class="ui primary ribbon label">
+                        {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
+                        {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                            <a
+                                href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": "all"}) }}"
+                            >
+                                <i class="icon times tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">
+                                    {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                                        {{ _T("Show all your transactions") }}
+                                    {% else %}
+                                        {{ _T("Show all members transactions") }}
+                                    {% endif %}
+                                </span>
+                            </a>
                         {% endif %}
-                        </span>
-                    </a>
-                {% endif %}
-            {% endif %}
-            {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
-            </span>
-            {% if login.isAdmin() or login.isStaff() %}
-                <div class="item">
-                    <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny labeled icon button">
-                        <i class="ui user blue icon" aria-hidden="true"></i>
-                        {{ _T("See member profile") }}
-                    </a>
+                        {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
+                    </span>
+                    {% if login.isAdmin() or login.isStaff() %}
+                        <div class="item">
+                            <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny labeled icon button">
+                                <i class="ui user blue icon" aria-hidden="true"></i>
+                                {{ _T("See member profile") }}
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="{{ url_for("addTransaction") }}?id_adh={{ member.id }}" class="ui tiny labeled icon button">
+                                <i class="ui plus circle green icon" aria-hidden="true"></i>
+                                {{ _T("Add a transaction") }}
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
-                <div class="item">
-                    <a href="{{ url_for("addTransaction") }}?id_adh={{ member.id }}" class="ui tiny labeled icon button">
-                        <i class="ui plus circle green icon" aria-hidden="true"></i>
-                        {{ _T("Add a transaction") }}
-                    </a>
-                </div>
-            {% endif %}
-            </div>
             </div>
         {% endif %}
         {% include "components/forms/csrf.html.twig" %}
