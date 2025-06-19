@@ -103,7 +103,7 @@
                 <div class="ui horizontal list">
                     <span class="ui primary ribbon label">
                         {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
-                        {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                        {% if login.isAdmin() or login.isStaff() or login.isGroupManager() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
                             <a
                                 href="{{ url_for("contributions", {"type": "transactions", "option": "member", "value": "all"}) }}"
                             >
@@ -119,13 +119,15 @@
                         {% endif %}
                         {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
                     </span>
-                    {% if login.isAdmin() or login.isStaff() %}
+                    {% if member.canShow(login) %}
                         <div class="item">
                             <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny labeled icon button">
                                 <i class="ui user blue icon" aria-hidden="true"></i>
                                 {{ _T("See member profile") }}
                             </a>
                         </div>
+                    {% endif %}
+                    {% if login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_transactions) %}
                         <div class="item">
                             <a href="{{ url_for("addTransaction") }}?id_adh={{ member.id }}" class="ui tiny labeled icon button">
                                 <i class="ui plus circle green icon" aria-hidden="true"></i>
@@ -154,7 +156,7 @@
 {% endblock %}
 
 {% block infoline_actions %}
-    {% if (login.isAdmin() or login.isStaff()) and member is not defined %}
+    {% if (login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_transactions)) and member is not defined %}
         <a
                 class="ui tiny labeled icon button"
                 href="{{ url_for("addTransaction") }}"
