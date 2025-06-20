@@ -156,16 +156,6 @@
     </form>
 {% endblock %}
 
-{% block footer %}
-    {% if mode != 'ajax' and nb != 0 %}
-        <tr>
-            <th class="right aligned" colspan="{{ columns_count }}" scope="colgroup">
-                {{ _T("Number of mailings listed: %f")|replace({"%f": logs|length}) }}
-            </th>
-        </tr>
-    {% endif %}
-{% endblock %}
-
 {% block body %}
     {% for log in logs %}
         {% set date_format = _T('Y-m-d H:i:s') %}
