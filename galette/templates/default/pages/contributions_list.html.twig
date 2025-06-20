@@ -301,29 +301,50 @@
                 {% endif %}
                 {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
                     <span class="displaynone">
-                            <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
-                                {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
-                            </a>
-                        </span>
+                        <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
+                            {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
+                        </a>
+                    </span>
                     {% if contribution.isTransactionPart() %}
                         <a
-                                href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
+                            href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
                         >
                             <i class="ui linkify icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
                         </a>
+                    {% else %}
+                        <i class="ui icon" aria-hidden="true"></i>
+                    {% endif %}
+                    {% if contribution.hasSchedule() %}
+                        <a
+                            {# 
+                                FIXME : return a filtered view of corresponding sheduled payments
+                                NOTE : it would be great to do the same on transactions
+                            #}
+                            href="{{ url_for("scheduledPayments") }}"
+                        >
+                            <i class="ui sitemap icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("View scheduled payments") }}</span>
+                        </a>
+                    {% else %}
+                        <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
                 {% else %}
                     <span class="displaynone">
-                            {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
-                        </span>
+                        {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
+                    </span>
                     {% if contribution.isTransactionPart() %}
-                        <i class="ui link icon" aria-hidden="true"></i>
+                        <i class="ui linkify icon" aria-hidden="true"></i>
                         <span class="visually-hidden">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
+                    {% else %}
+                        <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
-                {% endif %}
-                {% if not contribution.isTransactionPart() %}
-                    <i class="ui icon">&nbsp;</i>
+                    {% if contribution.hasSchedule() %}
+                        <i class="ui sitemap icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ _T("Has scheduled payments") }}</span>
+                    {% else %}
+                        <i class="ui icon" aria-hidden="true"></i>
+                    {% endif %}
                 {% endif %}
             </td>
             <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ contribution.date }}</td>

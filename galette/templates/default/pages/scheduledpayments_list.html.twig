@@ -229,15 +229,23 @@
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
                 {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
-                    <span>
-                        <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
-                            <i
-                                class="ui {% if contribution.isFee() %}user check{% else %}gift{% endif %} grey icon tooltip"
-                                title="{% if contribution.isFee() %}{{ _T('Contribution') }}{% else %}{{ _T('Donation') }}{% endif %}"
-                            ></i>
-                            <span class="visually-hidden">{{ _T("Contribution %id")|replace({"%id": contribution.id}) }}</span>
-                        </a>
-                    </span>
+                    <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
+                        <i class="icons tooltip" aria-hidden="true">
+                            {% if contribution.isFee() %}
+                                <i class="user icon"></i>
+                            {% else %}
+                                <i class="gift icon"></i>
+                            {% endif %}
+                          <i class="corner linkify icon"></i>
+                        </i>
+                        <span class="ui special popup">
+                            {% if contribution.isFee() %}
+                                {{ _T("Membership fee %id")|replace({"%id": contribution.id}) }}
+                            {% else %}
+                                {{ _T("Donation %id")|replace({"%id": contribution.id}) }}
+                            {% endif %}
+                        </span>
+                    </a>
                 {% endif %}
             </td>
             {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
