@@ -244,7 +244,7 @@ class ScheduledPaymentController extends CrudController
             }
 
             if (isset($post['date_field'])) {
-                $filters->date_field = $post['date_field'];
+                $filters->date_field = (int)$post['date_field'];
             }
 
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
