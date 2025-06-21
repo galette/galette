@@ -901,7 +901,7 @@ class ContributionsController extends CrudController
                     ]
                 ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
                 '&' . Adherent::PK . '=' . $contrib->member;
-            } elseif ($contrib->payment_type === PaymentType::SCHEDULED/* && !$contrib->isScheduleFullyAllocated() */) {
+            } elseif ($contrib->payment_type === PaymentType::SCHEDULED && !$contrib->isScheduleFullyAllocated()) {
                 //if payment type is a payment schedule, and schedule is not fully allocated, create a new schedule entry
                 $redirect_url = $this->routeparser->urlFor(
                     'addScheduledPayment',
