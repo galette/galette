@@ -256,9 +256,10 @@
                                 {% set ptype = preferences.pref_default_paymenttype %}
                             {% endif %}
                             {% include 'components/forms/payment_types.html.twig' with {
-                                    'current': ptype,
-                                    'varname': 'type_paiement_cotis',
-                                    'disabled': contribution.hasSchedule()
+                                'current': ptype,
+                                'varname': 'type_paiement_cotis',
+                                'disabled': contribution.hasSchedule(),
+                                'tip_html': contribution.hasSchedule() ? false : 'When selecting the type <strong>scheduled payment</strong>, a contribution will be added and you will be asked to create the corresponding scheduled payments afterwards. In that case the amount of the contribution on the present form must equal the total of all the scheduled payments you will define next.'
                             } %}
                         </div>
                         <div class="{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}three{% else %}two{% endif %} fields">
