@@ -154,6 +154,9 @@ class ScheduledPaymentController extends CrudController
             case 'order':
                 $filters->orderby = $value;
                 break;
+            case 'member':
+                $filters->member_filter = ($value === 'all' ? null : (int)$value);
+                break;
             default:
                 break;
         }
@@ -171,19 +174,28 @@ class ScheduledPaymentController extends CrudController
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view);
 
+        $tpl_vars = [
+            'page_title'        => _T("List of scheduled payments"),
+            'scheduled'         => $scheduled,
+            'list'              => $list,
+            'nb'                => $scheduled->getCount(),
+            'filters'           => $filters,
+            'mode'              => $ajax ? 'ajax' : '',
+            'documentation'     => 'usermanual/contributions.html#scheduled-payments'
+        ];
+
+        if ($filters->member_filter != null) {
+            $member = new Adherent($this->zdb);
+            $member->enableDep('children');
+            $member->load($filters->member_filter);
+            $tpl_vars['member'] = $member;
+        }
+
         // display page
         $this->view->render(
             $response,
             'pages/scheduledpayments_list.html.twig',
-            [
-                'page_title'        => _T("List of scheduled payments"),
-                'scheduled'         => $scheduled,
-                'list'              => $list,
-                'nb'                => $scheduled->getCount(),
-                'filters'           => $filters,
-                'mode'              => $ajax ? 'ajax' : '',
-                'documentation'     => 'usermanual/contributions.html#scheduled-payments'
-            ]
+            $tpl_vars
         );
         return $response;
     }
