@@ -19,7 +19,7 @@
  */
 #}
 {% if selector is not defined %}
-    {% set selector = "[id$='rangestart'], [id$='rangeend']" %}
+    {% set selector = "[id$='rangestart'], [id$='rangeend'], [id$='uicalendar']" %}
 {% endif %}
 
     var _calendarDays = '{{ __("S,M,T,W,T,F,S") }}';

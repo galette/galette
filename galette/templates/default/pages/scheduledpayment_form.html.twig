@@ -131,7 +131,7 @@
                                 <label for="creation_date">
                                     {{ scheduled.getFieldLabel('creation_date') }}
                                 </label>
-                                <div class="ui calendar" id="scheduled-creationdate">
+                                <div class="ui calendar" id="scheduled-creationdate-uicalendar">
                                     <div class="ui input left icon">
                                         <i class="calendar icon" aria-hidden="true"></i>
                                         <input type="text" name="creation_date" id="creation_date" value="{{ scheduled.getCreationDate() }}" maxlength="10" required="required" placeholder="{{ _T('yyyy-mm-dd format') }}" />
@@ -140,7 +140,7 @@
                             </div>
                             <div class="inline field required">
                                 <label for="scheduled_date">{{ scheduled.getFieldLabel('scheduled_date') }}</label>
-                                <div class="ui calendar" id="scheduled-scheduleddate">
+                                <div class="ui calendar" id="scheduled-scheduleddate-uicalendar">
                                     <div class="ui input left icon">
                                         <i class="calendar icon" aria-hidden="true"></i>
                                         <input type="text" name="scheduled_date" id="scheduled_date" value="{{ scheduled.getScheduledDate() }}" maxlength="10" required="required" placeholder="{{ _T('yyyy-mm-dd format') }}" />
