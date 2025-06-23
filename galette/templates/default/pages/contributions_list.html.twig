@@ -299,7 +299,7 @@
                 {% else %}
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
-                {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
+                {% if (login.isAdmin() or login.isStaff() or login.isGroupManager()) or mode == 'ajax' %}
                     <span class="displaynone">
                         <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
                             {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
@@ -309,23 +309,30 @@
                         <a
                             href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
                         >
-                            <i class="ui linkify icon tooltip" aria-hidden="true"></i>
+                            <i class="ui sitemap icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
                         </a>
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
                     {% if contribution.hasSchedule() %}
-                        <a
-                            {# 
-                                FIXME : return a filtered view of corresponding sheduled payments
-                                NOTE : it would be great to do the same on transactions
-                            #}
-                            href="{{ url_for("scheduledPayments") }}"
-                        >
-                            <i class="ui sitemap icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("View scheduled payments") }}</span>
-                        </a>
+                        {% if not login.isGroupManager() %}
+                            <a
+                                {# 
+                                    FIXME : return a filtered view of corresponding sheduled payments
+                                    NOTE : it would be great to do the same on transactions
+                                #}
+                                href="{{ url_for("scheduledPayments") }}"
+                            >
+                        {% endif %}
+                            <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">
+                                {{ _T("View scheduled payments") }}
+                                {% if not contribution.isScheduleFullyAllocated() %}({{ _T("Amount is not fully dispatched") }}){% endif %}
+                            </span>
+                        {% if not login.isGroupManager() %}
+                            </a>
+                        {% endif %}
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
@@ -334,14 +341,17 @@
                         {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
                     </span>
                     {% if contribution.isTransactionPart() %}
-                        <i class="ui linkify icon" aria-hidden="true"></i>
+                        <i class="ui sitemap blue icon" aria-hidden="true"></i>
                         <span class="visually-hidden">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
                     {% if contribution.hasSchedule() %}
-                        <i class="ui sitemap icon" aria-hidden="true"></i>
-                        <span class="visually-hidden">{{ _T("Has scheduled payments") }}</span>
+                        <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon" aria-hidden="true"></i>
+                        <span class="visually-hidden">
+                            {{ _T("Has scheduled payments") }}
+                            {% if not contribution.isScheduleFullyAllocated() %}({{ _T("Amount is not fully dispatched") }}){% endif %}
+                        </span>
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
@@ -378,32 +388,30 @@
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ contribution.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ contribution.getPaymentType() }}</td>
             <td class="collapsing" data-col-label="{{ _T("Duration") }}">{{ contribution.duration }}</td>
-            {% if mode != 'ajax' and (login.isAdmin() or login.isStaff() or login.isGroupManager()) %}
-                <td class="actions_row center collapsing">
+            <td class="actions_row center collapsing">
+                <a
+                        href="{{ url_for("printContribution", {"id": contribution.id}) }}"
+                >
+                    <i class="ui file pdf green icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
+                </a>
+                {% if (login.isAdmin() or login.isStaff()) %}
                     <a
-                            href="{{ url_for("printContribution", {"id": contribution.id}) }}"
+                            href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}"
+                            class="action"
                     >
-                        <i class="ui file pdf green icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
+                        <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Edit the contribution") }}</span>
                     </a>
-                    {% if (login.isAdmin() or login.isStaff()) %}
-                        <a
-                                href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}"
-                                class="action"
-                        >
-                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Edit the contribution") }}</span>
-                        </a>
-                        <a
-                                href="{{ url_for("removeContribution", {"type": "contributions", "id": contribution.id}) }}"
-                                class="delete"
-                        >
-                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Delete the contribution") }}</span>
-                        </a>
-                    {% endif %}
-                </td>
-            {% endif %}
+                    <a
+                            href="{{ url_for("removeContribution", {"type": "contributions", "id": contribution.id}) }}"
+                            class="delete"
+                    >
+                        <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Delete the contribution") }}</span>
+                    </a>
+                {% endif %}
+            </td>
         </tr>
     {% else %}
         <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("no contribution") }}</td></tr>
@@ -438,25 +446,11 @@
                     </thead>
                     <tbody>
                         <tr>
-        {% if login.isAdmin() or login.isStaff() %}
-                            <th scope="row"  class="action">
-                                <i class="ui linkify blue icon" aria-hidden="true"></i>
-                            </th>
-                            <td class="back">{{ _T("Edit the attached transaction") }}</td>
-        {% endif %}
-                            <th scope="row"  class="action">
-                                <i class="ui filter grey small icon" aria-hidden="true"></i>
-                            </th>
-                            <td class="back">{{ _T("Show only '%name' contributions")|replace({"%name": _T("Member")}) }}</td>
-        {% if login.isAdmin() or login.isStaff() %}
-                        </tr>
-                        <tr>
-        {% endif %}
                             <th scope="row"  class="action">
                                 <i class="ui file pdf green icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</td>
-        {% if login.isAdmin() or login.isStaff() %}
+            {% if login.isAdmin() or login.isStaff() %}
                             <th scope="row"  class="action">
                                 <i class="ui edit blue icon" aria-hidden="true"></i>
                             </th>
@@ -467,7 +461,48 @@
                                 <i class="ui trash red icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Deletion") }}</td>
+            {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th scope="colgroup" colspan="4">{{ _T('Contribution interactions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        {% if preferences.pref_use_paid_flag %}
+                        <tr>
+                            <th scope="row"  class="action">
+                                <i class="ui money bill wave green small icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _Tx('contribution', 'Paid') }}</td>
+                            <th scope="row"  class="action">
+                                <i class="ui money bill wave red small icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _Tx('contribution', 'Unpaid') }}</td>
+                        </tr>
         {% endif %}
+                        <tr>
+                            <th scope="row"  class="action">
+                                <i class="ui sitemap blue icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Has an attached transaction") }}</td>
+                            <th scope="row"  class="action">
+                                <i class="ui calendar alternate outline blue icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Has scheduled payments") }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"  class="action">
+                                <i class="ui calendar alternate outline orange icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Has scheduled payments") }} ({{ _T("Amount is not fully dispatched") }})</td>
+                            <th scope="row"  class="action">
+                                <i class="ui filter grey small icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Show only '%name' contributions")|replace({"%name": _T("Member")}) }}</td>
                         </tr>
                     </tbody>
                 </table>
