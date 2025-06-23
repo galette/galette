@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # தமிழ்நேரம் <anishprabu.t@gmail.com>, 2024.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2024.
+# Prasanna Venkadesh <prasmailme@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-05-07 08:55+0200\n"
-"PO-Revision-Date: 2024-12-30 11:00+0000\n"
-"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
+"PO-Revision-Date: 2025-06-24 08:01+0000\n"
+"Last-Translator: Prasanna Venkadesh <prasmailme@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
 ">\n"
 "Language: ta\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:123
 msgid "Transaction"
@@ -45,7 +46,7 @@ msgstr "பரிவர்த்தனை வெற்றிகரமாக ச�
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:312
 msgid "Unable to attach contribution to transaction"
-msgstr "பரிவர்த்தனைக்கு பங்களிப்பை இணைக்க முடியவில்லை"
+msgstr "பங்களிப்பை பரிவர்த்தனையுடன் இணைக்க முடியவில்லை"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:317
 msgid "Contribution has been successfully attached to current transaction"
@@ -109,7 +110,7 @@ msgstr "திட்டமிடப்பட்ட கட்டணத்தை�
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:179
 #: ../lib/Galette/Core/Galette.php:253
 msgid "List of scheduled payments"
-msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகளின் பட்டியல்"
+msgstr "திட்டமிடப்பட்ட கட்டணங்களின் பட்டியல்"
 
 #: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:272
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:668
@@ -7000,7 +7001,7 @@ msgstr "ஒரு உறுப்பினரைத் தேர்ந்தெ�
 
 #: ../../tempcache/pages/documents_list.html.twig:96
 msgid "Add a document"
-msgstr "ஒரு ஆவணத்தைச் சேர்க்கவும்"
+msgstr "ஆவணத்தைச் சேர்"
 
 #: ../../tempcache/pages/documents_list.html.twig:113
 #: ../../tempcache/pages/documents_list.html.twig:174
