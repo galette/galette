@@ -260,6 +260,7 @@
                     </tr>
                 </tbody>
             </table>
+    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
             <table class="ui stripped table">
                 <thead>
                     <tr>
@@ -269,24 +270,32 @@
                 <tbody>
                     <tr>
                         <th scope="row"  class="action">
-                            <i class="ui filter grey small icon" aria-hidden="true"></i>
-                        </th>
-                        <td class="back">{{ _T("Show only '%name' transactions")|replace({"%name": _T("Originator")}) }}</td>
-    {% if login.isGroupManager() %}
-                        <th scope="row"  class="action">
                             <i class="ui edit blue icon" aria-hidden="true"></i>
                         </th>
                         <td class="back">{{ _T("Modification") }}</td>
-    {% endif %}
-                    </tr>
-    {% if login.isAdmin() or login.isStaff() %}
-                    <tr>
+        {% if login.isAdmin() or login.isStaff() %}
                         <th scope="row"  class="action">
                             <i class="ui trash red icon" aria-hidden="true"></i>
                         </th>
                         <td class="back">{{ _T("Deletion") }}</td>
+        {% endif %}
                     </tr>
+                </tbody>
+            </table>
     {% endif %}
+            <table class="ui stripped table">
+                <thead>
+                    <tr>
+                        <th scope="colgroup" colspan="4">{{ _T('Transaction interactions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"  class="action">
+                            <i class="ui filter grey small icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Show only '%name' transactions")|replace({"%name": _T("Originator")}) }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
