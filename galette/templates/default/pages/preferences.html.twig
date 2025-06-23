@@ -292,20 +292,6 @@
                             <option value="three"{% if pref.pref_member_form_grid == 'three' %} selected="selected"{% endif %}>3</option>
                         </select>
                     </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_use_paid_flag" id="pref_use_paid_flag" value="1" {% if pref.pref_use_paid_flag %} checked="checked"{% endif %}/>
-                            <label for="pref_use_paid_flag">{{ _T("Use paid flag") }}</label>
-                        </div>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Use paid flag on contributions") }}" aria-hidden="true"></i>
-                    </div>
-                    <div id="pref_paid_flag_default_field" class="inline field{% if pref.pref_use_paid_flag != 1 %} displaynone{% endif %}">
-                        <label for="pref_paid_flag_default">{{ _T('Paid default value') }}</label>
-                        <select name="pref_paid_flag_default">
-                            <option value="1"{% if pref.pref_paid_flag_default == true %} selected="selected"{% endif %}>{{ _Tx('contribution', 'Paid') }}</option>
-                            <option value="0"{% if pref.pref_paid_flag_default == false %} selected="selected"{% endif %}>{{ _Tx('contribution', 'Not paid') }}</option>
-                        </select>
-                    </div>
                 </div>{# /column #}
                 <div class="column">
                     <div class="{% if required.pref_numrows is defined and required.pref_numrows == 1 %}required {% endif %}field">
@@ -1219,13 +1205,6 @@
                 let _publicpages_visibility = document.getElementById('publicpages_visibility');
                 _publicpages_status.addEventListener('change', function () {
                     _publicpages_visibility.classList.toggle('displaynone');
-                    return;
-                });
-
-                let _paidflag_status = document.getElementById('pref_use_paid_flag');
-                let _paidflag_default = document.getElementById('pref_paid_flag_default_field');
-                _paidflag_status.addEventListener('change', function () {
-                    _paidflag_default.classList.toggle('displaynone');
                     return;
                 });
 

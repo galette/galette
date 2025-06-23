@@ -100,7 +100,6 @@ class Contribution
     private ?Transaction $transaction = null;
     private bool $is_cotis;
     private ?int $extension = null;
-    private bool $paid = false;
     /** @var array<int, PaymentType> */
     private array $ptypes_list;
 
@@ -112,7 +111,7 @@ class Contribution
     private bool $sendmail = false;
 
     /** @var string[] */
-    protected array $forbidden_fields = ['is_cotis', 'paid'];
+    protected array $forbidden_fields = ['is_cotis'];
 
     /** @var string[] */
     protected array $virtual_fields = [
@@ -145,8 +144,8 @@ class Contribution
             ->withAddEvent()
             ->withEditEvent()
             ->withoutDeleteEvent()
-            ->activateEvents()
-            ->handlePaid();
+            ->activateEvents();
+
 
         if (is_int($args)) {
             $this->load($args);
@@ -259,10 +258,6 @@ class Contribution
             'duree_mois_cotis'    => [
                 'label'    => _T("Membership extension:"),
                 'propname' => 'extension'
-            ],
-            'paid' => [
-                'label' => _Tx('contribution', 'Paid'),
-                'propname' => 'paid'
             ]
         ];
 
@@ -425,7 +420,6 @@ class Contribution
         //save original amount, we need it for transactions parts calculations
         $this->orig_amount = (float)$r->montant_cotis;
         $this->payment_type = (int)$r->type_paiement_cotis;
-        $this->setPaid((bool)$r->paid);
         $this->info = $r->info_cotis;
         $this->begin_date = $r->date_debut_cotis;
         $end_date = $r->date_fin_cotis;
@@ -539,9 +533,6 @@ class Contribution
                                 $this->retrieveEndDate();
                             }
                         }
-                        break;
-                    case 'paid':
-                        $this->setPaid((bool)$value);
                         break;
                 }
             }
@@ -685,11 +676,6 @@ class Contribution
                     case ContributionsTypes::PK:
                     case Transaction::PK:
                         $values[$field] = $this->$prop->id;
-                        break;
-                    case 'paid':
-                        $values [$field] = ($this->paid) ?
-                            true :
-                            ($this->zdb->isPostgres() ? 'false' : 0);
                         break;
                     default:
                         $values[$field] = $this->$prop;
@@ -1305,9 +1291,6 @@ class Contribution
                 case 'payment_type':
                     $this->setPaymentType((int)$value);
                     break;
-                case 'paid':
-                    $this->setPaid((bool)$value);
-                    break;
                 default:
                     Analog::log(
                         '[' . __CLASS__ . ']: Trying to set an unknown property (' .
@@ -1509,41 +1492,5 @@ class Contribution
             );
             $this->errors[] = _T("- Unknown payment type");
         }
-    }
-
-    /**
-     * Set contribution as paid
-     *
-     * @param bool $paid Paid or not
-     *
-     * @return self
-     */
-    public function setPaid(bool $paid): self
-    {
-        $this->paid = $paid;
-        return $this;
-    }
-
-    /**
-     * Is contribution paid
-     *
-     * @return bool
-     */
-    public function isPaid(): bool
-    {
-        return $this->paid;
-    }
-
-    /**
-     * Handle paid flag from preferences
-     *
-     * @return void
-     */
-    private function handlePaid(): void
-    {
-        global $preferences;
-        $this->setPaid(
-            $preferences->pref_use_paid_flag && $preferences->pref_paid_flag_default
-        );
     }
 }

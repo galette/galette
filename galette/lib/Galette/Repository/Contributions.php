@@ -298,9 +298,6 @@ class Contributions
             case ContributionsList::ORDERBY_PAYMENT_TYPE:
                 $order[] = 'type_paiement_cotis ' . $this->filters->getDirection();
                 break;
-            case ContributionsList::ORDERBY_PAID:
-                $order[] = 'paid ' . $this->filters->getDirection();
-                break;
         }
 
         return $order;
@@ -461,17 +458,6 @@ class Contributions
 
             if ($this->filters->filtre_transactions === true) {
                 $select->where('c.trans_id IS NULL');
-            }
-
-            if ($this->filters->paid != ContributionsList::PAID_DC) {
-                if ($this->zdb->isPostgres()) {
-                    $paid = $this->filters->paid == ContributionsList::PAID_YES ?
-                        $this->zdb->platform->quoteValue('true') :
-                        $this->zdb->platform->quoteValue('false');
-                } else {
-                    $paid = $this->filters->paid;
-                }
-                $select->where(['c.paid' => $paid]);
             }
         } catch (Throwable $e) {
             Analog::log(

@@ -15,7 +15,6 @@ Changes
 - Add few parameters to customize appearance
 - Plugins can now add Javascript just before the closing body tag
 - Add staff public pages (list and gallery)
-- Add paid flag on contributions
 - Prevent main social networks to be removed on update
 - Fix mass changes on boolean fields
 - Add phone number and contact email in settings
