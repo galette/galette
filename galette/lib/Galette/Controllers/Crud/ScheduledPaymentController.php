@@ -144,7 +144,7 @@ class ScheduledPaymentController extends CrudController
             $filters = new ScheduledPaymentsList();
         }
 
-        if ($ajax && $get[Contribution::PK]) {
+        if (isset($get[Contribution::PK])) {
             $filters->from_contribution = (int)$get[Contribution::PK];
         }
 

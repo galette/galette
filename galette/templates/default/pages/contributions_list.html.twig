@@ -299,7 +299,7 @@
                 {% else %}
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
-                {% if (login.isAdmin() or login.isStaff() or login.isGroupManager()) or mode == 'ajax' %}
+                {% if (login.isAdmin() or login.isStaff()) or mode != 'ajax' %}
                     <span class="displaynone">
                         <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
                             {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
@@ -316,23 +316,13 @@
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
                     {% if contribution.hasSchedule() %}
-                        {% if not login.isGroupManager() %}
-                            <a
-                                {# 
-                                    FIXME : return a filtered view of corresponding sheduled payments
-                                    NOTE : it would be great to do the same on transactions
-                                #}
-                                href="{{ url_for("scheduledPayments") }}"
-                            >
-                        {% endif %}
+                        <a href="{{ url_for("scheduledPayments") }}?id_cotis={{ contribution.id }}">
                             <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
                             <span class="ui special popup">
                                 {{ _T("View scheduled payments") }}
                                 {% if not contribution.isScheduleFullyAllocated() %}({{ _T("Amount is not fully dispatched") }}){% endif %}
                             </span>
-                        {% if not login.isGroupManager() %}
-                            </a>
-                        {% endif %}
+                        </a>
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
@@ -388,30 +378,32 @@
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ contribution.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ contribution.getPaymentType() }}</td>
             <td class="collapsing" data-col-label="{{ _T("Duration") }}">{{ contribution.duration }}</td>
-            <td class="actions_row center collapsing">
-                <a
-                        href="{{ url_for("printContribution", {"id": contribution.id}) }}"
-                >
-                    <i class="ui file pdf green icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
-                </a>
-                {% if (login.isAdmin() or login.isStaff()) %}
+            {% if mode != 'ajax' %}
+                <td class="actions_row center collapsing">
                     <a
-                            href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}"
-                            class="action"
+                            href="{{ url_for("printContribution", {"id": contribution.id}) }}"
                     >
-                        <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Edit the contribution") }}</span>
+                        <i class="ui file pdf green icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</span>
                     </a>
-                    <a
-                            href="{{ url_for("removeContribution", {"type": "contributions", "id": contribution.id}) }}"
-                            class="delete"
-                    >
-                        <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Delete the contribution") }}</span>
-                    </a>
-                {% endif %}
-            </td>
+                    {% if (login.isAdmin() or login.isStaff()) %}
+                        <a
+                                href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}"
+                                class="action"
+                        >
+                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Edit the contribution") }}</span>
+                        </a>
+                        <a
+                                href="{{ url_for("removeContribution", {"type": "contributions", "id": contribution.id}) }}"
+                                class="delete"
+                        >
+                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Delete the contribution") }}</span>
+                        </a>
+                    {% endif %}
+                </td>
+            {% endif %}
         </tr>
     {% else %}
         <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("no contribution") }}</td></tr>
