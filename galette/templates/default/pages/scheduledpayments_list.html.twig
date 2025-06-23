@@ -91,124 +91,121 @@
 
 
 {% block search %}
-    <form action="{{ url_for("filterScheduledPayments") }}" method="post" class="ui form filters">
-    <div class="ui secondary yellow segment">
-        <div class="three fields">
-            <div class="field">
-                <label for="date_field">{{ _T("Show payments by") }}</label>
-                <select name="date_field" id="date_field" class="ui search dropdown">
-                    <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD') %} selected="selected"{% endif %}>{{ _T("Date") }}</option>
-                    <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED') %} selected="selected"{% endif %}>{{ _T("Scheduled date") }}</option>
-                </select>
-            </div>
-            <div class="two fields">
-                <div class="field">
-                    <label for="start_date_filter">{{ _T("since") }}</label>
-                    <div class="ui calendar" id="contrib-rangestart">
-                        <div class="ui input left icon">
-                            <i class="calendar icon" aria-hidden="true"></i>
-                            <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
+    {% if mode != 'ajax' %}
+        <form action="{{ url_for("filterScheduledPayments") }}" method="post" class="ui form filters">
+            <div class="ui secondary yellow segment">
+                <div class="three fields">
+                    <div class="field">
+                        <label for="date_field">{{ _T("Show payments by") }}</label>
+                        <select name="date_field" id="date_field" class="ui search dropdown">
+                            <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD') %} selected="selected"{% endif %}>{{ _T("Date") }}</option>
+                            <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED') %} selected="selected"{% endif %}>{{ _T("Scheduled date") }}</option>
+                        </select>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label for="start_date_filter">{{ _T("since") }}</label>
+                            <div class="ui calendar" id="contrib-rangestart">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon" aria-hidden="true"></i>
+                                    <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
+                                </div>
+                            </div>
                         </div>
+                        <div class="field">
+                            <label for="end_date_filter">{{ _T("until") }}</label>
+                            <div class="ui calendar" id="contrib-rangeend">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon" aria-hidden="true"></i>
+                                    <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        {% include "components/forms/payment_types.html.twig" with {
+                            current: filters.payment_type_filter,
+                            varname: "payment_type_filter",
+                            classname: "",
+                            empty: {'value': -1, 'label': _T("Select")}
+                        } %}
                     </div>
                 </div>
-                <div class="field">
-                    <label for="end_date_filter">{{ _T("until") }}</label>
-                    <div class="ui calendar" id="contrib-rangeend">
-                        <div class="ui input left icon">
-                            <i class="calendar icon" aria-hidden="true"></i>
-                            <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="field">
-                {% include "components/forms/payment_types.html.twig" with {
-                    current: filters.payment_type_filter,
-                    varname: "payment_type_filter",
-                    classname: "",
-                    empty: {'value': -1, 'label': _T("Select")}
-                } %}
-            </div>
-        </div>
 
-        <div class="two fields last-child">
-            <div class="field">
-                <div class="inline fields">
-                    <label for="paid_filter">{{ _T('Paid scheduled payments:') }}</label>
-                    <div class="field inline">
-                        <div class="ui radio checkbox">
-                            <input type="radio" name="paid_filter" id="filter_dc_paid" value="{{ constant('Galette\\Filters\\ScheduledPaymentsList::PAID_DC') }}"{% if filters.paid == constant('Galette\\Filters\\ScheduledPaymentsList::PAID_DC') %} checked="checked"{% endif %}>
-                            <label for="filter_dc_paid">{{ _T("Don't care") }}</label>
+                <div class="two fields last-child">
+                    <div class="field">
+                        <div class="inline fields">
+                            <label for="paid_filter">{{ _T('Paid scheduled payments:') }}</label>
+                            <div class="field inline">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="paid_filter" id="filter_dc_paid" value="{{ constant('Galette\\Filters\\ScheduledPaymentsList::PAID_DC') }}"{% if filters.paid == constant('Galette\\Filters\\ScheduledPaymentsList::PAID_DC') %} checked="checked"{% endif %}>
+                                    <label for="filter_dc_paid">{{ _T("Don't care") }}</label>
+                                </div>
+                            </div>
+                            <div class="field inline">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="paid_filter" id="filter_paid" value="{{ constant('Galette\\Filters\\ScheduledPaymentsList::PAID_YES') }}"{% if filters.paid == constant('Galette\\Filters\\ScheduledPaymentsList::PAID_YES') %} checked="checked"{% endif %}>
+                                    <label for="filter_paid">{{ _T('Paid') }}</label>
+                                </div>
+                            </div>
+                            <div class="field inline">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="paid_filter" id="filter_not_paid" value="{{ constant('Galette\\Filters\\ScheduledPaymentsList::PAID_NO') }}"{% if filters.paid == constant('Galette\\Filters\\ScheduledPaymentsList::PAID_NO') %} checked="checked"{% endif %}>
+                                    <label for="filter_not_paid">{{ _T('Not paid') }}</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="field inline">
-                        <div class="ui radio checkbox">
-                            <input type="radio" name="paid_filter" id="filter_paid" value="{{ constant('Galette\\Filters\\ScheduledPaymentsList::PAID_YES') }}"{% if filters.paid == constant('Galette\\Filters\\ScheduledPaymentsList::PAID_YES') %} checked="checked"{% endif %}>
-                            <label for="filter_paid">{{ _T('Paid') }}</label>
-                        </div>
-                    </div>
-                    <div class="field inline">
-                        <div class="ui radio checkbox">
-                            <input type="radio" name="paid_filter" id="filter_not_paid" value="{{ constant('Galette\\Filters\\ScheduledPaymentsList::PAID_NO') }}"{% if filters.paid == constant('Galette\\Filters\\ScheduledPaymentsList::PAID_NO') %} checked="checked"{% endif %}>
-                            <label for="filter_not_paid">{{ _T('Not paid') }}</label>
-                        </div>
+
+                    <div class="ui right aligned basic fitted segment field">
+                        <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
+                            <i class="search icon" aria-hidden="true"></i>
+                            {{ _T("Filter") }}
+                        </button>
+                        <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
+                            <i class="trash alt red icon" aria-hidden="true"></i>
+                            {{ _T("Clear filter") }}
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div class="ui right aligned basic fitted segment field">
-                <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
-                    <i class="search icon" aria-hidden="true"></i>
-                    {{ _T("Filter") }}
-                </button>
-                <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
-                    <i class="trash alt red icon" aria-hidden="true"></i>
-                    {{ _T("Clear filter") }}
-                </button>
-            </div>
-        </div>
-    </div>
-
-    {% if mode != 'ajax' and member is defined and (login.isAdmin() or login.isStaff() or member.canShow(login)) %}
-        <div class="ui segment member-filtered">
-            <div class="ui horizontal list">
-                <span class="ui primary ribbon label">
-                    {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
-                    {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
-                        <a
-                            href="{{ url_for("scheduledPayments", {"option": "member", "value": "all"}) }}"
-                        >
-                            <i class="icon times tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">
-                            {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
-                                {{ _T("Show all your scheduled payments") }}
-                            {% else %}
-                                {{ _T("Show all members scheduled payments") }}
+            {% if member is defined and (login.isAdmin() or login.isStaff() or member.canShow(login)) %}
+                <div class="ui segment member-filtered">
+                    <div class="ui horizontal list">
+                        <span class="ui primary ribbon label">
+                            {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
+                            {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                                <a
+                                    href="{{ url_for("scheduledPayments", {"option": "member", "value": "all"}) }}"
+                                >
+                                    <i class="icon times tooltip" aria-hidden="true"></i>
+                                    <span class="ui special popup">
+                                    {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                                        {{ _T("Show all your scheduled payments") }}
+                                    {% else %}
+                                        {{ _T("Show all members scheduled payments") }}
+                                    {% endif %}
+                                    </span>
+                                </a>
                             {% endif %}
-                            </span>
-                        </a>
-                    {% endif %}
-                    {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
-                </span>
-                {% if member.canShow(login) %}
-                    <div class="item">
-                        <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny labeled icon button">
-                            <i class="ui user blue icon" aria-hidden="true"></i>
-                            {{ _T("See member profile") }}
-                        </a>
+                            {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
+                        </span>
+                        {% if member.canShow(login) %}
+                            <div class="item">
+                                <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny labeled icon button">
+                                    <i class="ui user blue icon" aria-hidden="true"></i>
+                                    {{ _T("See member profile") }}
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
-                {% endif %}
-            </div>
-        </div>
-    {% endif %}
+                </div>
+            {% endif %}
 
-    {% if mode == 'ajax'%}
-        <input type="hidden" name="ajax" value="true"/>
-        <input type="hidden" name="from_contribution" value="{{ filters.from_contribution }}"/>
-    {% else %}
-        {% include "components/forms/csrf.html.twig" %}
+            {% include "components/forms/csrf.html.twig" %}
+        </form>
     {% endif %}
-    </form>
 {% endblock %}
 
 {% block infoline %}
