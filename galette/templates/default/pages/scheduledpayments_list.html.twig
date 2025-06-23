@@ -105,6 +105,38 @@
         </div>
     </div>
 
+    {% if member is defined %}
+        {% if login.isAdmin() or login.isStaff() or member.canShow(login) %}
+    <div class="ui compact vertically fitted segment">
+        <div class="ui horizontal list">
+            <span class="ui primary ribbon label">
+            {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
+            {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+            <a
+                href="{{ url_for("scheduledPayments", {"option": "member", "value": "all"}) }}"
+            >
+                <i class="icon times tooltip" aria-hidden="true"></i>
+                <span class="ui special popup">
+                {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                    {{ _T("Show all your scheduled payments") }}
+                {% else %}
+                    {{ _T("Show all members scheduled payments") }}
+                {% endif %}
+                </span>
+            </a>
+            {% endif %}
+        {% endif %}
+            {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
+            </span>
+        {% if login.isAdmin() or login.isStaff() %}
+            <div class="item">
+                <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny button">{{ _T("See member profile") }}</a>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
     {% if mode == 'ajax'%}
         <input type="hidden" name="ajax" value="true"/>
         <input type="hidden" name="from_contribution" value="{{ filters.from_contribution }}"/>
@@ -129,8 +161,14 @@
         {
             'label': '#', 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID"),
             'collapse': true
-        },
-        {'label': _T("Member"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")},
+        }
+    ] %}
+
+    {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+        {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")}]) %}
+    {% endif %}
+
+    {% set columns = columns|merge([
         {
             'label': _T("Date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_DATE"),
             'collapse': true
@@ -144,7 +182,7 @@
             'collapse': true
         },
         {'label': _T("Payment type"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE")}
-    ] %}
+    ]) %}
 
     {% if (not login.isAdmin() and not login.isStaff()) or mode == 'ajax' %}
         {% set no_action = true %}
@@ -172,6 +210,13 @@
             {% set ctype = constant('Galette\\Entity\\Contribution::TYPE_DONATION') %}
         {% endif %}
 
+        {% set mid = scheduled.getContribution().member %}
+        {% if member is defined %}
+            {% set mname = member.sname %}
+        {% else %}
+            {% set mname = memberName({id: mid}) %}
+        {% endif %}
+
         <tr class="{% if mode == 'ajax' %}schedule_row {% endif %}" id="row_{{ scheduled.getId() }}">
             <td class="collapsing" data-scope="row">
                 <span class="ui checkbox">
@@ -194,7 +239,24 @@
                     </span>
                 {% endif %}
             </td>
-            <td data-col-label="{{ _T("Member") }}">{{ memberName({id: scheduled.getContribution().member}) }}</td>
+            {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+                <td data-col-label="{{ _T("Member") }}">
+                    {% if filters.member_filter == "" or filters.member_filter == null %}
+                        <a
+                            href="{{ url_for("scheduledPayments", {"option": "member", "value": mid}) }}"
+                            title="{{ _T("Show only '%name' scheduled payments")|replace({"%name": mname}) }}"
+                        >
+                            <i class="filter grey small icon" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}
+                     <a
+                        href="{{ url_for("member", {"id": mid}) }}"
+                        title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
+                    >
+                        {{ memberName({id: scheduled.getContribution().member}) }}
+                    </a>
+                </td>
+            {% endif %}
             <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ scheduled.getCreationDate() }}</td>
             <td class="collapsing" data-col-label="{{ _T("Scheduled date") }}">{{ scheduled.getScheduledDate() }}</td>
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ scheduled.getAmount() }}</td>
