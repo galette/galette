@@ -89,7 +89,8 @@ class ScheduledPaymentController extends CrudController
             [
                 'page_title'    => _T("Add scheduled payment"),
                 'scheduled'     => $scheduled,
-                'mode'          => $mode
+                'mode'          => $mode,
+                'documentation' => 'usermanual/contributions.html#scheduled-payments'
             ]
         );
         return $response;
@@ -283,6 +284,10 @@ class ScheduledPaymentController extends CrudController
                 } else {
                     $error_detected[] = _T("- Unknown payment type!");
                 }
+            }
+
+            if (isset($post['paid_filter'])) {
+                $filters->paid = (int)$post['paid_filter'];
             }
         }
 
