@@ -259,7 +259,7 @@
                                 'current': ptype,
                                 'varname': 'type_paiement_cotis',
                                 'disabled': contribution.hasSchedule(),
-                                'tip_html': contribution.hasSchedule() ? false : 'When selecting the type <strong>scheduled payment</strong>, a contribution will be added and you will be asked to create the corresponding scheduled payments afterwards. In that case the amount of the contribution on the present form must equal the total of all the scheduled payments you will define next.'
+                                'tip_html': contribution.hasSchedule() or login.isGroupManager() ? false : 'When selecting the type <strong>scheduled payment</strong>, a contribution will be added and you will be asked to create the corresponding scheduled payments afterwards. In that case the amount of the contribution on the present form must equal the total of all the scheduled payments you will define next.'
                             } %}
                         </div>
                         <div class="{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}three{% else %}two{% endif %} fields">
@@ -437,7 +437,7 @@
                             loader: 'button'
                         } %},
                         success: function(res){
-                            _contribs_dialog(res, '{{ contribution.id }}');
+                            _contribs_dialog(res);
                         },
                         error: function() {
                             {% include "elements/js/modal.js.twig" with {
@@ -454,7 +454,7 @@
             }
             _btnuser_mapping();
 
-            var _contribs_dialog = function(res, id_cotis){
+            var _contribs_dialog = function(res){
                 {% include "elements/js/modal.js.twig" with {
                     modal_title_twig: _T("Scheduled payments")|e("js"),
                     modal_content: "res",
@@ -463,17 +463,14 @@
                     modal_deny_only: true,
                     modal_cancel_text: _T("Close")|e('js')
                 } %}
-                _contribs_ajax_mapper(res, id_cotis);
+                _contribs_ajax_mapper(res);
             }
 
-            var _contribs_ajax_mapper = function(res, id_cotis){
-                /*$('.scheduledpayments .filter.icon').remove();
-                $('.scheduledpayments .infoline .button').remove();
-                $('.scheduledpayments .contribution_row input[type=checkbox]').hide();
-
+            var _contribs_ajax_mapper = function(res){
+                $('.scheduledpayments .schedule_row input[type=checkbox]').hide();
+                $('.infoline .right.segment').hide();
                 //Initialize Fomantic components
                 $('.scheduledpayments .dropdown').dropdown();
-                {% include "elements/js/calendar.js.twig" %}
 
                 //Deactivate contributions list links
                 $('.scheduledpayments tbody a').click(function(){
@@ -481,45 +478,14 @@
                     return false;
                 });
 
-                //Use JS to send forms
-                $('.scheduledpayments form').on('submit', function(){
-                    var _form = $(this);
-                    $.ajax({
-                        url: _form.attr('action'),
-                        type: "POST",
-                        data: _form.serialize(),
-                        {% include "elements/js/loader.js.twig" with {
-                            selector: '.scheduledpayments'
-                        } %},
-                        success: function(res){
-                            $('#main-container').remove();
-                            $('.scheduledpayments .content').append(res);
-                            _contribs_ajax_mapper(res, max_amount);
-                        },
-                        error: function() {
-                            {% include "elements/js/modal.js.twig" with {
-                                modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
-                                modal_without_content: true,
-                                modal_class: "mini",
-                                modal_deny_only: true,
-                                modal_cancel_text: _T("Close")|e("js"),
-                                modal_classname: "redalert",
-                            } %}
-                        }
-                    });
-                    return false;
-                });
-
-                _bindDropdownsAutosubmit();*/
-
                 //Bind pagination and ordering links
-                /*$('.scheduledpayments .pagination a, .scheduledpayments thead a').click(function() {
+                $('.scheduledpayments .pagination a, .scheduledpayments thead a').click(function(event) {
+                    event.preventDefault();
                     $.ajax({
                         url: this.href,
                         type: "GET",
                         data: {
-                            ajax: true,
-                            max_amount: max_amount
+                            id_cotis: '{{ contribution.id }}'
                         },
                         {% include "elements/js/loader.js.twig" with {
                             selector: '.scheduledpayments'
@@ -527,11 +493,11 @@
                         success: function(res){
                             $('#main-container').remove();
                             $('.scheduledpayments .content').append(res);
-                            _contribs_ajax_mapper(res, max_amount);
+                            _contribs_ajax_mapper(res);
                         },
                         error: function() {
                             {% include "elements/js/modal.js.twig" with {
-                                modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
+                                modal_title_twig: _T("An error occurred displaying scheduled payments :(")|e("js"),
                                 modal_without_content: true,
                                 modal_class: "mini",
                                 modal_deny_only: true,
@@ -541,40 +507,7 @@
                         },
                     });
                     return false;
-                });*/
-
-                //Bind reset filters button
-                /*$('#clear_filter').click(function(event) {
-                    var _this = $(this);
-                    _this.closest('form').submit(function(event) {
-                        var _form = $(this);
-                        $.ajax({
-                            url: _form.attr('action'),
-                            type: "POST",
-                            data: {
-                                clear_filter: true
-                            },
-                            {% include "elements/js/loader.js.twig" with {
-                                selector: '.scheduledpayments'
-                            } %},
-                            success: function(res){
-                                $('#main-container').remove();
-                                $('.scheduledpayments .content').append(res);
-                                _contribs_ajax_mapper(res, max_amount);
-                            },
-                            error: function() {
-                                {% include "elements/js/modal.js.twig" with {
-                                    modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
-                                    modal_without_content: true,
-                                    modal_class: "mini",
-                                    modal_deny_only: true,
-                                    modal_cancel_text: _T("Close")|e("js"),
-                                    modal_classname: "redalert",
-                                } %}
-                            }
-                        });
-                    });
-                });*/
+                });
             }
     {% endif %}
     });
