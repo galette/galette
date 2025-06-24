@@ -372,13 +372,9 @@ class ScheduledPayments
             }
 
             if ($this->filters->paid != ScheduledPaymentsList::PAID_DC) {
-                if ($this->zdb->isPostgres()) {
-                    $paid = $this->filters->paid == ScheduledPaymentsList::PAID_YES ?
-                        $this->zdb->platform->quoteValue('true') :
-                        $this->zdb->platform->quoteValue('false');
-                } else {
-                    $paid = $this->filters->paid;
-                }
+                $paid = $this->filters->paid ?
+                    true :
+                    ($this->zdb->isPostgres() ? 'false' : 0);
                 $select->where(['s.paid' => $paid]);
             }
         } catch (Throwable $e) {

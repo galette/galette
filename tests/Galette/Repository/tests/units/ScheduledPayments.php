@@ -95,7 +95,8 @@ class ScheduledPayments extends GaletteTestCase
             'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
             'scheduled_date' => $now->format('Y-m-d'),
             'comment' => 'FAKER' . $this->seed,
-            'amount' => 10.0
+            'amount' => 10.0,
+            'paid' => true
         ];
         $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
         $this->assertTrue($this->contrib->store());
@@ -112,6 +113,7 @@ class ScheduledPayments extends GaletteTestCase
         $scheduled_date = $now->modify('+1 month');
         $data['scheduled_date'] = $scheduled_date->format('Y-m-d');
         $data['amount'] = 25.0;
+        $data['paid'] = false;
         $data['id_paymenttype'] = \Galette\Entity\PaymentType::CREDITCARD;
         $check = $scheduledPayment->check($data);
         if (count($scheduledPayment->getErrors())) {
@@ -147,6 +149,25 @@ class ScheduledPayments extends GaletteTestCase
         $list = $scheduledPayments->getList(true);
         $this->assertCount(1, $list);
         $this->assertSame(10.0, $scheduledPayments->getSum());
+
+        $filters = new \Galette\Filters\ScheduledPaymentsList();
+        $filters->paid = \Galette\Filters\ScheduledPaymentsList::PAID_DC;
+        $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
+        $list = $scheduledPayments->getList(true);
+        $this->assertCount(2, $list);
+        $this->assertSame(35.0, $scheduledPayments->getSum());
+
+        $filters->paid = \Galette\Filters\ScheduledPaymentsList::PAID_YES;
+        $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
+        $list = $scheduledPayments->getList(true);
+        $this->assertCount(1, $list);
+        $this->assertSame(10.0, $scheduledPayments->getSum());
+
+        $filters->paid = \Galette\Filters\ScheduledPaymentsList::PAID_NO;
+        $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login, $filters);
+        $list = $scheduledPayments->getList(true);
+        $this->assertCount(1, $list);
+        $this->assertSame(25.0, $scheduledPayments->getSum());
     }
 
     /**
