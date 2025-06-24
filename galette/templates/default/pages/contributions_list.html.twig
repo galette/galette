@@ -270,7 +270,7 @@
     {% if mode != 'ajax' and nb != 0 %}
         <tr>
             <th class="right aligned" colspan="{{ columns_count }}" scope="colgroup">
-                {{ _T("Total amount of contributions: %f")|replace({"%f": contribs.getSum()}) }}
+                {{ _T("Found contributions total %f")|replace({"%f": contribs.getSum()}) }}
             </th>
         </tr>
     {% endif %}
