@@ -464,18 +464,6 @@
                         </tr>
                     </thead>
                     <tbody>
-        {% if preferences.pref_use_paid_flag %}
-                        <tr>
-                            <th scope="row"  class="action">
-                                <i class="ui money bill wave green small icon" aria-hidden="true"></i>
-                            </th>
-                            <td class="back">{{ _Tx('contribution', 'Paid') }}</td>
-                            <th scope="row"  class="action">
-                                <i class="ui money bill wave red small icon" aria-hidden="true"></i>
-                            </th>
-                            <td class="back">{{ _Tx('contribution', 'Unpaid') }}</td>
-                        </tr>
-        {% endif %}
                         <tr>
                             <th scope="row"  class="action">
                                 <i class="ui sitemap blue icon" aria-hidden="true"></i>
