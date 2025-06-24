@@ -170,7 +170,7 @@
                 </div>
             </div>
 
-            {% if member is defined and (login.isAdmin() or login.isStaff() or member.canShow(login)) %}
+            {% if member is defined and member.canShow(login) %}
                 <div class="ui segment member-filtered">
                     <div class="ui horizontal list">
                         <span class="ui primary ribbon label">

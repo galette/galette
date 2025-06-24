@@ -165,13 +165,13 @@
             </button>
         </div>
     </div>
-    {% if mode != 'ajax' and member is defined and (login.isAdmin() or login.isStaff() or member.canShow(login)) %}
+    {% if mode != 'ajax' and member is defined and member.canShow(login) %}
         <div class="ui horizontal wrapping segments member-filtered">
             <div class="ui compact segment">
                 <div class="ui horizontal list">
                     <span class="ui primary ribbon label">
                         {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
-                        {% if login.isAdmin() or login.isStaff() or login.isGroupManager() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                        {% if login.isAdmin() or login.isStaff() or login.isGroupManager() and preferences.pref_bool_groupsmanagers_see_contributions or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
                             <a
                                 href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": "all"}) }}"
                             >
