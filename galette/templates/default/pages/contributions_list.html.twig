@@ -438,18 +438,18 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui file pdf green icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</td>
             {% if login.isAdmin() or login.isStaff() %}
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui edit blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Modification") }}</td>
                         </tr>
                         <tr>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui trash red icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Deletion") }}</td>
@@ -460,29 +460,29 @@
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th scope="colgroup" colspan="4">{{ _T('Contribution interactions') }}</th>
+                            <th scope="colgroup" colspan="4">{{ _T('Statuses and interactions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui sitemap blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Has an attached transaction") }}</td>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui calendar alternate outline blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Has scheduled payments") }}</td>
                         </tr>
                         <tr>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui calendar alternate outline orange icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Has scheduled payments") }} ({{ _T("Amount is not fully dispatched") }})</td>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui filter grey small icon" aria-hidden="true"></i>
                             </th>
-                            <td class="back">{{ _T("Show only '%name' contributions")|replace({"%name": _T("Member")}) }}</td>
+                            <td class="back">{{ _T("Filter on corresponding member") }}</td>
                         </tr>
                     </tbody>
                 </table>

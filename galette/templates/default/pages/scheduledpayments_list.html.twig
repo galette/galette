@@ -350,11 +350,11 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui edit blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Modification") }}</td>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui trash red icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Deletion") }}</td>
@@ -365,26 +365,26 @@
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th scope="colgroup" colspan="4">{{ _T('Scheduled payment status/interactions') }}</th>
+                            <th scope="colgroup" colspan="4">{{ _T('Statuses and interactions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui money bill wave green small icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Paid") }}</td>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui money bill wave red small icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Unpaid") }}</td>
                         </tr>
         {% if login.isAdmin() or login.isStaff() %}
                         <tr>
-                            <th scope="row"  class="action">
+                            <th scope="row">
                                 <i class="ui filter grey small icon" aria-hidden="true"></i>
                             </th>
-                            <td class="back">{{ _T("Show only '%name' scheduled payments")|replace({"%name": _T("Member")}) }}</td>
+                            <td class="back">{{ _T("Filter on corresponding member") }}</td>
                         </tr>
         {% endif %}
                     </tbody>
