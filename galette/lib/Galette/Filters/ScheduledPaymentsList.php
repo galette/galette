@@ -40,6 +40,7 @@ use Galette\Core\Pagination;
  * @property string $rend_date_filter
  * @property integer[] $selected
  * @property ?integer $member_filter
+ * @property integer $paid
  */
 
 class ScheduledPaymentsList extends Pagination
@@ -53,6 +54,11 @@ class ScheduledPaymentsList extends Pagination
     public const ORDERBY_AMOUNT = 5;
     public const ORDERBY_PAYMENT_TYPE = 7;
     public const ORDERBY_ID = 8;
+    public const ORDERBY_PAID = 9;
+
+    public const PAID_DC = 2;
+    public const PAID_YES = 1;
+    public const PAID_NO = 0;
 
     public const DATE_RECORD = 0;
 
@@ -65,6 +71,7 @@ class ScheduledPaymentsList extends Pagination
     private ?int $payment_type_filter = null; //@phpstan-ignore-line
     private int|false $from_contribution = false; //@phpstan-ignore-line
     private ?int $member_filter = null;
+    private int $paid = self::PAID_DC;
 
 
     /** @var array<int> */
@@ -78,7 +85,8 @@ class ScheduledPaymentsList extends Pagination
         'payment_type_filter',
         'from_contribution',
         'selected',
-        'member_filter'
+        'member_filter',
+        'paid'
     ];
 
     /** @var array<string>  */
@@ -121,6 +129,7 @@ class ScheduledPaymentsList extends Pagination
         $this->payment_type_filter = null;
         $this->selected = [];
         $this->member_filter = null;
+        $this->paid = self::PAID_DC;
 
         if ($ajax === false) {
             $this->from_contribution = false;

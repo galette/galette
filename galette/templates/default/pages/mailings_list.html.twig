@@ -28,6 +28,31 @@
     }
 } %}
 
+{% set columns = [
+    {
+        'label': '#',
+        'collapse': true
+    },
+    {
+        'label': _T("Date"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_DATE"),
+        'collapse': true
+    },
+    {'label': _T('Sender'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENDER")},
+    {
+        'label': _T('Recipients'),
+        'collapse': true
+    },
+    {'label': _T('Subject'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT")},
+    {
+        'label': _T('Att.'),
+        'collapse': true
+    },
+    {
+        'label': _T("Sent"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENT"),
+        'collapse': true
+    }
+] %}
+
 {% block infoline %}
     {% set infoline = {
         'label': _Tn("%1$s entry", "%1$s entries", history.getCount())|format(history.getCount()),
@@ -61,37 +86,13 @@
 {% endblock %}
 
 {% block header %}
-    {% set columns = [
-        {
-            'label': '#',
-            'collapse': true
-        },
-        {
-            'label': _T("Date"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_DATE"),
-            'collapse': true
-        },
-        {'label': _T('Sender'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENDER")},
-        {
-            'label': _T('Recipients'),
-            'collapse': true
-        },
-        {'label': _T('Subject'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT")},
-        {
-            'label': _T('Att.'),
-            'collapse': true
-        },
-        {
-            'label': _T("Sent"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENT"),
-            'collapse': true
-        }
-    ] %}
     {{ parent() }}
 {% endblock %}
 
 {% block search %}
     <form action="{{ url_for('mailings_filter') }}" method="post" class="ui form filters">
         <div class="ui secondary yellow segment">
-            <div class="three fields">
+            <div class="two fields">
                 <div class="two fields">
                     <div class="field">
                         <label for="start_date_filter">{{ _T('since') }}</label>
@@ -116,6 +117,9 @@
                     <label for="subject_filter">{{ _T('Subject') }}</label>
                     <input type="text" name="subject_filter" id="subject_filter" value="{{ history.filters.subject_filter }}"/>
                 </div>
+            </div>
+
+            <div class="two fields last-child">
                 <div class="field">
                         <label for="sent_filter">{{ _T('Sent mailings:') }}</label>
                     <div class="inline fields">
@@ -139,16 +143,17 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="ui right aligned basic fitted segment field">
-                <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
-                    <i class="search icon" aria-hidden="true"></i>
-                    {{ _T('Filter') }}
-                </button>
-                <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
-                    <i class="trash alt red icon" aria-hidden="true"></i>
-                    {{ _T('Clear filter') }}
-                </button>
+
+                <div class="ui right aligned basic fitted segment field">
+                    <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
+                        <i class="search icon" aria-hidden="true"></i>
+                        {{ _T('Filter') }}
+                    </button>
+                    <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                        <i class="trash alt red icon" aria-hidden="true"></i>
+                        {{ _T('Clear filter') }}
+                    </button>
+                </div>
             </div>
         </div>
         {% include "components/forms/csrf.html.twig" %}

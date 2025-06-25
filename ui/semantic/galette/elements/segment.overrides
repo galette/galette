@@ -14,7 +14,7 @@
     background: transparent;
     border-left: none;
     padding: .8em;
-    
+
     .mini.circular.icon.button {
       margin-top: .3rem;
     }
@@ -47,6 +47,15 @@
 .ui.attached.accordion-styled.segment {
   border: 1px solid @primaryColor;
   border-top: none;
+}
+
+/*--------------------------------------------------------
+     Toolbar displayed on lists filtered by member
+---------------------------------------------------------*/
+.segments.member-filtered .segment:first-child,
+.segment.member-filtered {
+  padding-top: .65em;
+  padding-bottom: 0;
 }
 
 /*-------------------------

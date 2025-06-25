@@ -54,6 +54,14 @@
 /*-------------------------
       Filters' fields
 --------------------------*/
+.filters .yellow.segment {
+  padding-bottom: 0;
+
+  & > .last-child {
+    margin-bottom: 0;
+  }
+}
+
 .filters .fields .fields {
   margin: 0;
 }

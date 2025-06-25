@@ -296,6 +296,9 @@ class ScheduledPayments
             case ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE:
                 $order[] = 'id_paymenttype ' . $this->filters->getDirection();
                 break;
+            case ScheduledPaymentsList::ORDERBY_PAID:
+                $order[] = 'paid ' . $this->filters->getDirection();
+                break;
             default:
                 $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
                 break;
@@ -366,6 +369,13 @@ class ScheduledPayments
                         'a.' . Adherent::PK => $this->login->id
                     ]
                 );
+            }
+
+            if ($this->filters->paid != ScheduledPaymentsList::PAID_DC) {
+                $paid = $this->filters->paid ?
+                    true :
+                    ($this->zdb->isPostgres() ? 'false' : 0);
+                $select->where(['s.paid' => $paid]);
             }
         } catch (Throwable $e) {
             Analog::log(

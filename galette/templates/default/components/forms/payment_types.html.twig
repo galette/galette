@@ -18,8 +18,17 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 #}
+{% if tip_html is defined and tip_html != '' %}
+    {% set tip = tip_html %}
+{% endif %}
+
 <div class="{% if show_inline is defined %}inline {% endif %}field{% if required is defined and required == true %} required{% endif %}">
-    <label for="{{ varname }}">{% if label is defined %}{{ label }}{% else %}{{ _T("Payment type:") }}{% endif %}</label>
+    <label for="{{ varname }}">
+        {% if label is defined %}{{ label }}{% else %}{{ _T("Payment type:") }}{% endif %}
+        {% if tip is defined %}
+            <i class="circular small basic question icon tooltip" {% if tip_html is defined %}data-html{% else %}title{% endif %}="{{ tip }}" aria-hidden="true"></i>
+        {% endif %}
+    </label>
     <select
         name="{{ varname }}"
         id="{{ varname }}"

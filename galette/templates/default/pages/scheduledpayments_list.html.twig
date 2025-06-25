@@ -53,97 +53,159 @@
     ] %}
 {% endif %}
 
+{% set columns = [
+    {
+        'label': '#', 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID"),
+        'collapse': true
+    }
+] %}
+
+{% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
+    {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")}]) %}
+{% endif %}
+
+{% set columns = columns|merge([
+    {
+        'label': _T("Date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_DATE"),
+        'collapse': true
+    },
+    {
+        'label': _T("Scheduled date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE"),
+        'collapse': true
+    },
+    {
+        'label': _T('Amount'), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_AMOUNT"),
+        'collapse': true
+    },
+    {
+        'label': _T('Paid'),
+        'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAID"),
+        'collapse': true
+    },
+    {'label': _T("Payment type"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE")}
+]) %}
+
+{% if (not login.isAdmin() and not login.isStaff()) or mode == 'ajax' %}
+    {% set no_action = true %}
+{% endif %}
+
+
 {% block search %}
-    <form action="{{ url_for("filterScheduledPayments") }}" method="post" class="ui form filters">
-    <div class="ui secondary yellow segment">
-        <div class="four fields">
-            <div class="field">
-                <label for="date_field">{{ _T("Show payments by") }}</label>
-                <select name="date_field" id="date_field" class="ui search dropdown">
-                    <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD') %} selected="selected"{% endif %}>{{ _T("Date") }}</option>
-                    <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED') %} selected="selected"{% endif %}>{{ _T("Scheduled date") }}</option>
-                </select>
-            </div>
-            <div class="two fields">
-                <div class="field">
-                    <label for="start_date_filter">{{ _T("since") }}</label>
-                    <div class="ui calendar" id="contrib-rangestart">
-                        <div class="ui input left icon">
-                            <i class="calendar icon" aria-hidden="true"></i>
-                            <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
+    {% if mode != 'ajax' %}
+        <form action="{{ url_for("filterScheduledPayments") }}" method="post" class="ui form filters">
+            <div class="ui secondary yellow segment">
+                <div class="three fields">
+                    <div class="field">
+                        <label for="date_field">{{ _T("Show payments by") }}</label>
+                        <select name="date_field" id="date_field" class="ui search dropdown">
+                            <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_RECORD') %} selected="selected"{% endif %}>{{ _T("Date") }}</option>
+                            <option value="{{ constant("Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED") }}"{% if filters.date_field == constant('Galette\\Filters\\ScheduledPaymentsList::DATE_SCHEDULED') %} selected="selected"{% endif %}>{{ _T("Scheduled date") }}</option>
+                        </select>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label for="start_date_filter">{{ _T("since") }}</label>
+                            <div class="ui calendar" id="contrib-rangestart">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon" aria-hidden="true"></i>
+                                    <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{{ filters.start_date_filter }}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="end_date_filter">{{ _T("until") }}</label>
+                            <div class="ui calendar" id="contrib-rangeend">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon" aria-hidden="true"></i>
+                                    <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label for="end_date_filter">{{ _T("until") }}</label>
-                    <div class="ui calendar" id="contrib-rangeend">
-                        <div class="ui input left icon">
-                            <i class="calendar icon" aria-hidden="true"></i>
-                            <input placeholder="{{ _T("yyyy-mm-dd format") }}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{{ filters.end_date_filter }}"/>
-                        </div>
+                    <div class="field">
+                        {% include "components/forms/payment_types.html.twig" with {
+                            current: filters.payment_type_filter,
+                            varname: "payment_type_filter",
+                            classname: "",
+                            empty: {'value': -1, 'label': _T("Select")}
+                        } %}
                     </div>
                 </div>
-            </div>
-            <div class="field">
-                {% include "components/forms/payment_types.html.twig" with {
-                    current: filters.payment_type_filter,
-                    varname: "payment_type_filter",
-                    classname: "",
-                    empty: {'value': -1, 'label': _T("Select")}
-                } %}
-            </div>
-                <div class="ui right aligned basic fitted segment field flexend">
-                    <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
-                        <i class="search icon" aria-hidden="true"></i>
-                        {{ _T("Filter") }}
-                    </button>
-                    <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
-                        <i class="trash alt red icon" aria-hidden="true"></i>
-                        {{ _T("Clear filter") }}
-                    </button>
-            </div>
-        </div>
-    </div>
 
-    {% if member is defined %}
-        {% if login.isAdmin() or login.isStaff() or member.canShow(login) %}
-    <div class="ui compact vertically fitted segment">
-        <div class="ui horizontal list">
-            <span class="ui primary ribbon label">
-            {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
-            {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
-            <a
-                href="{{ url_for("scheduledPayments", {"option": "member", "value": "all"}) }}"
-            >
-                <i class="icon times tooltip" aria-hidden="true"></i>
-                <span class="ui special popup">
-                {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
-                    {{ _T("Show all your scheduled payments") }}
-                {% else %}
-                    {{ _T("Show all members scheduled payments") }}
-                {% endif %}
-                </span>
-            </a>
+                <div class="two fields last-child">
+                    <div class="field">
+                        <div class="inline fields">
+                            <label for="paid_filter">{{ _T('Paid scheduled payments:') }}</label>
+                            <div class="field inline">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="paid_filter" id="filter_dc_paid" value="{{ constant('Galette\\Filters\\ScheduledPaymentsList::PAID_DC') }}"{% if filters.paid == constant('Galette\\Filters\\ScheduledPaymentsList::PAID_DC') %} checked="checked"{% endif %}>
+                                    <label for="filter_dc_paid">{{ _T("Don't care") }}</label>
+                                </div>
+                            </div>
+                            <div class="field inline">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="paid_filter" id="filter_paid" value="{{ constant('Galette\\Filters\\ScheduledPaymentsList::PAID_YES') }}"{% if filters.paid == constant('Galette\\Filters\\ScheduledPaymentsList::PAID_YES') %} checked="checked"{% endif %}>
+                                    <label for="filter_paid">{{ _T('Paid') }}</label>
+                                </div>
+                            </div>
+                            <div class="field inline">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="paid_filter" id="filter_not_paid" value="{{ constant('Galette\\Filters\\ScheduledPaymentsList::PAID_NO') }}"{% if filters.paid == constant('Galette\\Filters\\ScheduledPaymentsList::PAID_NO') %} checked="checked"{% endif %}>
+                                    <label for="filter_not_paid">{{ _T('Not paid') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui right aligned basic fitted segment field">
+                        <button type="submit"  class="tooltip ui labeled icon primary button" title="{{ _T("Apply filters") }}" name="filter">
+                            <i class="search icon" aria-hidden="true"></i>
+                            {{ _T("Filter") }}
+                        </button>
+                        <button type="submit" id="clear_filter" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T("Reset all filters to defaults") }}">
+                            <i class="trash alt red icon" aria-hidden="true"></i>
+                            {{ _T("Clear filter") }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {% if member is defined and member.canShow(login) %}
+                <div class="ui segment member-filtered">
+                    <div class="ui horizontal list">
+                        <span class="ui primary ribbon label">
+                            {% set member_logged_in_as = member.name ~ " " ~ member.surname ~ " (" ~ member.login ~ ")" %}
+                            {% if login.isAdmin() or login.isStaff() or member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                                <a
+                                    href="{{ url_for("scheduledPayments", {"option": "member", "value": "all"}) }}"
+                                >
+                                    <i class="icon times tooltip" aria-hidden="true"></i>
+                                    <span class="ui special popup">
+                                    {% if member.hasChildren() or (member.hasParent() and (member_logged_in_as != login.loggedInAs(true))) %}
+                                        {{ _T("Show all your scheduled payments") }}
+                                    {% else %}
+                                        {{ _T("Show all members scheduled payments") }}
+                                    {% endif %}
+                                    </span>
+                                </a>
+                            {% endif %}
+                            {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
+                        </span>
+                        {% if member.canShow(login) %}
+                            <div class="item">
+                                <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny labeled icon button">
+                                    <i class="ui user blue icon" aria-hidden="true"></i>
+                                    {{ _T("See member profile") }}
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
             {% endif %}
-        {% endif %}
-            {{ member.sname }}{% if not member.isActive() %} ({{ _T("Inactive") }}){% endif %}
-            </span>
-        {% if login.isAdmin() or login.isStaff() %}
-            <div class="item">
-                <a href="{{ url_for("member", {"id": member.id}) }}" class="ui tiny button">{{ _T("See member profile") }}</a>
-            </div>
-        {% endif %}
-        </div>
-    </div>
-    {% endif %}
 
-    {% if mode == 'ajax'%}
-        <input type="hidden" name="ajax" value="true"/>
-        <input type="hidden" name="from_contribution" value="{{ filters.from_contribution }}"/>
-    {% else %}
-        {% include "components/forms/csrf.html.twig" %}
+            {% include "components/forms/csrf.html.twig" %}
+        </form>
     {% endif %}
-    </form>
 {% endblock %}
 
 {% block infoline %}
@@ -157,44 +219,13 @@
 {% endblock %}
 
 {% block header %}
-    {% set columns = [
-        {
-            'label': '#', 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID"),
-            'collapse': true
-        }
-    ] %}
-
-    {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-        {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")}]) %}
-    {% endif %}
-
-    {% set columns = columns|merge([
-        {
-            'label': _T("Date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_DATE"),
-            'collapse': true
-        },
-        {
-            'label': _T("Scheduled date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE"),
-            'collapse': true
-        },
-        {
-            'label': _T('Amount'), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_AMOUNT"),
-            'collapse': true
-        },
-        {'label': _T("Payment type"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE")}
-    ]) %}
-
-    {% if (not login.isAdmin() and not login.isStaff()) or mode == 'ajax' %}
-        {% set no_action = true %}
-    {% endif %}
-
     {{ parent() }}
 {% endblock %}
 
 {% block footer %}
-    {% if nb != 0 %}
+    {% if mode != 'ajax' and nb != 0 %}
         <tr>
-            <th class="right aligned" colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}7{% else %}6{% endif %}">
+            <th class="right aligned" colspan="{{ columns_count }}" scope="colgroup">
                 {{ _T("Found total scheduled %f")|replace({"%f": scheduled.getSum()}) }}
             </th>
         </tr>
@@ -228,20 +259,28 @@
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
                 {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
-                    <span>
-                        <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
-                            <i
-                                class="ui {% if contribution.isFee() %}user check{% else %}gift{% endif %} grey icon tooltip"
-                                title="{% if contribution.isFee() %}{{ _T('Contribution') }}{% else %}{{ _T('Donation') }}{% endif %}"
-                            ></i>
-                            <span class="visually-hidden">{{ _T("Contribution %id")|replace({"%id": contribution.id}) }}</span>
-                        </a>
-                    </span>
+                    <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
+                        <i class="icons tooltip" aria-hidden="true">
+                            {% if contribution.isFee() %}
+                                <i class="user icon"></i>
+                            {% else %}
+                                <i class="gift icon"></i>
+                            {% endif %}
+                          <i class="corner linkify icon"></i>
+                        </i>
+                        <span class="ui special popup">
+                            {% if contribution.isFee() %}
+                                {{ _T("Membership fee %id")|replace({"%id": contribution.id}) }}
+                            {% else %}
+                                {{ _T("Donation %id")|replace({"%id": contribution.id}) }}
+                            {% endif %}
+                        </span>
+                    </a>
                 {% endif %}
             </td>
             {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
                 <td data-col-label="{{ _T("Member") }}">
-                    {% if filters.member_filter == "" or filters.member_filter == null %}
+                    {% if (filters.member_filter == "" or filters.member_filter == null) and mode != "ajax" %}
                         <a
                             href="{{ url_for("scheduledPayments", {"option": "member", "value": mid}) }}"
                             title="{{ _T("Show only '%name' scheduled payments")|replace({"%name": mname}) }}"
@@ -260,6 +299,16 @@
             <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ scheduled.getCreationDate() }}</td>
             <td class="collapsing" data-col-label="{{ _T("Scheduled date") }}">{{ scheduled.getScheduledDate() }}</td>
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ scheduled.getAmount() }}</td>
+            <td class=" collapsing" data-col-label="{{ _T("Paid") }}">
+                <i class="money bill wave {% if not scheduled.isPaid() %}red{% else %}green{% endif %} icon tooltip" data-html="{% if scheduled.isPaid() %}{{ _T("Paid") }}{% else %}{{ _T("Not paid") }}{% endif %}"></i>
+                <span class="visually-hidden">
+                    {% if scheduled.isPaid() %}
+                        {{ _T("Paid") }}
+                    {% else %}
+                        {{ _T("Not paid") }}"
+                    {% endif %}
+                </span>
+            </td>
             <td data-col-label="{{ _T("Payment type") }}">{{ scheduled.getPaymentType() }}</td>
             {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
                 <td class="actions_row center collapsing">
@@ -283,6 +332,65 @@
             {% endif %}
         </tr>
     {% else %}
-        <tr><td colspan="{% if (login.isAdmin() or login.isStaff()) and member is not defined %}7{% elseif login.isAdmin() or login.isStaff() %}6{% else %}5{% endif %}" class="emptylist">{{ _T("No scheduled payment") }}</td></tr>
+        <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("No scheduled payment") }}</td></tr>
     {% endfor %}
+{% endblock %}
+
+{% block legend %}
+    {% if mode != 'ajax' %}
+        <div id="legende" title="{{ _T("Legend") }}" class="ui modal">
+            <div class="header">{{ _T("Legend") }}</div>
+            <div class="content">
+        {% if login.isAdmin() or login.isStaff() %}
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th scope="colgroup" colspan="4">{{ _T('Actions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"  class="action">
+                                <i class="ui edit blue icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Modification") }}</td>
+                            <th scope="row"  class="action">
+                                <i class="ui trash red icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Deletion") }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+        {% endif %}
+                <table class="ui stripped table">
+                    <thead>
+                        <tr>
+                            <th scope="colgroup" colspan="4">{{ _T('Scheduled payment status/interactions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"  class="action">
+                                <i class="ui money bill wave green small icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Paid") }}</td>
+                            <th scope="row"  class="action">
+                                <i class="ui money bill wave red small icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Unpaid") }}</td>
+                        </tr>
+        {% if login.isAdmin() or login.isStaff() %}
+                        <tr>
+                            <th scope="row"  class="action">
+                                <i class="ui filter grey small icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Show only '%name' scheduled payments")|replace({"%name": _T("Member")}) }}</td>
+                        </tr>
+        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon" aria-hidden="true"></i> {{ _T("Close") }}</div></div>
+        </div>
+    {% endif %}
 {% endblock %}
