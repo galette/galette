@@ -43,6 +43,13 @@ class Contribution extends GaletteTestCase
     {
         parent::tearDown();
 
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
+        $this->zdb->execute($delete);
+
         $this->zdb = new \Galette\Core\Db();
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
@@ -908,6 +915,10 @@ class Contribution extends GaletteTestCase
      */
     public function testCan(): void
     {
+        global $preferences;
+        $orig_pref_bool_groupsmanagers_see_contributions = $preferences->pref_bool_groupsmanagers_see_contributions;
+        $this->assertFalse($preferences->pref_bool_groupsmanagers_see_contributions);
+
         $this->getMemberOne();
         //create contribution for member
         $this->createContribution();
@@ -938,7 +949,7 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($this->login->isLogged());
 
         //Another member has no access
-        $this->getMemberTwo();
+        $member2 = $this->getMemberTwo();
         $mdata = $this->dataAdherentTwo();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertTrue($this->login->isLogged());
@@ -1010,6 +1021,22 @@ class Contribution extends GaletteTestCase
         //logout
         $this->login->logOut();
         $this->assertFalse($this->login->isLogged());
+
+        //tests for group managers
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+        $this->assertTrue($g1->setManagers([$member2]));
+        $this->assertTrue($g1->setMembers([$member]));
+
+        $mdata = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->logIn($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($contrib->canShow($this->login));
+
+        $preferences->pref_bool_groupsmanagers_see_contributions = true;
+        $can_show = $contrib->canShow($this->login);
+        $preferences->pref_bool_groupsmanagers_see_contributions = $orig_pref_bool_groupsmanagers_see_contributions;
+        $this->assertTrue($can_show);
     }
 
     /**

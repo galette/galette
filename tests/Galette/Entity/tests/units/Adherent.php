@@ -622,6 +622,80 @@ class Adherent extends GaletteTestCase
     }
 
     /**
+     * Test canDelete
+     *
+     * @return void
+     */
+    public function testCanDelete(): void
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+
+        //non authorized
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isGroupManager'))
+            ->getMock();
+        $this->assertFalse($adh->canDelete($login));
+
+        //admin => authorized
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isAdmin'))
+            ->getMock();
+        $login->method('isAdmin')->willReturn(true);
+        $this->assertTrue($adh->canDelete($login));
+
+        //staff => authorized
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isStaff'))
+            ->getMock();
+        $login->method('isStaff')->willReturn(true);
+        $this->assertTrue($adh->canDelete($login));
+
+        //group managers
+        $adh = $this->getMockBuilder(\Galette\Entity\Adherent::class)
+            ->setConstructorArgs(array($this->zdb))
+            ->onlyMethods(array('getGroups'))
+            ->getMock();
+
+        $g1 = $this->getMockBuilder(\Galette\Entity\Group::class)
+            ->onlyMethods(array('getId'))
+            ->getMock();
+        $g1->method('getId')->willReturn(1);
+
+        $g2 = $this->getMockBuilder(\Galette\Entity\Group::class)
+            ->onlyMethods(array('getId'))
+            ->getMock();
+        $g2->method('getId')->willReturn(2);
+
+        $adh->method('getGroups')->willReturn([$g1, $g2]);
+
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isGroupManager'))
+            ->getMock();
+
+        $this->assertFalse($adh->canDelete($login));
+
+        $login->method('isGroupManager')->willReturnCallback(
+            function ($gid) use ($g1) {
+                return $gid === null || $gid == $g1->getId();
+            }
+        );
+        $this->assertFalse($adh->canDelete($login));
+
+        $this->preferences->pref_bool_groupsmanagers_edit_member = true;
+        $canDelete = $adh->canDelete($login);
+        $this->preferences->pref_bool_groupsmanagers_edit_member = false; //reset
+        $this->assertTrue($canDelete);
+
+        //groups managers cannot edit members of the groups they do not own
+        $adh->method('getGroups')->willReturn([$g2]);
+        $this->assertFalse($adh->canDelete($login));
+    }
+
+    /**
      * Test member duplication
      *
      * @return void
@@ -766,6 +840,7 @@ class Adherent extends GaletteTestCase
         $this->assertFalse($member->canShow($this->login));
         $this->assertFalse($member->canCreate($this->login));
         $this->assertFalse($member->canEdit($this->login));
+        $this->assertFalse($member->canDelete($this->login));
 
         //Superadmin can fully change members
         $this->logSuperAdmin();
@@ -773,6 +848,7 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($member->canShow($this->login));
         $this->assertTrue($member->canCreate($this->login));
         $this->assertTrue($member->canEdit($this->login));
+        $this->assertTrue($member->canDelete($this->login));
 
         //logout
         $this->login->logOut();
@@ -788,6 +864,7 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($member->canShow($this->login));
         $this->assertTrue($member->canCreate($this->login));
         $this->assertTrue($member->canEdit($this->login));
+        $this->assertTrue($member->canDelete($this->login));
 
         //logout
         $this->login->logOut();
@@ -804,6 +881,7 @@ class Adherent extends GaletteTestCase
         $this->assertFalse($member->canShow($this->login));
         $this->assertFalse($member->canCreate($this->login));
         $this->assertFalse($member->canEdit($this->login));
+        $this->assertFalse($member->canDelete($this->login));
 
         //parents can fully change children information
         $this->getMemberOne();
@@ -843,6 +921,7 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($child->canShow($this->login));
         $this->assertFalse($child->canCreate($this->login));
         $this->assertTrue($child->canEdit($this->login));
+        $this->assertTrue($child->canDelete($this->login));
 
         //logout
         $this->login->logOut();

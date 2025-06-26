@@ -28,6 +28,7 @@ use DateInterval;
 use DateTime;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
+use Galette\Interfaces\AccessManagementInterface;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -64,7 +65,7 @@ use Galette\Helpers\EntityHelper;
  * @property integer $model
  * @property array<string, array<string, string>> $fields
  */
-class Contribution
+class Contribution implements AccessManagementInterface
 {
     use Dynamics;
     use HasEvent;
@@ -1368,7 +1369,33 @@ class Contribution
     }
 
     /**
-     * Can current logged-in user display contribution
+     * Can current logged-in user create a contribution?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canCreate(Login $login): bool
+    {
+        global $preferences;
+
+        if (!$login->isLogged()) {
+            return false;
+        }
+
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        if ($preferences->pref_bool_groupsmanagers_create_contributions && $login->isGroupManager()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Can current logged-in user display contribution?
      *
      * @param Login $login Login instance
      *
@@ -1376,6 +1403,8 @@ class Contribution
      */
     public function canShow(Login $login): bool
     {
+        global $preferences;
+
         //non-logged-in members cannot show contributions
         if (!$login->isLogged()) {
             return false;
@@ -1386,12 +1415,18 @@ class Contribution
             return true;
         }
 
+        //groups managers can see contributions of their group members - if preferences is enabled
+        if ($preferences->pref_bool_groupsmanagers_see_contributions && $login->isGroupManager()) {
+            $member = new Adherent($this->zdb, (int)$this->member, false);
+            return $login->isGroupManager(array_keys($member->getGroups()));
+        }
+
         //parent can see their children contributions
         $parent = new Adherent($this->zdb);
         $parent
             ->disableAllDeps()
             ->enableDep('children')
-            ->load($this->login->id);
+            ->load($login->id);
         if ($parent->hasChildren()) {
             foreach ($parent->children as $child) {
                 if ($child->id === $this->member) {
@@ -1402,6 +1437,38 @@ class Contribution
         }
 
         return false;
+    }
+
+    /**
+     * Can current logged-in user edit a contribution?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canEdit(Login $login): bool
+    {
+        if (!$login->isLogged()) {
+            return false;
+        }
+
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Can current logged-in user delete a contribution?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canDelete(Login $login): bool
+    {
+        return $this->canEdit($login);
     }
 
     /**

@@ -30,6 +30,7 @@ use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
 use Galette\Features\Socials;
+use Galette\Interfaces\AccessManagementInterface;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -109,7 +110,7 @@ use Galette\Features\Dynamics;
  * @property-read bool $self_adh
  * @property ?string $region
  */
-class Adherent
+class Adherent implements AccessManagementInterface
 {
     use Dynamics;
     use Socials;
@@ -2243,6 +2244,27 @@ class Adherent
     }
 
     /**
+     * Can current logged-in user display member
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canShow(Login $login): bool
+    {
+        //group managers can show members of groups they manage
+        if ($login->isGroupManager()) {
+            foreach ($this->getGroups() as $g) {
+                if ($login->isGroupManager($g->getId())) {
+                    return true;
+                }
+            }
+        }
+
+        return $this->canEdit($login);
+    }
+
+    /**
      * Can current logged-in user edit member
      *
      * @param Login $login Login instance
@@ -2276,23 +2298,15 @@ class Adherent
     }
 
     /**
-     * Can current logged-in user display member
+     * Can current logged-in user delete member
      *
      * @param Login $login Login instance
      *
      * @return boolean
      */
-    public function canShow(Login $login): bool
+    public function canDelete(Login $login): bool
     {
-        //group managers can show members of groups they manage
-        if ($login->isGroupManager()) {
-            foreach ($this->getGroups() as $g) {
-                if ($login->isGroupManager($g->getId())) {
-                    return true;
-                }
-            }
-        }
-
+        //FIXME: too large.
         return $this->canEdit($login);
     }
 

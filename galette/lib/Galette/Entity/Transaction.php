@@ -25,6 +25,7 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use Galette\Events\GaletteEvent;
+use Galette\Interfaces\AccessManagementInterface;
 use Galette\Repository\PaymentTypes;
 use Throwable;
 use Analog\Analog;
@@ -48,7 +49,7 @@ use Galette\Helpers\EntityHelper;
  * @property ?integer $member
  * @property ?integer $payment_type
  */
-class Transaction
+class Transaction implements AccessManagementInterface
 {
     use Dynamics;
     use EntityHelper;
@@ -656,7 +657,33 @@ class Transaction
     }
 
     /**
-     * Can current logged-in user display transaction
+     * Can current logged-in user create a transaction?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canCreate(Login $login): bool
+    {
+        global $preferences;
+
+        if (!$login->isLogged()) {
+            return false;
+        }
+
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        if ($preferences->pref_bool_groupsmanagers_create_transactions && $login->isGroupManager()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Can current logged-in user display transactions?
      *
      * @param Login $login Login instance
      *
@@ -694,6 +721,42 @@ class Transaction
                 }
             }
             return false;
+        }
+
+        return false;
+    }
+
+    /**
+     * Can current logged-in user edit a transaction?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canEdit(Login $login): bool
+    {
+        if ($this->canCreate($login) && isset($this->id)) {
+            $member = new Adherent($this->zdb, (int)$this->member, false);
+            return $login->isGroupManager(array_keys($member->getGroups()));
+        }
+        return false;
+    }
+
+    /**
+     * Can current logged-in user delete a transaction?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canDelete(Login $login): bool
+    {
+        if (!$login->isLogged()) {
+            return false;
+        }
+
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
         }
 
         return false;
