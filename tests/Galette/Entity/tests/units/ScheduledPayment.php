@@ -575,4 +575,68 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertSame(0.0, $scheduledPayment->getMissingAmount());
         $this->assertTrue($scheduledPayment->isFullyAllocated($this->contrib));
     }
+
+    /**
+     * Test isDue
+     *
+     * @return void
+     */
+    public function testIsDue(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        //create contribution for member
+        $this->createContribution();
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $now = new \DateTime();
+
+        $data = [
+            \Galette\Entity\Contribution::PK => $this->contrib->id,
+            'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+            'scheduled_date' => $now->format('Y-m-d'),
+            'comment' => 'FAKER' . $this->seed,
+            'amount' => 10.0,
+            'paid' => true
+        ];
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($this->contrib->store());
+        $this->assertSame([], $this->contrib->getErrors());
+
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+        $this->assertFalse($scheduledPayment->isDue());
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $scheduled_date = $now->modify('+1 month');
+        $data['scheduled_date'] = $scheduled_date->format('Y-m-d');
+        $data['amount'] = 25.0;
+        $data['paid'] = false;
+        $data['id_paymenttype'] = \Galette\Entity\PaymentType::CREDITCARD;
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+        $this->assertFalse($scheduledPayment->isDue());
+
+        $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $scheduled_date = $now->modify('-1 month');
+        $data['scheduled_date'] = $scheduled_date->format('Y-m-d');
+        $data['amount'] = 15.0;
+        $data['paid'] = false;
+        $data['id_paymenttype'] = \Galette\Entity\PaymentType::CASH;
+        $check = $scheduledPayment->check($data);
+        if (count($scheduledPayment->getErrors())) {
+            var_dump($scheduledPayment->getErrors());
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($scheduledPayment->store());
+        $this->assertTrue($scheduledPayment->isDue());
+    }
 }
