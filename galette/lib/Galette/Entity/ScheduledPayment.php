@@ -465,6 +465,18 @@ class ScheduledPayment
     }
 
     /**
+     * Is payment due?
+     *
+     * @return boolean
+     */
+    public function isDue(): bool
+    {
+        $now = time();
+        $date = $this->getScheduledDate(false)->getTimestamp();
+        return !$this->isPaid() && $date < $now;
+    }
+
+    /**
      * Get comment
      *
      * @return ?string

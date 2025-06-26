@@ -300,9 +300,11 @@
             <td class="collapsing" data-col-label="{{ _T("Scheduled date") }}">{{ scheduled.getScheduledDate() }}</td>
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ scheduled.getAmount() }}</td>
             <td class=" collapsing" data-col-label="{{ _T("Paid") }}">
-                <i class="money bill wave {% if not scheduled.isPaid() %}red{% else %}green{% endif %} icon tooltip" data-html="{% if scheduled.isPaid() %}{{ _T("Paid") }}{% else %}{{ _T("Not paid") }}{% endif %}"></i>
+                <i class="{% if scheduled.isDue() %}exclamation triangle{% else %}money bill wave{% endif %} {% if scheduled.isDue() %}orange{% elseif not scheduled.isPaid() %}red{% else %}green{% endif %} icon tooltip" data-html="{% if scheduled.isDue() %}{{ _T("Not paid and due") }}{% elseif scheduled.isPaid() %}{{ _T("Paid") }}{% else %}{{ _T("Not paid") }}{% endif %}"></i>
                 <span class="visually-hidden">
-                    {% if scheduled.isPaid() %}
+                    {% if scheduled.isDue() %}
+                        {{ _T("Not paid and due") }}
+                    {% elseif scheduled.isPaid() %}
                         {{ _T("Paid") }}
                     {% else %}
                         {{ _T("Not paid") }}"
@@ -377,16 +379,20 @@
                             <th scope="row">
                                 <i class="ui money bill wave red small icon" aria-hidden="true"></i>
                             </th>
-                            <td class="back">{{ _T("Unpaid") }}</td>
+                            <td class="back">{{ _T("Not paid") }}</td>
                         </tr>
-        {% if login.isAdmin() or login.isStaff() %}
                         <tr>
-                            <th scope="row">
+                            <th scope="row"  class="action">
+                                <i class="exclamation triangle orange small icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Not paid and due") }}</td>
+        {% if login.isAdmin() or login.isStaff() %}
+                            <th scope="row"  class="action">
                                 <i class="ui filter grey small icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Filter on corresponding member") }}</td>
-                        </tr>
         {% endif %}
+                        </tr>
                     </tbody>
                 </table>
             </div>
