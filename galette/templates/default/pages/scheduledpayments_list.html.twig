@@ -53,12 +53,23 @@
     ] %}
 {% endif %}
 
-{% set columns = [
-    {
-        'label': '#', 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID"),
-        'collapse': true
-    }
-] %}
+{% set columns = [] %}
+{% if preferences.pref_show_id %}
+    {% set columns = columns|merge([
+        {
+            'label': _T('ID'),
+            'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID"),
+            'collapse': true
+        }
+    ]) %}
+{% else %}
+    {% set columns = columns|merge([
+        {
+            'label': '#',
+            'collapse': true
+        }
+    ]) %}
+{% endif %}
 
 {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
     {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")}]) %}
@@ -249,7 +260,7 @@
         {% endif %}
 
         <tr class="{% if mode == 'ajax' %}schedule_row {% endif %}" id="row_{{ scheduled.getId() }}">
-            <td class="collapsing" data-scope="row" data-col-label="{{ _T("Scheduled payment") }}">
+            <td class="collapsing" data-scope="row" data-col-label="{% if preferences.pref_show_id %}{{ _T('ID') }}{% else %}#{% endif %}">
                 <span class="ui checkbox">
                     <input type="checkbox" name="entries_sel[]" value="{{ scheduled.getId() }}"/>
                 </span>
@@ -270,9 +281,9 @@
                         </i>
                         <span class="ui special popup">
                             {% if contribution.isFee() %}
-                                {{ _T("Membership fee %id")|replace({"%id": contribution.id}) }}
+                                {{ _T("Edit membership fee %1$s")|format(contribution.id) }}
                             {% else %}
-                                {{ _T("Donation %id")|replace({"%id": contribution.id}) }}
+                                {{ _T("Edit donation %1$s")|format(contribution.id) }}
                             {% endif %}
                         </span>
                     </a>
@@ -283,7 +294,7 @@
                     {% if (filters.member_filter == "" or filters.member_filter == null) and mode != "ajax" %}
                         <a
                             href="{{ url_for("scheduledPayments", {"option": "member", "value": mid}) }}"
-                            title="{{ _T("Show only '%name' scheduled payments")|replace({"%name": mname}) }}"
+                            title="{{ _T("Show only '%1$s' scheduled payments")|format(mname) }}"
                         >
                             <i class="filter grey small icon" aria-hidden="true"></i>
                         </a>
@@ -371,6 +382,25 @@
                         </tr>
                     </thead>
                     <tbody>
+        {% if login.isAdmin() or login.isStaff() %}
+                        <tr>
+                            <th scope="row">
+
+                                <i class="icons" aria-hidden="true">
+                                    <i class="user blue icon"></i>
+                                    <i class="corner linkify blue icon"></i>
+                                </i>
+                            </th>
+                            <td class="back">{{ _T("Edit membership fee %1$s")|format("ID") }}</td>
+                            <th scope="row">
+                                <i class="icons" aria-hidden="true">
+                                    <i class="gift blue icon"></i>
+                                    <i class="corner linkify blue icon"></i>
+                                </i>
+                            </th>
+                            <td class="back">{{ _T("Edit donation %1$s")|format("ID") }}</td>
+                        </tr>
+        {% endif %}
                         <tr>
                             <th scope="row">
                                 <i class="ui money bill wave green small icon" aria-hidden="true"></i>

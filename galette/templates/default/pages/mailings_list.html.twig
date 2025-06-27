@@ -28,11 +28,24 @@
     }
 } %}
 
-{% set columns = [
-    {
-        'label': '#',
-        'collapse': true
-    },
+{% set columns = [] %}
+{% if preferences.pref_show_id %}
+    {% set columns = columns|merge([
+        {
+            'label': _T('ID'),
+            'collapse': true
+        }
+    ]) %}
+{% else %}
+    {% set columns = columns|merge([
+        {
+            'label': '#',
+            'collapse': true
+        }
+    ]) %}
+{% endif %}
+
+{% set columns = columns|merge([
     {
         'label': _T("Date"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_DATE"),
         'collapse': true
@@ -51,7 +64,7 @@
         'label': _T("Sent"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENT"),
         'collapse': true
     }
-] %}
+]) %}
 
 {% block infoline %}
     {% set infoline = {
@@ -164,15 +177,12 @@
     {% for log in logs %}
         {% set date_format = _T('Y-m-d H:i:s') %}
         <tr>
-            <td class="collapsing" data-scope="row">
+            <td class="collapsing" data-scope="row" data-col-label="{% if preferences.pref_show_id %}{{ _T('ID') }}{% else %}#{% endif %}">
                 {% if preferences.pref_show_id %}
                     {{ log.mailing_id }}
                 {% else %}
                     {{ loop.index }}
                 {% endif %}
-                <span class="visually-hidden">
-                            {{ _T('Mailing entry %id')|replace({'%id': log.mailing_id}) }}
-                        </span>
             </td>
             <td class="collapsing" data-col-label="{{ _T('Date') }}">{{ log.mailing_date|date(date_format) }}</td>
             <td data-col-label="{{ _T('Sender') }}">{% if log.mailing_sender == 0 %}{{ _T('Superadmin') }}{% else %}{{ log.mailing_sender_name }}{% endif %}</td>

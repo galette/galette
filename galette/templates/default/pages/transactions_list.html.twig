@@ -39,16 +39,30 @@
     }
 } %}
 
-{% set columns = [
-    {
-        'label': '#', 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID"),
-        'collapse': true
-    },
+{% set columns = [] %}
+{% if preferences.pref_show_id %}
+    {% set columns = columns|merge([
+        {
+            'label': _T('ID'),
+            'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID"),
+            'collapse': true
+        }
+    ]) %}
+{% else %}
+    {% set columns = columns|merge([
+        {
+            'label': '#',
+            'collapse': true
+        }
+    ]) %}
+{% endif %}
+
+{% set columns = columns|merge([
     {
         'label': _T("Date"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE"),
         'collapse': true
     }
-] %}
+]) %}
 
 {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
     {% set columns = columns|merge([{'label': _T("Originator"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER")}]) %}
@@ -62,6 +76,10 @@
     },
     {'label': _T('Payment type'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_PAYMENT_TYPE")}
 ]) %}
+
+{% if (login.isGroupManager() and not preferences.pref_bool_groupsmanagers_create_transactions) and not login.isAdmin() and not login.isStaff() or mode == 'ajax' %}
+    {% set no_action = true %}
+{% endif %}
 
 {% block search %}
     <form action="{{ url_for("payments_filter", {"type": "transactions"}) }}" method="post" class="ui form filters">
@@ -181,11 +199,30 @@
         {% endif %}
 
         <tr class="{{ transaction.getRowClass() }}">
-            <td class="collapsing" data-scope="row" data-col-label="{{ _T("Transaction") }}">
+            <td class="collapsing" data-scope="row" data-col-label="{% if preferences.pref_show_id %}{{ _T('ID') }}{% else %}#{% endif %}">
                 {% if preferences.pref_show_id %}
                     {{ transaction.id }}
                 {% else %}
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
+                {% endif %}
+                {% if (login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_see_contributions)) and mode != 'ajax' %}
+                    {% if transaction.getDispatchedAmount() != 0 %}
+                        <a href="{{ url_for("contributions", {"type": "contributions"}) }}?trans_id={{ transaction.id }}">
+                            <i class="ui linkify icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("View contributions") }}</span>
+                        </a>
+                    {% else %}
+                        <i class="ui icon" aria-hidden="true"></i>
+                    {% endif %}
+                {% else %}
+                    {% if transaction.getDispatchedAmount() != 0 %}
+                        <a href="{{ url_for("myContributions", {"type": "contributions"}) }}?trans_id={{ transaction.id }}">
+                            <i class="ui linkify icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("View contributions") }}</span>
+                        </a>
+                    {% else %}
+                        <i class="ui icon" aria-hidden="true"></i>
+                    {% endif %}
                 {% endif %}
             </td>
             <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ transaction.date }}</td>
@@ -210,7 +247,7 @@
             <td data-col-label="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ transaction.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ transaction.getPaymentType() }}</td>
-            {% if (login.isAdmin() or login.isStaff() or login.isGroupManager()) and mode != 'ajax' %}
+            {% if (login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_create_transactions)) and mode != 'ajax' %}
                 <td class="center actions_row collapsing">
                     <a
                         href="{{ url_for("editTransaction", {"id": transaction.id}) }}"
@@ -286,6 +323,10 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <th scope="row">
+                            <i class="ui linkify blue small icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("View corresponding contributions") }}</td>
                         <th scope="row">
                             <i class="ui filter grey small icon" aria-hidden="true"></i>
                         </th>

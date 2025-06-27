@@ -136,11 +136,8 @@
 {% block body %}
     {% for log in logs %}
         <tr>
-            <td class="collapsing" data-scope="row">
+            <td class="collapsing" data-scope="row" data-col-label="#">
                 {{ loop.index }}
-                <span class="visually-hidden">
-                        {{ _T("History entry %id")|replace({"%id": loop.index}) }}
-                    </span>
             </td>
             <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ log.date_log|date(_T("Y-m-d H:i:s")) }}</td>
             <td data-col-label="{{ _T("IP") }}">{{ log.ip_log }}</td>

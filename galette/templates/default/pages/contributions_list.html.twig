@@ -58,12 +58,25 @@
     ] %}
 {% endif %}
 
-{% set columns = [
-    {
-        'label': '#',
-        'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_ID"),
-        'collapse': true
-    },
+{% set columns = [] %}
+{% if preferences.pref_show_id %}
+    {% set columns = columns|merge([
+        {
+            'label': _T('ID'),
+            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_ID"),
+            'collapse': true
+        }
+    ]) %}
+{% else %}
+    {% set columns = columns|merge([
+        {
+            'label': '#',
+            'collapse': true
+        }
+    ]) %}
+{% endif %}
+
+{% set columns = columns|merge([
     {
         'label': _T("Date"),
         'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_DATE"),
@@ -79,7 +92,7 @@
         'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_END_DATE"),
         'collapse': true
     }
-] %}
+]) %}
 
 {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
     {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_MEMBER")}]) %}
@@ -286,7 +299,7 @@
         {% endif %}
 
         <tr class="{% if mode == 'ajax' %}contribution_row {% endif %}{{ contribution.getRowClass() }}" id="row_{{ contribution.id }}">
-            <td class="collapsing" data-scope="row" data-col-label="{{ _T("Contribution") }}">
+            <td class="collapsing" data-scope="row" data-col-label="{% if preferences.pref_show_id %}{{ _T('ID') }}{% else %}#{% endif %}">
                 {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
                     <span class="ui checkbox">
                         <input type="checkbox" name="entries_sel[]" value="{{ contribution.id }}"/>
@@ -299,13 +312,17 @@
                 {% else %}
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
+
                 {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
                     {% if contribution.isTransactionPart() %}
                         <a
                             href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
                         >
-                            <i class="ui sitemap icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
+                            <i class="ui sitemap {% if contribution.transaction.getMissingAmount() == 0 %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">
+                                {{ _T("Edit transaction #%id")|replace({"%id": contribution.transaction.id}) }}
+                                {% if contribution.transaction.getMissingAmount() != 0 %}({{ _T("Amount is not fully dispatched") }}){% endif %}
+                            </span>
                         </a>
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
@@ -321,23 +338,60 @@
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
-                {% else %}
+                {% elseif login.isGroupManager() %}
                     {% if contribution.isTransactionPart() %}
-                        <i class="ui sitemap blue icon" aria-hidden="true"></i>
-                        <span class="visually-hidden">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>
+                        {% if preferences.pref_bool_groupsmanagers_create_transactions %}
+                            <a
+                                href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
+                            >
+                        {% endif %}
+                                <i class="ui sitemap {% if contribution.transaction.getMissingAmount() == 0 %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
+                                <span class="ui special popup">
+                                    {% if preferences.pref_bool_groupsmanagers_create_transactions %}
+                                        {{ _T("Edit transaction #%id")|replace({"%id": contribution.transaction.id}) }}
+                                    {% else %}
+                                        {{ _T("Is part of a transaction") }}
+                                    {% endif %}
+                                    {% if contribution.transaction.getMissingAmount() != 0 %}({{ _T("Amount is not fully dispatched") }}){% endif %}
+                                </span>
+                        {% if preferences.pref_bool_groupsmanagers_create_transactions %}
+                            </a>
+                        {% endif %}
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
                     {% if contribution.hasSchedule() %}
-                        <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon" aria-hidden="true"></i>
-                        <span class="visually-hidden">
+                        <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">
                             {{ _T("Has scheduled payments") }}
                             {% if not contribution.isScheduleFullyAllocated() %}({{ _T("Amount is not fully dispatched") }}){% endif %}
                         </span>
                     {% else %}
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
+                {% else %}
+                    {% if contribution.isTransactionPart() %}
+                        <i class="ui sitemap {% if contribution.transaction.getMissingAmount() == 0 %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">
+                            {{ _T("Is part of a transaction") }}
+                            {% if contribution.transaction.getMissingAmount() != 0 %}({{ _T("Amount is not fully dispatched") }}){% endif %}
+                        </span>
+                    {% else %}
+                        <i class="ui icon" aria-hidden="true"></i>
+                    {% endif %}
+                    {% if contribution.hasSchedule() %}
+                        <a href="{{ url_for("myScheduledPayments") }}?id_cotis={{ contribution.id }}">
+                            <i class="ui calendar alternate outline {% if contribution.isScheduleFullyAllocated() %}blue{% else %}orange{% endif %} icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">
+                                {{ _T("View scheduled payments") }}
+                                {% if not contribution.isScheduleFullyAllocated() %}({{ _T("Amount is not fully dispatched") }}){% endif %}
+                            </span>
+                        </a>
+                    {% else %}
+                        <i class="ui icon" aria-hidden="true"></i>
+                    {% endif %}
                 {% endif %}
+
             </td>
             <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ contribution.date }}</td>
             <td class="collapsing" data-col-label="{{ _T("Begin") }}">{{ contribution.begin_date }}</td>
@@ -460,17 +514,23 @@
                             <th scope="row">
                                 <i class="ui sitemap blue icon" aria-hidden="true"></i>
                             </th>
-                            <td class="back">{{ _T("Has an attached transaction") }}</td>
+                            <td class="back">{{ _T("Is part of a transaction") }}</td>
+                            <th scope="row">
+                                <i class="ui sitemap orange icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T("Is part of a transaction") }} ({{ _T("Amount is not fully dispatched") }})</td>
+                        </tr>
+                        <tr>
                             <th scope="row">
                                 <i class="ui calendar alternate outline blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Has scheduled payments") }}</td>
-                        </tr>
-                        <tr>
                             <th scope="row">
                                 <i class="ui calendar alternate outline orange icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Has scheduled payments") }} ({{ _T("Amount is not fully dispatched") }})</td>
+                        </tr>
+                        <tr>
                             <th scope="row">
                                 <i class="ui filter grey small icon" aria-hidden="true"></i>
                             </th>

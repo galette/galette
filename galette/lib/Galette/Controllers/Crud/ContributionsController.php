@@ -453,6 +453,10 @@ class ContributionsController extends CrudController
             $filters->max_amount = (int)$request->getQueryParams()['max_amount'];
         }
 
+        if ($type === 'contributions' && isset($get[Transaction::PK])) {
+            $filters->from_transaction = (int)$get[Transaction::PK];
+        }
+
         switch ($option) {
             case 'page':
                 $filters->current_page = (int)$value;

@@ -26,11 +26,24 @@
     }
 } %}
 
-{% set columns = [
-    {
-        'label': '#',
-        'collapse': true
-    },
+{% set columns = [] %}
+{% if preferences.pref_show_id %}
+    {% set columns = columns|merge([
+        {
+            'label': _T('ID'),
+            'collapse': true
+        }
+    ]) %}
+{% else %}
+    {% set columns = columns|merge([
+        {
+            'label': '#',
+            'collapse': true
+        }
+    ]) %}
+{% endif %}
+
+{% set columns = columns|merge([
     {'label': _T("Filename")},
     {'label': _T('Type')},
     {'label': _T('Visibility')},
@@ -38,7 +51,7 @@
         'label': _T("Creation date"),
         'collapse': true
     }
-] %}
+]) %}
 
 {% block infoline %}
     {% set infoline = {
@@ -66,7 +79,7 @@
 {% block body %}
     {% for document in documents %}
         <tr class="" id="row_{{ document.id }}">
-            <td class="collapsing" data-scope="id">
+            <td class="collapsing" data-scope="row" data-col-label="{% if preferences.pref_show_id %}{{ _T('ID') }}{% else %}#{% endif %}">
                 {% if preferences.pref_show_id %}
                     {{ document.id }}
                 {% else %}
@@ -83,22 +96,20 @@
             <td class="collapsing" data-col-label="{{ _T("Creation date") }}">{{ document.getCreationDate() }}</td>
             {% if mode != 'ajax' %}
                 <td class="actions_row center collapsing">
-                    {% if (login.isAdmin() or login.isStaff()) %}
-                        <a
-                                href="{{ url_for("editDocument", {"id": document.getID()}) }}"
-                                class="action"
-                        >
-                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Edit document") }}</span>
-                        </a>
-                        <a
-                                href="{{ url_for("removeDocument", {"id": document.getID()}) }}"
-                                class="delete"
-                        >
-                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Delete document") }}</span>
-                        </a>
-                    {% endif %}
+                    <a
+                            href="{{ url_for("editDocument", {"id": document.getID()}) }}"
+                            class="action"
+                    >
+                        <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Edit document") }}</span>
+                    </a>
+                    <a
+                            href="{{ url_for("removeDocument", {"id": document.getID()}) }}"
+                            class="delete"
+                    >
+                        <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Delete document") }}</span>
+                    </a>
                 </td>
             {% endif %}
         </tr>
