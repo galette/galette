@@ -181,17 +181,12 @@
         {% endif %}
 
         <tr class="{{ transaction.getRowClass() }}">
-            <td class="collapsing" data-scope="row">
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T("Transaction") }}">
                 {% if preferences.pref_show_id %}
                     {{ transaction.id }}
                 {% else %}
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
-                <span class="displaynone">
-                            <a href="{{ url_for("editTransaction", {"id": transaction.id}) }}">
-                                {{ _T("Transaction %id")|replace({"%id": transaction.id}) }}
-                            </a>
-                        </span>
             </td>
             <td class="collapsing" data-col-label="{{ _T("Date") }}">{{ transaction.date }}</td>
             {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
@@ -215,7 +210,7 @@
             <td data-col-label="{{ _T("Description") }}">{{ transaction.description|escape }}</td>
             <td class="collapsing" data-col-label="{{ _T("Amount") }}">{{ transaction.amount }}</td>
             <td data-col-label="{{ _T("Payment type") }}">{{ transaction.getPaymentType() }}</td>
-            {% if mode != 'ajax' and (login.isAdmin() or login.isStaff() or login.isGroupManager()) %}
+            {% if (login.isAdmin() or login.isStaff() or login.isGroupManager()) and mode != 'ajax' %}
                 <td class="center actions_row collapsing">
                     <a
                         href="{{ url_for("editTransaction", {"id": transaction.id}) }}"

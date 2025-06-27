@@ -286,7 +286,7 @@
         {% endif %}
 
         <tr class="{% if mode == 'ajax' %}contribution_row {% endif %}{{ contribution.getRowClass() }}" id="row_{{ contribution.id }}">
-            <td data-scope="row" class="collapsing">
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T("Contribution") }}">
                 {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
                     <span class="ui checkbox">
                         <input type="checkbox" name="entries_sel[]" value="{{ contribution.id }}"/>
@@ -299,12 +299,7 @@
                 {% else %}
                     {{ ordre + 1 + (filters.current_page - 1) * numrows }}
                 {% endif %}
-                {% if (login.isAdmin() or login.isStaff()) or mode != 'ajax' %}
-                    <span class="displaynone">
-                        <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
-                            {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
-                        </a>
-                    </span>
+                {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
                     {% if contribution.isTransactionPart() %}
                         <a
                             href="{{ url_for("editTransaction", {"id": contribution.transaction.id}) }}"
@@ -327,9 +322,6 @@
                         <i class="ui icon" aria-hidden="true"></i>
                     {% endif %}
                 {% else %}
-                    <span class="displaynone">
-                        {{ _T("Contribution %id")|replace({"%id": contribution.id}) }}
-                    </span>
                     {% if contribution.isTransactionPart() %}
                         <i class="ui sitemap blue icon" aria-hidden="true"></i>
                         <span class="visually-hidden">{{ _T("Transaction: %s")|replace({"%s": contribution.transaction.description}) }}</span>

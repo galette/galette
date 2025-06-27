@@ -249,7 +249,7 @@
         {% endif %}
 
         <tr class="{% if mode == 'ajax' %}schedule_row {% endif %}" id="row_{{ scheduled.getId() }}">
-            <td class="collapsing" data-scope="row">
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T("Scheduled payment") }}">
                 <span class="ui checkbox">
                     <input type="checkbox" name="entries_sel[]" value="{{ scheduled.getId() }}"/>
                 </span>
