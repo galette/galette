@@ -3400,7 +3400,7 @@ msgstr "முரண்பாடு"
 #: ../lib/Galette/Entity/PdfModel.php:295
 #, fuzzy, php-format
 msgid "%field should be less than %chars characters long."
-msgstr "%புலம் %கரிச் கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
+msgstr "%field %கரிச் கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
 
 #: ../lib/Galette/Entity/PdfModel.php:305
 #, php-format
