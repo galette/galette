@@ -2,15 +2,15 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # தமிழ்நேரம் <anishprabu.t@gmail.com>, 2024.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2024.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2024, 2025.
 # Prasanna Venkadesh <prasmailme@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-05-07 08:55+0200\n"
-"PO-Revision-Date: 2025-06-24 08:01+0000\n"
-"Last-Translator: Prasanna Venkadesh <prasmailme@gmail.com>\n"
+"PO-Revision-Date: 2025-06-27 16:28+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
 ">\n"
 "Language: ta\n"
@@ -1018,7 +1018,7 @@ msgid "Your account (%s) do not contain any valid email address"
 msgstr "உங்கள் கணக்கில் (%s) எந்த சரியான மின்னஞ்சல் முகவரியும் இல்லை"
 
 #: ../lib/Galette/Controllers/AuthController.php:448
-#, php-format
+#, fuzzy, php-format
 msgid "Mails address %s does not exist"
 msgstr "மின்னஞ்சல் முகவரி இல்லை"
 
@@ -1053,7 +1053,7 @@ msgid "An error occurred while updating your password."
 msgstr "உங்கள் கடவுச்சொல்லைப் புதுப்பிக்கும்போது பிழை ஏற்பட்டது."
 
 #: ../lib/Galette/Controllers/AuthController.php:555
-#, php-format
+#, fuzzy, php-format
 msgid "Password changed for member '%s'."
 msgstr "உறுப்பினர்களுக்கான கடவுச்சொல் மாற்றம்."
 
@@ -2937,9 +2937,10 @@ msgid "Freed of dues"
 msgstr "நிலுவைத் தொகையிலிருந்து விடுபடுகிறது"
 
 #: ../lib/Galette/Entity/Adherent.php:787
-#, php-format
+#, fuzzy, php-format
 msgid "Never contributed: Registered %days days ago (since %date)"
-msgstr "ஒருபோதும் பங்களிக்கவில்லை: பதிவுசெய்யப்பட்ட %நாட்கள் முன்பு ( %தேதியிலிருந்து)"
+msgstr ""
+"ஒருபோதும் பங்களிக்கவில்லை: பதிவுசெய்யப்பட்ட %days முன்பு (தேதியிலிருந்து %date)"
 
 #: ../lib/Galette/Entity/Adherent.php:790
 #: ../lib/Galette/Filters/MembersList.php:299
@@ -2956,14 +2957,14 @@ msgid "Late since today!"
 msgstr "இன்று முதல் தாமதமாக!"
 
 #: ../lib/Galette/Entity/Adherent.php:809
-#, php-format
+#, fuzzy, php-format
 msgid "%days days remaining (ending on %date)"
-msgstr "%நாட்கள் மீதமுள்ள ( %தேதியில் முடிவடையும்)"
+msgstr "%days மீதமுள்ள ( %date முடிவடையும்)"
 
 #: ../lib/Galette/Entity/Adherent.php:823
-#, php-format
+#, fuzzy, php-format
 msgid "Late of %days days (since %date)"
-msgstr "%நாட்களின் பிற்பகுதியில் ( %தேதியிலிருந்து)"
+msgstr "%days பிற்பகுதியில் (தேதியிலிருந்து %date)"
 
 #: ../lib/Galette/Entity/Adherent.php:826
 msgid "No longer member"
@@ -3397,7 +3398,7 @@ msgid "Discord"
 msgstr "முரண்பாடு"
 
 #: ../lib/Galette/Entity/PdfModel.php:295
-#, php-format
+#, fuzzy, php-format
 msgid "%field should be less than %chars characters long."
 msgstr "%புலம் %கரிச் கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
 
