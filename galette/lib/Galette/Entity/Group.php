@@ -855,7 +855,7 @@ class Group
 
             return true;
         } catch (Throwable $e) {
-            $te = clone $e;
+            $te = new \RuntimeException('Unable to attach members to group', $e->getCode(), $e);
             $zdb->connection->rollBack();
             $messages = [];
             do {
