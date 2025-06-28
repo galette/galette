@@ -359,7 +359,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements[0]);
         $this->assertSame(1, $elements[0]->id);
-        $this->assertCount(8, $elements[0]->elements);
+        $this->assertCount(9, $elements[0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements[1]);
         $this->assertSame(3, $elements[1]->id);
@@ -382,7 +382,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements[0]);
         $this->assertSame(1, $elements[0]->id);
-        $this->assertCount(7, $elements[0]->elements);
+        $this->assertCount(8, $elements[0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements[1]);
         $this->assertSame(3, $elements[1]->id);
@@ -419,7 +419,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
         $this->assertSame(1, $elements['fieldsets'][0]->id);
-        $this->assertCount(11, $elements['fieldsets'][0]->elements);
+        $this->assertCount(12, $elements['fieldsets'][0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
@@ -430,7 +430,7 @@ class FieldsConfig extends TestCase
         $this->assertCount(10, $elements['fieldsets'][2]->elements);
         $this->assertTrue(isset($elements['fieldsets'][2]->elements['info_adh']));
 
-        $this->assertCount(2, $elements['hiddens']);
+        $this->assertCount(1, $elements['hiddens']);
 
         $user_login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
@@ -447,7 +447,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
         $this->assertSame(1, $elements['fieldsets'][0]->id);
-        $this->assertCount(10, $elements['fieldsets'][0]->elements);
+        $this->assertCount(11, $elements['fieldsets'][0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
@@ -466,7 +466,7 @@ class FieldsConfig extends TestCase
         $pass  = $elements['fieldsets'][2]->elements['mdp_adh'];
         $this->assertTrue($pass->required);
 
-        $this->assertCount(2, $elements['hiddens']);
+        $this->assertCount(1, $elements['hiddens']);
 
         //form elements for self subscription
         $no_login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -482,7 +482,7 @@ class FieldsConfig extends TestCase
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][0]);
         $this->assertSame(1, $elements['fieldsets'][0]->id);
-        $this->assertCount(10, $elements['fieldsets'][0]->elements);
+        $this->assertCount(11, $elements['fieldsets'][0]->elements);
 
         $this->assertInstanceOf('\stdClass', $elements['fieldsets'][1]);
         $this->assertSame(3, $elements['fieldsets'][1]->id);
@@ -496,7 +496,7 @@ class FieldsConfig extends TestCase
         $this->assertCount(4, $elements['fieldsets'][2]->elements);
         $this->assertFalse(isset($elements['fieldsets'][2]->elements['info_adh']));
 
-        $this->assertCount(2, $elements['hiddens']);
+        $this->assertCount(1, $elements['hiddens']);
     }
 
     /**

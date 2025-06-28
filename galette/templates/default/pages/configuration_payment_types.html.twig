@@ -56,12 +56,8 @@
                     <tbody>
             {% for ptype in list %}
                         <tr>
-                            <td class="collapsing" data-scope="id">
-                {% if preferences.pref_show_id %}
+                            <td class="collapsing" data-scope="id" data-col-label="{{ _T('ID') }}">
                                 {{ ptype.__get('id') }}
-                {% else %}
-                                {{ loop.index }}
-                {% endif %}
                             </td>
                             <td class="left" data-col-label="{{ _T("Name") }}">{{ ptype.getName() }}</td>
                             <td class="center actions_row collapsing">

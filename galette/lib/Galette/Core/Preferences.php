@@ -132,7 +132,6 @@ use Galette\Repository\Members;
  * @property string $pref_new_contrib_script
  * @property boolean $pref_bool_wrap_mails
  * @property string $pref_rss_url
- * @property boolean $pref_show_id
  * @property string $pref_adhesion_form
  * @property boolean $pref_mail_allow_unsecure
  * @property string $pref_instance_uuid
@@ -315,7 +314,6 @@ class Preferences
         'pref_new_contrib_script' => '',
         'pref_bool_wrap_mails' => true,
         'pref_rss_url' => 'https://galette.eu/dc/index.php/feed/atom',
-        'pref_show_id' => false,
         'pref_adhesion_form' => '\Galette\IO\PdfAdhesionForm',
         'pref_mail_allow_unsecure' => false,
         'pref_instance_uuid' => '',
@@ -1183,7 +1181,6 @@ class Preferences
                 'pref_mail_smtp_secure',
                 'pref_mail_allow_unsecure',
                 'pref_password_blacklist',
-                'pref_show_id',
                 'pref_hide_bg_image',
                 'pref_enable_custom_colors'
             ]

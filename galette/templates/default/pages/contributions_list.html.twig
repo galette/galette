@@ -58,25 +58,12 @@
     ] %}
 {% endif %}
 
-{% set columns = [] %}
-{% if preferences.pref_show_id %}
-    {% set columns = columns|merge([
-        {
-            'label': _T('ID'),
-            'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_ID"),
-            'collapse': true
-        }
-    ]) %}
-{% else %}
-    {% set columns = columns|merge([
-        {
-            'label': '#',
-            'collapse': true
-        }
-    ]) %}
-{% endif %}
-
-{% set columns = columns|merge([
+{% set columns = [
+    {
+        'label': _T('ID'),
+        'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_ID"),
+        'collapse': true
+    },
     {
         'label': _T("Date"),
         'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_DATE"),
@@ -92,7 +79,7 @@
         'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_END_DATE"),
         'collapse': true
     }
-]) %}
+] %}
 
 {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
     {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ContributionsList::ORDERBY_MEMBER")}]) %}
@@ -299,7 +286,7 @@
         {% endif %}
 
         <tr class="{% if mode == 'ajax' %}contribution_row {% endif %}{{ contribution.getRowClass() }}" id="row_{{ contribution.id }}">
-            <td class="collapsing" data-scope="row" data-col-label="{% if preferences.pref_show_id %}{{ _T('ID') }}{% else %}#{% endif %}">
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
                 {% if (login.isAdmin() or login.isStaff()) or mode == 'ajax' %}
                     <span class="ui checkbox">
                         <input type="checkbox" name="entries_sel[]" value="{{ contribution.id }}"/>
@@ -307,11 +294,7 @@
                 {% else %}
                     <input type="hidden" name="contrib_id" value="{{ contribution.id }}"/>
                 {% endif %}
-                {% if preferences.pref_show_id %}
-                    {{ contribution.id }}
-                {% else %}
-                    {{ ordre + 1 + (filters.current_page - 1) * numrows }}
-                {% endif %}
+                {{ contribution.id }}
 
                 {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
                     {% if contribution.isTransactionPart() %}

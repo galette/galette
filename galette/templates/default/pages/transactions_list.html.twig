@@ -39,42 +39,39 @@
     }
 } %}
 
-{% set columns = [] %}
-{% if preferences.pref_show_id %}
-    {% set columns = columns|merge([
-        {
-            'label': _T('ID'),
-            'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID"),
-            'collapse': true
-        }
-    ]) %}
-{% else %}
-    {% set columns = columns|merge([
-        {
-            'label': '#',
-            'collapse': true
-        }
-    ]) %}
-{% endif %}
-
-{% set columns = columns|merge([
+{% set columns = [
     {
-        'label': _T("Date"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE"),
+        'label': _T('ID'),
+        'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_ID"),
+        'collapse': true
+    },
+    {
+        'label': _T("Date"),
+        'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_DATE"),
         'collapse': true
     }
-]) %}
+] %}
 
 {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-    {% set columns = columns|merge([{'label': _T("Originator"), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER")}]) %}
+    {% set columns = columns|merge([
+        {
+            'label': _T("Originator"),
+            'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_MEMBER")
+        }
+    ]) %}
 {% endif %}
 
 {% set columns = columns|merge([
     {'label': _T("Description")},
     {
-        'label': _T('Amount'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT"),
+        'label': _T('Amount'),
+        'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_AMOUNT"),
         'collapse': true
     },
-    {'label': _T('Payment type'), 'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_PAYMENT_TYPE")}
+    {
+        'label': _T('Payment type'),
+        'order': constant("Galette\\Filters\\TransactionsList::ORDERBY_PAYMENT_TYPE")
+    }
 ]) %}
 
 {% if (login.isGroupManager() and not preferences.pref_bool_groupsmanagers_create_transactions) and not login.isAdmin() and not login.isStaff() or mode == 'ajax' %}
@@ -199,12 +196,8 @@
         {% endif %}
 
         <tr class="{{ transaction.getRowClass() }}">
-            <td class="collapsing" data-scope="row" data-col-label="{% if preferences.pref_show_id %}{{ _T('ID') }}{% else %}#{% endif %}">
-                {% if preferences.pref_show_id %}
-                    {{ transaction.id }}
-                {% else %}
-                    {{ ordre + 1 + (filters.current_page - 1) * numrows }}
-                {% endif %}
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
+                {{ transaction.id }}
                 {% if (login.isAdmin() or login.isStaff() or (login.isGroupManager() and preferences.pref_bool_groupsmanagers_see_contributions)) and mode != 'ajax' %}
                     {% if transaction.getDispatchedAmount() != 0 %}
                         <a href="{{ url_for("contributions", {"type": "contributions"}) }}?trans_id={{ transaction.id }}">

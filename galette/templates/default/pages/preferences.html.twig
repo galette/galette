@@ -277,13 +277,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {% if pref.pref_show_id %} checked="checked"{% endif %}/>
-                            <label for="pref_show_id">{{ _T("Show identifiers") }}</label>
-                        </div>
-                        <i class="circular small basic question icon tooltip" title="{{ _T("Display database identifiers in related windows") }}" aria-hidden="true"></i>
-                    </div>
                     <div id="pref_member_form_grid_field" class="inline field">
                         <label for="pref_member_form_grid">{{ _T("Number of columns on the member form") }}</label>
                         <select name="pref_member_form_grid" id="pref_member_form_grid" class="ui dropdown">

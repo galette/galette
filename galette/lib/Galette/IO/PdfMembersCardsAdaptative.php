@@ -229,32 +229,31 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
             $this->SetFontSize(8);
             $this->SetFont(self::FONT, 'B');
             $this->ratio = $this->wlogo / $this->hlogo;
-            if (!empty($this->preferences->pref_show_id) || !empty($member->number)) {
-                $member_id = (!empty($member->number)) ? $member->number : $member->id;
-                $this->adh_nbr = _T("Member") . ' n° : ' . $member_id;
-                if ($this->hlogo + 1 > 7) {
-                    $this->fixSize(
-                        $this->adh_nbr,
-                        intval(round($this->max_text_size_top * 0.9, PHP_ROUND_HALF_DOWN)),
-                        8,
-                        'B'
-                    );
-                    $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
-                    $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->adh_nbr, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2 - $this->wlogo / 2;
-                    $this->SetXY($xid, $y0 + 8);
-                } else {
-                    $this->fixSize(
-                        $this->adh_nbr,
-                        intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
-                        10,
-                        'B'
-                    );
-                    $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->adh_nbr, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2;
-                    $this->SetXY($xid, $y0 + 8);
-                }
+
+            $member_id = (!empty($member->number)) ? $member->number : $member->id;
+            $this->adh_nbr = _T("Member") . ' n° : ' . $member_id;
+            if ($this->hlogo + 1 > 7) {
+                $this->fixSize(
+                    $this->adh_nbr,
+                    intval(round($this->max_text_size_top * 0.9, PHP_ROUND_HALF_DOWN)),
+                    8,
+                    'B'
+                );
                 $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
-                $this->writeHTML('<strong>' . $this->adh_nbr . '  </strong>', false, false);
+                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->adh_nbr, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2 - $this->wlogo / 2;
+                $this->SetXY($xid, $y0 + 8);
+            } else {
+                $this->fixSize(
+                    $this->adh_nbr,
+                    intval(round($this->max_text_size_center * 0.9, PHP_ROUND_HALF_DOWN)),
+                    10,
+                    'B'
+                );
+                $xid = $x0 + $this->wi / 2 - $this->GetStringWidth($this->adh_nbr, $this->FontFamily, $this->FontStyle, $this->FontSizePt) / 2 + $this->wphoto / 2;
+                $this->SetXY($xid, $y0 + 8);
             }
+            $this->SetFontSize(round($this->FontSizePt, 0, PHP_ROUND_HALF_DOWN));
+            $this->writeHTML('<strong>' . $this->adh_nbr . '  </strong>', false, false);
 
             // Abbrev: Adapt font size to text length
             if (13 < $this->hlogo + 1) {

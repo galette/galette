@@ -19,6 +19,7 @@ Changes
 - Fix mass changes on boolean fields
 - Add phone number and contact email in settings
 - Fix few dynamic translations issues
+- Remove show ID preference
 - Fix stored XSS CVE-2025-48076 and reflected XSS CVE-2025-48884
 
 1.1.5.1 -> 1.1.5.2

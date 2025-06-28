@@ -63,12 +63,8 @@
                 <tbody>
         {% for title in titles_list %}
                     <tr>
-                        <td class="collapsing" data-scope="row">
-            {% if preferences.pref_show_id %}
+                        <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
                             {{ title.id }}
-            {% else %}
-                            {{ loop.index }}
-            {% endif %}
                         </td>
                         <td class="left" data-col-label="{{ _T("Short form") }}">{{ title.short|escape }}</td>
                         <td class="left" data-col-label="{{ _T("Long form") }}">{{ title.long|escape }}</td>

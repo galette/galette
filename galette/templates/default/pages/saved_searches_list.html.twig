@@ -27,34 +27,29 @@
     {{ parent() }}
 {% endblock %}
 
-{% block header %}
-    {% set columns = [
-        {
-            'label': '#',
-            collapse: true
-        },
-        {
-            'label': _T("Creation date"),
-            collapse: true
-        },
-        {
-            'label': _T("Name"),
-            collapse: true
-        },
-        {'label': _T("Parameters")}
-    ] %}
-    {{ parent() }}
-{% endblock %}
+{% set columns = [
+    {
+        'label': _T('ID'),
+        'collapse': true
+    },
+    {
+        'label': _T("Creation date"),
+        collapse: true
+    },
+    {
+        'label': _T("Name"),
+        collapse: true
+    },
+    {
+        'label': _T("Parameters")
+    }
+] %}
 
 {% block body %}
     {% for search in searches %}
         <tr>
-            <td class="collapsing" data-scope="row">
-                {% if preferences.pref_show_id %}
-                    {{ search.id }}
-                {% else %}
-                    {{ loop.index }}
-                {% endif %}
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
+                {{ search.id }}
             </td>
             <td class="left collapsing" data-col-label="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
             <td class="left collapsing" data-col-label="{{ _T("Name") }}">{{ search.name|default("-") }}</td>
@@ -88,7 +83,7 @@
             </td>
         </tr>
     {% else %}
-        <tr><td colspan="5" class="emptylist">{{ _T("no search") }}</td></tr>
+        <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("no search") }}</td></tr>
     {% endfor %}
 {% endblock %}
 

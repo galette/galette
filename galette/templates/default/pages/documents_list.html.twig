@@ -26,32 +26,25 @@
     }
 } %}
 
-{% set columns = [] %}
-{% if preferences.pref_show_id %}
-    {% set columns = columns|merge([
-        {
-            'label': _T('ID'),
-            'collapse': true
-        }
-    ]) %}
-{% else %}
-    {% set columns = columns|merge([
-        {
-            'label': '#',
-            'collapse': true
-        }
-    ]) %}
-{% endif %}
-
-{% set columns = columns|merge([
-    {'label': _T("Filename")},
-    {'label': _T('Type')},
-    {'label': _T('Visibility')},
+{% set columns = [
+    {
+        'label': _T('ID'),
+        'collapse': true
+    },
+    {
+        'label': _T("Filename")
+    },
+    {
+        'label': _T('Type')
+    },
+    {
+        'label': _T('Visibility')
+    },
     {
         'label': _T("Creation date"),
         'collapse': true
     }
-]) %}
+] %}
 
 {% block infoline %}
     {% set infoline = {
@@ -79,12 +72,8 @@
 {% block body %}
     {% for document in documents %}
         <tr class="" id="row_{{ document.id }}">
-            <td class="collapsing" data-scope="row" data-col-label="{% if preferences.pref_show_id %}{{ _T('ID') }}{% else %}#{% endif %}">
-                {% if preferences.pref_show_id %}
-                    {{ document.id }}
-                {% else %}
-                    {{ loop.index }}
-                {% endif %}
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
+                {{ document.id }}
             </td>
             <td data-col-label="{{ _T("Filename") }}">
                 <a href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">

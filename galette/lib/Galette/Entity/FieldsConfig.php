@@ -493,7 +493,7 @@ class FieldsConfig
 
                     if ($o->field_id == 'id_adh') {
                         // ignore access control, as member ID is always needed
-                        if (!$preferences->pref_show_id || $new === true) {
+                        if ($new === true) {
                             $hidden_elements[] = $o;
                         } else {
                             $o->type = self::TYPE_STR;
@@ -630,7 +630,7 @@ class FieldsConfig
 
                     if ($o->field_id == 'id_adh') {
                         // ignore access control, as member ID is always needed
-                        if (!isset($preferences) || !$preferences->pref_show_id) {
+                        if (!isset($preferences)) {
                             $hidden_elements[] = $o;
                         } else {
                             $o->type = self::TYPE_STR;

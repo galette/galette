@@ -33,7 +33,7 @@
             </thead>
             <tbody id="sortable_fields_{{ fs }}" class="sortable-items" data-category="{{ fs }}">
 {% for col, field in categorized_fields[fs] %}
-    {% if (preferences.pref_show_id or field.field_id != 'id_adh') and field.field_id != 'parent_id' %}
+    {% if field.field_id != 'parent_id' %}
         {% set fid = field.field_id %}
                 <tr>
                     <td data-scope="id" class="collapsing">

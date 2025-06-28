@@ -25,7 +25,6 @@ namespace Galette\Filters;
 
 use Analog\Analog;
 use Galette\Core\Pagination;
-use Galette\Core\Preferences;
 use Galette\Entity\Group;
 use Galette\Repository\Members;
 use Slim\Views\Twig;
@@ -263,12 +262,11 @@ class MembersList extends Pagination
     /**
      * Set commons filters for templates
      *
-     * @param Preferences $prefs Preferences instance
-     * @param Twig        $view  Template reference
+     * @param Twig $view Template reference
      *
      * @return void
      */
-    public function setViewCommonsFilters(Preferences $prefs, Twig $view): void
+    public function setViewCommonsFilters(Twig $view): void
     {
         $filter_options = [
             Members::FILTER_NAME            => _T("Name"),
@@ -277,12 +275,9 @@ class MembersList extends Pagination
             Members::FILTER_ADDRESS         => _T("Address"),
             Members::FILTER_MAIL            => _T("Email,URL,IM"),
             Members::FILTER_JOB             => _T("Job"),
-            Members::FILTER_INFOS           => _T("Infos")
+            Members::FILTER_INFOS           => _T("Infos"),
+            Members::FILTER_ID              => _T("Member ID")
         ];
-
-        if ($prefs->pref_show_id) {
-            $filter_options[Members::FILTER_ID] = _T("Member ID");
-        }
 
         $view->getEnvironment()->addGlobal(
             'field_filter_options',

@@ -246,6 +246,9 @@ class UpgradeTo120 extends AbstractUpdater
         if ($preferences->pref_log) { //@phpstan-ignore-line
             $delete_prefs[] = 'pref_log';
         }
+        if ($preferences->pref_show_id) { //@phpstan-ignore-line
+            $delete_prefs[] = 'pref_show_id';
+        }
 
         if ($preferences->pref_publicpages_visibility) { //@phpstan-ignore-line
             $pref_publicpages_visibility = $preferences->pref_publicpages_visibility;

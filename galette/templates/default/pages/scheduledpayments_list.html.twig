@@ -53,39 +53,36 @@
     ] %}
 {% endif %}
 
-{% set columns = [] %}
-{% if preferences.pref_show_id %}
-    {% set columns = columns|merge([
-        {
-            'label': _T('ID'),
-            'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID"),
-            'collapse': true
-        }
-    ]) %}
-{% else %}
-    {% set columns = columns|merge([
-        {
-            'label': '#',
-            'collapse': true
-        }
-    ]) %}
-{% endif %}
+{% set columns = [
+    {
+        'label': _T('ID'),
+        'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_ID"),
+        'collapse': true
+    }
+] %}
 
 {% if ((login.isAdmin() or login.isStaff()) and member is not defined) or pmember is defined %}
-    {% set columns = columns|merge([{'label': _T("Member"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")}]) %}
+    {% set columns = columns|merge([
+        {
+        'label': _T("Member"),
+        'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_MEMBER")}
+    ]) %}
 {% endif %}
 
 {% set columns = columns|merge([
     {
-        'label': _T("Date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_DATE"),
+        'label': _T("Date"),
+        'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_DATE"),
         'collapse': true
     },
     {
-        'label': _T("Scheduled date"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE"),
+        'label': _T("Scheduled date"),
+        'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE"),
         'collapse': true
     },
     {
-        'label': _T('Amount'), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_AMOUNT"),
+        'label': _T('Amount'),
+        'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_AMOUNT"),
         'collapse': true
     },
     {
@@ -93,7 +90,10 @@
         'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAID"),
         'collapse': true
     },
-    {'label': _T("Payment type"), 'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE")}
+    {
+        'label': _T("Payment type"),
+        'order': constant("Galette\\Filters\\ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE")
+    }
 ]) %}
 
 {% if (not login.isAdmin() and not login.isStaff()) or mode == 'ajax' %}
@@ -260,15 +260,11 @@
         {% endif %}
 
         <tr class="{% if mode == 'ajax' %}schedule_row {% endif %}" id="row_{{ scheduled.getId() }}">
-            <td class="collapsing" data-scope="row" data-col-label="{% if preferences.pref_show_id %}{{ _T('ID') }}{% else %}#{% endif %}">
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
                 <span class="ui checkbox">
                     <input type="checkbox" name="entries_sel[]" value="{{ scheduled.getId() }}"/>
                 </span>
-                {% if preferences.pref_show_id %}
-                    {{ scheduled.getId() }}
-                {% else %}
-                    {{ ordre + 1 + (filters.current_page - 1) * numrows }}
-                {% endif %}
+                {{ scheduled.getId() }}
                 {% if (login.isAdmin() or login.isStaff()) and mode != 'ajax' %}
                     <a href="{{ url_for("editContribution", {"type": ctype, "id": contribution.id}) }}">
                         <i class="icons tooltip" aria-hidden="true">

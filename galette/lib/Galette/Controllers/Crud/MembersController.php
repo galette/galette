@@ -605,7 +605,7 @@ class MembersController extends CrudController
 
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
-        $filters->setViewCommonsFilters($this->preferences, $this->view);
+        $filters->setViewCommonsFilters($this->view);
 
         $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
 
@@ -827,7 +827,7 @@ class MembersController extends CrudController
         );
         $ptlist = $ptypes->getList();
 
-        $filters->setViewCommonsFilters($this->preferences, $this->view);
+        $filters->setViewCommonsFilters($this->view);
 
         $social = new Social($this->zdb);
         $types = $member->getMemberRegisteredTypes();

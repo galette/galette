@@ -70,22 +70,13 @@
     {% set columns = [] %}
     {% for column in galette_list %}
         {% if column.field_id == 'id_adh' %}
-            {% if preferences.pref_show_id %}
-                {% set columns = columns|merge([
-                    {
-                        label: _T('Mbr id'),
-                        order: constant("Galette\\Repository\\Members::ORDERBY_ID"),
-                        collapse: true
-                    }
-                ]) %}
-            {% else %}
-                {% set columns = columns|merge([
-                    {
-                        label: '#',
-                        collapse: true
-                    }
-                ]) %}
-            {% endif %}
+            {% set columns = columns|merge([
+                {
+                    label: _T('ID'),
+                    order: constant("Galette\\Repository\\Members::ORDERBY_ID"),
+                    collapse: true
+                }
+            ]) %}
         {% elseif column.field_id starts with 'date_' %}
             {% set columns = columns|merge([
                 {
@@ -333,15 +324,11 @@
                     <tr class="{{ member.getRowClass() }}">
     {% for column in galette_list %}
         {% if column.field_id == 'id_adh' %}
-                        <td class="right collapsing" data-scope="row" data-col-label="{% if preferences.pref_show_id %}{{ _T('Mbr id') }}{% else %}#{% endif %}">
+                        <td class="right collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
                             <span class="ui checkbox">
                                 <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
                             </span>
-            {% if preferences.pref_show_id %}
                             {{ member.id }}
-            {% else %}
-                            {{ ordre + 1 + (filters.current_page - 1) * numrows }}
-            {% endif %}
                         </td>
         {% elseif column.field_id == 'list_adh_name' %}
                         <td class="username_row" data-scope="row" data-col-label="{{ column.label }}">
