@@ -51,6 +51,12 @@
   margin-top: 0;
 }
 
+@media only screen and (min-width: @tabletBreakpoint) {
+  .ui .two.fields .right.aligned.field {
+    text-align: right;
+  }
+}
+
 /*-------------------------
       Filters' fields
 --------------------------*/

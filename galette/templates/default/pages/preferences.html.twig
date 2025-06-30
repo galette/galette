@@ -314,20 +314,24 @@
                             <option value="{{ constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') }}"{% if pref.pref_redirect_on_create == constant('Galette\\Entity\\Adherent::AFTER_ADD_HOME') %} selected="selected"{% endif %}>{{ _T("go to main page") }}</option>
                         </select>
                     </div>
-                    <div class="field inline">
-                        <div class="ui right aligned toggle checkbox">
-                            <input type="checkbox" name="pref_force_picture_ratio" id="pref_force_picture_ratio" value="1" {% if pref.pref_force_picture_ratio == 1 %}checked="checked"{% endif %}/>
-                            <label for="pref_force_picture_ratio">{{ _T("Force member picture ratio") }}</label>
+                    <div class="field">
+                        <div class="two fields">
+                            <div class="field inline">
+                                <div class="ui right aligned toggle checkbox">
+                                    <input type="checkbox" name="pref_force_picture_ratio" id="pref_force_picture_ratio" value="1" {% if pref.pref_force_picture_ratio == 1 %}checked="checked"{% endif %}/>
+                                    <label for="pref_force_picture_ratio">{{ _T("Force member picture ratio") }}</label>
+                                </div>
+                                <i class="circular small basic question icon tooltip" data-html="{{ _T("If checked, the members's picture will be resized and cropped to the ratio selected below.") }}" data-variation="inverted wide" aria-hidden="true"></i>
+                            </div>
+                            <div id="pref_member_picture_ratio_field" class="inline right aligned field{% if pref.pref_force_picture_ratio != 1 %} displaynone{% endif %}">
+                                <label for="pref_member_picture_ratio">{{ _T("Select a ratio") }}</label>
+                                <select name="pref_member_picture_ratio" id="pref_member_picture_ratio" class="ui dropdown">
+                                    <option value="square_ratio"{% if pref.pref_member_picture_ratio == 'square_ratio' %} selected="selected"{% endif %}>{{ _T("Square (1:1)") }}</option>
+                                    <option value="portrait_ratio"{% if pref.pref_member_picture_ratio == 'portrait_ratio' %} selected="selected"{% endif %}>{{ _T("Portrait (3:4)") }}</option>
+                                    <option value="landscape_ratio"{% if pref.pref_member_picture_ratio == 'landscape_ratio' %} selected="selected"{% endif %}>{{ _T("Landscape (4:3)") }}</option>
+                                </select>
+                            </div>
                         </div>
-                        <i class="circular small basic question icon tooltip" data-html="{{ _T("If checked, the members's picture will be resized and cropped to the ratio selected below.") }}" data-variation="inverted wide" aria-hidden="true"></i>
-                    </div>
-                    <div id="pref_member_picture_ratio_field" class="inline field{% if pref.pref_force_picture_ratio != 1 %} displaynone{% endif %}">
-                        <label for="pref_member_picture_ratio">{{ _T("Select a ratio") }}</label>
-                        <select name="pref_member_picture_ratio" id="pref_member_picture_ratio" class="ui dropdown">
-                            <option value="square_ratio"{% if pref.pref_member_picture_ratio == 'square_ratio' %} selected="selected"{% endif %}>{{ _T("Square (1:1)") }}</option>
-                            <option value="portrait_ratio"{% if pref.pref_member_picture_ratio == 'portrait_ratio' %} selected="selected"{% endif %}>{{ _T("Portrait (3:4)") }}</option>
-                            <option value="landscape_ratio"{% if pref.pref_member_picture_ratio == 'landscape_ratio' %} selected="selected"{% endif %}>{{ _T("Landscape (4:3)") }}</option>
-                        </select>
                     </div>
                 </div>{# /column #}
             </div>{# /column grid #}
