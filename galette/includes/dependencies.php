@@ -28,6 +28,7 @@ use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 use Slim\Views\Twig;
 use Twig\Extra\String\StringExtension;
+use Twig\Extra\Intl\IntlExtension;
 
 $container = $app->getContainer();
 
@@ -69,6 +70,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     //Twig extensions
     $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
     $view->addExtension(new StringExtension());
+    $view->addExtension(new IntlExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
         $view->addExtension(new \Twig\Extension\DebugExtension());
         global $logger;
