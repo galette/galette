@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-07-04 07:30+0200\n"
-"PO-Revision-Date: 2025-05-07 07:04+0000\n"
+"PO-Revision-Date: 2025-07-04 05:37+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:123
 msgid "Transaction"
@@ -6418,7 +6418,7 @@ msgstr ""
 #: ../../tempcache/pages/transactions_list.html.twig:61
 #: ../../tempcache/pages/transactions_list.html.twig:357
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: ../../tempcache/pages/contributions_list.html.twig:93
 msgid "Show contributions by"
@@ -6524,7 +6524,7 @@ msgstr "Modifier la transaction #%id"
 #: ../../tempcache/pages/contributions_list.html.twig:1103
 #: ../../tempcache/pages/contributions_list.html.twig:1121
 msgid "Amount is not fully dispatched"
-msgstr ""
+msgstr "Le montant n'est pas entièrement ventilé"
 
 #: ../../tempcache/pages/contributions_list.html.twig:622
 #: ../../tempcache/pages/contributions_list.html.twig:790
@@ -6536,10 +6536,8 @@ msgstr "Voir les paiements planifiés"
 #: ../../tempcache/pages/contributions_list.html.twig:753
 #: ../../tempcache/pages/contributions_list.html.twig:1094
 #: ../../tempcache/pages/contributions_list.html.twig:1101
-#, fuzzy
-#| msgid "List of transactions"
 msgid "Is part of a transaction"
-msgstr "Liste des transactions"
+msgstr "Fait partie d'une transaction"
 
 #: ../../tempcache/pages/contributions_list.html.twig:719
 #: ../../tempcache/pages/contributions_list.html.twig:1112
@@ -6615,16 +6613,14 @@ msgstr "Suppression"
 #: ../../tempcache/pages/members_list.html.twig:619
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:762
 #: ../../tempcache/pages/transactions_list.html.twig:633
-#, fuzzy
-#| msgid "User status/interactions"
 msgid "Statuses and interactions"
-msgstr "Statut/interactions utilisateur"
+msgstr "Statut et interactions"
 
 #: ../../tempcache/pages/contributions_list.html.twig:1130
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:830
 #: ../../tempcache/pages/transactions_list.html.twig:651
 msgid "Filter on corresponding member"
-msgstr ""
+msgstr "Filtrer sur l'adhérent correspondant"
 
 #: ../../tempcache/pages/admintools.html.twig:66
 msgid ""
@@ -7352,6 +7348,11 @@ msgid ""
 "present form must equal the total of all the scheduled payments you will "
 "define next."
 msgstr ""
+"Lorsque le type <strong>paiement planifié</strong> est sélectionné, une "
+"contribution sera ajoutée et il vous sera demandé de créer le paiement "
+"planifiée ensuite. Dans ce cas le montant de la contribution du formulaire "
+"courant doit être égal au total des paiements planifiés que vous définirez "
+"ensuite."
 
 #: ../../tempcache/pages/contribution_form.html.twig:707
 msgid "months"
@@ -8633,32 +8634,23 @@ msgid "Show payments by"
 msgstr "Afficher les paiements par"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:173
-#, fuzzy
-#| msgid "Has scheduled payments"
 msgid "Paid scheduled payments:"
-msgstr "A des paiements planifiés"
+msgstr "Paiements planifiés payés :"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:219
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:606
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:628
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:810
-#, fuzzy
-#| msgctxt "contribution"
-#| msgid "Not paid"
 msgid "Not paid"
-msgstr "Non payée"
+msgstr "Non payé"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:278
-#, fuzzy
-#| msgid "My scheduled payments"
 msgid "Show all your scheduled payments"
-msgstr "Mes paiements planifiés"
+msgstr "Voir tous vos paiements planifiés"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:284
-#, fuzzy
-#| msgid "Has scheduled payments"
 msgid "Show all members scheduled payments"
-msgstr "A des paiements planifiés"
+msgstr "Voir les paiements planifiés de tous les adhérents"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:347
 #, php-format
@@ -8674,33 +8666,26 @@ msgstr "Montant total planifié trouvé %f"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:502
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:781
-#, fuzzy, php-format
-#| msgid "Add a membership fee"
+#, php-format
 msgid "Edit membership fee %1$s"
-msgstr "Ajouter une cotisation"
+msgstr "Modifier la cotisation %1$s"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:508
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:791
-#, fuzzy, php-format
-#| msgid "Edit transaction #%id"
+#, php-format
 msgid "Edit donation %1$s"
-msgstr "Modifier la transaction #%id"
+msgstr "Modifier le don %1$s"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:537
-#, fuzzy, php-format
-#| msgid "%1$s shceduled payment"
-#| msgid_plural "%1$s scheduled payments"
+#, php-format
 msgid "Show only '%1$s' scheduled payments"
-msgstr "%1$s paiement planifié"
+msgstr "Voir uniquement les paiement planifié de \"%1$s\""
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:602
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:615
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:819
-#, fuzzy
-#| msgctxt "contribution"
-#| msgid "Not paid"
 msgid "Not paid and due"
-msgstr "Non payée"
+msgstr "Non payé et dû"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:673
 msgid "Delete scheduled payment"
@@ -8830,10 +8815,8 @@ msgid "Uncomplete dispatched transaction"
 msgstr "La transaction n’est pas entièrement ventilée"
 
 #: ../../tempcache/pages/transactions_list.html.twig:644
-#, fuzzy
-#| msgid "View and filter contributions"
 msgid "View corresponding contributions"
-msgstr "Consulter et filtrer les contributions"
+msgstr "Voir les contributions correspondantes"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:71
 #, php-format
