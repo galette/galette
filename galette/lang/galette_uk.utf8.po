@@ -9,13 +9,14 @@
 # Максим Горпиніч <mgorpinic2005@gmail.com>, 2024.
 # Максим Горпиніч <maksimgorpinic2005a@gmail.com>, 2025.
 # Максим Горпиніч <maksimgorpinic4@gmail.com>, 2025.
+# Максим Горпиніч <gorpinicmaksim5@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-07-04 07:30+0200\n"
-"PO-Revision-Date: 2025-05-22 16:01+0000\n"
-"Last-Translator: Максим Горпиніч <maksimgorpinic4@gmail.com>\n"
+"PO-Revision-Date: 2025-07-05 15:02+0000\n"
+"Last-Translator: Максим Горпиніч <gorpinicmaksim5@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:123
 msgid "Transaction"
@@ -6331,7 +6332,7 @@ msgstr ""
 #: ../../tempcache/pages/transactions_list.html.twig:61
 #: ../../tempcache/pages/transactions_list.html.twig:357
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: ../../tempcache/pages/contributions_list.html.twig:93
 msgid "Show contributions by"
@@ -6438,7 +6439,7 @@ msgstr "Змінити переказ #%id"
 #: ../../tempcache/pages/contributions_list.html.twig:1103
 #: ../../tempcache/pages/contributions_list.html.twig:1121
 msgid "Amount is not fully dispatched"
-msgstr ""
+msgstr "Сума не повністю відправлена"
 
 #: ../../tempcache/pages/contributions_list.html.twig:622
 #: ../../tempcache/pages/contributions_list.html.twig:790
@@ -6450,10 +6451,8 @@ msgstr "Переглянути заплановані платежі"
 #: ../../tempcache/pages/contributions_list.html.twig:753
 #: ../../tempcache/pages/contributions_list.html.twig:1094
 #: ../../tempcache/pages/contributions_list.html.twig:1101
-#, fuzzy
-#| msgid "List of transactions"
 msgid "Is part of a transaction"
-msgstr "Списки переказів"
+msgstr "Є частиною транзакції"
 
 #: ../../tempcache/pages/contributions_list.html.twig:719
 #: ../../tempcache/pages/contributions_list.html.twig:1112
@@ -6529,16 +6528,14 @@ msgstr "Видалення"
 #: ../../tempcache/pages/members_list.html.twig:619
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:762
 #: ../../tempcache/pages/transactions_list.html.twig:633
-#, fuzzy
-#| msgid "User status/interactions"
 msgid "Statuses and interactions"
-msgstr "Стан/взаємодія користувача"
+msgstr "Статуси та взаємодії"
 
 #: ../../tempcache/pages/contributions_list.html.twig:1130
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:830
 #: ../../tempcache/pages/transactions_list.html.twig:651
 msgid "Filter on corresponding member"
-msgstr ""
+msgstr "Фільтр за відповідним членом"
 
 #: ../../tempcache/pages/admintools.html.twig:66
 msgid ""
@@ -7259,6 +7256,10 @@ msgid ""
 "present form must equal the total of all the scheduled payments you will "
 "define next."
 msgstr ""
+"Якщо вибрати тип <strong>запланований платіж</strong>, буде додано внесок, і "
+"вам буде запропоновано створити відповідні заплановані платежі згодом. У "
+"такому разі сума внеску в цій формі має дорівнювати загальній сумі всіх "
+"запланованих платежів, які ви визначите далі."
 
 #: ../../tempcache/pages/contribution_form.html.twig:707
 msgid "months"
@@ -8536,32 +8537,23 @@ msgid "Show payments by"
 msgstr "Показати платежі за"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:173
-#, fuzzy
-#| msgid "Has scheduled payments"
 msgid "Paid scheduled payments:"
-msgstr "Має заплановані платежі"
+msgstr "Сплачені планові платежі:"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:219
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:606
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:628
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:810
-#, fuzzy
-#| msgctxt "contribution"
-#| msgid "Not paid"
 msgid "Not paid"
-msgstr "Не оплачується"
+msgstr "Не оплачено"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:278
-#, fuzzy
-#| msgid "My scheduled payments"
 msgid "Show all your scheduled payments"
-msgstr "Мої заплановані платежі"
+msgstr "Показати всі заплановані платежі"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:284
-#, fuzzy
-#| msgid "Has scheduled payments"
 msgid "Show all members scheduled payments"
-msgstr "Має заплановані платежі"
+msgstr "Показати всі заплановані платежі учасників"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:347
 #, php-format
@@ -8578,33 +8570,26 @@ msgstr "Знайдено всього заплановано %f"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:502
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:781
-#, fuzzy, php-format
-#| msgid "Add a membership fee"
+#, php-format
 msgid "Edit membership fee %1$s"
-msgstr "Додати членський внесок"
+msgstr "Змінити членський внесок %1$s"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:508
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:791
-#, fuzzy, php-format
-#| msgid "Edit transaction #%id"
+#, php-format
 msgid "Edit donation %1$s"
-msgstr "Змінити переказ #%id"
+msgstr "Редагувати пожертву %1$s"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:537
-#, fuzzy, php-format
-#| msgid "%1$s shceduled payment"
-#| msgid_plural "%1$s scheduled payments"
+#, php-format
 msgid "Show only '%1$s' scheduled payments"
-msgstr "%1$s запланований платіж"
+msgstr "Показувати лише заплановані платежі '%1$s'"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:602
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:615
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:819
-#, fuzzy
-#| msgctxt "contribution"
-#| msgid "Not paid"
 msgid "Not paid and due"
-msgstr "Не оплачується"
+msgstr "Не сплачено та належно"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:673
 msgid "Delete scheduled payment"
@@ -8736,10 +8721,8 @@ msgid "Uncomplete dispatched transaction"
 msgstr "Не повністю надісланий переказ"
 
 #: ../../tempcache/pages/transactions_list.html.twig:644
-#, fuzzy
-#| msgid "View and filter contributions"
 msgid "View corresponding contributions"
-msgstr "Перегляд і добірка внесків"
+msgstr "Переглянути відповідні внески"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:71
 #, php-format
