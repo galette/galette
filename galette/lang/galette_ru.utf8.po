@@ -10,9 +10,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-07-04 07:30+0200\n"
-"PO-Revision-Date: 2025-06-25 05:41+0000\n"
+"PO-Revision-Date: 2025-07-05 15:02+0000\n"
 "Last-Translator: Maksim_220 Кабанов <law820314@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
@@ -200,19 +200,19 @@ msgstr "Почтовая рассылка"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:273
 msgid "Please type an object for the message."
-msgstr ""
+msgstr "Пожалуйста, введите объект для сообщения."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:279
 msgid "Please enter a message."
-msgstr ""
+msgstr "Пожалуйста, введите сообщение."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:375
 msgid "Mailing has been successfully sent!"
-msgstr ""
+msgstr "Рассылка успешно отправлена!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:398
 msgid "Mailing has been successfully saved."
-msgstr ""
+msgstr "Рассылка успешно сохранена."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:480
 #: ../lib/Galette/Core/Galette.php:349 ../lib/Galette/Core/Galette.php:756
@@ -222,18 +222,18 @@ msgstr "Рассылки"
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:615
 #, php-format
 msgid "Remove mailing #%1$s"
-msgstr ""
+msgstr "Удалить рассылку #%1$s"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:695
 #: ../../tempcache/pages/mailing_form.html.twig:571
 #: ../../tempcache/pages/mailings_list.html.twig:487
 msgid "Mailing preview"
-msgstr ""
+msgstr "Пред. просмотр рассылки"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:88
 #: ../lib/Galette/Core/Install.php:1200 ../lib/Galette/Core/Galette.php:430
 msgid "Contributions types"
-msgstr ""
+msgstr "Виды взносов"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:142
 #: ../../tempcache/pages/contributions_types_list.html.twig:296
