@@ -66,8 +66,6 @@
     {% endblock %}
     {% if form is defined %}
         <form action="{%  if form.route is defined %}{{ url_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
-            <div class="ui basic fitted segment">
-
             {% if mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
                 {{ macros.drawBatchActionsList(batch_actions) }}
             {% endif %}
@@ -115,7 +113,6 @@
                         </tfoot>
                     </table>
     {% endif %}
-
             </div>
 
             {% if form is defined and mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
@@ -140,7 +137,7 @@
     {% endif %}
         {% block legend %}{% endblock %}
     {% if mode == 'ajax' %}
-    </div>
+    </div>{# .main-container #}
     {% endif %}
 {% endblock %}
 

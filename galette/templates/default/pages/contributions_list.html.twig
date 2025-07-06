@@ -145,7 +145,7 @@
             </div>
             <div class="field">
                 <label for="contrib_type_filter">{{ _T("Contribution type:") }}</label>
-                <select name="contrib_type_filter" class="ui search dropdown">
+                <select id="contrib_type_filter" name="contrib_type_filter" class="ui search dropdown">
                     <option value="0">{{ _T('Select') }}</option>
                     {% for key, values in type_cotis_options %}
                         <option value="{{ key }}"{% if key == filters.contrib_type_filter %} selected="selected"{% endif %}>{{ values.label }}</option>
@@ -449,7 +449,7 @@
                         <tr>
                             <th scope="colgroup" colspan="4">{{ _T('Reading the list') }}</th>
                         </tr>
-                    <thead>
+                    </thead>
                     <tbody>
                         <tr>
                             <th scope="row" class="cotis-normal color-sample">&nbsp;</th>
@@ -466,23 +466,25 @@
                         </tr>
                     </thead>
                     <tbody>
+            {% if login.isAdmin() or login.isStaff() %}
+                    <tr>
+                        <th scope="row">
+                            <i class="ui edit blue icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Modification") }}</td>
+                        <th scope="row">
+                            <i class="ui trash red icon" aria-hidden="true"></i>
+                        </th>
+                        <td class="back">{{ _T("Deletion") }}</td>
+                    </tr>
+                {% endif %}
                         <tr>
                             <th scope="row">
                                 <i class="ui file pdf green icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Print an invoice or a receipt (depending on contribution type)") }}</td>
-            {% if login.isAdmin() or login.isStaff() %}
-                            <th scope="row">
-                                <i class="ui edit blue icon" aria-hidden="true"></i>
-                            </th>
-                            <td class="back">{{ _T("Modification") }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <i class="ui trash red icon" aria-hidden="true"></i>
-                            </th>
-                            <td class="back">{{ _T("Deletion") }}</td>
-            {% endif %}
+                            <th scope="row"></th>
+                            <td class="back"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -518,6 +520,8 @@
                                 <i class="ui filter grey small icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T("Filter on corresponding member") }}</td>
+                            <th scope="row"></th>
+                            <td class="back"></td>
                         </tr>
                     </tbody>
                 </table>
