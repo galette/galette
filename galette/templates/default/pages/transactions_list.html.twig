@@ -28,7 +28,7 @@
 
 {% set form = {
     'route': {
-        'name': 'payments_filter',
+        'name': 'filterContributions',
         'args': {
             'type': 'transactions'
         }
@@ -79,7 +79,7 @@
 {% endif %}
 
 {% block search %}
-    <form action="{{ url_for("payments_filter", {"type": "transactions"}) }}" method="post" class="ui form filters">
+    <form action="{{ url_for("filterContributions", {"type": "transactions"}) }}" method="post" class="ui form filters">
         <div class="ui secondary yellow segment">
             <div class="two fields">
                 <div class="field">
@@ -161,7 +161,7 @@
     {% set infoline = {
         'label': _Tn("%1$s transaction", "%1$s transactions", nb)|format(nb),
         'route': {
-            'name': 'payments_filter',
+            'name': 'filterContributions',
             'args': {
                 'type': 'transactions'
             }

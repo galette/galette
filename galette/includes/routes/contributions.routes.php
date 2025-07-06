@@ -40,7 +40,7 @@ $app->get(
 $app->post(
     '/{type:contributions|transactions}/filter',
     [Crud\ContributionsController::class, 'filter']
-)->setName('payments_filter')->add($authenticate);
+)->setName('filterContributions')->add($authenticate);
 
 $app->get(
     '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/add',

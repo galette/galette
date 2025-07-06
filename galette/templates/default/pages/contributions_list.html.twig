@@ -104,7 +104,7 @@
 ]) %}
 
 {% block search %}
-    <form action="{{ url_for("payments_filter", {"type": "contributions"}) }}" method="post" class="ui form filters">
+    <form action="{{ url_for("filterContributions", {"type": "contributions"}) }}" method="post" class="ui form filters">
     <div class="ui secondary yellow segment">
         <div class="four fields">
             <div class="field">
@@ -233,7 +233,7 @@
     {% set infoline = {
         'label': _Tn("%1$s contribution", "%1$s contributions", nb)|format(nb),
         'route': {
-            'name': 'payments_filter',
+            'name': 'filterContributions',
             'args': {
                 'type': 'contributions'
             }

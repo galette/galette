@@ -71,7 +71,7 @@ $core_acls = [
     '/(.+)?member(.+)?/i'               => 'groupmanager',
     'ajaxGroupMembers'                  => 'staff',
     'duplicateMember'                   => 'staff',
-    'payments_filter'                   => 'member',
+    'filterContributions'               => 'member',
     'adhesionForm'                      => 'member',
     'getDynamicFile'                    => 'member',
     // /Members rules
@@ -94,5 +94,5 @@ $core_acls = [
     'attendance_sheet'                  => 'groupmanager',
     '/(.+)?document(.+)?/i'             => 'staff',
     'myScheduledPayments'               => 'member',
-    '/(.+)?scheduledPayment(.+)?/i'      => 'staff'
+    '/(.+)?scheduledPayment(.+)?/i'     => 'staff'
 ];
