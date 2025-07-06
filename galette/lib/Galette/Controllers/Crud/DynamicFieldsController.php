@@ -576,10 +576,6 @@ class DynamicFieldsController extends CrudController
     {
         $field = DynamicField::loadFieldType($this->zdb, (int)$args['id']);
         if ($field === false) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Requested field does not exists!")
-            );
             return _T("Requested field does not exists!");
         }
 
@@ -601,6 +597,13 @@ class DynamicFieldsController extends CrudController
     {
         $field_id = (int)$post['id'];
         $field = DynamicField::loadFieldType($this->zdb, $field_id);
+        if ($field === false) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Requested field does not exists!")
+            );
+            return false;
+        }
         return $field->remove();
     }
 
@@ -626,7 +629,7 @@ class DynamicFieldsController extends CrudController
         string $direction
     ): Response {
         $field = DynamicField::loadFieldType($this->zdb, $id);
-        if ($field->move($direction)) {
+        if ($field !== false && $field->move($direction)) {
             $this->flash->addMessage(
                 'success_detected',
                 _T("Field has been successfully moved")

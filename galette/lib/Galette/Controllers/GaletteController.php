@@ -41,7 +41,6 @@ use Galette\IO\News;
 use Galette\IO\Charts;
 use Galette\Repository\Members;
 use Galette\Repository\Reminders;
-use Analog\Analog;
 
 /**
  * Galette main controller
@@ -110,7 +109,7 @@ class GaletteController extends AbstractController
             'page_title'        => _T("Dashboard"),
             'contentcls'        => 'desktop',
             'news'              => $news->getPosts(),
-            'show_dashboard'    => $_COOKIE['show_galette_dashboard'],
+            'show_dashboard'    => $request->getCookieParams()['show_galette_dashboard'],
             'documentation'     => 'usermanual'
         ];
 
@@ -253,66 +252,31 @@ class GaletteController extends AbstractController
                     );
                 }
 
-                // picture upload
-                if (!Galette::isDemo() && isset($_FILES['logo'])) {
-                    if ($_FILES['logo']['error'] === UPLOAD_ERR_OK) {
-                        if ($_FILES['logo']['tmp_name'] != '') {
-                            if (is_uploaded_file($_FILES['logo']['tmp_name'])) {
-                                $res = $this->logo->store($_FILES['logo']);
-                                if ($res < 0) {
-                                    $error_detected[] = $this->logo->getErrorMessage($res);
-                                } else {
-                                    $this->logo = new Logo();
-                                }
-                            }
+                if (!Galette::isDemo()) {
+                    //handle logo
+                    if (isset($_FILES['logo'])) {
+                        $file_res = $this->preferences->handleLogo($this->logo, $_FILES);
+                        if (is_array($file_res)) {
+                            $error_detected = array_merge($error_detected, $file_res);
                         }
-                    } elseif ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                        Analog::log(
-                            $this->logo->getPhpErrorMessage($_FILES['logo']['error']),
-                            Analog::WARNING
-                        );
-                        $error_detected[] = $this->logo->getPhpErrorMessage(
-                            $_FILES['logo']['error']
-                        );
                     }
-                }
-
-                if (!Galette::isDemo() && isset($post['del_logo'])) {
-                    if (!$this->logo->delete()) {
+                    if (isset($post['del_logo']) && !$this->logo->delete()) {
                         $error_detected[] = _T("Delete failed");
-                    } else {
-                        $this->logo = new Logo(); //get default Logo
                     }
-                }
 
-                // Card logo upload
-                if (!Galette::isDemo() && isset($_FILES['card_logo'])) {
-                    if ($_FILES['card_logo']['error'] === UPLOAD_ERR_OK) {
-                        if ($_FILES['card_logo']['tmp_name'] != '') {
-                            if (is_uploaded_file($_FILES['card_logo']['tmp_name'])) {
-                                $res = $this->print_logo->store($_FILES['card_logo']);
-                                if ($res < 0) {
-                                    $error_detected[] = $this->print_logo->getErrorMessage($res);
-                                } else {
-                                    $this->print_logo = new PrintLogo();
-                                }
-                            }
+                    //handle card logo
+                    if (isset($_FILES['card_logo'])) {
+                        $file_res = $this->preferences->handlePrintLogo($this->print_logo, $_FILES);
+                        if (is_array($file_res)) {
+                            $error_detected = array_merge($error_detected, $file_res);
                         }
-                    } elseif ($_FILES['card_logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                        Analog::log(
-                            $this->print_logo->getPhpErrorMessage($_FILES['card_logo']['error']),
-                            Analog::WARNING
-                        );
-                        $error_detected[] = $this->print_logo->getPhpErrorMessage(
-                            $_FILES['card_logo']['error']
-                        );
                     }
-                }
-
-                if (!Galette::isDemo() && isset($post['del_card_logo'])) {
-                    if (!$this->print_logo->delete()) {
+                    if (isset($post['del_card_logo']) && !$this->print_logo->delete()) {
                         $error_detected[] = _T("Delete failed");
-                    } else {
+                    }
+
+                    if (!count($error_detected)) {
+                        $this->logo = new Logo();
                         $this->print_logo = new PrintLogo();
                     }
                 }
@@ -492,13 +456,10 @@ class GaletteController extends AbstractController
         $post = $request->getParsedBody();
         $fc = $this->fields_config;
 
-        $pos = 0;
         $current_cat = 0;
         $res = [];
         foreach ($post['fields'] as $field) {
             if ($current_cat != $post[$field . '_category']) {
-                //reset position when category has changed
-                $pos = 0;
                 //set new current category
                 $current_cat = $post[$field . '_category'];
             }
@@ -518,7 +479,6 @@ class GaletteController extends AbstractController
                 'required'      =>  $required,
                 'width_in_forms'  =>  $post[$field . '_width_in_forms'] ?? 1
             ];
-            $pos++;
         }
         //okay, we've got the new array, we send it to the
         //Object that will store it in the database
@@ -809,7 +769,7 @@ class GaletteController extends AbstractController
     }
 
     /**
-     * Main route
+     * Favicon route
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response

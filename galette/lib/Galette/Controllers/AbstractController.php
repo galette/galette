@@ -232,4 +232,29 @@ abstract class AbstractController
         $filter_name = Text::slugify($filter_name);
         return $filter_name;
     }
+
+    /**
+     * Redirect with errors
+     *
+     * @param Response $response     PSR Response
+     * @param string[] $errors       Errors to report
+     * @param string   $redirect_uri URI to redirect to
+     *
+     * @return Response
+     */
+    protected function redirectWithErrors(Response $response, array $errors, string $redirect_uri): Response
+    {
+        //report errors
+        foreach ($errors as $error) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
+        }
+
+        //redirect to calling action
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $redirect_uri);
+    }
 }

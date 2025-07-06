@@ -578,7 +578,7 @@ class Document implements FileInterface
      * @param string $tmpfile Temporary file
      * @param bool   $ajax    If the file comes from an ajax call (dnd)
      *
-     * @return bool|int
+     * @return true|int
      */
     public function writeOnDisk(string $tmpfile, bool $ajax): bool|int
     {

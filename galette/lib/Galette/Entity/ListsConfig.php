@@ -80,8 +80,8 @@ class ListsConfig extends FieldsConfig
     }
 
     /**
-     * Create field array configuration,
-     * Several lists of fields are kept (visible, requireds, etc), build them.
+     * Create field array configuration
+     * Several lists of fields are kept (visible, required, etc), build them.
      *
      * @return void
      */
@@ -131,8 +131,6 @@ class ListsConfig extends FieldsConfig
      */
     public function getDisplayElements(Login $login): array
     {
-        global $preferences;
-
         $display_elements = [];
         $access_level = $login->getAccessLevel();
         try {

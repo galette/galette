@@ -417,7 +417,7 @@ class Picture implements FileInterface
      * @param boolean               $ajax     If the image comes from an ajax call (dnd)
      * @param ?array<string, mixed> $cropping Cropping properties
      *
-     * @return bool|int
+     * @return true|int
      */
     public function store(array $file, bool $ajax = false, ?array $cropping = null): bool|int
     {
@@ -459,7 +459,7 @@ class Picture implements FileInterface
      * @param string $tmpfile Temporary file
      * @param bool   $ajax    If the file comes from an ajax call (dnd)
      *
-     * @return bool|int
+     * @return true|int
      */
     public function writeOnDisk(string $tmpfile, bool $ajax): bool|int
     {
@@ -508,7 +508,7 @@ class Picture implements FileInterface
      * @param string $file File path on disk
      * @param string $ext  File extension
      *
-     * @return bool|int
+     * @return true|int
      */
     private function storeInDb(Db $zdb, int $id, string $file, string $ext): bool|int
     {

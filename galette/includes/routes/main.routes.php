@@ -33,7 +33,7 @@ $app->get(
 $app->get(
     '/favicon.ico',
     [GaletteController::class, 'favicon']
-);
+)->setName('defaultFavicon');
 
 //logo route
 $app->get(

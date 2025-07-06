@@ -418,9 +418,11 @@ class Contribution extends GaletteTestCase
      */
     public function testCreation(): void
     {
+        $this->logSuperAdmin();
         $this->getMemberOne();
         //create contribution for member
         $this->createContribution();
+        $this->login->logout();
     }
 
     /**
@@ -496,7 +498,9 @@ class Contribution extends GaletteTestCase
             'date_debut_cotis' => $begin_date->format('Y-m-d'),
             'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
+        $this->logSuperAdmin();
         $contrib = $this->createContrib($data);
+        $this->login->logout();
         $this->assertSame(
             [
                 'id_type_cotis'     => 1,
@@ -736,6 +740,7 @@ class Contribution extends GaletteTestCase
      */
     public function testCheckOverlap(): void
     {
+        $this->logSuperAdmin();
         $adh = new \Galette\Entity\Adherent($this->zdb);
         $adh->setDependencies(
             $this->preferences,
@@ -896,6 +901,7 @@ class Contribution extends GaletteTestCase
      */
     public function testRemove(): void
     {
+        $this->logSuperAdmin();
         $this->getMemberOne();
         $this->createContribution();
 
@@ -919,10 +925,12 @@ class Contribution extends GaletteTestCase
         $orig_pref_bool_groupsmanagers_see_contributions = $preferences->pref_bool_groupsmanagers_see_contributions;
         $this->assertFalse($preferences->pref_bool_groupsmanagers_see_contributions);
 
+        $this->logSuperAdmin();
         $this->getMemberOne();
         //create contribution for member
         $this->createContribution();
         $contrib = $this->contrib;
+        $this->login->logOut();
 
         $this->assertFalse($contrib->canShow($this->login));
 

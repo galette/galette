@@ -23,8 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\test\units;
 
-use PHPUnit\Framework\TestCase;
-use Galette\GaletteTestCase;
+use Galette\GaletteRoutingTestCase;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request;
 
@@ -33,7 +32,7 @@ use Slim\Psr7\Request;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class PdfController extends GaletteTestCase
+class PdfController extends GaletteRoutingTestCase
 {
     protected int $seed = 58144569971203;
 
@@ -67,6 +66,17 @@ class PdfController extends GaletteTestCase
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
 
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Core\Links::TABLE);
+        $this->zdb->execute($delete);
+
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
@@ -95,17 +105,9 @@ class PdfController extends GaletteTestCase
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
         $this->assertSame('_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}', $model->title);
 
-        $ufactory = new \Slim\Psr7\Factory\UriFactory();
-        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
-
-        $request = new Request(
-            'POST',
-            $ufactory->createUri('http://localhost/models/pdf'),
-            new Headers(['Content-Type' => ['application/json']]),
-            [],
-            [],
-            $sfactory->createStream()
-        );
+        $route_name = 'pdfModels';
+        $route_arguments = [];
+        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
         $request = $request->withParsedBody(
             [
                 'store' => true,
@@ -115,11 +117,14 @@ class PdfController extends GaletteTestCase
             ]
         );
 
-        $response = new \Slim\Psr7\Response();
-        $controller = new \Galette\Controllers\PdfController($this->container);
-        $this->container->injectOn($controller);
-
-        $test_response = $controller->storeModels($request, $response);
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('pdfModels', ['id' => $model->id])]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
         $this->assertSame(
             [
                 'success_detected' => [
@@ -134,32 +139,74 @@ class PdfController extends GaletteTestCase
     }
 
     /**
+     * Test display models
+     *
+     * @return void
+     */
+    public function testDisplayModels(): void
+    {
+        $route_name = 'pdfModels';
+        $route_arguments = [];
+        $request = $this->createRequest($route_name, $route_arguments);
+
+        //Refused from authenticate middleware
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
+        $this->flash_data = [];
+
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->assertSame([], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame([], $this->flash_data);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(
+            'PDF models',
+            $body
+        );
+    }
+
+    /**
      * Test membersCards
      *
      * @return void
      */
     public function testMembersCards(): void
     {
-        $this->getMemberOne();
+        $this->logSuperAdmin();
+        $member_two = $this->getMemberTwo();
+        //change language
+        $check = $member_two->check(['pref_lang' => 'en_US'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($member_two->store());
+        $member_one = $this->getMemberOne();
+        $this->login->logOut();
 
-        $ufactory = new \Slim\Psr7\Factory\UriFactory();
-        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+        $route_name = 'pdf-members-cards';
+        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
 
-        $request = new Request(
-            'POST',
-            $ufactory->createUri('/members/card/' . $this->adh->id),
-            new Headers(['Content-Type' => ['text/html']]),
-            [],
-            [],
-            $sfactory->createStream()
-        );
+        $request = $this->createRequest($route_name, $route_arguments);
 
-        $response = new \Slim\Psr7\Response();
-        $controller = new \Galette\Controllers\PdfController($this->container);
-        $this->container->injectOn($controller);
+        //login is required to access this page
+        //Refused from authenticate middleware
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
+        $this->flash_data = [];
 
-        //test with non-logged-in user
-        $test_response = $controller->membersCards($request, $response, $this->adh->id);
+        //test with another simple member
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/member/me']], $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame(
@@ -171,20 +218,12 @@ class PdfController extends GaletteTestCase
             $this->flash_data['slimFlash']
         );
         $this->flash_data = [];
-
-        //test logged-in as superadmin
-        $this->logSuperAdmin();
-        $test_response = null;
-
-        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
-        $test_response = $controller->membersCards($request, $response, $this->adh->id);
-
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $this->login->logout();
 
         //test no selection
-        $test_response = $controller->membersCards($request, $response);
+        $this->logSuperAdmin();
+        $test_request = $this->createRequest($route_name, []);
+        $test_response = $this->app->handle($test_request);
         $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->assertSame(
@@ -196,6 +235,31 @@ class PdfController extends GaletteTestCase
             $this->flash_data['slimFlash']
         );
         $this->flash_data = [];
+        $this->login->logout();
+
+        //test with expected simple member
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        //member is not up-to-date, he cannot see his card
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog::WARNING, 'Member ' . $member_one->id . ' is not up to date; cannot get his PDF member card');
+
+        //make member up-to-date
+        $this->login->logout();
+        $this->logSuperAdmin();
+        $this->createContribution();
+        $this->login->logout();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
     }
 
     /**
@@ -205,23 +269,11 @@ class PdfController extends GaletteTestCase
      */
     public function testFilteredMembersCards(): void
     {
-        $this->getMemberOne();
+        $member_one = $this->getMemberOne();
 
-        $ufactory = new \Slim\Psr7\Factory\UriFactory();
-        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
-
-        $request = new Request(
-            'POST',
-            $ufactory->createUri('/members/card/' . $this->adh->id),
-            new Headers(['Content-Type' => ['text/html']]),
-            [],
-            [],
-            $sfactory->createStream()
-        );
-
-        $response = new \Slim\Psr7\Response();
-        $controller = new \Galette\Controllers\PdfController($this->container);
-        $this->container->injectOn($controller);
+        $route_name = 'pdf-members-cards';
+        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $request = $this->createRequest($route_name, $route_arguments);
 
         //test logged-in as superadmin
         $this->logSuperAdmin();
@@ -229,10 +281,11 @@ class PdfController extends GaletteTestCase
         //test with filters
         $filters = new \Galette\Filters\MembersList();
         $filters->selected = [$this->adh->id];
+        $controller = new \Galette\Controllers\PdfController($this->container);
         $this->session->{$controller->getFilterName('members')} = $filters;
 
         $this->expectOutputRegex('/^%PDF-\d.\d.');
-        $test_response = $controller->membersCards($request, $response);
+        $test_response = $this->app->handle($request);
 
         unset($this->session->{$controller->getFilterName('members')});
         $this->assertSame(200, $test_response->getStatusCode());
@@ -249,25 +302,24 @@ class PdfController extends GaletteTestCase
     {
         $controller = new \Galette\Controllers\PdfController($this->container);
         unset($this->session->{$controller->getFilterName('members')});
-        $this->getMemberOne();
+        $member_one = $this->getMemberOne();
 
-        $ufactory = new \Slim\Psr7\Factory\UriFactory();
-        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+        $route_name = 'pdf-members-labels';
+        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $request = $this->createRequest($route_name, $route_arguments);
 
-        $request = new Request(
-            'POST',
-            $ufactory->createUri('/members/labels'),
-            new Headers(['Content-Type' => ['text/html']]),
-            [],
-            [],
-            $sfactory->createStream()
-        );
+        //login is required to access this page
+        //Refused from authenticate middleware
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
+        $this->flash_data = [];
 
-        $response = new \Slim\Psr7\Response();
-        $this->container->injectOn($controller);
-
-        //test with non-logged-in user
-        $test_response = $controller->membersLabels($request, $response, $this->adh->id);
+        $this->logSuperAdmin();
+        //non member selected
+        $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->assertSame(
@@ -280,36 +332,19 @@ class PdfController extends GaletteTestCase
         );
         $this->flash_data = [];
 
-        //test again from filters
+        //add selected member to filters
         $test_response = null;
         $filters = new \Galette\Filters\MembersList();
         $filters->selected = [$this->adh->id];
         $this->session->{$controller->getFilterName('members')} = $filters;
 
         $this->expectOutputRegex('/^%PDF-\d\.\d');
-        $test_response = $controller->membersLabels($request, $response);
+        $test_response = $this->app->handle($request);
 
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
         $this->assertSame('attachment;filename="labels_print_filename.pdf"', $test_response->getHeader('Content-Disposition')[0]);
         unset($this->session->{$controller->getFilterName('members')});
-
-        //test logged-in as superadmin
-        $this->logSuperAdmin();
-        //test no selection
-        $test_response = null;
-        $test_response = $controller->membersCards($request, $response);
-        $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->assertSame(
-            [
-                'error_detected' => [
-                    'No member was selected, please check at least one name.'
-                ]
-            ],
-            $this->flash_data['slimFlash']
-        );
-        $this->flash_data = [];
     }
 
     /**
@@ -323,35 +358,31 @@ class PdfController extends GaletteTestCase
         unset($this->session->{$controller->getFilterName('members')});
         $this->getMemberOne();
 
-        $ufactory = new \Slim\Psr7\Factory\UriFactory();
-        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+        $route_name = 'pdf-members-labels';
+        $route_arguments = [];
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
 
-        $request = new Request(
-            'POST',
-            $ufactory->createUri('/members/labels'),
-            new Headers(['Content-Type' => ['text/html']]),
-            [],
-            [],
-            $sfactory->createStream()
-        );
-
-        $response = new \Slim\Psr7\Response();
-        $this->container->injectOn($controller);
-
-        //test logged-in as superadmin
-        $this->logSuperAdmin();
+        //login is required to access this page
+        //Refused from authenticate middleware
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
+        $this->flash_data = [];
 
         //test again from filters
+        $this->logSuperAdmin();
         $filters = new \Galette\Filters\MembersList();
         $filters->selected = [$this->adh->id];
         $this->session->{$controller->getFilterName('members')} = $filters;
 
         $this->expectOutputRegex('/^%PDF-\d\.\d');
-        $test_response = $controller->membersCards($request, $response);
+        $test_response = $this->app->handle($request);
 
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $this->assertSame('attachment;filename="labels_print_filename.pdf"', $test_response->getHeader('Content-Disposition')[0]);
     }
 
     /**
@@ -363,25 +394,33 @@ class PdfController extends GaletteTestCase
     {
         $controller = new \Galette\Controllers\PdfController($this->container);
         unset($this->session->{$controller->getFilterName('members')});
-        $this->getMemberOne();
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        //change language
+        $check = $member_two->check(['pref_lang' => 'en_US'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($member_two->store());
 
-        $ufactory = new \Slim\Psr7\Factory\UriFactory();
-        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+        $route_name = 'adhesionForm';
+        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $request = $this->createRequest($route_name, $route_arguments);
 
-        $request = new Request(
-            'POST',
-            $ufactory->createUri('/members/labels'),
-            new Headers(['Content-Type' => ['text/html']]),
-            [],
-            [],
-            $sfactory->createStream()
-        );
+        //login is required to access this page
+        //Refused from authenticate middleware
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
+        $this->flash_data = [];
 
-        $response = new \Slim\Psr7\Response();
-        $this->container->injectOn($controller);
-
-        //test with non-logged-in user
-        $test_response = $controller->adhesionForm($request, $response, $this->adh->id);
+        //test with simple member: can show its own form only
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/member/me']], $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame(
@@ -393,17 +432,17 @@ class PdfController extends GaletteTestCase
             $this->flash_data['slimFlash']
         );
         $this->flash_data = [];
+        $this->login->logOut();
 
-        //test logged-in as superadmin
-        $this->logSuperAdmin();
-        $test_response = null;
-
+        //test logged-in as member one
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->expectOutputRegex('/^%PDF-\d\.\d/');
-        $test_response = $controller->adhesionForm($request, $response, $this->adh->id);
-
+        $test_response = $this->app->handle($request);
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="adherent_form.' . $this->adh->id . '.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $this->assertSame('attachment;filename="adherent_form.' . $member_one->id . '.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $this->login->logout();
     }
 
     /**
@@ -415,31 +454,20 @@ class PdfController extends GaletteTestCase
     {
         $this->getMemberOne();
 
-        $ufactory = new \Slim\Psr7\Factory\UriFactory();
-        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+        $route_name = 'attendance_sheet';
+        $route_arguments = [];
+        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
 
-        $request = new Request(
-            'POST',
-            $ufactory->createUri('/attendance-sheet'),
-            new Headers(['Content-Type' => ['application/json']]),
-            [],
-            [],
-            $sfactory->createStream()
-        );
-
-        $response = new \Slim\Psr7\Response();
-        $controller = new \Galette\Controllers\PdfController($this->container);
-        $this->container->injectOn($controller);
+        $this->logSuperAdmin();
 
         //test no selection
-        $test_response = null;
-        $test_response = $controller->membersCards($request, $response);
+        $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->assertSame(
             [
                 'error_detected' => [
-                    'No member was selected, please check at least one name.'
+                    'No member selected to generate attendance sheet'
                 ]
             ],
             $this->flash_data['slimFlash']
@@ -453,14 +481,36 @@ class PdfController extends GaletteTestCase
             ]
         );
 
-        $test_response = null;
-
         $this->expectOutputRegex('/^%PDF-\d\.\d/');
-        $test_response = $controller->attendanceSheet($request, $response);
+        $test_response = $this->app->handle($request);
 
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
         $this->assertSame('attachment;filename="attendance_sheet.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+    }
+
+    /**
+     * Test attendanceSheetConfig
+     *
+     * @return void
+     */
+    public function testAttendanceSheetConfig(): void
+    {
+        $route_name = 'attendance_sheet_details';
+        $route_arguments = [];
+        $request = $this->createRequest($route_name, $route_arguments, 'POST', 'application/json');
+
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->assertSame([], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame([], $this->flash_data['slimFlash']);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(
+            'Attendance sheet configuration',
+            $body
+        );
     }
 
     /**
@@ -470,48 +520,169 @@ class PdfController extends GaletteTestCase
      */
     public function testContribution(): void
     {
+        $this->logSuperAdmin();
         $this->getMemberOne();
         $this->createContribution();
+        $contribution_one = $this->contrib;
 
-        $ufactory = new \Slim\Psr7\Factory\UriFactory();
-        $sfactory = new \Slim\Psr7\Factory\StreamFactory();
+        $member_two = $this->getMemberTwo();
+        //change language
+        $check = $member_two->check(['pref_lang' => 'en_US'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($member_two->store());
 
-        $request = new Request(
-            'POST',
-            $ufactory->createUri('/contribution/print/' . $this->contrib->id),
-            new Headers(['Content-Type' => ['application/json']]),
-            [],
-            [],
-            $sfactory->createStream()
-        );
+        $this->login->logOut();
 
-        $response = new \Slim\Psr7\Response();
-        $controller = new \Galette\Controllers\PdfController($this->container);
-        $this->container->injectOn($controller);
+        $route_name = 'printContribution';
+        $route_arguments = ['id' => $contribution_one->id];
+        $request = $this->createRequest($route_name, $route_arguments);
 
-        //test not logged
-        $test_response = $controller->contribution($request, $response, $this->contrib->id);
+        //test No rights
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/contributions']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog::ERROR, 'No contribution #' . $contribution_one->id);
         $this->assertSame(
             [
                 'error_detected' => [
-                    'Unable to load contribution #' . $this->contrib->id . '!'
+                    'Unable to load contribution #' . $contribution_one->id . '!'
                 ]
             ],
             $this->flash_data['slimFlash']
         );
         $this->flash_data = [];
+        $this->login->logOut();
 
-        //test superadmin
-        $this->logSuperAdmin();
-        $test_response = null;
+        //test with correct member
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
         $this->expectOutputRegex('/^%PDF-\d\.\d\/');
-        $test_response = $controller->contribution($request, $response, $this->contrib->id);
+        $test_response = $this->app->handle($request);
 
+        $this->expectNoLogEntry();
         $this->assertSame(200, $test_response->getStatusCode());
         $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="contribution_' . $this->contrib->id . '_invoice.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $this->assertSame('attachment;filename="contribution_' . $contribution_one->id . '_invoice.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+    }
+
+    /**
+     * Test group
+     *
+     * @return void
+     */
+    public function testGroup(): void
+    {
+        $route_name = 'pdf_groups';
+        $route_arguments = [];
+        $request = $this->createRequest($route_name, $route_arguments);
+
+        //login is required to access this page
+        //Refused from authenticate middleware
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
+        $this->flash_data = [];
+
+        $this->logSuperAdmin();
+        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $test_response = $this->app->handle($request);
+
+        //no groups, no pdf
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog::ERROR, 'An error has occurred, unable to get groups list');
+        $this->assertSame(['error_detected' => ['Unable to get groups list.']], $this->flash_data['slimFlash']);
+        $this->flash_data = [];
+
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+
+        $test_response = $this->app->handle($request);
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame('attachment;filename="groups_list.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $this->assertSame([], $this->flash_data);
+        $this->login->logOut();
+    }
+
+    /**
+     * Test direct member card link
+     *
+     * @return void
+     */
+    public function testDirectlinkDocumentMemberCard(): void
+    {
+        $member_one = $this->getMemberOne();
+        $hash = base64_encode('FAKER' . $this->seed);
+
+        $route_name = 'get-directlink';
+        $route_arguments = ['hash' => $hash];
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $request->withParsedBody(['email' => $member_one->email]);
+
+        //link does not exist
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('directlink', ['hash' => $hash])]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame(['error_detected' => ['Invalid link!']], $this->flash_data['slimFlash']);
+        $this->flash_data = [];
+
+        //create a link
+        $links = new \Galette\Core\Links($this->zdb);
+        $hash = $links->generateNewLink(\Galette\Core\Links::TARGET_MEMBERCARD, $member_one->id);
+        $route_arguments = ['hash' => $hash];
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $request->withParsedBody(['email' => $member_one->email]);
+
+        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $test_response = $this->app->handle($request);
+        $this->expectNoLogEntry();
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+    }
+
+    /**
+     * Test direct contribution link
+     *
+     * @return void
+     */
+    public function testDirectlinkDocumentContribution(): void
+    {
+        $this->logSuperAdmin();
+        $member_one = $this->getMemberOne();
+        $cdata = $this->getContribData();
+        $cdata['id_type_cotis'] = 5; //donation
+        $this->createContrib($cdata);
+        $contribution_one = $this->contrib;
+        $this->login->logOut();
+
+        //create a link
+        $links = new \Galette\Core\Links($this->zdb);
+        $hash = $links->generateNewLink(\Galette\Core\Links::TARGET_RECEIPT, $contribution_one->id);
+        $route_name = 'get-directlink';
+        $route_arguments = ['hash' => $hash];
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $request->withParsedBody(['email' => $member_one->email]);
+
+        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $test_response = $this->app->handle($request);
+        $this->expectNoLogEntry();
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
+        $this->assertSame(
+            'attachment;filename="contribution_' . $contribution_one->id . '_receipt.pdf"',
+            $test_response->getHeader('Content-Disposition')[0]
+        );
     }
 }

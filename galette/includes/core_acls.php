@@ -59,6 +59,7 @@ $core_acls = [
     '/(.+)?contribution(.+)?/i'         => 'staff',
     '/(.*)?addTransaction/i'            => 'groupmanager',
     '/(.*)?editTransaction/i'           => 'groupmanager',
+    '/doEditTransaction/i'              => 'staff',
     '/(.+)?transaction(.+)?/i'          => 'staff',
     // /Contributions rules
     // Members rules

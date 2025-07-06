@@ -383,7 +383,9 @@ Au milieu
             'date_fin_cotis' => $edate->format('Y-m-d'),
             'info_field_' . $cdf->getId() . '_1' => $dyndate->format('Y-m-d')
         ];
+        $this->logSuperAdmin();
         $this->createContrib($data);
+        $this->login->logout();
     }
 
     /**

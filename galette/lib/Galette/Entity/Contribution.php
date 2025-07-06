@@ -155,6 +155,9 @@ class Contribution implements AccessManagementInterface
             if (isset($args['adh']) && $args['adh'] != '') {
                 $this->member = (int)$args['adh'];
             }
+            if (isset($args['amount'])) {
+                $this->amount = $args['amount'];
+            }
             if (isset($args['trans'])) {
                 $this->transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
                 if (!isset($this->member)) {
@@ -348,7 +351,7 @@ class Contribution implements AccessManagementInterface
             );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                if ($this->login->isGroupManager() && $preferences->pref_bool_groupsmanagers_create_transactions) {
+                if ($this->login->isGroupManager() && ($preferences->pref_bool_groupsmanagers_create_transactions || $preferences->pref_bool_groupsmanagers_see_transactions)) {
                     //limit to managed members from managed groups
                     $mgroups = $this->login->getManagedGroups();
                     $select->join(
@@ -440,6 +443,8 @@ class Contribution implements AccessManagementInterface
         $transpk = Transaction::PK;
         if ($r->$transpk != '') {
             $this->transaction = new Transaction($this->zdb, $this->login, (int)$r->$transpk);
+        } else {
+            $this->transaction = null;
         }
 
         $this->setContributionType((int)$r->id_type_cotis);
@@ -491,7 +496,16 @@ class Contribution implements AccessManagementInterface
                         break;
                     case Adherent::PK:
                         if ($value != '') {
-                            $this->member = (int)$value;
+                            $member = new Adherent($this->zdb, (int)$value, false);
+                            if (
+                                !$this->login->isStaff()
+                                && !$this->login->isAdmin()
+                                && !$this->login->isGroupManager(array_keys($member->getGroups()))
+                            ) {
+                                $this->errors[] = _T("- Please select a member from a group you manage.");
+                            } else {
+                                $this->member = (int)$value;
+                            }
                         }
                         break;
                     case ContributionsTypes::PK:
@@ -929,30 +943,27 @@ class Contribution implements AccessManagementInterface
     /**
      * Detach a contribution from a transaction
      *
-     * @param Db    $zdb        Database instance
-     * @param Login $login      Login instance
-     * @param int   $trans_id   Transaction identifier
-     * @param int   $contrib_id Contribution identifier
+     * @param int $trans_id Transaction identifier
      *
      * @return boolean
      */
-    public static function unsetTransactionPart(Db $zdb, Login $login, int $trans_id, int $contrib_id): bool
+    public function unsetTransactionPart(int $trans_id): bool
     {
         try {
             //first, we check if contribution is part of transaction
-            $c = new Contribution($zdb, $login, (int)$contrib_id);
+            $c = new Contribution($this->zdb, $this->login, $this->id);
             if ($c->isTransactionPartOf($trans_id)) {
-                $update = $zdb->update(self::TABLE);
+                $update = $this->zdb->update(self::TABLE);
                 $update->set(
                     [Transaction::PK => null]
                 )->where(
-                    [self::PK => $contrib_id]
+                    [self::PK => $this->id]
                 );
-                $zdb->execute($update);
+                $this->zdb->execute($update);
                 return true;
             } else {
                 Analog::log(
-                    'Contribution #' . $contrib_id .
+                    'Contribution #' . $this->id .
                     ' is not actually part of transaction #' . $trans_id,
                     Analog::WARNING
                 );
@@ -960,7 +971,7 @@ class Contribution implements AccessManagementInterface
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to detach contribution #' . $contrib_id .
+                'Unable to detach contribution #' . $this->id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -971,25 +982,23 @@ class Contribution implements AccessManagementInterface
     /**
      * Set a contribution as a transaction part
      *
-     * @param Db  $zdb        Database instance
-     * @param int $trans_id   Transaction identifier
-     * @param int $contrib_id Contribution identifier
+     * @param int $trans_id Transaction identifier
      *
      * @return boolean
      */
-    public static function setTransactionPart(Db $zdb, int $trans_id, int $contrib_id): bool
+    public function setTransactionPart(int $trans_id): bool
     {
         try {
-            $update = $zdb->update(self::TABLE);
+            $update = $this->zdb->update(self::TABLE);
             $update->set(
                 [Transaction::PK => $trans_id]
-            )->where([self::PK => $contrib_id]);
+            )->where([self::PK => $this->id]);
 
-            $zdb->execute($update);
+            $this->zdb->execute($update);
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to attach contribution #' . $contrib_id .
+                'Unable to attach contribution #' . $this->id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );

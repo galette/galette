@@ -358,18 +358,6 @@ class PdfController extends AbstractController
         $filters->selected = $selection;
         $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
 
-        if (count($filters->selected) == 0) {
-            Analog::log('No member selected to generate attendance sheet', Analog::INFO);
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member selected to generate attendance sheet")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('members'));
-        }
-
         $m = new Members();
         $members = $m->getArrayList(
             $filters->selected,

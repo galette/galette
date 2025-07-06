@@ -1739,4 +1739,75 @@ class Preferences
             );
         }
     }
+
+    /**
+     * Handle logo
+     *
+     * @param Logo                $logo  Logo instance
+     * @param array<string,mixed> $files Files sent
+     *
+     * @return array<string>|true
+     */
+    public function handleLogo(Logo $logo, array $files): array|bool
+    {
+        $this->errors = [];
+        if ($files['logo']['error'] === UPLOAD_ERR_OK) {
+            if ($files['logo']['tmp_name'] != '' && is_uploaded_file($files['logo']['tmp_name'])) {
+                $res = $logo->store($files['logo']);
+                if ($res !== true) {
+                    $this->errors[] = $logo->getErrorMessage($res);
+                }
+            }
+        } elseif ($files['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $this->errors[] = $logo->getPhpErrorMessage(
+                $files['logo']['error']
+            );
+        }
+
+        if (count($this->errors) > 0) {
+            Analog::log(
+                'Some errors has been thew attempting to edit/store logo' . "\n" .
+                print_r($this->errors, true),
+                Analog::WARNING
+            );
+            return $this->errors;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Handle print logo
+     *
+     * @param PrintLogo           $print_logo PrintLogo instance
+     * @param array<string,mixed> $files      Files sent
+     *
+     * @return array<string>|true
+     */
+    public function handlePrintLogo(PrintLogo $print_logo, array $files): array|bool
+    {
+        if ($files['card_logo']['error'] === UPLOAD_ERR_OK) {
+            if ($files['card_logo']['tmp_name'] != '' && is_uploaded_file($files['card_logo']['tmp_name'])) {
+                $res = $print_logo->store($files['card_logo']);
+                if ($res !== true) {
+                    $this->errors[] = $print_logo->getErrorMessage($res);
+                }
+            }
+        } elseif ($files['card_logo']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $this->errors[] = $print_logo->getPhpErrorMessage(
+                $files['card_logo']['error']
+            );
+        }
+
+        if (count($this->errors) > 0) {
+            Analog::log(
+                'Some errors has been thew attempting to edit/store print logo' . "\n" .
+                print_r($this->errors, true),
+                Analog::WARNING
+            );
+            return $this->errors;
+        } else {
+            return true;
+        }
+    }
 }

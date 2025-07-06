@@ -174,7 +174,7 @@ class ListsConfig extends TestCase
         $this->assertSame(-1, $field['list_position']);
         $this->assertFalse($field['list_visible']);
 
-        // copied from FieldsConfig::testSetFields to ensure it works as excpeted from here.
+        // copied from FieldsConfig::testSetFields to ensure it works as excepted from here.
         //town
         $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2]; //3 in FieldsConfig but 2 here.
         $this->assertSame('ville_adh', $town['field_id']);

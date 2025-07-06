@@ -186,16 +186,16 @@ class Transaction implements AccessManagementInterface
                 return true;
             } else {
                 Analog::log(
-                    'Transaction id `' . $id . '` does not exist',
-                    Analog::WARNING
+                    'No transaction #' . $id . ' (user ' . $this->login->id . ')',
+                    Analog::ERROR
                 );
                 return false;
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load transaction form id `' . $id . '` | ' .
+                'An error occurred attempting to load contribution #' . $id .
                 $e->getMessage(),
-                Analog::WARNING
+                Analog::ERROR
             );
             throw $e;
         }
@@ -326,7 +326,18 @@ class Transaction implements AccessManagementInterface
                             $this->setDate($key, $value);
                             break;
                         case Adherent::PK:
-                            $this->member = (int)$value;
+                            if ($value != '') {
+                                $member = new Adherent($this->zdb, (int)$value, false);
+                                if (
+                                    !$this->login->isStaff()
+                                    && !$this->login->isAdmin()
+                                    && !$this->login->isGroupManager(array_keys($member->getGroups()))
+                                ) {
+                                    $this->errors[] = _T("- Please select a member from a group you manage.");
+                                } else {
+                                    $this->member = (int)$value;
+                                }
+                            }
                             break;
                         case 'trans_amount':
                             //FIXME: this is a hack to allow comma as decimal separator
@@ -391,7 +402,7 @@ class Transaction implements AccessManagementInterface
             Analog::log(
                 'Some errors has been thew attempting to edit/store a transaction' .
                 print_r($this->errors, true),
-                Analog::WARNING
+                Analog::ERROR
             );
             return $this->errors;
         } else {
@@ -735,10 +746,36 @@ class Transaction implements AccessManagementInterface
      */
     public function canEdit(Login $login): bool
     {
-        if ($this->canCreate($login) && isset($this->id)) {
-            $member = new Adherent($this->zdb, (int)$this->member, false);
-            return $login->isGroupManager(array_keys($member->getGroups()));
+        return $this->canDelete($login);
+    }
+
+    /**
+     * Can current logged-in user display transaction edit page?
+     * Specific right for groups managers to attach/detach contributions from a transaction -_-
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canAttachAndDetach(Login $login): bool
+    {
+        if ($this->canEdit($login)) {
+            return true;
         }
+
+        global $preferences;
+
+        if (
+            isset($this->id)
+            && $login->isGroupManager()
+            && (
+                $preferences->pref_bool_groupsmanagers_create_contributions
+                || $preferences->pref_bool_groupsmanagers_see_contributions
+            )
+        ) {
+            return true;
+        }
+
         return false;
     }
 

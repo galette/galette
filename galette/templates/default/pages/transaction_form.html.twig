@@ -126,6 +126,7 @@
                                 <tr>
                                     <th colspan="{% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}9{% else %}7{% endif %}">
                                         <div class="ui basic fitted right aligned segment">
+                {% if contribution.canCreate(login) %}
                                             <a
                                                 href="{{ url_for("addContribution", {"type": constant('Galette\\Entity\\Contribution::TYPE_FEE')}) }}?trans_id={{ transaction.id }}"
                                                 class="ui icon green compact button tooltip"
@@ -144,6 +145,8 @@
                                                 <i class="gift icon" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
                                             </a>
+                {% endif %}
+                {% if preferences.pref_bool_groupsmanagers_see_contributions %}
                                             <a
                                                 href="#"
                                                 class="ui icon blue compact button tooltip"
@@ -153,6 +156,7 @@
                                                 <i class="receipt icon" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ _T("Select an existing contribution in the database, and attach it to the current transaction") }}</span>
                                             </a>
+                {% endif %}
                                         </div>
                                     </th>
                                 </tr>
@@ -199,6 +203,7 @@
 
         {% include "components/dynamic_fields.html.twig" with {'object': transaction} %}
 
+    {% if transaction.canEdit(login) %}
         <div class="ui basic center aligned segment">
             <button type="submit" name="valid" class="ui labeled icon primary button action">
                 <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
@@ -207,6 +212,7 @@
             <input type="hidden" name="valid" value="1"/>
             {% include "components/forms/csrf.html.twig" %}
         </div>
+    {% endif %}
     </form>
 {% else %} {# No members #}
     <div class="ui warning message" id="warningbox">

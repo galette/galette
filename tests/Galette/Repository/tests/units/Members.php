@@ -94,6 +94,7 @@ class Members extends GaletteTestCase
         $hist = $this->history;
         $i18n = $this->i18n;
 
+        $this->logSuperAdmin();
         try {
             $this->deleteMembers();
         } catch (\Exception $e) {
@@ -179,6 +180,7 @@ class Members extends GaletteTestCase
             }
         }
 
+        $this->login->logOut();
         $this->mids = $mids;
     }
 
@@ -776,8 +778,10 @@ class Members extends GaletteTestCase
             \Galette\Entity\ContributionsTypes::PK  => 4, //donation in kind
             'info_field_' . $tdf->getId() . '_1' => 'A contribution with a dynamic text value set on it'
         ];
+        $this->logSuperAdmin();
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
+        $this->login->logout();
 
         $list = $members->getList();
         $this->assertSame(1, $list->count());
@@ -795,8 +799,10 @@ class Members extends GaletteTestCase
             'id_cotis' => $contrib->id,
             'info_field_' . $ddf->getId() . '_1' => $ddate->format(__('Y-m-d'))
         ];
+        $this->logSuperAdmin();
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
+        $this->login->logout();
 
         $list = $members->getList();
         $this->assertSame(1, $list->count());
@@ -813,8 +819,10 @@ class Members extends GaletteTestCase
             'id_cotis' => $contrib->id,
             'info_field_' . $cdf->getId() . '_1' => '2'
         ];
+        $this->logSuperAdmin();
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
+        $this->login->logout();
 
         $list = $members->getList();
         $this->assertSame(1, $list->count());
@@ -1049,8 +1057,10 @@ class Members extends GaletteTestCase
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
             \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
+        $this->logSuperAdmin();
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
+        $this->login->logout();
 
         $counts = $members->getRemindersCount();
         $this->assertCount(3, $counts);
@@ -1080,8 +1090,10 @@ class Members extends GaletteTestCase
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
             \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
+        $this->logSuperAdmin();
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
+        $this->login->logout();
 
         $counts = $members->getRemindersCount();
         $this->assertCount(3, $counts);
@@ -1121,8 +1133,10 @@ class Members extends GaletteTestCase
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
             \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
+        $this->logSuperAdmin();
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
+        $this->login->logout();
 
         $counts = $members->getRemindersCount();
         $this->assertCount(3, $counts);
@@ -1158,8 +1172,10 @@ class Members extends GaletteTestCase
             'date_fin_cotis'                => $due_date->format('Y-m-d'),
             \Galette\Entity\ContributionsTypes::PK  => 1 // annual fee
         ];
+        $this->logSuperAdmin();
         $this->assertTrue($contrib->check($cdata, [], []));
         $this->assertTrue($contrib->store());
+        $this->login->logout();
 
         $counts = $members->getRemindersCount();
         $this->assertCount(3, $counts);

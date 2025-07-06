@@ -49,7 +49,10 @@ abstract class GaletteTestCase extends TestCase
     /** @var array<string,array<string,array<int,string>> */
     protected array $flash_data;
     protected \Slim\Flash\Messages $flash;
+    protected \Slim\Routing\RouteParser $routeparser;
+    protected \Slim\Views\Twig $view;
     protected \DI\Container $container;
+    protected \Slim\App $app;
     protected int $seed;
     protected array $expected_mysql_warnings = [];
     protected bool $check_logs = true;
@@ -82,6 +85,7 @@ abstract class GaletteTestCase extends TestCase
 
         $gapp =  new \Galette\Core\SlimApp();
         $app = $gapp->getApp();
+        $this->app = $app;
         $plugins = new \Galette\Core\Plugins();
         $this->plugins = $plugins;
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
@@ -93,6 +97,7 @@ abstract class GaletteTestCase extends TestCase
         $container->set(\Slim\Flash\Messages::class, $this->flash);
 
         $app->addRoutingMiddleware();
+        $app->add(\Slim\Views\TwigMiddleware::createFromContainer($app, \Slim\Views\Twig::class));
 
         $this->container = $container;
 
@@ -104,6 +109,8 @@ abstract class GaletteTestCase extends TestCase
         $this->members_fields = $container->get('members_fields');
         $this->members_fields_cats = $container->get('members_fields_cats');
         $this->session = $container->get('session');
+        $this->routeparser = $container->get(\Slim\Routing\RouteParser::class);
+        $this->view = $container->get(\Slim\Views\Twig::class);
 
         global $zdb, $login, $hist, $i18n, $container, $galette_log_var, $routeparser;  // globals :(
         $zdb = $this->zdb;
@@ -111,7 +118,7 @@ abstract class GaletteTestCase extends TestCase
         $hist = $this->history;
         $i18n = $this->i18n;
         $container = $this->container;
-        $routeparser = $container->get(\Slim\Routing\RouteParser::class);
+        $routeparser = $this->routeparser;
 
         $this->initPaymentTypes();
         $this->initStatus();
@@ -604,11 +611,11 @@ abstract class GaletteTestCase extends TestCase
     }
 
     /**
-     * Create test contribution in database
+     * Get contribution data
      *
-     * @return void
+     * @return array<string,mixed>
      */
-    protected function createContribution(): void
+    protected function getContribData(): array
     {
         $now = new \DateTime(); // 2020-11-07
         $begin_date = clone $now;
@@ -619,7 +626,7 @@ abstract class GaletteTestCase extends TestCase
         $due_date->sub(new \DateInterval('P1D'));
         $due_date->add(new \DateInterval('P1Y'));
 
-        $data = [
+        return [
             'id_adh' => $this->adh->id,
             'id_type_cotis' => 1, //annual fee
             'montant_cotis' => 92,
@@ -629,7 +636,16 @@ abstract class GaletteTestCase extends TestCase
             'date_debut_cotis' => $begin_date->format('Y-m-d'),
             'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
-        $this->createContrib($data);
+    }
+
+    /**
+     * Create test contribution in database
+     *
+     * @return void
+     */
+    protected function createContribution(): void
+    {
+        $this->createContrib($this->getContribData());
         $this->checkContribExpected();
     }
 
@@ -664,10 +680,51 @@ abstract class GaletteTestCase extends TestCase
             'type_paiement_cotis' => '3',
             'info_cotis' => 'FAKER' . $this->seed,
             'date_fin_cotis' => $due_date->format('Y-m-d'),
+            'row_class' => 'active-account cotis-ok', //member is up-to-date
+            'type' => \Galette\Entity\Contribution::TYPE_FEE,
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
         $this->assertSame($expecteds['date_fin_cotis'], $contrib->raw_end_date->format('Y-m-d'));
+
+        //load member from db
+        $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+        $this->assertSame($expecteds['row_class'], $this->adh->getRowClass());
+        unset($expecteds['row_class']);
+        if ($expecteds['type'] === \Galette\Entity\Contribution::TYPE_FEE) {
+            $this->assertSame($this->contrib->end_date, $this->adh->due_date);
+            $this->assertTrue($this->adh->isUp2Date());
+            $this->assertTrue($contrib->isFee());
+            $this->assertSame('Membership', $contrib->getTypeLabel());
+            $this->assertSame('membership', $contrib->getRawType());
+            $this->assertSame(
+                $this->contrib->getRequired(),
+                [
+                    'id_type_cotis'     => 1,
+                    'id_adh'            => 1,
+                    'date_enreg'        => 1,
+                    'date_debut_cotis'  => 1,
+                    'date_fin_cotis'    => 1,
+                    'montant_cotis'     => 1
+                ]
+            );
+        } else {
+            $this->assertFalse($contrib->isFee());
+            $this->assertSame('Donation', $contrib->getTypeLabel());
+            $this->assertSame('donation', $contrib->getRawType());
+            $this->assertSame(
+                $this->contrib->getRequired(),
+                [
+                    'id_type_cotis'     => 1,
+                    'id_adh'            => 1,
+                    'date_enreg'        => 1,
+                    'date_debut_cotis'  => 1,
+                    'date_fin_cotis'    => 0,
+                    'montant_cotis'     => 0
+                ]
+            );
+        }
+        unset($expecteds['type']);
 
         foreach ($expecteds as $key => $value) {
             $property = $this->contrib->fields[$key]['propname'];
@@ -685,27 +742,6 @@ abstract class GaletteTestCase extends TestCase
                     break;
             }
         }
-
-        //load member from db
-        $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
-        //member is now up-to-date
-        $this->assertSame('active-account cotis-ok', $this->adh->getRowClass());
-        $this->assertSame($this->contrib->end_date, $this->adh->due_date);
-        $this->assertTrue($this->adh->isUp2Date());
-        $this->assertTrue($contrib->isFee());
-        $this->assertSame('Membership', $contrib->getTypeLabel());
-        $this->assertSame('membership', $contrib->getRawType());
-        $this->assertSame(
-            $this->contrib->getRequired(),
-            [
-                'id_type_cotis'     => 1,
-                'id_adh'            => 1,
-                'date_enreg'        => 1,
-                'date_debut_cotis'  => 1,
-                'date_fin_cotis'    => 1,
-                'montant_cotis'     => 1
-            ]
-        );
     }
 
     /**
@@ -842,5 +878,42 @@ abstract class GaletteTestCase extends TestCase
     {
         $logs = $this->getCleanedLogs();
         $this->assertCount(0, $logs, print_r($logs, true));
+    }
+
+    /**
+     * Clean created contributions
+     *
+     * @return void
+     */
+    protected function cleanContributions(): void
+    {
+        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
+        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
+    }
+
+    /**
+     * Clean created members and groups
+     *
+     * @return void
+     */
+    protected function cleanMembers(): void
+    {
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
+        $delete->where('parent_id IS NOT NULL');
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
     }
 }

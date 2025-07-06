@@ -231,7 +231,7 @@ trait FileTrait
      * @param array<string, string|int> $file the uploaded file
      * @param boolean                   $ajax If the file comes from an ajax call (dnd)
      *
-     * @return bool|int result of the storage process
+     * @return true|int result of the storage process
      */
     public function store(array $file, bool $ajax = false): bool|int
     {
@@ -336,7 +336,7 @@ trait FileTrait
      * @param string $tmpfile Temporary file
      * @param bool   $ajax    If the file comes from an ajax call (dnd)
      *
-     * @return bool|int
+     * @return true|int
      */
     public function writeOnDisk(string $tmpfile, bool $ajax): bool|int
     {

@@ -294,8 +294,10 @@ class Links extends GaletteTestCase
             'date_debut_cotis' => $begin_date->format('Y-m-d'),
             'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
+        $this->logSuperAdmin();
         $this->createContrib($data);
         $this->checkContribExpected();
+        $this->login->logout();
     }
 
     /**

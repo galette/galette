@@ -56,6 +56,14 @@ class Transaction extends GaletteTestCase
         $delete->where(['trans_desc' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
 
+        //Remove groups
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
+        $this->zdb->execute($delete);
+
         //remove members with parents
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
@@ -66,6 +74,12 @@ class Transaction extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        $this->preferences->pref_bool_groupsmanagers_see_transactions = false;
+        $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
+        $this->preferences->pref_bool_groupsmanagers_create_transactions = false;
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
+        $this->assertTrue($this->preferences->store());
     }
 
     /**
@@ -161,7 +175,7 @@ class Transaction extends GaletteTestCase
         $expected = ['- Wrong date format (Y-m-d) for Date!'];
         $check = $transaction->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::WARNING, $expected[0]);
+        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
 
         //set a correct date
         $data = ['trans_date' => '1999-01-01'];
@@ -174,7 +188,7 @@ class Transaction extends GaletteTestCase
         $expected = ['- The amount must be an integer!'];
         $check = $transaction->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::WARNING, $expected[0]);
+        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
 
         //set a correct amount
         $data = ['trans_amount' => 1256];
@@ -187,7 +201,7 @@ class Transaction extends GaletteTestCase
         $expected = ['- Transaction description must be 150 characters long maximum.'];
         $check = $transaction->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::WARNING, $expected[0]);
+        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
     }
 
     /**
@@ -197,9 +211,11 @@ class Transaction extends GaletteTestCase
      */
     public function testCreation(): void
     {
+        $this->logSuperAdmin();
         $this->getMemberOne();
         //create transaction for member
         $this->createTransaction();
+        $this->login->logOut();
     }
 
     /**
@@ -209,11 +225,11 @@ class Transaction extends GaletteTestCase
      */
     public function testUpdate(): void
     {
+        $this->logSuperAdmin();
         $this->getMemberOne();
         //create transaction for member
         $this->createTransaction();
 
-        $this->logSuperAdmin();
         $data = [
             'trans_amount' => 42
         ];
@@ -273,10 +289,11 @@ class Transaction extends GaletteTestCase
         $this->login->method('isAdmin')->willReturn(true);
         $this->login->method('isStaff')->willReturn(true);
 
+        $this->logSuperAdmin();
         $this->getMemberOne();
-
         //create transaction for member
         $this->createTransaction();
+        $this->login->logOut();
 
         $id = $this->transaction->id;
         $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
@@ -284,8 +301,8 @@ class Transaction extends GaletteTestCase
         $this->assertTrue($transaction->load((int)$id));
         $this->assertFalse($transaction->load(1355522012));
         $this->expectLogEntry(
-            \Analog::WARNING,
-            'Transaction id `1355522012` does not exist'
+            \Analog::ERROR,
+            'No transaction #1355522012'
         );
     }
 
@@ -306,8 +323,8 @@ class Transaction extends GaletteTestCase
         $this->assertTrue($this->transaction->remove($this->history));
         $this->assertFalse($this->transaction->load($tid));
         $this->expectLogEntry(
-            \Analog::WARNING,
-            'Transaction id `' . $tid . '` does not exist'
+            \Analog::ERROR,
+            'No transaction #' . $tid
         );
         $this->assertFalse($this->transaction->remove($this->history));
         $this->expectLogEntry(
@@ -323,17 +340,27 @@ class Transaction extends GaletteTestCase
      */
     public function testCan(): void
     {
-        $this->getMemberOne();
+        $this->logSuperAdmin();
+        $member_one = $this->getMemberOne();
         //create transaction for member
         $this->createTransaction();
         $transaction = $this->transaction;
+        $this->login->logOut();
 
+        $this->assertFalse($transaction->canCreate($this->login));
         $this->assertFalse($transaction->canShow($this->login));
+        $this->assertFalse($transaction->canEdit($this->login));
+        $this->assertFalse($transaction->canAttachAndDetach($this->login));
+        $this->assertFalse($transaction->canDelete($this->login));
 
         //Superadmin can fully change transactions
         $this->logSuperAdmin();
 
+        $this->assertTrue($transaction->canCreate($this->login));
         $this->assertTrue($transaction->canShow($this->login));
+        $this->assertTrue($transaction->canEdit($this->login));
+        $this->assertTrue($transaction->canAttachAndDetach($this->login));
+        $this->assertTrue($transaction->canDelete($this->login));
 
         //logout
         $this->login->logOut();
@@ -346,14 +373,18 @@ class Transaction extends GaletteTestCase
         $this->assertFalse($this->login->isAdmin());
         $this->assertFalse($this->login->isStaff());
 
+        $this->assertFalse($transaction->canCreate($this->login));
         $this->assertTrue($transaction->canShow($this->login));
+        $this->assertFalse($transaction->canEdit($this->login));
+        $this->assertFalse($transaction->canAttachAndDetach($this->login));
+        $this->assertFalse($transaction->canDelete($this->login));
 
         //logout
         $this->login->logOut();
         $this->assertFalse($this->login->isLogged());
 
         //Another member has no access
-        $this->getMemberTwo();
+        $member_two = $this->getMemberTwo();
         $mdata = $this->dataAdherentTwo();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertTrue($this->login->isLogged());
@@ -363,8 +394,6 @@ class Transaction extends GaletteTestCase
         $this->assertFalse($transaction->canShow($this->login));
 
         //parents can chow change children transactions
-        $this->getMemberOne();
-        $member = $this->adh;
         $mdata = $this->dataAdherentOne();
         global $login;
         $login = $this->login;
@@ -373,7 +402,7 @@ class Transaction extends GaletteTestCase
         $child_data = [
             'nom_adh'       => 'Doe',
             'prenom_adh'    => 'Johny',
-            'parent_id'     => $member->id,
+            'parent_id'     => $member_one->id,
             'attach'        => true,
             'login_adh'     => 'child.johny.doe',
             'fingerprint' => 'FAKER' . $this->seed
@@ -410,7 +439,7 @@ class Transaction extends GaletteTestCase
 
         $this->assertSame($child_data['nom_adh'], $child->name);
         $this->assertInstanceOf('\Galette\Entity\Adherent', $child->parent);
-        $this->assertSame($member->id, $child->parent->id);
+        $this->assertSame($member_one->id, $child->parent->id);
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
         $mdata = $this->dataAdherentOne();
@@ -419,11 +448,55 @@ class Transaction extends GaletteTestCase
         $this->assertFalse($this->login->isAdmin());
         $this->assertFalse($this->login->isStaff());
 
+        $this->assertFalse($ctransaction->canCreate($this->login));
         $this->assertTrue($ctransaction->canShow($this->login));
+        $this->assertFalse($ctransaction->canEdit($this->login));
+        $this->assertFalse($ctransaction->canAttachAndDetach($this->login));
+        $this->assertFalse($ctransaction->canDelete($this->login));
 
         //logout
         $this->login->logOut();
         $this->assertFalse($this->login->isLogged());
+
+        $mdata = $this->dataAdherentTwo();
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+        $this->assertTrue($g1->setManagers([$member_two]));
+
+        //by default, groups manager can't do anything
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($transaction->canCreate($this->login));
+        $this->assertFalse($transaction->canShow($this->login));
+        $this->assertFalse($transaction->canEdit($this->login));
+        $this->assertFalse($transaction->canAttachAndDetach($this->login));
+        $this->assertFalse($transaction->canDelete($this->login));
+
+        //change preferences so managers can see group members contributions
+        $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
+        $this->assertTrue($this->preferences->store());
+
+        $this->assertFalse($transaction->canCreate($this->login));
+        $this->assertTrue($transaction->canShow($this->login));
+        $this->assertFalse($transaction->canEdit($this->login));
+        $this->assertFalse($transaction->canAttachAndDetach($this->login));
+        $this->assertFalse($transaction->canDelete($this->login));
+
+        //can create && can see
+        $this->preferences->pref_bool_groupsmanagers_create_transactions = true;
+        $this->assertTrue($this->preferences->store());
+
+        $this->assertTrue($transaction->canCreate($this->login));
+        $this->assertTrue($transaction->canShow($this->login));
+        $this->assertFalse($transaction->canEdit($this->login));
+        $this->assertFalse($transaction->canAttachAndDetach($this->login));
+        $this->assertFalse($transaction->canDelete($this->login));
+
+        //can attach and detach
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
+        $this->assertTrue($this->preferences->store());
+
+        $this->assertTrue($transaction->canAttachAndDetach($this->login));
     }
 
     /**
@@ -540,7 +613,7 @@ class Transaction extends GaletteTestCase
 
         $contrib_id = $contribs_ids[0];
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $contrib_id);
-        $this->assertTrue($contrib->unsetTransactionPart($this->zdb, $this->login, $tid, $contrib_id));
+        $this->assertTrue($contrib->unsetTransactionPart($tid));
 
         $this->assertSame(
             (double)67,
@@ -552,7 +625,7 @@ class Transaction extends GaletteTestCase
         );
         $this->assertSame('transaction-uncomplete', $this->transaction->getRowClass());
 
-        $this->assertTrue($contrib->setTransactionPart($this->zdb, $tid, $contrib_id));
+        $this->assertTrue($contrib->setTransactionPart($tid));
 
         $this->assertSame(
             (double)92,
@@ -569,8 +642,8 @@ class Transaction extends GaletteTestCase
         $this->expectNoLogEntry();
         $this->assertFalse($this->transaction->load($tid));
         $this->expectLogEntry(
-            \Analog::WARNING,
-            'Transaction id `' . $tid . '` does not exist'
+            \Analog::ERROR,
+            'No transaction #' . $tid
         );
         foreach ($contribs_ids as $contrib_id) {
             $this->assertFalse($this->contrib->load($contrib_id));

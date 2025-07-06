@@ -1107,6 +1107,7 @@ class Adherent extends GaletteTestCase
         $begin_date->add(new \DateInterval('P1D'));
         $begin_date->sub(new \DateInterval('P1Y'));
 
+        $this->logSuperAdmin();
         $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $this->adh->id,
@@ -1118,6 +1119,7 @@ class Adherent extends GaletteTestCase
             'date_enreg'            => $begin_date->format('Y-m-d'),
             'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
+        $this->login->logout();
 
         //member is up-to-date, close to be expired
         $this->assertTrue($this->adh->load($this->adh->id));
@@ -1145,6 +1147,7 @@ class Adherent extends GaletteTestCase
         $begin_date->add(new \DateInterval('P1D'));
         $begin_date->sub(new \DateInterval('P1Y'));
 
+        $this->logSuperAdmin();
         $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $this->adh->id,
@@ -1156,6 +1159,7 @@ class Adherent extends GaletteTestCase
             'date_enreg'            => $begin_date->format('Y-m-d'),
             'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
+        $this->login->logout();
 
         //member is late, but for less than 30 days, no reminder to send
         $this->assertTrue($this->adh->load($this->adh->id));
@@ -1175,18 +1179,6 @@ class Adherent extends GaletteTestCase
             $this->adh->getDues()
         );
         $this->changeMemberActivation(true);
-    }
-
-    /**
-     * Clean created contributions
-     *
-     * @return void
-     */
-    private function cleanContributions(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
     }
 
     /**
@@ -1213,6 +1205,7 @@ class Adherent extends GaletteTestCase
         $begin_date->add(new \DateInterval('P1D'));
         $begin_date->sub(new \DateInterval('P1Y'));
 
+        $this->logSuperAdmin();
         $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $this->adh->id,
@@ -1224,6 +1217,7 @@ class Adherent extends GaletteTestCase
             'date_enreg'            => $begin_date->format('Y-m-d'),
             'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
+        $this->login->logout();
 
         //member is up-to-date, close to be expired - still not sponsor
         $this->assertTrue($this->adh->load($this->adh->id));
@@ -1233,6 +1227,7 @@ class Adherent extends GaletteTestCase
         $this->assertFalse($this->adh->isSponsor());
 
         //create a donation
+        $this->logSuperAdmin();
         $this->createContrib([
             'id_adh'                => $this->adh->id,
             'id_type_cotis'         => 5, //donation in money
@@ -1242,6 +1237,7 @@ class Adherent extends GaletteTestCase
             'date_enreg'            => $begin_date->format('Y-m-d'),
             'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
+        $this->login->logout();
 
         $this->assertTrue($this->adh->load($this->adh->id));
         $this->assertTrue($this->adh->isSponsor());

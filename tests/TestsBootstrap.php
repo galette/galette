@@ -111,13 +111,8 @@ $gapp =  new \Galette\Core\SlimApp();
 $app = $gapp->getApp();
 $app->add($session);
 
-require_once GALETTE_BASE_PATH . '/includes/dependencies.php';
-//Globals... :(
-global $preferences, $emitter, $zdb;
-$zdb = $container->get('zdb');
-$preferences = $container->get('preferences');
-$emitter = $container->get('event_manager');
-$i18n->changeLanguage('en_US');
+$zdb = new \Galette\Core\Db();
+$preferences = new \Galette\Core\Preferences($zdb);
 
 if (!defined('_CURRENT_THEME_PATH')) {
     define(
@@ -125,6 +120,14 @@ if (!defined('_CURRENT_THEME_PATH')) {
         GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
     );
 }
+
+require_once GALETTE_BASE_PATH . 'includes/main.inc.php';
+//Globals... :(
+global $preferences, $emitter, $zdb;
+$zdb = $container->get('zdb');
+$preferences = $container->get('preferences');
+$emitter = $container->get('event_manager');
+$i18n->changeLanguage('en_US');
 
 if (
     $testenv !== 'UPDATE'
@@ -136,3 +139,4 @@ if (
 }
 
 require_once __DIR__ . '/GaletteTestCase.php';
+require_once __DIR__ . '/GaletteRoutingTestCase.php';

@@ -51,8 +51,8 @@ class ContributionsController extends CrudController
     /**
      * Add/Edit page
      *
-     * Only a few things changes in add and edit pages,
-     * boths methods will use this common one.
+     * Only a few things change in add and edit pages,
+     * both methods will use this common one.
      *
      * @param Request      $request  PSR Request
      * @param Response     $response PSR Response
@@ -192,19 +192,28 @@ class ContributionsController extends CrudController
                 $cparams['trans'] = $get[Transaction::PK];
             }
 
+            if (isset($get['montant_cotis']) && $get['montant_cotis'] > 0) {
+                $cparams['amount'] = (int)$get['montant_cotis'];
+            }
+
             $contrib = new Contribution(
                 $this->zdb,
                 $this->login,
                 $cparams
             );
+        }
 
-            if (isset($cparams['adh'])) {
-                $contrib->member = $cparams['adh'];
-            }
-
-            if (isset($get['montant_cotis']) && $get['montant_cotis'] > 0) {
-                $contrib->amount = $get['montant_cotis'];
-            }
+        if (!$contrib->canCreate($this->login)) {
+            Analog::log(
+                'Trying to add contribution without appropriate ACLs',
+                Analog::WARNING
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
+                );
         }
 
         return $this->addEditPage($request, $response, $type, $contrib);
@@ -221,7 +230,27 @@ class ContributionsController extends CrudController
      */
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
-        return $this->store($request, $response, 'add', $type);
+        $post = $request->getParsedBody();
+        $args = [
+            'type' => $post[ContributionsTypes::PK],
+            'adh' => $post[Adherent::PK]
+        ];
+        $contrib = new Contribution($this->zdb, $this->login, $args);
+
+        if (!$contrib->canCreate($this->login)) {
+            Analog::log(
+                'Trying to add contribution without appropriate ACLs',
+                Analog::WARNING
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
+                );
+        }
+
+        return $this->store($request, $response, 'add', $type, $contrib);
     }
 
     /**
@@ -408,20 +437,10 @@ class ContributionsController extends CrudController
                 $documentation = 'usermanual/contributions.html#transactions';
                 break;
             case 'contributions':
+            default:
                 $raw_type = 'contributions';
                 $documentation = 'usermanual/contributions.html';
                 break;
-            default:
-                Analog::log(
-                    'Trying to load unknown contribution type ' . $type,
-                    Analog::WARNING
-                );
-                return $response
-                    ->withStatus(301)
-                    ->withHeader(
-                        'Location',
-                        $this->routeparser->urlFor('me')
-                    );
         }
 
         $filter_args = [];
@@ -491,13 +510,14 @@ class ContributionsController extends CrudController
                     $member->parent->id != $this->login->id
                 ) {
                     Analog::log(
-                        'Trying to display contributions for member #' . $value .
+                        'Trying to display ' . $type . ' for member #' . $value .
                         ' without appropriate ACLs',
                         Analog::WARNING
                     );
                     $value = $this->login->id;
                 }
             }
+            //FIXME: children is set here even for no parent members
             $filters->filtre_cotis_children = (int)$value;
         }
 
@@ -790,6 +810,19 @@ class ContributionsController extends CrudController
             }
         }
 
+        if (!$contrib->canEdit($this->login)) {
+            Analog::log(
+                'Trying to edit contribution without appropriate ACLs',
+                Analog::WARNING
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
+                );
+        }
+
         return $this->addEditPage($request, $response, $type, $contrib);
     }
 
@@ -805,21 +838,36 @@ class ContributionsController extends CrudController
      */
     public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
-        return $this->store($request, $response, 'edit', $type, $id);
+        $contrib = new Contribution($this->zdb, $this->login, $id);
+        if (!$contrib->canEdit($this->login)) {
+            Analog::log(
+                'Trying to edit contribution without appropriate ACLs',
+                Analog::WARNING
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
+                );
+        }
+
+        return $this->store($request, $response, 'edit', $type, $contrib, $id);
     }
 
     /**
      * Store contribution (new or existing)
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $action   Action ('edit' or 'add')
-     * @param string   $type     Contribution type
-     * @param ?integer $id       Contribution id
+     * @param Request      $request  PSR Request
+     * @param Response     $response PSR Response
+     * @param string       $action   Action ('edit' or 'add')
+     * @param string       $type     Contribution type
+     * @param Contribution $contrib  Contribution instance
+     * @param ?integer     $id       Contribution id
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, string $action, string $type, ?int $id = null): Response
+    public function store(Request $request, Response $response, string $action, string $type, Contribution $contrib, ?int $id = null): Response
     {
         $post = $request->getParsedBody();
         $url_args = [
@@ -830,39 +878,20 @@ class ContributionsController extends CrudController
             $url_args['id'] = (string)$id;
         }
 
-        if ($action == 'edit' && isset($post['btnreload'])) {
-            $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $url_args);
-            $redirect_url .= '?' . Adherent::PK . '=' . $post[Adherent::PK] . '&' .
-                ContributionsTypes::PK . '=' . $post[ContributionsTypes::PK] . '&' .
-                'montant_cotis=' . $post['montant_cotis'];
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $redirect_url);
-        }
-
-        $error_detected = [];
-
-        if ($this->session->contribution !== null) {
-            $contrib = $this->session->contribution;
-            $this->session->contribution = null;
-        } else {
-            if ($id === null) {
-                $args = [
-                    'type' => $post[ContributionsTypes::PK],
-                    'adh' => $post[Adherent::PK]
-                ];
-                $contrib = new Contribution($this->zdb, $this->login, $args);
-            } else {
-                $contrib = new Contribution($this->zdb, $this->login, $id);
-            }
-        }
-
         $disabled = [];
 
         // regular fields
         $valid = $contrib->check($post, $contrib->getRequired(), $disabled);
+        //store entity in session
+        $this->session->contribution = $contrib;
+        $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $url_args);
+
         if ($valid !== true) {
-            $error_detected = array_merge($error_detected, $valid);
+            return $this->redirectWithErrors(
+                $response,
+                $valid,
+                $redirect_url
+            );
         }
 
         // send email to member
@@ -871,69 +900,58 @@ class ContributionsController extends CrudController
         }
 
         //all goes well, we can proceed
-        if (count($error_detected) == 0) {
-            $store = $contrib->store();
-            if ($store === true) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    _T('Contribution has been successfully stored')
-                );
-            } else {
-                //something went wrong :'(
-                $error_detected[] = _T("An error occurred while storing the contribution.");
-            }
+        $store = $contrib->store();
+        if (!$store) {
+            //something went wrong :'(
+            return $this->redirectWithErrors(
+                $response,
+                [_T("An error occurred while storing the contribution.")],
+                $redirect_url
+            );
         }
 
-        if (count($error_detected) === 0) {
-            $files_res = $contrib->handleFiles($_FILES);
-            if (is_array($files_res)) {
-                $error_detected = array_merge($error_detected, $files_res);
-            }
-        }
-
-        if (count($error_detected) == 0) {
-            $this->session->contribution = null;
-            if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
-                //if part of a transaction, and transaction is not fully allocated, create a new contribution
-                $redirect_url = $this->routeparser->urlFor(
-                    'addContribution',
-                    [
-                        'type' => $post['contrib_type'] ?? $type
-                    ]
-                ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
-                '&' . Adherent::PK . '=' . $contrib->member;
-            } elseif ($contrib->payment_type === PaymentType::SCHEDULED && !$contrib->isScheduleFullyAllocated()) {
-                //if payment type is a payment schedule, and schedule is not fully allocated, create a new schedule entry
-                $redirect_url = $this->routeparser->urlFor(
-                    'addScheduledPayment',
-                    [
-                        Contribution::PK => $contrib->id
-                    ]
-                );
-            } elseif ($this->login->isAdmin() || $this->login->isStaff()) {
-                //contributions list (for member if admin or staff member)
-                $redirect_url = $this->routeparser->urlFor(
-                    'contributions',
-                    [
-                        'type'      => 'contributions'
-                    ]
-                ) . '?' . Adherent::PK . '=' . $contrib->member;
-            } else {
-                $redirect_url = $this->routeparser->urlFor('slash');
-            }
-        } else {
-            //something went wrong.
-            //store entity in session
-            $this->session->contribution = $contrib;
-            $redirect_url = $this->routeparser->urlFor($action . 'Contribution', $url_args);
-
-            //report errors
-            foreach ($error_detected as $error) {
+        $this->session->contribution = null;
+        $this->flash->addMessage(
+            'success_detected',
+            _T('Contribution has been successfully stored')
+        );
+        $files_res = $contrib->handleFiles($_FILES);
+        if (is_array($files_res)) {
+            foreach ($files_res as $res) {
                 $this->flash->addMessage(
                     'error_detected',
-                    $error
+                    $res
                 );
             }
+        }
+
+        if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
+            //if part of a transaction, and transaction is not fully allocated, create a new contribution
+            $redirect_url = $this->routeparser->urlFor(
+                'addContribution',
+                [
+                    'type' => $post['contrib_type'] ?? $type
+                ]
+            ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
+            '&' . Adherent::PK . '=' . $contrib->member;
+        } elseif ($contrib->payment_type === PaymentType::SCHEDULED && !$contrib->isScheduleFullyAllocated()) {
+            //if payment type is a payment schedule, and schedule is not fully allocated, create a new schedule entry
+            $redirect_url = $this->routeparser->urlFor(
+                'addScheduledPayment',
+                [
+                    Contribution::PK => (string)$contrib->id
+                ]
+            );
+        } elseif ($this->login->isAdmin() || $this->login->isStaff()) {
+            //contributions list (for member if admin or staff member)
+            $redirect_url = $this->routeparser->urlFor(
+                'contributions',
+                [
+                    'type'      => 'contributions'
+                ]
+            ) . '?' . Adherent::PK . '=' . $contrib->member;
+        } else {
+            $redirect_url = $this->routeparser->urlFor('slash');
         }
 
         //redirect to calling action

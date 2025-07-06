@@ -63,24 +63,9 @@ class Reminders extends GaletteTestCase
     {
         parent::tearDown();
         $this->cleanContributions();
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
+        $this->cleanMembers();
 
         $delete = $this->zdb->delete(\Galette\Entity\Reminder::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
-     * Clean created contributions
-     *
-     * @return void
-     */
-    private function cleanContributions(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
     }
 
@@ -116,6 +101,7 @@ class Reminders extends GaletteTestCase
         $begin_date->add(new \DateInterval('P1D'));
         $begin_date->sub(new \DateInterval('P1Y'));
 
+        $this->logSuperAdmin();
         $this->createContrib([
             'id_adh'                => $id,
             'id_type_cotis'         => 3,
@@ -548,6 +534,7 @@ class Reminders extends GaletteTestCase
         $begin_date->add(new \DateInterval('P1D'));
         $begin_date->sub(new \DateInterval('P1Y'));
 
+        $this->logSuperAdmin();
         $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $id,
