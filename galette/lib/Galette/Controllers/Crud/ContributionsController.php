@@ -386,7 +386,7 @@ class ContributionsController extends CrudController
      *
      * @param Request             $request  PSR Request
      * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|null         $option   One of 'page', 'order' or 'member'
      * @param integer|string|null $value    Value of the option
      * @param ?string             $type     One of 'transactions' or 'contributions'
      *
