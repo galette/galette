@@ -490,12 +490,12 @@ class ContributionsController extends CrudController
                     !$member->hasParent() ||
                     $member->parent->id != $this->login->id
                 ) {
-                    $value = $this->login->id;
                     Analog::log(
                         'Trying to display contributions for member #' . $value .
                         ' without appropriate ACLs',
                         Analog::WARNING
                     );
+                    $value = $this->login->id;
                 }
             }
             $filters->filtre_cotis_children = (int)$value;
