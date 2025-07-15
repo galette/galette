@@ -308,55 +308,53 @@ class AdvancedMembersList extends MembersList
             || in_array($name, $this->memberslist_fields)
         ) {
             return parent::__get($name);
-        } else {
-            if (
-                in_array($name, $this->advancedmemberslist_fields)
-                || in_array($name, $this->virtuals_advancedmemberslist_fields)
-            ) {
-                switch ($name) {
-                    case 'creation_date_begin':
-                    case 'creation_date_end':
-                    case 'modif_date_begin':
-                    case 'modif_date_end':
-                    case 'due_date_begin':
-                    case 'due_date_end':
-                    case 'birth_date_begin':
-                    case 'birth_date_end':
-                    case 'contrib_creation_date_begin':
-                    case 'contrib_creation_date_end':
-                    case 'contrib_begin_date_begin':
-                    case 'contrib_begin_date_end':
-                    case 'contrib_end_date_begin':
-                    case 'contrib_end_date_end':
-                        return $this->getDate($name);
-                    case 'rcreation_date_begin':
-                    case 'rcreation_date_end':
-                    case 'rmodif_date_begin':
-                    case 'rmodif_date_end':
-                    case 'rdue_date_begin':
-                    case 'rdue_date_end':
-                    case 'rbirth_date_begin':
-                    case 'rbirth_date_end':
-                    case 'rcontrib_creation_date_begin':
-                    case 'rcontrib_creation_date_end':
-                    case 'rcontrib_begin_date_begin':
-                    case 'rcontrib_begin_date_end':
-                    case 'rcontrib_end_date_begin':
-                    case 'rcontrib_end_date_end':
-                        $rname = substr($name, 1);
-                        return $this->getDate($rname, true, false);
-                    case 'search_fields':
-                        $search_fields = array_merge($this->memberslist_fields, $this->advancedmemberslist_fields);
-                        $key = array_search('selected', $search_fields);
-                        unset($search_fields[$key]);
-                        $key = array_search('unreachable', $search_fields);
-                        unset($search_fields[$key]);
-                        $key = array_search('query', $search_fields);
-                        unset($search_fields[$key]);
-                        return $search_fields;
-                }
-                return $this->$name;
+        } elseif (
+            in_array($name, $this->advancedmemberslist_fields)
+            || in_array($name, $this->virtuals_advancedmemberslist_fields)
+        ) {
+            switch ($name) {
+                case 'creation_date_begin':
+                case 'creation_date_end':
+                case 'modif_date_begin':
+                case 'modif_date_end':
+                case 'due_date_begin':
+                case 'due_date_end':
+                case 'birth_date_begin':
+                case 'birth_date_end':
+                case 'contrib_creation_date_begin':
+                case 'contrib_creation_date_end':
+                case 'contrib_begin_date_begin':
+                case 'contrib_begin_date_end':
+                case 'contrib_end_date_begin':
+                case 'contrib_end_date_end':
+                    return $this->getDate($name);
+                case 'rcreation_date_begin':
+                case 'rcreation_date_end':
+                case 'rmodif_date_begin':
+                case 'rmodif_date_end':
+                case 'rdue_date_begin':
+                case 'rdue_date_end':
+                case 'rbirth_date_begin':
+                case 'rbirth_date_end':
+                case 'rcontrib_creation_date_begin':
+                case 'rcontrib_creation_date_end':
+                case 'rcontrib_begin_date_begin':
+                case 'rcontrib_begin_date_end':
+                case 'rcontrib_end_date_begin':
+                case 'rcontrib_end_date_end':
+                    $rname = substr($name, 1);
+                    return $this->getDate($rname, true, false);
+                case 'search_fields':
+                    $search_fields = array_merge($this->memberslist_fields, $this->advancedmemberslist_fields);
+                    $key = array_search('selected', $search_fields);
+                    unset($search_fields[$key]);
+                    $key = array_search('unreachable', $search_fields);
+                    unset($search_fields[$key]);
+                    $key = array_search('query', $search_fields);
+                    unset($search_fields[$key]);
+                    return $search_fields;
             }
+            return $this->$name;
         }
 
         throw new \RuntimeException(
@@ -378,16 +376,11 @@ class AdvancedMembersList extends MembersList
      */
     public function __isset(string $name): bool
     {
-        if (
+        return
             in_array($name, $this->pagination_fields)
             || in_array($name, $this->memberslist_fields)
             || in_array($name, $this->advancedmemberslist_fields)
-            || in_array($name, $this->virtuals_advancedmemberslist_fields)
-        ) {
-            return true;
-        }
-
-        return false;
+            || in_array($name, $this->virtuals_advancedmemberslist_fields);
     }
 
     /**
@@ -434,14 +427,12 @@ class AdvancedMembersList extends MembersList
                 case 'contrib_max_amount':
                     if (is_float($value)) {
                         $this->$name = $value;
-                    } else {
-                        if ($value !== null) {
-                            Analog::log(
-                                'Incorrect amount for ' . $name . '! ' .
-                                'Should be a float (' . gettype($value) . ' given)',
-                                Analog::WARNING
-                            );
-                        }
+                    } elseif ($value !== null) {
+                        Analog::log(
+                            'Incorrect amount for ' . $name . '! ' .
+                            'Should be a float (' . gettype($value) . ' given)',
+                            Analog::WARNING
+                        );
                     }
                     break;
                 case 'show_public_infos':
@@ -637,12 +628,7 @@ class AdvancedMembersList extends MembersList
                         || substr($name, 0, 5) === 'cdsc_'
                     ) {
                         if (is_array($value) || trim($value) !== '') {
-                            $id = null;
-                            if (substr($name, 0, 5) === 'cdsc_') {
-                                $id = substr($name, 5, strlen($name));
-                            } else {
-                                $id = substr($name, 4, strlen($name));
-                            }
+                            $id = substr($name, 0, 5) === 'cdsc_' ? substr($name, 5, strlen($name)) : substr($name, 4, strlen($name));
                             $dyn_field = DynamicField::loadFieldType($zdb, (int)$id);
                             if ($dyn_field instanceof \Galette\DynamicFields\Date) {
                                 $value = $this->buildDate($value);

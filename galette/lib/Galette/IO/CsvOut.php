@@ -222,7 +222,7 @@ class CsvOut extends Csv
             $xml = simplexml_load_file($this->legacy_parameted_file);
 
             foreach ($xml->export as $export) {
-                if (!($export['inactive'] == 'inactive')) {
+                if ($export['inactive'] != 'inactive') {
                     $id = (string)$export['id'];
                     $parameted[$id] = [
                         'id' => $id,

@@ -558,11 +558,7 @@ class Preferences
         // obtain fields
         foreach ($this->getFieldsNames() as $fieldname) {
             if (isset($values[$fieldname])) {
-                if (is_string($values[$fieldname])) {
-                    $value = trim($values[$fieldname]);
-                } else {
-                    $value = $values[$fieldname];
-                }
+                $value = is_string($values[$fieldname]) ? trim($values[$fieldname]) : $values[$fieldname];
             } else {
                 $value = "";
             }
@@ -597,13 +593,8 @@ class Preferences
             ) {
                 $this->errors[] = _T("- You must indicate an email address Galette should use to send emails!");
             }
-            if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP) {
-                if (
-                    !isset($insert_values['pref_mail_smtp_host'])
-                    || $insert_values['pref_mail_smtp_host'] == ''
-                ) {
-                    $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
-                }
+            if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP && (!isset($insert_values['pref_mail_smtp_host']) || $insert_values['pref_mail_smtp_host'] == '')) {
+                $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
             }
             if (
                 $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
@@ -657,11 +648,9 @@ class Preferences
             }
         }
 
-        if (!Galette::isDemo() && isset($values['pref_admin_pass_check'])) {
-            // Check passwords. Hash will be done into the Preferences class
-            if (strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
-                $this->errors[] = _T("Passwords mismatch");
-            }
+        // Check passwords. Hash will be done into the Preferences class
+        if (!Galette::isDemo() && isset($values['pref_admin_pass_check']) && strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
+            $this->errors[] = _T("Passwords mismatch");
         }
 
         //postal address
@@ -694,16 +683,17 @@ class Preferences
 
         // update preferences
         foreach ($insert_values as $champ => $valeur) {
-            if (
-                $login->isSuperAdmin()
-                || $champ != 'pref_admin_pass' && $champ != 'pref_admin_login'
-            ) {
-                if (
-                    ($champ == "pref_admin_pass" && ($_POST['pref_admin_pass'] ?? '') != '')
-                    || ($champ != "pref_admin_pass")
-                ) {
-                    $this->$champ = $valeur;
+            $checked = $login->isSuperAdmin();
+            if (!$checked) {
+                if ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login') {
+                    $checked = true;
                 }
+            } elseif ($champ == "pref_admin_pass" && empty($_POST['pref_admin_pass'] ?? '')) {
+                $checked = false;
+            }
+
+            if ($checked) {
+                $this->$champ = $valeur;
             }
         }
 
@@ -734,11 +724,7 @@ class Preferences
                 //"mail@domain.com,other@mail.com" only for pref_email_newadh.
                 $addresses = [];
                 if (trim($value) != '') {
-                    if ($fieldname == 'pref_email_newadh') {
-                        $addresses = explode(',', $value);
-                    } else {
-                        $addresses = [$value];
-                    }
+                    $addresses = $fieldname == 'pref_email_newadh' ? explode(',', $value) : [$value];
                 }
                 foreach ($addresses as $address) {
                     if (!GaletteMail::isValidEmail($address)) {
@@ -754,15 +740,11 @@ class Preferences
                         'Trying to set superadmin login while in DEMO.',
                         Analog::WARNING
                     );
-                } else {
-                    if (strlen($value) < 4) {
-                        $this->errors[] = _T("- The username must be composed of at least 4 characters!");
-                    } else {
-                        //check if login is already taken
-                        if ($login->loginExists($value)) {
-                            $this->errors[] = _T("- This username is already used by another member !");
-                        }
-                    }
+                } elseif (strlen($value) < 4) {
+                    $this->errors[] = _T("- The username must be composed of at least 4 characters!");
+                } elseif ($login->loginExists($value)) {
+                    //check if login is already taken
+                    $this->errors[] = _T("- This username is already used by another member !");
                 }
                 break;
             case 'pref_numrows':
@@ -1024,11 +1006,7 @@ class Preferences
         } else {
             //get selected staff phone number
             $adh = new Adherent($this->zdb, (int)$this->prefs['pref_org_phone_staff_member']);
-            if ($this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_STAFF) {
-                $_phone = $adh->phone;
-            } else {
-                $_phone = $adh->gsm;
-            }
+            $_phone = $this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_STAFF ? $adh->phone : $adh->gsm;
         }
 
         return $_phone;
@@ -1290,18 +1268,12 @@ class Preferences
             return;
         }
 
-        if (
-            $name == 'pref_email'
-            || $name == 'pref_email_newadh'
-            || $name == 'pref_email_reply_to'
-        ) {
-            if (Galette::isDemo()) {
-                Analog::log(
-                    'Trying to set pref_email while in DEMO.',
-                    Analog::WARNING
-                );
-                return;
-            }
+        if (($name == 'pref_email' || $name == 'pref_email_newadh' || $name == 'pref_email_reply_to') && Galette::isDemo()) {
+            Analog::log(
+                'Trying to set pref_email while in DEMO.',
+                Analog::WARNING
+            );
+            return;
         }
 
         // now, check validity

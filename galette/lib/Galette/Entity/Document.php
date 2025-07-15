@@ -527,18 +527,16 @@ class Document implements FileInterface
         // document upload
         if (isset($files['document_file'])) {
             if ($files['document_file']['error'] === UPLOAD_ERR_OK) {
-                if ($files['document_file']['tmp_name'] != '') {
-                    if (is_uploaded_file($files['document_file']['tmp_name'])) {
-                        $res = $this->trait_store($files['document_file']);
-                        if ($res < 0) {
-                            $this->errors[] = $this->getErrorMessage($res);
-                        } else {
-                            $this->filename = sprintf(
-                                '%s.%s',
-                                $this->name_wo_ext,
-                                $this->extension
-                            );
-                        }
+                if ($files['document_file']['tmp_name'] != '' && is_uploaded_file($files['document_file']['tmp_name'])) {
+                    $res = $this->trait_store($files['document_file']);
+                    if ($res < 0) {
+                        $this->errors[] = $this->getErrorMessage($res);
+                    } else {
+                        $this->filename = sprintf(
+                            '%s.%s',
+                            $this->name_wo_ext,
+                            $this->extension
+                        );
                     }
                 }
             } elseif (!isset($this->id)) {

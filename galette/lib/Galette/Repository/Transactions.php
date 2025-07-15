@@ -65,11 +65,7 @@ class Transactions
         $this->zdb = $zdb;
         $this->login = $login;
 
-        if ($filters === null) {
-            $this->filters = new TransactionsList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters === null ? new TransactionsList() : $filters;
     }
 
     /**

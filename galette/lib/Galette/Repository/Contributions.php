@@ -69,11 +69,7 @@ class Contributions
         $this->zdb = $zdb;
         $this->login = $login;
 
-        if ($filters === null) {
-            $this->filters = new ContributionsList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters === null ? new ContributionsList() : $filters;
     }
 
     /**

@@ -47,7 +47,7 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') || !extension_loaded('int
 $logfile = 'galette_install';
 define('GALETTE_BASE_PATH', '../');
 
-require_once '../includes/galette.inc.php';
+require_once __DIR__ . '/../includes/galette.inc.php';
 
 session_start();
 $session_name = 'galette_install_' . str_replace('.', '_', GALETTE_VERSION);
@@ -55,7 +55,7 @@ $session = &$_SESSION['galette'][$session_name];
 
 $gapp = new \Galette\Core\SlimApp();
 $app = $gapp->getApp();
-require_once '../includes/dependencies.php';
+require_once __DIR__ . '/../includes/dependencies.php';
 
 if (isset($_POST['abort_btn'])) {
     if (isset($session[md5(GALETTE_ROOT)])) {

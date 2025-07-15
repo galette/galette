@@ -149,39 +149,35 @@ class ScheduledPayment
 
         if (!isset($data[Contribution::PK]) || !is_numeric($data[Contribution::PK])) {
             $this->errors[] = _T('Contribution is required');
+        } elseif (!$this->contribution->load((int)$data[Contribution::PK])) {
+            $this->errors[] = _T('Unable to load contribution');
         } else {
-            if (!$this->contribution->load((int)$data[Contribution::PK])) {
-                $this->errors[] = _T('Unable to load contribution');
-            } else {
-                if (isset($data['amount'])) {
-                    //Amount is not required (will defaults to contribution amount)
-                    if (!is_numeric($data['amount']) || $data['amount'] <= 0) {
-                        $this->errors[] = _T('Amount must be a positive number');
-                    } else {
-                        $not_allocated = $this->contribution->amount - $this->getAllocation($this->contribution->id);
-                        if (isset($this->id)) {
-                            $not_allocated += $this->amount;
-                        }
-                        if ($data['amount'] > $not_allocated) {
-                            $this->errors[] = _T('Amount cannot be greater than non allocated amount');
-                        }
+            if (isset($data['amount'])) {
+                //Amount is not required (will defaults to contribution amount)
+                if (!is_numeric($data['amount']) || $data['amount'] <= 0) {
+                    $this->errors[] = _T('Amount must be a positive number');
+                } else {
+                    $not_allocated = $this->contribution->amount - $this->getAllocation($this->contribution->id);
+                    if (isset($this->id)) {
+                        $not_allocated += $this->amount;
+                    }
+                    if ($data['amount'] > $not_allocated) {
+                        $this->errors[] = _T('Amount cannot be greater than non allocated amount');
                     }
                 }
-                if ($this->contribution->payment_type !== PaymentType::SCHEDULED) {
-                    $this->errors[] = _T('Payment type for contribution must be set to scheduled');
-                }
+            }
+            if ($this->contribution->payment_type !== PaymentType::SCHEDULED) {
+                $this->errors[] = _T('Payment type for contribution must be set to scheduled');
             }
         }
 
         if (!isset($data['id_paymenttype']) || !is_numeric($data['id_paymenttype'])) {
             $this->errors[] = _T('Payment type is required');
-        } else {
+        } elseif ((int)$data['id_paymenttype'] === PaymentType::SCHEDULED) {
             //no schedule inception allowed!
-            if ((int)$data['id_paymenttype'] === PaymentType::SCHEDULED) {
-                $this->errors[] = _T('Cannot schedule a scheduled payment!');
-            } else {
-                $this->payment_type = new PaymentType($this->zdb, (int)$data['id_paymenttype']);
-            }
+            $this->errors[] = _T('Cannot schedule a scheduled payment!');
+        } else {
+            $this->payment_type = new PaymentType($this->zdb, (int)$data['id_paymenttype']);
         }
 
         if (!isset($data['scheduled_date'])) {
@@ -565,7 +561,7 @@ class ScheduledPayment
      */
     public function isFullyAllocated(Contribution $contrib): bool
     {
-        return !($this->getAllocation($contrib->id) < $contrib->amount);
+        return $this->getAllocation($contrib->id) >= $contrib->amount;
     }
 
     /**

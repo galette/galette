@@ -140,29 +140,27 @@ abstract class AbstractController
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $urlRedirect);
-            } else {
+            } elseif (
+                $this->login->isSuperAdmin()
+                || $this->login->isAdmin()
+                || $this->login->isStaff()
+            ) {
                 if (
-                    $this->login->isSuperAdmin()
-                    || $this->login->isAdmin()
-                    || $this->login->isStaff()
+                    !isset($_COOKIE['show_galette_dashboard'])
+                    || $_COOKIE['show_galette_dashboard'] == 1
                 ) {
-                    if (
-                        !isset($_COOKIE['show_galette_dashboard'])
-                        || $_COOKIE['show_galette_dashboard'] == 1
-                    ) {
-                        return $response
-                            ->withStatus(301)
-                            ->withHeader('Location', $this->routeparser->urlFor('dashboard'));
-                    } else {
-                        return $response
-                            ->withStatus(301)
-                            ->withHeader('Location', $this->routeparser->urlFor('members'));
-                    }
-                } else {
                     return $response
                         ->withStatus(301)
                         ->withHeader('Location', $this->routeparser->urlFor('dashboard'));
+                } else {
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $this->routeparser->urlFor('members'));
                 }
+            } else {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->routeparser->urlFor('dashboard'));
             }
         } else {
             return $response

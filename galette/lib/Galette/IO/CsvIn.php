@@ -380,17 +380,15 @@ class CsvIn extends Csv implements FileInterface
                         }
                         if (empty($column)) {
                             $column = $this->preferences->pref_lang;
-                        } else {
-                            if (!isset($this->langs[$column])) {
-                                $this->addError(
-                                    str_replace(
-                                        '%lang',
-                                        $column,
-                                        _T("Lang %lang does not exists!")
-                                    )
-                                );
-                                return false;
-                            }
+                        } elseif (!isset($this->langs[$column])) {
+                            $this->addError(
+                                str_replace(
+                                    '%lang',
+                                    $column,
+                                    _T("Lang %lang does not exists!")
+                                )
+                            );
+                            return false;
                         }
                     }
 
@@ -436,7 +434,7 @@ class CsvIn extends Csv implements FileInterface
         }
         fclose($handle);
 
-        if (!($row > 1)) {
+        if ($row <= 1) {
             //no data in file, just headers line
             $this->addError(
                 _T("File is empty!")

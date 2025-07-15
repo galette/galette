@@ -150,7 +150,7 @@ class Login extends Authentication
                 $row = $results->current();
 
                 //check if member is active
-                if (!($row->activite_adh == true)) {
+                if ($row->activite_adh != true) {
                     Analog::log(
                         'Member `' . $user . ' is inactive!`' . $log_suffix,
                         Analog::WARNING
@@ -241,16 +241,14 @@ class Login extends Authentication
         if ($row->bool_exempt_adh) {
             //member is due free, he's up to date.
             $this->uptodate = true;
-        } else {
+        } elseif ($row->date_echeance == null) {
             //let's check from end date, if present
-            if ($row->date_echeance == null) {
-                $this->uptodate = false;
-            } else {
-                $ech = new \DateTime($row->date_echeance);
-                $now = new \DateTime();
-                $now->setTime(0, 0, 0);
-                $this->uptodate = $ech >= $now;
-            }
+            $this->uptodate = false;
+        } else {
+            $ech = new \DateTime($row->date_echeance);
+            $now = new \DateTime();
+            $now->setTime(0, 0, 0);
+            $this->uptodate = $ech >= $now;
         }
         //Staff members and admins are de facto groups managers. For all
         //others, get managed groups

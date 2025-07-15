@@ -68,11 +68,7 @@ class SavedSearchesController extends CrudController
      */
     public function doAdd(Request $request, Response $response): Response
     {
-        if ($request->getMethod() === 'POST') {
-            $post = $request->getParsedBody();
-        } else {
-            $post = $request->getQueryParams();
-        }
+        $post = $request->getMethod() === 'POST' ? $request->getParsedBody() : $request->getQueryParams();
 
         $name = null;
         if (isset($post['search_title'])) {
@@ -299,11 +295,7 @@ class SavedSearchesController extends CrudController
         }
         $searches = new SavedSearches($this->zdb, $this->login, $filters);
 
-        if (!is_array($post['id'])) {
-            $ids = (array)$post['id'];
-        } else {
-            $ids = $post['id'];
-        }
+        $ids = !is_array($post['id']) ? (array)$post['id'] : $post['id'];
 
         return $searches->remove($ids, $this->history);
     }

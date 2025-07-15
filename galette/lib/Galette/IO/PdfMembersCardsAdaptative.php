@@ -221,7 +221,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
 
             //Write the year, center of the card
             $this->SetFontSize($this->year_font_size);
-            $xan_cot = $xan_cot - 0.1;
+            $xan_cot -= 0.1;
             $this->SetXY($xan_cot, $y0 + 1 - 0.1);
             $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
 

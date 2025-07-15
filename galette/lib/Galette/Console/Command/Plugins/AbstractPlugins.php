@@ -95,7 +95,7 @@ abstract class AbstractPlugins extends AbstractCommand
             // Ask for plugin list if argument is empty
             $choices = $this->getRelevantChoices($io);
 
-            if (!empty($choices)) {
+            if ($choices !== []) {
                 $choices = array_merge(
                     [self::ALL => 'All plugins'],
                     $choices

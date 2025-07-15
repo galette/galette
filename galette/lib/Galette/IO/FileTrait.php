@@ -194,16 +194,8 @@ trait FileTrait
         if ($mimes !== null) {
             $this->allowed_mimes = $mimes;
         }
-        if ($maxlength !== null) {
-            $this->maxlength = $maxlength;
-        } else {
-            $this->maxlength = self::MAX_FILE_SIZE;
-        }
-        if ($mincropsize !== null) {
-            $this->mincropsize = $mincropsize;
-        } else {
-            $this->mincropsize = self::MIN_CROP_SIZE;
-        }
+        $this->maxlength = $maxlength !== null ? $maxlength : self::MAX_FILE_SIZE;
+        $this->mincropsize = $mincropsize !== null ? $mincropsize : self::MIN_CROP_SIZE;
     }
 
     /**
@@ -350,11 +342,7 @@ trait FileTrait
             return self::NEW_FILE_EXISTS;
         }
 
-        if ($ajax === true) {
-            $in_place = rename($tmpfile, $new_file);
-        } else {
-            $in_place = move_uploaded_file($tmpfile, $new_file);
-        }
+        $in_place = $ajax === true ? rename($tmpfile, $new_file) : move_uploaded_file($tmpfile, $new_file);
 
         if ($in_place === false) {
             return self::CANT_WRITE;
@@ -473,11 +461,7 @@ trait FileTrait
                 '[' . $class . '] Extension : ' . $ext,
                 Analog::DEBUG
             );
-            if (array_key_exists($ext, self::$mime_types)) {
-                $mime = self::$mime_types[$ext];
-            } else {
-                $mime = 'application/octet-stream';
-            }
+            $mime = array_key_exists($ext, self::$mime_types) ? self::$mime_types[$ext] : 'application/octet-stream';
         }
 
         Analog::log(

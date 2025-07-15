@@ -409,12 +409,7 @@ class MailingHistory extends History
                 }
             }
 
-            $sender = null;
-            if ($this->sender === 0) {
-                $sender = new Expression('NULL');
-            } else {
-                $sender = $this->sender;
-            }
+            $sender = $this->sender === 0 ? new Expression('NULL') : $this->sender;
             $sender_name = ($this->sender_name === null) ?
                 new Expression('NULL') : $this->sender_name;
             $sender_address = ($this->sender_address === null) ?

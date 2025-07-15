@@ -54,11 +54,7 @@ class PluginInstallDb extends AbstractPlugins
 
         $io = new SymfonyStyle($input, $output);
         $selected = $input->getArgument('plugins');
-        if ($selected === [self::ALL]) {
-            $selected = $this->getRelevantPlugins($io);
-        } else {
-            $selected = $this->getSelectedModules($io, $selected);
-        }
+        $selected = $selected === [self::ALL] ? $this->getRelevantPlugins($io) : $this->getSelectedModules($io, $selected);
 
         $errors = [];
         $install = new \Galette\Core\PluginInstall();

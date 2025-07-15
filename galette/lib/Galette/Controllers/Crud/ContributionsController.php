@@ -84,12 +84,7 @@ class ContributionsController extends CrudController
         $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
 
         // template variable declaration
-        $title = null;
-        if ($type === Contribution::TYPE_FEE) {
-            $title = _T("Membership fee");
-        } else {
-            $title = _T("Donation");
-        }
+        $title = $type === Contribution::TYPE_FEE ? _T("Membership fee") : _T("Donation");
 
         if ($contrib->id) {
             $title .= ' (' . _T("modification") . ')';

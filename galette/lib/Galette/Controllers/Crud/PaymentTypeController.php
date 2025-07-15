@@ -205,18 +205,16 @@ class PaymentTypeController extends CrudController
                 //redirect to payment type edition
                 $redirect_uri = $this->routeparser->urlFor('editPaymentType', ['id' => (string)$id]);
             }
+        } elseif ($id === null) {
+            $msg = sprintf(
+                _T('Payment type \'%1$s\' has been successfully added.'),
+                $ptype->getName()
+            );
         } else {
-            if ($id === null) {
-                $msg = sprintf(
-                    _T('Payment type \'%1$s\' has been successfully added.'),
-                    $ptype->getName()
-                );
-            } else {
-                $msg = sprintf(
-                    _T('Payment type \'%1$s\' has been successfully modified.'),
-                    $ptype->getName()
-                );
-            }
+            $msg = sprintf(
+                _T('Payment type \'%1$s\' has been successfully modified.'),
+                $ptype->getName()
+            );
         }
 
         $warning_detected = $ptype->getWarnings();

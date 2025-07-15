@@ -39,11 +39,9 @@ echo '<p>' . _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT
 if ($install->isUpgrade()) {
     echo '<div class="ui orange message"><p>' . _T("Enter connection data for the existing database.") . '</p></div>';
     $install->loadExistingConfig($_POST, $error_detected);
-} else {
-    if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
-        echo '<div class="ui orange message"><p>' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . '</p></div>';
-        $install->loadExistingConfig($_POST, $error_detected);
-    }
+} elseif (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
+    echo '<div class="ui orange message"><p>' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . '</p></div>';
+    $install->loadExistingConfig($_POST, $error_detected);
 }
 ?>
         <div class="inline required field">

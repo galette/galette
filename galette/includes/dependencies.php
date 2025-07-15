@@ -286,7 +286,7 @@ $container->set('acls', function (ContainerInterface $c) {
     }
 
     //use + to be sure core ACLs are not overrided by plugins ones.
-    $acls = $acls + $c->get('plugins')->getAcls();
+    $acls += $c->get('plugins')->getAcls();
 
     //load user defined ACLs
     if (file_exists(GALETTE_CONFIG_PATH . 'local_acls.inc.php')) {

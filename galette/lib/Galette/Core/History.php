@@ -70,11 +70,7 @@ class History
         $this->login = $login;
         $this->preferences = $preferences;
 
-        if ($filters === null) {
-            $this->filters = new HistoryList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters === null ? new HistoryList() : $filters;
     }
 
     /**
@@ -120,12 +116,7 @@ class History
      */
     public function add(string $action, string $argument = '', string $query = ''): bool
     {
-        $ip = null;
-        if (PHP_SAPI === 'cli') {
-            $ip = '127.0.0.1';
-        } else {
-            $ip = self::findUserIpAddress();
-        }
+        $ip = PHP_SAPI === 'cli' ? '127.0.0.1' : self::findUserIpAddress();
 
         try {
             $values = [
@@ -402,10 +393,7 @@ class History
      */
     public function __isset(string $name): bool
     {
-        if (isset($this->$name)) {
-            return true;
-        }
-        return false;
+        return isset($this->$name);
     }
 
     /**

@@ -84,7 +84,7 @@ abstract class AbstractUpdater
      */
     private function hasSql(): bool
     {
-        return !($this->sql_scripts === null);
+        return $this->sql_scripts !== null;
     }
 
     /**
@@ -246,10 +246,8 @@ abstract class AbstractUpdater
 
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver)) {
-                    if ($ver[1] == $version) {
-                        $scripts[$ver[2]] = GALETTE_ROOT . '/install/scripts/sql/' . $file;
-                    }
+                if (preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver) && $ver[1] == $version) {
+                    $scripts[$ver[2]] = GALETTE_ROOT . '/install/scripts/sql/' . $file;
                 }
             }
             closedir($dh);

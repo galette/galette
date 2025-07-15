@@ -308,6 +308,10 @@ jobs:
         run: |
           galette/vendor/bin/php-cs-fixer check --show-progress=dots --verbose --diff
 
+      - name: Rector
+        run: |
+          galette/vendor/bin/rector process --dry-run --ansi
+
       - name: Twig CS
         run: |
           galette/vendor/bin/twigcs galette/templates/default --severity error --display blocking

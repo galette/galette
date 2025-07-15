@@ -113,11 +113,9 @@ class Reminders
                 } elseif ($now > $first && $first > $last_reminder) {
                     $toremind = true;
                 }
-            } else {
+            } elseif ($now >= $first) {
                 //no existing reminder. Just check if we exceed first reminder date to send it
-                if ($now >= $first) {
-                    $toremind = true;
-                }
+                $toremind = true;
             }
 
             if ($toremind === true) {
@@ -170,10 +168,8 @@ class Reminders
             if ($reminders->count() > 0) {
                 //a reminder of this type already exists in period. Do not remind until date has been checked.
                 $toremind = false;
-
                 $reminder = $reminders->current();
                 $last_reminder = new DateTime($reminder['reminder_date']);
-
                 if ($now >= $second && $second > $last_reminder) {
                     //current date is after second reminder
                     $toremind = true;
@@ -181,11 +177,9 @@ class Reminders
                     //current date is after first reminder
                     $toremind = true;
                 }
-            } else {
+            } elseif ($now >= $first) {
                 //no existing reminder. Just check if we exceed first reminder date to send it
-                if ($now >= $first) {
-                    $toremind = true;
-                }
+                $toremind = true;
             }
 
             if ($toremind === true) {

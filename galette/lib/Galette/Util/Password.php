@@ -96,11 +96,9 @@ class Password
             $this->errors = array_merge($this->errors, $this->strength_errors);
         }
 
-        if ($this->preferences->pref_password_strength > Preferences::PWD_NONE) {
-            //check also against personal information
-            if (in_array(mb_strtolower($password), $this->personal_infos)) {
-                $this->errors[] = _T('Do not use any of your personal information as password!');
-            }
+        //check also against personal information
+        if ($this->preferences->pref_password_strength > Preferences::PWD_NONE && in_array(mb_strtolower($password), $this->personal_infos)) {
+            $this->errors[] = _T('Do not use any of your personal information as password!');
         }
 
         return count($this->errors) === 0;

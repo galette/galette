@@ -230,7 +230,7 @@ abstract class PdfModel
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($data);
                 $add = $this->zdb->execute($insert);
-                if (!($add->count() > 0)) {
+                if ($add->count() <= 0) {
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }
@@ -296,16 +296,14 @@ abstract class PdfModel
                     )
                 );
             }
-        } else {
-            if ($empty === false) {
-                throw new \UnexpectedValueException(
-                    str_replace(
-                        '%field',
-                        $field,
-                        _T("%field should not be empty!")
-                    )
-                );
-            }
+        } elseif ($empty === false) {
+            throw new \UnexpectedValueException(
+                str_replace(
+                    '%field',
+                    $field,
+                    _T("%field should not be empty!")
+                )
+            );
         }
     }
 
@@ -445,11 +443,7 @@ abstract class PdfModel
                 break;
             case 'title':
             case 'subtitle':
-                if ($name == 'title') {
-                    $field = _T("Title");
-                } else {
-                    $field = _T("Subtitle");
-                }
+                $field = $name == 'title' ? _T("Title") : _T("Subtitle");
                 $this->checkChars($value, 100, $field, true);
                 $this->$name = $value;
                 break;

@@ -140,7 +140,6 @@ class TransactionsController extends ContributionsController
                         ['type' => 'transactions']
                     ));
             }
-
             if (!$trans->canEdit($this->login) && !$trans->canAttachAndDetach($this->login)) {
                 Analog::log(
                     'Trying to edit transaction without appropriate ACLs',
@@ -153,19 +152,17 @@ class TransactionsController extends ContributionsController
                         $this->routeparser->urlFor('slash')
                     );
             }
-        } else {
-            if (!$trans->canCreate($this->login)) {
-                Analog::log(
-                    'Trying to add transaction without appropriate ACLs',
-                    Analog::WARNING
+        } elseif (!$trans->canCreate($this->login)) {
+            Analog::log(
+                'Trying to add transaction without appropriate ACLs',
+                Analog::WARNING
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
                 );
-                return $response
-                    ->withStatus(301)
-                    ->withHeader(
-                        'Location',
-                        $this->routeparser->urlFor('slash')
-                    );
-            }
         }
 
         // template variable declaration

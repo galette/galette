@@ -778,11 +778,7 @@ class Contribution implements AccessManagementInterface
         try {
             $due_date = self::getDueDate($this->zdb, $this->member);
 
-            if ($due_date != '') {
-                $due_date_update = $due_date;
-            } else {
-                $due_date_update = new Expression('NULL');
-            }
+            $due_date_update = $due_date != '' ? $due_date : new Expression('NULL');
 
             $update = $this->zdb->update(Adherent::TABLE);
             $update->set(
@@ -1395,12 +1391,7 @@ class Contribution implements AccessManagementInterface
         if ($login->isAdmin() || $login->isStaff()) {
             return true;
         }
-
-        if ($preferences->pref_bool_groupsmanagers_create_contributions && $login->isGroupManager()) {
-            return true;
-        }
-
-        return false;
+        return $preferences->pref_bool_groupsmanagers_create_contributions && $login->isGroupManager();
     }
 
     /**
@@ -1460,12 +1451,7 @@ class Contribution implements AccessManagementInterface
         if (!$login->isLogged()) {
             return false;
         }
-
-        if ($login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-
-        return false;
+        return $login->isAdmin() || $login->isStaff();
     }
 
     /**
@@ -1492,11 +1478,7 @@ class Contribution implements AccessManagementInterface
         //set type
         $this->type = new ContributionsTypes($this->zdb, $type);
         //set is_cotis according to type
-        if ($this->type->extension == ContributionsTypes::DONATION_TYPE) {
-            $this->is_cotis = false;
-        } else {
-            $this->is_cotis = true;
-        }
+        $this->is_cotis = $this->type->extension != ContributionsTypes::DONATION_TYPE;
 
         return $this;
     }

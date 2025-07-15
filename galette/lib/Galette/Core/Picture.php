@@ -281,12 +281,10 @@ class Picture implements FileInterface
                 $this->optimal_height = $this->max_height;
                 $this->optimal_width = (int)($this->width * $ratio);
             }
-        } else {
-            if ($this->width > $this->max_width) {
-                $ratio = $this->max_width / $this->width;
-                $this->optimal_width = $this->max_width;
-                $this->optimal_height = (int)($this->height * $ratio);
-            }
+        } elseif ($this->width > $this->max_width) {
+            $ratio = $this->max_width / $this->width;
+            $this->optimal_width = $this->max_width;
+            $this->optimal_height = (int)($this->height * $ratio);
         }
     }
 
@@ -795,13 +793,11 @@ class Picture implements FileInterface
             $thumb_cropped = imagecreatetruecolor((int)$crop_width, (int)$crop_height);
             // Cropped ratio.
             $ratio = $crop_width / $crop_height;
-        } else {
+        } elseif ($cur_width > $cur_height) {
             // Otherwise, calculate image size according to the source's ratio.
-            if ($cur_width > $cur_height) {
-                $h = round($w / $ratio);
-            } else {
-                $w = round($h * $ratio);
-            }
+            $h = round($w / $ratio);
+        } else {
+            $w = round($h * $ratio);
         }
 
         //fix typehints

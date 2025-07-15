@@ -386,10 +386,8 @@ class Telemetry
     {
         $now = new \DateTime();
         $sent = new \DateTime($this->prefs->pref_telemetry_date);
-        $sent->add(new \DateInterval('P1Y')); // ask to resend telemetry after one year
-        if ($now > $sent && !isset($_COOKIE['renew_telemetry'])) {
-            return true;
-        }
-        return false;
+        $sent->add(new \DateInterval('P1Y'));
+        // ask to resend telemetry after one year
+        return $now > $sent && !isset($_COOKIE['renew_telemetry']);
     }
 }

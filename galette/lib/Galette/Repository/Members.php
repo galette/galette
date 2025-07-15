@@ -118,11 +118,7 @@ class Members
      */
     public function __construct(MembersList|AdvancedMembersList|null $filters = null)
     {
-        if ($filters === null) {
-            $this->filters = new MembersList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters === null ? new MembersList() : $filters;
     }
 
     /**
@@ -618,11 +614,7 @@ class Members
                 'parent'    => $parent
             ];
             foreach ($results as $o) {
-                if ($as_members === true) {
-                    $members[] = new Adherent($zdb, $o, $deps);
-                } else {
-                    $members[] = $o;
-                }
+                $members[] = $as_members === true ? new Adherent($zdb, $o, $deps) : $o;
             }
             return $members;
         } catch (Throwable $e) {
@@ -743,18 +735,13 @@ class Members
             //check if there are dynamic fields in filter
             $hasDf = false;
             $dfs = [];
-            if ($this->filters instanceof AdvancedMembersList) {
-                if (
-                    (bool)count($this->filters->free_search)
-                    && !isset($this->filters->free_search['empty'])
-                ) {
-                    $free_searches = $this->filters->free_search;
-                    foreach ($free_searches as $fs) {
-                        if (strpos($fs['field'], 'dyn_') === 0) {
-                            // simple dynamic fields
-                            $hasDf = true;
-                            $dfs[] = str_replace('dyn_', '', $fs['field']);
-                        }
+            if ($this->filters instanceof AdvancedMembersList && ((bool)count($this->filters->free_search) && !isset($this->filters->free_search['empty']))) {
+                $free_searches = $this->filters->free_search;
+                foreach ($free_searches as $fs) {
+                    if (strpos($fs['field'], 'dyn_') === 0) {
+                        // simple dynamic fields
+                        $hasDf = true;
+                        $dfs[] = str_replace('dyn_', '', $fs['field']);
                     }
                 }
             }
@@ -764,22 +751,14 @@ class Members
             $hasCdfc = false;
             $cdfcs = [];
 
-            if (
-                $this->filters instanceof AdvancedMembersList
-                && $this->filters->withinContributions()
-            ) {
-                if (
-                    count($this->filters->contrib_dynamic) > 0
-                ) {
-                    $hasDfc = true;
-
-                    //check if there are dynamic fields in the filter
-                    foreach ($this->filters->contrib_dynamic as $k => $cd) {
-                        $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
-                        if ($dyn_field instanceof \Galette\DynamicFields\Choice) {
-                            $hasCdfc = true;
-                            $cdfcs[] = (int)$k;
-                        }
+            if ($this->filters instanceof AdvancedMembersList && $this->filters->withinContributions() && count($this->filters->contrib_dynamic) > 0) {
+                $hasDfc = true;
+                //check if there are dynamic fields in the filter
+                foreach (array_keys($this->filters->contrib_dynamic) as $k) {
+                    $dyn_field = DynamicField::loadFieldType($zdb, (int)$k);
+                    if ($dyn_field instanceof \Galette\DynamicFields\Choice) {
+                        $hasCdfc = true;
+                        $cdfcs[] = (int)$k;
                     }
                 }
             }
@@ -823,7 +802,7 @@ class Members
                         $zdb->platform->quoteIdentifier('id')
                     );
                     if ($zdb->isPostgres()) {
-                        $rcdf_field = $rcdf_field . '::text';
+                        $rcdf_field .= '::text';
                     }
 
                     $select->join(
@@ -1504,7 +1483,7 @@ class Members
                         break;
                     case AdvancedMembersList::OP_STARTS_WITH:
                         $qop = 'LIKE';
-                        $fs['search'] = $fs['search'] . '%';
+                        $fs['search'] .= '%';
                         break;
                     case AdvancedMembersList::OP_ENDS_WITH:
                         $qop = 'LIKE';

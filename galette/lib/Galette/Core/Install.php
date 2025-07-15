@@ -242,7 +242,7 @@ class Install
                 if ($this->step === self::STEP_DB_UPGRADE) {
                     $this->setInstalledVersion(null);
                 }
-                $this->step = $this->step - 1;
+                $this->step -= 1;
             }
         } else {
             $msg = null;
@@ -603,10 +603,8 @@ class Install
                 if (preg_match("/upgrade-to-(.*).php/", $file, $ver)) {
                     if ($version === null) {
                         $php_update_scripts[$ver[1]] = $ver[1];
-                    } else {
-                        if ($version < $ver[1]) {
-                            $php_update_scripts[$ver[1]] = $file;
-                        }
+                    } elseif ($version < $ver[1]) {
+                        $php_update_scripts[$ver[1]] = $file;
                     }
                 }
                 if (
@@ -618,10 +616,8 @@ class Install
                 ) {
                     if ($version === null) {
                         $sql_update_scripts[$ver[1]] = $ver[1];
-                    } else {
-                        if ($version < $ver[1]) {
-                            $sql_update_scripts[$ver[1]] = $file;
-                        }
+                    } elseif ($version < $ver[1]) {
+                        $sql_update_scripts[$ver[1]] = $file;
                     }
                 }
             }
@@ -745,7 +741,7 @@ class Install
 
         $zdb->connection->beginTransaction();
 
-        $sql_size = sizeof($sql_query);
+        $sql_size = count($sql_query);
         for ($i = 0; $i < $sql_size; $i++) {
             $query = trim($sql_query[$i]);
             if ($query != '' && $query[0] != '-') {

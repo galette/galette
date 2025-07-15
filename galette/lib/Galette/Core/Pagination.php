@@ -230,16 +230,8 @@ abstract class Pagination
         $this->routeparser = $routeparser;
 
         //Create pagination links
-        if ($this->current_page < 11) {
-            $idepart = 1;
-        } else {
-            $idepart = $this->current_page - 10;
-        }
-        if ($this->current_page + 10 < $this->pages) {
-            $ifin = $this->current_page + 10;
-        } else {
-            $ifin = $this->pages;
-        }
+        $idepart = $this->current_page < 11 ? 1 : $this->current_page - 10;
+        $ifin = $this->current_page + 10 < $this->pages ? $this->current_page + 10 : $this->pages;
 
         $next = $this->current_page + 1;
         $previous = $this->current_page - 1;
@@ -328,11 +320,7 @@ abstract class Pagination
      */
     private function getLink(string $content, string $url, string $title, bool $current = false): string
     {
-        if ($current === true) {
-            $active = "active ";
-        } else {
-            $active = "";
-        }
+        $active = $current === true ? "active " : "";
         $link = "<a href=\"" . $url . "\" " .
             "title=\"" . $title . "\" class=\"" . $active . "item\">" . $content . "</a>\n";
         return $link;

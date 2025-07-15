@@ -127,7 +127,7 @@ trait Dynamics
                 }
             }
 
-            foreach ($dynamic_fields as $key => $dfield_values) {
+            foreach ($dynamic_fields as $dfield_values) {
                 $field_id = (int)$dfield_values['field_id'];
                 $value = $dfield_values['value'];
                 $val_index = (int)$dfield_values['val_index'];
@@ -138,59 +138,57 @@ trait Dynamics
                         $fields[$field_id]->getName(),
                         _T('Missing required field %field')
                     );
+                } elseif ($fields[$field_id] instanceof File) {
+                    //delete checkbox
+                    $filename = $fields[$field_id]->getFileName($this->id, $val_index);
+                    if (file_exists(GALETTE_FILES_PATH . $filename)) {
+                        unlink(GALETTE_FILES_PATH . $filename);
+                    } elseif (!$this instanceof Adherent) {
+                        $test_filename = $fields[$field_id]->getFileName($this->id, $val_index, 'member');
+                        if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
+                            unlink(GALETTE_FILES_PATH . $test_filename);
+                        }
+                    }
+                    $this->dynamics->setValue($this->id, $field_id, $val_index, '');
                 } else {
-                    if ($fields[$field_id] instanceof File) {
-                        //delete checkbox
-                        $filename = $fields[$field_id]->getFileName($this->id, $val_index);
-                        if (file_exists(GALETTE_FILES_PATH . $filename)) {
-                            unlink(GALETTE_FILES_PATH . $filename);
-                        } elseif (!$this instanceof Adherent) {
-                            $test_filename = $fields[$field_id]->getFileName($this->id, $val_index, 'member');
-                            if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
-                                unlink(GALETTE_FILES_PATH . $test_filename);
-                            }
-                        }
-                        $this->dynamics->setValue($this->id, $field_id, $val_index, '');
-                    } else {
-                        if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
-                            //check date format
-                            try {
-                                $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                    if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
+                        //check date format
+                        try {
+                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                            if ($d === false) {
+                                //try with non localized date
+                                $d = \DateTime::createFromFormat("Y-m-d", $value);
                                 if ($d === false) {
-                                    //try with non localized date
-                                    $d = \DateTime::createFromFormat("Y-m-d", $value);
-                                    if ($d === false) {
-                                        throw new \Exception('Incorrect format');
-                                    }
+                                    throw new \Exception('Incorrect format');
                                 }
-                                $derrors = \DateTime::getLastErrors();
-                                if (!empty($derrors['warning_count'])) {
-                                    throw new \Exception(implode("\n", $derrors['warnings']));
-                                }
-                                //always store date with default format
-                                $value = $d->format('Y-m-d');
-                            } catch (Throwable $e) {
-                                $valid = false;
-                                Analog::log(
-                                    'Wrong date format. field: ' . $field_id .
-                                    ', value: ' . $value . ', expected fmt: ' .
-                                    __("Y-m-d") . ' | ' . $e->getMessage(),
-                                    Analog::INFO
-                                );
-                                $this->errors[] = sprintf(
-                                    //TRANS: %1$s date format, %2$s is the field name
-                                    _T('- Wrong date format (%1$s) for %2$s!'),
-                                    __("Y-m-d"),
-                                    $fields[$field_id]->getName()
-                                );
                             }
+                            $derrors = \DateTime::getLastErrors();
+                            if (!empty($derrors['warning_count'])) {
+                                throw new \Exception(implode("\n", $derrors['warnings']));
+                            }
+                            //always store date with default format
+                            $value = $d->format('Y-m-d');
+                        } catch (Throwable $e) {
+                            $valid = false;
+                            Analog::log(
+                                'Wrong date format. field: ' . $field_id .
+                                ', value: ' . $value . ', expected fmt: ' .
+                                __("Y-m-d") . ' | ' . $e->getMessage(),
+                                Analog::INFO
+                            );
+                            $this->errors[] = sprintf(
+                                //TRANS: %1$s date format, %2$s is the field name
+                                _T('- Wrong date format (%1$s) for %2$s!'),
+                                __("Y-m-d"),
+                                $fields[$field_id]->getName()
+                            );
                         }
-                        //actual field value
-                        if ($value !== null && trim($value) !== '') {
-                            $this->dynamics->setValue($this->id ?? null, $field_id, $val_index, $value);
-                        } else {
-                            $this->dynamics->unsetValue($field_id, $val_index);
-                        }
+                    }
+                    //actual field value
+                    if ($value !== null && trim($value) !== '') {
+                        $this->dynamics->setValue($this->id ?? null, $field_id, $val_index, $value);
+                    } else {
+                        $this->dynamics->unsetValue($field_id, $val_index);
                     }
                 }
             }

@@ -273,7 +273,7 @@ class PdfMembersCards extends Pdf
             $this->writeHTML('<strong>' . $member_id . '</strong>', false, false);
 
             $this->SetFontSize($this->year_font_size);
-            $xan_cot = $xan_cot - 0.3;
+            $xan_cot -= 0.3;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
             $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
             $y_an_cot = $this->getY();

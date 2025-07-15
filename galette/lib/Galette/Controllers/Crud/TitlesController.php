@@ -200,18 +200,16 @@ class TitlesController extends CrudController
 
                 $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => (string)$id]);
             }
+        } elseif ($id === null) {
+            $msg = sprintf(
+                _T('Title \'%1$s\' has been successfully added.'),
+                $title->short
+            );
         } else {
-            if ($id === null) {
-                $msg = sprintf(
-                    _T('Title \'%1$s\' has been successfully added.'),
-                    $title->short
-                );
-            } else {
-                $msg = sprintf(
-                    _T('Title \'%1$s\' has been successfully modified.'),
-                    $title->short
-                );
-            }
+            $msg = sprintf(
+                _T('Title \'%1$s\' has been successfully modified.'),
+                $title->short
+            );
         }
 
         if (count($error_detected) > 0) {

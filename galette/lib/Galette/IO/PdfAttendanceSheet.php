@@ -180,18 +180,10 @@ class PdfAttendanceSheet extends Pdf
                 // Set logo size to max width 30 mm or max height 25 mm
                 $ratio = $m->picture->getWidth() / $m->picture->getHeight();
                 if ($ratio < 1) {
-                    if ($m->picture->getHeight() > 14) {
-                        $hlogo = 14;
-                    } else {
-                        $hlogo = $m->picture->getHeight();
-                    }
+                    $hlogo = $m->picture->getHeight() > 14 ? 14 : $m->picture->getHeight();
                     $wlogo = round($hlogo * $ratio);
                 } else {
-                    if ($m->picture->getWidth() > 14) {
-                        $wlogo = 14;
-                    } else {
-                        $wlogo = $m->picture->getWidth();
-                    }
+                    $wlogo = $m->picture->getWidth() > 14 ? 14 : $m->picture->getWidth();
                     $hlogo = round($wlogo / $ratio);
                 }
 

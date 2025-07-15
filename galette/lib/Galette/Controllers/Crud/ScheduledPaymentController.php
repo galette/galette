@@ -455,12 +455,10 @@ class ScheduledPaymentController extends CrudController
                     //redirect to edition
                     $redirect_uri = $this->routeparser->urlFor('editScheduledPayment', ['id' => (string)$id]);
                 }
+            } elseif ($id === null) {
+                $msg = _T("Scheduled payment has been successfully added.");
             } else {
-                if ($id === null) {
-                    $msg = _T("Scheduled payment has been successfully added.");
-                } else {
-                    $msg = _T("Scheduled payment has been successfully modified.");
-                }
+                $msg = _T("Scheduled payment has been successfully modified.");
             }
         }
 

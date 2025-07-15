@@ -601,31 +601,23 @@ abstract class DynamicField
 
         if (!isset($values['field_perm']) || $values['field_perm'] === '') {
             $this->errors[] = _T('Missing required field permissions!');
+        } elseif (in_array($values['field_perm'], array_keys(self::getPermissionsList()))) {
+            $this->permission = (int)$values['field_perm'];
         } else {
-            if (in_array($values['field_perm'], array_keys(self::getPermissionsList()))) {
-                $this->permission = (int)$values['field_perm'];
-            } else {
-                $this->errors[] = _T('Unknown permission!');
-            }
+            $this->errors[] = _T('Unknown permission!');
         }
 
         if (!isset($this->id)) {
             if (!isset($values['form_name']) || $values['form_name'] == '') {
                 $this->errors[] = _T('Missing required form!');
+            } elseif (in_array($values['form_name'], array_keys(self::getFormsNames()))) {
+                $this->form = $values['form_name'];
             } else {
-                if (in_array($values['form_name'], array_keys(self::getFormsNames()))) {
-                    $this->form = $values['form_name'];
-                } else {
-                    $this->errors[] = _T('Unknown form!');
-                }
+                $this->errors[] = _T('Unknown form!');
             }
         }
 
-        if (isset($values['field_required'])) {
-            $this->required = $values['field_required'] == 1;
-        } else {
-            $this->required = false;
-        }
+        $this->required = isset($values['field_required']) ? $values['field_required'] == 1 : false;
 
         $this->width_in_forms = (int)($values['field_width_in_forms'] ?? 1);
 
@@ -674,14 +666,9 @@ abstract class DynamicField
         }
 
         if (
-            $this->hasMinSize()
-                && $this->min_size !== null
-            && $this->hasSize()
-                && $this->size !== null
+            $this->hasMinSize() && $this->min_size !== null && $this->hasSize() && $this->size !== null && $this->min_size > $this->size
         ) {
-            if ($this->min_size > $this->size) {
-                $this->errors[] = _T("- Min size must be lower than size!");
-            }
+            $this->errors[] = _T("- Min size must be lower than size!");
         }
 
         if (isset($values['field_repeat'])) {
@@ -1022,7 +1009,7 @@ abstract class DynamicField
                 );
                 $this->zdb->execute($delete);
             } catch (Throwable $e) {
-                throw new \RuntimeException('Unable to remove associated values for field ' . $this->id . '!');
+                throw new \RuntimeException('Unable to remove associated values for field ' . $this->id . '!', $e->getCode(), $e);
             }
 
             //remove field type
@@ -1036,7 +1023,7 @@ abstract class DynamicField
                 );
                 $this->zdb->execute($delete);
             } catch (Throwable $e) {
-                throw new \RuntimeException('Unable to remove field type ' . $this->id . '!');
+                throw new \RuntimeException('Unable to remove field type ' . $this->id . '!', $e->getCode(), $e);
             }
 
             $this->deleteTranslation($this->name);

@@ -333,20 +333,18 @@ class CsvController extends AbstractController
         $csv = new CsvIn($this->zdb);
         if (isset($_FILES['new_file'])) {
             if ($_FILES['new_file']['error'] === UPLOAD_ERR_OK) {
-                if ($_FILES['new_file']['tmp_name'] != '') {
-                    if (is_uploaded_file($_FILES['new_file']['tmp_name'])) {
-                        $res = $csv->store($_FILES['new_file']);
-                        if ($res < 0) {
-                            $this->flash->addMessage(
-                                'error_detected',
-                                $csv->getErrorMessage($res)
-                            );
-                        } else {
-                            $this->flash->addMessage(
-                                'success_detected',
-                                _T("Your file has been successfully uploaded!")
-                            );
-                        }
+                if ($_FILES['new_file']['tmp_name'] != '' && is_uploaded_file($_FILES['new_file']['tmp_name'])) {
+                    $res = $csv->store($_FILES['new_file']);
+                    if ($res < 0) {
+                        $this->flash->addMessage(
+                            'error_detected',
+                            $csv->getErrorMessage($res)
+                        );
+                    } else {
+                        $this->flash->addMessage(
+                            'success_detected',
+                            _T("Your file has been successfully uploaded!")
+                        );
                     }
                 }
             } elseif ($_FILES['new_file']['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -683,11 +681,7 @@ class CsvController extends AbstractController
 
         $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\MembersController::getDefaultFilterName());
 
-        if (isset($this->session->$session_var)) {
-            $filters = $this->session->$session_var;
-        } else {
-            $filters = new MembersList();
-        }
+        $filters = $this->session->$session_var ?? new MembersList();
 
         $csv = new MembersCsv(
             $this->zdb,

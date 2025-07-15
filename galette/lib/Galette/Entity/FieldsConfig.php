@@ -972,7 +972,7 @@ class FieldsConfig
         //remove not searchable fields
         unset($fields['mdp_adh']);
 
-        foreach ($fields as $k => $f) {
+        foreach (array_keys($fields) as $k) {
             if (
                 $visibles[$k] == FieldsConfig::NOBODY ||
                 ($visibles[$k] == FieldsConfig::ADMIN &&

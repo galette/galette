@@ -295,11 +295,7 @@ class GaletteController extends AbstractController
                 }
             }
         }
-        if (isset($post['tab']) && $post['tab'] != 'general') {
-            $tab = '?tab=' . $post['tab'];
-        } else {
-            $tab = '';
-        }
+        $tab = isset($post['tab']) && $post['tab'] != 'general' ? '?tab=' . $post['tab'] : '';
 
         // Reset dark mode CSS file if required
         $this->preferences->resetDarkCss($this->flash);
@@ -365,7 +361,7 @@ class GaletteController extends AbstractController
             }
         }
 
-        if (!($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')) {
+        if ($request->getHeaderLine('X-Requested-With') !== 'XMLHttpRequest') {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('preferences'));
@@ -464,12 +460,7 @@ class GaletteController extends AbstractController
                 $current_cat = $post[$field . '_category'];
             }
 
-            $required = null;
-            if (isset($post[$field . '_required'])) {
-                $required = $post[$field . '_required'];
-            } else {
-                $required = false;
-            }
+            $required = $post[$field . '_required'] ?? false;
 
             $res[$current_cat][] = [
                 'field_id'      =>  $field,

@@ -159,7 +159,7 @@ class Reminder
             $insert->values($data);
 
             $add = $zdb->execute($insert);
-            if (!($add->count() > 0)) {
+            if ($add->count() <= 0) {
                 Analog::log('Reminder not stored!', Analog::ERROR);
                 return false;
             }
@@ -381,20 +381,17 @@ class Reminder
             case 'dest':
                 if ($this->type !== null && $value instanceof Adherent) {
                     $this->dest = $value;
-
                     if ($value->getEmail() != '') {
                         $this->nomail = false;
                     }
+                } elseif (!$value instanceof Adherent) {
+                    throw new \UnexpectedValueException(
+                        'Please provide a member object.'
+                    );
                 } else {
-                    if (!$value instanceof Adherent) {
-                        throw new \UnexpectedValueException(
-                            'Please provide a member object.'
-                        );
-                    } else {
-                        throw new \UnderflowException(
-                            'Please set reminder type first.'
-                        );
-                    }
+                    throw new \UnderflowException(
+                        'Please set reminder type first.'
+                    );
                 }
                 break;
             default:

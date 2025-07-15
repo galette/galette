@@ -62,11 +62,7 @@ class SavedSearches
         $this->zdb = $zdb;
         $this->login = $login;
 
-        if ($filters === null) {
-            $this->filters = new SavedSearchesList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters === null ? new SavedSearchesList() : $filters;
     }
 
     /**

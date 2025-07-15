@@ -206,11 +206,7 @@ class PluginsController extends AbstractController
         }
 
         if (isset($post['install_dbperms_ok'])) {
-            if ($post['install_type'] === PluginInstall::INSTALL) {
-                $istep = 4;
-            } else {
-                $istep = 3;
-            }
+            $istep = $post['install_type'] === PluginInstall::INSTALL ? 4 : 3;
         }
 
         if (isset($post['previous_version'])) {

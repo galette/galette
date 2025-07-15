@@ -678,12 +678,10 @@ class Group
             return count($this->members);
         } elseif (isset($this->count_members)) {
             return $this->count_members;
+        } elseif ($force === true) {
+            return count($this->getMembers());
         } else {
-            if ($force === true) {
-                return count($this->getMembers());
-            } else {
-                return 0;
-            }
+            return 0;
         }
     }
 
@@ -987,12 +985,7 @@ class Group
         if ($login->isAdmin() || $login->isStaff()) {
             return true;
         }
-
         //group managers can edit groups they manage when pref is on
-        if ($preferences->pref_bool_groupsmanagers_edit_groups && $this->isManager($login)) {
-            return true;
-        }
-
-        return false;
+        return $preferences->pref_bool_groupsmanagers_edit_groups && $this->isManager($login);
     }
 }

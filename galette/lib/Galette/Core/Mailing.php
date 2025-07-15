@@ -196,7 +196,7 @@ class Mailing extends GaletteMail
         $this->setRecipients($_recipients);
         $this->subject = $rs->mailing_subject;
         $this->message = $rs->mailing_body;
-        $this->html = $this->message != strip_tags($this->message) ? true : false;
+        $this->html = $this->message != strip_tags($this->message);
         if ($rs->mailing_sender_name !== null || $rs->mailing_sender_address !== null) {
             $this->setSender(
                 $rs->mailing_sender_name,
@@ -298,10 +298,8 @@ class Mailing extends GaletteMail
                     $this->mrecipients[] = $member;
                 }
                 $m[$email] = $member->sname;
-            } else {
-                if (!in_array($member, $this->unreachables)) {
-                    $this->unreachables[] = $member;
-                }
+            } elseif (!in_array($member, $this->unreachables)) {
+                $this->unreachables[] = $member;
             }
         }
         return parent::setRecipients($m);

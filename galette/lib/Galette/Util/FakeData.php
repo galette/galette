@@ -51,11 +51,7 @@ class FakeData
     public function addPhoto(Adherent $member): bool
     {
         $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
-        if (!defined('GALETTE_TESTS')) {
-            $url = 'https://loremflickr.com/800/600/people';
-        } else {
-            $url = GALETTE_ROOT . '../tests/fake_image.jpg';
-        }
+        $url = !defined('GALETTE_TESTS') ? 'https://loremflickr.com/800/600/people' : GALETTE_ROOT . '../tests/fake_image.jpg';
 
         if (copy($url, $file)) {
             $_FILES = [

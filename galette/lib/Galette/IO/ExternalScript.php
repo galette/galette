@@ -101,18 +101,16 @@ class ExternalScript
                 $this->protocol . '://',
                 $uri
             );
+        } elseif (file_exists($uri)) {
+            $this->uri = str_replace(
+                $protocol . '://',
+                '',
+                $uri
+            );
         } else {
-            if (file_exists($uri)) {
-                $this->uri = str_replace(
-                    $protocol . '://',
-                    '',
-                    $uri
-                );
-            } else {
-                throw new \RuntimeException(
-                    __METHOD__ . 'File ' . $uri . ' does not exists!'
-                );
-            }
+            throw new \RuntimeException(
+                __METHOD__ . 'File ' . $uri . ' does not exists!'
+            );
         }
 
         Analog::log(
@@ -148,11 +146,7 @@ class ExternalScript
                 curl_setopt($ch, CURLOPT_URL, $uri);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $this->output = curl_exec($ch);
-                if ($this->output) {
-                    $result = true;
-                } else {
-                    $result = false;
-                }
+                $result = (bool) $this->output;
                 curl_close($ch);
                 break;
             case 'galette':
@@ -173,11 +167,7 @@ class ExternalScript
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
                 }
                 $this->output = curl_exec($ch);
-                if ($this->output) {
-                    $result = true;
-                } else {
-                    $result = false;
-                }
+                $result = (bool) $this->output;
                 curl_close($ch);
                 break;
             case 'file':
@@ -223,11 +213,7 @@ class ExternalScript
                 fclose($pipes[2]);
                 proc_close($process);
 
-                if (trim($this->output) === '') {
-                    $result = true;
-                } else {
-                    $result = false;
-                }
+                $result = trim($this->output) === '';
                 break;
             default:
                 throw new \RuntimeException(

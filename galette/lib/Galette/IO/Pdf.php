@@ -339,18 +339,10 @@ class Pdf extends TCPDF
         // Set logo size to max width 30 mm or max height 25 mm
         $ratio = $print_logo->getWidth() / $print_logo->getHeight();
         if ($ratio < 1) {
-            if ($print_logo->getHeight() > 16) {
-                $hlogo = 25;
-            } else {
-                $hlogo = $print_logo->getHeight();
-            }
+            $hlogo = $print_logo->getHeight() > 16 ? 25 : $print_logo->getHeight();
             $wlogo = round($hlogo * $ratio);
         } else {
-            if ($print_logo->getWidth() > 16) {
-                $wlogo = 30;
-            } else {
-                $wlogo = $print_logo->getWidth();
-            }
+            $wlogo = $print_logo->getWidth() > 16 ? 30 : $print_logo->getWidth();
             $hlogo = round($wlogo / $ratio);
         }
 
@@ -442,7 +434,7 @@ class Pdf extends TCPDF
      */
     protected function cut(string $str, int $length): string
     {
-        $length = $length - 2; //keep a margin
+        $length -= 2; //keep a margin
         if ((int)$this->GetStringWidth($str) > $length) {
             while ((int)$this->GetStringWidth($str . '...') > $length) {
                 $str = mb_substr($str, 0, -1, 'UTF-8');

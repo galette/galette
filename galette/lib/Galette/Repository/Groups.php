@@ -79,11 +79,7 @@ class Groups
             $results = $zdb->execute($select);
 
             foreach ($results as $row) {
-                if ($as_groups === false) {
-                    $groups[$row->$gpk] = $row->group_name;
-                } else {
-                    $groups[$row->$gpk] = new Group($row);
-                }
+                $groups[$row->$gpk] = $as_groups === false ? $row->group_name : new Group($row);
             }
             return $groups;
         } catch (Throwable $e) {
@@ -209,11 +205,7 @@ class Groups
             $groups = [];
             $gpk = Group::PK;
             foreach ($results as $r) {
-                if ($as_group === true) {
-                    $groups[$r->$gpk] = new Group($r);
-                } else {
-                    $groups[$r->$gpk] = $r->$gpk;
-                }
+                $groups[$r->$gpk] = $as_group === true ? new Group($r) : $r->$gpk;
             }
             return $groups;
         } catch (Throwable $e) {
@@ -253,12 +245,7 @@ class Groups
                 $zdb->connection->beginTransaction();
             }
 
-            $table = null;
-            if ($manager === true) {
-                $table = Group::GROUPSMANAGERS_TABLE;
-            } else {
-                $table = Group::GROUPSUSERS_TABLE;
-            }
+            $table = $manager === true ? Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
 
             //first, remove current groups members
             $delete = $zdb->delete($table);
@@ -424,7 +411,7 @@ class Groups
             }
 
             $results = $zdb->execute($select);
-            return !($results->count() > 0);
+            return $results->count() <= 0;
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot check group name uniqueness | ' . $e->getMessage(),

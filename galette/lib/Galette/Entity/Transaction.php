@@ -317,60 +317,58 @@ class Transaction implements AccessManagementInterface
             }
 
             // if the field is enabled, check it
-            if (!isset($disabled[$key])) {
-                // now, check validity
-                if ($value != '') {
-                    switch ($key) {
-                        // dates
-                        case 'trans_date':
-                            $this->setDate($key, $value);
-                            break;
-                        case Adherent::PK:
-                            if ($value != '') {
-                                $member = new Adherent($this->zdb, (int)$value, false);
-                                if (
-                                    !$this->login->isStaff()
-                                    && !$this->login->isAdmin()
-                                    && !$this->login->isGroupManager(array_keys($member->getGroups()))
-                                ) {
-                                    $this->errors[] = _T("- Please select a member from a group you manage.");
-                                } else {
-                                    $this->member = (int)$value;
-                                }
-                            }
-                            break;
-                        case 'trans_amount':
-                            //FIXME: this is a hack to allow comma as decimal separator
-                            $value = strtr((string)$value, ',', '.');
-                            $this->amount = (float)$value;
-                            if (!is_numeric($value)) {
-                                $this->errors[] = _T("- The amount must be an integer!");
-                            }
-                            break;
-                        case 'trans_desc':
-                            /** TODO: retrieve field length from database and check that */
-                            $this->description = strip_tags($value);
-                            if (mb_strlen($value) > 150) {
-                                $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
-                            }
-                            break;
-                        case 'type_paiement_trans':
-                            if ($value == 0) {
-                                break;
-                            }
-                            $ptypes = new PaymentTypes(
-                                $this->zdb,
-                                $preferences,
-                                $this->login
-                            );
-                            $ptlist = $ptypes->getList();
-                            if (isset($ptlist[$value])) {
-                                $this->payment_type = (int)$value;
+            // now, check validity
+            if (!isset($disabled[$key]) && $value != '') {
+                switch ($key) {
+                    // dates
+                    case 'trans_date':
+                        $this->setDate($key, $value);
+                        break;
+                    case Adherent::PK:
+                        if ($value != '') {
+                            $member = new Adherent($this->zdb, (int)$value, false);
+                            if (
+                                !$this->login->isStaff()
+                                && !$this->login->isAdmin()
+                                && !$this->login->isGroupManager(array_keys($member->getGroups()))
+                            ) {
+                                $this->errors[] = _T("- Please select a member from a group you manage.");
                             } else {
-                                $this->errors[] = _T("- Unknown payment type");
+                                $this->member = (int)$value;
                             }
+                        }
+                        break;
+                    case 'trans_amount':
+                        //FIXME: this is a hack to allow comma as decimal separator
+                        $value = strtr((string)$value, ',', '.');
+                        $this->amount = (float)$value;
+                        if (!is_numeric($value)) {
+                            $this->errors[] = _T("- The amount must be an integer!");
+                        }
+                        break;
+                    case 'trans_desc':
+                        /** TODO: retrieve field length from database and check that */
+                        $this->description = strip_tags($value);
+                        if (mb_strlen($value) > 150) {
+                            $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
+                        }
+                        break;
+                    case 'type_paiement_trans':
+                        if ($value == 0) {
                             break;
-                    }
+                        }
+                        $ptypes = new PaymentTypes(
+                            $this->zdb,
+                            $preferences,
+                            $this->login
+                        );
+                        $ptlist = $ptypes->getList();
+                        if (isset($ptlist[$value])) {
+                            $this->payment_type = (int)$value;
+                        } else {
+                            $this->errors[] = _T("- Unknown payment type");
+                        }
+                        break;
                 }
             }
         }
@@ -685,12 +683,7 @@ class Transaction implements AccessManagementInterface
         if ($login->isAdmin() || $login->isStaff()) {
             return true;
         }
-
-        if ($preferences->pref_bool_groupsmanagers_create_transactions && $login->isGroupManager()) {
-            return true;
-        }
-
-        return false;
+        return $preferences->pref_bool_groupsmanagers_create_transactions && $login->isGroupManager();
     }
 
     /**
@@ -764,19 +757,7 @@ class Transaction implements AccessManagementInterface
         }
 
         global $preferences;
-
-        if (
-            isset($this->id)
-            && $login->isGroupManager()
-            && (
-                $preferences->pref_bool_groupsmanagers_create_contributions
-                || $preferences->pref_bool_groupsmanagers_see_contributions
-            )
-        ) {
-            return true;
-        }
-
-        return false;
+        return isset($this->id) && $login->isGroupManager() && ($preferences->pref_bool_groupsmanagers_create_contributions || $preferences->pref_bool_groupsmanagers_see_contributions);
     }
 
     /**
@@ -791,11 +772,6 @@ class Transaction implements AccessManagementInterface
         if (!$login->isLogged()) {
             return false;
         }
-
-        if ($login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-
-        return false;
+        return $login->isAdmin() || $login->isStaff();
     }
 }

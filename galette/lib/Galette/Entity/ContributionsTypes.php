@@ -622,15 +622,7 @@ class ContributionsTypes
     {
         $forbidden = [];
         $virtuals = ['extension', 'libelle'];
-        if (
-            in_array($name, $virtuals)
-            || !in_array($name, $forbidden)
-            && isset($this->$name)
-        ) {
-            return true;
-        }
-
-        return false;
+        return in_array($name, $virtuals) || !in_array($name, $forbidden) && isset($this->$name);
     }
 
     /**

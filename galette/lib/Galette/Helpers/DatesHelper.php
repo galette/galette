@@ -73,11 +73,7 @@ trait DatesHelper
     {
         try {
             /** @phpstan-ignore-next-line */
-            if (method_exists($this, 'getFieldPropertyName')) {
-                $fieldPropertyName = $this->getFieldPropertyName($field);
-            } else {
-                $fieldPropertyName = $field;
-            }
+            $fieldPropertyName = method_exists($this, 'getFieldPropertyName') ? $this->getFieldPropertyName($field) : $field;
             $this->$fieldPropertyName = $this->buildDate($value);
         } catch (Throwable $e) {
             Analog::log(
@@ -88,11 +84,7 @@ trait DatesHelper
             );
 
             /** @phpstan-ignore-next-line */
-            if (method_exists($this, 'getFieldLabel')) {
-                $fieldLabel = $this->getFieldLabel($field);
-            } else {
-                $fieldLabel = $field;
-            }
+            $fieldLabel = method_exists($this, 'getFieldLabel') ? $this->getFieldLabel($field) : $field;
 
             $this->errors[] = sprintf(
                 //TRANS: %1$s is the date format, %2$s is the field name
@@ -178,12 +170,7 @@ trait DatesHelper
                     }
                 }
 
-                $field = null;
-                if ($start === true) {
-                    $field = _T("start date filter");
-                } else {
-                    $field = _T("end date filter");
-                }
+                $field = $start === true ? _T("start date filter") : _T("end date filter");
 
                 throw new \Exception(
                     sprintf(
@@ -205,11 +192,7 @@ trait DatesHelper
             );
 
             /** @phpstan-ignore-next-line */
-            if (method_exists($this, 'getFieldLabel')) {
-                $fieldLabel = $this->getFieldLabel($field);
-            } else {
-                $fieldLabel = $field;
-            }
+            $fieldLabel = method_exists($this, 'getFieldLabel') ? $this->getFieldLabel($field) : $field;
 
             $this->errors[] = sprintf(
                 //TRANS: %1$s is the date format, %2$s is the field name
@@ -236,11 +219,7 @@ trait DatesHelper
     public function getDate(string $field, bool $formatted = true, bool $translated = true): string|DateTime|null
     {
         /** @phpstan-ignore-next-line */
-        if (method_exists($this, 'getFieldPropertyName')) {
-            $fieldPropertyName = $this->getFieldPropertyName($field);
-        } else {
-            $fieldPropertyName = $field;
-        }
+        $fieldPropertyName = method_exists($this, 'getFieldPropertyName') ? $this->getFieldPropertyName($field) : $field;
 
         if ($this->$fieldPropertyName !== null && $this->$fieldPropertyName != '') {
             try {

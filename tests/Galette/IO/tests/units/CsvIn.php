@@ -776,7 +776,7 @@ class CsvIn extends GaletteTestCase
         ];
         $members_list = $this->getMemberData2();
         $i = 0;
-        foreach ($members_list as $fingerprint => &$data) {
+        foreach ($members_list as &$data) {
             //two lines without required dynamic field.
             $data['dynfield_' . $cdf->getId()] = (($i == 2 || $i == 5) ? '20200513' : $data['date_crea_adh']);
             ++$i;

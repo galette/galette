@@ -123,10 +123,8 @@ class MembersList extends Pagination
     {
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
-        } else {
-            if (in_array($name, $this->memberslist_fields)) {
-                return $this->$name;
-            }
+        } elseif (in_array($name, $this->memberslist_fields)) {
+            return $this->$name;
         }
 
         throw new \RuntimeException(

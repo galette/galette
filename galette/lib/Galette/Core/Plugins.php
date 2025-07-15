@@ -156,7 +156,7 @@ class Plugins
         uasort($this->modules, [$this, 'sortModules']);
 
         // Load translation, _prepend and ns_file
-        foreach ($this->modules as $id => $m) {
+        foreach (array_keys($this->modules) as $id) {
             if ($lang !== null) {
                 $this->loadModuleL10N($id, $lang);
             }
@@ -474,7 +474,7 @@ class Plugins
     public function getTplHeaders(): array
     {
         $_headers = [];
-        foreach ($this->modules as $key => $module) {
+        foreach (array_keys($this->modules) as $key) {
             $headers_path = $this->getTemplatesPath($key) . '/headers.html.twig';
             if (file_exists($headers_path)) {
                 $_headers[$key] = sprintf('@%s/%s.html.twig', $this->getClassName($key), 'headers');
@@ -491,7 +491,7 @@ class Plugins
     public function getTplScripts(): array
     {
         $_scripts = [];
-        foreach ($this->modules as $key => $module) {
+        foreach (array_keys($this->modules) as $key) {
             $scripts_path = $this->getTemplatesPath($key) . '/scripts.html.twig';
             if (file_exists($scripts_path)) {
                 $_scripts[$key] = sprintf('@%s/%s.html.twig', $this->getClassName($key), 'scripts');

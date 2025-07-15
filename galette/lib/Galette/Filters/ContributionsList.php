@@ -156,20 +156,18 @@ class ContributionsList extends Pagination
     {
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
-        } else {
-            if (in_array($name, $this->list_fields) || in_array($name, $this->virtuals_list_fields)) {
-                switch ($name) {
-                    case 'start_date_filter':
-                    case 'end_date_filter':
-                        return $this->getDate($name);
-                    case 'rstart_date_filter':
-                    case 'rend_date_filter':
-                        //same as above, but raw format
-                        $rname = substr($name, 1);
-                        return $this->getDate($rname, true, false);
-                    default:
-                        return $this->$name;
-                }
+        } elseif (in_array($name, $this->list_fields) || in_array($name, $this->virtuals_list_fields)) {
+            switch ($name) {
+                case 'start_date_filter':
+                case 'end_date_filter':
+                    return $this->getDate($name);
+                case 'rstart_date_filter':
+                case 'rend_date_filter':
+                    //same as above, but raw format
+                    $rname = substr($name, 1);
+                    return $this->getDate($rname, true, false);
+                default:
+                    return $this->$name;
             }
         }
 

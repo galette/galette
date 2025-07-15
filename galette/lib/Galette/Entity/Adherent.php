@@ -377,11 +377,7 @@ class Adherent implements AccessManagementInterface
         $this->login = $r->login_adh;
         $this->password = $r->mdp_adh;
         $this->creation_date = $r->date_crea_adh;
-        if ($r->date_modif_adh != '1901-01-01') {
-            $this->modification_date = $r->date_modif_adh;
-        } else {
-            $this->modification_date = $this->creation_date;
-        }
+        $this->modification_date = $r->date_modif_adh != '1901-01-01' ? $r->date_modif_adh : $this->creation_date;
         $this->due_date = $r->date_echeance;
         $this->others_infos = $r->info_public_adh;
         $this->others_infos_admin = $r->info_adh;
@@ -510,42 +506,40 @@ class Adherent implements AccessManagementInterface
             //no fee required, we don't care about dates
             $this->row_classes .= ' cotis-exempt';
             $this->due_status = Contribution::STATUS_DUEFREE;
-        } else {
+        } elseif ($this->due_date == '') {
             //ok, fee is required. Let's check the dates
-            if ($this->due_date == '') {
-                $this->row_classes .= ' cotis-never';
-                $this->due_status = Contribution::STATUS_NEVER;
-            } else {
-                // To count the days remaining, the next begin date is required.
-                $due_date = new DateTime($this->due_date);
-                $next_begin_date = clone $due_date;
-                $next_begin_date->add(new DateInterval('P1D'));
-                $date_diff = $now->diff($next_begin_date);
+            $this->row_classes .= ' cotis-never';
+            $this->due_status = Contribution::STATUS_NEVER;
+        } else {
+            // To count the days remaining, the next begin date is required.
+            $due_date = new DateTime($this->due_date);
+            $next_begin_date = clone $due_date;
+            $next_begin_date->add(new DateInterval('P1D'));
+            $date_diff = $now->diff($next_begin_date);
+            $this->days_remaining = $date_diff->days;
+            if ($date_diff->invert == 0 && $date_diff->days >= 0) {
+                // Active
                 $this->days_remaining = $date_diff->days;
-                if ($date_diff->invert == 0 && $date_diff->days >= 0) {
-                    // Active
-                    $this->days_remaining = $date_diff->days;
-                    if ($this->days_remaining <= 30) {
-                        if ($date_diff->days == 0) {
-                            $this->row_classes .= ' cotis-lastday';
-                        }
-                        $this->row_classes .= ' cotis-soon';
-                        $this->due_status = Contribution::STATUS_IMPENDING;
-                    } else {
-                        $this->row_classes .= ' cotis-ok';
-                        $this->due_status = Contribution::STATUS_UPTODATE;
+                if ($this->days_remaining <= 30) {
+                    if ($date_diff->days == 0) {
+                        $this->row_classes .= ' cotis-lastday';
                     }
-                } elseif ($date_diff->invert == 1 && $date_diff->days >= 0) {
-                    // Expired
-                    $this->days_remaining = $date_diff->days;
-                    //check if member is still active
-                    if ($this->isActive()) {
-                        $this->row_classes .= ' cotis-late';
-                        $this->due_status = Contribution::STATUS_LATE;
-                    } else {
-                        $this->row_classes .= ' cotis-old';
-                        $this->due_status = Contribution::STATUS_OLD;
-                    }
+                    $this->row_classes .= ' cotis-soon';
+                    $this->due_status = Contribution::STATUS_IMPENDING;
+                } else {
+                    $this->row_classes .= ' cotis-ok';
+                    $this->due_status = Contribution::STATUS_UPTODATE;
+                }
+            } elseif ($date_diff->invert == 1 && $date_diff->days >= 0) {
+                // Expired
+                $this->days_remaining = $date_diff->days;
+                //check if member is still active
+                if ($this->isActive()) {
+                    $this->row_classes .= ' cotis-late';
+                    $this->due_status = Contribution::STATUS_LATE;
+                } else {
+                    $this->row_classes .= ' cotis-old';
+                    $this->due_status = Contribution::STATUS_OLD;
                 }
             }
         }
@@ -633,12 +627,10 @@ class Adherent implements AccessManagementInterface
                 }
             }
             return false;
+        } elseif ($this->isAdmin() || $this->isStaff()) {
+            return true;
         } else {
-            if ($this->isAdmin() || $this->isStaff()) {
-                return true;
-            } else {
-                return count($this->managed_groups) > 0;
-            }
+            return count($this->managed_groups) > 0;
         }
     }
 
@@ -792,11 +784,7 @@ class Adherent implements AccessManagementInterface
             }
         } elseif ($this->days_remaining === 0) {
             // Last active or first expired day
-            if ($date_diff->invert == 0) {
-                $ret = _T("Last day!");
-            } else {
-                $ret = _T("Late since today!");
-            }
+            $ret = $date_diff->invert == 0 ? _T("Last day!") : _T("Late since today!");
         } elseif ($date_diff->invert == 0 && $this->days_remaining > 0) {
             // Active
             $patterns = ['/%days/', '/%date/'];
@@ -1040,16 +1028,14 @@ class Adherent implements AccessManagementInterface
         if ($this->isDueFree()) {
             //member is due free, he's up-to-date.
             return true;
-        } else {
+        } elseif (!isset($this->due_date)) {
             //let's check from due date, if present
-            if (!isset($this->due_date)) {
-                return false;
-            } else {
-                $due_date = new DateTime($this->due_date);
-                $now = new DateTime();
-                $now->setTime(0, 0, 0);
-                return $due_date >= $now;
-            }
+            return false;
+        } else {
+            $due_date = new DateTime($this->due_date);
+            $now = new DateTime();
+            $now->setTime(0, 0, 0);
+            return $due_date >= $now;
         }
     }
 
@@ -1154,13 +1140,11 @@ class Adherent implements AccessManagementInterface
                         $value = '';
                         break;
                 }
-            } else {
+            } elseif ($prop != 'password' || isset($values['mdp_adh']) && isset($values['mdp_adh2'])) {
                 //keep stored value on update
-                if ($prop != 'password' || isset($values['mdp_adh']) && isset($values['mdp_adh2'])) {
-                    $value = $this->$prop;
-                } else {
-                    $value = null;
-                }
+                $value = $this->$prop;
+            } else {
+                $value = null;
             }
 
             // if the field is enabled, check it
@@ -1193,7 +1177,7 @@ class Adherent implements AccessManagementInterface
         }
 
         // missing required fields?
-        foreach ($required as $key => $val) {
+        foreach (array_keys($required) as $key) {
             $prop = $this->fields[$key]['propname'];
 
             if (!isset($disabled[$key])) {
@@ -1412,38 +1396,36 @@ class Adherent implements AccessManagementInterface
                         '2',
                         _T("- The username must be composed of at least %i characters!")
                     );
-                } else {
+                } elseif (str_contains($value, '@')) {
                     //check if login does not contain the @ character
-                    if (str_contains($value, '@')) {
-                        $this->errors[] = _T("- The username cannot contain the @ character");
-                    } else {
-                        //check if login is already taken
-                        try {
-                            $select = $this->zdb->select(self::TABLE);
-                            $select->columns(
-                                [self::PK]
-                            )->where(['login_adh' => $value]);
-                            if (!empty($this->id)) {
-                                $select->where->notEqualTo(
-                                    self::PK,
-                                    $this->id
-                                );
-                            }
-
-                            $results = $this->zdb->execute($select);
-                            if (
-                                $results->count() !== 0
-                                || $value == $preferences->pref_admin_login
-                            ) {
-                                $this->errors[] = _T("- This username is already in use, please choose another one!");
-                            }
-                        } catch (Throwable $e) {
-                            Analog::log(
-                                'An error occurred checking member login uniqueness.',
-                                Analog::ERROR
+                    $this->errors[] = _T("- The username cannot contain the @ character");
+                } else {
+                    //check if login is already taken
+                    try {
+                        $select = $this->zdb->select(self::TABLE);
+                        $select->columns(
+                            [self::PK]
+                        )->where(['login_adh' => $value]);
+                        if (!empty($this->id)) {
+                            $select->where->notEqualTo(
+                                self::PK,
+                                $this->id
                             );
-                            $this->errors[] = _T("An error has occurred while looking if login already exists.");
                         }
+
+                        $results = $this->zdb->execute($select);
+                        if (
+                            $results->count() !== 0
+                            || $value == $preferences->pref_admin_login
+                        ) {
+                            $this->errors[] = _T("- This username is already in use, please choose another one!");
+                        }
+                    } catch (Throwable $e) {
+                        Analog::log(
+                            'An error occurred checking member login uniqueness.',
+                            Analog::ERROR
+                        );
+                        $this->errors[] = _T("An error has occurred while looking if login already exists.");
                     }
                 }
                 break;
@@ -1544,10 +1526,8 @@ class Adherent implements AccessManagementInterface
         global $hist, $emitter, $login;
         $event = null;
 
-        if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '') {
-            if ($this->preferences->pref_bool_create_member) {
-                $this->parent = $login->id;
-            }
+        if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '' && $this->preferences->pref_bool_create_member) {
+            $this->parent = $login->id;
         }
 
         try {
@@ -2106,17 +2086,15 @@ class Adherent implements AccessManagementInterface
         // picture upload
         if (isset($files['photo'])) {
             if ($files['photo']['error'] === UPLOAD_ERR_OK) {
-                if ($files['photo']['tmp_name'] != '') {
-                    if (is_uploaded_file($files['photo']['tmp_name'])) {
-                        if ($this->preferences->pref_force_picture_ratio == 1 && isset($cropping)) {
-                            $res = $this->picture->store($files['photo'], false, $cropping);
-                        } else {
-                            $res = $this->picture->store($files['photo']);
-                        }
-                        if ($res < 0) {
-                            $this->errors[]
-                                = $this->picture->getErrorMessage($res);
-                        }
+                if ($files['photo']['tmp_name'] != '' && is_uploaded_file($files['photo']['tmp_name'])) {
+                    if ($this->preferences->pref_force_picture_ratio == 1 && isset($cropping)) {
+                        $res = $this->picture->store($files['photo'], false, $cropping);
+                    } else {
+                        $res = $this->picture->store($files['photo']);
+                    }
+                    if ($res < 0) {
+                        $this->errors[]
+                            = $this->picture->getErrorMessage($res);
                     }
                 }
             } elseif ($files['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -2235,12 +2213,7 @@ class Adherent implements AccessManagementInterface
         if ($preferences->pref_bool_groupsmanagers_create_member && $login->isGroupManager()) {
             return true;
         }
-
-        if ($preferences->pref_bool_create_member && $login->isLogged()) {
-            return true;
-        }
-
-        return false;
+        return $preferences->pref_bool_create_member && $login->isLogged();
     }
 
     /**

@@ -391,11 +391,7 @@ class GroupsController extends CrudController
             );
         }
 
-        if (isset($post['tab']) && $post['tab'] != 'general') {
-            $tab = '?tab=' . $post['tab'];
-        } else {
-            $tab = '';
-        }
+        $tab = isset($post['tab']) && $post['tab'] != 'general' ? '?tab=' . $post['tab'] : '';
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => (string)$group->getId()]) . $tab);

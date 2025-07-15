@@ -67,11 +67,7 @@ class ScheduledPayments
         $this->zdb = $zdb;
         $this->login = $login;
 
-        if ($filters === null) {
-            $this->filters = new ScheduledPaymentsList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters === null ? new ScheduledPaymentsList() : $filters;
     }
 
     /**
@@ -466,12 +462,7 @@ class ScheduledPayments
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
-        $list = [];
-        if (is_array($ids)) {
-            $list = $ids;
-        } else {
-            $list = [$ids];
-        }
+        $list = is_array($ids) ? $ids : [$ids];
 
         try {
             if ($transaction) {

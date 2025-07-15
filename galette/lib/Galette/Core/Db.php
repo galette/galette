@@ -185,11 +185,7 @@ class Db
     public function getDbVersion(bool $check_table = false): string
     {
         try {
-            if ($check_table === true) {
-                $exists = count($this->getTables(PREFIX_DB . 'database')) === 1;
-            } else {
-                $exists = true;
-            }
+            $exists = $check_table === true ? count($this->getTables(PREFIX_DB . 'database')) === 1 : true;
 
             if ($exists === true) {
                 $select = $this->select('database');
@@ -213,7 +209,7 @@ class Db
                 'Cannot check database version: ' . $e->getMessage(),
                 Analog::ERROR
             );
-            throw new LogicException('Cannot check database version');
+            throw new LogicException('Cannot check database version', $e->getCode(), $e);
         }
     }
 

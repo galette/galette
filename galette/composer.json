@@ -72,7 +72,8 @@
         "malukenho/docheader": "^1.0",
         "slevomat/coding-standard": "^8.14",
         "alisqi/twigqi": "^3.0",
-        "friendsofphp/php-cs-fixer": "^3.75"
+        "friendsofphp/php-cs-fixer": "^3.75",
+        "rector/rector": "^2.0"
     },
     "config": {
         "optimize-autoloader": true,

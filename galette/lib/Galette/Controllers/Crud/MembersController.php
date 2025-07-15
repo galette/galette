@@ -452,11 +452,7 @@ class MembersController extends CrudController
         string|int|null $value = null,
     ): Response {
         $varname = $args['filter_name'];
-        if (isset($this->session->$varname)) {
-            $filters = $this->session->$varname;
-        } else {
-            $filters = new MembersList();
-        }
+        $filters = $this->session->$varname ?? new MembersList();
 
         switch ($option) {
             case 'page':
@@ -539,20 +535,14 @@ class MembersController extends CrudController
         $post = $request->getParsedBody();
 
         $varname = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => $type]);
-        if (isset($this->session->$varname)) {
-            $filters = $this->session->$varname;
-        } else {
-            $filters = new MembersList();
-        }
+        $filters = $this->session->$varname ?? new MembersList();
 
         //reintialize filters
         if (isset($post['clear_filter'])) {
             $filters->reinit();
-        } else {
+        } elseif (isset($post['nbshow'])) {
             //number of rows to show
-            if (isset($post['nbshow'])) {
-                $filters->show = (int)$post['nbshow'];
-            }
+            $filters->show = (int)$post['nbshow'];
         }
 
         $this->session->$varname = $filters;
@@ -678,11 +668,7 @@ class MembersController extends CrudController
             }
             //group filter
             if (isset($post['group_filter'])) {
-                if ($post['group_filter'] > 0) {
-                    $filters->group_filter = (int)$post['group_filter'];
-                } else {
-                    $filters->group_filter = null;
-                }
+                $filters->group_filter = $post['group_filter'] > 0 ? (int)$post['group_filter'] : null;
             }
             //number of rows to show
             if (isset($post['nbshow'])) {
@@ -743,11 +729,7 @@ class MembersController extends CrudController
                         switch ($k) {
                             case 'contrib_min_amount':
                             case 'contrib_max_amount':
-                                if (trim($v) !== '') {
-                                    $v = (float)$v;
-                                } else {
-                                    $v = null;
-                                }
+                                $v = trim($v) !== '' ? (float)$v : null;
                                 break;
                         }
                         $filters->$k = $v;
@@ -1560,7 +1542,7 @@ class MembersController extends CrudController
             }
         }
 
-        if (!($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')) {
+        if ($request->getHeaderLine('X-Requested-With') !== 'XMLHttpRequest') {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $redirect_url);
@@ -1628,10 +1610,8 @@ class MembersController extends CrudController
                     )
                 );
             }
-        } else {
-            if ($member->id != '') {
-                $member->load($this->login->id);
-            }
+        } elseif ($member->id != '') {
+            $member->load($this->login->id);
         }
 
         // flagging required fields
@@ -1776,15 +1756,13 @@ class MembersController extends CrudController
                     $error_detected = array_merge($error_detected, $files_res);
                 }
 
-                if (isset($post['del_photo'])) {
-                    if (!$member->picture->delete()) {
-                        $error_detected[] = _T("Delete failed");
-                        $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
-                        Analog::log(
-                            'Unable to delete picture for member ' . $str_adh,
-                            Analog::ERROR
-                        );
-                    }
+                if (isset($post['del_photo']) && !$member->picture->delete()) {
+                    $error_detected[] = _T("Delete failed");
+                    $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
+                    Analog::log(
+                        'Unable to delete picture for member ' . $str_adh,
+                        Analog::ERROR
+                    );
                 }
             }
 
@@ -1853,15 +1831,13 @@ class MembersController extends CrudController
 
                 if ($this->isSelfMembership()) {
                     $redirect_url = $this->routeparser->urlFor('subscribe');
+                } elseif ($member->id) {
+                    $redirect_url = $this->routeparser->urlFor(
+                        'editMember',
+                        ['id'    => (string)$member->id]
+                    );
                 } else {
-                    if ($member->id) {
-                        $redirect_url = $this->routeparser->urlFor(
-                            'editMember',
-                            ['id'    => (string)$member->id]
-                        );
-                    } else {
-                        $redirect_url = $this->routeparser->urlFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
-                    }
+                    $redirect_url = $this->routeparser->urlFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
                 }
             }
         }
@@ -1947,11 +1923,7 @@ class MembersController extends CrudController
         }
         $members = new Members($filters);
 
-        if (!is_array($post['id'])) {
-            $ids = (array)$post['id'];
-        } else {
-            $ids = $post['id'];
-        }
+        $ids = !is_array($post['id']) ? (array)$post['id'] : $post['id'];
 
         return $members->removeMembers($ids);
     }

@@ -308,17 +308,15 @@ class MailingsController extends CrudController
                     $cnt_files = count($_FILES['attachment']['name']);
                     for ($i = 0; $i < $cnt_files; $i++) {
                         if ($_FILES['attachment']['error'][$i] === UPLOAD_ERR_OK) {
-                            if ($_FILES['attachment']['tmp_name'][$i] != '') {
-                                if (is_uploaded_file($_FILES['attachment']['tmp_name'][$i])) {
-                                    $da_file = [];
-                                    foreach (array_keys($_FILES['attachment']) as $key) {
-                                        $da_file[$key] = $_FILES['attachment'][$key][$i];
-                                    }
-                                    $res = $mailing->store($da_file);
-                                    if ($res < 0) {
-                                        //what to do if one of attachments fail? should other be removed?
-                                        $error_detected[] = $mailing->getAttachmentErrorMessage($res);
-                                    }
+                            if ($_FILES['attachment']['tmp_name'][$i] != '' && is_uploaded_file($_FILES['attachment']['tmp_name'][$i])) {
+                                $da_file = [];
+                                foreach (array_keys($_FILES['attachment']) as $key) {
+                                    $da_file[$key] = $_FILES['attachment'][$key][$i];
+                                }
+                                $res = $mailing->store($da_file);
+                                if ($res < 0) {
+                                    //what to do if one of attachments fail? should other be removed?
+                                    $error_detected[] = $mailing->getAttachmentErrorMessage($res);
                                 }
                             }
                         } elseif ($_FILES['attachment']['error'][$i] !== UPLOAD_ERR_NO_FILE) {

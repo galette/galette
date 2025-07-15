@@ -220,13 +220,11 @@ class Title
                 $rname = null;
                 if ($name === 'tshort') {
                     $rname = 'short';
+                } elseif ($this->long !== null && trim($this->long) !== '') {
+                    $rname = 'long';
                 } else {
-                    if ($this->long !== null && trim($this->long) !== '') {
-                        $rname = 'long';
-                    } else {
-                        //switch back to short version if long does not exists
-                        $rname = 'short';
-                    }
+                    //switch back to short version if long does not exists
+                    $rname = 'short';
                 }
                 if (isset($lang) && isset($lang[$this->$rname])) {
                     return _T($this->$rname);

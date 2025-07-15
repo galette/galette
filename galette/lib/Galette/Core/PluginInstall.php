@@ -70,7 +70,7 @@ class PluginInstall extends Install
                     if ($this->step === self::STEP_DB_UPGRADE) {
                         $this->setInstalledVersion(null);
                     }
-                    $this->step = $this->step - 1;
+                    $this->step -= 1;
                 }
             } else {
                 $msg = null;
