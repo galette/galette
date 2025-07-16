@@ -381,15 +381,10 @@ class AdvancedMembersList extends MembersList
         if (
             in_array($name, $this->pagination_fields)
             || in_array($name, $this->memberslist_fields)
+            || in_array($name, $this->advancedmemberslist_fields)
+            || in_array($name, $this->virtuals_advancedmemberslist_fields)
         ) {
             return true;
-        } else {
-            if (
-                in_array($name, $this->advancedmemberslist_fields)
-                || in_array($name, $this->virtuals_advancedmemberslist_fields)
-            ) {
-                return true;
-            }
         }
 
         return false;
