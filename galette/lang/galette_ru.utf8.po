@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-07-04 07:30+0200\n"
-"PO-Revision-Date: 2025-07-05 15:02+0000\n"
+"PO-Revision-Date: 2025-07-19 20:01+0000\n"
 "Last-Translator: Maksim_220 Кабанов <law820314@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
@@ -238,49 +238,49 @@ msgstr "Виды взносов"
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:142
 #: ../../tempcache/pages/contributions_types_list.html.twig:296
 msgid "Edit contribution type"
-msgstr ""
+msgstr "Редактировать тип взноса"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:211
 msgid "Missing required contribution type name!"
-msgstr ""
+msgstr "Отсутствует название типа обязательного взноса!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:217
 msgid "Contribution type has not been added :("
-msgstr ""
+msgstr "Тип взноса не был добавлен :("
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:217
 msgid "Contribution type #%id has not been updated"
-msgstr ""
+msgstr "Тип взноса #%id не был обновлен"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:223
 msgid "Contribution type has been successfully added!"
-msgstr ""
+msgstr "Тип вклада успешно добавлен!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:223
 msgid "Contribution type #%id has been successfully updated!"
-msgstr ""
+msgstr "Тип взноса #%id был успешно обновлен!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:301
 msgid "Remove contribution type '%label'"
-msgstr ""
+msgstr "Удалить тип вклада '%label'"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:58
 msgid "Add field"
-msgstr ""
+msgstr "Добавить поле"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:119
 msgid "An error occurred adding dynamic field :("
-msgstr ""
+msgstr "Произошла ошибка при добавлении динамического поля :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:133
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:495
 msgid "Dynamic field has been successfully stored!"
-msgstr ""
+msgstr "Динамическое поле успешно сохранено!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:218
 #: ../lib/Galette/Core/Galette.php:422
 msgid "Dynamic fields"
-msgstr ""
+msgstr "Динамические поля"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:311
 #: ../lib/Galette/Controllers/Crud/MembersController.php:236
@@ -290,43 +290,43 @@ msgstr ""
 #: ../lib/Galette/Controllers/PdfController.php:272
 #: ../lib/Galette/Middleware/Authenticate.php:159
 msgid "You do not have permission for requested URL."
-msgstr ""
+msgstr "У вас нет разрешения на использование запрашиваемого URL."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:367
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:318
 msgid "The file does not exists or cannot be read :("
-msgstr ""
+msgstr "Файл не существует или не может быть прочитан :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:409
 msgid "Unable to retrieve field information."
-msgstr ""
+msgstr "Невозможно получить информацию о поле."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:418
 #: ../../tempcache/pages/configuration_dynamic_fields.html.twig:219
 msgid "Edit field"
-msgstr ""
+msgstr "Поле редактирования"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:480
 msgid "An error occurred editing dynamic field :("
-msgstr ""
+msgstr "Произошла ошибка при редактировании динамического поля :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:581
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:583
 msgid "Requested field does not exists!"
-msgstr ""
+msgstr "Запрашиваемое поле не существует!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:587
 #, php-format
 msgid "Remove dynamic field %1$s"
-msgstr ""
+msgstr "Удалить динамическое поле %1$s"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:632
 msgid "Field has been successfully moved"
-msgstr ""
+msgstr "Поле успешно перемещено"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:637
 msgid "An error occurred moving field :("
-msgstr ""
+msgstr "Произошла ошибка при перемещении поля :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:146
 msgid "Subscription"
@@ -334,12 +334,12 @@ msgstr "Подписка"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:251
 msgid "No member #%id."
-msgstr ""
+msgstr "Нет участника #%id."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:270
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1133
 msgid "Member Profile"
-msgstr ""
+msgstr "Профиль участника"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:324
 #: ../lib/Galette/Core/Galette.php:174 ../lib/Galette/Core/Galette.php:549
@@ -357,73 +357,69 @@ msgstr "Тромбиноскоп"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:390
 #: ../lib/Galette/Core/Galette.php:569
 msgid "Staff"
-msgstr ""
+msgstr "Персонал"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:426
 #: ../lib/Galette/Core/Galette.php:579
 #: ../../tempcache/pages/preferences.html.twig:1445
-#, fuzzy
-#| msgid "Gallery"
 msgid "Staff gallery"
-msgstr "Тромбиноскоп"
+msgstr "Галерея персонала"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:617
 #: ../lib/Galette/Core/Galette.php:182
 msgid "List of members"
-msgstr ""
+msgstr "Список членов"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:844
 #: ../lib/Galette/Core/Galette.php:190
 #: ../../tempcache/pages/advanced_search.html.twig:266
 msgid "Advanced search"
-msgstr ""
+msgstr "Расширенный поиск"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1041
 #: ../lib/Galette/Controllers/PdfController.php:133
 #: ../lib/Galette/Controllers/PdfController.php:219
 msgid "No member was selected, please check at least one name."
-msgstr ""
+msgstr "Ни один участник не был выбран, пожалуйста, отметьте хотя бы одно имя."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1259
 #, php-format
 msgid "Mass change %1$s members"
-msgstr ""
+msgstr "Массовое изменение %1$s членов"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1292
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1411
 msgid "Mass changes has not been confirmed!"
-msgstr ""
+msgstr "Массовые изменения не подтверждены!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1317
 #: ../../tempcache/components/forms/mass_groups.html.twig:73
-#, fuzzy
-#| msgid "Groups"
 msgid "Add to group"
-msgstr "Группы"
+msgstr "Добавить в группу"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1327
 #: ../../tempcache/components/forms/mass_groups.html.twig:80
 msgid "Remove from group"
-msgstr ""
+msgstr "Удалить из группы"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1378
 #, php-format
 msgid "Review mass change %1$s members"
-msgstr ""
+msgstr "Обзор массового изменения %1$s членов"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1472
 msgid "Nothing to do!"
-msgstr ""
+msgstr "Нечего делать!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1497
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1763
 msgid "An error occurred while storing the member."
-msgstr ""
+msgstr "При сохранении участника произошла ошибка."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1525
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1744
 msgid "An error occurred adding member to its groups."
-msgstr ""
+msgstr "Произошла ошибка при добавлении участника в его группы."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1538
 msgid "Something went wrong during mass edition!"
