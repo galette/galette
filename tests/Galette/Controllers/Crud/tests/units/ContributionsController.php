@@ -564,6 +564,13 @@ class ContributionsController extends GaletteRoutingTestCase
     {
         $member_one = $this->getMemberOne();
         $member_two = $this->getMemberTwo();
+        //change language
+        $check = $member_two->check(['pref_lang' => 'en_US'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($member_two->store());
 
         $route_name = 'addContribution';
         $route_arguments = ['type' => $type];
@@ -679,7 +686,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->expectLogEntry(\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
         $this->assertSame([], $this->flash_data);
 
-        //change preferences so managers can see group members contributions
+        //change preferences so managers can create contributions
         $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
         $this->assertTrue($this->preferences->store());
 
@@ -694,6 +701,87 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertSame(200, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->assertSame([], $this->flash_data);
+
+        $this->login->logout();
+
+        $this->logSuperAdmin();
+        //add a new member
+        $member_three_data = [
+            'nom_adh'       => 'Nongroupmember',
+            'prenom_adh'    => 'Joe',
+            'login_adh'     => 'non.group.member',
+            'fingerprint' => 'FAKER' . $this->seed
+        ];
+        $member_three = $this->createMember($member_three_data);
+        $this->login->logout();
+
+        //simulate error while storing, values are kept in session
+        $cdata = $this->getContribData();
+        $cdata['id_type_cotis'] = 5; //donation
+        $cdata['id_adh'] = $member_three->id; //member not part of "Group 1"
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            [
+                'type' => $cdata['id_type_cotis'], //donation
+                'adh' => $cdata['id_adh'],  //member not part of "Group 1"
+            ]
+        );
+        $check = $contrib->check($cdata, $contrib->getRequired(), []);
+        $this->assertSame(
+            [
+                '- Please select a member from a group you manage.',
+                '- Mandatory field <a href="#id_adh">Contributor</a> empty.'
+            ],
+            $check
+        );
+        $this->expectLogEntry(\Analog::ERROR, 'Please select a member from a group you manage');
+        $this->session->contribution = $contrib;
+
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        //change preferences so managers can create contributions
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
+        $this->assertTrue($this->preferences->store());
+
+        $request = $this->createRequest($route_name, $route_arguments);
+        $test_response = $this->app->handle($request);
+
+        //Reset
+        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
+        $this->assertTrue($this->preferences->store());
+
+        $this->assertSame([], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame([], $this->flash_data);
+
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('(creation)', $body);
+        //member_one is listed
+        $this->assertStringContainsString(
+            $member_one->getNameWithCase(
+                $member_one->name,
+                $member_one->surname,
+                false,
+                (int)$member_one->id,
+                $member_one->nickname
+            ),
+            $body
+        );
+        //member_two is listed
+        $this->assertStringContainsString(
+            $member_two->getNameWithCase(
+                $member_two->name,
+                $member_two->surname,
+                false,
+                (int)$member_two->id,
+                $member_two->nickname
+            ),
+            $body
+        );
+        //member_three is not listed
+        $this->assertStringNotContainsStringIgnoringCase($member_three->name, $body);
 
         $this->login->logout();
     }
@@ -1105,7 +1193,15 @@ class ContributionsController extends GaletteRoutingTestCase
             \Analog::ERROR,
             'Please select a member from a group you manage.'
         );
-        $this->assertSame(['error_detected' => ['- Please select a member from a group you manage.']], $this->flash_data['slimFlash']);
+        $this->assertSame(
+            [
+                'error_detected' => [
+                    '- Please select a member from a group you manage.',
+                    '- Mandatory field <a href="#id_adh">Contributor</a> empty.'
+                ]
+            ],
+            $this->flash_data['slimFlash']
+        );
         $this->flash_data = [];
 
         $this->login->logout();

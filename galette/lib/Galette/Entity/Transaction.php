@@ -333,6 +333,7 @@ class Transaction implements AccessManagementInterface
                                 && !$this->login->isGroupManager(array_keys($member->getGroups()))
                             ) {
                                 $this->errors[] = _T("- Please select a member from a group you manage.");
+                                $this->member = null;
                             } else {
                                 $this->member = (int)$value;
                             }

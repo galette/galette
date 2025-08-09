@@ -503,6 +503,7 @@ class Contribution implements AccessManagementInterface
                                 && !$this->login->isGroupManager(array_keys($member->getGroups()))
                             ) {
                                 $this->errors[] = _T("- Please select a member from a group you manage.");
+                                unset($this->member);
                             } else {
                                 $this->member = (int)$value;
                             }
@@ -1231,7 +1232,7 @@ class Contribution implements AccessManagementInterface
                 default:
                     if (property_exists($this, $name)) {
                         if (isset($this->$name)) {
-                            return $this->$name;
+                            return $this->$name ?? null;
                         }
                     } else {
                         throw new \LogicException("Property '" . __CLASS__ . "::$name' does not exist!");

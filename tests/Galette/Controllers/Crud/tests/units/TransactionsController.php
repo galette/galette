@@ -564,6 +564,13 @@ class TransactionsController extends GaletteRoutingTestCase
     {
         $member_one = $this->getMemberOne();
         $member_two = $this->getMemberTwo();
+        //change language
+        $check = $member_two->check(['pref_lang' => 'en_US'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($member_two->store());
 
         $route_name = 'addTransaction';
 
@@ -688,6 +695,84 @@ class TransactionsController extends GaletteRoutingTestCase
         $this->assertSame(200, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->assertSame([], $this->flash_data);
+
+        $this->login->logout();
+
+        $this->logSuperAdmin();
+        //add a new member
+        $member_three_data = [
+            'nom_adh'       => 'Nongroupmember',
+            'prenom_adh'    => 'Joe',
+            'login_adh'     => 'non.group.member',
+            'fingerprint' => 'FAKER' . $this->seed
+        ];
+        $member_three = $this->createMember($member_three_data);
+        $this->login->logout();
+
+        //simulate error while storing, values are kept in session
+        $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+        $date = new \DateTime();
+        $tdata = [
+            'id_adh' => $member_three->id, //member not part of "Group 1"
+            'trans_date' => $date->format('Y-m-d'),
+            'trans_amount' => 92,
+            'payment_type' => 3, //bank check
+            'trans_desc' => 'FAKER' . $this->seed
+        ];
+        $check = $transaction->check($tdata, [], []);
+        $this->assertSame(
+            [
+                '- Please select a member from a group you manage.',
+                //'- Mandatory field <a href="#id_adh">Contributor</a> empty.'
+            ],
+            $check
+        );
+        $this->expectLogEntry(\Analog::ERROR, 'Please select a member from a group you manage');
+        $this->session->transaction = $transaction;
+
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        //change preferences so managers can create transactions
+        $this->preferences->pref_bool_groupsmanagers_create_transactions = true;
+        $this->assertTrue($this->preferences->store());
+
+        $request = $this->createRequest($route_name);
+        $test_response = $this->app->handle($request);
+
+        //Reset
+        $this->preferences->pref_bool_groupsmanagers_create_transactions = false;
+        $this->assertTrue($this->preferences->store());
+
+        $this->assertSame([], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame([], $this->flash_data);
+
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('Transaction (creation)', $body);
+        //member_one is listed
+        $this->assertStringContainsString(
+            $member_one->getNameWithCase(
+                $member_one->name,
+                $member_one->surname,
+                false,
+                (int)$member_one->id,
+                $member_one->nickname
+            ),
+            $body
+        );
+        //member_two is listed
+        $this->assertStringContainsString(
+            $member_two->getNameWithCase(
+                $member_two->name,
+                $member_two->surname,
+                false,
+                (int)$member_two->id,
+                $member_two->nickname
+            ),
+            $body
+        );
+        //member_three is not listed
+        $this->assertStringNotContainsStringIgnoringCase($member_three->name, $body);
 
         $this->login->logout();
     }
