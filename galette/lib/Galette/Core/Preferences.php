@@ -313,7 +313,7 @@ class Preferences
         /* New contribution script */
         'pref_new_contrib_script' => '',
         'pref_bool_wrap_mails' => true,
-        'pref_rss_url' => 'https://galette.eu/dc/index.php/feed/atom',
+        'pref_rss_url' => Galette::RSS_URL,
         'pref_adhesion_form' => '\Galette\IO\PdfAdhesionForm',
         'pref_mail_allow_unsecure' => false,
         'pref_instance_uuid' => '',

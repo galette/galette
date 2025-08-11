@@ -25,6 +25,7 @@ namespace Galette\IO;
 
 use Galette\Core\Galette;
 use Galette\Features\Cacheable;
+use Galette\IO\News\Post;
 use Throwable;
 use Analog\Analog;
 
@@ -40,7 +41,7 @@ class News
     protected string $cache_filename = '%feed.cache';
     private int $show = 10;
     private ?string $feed_url = null;
-    /** @var array<int, array<string, string>> */
+    /** @var Post[] */
     private array $posts = [];
     /** @var array<string, array<string, int|string>> */
     private array $stream_opts = [
@@ -148,11 +149,11 @@ class News
             if (isset($xml->entry)) {
                 //Reading an atom feed
                 foreach ($xml->entry as $post) {
-                    $posts[] = [
-                        'title' => (string)$post->title,
-                        'url'   => (string)$post->link['href'],
-                        'date'  => (string)$post->published
-                    ];
+                    $posts[] = new Post(
+                        (string)$post->title,
+                        (string)$post->link['href'],
+                        (string)$post->published
+                    );
                     if (count($posts) == $this->show) {
                         break;
                     }
@@ -160,11 +161,15 @@ class News
             } elseif (isset($xml->channel->item)) {
                 //Reading a RSS feed
                 foreach ($xml->channel->item as $post) {
-                    $posts[] = [
-                        'title' => (string)$post->title,
-                        'url'   => (string)$post->link,
-                        'date'  => (string)$post->pubDate
-                    ];
+                    $title = (string)$post->title;
+                    if (empty($title) && isset($post->description)) {
+                        $title = mb_strimwidth(strip_tags((string)$post->description), 0, 100, '...');
+                    }
+                    $posts[] = new Post(
+                        $title,
+                        (string)$post->link,
+                        (string)$post->pubDate
+                    );
                     if (count($posts) == $this->show) {
                         break;
                     }
@@ -187,7 +192,7 @@ class News
     /**
      * Get posts
      *
-     * @return array<int, array<string, string>>
+     * @return Post[]
      */
     public function getPosts(): array
     {

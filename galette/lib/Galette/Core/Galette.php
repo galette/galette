@@ -26,7 +26,9 @@ namespace Galette\Core;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Document;
+use Galette\IO\News;
 use Galette\Util\Release;
+use Psr\Container\ContainerInterface;
 use RuntimeException;
 
 /**
@@ -40,6 +42,8 @@ class Galette
     public const MODE_DEV = 'DEV';
     public const MODE_MAINT = 'MAINT';
     public const MODE_DEMO = 'DEMO';
+
+    public const RSS_URL = 'https://galette.eu/dc/index.php/feed/atom';
 
     /**
      * Retrieve Galette version from git, if present.
@@ -112,8 +116,9 @@ class Galette
          * @var Login $login
          * @var Preferences $preferences
          * @var Plugins $plugins
+         * @var ContainerInterface $container
          */
-        global $login, $preferences, $plugins;
+        global $login, $preferences, $plugins, $container;
 
         $menus = [];
 
@@ -498,7 +503,8 @@ class Galette
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
-                $plugin = new $plugin_class();
+                /** @var GalettePlugin $plugin */
+                $plugin = $container->get($plugin_class);
                 $menus = array_merge_recursive(
                     $menus,
                     $plugin->getMenus()
@@ -531,8 +537,9 @@ class Galette
          * @var Preferences $preferences
          * @var Login $login
          * @var Plugins $plugins
+         * @var ContainerInterface $container
          */
-        global $preferences, $login, $plugins, $zdb;
+        global $preferences, $login, $plugins, $container;
 
         if (!$preferences->arePublicPagesEnabled()) {
             return [];
@@ -621,7 +628,8 @@ class Galette
             //get plugins public menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
-                $plugin = new $plugin_class();
+                /** @var GalettePlugin $plugin */
+                $plugin = $container->get($plugin_class);
                 $items = array_merge(
                     $items,
                     $plugin->getPublicMenuItems()
@@ -650,10 +658,9 @@ class Galette
         /**
          * @var Login $login
          * @var Plugins $plugins
-         * @var Db $zdb
-         * @var Preferences $preferences
+         * @var ContainerInterface $container
          */
-        global $login, $plugins, $zdb, $preferences;
+        global $login, $plugins, $container;
 
         $dashboards = [];
         if ($login->isLogged() && !$login->isSuperAdmin()) {
@@ -696,7 +703,7 @@ class Galette
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class) && method_exists($plugin_class, 'getMyDashboards')) {
                 /** @var GalettePlugin $plugin */
-                $plugin = new $plugin_class();
+                $plugin = $container->get($plugin_class);
                 $dashboards = array_merge_recursive(
                     $dashboards,
                     $plugin->getMyDashboards()
@@ -718,9 +725,9 @@ class Galette
          * @var Login $login
          * @var Plugins $plugins
          * @var Db $zdb
-         * @var Preferences $preferences
+         * @var ContainerInterface $container
          */
-        global $login, $plugins, $zdb, $preferences;
+        global $login, $plugins, $zdb, $container;
 
         $dashboards = [];
 
@@ -838,7 +845,7 @@ class Galette
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
                 /** @var GalettePlugin $plugin */
-                $plugin = new $plugin_class();
+                $plugin = $container->get($plugin_class);
                 $dashboards = array_merge_recursive(
                     $dashboards,
                     $plugin->getDashboards()
@@ -861,8 +868,9 @@ class Galette
         /**
          * @var Login $login
          * @var Plugins $plugins
+         * @var ContainerInterface $container
          */
-        global $login, $plugins;
+        global $login, $plugins, $container;
 
         $actions = [];
 
@@ -959,7 +967,7 @@ class Galette
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
                 /** @var GalettePlugin $plugin */
-                $plugin = new $plugin_class();
+                $plugin = $container->get($plugin_class);
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getListActions($member)
@@ -979,10 +987,10 @@ class Galette
     public static function getDetailedActions(Adherent $member): array
     {
         /**
-         * @var Login $login
          * @var Plugins $plugins
+         * @var ContainerInterface $container
          */
-        global $login, $plugins;
+        global $plugins, $container;
 
         $actions = [];
 
@@ -993,7 +1001,7 @@ class Galette
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
                 /** @var GalettePlugin $plugin */
-                $plugin = new $plugin_class();
+                $plugin = $container->get($plugin_class);
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getDetailedActions($member)
@@ -1014,8 +1022,9 @@ class Galette
          * @var Login $login
          * @var Plugins $plugins
          * @var Preferences $preferences
+         * @var ContainerInterface $container
          */
-        global $login, $plugins, $preferences;
+        global $login, $plugins, $preferences, $container;
 
         $actions = [];
 
@@ -1097,7 +1106,7 @@ class Galette
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
                 /** @var GalettePlugin $plugin */
-                $plugin = new $plugin_class();
+                $plugin = $container->get($plugin_class);
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getBatchActions()
@@ -1105,6 +1114,65 @@ class Galette
             }
         }
         return $actions;
+    }
+
+    /**
+     * Get Galette news
+     *
+     * @return array<int, News\Entry>
+     */
+    public static function getNews(): array
+    {
+        global $container;
+
+        /**
+         * @var Login $login
+         * @var Preferences $preferences
+         * @var Plugins $plugins
+         */
+        global $login, $preferences, $plugins;
+
+        $news = [];
+
+        //display Galette news for staff and admins
+        if ($login->isStaff() || $login->isAdmin()) {
+            $core_news = new News(self::RSS_URL);
+            $entry = new News\Entry(
+                _T("Galette news"),
+                $core_news->getPosts(),
+                50
+            );
+            $news[$entry->getPosition()] = $entry;
+        }
+        //if a custom RSS feed is set, we add it for everyone; and before Galette news
+        if (!empty($preferences->pref_rss_url) && $preferences->pref_rss_url != self::RSS_URL) {
+            $asso_news = new News($preferences->pref_rss_url);
+            $entry = new News\Entry(
+                _T("Association news"),
+                $asso_news->getPosts(),
+                20
+            );
+            $news[$entry->getPosition()] = $entry;
+        }
+
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class)) {
+                /** @var GalettePlugin $plugin */
+                $plugin = $container->get($plugin_class);
+                if ($entry = $plugin->getNews()) {
+                    $position = $entry->getPosition();
+                    while (isset($news[$position])) {
+                        ++$position;
+                    }
+                    $news[$position] = $entry;
+                }
+            }
+        }
+
+        ksort($news);
+        return $news;
     }
 
     /**

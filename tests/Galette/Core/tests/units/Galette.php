@@ -492,4 +492,102 @@ class Galette extends GaletteTestCase
         $actions = \Galette\Core\Galette::getBatchActions();
         $this->assertCount(0, $actions);
     }
+
+    /**
+     * Test Galette::getNews() method
+     *
+     * @return void
+     */
+    public function testGetNews(): void
+    {
+        $entries = \Galette\Core\Galette::getNews();
+        $this->assertCount(0, $entries);
+
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->assertTrue($this->login->isLogged());
+        $this->assertTrue($this->login->isSuperAdmin());
+
+        //we got only Galette News
+        $entries = \Galette\Core\Galette::getNews();
+        $this->assertCount(1, $entries);
+        $entry = array_pop($entries);
+        $this->assertInstanceOf(\Galette\IO\News\Entry::class, $entry);
+        $this->assertNotEmpty($entry->getTitle());
+        $this->assertSame(50, $entry->getPosition());
+        $posts = $entry->getPosts();
+        $this->assertGreaterThan(0, count($posts));
+        $post = array_pop($posts);
+        $this->assertInstanceOf(\Galette\IO\News\Post::class, $post);
+        $this->assertNotEmpty($post->getTitle());
+        $this->assertNotEmpty($post->getUrl());
+        $this->assertNotEmpty($post->getDate());
+
+        $this->preferences->pref_rss_url = 'file:///' . realpath(GALETTE_ROOT . '../tests/feed.xml');
+        $this->assertTrue($this->preferences->store());
+
+        //we got both Galette and asso news
+        $entries = \Galette\Core\Galette::getNews();
+
+        //reset
+        $this->preferences->pref_rss_url = \Galette\Core\Galette::RSS_URL;
+        $this->assertTrue($this->preferences->store());
+
+        $this->assertCount(2, $entries);
+
+        $this->login->logOut();
+
+        $this->getMemberOne();
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->logIn($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
+
+        //no news to display
+        $entries = \Galette\Core\Galette::getNews();
+        $this->assertCount(0, $entries);
+
+        $this->preferences->pref_rss_url = 'file:///' . realpath(GALETTE_ROOT . '../tests/feed.xml');
+        $this->assertTrue($this->preferences->store());
+
+        //we got asso news
+        $entries = \Galette\Core\Galette::getNews();
+
+        //reset
+        $this->preferences->pref_rss_url = \Galette\Core\Galette::RSS_URL;
+        $this->assertTrue($this->preferences->store());
+
+        $this->assertCount(1, $entries);
+
+        $this->plugins->autoload(GALETTE_PLUGINS_PATH);
+        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->plugins->activateModule('plugin-news');
+
+        $this->plugins = new \Galette\Core\Plugins();
+        $this->plugins->autoload(GALETTE_PLUGINS_PATH);
+        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+
+        $this->assertArrayNotHasKey('plugin-news', $this->plugins->getDisabledModules());
+
+        global $plugins;
+        $plugins = $this->plugins;
+
+        //we got asso and plugin news
+        $entries = \Galette\Core\Galette::getNews();
+
+        //reset
+        $this->plugins->deactivateModule('plugin-news');
+
+        $this->assertCount(1, $entries);
+        $entry = array_pop($entries);
+        $this->assertInstanceOf(\Galette\IO\News\Entry::class, $entry);
+        $this->assertSame('Test plugin news', $entry->getTitle());
+        $this->assertSame(42, $entry->getPosition());
+        $posts = $entry->getPosts();
+        $this->assertCount(2, $posts);
+        $post = array_pop($posts);
+        $this->assertInstanceOf(\Galette\IO\News\Post::class, $post);
+        $this->assertNotEmpty($post->getTitle());
+        $this->assertNull($post->getUrl());
+        $this->assertNotEmpty($post->getDate());
+    }
 }

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Galette\Entity\Adherent;
+use Galette\IO\News\Entry;
 
 /**
  * Galette plugins
@@ -177,4 +178,15 @@ abstract class GalettePlugin
      * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getDetailedActionsContents(Adherent $member): array;
+
+    /**
+     * Get news for this plugin
+     *
+     * @return ?Entry
+     */
+    public function getNews(): ?Entry
+    {
+        //per default, plugins do not have news to display.
+        return null;
+    }
 }

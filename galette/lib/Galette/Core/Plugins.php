@@ -120,7 +120,6 @@ class Plugins
                                 $$varname->register();
                             }
                         } else {
-                            //plugin is not compatible with that version of galette.
                             Analog::log(
                                 'Plugin ' . $entry . ' is explicitly disabled',
                                 Analog::INFO

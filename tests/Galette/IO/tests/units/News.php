@@ -64,6 +64,30 @@ class News extends TestCase
     }
 
     /**
+     * Test news loading
+     *
+     * @return void
+     */
+    public function testLoadRSSNews(): void
+    {
+        //ensure allow_url_fopen is on
+        ini_set('allow_url_fopen', true);
+        //load news without caching
+        $news = new \Galette\IO\News('file:///' . realpath(GALETTE_ROOT . '../tests/rss.xml'), true);
+        $posts = $news->getPosts();
+        $this->assertCount(10, $posts);
+
+        $first_post = $posts[0];
+        $second_post = $posts[1];
+
+        $this->assertSame('Test post', $first_post->getTitle());
+        $this->assertSame('https://galette.eu/post1', $first_post->getUrl());
+
+        $this->assertSame('This is a test post description without title, so Galette will use a truncated version of this de...', $second_post->getTitle());
+        $this->assertSame('https://galette.eu/post2', $second_post->getUrl());
+    }
+
+    /**
      * Test news caching
      *
      * @return void

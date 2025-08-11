@@ -97,20 +97,26 @@
             {% endif %}
         </div>
 {% if news|length > 0 %}
-        <div class="sixteen wide tablet six wide computer column">
-            <div class="ui attached yellow segment">
-                <div class="ui medium header">{{ _T("News") }}</div>
+    <div class="sixteen wide tablet six wide computer column">
+    {% for entry in news %}
+            <div class="ui top attached yellow segment">
+                <div class="ui medium header">{{ entry.title }}</div>
             </div>
             <div class="ui bottom attached segment">
                 <div class="ui bulleted list">
-    {% for post in news %}
+        {% for post in entry.getPosts() %}
                     <div class="item">
-                        <a href="{{ post.url }}" target="_blank">{{ post.title }}</a>
+            {% if post.getUrl() %}
+                        <a href="{{ post.getURL() }}" target="_blank">{{ post.getTitle() }}</a>
+            {% else %}
+                        {{ post.getTitle() }}
+            {% endif %}
                     </div>
-    {% endfor %}
+        {% endfor %}
                 </div>
             </div>
-        </div>
+    {% endfor %}
+    </div>
 {% endif %}
         <div class="jsonly displaynone sixteen wide column">
             <div class="ui basic vertically fitted segment">

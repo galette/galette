@@ -37,7 +37,6 @@ use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
 use Galette\Entity\Texts;
 use Galette\Filters\MembersList;
-use Galette\IO\News;
 use Galette\IO\Charts;
 use Galette\Repository\Members;
 use Galette\Repository\Reminders;
@@ -103,12 +102,11 @@ class GaletteController extends AbstractController
      */
     public function dashboard(Request $request, Response $response): Response
     {
-        $news = new News($this->preferences->pref_rss_url);
-
+        $news = Galette::getNews();
         $params = [
             'page_title'        => _T("Dashboard"),
             'contentcls'        => 'desktop',
-            'news'              => $news->getPosts(),
+            'news'              => $news,
             'show_dashboard'    => $request->getCookieParams()['show_galette_dashboard'],
             'documentation'     => 'usermanual'
         ];
