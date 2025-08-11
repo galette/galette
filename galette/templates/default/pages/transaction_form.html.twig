@@ -203,7 +203,7 @@
 
         {% include "components/dynamic_fields.html.twig" with {'object': transaction} %}
 
-    {% if transaction.canEdit(login) %}
+    {% if transaction.id and transaction.canEdit(login) or transaction.canCreate(login) %}
         <div class="ui basic center aligned segment">
             <button type="submit" name="valid" class="ui labeled icon primary button action">
                 <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
