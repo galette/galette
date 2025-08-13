@@ -1,0 +1,10 @@
+/*******************************
+      Galette Overrides
+*******************************/
+
+.ui.toast {
+  .content a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
