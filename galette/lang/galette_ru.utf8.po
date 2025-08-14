@@ -7,13 +7,14 @@
 # Evgeniy Khramov <65224669+thejenja@users.noreply.github.com>, 2025.
 # Sotski Eugene <jekakmail@gmail.com>, 2025.
 # Maksim_220 Кабанов <law820314@gmail.com>, 2025.
+# vanapro1 <law820314@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-07-04 07:30+0200\n"
-"PO-Revision-Date: 2025-07-19 20:01+0000\n"
-"Last-Translator: Maksim_220 Кабанов <law820314@gmail.com>\n"
+"PO-Revision-Date: 2025-08-16 00:02+0000\n"
+"Last-Translator: vanapro1 <law820314@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.13\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:123
 msgid "Transaction"
@@ -423,39 +424,40 @@ msgstr "Произошла ошибка при добавлении участн
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1538
 msgid "Something went wrong during mass edition!"
-msgstr ""
+msgstr "Что-то пошло не так во время массового выпуска!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1545
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Участник %1$s был успешно изменен!"
+msgstr[1] "Участника %1$s были успешно изменены!"
+msgstr[2] "Участники %1$s были успешно изменены!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1614
 msgid "Invalid captcha"
-msgstr ""
+msgstr "Неверная капча"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1721
 msgid "Your account has been created!"
-msgstr ""
+msgstr "Ваша учетная запись создана!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1726
 msgid "An email has been sent to you, check your inbox."
-msgstr ""
+msgstr "Вам было отправлено письмо, проверьте свою эл. почту."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1729
 msgid "New member has been successfully added."
-msgstr ""
+msgstr "Новый участник успешно добавлен."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1732
 msgid "Member account has been modified."
-msgstr ""
+msgstr "Учетная запись пользователя была изменена."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1758
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
+"Произошла ошибка при добавлении участника в свои группы в качестве менеджера."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1781
 #: ../lib/Galette/Controllers/GaletteController.php:282
@@ -466,12 +468,12 @@ msgstr "Удалить не удалось"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1919
 #, php-format
 msgid "Remove member %1$s"
-msgstr ""
+msgstr "Удалить участника %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1927
 #, php-format
 msgid "You are about to remove %1$s members."
-msgstr ""
+msgstr "Вы собираетесь удалить %1$s пользователей."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:91
 #: ../lib/Galette/Core/Install.php:1216 ../lib/Galette/Core/Galette.php:452
@@ -481,50 +483,50 @@ msgstr "Названия"
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:134
 #: ../../tempcache/pages/configuration_titles.html.twig:232
 msgid "Edit title"
-msgstr ""
+msgstr "Редактировать название"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:185
 msgid "Missing required title's short or long form!"
-msgstr ""
+msgstr "Отсутствует краткая или длинная форма названия!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:192
 #, php-format
 msgid "Title '%1$s' has not been added!"
-msgstr ""
+msgstr "Название '%1$s' не было добавлено!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:197
 #, php-format
 msgid "Title '%1$s' has not been modified!"
-msgstr ""
+msgstr "Название '%1$s' не было изменено!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:206
 #, php-format
 msgid "Title '%1$s' has been successfully added."
-msgstr ""
+msgstr "Заголовок '%1$s' был успешно добавлен."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:211
 #, php-format
 msgid "Title '%1$s' has been successfully modified."
-msgstr ""
+msgstr "Заголовок '%1$s' был успешно изменен."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:277
 #, php-format
 msgid "Remove title %1$s"
-msgstr ""
+msgstr "Удалить название %1$s"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:95
 #: ../lib/Galette/Core/Galette.php:445
 msgid "User statuses"
-msgstr ""
+msgstr "Статусы пользователей"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:148
 #: ../../tempcache/pages/status_list.html.twig:258
 msgid "Edit status"
-msgstr ""
+msgstr "Редактировать статус"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:215
 msgid "Missing required status name!"
-msgstr ""
+msgstr "Отсутствует необходимое имя статуса!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:221
 msgid "Status has not been added :("
@@ -532,25 +534,25 @@ msgstr "Статус не был добавлен :("
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:221
 msgid "Status #%id has not been updated"
-msgstr ""
+msgstr "Статус #%id не был обновлен"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:227
 msgid "Status has been successfully added!"
-msgstr ""
+msgstr "Статус успешно добавлен!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:227
 msgid "Status #%id has been successfully updated!"
-msgstr ""
+msgstr "Статус #%id был успешно обновлен!"
 
 #: ../lib/Galette/Controllers/Crud/StatusController.php:305
 msgid "Remove status '%label'"
-msgstr ""
+msgstr "Удалить статус '%label'"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:89
 #: ../../tempcache/pages/transaction_form.html.twig:191
 #: ../../tempcache/pages/contribution_form.html.twig:424
 msgid "Membership fee"
-msgstr ""
+msgstr "Членский взнос"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:91
 #: ../lib/Galette/Entity/Contribution.php:1150
@@ -562,23 +564,23 @@ msgstr "Пожертвование"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:175
 msgid "No related contribution type available, please create a new one."
-msgstr ""
+msgstr "Не существует связанного типа вклада, пожалуйста, создайте новый."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:249
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:296
 #, php-format
 msgid "Mass add contribution on %1$s members"
-msgstr ""
+msgstr "Массовое добавление вкладов для %1$s участников"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
 #: ../lib/Galette/Core/Galette.php:239
 msgid "List of contributions"
-msgstr ""
+msgstr "Список вкладов"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:533
 #: ../lib/Galette/Core/Galette.php:266
 msgid "List of transactions"
-msgstr ""
+msgstr "Список операций"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:685
 msgid "- Unknown contribution type!"
@@ -586,21 +588,21 @@ msgstr "- Неизвестный способ вклада!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:744
 msgid "No contribution was selected, please check at least one."
-msgstr ""
+msgstr "Не выбран ни один вклад, отметьте хотя бы один."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:780
 #: ../lib/Galette/Controllers/PdfController.php:432
 #: ../lib/Galette/Controllers/PdfController.php:701
 msgid "Unable to load contribution #%id!"
-msgstr ""
+msgstr "Невозможно загрузить вклад #%id!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:878
 msgid "Contribution has been successfully stored"
-msgstr ""
+msgstr "Вклад успешно сохранен"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:882
 msgid "An error occurred while storing the contribution."
-msgstr ""
+msgstr "При сохранении вклада произошла ошибка."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:996
 #, php-format
@@ -618,7 +620,7 @@ msgstr "транзакции"
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1002
 #, php-format
 msgid "Remove %1$s #%2$s"
-msgstr ""
+msgstr "Удалить %1$s #%2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:1003
 #: ../lib/Galette/IO/PdfContribution.php:64
@@ -631,17 +633,17 @@ msgstr "транзакция"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:64
 msgid "Add document"
-msgstr ""
+msgstr "Добавить документ"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:121
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:410
 msgid "An error occurred adding document :("
-msgstr ""
+msgstr "Произошла ошибка при добавлении документа :("
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:135
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:424
 msgid "Document has been successfully stored!"
-msgstr ""
+msgstr "Документ успешно сохранен!"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:196
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:232
@@ -649,53 +651,53 @@ msgstr ""
 #: ../lib/Galette/Core/Galette.php:801
 #: ../../tempcache/pages/preferences.html.twig:1207
 msgid "Documents"
-msgstr ""
+msgstr "Документы"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:353
 #: ../../tempcache/pages/documents_list.html.twig:194
 msgid "Edit document"
-msgstr ""
+msgstr "Редактировать документ"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:496
 #: ../../tempcache/pages/documents_list.html.twig:207
 msgid "Delete document"
-msgstr ""
+msgstr "Удалить документ"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:104
 msgid "This search is already saved."
-msgstr ""
+msgstr "Этот поиск уже сохранен."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:109
 msgid "Search has been saved."
-msgstr ""
+msgstr "Поиск сохранен."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:177
 #: ../lib/Galette/Core/Galette.php:197
 msgid "Saved searches"
-msgstr ""
+msgstr "История поиска"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:274
 #: ../../tempcache/pages/saved_searches_list.html.twig:190
 msgid "Remove saved search"
-msgstr ""
+msgstr "Удалить историю поиска"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:279
 #, php-format
 msgid "You are about to remove %1$s searches."
-msgstr ""
+msgstr "Вы собираетесь удалить %1$s поисковых запросов."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:328
 msgid "Saved search loaded"
-msgstr ""
+msgstr "История поиска загружена"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:347
 msgid "An SQL error has occurred while loading search."
-msgstr ""
+msgstr "При загрузке истории поиска произошла ошибка SQL."
 
 #: ../lib/Galette/Controllers/GaletteController.php:89
 #: ../../tempcache/elements/footer.html.twig:111
 msgid "System information"
-msgstr ""
+msgstr "Информация о системе"
 
 #: ../lib/Galette/Controllers/GaletteController.php:110
 #: ../../tempcache/elements/navigation/navigation_items.html.twig:76
@@ -712,59 +714,63 @@ msgstr "Настройки"
 #: ../lib/Galette/Controllers/GaletteController.php:218
 #: ../lib/Galette/Filters/MembersList.php:304
 msgid "All accounts"
-msgstr ""
+msgstr "Все аккаунты"
 
 #: ../lib/Galette/Controllers/GaletteController.php:219
 #: ../lib/Galette/Filters/MembersList.php:305
 msgid "Active accounts"
-msgstr ""
+msgstr "Активные аккаунты"
 
 #: ../lib/Galette/Controllers/GaletteController.php:220
 #: ../lib/Galette/Filters/MembersList.php:306
 msgid "Inactive accounts"
-msgstr ""
+msgstr "Неактивные аккаунты"
 
 #: ../lib/Galette/Controllers/GaletteController.php:248
 msgid ""
 "An SQL error has occurred while storing preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
+"При сохранении предпочтений произошла ошибка SQL. Пожалуйста, попробуйте еще "
+"раз и свяжитесь с администратором, если проблема сохраняется."
 
 #: ../lib/Galette/Controllers/GaletteController.php:252
 msgid "Preferences has been saved."
-msgstr ""
+msgstr "Предпочтения были сохранены."
 
 #: ../lib/Galette/Controllers/GaletteController.php:361
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
 msgstr ""
+"Вы попросили Galette отправить тестовое письмо, но эл. почта была отключена "
+"в настройках."
 
 #: ../lib/Galette/Controllers/GaletteController.php:368
 msgid "Test message"
-msgstr ""
+msgstr "Тестовое сообщение"
 
 #: ../lib/Galette/Controllers/GaletteController.php:371
 msgid "Galette admin"
-msgstr ""
+msgstr "Galette админ"
 
 #: ../lib/Galette/Controllers/GaletteController.php:374
 msgid "Test message."
-msgstr ""
+msgstr "Тестовое сообщение."
 
 #: ../lib/Galette/Controllers/GaletteController.php:383
 #, php-format
 msgid "An email has been sent to %email"
-msgstr ""
+msgstr "На %email было отправлено письмо"
 
 #: ../lib/Galette/Controllers/GaletteController.php:392
 #, php-format
 msgid "No email sent to %email"
-msgstr ""
+msgstr "Не отправлено письмо на %email"
 
 #: ../lib/Galette/Controllers/GaletteController.php:399
 msgid "Invalid email adress!"
-msgstr ""
+msgstr "Неверный адрес эл. почты!"
 
 #: ../lib/Galette/Controllers/GaletteController.php:443
 #: ../lib/Galette/Core/Galette.php:356
@@ -774,28 +780,28 @@ msgstr "Графики"
 #: ../lib/Galette/Controllers/GaletteController.php:464
 #: ../lib/Galette/Core/Galette.php:415
 msgid "Core fields"
-msgstr ""
+msgstr "Основные области"
 
 #: ../lib/Galette/Controllers/GaletteController.php:530
 msgid "Fields configuration has been successfully stored"
-msgstr ""
+msgstr "Конфигурация полей успешно сохранена"
 
 #: ../lib/Galette/Controllers/GaletteController.php:535
 msgid "An error occurred while storing fields configuration :("
-msgstr ""
+msgstr "Произошла ошибка при сохранении конфигурации полей :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:558
 #: ../lib/Galette/Core/Galette.php:407
 msgid "Core lists"
-msgstr ""
+msgstr "Основные списки"
 
 #: ../lib/Galette/Controllers/GaletteController.php:598
 msgid "List configuration has been successfully stored"
-msgstr ""
+msgstr "Конфигурация списка успешно сохранена"
 
 #: ../lib/Galette/Controllers/GaletteController.php:603
 msgid "An error occurred while storing list configuration :("
-msgstr ""
+msgstr "Произошла ошибка при сохранении конфигурации списка :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:637
 #: ../lib/Galette/Core/Galette.php:313 ../lib/Galette/Core/Galette.php:782
@@ -804,11 +810,11 @@ msgstr "Напоминания"
 
 #: ../lib/Galette/Controllers/GaletteController.php:679
 msgid "No reminder to send for now."
-msgstr ""
+msgstr "Пока что напоминание не нужно отправлять."
 
 #: ../lib/Galette/Controllers/GaletteController.php:716
 msgid "There are no member to proceed."
-msgstr ""
+msgstr "Нет участников, которые могли бы продолжить работу."
 
 #: ../lib/Galette/Controllers/GaletteController.php:723
 msgid "Reminder has not been sent:"
