@@ -590,4 +590,59 @@ class Galette extends GaletteTestCase
         $this->assertNull($post->getUrl());
         $this->assertNotEmpty($post->getDate());
     }
+
+    /**
+     * Test isNightly
+     *
+     * @return void
+     */
+    public function testIsNightly(): void
+    {
+        $this->assertFalse(\Galette\Core\Galette::isNightly());
+    }
+
+    /**
+     * Test jsonDecode
+     *
+     * @return void
+     */
+    public function testJsonDecode(): void
+    {
+        $json = '{"key1": "value1", "key2": "value2"}';
+        $decoded = \Galette\Core\Galette::jsonDecode($json);
+        $this->assertEquals(
+            [
+                'key1' => 'value1',
+                'key2' => 'value2',
+            ],
+            $decoded
+        );
+
+        $invalid_json = '{"key1": "value1", "key2": "value2"'; // missing closing brace
+        $this->expectExceptionMessage('JSON decode error: Syntax error');
+        \Galette\Core\Galette::jsonDecode($invalid_json);
+    }
+
+    /**
+     * Test jsonEncode
+     *
+     * @return void
+     */
+    public function testJsonEncode(): void
+    {
+        $data = [
+            'key1' => 'value1',
+            'key2' => 'value2',
+        ];
+        $encoded = \Galette\Core\Galette::jsonEncode($data);
+        $this->assertJsonStringEqualsJsonString(
+            '{"key1":"value1","key2":"value2"}',
+            $encoded
+        );
+
+        // Test with an invalid data type
+        $data['key3'] = mb_convert_encoding('éè', 'ISO-8859-1', 'UTF-8'); //invalid UTF-8 characters
+        $this->expectExceptionMessage('JSON encode error: Malformed UTF-8 characters, possibly incorrectly encoded');
+        \Galette\Core\Galette::jsonEncode($data);
+    }
 }
