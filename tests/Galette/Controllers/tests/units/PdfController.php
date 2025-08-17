@@ -151,18 +151,12 @@ class PdfController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString(
             'PDF models',
@@ -197,11 +191,7 @@ class PdfController extends GaletteRoutingTestCase
         //login is required to access this page
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with another simple member
         $m2data = $this->dataAdherentTwo();
@@ -257,9 +247,11 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectOutputRegex('/^%PDF-\d\.\d\.');
         $test_response = $this->app->handle($request);
 
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $expected_headers = [
+            'Content-type' => ['application/pdf'],
+            'Content-Disposition' => ['attachment;filename="cards.pdf"']
+        ];
+        $this->expectOK($test_response, $expected_headers);
     }
 
     /**
@@ -288,9 +280,11 @@ class PdfController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
 
         unset($this->session->{$controller->getFilterName('members')});
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $expected_headers = [
+            'Content-type' => ['application/pdf'],
+            'Content-Disposition' => ['attachment;filename="cards.pdf"']
+        ];
+        $this->expectOK($test_response, $expected_headers);
     }
 
     /**
@@ -311,11 +305,7 @@ class PdfController extends GaletteRoutingTestCase
         //login is required to access this page
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         $this->logSuperAdmin();
         //non member selected
@@ -341,9 +331,11 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectOutputRegex('/^%PDF-\d\.\d');
         $test_response = $this->app->handle($request);
 
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="labels_print_filename.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $expected_headers = [
+            'Content-type' => ['application/pdf'],
+            'Content-Disposition' => ['attachment;filename="labels_print_filename.pdf"']
+        ];
+        $this->expectOK($test_response, $expected_headers);
         unset($this->session->{$controller->getFilterName('members')});
     }
 
@@ -365,11 +357,7 @@ class PdfController extends GaletteRoutingTestCase
         //login is required to access this page
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test again from filters
         $this->logSuperAdmin();
@@ -380,9 +368,11 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectOutputRegex('/^%PDF-\d\.\d');
         $test_response = $this->app->handle($request);
 
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="labels_print_filename.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $expected_headers = [
+            'Content-type' => ['application/pdf'],
+            'Content-Disposition' => ['attachment;filename="labels_print_filename.pdf"']
+        ];
+        $this->expectOK($test_response, $expected_headers);
     }
 
     /**
@@ -411,11 +401,7 @@ class PdfController extends GaletteRoutingTestCase
         //login is required to access this page
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with simple member: can show its own form only
         $m2data = $this->dataAdherentTwo();
@@ -439,9 +425,11 @@ class PdfController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->expectOutputRegex('/^%PDF-\d\.\d/');
         $test_response = $this->app->handle($request);
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="adherent_form.' . $member_one->id . '.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $expected_headers = [
+            'Content-type' => ['application/pdf'],
+            'Content-Disposition' => ['attachment;filename="adherent_form.' . $member_one->id . '.pdf"']
+        ];
+        $this->expectOK($test_response, $expected_headers);
         $this->login->logout();
     }
 
@@ -484,9 +472,11 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectOutputRegex('/^%PDF-\d\.\d/');
         $test_response = $this->app->handle($request);
 
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="attendance_sheet.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $expected_headers = [
+            'Content-type' => ['application/pdf'],
+            'Content-Disposition' => ['attachment;filename="attendance_sheet.pdf"']
+        ];
+        $this->expectOK($test_response, $expected_headers);
     }
 
     /**
@@ -503,9 +493,9 @@ class PdfController extends GaletteRoutingTestCase
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
         $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data['slimFlash']);
+        $this->assertSame([], $this->flash_data);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString(
             'Attendance sheet configuration',
@@ -565,10 +555,11 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectOutputRegex('/^%PDF-\d\.\d\/');
         $test_response = $this->app->handle($request);
 
-        $this->expectNoLogEntry();
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="contribution_' . $contribution_one->id . '_invoice.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $expected_headers = [
+            'Content-type' => ['application/pdf'],
+            'Content-Disposition' => ['attachment;filename="contribution_' . $contribution_one->id . '_invoice.pdf"']
+        ];
+        $this->expectOK($test_response, $expected_headers);
     }
 
     /**
@@ -585,11 +576,7 @@ class PdfController extends GaletteRoutingTestCase
         //login is required to access this page
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         $this->logSuperAdmin();
         $this->expectOutputRegex('/^%PDF-\d\.\d\.');
@@ -606,11 +593,11 @@ class PdfController extends GaletteRoutingTestCase
         $this->assertTrue($g1->store());
 
         $test_response = $this->app->handle($request);
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="groups_list.pdf"', $test_response->getHeader('Content-Disposition')[0]);
-        $this->assertSame([], $this->flash_data);
+        $expected_headers = [
+            'Content-type' => ['application/pdf'],
+            'Content-Disposition' => ['attachment;filename="groups_list.pdf"']
+        ];
+        $this->expectOK($test_response, $expected_headers);
         $this->login->logOut();
     }
 
@@ -647,9 +634,11 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectOutputRegex('/^%PDF-\d\.\d\.');
         $test_response = $this->app->handle($request);
         $this->expectNoLogEntry();
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame('attachment;filename="cards.pdf"', $test_response->getHeader('Content-Disposition')[0]);
+        $expected_headers = [
+            'Content-type' => ['application/pdf'],
+            'Content-Disposition' => ['attachment;filename="cards.pdf"']
+        ];
+        $this->expectOK($test_response, $expected_headers);
     }
 
     /**
@@ -677,12 +666,10 @@ class PdfController extends GaletteRoutingTestCase
 
         $this->expectOutputRegex('/^%PDF-\d\.\d\.');
         $test_response = $this->app->handle($request);
-        $this->expectNoLogEntry();
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame('application/pdf', $test_response->getHeader('Content-type')[0]);
-        $this->assertSame(
-            'attachment;filename="contribution_' . $contribution_one->id . '_receipt.pdf"',
-            $test_response->getHeader('Content-Disposition')[0]
-        );
+        $expected_headers = [
+            'Content-type' => ['application/pdf'],
+            'Content-Disposition' => ['attachment;filename="contribution_' . $contribution_one->id . '_receipt.pdf"']
+        ];
+        $this->expectOK($test_response, $expected_headers);
     }
 }

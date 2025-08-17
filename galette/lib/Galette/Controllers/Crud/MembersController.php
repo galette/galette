@@ -55,6 +55,7 @@ use Analog\Analog;
 class MembersController extends CrudController
 {
     private bool $is_self_membership = false;
+    private bool $add_child = false;
 
     #[Inject]
     private Status $status;
@@ -84,7 +85,13 @@ class MembersController extends CrudController
      */
     public function addChild(Request $request, Response $response): Response
     {
-        return $this->edit($request, $response, null, 'addchild');
+        if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
+        }
+        $this->setAddChild();
+        return $this->edit($request, $response, null, 'add');
     }
 
     /**
@@ -179,6 +186,25 @@ class MembersController extends CrudController
     }
 
     /**
+     * Add child action
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function doAddChild(Request $request, Response $response): Response
+    {
+        if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
+        }
+        $this->setAddChild();
+        return $this->store($request, $response);
+    }
+
+    /**
      * Self subscription add action
      *
      * @param Request  $request  PSR Request
@@ -188,6 +214,12 @@ class MembersController extends CrudController
      */
     public function doSelfSubscribe(Request $request, Response $response): Response
     {
+        if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
+        }
+
         $this->setSelfMembership();
         return $this->doAdd($request, $response);
     }
@@ -256,6 +288,7 @@ class MembersController extends CrudController
             );
 
             return $response
+                ->withStatus(301)
                 ->withHeader(
                     'Location',
                     $this->routeparser->urlFor('slash')
@@ -1062,7 +1095,18 @@ class MembersController extends CrudController
 
         if ($id !== null) {
             //load requested member
-            $member->load($id);
+            if (!$member->load($id)) {
+                //not possible to load member, exit
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace('%id', (string)$id, _T("No member #%id."))
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->routeparser->urlFor(
+                        'members'
+                    ));
+            }
             $can = $member->canEdit($this->login);
         } else {
             $can = $member->canCreate($this->login);
@@ -1075,6 +1119,7 @@ class MembersController extends CrudController
             );
 
             return $response
+                ->withStatus(301)
                 ->withHeader(
                     'Location',
                     $this->routeparser->urlFor('me')
@@ -1082,7 +1127,7 @@ class MembersController extends CrudController
         }
 
         //if adding a child, force parent here
-        if ($action === 'addchild') {
+        if ($this->isAddChild()) {
             $member->setParent((int)$this->login->id);
         }
 
@@ -1561,9 +1606,10 @@ class MembersController extends CrudController
      */
     public function store(Request $request, Response $response): Response
     {
-        if (!$this->preferences->pref_bool_selfsubscribe && !$this->login->isLogged()) {
+        if (!($this->login->isLogged() || $this->preferences->pref_bool_selfsubscribe && $this->isSelfMembership())) {
+            $this->flash->addMessage('error_detected', _T("Login required"));
             return $response
-                ->withStatus(301)
+                ->withStatus(302)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
 
@@ -1592,6 +1638,11 @@ class MembersController extends CrudController
             }
         }
 
+        //if adding a child, force parent here
+        if ($this->isAddChild()) {
+            $member->setParent((int)$this->login->id);
+        }
+
         // new or edit
         if (isset($post['id_adh'])) {
             $member->load((int)$post['id_adh']);
@@ -1607,6 +1658,9 @@ class MembersController extends CrudController
             }
         } elseif ($member->id != '') {
             $member->load($this->login->id);
+        } elseif (!$this->isSelfMembership() && !$member->canCreate($this->login)) {
+            //redirection should have been done before. Just throw an Exception.
+            throw new \RuntimeException('No right to store new member!');
         }
 
         // flagging required fields
@@ -1664,8 +1718,6 @@ class MembersController extends CrudController
             }
         }
 
-        $real_requireds = array_diff(array_keys($required), $disabled);
-
         // send email to member
         if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
             $member->setSendmail(); //flag to send creation email
@@ -1673,167 +1725,166 @@ class MembersController extends CrudController
 
         // Validation
         $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
-        if (!count($real_requireds) || isset($post[array_shift($real_requireds)])) {
-            // regular fields
-            $valid = $member->check($post, $required, $disabled);
-            if ($valid !== true) {
-                $error_detected = array_merge($error_detected, $valid);
+
+        // regular fields
+        $valid = $member->check($post, $required, $disabled);
+        if ($valid !== true) {
+            $error_detected = array_merge($error_detected, $valid);
+        }
+
+        if (count($error_detected) == 0) {
+            //all goes well, we can proceed
+
+            $new = false;
+            if ($member->id == '') {
+                $new = true;
             }
 
-            if (count($error_detected) == 0) {
-                //all goes well, we can proceed
-
-                $new = false;
-                if ($member->id == '') {
-                    $new = true;
-                }
-
-                $store = $member->store();
-                if ($store === true) {
-                    //member has been stored :)
-                    if ($new) {
-                        if ($this->isSelfMembership()) {
-                            $success_detected[] = _T("Your account has been created!");
-                            if (
-                                $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
-                                && $member->getEmail() != ''
-                            ) {
-                                $success_detected[] = _T("An email has been sent to you, check your inbox.");
-                            }
-                        } else {
-                            $success_detected[] = _T("New member has been successfully added.");
+            $store = $member->store();
+            if ($store === true) {
+                //member has been stored :)
+                if ($new) {
+                    if ($this->isSelfMembership()) {
+                        $success_detected[] = _T("Your account has been created!");
+                        if (
+                            $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                            && $member->getEmail() != ''
+                        ) {
+                            $success_detected[] = _T("An email has been sent to you, check your inbox.");
                         }
                     } else {
-                        $success_detected[] = _T("Member account has been modified.");
-                    }
-
-                    if ($this->login->isGroupManager()) {
-                        //add/remove user from groups
-                        $groups_adh = $post['groups_adh'] ?? [];
-                        $add_groups = Groups::addMemberToGroups(
-                            $member,
-                            $groups_adh
-                        );
-
-                        if ($add_groups === false) {
-                            $error_detected[] = _T("An error occurred adding member to its groups.");
-                        }
-                    }
-                    if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
-                        //add/remove manager from groups
-                        $managed_groups_adh = $post['groups_managed_adh'] ?? [];
-                        $add_groups = Groups::addMemberToGroups(
-                            $member,
-                            $managed_groups_adh,
-                            true
-                        );
-                        $member->loadGroups();
-
-                        if ($add_groups === false) {
-                            $error_detected[] = _T("An error occurred adding member to its groups as manager.");
-                        }
+                        $success_detected[] = _T("New member has been successfully added.");
                     }
                 } else {
-                    //something went wrong :'(
-                    $error_detected[] = _T("An error occurred while storing the member.");
-                }
-            }
-
-            if (count($error_detected) === 0) {
-                $cropping = null;
-                if ($this->preferences->pref_force_picture_ratio == 1) {
-                    $cropping = [];
-                    $cropping['ratio'] = $this->preferences->pref_member_picture_ratio ?? 'square_ratio';
-                    $cropping['focus'] = $post['crop_focus'] ?? 'center';
-                }
-                $files_res = $member->handleFiles($_FILES, $cropping);
-                if (is_array($files_res)) {
-                    $error_detected = array_merge($error_detected, $files_res);
+                    $success_detected[] = _T("Member account has been modified.");
                 }
 
-                if (isset($post['del_photo']) && !$member->picture->delete()) {
-                    $error_detected[] = _T("Delete failed");
-                    $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
-                    Analog::log(
-                        'Unable to delete picture for member ' . $str_adh,
-                        Analog::ERROR
+                if ($this->login->isGroupManager()) {
+                    //add/remove user from groups
+                    $groups_adh = $post['groups_adh'] ?? [];
+                    $add_groups = Groups::addMemberToGroups(
+                        $member,
+                        $groups_adh
                     );
+
+                    if ($add_groups === false) {
+                        $error_detected[] = _T("An error occurred adding member to its groups.");
+                    }
                 }
+                if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
+                    //add/remove manager from groups
+                    $managed_groups_adh = $post['groups_managed_adh'] ?? [];
+                    $add_groups = Groups::addMemberToGroups(
+                        $member,
+                        $managed_groups_adh,
+                        true
+                    );
+                    $member->loadGroups();
+
+                    if ($add_groups === false) {
+                        $error_detected[] = _T("An error occurred adding member to its groups as manager.");
+                    }
+                }
+            } else {
+                //something went wrong :'(
+                $error_detected[] = _T("An error occurred while storing the member.");
+            }
+        }
+
+        if (count($error_detected) === 0) {
+            $cropping = null;
+            if ($this->preferences->pref_force_picture_ratio == 1) {
+                $cropping = [];
+                $cropping['ratio'] = $this->preferences->pref_member_picture_ratio ?? 'square_ratio';
+                $cropping['focus'] = $post['crop_focus'] ?? 'center';
+            }
+            $files_res = $member->handleFiles($_FILES, $cropping);
+            if (is_array($files_res)) {
+                $error_detected = array_merge($error_detected, $files_res);
             }
 
-            if (count($error_detected) > 0) {
-                foreach ($error_detected as $error) {
-                    if (strpos($error, '%member_url_') !== false) {
-                        preg_match('/%member_url_(\d+)/', $error, $matches);
-                        $url = $this->routeparser->urlFor('member', ['id' => $matches[1]]);
-                        $error = str_replace(
-                            '%member_url_' . $matches[1],
-                            $url,
-                            $error
-                        );
-                    }
-                    $this->flash->addMessage(
-                        'error_detected',
+            if (isset($post['del_photo']) && !$member->picture->delete()) {
+                $error_detected[] = _T("Delete failed");
+                $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
+                Analog::log(
+                    'Unable to delete picture for member ' . $str_adh,
+                    Analog::ERROR
+                );
+            }
+        }
+
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                if (strpos($error, '%member_url_') !== false) {
+                    preg_match('/%member_url_(\d+)/', $error, $matches);
+                    $url = $this->routeparser->urlFor('member', ['id' => $matches[1]]);
+                    $error = str_replace(
+                        '%member_url_' . $matches[1],
+                        $url,
                         $error
                     );
                 }
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
             }
+        }
 
-            if (count($success_detected) > 0) {
-                foreach ($success_detected as $success) {
-                    $this->flash->addMessage(
-                        'success_detected',
-                        $success
-                    );
-                }
+        if (count($success_detected) > 0) {
+            foreach ($success_detected as $success) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    $success
+                );
             }
+        }
 
-            if (count($error_detected) === 0) {
-                if ($this->isSelfMembership()) {
-                    $redirect_url = $this->routeparser->urlFor('login');
-                } elseif (
-                    isset($post['redirect_on_create'])
-                    && $post['redirect_on_create'] > Adherent::AFTER_ADD_DEFAULT
-                ) {
-                    switch ($post['redirect_on_create']) {
-                        case Adherent::AFTER_ADD_TRANS:
-                            $redirect_url = $this->routeparser->urlFor('addTransaction');
-                            break;
-                        case Adherent::AFTER_ADD_NEW:
-                            $redirect_url = $this->routeparser->urlFor('addMember');
-                            break;
-                        case Adherent::AFTER_ADD_SHOW:
-                            $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
-                            break;
-                        case Adherent::AFTER_ADD_LIST:
-                            $redirect_url = $this->routeparser->urlFor('members');
-                            break;
-                        case Adherent::AFTER_ADD_HOME:
-                            $redirect_url = $this->routeparser->urlFor('slash');
-                            break;
-                    }
-                } elseif (!isset($post['id_adh']) && !$member->isDueFree()) {
-                    $redirect_url = $this->routeparser->urlFor(
-                        'addContribution',
-                        ['type' => 'fee']
-                    ) . '?id_adh=' . $member->id;
-                } else {
-                    $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
+        if (count($error_detected) === 0) {
+            if ($this->isSelfMembership()) {
+                $redirect_url = $this->routeparser->urlFor('login');
+            } elseif (
+                isset($post['redirect_on_create'])
+                && $post['redirect_on_create'] > Adherent::AFTER_ADD_DEFAULT
+            ) {
+                switch ($post['redirect_on_create']) {
+                    case Adherent::AFTER_ADD_TRANS:
+                        $redirect_url = $this->routeparser->urlFor('addTransaction');
+                        break;
+                    case Adherent::AFTER_ADD_NEW:
+                        $redirect_url = $this->routeparser->urlFor('addMember');
+                        break;
+                    case Adherent::AFTER_ADD_SHOW:
+                        $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
+                        break;
+                    case Adherent::AFTER_ADD_LIST:
+                        $redirect_url = $this->routeparser->urlFor('members');
+                        break;
+                    case Adherent::AFTER_ADD_HOME:
+                        $redirect_url = $this->routeparser->urlFor('slash');
+                        break;
                 }
+            } elseif (!isset($post['id_adh']) && !$member->isDueFree()) {
+                $redirect_url = $this->routeparser->urlFor(
+                    'addContribution',
+                    ['type' => 'fee']
+                ) . '?id_adh=' . $member->id;
             } else {
-                //store entity in session
-                $this->session->member = $member;
+                $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
+            }
+        } else {
+            //store entity in session
+            $this->session->member = $member;
 
-                if ($this->isSelfMembership()) {
-                    $redirect_url = $this->routeparser->urlFor('subscribe');
-                } elseif ($member->id) {
-                    $redirect_url = $this->routeparser->urlFor(
-                        'editMember',
-                        ['id'    => (string)$member->id]
-                    );
-                } else {
-                    $redirect_url = $this->routeparser->urlFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
-                }
+            if ($this->isSelfMembership()) {
+                $redirect_url = $this->routeparser->urlFor('subscribe');
+            } elseif ($member->id) {
+                $redirect_url = $this->routeparser->urlFor(
+                    'editMember',
+                    ['id'    => (string)$member->id]
+                );
+            } else {
+                $redirect_url = $this->routeparser->urlFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
             }
         }
 
@@ -1944,6 +1995,27 @@ class MembersController extends CrudController
     private function isSelfMembership(): bool
     {
         return $this->is_self_membership;
+    }
+
+    /**
+     * Set add child flag
+     *
+     * @return MembersController
+     */
+    private function setAddChild(): MembersController
+    {
+        $this->add_child = true;
+        return $this;
+    }
+
+    /**
+     * Is adding child?
+     *
+     * @return bool
+     */
+    private function isAddChild(): bool
+    {
+        return $this->add_child;
     }
 
     /**

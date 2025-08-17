@@ -208,6 +208,7 @@ class Password extends GaletteTestCase
 
         $pass = new \Galette\Core\Password($this->zdb, false);
         $res = $pass->generateNewPassword(12);
+        $this->expectLogEntry(\Analog::ERROR, 'Error executing query!');
         $this->assertFalse($res);
     }
 
@@ -231,6 +232,7 @@ class Password extends GaletteTestCase
 
         $pass = new \Galette\Core\Password($this->zdb, false);
         $res = $pass->generateNewPassword(12);
+        $this->expectLogEntry(\Analog::ERROR, 'Error executing query!');
         $this->assertFalse($res);
     }
 
@@ -254,6 +256,7 @@ class Password extends GaletteTestCase
 
         $pass = new \Galette\Core\Password($this->zdb, false);
         $this->assertFalse($pass->cleanExpired());
+        $this->expectLogEntry(\Analog::WARNING, 'Error executing query!');
     }
 
     /**
@@ -276,6 +279,7 @@ class Password extends GaletteTestCase
 
         $pass = new \Galette\Core\Password($this->zdb, false);
         $res = $pass->isHashValid('thehash');
+        $this->expectLogEntry(\Analog::WARNING, 'Error executing query!');
         $this->assertFalse($res);
     }
 
@@ -299,6 +303,7 @@ class Password extends GaletteTestCase
 
         $pass = new \Galette\Core\Password($this->zdb, false);
         $res = $pass->removeHash('thehash');
+        $this->expectLogEntry(\Analog::WARNING, 'Error executing query!');
         $this->assertFalse($res);
     }
 }

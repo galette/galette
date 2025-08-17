@@ -65,6 +65,6 @@ class Choice extends DynamicField
      */
     public function getDisplayValue(mixed $value): string
     {
-        return $this->values[$value] ?? '';
+        return $this->values[$value ?? ''] ?? '';
     }
 }

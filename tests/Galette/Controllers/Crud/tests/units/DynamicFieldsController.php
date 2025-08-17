@@ -88,22 +88,14 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with logged-in user
         $this->logSuperAdmin();
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
         $this->login->logout();
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
-        $this->flash_data = [];
+        $this->expectOK($test_response);
     }
 
     /**
@@ -123,22 +115,14 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with logged-in user
         $this->logSuperAdmin();
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
         $this->login->logout();
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
-        $this->flash_data = [];
+        $this->expectOK($test_response);
 
         //test non existing field
         $this->logSuperAdmin();
@@ -180,11 +164,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
         //login is required to access this page
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with logged-in user
         $this->logSuperAdmin();
@@ -324,11 +304,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
         //login is required to access this page
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with logged-in user
         $this->logSuperAdmin();
@@ -459,11 +435,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with logged-in user
         $this->logSuperAdmin();
@@ -472,10 +444,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $this->login->logout();
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Remove dynamic field Dynamic test field', $body);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
 
         //test with a field that does not exist
         $route_arguments = [
@@ -488,10 +457,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         $this->login->logout();
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Requested field does not exists!', $body);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
     }
 
     /**
@@ -511,11 +477,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with logged-in user
         $this->logSuperAdmin();
@@ -618,11 +580,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with logged-in user
         $this->logSuperAdmin();
@@ -683,21 +641,14 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
         //login is required to access this page
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with logged-in user
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $this->login->logout();
 
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Dynamic test field', $body);
         $this->assertStringContainsString(sprintf('href="/fields/dynamic/edit/adh/%1$s"', $field_id_1), $body);

@@ -97,18 +97,14 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin will get page displayed
         $this->logSuperAdmin();
         $_SERVER['HTTP_USER_AGENT'] = 'Galette test suite';
 
         $test_response = $this->app->handle($request);
-        $this->assertEquals(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
         $body = (string) $test_response->getBody();
         $this->assertStringContainsString('Dashboard', $body);
         $this->assertMatchesRegularExpression(
@@ -133,17 +129,13 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin will get dashboard displayed
         $this->logSuperAdmin();
 
         $test_response = $this->app->handle($request);
-        $this->assertEquals(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
         $body = (string) $test_response->getBody();
         $this->assertStringContainsString('Dashboard', $body);
     }
@@ -159,17 +151,13 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin will get page displayed
         $this->logSuperAdmin();
 
         $test_response = $this->app->handle($request);
-        $this->assertEquals(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
         $body = (string) $test_response->getBody();
         $this->assertStringContainsString('Settings', $body);
         $this->assertStringContainsString('<input type="text" name="pref_nom" id="pref_nom" value="Galette"', $body);
@@ -177,7 +165,7 @@ class GaletteController extends GaletteRoutingTestCase
         //simulate error while storing, values are kept in session
         $this->session->entered_preferences = ['pref_nom' => 'Name from test suite'];
         $test_response = $this->app->handle($request);
-        $this->assertEquals(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
         $body = (string) $test_response->getBody();
         $this->assertStringContainsString('Settings', $body);
         $this->assertStringContainsString('<input type="text" name="pref_nom" id="pref_nom" value="Name from test suite"', $body);
@@ -194,11 +182,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin can store preferences
         $this->logSuperAdmin();
@@ -233,11 +217,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin can test email
         $this->logSuperAdmin();
@@ -273,6 +253,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertSame(['Content-Type' => ['application/json']], $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());
         $this->expectNoLogEntry();
+
         $body = (string)$test_response->getBody();
         $this->assertSame('{"sent":0}', $body);
         $this->assertSame(['error_detected' => ['No email sent to mail@domain.com']], $this->flash_data['slimFlash']);
@@ -293,17 +274,13 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin will get page displayed
         $this->logSuperAdmin();
 
         $test_response = $this->app->handle($request);
-        $this->assertEquals(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
         $body = (string) $test_response->getBody();
         $this->assertStringContainsString('Charts', $body);
     }
@@ -319,17 +296,13 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin will get page displayed
         $this->logSuperAdmin();
 
         $test_response = $this->app->handle($request);
-        $this->assertEquals(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
         $body = (string) $test_response->getBody();
         $this->assertStringContainsString('Core fields', $body);
     }
@@ -345,11 +318,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         $fields_config = $this->container->get(\Galette\Entity\FieldsConfig::class);
         $fields_config->installInit();
@@ -419,17 +388,13 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin will get page displayed
         $this->logSuperAdmin();
 
         $test_response = $this->app->handle($request);
-        $this->assertEquals(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
         $body = (string) $test_response->getBody();
         $this->assertStringContainsString('Core lists', $body);
     }
@@ -445,11 +410,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         $lists_config = $this->container->get(\Galette\Entity\ListsConfig::class);
         $lists_config->installInit();
@@ -527,17 +488,13 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin will get page displayed
         $this->logSuperAdmin();
 
         $test_response = $this->app->handle($request);
-        $this->assertEquals(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
         $body = (string) $test_response->getBody();
         $this->assertStringContainsString('Reminders', $body);
         $this->assertStringContainsString(
@@ -570,11 +527,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin will get page displayed
         //no reminder to send by default
@@ -684,11 +637,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //superadmin will get page displayed
         $this->logSuperAdmin();
@@ -708,7 +657,7 @@ class GaletteController extends GaletteRoutingTestCase
         $request = $this->createRequest('directlink', ['hash' => 'testhash']);
 
         $test_response = $this->app->handle($request);
-        $this->assertEquals(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
         $body = (string) $test_response->getBody();
         $this->assertStringContainsString('Download document', $body);
         $this->assertStringContainsString(
@@ -731,6 +680,6 @@ class GaletteController extends GaletteRoutingTestCase
         $request = $this->createRequest('defaultFavicon');
 
         $test_response = $this->app->handle($request);
-        $this->assertEquals(200, $test_response->getStatusCode());
+        $this->expectOK($test_response);
     }
 }

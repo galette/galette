@@ -487,6 +487,13 @@ class Adherent extends GaletteTestCase
         $this->assertSame($expected, $check);
         $this->expectLogEntry(\Analog::ERROR, $expected[0]);
 
+        global $login;
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isStaff'))
+            ->getMock();
+        $login->method('isStaff')->willReturn(true);
+
         $data = ['id_statut' => 256];
         $expected = ['Status #256 does not exists in database.'];
         $check = $adh->check($data, [], []);
@@ -568,7 +575,7 @@ class Adherent extends GaletteTestCase
             $this->assertSame('No right to store member #', $e->getMessage());
         }
         $this->assertTrue($exception_thrown, 'No exception has been thrown');
-        //TODO: add log check in next major
+        $this->expectLogEntry(\Analog::CRITICAL, 'Non allowed user  attempting to change member  admin flag');
     }
 
     /**
@@ -1152,7 +1159,6 @@ class Adherent extends GaletteTestCase
         $begin_date->add(new \DateInterval('P1D'));
         $begin_date->sub(new \DateInterval('P1Y'));
 
-        $this->logSuperAdmin();
         $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $this->adh->id,
@@ -1164,7 +1170,6 @@ class Adherent extends GaletteTestCase
             'date_enreg'            => $begin_date->format('Y-m-d'),
             'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
-        $this->login->logout();
 
         //member is up-to-date, close to be expired
         $this->assertTrue($this->adh->load($this->adh->id));
@@ -1192,7 +1197,6 @@ class Adherent extends GaletteTestCase
         $begin_date->add(new \DateInterval('P1D'));
         $begin_date->sub(new \DateInterval('P1Y'));
 
-        $this->logSuperAdmin();
         $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $this->adh->id,
@@ -1204,7 +1208,6 @@ class Adherent extends GaletteTestCase
             'date_enreg'            => $begin_date->format('Y-m-d'),
             'date_debut_cotis'      => $begin_date->format('Y-m-d')
         ]);
-        $this->login->logout();
 
         //member is late, but for less than 30 days, no reminder to send
         $this->assertTrue($this->adh->load($this->adh->id));
@@ -1819,6 +1822,8 @@ class Adherent extends GaletteTestCase
      */
     public function testGroupMembership(): void
     {
+        $this->logSuperAdmin();
+
         $adh1 = $this->getMemberOne();
         $adh2 = $this->getMemberTwo();
 
@@ -1864,5 +1869,7 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($adh->isGroupManager($g1->getName()));
         $this->assertFalse($adh->isGroupManager($g2->getName()));
         $this->assertTrue($adh->isGroupManager(null));
+
+        $this->login->logOut();
     }
 }

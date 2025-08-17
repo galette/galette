@@ -119,11 +119,7 @@ class ContributionsController extends GaletteRoutingTestCase
 
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with simple member: can show its own contributions only
         $mdata = $this->dataAdherentOne();
@@ -133,10 +129,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments);
 
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member contribution is listed
         $this->assertStringContainsString(
@@ -183,10 +176,7 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member contribution is listed
         $this->assertStringContainsString(
@@ -207,10 +197,7 @@ class ContributionsController extends GaletteRoutingTestCase
         //when showing "my contributions"; shows only member contributions
         $request = $this->createRequest('myContributions', $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member contribution is listed
         $this->assertStringContainsString(
@@ -231,10 +218,8 @@ class ContributionsController extends GaletteRoutingTestCase
         //cannot show contributions of another member
         $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => $member_two->id]);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
         $this->expectLogEntry(\Analog::WARNING, sprintf('Trying to display contributions for member #%1$s without appropriate ACLs', $member_two->id));
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member contribution is listed
         $this->assertStringContainsString(
@@ -255,10 +240,7 @@ class ContributionsController extends GaletteRoutingTestCase
         //can show contributions of children
         $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => $child->id]);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member contribution is not listed
         $this->assertStringNotContainsString(
@@ -284,12 +266,9 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        //$this->expectNoLogEntry();
         //FIXME: should not happen
         $this->expectLogEntry(\Analog::WARNING, sprintf('Trying to display contributions for member #%1$s without appropriate ACLs', $child->id));
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member one contribution is not listed
         $this->assertStringNotContainsString(
@@ -309,13 +288,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         //set member as staff
-        $staff_member = clone $member_one;
-        $check = $staff_member->check(['id_statut' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $staff_member = $this->getStaffMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertFalse($this->login->isAdmin());
@@ -325,10 +298,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
 
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member one contribution is listed
         $this->assertStringContainsString(
@@ -345,24 +315,13 @@ class ContributionsController extends GaletteRoutingTestCase
             sprintf('<input type="checkbox" name="entries_sel[]" value="%1$s"/>', $contrib_two->id),
             $body
         );
-
-        //reset staff status
-        $check = $staff_member->check(['id_statut' => $member_one->status], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
         $this->login->logout();
 
+        //reset staff status
+        $this->resetStaffStatus($staff_member, $member_one);
+
         //set member as admin
-        $adm_member = clone $member_one;
-        $check = $adm_member->check(['bool_admin_adh' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $adm_member = $this->getAdminMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertTrue($this->login->isAdmin());
@@ -372,10 +331,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
 
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member one contribution is listed
         $this->assertStringContainsString(
@@ -394,12 +350,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
 
         //reset admin status
-        $check = $adm_member->check(['bool_admin_adh' => '0'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $this->resetAdminStatus($adm_member);
 
         $g1 = new \Galette\Entity\Group();
         $g1->setName('Group 1');
@@ -413,10 +364,7 @@ class ContributionsController extends GaletteRoutingTestCase
         //by default, group manager can only see its own contributions
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member one contribution is not listed
         $this->assertStringNotContainsString(
@@ -446,10 +394,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
         $this->assertTrue($this->preferences->store());
 
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member one contribution is listed
         $this->assertStringContainsString(
@@ -501,13 +446,11 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->assertSame(['slimFlash' => []], $this->flash_data);
+        $this->flash_data = [];
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['slimFlash' => []], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member contribution is listed
         $this->assertStringContainsString(
@@ -523,14 +466,11 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => ['/contributions']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['slimFlash' => []], $this->flash_data);
+        $this->assertSame([], $this->flash_data);
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['slimFlash' => []], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member contribution is not listed
         $this->assertStringNotContainsString(
@@ -578,21 +518,13 @@ class ContributionsController extends GaletteRoutingTestCase
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //super-admin can access add page
         $this->logSuperAdmin();
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
-        $this->flash_data = [];
+        $this->expectOK($test_response);
         $this->login->logout();
 
         //test with simple member: refused from authenticate middleware
@@ -604,21 +536,11 @@ class ContributionsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments);
 
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
         $this->login->logout();
 
         //set member as staff
-        $staff_member = clone $member_one;
-        $check = $staff_member->check(['id_statut' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $staff_member = $this->getStaffMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertFalse($this->login->isAdmin());
@@ -626,28 +548,14 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
 
         $this->login->logOut();
         //reset statut
-        $check = $staff_member->check(['id_statut' => $member_one->status], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $this->resetStaffStatus($staff_member, $member_one);
 
         //set member as admin
-        $adm_member = clone $member_one;
-        $check = $adm_member->check(['bool_admin_adh' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $adm_member = $this->getAdminMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertTrue($this->login->isAdmin());
@@ -655,19 +563,11 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
 
         $this->login->logOut();
         //reset admin status
-        $check = $adm_member->check(['bool_admin_adh' => '0'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $this->resetAdminStatus($adm_member);
 
         $g1 = new \Galette\Entity\Group();
         $g1->setName('Group 1');
@@ -697,10 +597,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
         $this->assertTrue($this->preferences->store());
 
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
 
         $this->login->logout();
 
@@ -751,10 +648,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
         $this->assertTrue($this->preferences->store());
 
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
 
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('(creation)', $body);
@@ -827,21 +721,13 @@ class ContributionsController extends GaletteRoutingTestCase
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //super-admin can access add page
         $this->logSuperAdmin();
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
-        $this->flash_data = [];
+        $this->expectOK($test_response);
 
         //contribution that does not exists
         $request = $this->createRequest($route_name, ['id' => 999999] + $route_arguments);
@@ -863,21 +749,11 @@ class ContributionsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments);
 
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
         $this->login->logout();
 
         //set member as staff
-        $staff_member = clone $member_one;
-        $check = $staff_member->check(['id_statut' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $staff_member = $this->getStaffMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertFalse($this->login->isAdmin());
@@ -885,28 +761,14 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
 
         $this->login->logOut();
         //reset statut
-        $check = $staff_member->check(['id_statut' => $member_one->status], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $this->resetStaffStatus($staff_member, $member_one);
 
         //set member as admin
-        $adm_member = clone $member_one;
-        $check = $adm_member->check(['bool_admin_adh' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $adm_member = $this->getAdminMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertTrue($this->login->isAdmin());
@@ -914,19 +776,11 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
 
         $this->login->logOut();
         //reset admin status
-        $check = $adm_member->check(['bool_admin_adh' => '0'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $this->resetAdminStatus($adm_member);
 
         $g1 = new \Galette\Entity\Group();
         $g1->setName('Group 1');
@@ -940,11 +794,7 @@ class ContributionsController extends GaletteRoutingTestCase
 
         //groups manager: refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so managers can see and create group members contributions
         $this->preferences->pref_bool_groupsmanagers_see_contributions = true;
@@ -959,11 +809,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
         $this->assertTrue($this->preferences->store());
 
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
 
         $this->login->logout();
     }
@@ -1003,11 +849,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $request = $request->withParsedBody($contrib_data);
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         $result = $this->zdb->execute($count_select);
         $this->assertCount(0, $result); //no contribution added
@@ -1037,24 +879,14 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertFalse($this->login->isGroupManager());
 
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
         $this->login->logout();
 
         $result = $this->zdb->execute($count_select);
         $this->assertCount($expected_count, $result); //no new contribution
 
         //set member as staff
-        $staff_member = clone $member_one;
-        $check = $staff_member->check(['id_statut' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $staff_member = $this->getStaffMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertFalse($this->login->isAdmin());
@@ -1072,25 +904,14 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $this->login->logOut();
         //reset statut
-        $check = $staff_member->check(['id_statut' => $member_one->status], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $this->resetStaffStatus($staff_member, $member_one);
 
         $result = $this->zdb->execute($count_select);
         $this->assertCount(1, $result); //one contribution added by staff member
         $this->assertCount(1, $this->zdb->execute($remove_contributions));
 
         //set member as admin
-        $adm_member = clone $member_one;
-        $check = $adm_member->check(['bool_admin_adh' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $adm_member = $this->getAdminMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertTrue($this->login->isAdmin());
@@ -1108,12 +929,7 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $this->login->logOut();
         //reset admin status
-        $check = $adm_member->check(['bool_admin_adh' => '0'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $this->resetAdminStatus($adm_member);
 
         $result = $this->zdb->execute($count_select);
         $this->assertCount(1, $result); //one contribution added by admin member
@@ -1254,11 +1070,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $request = $request->withParsedBody($contrib_data);
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //super-admin can access add page
         $this->logSuperAdmin();
@@ -1281,21 +1093,11 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertFalse($this->login->isGroupManager());
 
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
         $this->login->logout();
 
         //set member as staff
-        $staff_member = clone $member_one;
-        $check = $staff_member->check(['id_statut' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $staff_member = $this->getStaffMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertFalse($this->login->isAdmin());
@@ -1310,24 +1112,13 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->expectNoLogEntry();
         $this->assertSame(['success_detected' => ['Contribution has been successfully stored']], $this->flash_data['slimFlash']);
         $this->flash_data = [];
-
         $this->login->logOut();
+
         //reset statut
-        $check = $staff_member->check(['id_statut' => $member_one->status], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $this->resetStaffStatus($staff_member, $member_one);
 
         //set member as admin
-        $adm_member = clone $member_one;
-        $check = $adm_member->check(['bool_admin_adh' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $adm_member = $this->getAdminMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertTrue($this->login->isAdmin());
@@ -1345,12 +1136,7 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $this->login->logOut();
         //reset admin status
-        $check = $adm_member->check(['bool_admin_adh' => '0'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $this->resetAdminStatus($adm_member);
 
         $g1 = new \Galette\Entity\Group();
         $g1->setName('Group 1');
@@ -1364,11 +1150,7 @@ class ContributionsController extends GaletteRoutingTestCase
 
         //groups manager: refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so managers can see and create group members contributions
         $this->preferences->pref_bool_groupsmanagers_see_contributions = true;
@@ -1382,14 +1164,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
         $this->assertTrue($this->preferences->store());
 
-        $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('slash')]],
-            $test_response->getHeaders()
-        );
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
 
         $this->login->logout();
     }
@@ -1426,21 +1201,14 @@ class ContributionsController extends GaletteRoutingTestCase
         //login is required to access this page
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with logged-in user
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Remove contribution #' . $contrib_one->id, $body);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
 
         $batch_request = $this->createRequest('removeContributions', ['type' => 'contributions']);
         $batch_request = $batch_request->withParsedBody([
@@ -1461,71 +1229,39 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertSame($member_one->id, $contrib_one->member);
 
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
 
         //set member as staff
-        $staff_member = clone $member_one;
-        $check = $staff_member->check(['id_statut' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $staff_member = $this->getStaffMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertFalse($this->login->isAdmin());
         $this->assertTrue($this->login->isStaff());
 
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Remove contribution #' . $contrib_one->id, $body);
 
         $this->login->logOut();
         //reset statut
-        $check = $staff_member->check(['id_statut' => $member_one->status], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $this->resetStaffStatus($staff_member, $member_one);
 
         //set member as admin
-        $adm_member = clone $member_one;
-        $check = $adm_member->check(['bool_admin_adh' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $adm_member = $this->getAdminMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertTrue($this->login->isAdmin());
         $this->assertFalse($this->login->isStaff());
 
         $test_response = $this->app->handle($request);
-        $this->assertSame([], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Remove contribution #' . $contrib_one->id, $body);
 
         $this->login->logOut();
         //reset admin status
-        $check = $adm_member->check(['bool_admin_adh' => '0'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $this->resetAdminStatus($adm_member);
 
         $g1 = new \Galette\Entity\Group();
         $g1->setName('Group 1');
@@ -1539,14 +1275,10 @@ class ContributionsController extends GaletteRoutingTestCase
 
         //groups manager: refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
     }
 
-/**
+    /**
      * Test delete contribution
      *
      * @return void
@@ -1579,11 +1311,7 @@ class ContributionsController extends GaletteRoutingTestCase
         //login is required to access this page
         //Refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Login required']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectLogin($test_response);
 
         //test with logged-in user
         $this->logSuperAdmin();
@@ -1631,26 +1359,15 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertSame($member_one->id, $contrib_one->member);
 
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
 
         //set member as staff
         $this->logSuperAdmin();
         $this->createContribution();
         $contrib = $this->contrib;
         $this->login->logOut();
+        $staff_member = $this->getStaffMember($member_one);
         $request = $request->withParsedBody(['id' => [$contrib->id], 'confirm' => true]);
-
-        $staff_member = clone $member_one;
-        $check = $staff_member->check(['id_statut' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertFalse($this->login->isAdmin());
@@ -1668,12 +1385,7 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $this->login->logOut();
         //reset statut
-        $check = $staff_member->check(['id_statut' => $member_one->status], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($staff_member->store());
+        $this->resetStaffStatus($staff_member, $member_one);
 
         //set member as admin
         $this->logSuperAdmin();
@@ -1682,13 +1394,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->login->logOut();
         $request = $request->withParsedBody(['id' => [$contrib->id], 'confirm' => true]);
 
-        $adm_member = clone $member_one;
-        $check = $adm_member->check(['bool_admin_adh' => '1'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $adm_member = $this->getAdminMember($member_one);
 
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
         $this->assertTrue($this->login->isAdmin());
@@ -1706,12 +1412,7 @@ class ContributionsController extends GaletteRoutingTestCase
 
         $this->login->logOut();
         //reset admin status
-        $check = $adm_member->check(['bool_admin_adh' => '0'], [], []);
-        if (is_array($check)) {
-            var_dump($check);
-        }
-        $this->assertTrue($check);
-        $this->assertTrue($adm_member->store());
+        $this->resetAdminStatus($adm_member);
 
         $g1 = new \Galette\Entity\Group();
         $g1->setName('Group 1');
@@ -1725,10 +1426,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
         //groups manager: refused from authenticate middleware
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
-        $this->assertSame(302, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectAuthMiddlewareRefused($test_response);
     }
 }

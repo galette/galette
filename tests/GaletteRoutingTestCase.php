@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace Galette;
 
+use Slim\Psr7\Response;
+
 /**
  * Galette routing tests case main class
  *
@@ -63,5 +65,75 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
             [],
             $sfactory->createStream()
         );
+    }
+
+    /**
+     * Assert request has been refused from authentication middleware
+     *
+     * @param Response $test_response Response to test
+     *
+     * @return void
+     */
+    protected function expectAuthMiddlewareRefused(Response $test_response): void
+    {
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('slash')]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->assertSame(
+            ['error_detected' => ['You do not have permission for requested URL.']],
+            $this->flash_data['slimFlash']
+        );
+        $this->flash_data = [];
+
+    }
+
+    /**
+     * Assert request requires a logged in user
+     *
+     * @param Response $test_response Response to test
+     *
+     * @return void
+     */
+    protected function expectLogin(Response $test_response): void
+    {
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('slash')]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(302, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['error_detected' => ['Login required']]);
+    }
+
+    /**
+     * Assert request has been successfully processed
+     *
+     * @param Response $test_response Response to test
+     * @param array    $headers       Expected headers
+     *
+     * @return void
+     */
+    protected function expectOK(Response $test_response, array $headers =  []): void
+    {
+        $this->assertSame($headers, $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData([]);
+    }
+
+    /**
+     * Assert Flash data correspond to what is expected, and reset it
+     *
+     * @param array $expected Expected flash data
+     *
+     * @return void
+     */
+    protected function expectFlashData(array $expected): void
+    {
+        $this->assertSame($expected, $this->flash_data['slimFlash'] ?? []);
+        $this->flash_data = [];
     }
 }

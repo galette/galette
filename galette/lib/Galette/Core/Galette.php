@@ -86,6 +86,13 @@ class Galette
      */
     public static function getNewRelease(): array
     {
+        if (defined('GALETTE_TESTS')) {
+            return [
+                'new' => false,
+                'version' => GALETTE_VERSION
+            ];
+        }
+
         $release = new Release();
         return [
             'new' => $release->checkNewRelease(),

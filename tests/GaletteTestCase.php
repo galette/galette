@@ -925,4 +925,91 @@ abstract class GaletteTestCase extends TestCase
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
     }
+
+    /**
+     * Set given member as staff
+     *
+     * @param \Galette\Entity\Adherent $member Member to edit
+     *
+     * @return \Galette\Entity\Adherent
+     */
+    protected function getStaffMember(\Galette\Entity\Adherent $member): \Galette\Entity\Adherent
+    {
+        $this->logSuperAdmin();
+
+        $staff_member = clone $member;
+        $check = $staff_member->check(['id_statut' => '1'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($staff_member->store());
+
+        $this->login->logout();
+
+        return $staff_member;
+    }
+
+    /**
+     * Reset given staff member to given member status
+     *
+     * @param \Galette\Entity\Adherent $staff_member Staff member to edit
+     * @param \Galette\Entity\Adherent $member       Member to get status from
+     *
+     * @return void
+     */
+    protected function resetStaffStatus(\Galette\Entity\Adherent $staff_member, \Galette\Entity\Adherent $member): void
+    {
+        $this->logSuperAdmin();
+        $check = $staff_member->check(['id_statut' => $member->status], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($staff_member->store());
+        $this->login->logout();
+    }
+
+    /**
+     * Set given member as admin
+     *
+     * @param \Galette\Entity\Adherent $member Member to edit
+     *
+     * @return \Galette\Entity\Adherent
+     */
+    protected function getAdminMember(\Galette\Entity\Adherent $member): \Galette\Entity\Adherent
+    {
+        $this->logSuperAdmin();
+
+        $adm_member = clone $member;
+        $check = $adm_member->check(['bool_admin_adh' => '1'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($adm_member->store());
+
+        $this->login->logout();
+
+        return $adm_member;
+    }
+
+    /**
+     * Reset given admin member flag
+     *
+     * @param \Galette\Entity\Adherent $admin_member Admin member to edit
+     *
+     * @return void
+     */
+    protected function resetAdminStatus(\Galette\Entity\Adherent $admin_member): void
+    {
+        $this->logSuperAdmin();
+        $check = $admin_member->check(['bool_admin_adh' => '0'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($admin_member->store());
+        $this->login->logout();
+    }
 }

@@ -287,6 +287,10 @@ class Adherent implements AccessManagementInterface
         $results = $this->zdb->execute($select);
 
         if ($results->count() === 0) {
+            Analog::log(
+                'No member #' . $id,
+                Analog::ERROR
+            );
             return false;
         }
 
@@ -1202,7 +1206,16 @@ class Adherent implements AccessManagementInterface
 
         if ($login->isGroupManager() && !$login->isAdmin() && !$login->isStaff() && $this->parent_id !== $login->id) {
             if (!isset($values['groups_adh'])) {
-                $this->errors[] = _T('You have to select a group you own!');
+                $owned_group = false;
+                //when editing an existing member, check in his existing groups
+                if ($this->id) {
+                    foreach ($this->groups as $group) {
+                        if ($login->isGroupManager((int)$group->getId())) {
+                            $owned_group = true;
+                            break;
+                        }
+                    }
+                }
             } else {
                 $owned_group = false;
                 foreach ($values['groups_adh'] as $group) {
@@ -1211,9 +1224,9 @@ class Adherent implements AccessManagementInterface
                         $owned_group = true;
                     }
                 }
-                if ($owned_group === false) {
-                    $this->errors[] = _T('You have to select a group you own!');
-                }
+            }
+            if ($owned_group === false) {
+                $this->errors[] = _T('You have to select a group you own!');
             }
         }
 
@@ -1652,6 +1665,17 @@ class Adherent implements AccessManagementInterface
                 //set modification date
                 $this->modification_date = date('Y-m-d');
                 $values['date_modif_adh'] = $this->modification_date;
+
+                //required fields with no default in database
+                $db_required = [
+                    Status::PK => 'status',
+                    'date_crea_adh' => 'creation_date'
+                ];
+                foreach ($db_required as $db_key => $prop) {
+                    if (!isset($values[$db_key])) {
+                        $values[$db_key] = $this->$prop;
+                    }
+                }
 
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($values);

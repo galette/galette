@@ -90,6 +90,11 @@ $app->post(
 )->setName('doAddMember');
 
 $app->post(
+    '/member/store/child',
+    [Crud\MembersController::class, 'doAddChild']
+)->setName('doAddMemberChild')->add($authenticate);
+
+$app->post(
     '/member/store/{id:\d+}',
     [Crud\MembersController::class, 'doEdit']
 )->setName('doEditMember');
