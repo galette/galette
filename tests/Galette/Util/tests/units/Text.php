@@ -90,4 +90,33 @@ class Text extends TestCase
         $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]{10}$/', \Galette\Util\Text::getRandomString(10));
         $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]{60}$/', \Galette\Util\Text::getRandomString(60));
     }
+
+    /**
+     * Test truncateOnWords method
+     *
+     * @return void
+     */
+    public function testTruncateOnWords(): void
+    {
+        $text = 'This text will be truncated on entire words, using Galette\'s-util methods that manages a bit of text.';
+        $truncated = \Galette\Util\Text::truncateOnWords(text: $text);
+        $this->assertSame('This text will be truncated on entire words, using Galette\'s-util…', $truncated);
+
+        // Test with a shorter length
+        $truncated = \Galette\Util\Text::truncateOnWords(text: $text, max_words: 5);
+        $this->assertSame('This text will be truncated…', $truncated);
+
+        //Test with HTML string
+        $text = '<p>This text will be truncated on <strong>entire</strong> words, using <em>Galette\'s-util</em> methods that manages a bit of text.</p>';
+        $truncated = \Galette\Util\Text::truncateOnWords(text: $text);
+        $this->assertSame('This text will be truncated on entire words, using Galette\'s-util…', $truncated);
+        $truncated = \Galette\Util\Text::truncateOnWords(text: $text, keep_html: true); //will produce invalid HTML
+        $this->assertSame('<p>This text will be truncated on <strong>entire</strong> words, using <em>Galette\'s-util</em>…', $truncated);
+
+
+        $truncated = \Galette\Util\Text::truncateOnWords(text: $text, max_words: 5);
+        $this->assertSame('This text will be truncated…', $truncated);
+        $truncated = \Galette\Util\Text::truncateOnWords(text: $text, max_words: 5, keep_html: true); //will produce invalid HTML
+        $this->assertSame('<p>This text will be truncated…', $truncated);
+    }
 }

@@ -26,6 +26,7 @@ namespace Galette\IO;
 use Galette\Core\Galette;
 use Galette\Features\Cacheable;
 use Galette\IO\News\Post;
+use Galette\Util\Text;
 use Throwable;
 use Analog\Analog;
 
@@ -163,7 +164,7 @@ class News
                 foreach ($xml->channel->item as $post) {
                     $title = (string)$post->title;
                     if (empty($title) && isset($post->description)) {
-                        $title = mb_strimwidth(strip_tags((string)$post->description), 0, 100, '...');
+                        $title = Text::truncateOnWords((string)$post->description);
                     }
                     $posts[] = new Post(
                         $title,

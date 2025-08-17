@@ -72,4 +72,31 @@ class Text
         }
         return $str;
     }
+
+    /**
+     * Truncate a string on words
+     *
+     * @param string $text        Text to truncate
+     * @param int    $max_words   Maximum number of words to keep
+     * @param string $suffix      Suffix to append if truncated
+     * @param bool   $keep_html   Keep HTML tags or not
+     *
+     * @return string
+     */
+    public static function truncateOnWords(
+        string $text,
+        int $max_words = 10,
+        string $suffix = '…',
+        bool $keep_html = false
+    ): string {
+        if ($keep_html === false) {
+            // Remove HTML tags if not keeping HTML
+            $text = strip_tags($text);
+        }
+        $words = explode(' ', $text);
+        if (count($words) > $max_words) {
+            return implode(' ', array_slice($words, 0, $max_words)) . $suffix;
+        }
+        return $text;
+    }
 }
