@@ -105,7 +105,7 @@
             <div class="ui bottom attached segment">
                 <div class="ui bulleted list">
         {% for post in entry.getPosts() %}
-                    <div class="item">
+                    <div class="item tooltip"{% if post.getDate() %} title="{{ post.getDate() }}"{% endif %}>
             {% if post.getUrl() %}
                         <a href="{{ post.getURL() }}" target="_blank">{{ post.getTitle() }}</a>
             {% else %}

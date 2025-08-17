@@ -83,7 +83,7 @@ class News extends TestCase
         $this->assertSame('Test post', $first_post->getTitle());
         $this->assertSame('https://galette.eu/post1', $first_post->getUrl());
 
-        $this->assertSame('This is a test post description without title, so Galette will use a truncated version of this de...', $second_post->getTitle());
+        $this->assertSame('This is a test post description without title, so Galette…', $second_post->getTitle());
         $this->assertSame('https://galette.eu/post2', $second_post->getUrl());
     }
 

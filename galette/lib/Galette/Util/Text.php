@@ -76,10 +76,10 @@ class Text
     /**
      * Truncate a string on words
      *
-     * @param string $text        Text to truncate
-     * @param int    $max_words   Maximum number of words to keep
-     * @param string $suffix      Suffix to append if truncated
-     * @param bool   $keep_html   Keep HTML tags or not
+     * @param string $text      Text to truncate
+     * @param int    $max_words Maximum number of words to keep
+     * @param string $suffix    Suffix to append if truncated
+     * @param bool   $keep_html Keep HTML tags or not
      *
      * @return string
      */
