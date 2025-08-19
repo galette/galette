@@ -79,7 +79,7 @@ jobs:
         if: env.skip != 'true'
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           tools: composer, pecl
           coverage: ${{ matrix.coverage }}
           extensions: apcu
