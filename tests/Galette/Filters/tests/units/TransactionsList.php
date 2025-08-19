@@ -77,7 +77,7 @@ class TransactionsList extends GaletteTestCase
         $this->expectLogEntry(
             \Analog::WARNING,
             sprintf(
-                '[Galette\Filters\ContributionsList|Pagination] "abcde" is not a valid backing value for enum %1$s',
+                '[Galette\Filters\TransactionsList|Pagination] "abcde" is not a valid backing value for enum %1$s',
                 version_compare(PHP_VERSION, '8.2.0', '<') ? '"Galette\Enums\SQLOrder"' : 'Galette\Enums\SQLOrder'
             )
         );
