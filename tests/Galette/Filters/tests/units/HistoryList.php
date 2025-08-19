@@ -77,7 +77,10 @@ class HistoryList extends GaletteTestCase
         $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
         $this->expectLogEntry(
             \Analog::WARNING,
-            '[Galette\Filters\HistoryList|Pagination] "abcde" is not a valid backing value for enum Galette\Enums\SQLOrder'
+            sprintf(
+                '[Galette\Filters\ContributionsList|Pagination] "abcde" is not a valid backing value for enum %1$s',
+                version_compare(PHP_VERSION, '8.2.0', '<') ? '"Galette\Enums\SQLOrder"' : 'Galette\Enums\SQLOrder'
+            )
         );
 
         //change direction only
