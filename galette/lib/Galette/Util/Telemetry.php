@@ -271,7 +271,6 @@ class Telemetry
         curl_setopt_array($ch, $opts);
         $content = json_decode(curl_exec($ch));
         $errstr = curl_error($ch);
-        curl_close($ch);
 
         if ($content && property_exists($content, 'message')) {
             if (property_exists($content, 'errors')) {

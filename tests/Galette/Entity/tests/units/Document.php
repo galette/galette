@@ -115,7 +115,6 @@ class Document extends GaletteTestCase
                 function (array $files) use ($document) {
                     $reflection = new \ReflectionClass(\Galette\Entity\Document::class);
                     $reflection_property = $reflection->getProperty('filename');
-                    $reflection_property->setAccessible(true);
                     $reflection_property->setValue($document, $files['document_file']['name']);
 
                     return true;

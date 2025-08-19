@@ -443,7 +443,6 @@ trait FileTrait
             );
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime = finfo_file($finfo, $file);
-            finfo_close($finfo);
         } elseif (function_exists('mime_content_type')) {
             Analog::log(
                 '[' . $class . '] Function mime_content_type exist ',

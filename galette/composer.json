@@ -84,7 +84,8 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch"
+            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch",
+            "patch -d vendor/guzzlehttp/guzzle/ -p3 < ../patches/guzzle-php85.patch"
         ]
     }
 }

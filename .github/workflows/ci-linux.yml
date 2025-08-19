@@ -25,6 +25,8 @@ jobs:
     strategy:
       matrix:
         include:
+          #8.5 is now beta
+          - { php-version: "8.5", db-image: "postgres:17", coverage: none, always: true }
           #always tests higher stable php version with lower db version
           #enable coverage on higher stable php version with higher PostgreSQL version
           #higher stable php version

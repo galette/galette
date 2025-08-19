@@ -1,0 +1,33 @@
+diff -up vendor/guzzlehttp/guzzle/src/Handler/CurlFactory.php.patch vendor/guzzlehttp/guzzle/src/Handler/CurlFactory.php
+--- vendor/guzzlehttp/guzzle/src/Handler/CurlFactory.php.patch	2025-08-20 07:28:47.337607875 +0200
++++ vendor/guzzlehttp/guzzle/src/Handler/CurlFactory.php	2025-08-20 07:33:45.967609859 +0200
+@@ -124,9 +124,7 @@ class CurlFactory implements CurlFactory
+         $resource = $easy->handle;
+         unset($easy->handle);
+ 
+-        if (\count($this->handles) >= $this->maxHandles) {
+-            \curl_close($resource);
+-        } else {
++        if (\count($this->handles) < $this->maxHandles) {
+             // Remove all callback functions as they can hold onto references
+             // and are not cleaned up by curl_reset. Using curl_setopt_array
+             // does not work for some reason, so removing each one
+@@ -729,7 +727,6 @@ class CurlFactory implements CurlFactory
+     public function __destruct()
+     {
+         foreach ($this->handles as $id => $handle) {
+-            \curl_close($handle);
+             unset($this->handles[$id]);
+         }
+     }
+diff -up vendor/guzzlehttp/guzzle/src/Handler/CurlMultiHandler.php.patch vendor/guzzlehttp/guzzle/src/Handler/CurlMultiHandler.php
+--- vendor/guzzlehttp/guzzle/src/Handler/CurlMultiHandler.php.patch	2025-08-20 07:28:40.859458643 +0200
++++ vendor/guzzlehttp/guzzle/src/Handler/CurlMultiHandler.php	2025-08-20 07:28:58.758382165 +0200
+@@ -240,7 +240,6 @@ class CurlMultiHandler
+         $handle = $this->handles[$id]['easy']->handle;
+         unset($this->delays[$id], $this->handles[$id]);
+         \curl_multi_remove_handle($this->_mh, $handle);
+-        \curl_close($handle);
+ 
+         return true;
+     }

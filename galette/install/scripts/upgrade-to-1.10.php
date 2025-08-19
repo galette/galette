@@ -113,7 +113,7 @@ class UpgradeTo110 extends AbstractUpdater
                         if ($paypal[ContributionsTypes::PK] == $k) {
                             $queries[] = array(
                                 'id'   => $k,
-                                'amount' => (double)$paypal['amount']
+                                'amount' => (float)$paypal['amount']
                             );
                         }
                     }

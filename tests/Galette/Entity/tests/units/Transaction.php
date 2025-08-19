@@ -143,8 +143,8 @@ class Transaction extends GaletteTestCase
         $this->assertNull($this->transaction->amount);
         $this->assertNull($this->transaction->description);
 
-        $this->assertSame((double)0, $this->transaction->getDispatchedAmount());
-        $this->assertSame((double)0, $this->transaction->getMissingAmount());
+        $this->assertSame((float)0, $this->transaction->getDispatchedAmount());
+        $this->assertSame((float)0, $this->transaction->getMissingAmount());
         $this->assertSame('transaction-normal', $this->transaction->getRowClass());
         $this->assertCount(6, $this->transaction->fields);
         $this->assertArrayHasKey(\Galette\Entity\Transaction::PK, $this->transaction->fields);
@@ -551,11 +551,11 @@ class Transaction extends GaletteTestCase
         $this->assertNotEquals($this->transaction->payment_type, $contrib->payment_type);
 
         $this->assertSame(
-            (double)25,
+            (float)25,
             $this->transaction->getDispatchedAmount()
         );
         $this->assertSame(
-            (double)67,
+            (float)67,
             $this->transaction->getMissingAmount()
         );
         $this->assertSame('transaction-uncomplete', $this->transaction->getRowClass());
@@ -582,11 +582,11 @@ class Transaction extends GaletteTestCase
         $this->assertSame($this->transaction->payment_type, $contrib->payment_type);
 
         $this->assertSame(
-            (double)92,
+            (float)92,
             $this->transaction->getDispatchedAmount()
         );
         $this->assertSame(
-            (double)0,
+            (float)0,
             $this->transaction->getMissingAmount()
         );
         $this->assertSame('transaction-normal', $this->transaction->getRowClass());
@@ -616,11 +616,11 @@ class Transaction extends GaletteTestCase
         $this->assertTrue($contrib->unsetTransactionPart($tid));
 
         $this->assertSame(
-            (double)67,
+            (float)67,
             $this->transaction->getDispatchedAmount()
         );
         $this->assertSame(
-            (double)25,
+            (float)25,
             $this->transaction->getMissingAmount()
         );
         $this->assertSame('transaction-uncomplete', $this->transaction->getRowClass());
@@ -628,11 +628,11 @@ class Transaction extends GaletteTestCase
         $this->assertTrue($contrib->setTransactionPart($tid));
 
         $this->assertSame(
-            (double)92,
+            (float)92,
             $this->transaction->getDispatchedAmount()
         );
         $this->assertSame(
-            (double)0,
+            (float)0,
             $this->transaction->getMissingAmount()
         );
         $this->assertSame('transaction-normal', $this->transaction->getRowClass());

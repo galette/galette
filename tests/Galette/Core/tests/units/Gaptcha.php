@@ -44,19 +44,15 @@ class Gaptcha extends TestCase
         $rgaptcha = new ReflectionClass($gaptcha);
 
         $op = $rgaptcha->getProperty('current_op');
-        $op->setAccessible(true);
         $op->setValue($gaptcha, \Galette\Core\Gaptcha::OP_ADD);
 
         $left = $rgaptcha->getProperty('current_left');
-        $left->setAccessible(true);
         $left->setValue($gaptcha, 3);
 
         $right = $rgaptcha->getProperty('current_right');
-        $right->setAccessible(true);
         $right->setValue($gaptcha, 5);
 
         $current = $rgaptcha->getProperty('gaptcha');
-        $current->setAccessible(true);
         $current->setValue($gaptcha, 8);
 
         $question = $gaptcha->generateQuestion();
@@ -70,19 +66,15 @@ class Gaptcha extends TestCase
         $rgaptcha = new ReflectionClass($gaptcha);
 
         $op = $rgaptcha->getProperty('current_op');
-        $op->setAccessible(true);
         $op->setValue($gaptcha, \Galette\Core\Gaptcha::OP_ADD);
 
         $left = $rgaptcha->getProperty('current_left');
-        $left->setAccessible(true);
         $left->setValue($gaptcha, 3);
 
         $right = $rgaptcha->getProperty('current_right');
-        $right->setAccessible(true);
         $right->setValue($gaptcha, 5);
 
         $current = $rgaptcha->getProperty('gaptcha');
-        $current->setAccessible(true);
         $current->setValue($gaptcha, 8);
 
         $question = $gaptcha->generateQuestion();
@@ -96,19 +88,15 @@ class Gaptcha extends TestCase
         $rgaptcha = new ReflectionClass($gaptcha);
 
         $op = $rgaptcha->getProperty('current_op');
-        $op->setAccessible(true);
         $op->setValue($gaptcha, \Galette\Core\Gaptcha::OP_SUB);
 
         $left = $rgaptcha->getProperty('current_left');
-        $left->setAccessible(true);
         $left->setValue($gaptcha, 5);
 
         $right = $rgaptcha->getProperty('current_right');
-        $right->setAccessible(true);
         $right->setValue($gaptcha, 3);
 
         $current = $rgaptcha->getProperty('gaptcha');
-        $current->setAccessible(true);
         $current->setValue($gaptcha, 2);
 
         $question = $gaptcha->generateQuestion();
