@@ -144,8 +144,8 @@ abstract class PdfModel
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading model #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading model #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -238,8 +238,8 @@ abstract class PdfModel
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing model: ' . $e->getMessage() .
-                "\n" . print_r($data, true),
+                'An error occurred storing model: ' . $e->getMessage()
+                . "\n" . print_r($data, true),
                 Analog::ERROR
             );
             throw $e;

@@ -174,8 +174,8 @@ class Texts
     public function setChangePasswordURI(Password $password): self
     {
         $this->setReplacements([
-            'change_pass_uri'   => $this->preferences->getURL() .
-                $this->routeparser->urlFor(
+            'change_pass_uri'   => $this->preferences->getURL()
+                . $this->routeparser->urlFor(
                     'password-recovery',
                     ['hash' => base64_encode($password->getHash())]
                 )
@@ -246,8 +246,8 @@ class Texts
 
         if ($is_lang_ok !== true) {
             Analog::log(
-                'Language ' . $lang .
-                ' does not exists. Falling back to default Galette lang.',
+                'Language ' . $lang
+                . ' does not exists. Falling back to default Galette lang.',
                 Analog::ERROR
             );
             $lang = $i18n->getID();
@@ -290,15 +290,15 @@ class Texts
                         return $this->getTexts($ref, $lang);
                     } catch (Throwable $e) {
                         Analog::log(
-                            'Unable to add missing requested text "' . $ref .
-                            ' (' . $lang . ') | ' . $e->getMessage(),
+                            'Unable to add missing requested text "' . $ref
+                            . ' (' . $lang . ') | ' . $e->getMessage(),
                             Analog::WARNING
                         );
                     }
                 } else {
                     Analog::log(
-                        'Unable to find missing requested text "' . $ref .
-                        ' (' . $lang . ')',
+                        'Unable to find missing requested text "' . $ref
+                        . ' (' . $lang . ')',
                         Analog::WARNING
                     );
                 }
@@ -318,8 +318,8 @@ class Texts
             return $this->all_texts;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' .
-                $e->getMessage(),
+                'Cannot get text `' . $ref . '` for lang `' . $lang . '` | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -356,8 +356,8 @@ class Texts
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error has occurred while storing email text. | ' .
-                $e->getMessage(),
+                'An error has occurred while storing email text. | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -387,8 +387,8 @@ class Texts
             return $refs;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot get refs for lang `' . $lang . '` | ' .
-                $e->getMessage(),
+                'Cannot get refs for lang `' . $lang . '` | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;

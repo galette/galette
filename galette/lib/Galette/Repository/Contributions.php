@@ -360,8 +360,8 @@ class Contributions
 
             if ($this->filters->max_amount !== null) {
                 $select->where(
-                    '(montant_cotis <= ' . $this->filters->max_amount .
-                    ' OR montant_cotis IS NULL)'
+                    '(montant_cotis <= ' . $this->filters->max_amount
+                    . ' OR montant_cotis IS NULL)'
                 );
             }
 
@@ -384,16 +384,16 @@ class Contributions
                         ]
                     );
                     if (
-                        !$member->hasParent() ||
-                        $member->parent->id != $this->login->id
+                        !$member->hasParent()
+                        || $member->parent->id != $this->login->id
                     ) {
                         //check if member is part of logged-in user managed groups
                         $mgroup = $this->login->getManagedGroups();
                         $groups = $member->getGroups();
                         if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
                             Analog::log(
-                                'Trying to display contributions for member #' . $member->id .
-                                ' without appropriate ACLs',
+                                'Trying to display contributions for member #' . $member->id
+                                . ' without appropriate ACLs',
                                 Analog::WARNING
                             );
                             $this->filters->filtre_cotis_adh = $this->login->id;
@@ -530,8 +530,8 @@ class Contributions
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred trying to remove contributions | ' .
-                $e->getMessage(),
+                'An error occurred trying to remove contributions | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;

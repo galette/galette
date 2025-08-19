@@ -150,8 +150,8 @@ abstract class Pagination
             $this->ordered = $odirection;
         } catch (\ValueError $e) {
             Analog::log(
-                '[' . get_class($this) .
-                '|Pagination] ' . $e->getMessage(),
+                '[' . get_class($this)
+                . '|Pagination] ' . $e->getMessage(),
                 Analog::WARNING
             );
         }
@@ -321,8 +321,8 @@ abstract class Pagination
     private function getLink(string $content, string $url, string $title, bool $current = false): string
     {
         $active = $current === true ? "active " : "";
-        $link = "<a href=\"" . $url . "\" " .
-            "title=\"" . $title . "\" class=\"" . $active . "item\">" . $content . "</a>\n";
+        $link = "<a href=\"" . $url . "\" "
+            . "title=\"" . $title . "\" class=\"" . $active . "item\">" . $content . "</a>\n";
         return $link;
     }
 
@@ -362,8 +362,8 @@ abstract class Pagination
     {
         if ($name === 'ordered') {
             Analog::log(
-                '[' . get_class($this) .
-                '|Pagination] ' . $name . ' is deprecated, use getDirection() instead',
+                '[' . get_class($this)
+                . '|Pagination] ' . $name . ' is deprecated, use getDirection() instead',
                 Analog::WARNING
             );
             return $this->getDirection();
@@ -411,8 +411,8 @@ abstract class Pagination
         switch ($name) {
             case 'ordered':
                 Analog::log(
-                    '[' . get_class($this) .
-                    '|Pagination] ' . $name . ' is deprecated, use setDirection() instead',
+                    '[' . get_class($this)
+                    . '|Pagination] ' . $name . ' is deprecated, use setDirection() instead',
                     Analog::WARNING
                 );
                 $this->setDirection($value);
@@ -432,10 +432,10 @@ abstract class Pagination
                     $this->$name = $value;
                 } else {
                     Analog::log(
-                        '[' . get_class($this) .
-                        '|Pagination] Value for field `' .
-                        $name . '` should be a positive integer - (' .
-                        gettype($value) . ')' . $value . ' given',
+                        '[' . get_class($this)
+                        . '|Pagination] Value for field `'
+                        . $name . '` should be a positive integer - ('
+                        . gettype($value) . ')' . $value . ' given',
                         Analog::WARNING
                     );
                 }
@@ -449,17 +449,17 @@ abstract class Pagination
                     $this->$name = (int)$value;
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '|Pagination] Value for `' .
-                        $name . '` should be a positive integer or \'all\' - (' .
-                        gettype($value) . ')' . $value . ' given',
+                        '[' . get_class($this) . '|Pagination] Value for `'
+                        . $name . '` should be a positive integer or \'all\' - ('
+                        . gettype($value) . ')' . $value . ' given',
                         Analog::WARNING
                     );
                 }
                 break;
             default:
                 Analog::log(
-                    '[' . get_class($this) .
-                    '|Pagination] Unable to set property `' . $name . '`',
+                    '[' . get_class($this)
+                    . '|Pagination] Unable to set property `' . $name . '`',
                     Analog::WARNING
                 );
                 break;

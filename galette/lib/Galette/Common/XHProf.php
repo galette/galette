@@ -119,8 +119,8 @@ class XHProf
 
             $url  = (defined('XHPROF_URL') ? XHPROF_URL : self::XHPROF_URL);
             $host = (defined('XHPROF_HOST') ? XHPROF_HOST : $_SERVER['HTTP_HOST'] ?? 'localhost');
-            $link = 'http://' . $host . $url . '/index.php?run=' .
-                $id . '&source=galette-' . GALETTE_VERSION;
+            $link = 'http://' . $host . $url . '/index.php?run='
+                . $id . '&source=galette-' . GALETTE_VERSION;
             Analog::log(
                 'Stop profiling with XHProf, result URL: ' . $link,
                 Analog::INFO

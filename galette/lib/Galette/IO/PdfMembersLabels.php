@@ -128,12 +128,12 @@ class PdfMembersLabels extends Pdf
                 % $this->preferences->pref_etiq_rows;
             // Set label origin
             $x = $this->xorigin + $col * (
-                round($this->preferences->pref_etiq_hsize) +
-                round($this->preferences->pref_etiq_hspace)
+                round($this->preferences->pref_etiq_hsize)
+                + round($this->preferences->pref_etiq_hspace)
             );
             $y = $this->yorigin + $row * (
-                round($this->preferences->pref_etiq_vsize) +
-                round($this->preferences->pref_etiq_vspace)
+                round($this->preferences->pref_etiq_vsize)
+                + round($this->preferences->pref_etiq_vspace)
             );
             // Draw a frame around the label
             if ($this->preferences->pref_etiq_border) {

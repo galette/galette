@@ -221,8 +221,8 @@ class MemberListener implements ListenerSubscriber
             $msg = str_replace(
                 '%s',
                 $member->sname . ' (' . $member->getEmail() . ')',
-                ($new) ?
-                _T("New account email sent to '%s'.") : _T("Account modification email sent to '%s'.")
+                ($new)
+                ? _T("New account email sent to '%s'.") : _T("Account modification email sent to '%s'.")
             );
             $this->history->add($msg);
             $success_detected[] = $msg;
@@ -286,8 +286,8 @@ class MemberListener implements ListenerSubscriber
         $sent = $mail->send();
 
         if ($sent == GaletteMail::MAIL_SENT) {
-            $msg = $new ?
-                str_replace(
+            $msg = $new
+                ? str_replace(
                     '%s',
                     $member->sname . ' (' . $member->email . ')',
                     _T("New account email sent to admin for '%s'.")
@@ -299,8 +299,8 @@ class MemberListener implements ListenerSubscriber
                 $msg
             );
         } else {
-            $msg = $new ?
-                str_replace(
+            $msg = $new
+                ? str_replace(
                     '%s',
                     $member->sname . ' (' . $member->email . ')',
                     _T("A problem happened while sending email to admin for account '%s'.")

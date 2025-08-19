@@ -31,9 +31,9 @@ require_once GALETTE_ROOT . '/includes/sys_config/paths.inc.php';
 
 // check required PHP version...
 if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
-    echo 'Galette is NOT compliant with your current PHP version. ' .
-        'Galette requires PHP ' . GALETTE_PHP_MIN .
-        ' minimum and current version is ' . phpversion();
+    echo 'Galette is NOT compliant with your current PHP version. '
+        . 'Galette requires PHP ' . GALETTE_PHP_MIN
+        . ' minimum and current version is ' . phpversion();
     die(1);
 }
 

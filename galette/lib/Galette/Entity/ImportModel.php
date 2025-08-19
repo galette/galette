@@ -69,8 +69,8 @@ class ImportModel
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load import model | ' . $e->getMessage() .
-                "\n" . $e->__toString(),
+                'Cannot load import model | ' . $e->getMessage()
+                . "\n" . $e->__toString(),
                 Analog::ERROR
             );
             throw $e;
@@ -164,8 +164,8 @@ class ImportModel
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong storing import model :\'( | ' .
-                $e->getMessage() . "\n" . $e->getTraceAsString(),
+                'Something went wrong storing import model :\'( | '
+                . $e->getMessage() . "\n" . $e->getTraceAsString(),
                 Analog::ERROR
             );
             throw $e;

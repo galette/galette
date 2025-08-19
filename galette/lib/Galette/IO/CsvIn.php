@@ -353,8 +353,8 @@ class CsvIn extends Csv implements FileInterface
                         if (isset($this->emails[$column])) {
                             $existing = $this->emails[$column];
                             $extra = (
-                                $existing == -1 ?
-                                _T("from another member in import") : str_replace('%id_adh', (string)$existing, _T("from member %id_adh"))
+                                $existing == -1
+                                ? _T("from another member in import") : str_replace('%id_adh', (string)$existing, _T("from member %id_adh"))
                             );
                             $this->addError(
                                 str_replace(

@@ -429,8 +429,8 @@ class AdvancedMembersList extends MembersList
                         $this->$name = $value;
                     } elseif ($value !== null) {
                         Analog::log(
-                            'Incorrect amount for ' . $name . '! ' .
-                            'Should be a float (' . gettype($value) . ' given)',
+                            'Incorrect amount for ' . $name . '! '
+                            . 'Should be a float (' . gettype($value) . ' given)',
                             Analog::WARNING
                         );
                     }
@@ -440,8 +440,8 @@ class AdvancedMembersList extends MembersList
                         $this->$name = (int)$value;
                     } else {
                         Analog::log(
-                            '[AdvancedMembersList] Value for property `' . $name .
-                            '` should be an integer (' . gettype($value) . ' given)',
+                            '[AdvancedMembersList] Value for property `' . $name
+                            . '` should be an integer (' . gettype($value) . ' given)',
                             Analog::WARNING
                         );
                     }
@@ -494,8 +494,8 @@ class AdvancedMembersList extends MembersList
                         } else {
                             Analog::log(
                                 '[AdvancedMembersList] Value for contribution type '
-                                . 'filter should be an integer (' . gettype($v) .
-                                ' given',
+                                . 'filter should be an integer (' . gettype($v)
+                                . ' given',
                                 Analog::WARNING
                             );
                         }
@@ -556,8 +556,8 @@ class AdvancedMembersList extends MembersList
                                             $value['search'] = $this->buildDate($value['search']);
                                         } catch (Throwable $e) {
                                             Analog::log(
-                                                'Incorrect date format for ' . $value['field'] .
-                                                '! was: ' . $value['search'],
+                                                'Incorrect date format for ' . $value['field']
+                                                . '! was: ' . $value['search'],
                                                 Analog::WARNING
                                             );
                                         }
@@ -637,8 +637,8 @@ class AdvancedMembersList extends MembersList
                         }
                     } else {
                         Analog::log(
-                            '[AdvancedMembersList] Unable to set property `' .
-                            $name . '`',
+                            '[AdvancedMembersList] Unable to set property `'
+                            . $name . '`',
                             Analog::WARNING
                         );
                     }

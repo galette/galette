@@ -666,8 +666,8 @@ class Install
             } else {
                 //we got an update class
                 include_once $scripts_path . $val;
-                $className = '\Galette\Updates\UpgradeTo' .
-                    str_replace('.', '', $key);
+                $className = '\Galette\Updates\UpgradeTo'
+                    . str_replace('.', '', $key);
                 $ret = [
                     'message'   => null,
                     'res'       => false

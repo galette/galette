@@ -213,14 +213,14 @@ class ContributionsTypesController extends CrudController
         $redirect_uri = $this->routeparser->urlFor('contributionsTypes');
 
         if ($ret !== true) {
-            $error_detected[] = $action === 'add' ?
-                _T("Contribution type has not been added :(") : _T("Contribution type #%id has not been updated");
+            $error_detected[] = $action === 'add'
+                ? _T("Contribution type has not been added :(") : _T("Contribution type #%id has not been updated");
             if ($action === 'edit') {
                 $redirect_uri = $this->routeparser->urlFor('editContributionType', ['id' => (string)$id]);
             }
         } else {
-            $msg = $action === 'add' ?
-                _T("Contribution type has been successfully added!") : _T("Contribution type #%id has been successfully updated!");
+            $msg = $action === 'add'
+                ? _T("Contribution type has been successfully added!") : _T("Contribution type #%id has been successfully updated!");
         }
 
         if (count($error_detected) > 0) {

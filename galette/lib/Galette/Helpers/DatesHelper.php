@@ -77,9 +77,9 @@ trait DatesHelper
             $this->$fieldPropertyName = $this->buildDate($value);
         } catch (Throwable $e) {
             Analog::log(
-                'Wrong date format. field: ' . $field .
-                ', value: ' . $field . ', expected fmt: ' .
-                __("Y-m-d") . ' | ' . $e->getMessage(),
+                'Wrong date format. field: ' . $field
+                . ', value: ' . $field . ', expected fmt: '
+                . __("Y-m-d") . ' | ' . $e->getMessage(),
                 Analog::INFO
             );
 
@@ -185,9 +185,9 @@ trait DatesHelper
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Wrong date format. field: ' . $field .
-                ', value: ' . $value . ', known formats: ' .
-                implode(', ', $formats) . ' | ' . $e->getMessage(),
+                'Wrong date format. field: ' . $field
+                . ', value: ' . $value . ', known formats: '
+                . implode(', ', $formats) . ' | ' . $e->getMessage(),
                 Analog::INFO
             );
 
@@ -234,8 +234,8 @@ trait DatesHelper
             } catch (Throwable $e) {
                 //oops, we've got a bad date :/
                 Analog::log(
-                    'Bad date (' . $this->$fieldPropertyName . ') | ' .
-                    $e->getMessage(),
+                    'Bad date (' . $this->$fieldPropertyName . ') | '
+                    . $e->getMessage(),
                     Analog::INFO
                 );
                 return $this->$fieldPropertyName;

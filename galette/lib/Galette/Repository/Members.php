@@ -287,8 +287,8 @@ class Members
 
             $infos = null;
             foreach ($results as $member) {
-                $str_adh = $member->id_adh . ' (' . $member->nom_adh . ' ' .
-                    $member->prenom_adh . ')';
+                $str_adh = $member->id_adh . ' (' . $member->nom_adh . ' '
+                    . $member->prenom_adh . ')';
                 $infos .= $str_adh . "\n";
 
                 $p = new Picture($member->id_adh);
@@ -299,8 +299,8 @@ class Members
                             Analog::ERROR
                         );
                         throw new \Exception(
-                            'Unable to delete picture for member ' .
-                            $str_adh
+                            'Unable to delete picture for member '
+                            . $str_adh
                         );
                     } else {
                         $hist->add(
@@ -395,17 +395,17 @@ class Members
             }
             if ($zdb->isForeignKeyException($e)) {
                 Analog::log(
-                    'Member still have existing dependencies in the ' .
-                    'database, maybe a mailing or some content from a ' .
-                    'plugin. Please remove dependencies before trying ' .
-                    'to remove him.',
+                    'Member still have existing dependencies in the '
+                    . 'database, maybe a mailing or some content from a '
+                    . 'plugin. Please remove dependencies before trying '
+                    . 'to remove him.',
                     Analog::ERROR
                 );
                 $this->errors[] = _T("Cannot remove a member who still have dependencies (mailings, ...)");
             } else {
                 Analog::log(
-                    'Unable to delete selected member(s) |' .
-                    $e->getMessage(),
+                    'Unable to delete selected member(s) |'
+                    . $e->getMessage(),
                     Analog::ERROR
                 );
                 throw $e;
@@ -1046,8 +1046,8 @@ class Members
             return true;
         } else {
             Analog::log(
-                'Trying to order by ' . $field_name . ' while it is not in ' .
-                'selected fields.',
+                'Trying to order by ' . $field_name . ' while it is not in '
+                . 'selected fields.',
                 Analog::WARNING
             );
             return false;
@@ -1094,44 +1094,44 @@ class Members
                         }
 
                         $select->where(
-                            '(' .
-                            $pre . 'LOWER(a.nom_adh)' . $sep .
-                            'LOWER(a.prenom_adh)' . $sep .
-                            'LOWER(a.pseudo_adh)' . $post . ' LIKE ' .
-                            $token
-                            . ' OR ' .
-                            $pre . 'LOWER(a.prenom_adh)' . $sep .
-                            'LOWER(a.nom_adh)' . $sep .
-                            'LOWER(a.pseudo_adh)' . $post . ' LIKE ' .
-                            $token
+                            '('
+                            . $pre . 'LOWER(a.nom_adh)' . $sep
+                            . 'LOWER(a.prenom_adh)' . $sep
+                            . 'LOWER(a.pseudo_adh)' . $post . ' LIKE '
+                            . $token
+                            . ' OR '
+                            . $pre . 'LOWER(a.prenom_adh)' . $sep
+                            . 'LOWER(a.nom_adh)' . $sep
+                            . 'LOWER(a.pseudo_adh)' . $post . ' LIKE '
+                            . $token
                             . ')'
                         );
                         break;
                     case self::FILTER_COMPANY_NAME:
                         $select->where(
-                            'LOWER(a.societe_adh) LIKE ' .
-                            $token
+                            'LOWER(a.societe_adh) LIKE '
+                            . $token
                         );
                         break;
                     case self::FILTER_ADDRESS:
                         $select->where(
-                            '(' .
-                            'LOWER(a.adresse_adh) LIKE ' . $token
-                            . ' OR ' .
-                            'a.cp_adh LIKE ' . $token
-                            . ' OR ' .
-                            'LOWER(a.ville_adh) LIKE ' . $token
-                            . ' OR ' .
-                            'LOWER(a.pays_adh) LIKE ' . $token
+                            '('
+                            . 'LOWER(a.adresse_adh) LIKE ' . $token
+                            . ' OR '
+                            . 'a.cp_adh LIKE ' . $token
+                            . ' OR '
+                            . 'LOWER(a.ville_adh) LIKE ' . $token
+                            . ' OR '
+                            . 'LOWER(a.pays_adh) LIKE ' . $token
                             . ')'
                         );
                         break;
                     case self::FILTER_MAIL:
                         $select->where(
-                            '(' .
-                            'LOWER(a.email_adh) LIKE ' . $token
-                            . ' OR ' .
-                            'LOWER(so.url) LIKE ' . $token
+                            '('
+                            . 'LOWER(a.email_adh) LIKE ' . $token
+                            . ' OR '
+                            . 'LOWER(so.url) LIKE ' . $token
                             . ')'
                         );
                         break;
@@ -1146,8 +1146,8 @@ class Members
                             $more = ' OR LOWER(a.info_adh) LIKE ' . $token;
                         }
                         $select->where(
-                            '(LOWER(a.info_public_adh) LIKE ' .
-                            $token . $more . ')'
+                            '(LOWER(a.info_public_adh) LIKE '
+                            . $token . $more . ')'
                         );
                         break;
                     case self::FILTER_NUMBER:
@@ -1229,9 +1229,9 @@ class Members
                     [],
                     $select::JOIN_LEFT
                 )->where(
-                    '(g.' . Group::PK . ' = ' . $zdb->platform->quoteValue((string)$this->filters->group_filter) .
-                    ' OR gs.parent_group = NULL OR gs.parent_group = ' .
-                    $this->filters->group_filter . ')'
+                    '(g.' . Group::PK . ' = ' . $zdb->platform->quoteValue((string)$this->filters->group_filter)
+                    . ' OR gs.parent_group = NULL OR gs.parent_group = '
+                    . $this->filters->group_filter . ')'
                 );
             }
 
@@ -1497,8 +1497,8 @@ class Members
                         break;
                     default:
                         Analog::log(
-                            'Unknown query operator: ' . $fs['qry_op'] .
-                            ' (will fallback to equals)',
+                            'Unknown query operator: ' . $fs['qry_op']
+                            . ' (will fallback to equals)',
                             Analog::WARNING
                         );
                         $qop = '=';
@@ -1532,27 +1532,27 @@ class Members
                         } else {
                             $sval = $fs['search'];
                         }
-                        $qry .= $prefix . $fs['field'] . $qop . ' ' .
-                            $sval;
+                        $qry .= $prefix . $fs['field'] . $qop . ' '
+                            . $sval;
                     } else {
                         $qry .= $prefix . $fs['field'] . ' IS NULL';
                     }
                 } elseif (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
-                    $qry .= $prefix . $fs['field'] . $qop . ' ' .
-                        $fs['search'];
+                    $qry .= $prefix . $fs['field'] . $qop . ' '
+                        . $fs['search'];
                 } elseif (
                     $fs['qry_op'] === AdvancedMembersList::OP_BEFORE
                     || $fs['qry_op'] === AdvancedMembersList::OP_AFTER
                 ) {
-                    $qry .= $prefix . $fs['field'] . $qop . ' ' .
-                        $zdb->platform->quoteValue($fs['search']);
+                    $qry .= $prefix . $fs['field'] . $qop . ' '
+                        . $zdb->platform->quoteValue($fs['search']);
                 } else {
                     $field = $prefix . $fs['field'];
                     if ($zdb->isPostgres()) {
                         $field = 'CAST(' . $field . ' AS TEXT)';
                     }
-                    $qry .= 'LOWER(' . $field . ') ' .
-                        $qop . ' ' . $zdb->platform->quoteValue($fs['search']);
+                    $qry .= 'LOWER(' . $field . ') '
+                        . $qop . ' ' . $zdb->platform->quoteValue($fs['search']);
                 }
 
                 if ($fs['log_op'] === AdvancedMembersList::OP_AND) {
@@ -1659,8 +1659,8 @@ class Members
         } catch (Throwable $e) {
             $zdb->connection->rollBack();
             Analog::log(
-                'An error occurred trying to retrieve members with ' .
-                'empty logins/passwords (' . $e->getMessage(),
+                'An error occurred trying to retrieve members with '
+                . 'empty logins/passwords (' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -1859,9 +1859,9 @@ class Members
 
         //check if current attached member is part of the list
         if ($current !== null && !isset($members[$current])) {
-            $members =
-                [$current => Adherent::getSName($zdb, $current, true, true)] +
-                $members
+            $members
+                = [$current => Adherent::getSName($zdb, $current, true, true)]
+                + $members
             ;
         }
 

@@ -224,8 +224,8 @@ abstract class AbstractUpdater
             return $checked;
         } else {
             Analog::log(
-                'Unable to see SQL scripts. Please check that scripts exists ' .
-                'in scripts/sql directory, for all supported SQL engines.',
+                'Unable to see SQL scripts. Please check that scripts exists '
+                . 'in scripts/sql directory, for all supported SQL engines.',
                 Analog::ERROR
             );
             return false;

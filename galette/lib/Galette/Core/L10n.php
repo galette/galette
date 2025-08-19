@@ -86,8 +86,8 @@ class L10n
                         'text_nref' => new Expression('text_nref+1')
                     ];
                     Analog::log(
-                        'Entry for `' . $text_orig .
-                        '` dynamic translation already exists.',
+                        'Entry for `' . $text_orig
+                        . '` dynamic translation already exists.',
                         Analog::INFO
                     );
 
@@ -118,8 +118,8 @@ class L10n
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred adding dynamic translation for `' .
-                $text_orig . '` | ' . $e->getMessage(),
+                'An error occurred adding dynamic translation for `'
+                . $text_orig . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -146,9 +146,9 @@ class L10n
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred deleting dynamic translation for `' .
-                $text_orig . ' | ' .
-                $e->getMessage(),
+                'An error occurred deleting dynamic translation for `'
+                . $text_orig . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -207,8 +207,8 @@ class L10n
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred updating dynamic translation for `' .
-                $text_orig . '` | ' . $e->getMessage(),
+                'An error occurred updating dynamic translation for `'
+                . $text_orig . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -244,8 +244,8 @@ class L10n
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred retrieving l10n entry. text_orig=' . $text_orig .
-                ', text_locale=' . $text_locale . ' | ' . $e->getMessage(),
+                'An error occurred retrieving l10n entry. text_orig=' . $text_orig
+                . ', text_locale=' . $text_locale . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -286,8 +286,8 @@ class L10n
             return $results;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred retrieving l10n entries. text_orig_sum=' . $text_orig_sum .
-                ' | ' . $e->getMessage(),
+                'An error occurred retrieving l10n entries. text_orig_sum=' . $text_orig_sum
+                . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;

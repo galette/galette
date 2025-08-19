@@ -92,12 +92,12 @@ class DynamicFieldsSet
                 /** @var ArrayObject<string, int|string> $r */
                 $perm = $r['field_perm'];
                 if (
-                    ($perm == FieldsConfig::MANAGER &&
-                        $access_level < Authentication::ACCESS_MANAGER) ||
-                    ($perm == FieldsConfig::STAFF &&
-                         $access_level < Authentication::ACCESS_STAFF) ||
-                    ($perm == FieldsConfig::ADMIN &&
-                        $access_level < Authentication::ACCESS_ADMIN)
+                    ($perm == FieldsConfig::MANAGER
+                        && $access_level < Authentication::ACCESS_MANAGER)
+                    || ($perm == FieldsConfig::STAFF
+                         && $access_level < Authentication::ACCESS_STAFF)
+                    || ($perm == FieldsConfig::ADMIN
+                        && $access_level < Authentication::ACCESS_ADMIN)
                 ) {
                     continue;
                 }

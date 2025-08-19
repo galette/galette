@@ -67,8 +67,8 @@ class ExternalScript
                 $selfs = explode('/', $_SERVER['PHP_SELF']);
                 array_pop($selfs);
                 $self = implode('/', $selfs);
-                $uri = $protocol . '://' . $_SERVER['SERVER_NAME'] . $self .
-                    '/' . GALETTE_BASE_PATH . str_replace($protocol . '://', '', $uri);
+                $uri = $protocol . '://' . $_SERVER['SERVER_NAME'] . $self
+                    . '/' . GALETTE_BASE_PATH . str_replace($protocol . '://', '', $uri);
                 break;
             case 'file':
                 $this->protocol = $protocol;
@@ -90,8 +90,8 @@ class ExternalScript
         }
 
         Analog::log(
-            __CLASS__ . ' instanced with method ' . $this->method .
-            ' and protocol ' . $this->protocol,
+            __CLASS__ . ' instanced with method ' . $this->method
+            . ' and protocol ' . $this->protocol,
             Analog::INFO
         );
 

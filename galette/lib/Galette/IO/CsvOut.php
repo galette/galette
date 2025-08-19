@@ -278,6 +278,9 @@ class CsvOut extends Csv
 
             $fp = fopen($filename, 'w');
             if ($fp) {
+                //show titles
+                $title = true;
+
                 $separator = ($export->separator)
                     ? (string)$export->separator
                     : self::DEFAULT_SEPARATOR;
@@ -287,10 +290,7 @@ class CsvOut extends Csv
                     $title = false;
                 } else {
                     $xpath = $export->xpath('headers/header');
-                    if (count($xpath) == 0) {
-                        //show titles
-                        $title = true;
-                    } else {
+                    if (count($xpath) > 0) {
                         //titles from array
                         foreach ($xpath as $header) {
                             $title[] = (string)$header;

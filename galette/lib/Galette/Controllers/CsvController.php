@@ -61,8 +61,8 @@ class CsvController extends AbstractController
     {
         if (!file_exists($filepath)) {
             Analog::log(
-                'A request has been made to get a CSV file named `' .
-                $filename . '` that does not exists (' . $filepath . ').',
+                'A request has been made to get a CSV file named `'
+                . $filename . '` that does not exists (' . $filepath . ').',
                 Analog::WARNING
             );
             //FIXME: use a proper error page
@@ -394,15 +394,15 @@ class CsvController extends AbstractController
         //admins or staff members
         if (!$this->login->isAdmin() && !$this->login->isStaff()) {
             Analog::log(
-                'A non authorized person asked to retrieve ' . $type . ' file named `' .
-                $filename . '`. Access has not been granted.',
+                'A non authorized person asked to retrieve ' . $type . ' file named `'
+                . $filename . '`. Access has not been granted.',
                 Analog::WARNING
             );
             return $response->withStatus(403);
         }
 
-        $filepath = $type === 'export' ?
-            CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
+        $filepath = $type === 'export'
+            ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
         $filepath .= $filename;
         return $this->sendResponse($response, $filepath, $filename);
     }
@@ -478,8 +478,8 @@ class CsvController extends AbstractController
                 _T("Removal has not been confirmed!")
             );
         } else {
-            $csv = $type === 'export' ?
-                new CsvOut() : new CsvIn($this->zdb);
+            $csv = $type === 'export'
+                ? new CsvOut() : new CsvIn($this->zdb);
             $res = $csv->remove($file);
             if ($res === true) {
                 $success = true;

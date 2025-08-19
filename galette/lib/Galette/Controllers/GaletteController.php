@@ -719,12 +719,12 @@ class GaletteController extends AbstractController
         $filters = new MembersList();
         $filters->filter_account = Members::ACTIVE_ACCOUNT;
 
-        $membership = ($membership === 'nearly' ?
-            Members::MEMBERSHIP_NEARLY : Members::MEMBERSHIP_LATE);
+        $membership = ($membership === 'nearly'
+            ? Members::MEMBERSHIP_NEARLY : Members::MEMBERSHIP_LATE);
         $filters->membership_filter = $membership;
 
-        $mail = ($mail === 'withmail' ?
-            Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
+        $mail = ($mail === 'withmail'
+            ? Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
         $filters->email_filter = $mail;
 
         $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;

@@ -336,10 +336,10 @@ class FieldsConfig
 
             if (count($this->defaults) != count($_all_fields)) {
                 Analog::log(
-                    'Fields configuration count for `' . $this->table .
-                    '` columns does not match records. Is : ' .
-                    count($_all_fields) . ' and should be ' .
-                    count($this->defaults),
+                    'Fields configuration count for `' . $this->table
+                    . '` columns does not match records. Is : '
+                    . count($_all_fields) . ' and should be '
+                    . count($this->defaults),
                     Analog::WARNING
                 );
 
@@ -371,9 +371,9 @@ class FieldsConfig
             }
         } catch (Throwable $e) {
             Analog::log(
-                '[' . $class . '] An error occurred while checking update for ' .
-                'fields configuration for table `' . $this->table . '`. ' .
-                $e->getMessage(),
+                '[' . $class . '] An error occurred while checking update for '
+                . 'fields configuration for table `' . $this->table . '`. '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -513,13 +513,13 @@ class FieldsConfig
 
                         // skip fields according to access control
                         if (
-                            $o->visible == self::NOBODY ||
-                            ($o->visible == self::ADMIN &&
-                                $access_level < Authentication::ACCESS_ADMIN) ||
-                            ($o->visible == self::STAFF &&
-                                $access_level < Authentication::ACCESS_STAFF) ||
-                            ($o->visible == self::MANAGER &&
-                                $access_level < Authentication::ACCESS_MANAGER)
+                            $o->visible == self::NOBODY
+                            || ($o->visible == self::ADMIN
+                                && $access_level < Authentication::ACCESS_ADMIN)
+                            || ($o->visible == self::STAFF
+                                && $access_level < Authentication::ACCESS_STAFF)
+                            || ($o->visible == self::MANAGER
+                                && $access_level < Authentication::ACCESS_MANAGER)
                         ) {
                             continue;
                         }
@@ -553,8 +553,8 @@ class FieldsConfig
 
                         // disabled field according to access control
                         if (
-                            $o->visible == self::USER_READ &&
-                                $access_level == Authentication::ACCESS_USER
+                            $o->visible == self::USER_READ
+                                && $access_level == Authentication::ACCESS_USER
                         ) {
                             $o->disabled = true;
                         } else {
@@ -644,13 +644,13 @@ class FieldsConfig
 
                         // skip fields according to access control
                         if (
-                            $o->visible == self::NOBODY ||
-                            ($o->visible == self::ADMIN &&
-                                $access_level < Authentication::ACCESS_ADMIN) ||
-                            ($o->visible == self::STAFF &&
-                                $access_level < Authentication::ACCESS_STAFF) ||
-                            ($o->visible == self::MANAGER &&
-                                $access_level < Authentication::ACCESS_MANAGER)
+                            $o->visible == self::NOBODY
+                            || ($o->visible == self::ADMIN
+                                && $access_level < Authentication::ACCESS_ADMIN)
+                            || ($o->visible == self::STAFF
+                                && $access_level < Authentication::ACCESS_STAFF)
+                            || ($o->visible == self::MANAGER
+                                && $access_level < Authentication::ACCESS_MANAGER)
                         ) {
                             continue;
                         }
@@ -788,8 +788,8 @@ class FieldsConfig
                 str_replace(
                     '%s',
                     $this->table,
-                    '[' . $class . '] Fields configuration for table %s stored ' .
-                    'successfully.'
+                    '[' . $class . '] Fields configuration for table %s stored '
+                    . 'successfully.'
                 ),
                 Analog::INFO
             );
@@ -799,9 +799,9 @@ class FieldsConfig
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                '[' . $class . '] An error occurred while storing fields ' .
-                'configuration for table `' . $this->table . '`.' .
-                $e->getMessage(),
+                '[' . $class . '] An error occurred while storing fields '
+                . 'configuration for table `' . $this->table . '`.'
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -824,8 +824,8 @@ class FieldsConfig
             $old_required = $this->zdb->execute($select);
         } catch (\Exception $pe) {
             Analog::log(
-                'Unable to retrieve required fields_config. Maybe ' .
-                'the table does not exists?',
+                'Unable to retrieve required fields_config. Maybe '
+                . 'the table does not exists?',
                 Analog::WARNING
             );
             //not a blocker
@@ -851,8 +851,8 @@ class FieldsConfig
             foreach ($old_required as $or) {
                 $stmt->execute(
                     [
-                        'required'  => ($or->required === false) ?
-                            ($this->zdb->isPostgres() ? 'false' : 0) : true,
+                        'required'  => ($or->required === false)
+                            ? ($this->zdb->isPostgres() ? 'false' : 0) : true,
                         'field_id'  => $or->field_id
                     ]
                 );
@@ -863,8 +863,8 @@ class FieldsConfig
                 str_replace(
                     '%s',
                     $this->table,
-                    '[' . $class . '] Required fields for table %s upgraded ' .
-                    'successfully.'
+                    '[' . $class . '] Required fields for table %s upgraded '
+                    . 'successfully.'
                 ),
                 Analog::INFO
             );
@@ -879,8 +879,8 @@ class FieldsConfig
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'An error occurred migrating old required fields. | ' .
-                $e->getMessage(),
+                'An error occurred migrating old required fields. | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -974,13 +974,13 @@ class FieldsConfig
 
         foreach (array_keys($fields) as $k) {
             if (
-                $visibles[$k] == FieldsConfig::NOBODY ||
-                ($visibles[$k] == FieldsConfig::ADMIN &&
-                    $access_level < Authentication::ACCESS_ADMIN) ||
-                ($visibles[$k] == FieldsConfig::STAFF &&
-                    $access_level < Authentication::ACCESS_STAFF) ||
-                ($visibles[$k] == FieldsConfig::MANAGER &&
-                    $access_level < Authentication::ACCESS_MANAGER)
+                $visibles[$k] == FieldsConfig::NOBODY
+                || ($visibles[$k] == FieldsConfig::ADMIN
+                    && $access_level < Authentication::ACCESS_ADMIN)
+                || ($visibles[$k] == FieldsConfig::STAFF
+                    && $access_level < Authentication::ACCESS_STAFF)
+                || ($visibles[$k] == FieldsConfig::MANAGER
+                    && $access_level < Authentication::ACCESS_MANAGER)
             ) {
                 unset($fields[$k]);
             }

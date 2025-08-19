@@ -171,9 +171,9 @@ trait Dynamics
                         } catch (Throwable $e) {
                             $valid = false;
                             Analog::log(
-                                'Wrong date format. field: ' . $field_id .
-                                ', value: ' . $value . ', expected fmt: ' .
-                                __("Y-m-d") . ' | ' . $e->getMessage(),
+                                'Wrong date format. field: ' . $field_id
+                                . ', value: ' . $value . ', expected fmt: '
+                                . __("Y-m-d") . ' | ' . $e->getMessage(),
                                 Analog::INFO
                             );
                             $this->errors[] = sprintf(
@@ -264,9 +264,9 @@ trait Dynamics
                 continue;
             }
 
-            $max_size =
-                $fields[$field_id]->getSize() ?
-                $fields[$field_id]->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
+            $max_size
+                = $fields[$field_id]->getSize()
+                ? $fields[$field_id]->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
             if ($file['size'] > $max_size) {
                 Analog::log(
                     "file too large: " . $file['size'] . " Ko, vs $max_size Ko allowed",

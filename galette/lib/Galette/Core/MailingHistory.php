@@ -222,8 +222,8 @@ class MailingHistory extends History
                 );
 
                 $select->where(
-                    'LOWER(mailing_subject) LIKE ' .
-                    $token
+                    'LOWER(mailing_subject) LIKE '
+                    . $token
                 );
             }
         } catch (Throwable $e) {
@@ -294,8 +294,8 @@ class MailingHistory extends History
             return $mailing->loadFromHistory($result, $new);
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to load mailing model #' . $id . ' | ' .
-                $e->getMessage(),
+                'Unable to load mailing model #' . $id . ' | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -337,8 +337,8 @@ class MailingHistory extends History
             return true;
         } else {
             Analog::log(
-                '[' . __METHOD__ .
-                '] Mailing should be an instance of Mailing',
+                '[' . __METHOD__
+                . '] Mailing should be an instance of Mailing',
                 Analog::ERROR
             );
             return false;
@@ -360,12 +360,12 @@ class MailingHistory extends History
                 }
             }
 
-            $sender = ($this->sender === 0) ?
-                new Expression('NULL') : $this->sender;
-            $sender_name = ($this->sender_name === null) ?
-                new Expression('NULL') : $this->sender_name;
-            $sender_address = ($this->sender_address === null) ?
-                new Expression('NULL') : $this->sender_address;
+            $sender = ($this->sender === 0)
+                ? new Expression('NULL') : $this->sender;
+            $sender_name = ($this->sender_name === null)
+                ? new Expression('NULL') : $this->sender_name;
+            $sender_address = ($this->sender_address === null)
+                ? new Expression('NULL') : $this->sender_address;
 
             $values = [
                 'mailing_sender'            => $sender,
@@ -375,9 +375,9 @@ class MailingHistory extends History
                 'mailing_body'              => $this->message,
                 'mailing_date'              => $this->date,
                 'mailing_recipients'        => Galette::jsonEncode($_recipients),
-                'mailing_sent'              => ($this->sent) ?
-                    true :
-                    ($this->zdb->isPostgres() ? 'false' : 0)
+                'mailing_sent'              => ($this->sent)
+                    ? true
+                    : ($this->zdb->isPostgres() ? 'false' : 0)
             ];
 
             $update = $this->zdb->update(self::TABLE);
@@ -410,10 +410,10 @@ class MailingHistory extends History
             }
 
             $sender = $this->sender === 0 ? new Expression('NULL') : $this->sender;
-            $sender_name = ($this->sender_name === null) ?
-                new Expression('NULL') : $this->sender_name;
-            $sender_address = ($this->sender_address === null) ?
-                new Expression('NULL') : $this->sender_address;
+            $sender_name = ($this->sender_name === null)
+                ? new Expression('NULL') : $this->sender_name;
+            $sender_address = ($this->sender_address === null)
+                ? new Expression('NULL') : $this->sender_address;
 
             $values = [
                 'mailing_sender'            => $sender,
@@ -423,9 +423,9 @@ class MailingHistory extends History
                 'mailing_body'              => $this->message,
                 'mailing_date'              => $this->date,
                 'mailing_recipients'        => Galette::jsonEncode($_recipients),
-                'mailing_sent'              => ($this->sent) ?
-                    true :
-                    ($this->zdb->isPostgres() ? 'false' : 0)
+                'mailing_sent'              => ($this->sent)
+                    ? true
+                    : ($this->zdb->isPostgres() ? 'false' : 0)
             ];
 
             $insert = $this->zdb->insert(self::TABLE);
@@ -480,8 +480,8 @@ class MailingHistory extends History
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to delete selected mailing history entries |' .
-                $e->getMessage(),
+                'Unable to delete selected mailing history entries |'
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return false;

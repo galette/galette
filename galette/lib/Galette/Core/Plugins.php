@@ -101,8 +101,8 @@ class Plugins
                         ) {
                             //plugin is not compatible with that version of galette.
                             Analog::log(
-                                'Plugin ' . $entry . ' is missing a _define.php and/or _routes.php ' .
-                                'files that are required.',
+                                'Plugin ' . $entry . ' is missing a _define.php and/or _routes.php '
+                                . 'files that are required.',
                                 Analog::WARNING
                             );
                             $this->setDisabled(self::DISABLED_MISS);
@@ -201,17 +201,17 @@ class Plugins
         if ($compver === null) {
             //plugin compatibility missing!
             Analog::log(
-                'Plugin ' . $name . ' does not contains mandatory version ' .
-                'compatibility information. Please contact the author.',
+                'Plugin ' . $name . ' does not contains mandatory version '
+                . 'compatibility information. Please contact the author.',
                 Analog::ERROR
             );
             $this->setDisabled(self::DISABLED_COMPAT);
         } elseif (version_compare($compver, GALETTE_COMPAT_VERSION, '<')) {
             //plugin is not compatible with that version of galette.
             Analog::log(
-                'Plugin ' . $name . ' is known to be compatible with Galette ' .
-                $compver . ' only, but you current installation require a ' .
-                'plugin compatible with at least ' . GALETTE_COMPAT_VERSION,
+                'Plugin ' . $name . ' is known to be compatible with Galette '
+                . $compver . ' only, but you current installation require a '
+                . 'plugin compatible with at least ' . GALETTE_COMPAT_VERSION,
                 Analog::WARNING
             );
             $this->setDisabled(self::DISABLED_COMPAT);

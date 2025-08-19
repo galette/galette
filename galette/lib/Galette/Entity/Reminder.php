@@ -96,8 +96,8 @@ class Reminder
             $this->loadFromRS($results->current());
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading reminder #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading reminder #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -147,12 +147,12 @@ class Reminder
             'reminder_type'     => $this->type,
             'reminder_dest'     => $this->dest->id,
             'reminder_date'     => $now->format('Y-m-d'),
-            'reminder_success'  => ($this->success) ?
-                true :
-                ($zdb->isPostgres() ? 'false' : 0),
-            'reminder_nomail'   => ($this->nomail) ?
-                true :
-                ($zdb->isPostgres() ? 'false' : 0)
+            'reminder_success'  => ($this->success)
+                ? true
+                : ($zdb->isPostgres() ? 'false' : 0),
+            'reminder_nomail'   => ($this->nomail)
+                ? true
+                : ($zdb->isPostgres() ? 'false' : 0)
         ];
         try {
             $insert = $zdb->insert(self::TABLE);
@@ -166,8 +166,8 @@ class Reminder
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing reminder: ' . $e->getMessage() .
-                "\n" . print_r($data, true),
+                'An error occurred storing reminder: ' . $e->getMessage()
+                . "\n" . print_r($data, true),
                 Analog::ERROR
             );
             throw $e;

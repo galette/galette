@@ -270,8 +270,8 @@ class Group
             $this->groups = $groups;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot get subgroup for group ' . $this->group_name .
-                ' (' . $this->id . ')| ' . $e->getMessage(),
+                'Cannot get subgroup for group ' . $this->group_name
+                . ' (' . $this->id . ')| ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -300,8 +300,8 @@ class Group
                 $subgroups = $this->getGroups();
                 if (count($subgroups) > 0) {
                     Analog::log(
-                        'Cascading remove ' . $this->group_name .
-                        '. Subgroups, their members and managers will be detached.',
+                        'Cascading remove ' . $this->group_name
+                        . '. Subgroups, their members and managers will be detached.',
                         Analog::INFO
                     );
                     foreach ($subgroups as $subgroup) {
@@ -310,8 +310,8 @@ class Group
                 }
 
                 Analog::log(
-                    'Cascading remove ' . $this->group_name .
-                    '. Members and managers will be detached.',
+                    'Cascading remove ' . $this->group_name
+                    . '. Members and managers will be detached.',
                     Analog::INFO
                 );
 
@@ -353,8 +353,8 @@ class Group
                 $this->isempty = false;
             } else {
                 Analog::log(
-                    'Unable to delete group ' . $this->group_name .
-                    ' (' . $this->id . ') |' . $e->getMessage(),
+                    'Unable to delete group ' . $this->group_name
+                    . ' (' . $this->id . ') |' . $e->getMessage(),
                     Analog::ERROR
                 );
                 throw $e;
@@ -405,10 +405,10 @@ class Group
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong detaching group `' . $this->group_name .
-                '` (' . $this->id . ') from its parent:\'( | ' .
-                $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
+                'Something went wrong detaching group `' . $this->group_name
+                . '` (' . $this->id . ') from its parent:\'( | '
+                . $e->getMessage() . "\n"
+                . $e->getTraceAsString(),
                 Analog::ERROR
             );
             throw $e;
@@ -489,8 +489,8 @@ class Group
             /** FIXME: also store members and managers? */
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
+                'Something went wrong :\'( | ' . $e->getMessage() . "\n"
+                . $e->getTraceAsString(),
                 Analog::ERROR
             );
             throw $e;
@@ -765,14 +765,14 @@ class Group
         } catch (\OverflowException $e) {
             //nothing to do, member is already in group
             Analog::log(
-                'Member `' . $member->sname . '` already in group `' .
-                $this->group_name . '` (' . $this->id . ').',
+                'Member `' . $member->sname . '` already in group `'
+                . $this->group_name . '` (' . $this->id . ').',
                 Analog::INFO
             );
         } catch (\Throwable $e) {
             Analog::log(
-                'Cannot add member to group `' . $this->group_name .
-                '` (' . $this->id . ') | ' . $e->getMessage(),
+                'Cannot add member to group `' . $this->group_name
+                . '` (' . $this->id . ') | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -800,8 +800,8 @@ class Group
             $zdb->execute($delete);
 
             Analog::log(
-                'Group members has been removed for `' . $this->group_name .
-                '`, we can now store new ones.',
+                'Group members has been removed for `' . $this->group_name
+                . '`, we can now store new ones.',
                 Analog::INFO
             );
 
@@ -825,20 +825,20 @@ class Group
 
                 if ($result) {
                     Analog::log(
-                        'Member `' . $m->sname . '` attached to group `' .
-                        $this->group_name . '`.',
+                        'Member `' . $m->sname . '` attached to group `'
+                        . $this->group_name . '`.',
                         Analog::DEBUG
                     );
                 } else {
                     Analog::log(
-                        'An error occurred trying to attach member `' .
-                        $m->sname . '` to group `' . $this->group_name .
-                        '` (' . $this->id . ').',
+                        'An error occurred trying to attach member `'
+                        . $m->sname . '` to group `' . $this->group_name
+                        . '` (' . $this->id . ').',
                         Analog::ERROR
                     );
                     throw new \Exception(
-                        'Unable to attach `' . $m->sname . '` ' .
-                        'to ' . $this->group_name . '(' . $this->id . ')'
+                        'Unable to attach `' . $m->sname . '` '
+                        . 'to ' . $this->group_name . '(' . $this->id . ')'
                     );
                 }
             }
@@ -860,8 +860,8 @@ class Group
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
             Analog::log(
-                'Unable to attach members to group `' . $this->group_name .
-                '` (' . $this->id . ')|' . implode("\n", $messages),
+                'Unable to attach members to group `' . $this->group_name
+                . '` (' . $this->id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
             throw $te;
@@ -889,8 +889,8 @@ class Group
             $zdb->execute($delete);
 
             Analog::log(
-                'Group managers has been removed for `' . $this->group_name .
-                '`, we can now store new ones.',
+                'Group managers has been removed for `' . $this->group_name
+                . '`, we can now store new ones.',
                 Analog::INFO
             );
 
@@ -914,20 +914,20 @@ class Group
 
                 if ($result) {
                     Analog::log(
-                        'Manager `' . $m->sname . '` attached to group `' .
-                        $this->group_name . '`.',
+                        'Manager `' . $m->sname . '` attached to group `'
+                        . $this->group_name . '`.',
                         Analog::DEBUG
                     );
                 } else {
                     Analog::log(
-                        'An error occurred trying to attach manager `' .
-                        $m->sname . '` to group `' . $this->group_name .
-                        '` (' . $this->id . ').',
+                        'An error occurred trying to attach manager `'
+                        . $m->sname . '` to group `' . $this->group_name
+                        . '` (' . $this->id . ').',
                         Analog::ERROR
                     );
                     throw new \Exception(
-                        'Unable to attach `' . $m->sname . '` ' .
-                        'to ' . $this->group_name . '(' . $this->id . ')'
+                        'Unable to attach `' . $m->sname . '` '
+                        . 'to ' . $this->group_name . '(' . $this->id . ')'
                     );
                 }
             }
@@ -949,8 +949,8 @@ class Group
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
             Analog::log(
-                'Unable to attach managers to group `' . $this->group_name .
-                '` (' . $this->id . ')|' . implode("\n", $messages),
+                'Unable to attach managers to group `' . $this->group_name
+                . '` (' . $this->id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
             throw $te;

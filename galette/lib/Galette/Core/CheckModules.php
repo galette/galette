@@ -119,8 +119,8 @@ class CheckModules
     {
         $html = null;
 
-        $html_elt = '<li><span>%1$s</span><span><i class="ui %2$s icon" aria-hidden="true"></i>' .
-            '<span class="visually-hidden">%3$s</span></span></li>';
+        $html_elt = '<li><span>%1$s</span><span><i class="ui %2$s icon" aria-hidden="true"></i>'
+            . '<span class="visually-hidden">%3$s</span></span></li>';
         if (count($this->missing) > 0) {
             $ko = ($translated ? _T('Ko') : 'Ko');
             foreach ($this->missing as $m) {

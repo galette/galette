@@ -101,22 +101,22 @@ class MembersCsv extends CsvOut
         foreach ($this->members_fields as $k => $f) {
             // skip fields blacklisted for export
             if (
-                $k === 'mdp_adh' ||
-                ($export_fields !== null &&
-                    (is_array($export_fields) && !in_array($k, $export_fields)))
+                $k === 'mdp_adh'
+                || ($export_fields !== null
+                    && (is_array($export_fields) && !in_array($k, $export_fields)))
             ) {
                 continue;
             }
 
             // skip fields according to access control
             if (
-                $visibles[$k] == FieldsConfig::NOBODY ||
-                ($visibles[$k] == FieldsConfig::ADMIN &&
-                    $access_level < Authentication::ACCESS_ADMIN) ||
-                ($visibles[$k] == FieldsConfig::STAFF &&
-                    $access_level < Authentication::ACCESS_STAFF) ||
-                ($visibles[$k] == FieldsConfig::MANAGER &&
-                    $access_level < Authentication::ACCESS_MANAGER)
+                $visibles[$k] == FieldsConfig::NOBODY
+                || ($visibles[$k] == FieldsConfig::ADMIN
+                    && $access_level < Authentication::ACCESS_ADMIN)
+                || ($visibles[$k] == FieldsConfig::STAFF
+                    && $access_level < Authentication::ACCESS_STAFF)
+                || ($visibles[$k] == FieldsConfig::MANAGER
+                    && $access_level < Authentication::ACCESS_MANAGER)
             ) {
                 continue;
             }

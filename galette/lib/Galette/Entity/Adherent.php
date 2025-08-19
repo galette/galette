@@ -924,8 +924,8 @@ class Adherent implements AccessManagementInterface
             $str .= $title->tshort . ' ';
         }
 
-        $str .= mb_strtoupper($name ?? '', 'UTF-8') . ' ' .
-            ucwords(mb_strtolower($surname ?? '', 'UTF-8'), " \t\r\n\f\v-_|");
+        $str .= mb_strtoupper($name ?? '', 'UTF-8') . ' '
+            . ucwords(mb_strtolower($surname ?? '', 'UTF-8'), " \t\r\n\f\v-_|");
 
         if ($id !== false || !empty($nick)) {
             $str .= ' (';
@@ -1225,8 +1225,8 @@ class Adherent implements AccessManagementInterface
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store a member' . "\n" .
-                print_r($this->errors, true),
+                'Some errors has been thew attempting to edit/store a member' . "\n"
+                . print_r($this->errors, true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -1332,9 +1332,9 @@ class Adherent implements AccessManagementInterface
                     $this->$prop = $d->format('Y-m-d');
                 } catch (Throwable $e) {
                     Analog::log(
-                        'Wrong date format. field: ' . $field .
-                        ', value: ' . $value . ', expected fmt: ' .
-                        __("Y-m-d") . ' | ' . $e->getMessage(),
+                        'Wrong date format. field: ' . $field
+                        . ', value: ' . $value . ', expected fmt: '
+                        . __("Y-m-d") . ' | ' . $e->getMessage(),
                         Analog::INFO
                     );
                     $this->errors[] = sprintf(
@@ -1359,8 +1359,8 @@ class Adherent implements AccessManagementInterface
             case 'email_adh':
                 $this->$prop = $value;
                 if (!GaletteMail::isValidEmail($value)) {
-                    $this->errors[] = _T("- Non-valid E-Mail address!") .
-                        ' (' . $this->getFieldLabel($field) . ')';
+                    $this->errors[] = _T("- Non-valid E-Mail address!")
+                        . ' (' . $this->getFieldLabel($field) . ')';
                 }
 
                 try {
@@ -1618,8 +1618,8 @@ class Adherent implements AccessManagementInterface
                     // logging
                     if ($this->self_adh) {
                         $hist->add(
-                            _T("Self_subscription as a member: ") .
-                            $this->getNameWithCase($this->name, $this->surname),
+                            _T("Self_subscription as a member: ")
+                            . $this->getNameWithCase($this->name, $this->surname),
                             $this->sname
                         );
                     } else {
@@ -1679,8 +1679,8 @@ class Adherent implements AccessManagementInterface
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
+                'Something went wrong :\'( | ' . $e->getMessage() . "\n"
+                . $e->getTraceAsString(),
                 Analog::ERROR
             );
             throw $e;
@@ -1859,8 +1859,8 @@ class Adherent implements AccessManagementInterface
                     } catch (Throwable $e) {
                         //oops, we've got a bad date :/
                         Analog::log(
-                            'Bad date (' . $this->$name . ') | ' .
-                            $e->getMessage(),
+                            'Bad date (' . $this->$name . ') | '
+                            . $e->getMessage(),
                             Analog::INFO
                         );
                         return $this->$name;
@@ -2111,8 +2111,8 @@ class Adherent implements AccessManagementInterface
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store a member files' . "\n" .
-                print_r($this->errors, true),
+                'Some errors has been thew attempting to edit/store a member files' . "\n"
+                . print_r($this->errors, true),
                 Analog::ERROR
             );
             return $this->errors;

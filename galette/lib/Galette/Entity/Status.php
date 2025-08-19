@@ -114,8 +114,8 @@ class Status
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load status #' . $id . ' | ' .
-                $e->getMessage(),
+                'Cannot load status #' . $id . ' | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -177,15 +177,15 @@ class Status
             }
 
             Analog::log(
-                'Defaults status ' .
-                ') were successfully stored into database.',
+                'Defaults status '
+                . ') were successfully stored into database.',
                 Analog::INFO
             );
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to initialize defaults status ' .
-                $e->getMessage(),
+                'Unable to initialize defaults status '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -256,8 +256,8 @@ class Status
             return $list;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot list status ' .
-                ' | ' . $e->getMessage(),
+                'Cannot list status '
+                . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -337,8 +337,8 @@ class Status
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to retrieve status from label `' .
-                $label . '` | ' . $e->getMessage(),
+                'Unable to retrieve status from label `'
+                . $label . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -382,8 +382,8 @@ class Status
 
             if ($ret->count() > 0) {
                 Analog::log(
-                    'New status `' . $label .
-                    '` added successfully.',
+                    'New status `' . $label
+                    . '` added successfully.',
                     Analog::INFO
                 );
 
@@ -398,8 +398,8 @@ class Status
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to add new status `' . $label . '` | ' .
-                $e->getMessage(),
+                'Unable to add new status `' . $label . '` | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -453,8 +453,8 @@ class Status
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to update status #' . $id . ' | ' .
-                $e->getMessage(),
+                'Unable to update status #' . $id . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -503,8 +503,8 @@ class Status
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to delete status  #' . $id .
-                ' | ' . $e->getMessage(),
+                'Unable to delete status  #' . $id
+                . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -534,8 +534,8 @@ class Status
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to check if status #' . $id .
-                ' is used. | ' . $e->getMessage(),
+                'Unable to check if status #' . $id
+                . ' is used. | ' . $e->getMessage(),
                 Analog::ERROR
             );
             //in case of error, we consider that it is used, to avoid errors

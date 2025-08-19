@@ -368,9 +368,9 @@ class ScheduledPayments
             }
 
             if ($this->filters->paid != ScheduledPaymentsList::PAID_DC) {
-                $paid = $this->filters->paid ?
-                    true :
-                    ($this->zdb->isPostgres() ? 'false' : 0);
+                $paid = $this->filters->paid
+                    ? true
+                    : ($this->zdb->isPostgres() ? 'false' : 0);
                 $select->where(['s.paid' => $paid]);
             }
         } catch (Throwable $e) {
@@ -408,16 +408,16 @@ class ScheduledPayments
                 ]
             );
             if (
-                !$member->hasParent() ||
-                $member->parent->id != $this->login->id
+                !$member->hasParent()
+                || $member->parent->id != $this->login->id
             ) {
                 //check if member is part of logged-in user managed groups
                 $mgroup = $this->login->getManagedGroups();
                 $groups = $member->getGroups();
                 if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
                     Analog::log(
-                        'Trying to display scheduled payments for member #' . $member->id .
-                        ' without appropriate ACLs',
+                        'Trying to display scheduled payments for member #' . $member->id
+                        . ' without appropriate ACLs',
                         Analog::WARNING
                     );
                     $this->filters->member_filter = $this->login->id;
@@ -494,8 +494,8 @@ class ScheduledPayments
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred trying to remove scheduled payments | ' .
-                $e->getMessage(),
+                'An error occurred trying to remove scheduled payments | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;

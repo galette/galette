@@ -365,8 +365,8 @@ $app->get(
 )->setName('configureDynamicFields')->add($authenticate);
 
 $app->get(
-    '/fields/dynamic/move/{form_name:adh|contrib|trans}' .
-        '/{direction:' . DynamicField::MOVE_UP . '|' . DynamicField::MOVE_DOWN . '}/{id:\d+}',
+    '/fields/dynamic/move/{form_name:adh|contrib|trans}'
+        . '/{direction:' . DynamicField::MOVE_UP . '|' . DynamicField::MOVE_DOWN . '}/{id:\d+}',
     [Crud\DynamicFieldsController::class, 'move']
 )->setName('moveDynamicField')->add($authenticate);
 

@@ -152,13 +152,13 @@ class ListsConfig extends FieldsConfig
 
                     // skip fields according to access control
                     if (
-                        $o->visible == self::NOBODY ||
-                        ($o->visible == self::ADMIN &&
-                            $access_level < Authentication::ACCESS_ADMIN) ||
-                        ($o->visible == self::STAFF &&
-                            $access_level < Authentication::ACCESS_STAFF) ||
-                        ($o->visible == self::MANAGER &&
-                            $access_level < Authentication::ACCESS_MANAGER)
+                        $o->visible == self::NOBODY
+                        || ($o->visible == self::ADMIN
+                            && $access_level < Authentication::ACCESS_ADMIN)
+                        || ($o->visible == self::STAFF
+                            && $access_level < Authentication::ACCESS_STAFF)
+                        || ($o->visible == self::MANAGER
+                            && $access_level < Authentication::ACCESS_MANAGER)
                     ) {
                         continue;
                     }
@@ -310,8 +310,8 @@ class ListsConfig extends FieldsConfig
                 str_replace(
                     '%s',
                     $this->table,
-                    '[' . $class . '] List configuration for table %s stored ' .
-                    'successfully.'
+                    '[' . $class . '] List configuration for table %s stored '
+                    . 'successfully.'
                 ),
                 Analog::INFO
             );
@@ -321,9 +321,9 @@ class ListsConfig extends FieldsConfig
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                '[' . $class . '] An error occurred while storing list ' .
-                'configuration for table `' . $this->table . '`.' .
-                $e->getMessage(),
+                '[' . $class . '] An error occurred while storing list '
+                . 'configuration for table `' . $this->table . '`.'
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;

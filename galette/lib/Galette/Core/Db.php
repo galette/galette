@@ -129,8 +129,8 @@ class Db
         } catch (Throwable $e) {
             // perhaps factory() failed to load the specified Adapter class
             Analog::log(
-                '[Db] Error (' . $e->getCode() . '|' .
-                $e->getMessage() . ')',
+                '[Db] Error (' . $e->getCode() . '|'
+                . $e->getMessage() . ')',
                 Analog::ALERT
             );
             throw $e;
@@ -297,8 +297,8 @@ class Db
         } catch (Throwable $e) {
             // perhaps failed to load the specified Adapter class
             Analog::log(
-                '[' . __METHOD__ . '] Connection error (' . $e->getCode() . '|' .
-                $e->getMessage() . ')',
+                '[' . __METHOD__ . '] Connection error (' . $e->getCode() . '|'
+                . $e->getMessage() . ')',
                 Analog::ALERT
             );
             throw $e;
@@ -559,8 +559,8 @@ class Db
                     //Change whole table charset
                     //CONVERT TO instruction will take care of each fields,
                     //but converting data stay our problem.
-                    $query = 'ALTER TABLE ' . $table .
-                        ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
+                    $query = 'ALTER TABLE ' . $table
+                        . ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
 
                     $this->db->query(
                         $query,
@@ -580,8 +580,8 @@ class Db
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred while converting to utf table ' .
-                $table . ' (' . $e->getMessage() . ')',
+                'An error occurred while converting to utf table '
+                . $table . ' (' . $e->getMessage() . ')',
                 Analog::ERROR
             );
             throw $e;
@@ -607,8 +607,8 @@ class Db
             );
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot SET NAMES on table `' . $table . '`. ' .
-                $e->getMessage(),
+                'Cannot SET NAMES on table `' . $table . '`. '
+                . $e->getMessage(),
                 Analog::ERROR
             );
         }
@@ -646,8 +646,8 @@ class Db
                 } else {
                     //not a know case, we do not perform any update.
                     throw new Exception(
-                        'Cannot define primary key for table `' . $table .
-                        '`, aborting'
+                        'Cannot define primary key for table `' . $table
+                        . '`, aborting'
                     );
                 }
             }
@@ -676,8 +676,8 @@ class Db
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred while converting contents to UTF-8 for table ' .
-                $table . ' (' . $e->getMessage() . ')',
+                'An error occurred while converting contents to UTF-8 for table '
+                . $table . ' (' . $e->getMessage() . ')',
                 Analog::ERROR
             );
         }
@@ -881,8 +881,8 @@ class Db
             $infos['version']   = $result['version'];
             $infos['sql_mode']  = $result['mode'];
 
-            $size_sql = 'SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS dbsize' .
-                ' FROM information_schema.tables WHERE table_schema="' . NAME_DB . '"';
+            $size_sql = 'SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS dbsize'
+                . ' FROM information_schema.tables WHERE table_schema="' . NAME_DB . '"';
             $result = $this->db->query($size_sql, Adapter::QUERY_MODE_EXECUTE)
                 ->current();
 
@@ -1030,8 +1030,8 @@ class Db
     {
         /** @phpstan-ignore-next-line */
         return (int)$this->driver->getLastGeneratedValue(
-            $this->isPostgres() ?
-                $this->getSequenceName($entity::TABLE, $entity::PK, true)
+            $this->isPostgres()
+                ? $this->getSequenceName($entity::TABLE, $entity::PK, true)
                 : null
         );
     }

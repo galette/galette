@@ -357,8 +357,8 @@ class Mailing extends GaletteMail
         ) {
             foreach ($this->attachments as &$attachment) {
                 $old_path = $attachment->getDestDir() . $attachment->getFileName();
-                $new_path = GALETTE_ATTACHMENTS_PATH . $id . '/' .
-                    $attachment->getFileName();
+                $new_path = GALETTE_ATTACHMENTS_PATH . $id . '/'
+                    . $attachment->getFileName();
                 if (!file_exists(GALETTE_ATTACHMENTS_PATH . $id)) {
                     mkdir(GALETTE_ATTACHMENTS_PATH . $id);
                 }
@@ -612,9 +612,9 @@ class Mailing extends GaletteMail
                     $this->isHTML($value);
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '] Value for field `' . $name .
-                        '` should be boolean - (' . gettype($value) . ')' .
-                        $value . ' given',
+                        '[' . get_class($this) . '] Value for field `' . $name
+                        . '` should be boolean - (' . gettype($value) . ')'
+                        . $value . ' given',
                         Analog::WARNING
                     );
                 }
@@ -630,9 +630,9 @@ class Mailing extends GaletteMail
                     $this->current_step = (int)$value;
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '] Value for field `' . $name .
-                        '` should be integer and know - (' . gettype($value) . ')' .
-                        $value . ' given',
+                        '[' . get_class($this) . '] Value for field `' . $name
+                        . '` should be integer and know - (' . gettype($value) . ')'
+                        . $value . ' given',
                         Analog::WARNING
                     );
                 }

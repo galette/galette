@@ -144,8 +144,8 @@ abstract class DynamicField
             }
         } catch (Throwable $e) {
             Analog::log(
-                __METHOD__ . ' | Unable to retrieve field `' . $id .
-                '` information | ' . $e->getMessage(),
+                __METHOD__ . ' | Unable to retrieve field `' . $id
+                . '` information | ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -197,8 +197,8 @@ abstract class DynamicField
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to retrieve field type for field ' . $id . ' | ' .
-                $e->getMessage(),
+                'Unable to retrieve field type for field ' . $id . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -794,15 +794,15 @@ abstract class DynamicField
                 $this->zdb->drop(str_replace(PREFIX_DB, '', $contents_table), true);
                 $field_size = ((int)$this->size > 0) ? $this->size : 1;
                 $this->zdb->db->query(
-                    'CREATE TABLE ' . $contents_table .
-                    ' (id INTEGER NOT NULL,val varchar(' . $field_size .
-                    ') NOT NULL)',
+                    'CREATE TABLE ' . $contents_table
+                    . ' (id INTEGER NOT NULL,val varchar(' . $field_size
+                    . ') NOT NULL)',
                     \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
             } catch (Throwable $e) {
                 Analog::log(
-                    'Unable to manage fields values table ' .
-                    $contents_table . ' | ' . $e->getMessage(),
+                    'Unable to manage fields values table '
+                    . $contents_table . ' | ' . $e->getMessage(),
                     Analog::ERROR
                 );
                 $this->errors[] = _T("An error occurred creating field values table");
@@ -835,8 +835,8 @@ abstract class DynamicField
                 } catch (Throwable $e) {
                     $this->zdb->connection->rollBack();
                     Analog::log(
-                        'Unable to store field ' . $this->id . ' values (' .
-                        $e->getMessage() . ')',
+                        'Unable to store field ' . $this->id . ' values ('
+                        . $e->getMessage() . ')',
                         Analog::ERROR
                     );
                     $this->warnings[] = _T('An error occurred storing dynamic field values :(');
@@ -964,8 +964,8 @@ abstract class DynamicField
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to change field ' . $this->id . ' rank | ' .
-                $e->getMessage(),
+                'Unable to change field ' . $this->id . ' rank | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return false;

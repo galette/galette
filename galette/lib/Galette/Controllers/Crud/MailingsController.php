@@ -130,8 +130,8 @@ class MailingsController extends CrudController
                         _T('No member selected for mailing!')
                     );
 
-                    $redirect_url = ($this->session->redirect_mailing !== null) ?
-                        $this->session->redirect_mailing : $this->routeparser->urlFor('members');
+                    $redirect_url = ($this->session->redirect_mailing !== null)
+                        ? $this->session->redirect_mailing : $this->routeparser->urlFor('members');
 
                     return $response
                         ->withStatus(301)
@@ -351,8 +351,8 @@ class MailingsController extends CrudController
                 if ($sent == Mailing::MAIL_ERROR) {
                     $mailing->current_step = Mailing::STEP_START;
                     Analog::log(
-                        '[Mailings] Message was not sent. Errors: ' .
-                        print_r($mailing->errors, true),
+                        '[Mailings] Message was not sent. Errors: '
+                        . print_r($mailing->errors, true),
                         Analog::ERROR
                     );
                     foreach ($mailing->errors as $e) {
@@ -695,8 +695,8 @@ class MailingsController extends CrudController
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
-                'sender'        => $mailing->getSenderName() . ' <' .
-                    $mailing->getSenderAddress() . '>',
+                'sender'        => $mailing->getSenderName() . ' <'
+                    . $mailing->getSenderAddress() . '>',
                 'attachments'   => $attachments
 
             ]

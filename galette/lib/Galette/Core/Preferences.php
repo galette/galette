@@ -465,8 +465,8 @@ class Preferences
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Preferences cannot be loaded. Galette should not work without ' .
-                'preferences. Exiting.',
+                'Preferences cannot be loaded. Galette should not work without '
+                . 'preferences. Exiting.',
                 Analog::URGENT
             );
             return false;
@@ -1738,8 +1738,8 @@ class Preferences
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store logo' . "\n" .
-                print_r($this->errors, true),
+                'Some errors has been thew attempting to edit/store logo' . "\n"
+                . print_r($this->errors, true),
                 Analog::WARNING
             );
             return $this->errors;
@@ -1773,8 +1773,8 @@ class Preferences
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store print logo' . "\n" .
-                print_r($this->errors, true),
+                'Some errors has been thew attempting to edit/store print logo' . "\n"
+                . print_r($this->errors, true),
                 Analog::WARNING
             );
             return $this->errors;

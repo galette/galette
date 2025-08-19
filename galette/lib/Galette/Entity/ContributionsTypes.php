@@ -121,8 +121,8 @@ class ContributionsTypes
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load contribution type #' . $id . ' | ' .
-                $e->getMessage(),
+                'Cannot load contribution type #' . $id . ' | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -207,15 +207,15 @@ class ContributionsTypes
             }
 
             Analog::log(
-                'Defaults contributions types ' .
-                ') were successfully stored into database.',
+                'Defaults contributions types '
+                . ') were successfully stored into database.',
                 Analog::INFO
             );
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to initialize defaults contributions types' .
-                $e->getMessage(),
+                'Unable to initialize defaults contributions types'
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -298,8 +298,8 @@ class ContributionsTypes
             return $list;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot list contributions types ' .
-                ' | ' . $e->getMessage(),
+                'Cannot list contributions types '
+                . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -379,8 +379,8 @@ class ContributionsTypes
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to retrieve contribution type from label `' .
-                $label . '` | ' . $e->getMessage(),
+                'Unable to retrieve contribution type from label `'
+                . $label . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -425,8 +425,8 @@ class ContributionsTypes
 
             if ($ret->count() > 0) {
                 Analog::log(
-                    'New contribution type `' . $label .
-                    '` added successfully.',
+                    'New contribution type `' . $label
+                    . '` added successfully.',
                     Analog::INFO
                 );
 
@@ -441,8 +441,8 @@ class ContributionsTypes
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to add new contribution type `' . $label . '` | ' .
-                $e->getMessage(),
+                'Unable to add new contribution type `' . $label . '` | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -497,8 +497,8 @@ class ContributionsTypes
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to update contribution type #' . $id . ' | ' .
-                $e->getMessage(),
+                'Unable to update contribution type #' . $id . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -543,8 +543,8 @@ class ContributionsTypes
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to delete contribution type #' . $id .
-                ' | ' . $e->getMessage(),
+                'Unable to delete contribution type #' . $id
+                . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -574,8 +574,8 @@ class ContributionsTypes
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to check if contribution type #' . $id .
-                ' is used. | ' . $e->getMessage(),
+                'Unable to check if contribution type #' . $id
+                . ' is used. | ' . $e->getMessage(),
                 Analog::ERROR
             );
             //in case of error, we consider that it is used, to avoid errors

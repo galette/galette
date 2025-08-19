@@ -501,12 +501,12 @@ class ContributionsController extends CrudController
                     ]
                 );
                 if (
-                    !$member->hasParent() ||
-                    $member->parent->id != $this->login->id
+                    !$member->hasParent()
+                    || $member->parent->id != $this->login->id
                 ) {
                     Analog::log(
-                        'Trying to display ' . $type . ' for member #' . $value .
-                        ' without appropriate ACLs',
+                        'Trying to display ' . $type . ' for member #' . $value
+                        . ' without appropriate ACLs',
                         Analog::WARNING
                     );
                     $value = $this->login->id;
@@ -545,8 +545,8 @@ class ContributionsController extends CrudController
         $filters->setViewPagination($this->routeparser, $this->view);
 
         $tpl_vars = [
-            'page_title'        => $raw_type === 'contributions' ?
-                                    _T("List of contributions") : _T("List of transactions"),
+            'page_title'        => $raw_type === 'contributions'
+                                    ? _T("List of contributions") : _T("List of transactions"),
             'contribs'          => $contrib,
             'list'              => $contribs_list,
             'nb'                => $contrib->getCount(),
@@ -927,8 +927,8 @@ class ContributionsController extends CrudController
                 [
                     'type' => $post['contrib_type'] ?? $type
                 ]
-            ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
-            '&' . Adherent::PK . '=' . $contrib->member;
+            ) . '?' . Transaction::PK . '=' . $contrib->transaction->id
+            . '&' . Adherent::PK . '=' . $contrib->member;
         } elseif ($contrib->payment_type === PaymentType::SCHEDULED && !$contrib->isScheduleFullyAllocated()) {
             //if payment type is a payment schedule, and schedule is not fully allocated, create a new schedule entry
             $redirect_url = $this->routeparser->urlFor(

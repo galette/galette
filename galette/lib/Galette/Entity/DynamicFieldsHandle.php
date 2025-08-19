@@ -131,8 +131,8 @@ class DynamicFieldsHandle
                         );
                     } else {
                         Analog::log(
-                            'Dynamic values found for ' . get_class($object) . ' #' . $this->item_id .
-                            '; but no dynamic field configured!',
+                            'Dynamic values found for ' . get_class($object) . ' #' . $this->item_id
+                            . '; but no dynamic field configured!',
                             Analog::WARNING
                         );
                     }
@@ -307,8 +307,8 @@ class DynamicFieldsHandle
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred storing dynamic field. Form name: ' . $this->form_name .
-                ' | Error was: ' . $e->getMessage(),
+                'An error occurred storing dynamic field. Form name: ' . $this->form_name
+                . ' | Error was: ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -481,8 +481,8 @@ class DynamicFieldsHandle
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred removing dynamic field. Form name: ' . $this->form_name .
-                ' | Error was: ' . $e->getMessage(),
+                'An error occurred removing dynamic field. Form name: ' . $this->form_name
+                . ' | Error was: ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -515,12 +515,12 @@ class DynamicFieldsHandle
         foreach ($this->dynamic_fields as $field) {
             $perm = $field->getPermission();
             if (
-                ($perm == FieldsConfig::MANAGER &&
-                    $access_level < Authentication::ACCESS_MANAGER) ||
-                ($perm == FieldsConfig::STAFF &&
-                        $access_level < Authentication::ACCESS_STAFF) ||
-                ($perm == FieldsConfig::ADMIN &&
-                    $access_level < Authentication::ACCESS_ADMIN)
+                ($perm == FieldsConfig::MANAGER
+                    && $access_level < Authentication::ACCESS_MANAGER)
+                || ($perm == FieldsConfig::STAFF
+                        && $access_level < Authentication::ACCESS_STAFF)
+                || ($perm == FieldsConfig::ADMIN
+                    && $access_level < Authentication::ACCESS_ADMIN)
             ) {
                 continue;
             }

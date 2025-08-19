@@ -245,8 +245,8 @@ class SavedSearches
                     $this->zdb->connection->rollBack();
                 }
                 Analog::log(
-                    'An error occurred trying to remove searches | ' .
-                    $e->getMessage(),
+                    'An error occurred trying to remove searches | '
+                    . $e->getMessage(),
                     Analog::ERROR
                 );
                 throw $e;

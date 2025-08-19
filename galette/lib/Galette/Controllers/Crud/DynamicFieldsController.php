@@ -109,8 +109,8 @@ class DynamicFieldsController extends CrudController
         } catch (Throwable $e) {
             $msg = 'An error occurred adding new dynamic field.';
             Analog::log(
-                $msg . ' | ' .
-                $e->getMessage(),
+                $msg . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             if (Galette::isDebugEnabled()) {
@@ -357,8 +357,8 @@ class DynamicFieldsController extends CrudController
             return $response->withBody(new \Slim\Psr7\Stream($stream));
         } else {
             Analog::log(
-                'A request has been made to get a dynamic file named `' .
-                $filename . '` that does not exists.',
+                'A request has been made to get a dynamic file named `'
+                . $filename . '` that does not exists.',
                 Analog::WARNING
             );
 
@@ -467,8 +467,8 @@ class DynamicFieldsController extends CrudController
         } catch (Throwable $e) {
             $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
             Analog::log(
-                $msg . ' | ' .
-                $e->getMessage(),
+                $msg . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             if (Galette::isDebugEnabled()) {

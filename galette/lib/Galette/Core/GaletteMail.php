@@ -210,8 +210,8 @@ class GaletteMail
                     //- log an INFO
                     $res = false;
                     Analog::log(
-                        '[' . get_class($this) .
-                        '] One of recipients address is not valid.',
+                        '[' . get_class($this)
+                        . '] One of recipients address is not valid.',
                         Analog::INFO
                     );
                     $this->mail->ClearBCCs();
@@ -286,8 +286,8 @@ class GaletteMail
                 $this->mail->AltBody .= $signature;
                 //then apply email sign to HTML version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
-                $hsign = '<div style="' . $sign_style . '">' .
-                    nl2br($signature) . '</div>';
+                $hsign = '<div style="' . $sign_style . '">'
+                    . nl2br($signature) . '</div>';
                 $this->mail->Body .= $hsign;
             } else {
                 $this->mail->Body .= Html2Text::convert($signature);
@@ -310,9 +310,9 @@ class GaletteMail
             if (!$this->mail->Send()) {
                 $this->errors[] = $this->mail->ErrorInfo;
                 Analog::log(
-                    'An error occurred sending email to: ' .
-                    implode(', ', array_keys($this->recipients)) .
-                    "\n" . $this->mail->ErrorInfo,
+                    'An error occurred sending email to: '
+                    . implode(', ', array_keys($this->recipients))
+                    . "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
                 );
                 unset($this->mail);

@@ -102,7 +102,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, ?int $id = null, string|null $action = 'edit'): Response
+    public function edit(Request $request, Response $response, ?int $id = null, ?string $action = 'edit'): Response
     {
         if ($this->session->transaction !== null) {
             $trans = $this->session->transaction;
@@ -351,8 +351,8 @@ class TransactionsController extends ContributionsController
             $redirect_url = $this->routeparser->urlFor(
                 'addContribution',
                 $rparams
-            ) . '?' . Transaction::PK . '=' . $trans->id .
-                '&' . Adherent::PK . '=' . $trans->member;
+            ) . '?' . Transaction::PK . '=' . $trans->id
+                . '&' . Adherent::PK . '=' . $trans->member;
         }
 
         return $response

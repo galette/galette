@@ -193,8 +193,8 @@ class Transaction implements AccessManagementInterface
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred attempting to load contribution #' . $id .
-                $e->getMessage(),
+                'An error occurred attempting to load contribution #' . $id
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -254,8 +254,8 @@ class Transaction implements AccessManagementInterface
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred trying to remove transaction #' .
-                $this->id . ' | ' . $e->getMessage(),
+                'An error occurred trying to remove transaction #'
+                . $this->id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -399,8 +399,8 @@ class Transaction implements AccessManagementInterface
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store a transaction' .
-                print_r($this->errors, true),
+                'Some errors has been thew attempting to edit/store a transaction'
+                . print_r($this->errors, true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -484,8 +484,8 @@ class Transaction implements AccessManagementInterface
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
+                'Something went wrong :\'( | ' . $e->getMessage() . "\n"
+                . $e->getTraceAsString(),
                 Analog::ERROR
             );
             throw $e;
@@ -517,8 +517,8 @@ class Transaction implements AccessManagementInterface
             return (float)$dispatched_amount;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred retrieving dispatched amounts | ' .
-                $e->getMessage(),
+                'An error occurred retrieving dispatched amounts | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -550,8 +550,8 @@ class Transaction implements AccessManagementInterface
             return (float)$this->amount - (float)$dispatched_amount;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred retrieving missing amounts | ' .
-                $e->getMessage(),
+                'An error occurred retrieving missing amounts | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -597,8 +597,8 @@ class Transaction implements AccessManagementInterface
      */
     public function getRowClass(): string
     {
-        return ($this->getMissingAmount() == 0) ?
-            'transaction-normal' : 'transaction-uncomplete';
+        return ($this->getMissingAmount() == 0)
+            ? 'transaction-normal' : 'transaction-uncomplete';
     }
 
     /**
@@ -656,8 +656,8 @@ class Transaction implements AccessManagementInterface
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store a transaction files' . "\n" .
-                print_r($this->errors, true),
+                'Some errors has been thew attempting to edit/store a transaction files' . "\n"
+                . print_r($this->errors, true),
                 Analog::ERROR
             );
             return $this->errors;

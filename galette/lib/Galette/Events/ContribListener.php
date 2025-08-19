@@ -177,8 +177,8 @@ class ContribListener implements ListenerSubscriber
             //member card link is present in mail model, let's add it
             $links = new Links($this->zdb);
             if ($hash = $links->generateNewLink(Links::TARGET_MEMBERCARD, $contrib->member)) {
-                $link_card = $this->preferences->getURL() .
-                    $this->routeparser->urlFor('directlink', ['hash' => $hash]);
+                $link_card = $this->preferences->getURL()
+                    . $this->routeparser->urlFor('directlink', ['hash' => $hash]);
             }
         }
         $texts->setMemberCardLink($link_card);
@@ -189,8 +189,8 @@ class ContribListener implements ListenerSubscriber
             $links = new Links($this->zdb);
             $ltype = $contrib->type->isExtension() ? Links::TARGET_INVOICE : Links::TARGET_RECEIPT;
             if ($hash = $links->generateNewLink($ltype, $contrib->id)) {
-                $link_pdf = $this->preferences->getURL() .
-                    $this->routeparser->urlFor('directlink', ['hash' => $hash]);
+                $link_pdf = $this->preferences->getURL()
+                    . $this->routeparser->urlFor('directlink', ['hash' => $hash]);
             }
         }
         $texts->setContribLink($link_pdf);
@@ -334,16 +334,16 @@ class ContribListener implements ListenerSubscriber
                         $warning_detected[] = $txt;
                         //Mails are disabled... We log (not safe, but)...
                         Analog::log(
-                            'Email to admin has not been sent. Here was the data: ' .
-                            "\n" . print_r($res, true),
+                            'Email to admin has not been sent. Here was the data: '
+                            . "\n" . print_r($res, true),
                             Analog::ERROR
                         );
                     }
                 } else {
                     //Mails are disabled... We log (not safe, but)...
                     Analog::log(
-                        'Post contribution script has failed. Here was the data: ' .
-                        "\n" . print_r($res, true),
+                        'Post contribution script has failed. Here was the data: '
+                        . "\n" . print_r($res, true),
                         Analog::ERROR
                     );
                 }

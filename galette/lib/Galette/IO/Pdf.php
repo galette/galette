@@ -251,8 +251,8 @@ class Pdf extends TCPDF
             $pdf->Cell(
                 0,
                 4,
-                $this->getAliasRightShift() . $this->PageNo() .
-                '/' . $this->getAliasNbPages(),
+                $this->getAliasRightShift() . $this->PageNo()
+                . '/' . $this->getAliasNbPages(),
                 0,
                 1,
                 ($this->i18n->isRTL() ? 'L' : 'R')
@@ -299,8 +299,8 @@ class Pdf extends TCPDF
         if (trim($this->model->title) !== '') {
             $htitle = '';
             if (trim($this->model->hstyles) !== '') {
-                $htitle .= "<style>\n" . $this->model->hstyles .
-                    "\n</style>\n\n";
+                $htitle .= "<style>\n" . $this->model->hstyles
+                    . "\n</style>\n\n";
             }
             $htitle .= '<div id="pdf_title">' . $this->model->htitle . '</div>';
             $this->writeHtml($htitle);
@@ -308,11 +308,11 @@ class Pdf extends TCPDF
         if (trim($this->model->subtitle) !== '') {
             $hsubtitle = '';
             if (trim($this->model->hstyles) !== '') {
-                $hsubtitle .= "<style>\n" . $this->model->hstyles .
-                    "\n</style>\n\n";
+                $hsubtitle .= "<style>\n" . $this->model->hstyles
+                    . "\n</style>\n\n";
             }
-            $hsubtitle .= '<div id="pdf_subtitle">' . $this->model->hsubtitle .
-                '</div>';
+            $hsubtitle .= '<div id="pdf_subtitle">' . $this->model->hsubtitle
+                . '</div>';
             $this->writeHtml($hsubtitle);
         }
         if (

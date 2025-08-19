@@ -94,8 +94,8 @@ class DynamicTranslationsController extends AbstractController
             $params['text_orig'] = $text_orig;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred retrieving l10n entries | ' .
-                $e->getMessage(),
+                'An error occurred retrieving l10n entries | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
         }

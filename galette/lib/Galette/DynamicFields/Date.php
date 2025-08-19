@@ -188,8 +188,8 @@ class Date extends DynamicField
         } catch (Throwable $e) {
             //oops, we've got a bad date :/
             Analog::log(
-                'Bad date (' . $value . ') | ' .
-                $e->getMessage(),
+                'Bad date (' . $value . ') | '
+                . $e->getMessage(),
                 Analog::INFO
             );
             return $value;

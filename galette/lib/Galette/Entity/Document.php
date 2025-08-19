@@ -109,8 +109,8 @@ class Document implements FileInterface
             $this->loadFromRS($res);
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading document #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading document #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
         }
@@ -145,17 +145,17 @@ class Document implements FileInterface
             foreach ($results as $r) {
                 // skip entries according to access control
                 if (
-                    $r->visible == FieldsConfig::NOBODY &&
+                    $r->visible == FieldsConfig::NOBODY
                     //@phpstan-ignore-next-line
-                    ($this->public_list === true || ($this->public_list === false && !$login->isAdmin())) ||
-                    ($r->visible == FieldsConfig::ADMIN &&
-                        $access_level < Authentication::ACCESS_ADMIN) ||
-                    ($r->visible == FieldsConfig::STAFF &&
-                        $access_level < Authentication::ACCESS_STAFF) ||
-                    ($r->visible == FieldsConfig::MANAGER &&
-                        $access_level < Authentication::ACCESS_MANAGER) ||
-                    (($r->visible == FieldsConfig::USER_READ || $r->visible == FieldsConfig::USER_WRITE) &&
-                        $access_level < Authentication::ACCESS_USER)
+                    && ($this->public_list === true || ($this->public_list === false && !$login->isAdmin()))
+                    || ($r->visible == FieldsConfig::ADMIN
+                        && $access_level < Authentication::ACCESS_ADMIN)
+                    || ($r->visible == FieldsConfig::STAFF
+                        && $access_level < Authentication::ACCESS_STAFF)
+                    || ($r->visible == FieldsConfig::MANAGER
+                        && $access_level < Authentication::ACCESS_MANAGER)
+                    || (($r->visible == FieldsConfig::USER_READ || $r->visible == FieldsConfig::USER_WRITE)
+                        && $access_level < Authentication::ACCESS_USER)
                 ) {
                     continue;
                 }
@@ -165,8 +165,8 @@ class Document implements FileInterface
             return $documents;
         } catch (Throwable $e) {
             Analog::log(
-                "An error occurred loading documents. Message:\n" .
-                $e->getMessage(),
+                "An error occurred loading documents. Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -550,8 +550,8 @@ class Document implements FileInterface
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store a document file' . "\n" .
-                print_r($this->errors, true),
+                'Some errors has been thew attempting to edit/store a document file' . "\n"
+                . print_r($this->errors, true),
                 Analog::ERROR
             );
             return $this->errors;

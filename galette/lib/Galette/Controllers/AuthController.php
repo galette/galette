@@ -179,8 +179,8 @@ class AuthController extends AbstractController
                 //password is no longer valid with current rules, must be changed
                 $this->flash->addMessage(
                     'warning_detected',
-                    _T("Your password is too weak! Please consider updating it.") .
-                    '<br/> -' . implode('<br/>', $checkpass->getErrors())
+                    _T("Your password is too weak! Please consider updating it.")
+                    . '<br/> -' . implode('<br/>', $checkpass->getErrors())
                 );
             }
             $this->session->login = $this->login;
@@ -537,8 +537,8 @@ class AuthController extends AbstractController
 
                 if (!$checkpass->isValid($post['mdp_adh'])) {
                     //password is not valid with current rules
-                    $error = _T("Your password is too weak!") .
-                        '<br/> -' . implode('<br/>', $checkpass->getErrors());
+                    $error = _T("Your password is too weak!")
+                        . '<br/> -' . implode('<br/>', $checkpass->getErrors());
                 } else {
                     $res = Adherent::updatePassword(
                         $this->zdb,

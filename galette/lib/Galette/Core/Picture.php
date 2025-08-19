@@ -383,8 +383,8 @@ class Picture implements FileInterface
                     $zdb->connection->rollBack();
                 }
                 Analog::log(
-                    'The file ' . $_file .
-                    ' was found on the disk but cannot be removed.',
+                    'The file ' . $_file
+                    . ' was found on the disk but cannot be removed.',
                     Analog::ERROR
                 );
                 return false;
@@ -400,8 +400,8 @@ class Picture implements FileInterface
                 $zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred attempting to delete picture ' . $this->db_id .
-                'from database | ' . $e->getMessage(),
+                'An error occurred attempting to delete picture ' . $this->db_id
+                . 'from database | ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -472,8 +472,8 @@ class Picture implements FileInterface
             if ($current[0] < $this->mincropsize || $current[1] < $this->mincropsize) {
                 $min_current = min($current[0], $current[1]);
                 Analog::log(
-                    '[' . get_class($this) . '] Image is too small. The minimum image side size allowed is ' .
-                    $this->mincropsize . 'px, but current is ' . $min_current . 'px.',
+                    '[' . get_class($this) . '] Image is too small. The minimum image side size allowed is '
+                    . $this->mincropsize . 'px, but current is ' . $min_current . 'px.',
                     Analog::ERROR
                 );
                 return self::IMAGE_TOO_SMALL;
@@ -556,8 +556,8 @@ class Picture implements FileInterface
         } catch (Throwable $e) {
             $zdb->connection->rollBack();
             Analog::log(
-                'An error occurred storing picture in database: ' .
-                $e->getMessage(),
+                'An error occurred storing picture in database: '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return self::SQL_ERROR;
@@ -580,8 +580,8 @@ class Picture implements FileInterface
         //retrieve files on disk
         if ($handle = opendir($this->store_path)) {
             while (false !== ($entry = readdir($handle))) {
-                $reg = "/^(\d+)\.(" .
-                    implode('|', $this->allowed_extensions) . ")$/i";
+                $reg = "/^(\d+)\.("
+                    . implode('|', $this->allowed_extensions) . ")$/i";
                 if (preg_match($reg, $entry, $matches)) {
                     $id = $matches[1];
                     $extension = strtolower($matches[2]);
@@ -642,8 +642,8 @@ class Picture implements FileInterface
             }
         } else {
             Analog::log(
-                'Something went wrong opening images directory ' .
-                $this->store_path,
+                'Something went wrong opening images directory '
+                . $this->store_path,
                 Analog::ERROR
             );
         }
@@ -666,8 +666,8 @@ class Picture implements FileInterface
 
         if (!function_exists("gd_info")) {
             Analog::log(
-                '[' . $class . '] GD is not present - ' .
-                'pictures could not be resized!',
+                '[' . $class . '] GD is not present - '
+                . 'pictures could not be resized!',
                 Analog::ERROR
             );
             return false;
@@ -684,8 +684,8 @@ class Picture implements FileInterface
             case 'jpg':
                 if (!$gdinfo['JPEG Support']) {
                     Analog::log(
-                        '[' . $class . '] GD has no JPEG Support - ' .
-                        'pictures could not be resized!',
+                        '[' . $class . '] GD has no JPEG Support - '
+                        . 'pictures could not be resized!',
                         Analog::ERROR
                     );
                     return false;
@@ -694,8 +694,8 @@ class Picture implements FileInterface
             case 'png':
                 if (!$gdinfo['PNG Support']) {
                     Analog::log(
-                        '[' . $class . '] GD has no PNG Support - ' .
-                        'pictures could not be resized!',
+                        '[' . $class . '] GD has no PNG Support - '
+                        . 'pictures could not be resized!',
                         Analog::ERROR
                     );
                     return false;
@@ -704,8 +704,8 @@ class Picture implements FileInterface
             case 'gif':
                 if (!$gdinfo['GIF Create Support']) {
                     Analog::log(
-                        '[' . $class . '] GD has no GIF Support - ' .
-                        'pictures could not be resized!',
+                        '[' . $class . '] GD has no GIF Support - '
+                        . 'pictures could not be resized!',
                         Analog::ERROR
                     );
                     return false;
@@ -714,8 +714,8 @@ class Picture implements FileInterface
             case 'webp':
                 if (!$gdinfo['WebP Support']) {
                     Analog::log(
-                        '[' . $class . '] GD has no WebP Support - ' .
-                        'pictures could not be resized!',
+                        '[' . $class . '] GD has no WebP Support - '
+                        . 'pictures could not be resized!',
                         Analog::ERROR
                     );
                     return false;

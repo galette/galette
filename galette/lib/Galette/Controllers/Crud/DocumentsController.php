@@ -111,8 +111,8 @@ class DocumentsController extends CrudController
         } catch (Throwable $e) {
             $msg = 'An error occurred adding new document.';
             Analog::log(
-                $msg . ' | ' .
-                $e->getMessage(),
+                $msg . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             if (Galette::isDebugEnabled()) {
@@ -308,8 +308,8 @@ class DocumentsController extends CrudController
             return $response->withBody(new \Slim\Psr7\Stream($stream));
         } else {
             Analog::log(
-                'A request has been made to get a document file named `' .
-                $document->getDocumentFilename() . '` that does not exists.',
+                'A request has been made to get a document file named `'
+                . $document->getDocumentFilename() . '` that does not exists.',
                 Analog::WARNING
             );
 
@@ -400,8 +400,8 @@ class DocumentsController extends CrudController
         } catch (Throwable $e) {
             $msg = 'An error occurred adding new document.';
             Analog::log(
-                $msg . ' | ' .
-                $e->getMessage(),
+                $msg . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             if (Galette::isDebugEnabled()) {

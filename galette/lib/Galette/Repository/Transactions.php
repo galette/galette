@@ -261,16 +261,16 @@ class Transactions
                         ]
                     );
                     if (
-                        !$member->hasParent() ||
-                        $member->parent->id != $this->login->id
+                        !$member->hasParent()
+                        || $member->parent->id != $this->login->id
                     ) {
                         //check if member is part of logged-in user managed groups
                         $mgroup = $this->login->getManagedGroups();
                         $groups = $member->getGroups();
                         if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
                             Analog::log(
-                                'Trying to display transactions for member #' . $member->id .
-                                ' without appropriate ACLs',
+                                'Trying to display transactions for member #' . $member->id
+                                . ' without appropriate ACLs',
                                 Analog::WARNING
                             );
                             $this->filters->filtre_cotis_adh = $this->login->id;
@@ -386,8 +386,8 @@ class Transactions
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'An error occurred trying to remove transactions | ' .
-                $e->getMessage(),
+                'An error occurred trying to remove transactions | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return false;

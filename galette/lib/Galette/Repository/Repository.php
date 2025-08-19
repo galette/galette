@@ -79,8 +79,8 @@ abstract class Repository
                 $entity = $ent;
             } else {
                 throw new \RuntimeException(
-                    'Unable to find entity name from repository one. Please ' .
-                    'provide entity name in repository constructor'
+                    'Unable to find entity name from repository one. Please '
+                    . 'provide entity name in repository constructor'
                 );
             }
         }
@@ -175,8 +175,8 @@ abstract class Repository
             return true;
         } else {
             Analog::log(
-                'Trying to order by ' . $field_name . ' while it is not in ' .
-                'selected fields.',
+                'Trying to order by ' . $field_name . ' while it is not in '
+                . 'selected fields.',
                 Analog::WARNING
             );
             return false;

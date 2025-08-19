@@ -400,8 +400,8 @@ class Contribution implements AccessManagementInterface
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred attempting to load contribution #' . $id .
-                $e->getMessage(),
+                'An error occurred attempting to load contribution #' . $id
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -591,8 +591,8 @@ class Contribution implements AccessManagementInterface
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been threw attempting to edit/store a contribution' .
-                print_r($this->errors, true),
+                'Some errors has been threw attempting to edit/store a contribution'
+                . print_r($this->errors, true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -648,8 +648,8 @@ class Contribution implements AccessManagementInterface
                     return true;
                 }
 
-                return _T("- Membership period overlaps period starting at ") .
-                    $d_begin->format(__("Y-m-d"));
+                return _T("- Membership period overlaps period starting at ")
+                    . $d_begin->format(__("Y-m-d"));
             }
             return true;
         } catch (Throwable $e) {
@@ -674,8 +674,8 @@ class Contribution implements AccessManagementInterface
 
         if (count($this->errors) > 0) {
             throw new \RuntimeException(
-                'Existing errors prevents storing contribution: ' .
-                print_r($this->errors, true)
+                'Existing errors prevents storing contribution: '
+                . print_r($this->errors, true)
             );
         }
 
@@ -791,9 +791,9 @@ class Contribution implements AccessManagementInterface
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred updating member ' . $this->member .
-                '\'s deadline |' .
-                $e->getMessage(),
+                'An error occurred updating member ' . $this->member
+                . '\'s deadline |'
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -839,8 +839,8 @@ class Contribution implements AccessManagementInterface
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred trying to remove contribution #' .
-                $this->id . ' | ' . $e->getMessage(),
+                'An error occurred trying to remove contribution #'
+                . $this->id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -887,8 +887,8 @@ class Contribution implements AccessManagementInterface
      */
     public function getRowClass(): string
     {
-        return ($this->end_date != $this->begin_date && $this->is_cotis) ?
-            'cotis-normal' : 'cotis-give';
+        return ($this->end_date != $this->begin_date && $this->is_cotis)
+            ? 'cotis-normal' : 'cotis-give';
     }
 
     /**
@@ -960,16 +960,16 @@ class Contribution implements AccessManagementInterface
                 return true;
             } else {
                 Analog::log(
-                    'Contribution #' . $this->id .
-                    ' is not actually part of transaction #' . $trans_id,
+                    'Contribution #' . $this->id
+                    . ' is not actually part of transaction #' . $trans_id,
                     Analog::WARNING
                 );
                 return false;
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to detach contribution #' . $this->id .
-                ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
+                'Unable to detach contribution #' . $this->id
+                . ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -995,8 +995,8 @@ class Contribution implements AccessManagementInterface
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to attach contribution #' . $this->id .
-                ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
+                'Unable to attach contribution #' . $this->id
+                . ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -1118,8 +1118,8 @@ class Contribution implements AccessManagementInterface
 
         if ($res !== true) {
             Analog::log(
-                'An error occurred calling post contribution ' .
-                "script:\n" . $es->getOutput(),
+                'An error occurred calling post contribution '
+                . "script:\n" . $es->getOutput(),
                 Analog::ERROR
             );
             $res = _T("Contribution information") . "\n";
@@ -1225,8 +1225,8 @@ class Contribution implements AccessManagementInterface
                     if (!isset($this->is_cotis)) {
                         return null;
                     }
-                    return ($this->isFee()) ?
-                        PdfModel::INVOICE_MODEL : PdfModel::RECEIPT_MODEL;
+                    return ($this->isFee())
+                        ? PdfModel::INVOICE_MODEL : PdfModel::RECEIPT_MODEL;
                 case 'fields':
                     return $this->fields;
                 default:
@@ -1283,8 +1283,8 @@ class Contribution implements AccessManagementInterface
                         $this->$name = (float)$value;
                     } else {
                         Analog::log(
-                            'Trying to set an amount with a non numeric value, ' .
-                            'or with a zero value',
+                            'Trying to set an amount with a non numeric value, '
+                            . 'or with a zero value',
                             Analog::WARNING
                         );
                     }
@@ -1300,8 +1300,8 @@ class Contribution implements AccessManagementInterface
                     break;
                 default:
                     Analog::log(
-                        '[' . __CLASS__ . ']: Trying to set an unknown property (' .
-                        $name . ')',
+                        '[' . __CLASS__ . ']: Trying to set an unknown property ('
+                        . $name . ')',
                         Analog::WARNING
                     );
                     break;
@@ -1347,8 +1347,8 @@ class Contribution implements AccessManagementInterface
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been threw attempting to edit/store a contribution files' . "\n" .
-                print_r($this->errors, true),
+                'Some errors has been threw attempting to edit/store a contribution files' . "\n"
+                . print_r($this->errors, true),
                 Analog::ERROR
             );
             return $this->errors;

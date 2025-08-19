@@ -102,8 +102,8 @@ class PdfContribution extends Pdf
             return true;
         } else {
             Analog::log(
-                __METHOD__ . ' ' . $path .
-                ' does not exists or is not a directory or is not writeable.',
+                __METHOD__ . ' ' . $path
+                . ' does not exists or is not a directory or is not writeable.',
                 Analog::ERROR
             );
         }

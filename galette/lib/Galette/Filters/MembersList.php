@@ -180,8 +180,8 @@ class MembersList extends Pagination
                         $this->$name = $value;
                     } elseif ($value !== null) {
                         Analog::log(
-                            '[MembersList] Value for property `' . $name .
-                            '` should be an array (' . gettype($value) . ' given)',
+                            '[MembersList] Value for property `' . $name
+                            . '` should be an array (' . gettype($value) . ' given)',
                             Analog::WARNING
                         );
                     }
@@ -196,8 +196,8 @@ class MembersList extends Pagination
                         $this->$name = (int)$value;
                     } elseif ($value !== null) {
                         Analog::log(
-                            '[MembersList] Value for property `' . $name .
-                            '` should be an integer (' . gettype($value) . ' given)',
+                            '[MembersList] Value for property `' . $name
+                            . '` should be an integer (' . gettype($value) . ' given)',
                             Analog::WARNING
                         );
                     }
@@ -211,10 +211,10 @@ class MembersList extends Pagination
                             break;
                         default:
                             Analog::log(
-                                '[MembersList] Value for email filter should be either ' .
-                                Members::FILTER_DC_EMAIL . ', ' .
-                                Members::FILTER_W_EMAIL . ' or ' .
-                                Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
+                                '[MembersList] Value for email filter should be either '
+                                . Members::FILTER_DC_EMAIL . ', '
+                                . Members::FILTER_W_EMAIL . ' or '
+                                . Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
                                 Analog::WARNING
                             );
                             break;

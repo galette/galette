@@ -188,8 +188,8 @@ class Groups
     {
         global $zdb;
         try {
-            $join_table = ($managed) ?
-                Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
+            $join_table = ($managed)
+                ? Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
 
             $select = $zdb->select(Group::TABLE, 'group');
             $select->join(
@@ -210,8 +210,8 @@ class Groups
             return $groups;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load member groups for id `' . $id . '` | ' .
-                $e->getMessage(),
+                'Cannot load member groups for id `' . $id . '` | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -292,8 +292,8 @@ class Groups
                     );
 
                     if ($result) {
-                        $msg = 'Member `' . $adh->sname . '` attached to group `' .
-                            $gname . '` (' . $gid . ')';
+                        $msg = 'Member `' . $adh->sname . '` attached to group `'
+                            . $gname . '` (' . $gid . ')';
                         if ($manager === true) {
                             $msg .= ' as a manager';
                         }
@@ -302,9 +302,9 @@ class Groups
                             Analog::DEBUG
                         );
                     } else {
-                        $msg = 'Unable to attach member `' .
-                            $adh->sname . '` (' . $adh->id . ') to group `' .
-                            $gname . '` (' . $gid . ').';
+                        $msg = 'Unable to attach member `'
+                            . $adh->sname . '` (' . $adh->id . ') to group `'
+                            . $gname . '` (' . $gid . ').';
                         if ($manager === true) {
                             $msg .= ' as a manager';
                         }
@@ -326,8 +326,8 @@ class Groups
             if ($transaction === false) {
                 $zdb->connection->rollBack();
             }
-            $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
-                ') to specified groups ' . print_r($groups, true);
+            $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id
+                . ') to specified groups ' . print_r($groups, true);
             if ($manager === true) {
                 $msg .= ' as a manager';
             }
@@ -363,8 +363,8 @@ class Groups
             $zdb->execute($del_qry);
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to remove member #' . implode(', ', $ids) . ' from his groups: ' .
-                $e->getMessage(),
+                'Unable to remove member #' . implode(', ', $ids) . ' from his groups: '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;

@@ -183,8 +183,8 @@ class News
             $this->posts = $posts;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to load feed from "' . $this->feed_url .
-                '" :( | ' . $e->getMessage(),
+                'Unable to load feed from "' . $this->feed_url
+                . '" :( | ' . $e->getMessage(),
                 Analog::ERROR
             );
         }
@@ -230,8 +230,8 @@ class News
             $url .= '/feed.xml';
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to load feed languages from "' . $url .
-                '" :( | ' . $e->getMessage(),
+                'Unable to load feed languages from "' . $url
+                . '" :( | ' . $e->getMessage(),
                 Analog::ERROR
             );
         }

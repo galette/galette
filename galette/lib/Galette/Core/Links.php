@@ -86,8 +86,8 @@ class Links
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error has occurred removing old temporary link ' .
-                $e->getMessage(),
+                'An error has occurred removing old temporary link '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -147,8 +147,8 @@ class Links
             return base64_encode($hash);
         } catch (Throwable $e) {
             Analog::log(
-                "An error occurred trying to add temporary link entry. " .
-                $e->getMessage(),
+                "An error occurred trying to add temporary link entry. "
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -189,8 +189,8 @@ class Links
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred deleting expired temporary links. ' .
-                $e->getMessage(),
+                'An error occurred deleting expired temporary links. '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;

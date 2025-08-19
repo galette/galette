@@ -475,8 +475,8 @@ trait Replacements
 
         $website = '';
         if ($this->preferences->pref_website !== '') {
-            $website = '<a href="' . $this->preferences->pref_website . '">' .
-                $this->preferences->pref_website . '</a>';
+            $website = '<a href="' . $this->preferences->pref_website . '">'
+                . $this->preferences->pref_website . '</a>';
         }
 
         $logo = new Logo();
@@ -764,9 +764,9 @@ trait Replacements
                                 continue;
                             }
                             $spattern = (
-                                ($this instanceof Texts) ?
-                                '%3$s (%1$s%2$s)' :
-                                '<a href="%1$s%2$s">%3$s</a>'
+                                ($this instanceof Texts)
+                                ? '%3$s (%1$s%2$s)'
+                                : '<a href="%1$s%2$s">%3$s</a>'
                             );
                             $value .= sprintf(
                                 $spattern,

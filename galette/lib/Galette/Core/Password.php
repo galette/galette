@@ -82,8 +82,8 @@ class Password extends AbstractPassword
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error has occurred removing old tmppasswords ' .
-                $e->getMessage(),
+                'An error has occurred removing old tmppasswords '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -126,8 +126,8 @@ class Password extends AbstractPassword
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                "An error occurred trying to add temporary password entry. " .
-                $e->getMessage(),
+                "An error occurred trying to add temporary password entry. "
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -158,8 +158,8 @@ class Password extends AbstractPassword
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred deleting expired temporary passwords. ' .
-                $e->getMessage(),
+                'An error occurred deleting expired temporary passwords. '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             return false;
@@ -222,8 +222,8 @@ class Password extends AbstractPassword
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred attempting to delete used hash' .
-                $e->getMessage(),
+                'An error occurred attempting to delete used hash'
+                . $e->getMessage(),
                 Analog::WARNING
             );
             return false;

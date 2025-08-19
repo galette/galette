@@ -89,8 +89,8 @@ abstract class Csv
     {
         $csv_files = [];
         $files = glob(
-            $this->default_directory . '*.{' .
-            implode(',', $this->extensions) . '}',
+            $this->default_directory . '*.{'
+            . implode(',', $this->extensions) . '}',
             GLOB_BRACE
         );
         foreach ($files as $file) {
@@ -138,8 +138,8 @@ abstract class Csv
             return $removed;
         } else {
             Analog::log(
-                'CSV file ' . $filename .
-                ' does not exists, no way to remove it!',
+                'CSV file ' . $filename
+                . ' does not exists, no way to remove it!',
                 Analog::ERROR
             );
             return false;

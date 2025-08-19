@@ -81,8 +81,8 @@ class FieldsCategories
             return $categories;
         } catch (Throwable $e) {
             Analog::log(
-                '[' . static::class . '] Cannot get fields categories list | ' .
-                $e->getMessage(),
+                '[' . static::class . '] Cannot get fields categories list | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -171,8 +171,8 @@ class FieldsCategories
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to initialize default fields configuration.' .
-                $e->getMessage(),
+                'Unable to initialize default fields configuration.'
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;

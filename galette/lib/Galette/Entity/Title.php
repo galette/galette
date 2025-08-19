@@ -89,8 +89,8 @@ class Title
             $this->long = $res->long_label;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading title #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading title #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -149,8 +149,8 @@ class Title
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing title: ' . $e->getMessage() .
-                "\n" . print_r($data, true),
+                'An error occurred storing title: ' . $e->getMessage()
+                . "\n" . print_r($data, true),
                 Analog::ERROR
             );
             throw $e;
