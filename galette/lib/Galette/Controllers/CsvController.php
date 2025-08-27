@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use DI\Attribute\Inject;
 use Galette\Filters\ContributionsList;
 use Galette\Filters\ScheduledPaymentsList;
 use Galette\IO\ContributionsCsv;
@@ -48,6 +49,9 @@ use Slim\Psr7\Stream;
 
 class CsvController extends AbstractController
 {
+    #[Inject]
+    private CsvIn $csvin;
+
     /**
      * Send response
      *
@@ -264,7 +268,7 @@ class CsvController extends AbstractController
      */
     public function doImports(Request $request, Response $response): Response
     {
-        $csv = new CsvIn($this->zdb);
+        $csv = $this->csvin;
         $post = $request->getParsedBody();
         $dryrun = isset($post['dryrun']);
 

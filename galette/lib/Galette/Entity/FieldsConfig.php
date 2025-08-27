@@ -511,6 +511,16 @@ class FieldsConfig
                             continue;
                         }
 
+                        // enforce access control on admin only fields
+                        if (in_array($o->field_id, $this->admin_fields)) {
+                            $o->visible = self::ADMIN;
+                        }
+
+                        // enforce access control on other info admin field
+                        if ($o->field_id === 'others_infos_admin') {
+                            $o->visible = self::STAFF;
+                        }
+
                         // skip fields according to access control
                         if (
                             $o->visible == self::NOBODY ||

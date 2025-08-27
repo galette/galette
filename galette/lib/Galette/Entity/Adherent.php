@@ -1308,7 +1308,7 @@ class Adherent
      */
     public function validate(string $field, mixed $value, array $values): void
     {
-        global $preferences;
+        global $preferences, $login;
 
         $prop = $this->fields[$field]['propname'];
 
@@ -1516,7 +1516,7 @@ class Adherent
                 break;
             case 'id_statut':
                 try {
-                    $this->$prop = (int)$value;
+                    $value = (int)$value;
                     //check if status exists
                     $select = $this->zdb->select(Status::TABLE);
                     $select->where([Status::PK => $value]);
@@ -1531,6 +1531,24 @@ class Adherent
                         );
                         break;
                     }
+
+                    if (
+                        $value !== $this->$prop
+                        && !$login->isStaff()
+                        && !$login->isAdmin()
+                        && $result->priorite_statut < Members::NON_STAFF_MEMBERS
+                    ) {
+                        Analog::log(
+                            sprintf(
+                                'Non allowed user %1$s attempting to change member %2$s status',
+                                $login->id,
+                                $this->id
+                            ),
+                            Analog::CRITICAL
+                        );
+                        throw new \RuntimeException('No right to store member #' . $this->id);
+                    }
+                    $this->$prop = $value;
                 } catch (Throwable $e) {
                     Analog::log(
                         'An error occurred checking status existence: ' . $e->getMessage(),
@@ -1555,6 +1573,35 @@ class Adherent
                     $this->$prop = $pid;
                     $this->loadParent();
                 }
+                break;
+            case 'bool_admin_adh':
+                $value = (bool)$value;
+                if ($value !== $this->$prop && !$login->isAdmin()) {
+                    Analog::log(
+                        sprintf(
+                            'Non allowed user %1$s attempting to change member %2$s admin flag',
+                            $login->id,
+                            $this->id
+                        ),
+                        Analog::CRITICAL
+                    );
+                    throw new \RuntimeException('No right to store member #' . $this->id);
+                }
+                $this->$prop = $value;
+                break;
+            case 'others_infos_admin':
+                if ($value !== $this->$prop && !$login->isStaff() || !$login->isAdmin()) {
+                    Analog::log(
+                        sprintf(
+                            'Non allowed user %1$s attempting to change member %2$s admin information',
+                            $login->id,
+                            $this->id
+                        ),
+                        Analog::CRITICAL
+                    );
+                    throw new \RuntimeException('No right to store member #' . $this->id);
+                }
+                $this->$prop = $value;
                 break;
             default:
                 if (in_array($field, $types['int'])) {

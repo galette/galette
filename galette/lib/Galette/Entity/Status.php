@@ -24,9 +24,12 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use Analog\Analog;
+use DI\Attribute\Inject;
 use Galette\Core\Db;
 use ArrayObject;
+use Galette\Core\Login;
 use Galette\Features\I18n;
+use Galette\Repository\Members;
 use Throwable;
 
 /**
@@ -49,6 +52,8 @@ class Status
     private int $id;
     private string $label;
     private int $priority;
+    #[Inject]
+    private Login $login;
 
     public const ID_NOT_EXISTS = -1;
 
@@ -211,6 +216,13 @@ class Status
             $results = $this->zdb->execute($select);
 
             foreach ($results as $r) {
+                if (
+                    !$this->login->isStaff()
+                    && !$this->login->isAdmin()
+                    && $r->priorite_statut < Members::NON_STAFF_MEMBERS
+                ) {
+                    continue;
+                }
                 $list[$r->{self::PK}] = _T($r->libelle_statut);
             }
             return $list;

@@ -100,7 +100,7 @@ class Members extends GaletteTestCase
             //empty catch
         }
 
-        $status = new \Galette\Entity\Status($this->zdb);
+        $status = $this->container->get(\Galette\Entity\Status::class);
         if (count($status->getList()) === 0) {
             $res = $status->installInit();
             $this->assertTrue($res);
@@ -117,6 +117,7 @@ class Members extends GaletteTestCase
 
         $mids = [];
         $first = true;
+        $this->logSuperAdmin();
         foreach ($tests_members as $test_member) {
             $test_member = (array)$test_member;
             $member = new \Galette\Entity\Adherent($this->zdb);
@@ -177,6 +178,7 @@ class Members extends GaletteTestCase
                 $this->assertGreaterThan(0, (int)$member->picture->store($_FILES['photo'], true));
             }
         }
+        $this->login->logOut();
 
         $this->mids = $mids;
     }

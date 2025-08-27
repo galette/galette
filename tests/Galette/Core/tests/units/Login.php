@@ -251,6 +251,8 @@ class Login extends GaletteTestCase
      */
     private function createUser(): void
     {
+        $this->logSuperAdmin();
+
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
         $select->where(array('a.fingerprint' => 'FAKER' . $this->seed));
         $results = $this->zdb->execute($select);
@@ -262,7 +264,7 @@ class Login extends GaletteTestCase
         $i18n = $this->i18n;
 
         if ($results->count() === 0) {
-            $status = new \Galette\Entity\Status($this->zdb);
+            $status = $this->container->get(\Galette\Entity\Status::class);
             if (count($status->getList()) === 0) {
                 $res = $status->installInit();
                 $this->assertTrue($res);
@@ -314,6 +316,8 @@ class Login extends GaletteTestCase
         } else {
             $this->adh = new \Galette\Entity\Adherent($this->zdb, $results->current());
         }
+
+        $this->login->logOut();
     }
 
     /**
