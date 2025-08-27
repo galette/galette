@@ -44,13 +44,23 @@
                         <input type="hidden" name="fields[]" value="{{ fid }}"/>
                         <input type="hidden" name="{{ fid }}_category" value="{{ category.id_field_category }}"/>
                         <input type="hidden" name="{{ fid }}_label" value="{{ field.label }}"/>
-                        {{ field.label }}
+                        <label for="{{ fid }}_visible">{{ field.label }}</label>
                     </td>
                     <td class="visibility_cell" data-col-label="{{ _T("Permissions") }}">
                         <span data-prop-label="{{ _T("Permissions") }}" class="visible" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
                             <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown">
                                 {% for key, value in perm_names %}
+                                    {% set display_option = true %}
+                                    {% if fid is same as('bool_admin_adh') and key is not same as(constant('Galette\\Entity\\FieldsConfig::ADMIN')) and key is not same as(constant('Galette\\Entity\\FieldsConfig::NOBODY')) %}
+                                        {% set display_option = false %}
+                                    {% endif %}
+                                    {% if fid is same as('info_adh') and key is not same as(constant('Galette\\Entity\\FieldsConfig::ADMIN')) and key is not same as(constant('Galette\\Entity\\FieldsConfig::STAFF')) and key is not same as(constant('Galette\\Entity\\FieldsConfig::NOBODY')) %}
+                                        {% set display_option = false %}
+                                    {% endif %}
+
+                                    {% if display_option %}
                                     <option value="{{ key }}"{% if key == field.visible %} selected="selected"{% endif %}>{{ value }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </span>

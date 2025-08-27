@@ -23,17 +23,16 @@ declare(strict_types=1);
 
 namespace Galette\Core\test\units;
 
-use PHPUnit\Framework\TestCase;
+use Galette\GaletteTestCase;
 
 /**
  * Password tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Password extends TestCase
+class Password extends GaletteTestCase
 {
     private ?\Galette\Core\Password $pass = null;
-    private \Galette\Core\Db $zdb;
 
     /**
      * Set up tests
@@ -42,20 +41,8 @@ class Password extends TestCase
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
+        parent::setUp();
         $this->pass = new \Galette\Core\Password($this->zdb, false);
-    }
-
-    /**
-     * Tear down tests
-     *
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
     }
 
     /**
@@ -87,7 +74,7 @@ class Password extends TestCase
      *
      * @return int
      */
-    private function createMember(): int
+    private function localCreateMember(): int
     {
         try {
             $this->deleteMember();
@@ -95,7 +82,7 @@ class Password extends TestCase
             //empty catch
         }
 
-        $status = new \Galette\Entity\Status($this->zdb);
+        $status = $this->container->get(\Galette\Entity\Status::class);
         if (count($status->getList()) === 0) {
             $res = $status->installInit();
             $this->assertTrue($res);
@@ -142,7 +129,7 @@ class Password extends TestCase
      */
     public function testGenerateNewPassword(): void
     {
-        $id_adh = $this->createMember();
+        $id_adh = $this->localCreateMember();
         $pass = $this->pass;
         $res = $pass->generateNewPassword($id_adh);
         $this->assertTrue($res);
@@ -174,7 +161,7 @@ class Password extends TestCase
      */
     public function testCleanExpired(): void
     {
-        $id_adh = $this->createMember();
+        $id_adh = $this->localCreateMember();
 
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT48H'));

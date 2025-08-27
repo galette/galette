@@ -109,6 +109,8 @@ class CsvIn extends GaletteTestCase
             $count_after = $count_before + count($members_list);
         }
 
+        $this->logSuperAdmin();
+
         $members = new \Galette\Repository\Members();
         $list = $members->getList();
         $this->assertSame(
@@ -128,7 +130,7 @@ class CsvIn extends GaletteTestCase
         $response = new \Slim\Psr7\Response();
 
         $response = $controller->getImportModel($request, $response);
-        $csvin = new \Galette\IO\CsvIn($this->container->get('zdb'));
+        $csvin = $this->container->get(\Galette\IO\CsvIn::class);
 
         $this->assertSame(200, $response->getStatusCode());
         $headers = $response->getHeaders();
@@ -227,6 +229,8 @@ class CsvIn extends GaletteTestCase
                 }
             }
         }
+
+        $this->login->logOut();
     }
 
     /**

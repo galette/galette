@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use DI\Attribute\Inject;
 use Galette\Controllers\CrudController;
 use Galette\DynamicFields\Boolean;
 use Slim\Psr7\Request;
@@ -54,6 +55,9 @@ use Analog\Analog;
 class MembersController extends CrudController
 {
     private bool $is_self_membership = false;
+
+    #[Inject]
+    private Status $status;
 
     // CRUD - Create
 
@@ -1119,8 +1123,6 @@ class MembersController extends CrudController
             $title .= ' (' . _T("creation") . ')';
         }
 
-        //Status
-        $statuts = new Status($this->zdb);
         //Titles
         $titles = new Titles($this->zdb);
 
@@ -1171,7 +1173,7 @@ class MembersController extends CrudController
                 // pseudo random int
                 'time'              => time(),
                 'titles_list'       => $titles->getList(),
-                'statuts'           => $statuts->getList(),
+                'statuts'           => $this->status->getList(),
                 'groups'            => $groups_list,
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens'],

@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Entity\test\units;
 
-use PHPUnit\Framework\TestCase;
+use Galette\GaletteTestCase;
 use Laminas\Db\Adapter\Adapter;
 
 /**
@@ -31,24 +31,9 @@ use Laminas\Db\Adapter\Adapter;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Status extends TestCase
+class Status extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private array $remove = [];
-    private \Galette\Core\I18n $i18n;
-
-    /**
-     * Set up tests
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
-    }
 
     /**
      * Tear down tests
@@ -57,9 +42,7 @@ class Status extends TestCase
      */
     public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::tearDown();
         $this->deleteStatus();
     }
 
@@ -93,7 +76,7 @@ class Status extends TestCase
         global $i18n; // globals :(
         $i18n = $this->i18n;
 
-        $status = new \Galette\Entity\Status($this->zdb);
+        $status = $this->container->get(\Galette\Entity\Status::class);
 
         $this->assertSame(
             -2,
@@ -179,10 +162,16 @@ class Status extends TestCase
      */
     public function testGetList(): void
     {
-        $status = new \Galette\Entity\Status($this->zdb);
+        $status = $this->container->get(\Galette\Entity\Status::class);
 
+        $this->logSuperAdmin();
         $list = $status->getList();
         $this->assertCount(10, $list);
+        $this->login->logOut();
+
+        //there are 10 status, but staff ones are not listed for normal users
+        $list = $status->getList();
+        $this->assertCount(6, $list);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select($this->zdb->getSequenceName($status::TABLE, $status::PK));
@@ -200,8 +189,10 @@ class Status extends TestCase
         //reinstall status
         $status->installInit();
 
+        $this->logSuperAdmin();
         $list = $status->getList();
         $this->assertCount(10, $list);
+        $this->login->logOut();
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select($this->zdb->getSequenceName($status::TABLE, $status::PK));

@@ -751,7 +751,7 @@ abstract class GaletteTestCase extends TestCase
      */
     protected function initStatus(): void
     {
-        $status = new \Galette\Entity\Status($this->zdb);
+        $status = $this->container->get(\Galette\Entity\Status::class);
         if (count($status->getList()) === 0) {
             //status are not yet instantiated.
             $res = $status->installInit();

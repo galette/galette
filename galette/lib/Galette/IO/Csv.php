@@ -192,4 +192,14 @@ abstract class Csv
     {
         return $this->errors;
     }
+
+    /**
+     * Reset errors
+     *
+     * @return void
+     */
+    protected function resetErrors(): void
+    {
+        $this->errors = [];
+    }
 }

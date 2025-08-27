@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
+use DI\Attribute\Inject;
 use Galette\Core\I18n;
 use Galette\Entity\Title;
 use Throwable;
@@ -96,6 +97,8 @@ class CsvIn extends Csv implements FileInterface
     private Db $zdb;
     private Preferences $preferences;
     private History $history;
+    #[Inject]
+    private Status $status; // @phpstan-ignore property.onlyRead (this is what's expected here)
 
     /**
      * Default constructor
@@ -213,6 +216,8 @@ class CsvIn extends Csv implements FileInterface
      */
     private function check(string $filename): bool
     {
+        $this->resetErrors();
+        unset($this->emails);
         $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
         if (!$handle) {
             Analog::log(
@@ -309,8 +314,7 @@ class CsvIn extends Csv implements FileInterface
                         } else {
                             if (!isset($this->statuses)) {
                                 //load existing status
-                                $status = new Status($this->zdb);
-                                $this->statuses = $status->getList();
+                                $this->statuses = $this->status->getList();
                             }
                             if (!isset($this->statuses[(int)$column])) {
                                 $this->addError(
