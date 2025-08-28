@@ -1161,7 +1161,7 @@ class Galette
             if (class_exists($plugin_class)) {
                 /** @var GalettePlugin $plugin */
                 $plugin = $container->get($plugin_class);
-                if ($entry = $plugin->getNews()) {
+                if ($plugin->isInstalled() && $entry = $plugin->getNews()) {
                     $position = $entry->getPosition();
                     while (isset($news[$position])) {
                         ++$position;

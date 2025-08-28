@@ -139,4 +139,14 @@ class PluginGaletteNews extends GalettePlugin
             position: 42
         );
     }
+
+    /**
+     * Is the plugin fully installed (including database, extra configuration, etc)?
+     *
+     * @return bool
+     */
+    public function isInstalled(): bool
+    {
+        return false;
+    }
 }

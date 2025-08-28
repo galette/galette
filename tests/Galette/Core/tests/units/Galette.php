@@ -568,14 +568,28 @@ class Galette extends GaletteTestCase
 
         $this->assertArrayNotHasKey('plugin-news', $this->plugins->getDisabledModules());
 
-        global $plugins;
+        global $plugins, $container;
         $plugins = $this->plugins;
 
         //we got asso and plugin news
         $entries = \Galette\Core\Galette::getNews();
 
+        //by default, plugin-news is marked as not installed, so we don't get it news
+        $this->assertCount(0, $entries);
+
+        //mock plugin to mark as installed
+        $plugin_class = $plugins->getClassName('plugin-news', true);
+        $mock = $this->getMockBuilder($plugin_class)
+            ->onlyMethods(array('isInstalled'))
+            ->getMock();
+        $mock->method('isInstalled')->willReturn(true);
+        $container->set($plugin_class, $mock);
+
+        $entries = \Galette\Core\Galette::getNews();
+
         //reset
         $this->plugins->deactivateModule('plugin-news');
+        $container->set($plugin_class, new $plugin_class());
 
         $this->assertCount(1, $entries);
         $entry = array_pop($entries);

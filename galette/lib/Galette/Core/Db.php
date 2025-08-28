@@ -516,6 +516,28 @@ class Db
     }
 
     /**
+     * Does a given table exists?
+     *
+     * @param string $name Table name
+     *
+     * @return bool
+     */
+    public function tableExists(string $name): bool
+    {
+        $metadata = Factory::createSourceFromAdapter($this->db);
+        try {
+            $metadata->getTable(PREFIX_DB . $name);
+            return true;
+        } catch (Throwable $e) {
+            Analog::log(
+                'Table "' . $name . '" does not exist',
+                Analog::INFO
+            );
+            return false;
+        }
+    }
+
+    /**
      * Get columns for a specified table
      *
      * @param string $table Table name

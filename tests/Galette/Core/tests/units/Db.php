@@ -599,6 +599,17 @@ class Db extends TestCase
     }
 
     /**
+     * Test table exists method
+     *
+     * @return void
+     */
+    public function testTableExists(): void
+    {
+        $this->assertTrue($this->db->tableExists('preferences'));
+        $this->assertFalse($this->db->tableExists('does_not_exists'));
+    }
+
+    /**
      * Test UTF conversion, for MySQL only
      *
      * @return void

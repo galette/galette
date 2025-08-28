@@ -189,4 +189,14 @@ abstract class GalettePlugin
         //per default, plugins do not have news to display.
         return null;
     }
+
+    /**
+     * Is the plugin fully installed (including database, extra configuration, etc)?
+     *
+     * @return bool
+     */
+    public function isInstalled(): bool
+    {
+        return true;
+    }
 }
