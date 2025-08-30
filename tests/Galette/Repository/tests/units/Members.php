@@ -1028,6 +1028,7 @@ class Members extends GaletteTestCase
      */
     public function testGetRemindersCount(): void
     {
+        $this->logSuperAdmin();
         $members = new \Galette\Repository\Members();
         $counts = $members->getRemindersCount();
         $this->assertCount(3, $counts);
@@ -1198,6 +1199,7 @@ class Members extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['id_adh' => $nomail_id]);
         $this->zdb->execute($delete);
+        $this->login->logout();
     }
 
     /**
@@ -1207,10 +1209,12 @@ class Members extends GaletteTestCase
      */
     public function testGetDropdownMembers(): void
     {
+        $this->logSuperAdmin();
         $members = new \Galette\Repository\Members();
         $this->logSuperAdmin();
         $dropdown = $members->getDropdownMembers($this->zdb, $this->login);
         $this->assertCount(10, $dropdown);
+        $this->login->logOut();
     }
 
     /**
@@ -1241,6 +1245,7 @@ class Members extends GaletteTestCase
      */
     public function testRemoveMembers(): void
     {
+        $this->logSuperAdmin();
         $members = new \Galette\Repository\Members();
 
         //Filter on inactive accounts
@@ -1283,5 +1288,6 @@ class Members extends GaletteTestCase
         //remove mailing so member can be removed
         $this->assertTrue($mailhist->removeEntries($mailing_id, $this->history));
         $this->assertTrue($members->removeMembers($member->id));
+        $this->login->logOut();
     }
 }

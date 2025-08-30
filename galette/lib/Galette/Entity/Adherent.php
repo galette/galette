@@ -506,7 +506,7 @@ class Adherent implements AccessManagementInterface
             //no fee required, we don't care about dates
             $this->row_classes .= ' cotis-exempt';
             $this->due_status = Contribution::STATUS_DUEFREE;
-        } elseif ($this->due_date == '') {
+        } elseif (($this->due_date ?? '') == '') {
             //ok, fee is required. Let's check the dates
             $this->row_classes .= ' cotis-never';
             $this->due_status = Contribution::STATUS_NEVER;
@@ -988,20 +988,17 @@ class Adherent implements AccessManagementInterface
     }
 
     /**
-     * Retrieve fields from database
-     *
-     * @param Db $zdb Database instance
+     * Retrieve fields
      *
      * @return array<string>
      */
-    public static function getDbFields(Db $zdb): array
+    public static function getFields(): array
     {
-        $columns = $zdb->getColumns(self::TABLE);
-        $fields = [];
-        foreach ($columns as $col) {
-            $fields[] = $col->getName();
-        }
-        return $fields;
+        global $container, $login;
+
+        /** @var FieldsConfig $fc */
+        $fc = $container->get(FieldsConfig::class);
+        return $fc->getAllowedFields($login);
     }
 
     /**
@@ -1081,7 +1078,7 @@ class Adherent implements AccessManagementInterface
             }
         }
 
-        $fields = self::getDbFields($this->zdb);
+        $fields = self::getFields();
 
         //reset company name if needed
         if (!isset($values['is_company'])) {
@@ -1579,7 +1576,7 @@ class Adherent implements AccessManagementInterface
 
         try {
             $values = [];
-            $fields = self::getDbFields($this->zdb);
+            $fields = self::getFields();
 
             foreach ($fields as $field) {
                 if (
@@ -1616,7 +1613,7 @@ class Adherent implements AccessManagementInterface
             if (!$this->birthdate) {
                 $values['ddn_adh'] = new Expression('NULL');
             }
-            if (!$this->due_date) {
+            if (!isset($this->due_date) || $this->due_date === null) {
                 $values['date_echeance'] = new Expression('NULL');
             }
 

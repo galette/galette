@@ -415,6 +415,13 @@ class Adherent extends GaletteTestCase
      */
     public function testCheckErrors(): void
     {
+        global $login;
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isAdmin'))
+            ->getMock();
+        $login->method('isAdmin')->willReturn(true);
+
         $adh = $this->adh;
 
         $data = ['ddn_adh' => 'not a date'];
@@ -499,7 +506,6 @@ class Adherent extends GaletteTestCase
         $g2->method('getId')->willReturn(2);
 
         //groups managers must specify a group they manage
-        global $login;
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
             ->onlyMethods(array('isGroupManager'))
@@ -525,6 +531,44 @@ class Adherent extends GaletteTestCase
         $data = ['groups_adh' => [$g1->getId()]];
         $check = $adh->check($data, [], []);
         $this->assertTrue($check);
+
+        //staff cannot set admin flag
+        $login = $this->getMockBuilder(\Galette\Core\Login::class)
+            ->setConstructorArgs(array($this->zdb, $this->i18n))
+            ->onlyMethods(array('isStaff'))
+            ->getMock();
+        $login->method('isStaff')->willReturn(true);
+
+        //force admin flag to be allowed for everyone
+        $fc = $this->getMockBuilder(\Galette\Entity\FieldsConfig::class)
+            ->setConstructorArgs([
+                $this->zdb,
+                \Galette\Entity\Adherent::TABLE,
+                $this->members_fields,
+                $this->members_fields_cats
+            ])
+            ->onlyMethods(array('getAllowedFields'))
+            ->getMock();
+        $orig_fields = $fc->getCategorizedFields();
+        $fields = [];
+        foreach ($orig_fields as $fieldset) {
+            foreach ($fieldset as $field) {
+                $fields[] = $field['field_id'];
+            }
+        }
+        $fc->method('getAllowedFields')->willReturn($fields);
+        $this->container->set(\Galette\Entity\FieldsConfig::class, $fc);
+
+        $data = ['bool_admin_adh' => true];
+        $exception_thrown = false;
+        try {
+            $adh->check($data, [], []);
+        } catch (\RuntimeException $e) {
+            $exception_thrown = true;
+            $this->assertSame('No right to store member #', $e->getMessage());
+        }
+        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        //TODO: add log check in next major
     }
 
     /**
@@ -1084,6 +1128,7 @@ class Adherent extends GaletteTestCase
      */
     public function testGetDueStatus(): void
     {
+        $this->logSuperAdmin();
         $now = new \DateTime();
         $member = new \Galette\Entity\Adherent($this->zdb);
         $this->assertSame(\Galette\Entity\Contribution::STATUS_UNKNOWN, $member->getDueStatus());
@@ -1179,6 +1224,7 @@ class Adherent extends GaletteTestCase
             $this->adh->getDues()
         );
         $this->changeMemberActivation(true);
+        $this->login->logout();
     }
 
     /**

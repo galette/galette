@@ -75,10 +75,12 @@ class ListsConfig extends TestCase
      */
     public function tearDown(): void
     {
+        parent::tearDown();
         if (TYPE_DB === 'mysql') {
             $this->assertSame([], $this->zdb->getWarnings());
         }
         $this->resetListsConfig();
+        $this->lists_config->installInit();
     }
 
     /**

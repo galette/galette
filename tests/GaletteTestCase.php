@@ -311,6 +311,12 @@ abstract class GaletteTestCase extends TestCase
      */
     public function createMember(array $data): \Galette\Entity\Adherent
     {
+        $waslogged = true;
+        if (!$this->login->isLogged()) {
+            $waslogged = false;
+            $this->logSuperAdmin();
+        }
+
         $this->adh = new \Galette\Entity\Adherent($this->zdb);
         $this->adh->setDependencies(
             $this->preferences,
@@ -327,6 +333,9 @@ abstract class GaletteTestCase extends TestCase
         $store = $this->adh->store();
         $this->assertTrue($store);
 
+        if (!$waslogged) {
+            $this->login->logOut();
+        }
         return $this->adh;
     }
 

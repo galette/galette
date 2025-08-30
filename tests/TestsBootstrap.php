@@ -136,7 +136,17 @@ if (
     //do not initialize Tiles on update nor fail tests
     $titles = new \Galette\Repository\Titles($zdb);
     $res = $titles->installInit($zdb);
-}
 
+    $fc = $container->get(\Galette\Entity\FieldsConfig::class);
+    $categorized_fields = $fc->getCategorizedFields();
+    foreach ($categorized_fields as &$fieldset) {
+        foreach ($fieldset as &$field) {
+            if ($field['field_id'] == 'fingerprint') {
+                $field['visible'] = \Galette\Entity\FieldsConfig::ALL; //make sure fingerprint field is visible
+            }
+        }
+    }
+    $fc->setFields($categorized_fields);
+}
 require_once __DIR__ . '/GaletteTestCase.php';
 require_once __DIR__ . '/GaletteRoutingTestCase.php';

@@ -494,14 +494,14 @@ class FieldsConfig
                     if ($o->field_id == 'id_adh') {
                         // ignore access control, as member ID is always needed
                         if ($new === true) {
-                            $hidden_elements[] = $o;
+                            $hidden_elements[$o->field_id] = $o;
                         } else {
                             $o->type = self::TYPE_STR;
                             $o->readonly = true;
                             $cat->elements[$o->field_id] = $o;
                         }
                     } elseif ($o->field_id == 'parent_id') {
-                        $hidden_elements[] = $o;
+                        $hidden_elements[$o->field_id] = $o;
                     } else {
                         // skip fields blacklisted for edition
                         if (
@@ -551,12 +551,13 @@ class FieldsConfig
                         }
 
                         //retrieve field information from DB
-                        foreach ($columns as $column) {
+                        foreach ($columns as $k => $column) {
                             if ($column->getName() === $o->field_id) {
                                 $o->max_length
                                     = $column->getCharacterMaximumLength();
                                 $o->default = $column->getColumnDefault();
                                 $o->datatype = $column->getDataType();
+                                unset($columns[$k]);
                                 break;
                             }
                         }
@@ -597,6 +598,23 @@ class FieldsConfig
             );
             throw $e;
         }
+    }
+
+    /**
+     * Get fields that are allowed for current user
+     *
+     * @param Login $login Login instance
+     *
+     * @return string[]
+     */
+    public function getAllowedFields(Login $login): array
+    {
+        $form_elements = $this->getFormElements($login, false);
+        $to_check = [];
+        foreach ($form_elements['fieldsets'] as $fieldset) {
+            $to_check = array_merge($to_check, array_keys($fieldset->elements));
+        }
+        return array_merge($to_check, array_keys($form_elements['hiddens']));
     }
 
     /**

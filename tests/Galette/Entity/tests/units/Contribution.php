@@ -868,6 +868,7 @@ class Contribution extends GaletteTestCase
      */
     public function testLoad(): void
     {
+        global $login;
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, $this->i18n))
             ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin'))
@@ -875,6 +876,7 @@ class Contribution extends GaletteTestCase
         $this->login->method('isLogged')->willReturn(true);
         $this->login->method('isStaff')->willReturn(true);
         $this->login->method('isAdmin')->willReturn(true);
+        $login = $this->login;
 
         $this->getMemberOne();
 
