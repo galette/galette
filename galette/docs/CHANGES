@@ -1,7 +1,7 @@
 Changes
 -------
 
-1.1.5.2 -> 1.2.0
+1.1.6 -> 1.2.0
 
 - Rework/harmonize SQL scripts - review some data types and defaults values
 - Dynamic dates are now stored using Y-m-d format only
@@ -21,6 +21,11 @@ Changes
 - Fix few dynamic translations issues
 - Remove show ID preference
 - Fix stored XSS CVE-2025-48076 and reflected XSS CVE-2025-48884
+
+1.1.5.2 -> 1.6.0
+
+- Improve checks on members
+- Use fields configuration to restrcit to allowed fields only
 
 1.1.5.1 -> 1.1.5.2
 
