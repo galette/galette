@@ -273,6 +273,7 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib->id);
         $this->assertEquals(date('Y-m-d'), $contrib->date);
         $now = new \DateTime();
+        $now->sub(new \DateInterval('P1Y'));
         $bdate = $contrib->raw_begin_date;
         if ($bdate < $now) {
             $bdate->add(new \DateInterval('P1Y'));
