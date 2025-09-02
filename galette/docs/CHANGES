@@ -1,6 +1,11 @@
 Changes
 -------
 
+1.1.5.2 -> 1.6.0
+
+- Improve checks on members
+- Use fields configuration to restrcit to allowed fields only
+
 1.1.5.1 -> 1.1.5.2
 
 - Wrong year on new contributions when using begin of membership date
