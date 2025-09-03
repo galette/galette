@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use DI\Attribute\Inject;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Social;
 use Galette\Repository\PaymentTypes;
@@ -49,6 +50,9 @@ use Galette\Repository\Reminders;
 
 class GaletteController extends AbstractController
 {
+    #[Inject]
+    private Status $status;
+
     /**
      * Main route
      *
@@ -187,7 +191,6 @@ class GaletteController extends AbstractController
         $ptlist = $ptypes->getList(false);
 
         $m = new Members();
-        $s = new Status($this->zdb);
 
         //Active tab on page
         $tab = $request->getQueryParams()['tab'] ?? 'general';
@@ -210,7 +213,7 @@ class GaletteController extends AbstractController
                 'print_logo'            => $this->print_logo,
                 'required'              => $required,
                 'themes'                => $themes,
-                'statuts'               => $s->getList(),
+                'statuts'               => $this->status->getList(),
                 'accounts_options'      => [
                     Members::ALL_ACCOUNTS       => _T("All accounts"),
                     Members::ACTIVE_ACCOUNT     => _T("Active accounts"),

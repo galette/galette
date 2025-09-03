@@ -799,9 +799,6 @@ class MembersController extends CrudController
         $contrib = new Contribution($this->zdb, $this->login);
         $contrib_dynamics = new DynamicFieldsHandle($this->zdb, $this->login, $contrib);
 
-        //Status
-        $statuts = new Status($this->zdb);
-
         //Contributions types
         $ct = new ContributionsTypes($this->zdb);
 
@@ -833,7 +830,7 @@ class MembersController extends CrudController
                 'adh_dynamics'          => $adh_dynamics->getSearchFields(),
                 'contrib_dynamics'      => $contrib_dynamics->getSearchFields(),
                 'adh_socials'           => $social_types,
-                'statuts'               => $statuts->getList(),
+                'statuts'               => $this->status->getList(),
                 'contributions_types'   => $ct->getList(),
                 'filters'               => $filters,
                 'payments_types'        => $ptlist,
@@ -1224,8 +1221,6 @@ class MembersController extends CrudController
         $member = new Adherent($this->zdb);
         $member->disableAllDeps()->enableDep('dynamics');
 
-        //Status
-        $statuts = new Status($this->zdb);
         //Titles
         $titles = new Titles($this->zdb);
 
@@ -1249,7 +1244,7 @@ class MembersController extends CrudController
                 'member'        => $member,
                 'fieldsets'     => $form_elements['fieldsets'],
                 'titles_list'   => $titles->getList(),
-                'statuts'       => $statuts->getList(),
+                'statuts'       => $this->status->getList(),
                 'require_mass'  => true,
                 'groups'        => $groups_list
             ]
@@ -1345,8 +1340,6 @@ class MembersController extends CrudController
             'redirect_uri'  => $this->routeparser->urlFor('members')
         ];
 
-        //Status
-        $statuts = new Status($this->zdb);
         //Titles
         $titles = new Titles($this->zdb);
         //Groups
@@ -1366,7 +1359,7 @@ class MembersController extends CrudController
                 'cancel_uri'    => $this->routeparser->urlFor('members'),
                 'data'          => $data,
                 'titles_list'   => $titles->getList(),
-                'statuts'       => $statuts->getList(),
+                'statuts'       => $this->status->getList(),
                 'groups'        => $groups->getSimpleList(),
                 'changes'       => $changes
             ]
