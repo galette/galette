@@ -281,6 +281,7 @@ class Transaction extends GaletteTestCase
      */
     public function testLoad(): void
     {
+        global $login;
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
             ->onlyMethods(array('isLogged', 'isAdmin', 'isStaff'))
@@ -288,6 +289,7 @@ class Transaction extends GaletteTestCase
         $this->login->method('isLogged')->willReturn(true);
         $this->login->method('isAdmin')->willReturn(true);
         $this->login->method('isStaff')->willReturn(true);
+        $login = $this->login;
 
         $this->logSuperAdmin();
         $this->getMemberOne();

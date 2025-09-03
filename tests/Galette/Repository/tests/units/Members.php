@@ -1110,6 +1110,7 @@ class Members extends GaletteTestCase
         $this->assertSame(0, (int)$counts['nomail']['late']);
 
         //member without email
+        $this->logSuperAdmin();
         $nomail = new \Galette\Entity\Adherent($this->zdb);
         $nomail->setDependencies(
             $this->preferences,
@@ -1124,6 +1125,7 @@ class Members extends GaletteTestCase
             var_dump($nomail->getErrors());
         }
         $this->assertTrue($nomail->store());
+        $this->login->logout();
         $nomail_id = $nomail->id;
 
         //create an expired contribution without email
