@@ -1,10 +1,14 @@
 Changes
 -------
 
-1.1.5.2 -> 1.6.0
+1.1.6 -> 1.1.6.1
+
+- Fix some issues when Status objects was not loaded from DI
+
+1.1.5.2 -> 1.1.6
 
 - Improve checks on members
-- Use fields configuration to restrcit to allowed fields only
+- Use fields configuration to restrict to allowed fields only
 
 1.1.5.1 -> 1.1.5.2
 
