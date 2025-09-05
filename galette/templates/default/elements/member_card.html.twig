@@ -18,6 +18,7 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 #}
+{% set qrcodes = member.getQrCodes() %}
 <div id="member_card" class="ui horizontal fluid card">
     {% if not (member.picture.path ends with '/default/images/default.png') %}
     <div class="image">
@@ -75,13 +76,11 @@
     </div>
 </div>
 
-{% if qrcodes is not empty %}
-    {% for key, qrcode in qrcodes %}
-        <div class="ui basic modal" id="qrcode_{{ key }}">
-            <img src="{{ qrcode.getImage() }}" alt="{{ qrcode.getLabel() }}" title="{{ qrcode.getLabel() }}" class="medium image tooltip"/>
-        </div>
-    {% endfor %}
-{% endif %}
+{% for key, qrcode in qrcodes %}
+    <div class="ui basic modal" id="qrcode_{{ key }}">
+        <img src="{{ qrcode.getImage() }}" alt="{{ qrcode.getLabel() }}" title="{{ qrcode.getLabel() }}" class="medium image tooltip"/>
+    </div>
+{% endfor %}
 
 <script type="text/javascript">
     $('#member_card .qrcode.icon').on('click', function() {
