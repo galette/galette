@@ -100,18 +100,14 @@ abstract class DynamicField
     /** @var array<string> */
     protected array $errors = [];
 
-    protected Db $zdb;
-
     /**
      * Default constructor
      *
      * @param Db    $zdb  Database instance
      * @param mixed $args Arguments
      */
-    public function __construct(Db $zdb, mixed $args = null)
+    public function __construct(protected Db $zdb, mixed $args = null)
     {
-        $this->zdb = $zdb;
-
         if (is_int($args)) {
             $this->load($args);
         } elseif (is_object($args)) {
@@ -308,7 +304,7 @@ abstract class DynamicField
      */
     public function getTypeName(): string
     {
-        $types = $this->getFieldsTypesNames();
+        $types = static::getFieldsTypesNames();
         if (isset($types[$this->getType()])) {
             return $types[$this->getType()];
         } else {
@@ -679,7 +675,7 @@ abstract class DynamicField
             }
         }
 
-        if (isset($values['field_information']) && trim($values['field_information']) != '') {
+        if (isset($values['field_information']) && trim((string) $values['field_information']) != '') {
             global $preferences;
             $this->information = $preferences->cleanHtmlValue($values['field_information']);
         }
@@ -688,7 +684,7 @@ abstract class DynamicField
 
         if ($this->hasFixedValues() && isset($values['fixed_values'])) {
             $fixed_values = [];
-            foreach (explode("\n", $values['fixed_values']) as $val) {
+            foreach (explode("\n", (string) $values['fixed_values']) as $val) {
                 $val = trim($val);
                 $len = mb_strlen($val);
                 if ($len > 0) {
@@ -738,18 +734,18 @@ abstract class DynamicField
 
         try {
             $values = [
-                'field_name'              => strip_tags($this->name),
+                'field_name'              => strip_tags((string) $this->name),
                 'field_perm'              => $this->permission,
                 'field_required'          => $this->required,
                 'field_width_in_forms'    => $this->width_in_forms,
-                'field_width'             => ($this->width === null ? new Expression('NULL') : $this->width),
-                'field_height'            => ($this->height === null ? new Expression('NULL') : $this->height),
-                'field_min_size'          => ($this->min_size === null ? new Expression('NULL') : $this->min_size),
-                'field_size'              => ($this->size === null ? new Expression('NULL') : $this->size),
-                'field_repeat'            => ($this->repeat === null ? new Expression('NULL') : $this->repeat),
+                'field_width'             => ($this->width ?? new Expression('NULL')),
+                'field_height'            => ($this->height ?? new Expression('NULL')),
+                'field_min_size'          => ($this->min_size ?? new Expression('NULL')),
+                'field_size'              => ($this->size ?? new Expression('NULL')),
+                'field_repeat'            => ($this->repeat ?? new Expression('NULL')),
                 'field_form'              => $this->form,
                 'field_index'             => $this->index,
-                'field_information'       => ($this->information === null ? new Expression('NULL') : $this->information),
+                'field_information'       => ($this->information ?? new Expression('NULL')),
                 'field_information_above' => $this->information_above,
             ];
 

@@ -46,7 +46,6 @@ class ScheduledPayment
 
     public const TABLE = 'payments_schedules';
     public const PK = 'id_schedule';
-    private Db $zdb;
     private int $id;
     private Contribution $contribution;
     private PaymentType $payment_type;
@@ -64,9 +63,8 @@ class ScheduledPayment
      * @param Db                                      $zdb  Database instance
      * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
-    public function __construct(Db $zdb, ArrayObject|int|null $args = null)
+    public function __construct(private Db $zdb, ArrayObject|int|null $args = null)
     {
-        $this->zdb = $zdb;
         $now = new DateTime();
         $this->creation_date = $now->format('Y-m-d');
         $this->scheduled_date = $now->format('Y-m-d');

@@ -63,8 +63,6 @@ class FieldsConfig
     public const TYPE_URL = 9;
     public const TYPE_RADIO = 10;
     public const TYPE_SELECT = 11;
-
-    protected Db $zdb;
     /** @var array<string, array<string, mixed>> */
     protected array $core_db_fields = [];
     /** @var array<string, bool> */
@@ -73,11 +71,6 @@ class FieldsConfig
     protected array $all_visibles = [];
     /** @var array<int, array<int, array<string, mixed>>> */
     protected array $categorized_fields = [];
-    protected string $table;
-    /** @var array<string, mixed>|null  */
-    protected ?array $defaults = null;
-    /** @var array<string, mixed>|null */
-    protected ?array $cats_defaults = null;
 
     /** @var array<string> */
     private array $staff_fields = [
@@ -141,12 +134,8 @@ class FieldsConfig
      * @param array<string, mixed> $cats_defaults default categories values
      * @param boolean              $install       Are we calling from installer?
      */
-    public function __construct(Db $zdb, string $table, array $defaults, array $cats_defaults, bool $install = false)
+    public function __construct(protected Db $zdb, protected string $table, protected ?array $defaults, protected ?array $cats_defaults, bool $install = false)
     {
-        $this->zdb = $zdb;
-        $this->table = $table;
-        $this->defaults = $defaults;
-        $this->cats_defaults = $cats_defaults;
         //prevent check at install time...
         if (!$install) {
             $this->load();
@@ -311,7 +300,7 @@ class FieldsConfig
      */
     private function checkUpdate(): void
     {
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             $_all_fields = [];
@@ -534,9 +523,9 @@ class FieldsConfig
                             continue;
                         }
 
-                        if (preg_match('/date/', $o->field_id)) {
+                        if (preg_match('/date/', (string) $o->field_id)) {
                             $o->type = self::TYPE_DATE;
-                        } elseif (preg_match('/bool/', $o->field_id)) {
+                        } elseif (preg_match('/bool/', (string) $o->field_id)) {
                             $o->type = self::TYPE_BOOL;
                         } elseif (
                             $o->field_id == 'titre_adh'
@@ -763,7 +752,7 @@ class FieldsConfig
      */
     private function store(): bool
     {
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             $this->zdb->connection->beginTransaction();
@@ -850,7 +839,7 @@ class FieldsConfig
             $select->from(PREFIX_DB . 'required');
 
             $old_required = $this->zdb->execute($select);
-        } catch (\Exception $pe) {
+        } catch (\Exception) {
             Analog::log(
                 'Unable to retrieve required fields_config. Maybe '
                 . 'the table does not exists?',
@@ -886,7 +875,7 @@ class FieldsConfig
                 );
             }
 
-            $class = get_class($this);
+            $class = static::class;
             Analog::log(
                 str_replace(
                     '%s',

@@ -30,11 +30,6 @@ namespace Galette\IO\News;
  */
 class Entry
 {
-    private string $title;
-    /** @var Post[] */
-    private array $posts;
-    private int $position = 0;
-
     /**
      * Default constructor
      *
@@ -42,11 +37,8 @@ class Entry
      * @param Post[] $posts    Posts
      * @param int    $position Position of entry in the list
      */
-    public function __construct(string $title, array $posts, int $position = 0)
+    public function __construct(private readonly string $title, private readonly array $posts, private readonly int $position = 0)
     {
-        $this->title = $title;
-        $this->posts = $posts;
-        $this->position = $position;
     }
 
     /**

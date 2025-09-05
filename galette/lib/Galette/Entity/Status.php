@@ -47,8 +47,6 @@ class Status
 
     public const ID_NOT_EXITS = -1;
 
-    private Db $zdb;
-
     private int $id;
     private string $label;
     private int $priority;
@@ -80,9 +78,8 @@ class Status
      * @param Db                                      $zdb  Database
      * @param int|ArrayObject<string,int|string>|null $args Optional existing result set
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
+    public function __construct(private Db $zdb, int|ArrayObject|null $args = null)
     {
-        $this->zdb = $zdb;
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
@@ -571,12 +568,10 @@ class Status
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
-            switch ($name) {
-                case 'libelle':
-                    return _T($this->label);
-                default:
-                    return $this->$name;
-            }
+            return match ($name) {
+                'libelle' => _T($this->label),
+                default => $this->$name,
+            };
         } else {
             return false;
         }

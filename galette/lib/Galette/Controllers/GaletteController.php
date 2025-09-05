@@ -51,7 +51,7 @@ use Galette\Repository\Reminders;
 class GaletteController extends AbstractController
 {
     #[Inject]
-    private Status $status;
+    private readonly Status $status;
 
     /**
      * Main route
@@ -465,7 +465,7 @@ class GaletteController extends AbstractController
 
             $res[$current_cat][] = [
                 'field_id'      =>  $field,
-                'label'         =>  htmlspecialchars($post[$field . '_label'], ENT_QUOTES),
+                'label'         =>  htmlspecialchars((string) $post[$field . '_label'], ENT_QUOTES),
                 'category'      =>  $post[$field . '_category'],
                 'visible'       =>  $post[$field . '_visible'],
                 'required'      =>  $required,

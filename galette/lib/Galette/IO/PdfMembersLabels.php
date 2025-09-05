@@ -144,7 +144,7 @@ class PdfMembersLabels extends Pdf
             $full_address_array = [];
             $full_address_array[] = $member->sfullname;
             // Transform member's address in array and merge it with $full_address_array
-            $address_array = explode(PHP_EOL, $member->address);
+            $address_array = explode(PHP_EOL, (string) $member->address);
             $full_address_array = array_merge($full_address_array, $address_array);
             $full_address_array[] = $member->zipcode . ' ' . $member->town;
             $full_address_array[] = $member->country;

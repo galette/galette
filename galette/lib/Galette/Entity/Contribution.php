@@ -103,9 +103,6 @@ class Contribution implements AccessManagementInterface
     private ?int $extension = null;
     /** @var array<int, PaymentType> */
     private array $ptypes_list;
-
-    private Db $zdb;
-    private Login $login;
     /** @var array<string> */
     protected array $errors = [];
 
@@ -132,11 +129,8 @@ class Contribution implements AccessManagementInterface
      *                                                                           a specific contribution, or a type id
      *                                                                           to just instantiate object
      */
-    public function __construct(Db $zdb, Login $login, int|array|ArrayObject|null $args = null)
+    public function __construct(private Db $zdb, private Login $login, int|array|ArrayObject|null $args = null)
     {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
         global $preferences;
         $this->payment_type = $preferences->pref_default_paymenttype;
 
@@ -190,7 +184,7 @@ class Contribution implements AccessManagementInterface
             } else {
                 $begin_date = new \DateTime();
                 $begin_date->sub(new DateInterval('P1Y'));
-                [$j, $m] = explode('/', $preferences->pref_beg_membership);
+                [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
                 $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
                 while ($next_begin_date <= $begin_date) {
                     $next_begin_date->add(new DateInterval('P1Y'));
@@ -285,7 +279,7 @@ class Contribution implements AccessManagementInterface
             $end_date = $begin_date->add($dext);
         } elseif ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            [$j, $m] = explode('/', $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
             $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
             while ($next_begin_date <= $begin_date) {
                 $next_begin_date->add(new DateInterval('P1Y'));
@@ -688,15 +682,10 @@ class Contribution implements AccessManagementInterface
                 if (!isset($this->$prop)) {
                     continue;
                 }
-                switch ($field) {
-                    case ContributionsTypes::PK:
-                    case Transaction::PK:
-                        $values[$field] = $this->$prop->id;
-                        break;
-                    default:
-                        $values[$field] = $this->$prop;
-                        break;
-                }
+                $values[$field] = match ($field) {
+                    ContributionsTypes::PK, Transaction::PK => $this->$prop->id,
+                    default => $this->$prop,
+                };
             }
 
             //no end date for donation
@@ -1188,12 +1177,10 @@ class Contribution implements AccessManagementInterface
                 Analog::WARNING
             );
 
-            switch ($name) {
-                case 'is_cotis':
-                    return $this->isFee();
-                default:
-                    throw new \RuntimeException("Call to __get for '$name' is forbidden!");
-            }
+            return match ($name) {
+                'is_cotis' => $this->isFee(),
+                default => throw new \RuntimeException("Call to __get for '$name' is forbidden!"),
+            };
         } elseif (
             property_exists($this, $name)
             || in_array($name, $this->virtual_fields)
@@ -1235,7 +1222,7 @@ class Contribution implements AccessManagementInterface
                             return $this->$name ?? null;
                         }
                     } else {
-                        throw new \LogicException("Property '" . __CLASS__ . "::$name' does not exist!");
+                        throw new \LogicException("Property '" . self::class . "::$name' does not exist!");
                     }
             }
         } else {
@@ -1300,7 +1287,7 @@ class Contribution implements AccessManagementInterface
                     break;
                 default:
                     Analog::log(
-                        '[' . __CLASS__ . ']: Trying to set an unknown property ('
+                        '[' . self::class . ']: Trying to set an unknown property ('
                         . $name . ')',
                         Analog::WARNING
                     );

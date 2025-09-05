@@ -41,10 +41,8 @@ use Galette\Repository\ScheduledPayments;
 
 class ScheduledPaymentsCsv extends CsvOut
 {
-    private string $filename;
-    private string $path;
-    private Db $zdb;
-    private Login $login;
+    private readonly string $filename;
+    private readonly string $path;
 
     /**
      * Default constructor
@@ -52,12 +50,10 @@ class ScheduledPaymentsCsv extends CsvOut
      * @param Db    $zdb   Db instance
      * @param Login $login Login instance
      */
-    public function __construct(Db $zdb, Login $login)
+    public function __construct(private readonly Db $zdb, private readonly Login $login)
     {
         $this->filename = 'filtered_shceduledpaymentslist.csv';
         $this->path = self::DEFAULT_DIRECTORY . $this->filename;
-        $this->zdb = $zdb;
-        $this->login = $login;
         parent::__construct();
     }
 

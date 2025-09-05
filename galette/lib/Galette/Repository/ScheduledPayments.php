@@ -46,11 +46,8 @@ class ScheduledPayments
     public const TABLE = ScheduledPayment::TABLE;
     public const PK = ScheduledPayment::PK;
 
-    private ScheduledPaymentsList $filters;
+    private readonly ScheduledPaymentsList $filters;
     private int $count = 0;
-
-    private Db $zdb;
-    private Login $login;
     private float $sum = 0;
     /** @var array<int> */
     private array $current_selection;
@@ -62,12 +59,9 @@ class ScheduledPayments
      * @param Login                  $login   Login
      * @param ?ScheduledPaymentsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?ScheduledPaymentsList $filters = null)
+    public function __construct(private readonly Db $zdb, private readonly Login $login, ?ScheduledPaymentsList $filters = null)
     {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
-        $this->filters = $filters === null ? new ScheduledPaymentsList() : $filters;
+        $this->filters = $filters ?? new ScheduledPaymentsList();
     }
 
     /**
@@ -312,15 +306,10 @@ class ScheduledPayments
      */
     private function buildWhereClause(Select $select): void
     {
-        switch ($this->filters->date_field) {
-            case ScheduledPaymentsList::DATE_RECORD:
-                $field = 'creation_date';
-                break;
-            case ScheduledPaymentsList::DATE_SCHEDULED:
-            default:
-                $field = 'scheduled_date';
-                break;
-        }
+        $field = match ($this->filters->date_field) {
+            ScheduledPaymentsList::DATE_RECORD => 'creation_date',
+            default => 'scheduled_date',
+        };
 
         if (isset($this->current_selection)) {
             $select->where->in('s.' . self::PK, $this->current_selection);

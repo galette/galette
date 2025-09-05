@@ -32,16 +32,13 @@ use Symfony\Component\Console\Application;
  */
 class GaletteApplication extends Application
 {
-    private string $basepath;
-
     /**
      * Default constructor
      *
      * @param string $basepath Base path to Galette installation
      */
-    public function __construct(string $basepath)
+    public function __construct(private readonly string $basepath)
     {
-        $this->basepath = $basepath;
         parent::__construct('Galette', GALETTE_VERSION);
     }
 

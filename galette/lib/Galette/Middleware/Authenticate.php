@@ -48,11 +48,11 @@ class Authenticate
      */
     protected array $acls;
 
-    private Login $login;
+    private readonly Login $login;
 
-    private Session $session;
+    private readonly Session $session;
 
-    private RouteParser $routeparser;
+    private readonly RouteParser $routeparser;
 
     /**
      * Constructor

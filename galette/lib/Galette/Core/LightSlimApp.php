@@ -37,19 +37,16 @@ use Slim\App;
  */
 class LightSlimApp
 {
-    private string $mode;
     /** @var App<TContainerInterface> */
-    private App $app;
+    private readonly App $app;
 
     /**
      * Create a new Slim application
      *
      * @param string $mode Galette mode
      */
-    public function __construct(string $mode = 'NEED_UPDATE')
+    public function __construct(private readonly string $mode = 'NEED_UPDATE')
     {
-        $this->mode = $mode;
-
         $builder = new ContainerBuilder();
         $builder->useAttributes(true);
         $builder->addDefinitions([
@@ -66,7 +63,7 @@ class LightSlimApp
             ],
             'mode'          => $this->mode,
             'galette.mode'  => $this->mode,
-            'session'       => \DI\autowire('\RKA\Session')
+            'session'       => \DI\autowire(\RKA\Session::class)
         ]);
         $container = $builder->build();
 

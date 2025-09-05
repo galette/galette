@@ -219,8 +219,8 @@ class ListsConfig extends TestCase
 
         //admin
         $superadmin_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isSuperAdmin'])
             ->getMock();
         $superadmin_login->method('isSuperAdmin')->willReturn(true);
 
@@ -230,8 +230,8 @@ class ListsConfig extends TestCase
 
         //admin
         $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $admin_login->method('isAdmin')->willReturn(true);
 
@@ -240,8 +240,8 @@ class ListsConfig extends TestCase
 
         //staff
         $staff_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isStaff'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isStaff'])
             ->getMock();
         $staff_login->method('isStaff')->willReturn(true);
 
@@ -262,8 +262,8 @@ class ListsConfig extends TestCase
 
         //group manager
         $manager_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isGroupManager'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isGroupManager'])
             ->getMock();
         $manager_login->method('isGroupManager')->willReturn(true);
 
@@ -284,8 +284,8 @@ class ListsConfig extends TestCase
 
         //simplemember
         $user_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isUp2Date'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isUp2Date'])
             ->getMock();
         $user_login->method('isUp2Date')->willReturn(true);
 

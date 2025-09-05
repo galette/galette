@@ -197,7 +197,7 @@ class ContributionsTypesController extends CrudController
         $msg = null;
         $ctype = new ContributionsTypes($this->zdb);
 
-        $label = trim($post['libelle_type_cotis']);
+        $label = trim((string) $post['libelle_type_cotis']);
         $field = (int)trim($post['cotis_extension'] ?? 0);
         $amount = null;
         if (isset($post['amount']) && $post['amount'] !== '') {

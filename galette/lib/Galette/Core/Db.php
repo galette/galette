@@ -230,7 +230,7 @@ class Db
 
         try {
             return $this->getDbVersion() === GALETTE_DB_VERSION;
-        } catch (LogicException $e) {
+        } catch (LogicException) {
             return false;
         }
     }
@@ -528,7 +528,7 @@ class Db
         try {
             $metadata->getTable(PREFIX_DB . $name);
             return true;
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             Analog::log(
                 'Table "' . $name . '" does not exist',
                 Analog::INFO
@@ -825,24 +825,16 @@ class Db
      */
     public function __get(string $name): mixed
     {
-        switch ($name) {
-            case 'db':
-                return $this->db;
-            case 'sql':
-                return $this->sql;
-            case 'driver':
-                return $this->db->getDriver();
-            case 'connection':
-                return $this->db->getDriver()->getConnection();
-            case 'platform':
-                return $this->db->getPlatform();
-            case 'query_string':
-                return $this->last_query;
-            case 'type_db':
-                return $this->type_db;
-            default:
-                throw new RuntimeException('Unknown property ' . $name);
-        }
+        return match ($name) {
+            'db' => $this->db,
+            'sql' => $this->sql,
+            'driver' => $this->db->getDriver(),
+            'connection' => $this->db->getDriver()->getConnection(),
+            'platform' => $this->db->getPlatform(),
+            'query_string' => $this->last_query,
+            'type_db' => $this->type_db,
+            default => throw new RuntimeException('Unknown property ' . $name),
+        };
     }
 
     /**
@@ -855,17 +847,10 @@ class Db
      */
     public function __isset(string $name): bool
     {
-        switch ($name) {
-            case 'db':
-            case 'sql':
-            case 'driver':
-            case 'connection':
-            case 'platform':
-            case 'query_string':
-            case 'type_db':
-                return true;
-        }
-        return property_exists($this, $name);
+        return match ($name) {
+            'db', 'sql', 'driver', 'connection', 'platform', 'query_string', 'type_db' => true,
+            default => property_exists($this, $name),
+        };
     }
 
     /**
@@ -1087,10 +1072,10 @@ class Db
         if ($this->isPostgres()) {
             $min_version = GALETTE_PGSQL_MIN;
         } else {
-            $min_version = str_contains($version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+            $min_version = str_contains((string) $version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
         }
 
-        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string) $version);
         return version_compare($version, $min_version, '>=');
     }
 
@@ -1107,11 +1092,11 @@ class Db
             $engine = 'PostgreSQL';
             $min_version = GALETTE_PGSQL_MIN;
         } else {
-            $engine = str_contains($version, '-MariaDB') ? 'MariaDB' : 'MySQL';
-            $min_version = str_contains($version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+            $engine = str_contains((string) $version, '-MariaDB') ? 'MariaDB' : 'MySQL';
+            $min_version = str_contains((string) $version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
         }
 
-        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string) $version);
 
         return sprintf(
             _T('Minimum version for %1$s engine is %2$s, %1$s %3$s found!'),

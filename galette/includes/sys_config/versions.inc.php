@@ -27,7 +27,7 @@ declare(strict_types=1);
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-define('GALETTE_PHP_MIN', '8.1');
+define('GALETTE_PHP_MIN', '8.2');
 define('GALETTE_MYSQL_MIN', '8.0');
 define('GALETTE_MARIADB_MIN', '10.5');
 define('GALETTE_PGSQL_MIN', '13');

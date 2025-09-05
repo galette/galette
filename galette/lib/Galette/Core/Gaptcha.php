@@ -37,11 +37,9 @@ class Gaptcha
 
     private int $max = 12;
     private int $min = 0;
-
-    private I18n $i18n;
-    private int $current_left;
-    private int $current_right;
-    private int $current_op;
+    private readonly int $current_left;
+    private readonly int $current_right;
+    private readonly int $current_op;
     private int $gaptcha;
 
     /**
@@ -49,12 +47,11 @@ class Gaptcha
      *
      * @param I18n $i18n I18n instance
      */
-    public function __construct(I18n $i18n)
+    public function __construct(private readonly I18n $i18n)
     {
-        $this->i18n = $i18n;
-        $this->current_left = rand($this->min, $this->max);
-        $this->current_right = rand($this->min, $this->max);
-        $this->current_op = rand(1, 2);
+        $this->current_left = random_int($this->min, $this->max);
+        $this->current_right = random_int($this->min, $this->max);
+        $this->current_op = random_int(1, 2);
         switch ($this->current_op) {
             case self::OP_ADD:
                 $this->gaptcha = $this->current_left + $this->current_right;
@@ -85,7 +82,7 @@ class Gaptcha
         ];
 
         $questions = ($this->current_op === self::OP_ADD) ? $add_questions : $sub_questions;
-        return $questions[rand(0, (count($questions) - 1))];
+        return $questions[random_int(0, (count($questions) - 1))];
     }
 
 

@@ -39,9 +39,6 @@ use Analog\Analog;
 
 class PdfAdhesionForm extends Pdf
 {
-    protected Db $zdb;
-    protected Adherent $adh;
-    protected Preferences $prefs;
     protected string $filename;
     private string $path;
 
@@ -52,17 +49,13 @@ class PdfAdhesionForm extends Pdf
      * @param Db          $zdb   Database instance
      * @param Preferences $prefs Preferences instance
      */
-    public function __construct(Adherent $adh, Db $zdb, Preferences $prefs)
+    public function __construct(protected Adherent $adh, protected Db $zdb, protected Preferences $prefs)
     {
-        $this->zdb = $zdb;
-        $this->adh = $adh;
-        $this->prefs = $prefs;
-
         $model = $this->getModel();
-        parent::__construct($prefs, $model);
+        parent::__construct($this->prefs, $model);
 
-        $this->filename = $adh->id
-            ? __("adherent_form") . '.' . $adh->id . '.pdf' : __("adherent_form") . '.pdf';
+        $this->filename = $this->adh->id
+            ? __("adherent_form") . '.' . $this->adh->id . '.pdf' : __("adherent_form") . '.pdf';
 
         if ($model !== null) {
             $this->PageHeader();

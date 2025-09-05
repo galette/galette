@@ -47,8 +47,6 @@ class SavedSearch
 {
     public const TABLE = 'searches';
     public const PK = 'search_id';
-
-    private Db $zdb;
     private int $id;
     private string $name;
     /** @var array<string, mixed> */
@@ -56,8 +54,6 @@ class SavedSearch
     private ?int $author_id = null;
     private ?string $creation_date;
     private string $form;
-
-    private Login $login;
     /** @var array<string> */
     private array $errors = [];
 
@@ -68,10 +64,8 @@ class SavedSearch
      * @param Login                                   $login Login instance
      * @param ArrayObject<string,int|string>|int|null $args  Arguments
      */
-    public function __construct(Db $zdb, Login $login, ArrayObject|int|null $args = null)
+    public function __construct(private readonly Db $zdb, private readonly Login $login, ArrayObject|int|null $args = null)
     {
-        $this->zdb = $zdb;
-        $this->login = $login;
         $this->creation_date = date('Y-m-d H:i:s');
 
         if (is_int($args)) {
@@ -192,7 +186,7 @@ class SavedSearch
             'name'              => $this->name,
             'parameters'        => $parameters,
             'id_adh'            => $this->author_id,
-            'creation_date'     => ($this->creation_date !== null ? $this->creation_date : date('Y-m-d H:i:s')),
+            'creation_date'     => ($this->creation_date ?? date('Y-m-d H:i:s')),
             'form'              => $this->form
         ];
 
@@ -301,7 +295,7 @@ class SavedSearch
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                self::class,
                 $name
             )
         );
@@ -324,13 +318,10 @@ class SavedSearch
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
-            switch ($name) {
-                case 'creation_date':
-                case 'sparameters':
-                    return true;
-                default:
-                    return property_exists($this, $name);
-            }
+            return match ($name) {
+                'creation_date', 'sparameters' => true,
+                default => property_exists($this, $name),
+            };
         }
         return false;
     }
@@ -362,7 +353,7 @@ class SavedSearch
                 $this->parameters = $value;
                 break;
             case 'name':
-                if (trim($value) === '') {
+                if (trim((string) $value) === '') {
                     $this->errors[] = _T("Name cannot be empty!");
                 }
                 $this->name = $value;

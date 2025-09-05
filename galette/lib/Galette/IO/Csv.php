@@ -68,16 +68,14 @@ abstract class Csv
 
     /** @var array<string> */
     private array $errors = [];
-    private string $default_directory;
 
     /**
      * Default constructor
      *
-     * @param string $default_dir Default directory
+     * @param string $default_directory Default directory
      */
-    public function __construct(string $default_dir)
+    public function __construct(private readonly string $default_directory)
     {
-        $this->default_directory = $default_dir;
     }
 
     /**
@@ -175,7 +173,7 @@ abstract class Csv
      */
     public function addError(string $msg): void
     {
-        $class = get_class($this);
+        $class = static::class;
         Analog::log(
             '[' . $class . '] ' . $msg,
             Analog::ERROR

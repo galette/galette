@@ -44,9 +44,6 @@ class History
     public const PK = 'id_log';
 
     protected int $count;
-    protected Db $zdb;
-    protected Login $login;
-    protected Preferences $preferences;
     protected HistoryList $filters;
 
     /** @var array<int, string> */
@@ -64,13 +61,9 @@ class History
      * @param Preferences  $preferences Preferences
      * @param ?HistoryList $filters     Filtering
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, ?HistoryList $filters = null)
+    public function __construct(protected Db $zdb, protected Login $login, protected Preferences $preferences, ?HistoryList $filters = null)
     {
-        $this->zdb = $zdb;
-        $this->login = $login;
-        $this->preferences = $preferences;
-
-        $this->filters = $filters === null ? new HistoryList() : $filters;
+        $this->filters = $filters ?? new HistoryList();
     }
 
     /**
@@ -89,7 +82,7 @@ class History
             defined('GALETTE_X_FORWARDED_FOR_INDEX')
             && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
         ) {
-            $split_xff = preg_split('/,\s*/', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $split_xff = preg_split('/,\s*/', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);
             $ip = $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];

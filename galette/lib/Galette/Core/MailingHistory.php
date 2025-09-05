@@ -46,8 +46,6 @@ class MailingHistory extends History
     public const FILTER_DC_SENT = 0;
     public const FILTER_SENT = 1;
     public const FILTER_NOT_SENT = 2;
-
-    private ?Mailing $mailing = null;
     private int $id;
     private string $date;
     private string $subject;
@@ -55,8 +53,8 @@ class MailingHistory extends History
     /** @var array<int, mixed> */
     private array $recipients;
     private int $sender;
-    private ?string $sender_name; //@phpstan-ignore-line
-    private ?string $sender_address; //@phpstan-ignore-line
+    private ?string $sender_name = null; //@phpstan-ignore-line
+    private ?string $sender_address = null; //@phpstan-ignore-line
     private bool $sent = false;
 
     /**
@@ -68,14 +66,13 @@ class MailingHistory extends History
      * @param MailingsList|null $filters     Filtering
      * @param Mailing|null      $mailing     Mailing
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, ?MailingsList $filters = null, ?Mailing $mailing = null)
+    public function __construct(Db $zdb, Login $login, Preferences $preferences, ?MailingsList $filters = null, private readonly ?Mailing $mailing = null)
     {
         if ($filters === null) {
             $filters = new MailingsList();
         }
 
         parent::__construct($zdb, $login, $preferences, $filters);
-        $this->mailing = $mailing;
     }
 
     /**
@@ -218,7 +215,7 @@ class MailingHistory extends History
 
             if ($this->filters->subject_filter != '') {
                 $token = $this->zdb->platform->quoteValue(
-                    '%' . strtolower($this->filters->subject_filter) . '%'
+                    '%' . strtolower((string) $this->filters->subject_filter) . '%'
                 );
 
                 $select->where(
@@ -362,10 +359,8 @@ class MailingHistory extends History
 
             $sender = ($this->sender === 0)
                 ? new Expression('NULL') : $this->sender;
-            $sender_name = ($this->sender_name === null)
-                ? new Expression('NULL') : $this->sender_name;
-            $sender_address = ($this->sender_address === null)
-                ? new Expression('NULL') : $this->sender_address;
+            $sender_name = $this->sender_name ?? new Expression('NULL');
+            $sender_address = $this->sender_address ?? new Expression('NULL');
 
             $values = [
                 'mailing_sender'            => $sender,
@@ -410,10 +405,8 @@ class MailingHistory extends History
             }
 
             $sender = $this->sender === 0 ? new Expression('NULL') : $this->sender;
-            $sender_name = ($this->sender_name === null)
-                ? new Expression('NULL') : $this->sender_name;
-            $sender_address = ($this->sender_address === null)
-                ? new Expression('NULL') : $this->sender_address;
+            $sender_name = $this->sender_name ?? new Expression('NULL');
+            $sender_address = $this->sender_address ?? new Expression('NULL');
 
             $values = [
                 'mailing_sender'            => $sender,
@@ -543,7 +536,7 @@ class MailingHistory extends History
             } else {
                 $recipients = Galette::jsonDecode($row['mailing_recipients']);
             }
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             Analog::log(
                 'Unable to retrieve recipients for mailing history ' . $row['mailing_id'],
                 Analog::ERROR

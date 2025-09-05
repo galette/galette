@@ -644,7 +644,7 @@ class ContributionsController extends CrudController
         if ($this->session->$filter_name !== null) {
             $filters = $this->session->$filter_name;
         } else {
-            $filter_class = '\\Galette\\Filters\\' . ucwords($type) . 'List';
+            $filter_class = '\\Galette\\Filters\\' . ucwords((string) $type) . 'List';
             $filters = new $filter_class();
         }
 
@@ -1040,7 +1040,7 @@ class ContributionsController extends CrudController
                 break;
         }
 
-        $class = '\\Galette\Repository\\' . ucwords($raw_type);
+        $class = '\\Galette\Repository\\' . ucwords((string) $raw_type);
         $contribs = new $class($this->zdb, $this->login);
         $rm = $contribs->remove($args['ids'] ?? (int)$args['id'], $this->history);
         return $rm;

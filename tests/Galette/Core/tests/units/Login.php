@@ -77,8 +77,8 @@ class Login extends GaletteTestCase
     public function testNotLoggedCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isLogged'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isLogged'])
             ->getMock();
         $login->method('isLogged')->willReturn(false);
 
@@ -94,8 +94,8 @@ class Login extends GaletteTestCase
     public function testStaffCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -115,8 +115,8 @@ class Login extends GaletteTestCase
     public function testAdminCantImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -136,7 +136,7 @@ class Login extends GaletteTestCase
     public function testImpersonateExistsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
@@ -147,8 +147,8 @@ class Login extends GaletteTestCase
             );
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($zdb, $this->i18n))
-            ->onlyMethods(array('isSuperAdmin'))
+            ->setConstructorArgs([$zdb, $this->i18n])
+            ->onlyMethods(['isSuperAdmin'])
             ->getMock();
 
         $login->method('isSuperAdmin')->willReturn(true);
@@ -166,8 +166,8 @@ class Login extends GaletteTestCase
     public function testSuperadminCanImpersonate(): void
     {
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isSuperAdmin'])
             ->getMock();
 
         $login->method('isSuperAdmin')->willReturn(true);
@@ -208,7 +208,7 @@ class Login extends GaletteTestCase
     public function testLoginExistsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
@@ -258,7 +258,7 @@ class Login extends GaletteTestCase
         $this->logSuperAdmin();
 
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
-        $select->where(array('a.fingerprint' => 'FAKER' . $this->seed));
+        $select->where(['a.fingerprint' => 'FAKER' . $this->seed]);
         $results = $this->zdb->execute($select);
 
         global $zdb, $login, $hist, $i18n; // globals :(

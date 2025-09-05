@@ -48,8 +48,8 @@ class Plugins
     /** @var array<string> */
     protected array $csrf_exclusions = [];
 
-    protected ?string $id;
-    protected ?string $mroot;
+    protected ?string $id = null;
+    protected ?string $mroot = null;
 
     protected Preferences $preferences;
     protected bool $autoload = false;
@@ -113,11 +113,11 @@ class Plugins
                             //set autoloader to PluginName.
                             if (isset($this->modules[$entry]) && file_exists($full_entry . '/lib')) {
                                 $varname = $entry . 'Loader';
-                                $$varname = new ClassLoader(
+                                ${$varname} = new ClassLoader(
                                     $this->getNamespace($entry),
                                     $full_entry . '/lib'
                                 );
-                                $$varname->register();
+                                ${$varname}->register();
                             }
                         } else {
                             Analog::log(
@@ -224,7 +224,7 @@ class Plugins
                 'version'       => $version,
                 'acls'          => $acls,
                 'date'          => $date,
-                'priority'      => $priority === null ? 1000 : $priority,
+                'priority'      => $priority ?? 1000,
                 'root_writable' => is_writable($this->mroot),
                 'route'         => $route
             ];
@@ -429,7 +429,7 @@ class Plugins
     private function sortModules(array $a, array $b): int
     {
         if ($a['priority'] == $b['priority']) {
-            return strcasecmp($a['name'], $b['name']);
+            return strcasecmp((string) $a['name'], (string) $b['name']);
         }
 
         return ($a['priority'] < $b['priority']) ? -1 : 1;
@@ -616,7 +616,7 @@ class Plugins
      */
     public function getClassName(string $id, bool $full = false): string
     {
-        $class = sprintf('PluginGalette%1$s', ucfirst($this->modules[$id]['route']));
+        $class = sprintf('PluginGalette%1$s', ucfirst((string) $this->modules[$id]['route']));
         if ($full === true) {
             return sprintf('%s\%s', $this->getNamespace($id), $class);
         }

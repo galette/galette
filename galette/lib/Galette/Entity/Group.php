@@ -762,7 +762,7 @@ class Group
             );
             $zdb->execute($insert);
             $this->members[] = $member;
-        } catch (\OverflowException $e) {
+        } catch (\OverflowException) {
             //nothing to do, member is already in group
             Analog::log(
                 'Member `' . $member->sname . '` already in group `'

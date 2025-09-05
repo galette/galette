@@ -37,14 +37,10 @@ use Laminas\Db\ResultSet\ResultSet;
  */
 abstract class Repository
 {
-    protected Db $zdb;
-    protected Preferences $preferences;
     protected string $entity;
-    protected Login $login;
     protected Pagination $filters;
     /** @var array<int|string,mixed> */
     protected array $defaults = [];
-    protected string $prefix;
 
     /**
      * Main constructor
@@ -57,22 +53,17 @@ abstract class Repository
      * @param string      $prefix      Prefix (for plugins)
      */
     public function __construct(
-        Db $zdb,
-        Preferences $preferences,
-        Login $login,
+        protected Db $zdb,
+        protected Preferences $preferences,
+        protected Login $login,
         ?string $entity = null,
         ?string $ns = null,
-        string $prefix = ''
+        protected string $prefix = ''
     ) {
-        $this->zdb = $zdb;
-        $this->preferences = $preferences;
-        $this->login = $login;
-        $this->prefix = $prefix;
-
         if ($entity === null) {
             //no entity class name provided. Take Repository
             //class name and remove trailing 's'
-            $r = array_slice(explode('\\', get_class($this)), -1);
+            $r = array_slice(explode('\\', static::class), -1);
             $repo = $r[0];
             $ent = substr($repo, 0, -1);
             if ($ent != $repo) {

@@ -51,107 +51,107 @@ if ($db_connected === true) {
 
         $results = $zdb->grantCheck($install->getMode());
 
-        $result = array();
+        $result = [];
         $error = false;
 
         //test returned values
         if ($results['create'] instanceof Exception) {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("CREATE operation not allowed"),
                 'debug' => $results['create']->getMessage(),
                 'res' => false
-            );
+            ];
             $error = true;
         } elseif ($results['create'] != '') {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("CREATE operation allowed"),
                 'res' => true
-            );
+            ];
         }
 
         if ($results['insert'] instanceof Exception) {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("INSERT operation not allowed"),
                 'debug' => $results['insert']->getMessage(),
                 'res' => false
-            );
+            ];
             $error = true;
         } elseif ($results['insert'] != '') {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("INSERT operation allowed"),
                 'res' => true
-            );
+            ];
         }
 
         if ($results['update'] instanceof Exception) {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("UPDATE operation not allowed"),
                 'debug' => $results['update']->getMessage(),
                 'res' => false
-            );
+            ];
             $error = true;
         } elseif ($results['update'] != '') {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("UPDATE operation allowed"),
                 'res' => true
-            );
+            ];
         }
 
         if ($results['select'] instanceof Exception) {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("SELECT operation not allowed"),
                 'debug' => $results['select']->getMessage(),
                 'res' => false
-            );
+            ];
             $error = true;
         } elseif ($results['select'] != '') {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("SELECT operation allowed"),
                 'res' => true
-            );
+            ];
         }
 
         if ($results['delete'] instanceof Exception) {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("DELETE operation not allowed"),
                 'debug' => $results['delete']->getMessage(),
                 'res' => false
-            );
+            ];
             $error = true;
         } elseif ($results['delete'] != '') {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("DELETE operation allowed"),
                 'res' => true
-            );
+            ];
         }
 
         if ($results['drop'] instanceof Exception) {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("DROP operation not allowed"),
                 'debug' => $results['drop']->getMessage(),
                 'res' => false
-            );
+            ];
             $error = true;
         } elseif ($results['drop'] != '') {
-            $result[] = array(
+            $result[] = [
                 'message' => _T("DROP operation allowed"),
                 'res' => true
-            );
+            ];
         }
 
         if ($install->isUpgrade()) {
             if ($results['alter'] instanceof Exception) {
-                $result[] = array(
+                $result[] = [
                     'message' => _T("ALTER operation not allowed"),
                     'debug' => $results['alter']->getMessage(),
                     'res' => false
-                );
+                ];
                 $error = true;
             } elseif ($results['alter'] != '') {
-                $result[] = array(
+                $result[] = [
                     'message' => _T("ALTER operation allowed"),
                     'res' => true
-                );
+                ];
             }
         }
 

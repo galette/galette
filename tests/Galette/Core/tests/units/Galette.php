@@ -138,8 +138,8 @@ class Galette extends GaletteTestCase
         $db = new \Galette\Core\Db();
         $plugins = new \Galette\Core\Plugins($db);
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
-            ->setConstructorArgs(array($db))
-            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
+            ->setConstructorArgs([$db])
+            ->onlyMethods(['arePublicPagesEnabled', 'showPublicPage'])
             ->getMock();
 
         $preferences->method('arePublicPagesEnabled')->willReturn(true);
@@ -155,8 +155,8 @@ class Galette extends GaletteTestCase
         $this->assertArrayHasKey('public', $menus);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -176,8 +176,8 @@ class Galette extends GaletteTestCase
         $this->assertArrayHasKey('public', $menus);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -197,8 +197,8 @@ class Galette extends GaletteTestCase
         $this->assertArrayHasKey('public', $menus);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -231,8 +231,8 @@ class Galette extends GaletteTestCase
 
         //public pages are disabled
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
-            ->setConstructorArgs(array($db))
-            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
+            ->setConstructorArgs([$db])
+            ->onlyMethods(['arePublicPagesEnabled', 'showPublicPage'])
             ->getMock();
         $preferences->method('arePublicPagesEnabled')->willReturn(false);
         $preferences->method('showPublicPage')->willReturn(true); //should not matter.
@@ -243,8 +243,8 @@ class Galette extends GaletteTestCase
 
         //public pages are enabled but not shown
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
-            ->setConstructorArgs(array($db))
-            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
+            ->setConstructorArgs([$db])
+            ->onlyMethods(['arePublicPagesEnabled', 'showPublicPage'])
             ->getMock();
         $preferences->method('arePublicPagesEnabled')->willReturn(true);
         $preferences->method('showPublicPage')->willReturn(false);
@@ -255,8 +255,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(0, $menus, print_r($menus, true));
 
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
-            ->setConstructorArgs(array($db))
-            ->onlyMethods(array('arePublicPagesEnabled', 'showPublicPage'))
+            ->setConstructorArgs([$db])
+            ->onlyMethods(['arePublicPagesEnabled', 'showPublicPage'])
             ->getMock();
         $preferences->method('arePublicPagesEnabled')->willReturn(true);
         $preferences->method('showPublicPage')->willReturn(true);
@@ -283,8 +283,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(0, $mydashboards);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -298,8 +298,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(0, $mydashboards);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -313,8 +313,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(3, $mydashboards);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -328,8 +328,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(3, $mydashboards);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -359,8 +359,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(0, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -372,8 +372,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(4, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -385,8 +385,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(3, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -398,8 +398,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(3, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -441,8 +441,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(0, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -454,8 +454,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(7, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -467,8 +467,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(7, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -480,8 +480,8 @@ class Galette extends GaletteTestCase
         $this->assertCount(7, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($db, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$db, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -580,7 +580,7 @@ class Galette extends GaletteTestCase
         //mock plugin to mark as installed
         $plugin_class = $plugins->getClassName('plugin-news', true);
         $mock = $this->getMockBuilder($plugin_class)
-            ->onlyMethods(array('isInstalled'))
+            ->onlyMethods(['isInstalled'])
             ->getMock();
         $mock->method('isInstalled')->willReturn(true);
         $container->set($plugin_class, $mock);

@@ -120,23 +120,18 @@ class HistoryList extends Pagination
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
         } elseif (in_array($name, $this->list_fields)) {
-            switch ($name) {
-                case 'raw_start_date_filter':
-                    return $this->getDate('start_date_filter', true, false);
-                case 'raw_end_date_filter':
-                    return $this->getDate('end_date_filter', true, false);
-                case 'start_date_filter':
-                case 'end_date_filter':
-                    return $this->getDate($name);
-                default:
-                    return $this->$name;
-            }
+            return match ($name) {
+                'raw_start_date_filter' => $this->getDate('start_date_filter', true, false),
+                'raw_end_date_filter' => $this->getDate('end_date_filter', true, false),
+                'start_date_filter', 'end_date_filter' => $this->getDate($name),
+                default => $this->$name,
+            };
         }
 
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                self::class,
                 $name
             )
         );

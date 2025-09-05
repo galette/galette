@@ -50,8 +50,8 @@ abstract class Pagination
     private int $show;
     private int $pages = 1;
     private ?int $counter = null;
-    protected ?Twig $view;
-    protected ?RouteParser $routeparser;
+    protected ?Twig $view = null;
+    protected ?RouteParser $routeparser = null;
     /** @var array<string> */
     protected array $errors = [];
 
@@ -150,7 +150,7 @@ abstract class Pagination
             $this->ordered = $odirection;
         } catch (\ValueError $e) {
             Analog::log(
-                '[' . get_class($this)
+                '[' . static::class
                 . '|Pagination] ' . $e->getMessage(),
                 Analog::WARNING
             );
@@ -362,7 +362,7 @@ abstract class Pagination
     {
         if ($name === 'ordered') {
             Analog::log(
-                '[' . get_class($this)
+                '[' . static::class
                 . '|Pagination] ' . $name . ' is deprecated, use getDirection() instead',
                 Analog::WARNING
             );
@@ -376,7 +376,7 @@ abstract class Pagination
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                self::class,
                 $name
             )
         );
@@ -411,7 +411,7 @@ abstract class Pagination
         switch ($name) {
             case 'ordered':
                 Analog::log(
-                    '[' . get_class($this)
+                    '[' . static::class
                     . '|Pagination] ' . $name . ' is deprecated, use setDirection() instead',
                     Analog::WARNING
                 );
@@ -432,7 +432,7 @@ abstract class Pagination
                     $this->$name = $value;
                 } else {
                     Analog::log(
-                        '[' . get_class($this)
+                        '[' . static::class
                         . '|Pagination] Value for field `'
                         . $name . '` should be a positive integer - ('
                         . gettype($value) . ')' . $value . ' given',
@@ -449,7 +449,7 @@ abstract class Pagination
                     $this->$name = (int)$value;
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '|Pagination] Value for `'
+                        '[' . static::class . '|Pagination] Value for `'
                         . $name . '` should be a positive integer or \'all\' - ('
                         . gettype($value) . ')' . $value . ' given',
                         Analog::WARNING
@@ -458,7 +458,7 @@ abstract class Pagination
                 break;
             default:
                 Analog::log(
-                    '[' . get_class($this)
+                    '[' . static::class
                     . '|Pagination] Unable to set property `' . $name . '`',
                     Analog::WARNING
                 );

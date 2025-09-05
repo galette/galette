@@ -52,7 +52,7 @@ class Password extends GaletteTestCase
      */
     public function testRandom(): void
     {
-        $results = array();
+        $results = [];
 
         for ($i = 0; $i < 200; $i++) {
             $random = $this->pass->makeRandomPassword(15);
@@ -78,7 +78,7 @@ class Password extends GaletteTestCase
     {
         try {
             $this->deleteMember();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             //empty catch
         }
 
@@ -196,7 +196,7 @@ class Password extends GaletteTestCase
     public function testGenerateNewPasswordWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->zdb->method('execute')
@@ -220,7 +220,7 @@ class Password extends GaletteTestCase
     public function testGenerateNewPasswordWFalseInsert(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->zdb->method('execute')
@@ -244,7 +244,7 @@ class Password extends GaletteTestCase
     public function testCleanExpiredWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->zdb->method('execute')
@@ -267,7 +267,7 @@ class Password extends GaletteTestCase
     public function testIsHashValidWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->zdb->method('execute')
@@ -291,7 +291,7 @@ class Password extends GaletteTestCase
     public function testRemoveHashWException(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->zdb->method('execute')

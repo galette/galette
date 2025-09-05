@@ -76,10 +76,10 @@ class UpgradeTo110 extends AbstractUpdater
             }
 
             $stmt->execute(
-                array(
+                [
                     'perm' => $mapping[$result['field_perm']],
                     DynamicField::PK => $result[DynamicField::PK]
-                )
+                ]
             );
         }
 
@@ -105,16 +105,16 @@ class UpgradeTo110 extends AbstractUpdater
             $results = $this->zdb->selectAll('paypal_' . Paypal::TABLE);
             $results = $results->toArray();
 
-            $queries = array();
+            $queries = [];
             foreach (array_keys($ctypes) as $k) {
                 if (count($results) > 0) {
                     //for each entry in types, we want to get the associated amount
                     foreach ($results as $paypal) {
                         if ($paypal[ContributionsTypes::PK] == $k) {
-                            $queries[] = array(
+                            $queries[] = [
                                 'id'   => $k,
                                 'amount' => (float)$paypal['amount']
-                            );
+                            ];
                         }
                     }
                 }
@@ -127,10 +127,10 @@ class UpgradeTo110 extends AbstractUpdater
 
                 foreach ($queries as $q) {
                     $stmt->execute(
-                        array(
+                        [
                             ContributionsTypes::PK => $q['id'],
                             'amount' => $q['amount']
-                        )
+                        ]
                     );
                 }
             }

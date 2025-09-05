@@ -360,7 +360,7 @@ class AdvancedMembersList extends MembersList
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                self::class,
                 $name
             )
         );
@@ -537,7 +537,7 @@ class AdvancedMembersList extends MembersList
                         unset($this->free_search['empty']);
                     }
 
-                    if ($this->isValidFreeSearch($value)) {
+                    if (static::isValidFreeSearch($value)) {
                         //should this happen?
                         $values = [$value];
                     } else {
@@ -545,16 +545,16 @@ class AdvancedMembersList extends MembersList
                     }
 
                     foreach ($values as $value) {
-                        if ($this->isValidFreeSearch($value)) {
+                        if (static::isValidFreeSearch($value)) {
                             $id = $value['idx'];
 
                             //handle value according to type
                             switch ($value['type']) {
                                 case DynamicField::DATE:
-                                    if ($value['search'] !== null && trim($value['search']) !== '') {
+                                    if ($value['search'] !== null && trim((string) $value['search']) !== '') {
                                         try {
                                             $value['search'] = $this->buildDate($value['search']);
-                                        } catch (Throwable $e) {
+                                        } catch (Throwable) {
                                             Analog::log(
                                                 'Incorrect date format for ' . $value['field']
                                                 . '! was: ' . $value['search'],
@@ -624,11 +624,11 @@ class AdvancedMembersList extends MembersList
                     break;
                 default:
                     if (
-                        substr($name, 0, 4) === 'cds_'
-                        || substr($name, 0, 5) === 'cdsc_'
+                        str_starts_with($name, 'cds_')
+                        || str_starts_with($name, 'cdsc_')
                     ) {
-                        if (is_array($value) || trim($value) !== '') {
-                            $id = substr($name, 0, 5) === 'cdsc_' ? substr($name, 5, strlen($name)) : substr($name, 4, strlen($name));
+                        if (is_array($value) || trim((string) $value) !== '') {
+                            $id = str_starts_with($name, 'cdsc_') ? substr($name, 5, strlen($name)) : substr($name, 4, strlen($name));
                             $dyn_field = DynamicField::loadFieldType($zdb, (int)$id);
                             if ($dyn_field instanceof \Galette\DynamicFields\Date) {
                                 $value = $this->buildDate($value);

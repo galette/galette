@@ -36,7 +36,7 @@ class Plugins extends TestCase
     private \Galette\Core\Preferences $preferences;
     private \Galette\Core\Plugins $plugins;
 
-    private array $plugin2 = array(
+    private array $plugin2 = [
         'root'          => 'plugin-test2',
         'name'          => 'Galette Test2 Plugin',
         'desc'          => 'Test two plugin',
@@ -50,7 +50,7 @@ class Plugins extends TestCase
         'priority'      => 1000,
         'root_writable' => true,
         'route'         => 'plugin2'
-    );
+    ];
 
     /**
      * Get instantiated plugins instance

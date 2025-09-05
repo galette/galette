@@ -40,10 +40,10 @@ class ImportModel
     public const TABLE = 'import_model';
     public const PK = 'model_id';
 
-    private ?int $id;
+    private ?int $id = null;
     /** @var array<string>|null */
-    private ?array $fields;
-    private ?string $creation_date;
+    private ?array $fields = null;
+    private ?string $creation_date = null;
 
     /**
      * Loads model

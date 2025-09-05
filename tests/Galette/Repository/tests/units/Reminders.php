@@ -217,13 +217,13 @@ class Reminders extends GaletteTestCase
         //add a first close to be expired contribution reminder
         $send = new \DateTime();
         $send->sub(new \DateInterval('P30D'));
-        $data = array(
+        $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
             'reminder_dest'     => $id,
             'reminder_date'     => $send->format('Y-m-d'),
             'reminder_success'  => true,
             'reminder_nomail'   => ($this->zdb->isPostgres() ? 'false' : 0)
-        );
+        ];
 
         $insert = $this->zdb->insert(\Galette\Entity\Reminder::TABLE);
         $insert->values($data);
@@ -243,13 +243,13 @@ class Reminders extends GaletteTestCase
         //add a second close to be expired contribution reminder, yesterday
         $send = new \DateTime();
         $send->sub(new \DateInterval('P1D'));
-        $data = array(
+        $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
             'reminder_dest'     => $id,
             'reminder_date'     => $send->format('Y-m-d'),
             'reminder_success'  => true,
             'reminder_nomail'   => ($this->zdb->isPostgres() ? 'false' : 0)
-        );
+        ];
 
         $insert = $this->zdb->insert(\Galette\Entity\Reminder::TABLE);
         $insert->values($data);
@@ -381,13 +381,13 @@ class Reminders extends GaletteTestCase
         //add a sent late reminder, as it should have been
         $send = clone $now;
         $send->sub(new \DateInterval('P5D'));
-        $data = array(
+        $data = [
             'reminder_type'     => \Galette\Entity\Reminder::LATE,
             'reminder_dest'     => $id,
             'reminder_date'     => $send->format('Y-m-d'),
             'reminder_success'  => true,
             'reminder_nomail'   => ($this->zdb->isPostgres() ? 'false' : 0)
-        );
+        ];
 
         $insert = $this->zdb->insert(\Galette\Entity\Reminder::TABLE);
         $insert->values($data);
@@ -462,13 +462,13 @@ class Reminders extends GaletteTestCase
         //add a first close to be expired contribution reminder - last year
         $send = new \DateTime();
         $send->sub(new \DateInterval('P90D'))->sub(new \DateInterval('P1Y'));
-        $data = array(
+        $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
             'reminder_dest'     => $id,
             'reminder_date'     => $send->format('Y-m-d'),
             'reminder_success'  => true,
             'reminder_nomail'   => ($this->zdb->isPostgres() ? 'false' : 0)
-        );
+        ];
 
         $insert = $this->zdb->insert(\Galette\Entity\Reminder::TABLE);
         $insert->values($data);
@@ -479,13 +479,13 @@ class Reminders extends GaletteTestCase
         //add a second close to be expired contribution reminder - last year
         $send = new \DateTime();
         $send->sub(new \DateInterval('P67D'))->sub(new \DateInterval('P1Y'));
-        $data = array(
+        $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
             'reminder_dest'     => $id,
             'reminder_date'     => $send->format('Y-m-d'),
             'reminder_success'  => true,
             'reminder_nomail'   => ($this->zdb->isPostgres() ? 'false' : 0)
-        );
+        ];
 
         $insert = $this->zdb->insert(\Galette\Entity\Reminder::TABLE);
         $insert->values($data);
@@ -496,13 +496,13 @@ class Reminders extends GaletteTestCase
         //add a first late contribution reminder - last year
         $send = clone $now;
         $send->sub(new \DateInterval('P30D'))->sub(new \DateInterval('P1Y'));
-        $data = array(
+        $data = [
             'reminder_type'     => \Galette\Entity\Reminder::LATE,
             'reminder_dest'     => $id,
             'reminder_date'     => $send->format('Y-m-d'),
             'reminder_success'  => true,
             'reminder_nomail'   => ($this->zdb->isPostgres() ? 'false' : 0)
-        );
+        ];
 
         $insert = $this->zdb->insert(\Galette\Entity\Reminder::TABLE);
         $insert->values($data);
@@ -513,13 +513,13 @@ class Reminders extends GaletteTestCase
         //add a second late contribution reminder - last year
         $send = clone $now;
         $send->sub(new \DateInterval('P1Y'));
-        $data = array(
+        $data = [
             'reminder_type'     => \Galette\Entity\Reminder::LATE,
             'reminder_dest'     => $id,
             'reminder_date'     => $send->format('Y-m-d'),
             'reminder_success'  => true,
             'reminder_nomail'   => ($this->zdb->isPostgres() ? 'false' : 0)
-        );
+        ];
 
         $insert = $this->zdb->insert(\Galette\Entity\Reminder::TABLE);
         $insert->values($data);

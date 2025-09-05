@@ -42,7 +42,7 @@ $db = 'mysql';
 $dbenv = getenv('DB');
 if (
     $dbenv === 'pgsql'
-    || substr($dbenv, 0, strlen('postgres')) === 'postgres'
+    || str_starts_with($dbenv, 'postgres')
 ) {
     $db = 'pgsql';
 }
@@ -135,7 +135,7 @@ if (
 ) {
     //do not initialize Tiles on update nor fail tests
     $titles = new \Galette\Repository\Titles($zdb);
-    $res = $titles->installInit($zdb);
+    $res = $titles->installInit();
 
     $fc = $container->get(\Galette\Entity\FieldsConfig::class);
     $categorized_fields = $fc->getCategorizedFields();

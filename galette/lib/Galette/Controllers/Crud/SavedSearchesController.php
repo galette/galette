@@ -140,8 +140,8 @@ class SavedSearchesController extends CrudController
      */
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
         } else {
             $filters = new SavedSearchesList();
         }
@@ -163,7 +163,7 @@ class SavedSearchesController extends CrudController
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
 
-        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
+        $this->session->{$this->getFilterName(static::getDefaultFilterName())} = $filters;
 
         // display page
         $this->view->render(
@@ -270,7 +270,7 @@ class SavedSearchesController extends CrudController
             return _T('Remove saved search');
         } else {
             //batch saved search removal
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])};
             return sprintf(
                 _T('You are about to remove %1$s searches.'),
                 (string)count($filters->selected),
@@ -288,8 +288,8 @@ class SavedSearchesController extends CrudController
      */
     protected function doDelete(array $args, array $post): bool
     {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
         } else {
             $filters = new SavedSearchesList();
         }

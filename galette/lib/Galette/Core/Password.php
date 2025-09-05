@@ -45,17 +45,14 @@ class Password extends AbstractPassword
     /** @var string Overrides default character set */
     protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789&@{[]}%#+*:ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-    private Db $zdb;
-
     /**
      * Default constructor
      *
      * @param Db      $zdb   Database instance:
      * @param boolean $clean Whether we should clean expired passwords in database
      */
-    public function __construct(Db $zdb, bool $clean = true)
+    public function __construct(private readonly Db $zdb, bool $clean = true)
     {
-        $this->zdb = $zdb;
         if ($clean === true) {
             $this->cleanExpired();
         }

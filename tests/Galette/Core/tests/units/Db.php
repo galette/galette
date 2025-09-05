@@ -58,7 +58,7 @@ class Db extends TestCase
                 $this->assertSame($know_warning['Level'], $dbwarning['Level']);
                 $this->assertEquals($know_warning['Code'], $dbwarning['Code']);
                 $this->assertStringContainsString(
-                    strtolower($know_warning['Message']),
+                    strtolower((string) $know_warning['Message']),
                     strtolower($dbwarning['Message'])
                 );
             }
@@ -81,14 +81,14 @@ class Db extends TestCase
         $type = $db->type_db;
         $this->assertSame(TYPE_DB, $type);
 
-        $dsn = array(
+        $dsn = [
             'TYPE_DB'   => TYPE_DB,
             'USER_DB'   => USER_DB,
             'PWD_DB'    => PWD_DB,
             'HOST_DB'   => HOST_DB,
             'PORT_DB'   => PORT_DB,
             'NAME_DB'   => NAME_DB
-        );
+        ];
         $db = new \Galette\Core\Db($dsn);
 
         $is_pg = $db->isPostgres();
@@ -137,14 +137,14 @@ class Db extends TestCase
     {
         $result = $this->db->dropTestTable();
 
-        $expected = array(
+        $expected = [
             'create' => true,
             'insert' => true,
             'select' => true,
             'update' => true,
             'delete' => true,
             'drop'   => true
-        );
+        ];
         $result = $this->db->grantCheck();
 
         $this->assertSame($expected, $result);
@@ -165,7 +165,7 @@ class Db extends TestCase
     {
         //test insert failing
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->db->method('execute')
@@ -189,7 +189,7 @@ class Db extends TestCase
 
         //test select failing
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->db->method('execute')
@@ -199,7 +199,7 @@ class Db extends TestCase
                         throw new \LogicException('Error executing query!', 123);
                     } else {
                         $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
-                            ->onlyMethods(array('count'))
+                            ->onlyMethods(['count'])
                             ->getMock();
                         $rs->method('count')
                             ->willReturn(1);
@@ -220,7 +220,7 @@ class Db extends TestCase
 
         //test update failing
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->db->method('execute')
@@ -230,7 +230,7 @@ class Db extends TestCase
                         throw new \LogicException('Error executing query!', 123);
                     } else {
                         $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
-                            ->onlyMethods(array('count'))
+                            ->onlyMethods(['count'])
                             ->getMock();
                         $rs->method('count')
                             ->willReturn(1);
@@ -251,7 +251,7 @@ class Db extends TestCase
 
         //test delete failing
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->db->method('execute')
@@ -261,7 +261,7 @@ class Db extends TestCase
                         throw new \LogicException('Error executing query!', 123);
                     } else {
                         $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
-                            ->onlyMethods(array('count'))
+                            ->onlyMethods(['count'])
                             ->getMock();
                         $rs->method('count')
                             ->willReturn(1);
@@ -290,14 +290,10 @@ class Db extends TestCase
     {
         $is_pg = $this->db->isPostgres();
 
-        switch (TYPE_DB) {
-            case 'pgsql':
-                $this->assertTrue($is_pg);
-                break;
-            default:
-                $this->assertFalse($is_pg);
-                break;
-        }
+        match (TYPE_DB) {
+            'pgsql' => $this->assertTrue($is_pg),
+            default => $this->assertFalse($is_pg),
+        };
     }
 
     /**
@@ -319,16 +315,16 @@ class Db extends TestCase
         }
 
         $db = $this->db->db;
-        $this->assertInstanceOf('Laminas\Db\Adapter\Adapter', $db);
+        $this->assertInstanceOf(\Laminas\Db\Adapter\Adapter::class, $db);
 
         $sql = $this->db->sql;
-        $this->assertInstanceOf('Laminas\Db\Sql\Sql', $sql);
+        $this->assertInstanceOf(\Laminas\Db\Sql\Sql::class, $sql);
 
         $connection = $this->db->connection;
-        $this->assertInstanceOf('Laminas\Db\Adapter\Driver\Pdo\Connection', $connection);
+        $this->assertInstanceOf(\Laminas\Db\Adapter\Driver\Pdo\Connection::class, $connection);
 
         $driver = $this->db->driver;
-        $this->assertInstanceOf('Laminas\Db\Adapter\Driver\Pdo\Pdo', $driver);
+        $this->assertInstanceOf(\Laminas\Db\Adapter\Driver\Pdo\Pdo::class, $driver);
     }
 
     /**
@@ -350,7 +346,7 @@ class Db extends TestCase
     public function testSelect(): void
     {
         $select = $this->db->select('preferences', 'p');
-        $select->where(array('p.nom_pref' => 'pref_nom'));
+        $select->where(['p.nom_pref' => 'pref_nom']);
 
         $results = $this->db->execute($select);
 
@@ -375,7 +371,7 @@ class Db extends TestCase
     public function testSelectAll(): void
     {
         $all = $this->db->selectAll('preferences');
-        $this->assertInstanceOf('Laminas\Db\ResultSet\ResultSet', $all);
+        $this->assertInstanceOf(\Laminas\Db\ResultSet\ResultSet::class, $all);
     }
 
     /**
@@ -502,7 +498,7 @@ class Db extends TestCase
     public function testDbVersionWException(): void
     {
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
         $this->db->method('execute')
             ->willReturnCallback(
@@ -527,17 +523,17 @@ class Db extends TestCase
 
         $this->assertCount(3, $cols);
 
-        $columns = array();
+        $columns = [];
         foreach ($cols as $c) {
             $columns[] = $c->getName();
         }
 
         $this->assertSame(
-            array(
+            [
                 'id_pref',
                 'nom_pref',
                 'val_pref'
-            ),
+            ],
             array_values($columns)
         );
     }
@@ -551,7 +547,7 @@ class Db extends TestCase
      */
     public function testTables(): void
     {
-        $expected = array (
+        $expected =  [
             'galette_groups_members',
             'galette_transactions',
             'galette_titles',
@@ -582,7 +578,7 @@ class Db extends TestCase
             'galette_searches',
             'galette_tmplinks',
             'galette_documents'
-        );
+        ];
 
         $tables = $this->db->getTables();
 
@@ -647,7 +643,7 @@ class Db extends TestCase
         $select->where(['p.nom_pref' => 'azerty']);
         $results = $this->db->execute($select);
 
-        $this->assertInstanceOf('\Laminas\Db\ResultSet\ResultSet', $results);
+        $this->assertInstanceOf(\Laminas\Db\ResultSet\ResultSet::class, $results);
     }
 
     /**
@@ -686,7 +682,7 @@ class Db extends TestCase
         $this->assertNotNull($serialized);
 
         $unserialized = unserialize($serialized);
-        $this->assertInstanceOf('Galette\Core\Db', $unserialized);
+        $this->assertInstanceOf(\Galette\Core\Db::class, $unserialized);
     }
 
     /**
@@ -727,12 +723,10 @@ class Db extends TestCase
 
         $zdb->method('isPostgres')->willReturn(false);
         $zdb->method('getInfos')->willReturnCallback(
-            function () {
-                return [
-                    'engine' => 'MariaDB Server',
-                    'version' => GALETTE_MARIADB_MIN
-                ];
-            }
+            fn() => [
+                'engine' => 'MariaDB Server',
+                'version' => GALETTE_MARIADB_MIN
+            ]
         );
         $this->assertTrue($zdb->isEngineSUpported());
 
@@ -742,12 +736,10 @@ class Db extends TestCase
 
         $zdb->method('isPostgres')->willReturn(false);
         $zdb->method('getInfos')->willReturnCallback(
-            function () {
-                return [
-                    'engine' => 'MariaDB Server',
-                    'version' => '10.4-MariaDB'
-                ];
-            }
+            fn() => [
+                'engine' => 'MariaDB Server',
+                'version' => '10.4-MariaDB'
+            ]
         );
         $this->assertFalse($zdb->isEngineSUpported());
         $this->assertSame(
@@ -761,12 +753,10 @@ class Db extends TestCase
 
         $zdb->method('isPostgres')->willReturn(true);
         $zdb->method('getInfos')->willReturnCallback(
-            function () {
-                return [
-                    'engine' => 'PostgreSQL',
-                    'version' => GALETTE_PGSQL_MIN
-                ];
-            }
+            fn() => [
+                'engine' => 'PostgreSQL',
+                'version' => GALETTE_PGSQL_MIN
+            ]
         );
         $this->assertTrue($zdb->isEngineSUpported());
 
@@ -776,12 +766,10 @@ class Db extends TestCase
 
         $zdb->method('isPostgres')->willReturn(true);
         $zdb->method('getInfos')->willReturnCallback(
-            function () {
-                return [
-                    'engine' => 'PostgreSQL',
-                    'version' => '12'
-                ];
-            }
+            fn() => [
+                'engine' => 'PostgreSQL',
+                'version' => '12'
+            ]
         );
         $this->assertFalse($zdb->isEngineSUpported());
         $this->assertFalse($zdb->isEngineSUpported());

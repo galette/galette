@@ -78,8 +78,8 @@ class DynamicTranslationsController extends AbstractController
                 $text_orig_sum = array_key_first($orig);
             }
 
-            if (isset($orig[$text_orig_sum]) || isset($orig[md5($text_orig_sum)])) {
-                $sum = isset($orig[$text_orig_sum]) ? $text_orig_sum : md5($text_orig_sum);
+            if (isset($orig[$text_orig_sum]) || isset($orig[md5((string) $text_orig_sum)])) {
+                $sum = isset($orig[$text_orig_sum]) ? $text_orig_sum : md5((string) $text_orig_sum);
                 $text_exists = true;
                 $text_trans = $this->l10n->getDynamicTranslations($sum);
                 $text_orig = $orig[$sum];
@@ -157,7 +157,7 @@ class DynamicTranslationsController extends AbstractController
 
             // Validate form
             foreach ($post as $key => $value) {
-                if (substr($key, 0, 11) == 'text_trans_') {
+                if (str_starts_with($key, 'text_trans_')) {
                     $trans_lang = substr($key, 11);
                     $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
                     $res = $this->l10n->updateDynamicTranslation(

@@ -316,23 +316,18 @@ class Reminder
      */
     public function __get(string $name): mixed
     {
-        switch ($name) {
-            case 'member_id':
-                return $this->dest->id;
-            case 'type':
-            case 'date':
-                return $this->$name;
-            case 'comment':
-                return $this->comment;
-        }
-
-        throw new \RuntimeException(
-            sprintf(
-                'Unable to get property "%s::%s"!',
-                __CLASS__,
-                $name
-            )
-        );
+        return match ($name) {
+            'member_id' => $this->dest->id,
+            'type', 'date' => $this->$name,
+            'comment' => $this->comment,
+            default => throw new \RuntimeException(
+                sprintf(
+                    'Unable to get property "%s::%s"!',
+                    self::class,
+                    $name
+                )
+            ),
+        };
     }
 
     /**
@@ -345,14 +340,10 @@ class Reminder
      */
     public function __isset(string $name): bool
     {
-        switch ($name) {
-            case 'member_id':
-            case 'type':
-            case 'date':
-            case 'comment':
-                return true;
-        }
-        return false;
+        return match ($name) {
+            'member_id', 'type', 'date', 'comment' => true,
+            default => false,
+        };
     }
 
     /**

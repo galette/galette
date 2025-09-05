@@ -382,7 +382,7 @@ abstract class GaletteTestCase extends TestCase
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
-                    $pw_checked = password_verify($value, $adh->password);
+                    $pw_checked = password_verify((string) $value, (string) $adh->password);
                     $this->assertTrue($pw_checked);
                     break;
                 case 'ddn_adh':
@@ -465,7 +465,7 @@ abstract class GaletteTestCase extends TestCase
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
-                    $pw_checked = password_verify($value, $adh->password);
+                    $pw_checked = password_verify((string) $value, (string) $adh->password);
                     $this->assertTrue($pw_checked);
                     break;
                 case 'ddn_adh':
@@ -518,10 +518,10 @@ abstract class GaletteTestCase extends TestCase
         $mdata = $this->dataAdherentOne();
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
         $select->where(
-            array(
+            [
                 'a.fingerprint' => 'FAKER' . $this->seed,
                 'a.login_adh' => $mdata['login_adh']
-            )
+            ]
         );
 
         $results = $this->zdb->execute($select);
@@ -542,10 +542,10 @@ abstract class GaletteTestCase extends TestCase
         $mdata = $this->dataAdherentTwo();
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
         $select->where(
-            array(
+            [
                 'a.fingerprint' => 'FAKER' . $this->seed,
                 'a.login_adh' => $mdata['login_adh']
-            )
+            ]
         );
 
         $results = $this->zdb->execute($select);

@@ -41,7 +41,7 @@ class I18n
     public const DEFAULT_LANG = 'en_US';
 
     private string $dir = 'lang/';
-    private string $path;
+    private readonly string $path;
 
     /** @var array<string,array<string,string>> */
     private array $langs = [];
@@ -72,7 +72,7 @@ class I18n
             $dlang = self::DEFAULT_LANG;
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
                 $preferred_locales = array_reduce(
-                    explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']),
+                    explode(',', (string) $_SERVER['HTTP_ACCEPT_LANGUAGE']),
                     function ($res, $el) {
                         [$l, $q] = array_merge(explode(';q=', $el), [1]);
                         $res[$l] = (float)$q;

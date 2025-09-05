@@ -314,7 +314,7 @@ class Preferences
         'pref_new_contrib_script' => '',
         'pref_bool_wrap_mails' => true,
         'pref_rss_url' => Galette::RSS_URL,
-        'pref_adhesion_form' => '\Galette\IO\PdfAdhesionForm',
+        'pref_adhesion_form' => \Galette\IO\PdfAdhesionForm::class,
         'pref_mail_allow_unsecure' => false,
         'pref_instance_uuid' => '',
         'pref_registration_uuid' => '',
@@ -463,7 +463,7 @@ class Preferences
             }
             $this->socials = Social::getListForMember(null);
             return true;
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             Analog::log(
                 'Preferences cannot be loaded. Galette should not work without '
                 . 'preferences. Exiting.',
@@ -603,7 +603,7 @@ class Preferences
             ) {
                 if (
                     !isset($insert_values['pref_mail_smtp_user'])
-                    || trim($insert_values['pref_mail_smtp_user']) == ''
+                    || trim((string) $insert_values['pref_mail_smtp_user']) == ''
                 ) {
                     $this->errors[] = _T("- You must provide a login for SMTP authentication.");
                 }
@@ -649,7 +649,7 @@ class Preferences
         }
 
         // Check passwords. Hash will be done into the Preferences class
-        if (!Galette::isDemo() && isset($values['pref_admin_pass_check']) && strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
+        if (!Galette::isDemo() && isset($values['pref_admin_pass_check']) && strcmp($insert_values['pref_admin_pass'], (string) $values['pref_admin_pass_check']) != 0) {
             $this->errors[] = _T("Passwords mismatch");
         }
 
@@ -723,8 +723,8 @@ class Preferences
                 //may be a comma-separated list of valid emails:
                 //"mail@domain.com,other@mail.com" only for pref_email_newadh.
                 $addresses = [];
-                if (trim($value) != '') {
-                    $addresses = $fieldname == 'pref_email_newadh' ? explode(',', $value) : [$value];
+                if (trim((string) $value) != '') {
+                    $addresses = $fieldname == 'pref_email_newadh' ? explode(',', (string) $value) : [$value];
                 }
                 foreach ($addresses as $address) {
                     if (!GaletteMail::isValidEmail($address)) {
@@ -740,7 +740,7 @@ class Preferences
                         'Trying to set superadmin login while in DEMO.',
                         Analog::WARNING
                     );
-                } elseif (strlen($value) < 4) {
+                } elseif (strlen((string) $value) < 4) {
                     $this->errors[] = _T("- The username must be composed of at least 4 characters!");
                 } elseif ($login->loginExists($value)) {
                     //check if login is already taken
@@ -780,7 +780,7 @@ class Preferences
             case 'pref_card_bcol':
             case 'pref_card_hcol':
                 $matches = [];
-                if (!preg_match("/^(#)?([0-9A-F]{6})$/i", $value, $matches)) {
+                if (!preg_match("/^(#)?([0-9A-F]{6})$/i", (string) $value, $matches)) {
                     // Set strip background colors to black or white (for tcol)
                     $value = ($fieldname == 'pref_card_tcol' ? '#FFFFFF' : '#000000');
                 } else {
@@ -810,7 +810,7 @@ class Preferences
                 }
                 break;
             case 'pref_beg_membership':
-                $beg_membership = explode("/", $value);
+                $beg_membership = explode("/", (string) $value);
                 if (count($beg_membership) != 2) {
                     $this->errors[] = _T("- Invalid format of beginning of membership.");
                 } else {
@@ -826,7 +826,7 @@ class Preferences
                 }
                 break;
             case 'pref_card_year':
-                if ($value !== 'DEADLINE' && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', $value)) {
+                if ($value !== 'DEADLINE' && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', (string) $value)) {
                     $this->errors[] = _T("- Invalid year for cards.");
                 }
                 break;
@@ -1283,7 +1283,7 @@ class Preferences
 
         //some values need to be changed (e.g., passwords)
         if ($name == 'pref_admin_pass') {
-            $value = password_hash($value, PASSWORD_BCRYPT);
+            $value = password_hash((string) $value, PASSWORD_BCRYPT);
         }
 
         //okay, let's update value

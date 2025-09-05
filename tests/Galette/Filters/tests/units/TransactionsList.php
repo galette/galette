@@ -78,7 +78,7 @@ class TransactionsList extends GaletteTestCase
             \Analog::WARNING,
             sprintf(
                 '[Galette\Filters\TransactionsList|Pagination] "abcde" is not a valid backing value for enum %1$s',
-                version_compare(PHP_VERSION, '8.2.0', '<') ? '"Galette\Enums\SQLOrder"' : 'Galette\Enums\SQLOrder'
+                version_compare(PHP_VERSION, '8.2.0', '<') ? '"Galette\Enums\SQLOrder"' : \Galette\Enums\SQLOrder::class
             )
         );
 
@@ -126,7 +126,7 @@ class TransactionsList extends GaletteTestCase
         $filter_date = new \DateTime('2000-01-01'); //day of the bug :D
 
         foreach ($langs as $lang) {
-            $this->assertInstanceOf('\Galette\Core\I18n', $lang);
+            $this->assertInstanceOf(\Galette\Core\I18n::class, $lang);
             $i18n->changeLanguage($lang->getID());
             $this->assertSame($i18n->getID(), $lang->getID());
             try {

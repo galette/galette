@@ -58,8 +58,6 @@ class Document implements FileInterface
     public const ADHESION = 'adhesion';
     public const MINUTES = 'minutes';
     public const VOTES = 'votes';
-
-    private Db $zdb;
     private int $id;
     private string $type;
     private string $filename;
@@ -76,9 +74,8 @@ class Document implements FileInterface
      * @param Db                                      $zdb  Database instance
      * @param int|ArrayObject<string,int|string>|null $args Arguments
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
+    public function __construct(private Db $zdb, int|ArrayObject|null $args = null)
     {
-        $this->zdb = $zdb;
         $this->can_public = true;
 
         $this->init($this->store_path);
@@ -211,24 +208,15 @@ class Document implements FileInterface
     public function canShow(Login $login): bool
     {
         $access_level = $login->getAccessLevel();
-
-        switch ($this->getPermission()) {
-            case FieldsConfig::ALL:
-                return true;
-            case FieldsConfig::NOBODY:
-                return false;
-            case FieldsConfig::ADMIN:
-                return $access_level >= Authentication::ACCESS_ADMIN;
-            case FieldsConfig::STAFF:
-                return $access_level >= Authentication::ACCESS_STAFF;
-            case FieldsConfig::MANAGER:
-                return $access_level >= Authentication::ACCESS_MANAGER;
-            case FieldsConfig::USER_WRITE:
-            case FieldsConfig::USER_READ:
-                return $access_level >= Authentication::ACCESS_USER;
-        }
-
-        return false;
+        return match ($this->getPermission()) {
+            FieldsConfig::ALL => true,
+            FieldsConfig::NOBODY => false,
+            FieldsConfig::ADMIN => $access_level >= Authentication::ACCESS_ADMIN,
+            FieldsConfig::STAFF => $access_level >= Authentication::ACCESS_STAFF,
+            FieldsConfig::MANAGER => $access_level >= Authentication::ACCESS_MANAGER,
+            FieldsConfig::USER_WRITE, FieldsConfig::USER_READ => $access_level >= Authentication::ACCESS_USER,
+            default => false,
+        };
     }
 
     /**

@@ -193,7 +193,7 @@ class Install extends AbstractCommand
 
         $displayed_db_pass = 'None';
         if ($db_pass !== null) {
-            $displayed_db_pass = str_pad('', mb_strlen($db_pass), '*');
+            $displayed_db_pass = str_pad('', mb_strlen((string) $db_pass), '*');
         }
 
         $galette_sa = $input->getOption('admin');
@@ -217,7 +217,7 @@ class Install extends AbstractCommand
             );
         }
 
-        $displayed_sa_pass = str_pad('', mb_strlen($galette_sa_pass), '*');
+        $displayed_sa_pass = str_pad('', mb_strlen((string) $galette_sa_pass), '*');
 
         $io->definitionList(
             'Database information',

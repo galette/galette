@@ -37,19 +37,14 @@ class L10n
 {
     public const TABLE = 'l10n';
 
-    private Db $zdb;
-    private I18n $i18n;
-
     /**
      * Default constructor.
      *
      * @param Db   $zdb  Database instance
      * @param I18n $i18n I18n instance
      */
-    public function __construct(Db $zdb, I18n $i18n)
+    public function __construct(private readonly Db $zdb, private readonly I18n $i18n)
     {
-        $this->zdb = $zdb;
-        $this->i18n = $i18n;
     }
 
     /**

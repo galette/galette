@@ -202,7 +202,7 @@ class Reminders
         $limit_now->setTime(23, 59, 59);
         if ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            [$j, $m] = explode('/', $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
             $limit_date = new \DateTime($limit_now->format('Y') . '-' . $m . '-' . $j);
             while ($limit_now <= $limit_date) {
                 $limit_date->sub(new \DateInterval('P1Y'));
