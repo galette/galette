@@ -312,7 +312,8 @@ class MembersController extends CrudController
                 'time'              => time(),
                 'display_elements'  => $display_elements,
                 'osocials'          => new Social($this->zdb),
-                'navigate'          => $this->handleNavigationLinks($member->id)
+                'navigate'          => $this->handleNavigationLinks($member->id),
+                'qrcodes'           => $member->getQrCodes()
             ]
         );
         return $response;
