@@ -33,6 +33,7 @@
     <div class="content">
         <div class="header aligned">
             {{ member.sname }} <a href="{{ url_for("memberVCard", {"id": member.id}) }}"><i class="icon address card outline"></i></a>
+            {% if qrcodes.vcard is defined %} <i class="qrcode icon" data-modal="qrcode_vcard"></i>{% endif %}
         </div>
         <div class="meta aligned">
             <span>{{ member.sstatus }}</span>
@@ -45,11 +46,11 @@
                             <span class="header">{{ _T("Phone") }}</span>
                             <div class="description">
                                 {% if member.phone %}
-                                    {{ member.phone }}
+                                    {{ member.phone }}{% if qrcodes.phone is defined %} <i class="qrcode icon" data-modal="qrcode_phone"></i>{% endif %}
                                 {% endif %}
                                 {% if member.gsm %}
                                     {% if member.phone %}, {% endif %}
-                                    {{ member.gsm }}
+                                    {{ member.gsm }}{% if qrcodes.gsm is defined %} <i class="qrcode icon" data-modal="qrcode_gsm"></i>{% endif %}
                                 {% endif %}
                             </div>
                         </div>
@@ -59,7 +60,9 @@
                     <div class="item">
                         <div class="content">
                             <span class="blue header">{{ _T("Email") }}</span>
-                            <div class="description">{{ member.getEMail() }}</div>
+                            <div class="description">
+                                {{ member.getEMail() }}{% if qrcodes.email is defined %} <i class="qrcode icon" data-modal="qrcode_email"></i>{% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endif %}
@@ -71,3 +74,17 @@
         {{ member.getDues()|escape }}
     </div>
 </div>
+
+{% if qrcodes is not empty %}
+    {% for key, qrcode in qrcodes %}
+        <div class="ui basic modal" id="qrcode_{{ key }}">
+            <img src="{{ qrcode.getImage() }}" alt="{{ qrcode.getLabel() }}" title="{{ qrcode.getLabel() }}" class="medium image tooltip"/>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<script type="text/javascript">
+    $('#member_card .qrcode.icon').on('click', function() {
+        $('#' + this.dataset.modal).modal({context: 'body'}).modal('show');
+    });
+</script>
