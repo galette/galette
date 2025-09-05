@@ -31,6 +31,7 @@ use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
 use Galette\Features\Socials;
 use Galette\Interfaces\AccessManagementInterface;
+use Galette\Util\QrCode;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -2413,5 +2414,49 @@ class Adherent implements AccessManagementInterface
     protected function getEventsPrefix(): string
     {
         return 'member';
+    }
+
+
+    /**
+     * Get QR codes associated to member
+     *
+     * @return QrCode[]
+     */
+    public function getQrCodes(): array
+    {
+        global $routeparser, $login;
+
+        $qrcodes = [];
+
+        if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager()) {
+            //only admin, staff and group managers can get QR codes
+            return $qrcodes;
+        }
+
+        if (!empty($this->getEmail())) {
+            $qrcodes['email'] = new QrCode(
+                data: 'mailto:' . $this->getEmail(),
+                label: $this->getEmail(),
+                url: 'mailto:' . $this->getEmail()
+            );
+        }
+
+        if (!empty($this->phone)) {
+            $qrcodes['phone'] = new QrCode(
+                data: 'tel:' . $this->phone,
+                label: $this->phone,
+                url: 'tel:' . $this->phone
+            );
+        }
+
+        if (!empty($this->gsm)) {
+            $qrcodes['gsm'] = new QrCode(
+                data: 'tel:' . $this->gsm,
+                label: $this->gsm,
+                url: 'tel:' . $this->gsm
+            );
+        }
+
+        return $qrcodes;
     }
 }
