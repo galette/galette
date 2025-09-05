@@ -320,6 +320,57 @@ class MembersController extends CrudController
     }
 
     /**
+     * Get member VCard
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param integer  $id       Member ID
+     *
+     * @return Response
+     */
+    public function vcard(Request $request, Response $response, int $id): Response
+    {
+        $member = new Adherent($this->zdb);
+        $member
+            ->enableAllDeps()
+            ->load($id);
+
+        if (!$member->canShow($this->login)) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('me')
+                );
+        }
+
+        if ($member->id == null) {
+            //member does not exist!
+            $this->flash->addMessage(
+                'error_detected',
+                str_replace('%id', (string)$id, _T("No member #%id."))
+            );
+
+            return $response
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
+                );
+        }
+
+        $response = $response
+            ->withHeader('Content-type', 'text/x-vcard')
+            ->withHeader('Content-Disposition', 'attachment;filename="vcard_member_' . $member->id . '"');
+        $response->getBody()->write($member->getVCard()->serialize());
+        return $response;
+    }
+
+    /**
      * Own card show
      *
      * @param Request  $request  PSR Request
