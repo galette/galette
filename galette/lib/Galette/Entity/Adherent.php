@@ -1860,7 +1860,6 @@ class Adherent implements AccessManagementInterface
                         self::WOMAN => _T('Woman'),
                         default => _T('Unspecified'),
                     };
-                    // no break - already returned
                 case 'contribstatus':
                     return $this->getDues();
                 default:

@@ -83,10 +83,10 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): v
 
     $app->get(
         '/{trombinoscope|trombi}',
-        fn($request, $response) =>
+        fn($request, $response)
             //trombi deprecated since 1.2.0
             //trombinoscope deprecated since 0.9.3
-            $response
+            => $response
             ->withStatus(301)
             ->withHeader('Location', $routeparser->urlFor('publicMembersGallery'))
     );
