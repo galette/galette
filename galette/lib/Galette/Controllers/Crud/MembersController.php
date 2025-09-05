@@ -58,7 +58,7 @@ class MembersController extends CrudController
     private bool $add_child = false;
 
     #[Inject]
-    private Status $status;
+    private readonly Status $status;
 
     // CRUD - Create
 
@@ -407,7 +407,7 @@ class MembersController extends CrudController
             $request,
             $response,
             [
-                'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
+                'filter_name' => $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
                 'with_photos' => false,
                 'page_title' => _T("Members"),
                 'template' => 'pages/public/members_list.html.twig',
@@ -438,7 +438,7 @@ class MembersController extends CrudController
             $request,
             $response,
             [
-                'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
+                'filter_name' => $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
                 'with_photos' => true,
                 'page_title' => _T("Gallery"),
                 'template' => 'pages/public/members_gallery.html.twig',
@@ -465,7 +465,7 @@ class MembersController extends CrudController
         ?string $option = null,
         string|int|null $value = null,
     ): Response {
-        $filter_name = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafflist']);
+        $filter_name = $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafflist']);
         $filters = new MembersList();
         $this->session->$filter_name = $filters;
 
@@ -501,7 +501,7 @@ class MembersController extends CrudController
         ?string $option = null,
         string|int|null $value = null,
     ): Response {
-        $filter_name = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafftrombi']);
+        $filter_name = $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafftrombi']);
         $filters = new MembersList();
         $this->session->$filter_name = $filters;
 
@@ -622,7 +622,7 @@ class MembersController extends CrudController
     {
         $post = $request->getParsedBody();
 
-        $varname = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => $type]);
+        $varname = $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => $type]);
         $filters = $this->session->$varname ?? new MembersList();
 
         //reintialize filters
@@ -652,8 +652,8 @@ class MembersController extends CrudController
      */
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
         } else {
             $filters = new MembersList();
         }
@@ -685,7 +685,7 @@ class MembersController extends CrudController
         $filters->setViewPagination($this->routeparser, $this->view, false);
         $filters->setViewCommonsFilters($this->view);
 
-        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
+        $this->session->{$this->getFilterName(static::getDefaultFilterName())} = $filters;
 
         // display page
         $this->view->render(
@@ -717,14 +717,14 @@ class MembersController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())} ?? new MembersList();
+        $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())} ?? new MembersList();
 
         //reinitialize filters
         if (isset($post['clear_filter'])) {
             $filters = new MembersList();
         } elseif (isset($post['clear_adv_filter'])) {
-            $this->session->{$this->getFilterName($this->getDefaultFilterName())} = null;
-            unset($this->session->{$this->getFilterName($this->getDefaultFilterName())});
+            $this->session->{$this->getFilterName(static::getDefaultFilterName())} = null;
+            unset($this->session->{$this->getFilterName(static::getDefaultFilterName())});
 
             return $response
                 ->withStatus(301)
@@ -772,15 +772,15 @@ class MembersController extends CrudController
                 unset($post['advanced_filtering']);
                 $freed = false;
                 foreach ($post as $k => $v) {
-                    if (strpos($k, 'free_', 0) === 0) {
+                    if (str_starts_with($k, 'free_')) {
                         if (!$freed) {
                             $i = 0;
                             foreach ($post['free_field'] as $f) {
                                 if (
-                                    trim($f) !== ''
-                                    && trim($post['free_text'][$i]) !== ''
+                                    trim((string) $f) !== ''
+                                    && trim((string) $post['free_text'][$i]) !== ''
                                 ) {
-                                    $fs_search = htmlspecialchars($post['free_text'][$i], ENT_QUOTES);
+                                    $fs_search = htmlspecialchars((string) $post['free_text'][$i], ENT_QUOTES);
                                     $log_op
                                         = (int)$post['free_logical_operator'][$i];
                                     $qry_op
@@ -804,7 +804,7 @@ class MembersController extends CrudController
                         $i = 0;
                         $filters->groups_search_log_op = (int)$post['groups_logical_operator'];
                         foreach ($post['groups_search'] as $g) {
-                            if (trim($g) !== '') {
+                            if (trim((string) $g) !== '') {
                                 $gs = [
                                     'idx'       => $i,
                                     'group'     => $g
@@ -838,7 +838,7 @@ class MembersController extends CrudController
                 );
         }
 
-        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
+        $this->session->{$this->getFilterName(static::getDefaultFilterName())} = $filters;
 
         return $response
             ->withStatus(301)
@@ -855,8 +855,8 @@ class MembersController extends CrudController
      */
     public function advancedSearch(Request $request, Response $response): Response
     {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
             if (!$filters instanceof AdvancedMembersList) {
                 $filters = new AdvancedMembersList($filters);
             }
@@ -938,7 +938,7 @@ class MembersController extends CrudController
     {
         $post = $request->getParsedBody();
 
-        $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'ajax'])} ?? new MembersList();
+        $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'ajax'])} ?? new MembersList();
 
         if ($option == 'page') {
             $filters->current_page = (int)$value;
@@ -971,7 +971,7 @@ class MembersController extends CrudController
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
 
-        $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'ajax'])} = $filters;
+        $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'ajax'])} = $filters;
 
         $selected_members = null;
         $unreachables_members = null;
@@ -1070,8 +1070,8 @@ class MembersController extends CrudController
         $post = $request->getParsedBody();
 
         if (isset($post['entries_sel'])) {
-            if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-                $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+            if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+                $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
             } else {
                 $filters = new MembersList();
             }
@@ -1090,7 +1090,7 @@ class MembersController extends CrudController
 
             foreach ($knowns as $known => $redirect_url) {
                 if (isset($post[$known])) {
-                    $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => $known])} = $filters;
+                    $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => $known])} = $filters;
                     $redirect_url = $this->routeparser->urlFor($redirect_url);
                     if ($known === 'sendmail') {
                         $redirect_url .= '?mailing_new=new';
@@ -1303,7 +1303,7 @@ class MembersController extends CrudController
      */
     public function massChange(Request $request, Response $response): Response
     {
-        $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'masschange'])} ?? new MembersList();
+        $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'masschange'])} ?? new MembersList();
 
         $data = [
             'id'            => $filters->selected,
@@ -1430,7 +1430,7 @@ class MembersController extends CrudController
             }
         }
 
-        $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'masschange'])};
+        $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'masschange'])};
         $data = [
             'id'            => $filters->selected,
             'redirect_uri'  => $this->routeparser->urlFor('members')
@@ -1866,7 +1866,7 @@ class MembersController extends CrudController
 
         if (count($error_detected) > 0) {
             foreach ($error_detected as $error) {
-                if (strpos($error, '%member_url_') !== false) {
+                if (str_contains($error, '%member_url_')) {
                     preg_match('/%member_url_(\d+)/', $error, $matches);
                     $url = $this->routeparser->urlFor('member', ['id' => $matches[1]]);
                     $error = str_replace(
@@ -1994,8 +1994,8 @@ class MembersController extends CrudController
             );
         } else {
             //batch members removal
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
-            $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])} = $filters;
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])};
+            $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])} = $filters;
             return sprintf(
                 _T('You are about to remove %1$s members.'),
                 (string)count($filters->selected)
@@ -2013,8 +2013,8 @@ class MembersController extends CrudController
      */
     protected function doDelete(array $args, array $post): bool
     {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])};
         } else {
             $filters = new MembersList();
         }
@@ -2080,8 +2080,8 @@ class MembersController extends CrudController
     {
         $navigate = [];
 
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = clone $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = clone $this->session->{$this->getFilterName(static::getDefaultFilterName())};
         } else {
             $filters = new MembersList();
         }

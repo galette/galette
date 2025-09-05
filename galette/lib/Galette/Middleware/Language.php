@@ -39,9 +39,9 @@ use Slim\Routing\RouteParser;
  */
 class Language
 {
-    private I18n $i18n;
-    private Session $session;
-    private RouteParser $routeparser;
+    private readonly I18n $i18n;
+    private readonly Session $session;
+    private readonly RouteParser $routeparser;
 
     /**
      * Constructor

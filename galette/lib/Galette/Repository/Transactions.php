@@ -49,9 +49,7 @@ class Transactions
     public const PK = Transaction::PK;
 
     private int $count = 0;
-    private Db $zdb;
-    private Login $login;
-    private TransactionsList $filters;
+    private readonly TransactionsList $filters;
 
     /**
      * Default constructor
@@ -60,12 +58,9 @@ class Transactions
      * @param Login             $login   Login
      * @param ?TransactionsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?TransactionsList $filters = null)
+    public function __construct(private readonly Db $zdb, private readonly Login $login, ?TransactionsList $filters = null)
     {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
-        $this->filters = $filters === null ? new TransactionsList() : $filters;
+        $this->filters = $filters ?? new TransactionsList();
     }
 
     /**

@@ -32,9 +32,8 @@ use InvalidArgumentException;
  */
 class Post
 {
-    private string $title;
-    private ?string $url;
-    private ?string $date;
+    private readonly string $title;
+    private readonly ?string $url;
 
     /**
      * Default constructor
@@ -43,7 +42,7 @@ class Post
      * @param ?string $url   Post URL
      * @param ?string $date  Post date
      */
-    public function __construct(string $title, ?string $url = null, ?string $date = null)
+    public function __construct(string $title, ?string $url = null, private readonly ?string $date = null)
     {
         if (empty($title) && !empty($url)) {
             $title = $url;
@@ -52,7 +51,6 @@ class Post
         }
         $this->title = $title;
         $this->url = $url;
-        $this->date = $date;
     }
 
     /**

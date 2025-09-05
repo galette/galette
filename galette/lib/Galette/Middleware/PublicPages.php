@@ -41,11 +41,11 @@ class PublicPages
 {
     protected Messages $flash;
 
-    private Login $login;
+    private readonly Login $login;
 
-    private RouteParser $routeparser;
+    private readonly RouteParser $routeparser;
 
-    private Preferences $preferences;
+    private readonly Preferences $preferences;
 
     /**
      * Constructor

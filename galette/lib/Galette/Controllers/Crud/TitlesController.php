@@ -190,12 +190,12 @@ class TitlesController extends CrudController
             if ($id === null) {
                 $error_detected[] = sprintf(
                     _T('Title \'%1$s\' has not been added!'),
-                    $title->short !== null ? $title->short : '',
+                    $title->short ?? '',
                 );
             } else {
                 $error_detected[] = sprintf(
                     _T('Title \'%1$s\' has not been modified!'),
-                    $title->short !== null ? $title->short : '',
+                    $title->short ?? '',
                 );
 
                 $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => (string)$id]);

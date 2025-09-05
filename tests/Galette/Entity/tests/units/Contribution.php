@@ -361,10 +361,10 @@ class Contribution extends GaletteTestCase
             \Analog::ERROR,
             'Unknown ID 156'
         );
-        $this->assertInstanceOf('\Galette\Entity\ContributionsTypes', $contrib->type);
+        $this->assertInstanceOf(\Galette\Entity\ContributionsTypes::class, $contrib->type);
         $this->assertFalse($contrib->type->id);
         $contrib->type = 1;
-        $this->assertInstanceOf('\Galette\Entity\ContributionsTypes', $contrib->type);
+        $this->assertInstanceOf(\Galette\Entity\ContributionsTypes::class, $contrib->type);
         $this->assertEquals(1, $contrib->type->id);
 
         $contrib->transaction = 'not a transaction id';
@@ -378,7 +378,7 @@ class Contribution extends GaletteTestCase
             \Analog::ERROR,
             'Non-logged-in users cannot load transaction id `46`'
         );
-        $this->assertInstanceOf('\Galette\Entity\Transaction', $contrib->transaction);
+        $this->assertInstanceOf(\Galette\Entity\Transaction::class, $contrib->transaction);
         $this->assertNull($contrib->transaction->id);
 
         $contrib->member = 'not a member';
@@ -871,8 +871,8 @@ class Contribution extends GaletteTestCase
     {
         global $login;
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin'])
             ->getMock();
         $this->login->method('isLogged')->willReturn(true);
         $this->login->method('isStaff')->willReturn(true);
@@ -1017,7 +1017,7 @@ class Contribution extends GaletteTestCase
         $this->assertTrue($child->load($cid));
 
         $this->assertSame($child_data['nom_adh'], $child->name);
-        $this->assertInstanceOf('\Galette\Entity\Adherent', $child->parent);
+        $this->assertInstanceOf(\Galette\Entity\Adherent::class, $child->parent);
         $this->assertSame($member->id, $child->parent->id);
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
@@ -1125,7 +1125,7 @@ class Contribution extends GaletteTestCase
 
         $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
         $update->set(
-            array('date_echeance' => $due_date->format('Y-m-d'))
+            ['date_echeance' => $due_date->format('Y-m-d')]
         )->where(
             [\Galette\Entity\Adherent::PK => $this->adh->id]
         );

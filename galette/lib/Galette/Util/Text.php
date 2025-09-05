@@ -44,7 +44,7 @@ class Text
         $string = transliterator_transliterate("Any-Latin; Latin-ASCII; [^a-zA-Z0-9\.\ -_] Remove;", $string);
         $string = str_replace(' ', '-', mb_strtolower($string, 'UTF-8'));
         $string = preg_replace('~[^0-9a-z_\.]+~i', '-', $string);
-        $string = trim($string, '-');
+        $string = trim((string) $string, '-');
         if ($string == '') {
             throw new \RuntimeException(
                 'Cannot create a slug from the given string ' . $string

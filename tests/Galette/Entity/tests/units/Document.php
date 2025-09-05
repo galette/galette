@@ -106,8 +106,8 @@ class Document extends GaletteTestCase
     private function getDocumentInstance(): \Galette\Entity\Document
     {
         $document = $this->getMockBuilder(\Galette\Entity\Document::class)
-            ->setConstructorArgs(array($this->zdb))
-            ->onlyMethods(array('handleFiles'))
+            ->setConstructorArgs([$this->zdb])
+            ->onlyMethods(['handleFiles'])
             ->getMock();
 
         $document->method('handleFiles')
@@ -250,8 +250,8 @@ class Document extends GaletteTestCase
 
         global $login;
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -269,8 +269,8 @@ class Document extends GaletteTestCase
 
         //regular user
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -288,8 +288,8 @@ class Document extends GaletteTestCase
 
         //non logged in user
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(false);

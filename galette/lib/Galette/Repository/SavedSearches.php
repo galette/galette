@@ -45,9 +45,7 @@ class SavedSearches
     public const TABLE = SavedSearch::TABLE;
     public const PK = SavedSearch::PK;
 
-    private SavedSearchesList $filters;
-    private Db $zdb;
-    private Login $login;
+    private readonly SavedSearchesList $filters;
     private ?int $count = null;
 
     /**
@@ -57,12 +55,9 @@ class SavedSearches
      * @param Login              $login   Login
      * @param ?SavedSearchesList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?SavedSearchesList $filters = null)
+    public function __construct(private readonly Db $zdb, private readonly Login $login, ?SavedSearchesList $filters = null)
     {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
-        $this->filters = $filters === null ? new SavedSearchesList() : $filters;
+        $this->filters = $filters ?? new SavedSearchesList();
     }
 
     /**

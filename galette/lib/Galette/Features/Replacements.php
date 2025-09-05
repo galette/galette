@@ -471,7 +471,7 @@ trait Replacements
     public function setMain(): self
     {
         $address = $this->preferences->getPostalAddress();
-        $address_multi = preg_replace("/\n/", "<br>", $address);
+        $address_multi = preg_replace("/\n/", "<br>", (string) $address);
 
         $website = '';
         if ($this->preferences->pref_website !== '') {
@@ -710,7 +710,7 @@ trait Replacements
 
         $dynamic_patterns = $this->getDynamicPatterns($form_name);
         foreach ($dynamic_patterns as $dynamic_pattern) {
-            $pattern = trim($dynamic_pattern['pattern'], '/');
+            $pattern = trim((string) $dynamic_pattern['pattern'], '/');
             $key   = strtolower(rtrim(ltrim($pattern, '{'), '}'));
             $value = '';
 
@@ -894,9 +894,7 @@ trait Replacements
     protected function proceedReplacements(string $source): string
     {
         //handle translations
-        $callback = static function ($matches) {
-            return _T($matches[1]);
-        };
+        $callback = (static fn($matches) => _T($matches[1]));
         $replaced = preg_replace_callback(
             '/_T\("([^\"]+)"\)/',
             $callback,
@@ -915,24 +913,22 @@ trait Replacements
         $replaced = preg_replace(
             $this->patterns,
             $this->replaces,
-            $replaced
+            (string) $replaced
         );
 
         //handle translations with replacements
-        $repl_callback = static function ($matches) {
-            return str_replace(
-                $matches[1],
-                $matches[2],
-                $matches[3]
-            );
-        };
+        $repl_callback = (static fn($matches) => str_replace(
+            $matches[1],
+            $matches[2],
+            $matches[3]
+        ));
         $replaced = preg_replace_callback(
             '/str_replace\(\'([^,]+)\', ?\'([^,]+)\', ?\'(.*)\'\)/',
             $repl_callback,
-            $replaced
+            (string) $replaced
         );
 
-        return trim($replaced);
+        return trim((string) $replaced);
     }
 
     /**

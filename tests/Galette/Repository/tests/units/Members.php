@@ -97,7 +97,7 @@ class Members extends GaletteTestCase
         $this->logSuperAdmin();
         try {
             $this->deleteMembers();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             //empty catch
         }
 
@@ -167,15 +167,15 @@ class Members extends GaletteTestCase
 
                 $copied = copy($url, $file);
                 $this->assertTrue($copied);
-                $_FILES = array(
-                    'photo' => array(
+                $_FILES = [
+                    'photo' => [
                         'name'      => 'fakephoto.jpg',
                         'type'      => 'image/jpeg',
                         'size'      => filesize($file),
                         'tmp_name'  => $file,
                         'error'     => 0
-                    )
-                );
+                    ]
+                ];
                 $this->assertGreaterThan(0, (int)$member->picture->store($_FILES['photo'], true));
                 $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for ' . $member->id);
             }
@@ -647,8 +647,8 @@ class Members extends GaletteTestCase
         //search on infos - as admin
         global $login;
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $login->method('isAdmin')->willReturn(true);
 
@@ -1264,7 +1264,7 @@ class Members extends GaletteTestCase
         //add member as sender for a mailing
         $mailhist = new \Galette\Core\MailingHistory($this->zdb, $this->login, $this->preferences);
 
-        $values = array(
+        $values = [
             'mailing_sender'            => $member->id,
             'mailing_sender_name'       => 'test',
             'mailing_sender_address'    => 'test@test.com',
@@ -1273,7 +1273,7 @@ class Members extends GaletteTestCase
             'mailing_date'              => '2015-01-01 00:00:00',
             'mailing_recipients'        => \Galette\Core\Galette::jsonEncode([]),
             'mailing_sent'              => true
-        );
+        ];
         $insert = $this->zdb->insert(\Galette\Core\MailingHistory::TABLE);
         $insert->values($values);
         $this->zdb->execute($insert);

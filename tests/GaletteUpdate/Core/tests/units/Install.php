@@ -35,7 +35,7 @@ class Install extends TestCase
 {
     private \Galette\Core\Db $zdb;
     /** @var array<string> */
-    private array $flash_data;
+    private readonly array $flash_data;
     private \Slim\Flash\Messages $flash;
     private \DI\Container $container;
     private string $latest_prefix = 'latest_galette_';
@@ -151,10 +151,9 @@ class Install extends TestCase
         //make sure all tables are present
         $this->assertEquals(
             array_map(
-                function ($table) use ($latest_prefix) {
+                fn($table) =>
                     //table prefix differs
-                    return str_replace($latest_prefix, PREFIX_DB, $table);
-                },
+                    str_replace($latest_prefix, PREFIX_DB, $table),
                 $latest_tables
             ),
             $tables

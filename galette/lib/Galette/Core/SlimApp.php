@@ -38,7 +38,7 @@ use Slim\App;
 class SlimApp
 {
     /** @var App<TContainerInterface> */
-    private App $app;
+    private readonly App $app;
 
     /**
      * Create a new Slim application
@@ -58,7 +58,7 @@ class SlimApp
             ],
             'mode'              => GALETTE_MODE,
             'galette.mode'      => GALETTE_MODE,
-            'session'           => \DI\autowire('\RKA\Session')
+            'session'           => \DI\autowire(\RKA\Session::class)
         ]);
         $container = $builder->build();
 

@@ -132,7 +132,7 @@ trait Dynamics
                 $value = $dfield_values['value'];
                 $val_index = (int)$dfield_values['val_index'];
 
-                if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
+                if ($fields[$field_id]->isRequired() && (trim((string) $value) === '' || $value == null)) {
                     $this->errors[] = str_replace(
                         '%field',
                         $fields[$field_id]->getName(),
@@ -151,7 +151,7 @@ trait Dynamics
                     }
                     $this->dynamics->setValue($this->id, $field_id, $val_index, '');
                 } else {
-                    if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
+                    if ($fields[$field_id] instanceof Date && !empty(trim((string) $value))) {
                         //check date format
                         try {
                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
@@ -356,6 +356,6 @@ trait Dynamics
      */
     public function getFormName(): string
     {
-        return array_search(get_class($this), DynamicFieldsSet::getClasses());
+        return array_search($this::class, DynamicFieldsSet::getClasses());
     }
 }

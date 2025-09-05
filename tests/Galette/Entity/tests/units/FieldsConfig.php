@@ -360,8 +360,8 @@ class FieldsConfig extends TestCase
         $fields_config->load();
 
         $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $admin_login->method('isAdmin')->willReturn(true);
 
@@ -382,8 +382,8 @@ class FieldsConfig extends TestCase
         $this->assertTrue(isset($elements[2]->elements['info_adh']));
 
         $user_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isUp2Date'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isUp2Date'])
             ->getMock();
         $user_login->method('isUp2Date')->willReturn(true);
 
@@ -416,8 +416,8 @@ class FieldsConfig extends TestCase
         $fields_config->load();
 
         $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $admin_login->method('isAdmin')->willReturn(true);
 
@@ -444,8 +444,8 @@ class FieldsConfig extends TestCase
         $this->assertCount(1, $elements['hiddens']);
 
         $user_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isUp2Date'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isUp2Date'])
             ->getMock();
         $user_login->method('isUp2Date')->willReturn(true);
 
@@ -481,7 +481,7 @@ class FieldsConfig extends TestCase
 
         //form elements for self subscription
         $no_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
             ->getMock();
 
         $elements = $fields_config->getFormElements($no_login, false, true);

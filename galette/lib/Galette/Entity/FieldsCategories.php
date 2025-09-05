@@ -39,11 +39,6 @@ class FieldsCategories
     public const TABLE = 'fields_categories';
     public const PK = 'id_field_category';
 
-    /** @var array<string,mixed> */
-    private array $defaults;
-
-    private Db $zdb;
-
     public const ADH_CATEGORY_IDENTITY = 1;
     public const ADH_CATEGORY_GALETTE = 2;
     public const ADH_CATEGORY_CONTACT = 3;
@@ -54,10 +49,8 @@ class FieldsCategories
      * @param Db                  $zdb      Database
      * @param array<string,mixed> $defaults default values
      */
-    public function __construct(Db $zdb, array $defaults)
+    public function __construct(private readonly Db $zdb, private readonly array $defaults)
     {
-        $this->zdb = $zdb;
-        $this->defaults = $defaults;
     }
 
     /**

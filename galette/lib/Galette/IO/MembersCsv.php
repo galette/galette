@@ -42,13 +42,8 @@ use Galette\Filters\MembersList;
 
 class MembersCsv extends CsvOut
 {
-    private string $filename;
-    private string $path;
-    private Db $zdb;
-    private Login $login;
-    /** @var array<string,mixed> */
-    private array $members_fields;
-    private FieldsConfig $fields_config;
+    private readonly string $filename;
+    private readonly string $path;
 
     /**
      * Default constructor
@@ -58,14 +53,10 @@ class MembersCsv extends CsvOut
      * @param array<string,mixed> $members_fields Members fields
      * @param FieldsConfig        $fields_config  Fields configuration
      */
-    public function __construct(Db $zdb, Login $login, array $members_fields, FieldsConfig $fields_config)
+    public function __construct(private readonly Db $zdb, private readonly Login $login, private readonly array $members_fields, private readonly FieldsConfig $fields_config)
     {
         $this->filename = __('filtered_memberslist') . '.csv';
         $this->path = self::DEFAULT_DIRECTORY . $this->filename;
-        $this->zdb = $zdb;
-        $this->login = $login;
-        $this->members_fields = $members_fields;
-        $this->fields_config = $fields_config;
         parent::__construct();
     }
 

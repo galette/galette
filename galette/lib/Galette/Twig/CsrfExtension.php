@@ -36,15 +36,12 @@ use Twig\Extension\GlobalsInterface;
 
 class CsrfExtension extends AbstractExtension implements GlobalsInterface
 {
-    protected Guard $csrf;
-
     /**
      * Constructor
      * @param Guard $csrf CSRF instance
      */
-    public function __construct(Guard $csrf)
+    public function __construct(protected Guard $csrf)
     {
-        $this->csrf = $csrf;
     }
 
     /**

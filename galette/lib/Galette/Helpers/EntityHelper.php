@@ -114,9 +114,6 @@ trait EntityHelper
      */
     protected function getFieldPropertyName(string $field): string
     {
-        if (isset($this->fields[$field]['propname'])) {
-            return $this->fields[$field]['propname'];
-        }
-        return $field;
+        return $this->fields[$field]['propname'] ?? $field;
     }
 }

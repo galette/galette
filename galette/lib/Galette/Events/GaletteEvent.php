@@ -32,19 +32,14 @@ use League\Event\HasEventName;
  */
 class GaletteEvent implements HasEventName
 {
-    private string $name;
-    private object $object;
-
     /**
      * Constructor
      *
      * @param string $name   Event name
      * @param object $object Event object
      */
-    public function __construct(string $name, object $object)
+    public function __construct(private readonly string $name, private readonly object $object)
     {
-        $this->name = $name;
-        $this->object = $object;
     }
 
     /**

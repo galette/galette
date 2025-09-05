@@ -64,9 +64,6 @@ class Transaction implements AccessManagementInterface
     private ?int $member = null;
     private ?int $payment_type = null;
 
-    private Db $zdb;
-    private Login $login;
-
     /** @var array<string> */
     protected array $errors;
     /** @var string[] */
@@ -81,10 +78,8 @@ class Transaction implements AccessManagementInterface
      *                                                        a specific transaction, or null to just
      *                                                        instantiate object
      */
-    public function __construct(Db $zdb, Login $login, ArrayObject|int|null $args = null)
+    public function __construct(private Db $zdb, private Login $login, ArrayObject|int|null $args = null)
     {
-        $this->zdb = $zdb;
-        $this->login = $login;
         $this->setFields();
 
         if ($args === null || is_int($args)) {
@@ -349,8 +344,8 @@ class Transaction implements AccessManagementInterface
                         break;
                     case 'trans_desc':
                         /** TODO: retrieve field length from database and check that */
-                        $this->description = strip_tags($value);
-                        if (mb_strlen($value) > 150) {
+                        $this->description = strip_tags((string) $value);
+                        if (mb_strlen((string) $value) > 150) {
                             $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
                         }
                         break;

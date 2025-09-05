@@ -52,11 +52,9 @@ class ContributionsTypes
     public const TABLE = 'types_cotisation';
     public const PK = 'id_type_cotis';
 
-    private Db $zdb;
-
     private int $id;
     private string $label;
-    private ?float $amount; //@phpstan-ignore-line
+    private ?float $amount = null; //@phpstan-ignore-line
     private int $extension;
 
     public const ID_NOT_EXITS = -1;
@@ -81,9 +79,8 @@ class ContributionsTypes
      * @param Db                                      $zdb  Database
      * @param int|ArrayObject<string,int|string>|null $args Optional existing result set
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
+    public function __construct(private Db $zdb, int|ArrayObject|null $args = null)
     {
-        $this->zdb = $zdb;
         $this->extension = self::DEFAULT_TYPE;
         if (is_int($args)) {
             $this->load($args);
@@ -594,17 +591,13 @@ class ContributionsTypes
     {
         $forbidden = [];
         $virtuals = ['extension', 'libelle'];
-        if (
-            in_array($name, $virtuals)
-            || !in_array($name, $forbidden)
-            && isset($this->$name)
-        ) {
-            switch ($name) {
-                case 'libelle':
-                    return _T($this->label);
-                default:
-                    return $this->$name;
-            }
+        if (in_array($name, $virtuals)
+        || !in_array($name, $forbidden)
+        && isset($this->$name)) {
+            return match ($name) {
+                'libelle' => _T($this->label),
+                default => $this->$name,
+            };
         } else {
             return false;
         }

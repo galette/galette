@@ -50,7 +50,7 @@ use Slim\Psr7\Stream;
 class CsvController extends AbstractController
 {
     #[Inject]
-    private CsvIn $csvin;
+    private readonly CsvIn $csvin;
 
     /**
      * Send response

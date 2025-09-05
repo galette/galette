@@ -37,19 +37,14 @@ use Throwable;
  */
 class Html implements ErrorRendererInterface
 {
-    protected Twig $view;
-    protected Messages $flash;
-
     /**
      * Constructor
      *
      * @param Twig     $view  View instance
      * @param Messages $flash Flash messages
      */
-    public function __construct(Twig $view, Messages $flash)
+    public function __construct(protected Twig $view, protected Messages $flash)
     {
-        $this->view = $view;
-        $this->flash = $flash;
     }
 
     /**

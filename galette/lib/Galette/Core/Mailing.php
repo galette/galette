@@ -70,7 +70,7 @@ class Mailing extends GaletteMail
     private array $mrecipients = [];
     private int $current_step;
 
-    private string $mime_type;
+    private readonly string $mime_type;
 
     private ?string $tmp_path;
     private int $history_id;
@@ -179,7 +179,7 @@ class Mailing extends GaletteMail
             } else {
                 $orig_recipients = Galette::jsonDecode($rs->mailing_recipients);
             }
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             Analog::log(
                 'Unable to retrieve recipients for mailing ' . $rs->mailing_id,
                 Analog::ERROR
@@ -542,14 +542,14 @@ class Mailing extends GaletteMail
                     return $this->$name;
                 default:
                     Analog::log(
-                        '[' . get_class($this) . 'Trying to get ' . $name,
+                        '[' . static::class . 'Trying to get ' . $name,
                         Analog::DEBUG
                     );
                     return $this->$name;
             }
         } else {
             Analog::log(
-                '[' . get_class($this) . 'Unable to get ' . $name,
+                '[' . static::class . 'Unable to get ' . $name,
                 Analog::ERROR
             );
             return false;
@@ -568,23 +568,10 @@ class Mailing extends GaletteMail
     {
         $forbidden = ['ordered'];
         if (!in_array($name, $forbidden)) {
-            switch ($name) {
-                case 'alt_message':
-                case 'step':
-                case 'subject':
-                case 'message':
-                case 'wrapped_message':
-                case 'html':
-                case 'mail':
-                case 'errors':
-                case 'recipients':
-                case 'tmp_path':
-                case 'attachments':
-                case 'sender_name':
-                case 'sender_address':
-                    return true;
-            }
-            return isset($this->$name);
+            return match ($name) {
+                'alt_message', 'step', 'subject', 'message', 'wrapped_message', 'html', 'mail', 'errors', 'recipients', 'tmp_path', 'attachments', 'sender_name', 'sender_address' => true,
+                default => isset($this->$name),
+            };
         }
 
         return false;
@@ -612,7 +599,7 @@ class Mailing extends GaletteMail
                     $this->isHTML($value);
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '] Value for field `' . $name
+                        '[' . static::class . '] Value for field `' . $name
                         . '` should be boolean - (' . gettype($value) . ')'
                         . $value . ' given',
                         Analog::WARNING
@@ -630,7 +617,7 @@ class Mailing extends GaletteMail
                     $this->current_step = (int)$value;
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '] Value for field `' . $name
+                        '[' . static::class . '] Value for field `' . $name
                         . '` should be integer and know - (' . gettype($value) . ')'
                         . $value . ' given',
                         Analog::WARNING
@@ -642,7 +629,7 @@ class Mailing extends GaletteMail
                 break;
             default:
                 Analog::log(
-                    '[' . get_class($this) . '] Unable to set property `' . $name . '`',
+                    '[' . static::class . '] Unable to set property `' . $name . '`',
                     Analog::WARNING
                 );
         }

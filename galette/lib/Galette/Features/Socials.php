@@ -66,7 +66,7 @@ trait Socials
         $existings = Social::getListForMember($id);
         foreach ($this->socials_input as $key => $value) {
             if (
-                str_starts_with($key, 'social_new_type')
+                str_starts_with((string) $key, 'social_new_type')
                 && !empty($value)
                 && isset($this->socials_input[str_replace('_type', '_value', $key)])
                 && !empty($this->socials_input[str_replace('_type', '_value', $key)])
@@ -79,7 +79,7 @@ trait Socials
                     ->setLinkedMember($id)
                     ->setUrl($this->socials_input['social_new_value_' . $new_index])
                     ->store();
-            } elseif (str_starts_with($key, 'social_') && !str_starts_with($key, 'social_new_')) {
+            } elseif (str_starts_with((string) $key, 'social_') && !str_starts_with((string) $key, 'social_new_')) {
                 //existing social network
                 $social_id = (int)str_replace('social_', '', $key);
                 $social = $existings[$social_id];

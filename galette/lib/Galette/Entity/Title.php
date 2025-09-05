@@ -47,7 +47,7 @@ class Title
 
     private int $id;
     private string $short;
-    private ?string $long;
+    private ?string $long = null;
 
     public const MR = 1;
     public const MRS = 2;
@@ -128,7 +128,7 @@ class Title
     {
         $data = [
             'short_label'   => strip_tags($this->short),
-            'long_label'    => strip_tags($this->long)
+            'long_label'    => strip_tags((string) $this->long)
         ];
         try {
             if (isset($this->id) && $this->id > 0) {
@@ -236,7 +236,7 @@ class Title
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                self::class,
                 $name
             )
         );
@@ -252,16 +252,10 @@ class Title
      */
     public function __isset(string $name): bool
     {
-        switch ($name) {
-            case 'id':
-            case 'short':
-            case 'long':
-            case 'tshort':
-            case 'tlong':
-                return true;
-        }
-
-        return false;
+        return match ($name) {
+            'id', 'short', 'long', 'tshort', 'tlong' => true,
+            default => false,
+        };
     }
 
     /**
@@ -277,7 +271,7 @@ class Title
         switch ($name) {
             case 'short':
             case 'long':
-                if (trim($value) === '') {
+                if (trim((string) $value) === '') {
                     Analog::log(
                         'Trying to set empty value for title' . $name,
                         Analog::WARNING

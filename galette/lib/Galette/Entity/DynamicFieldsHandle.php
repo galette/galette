@@ -51,13 +51,10 @@ class DynamicFieldsHandle
     /** @var array<int, array<int, mixed>> */
     private array $current_values = [];
     private string $form_name;
-    private ?int $item_id;
+    private ?int $item_id = null;
 
     /** @var array<string> */
     private array $errors = [];
-
-    private Db $zdb;
-    private Login $login;
 
     private StatementInterface $insert_stmt;
     private StatementInterface $update_stmt;
@@ -72,10 +69,8 @@ class DynamicFieldsHandle
      * @param Login   $login    Login instance
      * @param ?object $instance Object instance
      */
-    public function __construct(Db $zdb, Login $login, ?object $instance = null)
+    public function __construct(private readonly Db $zdb, private readonly Login $login, ?object $instance = null)
     {
-        $this->zdb = $zdb;
-        $this->login = $login;
         if ($instance !== null) {
             $this->load($instance);
         }
@@ -124,14 +119,12 @@ class DynamicFieldsHandle
                         }
                         $this->current_values[$f->{DynamicField::PK}][] = array_filter(
                             (array)$f,
-                            static function ($k) {
-                                return $k != DynamicField::PK;
-                            },
+                            static fn($k) => $k != DynamicField::PK,
                             ARRAY_FILTER_USE_KEY
                         );
                     } else {
                         Analog::log(
-                            'Dynamic values found for ' . get_class($object) . ' #' . $this->item_id
+                            'Dynamic values found for ' . $object::class . ' #' . $this->item_id
                             . '; but no dynamic field configured!',
                             Analog::WARNING
                         );

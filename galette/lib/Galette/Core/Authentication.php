@@ -47,11 +47,11 @@ abstract class Authentication
     public const ACCESS_ADMIN = 3;
     public const ACCESS_SUPERADMIN = 4;
 
-    protected string $login;
-    protected string $name;
-    protected ?string $surname;
+    protected string $login = null;
+    protected string $name = null;
+    protected ?string $surname = null;
     protected bool $admin = false;
-    protected int $id;
+    protected int $id = null;
     protected string $lang;
     protected bool $logged = false;
     protected bool $active = false;
@@ -311,10 +311,7 @@ abstract class Authentication
                 return null;
             case 'login':
             case 'lang':
-                if (isset($this->$name)) {
-                    return $this->$name;
-                }
-                return null;
+                return $this->$name ?? null;
             default:
                 if (!isset($this->$name)) {
                     throw new \RuntimeException('Property ' . $name . ' is not set!');

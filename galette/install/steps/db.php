@@ -54,11 +54,11 @@ if ($install->isUpgrade()) {
         <div id="install_dbconfig">
             <div class="inline required field">
                 <label for="install_dbhost"><?php echo _T("Host:"); ?></label>
-                <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo ($install->getDbHost() !== null) ? $install->getDbHost() : 'localhost'; ?>" required/>
+                <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo $install->getDbHost() ?? 'localhost'; ?>" required/>
             </div>
             <div class="inline required field">
                 <label for="install_dbport"><?php echo _T("Port:"); ?></label>
-                <input type="text" name="install_dbport" id="install_dbport" value="<?php echo ($install->getDbPort() !== null) ? $install->getDbPort() : $default_dbport; ?>" required/>
+                <input type="text" name="install_dbport" id="install_dbport" value="<?php echo $install->getDbPort() ?? $default_dbport; ?>" required/>
             </div>
             <div class="inline required field">
                 <label for="install_dbuser"><?php echo _T("User:"); ?></label>
@@ -74,7 +74,7 @@ if ($install->isUpgrade()) {
             </div>
             <div class="inline required field info">
                 <label for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
-                <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo ($install->getTablesPrefix() !== null) ? $install->getTablesPrefix() : 'galette_'; ?>" required/>
+                <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo $install->getTablesPrefix() ?? 'galette_'; ?>" required/>
 <?php
 if ($install->isUpgrade()) {
     echo '<div class="ui compact floating orange message"><p>' .

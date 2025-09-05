@@ -22,9 +22,9 @@ use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 use Galette\Core\Login;
 
-$results = array();
-$oks = array();
-$errs = array();
+$results = [];
+$oks = [];
+$errs = [];
 $install->reinitReport();
 
 $config_file_ok = $install->writeConfFile();

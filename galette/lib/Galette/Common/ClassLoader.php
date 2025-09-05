@@ -72,11 +72,6 @@ class ClassLoader
     protected string $fileExtension = '.php';
 
     /**
-     * @var ?string Current namespace
-     */
-    protected ?string $namespace;
-
-    /**
      * @var ?string Current include path
      */
     protected ?string $includePath;
@@ -94,16 +89,14 @@ class ClassLoader
      * If neither a namespace nor an include path is given, the ClassLoader will
      * be responsible for loading all classes, thereby relying on the PHP include_path.
      *
-     * @param ?string $ns          The namespace of the classes to load.
+     * @param ?string $namespace The namespace of the classes to load.
      * @param ?string $includePath The base include path to use.
      */
-    public function __construct(?string $ns = null, ?string $includePath = null)
+    public function __construct(protected ?string $namespace = null, ?string $includePath = null)
     {
         if (!file_exists($includePath)) {
             throw new \RuntimeException('Include path "' . $includePath . '" doesn\'t exists');
         }
-
-        $this->namespace = $ns;
         $this->includePath = $includePath;
     }
 
@@ -192,7 +185,7 @@ class ClassLoader
      */
     public function unregister(): void
     {
-        spl_autoload_unregister([$this, 'loadClass']);
+        spl_autoload_unregister($this->loadClass(...));
     }
 
     /**
@@ -204,7 +197,7 @@ class ClassLoader
      */
     public function loadClass(string $className): bool
     {
-        if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
+        if ($this->namespace !== null && !str_starts_with($className, $this->namespace . $this->namespaceSeparator)) {
             return false;
         }
 
@@ -237,7 +230,7 @@ class ClassLoader
      */
     public function canLoadClass(string $className): bool
     {
-        if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
+        if ($this->namespace !== null && !str_starts_with($className, $this->namespace . $this->namespaceSeparator)) {
             return false;
         }
 

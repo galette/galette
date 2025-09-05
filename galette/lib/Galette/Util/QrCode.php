@@ -37,11 +37,8 @@ use Endroid\QrCode\Writer\SvgWriter;
  */
 class QrCode
 {
-    private string $data;
-    private string $label;
-    private ?string $url;
+    private readonly string $label;
     private string $image;
-    private ?string $logo;
 
     /**
      * Default constructor
@@ -51,12 +48,9 @@ class QrCode
      * @param ?string $url   URL to encode
      * @param ?string $logo  Path to logo to embed in the QR code
      */
-    public function __construct(string $data, ?string $label = null, ?string $url = null, ?string $logo = null)
+    public function __construct(private readonly string $data, ?string $label = null, private readonly ?string $url = null, private readonly ?string $logo = null)
     {
-        $this->data = $data;
-        $this->label = $label ?? $data;
-        $this->url = $url;
-        $this->logo = $logo;
+        $this->label = $label ?? $this->data;
 
         $this->build();
     }

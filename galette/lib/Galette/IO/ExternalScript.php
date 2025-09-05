@@ -64,7 +64,7 @@ class ExternalScript
                     $this->protocol = 'https';
                 }
                 $this->method = 'galette';
-                $selfs = explode('/', $_SERVER['PHP_SELF']);
+                $selfs = explode('/', (string) $_SERVER['PHP_SELF']);
                 array_pop($selfs);
                 $self = implode('/', $selfs);
                 $uri = $protocol . '://' . $_SERVER['SERVER_NAME'] . $self
@@ -90,7 +90,7 @@ class ExternalScript
         }
 
         Analog::log(
-            __CLASS__ . ' instanced with method ' . $this->method
+            self::class . ' instanced with method ' . $this->method
             . ' and protocol ' . $this->protocol,
             Analog::INFO
         );
@@ -114,7 +114,7 @@ class ExternalScript
         }
 
         Analog::log(
-            __CLASS__ . ' URI set to ' . $this->uri,
+            self::class . ' URI set to ' . $this->uri,
             Analog::INFO
         );
     }

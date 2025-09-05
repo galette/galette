@@ -41,11 +41,9 @@ use Galette\Repository\PaymentTypes;
 
 class ContributionsCsv extends CsvOut
 {
-    private string $filename;
-    private string $path;
-    private Db $zdb;
-    private Login $login;
-    private string $type;
+    private readonly string $filename;
+    private readonly string $path;
+    private readonly string $type;
 
     /**
      * Default constructor
@@ -54,12 +52,10 @@ class ContributionsCsv extends CsvOut
      * @param Login  $login Login instance
      * @param string $type  One of 'contributions' or 'transactions'
      */
-    public function __construct(Db $zdb, Login $login, string $type)
+    public function __construct(private readonly Db $zdb, private readonly Login $login, string $type)
     {
         $this->filename = 'filtered_' . $type . 'list.csv';
         $this->path = self::DEFAULT_DIRECTORY . $this->filename;
-        $this->zdb = $zdb;
-        $this->login = $login;
         $this->type = $type;
         parent::__construct();
     }

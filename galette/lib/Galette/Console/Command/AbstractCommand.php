@@ -32,16 +32,13 @@ use Symfony\Component\Console\Command\Command;
  */
 abstract class AbstractCommand extends Command
 {
-    protected string $basepath;
-
     /**
      * Default constructor
      *
      * @param string $basepath Base path to Galette installation
      */
-    public function __construct(string $basepath)
+    public function __construct(protected string $basepath)
     {
-        $this->basepath = $basepath;
         parent::__construct();
     }
 }

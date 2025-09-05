@@ -104,7 +104,7 @@ class I18n extends TestCase
         $this->assertGreaterThan(3, count($list));
 
         foreach ($list as $elt) {
-            $this->assertInstanceOf('\Galette\Core\I18n', $elt);
+            $this->assertInstanceOf(\Galette\Core\I18n::class, $elt);
         }
     }
 

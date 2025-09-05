@@ -38,19 +38,14 @@ use Galette\Entity\FieldsConfig;
 
 class DynamicFieldsSet
 {
-    private Db $zdb;
-    private Login $login;
-
     /**
      * Main constructor
      *
      * @param Db    $zdb   Database instance
      * @param Login $login Login instance
      */
-    public function __construct(Db $zdb, Login $login)
+    public function __construct(private readonly Db $zdb, private readonly Login $login)
     {
-        $this->zdb = $zdb;
-        $this->login = $login;
     }
 
     /**
@@ -61,9 +56,9 @@ class DynamicFieldsSet
     public static function getClasses(): array
     {
         return [
-            'adh' => 'Galette\Entity\Adherent',
-            'contrib' => 'Galette\Entity\Contribution',
-            'trans' => 'Galette\Entity\Transaction'
+            'adh' => \Galette\Entity\Adherent::class,
+            'contrib' => \Galette\Entity\Contribution::class,
+            'trans' => \Galette\Entity\Transaction::class
         ];
     }
 

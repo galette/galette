@@ -81,7 +81,7 @@ trait Cacheable
                 $now = new \DateTime();
                 $has_expired = $now > $expire;
                 return !$has_expired;
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 Analog::log(
                     'Unable check cache expiry. Are you sure you have '
                     . 'properly configured PHP timezone settings on your server?',
@@ -121,7 +121,7 @@ trait Cacheable
         }
         $this->prepareForCache();
         $cfile = $this->getCacheFilename();
-        $cdir = dirname($cfile);
+        $cdir = dirname((string) $cfile);
         if (!file_exists($cdir)) {
             mkdir($cdir, 0o755, true);
         }

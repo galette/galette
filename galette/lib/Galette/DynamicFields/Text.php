@@ -67,6 +67,6 @@ class Text extends DynamicField
      */
     public function getDisplayValue(mixed $value): string
     {
-        return nl2br($value);
+        return nl2br((string) $value);
     }
 }

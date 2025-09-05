@@ -39,15 +39,13 @@ use Galette\Features\Translatable;
  * @property string $name
  */
 
-class PaymentType
+class PaymentType implements \Stringable
 {
     use Translatable;
     use I18n;
 
     public const TABLE = 'paymenttypes';
     public const PK = 'type_id';
-
-    private Db $zdb;
     private int $id;
 
     public const SCHEDULED = 7;
@@ -64,9 +62,8 @@ class PaymentType
      * @param Db                                      $zdb  Database instance
      * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
-    public function __construct(Db $zdb, ArrayObject|int|null $args = null)
+    public function __construct(private Db $zdb, ArrayObject|int|null $args = null)
     {
-        $this->zdb = $zdb;
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
@@ -202,19 +199,16 @@ class PaymentType
      */
     public function __get(string $name): mixed
     {
-        switch ($name) {
-            case 'id':
-            case 'name':
-                return $this->$name;
-        }
-
-        throw new \RuntimeException(
-            sprintf(
-                'Unable to get property "%s::%s"!',
-                __CLASS__,
-                $name
-            )
-        );
+        return match ($name) {
+            'id', 'name' => $this->$name,
+            default => throw new \RuntimeException(
+                sprintf(
+                    'Unable to get property "%s::%s"!',
+                    self::class,
+                    $name
+                )
+            ),
+        };
     }
 
     /**
@@ -227,13 +221,10 @@ class PaymentType
      */
     public function __isset(string $name): bool
     {
-        switch ($name) {
-            case 'id':
-            case 'name':
-                return true;
-        }
-
-        return false;
+        return match ($name) {
+            'id', 'name' => true,
+            default => false,
+        };
     }
 
     /**
@@ -248,7 +239,7 @@ class PaymentType
     {
         switch ($name) {
             case 'name':
-                if (trim($value) === '') {
+                if (trim((string) $value) === '') {
                     Analog::log(
                         'Name cannot be empty',
                         Analog::WARNING

@@ -47,7 +47,7 @@ class Charts
     public const CONTRIBS_ALLTIME = 'ContribsAllTime';
 
     /** @var array<string>  */
-    private array $types;
+    private readonly array $types;
     /** @var array<string> */
     private array $charts;
 

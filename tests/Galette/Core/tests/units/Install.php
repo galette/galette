@@ -102,7 +102,7 @@ class Install extends TestCase
             '0.6'
         );
 
-        $knowns = array(
+        $knowns = [
             '0.61'  => 'upgrade-to-0.61-pgsql.sql',
             '0.62'  => 'upgrade-to-0.62-pgsql.sql',
             '0.63'  => 'upgrade-to-0.63-pgsql.sql',
@@ -123,7 +123,7 @@ class Install extends TestCase
             '0.96'  => 'upgrade-to-0.96-pgsql.sql',
             '1.10'  => 'upgrade-to-1.10.php',
             '1.20'  => 'upgrade-to-1.20.php',
-        );
+        ];
 
         $this->assertSame($knowns, $update_scripts);
 
@@ -145,7 +145,7 @@ class Install extends TestCase
         $this->assertEquals(array_values($update_scripts), array_keys($all_knowns));
 
         $this->install->setMode(\Galette\Core\Install::UPDATE);
-        $errors = array();
+        $errors = [];
         $this->install->setDbType(\Galette\Core\Db::PGSQL, $errors);
         $this->install->setInstalledVersion('0.6');
         $update_scripts = $this->install->getScripts(
@@ -256,13 +256,13 @@ class Install extends TestCase
      */
     public function testSetDbType(): void
     {
-        $types = array(
+        $types = [
             \Galette\Core\Db::MYSQL,
             \Galette\Core\Db::PGSQL
-        );
+        ];
 
         foreach ($types as $t) {
-            $errors = array();
+            $errors = [];
 
             $this->install->setDbType(\Galette\Core\Db::MYSQL, $errors);
             $type = $this->install->getDbType();
@@ -271,7 +271,7 @@ class Install extends TestCase
             $this->assertCount(0, $errors);
         }
 
-        $errors = array();
+        $errors = [];
         $this->install->setDbType('nonsense', $errors);
 
         $this->assertSame(['Database type unknown'], $errors);
@@ -287,7 +287,7 @@ class Install extends TestCase
      */
     public function testDbCheckStep(): void
     {
-        $errors = array();
+        $errors = [];
         $this->install->setDbType(TYPE_DB, $errors);
         $this->install->setDsn(
             HOST_DB,
@@ -346,7 +346,7 @@ class Install extends TestCase
      */
     public function testDbInstallStep(): void
     {
-        $errors = array();
+        $errors = [];
         $this->install->setDbType(TYPE_DB, $errors);
         $this->install->setDsn(
             HOST_DB,

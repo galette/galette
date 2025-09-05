@@ -104,7 +104,7 @@ class Members
 
     public const NON_STAFF_MEMBERS = 30;
 
-    private MembersList|AdvancedMembersList $filters;
+    private readonly MembersList|AdvancedMembersList $filters;
     private int $count = 0;
     /** @var array<string> */
     private array $errors = [];
@@ -118,7 +118,7 @@ class Members
      */
     public function __construct(MembersList|AdvancedMembersList|null $filters = null)
     {
-        $this->filters = $filters === null ? new MembersList() : $filters;
+        $this->filters = $filters ?? new MembersList();
     }
 
     /**
@@ -738,7 +738,7 @@ class Members
             if ($this->filters instanceof AdvancedMembersList && ((bool)count($this->filters->free_search) && !isset($this->filters->free_search['empty']))) {
                 $free_searches = $this->filters->free_search;
                 foreach ($free_searches as $fs) {
-                    if (strpos($fs['field'], 'dyn_') === 0) {
+                    if (str_starts_with((string) $fs['field'], 'dyn_')) {
                         // simple dynamic fields
                         $hasDf = true;
                         $dfs[] = str_replace('dyn_', '', $fs['field']);
@@ -1079,7 +1079,7 @@ class Members
 
             if ($this->filters->filter_str != '') {
                 $token = $zdb->platform->quoteValue(
-                    '%' . strtolower($this->filters->filter_str) . '%'
+                    '%' . strtolower((string) $this->filters->filter_str) . '%'
                 );
                 switch ($this->filters->field_filter) {
                     case self::FILTER_NAME:
@@ -1508,7 +1508,7 @@ class Members
                 $qry = '';
                 $prefix = 'a.';
                 $dyn_field = false;
-                if (strpos($fs['field'], 'dyn_') === 0) {
+                if (str_starts_with((string) $fs['field'], 'dyn_')) {
                     // simple dynamic field spotted!
                     $index = str_replace('dyn_', '', $fs['field']);
                     $dyn_field = DynamicField::loadFieldType($zdb, (int)$index);
@@ -1517,7 +1517,7 @@ class Members
                 }
 
                 //handle socials networks
-                if (strpos($fs['field'], 'socials_') === 0) {
+                if (str_starts_with((string) $fs['field'], 'socials_')) {
                     //social networks
                     $type = str_replace('socials_', '', $fs['field']);
                     $prefix = 'so.';
@@ -1537,7 +1537,7 @@ class Members
                     } else {
                         $qry .= $prefix . $fs['field'] . ' IS NULL';
                     }
-                } elseif (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
+                } elseif (!strncmp((string) $fs['field'], 'bool_', strlen('bool_'))) {
                     $qry .= $prefix . $fs['field'] . $qop . ' '
                         . $fs['search'];
                 } elseif (

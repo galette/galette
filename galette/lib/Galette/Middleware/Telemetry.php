@@ -40,9 +40,9 @@ use DI\Container;
  */
 class Telemetry
 {
-    private Db $zdb;
-    private Preferences $preferences;
-    private Plugins $plugins;
+    private readonly Db $zdb;
+    private readonly Preferences $preferences;
+    private readonly Plugins $plugins;
 
     /**
      * Constructor
@@ -124,7 +124,7 @@ class Telemetry
                         }
                     }
                 }
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 //empty catch
             }
         }
