@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Util;
 
-use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Logo\Logo;
