@@ -314,7 +314,7 @@ class Preferences
         'pref_new_contrib_script' => '',
         'pref_bool_wrap_mails' => true,
         'pref_rss_url' => Galette::RSS_URL,
-        'pref_adhesion_form' => '\Galette\IO\PdfAdhesionForm',
+        'pref_adhesion_form' => \Galette\IO\PdfAdhesionForm::class,
         'pref_mail_allow_unsecure' => false,
         'pref_instance_uuid' => '',
         'pref_registration_uuid' => '',

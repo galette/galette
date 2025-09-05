@@ -118,7 +118,7 @@ class Members
      */
     public function __construct(MembersList|AdvancedMembersList|null $filters = null)
     {
-        $this->filters = $filters === null ? new MembersList() : $filters;
+        $this->filters = $filters ?? new MembersList();
     }
 
     /**
@@ -738,7 +738,7 @@ class Members
             if ($this->filters instanceof AdvancedMembersList && ((bool)count($this->filters->free_search) && !isset($this->filters->free_search['empty']))) {
                 $free_searches = $this->filters->free_search;
                 foreach ($free_searches as $fs) {
-                    if (strpos($fs['field'], 'dyn_') === 0) {
+                    if (str_starts_with($fs['field'], 'dyn_')) {
                         // simple dynamic fields
                         $hasDf = true;
                         $dfs[] = str_replace('dyn_', '', $fs['field']);
@@ -1508,7 +1508,7 @@ class Members
                 $qry = '';
                 $prefix = 'a.';
                 $dyn_field = false;
-                if (strpos($fs['field'], 'dyn_') === 0) {
+                if (str_starts_with($fs['field'], 'dyn_')) {
                     // simple dynamic field spotted!
                     $index = str_replace('dyn_', '', $fs['field']);
                     $dyn_field = DynamicField::loadFieldType($zdb, (int)$index);
@@ -1517,7 +1517,7 @@ class Members
                 }
 
                 //handle socials networks
-                if (strpos($fs['field'], 'socials_') === 0) {
+                if (str_starts_with($fs['field'], 'socials_')) {
                     //social networks
                     $type = str_replace('socials_', '', $fs['field']);
                     $prefix = 'so.';

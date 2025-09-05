@@ -131,7 +131,7 @@ class DynamicFieldsHandle
                         );
                     } else {
                         Analog::log(
-                            'Dynamic values found for ' . get_class($object) . ' #' . $this->item_id
+                            'Dynamic values found for ' . $object::class . ' #' . $this->item_id
                             . '; but no dynamic field configured!',
                             Analog::WARNING
                         );

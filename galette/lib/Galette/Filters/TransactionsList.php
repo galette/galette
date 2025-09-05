@@ -132,7 +132,7 @@ class TransactionsList extends Pagination
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );

@@ -311,10 +311,7 @@ abstract class Authentication
                 return null;
             case 'login':
             case 'lang':
-                if (isset($this->$name)) {
-                    return $this->$name;
-                }
-                return null;
+                return $this->$name ?? null;
             default:
                 if (!isset($this->$name)) {
                     throw new \RuntimeException('Property ' . $name . ' is not set!');

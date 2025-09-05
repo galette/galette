@@ -542,14 +542,14 @@ class Mailing extends GaletteMail
                     return $this->$name;
                 default:
                     Analog::log(
-                        '[' . get_class($this) . 'Trying to get ' . $name,
+                        '[' . static::class . 'Trying to get ' . $name,
                         Analog::DEBUG
                     );
                     return $this->$name;
             }
         } else {
             Analog::log(
-                '[' . get_class($this) . 'Unable to get ' . $name,
+                '[' . static::class . 'Unable to get ' . $name,
                 Analog::ERROR
             );
             return false;
@@ -612,7 +612,7 @@ class Mailing extends GaletteMail
                     $this->isHTML($value);
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '] Value for field `' . $name
+                        '[' . static::class . '] Value for field `' . $name
                         . '` should be boolean - (' . gettype($value) . ')'
                         . $value . ' given',
                         Analog::WARNING
@@ -630,7 +630,7 @@ class Mailing extends GaletteMail
                     $this->current_step = (int)$value;
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '] Value for field `' . $name
+                        '[' . static::class . '] Value for field `' . $name
                         . '` should be integer and know - (' . gettype($value) . ')'
                         . $value . ' given',
                         Analog::WARNING
@@ -642,7 +642,7 @@ class Mailing extends GaletteMail
                 break;
             default:
                 Analog::log(
-                    '[' . get_class($this) . '] Unable to set property `' . $name . '`',
+                    '[' . static::class . '] Unable to set property `' . $name . '`',
                     Analog::WARNING
                 );
         }

@@ -1945,10 +1945,7 @@ class Adherent implements AccessManagementInterface
                     );
                     return null;
                 } else {
-                    if (isset($this->$name)) {
-                        return $this->$name;
-                    }
-                    return null;
+                    return $this->$name ?? null;
                 }
         }
     }

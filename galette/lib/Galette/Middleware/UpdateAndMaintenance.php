@@ -110,7 +110,7 @@ class UpdateAndMaintenance
         if (
             $path === ''
             || $path !== '/'
-            && substr($path, -1) !== '/'
+            && !str_ends_with($path, '/')
         ) {
             $path .= '/';
         }

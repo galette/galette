@@ -311,7 +311,7 @@ class FieldsConfig
      */
     private function checkUpdate(): void
     {
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             $_all_fields = [];
@@ -763,7 +763,7 @@ class FieldsConfig
      */
     private function store(): bool
     {
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             $this->zdb->connection->beginTransaction();
@@ -886,7 +886,7 @@ class FieldsConfig
                 );
             }
 
-            $class = get_class($this);
+            $class = static::class;
             Analog::log(
                 str_replace(
                     '%s',

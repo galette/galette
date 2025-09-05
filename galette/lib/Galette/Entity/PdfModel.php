@@ -368,7 +368,7 @@ abstract class PdfModel
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );
@@ -451,11 +451,11 @@ abstract class PdfModel
             case 'footer':
             case 'body':
                 if ($value === null || trim($value) === '') {
-                    if ($name !== 'body' && get_class($this) === PdfMain::class) {
+                    if ($name !== 'body' && static::class === PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("header and footer should not be empty!")
                         );
-                    } elseif ($name === 'body' && get_class($this) !== PdfMain::class) {
+                    } elseif ($name === 'body' && static::class !== PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("body should not be empty!")
                         );

@@ -192,7 +192,7 @@ class SavedSearch
             'name'              => $this->name,
             'parameters'        => $parameters,
             'id_adh'            => $this->author_id,
-            'creation_date'     => ($this->creation_date !== null ? $this->creation_date : date('Y-m-d H:i:s')),
+            'creation_date'     => $this->creation_date ?? date('Y-m-d H:i:s'),
             'form'              => $this->form
         ];
 
@@ -301,7 +301,7 @@ class SavedSearch
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );

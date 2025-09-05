@@ -67,7 +67,7 @@ class ScheduledPayments
         $this->zdb = $zdb;
         $this->login = $login;
 
-        $this->filters = $filters === null ? new ScheduledPaymentsList() : $filters;
+        $this->filters = $filters ?? new ScheduledPaymentsList();
     }
 
     /**

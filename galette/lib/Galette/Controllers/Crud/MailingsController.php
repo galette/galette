@@ -130,8 +130,7 @@ class MailingsController extends CrudController
                         _T('No member selected for mailing!')
                     );
 
-                    $redirect_url = ($this->session->redirect_mailing !== null)
-                        ? $this->session->redirect_mailing : $this->routeparser->urlFor('members');
+                    $redirect_url = $this->session->redirect_mailing ?? $this->routeparser->urlFor('members');
 
                     return $response
                         ->withStatus(301)

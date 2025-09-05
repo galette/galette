@@ -90,7 +90,7 @@ class ExternalScript
         }
 
         Analog::log(
-            __CLASS__ . ' instanced with method ' . $this->method
+            static::class . ' instanced with method ' . $this->method
             . ' and protocol ' . $this->protocol,
             Analog::INFO
         );
@@ -114,7 +114,7 @@ class ExternalScript
         }
 
         Analog::log(
-            __CLASS__ . ' URI set to ' . $this->uri,
+            static::class . ' URI set to ' . $this->uri,
             Analog::INFO
         );
     }

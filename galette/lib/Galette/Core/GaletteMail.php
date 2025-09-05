@@ -141,7 +141,7 @@ class GaletteMail
                         Analog::log(
                             sprintf(
                                 '[%1$s]No SMTP port provided. Switch to default (%2$s).',
-                                get_class($this),
+                                static::class,
                                 $this->mail->Port
                             ),
                             Analog::INFO
@@ -210,7 +210,7 @@ class GaletteMail
                     //- log an INFO
                     $res = false;
                     Analog::log(
-                        '[' . get_class($this)
+                        '[' . static::class
                         . '] One of recipients address is not valid.',
                         Analog::INFO
                     );

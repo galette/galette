@@ -157,7 +157,7 @@ class DynamicTranslationsController extends AbstractController
 
             // Validate form
             foreach ($post as $key => $value) {
-                if (substr($key, 0, 11) == 'text_trans_') {
+                if (str_starts_with($key, 'text_trans_')) {
                     $trans_lang = substr($key, 11);
                     $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
                     $res = $this->l10n->updateDynamicTranslation(

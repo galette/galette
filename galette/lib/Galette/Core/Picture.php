@@ -236,7 +236,7 @@ class Picture implements FileInterface
     protected function getCheckFileQuery(): Select
     {
         global $zdb;
-        $class = get_class($this);
+        $class = static::class;
 
         $select = $zdb->select($this->tbl_prefix . $class::TABLE);
         $select->columns(
@@ -330,7 +330,7 @@ class Picture implements FileInterface
     public function delete(bool $transaction = true): bool
     {
         global $zdb;
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             if ($transaction === true) {
@@ -472,13 +472,13 @@ class Picture implements FileInterface
             if ($current[0] < $this->mincropsize || $current[1] < $this->mincropsize) {
                 $min_current = min($current[0], $current[1]);
                 Analog::log(
-                    '[' . get_class($this) . '] Image is too small. The minimum image side size allowed is '
+                    '[' . static::class . '] Image is too small. The minimum image side size allowed is '
                     . $this->mincropsize . 'px, but current is ' . $min_current . 'px.',
                     Analog::ERROR
                 );
                 return self::IMAGE_TOO_SMALL;
             } else {
-                Analog::log('[' . get_class($this) . '] Image dimensions are OK, proceed', Analog::DEBUG);
+                Analog::log('[' . static::class . '] Image dimensions are OK, proceed', Analog::DEBUG);
             }
         }
         $this->delete();
@@ -517,7 +517,7 @@ class Picture implements FileInterface
         }
         fclose($f);
 
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             $zdb->connection->beginTransaction();
@@ -605,7 +605,7 @@ class Picture implements FileInterface
             }
 
             //retrieve files in database
-            $class = get_class($this);
+            $class = static::class;
             $select = $zdb->select($this->tbl_prefix . $class::TABLE);
             $select
                 ->columns([$class::PK])
@@ -662,7 +662,7 @@ class Picture implements FileInterface
      */
     private function resizeImage(string $source, string $ext, ?string $dest = null, ?array $cropping = null): bool
     {
-        $class = get_class($this);
+        $class = static::class;
 
         if (!function_exists("gd_info")) {
             Analog::log(

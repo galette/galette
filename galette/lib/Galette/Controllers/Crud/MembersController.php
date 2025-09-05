@@ -721,7 +721,7 @@ class MembersController extends CrudController
                 unset($post['advanced_filtering']);
                 $freed = false;
                 foreach ($post as $k => $v) {
-                    if (strpos($k, 'free_', 0) === 0) {
+                    if (str_starts_with($k, 'free_')) {
                         if (!$freed) {
                             $i = 0;
                             foreach ($post['free_field'] as $f) {
@@ -1815,7 +1815,7 @@ class MembersController extends CrudController
 
         if (count($error_detected) > 0) {
             foreach ($error_detected as $error) {
-                if (strpos($error, '%member_url_') !== false) {
+                if (str_contains($error, '%member_url_')) {
                     preg_match('/%member_url_(\d+)/', $error, $matches);
                     $url = $this->routeparser->urlFor('member', ['id' => $matches[1]]);
                     $error = str_replace(

@@ -70,7 +70,7 @@ class History
         $this->login = $login;
         $this->preferences = $preferences;
 
-        $this->filters = $filters === null ? new HistoryList() : $filters;
+        $this->filters = $filters ?? new HistoryList();
     }
 
     /**

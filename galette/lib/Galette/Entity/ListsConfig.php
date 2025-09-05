@@ -261,7 +261,7 @@ class ListsConfig extends FieldsConfig
      */
     private function storeList(): bool
     {
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             if (!count($this->listed_fields)) {

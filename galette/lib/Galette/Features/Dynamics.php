@@ -356,6 +356,6 @@ trait Dynamics
      */
     public function getFormName(): string
     {
-        return array_search(get_class($this), DynamicFieldsSet::getClasses());
+        return array_search(static::class, DynamicFieldsSet::getClasses());
     }
 }

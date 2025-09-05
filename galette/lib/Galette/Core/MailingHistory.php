@@ -362,10 +362,8 @@ class MailingHistory extends History
 
             $sender = ($this->sender === 0)
                 ? new Expression('NULL') : $this->sender;
-            $sender_name = ($this->sender_name === null)
-                ? new Expression('NULL') : $this->sender_name;
-            $sender_address = ($this->sender_address === null)
-                ? new Expression('NULL') : $this->sender_address;
+            $sender_name = $this->sender_name ?? new Expression('NULL');
+            $sender_address = $this->sender_address ?? new Expression('NULL');
 
             $values = [
                 'mailing_sender'            => $sender,
@@ -410,10 +408,8 @@ class MailingHistory extends History
             }
 
             $sender = $this->sender === 0 ? new Expression('NULL') : $this->sender;
-            $sender_name = ($this->sender_name === null)
-                ? new Expression('NULL') : $this->sender_name;
-            $sender_address = ($this->sender_address === null)
-                ? new Expression('NULL') : $this->sender_address;
+            $sender_name = $this->sender_name ?? new Expression('NULL');
+            $sender_address = $this->sender_address ?? new Expression('NULL');
 
             $values = [
                 'mailing_sender'            => $sender,

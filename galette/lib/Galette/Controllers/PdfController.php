@@ -341,7 +341,7 @@ class PdfController extends AbstractController
         }
 
         //retrieve selected members
-        $selection = (isset($post['selection'])) ? $post['selection'] : [];
+        $selection = $post['selection'] ?? [];
 
         $filters->selected = $selection;
         $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;

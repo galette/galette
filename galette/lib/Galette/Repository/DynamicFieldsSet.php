@@ -61,9 +61,9 @@ class DynamicFieldsSet
     public static function getClasses(): array
     {
         return [
-            'adh' => 'Galette\Entity\Adherent',
-            'contrib' => 'Galette\Entity\Contribution',
-            'trans' => 'Galette\Entity\Transaction'
+            'adh' => \Galette\Entity\Adherent::class,
+            'contrib' => \Galette\Entity\Contribution::class,
+            'trans' => \Galette\Entity\Transaction::class,
         ];
     }
 

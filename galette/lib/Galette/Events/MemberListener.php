@@ -111,7 +111,7 @@ class MemberListener implements ListenerSubscriber
     public function memberAdded(Adherent $member): void
     {
         Analog::log(
-            '[' . get_class($this) . '] Event member.add emitted for ' . $member->sfullname,
+            '[' . static::class . '] Event member.add emitted for ' . $member->sfullname,
             Analog::DEBUG
         );
 
@@ -132,7 +132,7 @@ class MemberListener implements ListenerSubscriber
     public function memberEdited(Adherent $member): void
     {
         Analog::log(
-            '[' . get_class($this) . '] Event member.edit emitted for ' . $member->sfullname,
+            '[' . static::class . '] Event member.edit emitted for ' . $member->sfullname,
             Analog::DEBUG
         );
 

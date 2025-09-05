@@ -401,7 +401,7 @@ class CsvIn extends Csv implements FileInterface
                         $this->fields['mdp_adh2'] = $column;
                     }
 
-                    if (substr($this->fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
+                    if (str_starts_with($this->fields[$col], 'dynfield_')) {
                         //dynamic field, keep to check later
                         $dfields[$this->fields[$col] . '_1'] = $column;
                     } else {

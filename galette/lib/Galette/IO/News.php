@@ -211,9 +211,9 @@ class News
     {
         global $i18n;
 
-        if (strpos($url, 'galette.eu') !== false || trim($url) == '') {
+        if (str_contains($url, 'galette.eu') || trim($url) == '') {
             $url = 'https://galette.eu/site';
-        } elseif (strpos($url, 'localhost:4000') !== false) {
+        } elseif (str_contains($url, 'localhost:4000')) {
             $url = 'http://localhost:4000/site';
         } else {
             return $url;

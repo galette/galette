@@ -105,7 +105,7 @@ class ContribListener implements ListenerSubscriber
     public function contributionAdded(Contribution $contrib): void
     {
         Analog::log(
-            '[' . get_class($this) . '] Event contribution.add emitted for #' . $contrib->id,
+            '[' . static::class . '] Event contribution.add emitted for #' . $contrib->id,
             Analog::DEBUG
         );
 
@@ -173,7 +173,7 @@ class ContribListener implements ListenerSubscriber
         );
 
         $link_card = '';
-        if (strpos($mtxt->tbody, '{LINK_MEMBERCARD}') !== false) {
+        if (str_contains($mtxt->tbody, '{LINK_MEMBERCARD}')) {
             //member card link is present in mail model, let's add it
             $links = new Links($this->zdb);
             if ($hash = $links->generateNewLink(Links::TARGET_MEMBERCARD, $contrib->member)) {
@@ -184,7 +184,7 @@ class ContribListener implements ListenerSubscriber
         $texts->setMemberCardLink($link_card);
 
         $link_pdf = '';
-        if (strpos($mtxt->tbody, '{LINK_CONTRIBPDF}') !== false) {
+        if (str_contains($mtxt->tbody, '{LINK_CONTRIBPDF}')) {
             //contribution receipt link is present in mail model, let's add it
             $links = new Links($this->zdb);
             $ltype = $contrib->type->isExtension() ? Links::TARGET_INVOICE : Links::TARGET_RECEIPT;

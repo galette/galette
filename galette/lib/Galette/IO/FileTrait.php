@@ -194,8 +194,8 @@ trait FileTrait
         if ($mimes !== null) {
             $this->allowed_mimes = $mimes;
         }
-        $this->maxlength = $maxlength !== null ? $maxlength : self::MAX_FILE_SIZE;
-        $this->mincropsize = $mincropsize !== null ? $mincropsize : self::MIN_CROP_SIZE;
+        $this->maxlength = $maxlength ?? self::MAX_FILE_SIZE;
+        $this->mincropsize = $mincropsize ?? self::MIN_CROP_SIZE;
     }
 
     /**
@@ -227,7 +227,7 @@ trait FileTrait
      */
     public function store(array $file, bool $ajax = false): bool|int
     {
-        $class = get_class($this);
+        $class = static::class;
 
         $this->name = $file['name'];
         $tmpfile = $file['tmp_name'];
@@ -263,8 +263,8 @@ trait FileTrait
                 $ret = self::INVALID_EXTENSION;
             } else {
                 $err_msg = 'Invalid filename `' . $this->name . '` (Tip: ';
-                $err_msg .= preg_replace(
-                    '|%s|',
+                $err_msg .= str_replace(
+                    '%s',
                     htmlentities($this->getBadChars()),
                     "file name should not contain any of: %s). "
                 );
@@ -336,7 +336,7 @@ trait FileTrait
 
         if (file_exists($new_file)) {
             Analog::log(
-                '[' . get_class($this) . '] File `' . $new_file . '` already exists',
+                '[' . static::class . '] File `' . $new_file . '` already exists',
                 Analog::ERROR
             );
             return self::NEW_FILE_EXISTS;
@@ -486,15 +486,15 @@ trait FileTrait
                 $error = _T("File name is invalid, it should not contain any special character or space.");
                 break;
             case self::INVALID_EXTENSION:
-                $error = preg_replace(
-                    '|%s|',
+                $error = str_replace(
+                    '%s',
                     $this->getAllowedExts(),
                     _T("File extension is not allowed, only %s files are.")
                 );
                 break;
             case self::FILE_TOO_BIG:
-                $error = preg_replace(
-                    '|%d|',
+                $error = str_replace(
+                    '%d',
                     (string)$this->maxlength,
                     _T("File is too big. Maximum allowed size is %dKo")
                 );

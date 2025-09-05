@@ -1235,7 +1235,7 @@ class Contribution implements AccessManagementInterface
                             return $this->$name ?? null;
                         }
                     } else {
-                        throw new \LogicException("Property '" . __CLASS__ . "::$name' does not exist!");
+                        throw new \LogicException("Property '" . static::class . "::$name' does not exist!");
                     }
             }
         } else {
@@ -1300,7 +1300,7 @@ class Contribution implements AccessManagementInterface
                     break;
                 default:
                     Analog::log(
-                        '[' . __CLASS__ . ']: Trying to set an unknown property ('
+                        '[' . static::class . ']: Trying to set an unknown property ('
                         . $name . ')',
                         Analog::WARNING
                     );

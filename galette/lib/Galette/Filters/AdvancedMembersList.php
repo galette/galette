@@ -360,7 +360,7 @@ class AdvancedMembersList extends MembersList
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );
@@ -624,11 +624,11 @@ class AdvancedMembersList extends MembersList
                     break;
                 default:
                     if (
-                        substr($name, 0, 4) === 'cds_'
-                        || substr($name, 0, 5) === 'cdsc_'
+                        str_starts_with($name, 'cds_')
+                        || str_starts_with($name, 'cdsc_')
                     ) {
                         if (is_array($value) || trim($value) !== '') {
-                            $id = substr($name, 0, 5) === 'cdsc_' ? substr($name, 5, strlen($name)) : substr($name, 4, strlen($name));
+                            $id = str_starts_with($name, 'cdsc_') ? substr($name, 5, strlen($name)) : substr($name, 4, strlen($name));
                             $dyn_field = DynamicField::loadFieldType($zdb, (int)$id);
                             if ($dyn_field instanceof \Galette\DynamicFields\Date) {
                                 $value = $this->buildDate($value);

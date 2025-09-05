@@ -197,19 +197,19 @@ class PdfModel extends GaletteTestCase
         return [
             [
                 'type'  => \Galette\Entity\PdfModel::MAIN_MODEL,
-                'expected'  => 'Galette\Entity\PdfMain'
+                'expected'  => \Galette\Entity\PdfMain::class
             ], [
                 'type'  => \Galette\Entity\PdfModel::INVOICE_MODEL,
-                'expected'  => 'Galette\Entity\PdfInvoice'
+                'expected'  => \Galette\Entity\PdfInvoice::class
             ], [
                 'type'  => \Galette\Entity\PdfModel::RECEIPT_MODEL,
-                'expected'  => 'Galette\Entity\PdfReceipt'
+                'expected'  => \Galette\Entity\PdfReceipt::class
             ], [
                 'type'  => \Galette\Entity\PdfModel::ADHESION_FORM_MODEL,
-                'expected'  => 'Galette\Entity\PdfAdhesionFormModel'
+                'expected'  => \Galette\Entity\PdfAdhesionFormModel::class
             ], [
                 'type'  => 0,
-                'expected'  => 'Galette\Entity\PdfMain'
+                'expected'  => \Galette\Entity\PdfMain::class
             ]
         ];
     }

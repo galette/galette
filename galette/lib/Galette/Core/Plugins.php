@@ -224,7 +224,7 @@ class Plugins
                 'version'       => $version,
                 'acls'          => $acls,
                 'date'          => $date,
-                'priority'      => $priority === null ? 1000 : $priority,
+                'priority'      => $priority ?? 1000,
                 'root_writable' => is_writable($this->mroot),
                 'route'         => $route
             ];

@@ -175,7 +175,7 @@ abstract class Csv
      */
     public function addError(string $msg): void
     {
-        $class = get_class($this);
+        $class = static::class;
         Analog::log(
             '[' . $class . '] ' . $msg,
             Analog::ERROR
