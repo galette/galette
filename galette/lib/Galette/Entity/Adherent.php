@@ -2437,6 +2437,12 @@ class Adherent implements AccessManagementInterface
             return $qrcodes;
         }
 
+        $qrcodes['vcard'] = new QrCode(
+            data: $this->getVCard()->serialize(),
+            label: $this->sname,
+            url: $routeparser->urlFor('memberVCard', ['id' => $this->id])
+        );
+
         if (!empty($this->getEmail())) {
             $qrcodes['email'] = new QrCode(
                 data: 'mailto:' . $this->getEmail(),
