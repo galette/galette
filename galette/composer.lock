@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72eb6c75eef3271e47e1abd25f6b9a7a",
+    "content-hash": "fb4a73bc0d46bb3f1099584db2f860ff",
     "packages": [
         {
             "name": "akrabat/rka-slim-session-middleware",
@@ -8315,7 +8315,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "ext-curl": "*",
         "ext-gd": "*",
         "ext-intl": "*",

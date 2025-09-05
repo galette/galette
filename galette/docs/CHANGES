@@ -20,7 +20,10 @@ Changes
 - Add phone number and contact email in settings
 - Fix few dynamic translations issues
 - Remove show ID preference
+- PHP 8.5 compatibility
+- Remove support for PHP 8.1
 - Fix stored XSS CVE-2025-48076 and reflected XSS CVE-2025-48884
+- Fix groups manager access bypass CVE-2025-53922  and CVE-2025-58052
 
 1.1.6 -> 1.1.6.1
 
@@ -30,6 +33,7 @@ Changes
 
 - Improve checks on members
 - Use fields configuration to restrict to allowed fields only
+- Fix privilege escalation CVE-2025-58053
 
 1.1.5.1 -> 1.1.5.2
 
