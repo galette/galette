@@ -313,9 +313,11 @@ class SavedSearch
     {
         $forbidden = [];
         $virtuals = ['sparameters'];
-        if (in_array($name, $virtuals)
-        || !in_array($name, $forbidden)
-        && isset($this->$name)) {
+        if (
+            in_array($name, $virtuals)
+            || !in_array($name, $forbidden)
+            && isset($this->$name)
+        ) {
             return match ($name) {
                 'creation_date', 'sparameters' => true,
                 default => property_exists($this, $name),

@@ -57,7 +57,7 @@ class Pdf extends TCPDF
      * Main constructor, set creator and author
      *
      * @param Preferences $preferences Preferences
-     * @param ?PdfModel   $model Related model
+     * @param ?PdfModel   $model       Related model
      */
     public function __construct(protected Preferences $preferences, ?PdfModel $model = null)
     {

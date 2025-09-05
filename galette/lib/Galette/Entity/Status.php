@@ -563,9 +563,11 @@ class Status
     {
         $forbidden = [];
         $virtuals = ['extension', 'libelle'];
-        if (in_array($name, $virtuals)
-        || !in_array($name, $forbidden)
-        && isset($this->$name)) {
+        if (
+            in_array($name, $virtuals)
+            || !in_array($name, $forbidden)
+            && isset($this->$name)
+        ) {
             return match ($name) {
                 'libelle' => _T($this->label),
                 default => $this->$name,

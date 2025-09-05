@@ -89,7 +89,7 @@ class ClassLoader
      * If neither a namespace nor an include path is given, the ClassLoader will
      * be responsible for loading all classes, thereby relying on the PHP include_path.
      *
-     * @param ?string $namespace The namespace of the classes to load.
+     * @param ?string $namespace   The namespace of the classes to load.
      * @param ?string $includePath The base include path to use.
      */
     public function __construct(protected ?string $namespace = null, ?string $includePath = null)
