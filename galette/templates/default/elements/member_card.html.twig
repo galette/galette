@@ -32,7 +32,7 @@
     {% endif %}
     <div class="content">
         <div class="header aligned">
-            {{ member.sname }}
+            {{ member.sname }} <a href="{{ url_for("memberVCard", {"id": member.id}) }}"><i class="icon address card outline"></i></a>
         </div>
         <div class="meta aligned">
             <span>{{ member.sstatus }}</span>

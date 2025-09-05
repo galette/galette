@@ -32,6 +32,7 @@ use Galette\Features\HasEvent;
 use Galette\Features\Socials;
 use Galette\Interfaces\AccessManagementInterface;
 use Galette\Util\QrCode;
+use Sabre\VObject\Component\VCard;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -2458,5 +2459,31 @@ class Adherent implements AccessManagementInterface
         }
 
         return $qrcodes;
+    }
+
+    public function getVCard(): VCard
+    {
+        $vcard = new VCard([
+            'FN' => $this->sfullname,
+            'LANG' => $this->language
+        ]);
+
+        if (!empty($this->nickname)) {
+            $vcard->add('NICKNAME', $this->nickname);
+        }
+
+        if (!empty($this->getEmail())) {
+            $vcard->add('EMAIL', $this->getEmail());
+        }
+
+        if (!empty($this->phone)) {
+            $vcard->add('TEL', $this->phone);
+        }
+
+        if (!empty($this->gsm)) {
+            $vcard->add('TEL', $this->gsm, ['TYPE' => 'cell']);
+        }
+
+        return $vcard;
     }
 }

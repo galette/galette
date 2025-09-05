@@ -63,7 +63,8 @@
         "twig/string-extra": "^3.8",
         "symfony/console": "^7.1",
         "twig/intl-extra": "^3.21",
-        "endroid/qr-code": "^6.0"
+        "endroid/qr-code": "^6.0",
+        "sabre/vobject": "^4.5"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.7",
