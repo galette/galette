@@ -2437,14 +2437,16 @@ class Adherent implements AccessManagementInterface
         $qrcodes['vcard'] = new QrCode(
             data: $this->getVCard()->serialize(),
             label: $this->sname,
-            url: $routeparser->urlFor('memberVCard', ['id' => $this->id])
+            url: $routeparser->urlFor('memberVCard', ['id' => $this->id]),
+            logo: GALETTE_ROOT . '/webroot/themes/default/ui/themes/galette/assets/emojis/1faaa.svg'
         );
 
         if (!empty($this->getEmail())) {
             $qrcodes['email'] = new QrCode(
                 data: 'mailto:' . $this->getEmail(),
                 label: $this->getEmail(),
-                url: 'mailto:' . $this->getEmail()
+                url: 'mailto:' . $this->getEmail(),
+                logo: GALETTE_ROOT . '/webroot/themes/default/ui/themes/galette/assets/emojis/2709.svg'
             );
         }
 
@@ -2452,7 +2454,8 @@ class Adherent implements AccessManagementInterface
             $qrcodes['phone'] = new QrCode(
                 data: 'tel:' . $this->phone,
                 label: $this->phone,
-                url: 'tel:' . $this->phone
+                url: 'tel:' . $this->phone,
+                logo: GALETTE_ROOT . '/webroot/themes/default/ui/themes/galette/assets/emojis/1f4e0.svg'
             );
         }
 
@@ -2460,13 +2463,19 @@ class Adherent implements AccessManagementInterface
             $qrcodes['gsm'] = new QrCode(
                 data: 'tel:' . $this->gsm,
                 label: $this->gsm,
-                url: 'tel:' . $this->gsm
+                url: 'tel:' . $this->gsm,
+                logo: GALETTE_ROOT . '/webroot/themes/default/ui/themes/galette/assets/emojis/1f4f1.svg'
             );
         }
 
         return $qrcodes;
     }
 
+    /**
+     * Get member vCard
+     *
+     * @return VCard
+     */
     public function getVCard(): VCard
     {
         $vcard = new VCard([

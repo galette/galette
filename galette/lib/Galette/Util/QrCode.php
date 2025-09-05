@@ -26,6 +26,7 @@ namespace Galette\Util;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\SvgWriter;
 
@@ -40,6 +41,7 @@ class QrCode
     private string $label;
     private ?string $url;
     private string $image;
+    private ?string $logo;
 
     /**
      * Default constructor
@@ -47,12 +49,14 @@ class QrCode
      * @param string  $data  QR code data
      * @param ?string $label Label for the QR code
      * @param ?string $url   URL to encode
+     * @param ?string $logo  Path to logo to embed in the QR code
      */
-    public function __construct(string $data, ?string $label = null, ?string $url = null)
+    public function __construct(string $data, ?string $label = null, ?string $url = null, ?string $logo = null)
     {
         $this->data = $data;
         $this->label = $label ?? $data;
         $this->url = $url;
+        $this->logo = $logo;
 
         $this->build();
     }
@@ -64,18 +68,25 @@ class QrCode
      */
     private function build(): void
     {
-        $builder = new Builder(
-            writer: new SvgWriter(),
-            writerOptions: [],
-            validateResult: false,
+        $writer = new SvgWriter();
+
+        $qrcode = new \Endroid\QrCode\QrCode(
             data: $this->data,
             encoding: new Encoding('UTF-8'),
             errorCorrectionLevel: ErrorCorrectionLevel::High,
-            size: 100,
             margin: 10,
             roundBlockSizeMode: RoundBlockSizeMode::Margin,
         );
-        $result = $builder->build();
+
+        if (isset($this->logo)) {
+            $logo = new Logo(
+                path: $this->logo,
+                resizeToWidth: 50,
+                resizeToHeight: 50
+            );
+        }
+
+        $result = $writer->write($qrcode, $logo ?? null);
         $this->image = $result->getDataUri();
     }
 

@@ -152,22 +152,6 @@
                     </div>
                 </div>
         {% endif %}
-        {% if qrcodes is not empty %}
-            <div class="ui horizontal list">
-            {% for qrcode in qrcodes %}
-                <div class="center aligned item">
-                {% if qrcode.getURL() is not empty %}
-                    <a href="{{ qrcode.getURL() }}" class="ui medium image">
-                {% endif %}
-                        <img src="{{ qrcode.getImage() }}" alt="{{ qrcode.getLabel() }}" title="{{ qrcode.getLabel() }}" class="medium image tooltip"/>
-                {% if qrcode.getURL() is not empty %}
-                    </a>
-                {% endif %}
-                    <br/>{{ qrcode.getLabel }}
-                </div>
-            {% endfor %}
-            </div>
-        {% endif %}
             </div>
         </div>
 
