@@ -287,14 +287,14 @@
                         <tr>
                             <th scope="row" ><i class="ui envelope outline teal icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Send an email') }}</td>
-                            <th scope="row" ><i class="ui building icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui building outline icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a company') }}</td>
                         </tr>
 
                         <tr>
-                            <th scope="row" ><i class="ui male icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui mars icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a man') }}</td>
-                            <th scope="row" ><i class="ui female icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui venus icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a woman') }}</td>
                         </tr>
                         <tr>
@@ -339,12 +339,12 @@
                             </span>
             {%  elseif member.isMan() %}
                             <span>
-                                <i class="ui male icon tooltip" aria-hidden="true"></i>
+                                <i class="ui mars icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Is a man') }}</span>
                             </span>
             {%  elseif member.isWoman() %}
                             <span>
-                                <i class="ui female icon tooltip" aria-hidden="true"></i>
+                                <i class="ui venus icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Is a woman') }}</span>
                             </span>
             {% else %}
