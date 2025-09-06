@@ -364,7 +364,7 @@ class MembersController extends CrudController
 
         $response = $response
             ->withHeader('Content-type', 'text/x-vcard')
-            ->withHeader('Content-Disposition', 'attachment;filename="vcard_member_' . $member->id . '"');
+            ->withHeader('Content-Disposition', 'attachment;filename="vcard_member_' . $member->id . '.vcf"');
         $response->getBody()->write($member->getVCard()->serialize());
         return $response;
     }
