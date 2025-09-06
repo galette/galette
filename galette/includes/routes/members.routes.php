@@ -65,6 +65,11 @@ $app->get(
 )->setName('member')->add($authenticate);
 
 $app->get(
+    '/member/vcard/{id:\d+}',
+    [Crud\MembersController::class, 'vcard']
+)->setName('memberVCard')->add($authenticate);
+
+$app->get(
     '/member/edit/{id:\d+}',
     [Crud\MembersController::class, 'edit']
 )->setName('editMember')->add($authenticate);

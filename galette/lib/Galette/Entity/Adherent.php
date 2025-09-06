@@ -31,6 +31,8 @@ use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
 use Galette\Features\Socials;
 use Galette\Interfaces\AccessManagementInterface;
+use Galette\Util\QrCode;
+use Sabre\VObject\Component\VCard;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -2413,5 +2415,90 @@ class Adherent implements AccessManagementInterface
     protected function getEventsPrefix(): string
     {
         return 'member';
+    }
+
+
+    /**
+     * Get QR codes associated to member
+     *
+     * @return QrCode[]
+     */
+    public function getQrCodes(): array
+    {
+        global $routeparser, $login;
+
+        $qrcodes = [];
+
+        if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager()) {
+            //only admin, staff and group managers can get QR codes
+            return $qrcodes;
+        }
+
+        $qrcodes['vcard'] = new QrCode(
+            data: $this->getVCard()->serialize(),
+            label: $this->sname,
+            url: $routeparser->urlFor('memberVCard', ['id' => $this->id]),
+            logo: GALETTE_ROOT . '/includes/qr-logos/address-card-o.svg'
+        );
+
+        if (!empty($this->getEmail())) {
+            $qrcodes['email'] = new QrCode(
+                data: 'mailto:' . $this->getEmail(),
+                label: $this->getEmail(),
+                url: 'mailto:' . $this->getEmail(),
+                logo: GALETTE_ROOT . '/includes/qr-logos/envelope-o.svg'
+            );
+        }
+
+        if (!empty($this->phone)) {
+            $qrcodes['phone'] = new QrCode(
+                data: 'tel:' . $this->phone,
+                label: $this->phone,
+                url: 'tel:' . $this->phone,
+                logo: GALETTE_ROOT . '/includes/qr-logos/fax.svg'
+            );
+        }
+
+        if (!empty($this->gsm)) {
+            $qrcodes['gsm'] = new QrCode(
+                data: 'tel:' . $this->gsm,
+                label: $this->gsm,
+                url: 'tel:' . $this->gsm,
+                logo: GALETTE_ROOT . '/includes/qr-logos/mobile-phone.svg'
+            );
+        }
+
+        return $qrcodes;
+    }
+
+    /**
+     * Get member vCard
+     *
+     * @return VCard
+     */
+    public function getVCard(): VCard
+    {
+        $vcard = new VCard([
+            'FN' => $this->sfullname,
+            'LANG' => $this->language
+        ]);
+
+        if (!empty($this->nickname)) {
+            $vcard->add('NICKNAME', $this->nickname);
+        }
+
+        if (!empty($this->getEmail())) {
+            $vcard->add('EMAIL', $this->getEmail());
+        }
+
+        if (!empty($this->phone)) {
+            $vcard->add('TEL', $this->phone);
+        }
+
+        if (!empty($this->gsm)) {
+            $vcard->add('TEL', $this->gsm, ['TYPE' => 'cell']);
+        }
+
+        return $vcard;
     }
 }
