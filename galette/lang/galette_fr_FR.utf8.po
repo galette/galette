@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-09-07 09:41+0200\n"
-"PO-Revision-Date: 2025-07-04 05:37+0000\n"
+"PO-Revision-Date: 2025-09-07 07:47+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -26,14 +26,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:133
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:238
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load transaction #%id!"
-msgstr "Impossible de charger la contribution #%id !"
+msgstr "Impossible de charger la transaction #%id !"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:169
 msgid "Transaction"
@@ -1788,16 +1786,12 @@ msgid "Export as CSV"
 msgstr "Exporter en CSV"
 
 #: ../lib/Galette/Core/Galette.php:1148
-#, fuzzy
-#| msgid "Galette admin"
 msgid "Galette news"
-msgstr "Administrateur Galette"
+msgstr "Nouvelles de Galette"
 
 #: ../lib/Galette/Core/Galette.php:1158
-#, fuzzy
-#| msgid "Association %s"
 msgid "Association news"
-msgstr "Association %s"
+msgstr "Nouvelles de l'association"
 
 #: ../lib/Galette/Core/Preferences.php:588
 msgid "- You must indicate a sender name for emails!"
@@ -3141,7 +3135,7 @@ msgstr "Type de paiement :"
 #: ../lib/Galette/Entity/Transaction.php:335
 #: ../lib/Galette/Entity/Contribution.php:505
 msgid "- Please select a member from a group you manage."
-msgstr ""
+msgstr "- Veuillez choisir un adhérent d'un groupe que vous gérez."
 
 #: ../lib/Galette/Entity/Transaction.php:347
 #: ../lib/Galette/Entity/Contribution.php:524
@@ -5943,10 +5937,8 @@ msgstr "Image"
 
 #: ../../tempcache/elements/member_card.html.twig:83
 #: ../../tempcache/elements/member_card.html.twig:88
-#, fuzzy
-#| msgid "Download document"
 msgid "Download VCard"
-msgstr "Télécharger le document"
+msgstr "Télécharger la VCard"
 
 #: ../../tempcache/elements/member_card.html.twig:96
 #: ../../tempcache/elements/member_card.html.twig:101
@@ -5956,10 +5948,8 @@ msgstr "Télécharger le document"
 #: ../../tempcache/elements/member_card.html.twig:174
 #: ../../tempcache/elements/member_card.html.twig:208
 #: ../../tempcache/elements/member_card.html.twig:213
-#, fuzzy
-#| msgid "Display"
 msgid "Display QR Code"
-msgstr "Afficher"
+msgstr "Afficher le code QR"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:55
 #, php-format
