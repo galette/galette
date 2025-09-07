@@ -18,6 +18,7 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 #}
+{% set qrcodes = member.getQrCodes() %}
 <div id="member_card" class="ui horizontal fluid card">
     {% if not (member.picture.path ends with '/default/images/default.png') %}
     <div class="image">
@@ -33,6 +34,16 @@
     <div class="content">
         <div class="header aligned">
             {{ member.sname }}
+            <a href="{{ url_for("memberVCard", {"id": member.id}) }}" class="tooltip" title="{{ _T("Download VCard") }}">
+                <i class="icon address card outline"></i>
+                <span class="visually-hidden">{{ _T("Download VCard") }}</span>
+            </a>
+            {% if qrcodes.vcard is defined %}
+                <a href="#" class="qrcode tooltip" title="{{ _T("Display QR Code") }}" data-modal="qrcode_vcard">
+                    <i class="qrcode icon"></i>
+                    <span class="visually-hidden">{{ _T("Display QR Code") }}</span>
+                </a>
+            {% endif %}
         </div>
         <div class="meta aligned">
             <span>{{ member.sstatus }}</span>
@@ -46,10 +57,22 @@
                             <div class="description">
                                 {% if member.phone %}
                                     {{ member.phone }}
+                                    {% if qrcodes.phone is defined %}
+                                        <a href="#" class="qrcode tooltip" title="{{ _T("Display QR Code") }}" data-modal="qrcode_phone">
+                                            <i class="qrcode icon"></i>
+                                            <span class="visually-hidden">{{ _T("Display QR Code") }}</span>
+                                        </a>
+                                    {% endif %}
                                 {% endif %}
                                 {% if member.gsm %}
                                     {% if member.phone %}, {% endif %}
                                     {{ member.gsm }}
+                                    {% if qrcodes.gsm is defined %}
+                                        <a href="#" class="qrcode tooltip" title="{{ _T("Display QR Code") }}" data-modal="qrcode_gsm">
+                                            <i class="qrcode icon"></i>
+                                            <span class="visually-hidden">{{ _T("Display QR Code") }}</span>
+                                        </a>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>
@@ -59,7 +82,15 @@
                     <div class="item">
                         <div class="content">
                             <span class="blue header">{{ _T("Email") }}</span>
-                            <div class="description">{{ member.getEMail() }}</div>
+                            <div class="description">
+                                {{ member.getEMail() }}
+                                {% if qrcodes.email is defined %}
+                                    <a href="#" class="qrcode tooltip" title="{{ _T("Display QR Code") }}" data-modal="qrcode_email">
+                                        <i class="qrcode icon"></i>
+                                        <span class="visually-hidden">{{ _T("Display QR Code") }}</span>
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endif %}
@@ -71,3 +102,18 @@
         {{ member.getDues()|escape }}
     </div>
 </div>
+
+{% for key, qrcode in qrcodes %}
+    <div class="ui basic mini modal" id="qrcode_{{ key }}">
+        <div class="center aligned content">
+            <img src="{{ qrcode.getImage() }}" alt="{{ qrcode.getLabel() }}" title="{{ qrcode.getLabel() }}"/>
+        </div>
+    </div>
+{% endfor %}
+
+<script type="text/javascript">
+    $('a.qrcode').on('click', function(e) {
+        e.preventDefault();
+        $('#' + this.dataset.modal).modal({context: 'body'}).modal('show');
+    });
+</script>

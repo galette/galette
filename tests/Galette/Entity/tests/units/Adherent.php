@@ -1872,4 +1872,56 @@ class Adherent extends GaletteTestCase
 
         $this->login->logOut();
     }
+
+    /**
+     * Test vCard export
+     *
+     * @return void
+     */
+    public function testgetVCard(): void
+    {
+        $this->logSuperAdmin();
+
+        $adh = $this->getMemberOne();
+        $vcard = $adh->getVCard();
+
+        $this->assertSame('DURAND René', (string)$vcard->FN);
+        $this->assertSame('meunier.josephine95842354@ledoux.com', (string)$vcard->EMAIL);
+
+        $this->login->logOut();
+    }
+
+    /**
+     * Test QR codes generation
+     *
+     * @return void
+     */
+    public function testGetQrCodes(): void
+    {
+        $this->logSuperAdmin();
+
+        $adh = $this->getMemberOne();
+        $qrcodes = $adh->getQrCodes();
+
+        $this->assertIsArray($qrcodes);
+        $this->assertCount(3, $qrcodes);
+
+        $expected_keys = ['vcard', 'email', 'phone'];
+        foreach ($expected_keys as $key) {
+            $this->assertArrayHasKey($key, $qrcodes);
+            $this->assertInstanceOf(\Galette\Util\QrCode::class, $qrcodes[$key]);
+            $this->assertStringStartsWith('data:image/svg+xml;base64', $qrcodes[$key]->getImage());
+        }
+
+        $this->assertSame('DURAND René', $qrcodes['vcard']->getLabel());
+        $this->assertSame($this->routeparser->urlFor('memberVCard', ['id' => $adh->id]), $qrcodes['vcard']->getURL());
+
+        $this->assertSame('meunier.josephine95842354@ledoux.com', $qrcodes['email']->getLabel());
+        $this->assertSame('mailto:meunier.josephine95842354@ledoux.com', $qrcodes['email']->getURL());
+
+        $this->assertSame('0439153432', $qrcodes['phone']->getLabel());
+        $this->assertSame('tel:0439153432', $qrcodes['phone']->getURL());
+
+        $this->login->logOut();
+    }
 }
