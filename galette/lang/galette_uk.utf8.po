@@ -10,13 +10,14 @@
 # Максим Горпиніч <maksimgorpinic2005a@gmail.com>, 2025.
 # Максим Горпиніч <maksimgorpinic4@gmail.com>, 2025.
 # Максим Горпиніч <gorpinicmaksim5@gmail.com>, 2025.
+# Максим Горпиніч <gorpinicmaksim0@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-09-07 09:41+0200\n"
-"PO-Revision-Date: 2025-07-05 15:02+0000\n"
-"Last-Translator: Максим Горпиніч <gorpinicmaksim5@gmail.com>\n"
+"PO-Revision-Date: 2025-09-08 11:19+0000\n"
+"Last-Translator: Максим Горпиніч <gorpinicmaksim0@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -25,14 +26,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:133
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:238
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load transaction #%id!"
-msgstr "Не вдається завантажити внесок #%id!"
+msgstr "Не вдалося завантажити транзакцію #%id!"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:169
 msgid "Transaction"
@@ -1765,16 +1764,12 @@ msgid "Export as CSV"
 msgstr "Експорт у форматі CSV"
 
 #: ../lib/Galette/Core/Galette.php:1148
-#, fuzzy
-#| msgid "Galette admin"
 msgid "Galette news"
-msgstr "Адміністратор Galette"
+msgstr "Новини Галетти"
 
 #: ../lib/Galette/Core/Galette.php:1158
-#, fuzzy
-#| msgid "Association %s"
 msgid "Association news"
-msgstr "Товариство %s"
+msgstr "Новини Асоціації"
 
 #: ../lib/Galette/Core/Preferences.php:588
 msgid "- You must indicate a sender name for emails!"
@@ -3096,7 +3091,7 @@ msgstr "Вид оплати:"
 #: ../lib/Galette/Entity/Transaction.php:335
 #: ../lib/Galette/Entity/Contribution.php:505
 msgid "- Please select a member from a group you manage."
-msgstr ""
+msgstr "- Будь ласка, виберіть учасника з групи, якою ви керуєте."
 
 #: ../lib/Galette/Entity/Transaction.php:347
 #: ../lib/Galette/Entity/Contribution.php:524
@@ -5862,10 +5857,8 @@ msgstr "Зображення"
 
 #: ../../tempcache/elements/member_card.html.twig:83
 #: ../../tempcache/elements/member_card.html.twig:88
-#, fuzzy
-#| msgid "Download document"
 msgid "Download VCard"
-msgstr "Завантажити документ"
+msgstr "Завантажити VCard"
 
 #: ../../tempcache/elements/member_card.html.twig:96
 #: ../../tempcache/elements/member_card.html.twig:101
@@ -5875,10 +5868,8 @@ msgstr "Завантажити документ"
 #: ../../tempcache/elements/member_card.html.twig:174
 #: ../../tempcache/elements/member_card.html.twig:208
 #: ../../tempcache/elements/member_card.html.twig:213
-#, fuzzy
-#| msgid "Display"
 msgid "Display QR Code"
-msgstr "Дисплей"
+msgstr "Відображення QR-коду"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:55
 #, php-format
