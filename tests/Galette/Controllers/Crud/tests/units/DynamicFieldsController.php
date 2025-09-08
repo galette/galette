@@ -136,8 +136,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Unable to retrieve field information.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['Unable to retrieve field information.']]);
     }
 
     /**
@@ -183,13 +182,12 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'success_detected' => [
                     'Dynamic field has been successfully stored!'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
     }
 
@@ -227,7 +225,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data['slimFlash']);
+        $this->expectFlashData([]);
     }
 
     /**
@@ -265,13 +263,12 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'error_detected' => [
                     'Missing required field name!'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
     }
 
@@ -317,13 +314,12 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'success_detected' => [
                     'Dynamic field has been successfully stored!'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
     }
 
@@ -367,7 +363,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data['slimFlash']);
+        $this->expectFlashData([]);
     }
 
     /**
@@ -408,13 +404,12 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'error_detected' => [
                     'Missing required field name!'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
     }
 
@@ -490,8 +485,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Removal has not been confirmed!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['Removal has not been confirmed!']]);
 
         //make sure field still exists
         $select = $this->zdb->select(\Galette\DynamicFields\DynamicField::TABLE)
@@ -509,8 +503,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(\Analog::ERROR, 'An error occurred on delete | Undefined array key "id"');
-        $this->assertSame(['error_detected' => ['An error occurred trying to delete :(']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['An error occurred trying to delete :(']]);
 
         //make sure field still exists
         $select = $this->zdb->select(\Galette\DynamicFields\DynamicField::TABLE)
@@ -528,8 +521,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Successfully deleted!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
 
         //make sure field no longer exists
         $select = $this->zdb->select(\Galette\DynamicFields\DynamicField::TABLE)
@@ -548,8 +540,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Requested field does not exists!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['Requested field does not exists!']]);
     }
 
     /**
@@ -593,8 +584,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Field has been successfully moved']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Field has been successfully moved']]);
 
         //check new positions
         $select = $this->zdb->select(\Galette\DynamicFields\DynamicField::TABLE)
@@ -619,8 +609,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['An error occurred moving field :(']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['An error occurred moving field :(']]);
     }
 
     /**

@@ -899,6 +899,10 @@ abstract class GaletteTestCase extends TestCase
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
         $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Transaction::TABLE);
+        $delete->where(['trans_desc' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
     }
 
     /**

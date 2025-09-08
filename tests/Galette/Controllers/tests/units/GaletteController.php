@@ -192,7 +192,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' =>  ['Preferences has been saved.']], $this->flash_data['slimFlash']);
+        $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
 
         //check for change
         $preferences = new \Galette\Core\Preferences($this->zdb);
@@ -225,8 +225,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You asked Galette to send a test email, but email has been disabled in the preferences.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['You asked Galette to send a test email, but email has been disabled in the preferences.']]);
 
         $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_SMTP;
 
@@ -236,16 +235,14 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Invalid email adress!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['Invalid email adress!']]);
 
         //standard working test email - no real email provider setup so gives an error
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['No email sent to mail@domain.com']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['No email sent to mail@domain.com']]);
 
         //ajax test email - no real email provider setup so gives an error
         $json_request = $request->withHeader('X-Requested-With', 'XMLHttpRequest');
@@ -256,8 +253,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $body = (string)$test_response->getBody();
         $this->assertSame('{"sent":0}', $body);
-        $this->assertSame(['error_detected' => ['No email sent to mail@domain.com']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['No email sent to mail@domain.com']]);
 
         //Reset mail method to default
         $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;
@@ -363,7 +359,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('configureCoreFields')]], $test_response->getHeaders());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' =>  ['Fields configuration has been successfully stored']], $this->flash_data['slimFlash']);
+        $this->expectFlashData(['success_detected' =>  ['Fields configuration has been successfully stored']]);
 
         //check if changes have been stored in database
         $fields_config->load();
@@ -456,7 +452,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('configureListFields', ['table' => 'adherents'])]], $test_response->getHeaders());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' =>  ['List configuration has been successfully stored']], $this->flash_data['slimFlash']);
+        $this->expectFlashData(['success_detected' =>  ['List configuration has been successfully stored']]);
 
 
         //check if changes have been stored in database
@@ -534,10 +530,9 @@ class GaletteController extends GaletteRoutingTestCase
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $this->expectNoLogEntry();
-        $this->assertSame(['warning_detected' =>  ['No reminder to send for now.']], $this->flash_data['slimFlash']);
+        $this->expectFlashData(['warning_detected' =>  ['No reminder to send for now.']]);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('reminders')]], $test_response->getHeaders());
-        $this->flash_data = [];
 
         //impendings
         $ireminders = new \Galette\Repository\Reminders([\Galette\Entity\Reminder::IMPENDING]);
@@ -610,17 +605,15 @@ class GaletteController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->expectNoLogEntry();
         // no real email provider setup so gives an error
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'error_detected' =>  [
                     'Reminder has not been sent:',
                     'DURAND René <meunier.josephine20250802103040@ledoux.com> (30 days)',
                     'HOARAU Lucas <phoarau20250802103040@tele2.fr> (40 days)',
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
-        $this->flash_data = [];
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('reminders')]], $test_response->getHeaders());
         $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_DISABLED;

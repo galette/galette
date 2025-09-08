@@ -568,7 +568,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor($route_name)]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['slimFlash' => []], $this->flash_data);
+        $this->expectFlashData([]);
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
@@ -604,7 +604,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor($route_name)]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectFlashData([]);
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
@@ -640,7 +640,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor($route_name)]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectFlashData([]);
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
@@ -827,8 +827,7 @@ class MembersController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('me')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so managers can create members
         $this->preferences->pref_bool_groupsmanagers_create_member = true;
@@ -1085,8 +1084,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(\Analog::ERROR, 'No member #999999');
-        $this->assertSame(['error_detected' => ['No member #999999.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['No member #999999.']]);
 
         $this->login->logout();
 
@@ -1170,8 +1168,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('me')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         $this->assertTrue($g1->setMembers([]));
 
@@ -1253,8 +1250,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(\Analog::ERROR, 'No member #999999');
-        $this->assertSame(['error_detected' => ['No member #999999.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['No member #999999.']]);
 
         $this->login->logout();
 
@@ -1337,8 +1333,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('me')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['You do not have permission for requested URL.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         $this->assertTrue($g1->setMembers([$member_one, $member_two]));
         $test_response = $this->app->handle($request);
@@ -1534,7 +1529,6 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->expectFlashData(['success_detected' => ['New member has been successfully added.']]);
-        $this->flash_data = [];
 
         $this->login->logOut();
         //reset statut
@@ -2371,8 +2365,7 @@ class MembersController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Removal has not been confirmed!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['Removal has not been confirmed!']]);
 
         //make sure members still exists
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE)
@@ -2388,8 +2381,7 @@ class MembersController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Successfully deleted!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
 
         //make sure members no longer exists
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE)
@@ -2427,8 +2419,7 @@ class MembersController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Successfully deleted!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
 
         //make sure member no longer exists
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE)
@@ -2460,8 +2451,7 @@ class MembersController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Successfully deleted!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
 
         //make sure member no longer exists
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE)

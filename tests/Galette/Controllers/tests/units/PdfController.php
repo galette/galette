@@ -125,13 +125,12 @@ class PdfController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'success_detected' => [
                     'Model has been successfully stored!'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
 
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
@@ -199,15 +198,13 @@ class PdfController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/member/me']], $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'error_detected' => [
                     'You do not have permission for requested URL.'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
-        $this->flash_data = [];
         $this->login->logout();
 
         //test no selection
@@ -216,15 +213,13 @@ class PdfController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($test_request);
         $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'error_detected' => [
                     'No member was selected, please check at least one name.'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
-        $this->flash_data = [];
         $this->login->logout();
 
         //test with expected simple member
@@ -312,15 +307,13 @@ class PdfController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'error_detected' => [
                     'No member was selected, please check at least one name.'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
-        $this->flash_data = [];
 
         //add selected member to filters
         $test_response = null;
@@ -409,15 +402,13 @@ class PdfController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/member/me']], $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'error_detected' => [
                     'You do not have permission for requested URL.'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
-        $this->flash_data = [];
         $this->login->logOut();
 
         //test logged-in as member one
@@ -452,15 +443,13 @@ class PdfController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/members']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'error_detected' => [
                     'No member selected to generate attendance sheet'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
-        $this->flash_data = [];
 
         //test with selection
         $request = $request->withParsedBody(
@@ -495,7 +484,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->assertSame([], $test_response->getHeaders());
         $this->expectOK($test_response);
         $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectFlashData([]);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString(
             'Attendance sheet configuration',
@@ -537,15 +526,13 @@ class PdfController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => ['/contributions']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(\Analog::ERROR, 'No contribution #' . $contribution_one->id);
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'error_detected' => [
                     'Unable to load contribution #' . $contribution_one->id . '!'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
-        $this->flash_data = [];
         $this->login->logOut();
 
         //test with correct member
@@ -585,8 +572,7 @@ class PdfController extends GaletteRoutingTestCase
         //no groups, no pdf
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(\Analog::ERROR, 'An error has occurred, unable to get groups list');
-        $this->assertSame(['error_detected' => ['Unable to get groups list.']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['Unable to get groups list.']]);
 
         $g1 = new \Galette\Entity\Group();
         $g1->setName('Group 1');
@@ -621,8 +607,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('directlink', ['hash' => $hash])]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Invalid link!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['Invalid link!']]);
 
         //create a link
         $links = new \Galette\Core\Links($this->zdb);

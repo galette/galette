@@ -61,24 +61,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->zdb = new \Galette\Core\Db();
 
         $this->cleanContributions();
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $delete->where('parent_id IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
+        $this->cleanMembers();
         parent::tearDown();
     }
 
@@ -445,8 +428,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor($route_name, $route_arguments)]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['slimFlash' => []], $this->flash_data);
-        $this->flash_data = [];
+        $this->expectFlashData([]);
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
@@ -466,7 +448,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => ['/contributions']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame([], $this->flash_data);
+        $this->expectFlashData([]);
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
@@ -584,7 +566,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
-        $this->assertSame([], $this->flash_data);
+        $this->expectFlashData([]);
 
         //change preferences so managers can create contributions
         $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
@@ -735,8 +717,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('contributions', ['type' => 'contributions'])]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(\Analog::ERROR, 'No contribution #999999');
-        $this->assertSame(['error_detected' => ['Unable to load contribution #999999!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['Unable to load contribution #999999!']]);
 
         $this->login->logout();
 
@@ -863,8 +844,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Contribution has been successfully stored']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Contribution has been successfully stored']]);
         $this->login->logout();
 
         $result = $this->zdb->execute($count_select);
@@ -899,8 +879,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Contribution has been successfully stored']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Contribution has been successfully stored']]);
 
         $this->login->logOut();
         //reset statut
@@ -924,8 +903,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Contribution has been successfully stored']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Contribution has been successfully stored']]);
 
         $this->login->logOut();
         //reset admin status
@@ -961,7 +939,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
-        $this->assertSame([], $this->flash_data);
+        $this->expectFlashData([]);
 
         $result = $this->zdb->execute($count_select);
         $this->assertCount(0, $result); //no contribution added
@@ -982,8 +960,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Contribution has been successfully stored']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Contribution has been successfully stored']]);
 
         //Test group manager cannot create contribution for a member he do not own
         $contrib_data['id_adh'] = $member_new->id; //set contribution for new member
@@ -1009,16 +986,14 @@ class ContributionsController extends GaletteRoutingTestCase
             \Analog::ERROR,
             'Please select a member from a group you manage.'
         );
-        $this->assertSame(
+        $this->expectFlashData(
             [
                 'error_detected' => [
                     '- Please select a member from a group you manage.',
                     '- Mandatory field <a href="#id_adh">Contributor</a> empty.'
                 ]
-            ],
-            $this->flash_data['slimFlash']
+            ]
         );
-        $this->flash_data = [];
 
         $this->login->logout();
 
@@ -1081,8 +1056,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Contribution has been successfully stored']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Contribution has been successfully stored']]);
         $this->login->logout();
 
         //test with simple member: refused from authenticate middleware
@@ -1110,8 +1084,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Contribution has been successfully stored']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Contribution has been successfully stored']]);
         $this->login->logOut();
 
         //reset statut
@@ -1131,8 +1104,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Contribution has been successfully stored']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Contribution has been successfully stored']]);
 
         $this->login->logOut();
         //reset admin status
@@ -1323,8 +1295,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['error_detected' => ['Removal has not been confirmed!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['error_detected' => ['Removal has not been confirmed!']]);
 
         //make sure contributions still exists
         $select = $this->zdb->select(\Galette\Entity\Contribution::TABLE)
@@ -1340,8 +1311,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Successfully deleted!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
 
         //make sure contributions no longer exists
         $select = $this->zdb->select(\Galette\Entity\Contribution::TABLE)
@@ -1380,8 +1350,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Successfully deleted!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
 
         $this->login->logOut();
         //reset statut
@@ -1407,8 +1376,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->assertSame(['success_detected' => ['Successfully deleted!']], $this->flash_data['slimFlash']);
-        $this->flash_data = [];
+        $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
 
         $this->login->logOut();
         //reset admin status
