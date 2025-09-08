@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-07 09:41+0200\n"
+"POT-Creation-Date: 2025-09-08 22:05+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
@@ -107,62 +107,62 @@ msgstr "'%1$s' ගෙවීමේ ක්‍රමය සාර්ථක ව ව�
 msgid "Remove payment type %1$s"
 msgstr "%1$s ගෙවීමේ ක්‍රමය ඉවත් කරන්න"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:69
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:71
 #, fuzzy
 #| msgid "Payment type '%1$s' has been successfully added."
 msgid "Contribution is fully scheduled!"
 msgstr "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:90
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:92
 msgid "Add scheduled payment"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:179
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:181
 #: ../lib/Galette/Core/Galette.php:265
 msgid "List of scheduled payments"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:285
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:310
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:688
 msgid "- Unknown payment type!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:346
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:371
 msgid "No scheduled payment was selected, please check at least one."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:382
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:407
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:660
 #, fuzzy
 #| msgid "Edit payment type"
 msgid "Edit scheduled payment"
 msgstr "ගෙවීමේ ක්‍රමවේදය වෙනස් කරන්න"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:452
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:477
 #, fuzzy
 #| msgid "Payment type '%1$s' has not been added!"
 msgid "Scheduled payment has not been added!"
 msgstr "'%s' ගෙවීමේ ක්‍රමය ඇතුලත් ව නොමැත!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:454
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:479
 #, fuzzy
 #| msgid "Payment type '%1$s' has not been modified!"
 msgid "Scheduled payment has not been modified!"
 msgstr "'%s' ගෙවීමේ ක්‍රමවේදය වෙනස් කර නොමැත!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:459
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:484
 #, fuzzy
 #| msgid "Payment type '%1$s' has been successfully added."
 msgid "Scheduled payment has been successfully added."
 msgstr "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:461
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:486
 #, fuzzy
 #| msgid "Payment type '%1$s' has been successfully modified."
 msgid "Scheduled payment has been successfully modified."
 msgstr "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව වෙනස් කර ඇත."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:524
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:549
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
 msgstr[0] ""
@@ -438,20 +438,16 @@ msgid "Nothing to do!"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1570
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1841
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1845
 msgid "An error occurred while storing the member."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1598
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1822
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1602
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1826
 msgid "An error occurred adding member to its groups."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1611
-msgid "Something went wrong during mass edition!"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1618
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1620
 #, fuzzy, php-format
 #| msgid "Payment type '%1$s' has been successfully added."
 msgid "%1$s member has been changed successfully!"
@@ -459,47 +455,51 @@ msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
 msgstr[1] "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1661
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1628
+msgid "Something went wrong during mass edition!"
+msgstr ""
+
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1665
 #: ../lib/Galette/Middleware/Authenticate.php:92
 msgid "Login required"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1688
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1692
 msgid "Invalid captcha"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1799
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1803
 msgid "Your account has been created!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1804
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1808
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1807
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1811
 msgid "New member has been successfully added."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1810
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1814
 msgid "Member account has been modified."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1836
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1840
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1858
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1862
 #: ../lib/Galette/Controllers/GaletteController.php:265
 #: ../lib/Galette/Controllers/GaletteController.php:276
 msgid "Delete failed"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1992
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1996
 #, php-format
 msgid "Remove member %1$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2000
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2004
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr ""
@@ -2312,7 +2312,7 @@ msgstr ""
 #: ../lib/Galette/IO/MembersCsv.php:208
 #: ../lib/Galette/Features/Replacements.php:632
 #: ../lib/Galette/Entity/Adherent.php:1885
-#: ../../tempcache/modals/mass_change_members.html.twig:193
+#: ../../tempcache/modals/mass_change_members.html.twig:199
 #: ../../tempcache/elements/ajax_members.html.twig:105
 #: ../../tempcache/elements/group_persons.html.twig:103
 #: ../../tempcache/pages/advanced_search.html.twig:1162
@@ -2324,7 +2324,7 @@ msgstr ""
 #: ../lib/Galette/IO/MembersCsv.php:211
 #: ../lib/Galette/Features/Replacements.php:634
 #: ../lib/Galette/Entity/Adherent.php:1887
-#: ../../tempcache/modals/mass_change_members.html.twig:184
+#: ../../tempcache/modals/mass_change_members.html.twig:190
 #: ../../tempcache/elements/ajax_members.html.twig:116
 #: ../../tempcache/elements/group_persons.html.twig:114
 #: ../../tempcache/pages/advanced_search.html.twig:1162
@@ -2336,7 +2336,7 @@ msgstr ""
 #: ../lib/Galette/IO/MembersCsv.php:214
 #: ../lib/Galette/Features/Replacements.php:636
 #: ../lib/Galette/Entity/Adherent.php:1889
-#: ../../tempcache/modals/mass_change_members.html.twig:175
+#: ../../tempcache/modals/mass_change_members.html.twig:181
 #: ../../tempcache/pages/advanced_search.html.twig:1162
 #: ../../tempcache/pages/advanced_search.html.twig:1681
 #: ../../tempcache/components/forms/gender.html.twig:130
@@ -4527,7 +4527,7 @@ msgstr ""
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:128
 #: ../../tempcache/modals/confirm_removal.html.twig:168
 #: ../../tempcache/modals/mass_add_contributions.html.twig:122
-#: ../../tempcache/modals/mass_change_members.html.twig:246
+#: ../../tempcache/modals/mass_change_members.html.twig:252
 #: ../../tempcache/modals/telemetry.html.twig:144
 #: ../../tempcache/elements/js/modal.js.twig:284
 #: ../../tempcache/pages/contribution_type_form.html.twig:132
@@ -4878,7 +4878,7 @@ msgstr ""
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:122
 #: ../../tempcache/modals/mass_add_contributions.html.twig:115
-#: ../../tempcache/modals/mass_change_members.html.twig:239
+#: ../../tempcache/modals/mass_change_members.html.twig:245
 msgid "OK"
 msgstr ""
 
@@ -4957,7 +4957,7 @@ msgid "Remove"
 msgstr ""
 
 #: ../../tempcache/modals/mass_add_contributions.html.twig:113
-#: ../../tempcache/modals/mass_change_members.html.twig:237
+#: ../../tempcache/modals/mass_change_members.html.twig:243
 msgid "Edit"
 msgstr ""
 
@@ -4992,6 +4992,10 @@ msgid "Only checked fields will be updated."
 msgstr ""
 
 #: ../../tempcache/modals/mass_change_members.html.twig:129
+msgid "No changes selected"
+msgstr ""
+
+#: ../../tempcache/modals/mass_change_members.html.twig:135
 msgid "You are about to proceed following changes for selected members:"
 msgstr ""
 

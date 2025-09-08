@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-07 09:41+0200\n"
+"POT-Creation-Date: 2025-09-08 22:05+0200\n"
 "PO-Revision-Date: 2024-04-21 07:17+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -114,65 +114,65 @@ msgstr "El tipus de pagament «%1$s» s'ha modificat amb èxit."
 msgid "Remove payment type %1$s"
 msgstr "Elimina el tipus de pagament %1$s"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:69
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:71
 #, fuzzy
 #| msgid "Contribution has been successfully stored"
 msgid "Contribution is fully scheduled!"
 msgstr "La contribució s'ha desat correctament"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:90
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:92
 #, fuzzy
 msgid "Add scheduled payment"
 msgstr "Afegeix un adjunt"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:179
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:181
 #: ../lib/Galette/Core/Galette.php:265
 msgid "List of scheduled payments"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:285
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:310
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:688
 msgid "- Unknown payment type!"
 msgstr "- Tipus de pagament desconegut!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:346
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:371
 #, fuzzy
 #| msgid "No member was selected, please check at least one name."
 msgid "No scheduled payment was selected, please check at least one."
 msgstr "No s'ha seleccionat cap membre. Seleccioneu almenys un nom."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:382
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:407
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:660
 #, fuzzy
 #| msgid "Edit '%s' payment type"
 msgid "Edit scheduled payment"
 msgstr "Edita el tipus de pagament «%s»"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:452
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:477
 #, fuzzy
 #| msgid "Payment type '%1$s' has not been added!"
 msgid "Scheduled payment has not been added!"
 msgstr "No s'ha afegit el tipus de pagament «%s»!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:454
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:479
 #, fuzzy
 #| msgid "Payment type '%1$s' has not been modified!"
 msgid "Scheduled payment has not been modified!"
 msgstr "El tipus de pagament «%s» no s'ha modificat!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:459
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:484
 #, fuzzy
 #| msgid "New member has been successfully added."
 msgid "Scheduled payment has been successfully added."
 msgstr "El nou membre s'ha afegit exitosament."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:461
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:486
 #, fuzzy
 #| msgid "Payment type '%1$s' has been successfully modified."
 msgid "Scheduled payment has been successfully modified."
 msgstr "El tipus de pagament «%s» s'ha modificat amb èxit."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:524
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:549
 #, fuzzy
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
@@ -463,20 +463,16 @@ msgid "Nothing to do!"
 msgstr "Res a fer!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1570
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1841
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1845
 msgid "An error occurred while storing the member."
 msgstr "S'ha produït un error en emmagatzemar el membre."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1598
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1822
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1602
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1826
 msgid "An error occurred adding member to its groups."
 msgstr "Hi ha hagut un error en afegir un membre als seus grups."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1611
-msgid "Something went wrong during mass edition!"
-msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1618
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1620
 #, fuzzy, php-format
 #| msgid "%count members has been changed successfully!"
 msgid "%1$s member has been changed successfully!"
@@ -484,48 +480,52 @@ msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s membres han estat canviats satisfactoriament!"
 msgstr[1] "%1$s membres han estat canviats satisfactoriament!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1661
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1628
+msgid "Something went wrong during mass edition!"
+msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
+
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1665
 #: ../lib/Galette/Middleware/Authenticate.php:92
 #, fuzzy
 msgid "Login required"
 msgstr "Cal iniciar la sessió"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1688
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1692
 msgid "Invalid captcha"
 msgstr "Captcha no vàlid"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1799
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1803
 msgid "Your account has been created!"
 msgstr "S'ha creat el compte!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1804
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1808
 msgid "An email has been sent to you, check your inbox."
 msgstr "S'ha enviat un correu electrònic. Comprova la teva bústia d'entrada."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1807
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1811
 msgid "New member has been successfully added."
 msgstr "El nou membre s'ha afegit exitosament."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1810
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1814
 msgid "Member account has been modified."
 msgstr "S'ha modificat el compte del membre."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1836
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1840
 msgid "An error occurred adding member to its groups as manager."
 msgstr "Hi ha hagut un error afegint el membre als seus grups com a gestor."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1858
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1862
 #: ../lib/Galette/Controllers/GaletteController.php:265
 #: ../lib/Galette/Controllers/GaletteController.php:276
 msgid "Delete failed"
 msgstr "Ha fallat la supressió"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1992
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1996
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Elimina el membre %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2000
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2004
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr "Esteu a punt d'eliminar %1$s membres."
@@ -2624,7 +2624,7 @@ msgstr "llista de membres filtrats"
 #: ../lib/Galette/IO/MembersCsv.php:208
 #: ../lib/Galette/Features/Replacements.php:632
 #: ../lib/Galette/Entity/Adherent.php:1885
-#: ../../tempcache/modals/mass_change_members.html.twig:193
+#: ../../tempcache/modals/mass_change_members.html.twig:199
 #: ../../tempcache/elements/ajax_members.html.twig:105
 #: ../../tempcache/elements/group_persons.html.twig:103
 #: ../../tempcache/pages/advanced_search.html.twig:1162
@@ -2637,7 +2637,7 @@ msgstr "Man"
 #: ../lib/Galette/IO/MembersCsv.php:211
 #: ../lib/Galette/Features/Replacements.php:634
 #: ../lib/Galette/Entity/Adherent.php:1887
-#: ../../tempcache/modals/mass_change_members.html.twig:184
+#: ../../tempcache/modals/mass_change_members.html.twig:190
 #: ../../tempcache/elements/ajax_members.html.twig:116
 #: ../../tempcache/elements/group_persons.html.twig:114
 #: ../../tempcache/pages/advanced_search.html.twig:1162
@@ -2650,7 +2650,7 @@ msgstr "Dona"
 #: ../lib/Galette/IO/MembersCsv.php:214
 #: ../lib/Galette/Features/Replacements.php:636
 #: ../lib/Galette/Entity/Adherent.php:1889
-#: ../../tempcache/modals/mass_change_members.html.twig:175
+#: ../../tempcache/modals/mass_change_members.html.twig:181
 #: ../../tempcache/pages/advanced_search.html.twig:1162
 #: ../../tempcache/pages/advanced_search.html.twig:1681
 #: ../../tempcache/components/forms/gender.html.twig:130
@@ -5322,7 +5322,7 @@ msgstr "i"
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:128
 #: ../../tempcache/modals/confirm_removal.html.twig:168
 #: ../../tempcache/modals/mass_add_contributions.html.twig:122
-#: ../../tempcache/modals/mass_change_members.html.twig:246
+#: ../../tempcache/modals/mass_change_members.html.twig:252
 #: ../../tempcache/modals/telemetry.html.twig:144
 #: ../../tempcache/elements/js/modal.js.twig:284
 #: ../../tempcache/pages/contribution_type_form.html.twig:132
@@ -5750,7 +5750,7 @@ msgstr "Tipus de contribució"
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:122
 #: ../../tempcache/modals/mass_add_contributions.html.twig:115
-#: ../../tempcache/modals/mass_change_members.html.twig:239
+#: ../../tempcache/modals/mass_change_members.html.twig:245
 #, fuzzy
 msgid "OK"
 msgstr "D'ACORD"
@@ -5851,7 +5851,7 @@ msgid "Remove"
 msgstr "Elimina"
 
 #: ../../tempcache/modals/mass_add_contributions.html.twig:113
-#: ../../tempcache/modals/mass_change_members.html.twig:237
+#: ../../tempcache/modals/mass_change_members.html.twig:243
 #, fuzzy
 msgid "Edit"
 msgstr "Edita"
@@ -5894,6 +5894,11 @@ msgid "Only checked fields will be updated."
 msgstr "Només s'actualitzaran els camps marcats."
 
 #: ../../tempcache/modals/mass_change_members.html.twig:129
+#, fuzzy
+msgid "No changes selected"
+msgstr "No s'ha seleccionat cap fitxer"
+
+#: ../../tempcache/modals/mass_change_members.html.twig:135
 #, fuzzy
 msgid "You are about to proceed following changes for selected members:"
 msgstr "Esteu a punt de continuar els canvis dels membres seleccionats"

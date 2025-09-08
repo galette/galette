@@ -30,7 +30,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-07 09:41+0200\n"
+"POT-Creation-Date: 2025-09-08 22:05+0200\n"
 "PO-Revision-Date: 2025-05-29 17:11+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -127,51 +127,51 @@ msgstr "La tipologia di pagamento \"%1$s\" è stata modificata correttamente."
 msgid "Remove payment type %1$s"
 msgstr "Rimuovi la tipologia di pagamento %1$s"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:69
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:71
 msgid "Contribution is fully scheduled!"
 msgstr "Il programma del contributo è completo!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:90
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:92
 msgid "Add scheduled payment"
 msgstr "Aggiungi pagamento programmato"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:179
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:181
 #: ../lib/Galette/Core/Galette.php:265
 msgid "List of scheduled payments"
 msgstr "Elenco dei pagamenti programmati"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:285
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:310
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:688
 msgid "- Unknown payment type!"
 msgstr "- Metodo di pagamento sconosciuto!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:346
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:371
 msgid "No scheduled payment was selected, please check at least one."
 msgstr ""
 "Non è stato selezionato alcun pagamento programmato. Selezionarne almeno uno."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:382
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:407
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:660
 msgid "Edit scheduled payment"
 msgstr "Modifica pagamento programmato"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:452
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:477
 msgid "Scheduled payment has not been added!"
 msgstr "Il pagamento programmato non è stato aggiunto!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:454
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:479
 msgid "Scheduled payment has not been modified!"
 msgstr "Il pagamento programmato non è stato modificato!"
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:459
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:484
 msgid "Scheduled payment has been successfully added."
 msgstr "Il pagamento programmato è stato aggiunto con successo."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:461
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:486
 msgid "Scheduled payment has been successfully modified."
 msgstr "Il pagamento pianificato è stato modificato con successo."
 
-#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:524
+#: ../lib/Galette/Controllers/Crud/ScheduledPaymentController.php:549
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
 msgstr[0] "Rimuovi pagamento programmato"
@@ -440,69 +440,69 @@ msgid "Nothing to do!"
 msgstr "Niente da fare!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1570
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1841
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1845
 msgid "An error occurred while storing the member."
 msgstr "Si è verificato un errore nella memorizzazione del socio."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1598
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1822
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1602
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1826
 msgid "An error occurred adding member to its groups."
 msgstr "Si è verificato un errore nell'aggiungere un socio al gruppo."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1611
-msgid "Something went wrong during mass edition!"
-msgstr "Qualcosa è andato storto nell'edizione massiva!"
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1618
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1620
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s socio è stato cambiato con successo!"
 msgstr[1] "%1$s soci sono stati cambiati con successo!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1661
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1628
+msgid "Something went wrong during mass edition!"
+msgstr "Qualcosa è andato storto nell'edizione massiva!"
+
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1665
 #: ../lib/Galette/Middleware/Authenticate.php:92
 msgid "Login required"
 msgstr "Richiesta registrazione"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1688
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1692
 msgid "Invalid captcha"
 msgstr "Captcha invalido"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1799
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1803
 msgid "Your account has been created!"
 msgstr "Il tuo account è stato creato!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1804
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1808
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 "Ti è stata inviata un’e-mail, controlla la tua casella di posta elettronica."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1807
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1811
 msgid "New member has been successfully added."
 msgstr "Un nuovo socio è stato aggiunto con successo."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1810
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1814
 msgid "Member account has been modified."
 msgstr "L'account socio è stato modificato."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1836
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1840
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 "Si è verificato un errore nell'aggiungere un socio al gruppo come gestore."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1858
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1862
 #: ../lib/Galette/Controllers/GaletteController.php:265
 #: ../lib/Galette/Controllers/GaletteController.php:276
 msgid "Delete failed"
 msgstr "Rimozione fallita"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1992
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1996
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Rimuovi socio %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2000
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2004
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr "Stai per rimuovere %1$s membri."
@@ -2343,7 +2343,7 @@ msgstr "lista membri_filtrati"
 #: ../lib/Galette/IO/MembersCsv.php:208
 #: ../lib/Galette/Features/Replacements.php:632
 #: ../lib/Galette/Entity/Adherent.php:1885
-#: ../../tempcache/modals/mass_change_members.html.twig:193
+#: ../../tempcache/modals/mass_change_members.html.twig:199
 #: ../../tempcache/elements/ajax_members.html.twig:105
 #: ../../tempcache/elements/group_persons.html.twig:103
 #: ../../tempcache/pages/advanced_search.html.twig:1162
@@ -2355,7 +2355,7 @@ msgstr "Uomo"
 #: ../lib/Galette/IO/MembersCsv.php:211
 #: ../lib/Galette/Features/Replacements.php:634
 #: ../lib/Galette/Entity/Adherent.php:1887
-#: ../../tempcache/modals/mass_change_members.html.twig:184
+#: ../../tempcache/modals/mass_change_members.html.twig:190
 #: ../../tempcache/elements/ajax_members.html.twig:116
 #: ../../tempcache/elements/group_persons.html.twig:114
 #: ../../tempcache/pages/advanced_search.html.twig:1162
@@ -2367,7 +2367,7 @@ msgstr "Donna"
 #: ../lib/Galette/IO/MembersCsv.php:214
 #: ../lib/Galette/Features/Replacements.php:636
 #: ../lib/Galette/Entity/Adherent.php:1889
-#: ../../tempcache/modals/mass_change_members.html.twig:175
+#: ../../tempcache/modals/mass_change_members.html.twig:181
 #: ../../tempcache/pages/advanced_search.html.twig:1162
 #: ../../tempcache/pages/advanced_search.html.twig:1681
 #: ../../tempcache/components/forms/gender.html.twig:130
@@ -4653,7 +4653,7 @@ msgstr "e"
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:128
 #: ../../tempcache/modals/confirm_removal.html.twig:168
 #: ../../tempcache/modals/mass_add_contributions.html.twig:122
-#: ../../tempcache/modals/mass_change_members.html.twig:246
+#: ../../tempcache/modals/mass_change_members.html.twig:252
 #: ../../tempcache/modals/telemetry.html.twig:144
 #: ../../tempcache/elements/js/modal.js.twig:284
 #: ../../tempcache/pages/contribution_type_form.html.twig:132
@@ -5030,7 +5030,7 @@ msgstr "Tipo di contributo"
 
 #: ../../tempcache/modals/mass_choose_contributions_type.html.twig:122
 #: ../../tempcache/modals/mass_add_contributions.html.twig:115
-#: ../../tempcache/modals/mass_change_members.html.twig:239
+#: ../../tempcache/modals/mass_change_members.html.twig:245
 msgid "OK"
 msgstr "OK"
 
@@ -5119,7 +5119,7 @@ msgid "Remove"
 msgstr "Rimuovere"
 
 #: ../../tempcache/modals/mass_add_contributions.html.twig:113
-#: ../../tempcache/modals/mass_change_members.html.twig:237
+#: ../../tempcache/modals/mass_change_members.html.twig:243
 msgid "Edit"
 msgstr "Modificare"
 
@@ -5154,6 +5154,12 @@ msgid "Only checked fields will be updated."
 msgstr "Verranno aggiornati solo i campi selezionati."
 
 #: ../../tempcache/modals/mass_change_members.html.twig:129
+#, fuzzy
+#| msgid "No file selected"
+msgid "No changes selected"
+msgstr "Nessun file selezionato"
+
+#: ../../tempcache/modals/mass_change_members.html.twig:135
 msgid "You are about to proceed following changes for selected members:"
 msgstr "Si sta per procedere alle seguenti modifiche per i soci selezionati:"
 
