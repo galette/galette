@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-09-08 22:05+0200\n"
-"PO-Revision-Date: 2025-09-07 07:47+0000\n"
+"PO-Revision-Date: 2025-09-08 20:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -5154,10 +5154,8 @@ msgid "Only checked fields will be updated."
 msgstr "Seuls les champs cochés seront mis à jour."
 
 #: ../../tempcache/modals/mass_change_members.html.twig:129
-#, fuzzy
-#| msgid "No file selected"
 msgid "No changes selected"
-msgstr "Aucun fichier sélectionné"
+msgstr "Aucun changement sélectionné"
 
 #: ../../tempcache/modals/mass_change_members.html.twig:135
 msgid "You are about to proceed following changes for selected members:"
