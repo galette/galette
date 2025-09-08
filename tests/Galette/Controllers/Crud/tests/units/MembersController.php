@@ -2637,7 +2637,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->isGroupManager($g1->getId()));
         $this->assertTrue($g1->setMembers([$member_one, $member_two]));
 
-        //tets with group manager
+        //test with group manager
         $filters->selected = [$member_two->id, $member_three->id];
 
         $request = $request->withParsedBody([
@@ -2658,6 +2658,32 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame('Admin city', $member_three->town);
         $this->assertTrue($member_two->load($member_two->id));
         $this->assertSame('Group Manager City', $member_two->town);
+
+        //try to mass change on an emty group
+        $this->logSuperAdmin();
+        $g2 = new \Galette\Entity\Group();
+        $g2->setName('Group 2');
+        $this->assertTrue($g2->store());
+        $filters->selected = [$member_one->id, $member_two->id, $member_three->id];
+
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'group_to_add' => $g2->getId()
+        ]);
+
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['3 members has been changed successfully!']]); //only one member edited since member three is not in the group
+
+        $this->assertTrue($g2->load($g2->getId()));
+        $members = $g2->getMembers();
+        $this->assertCount(3, $members);
+
+        $this->login->logout();
     }
 
     /**

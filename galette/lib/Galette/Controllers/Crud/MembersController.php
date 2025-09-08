@@ -1579,19 +1579,19 @@ class MembersController extends CrudController
                                 $groups_adh = [];
                                 foreach ($current_groups as $group) {
                                     if (
-                                        !isset($post['group_to_remove'])
-                                        || $group->getId() !== (int)$post['group_to_remove']
+                                        (
+                                            !isset($post['group_to_remove'])
+                                            || $group->getId() !== (int)$post['group_to_remove']
+                                        )
+                                        && $group->getId() !== (int)$post['group_to_add']
                                     ) {
                                         $groups_adh[] = $group->getId() . '|' . $group->getName();
                                     }
+                                }
 
-                                    if (
-                                        isset($post['group_to_add'])
-                                        && $group->getId() !== (int)$post['group_to_add']
-                                    ) {
-                                        $new_group = new Group((int)$post['group_to_add']);
-                                        $groups_adh[] = $new_group->getId() . '|' . $new_group->getName();
-                                    }
+                                if (isset($post['group_to_add'])) {
+                                    $new_group = new Group((int)$post['group_to_add']);
+                                    $groups_adh[] = $new_group->getId() . '|' . $new_group->getName();
                                 }
 
                                 $add_groups = Groups::addMemberToGroups(
