@@ -971,6 +971,7 @@ abstract class GaletteTestCase extends TestCase
         }
         $this->assertTrue($check);
         $this->assertTrue($staff_member->store());
+        $this->assertTrue($member->load($member->id));
         $this->login->logout();
     }
 

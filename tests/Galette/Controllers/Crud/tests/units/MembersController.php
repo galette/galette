@@ -2226,6 +2226,441 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test mass change page
+     *
+     * @return void
+     */
+    public function testMassChangePage(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        //change language
+        $check = $member_two->check(['pref_lang' => 'en_US'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($member_two->store());
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->selected = [$member_one->id, $member_two->id];
+        $controller = new \Galette\Controllers\Crud\MembersController($this->container);
+        $this->session->{$controller->getFilterName($controller->getDefaultFilterName(), ['suffix' => 'masschange'])} = $filters;
+        $expected_title = 'Mass change ' . count($filters->selected) . ' members';
+
+        $route_name = 'masschangeMembers';
+
+        //login is required to access this page
+        $request = $this->createRequest($route_name);
+        $test_response = $this->app->handle($request);
+        $this->expectLogin($test_response);
+
+        //super-admin can access page
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->login->logout();
+
+        //member cannot access page
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
+        $this->assertFalse($this->login->isGroupManager());
+
+        $test_response = $this->app->handle($request);
+        $this->expectAuthMiddlewareRefused($test_response);
+        $this->login->logout();
+
+        //set member as staff
+        $staff_member = $this->getStaffMember($member_one);
+
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertTrue($this->login->isStaff());
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+
+        $this->login->logOut();
+        //reset statut
+        $this->resetStaffStatus($staff_member, $member_one);
+
+        //set member as admin
+        $adm_member = $this->getAdminMember($member_one);
+
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+
+        $this->login->logOut();
+        //reset admin status
+        $this->resetAdminStatus($adm_member);
+
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+        $this->assertTrue($g1->setManagers([$member_two]));
+
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $this->assertTrue($this->login->isGroupManager($g1->getId()));
+        $this->assertTrue($g1->setMembers([$member_one, $member_two]));
+
+        //with default preferences, groups manager cannot access edit page
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+    }
+
+    /**
+     * Test mass change validation page
+     *
+     * @return void
+     */
+    public function testValidateMassChange(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        //change language
+        $check = $member_two->check(['pref_lang' => 'en_US'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($member_two->store());
+
+        //add another member
+        $m3data = [
+            'nom_adh'       => 'Special',
+            'prenom_adh'    => 'Member',
+            'login_adh'     => 'special.member',
+            'fingerprint' => 'FAKER' . $this->seed
+        ];
+        $member_three = $this->createMember($m3data);
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->selected = [$member_one->id, $member_two->id];
+        $controller = new \Galette\Controllers\Crud\MembersController($this->container);
+        $this->session->{$controller->getFilterName($controller->getDefaultFilterName(), ['suffix' => 'masschange'])} = $filters;
+        $expected_title = 'Review mass change ' . count($filters->selected) . ' members';
+
+        $route_name = 'masschangeMembersReview';
+
+        //login is required to access this page
+        $request = $this->createRequest($route_name, [], 'POST');
+        $test_response = $this->app->handle($request);
+        $this->expectLogin($test_response);
+
+        //super-admin can access page
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+
+        //confirmation is expected
+        $this->assertSame([], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['error_detected' => ['Mass changes has not been confirmed!']]);
+
+        $request = $request->withParsedBody(['confirm' => 1]);
+        $test_response = $this->app->handle($request);
+
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->assertStringContainsString('No changes selected', $body);
+
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'mass_ville_adh' => 'on',
+            'ville_adh' => 'Test New City'
+        ]);
+        $test_response = $this->app->handle($request);
+
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->assertStringNotContainsString('No changes selected', $body);
+        $this->assertStringContainsString('<input type="hidden" name="ville_adh" value="Test New City"/>', $body);
+        $this->assertStringContainsString('City: Test New City', $body);
+
+        $this->login->logout();
+
+        //member cannot access page
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
+        $this->assertFalse($this->login->isGroupManager());
+
+        $test_response = $this->app->handle($request);
+        $this->expectAuthMiddlewareRefused($test_response);
+        $this->login->logout();
+
+        //set member as staff
+        $staff_member = $this->getStaffMember($member_one);
+
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertTrue($this->login->isStaff());
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->assertStringContainsString('<input type="hidden" name="ville_adh" value="Test New City"/>', $body);
+        $this->assertStringContainsString('City: Test New City', $body);
+        $this->assertStringContainsString(sprintf('<input type="hidden" name="id[]" value="%1$s"/>', $member_one->id), $body);
+        $this->assertStringContainsString(sprintf('<input type="hidden" name="id[]" value="%1$s"/>', $member_two->id), $body);
+
+        $this->login->logOut();
+        //reset statut
+        $this->resetStaffStatus($staff_member, $member_one);
+
+        //set member as admin
+        $adm_member = $this->getAdminMember($member_one);
+
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->assertStringContainsString('<input type="hidden" name="ville_adh" value="Test New City"/>', $body);
+        $this->assertStringContainsString('City: Test New City', $body);
+        $this->assertStringContainsString(sprintf('<input type="hidden" name="id[]" value="%1$s"/>', $member_one->id), $body);
+        $this->assertStringContainsString(sprintf('<input type="hidden" name="id[]" value="%1$s"/>', $member_two->id), $body);
+
+        $this->login->logOut();
+        //reset admin status
+        $this->resetAdminStatus($adm_member);
+
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+        $this->assertTrue($g1->setManagers([$member_two]));
+
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $this->assertTrue($this->login->isGroupManager($g1->getId()));
+        $this->assertTrue($g1->setMembers([$member_one, $member_two]));
+
+        //tets with group manager
+        $filters->selected = [$member_one->id, $member_two->id, $member_three->id];
+        $expected_title = 'Review mass change ' . count($filters->selected) . ' members';
+
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'mass_ville_adh' => 'on',
+            'ville_adh' => 'Test New City',
+            'mass_group_to_add' => 'on',
+            'group_to_add' => $g1->getId()
+        ]);
+
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString($expected_title, $body);
+        $this->assertStringContainsString('<input type="hidden" name="ville_adh" value="Test New City"/>', $body);
+        $this->assertStringContainsString('City: Test New City', $body);
+        $this->assertStringContainsString(sprintf('<input type="hidden" name="id[]" value="%1$s"/>', $member_one->id), $body);
+        $this->assertStringContainsString(sprintf('<input type="hidden" name="id[]" value="%1$s"/>', $member_two->id), $body);
+        $this->assertStringContainsString(sprintf('<input type="hidden" name="group_to_add" value="%1$s"/>', $g1->getId()), $body);
+        $this->assertStringContainsString('Add to group ' . $g1->getName(), $body);
+    }
+
+    /**
+     * Test mass change action
+     *
+     * @return void
+     */
+    public function testDoMassChanges(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        //change language
+        $check = $member_two->check(['pref_lang' => 'en_US'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($member_two->store());
+
+        //add another member
+        $m3data = [
+            'nom_adh'       => 'Special',
+            'prenom_adh'    => 'Member',
+            'login_adh'     => 'special.member',
+            'fingerprint' => 'FAKER' . $this->seed
+        ];
+        $member_three = $this->createMember($m3data);
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->selected = [$member_two->id, $member_three->id];
+        $controller = new \Galette\Controllers\Crud\MembersController($this->container);
+        $this->session->{$controller->getFilterName($controller->getDefaultFilterName(), ['suffix' => 'masschange'])} = $filters;
+
+        $route_name = 'massstoremembers';
+
+        //login is required to access this page
+        $request = $this->createRequest($route_name, [], 'POST');
+        $test_response = $this->app->handle($request);
+        $this->expectLogin($test_response);
+
+        //super-admin can mass change members
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+
+        //confirmation is expected
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['error_detected' => ['Mass changes has not been confirmed!']]);
+
+        $request = $request->withParsedBody(['confirm' => 1]);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['error_detected' => ['Nothing to do!']]);
+
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'ville_adh' => 'Superadmin city'
+        ]);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['2 members has been changed successfully!']]);
+
+        $this->assertTrue($member_three->load($member_three->id));
+        $this->assertSame('Superadmin city', $member_three->town);
+        $this->assertTrue($member_two->load($member_two->id));
+        $this->assertSame('Superadmin city', $member_two->town);
+
+        $this->login->logout();
+
+        //member cannot access page
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
+        $this->assertFalse($this->login->isGroupManager());
+
+        $test_response = $this->app->handle($request);
+        $this->expectAuthMiddlewareRefused($test_response);
+
+        $this->login->logout();
+
+        //set member as staff
+        $staff_member = $this->getStaffMember($member_one);
+
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertTrue($this->login->isStaff());
+
+        $request = $this->createRequest($route_name, [], 'POST');
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'ville_adh' => 'Staff city'
+        ]);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['2 members has been changed successfully!']]);
+
+        $this->login->logOut();
+        //reset statut
+        $this->resetStaffStatus($staff_member, $member_one);
+
+        $this->assertTrue($member_three->load($member_three->id));
+        $this->assertSame('Staff city', $member_three->town);
+        $this->assertTrue($member_two->load($member_two->id));
+        $this->assertSame('Staff city', $member_two->town);
+
+        //set member as admin
+        $adm_member = $this->getAdminMember($member_one);
+
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertTrue($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
+
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'ville_adh' => 'Admin city'
+        ]);
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['2 members has been changed successfully!']]);
+
+        $this->assertTrue($member_three->load($member_three->id));
+        $this->assertSame('Admin city', $member_three->town);
+        $this->assertTrue($member_two->load($member_two->id));
+        $this->assertSame('Admin city', $member_two->town);
+
+        $this->login->logOut();
+        //reset admin status
+        $this->resetAdminStatus($adm_member);
+
+        $g1 = new \Galette\Entity\Group();
+        $g1->setName('Group 1');
+        $this->assertTrue($g1->store());
+        $this->assertTrue($g1->setManagers([$member_two]));
+
+        $m2data = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
+        $this->assertTrue($this->login->isGroupManager($g1->getId()));
+        $this->assertTrue($g1->setMembers([$member_one, $member_two]));
+
+        //tets with group manager
+        $filters->selected = [$member_two->id, $member_three->id];
+
+        $request = $request->withParsedBody([
+            'confirm' => 1,
+            'id' => $filters->selected,
+            'ville_adh' => 'Group Manager City',
+            'group_to_add' => $g1->getId() //to check there is no duplicated entry
+        ]);
+
+        $test_response = $this->app->handle($request);
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['1 member has been changed successfully!']]); //only one member edited since member three is not in the group
+
+        $this->assertTrue($member_three->load($member_three->id));
+        $this->assertSame('Admin city', $member_three->town);
+        $this->assertTrue($member_two->load($member_two->id));
+        $this->assertSame('Group Manager City', $member_two->town);
+    }
+
+    /**
      * Test remove member page
      *
      * @return void

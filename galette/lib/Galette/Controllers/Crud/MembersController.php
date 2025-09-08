@@ -1474,7 +1474,7 @@ class MembersController extends CrudController
     public function doMassChange(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $redirect_url = $post['redirect_uri'];
+        $redirect_url = $post['redirect_uri'] ?? $this->redirectUri([]);
         $error_detected = [];
         $mass = 0;
         $dynamic_fields = null;
@@ -1484,7 +1484,7 @@ class MembersController extends CrudController
             $error_detected[] = _T("Mass changes has not been confirmed!");
         } else {
             unset($post['confirm']);
-            $ids = $post['id'];
+            $ids = $post['id'] ?? [];
             unset($post['id']);
 
             $fc = $this->fields_config;
@@ -1584,10 +1584,14 @@ class MembersController extends CrudController
                                     ) {
                                         $groups_adh[] = $group->getId() . '|' . $group->getName();
                                     }
-                                }
-                                if (isset($post['group_to_add'])) {
-                                    $new_group = new Group((int)$post['group_to_add']);
-                                    $groups_adh[] = $new_group->getId() . '|' . $new_group->getName();
+
+                                    if (
+                                        isset($post['group_to_add'])
+                                        && $group->getId() !== (int)$post['group_to_add']
+                                    ) {
+                                        $new_group = new Group((int)$post['group_to_add']);
+                                        $groups_adh[] = $new_group->getId() . '|' . $new_group->getName();
+                                    }
                                 }
 
                                 $add_groups = Groups::addMemberToGroups(
@@ -1607,9 +1611,7 @@ class MembersController extends CrudController
             }
         }
 
-        if ($mass == 0 && !count($error_detected)) {
-            $error_detected[] = _T('Something went wrong during mass edition!');
-        } else {
+        if ($mass !== 0) {
             $this->flash->addMessage(
                 'success_detected',
                 sprintf(
@@ -1622,6 +1624,8 @@ class MembersController extends CrudController
                     $mass
                 )
             );
+        } elseif (!count($error_detected)) {
+            $error_detected[] = _T('Something went wrong during mass edition!');
         }
 
         if (count($error_detected) > 0) {
