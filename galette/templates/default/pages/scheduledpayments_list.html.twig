@@ -103,7 +103,7 @@
 
 {% block search %}
     {% if mode != 'ajax' %}
-        <form action="{{ url_for("filterScheduledPayments") }}" method="post" class="ui form filters">
+        <form action="{{ url_for(show_mine ? "filterMyScheduledPayments" : "filterScheduledPayments") }}" method="post" class="ui form filters">
             <div class="ui secondary yellow segment">
                 <div class="three fields">
                     <div class="field">

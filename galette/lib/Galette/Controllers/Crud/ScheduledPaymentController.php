@@ -41,6 +41,8 @@ use Galette\Repository\PaymentTypes;
 
 class ScheduledPaymentController extends CrudController
 {
+    private bool $show_mine = false;
+
     // CRUD - Create
 
     /**
@@ -182,7 +184,8 @@ class ScheduledPaymentController extends CrudController
             'nb'                => $scheduled->getCount(),
             'filters'           => $filters,
             'mode'              => $ajax ? 'ajax' : '',
-            'documentation'     => 'usermanual/contributions.html#scheduled-payments'
+            'documentation'     => 'usermanual/contributions.html#scheduled-payments',
+            'show_mine'         => $this->show_mine
         ];
 
         if ($filters->member_filter != null) {
@@ -212,7 +215,29 @@ class ScheduledPaymentController extends CrudController
      */
     public function myList(Request $request, Response $response, ?string $type = null): Response
     {
+        $this->show_mine = true;
         return $this->list(
+            $request->withQueryParams(
+                $request->getQueryParams() + [
+                    Adherent::PK => $this->login->id
+                ]
+            ),
+            $response
+        );
+    }
+
+    /**
+     * Scheduled payments filtering
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function myFilter(Request $request, Response $response): Response
+    {
+        $this->show_mine = true;
+        return $this->filter(
             $request->withQueryParams(
                 $request->getQueryParams() + [
                     Adherent::PK => $this->login->id
@@ -305,7 +330,7 @@ class ScheduledPaymentController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('scheduledPayments'));
+            ->withHeader('Location', $this->routeparser->urlFor($this->show_mine ? 'myScheduledPayments' : 'scheduledPayments'));
     }
 
     /**

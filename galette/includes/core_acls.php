@@ -94,6 +94,6 @@ $core_acls = [
     'attendance_sheet_details'          => 'groupmanager',
     'attendance_sheet'                  => 'groupmanager',
     '/(.+)?document(.+)?/i'             => 'staff',
-    'myScheduledPayments'               => 'member',
+    '/(.+)?myScheduledPayments/i'       => 'member',
     '/(.+)?scheduledPayment(.+)?/i'     => 'staff'
 ];

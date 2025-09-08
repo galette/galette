@@ -156,6 +156,11 @@ $app->get(
     [Crud\ScheduledPaymentController::class, 'myList']
 )->setName('myScheduledPayments')->add($authenticate);
 
+$app->post(
+    '/scheduled-payments/mine/filter',
+    [Crud\ScheduledPaymentController::class, 'myFilter']
+)->setName('filterMyScheduledPayments')->add($authenticate);
+
 $app->get(
     '/scheduled-payments[/{option:page|order|member}/{value:\d+|all}]',
     [Crud\ScheduledPaymentController::class, 'list']
