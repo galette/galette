@@ -48,7 +48,6 @@ class Plugins extends TestCase
         ],
         'date'          => '2013-12-15',
         'priority'      => 1000,
-        'root_writable' => true,
         'route'         => 'plugin2'
     );
 

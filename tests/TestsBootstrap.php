@@ -91,7 +91,8 @@ $directories = [
     'photos',
     'attachments',
     'files',
-    'tempimages'
+    'tempimages',
+    'plugins'
 ];
 foreach ($directories as $directory) {
     mkdir(GALETTE_DATA_PATH . $directory);
@@ -99,6 +100,10 @@ foreach ($directories as $directory) {
 
 $logfile = 'galette_tests';
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
+
+//disabled news and disabled plugins
+touch(GALETTE_PLUGINS_DATA_PATH . '/plugin_plugin-news_disabled');
+touch(GALETTE_PLUGINS_DATA_PATH . '/plugin_plugin-disabled_disabled');
 
 $session_name = 'galette_tests';
 $session = new \RKA\SessionMiddleware([

@@ -24,6 +24,7 @@ Changes
 - Remove support for PHP 8.1
 - Fix stored XSS CVE-2025-48076 and reflected XSS CVE-2025-48884
 - Fix groups manager access bypass CVE-2025-53922  and CVE-2025-58052
+- Plugins no longer require write access to their root directory to be disabled/enabled
 
 1.1.6 -> 1.1.6.1
 

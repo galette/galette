@@ -106,7 +106,13 @@ class Plugins
                                 Analog::WARNING
                             );
                             $this->setDisabled(self::DISABLED_MISS);
-                        } elseif (!file_exists($full_entry . '/_disabled')) {
+                        } elseif ($this->isExplicitlyDisabled()) {
+                            Analog::log(
+                                'Plugin ' . $entry . ' is explicitly disabled',
+                                Analog::INFO
+                            );
+                            $this->setDisabled(self::DISABLED_EXPLICIT);
+                        } else {
                             include $full_entry . '/_define.php';
                             $this->id = null;
                             $this->mroot = null;
@@ -119,12 +125,6 @@ class Plugins
                                 );
                                 $$varname->register();
                             }
-                        } else {
-                            Analog::log(
-                                'Plugin ' . $entry . ' is explicitly disabled',
-                                Analog::INFO
-                            );
-                            $this->setDisabled(self::DISABLED_EXPLICIT);
                         }
                     }
                 }
@@ -225,7 +225,6 @@ class Plugins
                 'acls'          => $acls,
                 'date'          => $date,
                 'priority'      => $priority ?? 1000,
-                'root_writable' => is_writable($this->mroot),
                 'route'         => $route
             ];
         }
@@ -255,12 +254,54 @@ class Plugins
             throw new Exception(_T("No such module."));
         }
 
-        if (!$this->modules[$id]['root_writable']) {
-            throw new Exception(_T("Cannot deactivate plugin."));
+        try {
+            $this->createDisabledFile($id);
+        } catch (Exception $e) {
+            throw new Exception(_T("Cannot deactivate plugin."), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * Create the disabled file for a specified module
+     *
+     * @param string $id Module's ID
+     *
+     * @return void
+     * @throws Exception
+     */
+    protected function createDisabledFile(string $id): void
+    {
+        if (@file_put_contents($this->getDisabledPath($id), '') === false) {
+            throw new Exception("Cannot create disabled file for plugin " . $id);
+        }
+    }
+
+    /**
+     * Remove the disabled file for a specified module
+     *
+     * @param string $id Module's ID
+     *
+     * @return void
+     * @throws Exception
+     */
+    protected function removeDisabledFile(string $id): void
+    {
+        $legacy_file = $this->disabled[$id]['root'] . '/_disabled';
+        //try to remove the old file
+        if (file_exists($legacy_file) && @unlink($legacy_file) === false) {
+            Analog::log(
+                sprintf(
+                    'Plugin %1$s was disabled from its own directory, that is deprecated. Migration has been done, please remove the file %2$s manually.',
+                    $this->id,
+                    $legacy_file
+                ),
+                Analog::WARNING
+            );
+            throw new Exception("Cannot unlink legacy disabled file for plugin " . $id);
         }
 
-        if (@file_put_contents($this->modules[$id]['root'] . '/_disabled', '')) {
-            throw new Exception(_T("Cannot deactivate plugin."));
+        if (file_exists($this->getDisabledPath($id)) && @unlink($this->getDisabledPath($id)) === false) {
+            throw new Exception("Cannot unlink disabled file for plugin " . $id);
         }
     }
 
@@ -278,12 +319,10 @@ class Plugins
             throw new Exception(_T("No such module."));
         }
 
-        if (!$this->disabled[$id]['root_writable']) {
-            throw new Exception(_T("Cannot activate plugin."));
-        }
-
-        if (@unlink($this->disabled[$id]['root'] . '/_disabled') === false) {
-            throw new Exception(_T("Cannot activate plugin."));
+        try {
+            $this->removeDisabledFile($id);
+        } catch (Exception $e) {
+            throw new Exception(_T("Cannot activate plugin."), $e->getCode(), $e);
         }
     }
 
@@ -586,9 +625,8 @@ class Plugins
     private function setDisabled(int $cause): void
     {
         $this->disabled[$this->id] = [
-            'root'          => $this->mroot,
-            'root_writable' => is_writable($this->mroot),
-            'cause'         => $cause
+            'root'  => $this->mroot,
+            'cause' => $cause
         ];
         $this->id = null;
         $this->mroot = null;
@@ -644,5 +682,59 @@ class Plugins
     public function getCsrfExclusions(): array
     {
         return $this->csrf_exclusions;
+    }
+
+    /**
+     * Is the current module explicitly disabled?
+     *
+     * @return bool
+     */
+    public function isExplicitlyDisabled(): bool
+    {
+        if (file_exists($this->getDisabledPath($this->id))) {
+            return true;
+        }
+
+        //keep the old way of disabling a plugin for backward compatibility
+        $legacy_file = $this->mroot . '/_disabled';
+        if (file_exists($legacy_file)) {
+            try {
+                //disable module the new way
+                $this->createDisabledFile($this->id);
+                //try to remove the old file
+                if (@unlink($legacy_file) === false) {
+                    Analog::log(
+                        sprintf(
+                            'Plugin %1$s was disabled from its own directory, that is deprecated. Migration has been done, please remove the file %2$s manually.',
+                            $this->id,
+                            $legacy_file
+                        ),
+                        Analog::WARNING
+                    );
+                }
+            } catch (\Exception $e) {
+                //emtpy catch
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get path for disabled file
+     *
+     * @param string $id Module ID
+     *
+     * @return string
+     */
+    public function getDisabledPath(string $id): string
+    {
+        return sprintf(
+            '%1$s/plugin_%2$s_disabled',
+            GALETTE_PLUGINS_DATA_PATH,
+            $id
+        );
     }
 }
