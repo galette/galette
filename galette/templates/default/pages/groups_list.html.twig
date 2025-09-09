@@ -22,78 +22,75 @@
 
 {% set can_export = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
 
-{% macro group_item(login, group, parents, selected) %}
-    <div class="{% if group.getGroups()|length > 0 %}title{% if group.getName() in parents %} active{% endif %}{% else %}nochild{% endif %}">
+{% macro group_menu_item(login, group, parents, selected) %}
+    <div class="ui inverted {% if group.getGroups()|length > 0 %}dropdown{% endif %} item{% if group.getName() in parents %} active{% endif %}">
         {% if group.getGroups()|length > 0 %}
-        <i class="dropdown icon" aria-hidden="true"></i>
+            <i class="dropdown icon" aria-hidden="true"></i>
         {% endif %}
-        {% if login.isGroupManager(group.getId()) and group.getName() != selected %}
-        <a class="icon" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
-            <i class="edit icon" aria-hidden="true"></i>
-            <span class="visually-hidden">Edit</span>
-        </a>
-        {% else %}
-        <i class="black folder open outline icon"></i>
-        {% endif %}
-        <span class="{% if group.getName() == selected %}active{% endif %}">
+        <a href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
             {{ group.getName() }}
-        </span>
+        </a>
+
+        {% if group.getGroups()|length > 0 %}
+            <div class="menu{% if group.getName() in parents %} active{% endif %}">
+                {% for child_group in group.getGroups() %}
+                    {{ _self.group_menu_item(login, child_group, parents, selected) }}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
-    {% if group.getGroups()|length > 0 %}
-    <div class="content{% if group.getName() in parents %} active{% endif %}">
-        <div class="accordion">
-        {% for child_group in group.getGroups() %}
-            {{ _self.group_item(login, child_group, parents, selected) }}
-        {% endfor %}
-        </div>
-    </div>
-    {% endif %}
 {% endmacro %}
 
 {% block content %}
     {% set parents = group.getParents() %}
     {% set selected = group.getName() %}
-    <div class="ui stackable grid">
-        <div class="three wide column">
-    {% if group.getId() %}
-            <div class="ui top attached accordion-styled header">{{ _T("Select a group") }} :</div>
-            <div class="ui attached accordion-styled scrolling segment loader_selector">
-                <div class="ui tree accordion">
-                {% for group in groups_root %}
-                    {{ _self.group_item(login, group, parents, selected) }}
+    {% set can_edit = group.canEdit(login) %}
+
+    {% set managers = group.getManagers() %}
+    {% set members = group.getMembers() %}
+
+    <div class="ui stackable pointing inverted menu tabbed">
+        <div class="ui inverted dropdown item tooltip" title="{{ _T('Select a group') }}">
+            <div class="ui breadcrumb">
+                {% for parent in group.parents %}
+                    <span class="section">{{ parent }}</span>
+                    <i class="right angle icon divider"></i>
                 {% endfor %}
-                </div>
+                <span class="section active">{{ group.getName() }}</span>
             </div>
-    {% endif %}
-    {% if can_export or login.isAdmin() or login.isStaff() %}
-            <div class="ui basic fitted segment">
-                <div class="ui wrapping spaced buttons">
-        {% if group.getId() and can_export %}
-                    <a href="{{ url_for("pdf_groups") }}" class="ui labeled icon fluid button tooltip" title="{{ _T("Export all groups and their members as PDF") }}">
-                        <i class="file pdf red labeled icon" aria-hidden="true"></i>
-                        {{ _T("All groups PDF") }}
-                    </a>
-        {% endif %}
-        {% if login.isAdmin() or login.isStaff() %}
-                    <a href="{{ url_for("add_group", {"name": "NAME"}) }}" class="ui labeled icon fluid button tooltip" id="newgroup">
-                        <i class="plus circle green icon" aria-hidden="true"></i>
-                        {{ _T("New group") }}
-                    </a>
-        {% endif %}
-                </div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+                {% for group in groups_root %}
+                    {{ _self.group_menu_item(login, group, parents, selected) }}
+                {% endfor %}
             </div>
-    {% endif %}
         </div>
-        <div class="thirteen wide column">
-    {% if group.getId() %}
-            {% include "elements/group.html.twig" with {"group": group, "parent_groups": parent_groups} %}
-    {% else %}
-            <div class="ui small message">
-                {{ _T("no group") }}
-            </div>
-    {% endif %}
+        <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_information" class="item{{ tab == 'group_information' ? ' active' }}" data-tab="group_information">{{ _T("Information") }}</a>
+        <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_managers" class="item{{ tab == 'group_managers' ? ' active' }}" data-tab="group_managers"><i class="user shield icon" aria-hidden="true"></i>{{ _T("Managers") }} ({{ managers|length }})</a>
+        <a href="{{ url_for('groups', {'id': group.getId()}) }}?tab=group_members" class="item{{ tab == 'group_members' ? ' active' }}" data-tab="group_members"><i class="user icon" aria-hidden="true"></i>{{ _T("Members") }} ({{ members|length }})</a>
+        <div class="right menu">
+            {% if group.getId() and can_export %}
+                <a href="{{ url_for("pdf_groups") }}" class="ui item icon tooltip" title="{{ _T("Export all groups and their members as PDF") }}">
+                    <i class="file pdf red labeled icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("All groups PDF") }}</span>
+                </a>
+            {% endif %}
+            {% if login.isAdmin() or login.isStaff() %}
+                <a href="{{ url_for("add_group", {"name": "NAME"}) }}" class="ui item icon tooltip" id="newgroup" title="{{ _T("Add a new group") }}">
+                    <i class="plus circle green icon" aria-hidden="true"></i>
+                    <span class="visually-hidden">{{ _T("New group") }}</span>
+                </a>
+            {% endif %}
         </div>
     </div>
+
+    {% if group.getId() %}
+        {% include "elements/group.html.twig" with {"group": group, "parent_groups": parent_groups} %}
+    {% else %}
+        <div class="ui small message">
+            {{ _T("no group") }}
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
