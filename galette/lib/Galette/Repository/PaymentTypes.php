@@ -59,11 +59,12 @@ class PaymentTypes extends Repository
      */
     public function getList(bool $schedulable = true): array|ResultSet
     {
+        global $login;
         try {
             $select = $this->zdb->select(PaymentType::TABLE, 'a');
             $select->order(PaymentType::PK);
 
-            if ($schedulable === false) {
+            if ($schedulable === false || !$login->isAdmin() && !$login->isStaff()) {
                 $select->where->notEqualTo('a.' . PaymentType::PK, PaymentType::SCHEDULED);
             }
 

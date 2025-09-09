@@ -88,22 +88,30 @@ class PaymentTypes extends GaletteTestCase
     {
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
 
+        //non admin users will not see scheduled payment type
+        $list = $types->getList();
+        $this->assertCount(6, $list);
+
+        $this->logSuperadmin();
         $list = $types->getList();
         $this->assertCount(7, $list);
+        $this->login->logout();
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select($this->zdb->getSequenceName(\Galette\Entity\PaymentType::TABLE, \Galette\Entity\PaymentType::PK));
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->assertGreaterThanOrEqual(6, $result->last_value, 'Incorrect payments types sequence');
+            $this->assertGreaterThanOrEqual(7, $result->last_value, 'Incorrect payments types sequence');
         }
 
         //reinstall payment types
         $types->installInit();
 
+        $this->logSuperadmin();
         $list = $types->getList();
         $this->assertCount(7, $list);
+        $this->login->logout();
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select($this->zdb->getSequenceName(\Galette\Entity\PaymentType::TABLE, \Galette\Entity\PaymentType::PK));
@@ -111,7 +119,7 @@ class PaymentTypes extends GaletteTestCase
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $this->assertGreaterThanOrEqual(
-                6,
+                7,
                 $result->last_value,
                 'Incorrect payment types sequence ' . $result->last_value
             );
