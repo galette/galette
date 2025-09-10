@@ -1625,24 +1625,24 @@ class Adherent implements AccessManagementInterface
 
             //an empty value will cause date to be set to 1901-01-01, a null
             //will result in 0000-00-00. We want a database NULL value here.
-            if (!$this->birthdate) {
+            if (!($this->birthdate ?? null)) {
                 $values['ddn_adh'] = new Expression('NULL');
             }
             if (!isset($this->due_date) || $this->due_date === null) {
                 $values['date_echeance'] = new Expression('NULL');
             }
 
-            if ($this->title instanceof Title) {
+            if (($this->title ?? null) instanceof Title) {
                 $values['titre_adh'] = $this->title->id;
             } else {
                 $values['titre_adh'] = new Expression('NULL');
             }
 
-            if (!$this->parent) {
+            if (!($this->parent ?? null)) {
                 $values['parent_id'] = new Expression('NULL');
             }
 
-            if (!$this->number) {
+            if (!($this->number ?? null)) {
                 $values['num_adh'] = new Expression('NULL');
             }
 
