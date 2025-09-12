@@ -156,11 +156,14 @@ class Db
     /**
      * To store Db in session
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function __sleep(): array
+    public function __serialize(): array
     {
-        return ['type_db', 'options'];
+        return [
+            'type_db' => $this->type_db,
+            'options' => $this->options
+        ];
     }
 
     /**

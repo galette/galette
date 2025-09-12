@@ -86,7 +86,9 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch"
+            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch",
+            "patch -d vendor/symfony/string/ -p3 < ../patches/symfony-string-php85.patch",
+            "patch -d vendor/dasprid/enum/ -p3 < ../patches/dasprid-enum-php85.patch"
         ]
     }
 }
