@@ -27,6 +27,7 @@ use Analog\Analog;
 use ArrayObject;
 use Galette\Entity\Adherent;
 use Galette\IO\File;
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Mailing features
@@ -41,11 +42,11 @@ use Galette\IO\File;
  * @property integer|string $id
  * @property-read string $alt_message
  * @property-read string $wrapped_message
- * @property-read \PHPMailer\PHPMailer\PHPMailer $mail
+ * @property-read PHPMailer $mail
  * @property-read string[] $errors
  * @property-read Adherent[] $recipients
  * @property-read Adherent[] $unreachables
- * @property-read string|false $tmp_path
+ * @property-read string|false|null $tmp_path
  * @property File[] $attachments
  * @property-read string $sender_name
  * @property-read string $sender_address

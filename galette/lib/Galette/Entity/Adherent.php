@@ -1628,7 +1628,7 @@ class Adherent implements AccessManagementInterface
             if (!($this->birthdate ?? null)) {
                 $values['ddn_adh'] = new Expression('NULL');
             }
-            if (!isset($this->due_date) || $this->due_date === null) {
+            if (!isset($this->due_date)) {
                 $values['date_echeance'] = new Expression('NULL');
             }
 
@@ -1656,7 +1656,7 @@ class Adherent implements AccessManagementInterface
                 'region'   => 'region_adh'
             ];
             foreach ($notnull as $prop => $field) {
-                if (!isset($this->$prop) || $this->$prop === null) {
+                if (!isset($this->$prop)) {
                     $values[$field] = '';
                 }
             }

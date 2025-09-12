@@ -38,22 +38,22 @@ use Laminas\Db\Sql\Expression;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property ?integer $id
  * @property string $name
  * @property integer $type
- * @property string $header
+ * @property ?string $header
  * @property-read string $hheader
- * @property string $footer
+ * @property ?string $footer
  * @property-read string $hfooter
- * @property string $title
+ * @property ?string $title
  * @property-read string $htitle
- * @property string $subtitle
+ * @property ?string $subtitle
  * @property-read string $hsubtitle
- * @property string $body
+ * @property ?string $body
  * @property-read string $hbody
- * @property string $styles
+ * @property ?string $styles
  * @property string $hstyles
- * @property PdfMain $parent
+ * @property ?PdfMain $parent
  */
 
 abstract class PdfModel
@@ -197,13 +197,11 @@ abstract class PdfModel
     public function store(): bool
     {
         $title = $this->title;
-        //@phpstan-ignore-next-line
         if ($title === null || trim($title) === '') {
             $title = new Expression('NULL');
         }
 
         $subtitle = $this->subtitle;
-        //@phpstan-ignore-next-line
         if ($subtitle === null || trim($subtitle) === '') {
             $subtitle = new Expression('NULL');
         }

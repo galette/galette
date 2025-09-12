@@ -379,7 +379,7 @@ class Reminder
                 }
                 break;
             case 'dest':
-                if ($this->type !== null && $value instanceof Adherent) {
+                if (isset($this->type) && $value instanceof Adherent) {
                     $this->dest = $value;
                     if ($value->getEmail() != '') {
                         $this->nomail = false;

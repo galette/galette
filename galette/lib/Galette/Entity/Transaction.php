@@ -615,7 +615,7 @@ class Transaction implements AccessManagementInterface
                 case 'date':
                     return $this->getDate($name);
                 case 'id':
-                    if (isset($this->$name) && $this->$name !== null) {
+                    if (isset($this->$name)) {
                         return (int)$this->$name;
                     }
                     return null;

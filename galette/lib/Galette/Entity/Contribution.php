@@ -47,22 +47,22 @@ use Galette\Helpers\EntityHelper;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property integer $id
- * @property string $date
- * @property DateTime $raw_date
- * @property integer $member
- * @property ContributionsTypes $type
- * @property double $amount
- * @property integer $payment_type
- * @property double $orig_amount
- * @property string $info
- * @property string $begin_date
- * @property DateTime $raw_begin_date
- * @property string $end_date
- * @property DateTime $raw_end_date
- * @property Transaction|null $transaction
- * @property integer $extension
+ * @property ?string $date
+ * @property ?DateTime $raw_date
+ * @property ?integer $member
+ * @property ?ContributionsTypes $type
+ * @property ?double $amount
+ * @property ?integer $payment_type
+ * @property ?double $orig_amount
+ * @property ?string $info
+ * @property ?string $begin_date
+ * @property ?DateTime $raw_begin_date
+ * @property ?string $end_date
+ * @property ?DateTime $raw_end_date
+ * @property ?Transaction $transaction
+ * @property ?integer $extension
  * @property integer $duration
- * @property integer $model
+ * @property ?integer $model
  * @property array<string, array<string, string>> $fields
  */
 class Contribution implements AccessManagementInterface
