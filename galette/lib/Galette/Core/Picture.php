@@ -124,10 +124,15 @@ class Picture implements FileInterface
     /**
      * "Magic" function called on unserialize
      *
+     * @param array<string, mixed> $data Data to unserialize
+     *
      * @return void
      */
-    public function __wakeup(): void
+    public function __unserialize(array $data): void
     {
+        if (isset($data['id'])) {
+            $this->id = $data['id'];
+        }
         //if file has been deleted since we store our object in the session,
         //we try to retrieve it
         if (isset($this->id) && !$this->checkFileOnFS()) {

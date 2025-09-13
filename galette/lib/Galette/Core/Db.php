@@ -169,10 +169,14 @@ class Db
     /**
      * Connect again to the database on wakeup
      *
+     * @param array<string, mixed> $data Date to unserialize
+     *
      * @return void
      */
-    public function __wakeup(): void
+    public function __unserialize(array $data): void
     {
+        $this->type_db = $data['type_db'];
+        $this->options = $data['options'];
         $this->doConnection();
     }
 
