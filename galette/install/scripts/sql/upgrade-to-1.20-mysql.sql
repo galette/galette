@@ -198,4 +198,7 @@ ALTER TABLE galette_transactions ADD FOREIGN KEY galette_transactions_ibfk_1 (id
 ALTER TABLE galette_transactions DROP CONSTRAINT galette_transactions_ibfk_2;
 ALTER TABLE galette_transactions ADD FOREIGN KEY galette_transactions_ibfk_2 (type_paiement_trans) REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
+ALTER TABLE galette_payments_schedules CHANGE creation_date creation_date DATE NOT NULL;
+ALTER TABLE galette_payments_schedules CHANGE scheduled_date scheduled_date DATE NOT NULL;
+
 SET FOREIGN_KEY_CHECKS = 1;
