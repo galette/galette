@@ -1628,7 +1628,7 @@ class Adherent implements AccessManagementInterface
             if (!($this->birthdate ?? null)) {
                 $values['ddn_adh'] = new Expression('NULL');
             }
-            if (!isset($this->due_date) || empty($this->due_date)) {
+            if (empty($this->due_date)) {
                 $values['date_echeance'] = new Expression('NULL');
             }
 
@@ -1648,6 +1648,11 @@ class Adherent implements AccessManagementInterface
 
             if (!($this->gender ?? null)) {
                 $values['sexe_adh'] = self::NC;
+            }
+
+            if (empty($this->login)) {
+                $p = new Password($this->zdb);
+                $values['login_adh'] = $p->makeRandomPassword(15);
             }
 
             //fields that cannot be null
