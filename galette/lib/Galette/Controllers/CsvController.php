@@ -51,6 +51,10 @@ class CsvController extends AbstractController
 {
     #[Inject]
     private CsvIn $csvin;
+    #[Inject]
+    private MembersCsv $members_csv;
+    #[Inject]
+    private ScheduledPaymentsCsv $scheduled_payments_csv;
 
     /**
      * Send response
@@ -242,8 +246,7 @@ class CsvController extends AbstractController
      */
     public function import(Request $request, Response $response): Response
     {
-        $csv = new CsvIn($this->zdb);
-        $existing = $csv->getExisting();
+        $existing = $this->csvin->getExisting();
 
         // display page
         $this->view->render(
@@ -334,7 +337,7 @@ class CsvController extends AbstractController
      */
     public function uploadImportFile(Request $request, Response $response): Response
     {
-        $csv = new CsvIn($this->zdb);
+        $csv = $this->csvin;
         if (isset($_FILES['new_file'])) {
             if ($_FILES['new_file']['error'] === UPLOAD_ERR_OK) {
                 if ($_FILES['new_file']['tmp_name'] != '' && is_uploaded_file($_FILES['new_file']['tmp_name'])) {
@@ -483,7 +486,7 @@ class CsvController extends AbstractController
             );
         } else {
             $csv = $type === 'export'
-                ? new CsvOut() : new CsvIn($this->zdb);
+                ? new CsvOut() : $this->csvin;
             $res = $csv->remove($file);
             if ($res === true) {
                 $success = true;
@@ -540,13 +543,11 @@ class CsvController extends AbstractController
             $model->load();
         }
 
-        $csv = new CsvIn($this->zdb);
-
         /** FIXME:
          * - set fields that should not be part of import
          */
         $fields = $model->getFields();
-        $defaults = $csv->getDefaultFields();
+        $defaults = $this->csvin->getDefaultFields();
         $defaults_loaded = false;
 
         if ($fields === null) {
@@ -604,10 +605,8 @@ class CsvController extends AbstractController
         $model = new ImportModel();
         $model->load();
 
-        $csv = new CsvIn($this->zdb);
-
         $fields = $model->getFields();
-        $defaults = $csv->getDefaultFields();
+        $defaults = $this->csvin->getDefaultFields();
 
         if ($fields === null) {
             $fields = $defaults;
@@ -684,19 +683,11 @@ class CsvController extends AbstractController
         $get = $request->getQueryParams();
 
         $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\MembersController::getDefaultFilterName());
-
         $filters = $this->session->$session_var ?? new MembersList();
 
-        $csv = new MembersCsv(
-            $this->zdb,
-            $this->login,
-            $this->members_fields,
-            $this->fields_config
-        );
-        $csv->exportMembers($filters);
-
-        $filepath = $csv->getPath();
-        $filename = $csv->getFileName();
+        $this->members_csv->exportMembers($filters);
+        $filepath = $this->members_csv->getPath();
+        $filename = $this->members_csv->getFileName();
 
         return $this->sendResponse($response, $filepath, $filename);
     }
@@ -717,11 +708,7 @@ class CsvController extends AbstractController
 
         $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName($type, ['suffix' => 'csvexport']);
 
-        if (isset($this->session->$session_var)) {
-            $filters = $this->session->$session_var;
-        } else {
-            $filters = new ContributionsList();
-        }
+        $filters = $this->session->$session_var ?? new ContributionsList();
 
         $csv = new ContributionsCsv(
             $this->zdb,
@@ -751,20 +738,11 @@ class CsvController extends AbstractController
 
         $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\ScheduledPaymentController::getDefaultFilterName(), ['suffix' => 'csvexport']);
 
-        if (isset($this->session->$session_var)) {
-            $filters = $this->session->$session_var;
-        } else {
-            $filters = new ScheduledPaymentsList();
-        }
+        $filters = $this->session->$session_var ?? new ScheduledPaymentsList();
 
-        $csv = new ScheduledPaymentsCsv(
-            $this->zdb,
-            $this->login
-        );
-        $csv->exportScheduledPayments($filters);
-
-        $filepath = $csv->getPath();
-        $filename = $csv->getFileName();
+        $this->scheduled_payments_csv->exportScheduledPayments($filters);
+        $filepath = $this->scheduled_payments_csv->getPath();
+        $filename = $this->scheduled_payments_csv->getFileName();
 
         return $this->sendResponse($response, $filepath, $filename);
     }

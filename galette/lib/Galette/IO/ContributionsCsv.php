@@ -144,7 +144,7 @@ class ContributionsCsv extends CsvOut
 
             //member name
             if (isset($contribution->{Adherent::PK})) {
-                $contribution->{Adherent::PK} = Adherent::getSName($this->zdb, $contribution->{Adherent::PK});
+                $contribution->{Adherent::PK} = Adherent::getSName($this->zdb, (int)$contribution->{Adherent::PK});
             }
         }
 

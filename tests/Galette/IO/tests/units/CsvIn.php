@@ -804,7 +804,7 @@ class CsvIn extends GaletteTestCase
      */
     public function testNoFile(): void
     {
-        $cin = new \Galette\IO\CsvIn($this->zdb);
+        $cin = $this->container->get(\Galette\IO\CsvIn::class);
         $this->assertSame(
             \Galette\IO\FileInterface::INVALID_FILE,
             $cin->import(
@@ -858,7 +858,7 @@ class CsvIn extends GaletteTestCase
      */
     public function testMissingColumn(): void
     {
-        $csvin = new \Galette\IO\CsvIn($this->zdb);
+        $csvin = $this->container->get(\Galette\IO\CsvIn::class);
 
         $fields = ['nom_adh', 'ville_adh', 'fingerprint'];
         $file_name = 'test-import-missing-column.csv';
@@ -908,7 +908,7 @@ class CsvIn extends GaletteTestCase
             '[Galette\IO\CsvIn] Fields count mismatch... There should be 3 fields and there are 2 (row 1)'
         );
 
-        $csvin = new \Galette\IO\CsvIn($this->zdb);
+        $csvin = $this->container->get(\Galette\IO\CsvIn::class);
         $file_name = 'test-import-missing-column-headers.csv';
         $fields = ['nom_adh', 'fingerprint'];
         $members_list = $this->getMemberData1();

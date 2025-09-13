@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use DateTime;
+use DI\Attribute\Inject;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
@@ -44,28 +45,26 @@ class MembersCsv extends CsvOut
 {
     private string $filename;
     private string $path;
-    private Db $zdb;
-    private Login $login;
-    /** @var array<string,mixed> */
-    private array $members_fields;
-    private FieldsConfig $fields_config;
 
     /**
      * Default constructor
      *
      * @param Db                  $zdb            Db instance
      * @param Login               $login          Login instance
-     * @param array<string,mixed> $members_fields Members fields
-     * @param FieldsConfig        $fields_config  Fields configuration
+     * @param FieldsConfig        $fields_config  FieldsConfig instance
+     * @param array<string,mixed> $members_fields Members fields configuration
+     * @param Status              $status         Status entity instance
      */
-    public function __construct(Db $zdb, Login $login, array $members_fields, FieldsConfig $fields_config)
-    {
+    public function __construct(
+        private readonly Db $zdb,
+        private readonly Login $login,
+        private readonly FieldsConfig $fields_config,
+        #[Inject("members_fields")]
+        private readonly array $members_fields,
+        private readonly Status $status
+    ) {
         $this->filename = __('filtered_memberslist') . '.csv';
         $this->path = self::DEFAULT_DIRECTORY . $this->filename;
-        $this->zdb = $zdb;
-        $this->login = $login;
-        $this->members_fields = $members_fields;
-        $this->fields_config = $fields_config;
         parent::__construct();
     }
 
@@ -135,8 +134,7 @@ class MembersCsv extends CsvOut
             true
         );
 
-        $s = new Status($this->zdb);
-        $statuses = $s->getList();
+        $statuses = $this->status->getList();
 
         $t = new Titles($this->zdb);
         $titles = $t->getList();

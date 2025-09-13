@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
-use DI\Attribute\Inject;
 use Galette\Core\I18n;
 use Galette\Entity\Title;
 use Throwable;
@@ -94,20 +93,19 @@ class CsvIn extends Csv implements FileInterface
     private array $langs;
     /** @var array<string,int> */
     private array $emails;
-    private Db $zdb;
     private Preferences $preferences;
     private History $history;
-    #[Inject]
-    private Status $status; // @phpstan-ignore property.onlyRead (this is what's expected here)
 
     /**
      * Default constructor
      *
-     * @param Db $zdb Database
+     * @param Db     $zdb    Database
+     * @param Status $status Status instance
      */
-    public function __construct(Db $zdb)
-    {
-        $this->zdb = $zdb;
+    public function __construct(
+        private Db $zdb,
+        private readonly Status $status
+    ) {
         $this->init(
             self::DEFAULT_DIRECTORY,
             $this->extensions,
