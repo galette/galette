@@ -62,25 +62,11 @@ class PdfController extends GaletteRoutingTestCase
     {
         $this->zdb = new \Galette\Core\Db();
 
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
-
         $delete = $this->zdb->delete(\Galette\Core\Links::TABLE);
         $this->zdb->execute($delete);
 
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
+        $this->cleanContributions();
+        $this->cleanMembers();
         $this->cleanHistory();
     }
 
