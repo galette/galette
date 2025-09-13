@@ -1073,6 +1073,12 @@ class Adherent extends GaletteTestCase
             );
             $this->assertTrue($adh->check($data, [], []));
             $this->assertTrue($adh->store());
+
+            if ($field === 'login_adh') {
+                $this->assertTrue($adh->load($adh->id));
+                //login is mandatory, it takes an automatic value if not set
+                $this->assertNotEmpty($adh->login);
+            }
         }
 
         //reset
