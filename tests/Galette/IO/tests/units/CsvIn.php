@@ -78,6 +78,10 @@ class CsvIn extends GaletteTestCase
         if ($this->contents_table !== null) {
             $this->zdb->drop($this->contents_table);
         }
+
+        //remove model
+        $delete = $this->zdb->delete(\Galette\Entity\ImportModel::TABLE);
+        $this->zdb->execute($delete);
     }
 
     /**

@@ -396,18 +396,6 @@ class CsvController extends AbstractController
     public function getFile(Request $request, Response $response, string $file, string $type): Response
     {
         $filename = $file;
-
-        //Exports main contain user confidential data, they're accessible only for
-        //admins or staff members
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-            Analog::log(
-                'A non authorized person asked to retrieve ' . $type . ' file named `'
-                . $filename . '`. Access has not been granted.',
-                Analog::WARNING
-            );
-            return $response->withStatus(403);
-        }
-
         $filepath = $type === 'export'
             ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
         $filepath .= $filename;
