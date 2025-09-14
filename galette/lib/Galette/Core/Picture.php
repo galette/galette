@@ -26,12 +26,12 @@ namespace Galette\Core;
 use ArrayObject;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Select;
+use Psr\Http\Message\UploadedFileInterface;
 use Slim\Psr7\Response;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Repository\Members;
-use Galette\IO\FileInterface;
 use Galette\IO\FileTrait;
 
 /**
@@ -40,12 +40,13 @@ use Galette\IO\FileTrait;
  * @author Frédéric Jacquot <gna@logeek.com>
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Picture implements FileInterface
+class Picture
 {
     use FileTrait {
         writeOnDisk as protected trait_writeOnDisk;
-        store as protected trait_store;
+        storeFile as protected trait_store;
         getMimeType as protected trait_getMimeType;
+        upload as protected trait_upload;
     }
 
     //constants that will not be overridden
@@ -414,18 +415,42 @@ class Picture implements FileInterface
     }
 
     /**
+     * Do a file upload
+     *
+     * @param UploadedFileInterface[] $request_files Array of uploaded files (typically from PSR7 request)
+     * @param string                  $key           Key to look for in uploaded files
+     * @param callable|null           $callback      Callback to use for storing the file. If null, will use $this->storeFile()
+     * @param ?array<string,mixed>    $cropping      Cropping properties
+     *
+     * @return bool
+     */
+    public function upload(array $request_files, string $key, ?callable $callback = null, ?array $cropping = null): bool
+    {
+        global $preferences;
+
+        $callback = function ($uploaded_file) use ($cropping, $preferences) {
+            if ($preferences->pref_force_picture_ratio == 1 && isset($cropping)) {
+                return $this->storeFile($uploaded_file, $cropping);
+            } else {
+                return $this->storeFile($uploaded_file);
+            }
+        };
+
+        return $this->trait_upload($request_files, $key, $callback);
+    }
+
+    /**
      * Stores an image on the disk and in the database
      *
-     * @param array<string, mixed>  $file     The uploaded file
-     * @param boolean               $ajax     If the image comes from an ajax call (dnd)
+     * @param UploadedFileInterface $file     The uploaded file
      * @param ?array<string, mixed> $cropping Cropping properties
      *
      * @return true|int
      */
-    public function store(array $file, bool $ajax = false, ?array $cropping = null): bool|int
+    public function storeFile(UploadedFileInterface $file, ?array $cropping = null): bool|int
     {
         $this->cropping = $cropping;
-        return $this->trait_store($file, $ajax);
+        return $this->trait_store($file);
     }
 
     /**
@@ -459,17 +484,16 @@ class Picture implements FileInterface
     /**
      * Write file on disk
      *
-     * @param string $tmpfile Temporary file
-     * @param bool   $ajax    If the file comes from an ajax call (dnd)
+     * @param UploadedFileInterface $file Uploaded file
      *
      * @return true|int
      */
-    public function writeOnDisk(string $tmpfile, bool $ajax): bool|int
+    public function writeOnDisk(UploadedFileInterface $file): bool|int
     {
         global $zdb;
 
         $this->setDestDir($this->store_path);
-        $current = getimagesize($tmpfile);
+        $current = getimagesize($file->getStream()->getMetadata('uri'));
 
         // Source image must have minimum dimensions to match the cropping process requirements
         // and ensure the final picture will fit the maximum allowed resizing dimensions.
@@ -488,7 +512,7 @@ class Picture implements FileInterface
         }
         $this->delete();
 
-        $result = $this->trait_writeOnDisk($tmpfile, $ajax);
+        $result = $this->trait_writeOnDisk($file);
         if ($result !== true) {
             return $result;
         }
@@ -496,7 +520,7 @@ class Picture implements FileInterface
         // current[0] gives width; current[1] gives height
         if ($current[0] > $this->max_width || $current[1] > $this->max_height) {
             /** FIXME: what if image cannot be resized?
-            Should'nt we want to stop the process here? */
+            Shouldn't we want to stop the process here? */
             $this->resizeImage($this->buildDestPath(), $this->extension, null, $this->cropping);
         }
 

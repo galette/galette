@@ -96,33 +96,6 @@ class Document extends GaletteTestCase
         $this->assertCount(5, $document->getSystemTypes());
     }
 
-    //FIXME: not possible to test real document, since all relies on a file upload...
-
-    /**
-     * Get mocked document instance
-     *
-     * @return \Galette\Entity\Document
-     */
-    private function getDocumentInstance(): \Galette\Entity\Document
-    {
-        $document = $this->getMockBuilder(\Galette\Entity\Document::class)
-            ->setConstructorArgs(array($this->zdb))
-            ->onlyMethods(array('handleFiles'))
-            ->getMock();
-
-        $document->method('handleFiles')
-            ->willReturnCallback(
-                function (array $files) use ($document) {
-                    $reflection = new \ReflectionClass(\Galette\Entity\Document::class);
-                    $reflection_property = $reflection->getProperty('filename');
-                    $reflection_property->setValue($document, $files['document_file']['name']);
-
-                    return true;
-                }
-            );
-        return $document;
-    }
-
     /**
      * Test getList
      *
@@ -135,11 +108,14 @@ class Document extends GaletteTestCase
         // no document yet, list is empty
         $this->assertSame([], $document->getList());
 
-        $_FILES['document_file'] = [
-            'error' => UPLOAD_ERR_OK,
-            'name'      => 'status.pdf',
-            'tmp_name'  => '/tmp/status.pdf',
-            'size'      => 2048
+        $uploaded_files = [
+            'document_file' => new \Slim\Psr7\UploadedFile(
+                '/tmp/status.pdf',
+                'status.pdf',
+                'application/pdf',
+                2048,
+                UPLOAD_ERR_OK
+            )
         ];
         $post = [
             'document_type' => \Galette\Entity\Document::STATUS,
@@ -147,7 +123,7 @@ class Document extends GaletteTestCase
             'visible' => \Galette\Entity\FieldsConfig::ALL
         ];
 
-        $this->assertTrue($document->store($post, $_FILES));
+        $this->assertTrue($document->store($post, $uploaded_files));
 
         //test list
         $list = $document->getList();
@@ -168,11 +144,14 @@ class Document extends GaletteTestCase
 
         //"upload" another document
         $document = $this->getDocumentInstance();
-        $_FILES['document_file'] = [
-            'error' => UPLOAD_ERR_OK,
-            'name'      => 'afile.pdf',
-            'tmp_name'  => '/tmp/afile.pdf',
-            'size'      => 4096
+        $uploaded_files = [
+            'document_file' => new \Slim\Psr7\UploadedFile(
+                '/tmp/afile.pdf',
+                'afile.pdf',
+                'application/pdf',
+                4096,
+                UPLOAD_ERR_OK
+            )
         ];
         $post = [
             'document_type' => 'An other document type',
@@ -180,7 +159,7 @@ class Document extends GaletteTestCase
             'visible' => \Galette\Entity\FieldsConfig::STAFF
         ];
 
-        $this->assertTrue($document->store($post, $_FILES));
+        $this->assertTrue($document->store($post, $uploaded_files));
 
         //test list - not authenticated
         $list = $document->getList();
@@ -202,33 +181,39 @@ class Document extends GaletteTestCase
 
         //logged in regular member document
         $document = $this->getDocumentInstance();
-        $_FILES['document_file'] = [
-            'error' => UPLOAD_ERR_OK,
-            'name'      => 'member.pdf',
-            'tmp_name'  => '/tmp/member.pdf',
-            'size'      => 4096
+        $uploaded_files = [
+            'document_file' => new \Slim\Psr7\UploadedFile(
+                '/tmp/member.pdf',
+                'member.pdf',
+                'application/pdf',
+                4096,
+                UPLOAD_ERR_OK
+            )
         ];
         $post = [
             'document_type' => \Galette\Entity\Document::MINUTES,
             'comment' => '',
             'visible' => \Galette\Entity\FieldsConfig::USER_READ
         ];
-        $this->assertTrue($document->store($post, $_FILES));
+        $this->assertTrue($document->store($post, $uploaded_files));
 
         //inaccessible document
         $document = $this->getDocumentInstance();
-        $_FILES['document_file'] = [
-            'error' => UPLOAD_ERR_OK,
-            'name'      => 'noaccess.pdf',
-            'tmp_name'  => '/tmp/noaccess.pdf',
-            'size'      => 4096
+        $uploaded_files = [
+            'document_file' => new \Slim\Psr7\UploadedFile(
+                '/tmp/noaccess.pdf',
+                'noaccess.pdf',
+                'application/pdf',
+                4096,
+                UPLOAD_ERR_OK
+            )
         ];
         $post = [
             'document_type' => \Galette\Entity\Document::MINUTES,
             'comment' => '',
             'visible' => \Galette\Entity\FieldsConfig::NOBODY
         ];
-        $this->assertTrue($document->store($post, $_FILES));
+        $this->assertTrue($document->store($post, $uploaded_files));
 
         //test list - not authenticated
         $list = $document->getList();
@@ -322,11 +307,14 @@ class Document extends GaletteTestCase
 
         //create a new type
         $document = $this->getDocumentInstance();
-        $_FILES['document_file'] = [
-            'error' => UPLOAD_ERR_OK,
-            'name'      => 'afile.pdf',
-            'tmp_name'  => '/tmp/afile.pdf',
-            'size'      => 4096
+        $uploaded_files = [
+            'document_file' => new \Slim\Psr7\UploadedFile(
+                '/tmp/afile.pdf',
+                'afile.pdf',
+                'application/pdf',
+                4096,
+                UPLOAD_ERR_OK
+            )
         ];
         $post = [
             'document_type' => 'An other document type',
@@ -334,7 +322,7 @@ class Document extends GaletteTestCase
             'visible' => \Galette\Entity\FieldsConfig::STAFF
         ];
 
-        $this->assertTrue($document->store($post, $_FILES));
+        $this->assertTrue($document->store($post, $uploaded_files));
 
         //check new type is present from getTypes() method
         $list_types['An other document type'] = 'An other document type';

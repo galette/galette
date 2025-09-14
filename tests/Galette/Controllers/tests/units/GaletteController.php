@@ -60,9 +60,13 @@ class GaletteController extends GaletteRoutingTestCase
      */
     public function tearDown(): void
     {
-        parent::tearDown();
+        $delete = $this->zdb->delete(\Galette\Core\Picture::TABLE);
+        $this->zdb->execute($delete);
+
         $this->cleanContributions();
         $this->cleanMembers();
+
+        parent::tearDown();
     }
 
     /**
@@ -204,6 +208,97 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertEquals(301, $test_response->getStatusCode());
         $preferences = new \Galette\Core\Preferences($this->zdb);
         $this->assertSame('Galette', $preferences->pref_nom);
+    }
+
+    /**
+     * Test store logo
+     *
+     * @return void
+     */
+    public function testStoreLogo(): void
+    {
+        $this->logSuperAdmin();
+
+        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png'));
+        $uploaded_files = [
+            'logo' => new \Slim\Psr7\UploadedFile(
+                sys_get_temp_dir() . '/galette_pro.png',
+                'galette_pro.png',
+                'impage/png',
+                filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                UPLOAD_ERR_OK
+            )
+        ];
+
+        $request = $this->createRequest('store-preferences', [], 'POST');
+        $request = $request->withUploadedFiles($uploaded_files);
+        $request = $request->withParsedBody(['valid' => 1] + $this->preferences->getDefaults());
+        $test_response = $this->app->handle($request);
+        $this->assertEquals(301, $test_response->getStatusCode());
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
+        $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for 0');
+        $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
+
+        //check for new logo presence
+        $this->assertTrue(file_exists(GALETTE_PHOTOS_PATH . '/custom_logo.png'));
+
+        //delete logo
+        $request = $this->createRequest('store-preferences', [], 'POST');
+        $request = $request->withParsedBody(['del_logo' => 1, 'valid' => 1] + $this->preferences->getDefaults());
+        $test_response = $this->app->handle($request);
+        $this->assertEquals(301, $test_response->getStatusCode());
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
+
+        //check logo has been removed
+        $this->assertFalse(file_exists(GALETTE_PHOTOS_PATH . '/custom_logo.png'));
+    }
+
+    /**
+     * Test store print logo
+     *
+     * @return void
+     */
+    public function testStorePrintLogo(): void
+    {
+        $this->logSuperAdmin();
+
+        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png'));
+        $uploaded_files = [
+            'card_logo' => new \Slim\Psr7\UploadedFile(
+                sys_get_temp_dir() . '/galette_pro.png',
+                'galette_pro.png',
+                'impage/png',
+                filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                UPLOAD_ERR_OK
+            )
+        ];
+
+        $request = $this->createRequest('store-preferences', [], 'POST');
+        $request = $request->withUploadedFiles($uploaded_files);
+        $request = $request->withParsedBody(['valid' => 1] + $this->preferences->getDefaults());
+        $test_response = $this->app->handle($request);
+        $this->assertEquals(301, $test_response->getStatusCode());
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
+        $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for 999999');
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
+
+        //check for new logo presence
+        $this->assertTrue(file_exists(GALETTE_PHOTOS_PATH . '/custom_print_logo.png'));
+
+        //delete logo
+        $request = $this->createRequest('store-preferences', [], 'POST');
+        $request = $request->withParsedBody(['del_card_logo' => 1, 'valid' => 1] + $this->preferences->getDefaults());
+        $test_response = $this->app->handle($request);
+        $this->assertEquals(301, $test_response->getStatusCode());
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
+
+        //check logo has been removed
+        $this->assertFalse(file_exists(GALETTE_PHOTOS_PATH . '/custom_print_logo.png'));
     }
 
     /**

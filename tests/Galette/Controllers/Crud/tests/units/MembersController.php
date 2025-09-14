@@ -59,6 +59,10 @@ class MembersController extends GaletteRoutingTestCase
     public function tearDown(): void
     {
         $this->zdb = new \Galette\Core\Db();
+
+        $delete = $this->zdb->delete(\Galette\Core\Picture::TABLE);
+        $this->zdb->execute($delete);
+
         $this->cleanContributions();
         $this->cleanMembers();
         parent::tearDown();
@@ -2223,6 +2227,66 @@ class MembersController extends GaletteRoutingTestCase
         );
         $this->expectFlashData([]);
         $this->resetStaffStatus($staff_member, $member_one);
+    }
+
+    /**
+     * Test member photo
+     *
+     * @return void
+     */
+    public function testMemberPhoto(): void
+    {
+        $member_one = $this->getMemberOne();
+        $mdata = $this->dataAdherentOne();
+        $mdata['id_adh'] = $member_one->id;
+
+        $route_name = 'doEditMember';
+        $route_arguments = ['id' => $member_one->id];
+
+        $this->logSuperAdmin();
+
+        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png'));
+        $uploaded_files = [
+            'photo' => new \Slim\Psr7\UploadedFile(
+                sys_get_temp_dir() . '/galette_pro.png',
+                'galette_pro.png',
+                'impage/png',
+                filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                UPLOAD_ERR_OK
+            )
+        ];
+
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $request->withParsedBody($mdata);
+        $request = $request->withUploadedFiles($uploaded_files);
+
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for ' . $member_one->id);
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+
+        //check photo is present
+        $this->assertTrue(file_exists(GALETTE_PHOTOS_PATH . '/' . $member_one->id . '.png'));
+
+        //Remove photo
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+        $request = $request->withParsedBody($mdata + ['del_photo' => '1']);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]],
+            $test_response->getHeaders()
+        );
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+
+        $this->assertFalse(file_exists(GALETTE_PHOTOS_PATH . '/' . $member_one->id . '.png'));
+
+        $this->login->logout();
     }
 
     /**

@@ -254,9 +254,10 @@ class GaletteController extends AbstractController
                 }
 
                 if (!Galette::isDemo()) {
+                    $files = $request->getUploadedFiles();
                     //handle logo
-                    if (isset($_FILES['logo'])) {
-                        $file_res = $this->preferences->handleLogo($this->logo, $_FILES);
+                    if (isset($files['logo'])) {
+                        $file_res = $this->preferences->handleLogo($this->logo, $files['logo']);
                         if (is_array($file_res)) {
                             $error_detected = array_merge($error_detected, $file_res);
                         }
@@ -266,8 +267,8 @@ class GaletteController extends AbstractController
                     }
 
                     //handle card logo
-                    if (isset($_FILES['card_logo'])) {
-                        $file_res = $this->preferences->handlePrintLogo($this->print_logo, $_FILES);
+                    if (isset($files['card_logo'])) {
+                        $file_res = $this->preferences->handleLogo($this->print_logo, $files['card_logo']);
                         if (is_array($file_res)) {
                             $error_detected = array_merge($error_detected, $file_res);
                         }

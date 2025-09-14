@@ -173,11 +173,11 @@ class Picture extends TestCase
                 //will give an invalid extension
                 $expected = \Galette\Core\Picture::INVALID_EXTENSION;
             }
-            $file = [
-                'name'      => 'file-with-' . $badchar . '-char.jpg',
-                'tmp_name'  => 'none'
-            ];
-            $this->assertSame($expected, $this->picture->store($file));
+            $uploaded_file = new \Slim\Psr7\UploadedFile(
+                'none',
+                'file-with-' . $badchar . '-char.jpg'
+            );
+            $this->assertSame($expected, $this->picture->storeFile($uploaded_file));
         }
 
         $files = [
@@ -190,13 +190,15 @@ class Picture extends TestCase
         ];
 
         foreach ($files as $file) {
-            $file = [
-                'name'      => $file,
-                'tmp_name'  => 'none',
-                'size'      => \Galette\Core\Picture::MAX_FILE_SIZE * 1024 * 100
-            ];
+            $uploaded_file = new \Slim\Psr7\UploadedFile(
+                'none',
+                $file,
+                'image/jpeg',
+                \Galette\Core\Picture::MAX_FILE_SIZE * 1024 * 100,
+                UPLOAD_ERR_OK
+            );
             //Will fail on filesize, but this is OK, filenames and extensions have been checked :)
-            $this->assertSame(\Galette\Core\Picture::FILE_TOO_BIG, $this->picture->store($file));
+            $this->assertSame(\Galette\Core\Picture::FILE_TOO_BIG, $this->picture->storeFile($uploaded_file));
         }
     }
 

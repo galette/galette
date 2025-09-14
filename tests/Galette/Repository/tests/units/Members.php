@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Repository\test\units;
 
 use Galette\GaletteTestCase;
+use Slim\Psr7\UploadedFile;
 
 /**
  * Members repository tests
@@ -167,16 +168,14 @@ class Members extends GaletteTestCase
 
                 $copied = copy($url, $file);
                 $this->assertTrue($copied);
-                $_FILES = array(
-                    'photo' => array(
-                        'name'      => 'fakephoto.jpg',
-                        'type'      => 'image/jpeg',
-                        'size'      => filesize($file),
-                        'tmp_name'  => $file,
-                        'error'     => 0
-                    )
+                $uploaded_file = new \Slim\Psr7\UploadedFile(
+                    $file,
+                    'fakephoto.jpg',
+                    'image/jpeg',
+                    filesize($file),
+                    UPLOAD_ERR_OK
                 );
-                $this->assertGreaterThan(0, (int)$member->picture->store($_FILES['photo'], true));
+                $this->assertGreaterThan(0, (int)$member->picture->storeFile($uploaded_file));
                 $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for ' . $member->id);
             }
         }

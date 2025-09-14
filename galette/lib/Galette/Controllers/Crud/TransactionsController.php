@@ -329,7 +329,7 @@ class TransactionsController extends ContributionsController
             $redirect_url = $this->routeparser->urlFor('slash');
         }
 
-        $files_res = $trans->handleFiles($_FILES);
+        $files_res = $trans->handleFiles($request->getUploadedFiles());
         if (is_array($files_res)) {
             foreach ($files_res as $res) {
                 $this->flash->addMessage(

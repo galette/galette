@@ -26,6 +26,7 @@ namespace Galette\Features;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Repository\DynamicFieldsSet;
+use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
 use Galette\DynamicFields\File;
@@ -221,7 +222,7 @@ trait Dynamics
     /**
      * Store dynamic Files
      *
-     * @param array<string, mixed> $files Posted files
+     * @param array<UploadedFileInterface> $files Posted files
      *
      * @return void
      */
@@ -242,34 +243,22 @@ trait Dynamics
             }
 
             if (
-                $file['error'] == UPLOAD_ERR_NO_FILE
-                && $file['name'] == ''
-                && $file['tmp_name'] == ''
+                $file->getError() == UPLOAD_ERR_NO_FILE
+                && $file->getClientFilename() == ''
             ) {
                 //not upload atempt.
                 continue;
-            } elseif ($file['error'] !== UPLOAD_ERR_OK) {
+            } elseif ($file->getError() !== UPLOAD_ERR_OK) {
                 Analog::log("file upload error", Analog::ERROR);
-                continue;
-            }
-
-            $tmp_filename = $file['tmp_name'];
-            if ($tmp_filename == '') {
-                Analog::log("empty temporary filename", Analog::ERROR);
-                continue;
-            }
-
-            if (!is_uploaded_file($tmp_filename)) {
-                Analog::log("not an uploaded file", Analog::ERROR);
                 continue;
             }
 
             $max_size
                 = $fields[$field_id]->getSize()
                 ? $fields[$field_id]->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
-            if ($file['size'] > $max_size) {
+            if ($file->getSize() > $max_size) {
                 Analog::log(
-                    "file too large: " . $file['size'] . " Ko, vs $max_size Ko allowed",
+                    "file too large: " . $file->getSize() . " Ko, vs $max_size Ko allowed",
                     Analog::ERROR
                 );
                 $this->errors[] = preg_replace(
@@ -293,11 +282,8 @@ trait Dynamics
             );
             Analog::log("new file: $new_filename", Analog::DEBUG);
 
-            move_uploaded_file(
-                $tmp_filename,
-                GALETTE_FILES_PATH . $new_filename
-            );
-            $this->dynamics->setValue($this->id, (int)$field_id, (int)$val_index, $file['name']);
+            $file->moveTo(GALETTE_FILES_PATH . $new_filename);
+            $this->dynamics->setValue($this->id, (int)$field_id, (int)$val_index, $file->getClientFilename());
             $store = true;
         }
 

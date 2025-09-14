@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Util;
 
 use Galette\Entity\Adherent;
+use Slim\Psr7\UploadedFile;
 
 /**
  * Generate random data
@@ -54,16 +55,14 @@ class FakeData
         $url = !defined('GALETTE_TESTS') ? 'https://loremflickr.com/800/600/people' : GALETTE_ROOT . '../tests/fake_image.jpg';
 
         if (copy($url, $file)) {
-            $_FILES = [
-                'photo' => [
-                    'name'      => 'fakephoto.jpg',
-                    'type'      => 'image/jpeg',
-                    'size'      => filesize($file),
-                    'tmp_name'  => $file,
-                    'error'     => 0
-                ]
-            ];
-            $res = $member->picture->store($_FILES['photo'], true);
+            $uploaded_file = new UploadedFile(
+                $file,
+                'fakephoto.jpg',
+                'image/jpeg',
+                filesize($file),
+                UPLOAD_ERR_OK
+            );
+            $res = $member->picture->storeFile($uploaded_file);
             if ($res < 0) {
                 $this->addError(
                     _T("Photo has not been stored!")

@@ -371,7 +371,7 @@ class ContributionsController extends CrudController
                 $store = $contrib->store();
                 if ($store === true) {
                     ++$success;
-                    $files_res = $contrib->handleFiles($_FILES);
+                    $files_res = $contrib->handleFiles($request->getUploadedFiles());
                     if (is_array($files_res)) {
                         $error_detected = array_merge($error_detected, $files_res);
                     }
@@ -910,7 +910,7 @@ class ContributionsController extends CrudController
             'success_detected',
             _T('Contribution has been successfully stored')
         );
-        $files_res = $contrib->handleFiles($_FILES);
+        $files_res = $contrib->handleFiles($request->getUploadedFiles());
         if (is_array($files_res)) {
             foreach ($files_res as $res) {
                 $this->flash->addMessage(

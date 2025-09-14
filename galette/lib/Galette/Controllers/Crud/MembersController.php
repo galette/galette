@@ -1853,7 +1853,7 @@ class MembersController extends CrudController
                 $cropping['ratio'] = $this->preferences->pref_member_picture_ratio ?? 'square_ratio';
                 $cropping['focus'] = $post['crop_focus'] ?? 'center';
             }
-            $files_res = $member->handleFiles($_FILES, $cropping);
+            $files_res = $member->handleFiles($request->getUploadedFiles(), $cropping);
             if (is_array($files_res)) {
                 $error_detected = array_merge($error_detected, $files_res);
             }

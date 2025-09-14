@@ -277,7 +277,7 @@ class CsvController extends AbstractController
         $post = $request->getParsedBody();
         $dryrun = isset($post['dryrun']);
 
-        //store selected file to dispaly again in UI
+        //store selected file to display again in UI
         $this->session->import_file = $post['import_file'];
 
         $res = $csv->import(
@@ -337,44 +337,24 @@ class CsvController extends AbstractController
      */
     public function uploadImportFile(Request $request, Response $response): Response
     {
-        $csv = $this->csvin;
-        if (isset($_FILES['new_file'])) {
-            if ($_FILES['new_file']['error'] === UPLOAD_ERR_OK) {
-                if ($_FILES['new_file']['tmp_name'] != '' && is_uploaded_file($_FILES['new_file']['tmp_name'])) {
-                    $res = $csv->store($_FILES['new_file']);
-                    if ($res < 0) {
-                        $this->flash->addMessage(
-                            'error_detected',
-                            $csv->getErrorMessage($res)
-                        );
-                    } else {
-                        $this->flash->addMessage(
-                            'success_detected',
-                            _T("Your file has been successfully uploaded!")
-                        );
-                    }
-                }
-            } elseif ($_FILES['new_file']['error'] !== UPLOAD_ERR_NO_FILE) {
-                Analog::log(
-                    $csv->getPhpErrorMessage($_FILES['new_file']['error']),
-                    Analog::WARNING
-                );
+        $request_files =  $request->getUploadedFiles();
+        $key = 'new_file';
+        if (!$this->csvin->upload(request_files: $request_files, key: $key)) {
+            foreach ($this->csvin->uploadErrors() as $error) {
                 $this->flash->addMessage(
                     'error_detected',
-                    $csv->getPhpErrorMessage(
-                        $_FILES['new_file']['error']
-                    )
-                );
-            } elseif (isset($_POST['upload'])) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("No file has been selected for upload!")
+                    $error
                 );
             }
-        } else {
+        } elseif (!isset($request_files[$key])) {
             $this->flash->addMessage(
                 'warning_detected',
                 _T("No file has been uploaded!")
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Your file has been successfully uploaded!")
             );
         }
 

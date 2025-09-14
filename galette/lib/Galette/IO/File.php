@@ -29,7 +29,7 @@ namespace Galette\IO;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class File implements FileInterface
+class File
 {
     use FileTrait;
 
