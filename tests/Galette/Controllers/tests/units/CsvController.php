@@ -715,4 +715,75 @@ class CsvController extends GaletteRoutingTestCase
             $body
         );
     }
+
+    /**
+     * Test upload and import CSV file
+     *
+     * @return void
+     */
+    public function testImportFile(): void
+    {
+        $route_name = 'uploadImportFile';
+        $route_arguments = [];
+        $request = $this->createRequest($route_name, $route_arguments, 'POST');
+
+        //login is required to access this page
+        //Refused from authenticate middleware
+        $test_response = $this->app->handle($request);
+        $this->expectLogin($test_response);
+
+        //test again once logged-in as superadmin
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('import')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['warning_detected' => ['No file has been uploaded!']]);
+
+        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/import_file.csv', sys_get_temp_dir() . '/uploaded_file.csv'));
+        $uploaded_files = [
+            'new_file' => new \Slim\Psr7\UploadedFile(
+                sys_get_temp_dir() . '/uploaded_file.csv',
+                'uploaded_file.csv',
+                'text/csv'
+            )
+        ];
+        $request = $request->withUploadedFiles($uploaded_files);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('import')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['Your file has been successfully uploaded!']]);
+
+        //check uploaded file
+        $this->assertTrue(file_exists(GALETTE_IMPORTS_PATH . '/uploaded_file.csv'));
+        $this->assertSame(
+            file_get_contents(GALETTE_TESTS_PATH . '/fixtures/import_file.csv'),
+            file_get_contents(GALETTE_IMPORTS_PATH . '/uploaded_file.csv')
+        );
+
+        //import file
+        $model = new \Galette\Entity\ImportModel();
+        $model->setFields(['nom_adh', 'prenom_adh', 'ville_adh', 'fingerprint']);
+        $this->assertTrue($model->store($this->zdb));
+
+        $members = new \Galette\Repository\Members();
+        $this->assertCount(0, $members->getList());
+
+        $route_name = 'doImport';
+        $request = $this->createRequest($route_name, [], 'POST');
+        $request = $request->withParsedBody(['import_file' => 'uploaded_file.csv']);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('import')]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['File \'uploaded_file.csv\' has been successfully imported :)']]);
+
+        //2 members in CSV file has been imported
+        $this->assertCount(2, $members->getList());
+
+        //remove file
+        unlink(GALETTE_IMPORTS_PATH . '/uploaded_file.csv');
+        $this->login->logOut();
+    }
 }

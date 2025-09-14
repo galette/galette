@@ -162,13 +162,14 @@ class CsvIn extends GaletteTestCase
 
         $path = GALETTE_CACHE_DIR . $file_name;
         $this->assertIsInt(file_put_contents($path, $contents));
-        $_FILES['new_file'] = [
-            'error' => UPLOAD_ERR_OK,
-            'name'      => $file_name,
-            'tmp_name'  => $path,
-            'size'      => filesize($path)
-        ];
-        $this->assertTrue($csvin->store($_FILES['new_file'], true));
+        $uploaded_file = new \Slim\Psr7\UploadedFile(
+            $path,
+            $file_name,
+            'text/csv',
+            filesize($path),
+            UPLOAD_ERR_OK
+        );
+        $this->assertTrue($csvin->storeFile($uploaded_file));
         $this->assertTrue(file_exists($csvin->getDestDir() . $csvin->getFileName()));
 
         $post = [
@@ -810,7 +811,7 @@ class CsvIn extends GaletteTestCase
     {
         $cin = $this->container->get(\Galette\IO\CsvIn::class);
         $this->assertSame(
-            \Galette\IO\FileInterface::INVALID_FILE,
+            $cin::INVALID_FILE,
             $cin->import(
                 $this->zdb,
                 $this->preferences,
@@ -882,17 +883,18 @@ class CsvIn extends GaletteTestCase
 
         $path = GALETTE_CACHE_DIR . $file_name;
         $this->assertIsInt(file_put_contents($path, $contents));
-        $_FILES['new_file'] = [
-            'error' => UPLOAD_ERR_OK,
-            'name'      => $file_name,
-            'tmp_name'  => $path,
-            'size'      => filesize($path)
-        ];
-        $this->assertTrue($csvin->store($_FILES['new_file'], true));
+        $uploaded_file = new \Slim\Psr7\UploadedFile(
+            $path,
+            $file_name,
+            'text/csv',
+            filesize($path),
+            UPLOAD_ERR_OK
+        );
+        $this->assertTrue($csvin->storeFile($uploaded_file));
         $this->assertTrue(file_exists($csvin->getDestDir() . $csvin->getFileName()));
 
         $this->assertSame(
-            \Galette\IO\FileInterface::INVALID_FILE,
+            $csvin::INVALID_FILE,
             $csvin->import(
                 $this->zdb,
                 $this->preferences,
@@ -928,17 +930,18 @@ class CsvIn extends GaletteTestCase
 
         $path = GALETTE_CACHE_DIR . $file_name;
         $this->assertIsInt(file_put_contents($path, $contents));
-        $_FILES['new_file'] = [
-            'error' => UPLOAD_ERR_OK,
-            'name'      => $file_name,
-            'tmp_name'  => $path,
-            'size'      => filesize($path)
-        ];
-        $this->assertTrue($csvin->store($_FILES['new_file'], true));
+        $uploaded_file = new \Slim\Psr7\UploadedFile(
+            $path,
+            $file_name,
+            'text/csv',
+            filesize($path),
+            UPLOAD_ERR_OK
+        );
+        $this->assertTrue($csvin->storeFile($uploaded_file));
         $this->assertTrue(file_exists($csvin->getDestDir() . $csvin->getFileName()));
 
         $this->assertSame(
-            \Galette\IO\FileInterface::INVALID_FILE,
+            $csvin::INVALID_FILE,
             $csvin->import(
                 $this->zdb,
                 $this->preferences,

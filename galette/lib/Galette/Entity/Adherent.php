@@ -32,6 +32,7 @@ use Galette\Features\HasEvent;
 use Galette\Features\Socials;
 use Galette\Interfaces\AccessManagementInterface;
 use Galette\Util\QrCode;
+use Psr\Http\Message\UploadedFileInterface;
 use Sabre\VObject\Component\VCard;
 use Throwable;
 use Analog\Analog;
@@ -2151,37 +2152,17 @@ class Adherent implements AccessManagementInterface
     /**
      * Handle files (photo and dynamics files)
      *
-     * @param array<string,mixed>  $files    Files sent
-     * @param ?array<string,mixed> $cropping Cropping properties
+     * @param array<UploadedFileInterface> $files    Files sent
+     * @param ?array<string,mixed>         $cropping Cropping properties
      *
      * @return array<string>|true
      */
     public function handleFiles(array $files, ?array $cropping = null): array|bool
     {
         $this->errors = [];
-        // picture upload
-        if (isset($files['photo'])) {
-            if ($files['photo']['error'] === UPLOAD_ERR_OK) {
-                if ($files['photo']['tmp_name'] != '' && is_uploaded_file($files['photo']['tmp_name'])) {
-                    if ($this->preferences->pref_force_picture_ratio == 1 && isset($cropping)) {
-                        $res = $this->picture->store($files['photo'], false, $cropping);
-                    } else {
-                        $res = $this->picture->store($files['photo']);
-                    }
-                    if ($res < 0) {
-                        $this->errors[]
-                            = $this->picture->getErrorMessage($res);
-                    }
-                }
-            } elseif ($files['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                Analog::log(
-                    $this->picture->getPhpErrorMessage($files['photo']['error']),
-                    Analog::WARNING
-                );
-                $this->errors[] = $this->picture->getPhpErrorMessage(
-                    $files['photo']['error']
-                );
-            }
+
+        if (!$this->picture->upload(request_files: $files, key: 'photo', cropping: $cropping)) {
+            $this->errors = array_merge($this->errors, $this->picture->uploadErrors());
         }
         $this->dynamicsFiles($files);
 

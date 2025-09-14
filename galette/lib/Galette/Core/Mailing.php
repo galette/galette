@@ -27,7 +27,9 @@ use Analog\Analog;
 use ArrayObject;
 use Galette\Entity\Adherent;
 use Galette\IO\File;
+use Galette\IO\FileTrait;
 use PHPMailer\PHPMailer\PHPMailer;
+use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * Mailing features
@@ -54,6 +56,8 @@ use PHPMailer\PHPMailer\PHPMailer;
  */
 class Mailing extends GaletteMail
 {
+    use FileTrait;
+
     public const STEP_START = 0;
     public const STEP_PREVIEW = 1;
     public const STEP_SEND = 2;
@@ -309,11 +313,11 @@ class Mailing extends GaletteMail
     /**
      * Store mailing attachments
      *
-     * @param array<string, string|int> $files Array of uploaded files to store
+     * @param UploadedFileInterface $file Uploaded file
      *
      * @return true|int error code
      */
-    public function store(array $files): bool|int
+    public function storeFile(UploadedFileInterface $file): bool|int
     {
         if ($this->tmp_path === null) {
             $this->generateTmpPath();
@@ -332,7 +336,7 @@ class Mailing extends GaletteMail
 
         //store files
         $attachment = new File($this->tmp_path);
-        $res = $attachment->store($files);
+        $res = $attachment->storeFile($file);
         if ($res < 0) {
             return $res;
         } else {

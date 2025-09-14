@@ -29,8 +29,8 @@ use Galette\Core\Authentication;
 use Galette\Core\Login;
 use Galette\Features\I18n;
 use Galette\Features\Permissions;
-use Galette\IO\FileInterface;
 use Galette\IO\FileTrait;
+use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Galette\Core\Db;
 use Analog\Analog;
@@ -41,12 +41,11 @@ use Analog\Analog;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class Document implements FileInterface
+class Document
 {
     use I18n;
     use Permissions;
     use FileTrait {
-        store as protected trait_store;
         writeOnDisk as protected trait_writeOnDisk;
     }
 
@@ -66,7 +65,7 @@ class Document implements FileInterface
     private DateTime $creation_date;
     protected string $store_path = GALETTE_DOCUMENTS_PATH;
     private ?string $comment = null;
-    /** @var array<string> */
+    /** @var string[] */
     private array $errors = [];
     private bool $public_list = false;
 
@@ -251,8 +250,8 @@ class Document implements FileInterface
     /**
      * Store document in database
      *
-     * @param array<string,mixed> $post  POST data
-     * @param array<string,mixed> $files Files
+     * @param array<string,mixed>          $post  POST data
+     * @param array<UploadedFileInterface> $files Uploaded files
      *
      * @return boolean
      */
@@ -517,35 +516,26 @@ class Document implements FileInterface
     /**
      * Handle files
      *
-     * @param array<string,mixed> $files Files sent
+     * @param array<UploadedFileInterface> $files Files sent
      *
-     * @return array<string>|true
+     * @return string[]|true
      */
     public function handleFiles(array $files): array|bool
     {
+        if (!isset($files['document_file'])) {
+            return true;
+        }
         $this->errors = [];
         // document upload
-        if (isset($files['document_file'])) {
-            if ($files['document_file']['error'] === UPLOAD_ERR_OK) {
-                if ($files['document_file']['tmp_name'] != '' && is_uploaded_file($files['document_file']['tmp_name'])) {
-                    $res = $this->trait_store($files['document_file']);
-                    if ($res < 0) {
-                        $this->errors[] = $this->getErrorMessage($res);
-                    } else {
-                        $this->filename = sprintf(
-                            '%s.%s',
-                            $this->name_wo_ext,
-                            $this->extension
-                        );
-                    }
-                }
-            } elseif (!isset($this->id)) {
-                Analog::log(
-                    $this->getPhpErrorMessage($files['document_file']['error']),
-                    Analog::WARNING
-                );
-                $this->errors[] = $this->getPhpErrorMessage($files['document_file']['error']);
-            }
+        $this->upload($files, 'document_file');
+        if (count($this->uploadErrors())) {
+            $this->errors = $this->uploadErrors();
+        } elseif (isset($this->name_wo_ext)) {
+            $this->filename = sprintf(
+                '%s.%s',
+                $this->name_wo_ext,
+                $this->extension
+            );
         }
 
         if (count($this->errors) > 0) {
@@ -573,17 +563,16 @@ class Document implements FileInterface
     /**
      * Write file on disk
      *
-     * @param string $tmpfile Temporary file
-     * @param bool   $ajax    If the file comes from an ajax call (dnd)
+     * @param UploadedFileInterface $file Temporary file
      *
      * @return true|int
      */
-    public function writeOnDisk(string $tmpfile, bool $ajax): bool|int
+    public function writeOnDisk(UploadedFileInterface $file): bool|int
     {
         //remove existing file when updating
         if (isset($this->id) && $this->id > 0) {
             $this->removeFile();
         }
-        return $this->trait_writeOnDisk($tmpfile, $ajax);
+        return $this->trait_writeOnDisk($file);
     }
 }

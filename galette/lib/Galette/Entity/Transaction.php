@@ -27,6 +27,7 @@ use ArrayObject;
 use Galette\Events\GaletteEvent;
 use Galette\Interfaces\AccessManagementInterface;
 use Galette\Repository\PaymentTypes;
+use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -644,7 +645,7 @@ class Transaction implements AccessManagementInterface
     /**
      * Handle files (dynamics files)
      *
-     * @param array<string,mixed> $files Files sent
+     * @param array<UploadedFileInterface> $files Files sent
      *
      * @return array<string>|true
      */

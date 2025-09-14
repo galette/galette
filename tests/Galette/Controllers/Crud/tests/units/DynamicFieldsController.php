@@ -45,6 +45,8 @@ class DynamicFieldsController extends GaletteRoutingTestCase
     {
         $this->zdb = new \Galette\Core\Db();
 
+        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $this->zdb->execute($delete);
         $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
         $this->zdb->execute($delete);
         //cleanup dynamic translations
@@ -60,6 +62,10 @@ class DynamicFieldsController extends GaletteRoutingTestCase
                 );
             }
         }
+
+        $this->cleanMembers();
+
+        parent::tearDown();
     }
 
     /**
@@ -648,24 +654,131 @@ class DynamicFieldsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test getting dynamic file
+     *
+     * @return void
+     */
+    public function testGetDynamicFile(): void
+    {
+        $this->logSuperAdmin();
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        $field_id_1 = $this->createDynamicField(
+            name: 'My file',
+            type: \Galette\DynamicFields\DynamicField::FILE
+        );
+        $dynfile_id = 'info_field_' . $field_id_1 . '_1';
+
+        //create dynamic file
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png'));
+        $uploaded_files = [
+            $dynfile_id => new \Slim\Psr7\UploadedFile(
+                sys_get_temp_dir() . '/galette_pro.png',
+                'galette_pro.png',
+                'impage/png',
+                filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                UPLOAD_ERR_OK
+            )
+        ];
+        $member_request = $this->createRequest('doEditMember', ['id' => $member_one->id], 'POST');
+        $member_request = $member_request->withParsedBody($mdata + ['id_adh' => $member_one->id]);
+        $member_request = $member_request->withUploadedFiles($uploaded_files);
+        $test_response = $this->app->handle($member_request);
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+
+        $request = $this->createRequest(
+            'getDynamicFile',
+            [
+                'form_name' => 'adh',
+                'id' => $member_one->id,
+                'fid' => $field_id_1,
+                'pos' => 1,
+                'name' => $dynfile_id
+            ]
+        );
+        $test_response = $this->app->handle($request);
+        $expected_headers = [
+            'Content-Description' => ['File Transfer'],
+            'Content-Type' => ['image/png'],
+            'Content-Disposition' => ['attachment;filename="' . $dynfile_id . '"'],
+            'Pragma' => ['public'],
+            'Content-Transfer-Encoding' => ['binary'],
+            'Expires' => ['0'],
+            'Cache-Control' => ['must-revalidate']
+        ];
+        $this->expectOK($test_response, $expected_headers);
+
+        //file does not exist
+        $request = $this->createRequest(
+            'getDynamicFile',
+            [
+                'form_name' => 'adh',
+                'id' => $member_one->id,
+                'fid' => $field_id_1,
+                'pos' => 2,
+                'name' => $dynfile_id
+            ]
+        );
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            sprintf(
+                'A request has been made to get a dynamic file named `member_%1$s_field_%2$s_value_2` that does not exists.',
+                $member_one->id,
+                $field_id_1
+            )
+        );
+        $this->expectFlashData(['error_detected' => ['The file does not exists or cannot be read :(']]);
+
+        $this->login->logout();
+
+        //no right on field
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $request = $this->createRequest(
+            'getDynamicFile',
+            [
+                'form_name' => 'adh',
+                'id' => $member_two->id,
+                'fid' => $field_id_1,
+                'pos' => 1,
+                'name' => $dynfile_id
+            ]
+        );
+        $test_response = $this->app->handle($request);
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => $member_two->id])]], $test_response->getHeaders());
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+
+        $this->login->logout();
+    }
+
+    /**
      * Create a dynamic field for tests
      *
      * @param string $name Name of the field to create
+     * @param int    $type Type of the field to create (default to Line)
      *
      * @return int The created field id
      */
-    private function createDynamicField(string $name = 'Dynamic test field'): int
-    {
+    private function createDynamicField(
+        string $name = 'Dynamic test field',
+        int $type = \Galette\DynamicFields\DynamicField::LINE
+    ): int {
         //create field
         $field_data = [
             'field_name' => $name,
             'field_perm' => (string)\Galette\Entity\FieldsConfig::STAFF,
-            'field_type' => (string)\Galette\DynamicFields\Line::LINE,
+            'field_type' => (string)$type,
             'field_required' => '0',
             'form_name' => 'adh'
         ];
 
-        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, (int)$field_data['field_type']);
+        $df = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $type);
         $stored = $df->store($field_data);
         $this->assertTrue(
             $stored,

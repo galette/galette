@@ -92,7 +92,8 @@ $directories = [
     'attachments',
     'files',
     'tempimages',
-    'plugins'
+    'plugins',
+    'documents'
 ];
 foreach ($directories as $directory) {
     mkdir(GALETTE_DATA_PATH . $directory);

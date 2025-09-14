@@ -1017,4 +1017,29 @@ abstract class GaletteTestCase extends TestCase
         $this->assertTrue($admin_member->store());
         $this->login->logout();
     }
+
+    /**
+     * Get mocked document instance
+     *
+     * @return \Galette\Entity\Document
+     */
+    protected function getDocumentInstance(): \Galette\Entity\Document
+    {
+        $document = $this->getMockBuilder(\Galette\Entity\Document::class)
+            ->setConstructorArgs(array($this->zdb))
+            ->onlyMethods(array('handleFiles'))
+            ->getMock();
+
+        $document->method('handleFiles')
+            ->willReturnCallback(
+                function (array $files) use ($document) {
+                    $reflection = new \ReflectionClass(\Galette\Entity\Document::class);
+                    $reflection_property = $reflection->getProperty('filename');
+                    $reflection_property->setValue($document, $files['document_file']->getClientFilename());
+
+                    return true;
+                }
+            );
+        return $document;
+    }
 }

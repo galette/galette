@@ -105,7 +105,7 @@ class DocumentsController extends CrudController
         $document = new Document($this->zdb);
 
         try {
-            $document->store($post, $_FILES);
+            $document->store($post, $request->getUploadedFiles());
             $error_detected = $document->getErrors();
             $warning_detected = $document->getWarnings();
         } catch (Throwable $e) {
@@ -394,7 +394,7 @@ class DocumentsController extends CrudController
         $document = new Document($this->zdb, $id);
 
         try {
-            $document->store($post, $_FILES);
+            $document->store($post, $request->getUploadedFiles());
             $error_detected = $document->getErrors();
             $warning_detected = $document->getWarnings();
         } catch (Throwable $e) {

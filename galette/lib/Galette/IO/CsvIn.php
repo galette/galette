@@ -43,7 +43,7 @@ use Galette\Repository\Members;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class CsvIn extends Csv implements FileInterface
+class CsvIn extends Csv
 {
     use FileTrait;
 
