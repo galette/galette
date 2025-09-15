@@ -4,14 +4,14 @@
 # Languages add-on <noreply-addon-languages@weblate.org>, 2024.
 # Manuela Silva <mmsrs@sky.com>, 2024.
 # Gustavo Lorenzato dos Santos <gustavolorenzatodossantos@gmail.com>, 2024.
+# Nelson JESUS <jesus.nels@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-09-08 22:05+0200\n"
-"PO-Revision-Date: 2024-09-20 15:21+0000\n"
-"Last-Translator: Gustavo Lorenzato dos Santos "
-"<gustavolorenzatodossantos@gmail.com>\n"
+"PO-Revision-Date: 2025-09-15 15:52+0000\n"
+"Last-Translator: Nelson JESUS <jesus.nels@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
 "galette/pt/>\n"
 "Language: pt\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:133
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:238
@@ -667,7 +667,7 @@ msgstr "O documento foi guardado com sucesso!"
 #: ../lib/Galette/Core/Galette.php:815
 #: ../../tempcache/pages/preferences.html.twig:1207
 msgid "Documents"
-msgstr ""
+msgstr "Documentos"
 
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:353
 #: ../../tempcache/pages/documents_list.html.twig:194
@@ -2272,7 +2272,7 @@ msgstr ""
 #: ../../tempcache/pages/export.html.twig:136
 #: ../../tempcache/pages/export.html.twig:266
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: ../lib/Galette/IO/PdfGroups.php:157
 #: ../lib/Galette/Features/Replacements.php:312
@@ -8868,7 +8868,7 @@ msgstr ""
 
 #: ../../tempcache/pages/desktop.html.twig:196
 msgid "Activities"
-msgstr ""
+msgstr "Atividades"
 
 #: ../../tempcache/pages/desktop.html.twig:307
 msgid "Show dashboard on login"
