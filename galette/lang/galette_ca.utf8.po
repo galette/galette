@@ -1372,12 +1372,12 @@ msgstr "El fitxer s'ha pujat correctament!"
 
 #: ../lib/Galette/Controllers/CsvController.php:368
 #, fuzzy
-msgid "No files has been seleted for upload!"
+msgid "No file has been selected for upload!"
 msgstr "No s'ha seleccionat cap fitxer per a la pujada!"
 
 #: ../lib/Galette/Controllers/CsvController.php:374
 #, fuzzy
-msgid "No files has been uploaded!"
+msgid "No file has been uploaded!"
 msgstr "No s'ha pujat cap fitxer!"
 
 #: ../lib/Galette/Controllers/CsvController.php:443

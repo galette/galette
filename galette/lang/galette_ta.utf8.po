@@ -1229,11 +1229,11 @@ msgid "Your file has been successfully uploaded!"
 msgstr "உங்கள் கோப்பு வெற்றிகரமாக பதிவேற்றப்பட்டுள்ளது!"
 
 #: ../lib/Galette/Controllers/CsvController.php:368
-msgid "No files has been seleted for upload!"
+msgid "No file has been selected for upload!"
 msgstr "பதிவேற்றுவதற்கு கோப்புகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை!"
 
 #: ../lib/Galette/Controllers/CsvController.php:374
-msgid "No files has been uploaded!"
+msgid "No file has been uploaded!"
 msgstr "கோப்புகள் பதிவேற்றப்படவில்லை!"
 
 #: ../lib/Galette/Controllers/CsvController.php:443

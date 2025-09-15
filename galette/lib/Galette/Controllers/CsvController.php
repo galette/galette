@@ -368,13 +368,13 @@ class CsvController extends AbstractController
             } elseif (isset($_POST['upload'])) {
                 $this->flash->addMessage(
                     'error_detected',
-                    _T("No files has been seleted for upload!")
+                    _T("No file has been selected for upload!")
                 );
             }
         } else {
             $this->flash->addMessage(
                 'warning_detected',
-                _T("No files has been uploaded!")
+                _T("No file has been uploaded!")
             );
         }
 

@@ -1223,11 +1223,11 @@ msgid "Your file has been successfully uploaded!"
 msgstr "Ваш файл успішно вивантажено!"
 
 #: ../lib/Galette/Controllers/CsvController.php:368
-msgid "No files has been seleted for upload!"
+msgid "No file has been selected for upload!"
 msgstr "Не вибрано жодного файлу для вивантаження!"
 
 #: ../lib/Galette/Controllers/CsvController.php:374
-msgid "No files has been uploaded!"
+msgid "No file has been uploaded!"
 msgstr "Не вивантажено жодного файлу!"
 
 #: ../lib/Galette/Controllers/CsvController.php:443

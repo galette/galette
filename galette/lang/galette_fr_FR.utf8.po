@@ -1242,11 +1242,11 @@ msgid "Your file has been successfully uploaded!"
 msgstr "Votre fichier a été envoyé avec succès !"
 
 #: ../lib/Galette/Controllers/CsvController.php:368
-msgid "No files has been seleted for upload!"
+msgid "No file has been selected for upload!"
 msgstr "Aucun fichier n’a encore été sélectionné pour l’envoi !"
 
 #: ../lib/Galette/Controllers/CsvController.php:374
-msgid "No files has been uploaded!"
+msgid "No file has been uploaded!"
 msgstr "Aucun fichier n’a été envoyé !"
 
 #: ../lib/Galette/Controllers/CsvController.php:443

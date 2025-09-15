@@ -1266,11 +1266,11 @@ msgid "Your file has been successfully uploaded!"
 msgstr "Ezkarget mat eo bet ho restr !"
 
 #: ../lib/Galette/Controllers/CsvController.php:368
-msgid "No files has been seleted for upload!"
+msgid "No file has been selected for upload!"
 msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:374
-msgid "No files has been uploaded!"
+msgid "No file has been uploaded!"
 msgstr "Restr ebet zo bet ezkarget !"
 
 #: ../lib/Galette/Controllers/CsvController.php:443
