@@ -375,15 +375,17 @@
     {% if not contribution.id -%}
         var _types_amounts = {
             {%- for key, values in type_cotis_options -%}
-               {%- if values.amount > 0 -%}
+               {%- if values.amount >= 0 and values.amount != '' -%}
                     {{ key }}: {{ values.amount }},
+                {%- elseif values.amount == '' -%}
+                    {{ key }}: '',
                 {%- endif -%}
             {%- endfor -%}
         };
         $('#id_type_cotis').dropdown({
             onChange: function(value) {
-                //change to predefined amount if there is one, and if user has not entered data himself
-                if ($('#montant_cotis').data('userset') != true && _types_amounts[value]) {
+                //change to amount defined in settings if user has not entered data himself
+                if ($('#montant_cotis').data('userset') != true) {
                     var _amount = _types_amounts[value];
                     $('#montant_cotis').val(_amount);
                 }
