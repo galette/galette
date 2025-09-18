@@ -341,7 +341,8 @@ class Galette
                             'label' => _T("Groups"),
                             'title' => _T("View and manage groups"),
                             'route' => [
-                                'name' => 'groups'
+                                'name' => 'groups',
+                                'aliases' => ['editGroup']
                             ]
                         ]
                     ]

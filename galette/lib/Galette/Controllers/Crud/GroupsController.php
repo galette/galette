@@ -79,7 +79,7 @@ class GroupsController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => (string)$id]));
+            ->withHeader('Location', $this->routeparser->urlFor('doEditGroup', ['id' => (string)$id]));
     }
 
 
@@ -126,7 +126,6 @@ class GroupsController extends CrudController
      * @param Response            $response PSR Response
      * @param string|null         $option   One of 'page' or 'order'
      * @param integer|string|null $value    Value of the option
-     * @param ?integer            $id       Member id to check rights
      *
      * @return Response
      */
@@ -134,8 +133,7 @@ class GroupsController extends CrudController
         Request $request,
         Response $response,
         ?string $option = null,
-        int|string|null $value = null,
-        ?int $id = null
+        int|string|null $value = null
     ): Response {
         $groups = new Groups($this->zdb, $this->login);
         $group = new Group();
@@ -144,40 +142,6 @@ class GroupsController extends CrudController
         $groups_root = $groups->getList(false);
         $groups_list = $groups->getList();
 
-        if ($id !== null) {
-            if ($this->login->isGroupManager($id)) {
-                $group->load($id);
-            } else {
-                Analog::log(
-                    'Trying to display group ' . $id . ' without appropriate permissions',
-                    Analog::INFO
-                );
-                return $response->withStatus(403);
-            }
-        }
-
-        if ($id === null && count($groups_list) > 0) {
-            $group = current($groups_list);
-            if (!$this->login->isGroupManager($id)) {
-                foreach ($groups_list as $g) {
-                    if ($this->login->isGroupManager($g->getId())) {
-                        $group = $g;
-                        break;
-                    }
-                }
-            }
-        }
-
-        $parent_groups = [];
-        foreach ($groups_list as $parent_group) {
-            if ($group->canSetParentGroup($parent_group)) {
-                $parent_groups[] = $parent_group;
-            }
-        }
-
-        //Active tab on page
-        $tab = $request->getQueryParams['tab'] ?? 'group_information';
-
         // display page
         $this->view->render(
             $response,
@@ -185,12 +149,67 @@ class GroupsController extends CrudController
             [
                 'page_title'            => _T("Groups"),
                 'groups_root'           => $groups_root,
-                'parent_groups'         => $parent_groups,
-                'group'                 => $group,
-                'tab'                   => $tab
+                'is_paginated'          => false,
+                'form'                  => true,
+                'table'                 => [
+                    'class' => 'unstackable',
+                    'tbody' => [
+                        'id'    => 'listed_groups',
+                        'class' => 'sortable-items'
+                    ]
+                ],
+                'nb'                    => count($groups_list)
             ]
         );
         return $response;
+    }
+
+    /**
+     * List reorder
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function reorderList(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+        $list = '<ul>';
+        if (isset($post['reordered']) && !empty($post['reordered'])) {
+            foreach ($post['reordered'] as $value) {
+                $item = explode('|', $value);
+                $id = $item[0];
+                $parentId = $item[1];
+                $group = new Group((int)$id);
+                $parentGroup = new Group((int)$parentId);
+                if ($parentId != '0') {
+                    $group->setParentGroup((int)$parentId);
+                    $change = str_replace(
+                        '%1',
+                        $parentGroup->getName(),
+                        _T("new parent is %1")
+                    );
+                } else {
+                    $group->detach();
+                    $change = _T("parent removed");
+                }
+                $group->store();
+                $list .= '<li>' . $group->getName() . ' (' . $change . ')</li>';
+            }
+            $list .= '</ul>';
+            $this->flash->addMessage(
+                'success_detected',
+                str_replace(
+                    '%1',
+                    $list,
+                    _T("The parent of the following groups has been successfully modified : %1")
+                )
+            );
+        }
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->routeparser->urlFor('groups'));
     }
 
     /**
@@ -318,7 +337,39 @@ class GroupsController extends CrudController
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
-        //no edit page (included on list), just to satisfy inheritance
+        $groups = new Groups($this->zdb, $this->login);
+        $group = new Group();
+        $group->setLogin($this->login);
+
+        $groups_list = $groups->getList();
+
+        if ($this->login->isGroupManager($id)) {
+            $group->load($id);
+        } else {
+            Analog::log(
+                'Trying to display group ' . $id . ' without appropriate permissions',
+                Analog::INFO
+            );
+            return $response->withStatus(403);
+        }
+
+        $parent_groups = [];
+        foreach ($groups_list as $parent_group) {
+            if ($group->canSetParentGroup($parent_group)) {
+                $parent_groups[] = $parent_group;
+            }
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'pages/group_form.html.twig',
+            [
+                'page_title'            => $group->getName(),
+                'parent_groups'         => $parent_groups,
+                'group'                 => $group
+            ]
+        );
         return $response;
     }
 
@@ -390,10 +441,9 @@ class GroupsController extends CrudController
             );
         }
 
-        $tab = isset($post['tab']) && $post['tab'] != 'general' ? '?tab=' . $post['tab'] : '';
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => (string)$group->getId()]) . $tab);
+            ->withHeader('Location', $this->routeparser->urlFor('groups', ['id' => (string)$group->getId()]));
     }
 
     /**

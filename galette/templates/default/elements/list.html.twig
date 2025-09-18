@@ -75,7 +75,7 @@
                 <div class="{% if nb %}ui doubling {% if cards_columns is defined %}{{ cards_columns }}{% else %}six{% endif %} column cards loader_selector{% endif %}">
     {% elseif list_type is not defined %}
                 <div class="ui basic fitted segment loader_selector large-table-wrapper">
-                    <table class="listing ui celled{% if basic_table is not defined %} striped{% endif %} table">
+                    <table class="listing ui celled{% if basic_table is not defined %} striped{% endif %} table{% if table.class is defined %} {{ table.class }}{% endif %}">
                         <thead>
                             <tr>
                         {% block header %}
@@ -102,8 +102,9 @@
                             {% endif %}
                         {% endblock %}
                             </tr>
+                            {% block extra_header %}{% endblock %}
                         </thead>
-                        <tbody>
+                        <tbody{% if table.tbody.id is defined %} id="{{ table.tbody.id }}"{% endif %}>
     {% endif %}
                             {% block body %}{% endblock %}
     {% if list_type is not defined %}

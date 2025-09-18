@@ -248,14 +248,6 @@ class Group
         try {
             $select = $zdb->select(self::TABLE, 'a');
 
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                $select->join(
-                    ['b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE],
-                    'a.' . self::PK . '=b.' . self::PK,
-                    []
-                )->where(['b.' . Adherent::PK => $this->login->id]);
-            }
-
             $select->where(['parent_group' => $this->id])
                 ->order('group_name ASC');
 
