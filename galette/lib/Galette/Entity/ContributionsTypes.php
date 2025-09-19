@@ -236,7 +236,7 @@ class ContributionsTypes
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $fields = [self::PK, 'libelle_type_cotis', 'amount'];
+            $fields = [self::PK, 'libelle_type_cotis', 'amount', 'cotis_extension'];
             $select->quantifier('DISTINCT');
             $select->columns($fields);
             $select->order(self::PK);
@@ -252,7 +252,8 @@ class ContributionsTypes
             foreach ($results as $r) {
                 $list[$r->{self::PK}] = [
                     'label' => _T($r->libelle_type_cotis),
-                    'amount' => $r->amount
+                    'amount' => $r->amount,
+                    'extension' => $r->cotis_extension
                 ];
             }
             return $list;

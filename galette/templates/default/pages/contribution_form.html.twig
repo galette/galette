@@ -372,58 +372,85 @@
     {% endif %}
 
     $(function() {
-    {% if not contribution.id -%}
-        var _types_amounts = {
-            {%- for key, values in type_cotis_options -%}
-               {%- if values.amount >= 0 and values.amount != '' -%}
-                    {{ key }}: {{ values.amount }},
-                {%- elseif values.amount == '' -%}
-                    {{ key }}: '',
-                {%- endif -%}
-            {%- endfor -%}
-        };
-        $('#id_type_cotis').dropdown({
-            onChange: function(value) {
-                //change to amount defined in settings if user has not entered data himself
-                if ($('#montant_cotis').data('userset') != true) {
-                    var _amount = _types_amounts[value];
-                    $('#montant_cotis').val(_amount);
+        {% if not contribution.id -%}
+            var _types_amounts = {
+                {%- for key, values in type_cotis_options -%}
+                   {%- if values.amount >= 0 and values.amount != '' -%}
+                        {{ key }}: {{ values.amount }},
+                    {%- elseif values.amount == '' -%}
+                        {{ key }}: '',
+                    {%- endif -%}
+                {%- endfor -%}
+            };
+            $('#montant_cotis').on('keyup', function() {
+                //keep trace of user entered data
+                if ($(this).val() == '') {
+                    $(this).data('userset', false);
+                } else {
+                    $(this).data('userset', true);
                 }
-            }
-        });
-        $('#montant_cotis').on('keyup', function() {
-            //keep trace of user entered data
-            if ($(this).val() == '') {
-                $(this).data('userset', false);
-            } else {
-                $(this).data('userset', true);
-            }
-        });
+            });
+            {% if preferences.pref_membership_ext != "" %}
+                var _types_extensions = {
+                    {%- for key, values in type_cotis_options -%}
+                       {%- if values.extension < 0 -%}
+                            {{ key }}: {{ preferences.pref_membership_ext }},
+                        {%- elseif values.extension > 0 -%}
+                            {{ key }}: {{ values.extension }},
+                        {%- endif -%}
+                    {%- endfor -%}
+                };
+                $('#duree_mois_cotis').on('keyup', function() {
+                    //keep trace of user entered data
+                    if ($(this).val() == '') {
+                        $(this).data('userset', false);
+                    } else {
+                        $(this).data('userset', true);
+                    }
+                });
+            {% endif %}
+            $('#id_type_cotis').dropdown({
+                onChange: function(value) {
+                    //change to amount defined in settings if user has not entered data himself
+                    if ($('#montant_cotis').data('userset') != true) {
+                        var _amount = _types_amounts[value];
+                        $('#montant_cotis').val(_amount);
+                        $('#montant_cotis').transition('glow');
+                    }
+                    {% if preferences.pref_membership_ext != "" %}
+                        if ($('#duree_mois_cotis').data('userset') != true) {
+                            var _extension = _types_extensions[value];
+                            $('#duree_mois_cotis').val(_extension);
+                            $('#duree_mois_cotis').transition('glow');
+                        }
+                    {% endif %}
+                }
+            });
         {%- endif %}
 
         {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
-        $('#transaction_related').hide();
-        $('#montant_cotis').on('change', function() {
-            var _amount = {{ contribution.transaction.getMissingAmount() }};
-            var _current = $(this).val();
-            if (_current < _amount) {
-                $('#transaction_related').show();
-            } else if (_current > _amount) {
-                {% include "elements/js/modal.js.twig" with {
-                    modal_title_twig: _T("Contribution amount should not be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js"),
-                    modal_without_content: true,
-                    modal_class: "mini",
-                    modal_deny_only: true,
-                    modal_cancel_text: _T("Close")|e("js"),
-                    modal_classname: "redalert",
-                } %}
-            } else {
-                $('#transaction_related').hide();
-            }
-        });
-    {% endif %}
+            $('#transaction_related').hide();
+            $('#montant_cotis').on('change', function() {
+                var _amount = {{ contribution.transaction.getMissingAmount() }};
+                var _current = $(this).val();
+                if (_current < _amount) {
+                    $('#transaction_related').show();
+                } else if (_current > _amount) {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("Contribution amount should not be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                } else {
+                    $('#transaction_related').hide();
+                }
+            });
+        {% endif %}
 
-    {% if contribution.hasSchedule() %}
+        {% if contribution.hasSchedule() %}
             {# Contributions popup #}
             var _btnuser_mapping = function(){
                 $('#scheduledslist').click(function(){
@@ -511,7 +538,7 @@
                     return false;
                 });
             }
-    {% endif %}
+        {% endif %}
     });
 </script>
 {% endblock %}
