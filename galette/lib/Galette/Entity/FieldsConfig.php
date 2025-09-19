@@ -455,8 +455,6 @@ class FieldsConfig
      */
     public function getFormElements(Login $login, bool $new, bool $selfs = false): array
     {
-        global $preferences;
-
         $hidden_elements = [];
         $form_elements = [];
 

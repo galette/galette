@@ -1946,6 +1946,8 @@ class Adherent extends GaletteTestCase
             'fingerprint'
         ];
 
+        $expected_defaults = $this->adh->getDefaultValues();
+
         $counter = 0;
         foreach ($fields as $key => $field) {
             if (in_array($field, $excluded)) {
@@ -1965,10 +1967,12 @@ class Adherent extends GaletteTestCase
 
             $fc = $this->container->get(\Galette\Entity\FieldsConfig::class);
             $categorized_fields = $orig_fields;
-            foreach ($categorized_fields as &$fieldset) {
-                foreach ($fieldset as &$entry) {
+            foreach ($categorized_fields as $fieldset_key => &$fieldset) {
+                foreach ($fieldset as $entry_key => &$entry) {
                     if ($entry['field_id'] == $field) {
                         $entry['visible'] = \Galette\Entity\FieldsConfig::NOBODY; //make sure fingerprint field is visible
+                    } else {
+                        $entry = $orig_fields[$fieldset_key][$entry_key];
                     }
                 }
             }
@@ -1983,10 +1987,25 @@ class Adherent extends GaletteTestCase
             $this->assertTrue($adh->check($data, [], []));
             $this->assertTrue($adh->store());
 
-            if ($field === 'login_adh') {
-                $this->assertTrue($adh->load($adh->id));
-                //login is mandatory, it takes an automatic value if not set
+            $this->assertTrue($adh->load($adh->id));
+            if ($field === 'login_adh' || $field == 'mdp_adh') {
+                //login and password are mandatory, they takes an automatic value if not set
                 $this->assertNotEmpty($adh->login);
+            } else {
+                //check for expected default values
+                $propname = $this->members_fields[$field]['propname'];
+                if (isset($expected_defaults[$propname])) {
+                    $this->assertSame($expected_defaults[$propname], $adh->$propname, 'Disabled field ' . $field);
+                    if (in_array($propname, array_keys($adh->getDeprecatedProperties()))) {
+                        $this->expectLogEntry(
+                            \Analog::WARNING,
+                            sprintf(
+                                'Calling property "%1$s" directly is discouraged.',
+                                $propname,
+                            )
+                        );
+                    }
+                }
             }
         }
 

@@ -244,20 +244,7 @@ class Adherent implements AccessManagementInterface
             if (is_int($args) && $args > 0) {
                 $this->load($args);
             } else {
-                $this->active = true;
-                $this->language = $i18n->getID();
-                $this->creation_date = date("Y-m-d");
-                $this->status = $this->getDefaultStatus();
-                $this->title = null;
-                $this->gender = self::NC;
-                $gp = new Password($this->zdb);
-                $this->password = $gp->makeRandomPassword();
-                $this->picture = new Picture();
-                $this->admin = false;
-                $this->staff = false;
-                $this->due_free = false;
-                $this->appears_in_list = false;
-                $this->parent = null;
+                $this->applyDefaultValues();
 
                 if ($this->deps['dynamics'] === true) {
                     $this->loadDynamicFields();
@@ -267,6 +254,56 @@ class Adherent implements AccessManagementInterface
             $this->loadFromRS($args);
         } elseif (is_string($args)) {
             $this->loadFromLoginOrMail($args);
+        }
+    }
+
+    /**
+     * Returns default values for a new member
+     *
+     * @return array<string, mixed>
+     */
+    public function getDefaultValues(): array
+    {
+        /** @var I18n $i18n */
+        global $i18n;
+        $gp = new Password($this->zdb);
+
+        return [
+            'active' => true,
+            'language' => $i18n->getID(),
+            'creation_date' => date("Y-m-d"),
+            'status' => $this->getDefaultStatus(),
+            'title' => null,
+            'gender' => self::NC,
+            'login' => $gp->makeRandomPassword(15),
+            'password' => $gp->makeRandomPassword(),
+            'picture' => new Picture(),
+            'admin' => false,
+            'staff' => false,
+            'due_free' => false,
+            'appears_in_list' => false,
+            'parent' => null,
+            //fields that cannot be null in database
+            'surname'  => '',
+            'nickname' => '',
+            'address'  => '',
+            'zipcode'  => '',
+            'town'     => '',
+            'region'   => '',
+        ];
+    }
+
+    /**
+     * Apply default values
+     *
+     * @return void
+     */
+    public function applyDefaultValues(): void
+    {
+        foreach ($this->getDefaultValues() as $key => $value) {
+            if (!isset($this->$key)) {
+                $this->$key = $value;
+            }
         }
     }
 
@@ -995,6 +1032,21 @@ class Adherent implements AccessManagementInterface
     }
 
     /**
+     * Retrieve fields from database
+     *
+     * @return array<string>
+     */
+    public function getDbFields(): array
+    {
+        $columns = $this->zdb->getColumns(self::TABLE);
+        $fields = [];
+        foreach ($columns as $col) {
+            $fields[] = $col->getName();
+        }
+        return $fields;
+    }
+
+    /**
      * Retrieve fields
      *
      * @return array<string>
@@ -1592,7 +1644,7 @@ class Adherent implements AccessManagementInterface
 
         try {
             $values = [];
-            $fields = self::getFields();
+            $fields = $this->getDbFields();
 
             foreach ($fields as $field) {
                 if (
@@ -1618,7 +1670,7 @@ class Adherent implements AccessManagementInterface
                         } else {
                             $values['parent_id'] = $this->parent;
                         }
-                    } else {
+                    } elseif (isset($this->$prop)) {
                         $values[$field] = $this->$prop;
                     }
                 }
@@ -1647,30 +1699,6 @@ class Adherent implements AccessManagementInterface
                 $values['num_adh'] = new Expression('NULL');
             }
 
-            if (!($this->gender ?? null)) {
-                $values['sexe_adh'] = self::NC;
-            }
-
-            if (empty($this->login)) {
-                $p = new Password($this->zdb);
-                $values['login_adh'] = $p->makeRandomPassword(15);
-            }
-
-            //fields that cannot be null
-            $notnull = [
-                'surname'  => 'prenom_adh',
-                'nickname' => 'pseudo_adh',
-                'address'  => 'adresse_adh',
-                'zipcode'  => 'cp_adh',
-                'town'     => 'ville_adh',
-                'region'   => 'region_adh'
-            ];
-            foreach ($notnull as $prop => $field) {
-                if (!isset($this->$prop)) {
-                    $values[$field] = '';
-                }
-            }
-
             if (empty($this->id)) {
                 //we're inserting a new member
                 unset($values[self::PK]);
@@ -1678,14 +1706,15 @@ class Adherent implements AccessManagementInterface
                 $this->modification_date = date('Y-m-d');
                 $values['date_modif_adh'] = $this->modification_date;
 
-                //required fields with no default in database
-                $db_required = [
-                    Status::PK => 'status',
-                    'date_crea_adh' => 'creation_date'
-                ];
-                foreach ($db_required as $db_key => $prop) {
-                    if (!isset($values[$db_key])) {
-                        $values[$db_key] = $this->$prop;
+                //required fields with no default in database (among others)
+                foreach ($this->getDefaultValues() as $prop => $value) {
+                    foreach ($this->fields as $mkey => $mfield) {
+                        if ($mfield['propname'] == $prop) {
+                            if (!isset($values[$mkey]) && $value !== null) {
+                                $values[$mkey] = $value;
+                            }
+                            break;
+                        }
                     }
                 }
 
