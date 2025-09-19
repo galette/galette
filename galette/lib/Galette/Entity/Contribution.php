@@ -464,6 +464,7 @@ class Contribution implements AccessManagementInterface
      */
     public function check(array $values, array $required, array $disabled): bool|array
     {
+        global $preferences;
         $this->errors = [];
 
         $fields = array_keys($this->fields);
@@ -542,7 +543,7 @@ class Contribution implements AccessManagementInterface
                         }
                         break;
                     case 'duree_mois_cotis':
-                        if ($value != '') {
+                        if ($preferences->pref_membership_ext != ''  && $value != '') {
                             if (!is_numeric($value) || $value <= 0) {
                                 $this->errors[] = _T("- The duration must be a positive integer!");
                             } else {
@@ -554,6 +555,14 @@ class Contribution implements AccessManagementInterface
                 }
             }
         }
+
+        //check end date
+        if ($preferences->pref_membership_ext == '' && !empty($values['date_fin_cotis'])) {
+            if (new DateTime($this->end_date) <= new DateTime($this->begin_date)) {
+                $this->errors[] = _T("- The end date must be after the start date!");
+            }
+        }
+
 
         // missing required fields?
         foreach ($required as $key => $val) {
