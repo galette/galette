@@ -557,10 +557,12 @@ class Contribution implements AccessManagementInterface
         }
 
         //check end date
-        if ($preferences->pref_membership_ext == '' && !empty($values['date_fin_cotis'])) {
-            if (new DateTime($this->end_date) <= new DateTime($this->begin_date)) {
-                $this->errors[] = _T("- The end date must be after the start date!");
-            }
+        if (
+            $preferences->pref_membership_ext == ''
+            && $this->isFee()
+            && new DateTime($this->end_date) <= new DateTime($this->begin_date)
+        ) {
+            $this->errors[] = _T("- The end date must be after the start date!");
         }
 
 
