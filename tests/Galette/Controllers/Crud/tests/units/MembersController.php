@@ -3065,4 +3065,108 @@ class MembersController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Advanced search', $body);
     }
+
+    /**
+     * Test disabled fields are well handled
+     *
+     * @return void
+     */
+    public function testDisabledFields(): void
+    {
+        $this->logSuperAdmin();
+        $fc = $this->container->get(\Galette\Entity\FieldsConfig::class);
+        $orig_fields = $fc->getCategorizedFields();
+        $fields = [];
+        foreach ($orig_fields as $fieldset) {
+            foreach ($fieldset as $field) {
+                $fields[] = $field['field_id'];
+            }
+        }
+
+        $route_name = 'addMember';
+        $request = $this->createRequest($route_name);
+
+        $excluded = [
+            'id_adh',
+            'fingerprint',
+            'parent_id'
+        ];
+
+        $expected_defaults = $this->adh->getDefaultValues();
+
+        $counter = 0;
+        foreach ($fields as $key => $field) {
+            if (in_array($field, $excluded)) {
+                continue;
+            }
+
+            //change data
+            $counter++;
+            $data = $this->dataAdherentOne();
+            $data['email_adh'] = sprintf('mail%1$s@domain.com', $counter);
+            $data['login_adh'] = sprintf('login%1$s', $counter);
+
+            //unset each field to be sure disabled fields are well handled
+            $current_fields = $fields;
+            unset($current_fields[$key]);
+            unset($data[$field]);
+
+            $fc = $this->container->get(\Galette\Entity\FieldsConfig::class);
+            $categorized_fields = $orig_fields;
+            foreach ($categorized_fields as $fieldset_key => &$fieldset) {
+                foreach ($fieldset as $entry_key => &$entry) {
+                    if ($entry['field_id'] == $field) {
+                        $entry['visible'] = \Galette\Entity\FieldsConfig::NOBODY; //make sure fingerprint field is visible
+                    } else {
+                        $entry = $orig_fields[$fieldset_key][$entry_key];
+                    }
+                }
+            }
+            $fc->setFields($categorized_fields);
+
+            $test_response = $this->app->handle($request);
+            $this->expectOK($test_response);
+            $body = (string)$test_response->getBody();
+            $this->assertStringNotContainsString(
+                'name="' . $field . '"',
+                $body,
+                sprintf('Field %s is present in form', $field)
+            );
+
+            $adh = new \Galette\Entity\Adherent($this->zdb);
+            $adh->setDependencies(
+                $this->preferences,
+                $this->members_fields,
+                $this->history
+            );
+            $this->assertTrue($adh->check($data, [], []));
+            $this->assertTrue($adh->store());
+
+            $this->assertTrue($adh->load($adh->id));
+            if ($field === 'login_adh' || $field == 'mdp_adh') {
+                //login and password are mandatory, they takes an automatic value if not set
+                $this->assertNotEmpty($adh->login);
+            } else {
+                //check for expected default values
+                $propname = $this->members_fields[$field]['propname'];
+                if (isset($expected_defaults[$propname])) {
+                    $this->assertSame($expected_defaults[$propname], $adh->$propname, 'Disabled field ' . $field);
+                    if (in_array($propname, array_keys($adh->getDeprecatedProperties()))) {
+                        $this->expectLogEntry(
+                            \Analog::WARNING,
+                            sprintf(
+                                'Calling property "%1$s" directly is discouraged.',
+                                $propname,
+                            )
+                        );
+                    }
+                }
+            }
+        }
+
+        //reset
+        $fc->setFields($orig_fields);
+
+        $this->login->logOut();
+    }
 }

@@ -509,8 +509,11 @@ class FieldsConfig
                             continue;
                         }
 
-                        // enforce access control on admin only fields
-                        if (in_array($o->field_id, $this->admin_fields)) {
+                        // enforce access control on admin only visible fields
+                        if (
+                            $o->visible !== self::NOBODY
+                            && in_array($o->field_id, $this->admin_fields)
+                        ) {
                             $o->visible = self::ADMIN;
                         }
 
