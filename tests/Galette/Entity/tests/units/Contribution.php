@@ -1133,6 +1133,11 @@ class Contribution extends GaletteTestCase
         $this->assertTrue($store);
     }
 
+    /**
+     * Test contribution end date is set after start date - when relevant
+     *
+     * @return void
+     */
     public function testEndDateBeforeStartDate(): void
     {
         $this->logSuperAdmin();
