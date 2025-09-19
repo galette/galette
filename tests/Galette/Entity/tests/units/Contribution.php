@@ -43,30 +43,15 @@ class Contribution extends GaletteTestCase
     {
         parent::tearDown();
 
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
-
         $this->zdb = new \Galette\Core\Db();
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
+
+        $this->cleanContributions();
 
         $delete = $this->zdb->delete(\Galette\Entity\ContributionsTypes::TABLE);
         $delete->where(['libelle_type_cotis' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
 
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $delete->where('parent_id IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
+        $this->cleanMembers();
     }
 
     /**
@@ -1146,5 +1131,63 @@ class Contribution extends GaletteTestCase
 
         $store = $contrib->store();
         $this->assertTrue($store);
+    }
+
+    /**
+     * Test contribution end date is set after start date - when relevant
+     *
+     * @return void
+     */
+    public function testEndDateBeforeStartDate(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+
+        $now = new \DateTime(); // 2020-11-07
+        $begin_date = clone $now;
+
+        $due_date = clone $now; //due date is before begin date
+        $due_date->sub(new \DateInterval('P1Y')); // 2019-11-07
+
+        $contrib_data = $this->getContribData();
+        $contrib_data['date_debut_cotis'] = $begin_date->format('Y-m-d');
+        $contrib_data['duree_mois_cotis'] = 6;
+        $contrib_data['date_fin_cotis'] = $due_date->format('Y-m-d');
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] //annual fee
+        );
+        $check = $contrib->check($contrib_data, [], []);
+        $this->assertTrue($check);
+        $this->assertSame($contrib->begin_date, $contrib_data['date_debut_cotis']);
+        //end date is calculated, not the one sent
+        $this->assertNotSame($contrib->end_date, $contrib_data['date_fin_cotis']);
+
+        global $preferences;
+        $orig_pref_beg_membership = $preferences->pref_beg_membership;
+        $orig_pref_membership_ext = $preferences->pref_membership_ext;
+
+        $preferences->pref_beg_membership = '01/09';
+        $preferences->pref_membership_ext = '';
+
+        $this->assertTrue($preferences->store());
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] //annual fee
+        );
+        $check = $contrib->check($contrib_data, [], []);
+
+        $preferences->pref_beg_membership = $orig_pref_beg_membership;
+        $preferences->pref_membership_ext = $orig_pref_membership_ext;
+        $this->assertTrue($preferences->store());
+
+        $this->assertEquals($contrib->begin_date, $contrib_data['date_debut_cotis']);
+        $this->assertNotTrue($check);
+        $this->expectLogEntry(\Analog::ERROR, '- The end date must be after the start date!');
+        $this->assertSame(['- The end date must be after the start date!'], $check);
     }
 }
