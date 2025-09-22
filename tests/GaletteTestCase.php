@@ -56,6 +56,7 @@ abstract class GaletteTestCase extends TestCase
     protected int $seed;
     protected array $expected_mysql_warnings = [];
     protected bool $check_logs = true;
+    protected bool $load_plugins = false;
 
     /**
      * @see see \Analog\Handler\Level::$log_levels
@@ -88,6 +89,9 @@ abstract class GaletteTestCase extends TestCase
         $this->app = $app;
         $plugins = new \Galette\Core\Plugins();
         $this->plugins = $plugins;
+        if ($this->load_plugins) {
+            $this->plugins->autoload(GALETTE_PLUGINS_PATH);
+        }
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
         /** @var \DI\Container $container */
         $container = $app->getContainer();
@@ -111,6 +115,10 @@ abstract class GaletteTestCase extends TestCase
         $this->session = $container->get('session');
         $this->routeparser = $container->get(\Slim\Routing\RouteParser::class);
         $this->view = $container->get(\Slim\Views\Twig::class);
+
+        if ($this->load_plugins) {
+            $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        }
 
         global $zdb, $login, $hist, $i18n, $container, $galette_log_var, $routeparser;  // globals :(
         $zdb = $this->zdb;
