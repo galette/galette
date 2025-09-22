@@ -68,6 +68,42 @@
             },
             formatter: {
                 date: _dateFormatter,
+            },
+            onChange: function(date, text, mode) {
+                {% if new_contrib_onchange is defined %}
+                    if (this.id === 'contribution-rangeend') {
+                        var _fee    = $('#id_type_cotis_input').val();
+                        $.ajax({
+                            type: 'POST',
+                            dataType: 'json',
+                            url : '{{ url_for("contributionExtension") }}',
+                            data: {
+                                fee_id: _fee
+                            },
+                            {% include "elements/js/loader.js.twig" with {
+                                selector: '#contribdetails'
+                            } %},
+                            success: function(res){
+                                var _newStartDate = new Date(date);
+                                var _extension = res.membership_extension;
+                                var _dateExtended = new Date(_newStartDate.setMonth(_newStartDate.getMonth() + _extension));
+                                var _newEndDate = new Date(_dateExtended.setDate(_dateExtended.getDate() - 1));
+                                $('#membership-rangeend').calendar('set date', _newEndDate, true, false);
+                                $('#date_fin_cotis').transition('glow');
+                            },
+                            error: function() {
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_title_twig: _T("An error occurred retrieving contribution type extension :(")|e("js"),
+                                    modal_without_content: true,
+                                    modal_class: "mini",
+                                    modal_deny_only: true,
+                                    modal_cancel_text: _T("Close")|e("js"),
+                                    modal_classname: "redalert",
+                                } %}
+                            }
+                        });
+                    }
+                {% endif %}
             }
         });
     };

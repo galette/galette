@@ -66,6 +66,11 @@ $app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate): vo
     )->setName('contributionDates')->add($authenticate);
 
     $app->post(
+        '/contribution/extension',
+        [AjaxController::class, 'contributionExtension']
+    )->setName('contributionExtension')->add($authenticate);
+
+    $app->post(
         '/contribution/members[/{page:\d+}[/{search}]]',
         [AjaxController::class, 'contributionMembers']
     )->setName('contributionMembers')->add($authenticate);

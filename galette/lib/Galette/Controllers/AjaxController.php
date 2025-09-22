@@ -297,7 +297,7 @@ class AjaxController extends AbstractController
     }
 
     /**
-     * Contributions dates
+     * Contribution dates
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
@@ -327,7 +327,35 @@ class AjaxController extends AbstractController
     }
 
     /**
-     * Contributions dates
+     * Contribution extension
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function contributionExtension(Request $request, Response $response): Response
+    {
+        $post = $request->getParsedBody();
+
+        $contrib = new Contribution(
+            $this->zdb,
+            $this->login,
+            [
+                'type'  => (int)$post['fee_id']
+            ]
+        );
+
+        return $this->withJson(
+            $response,
+            [
+                'membership_extension' => $contrib->extension
+            ]
+        );
+    }
+
+    /**
+     * Contribution members
      *
      * @param Request     $request  PSR Request
      * @param Response    $response PSR Response

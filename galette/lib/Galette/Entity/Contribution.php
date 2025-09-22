@@ -198,6 +198,7 @@ class Contribution implements AccessManagementInterface
                 }
                 $this->begin_date = $next_begin_date->format('Y-m-d');
                 $this->retrieveEndDate();
+                $this->retrieveExpiration();
             }
             if (isset($args['payment_type'])) {
                 $this->setPaymentType((int)$args['payment_type']);
@@ -326,6 +327,23 @@ class Contribution implements AccessManagementInterface
         // Caution : the end_date to retrieve is the day before the next_begin_date.
         $end_date->sub(new DateInterval('P1D'));
         $this->end_date = $end_date->format('Y-m-d');
+    }
+
+    /**
+     * Sets expiration
+     *
+     * @return void
+     */
+    private function retrieveExpiration(): void
+    {
+        global $preferences;
+
+        if ($this->type->extension < ContributionsTypes::DONATION_TYPE) {
+            $extension = $preferences->pref_membership_ext != '' ? $preferences->pref_membership_ext : 12;
+        } else {
+            $extension = $this->type->extension;
+        }
+        $this->extension = $extension;
     }
 
     /**

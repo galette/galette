@@ -94,15 +94,19 @@ class ContributionsController extends CrudController
             if ($contrib->amount === null && $type_amount !== null) {
                 $contrib->amount = $type_amount;
             }
+            if ($type === Contribution::TYPE_FEE) {
+                $new_contrib_onchange = true;
+            }
         }
 
         $params = [
-            'page_title'        => $title,
-            'required'          => $contrib->getRequired(),
-            'contribution'      => $contrib,
-            'adh_selected'      => $contrib->member,
-            'type'              => $type,
-            'documentation'     => 'usermanual/contributions.html'
+            'page_title'           => $title,
+            'required'             => $contrib->getRequired(),
+            'contribution'         => $contrib,
+            'new_contrib_onchange' => isset($new_contrib_onchange) ? $new_contrib_onchange : false,
+            'adh_selected'         => $contrib->member,
+            'type'                 => $type,
+            'documentation'        => 'usermanual/contributions.html'
         ];
 
         // contribution types

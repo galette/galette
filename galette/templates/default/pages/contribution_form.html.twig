@@ -363,13 +363,7 @@
 
 {% block javascripts %}
 <script type="text/javascript">
-    {% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') and not contribution.id %}
-        {% include "elements/js/choose_adh.js.twig" with {
-            new_contrib_onchange: true
-        } %}
-    {% else %}
-        {% include "elements/js/choose_adh.js.twig" %}
-    {% endif %}
+    {% include "elements/js/choose_adh.js.twig" %}
 
     $(function() {
         {% if not contribution.id -%}
@@ -423,6 +417,36 @@
                             $('#duree_mois_cotis').val(_extension);
                             $('#duree_mois_cotis').transition('glow');
                         }
+                    {% else %}
+                        var _member = $('#id_adh_input').val();
+                        var _fee = value;
+                        $.ajax({
+                            type: 'POST',
+                            dataType: 'json',
+                            url : '{{ url_for("contributionDates") }}',
+                            data: {
+                                member_id: _member,
+                                fee_id: _fee
+                            },
+                            {% include "elements/js/loader.js.twig" with {
+                                selector: '#contribdetails'
+                            } %},
+                            success: function(res){
+                                $('#contribution-rangeend').calendar('set date', res.date_debut_cotis);
+                                $('#membership-rangeend').calendar('set date', res.date_fin_cotis);
+                                $('#date_debut_cotis').transition('glow');
+                            },
+                            error: function() {
+                                {% include "elements/js/modal.js.twig" with {
+                                    modal_title_twig: _T("An error occurred retrieving dates :(")|e("js"),
+                                    modal_without_content: true,
+                                    modal_class: "mini",
+                                    modal_deny_only: true,
+                                    modal_cancel_text: _T("Close")|e("js"),
+                                    modal_classname: "redalert",
+                                } %}
+                            }
+                        });
                     {% endif %}
                 }
             });
