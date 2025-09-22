@@ -105,7 +105,7 @@ $app->group(
                     )->setName($module['route'] . 'Info')->add($authenticate);
 
                     $f = $module['root'] . '/_routes.php';
-                    include_once $f;
+                    require $f;
                 }
             );
         }
