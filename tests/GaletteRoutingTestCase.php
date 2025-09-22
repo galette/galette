@@ -39,6 +39,7 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
      * @param array<string, string> $route_args   Route arguments
      * @param string                $method       HTTP method to use
      * @param string                $content_type Content type to use
+     * @param array<string, string> $query_params Query parameters to add to URL
      *
      * @return \Slim\Psr7\Request
      */
@@ -46,9 +47,10 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
         string $route_name,
         array $route_args = [],
         string $method = 'GET',
-        string $content_type = 'text/html'
+        string $content_type = 'text/html',
+        array $query_params = []
     ): \Slim\Psr7\Request {
-        $route = $this->routeparser->urlFor($route_name, $route_args);
+        $route = $this->routeparser->urlFor($route_name, $route_args, $query_params);
 
         $this->view->getEnvironment()->addGlobal('cur_route', $route_name);
         $this->view->getEnvironment()->addGlobal('cur_route_args', $route_args);
