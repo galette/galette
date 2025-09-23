@@ -53,14 +53,21 @@
                         </div>
                     </td>
                     <td class="left" data-col-label="{{ _T("Membership extension") }}">
-                        {% set cotisextensions = {
-                            (constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE")): _T("Default"),
-                            (constant("Galette\\Entity\\ContributionsTypes::DONATION_TYPE")): _T("No"),
-                            (1): _Tn('%1$s month', '%1$s months', 1)|format(1)
-                        } %}
-                        {% for m in 2..11 %}
-                            {% set cotisextensions = cotisextensions + {(m): _Tn('%1$s month', '%1$s months', m)|format(m)} %}
-                        {% endfor %}
+                        {% if preferences.pref_membership_ext != "" %}
+                            {% set cotisextensions = {
+                                (constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE")): _T("Default"),
+                                (constant("Galette\\Entity\\ContributionsTypes::DONATION_TYPE")): _T("No"),
+                                (1): _Tn('%1$s month', '%1$s months', 1)|format(1)
+                            } %}
+                            {% for m in 2..11 %}
+                                {% set cotisextensions = cotisextensions + {(m): _Tn('%1$s month', '%1$s months', m)|format(m)} %}
+                            {% endfor %}
+                        {% else %}
+                            {% set cotisextensions = {
+                                (constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE")): _T("Yes"),
+                                (constant("Galette\\Entity\\ContributionsTypes::DONATION_TYPE")): _T("No")
+                            } %}
+                        {% endif %}
                         {% include "components/forms/select.html.twig" with {
                             id: 'cotis_extension',
                             value: constant("Galette\\Entity\\ContributionsTypes::DEFAULT_TYPE"),
@@ -91,11 +98,11 @@
                     </td>
                     <td data-col-label="{{ _T("Membership extension") }}">
     {% if entry.extra == -1 %}
-                        {{ _T("Default") }}
+                        {{ preferences.pref_membership_ext != "" ? _T("Default") : _T("Yes") }}
     {% elseif entry.extra == 0 %}
                         {{ _T("No") }}
     {% else %}
-                        {{ _Tn('%1$s month', '%1$s months', entry.extra)|format(entry.extra) }}
+                        {{ preferences.pref_membership_ext != "" ? _Tn('%1$s month', '%1$s months', entry.extra)|format(entry.extra) : _T("Yes") }}
     {% endif %}
                     </td>
                     <td class="center actions_row collapsing">
