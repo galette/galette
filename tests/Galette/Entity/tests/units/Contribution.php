@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity\test\units;
 
 use Galette\GaletteTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Contribution tests class
@@ -74,13 +75,97 @@ class Contribution extends GaletteTestCase
     }
 
     /**
+     * pref_beg_membership provider
+     *
+     * @return array
+     */
+    public static function begProvider(): array
+    {
+        return [
+            ['interval' => 'P10M'],
+            ['interval' => 'P1M'],
+        ];
+    }
+
+    /**
      * Test empty contribution
      *
      * @return void
      */
-    public function testEmpty(): void
+    public function testMembershipExtensionJustEmpty(): void
     {
         $contrib = $this->contrib;
+        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->date);
+        $this->assertNull($contrib->begin_date);
+        $this->assertNull($contrib->end_date);
+        $this->assertNull($contrib->raw_date);
+        $this->assertNull($contrib->raw_begin_date);
+        $this->assertNull($contrib->raw_end_date);
+        $this->assertEmpty($contrib->duration);
+        $this->assertSame((int)$this->preferences->pref_default_paymenttype, $contrib->payment_type);
+        $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertNull($contrib->model);
+        $this->assertNull($contrib->member);
+        $this->assertNull($contrib->type);
+        $this->assertNull($contrib->amount);
+        $this->assertNull($contrib->orig_amount);
+        $this->assertNull($contrib->info);
+        $this->assertNull($contrib->transaction);
+        $this->assertCount(11, $contrib->fields);
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\Contribution::PK]));
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\Adherent::PK]));
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\ContributionsTypes::PK]));
+        $this->assertTrue(isset($contrib->fields['montant_cotis']));
+        $this->assertTrue(isset($contrib->fields['type_paiement_cotis']));
+        $this->assertTrue(isset($contrib->fields['info_cotis']));
+        $this->assertTrue(isset($contrib->fields['date_debut_cotis']));
+
+        $this->assertSame('cotis-give', $contrib->getRowClass());
+        $this->assertNull($contrib::getDueDate($this->zdb, 1));
+        $this->assertFalse($contrib->isTransactionPart());
+        $this->assertFalse($contrib->isTransactionPartOf(1));
+        $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertNull($contrib->unknown_property);
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            "Unknown property 'unknown_property'"
+        );
+    }
+
+    /**
+     * Test empty contribution with begin of membership set in preferences
+     *
+     * @param string $interval Interval to subtract from now to set begin of membership
+     *
+     * @return void
+     */
+    #[DataProvider("begProvider")]
+    public function testBeginMembershipJustEmpty(string $interval): void
+    {
+        //preg_beg_membership date, some months ago
+        $beg_membership = new \DateTime();
+        $beg_membership->sub(new \DateInterval($interval));
+
+        global $preferences;
+        $orig_pref_beg_membership = $preferences->pref_beg_membership;
+        $orig_pref_membership_ext = $preferences->pref_membership_ext;
+
+        $preferences->pref_beg_membership = $beg_membership->format('01/m');
+        $preferences->pref_membership_ext = '';
+
+        $this->assertTrue($preferences->store());
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login
+        );
+
+        //Reset preferences
+        $preferences->pref_beg_membership = $orig_pref_beg_membership;
+        $preferences->pref_membership_ext = $orig_pref_membership_ext;
+        $this->assertTrue($preferences->store());
+
         $this->assertNull($contrib->id);
         $this->assertNull($contrib->date);
         $this->assertNull($contrib->begin_date);
@@ -173,30 +258,113 @@ class Contribution extends GaletteTestCase
     }
 
     /**
+     * Test empty donation with begin of membership set in preferences
+     *
+     * @param string $interval Interval to subtract from now to set begin of membership
+     *
+     * @return void
+     */
+    #[DataProvider("begProvider")]
+    public function testBeginMembershipEmptyDonation(string $interval): void
+    {
+        $now = new \DateTime();
+
+        //preg_beg_membership date, some months ago
+        $beg_membership = new \DateTime();
+        $beg_membership->sub(new \DateInterval($interval));
+
+        global $preferences;
+        $orig_pref_beg_membership = $preferences->pref_beg_membership;
+        $orig_pref_membership_ext = $preferences->pref_membership_ext;
+
+        $preferences->pref_beg_membership = $beg_membership->format('01/m');
+        $preferences->pref_membership_ext = '';
+
+        $this->assertTrue($preferences->store());
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 4] //donation in kind
+        );
+
+        //Reset preferences
+        $preferences->pref_beg_membership = $orig_pref_beg_membership;
+        $preferences->pref_membership_ext = $orig_pref_membership_ext;
+        $this->assertTrue($preferences->store());
+
+        $this->assertNull($contrib->id);
+        $this->assertEquals($now->format('Y-m-d'), $contrib->date);
+        $this->assertEquals($now->format('Y-m-d'), $contrib->begin_date);
+        $this->assertNull($contrib->end_date);
+        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
+        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertEquals($now->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
+        $this->assertNull($contrib->raw_end_date);
+        $this->assertEmpty($contrib->duration);
+        $this->assertSame((int)$this->preferences->pref_default_paymenttype, $contrib->payment_type);
+        $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PdfModel::RECEIPT_MODEL, $contrib->model);
+        $this->assertNull($contrib->member);
+        $this->assertInstanceOf(\Galette\Entity\ContributionsTypes::class, $contrib->type);
+        $this->assertSame(4, $contrib->type->id);
+        $this->assertNull($contrib->amount);
+        $this->assertNull($contrib->orig_amount);
+        $this->assertNull($contrib->info);
+        $this->assertNull($contrib->transaction);
+        $this->assertCount(11, $contrib->fields);
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\Contribution::PK]));
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\Adherent::PK]));
+        $this->assertTrue(isset($contrib->fields[\Galette\Entity\ContributionsTypes::PK]));
+        $this->assertTrue(isset($contrib->fields['montant_cotis']));
+        $this->assertTrue(isset($contrib->fields['type_paiement_cotis']));
+        $this->assertTrue(isset($contrib->fields['info_cotis']));
+        $this->assertTrue(isset($contrib->fields['date_debut_cotis']));
+
+        $this->assertSame('cotis-give', $contrib->getRowClass());
+        $this->assertNull($contrib::getDueDate($this->zdb, 1));
+        $this->assertFalse($contrib->isTransactionPart());
+        $this->assertFalse($contrib->isTransactionPartOf(1));
+        $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertNull($contrib->unknown_property);
+        $this->expectLogEntry(
+            \Analog::WARNING,
+            "Unknown property 'unknown_property'"
+        );
+    }
+
+    /**
      * Test empty fee
      *
      * @return void
      */
     public function testEmptyFee(): void
     {
+        $now = new \DateTime();
+
+        //expected begin date
+        $expected_begin = new \DateTime($now->format('Y-m-d'));
+
+        $expected_end = clone $expected_begin;
+        $expected_end->add(new \DateInterval('P1Y'));
+        $expected_end->sub(new \DateInterval('P1D'));
+
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
             $this->login,
             ['type' => 1] //annual fee
         );
         $this->assertNull($contrib->id);
-        $this->assertEquals(date('Y-m-d'), $contrib->date);
-        $this->assertEquals(date('Y-m-d'), $contrib->begin_date);
-        $end_date = new \DateTime();
-        $end_date->sub(new \DateInterval('P1D'));
-        $end_date->add(new \DateInterval('P1Y'));
-        $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+        $this->assertEquals($now->format('Y-m-d'), $contrib->date);
+        $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->begin_date);
+        $this->assertSame($expected_end->format('Y-m-d'), $contrib->end_date);
         $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
-        $this->assertEquals(date('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
+        $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
         $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
-        $this->assertEquals(date('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
+        $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
         $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
-        $this->assertEquals($end_date->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
+        $this->assertEquals($expected_end->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
         $this->assertSame(12, $contrib->duration);
         $this->assertSame($this->preferences->pref_default_paymenttype, $contrib->payment_type);
         $this->assertSame('Check', $contrib->getPaymentType());
@@ -232,15 +400,31 @@ class Contribution extends GaletteTestCase
     /**
      * Test empty fee with begin of membership set in preferences
      *
+     * @param string $interval Interval to subtract from now to set begin of membership
+     *
      * @return void
      */
-    public function testBeginMembershipEmptyFee(): void
+    #[DataProvider("begProvider")]
+    public function testBeginMembershipEmptyFee(string $interval): void
     {
+        $now = new \DateTime();
+
+        //preg_beg_membership date, some months ago
+        $beg_membership = new \DateTime();
+        $beg_membership->sub(new \DateInterval($interval));
+
+        //expected begin date
+        $expected_begin = new \DateTime($beg_membership->format('Y-m-01'));
+
+        $expected_end = clone $expected_begin;
+        $expected_end->add(new \DateInterval('P1Y'));
+        $expected_end->sub(new \DateInterval('P1D'));
+
         global $preferences;
         $orig_pref_beg_membership = $preferences->pref_beg_membership;
         $orig_pref_membership_ext = $preferences->pref_membership_ext;
 
-        $preferences->pref_beg_membership = '01/09';
+        $preferences->pref_beg_membership = $beg_membership->format('01/m');
         $preferences->pref_membership_ext = '';
 
         $this->assertTrue($preferences->store());
@@ -251,29 +435,25 @@ class Contribution extends GaletteTestCase
             ['type' => 1] //annual fee
         );
 
+        //Reset preferences
         $preferences->pref_beg_membership = $orig_pref_beg_membership;
         $preferences->pref_membership_ext = $orig_pref_membership_ext;
         $this->assertTrue($preferences->store());
 
         $this->assertNull($contrib->id);
-        $this->assertEquals(date('Y-m-d'), $contrib->date);
-        $now = new \DateTime();
-        $now->sub(new \DateInterval('P1Y'));
-        $bdate = $contrib->raw_begin_date;
-        if ($bdate < $now) {
-            $bdate->add(new \DateInterval('P1Y'));
-        }
-        $this->assertEquals(date('Y-09-01'), $bdate->format('Y-m-d'));
-        $end_date = $contrib->raw_begin_date;
-        $end_date->add(new \DateInterval('P1Y'));
-        $end_date->sub(new \DateInterval('P1D'));
-        $this->assertSame($end_date->format('Y-m-d'), $contrib->end_date);
+
+        $this->assertEquals($now->format('Y-m-d'), $contrib->date);
         $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
-        $this->assertEquals(date('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
+        $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
+
+        $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->begin_date);
         $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
-        $this->assertEquals(date('Y-09-01'), $bdate->format('Y-m-d'));
+        $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
+
+        $this->assertSame($expected_end->format('Y-m-d'), $contrib->end_date);
         $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
-        $this->assertEquals($end_date->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
+        $this->assertEquals($expected_end->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
+
         $this->assertSame(12, $contrib->duration);
         $this->assertSame($this->preferences->pref_default_paymenttype, $contrib->payment_type);
         $this->assertSame('Check', $contrib->getPaymentType());
