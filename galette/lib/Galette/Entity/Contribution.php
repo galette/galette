@@ -285,7 +285,7 @@ class Contribution implements AccessManagementInterface
         $now = new \DateTime();
         $begin_date = new \DateTime($this->begin_date);
 
-        if ($this->type->extension > ContributionsTypes::DONATION_TYPE) {
+        if ($this->type->extension > ContributionsTypes::DONATION_TYPE && $preferences->pref_beg_membership == '') {
             $dext = new DateInterval('P' . $this->type->extension . 'M');
             $end_date = $begin_date->add($dext);
         } elseif ($preferences->pref_beg_membership != '') {
