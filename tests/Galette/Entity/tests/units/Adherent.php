@@ -1924,4 +1924,27 @@ class Adherent extends GaletteTestCase
 
         $this->login->logOut();
     }
+
+    /**
+     * Test there is no empty login possible
+     *
+     * @return void
+     */
+    public function testNoEmptyLogin(): void
+    {
+        $this->logSuperAdmin();
+        $adh = $this->getMemberOne();
+
+        $check = $this->adh->check(['login_adh' => ''], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($adh->store());
+
+        $this->assertTrue($adh->load($adh->id));
+        $this->assertNotEmpty($adh->login);
+        $this->assertNotEquals($this->dataAdherentOne()['login_adh'], $adh->login);
+
+        $this->login->logOut();
+    }
 }

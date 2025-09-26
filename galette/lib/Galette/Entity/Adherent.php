@@ -268,21 +268,10 @@ class Adherent implements AccessManagementInterface
         global $i18n;
         $gp = new Password($this->zdb);
 
-        return [
-            'active' => true,
-            'language' => $i18n->getID(),
-            'creation_date' => date("Y-m-d"),
-            'status' => $this->getDefaultStatus(),
-            'title' => null,
+        //Default values for both creation and update
+        $defaults = [
             'gender' => self::NC,
             'login' => $gp->makeRandomPassword(15),
-            'password' => $gp->makeRandomPassword(),
-            'picture' => new Picture(),
-            'admin' => false,
-            'staff' => false,
-            'due_free' => false,
-            'appears_in_list' => false,
-            'parent' => null,
             //fields that cannot be null in database
             'surname'  => '',
             'nickname' => '',
@@ -290,7 +279,28 @@ class Adherent implements AccessManagementInterface
             'zipcode'  => '',
             'town'     => '',
             'region'   => '',
+
         ];
+
+        //default values for creation only
+        if (!($this->id ?? null)) {
+            $defaults += [
+                'active' => true,
+                'language' => $i18n->getID(),
+                'creation_date' => date("Y-m-d"),
+                'status' => $this->getDefaultStatus(),
+                'title' => null,
+                'password' => $gp->makeRandomPassword(),
+                'picture' => new Picture(),
+                'admin' => false,
+                'staff' => false,
+                'due_free' => false,
+                'appears_in_list' => false,
+                'parent' => null,
+            ];
+        }
+
+        return $defaults;
     }
 
     /**
@@ -301,7 +311,7 @@ class Adherent implements AccessManagementInterface
     public function applyDefaultValues(): void
     {
         foreach ($this->getDefaultValues() as $key => $value) {
-            if (!isset($this->$key)) {
+            if (!isset($this->$key) || $this->$key === '') {
                 $this->$key = $value;
             }
         }
@@ -1638,6 +1648,7 @@ class Adherent implements AccessManagementInterface
         global $hist, $emitter, $login;
         $event = null;
 
+        $this->applyDefaultValues();
         if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '' && $this->preferences->pref_bool_create_member) {
             $this->parent = $login->id;
         }
