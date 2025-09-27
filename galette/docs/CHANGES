@@ -32,6 +32,10 @@ Changes
 - Wrong toast message displayed when saving a contribution
 - Display issues on contributions/scheduled payments/transactions lists
 - Fix member storage when some fields are not present in the form
+- Plugins can display news on dashboard
+- Several fixes on end dates/extension depending on settings
+- Admin field is shown even if it is configured to be hidden
+- New members are set inactive when activity field is hidden
 
 1.1.6 -> 1.1.6.1
 
