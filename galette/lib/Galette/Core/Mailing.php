@@ -554,7 +554,7 @@ class Mailing extends GaletteMail
             }
         } else {
             Analog::log(
-                '[' . static::class . 'Unable to get ' . $name,
+                '[' . static::class . '] Unable to get ' . $name,
                 Analog::ERROR
             );
             return false;
@@ -632,7 +632,7 @@ class Mailing extends GaletteMail
                     || $value == self::STEP_SEND
                     || $value == self::STEP_SENT)
                 ) {
-                    $this->current_step = (int)$value;
+                    $this->current_step = $value;
                 } else {
                     Analog::log(
                         '[' . static::class . '] Value for field `' . $name

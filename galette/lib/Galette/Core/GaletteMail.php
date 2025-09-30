@@ -81,6 +81,9 @@ class GaletteMail
             $preferences->pref_email_nom,
             $preferences->pref_email
         );
+        if (!$this->preferences->pref_bool_wrap_mails) {
+            $this->word_wrap = 0;
+        }
     }
 
     /**
@@ -173,10 +176,8 @@ class GaletteMail
         $this->mail->CharSet = 'UTF-8';
         $this->mail->SetLanguage($i18n->getAbbrev());
 
-        if ($this->preferences->pref_bool_wrap_mails) {
+        if ($this->word_wrap > 0) {
             $this->mail->WordWrap = $this->word_wrap;
-        } else {
-            $this->word_wrap = 0;
         }
     }
 
@@ -369,7 +370,7 @@ class GaletteMail
     public static function isUrl(string $url): bool
     {
         $valid = preg_match(
-            '|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i',
+            '|^http(s)?://\[?[a-z0-9-]+(.[a-z0-9-]+)*\]?(:[0-9]+)?(/.*)?$|i',
             $url
         );
         if (!$valid) {
@@ -400,6 +401,10 @@ class GaletteMail
      */
     protected function getPhpMailer(): PHPMailer
     {
+        if (!isset($this->mail)) {
+            $this->initMailer();
+        }
+
         return $this->mail;
     }
 

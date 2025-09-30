@@ -511,8 +511,13 @@ class Db extends TestCase
                 }
             );
 
-        $this->expectException('LogicException');
-        $this->db->getDbVersion();
+        $exception_thrown = false;
+        try {
+            $this->db->getDbVersion();
+        } catch (\LogicException $exception) {
+            $exception_thrown = true;
+        }
+        $this->assertTrue($exception_thrown);
         $this->assertFalse($this->db->checkDbVersion());
     }
 

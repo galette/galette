@@ -168,9 +168,11 @@ abstract class GaletteTestCase extends TestCase
     /**
      * Get logs as an array, cleaned of unwanted entries
      *
+     * @param ?int $keep_level Level to keep explicitly (to check INFO or DEBUG logs messages)
+     *
      * @return string[]
      */
-    private function getCleanedLogs(): array
+    private function getCleanedLogs(?int $keep_level = null): array
     {
         global $galette_log_var;
         $logs = explode("localhost - ", $galette_log_var ?? '');
@@ -190,8 +192,11 @@ abstract class GaletteTestCase extends TestCase
             if (
                 empty($log)
                 || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::DEBUG] . ' - ')
+                && $keep_level !== \Analog\Analog::DEBUG
                 || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::INFO] . ' - ')
+                && $keep_level !== \Analog\Analog::INFO
                 || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::NOTICE] . ' - ')
+                && $keep_level !== \Analog\Analog::NOTICE
             ) {
                 unset($logs[$i]);
             }
@@ -870,7 +875,7 @@ abstract class GaletteTestCase extends TestCase
         global $galette_log_var;
         $this->assertNotEmpty($galette_log_var);
 
-        $logs = $this->getCleanedLogs();
+        $logs = $this->getCleanedLogs(keep_level: $level);
         $found = false;
         foreach ($logs as $i => $log) {
             if (str_contains($log, $this->log_levels_names[$level] . ' - ') && str_contains($log, $message)) {
