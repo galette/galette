@@ -37,6 +37,13 @@ Changes
 - Admin field is shown even if it is configured to be hidden
 - New members are set inactive when activity field is hidden
 
+1.1.6.1 -> 1.1.6.2
+
+- Fixed typed property must not be accessed
+- Make sure fields visible for anyone don't cause errors
+- Login must never be empty
+- Fix donation begin date
+
 1.1.6 -> 1.1.6.1
 
 - Fix some issues when Status objects was not loaded from DI
