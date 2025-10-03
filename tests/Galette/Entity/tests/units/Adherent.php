@@ -1015,4 +1015,73 @@ class Adherent extends GaletteTestCase
         $this->assertTrue($this->adh->load($this->adh->id));
         $this->assertTrue($this->adh->isSponsor());
     }
+
+    /**
+     * Test disabled fields are well handled
+     *
+     * @return void
+     */
+    public function testDisabledFields(): void
+    {
+        $fc = $this->container->get(\Galette\Entity\FieldsConfig::class);
+        $orig_fields = $fc->getCategorizedFields();
+        $fields = [];
+        foreach ($orig_fields as $fieldset) {
+            foreach ($fieldset as $field) {
+                $fields[] = $field['field_id'];
+            }
+        }
+
+        $excluded = [
+            'id_adh',
+            'fingerprint'
+        ];
+
+        $counter = 0;
+        foreach ($fields as $key => $field) {
+            if (in_array($field, $excluded)) {
+                continue;
+            }
+
+            //change data
+            $counter++;
+            $data = $this->dataAdherentOne();
+            $data['email_adh'] = sprintf('mail%1$s@domain.com', $counter);
+            $data['login_adh'] = sprintf('login%1$s', $counter);
+
+            //unset each field to be sure disabled fields are well handled
+            $current_fields = $fields;
+            unset($current_fields[$key]);
+            unset($data[$field]);
+
+            $fc = $this->container->get(\Galette\Entity\FieldsConfig::class);
+            $categorized_fields = $orig_fields;
+            foreach ($categorized_fields as &$fieldset) {
+                foreach ($fieldset as &$entry) {
+                    if ($entry['field_id'] == $field) {
+                        $entry['visible'] = \Galette\Entity\FieldsConfig::NOBODY; //make sure fingerprint field is visible
+                    }
+                }
+            }
+            $fc->setFields($categorized_fields);
+
+            $adh = new \Galette\Entity\Adherent($this->zdb);
+            $adh->setDependencies(
+                $this->preferences,
+                $this->members_fields,
+                $this->history
+            );
+            $this->assertTrue($adh->check($data, [], []));
+            $this->assertTrue($adh->store());
+
+            if ($field === 'login_adh') {
+                $this->assertTrue($adh->load($adh->id));
+                //login is mandatory, it takes an automatic value if not set
+                $this->assertNotEmpty($adh->login);
+            }
+        }
+
+        //reset
+        $fc->setFields($orig_fields);
+    }
 }

@@ -162,8 +162,11 @@ class Contribution
                 $this->amount = $this->transaction->getMissingAmount();
             }
             $this->setContributionType((int)$args['type']);
-            //calculate begin date for membership fee
-            if ($preferences->pref_membership_ext != '') {
+            if (!$this->isFee()) {
+                //for donations, begin date is current date
+                $this->begin_date = $this->date;
+            } elseif ($preferences->pref_membership_ext != '') {
+                //calculate begin date for membership fee with membership extension
                 $this->begin_date = $this->date;
                 if ($this->is_cotis) {
                     $due_date = self::getDueDate($this->zdb, $this->member);
@@ -183,6 +186,7 @@ class Contribution
                     $this->retrieveEndDate();
                 }
             } else {
+                //calculate begin date for membership fee with beginning of membership date
                 $begin_date = new \DateTime();
                 $begin_date->sub(new DateInterval('P1Y'));
                 list($j, $m) = explode('/', $preferences->pref_beg_membership);
