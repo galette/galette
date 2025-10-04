@@ -268,53 +268,46 @@ class CsvOut extends Csv
         );
         $export = $xpath[0];
 
-        try {
-            $results = $zdb->db->query(
-                str_replace('galette_', PREFIX_DB, (string)$export->query),
-                Adapter::QUERY_MODE_EXECUTE
-            );
+        $results = $zdb->db->query(
+            str_replace('galette_', PREFIX_DB, (string)$export->query),
+            Adapter::QUERY_MODE_EXECUTE
+        );
 
-            $filename = self::DEFAULT_DIRECTORY . $export['filename'];
+        $filename = self::DEFAULT_DIRECTORY . $export['filename'];
 
-            $fp = fopen($filename, 'w');
-            if ($fp) {
-                //show titles
-                $title = true;
-
-                $separator = ($export->separator)
-                    ? (string)$export->separator
-                    : self::DEFAULT_SEPARATOR;
-                $quote = ($export->quote) ? (string)$export->quote : self::DEFAULT_QUOTE;
-                if ($export->headers->none) {
-                    //No title
-                    $title = false;
-                } else {
-                    $xpath = $export->xpath('headers/header');
-                    if (count($xpath) > 0) {
-                        //titles from array
-                        foreach ($xpath as $header) {
-                            $title[] = (string)$header;
-                        }
-                    }
-                }
-
-                $this->export($results, $separator, $quote, $title, $fp);
-                fclose($fp);
-            } else {
-                Analog::log(
-                    'File ' . $filename . ' is not writeable.',
-                    Analog::ERROR
-                );
-                return self::FILE_NOT_WRITABLE;
-            }
-            return (string)$export['filename'];
-        } catch (Throwable $e) {
+        $fp = fopen($filename, 'w');
+        if ($fp === false) {
             Analog::log(
-                'An error occurred while exporting | ' . $e->getMessage() . "\n" . $e->getTraceAsString(),
+                'File ' . $filename . ' is not writeable.',
                 Analog::ERROR
             );
-            return self::DB_ERROR;
+            return self::FILE_NOT_WRITABLE;
         }
+
+        //show titles
+        $title = true;
+
+        $separator = ($export->separator)
+            ? (string)$export->separator
+            : self::DEFAULT_SEPARATOR;
+        $quote = ($export->quote) ? (string)$export->quote : self::DEFAULT_QUOTE;
+        if ($export->headers->none) {
+            //No title
+            $title = false;
+        } else {
+            $xpath = $export->xpath('headers/header');
+            if (count($xpath) > 0) {
+                //titles from array
+                foreach ($xpath as $header) {
+                    $title[] = (string)$header;
+                }
+            }
+        }
+
+        $this->export($results, $separator, $quote, $title, $fp);
+        fclose($fp);
+
+        return (string)$export['filename'];
     }
 
     /**
@@ -322,16 +315,16 @@ class CsvOut extends Csv
      *
      * @param string $id export's id to run
      *
-     * @return string|int|false filename used, error code or failure
+     * @return string|int|null filename used, error code or failure
      */
-    private function runYamlParametedExport(string $id): string|int|false
+    private function runYamlParametedExport(string $id): string|int|null
     {
         global $zdb;
 
         $export = [];
         $data = Yaml::parseFile($this->parameted_file);
         foreach ($data as $anexport) {
-            if (!isset($anexport['inactive']) || $anexport['inactive']) {
+            if (!($anexport['inactive'] ?? false)) {
                 $keys = array_keys($anexport);
                 $anid = array_shift($keys);
                 if ($anid == $id) {
@@ -340,51 +333,44 @@ class CsvOut extends Csv
             }
         }
 
-        if (!count($export) || ($export['inactive'] ?? false)) {
-            return false;
+        if (!count($export)) {
+            return null;
         }
 
-        try {
-            $results = $zdb->db->query(
-                str_replace('galette_', PREFIX_DB, $export['query']),
-                Adapter::QUERY_MODE_EXECUTE
-            );
+        $results = $zdb->db->query(
+            str_replace('galette_', PREFIX_DB, $export['query']),
+            Adapter::QUERY_MODE_EXECUTE
+        );
 
-            $filename = self::DEFAULT_DIRECTORY . $export['filename'];
+        $filename = self::DEFAULT_DIRECTORY . $export['filename'];
 
-            $fp = fopen($filename, 'w');
-            if ($fp) {
-                $separator = $export['separator'] ?? self::DEFAULT_SEPARATOR;
-                $quote = $export['quote'] ?? self::DEFAULT_QUOTE;
-                $title = [];
-                if (isset($export['headers'])) {
-                    if ($export['headers'] === false) {
-                        //No title
-                        $title = false;
-                    } else {
-                        foreach ($export['headers'] as $header) {
-                            $title[] = (string)$header;
-                        }
-                    }
-                }
-
-                $this->export($results, $separator, $quote, $title, $fp);
-                fclose($fp);
-            } else {
-                Analog::log(
-                    'File ' . $filename . ' is not writeable.',
-                    Analog::ERROR
-                );
-                return self::FILE_NOT_WRITABLE;
-            }
-            return $export['filename'];
-        } catch (Throwable $e) {
+        $fp = fopen($filename, 'w');
+        if ($fp === false) {
             Analog::log(
-                'An error occurred while exporting | ' . $e->getMessage() . "\n" . $e->getTraceAsString(),
+                'File ' . $filename . ' is not writeable.',
                 Analog::ERROR
             );
-            return self::DB_ERROR;
+            return self::FILE_NOT_WRITABLE;
         }
+
+        $separator = $export['separator'] ?? self::DEFAULT_SEPARATOR;
+        $quote = $export['quote'] ?? self::DEFAULT_QUOTE;
+        $title = [];
+        if (isset($export['headers'])) {
+            if ($export['headers'] === false) {
+                //No title
+                $title = false;
+            } else {
+                foreach ($export['headers'] as $header) {
+                    $title[] = (string)$header;
+                }
+            }
+        }
+
+        $this->export($results, $separator, $quote, $title, $fp);
+        fclose($fp);
+
+        return $export['filename'];
     }
 
     /**
@@ -396,15 +382,23 @@ class CsvOut extends Csv
      */
     public function runParametedExport(string $id): string|int|null
     {
-        //try first to run from YAML configuration file
-        $run = $this->runYamlParametedExport($id);
-        if ($run !== false) {
-            return $run;
-        }
+        try {
+            //try first to run from YAML configuration file
+            $run = $this->runYamlParametedExport($id);
+            if ($run !== null) {
+                return $run;
+            }
 
-        //if nothing has been run yet, look into legacy XML configuration file
-        if (file_exists($this->legacy_parameted_file)) {
-            return $this->runXmlParametedExport($id);
+            //if nothing has been run yet, look into legacy XML configuration file
+            if (file_exists($this->legacy_parameted_file)) {
+                return $this->runXmlParametedExport($id);
+            }
+        } catch (Throwable $e) {
+            Analog::log(
+                'An error occurred while exporting | ' . $e->getMessage() . "\n" . $e->getTraceAsString(),
+                Analog::ERROR
+            );
+            return self::DB_ERROR;
         }
 
         return null;
