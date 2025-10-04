@@ -104,7 +104,7 @@ class MailingHistory extends History
             foreach ($results as $r) {
                 if ($r['mailing_sender'] !== null && $r['mailing_sender_name'] === null) {
                     $r['mailing_sender_name']
-                        = Adherent::getSName($this->zdb, $r['mailing_sender']);
+                        = Adherent::getSName($this->zdb, (int)$r['mailing_sender']);
                 }
 
                 $this->handleRecipients($r);
