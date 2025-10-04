@@ -124,7 +124,7 @@ class News extends TestCase
         $touched = touch($file, $expired->getTimestamp());
         $this->assertTrue($touched);
 
-        $news = new \Galette\IO\News($this->local_url);
+        new \Galette\IO\News($this->local_url);
         $mnewdate = \DateTime::createFromFormat(
             $dformat,
             date(

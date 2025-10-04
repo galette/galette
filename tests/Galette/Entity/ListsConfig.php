@@ -224,7 +224,6 @@ class ListsConfig extends TestCase
             ->getMock();
         $superadmin_login->method('isSuperAdmin')->willReturn(true);
 
-        $expecteds = $this->default_lists;
         $elements = $lists_config->getDisplayElements($superadmin_login);
         $this->assertCount(count($this->default_lists), $elements);
 

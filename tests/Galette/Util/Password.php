@@ -141,14 +141,14 @@ class Password extends TestCase
             $this->preferences->pref_password_strength = $level + 1;
             $password = new \Galette\Util\Password($this->preferences);
             $this->assertFalse($password->isValid($pass));
-            $this->assertEquals($password->getErrors(), $errors);
+            $this->assertEquals($errors, $password->getErrors());
         }
 
         $this->preferences->pref_password_strength = $level;
         $password = new \Galette\Util\Password($this->preferences);
         $this->assertTrue($password->isValid($pass), implode(', ', $password->getErrors()));
         $this->assertSame($password->getErrors(), []);
-        $this->assertEquals($password->getStrenghtErrors(), $errors);
+        $this->assertEquals($errors, $password->getStrenghtErrors());
     }
 
     /**
@@ -181,7 +181,7 @@ class Password extends TestCase
     {
         $this->preferences->pref_password_blacklist = true;
         $password = new \Galette\Util\Password($this->preferences);
-        $this->assertSame($password->isBlacklisted($pass), $expected, $pass);
+        $this->assertSame($expected, $password->isBlacklisted($pass), $pass);
 
         $this->preferences->pref_password_blacklist = false;
         $password = new \Galette\Util\Password($this->preferences);

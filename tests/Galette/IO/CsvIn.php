@@ -123,7 +123,7 @@ class CsvIn extends GaletteTestCase
             print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), true)
         );
 
-        $model = $this->getModel($fields);
+        $this->getModel($fields);
 
         //get csv model file to add data in
         $controller = new \Galette\Controllers\CsvController($this->container);
@@ -584,7 +584,7 @@ class CsvIn extends GaletteTestCase
             'success_detected' => ["File '$file_name' has been successfully imported :)"]
         ];
         $members_list = $this->getMemberData1();
-        foreach ($members_list as $fingerprint => &$data) {
+        foreach ($members_list as &$data) {
             $data['dynfield_' . $df->getId()] = 'Dynamic field value for ' . $data['fingerprint'];
         }
         unset($data);
@@ -603,7 +603,7 @@ class CsvIn extends GaletteTestCase
             ]
         ];
         $members_list = $this->getMemberData2NoName();
-        foreach ($members_list as $fingerprint => &$data) {
+        foreach ($members_list as &$data) {
             $data['dynfield_' . $df->getId()] = 'Dynamic field value for ' . $data['fingerprint'];
         }
         unset($data);
@@ -628,7 +628,7 @@ class CsvIn extends GaletteTestCase
         ];
         $members_list = $this->getMemberData2();
         $i = 0;
-        foreach ($members_list as $fingerprint => &$data) {
+        foreach ($members_list as &$data) {
             //two lines without required dynamic field.
             $data['dynfield_' . $df->getId()] = (($i == 2 || $i == 5) ? '' :
                 'Dynamic field value for ' . $data['fingerprint']);
@@ -697,7 +697,7 @@ class CsvIn extends GaletteTestCase
             'success_detected' => ["File '$file_name' has been successfully imported :)"]
         ];
         $members_list = $this->getMemberData1();
-        foreach ($members_list as $fingerprint => &$data) {
+        foreach ($members_list as &$data) {
             //two lines without required dynamic field.
             $data['dynfield_' . $cdf->getId()] = rand(0, 2);
         }
@@ -763,7 +763,7 @@ class CsvIn extends GaletteTestCase
             'success_detected' => ["File '$file_name' has been successfully imported :)"]
         ];
         $members_list = $this->getMemberData1();
-        foreach ($members_list as $fingerprint => &$data) {
+        foreach ($members_list as &$data) {
             //two lines without required dynamic field.
             $data['dynfield_' . $cdf->getId()] = $data['date_crea_adh'];
         }

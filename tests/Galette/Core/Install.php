@@ -264,10 +264,10 @@ class Install extends TestCase
         foreach ($types as $t) {
             $errors = array();
 
-            $this->install->setDbType(\Galette\Core\Db::MYSQL, $errors);
+            $this->install->setDbType($t, $errors);
             $type = $this->install->getDbType();
 
-            $this->assertSame(\Galette\Core\Db::MYSQL, $type);
+            $this->assertSame($t, $type);
             $this->assertCount(0, $errors);
         }
 

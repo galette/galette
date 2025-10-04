@@ -141,26 +141,6 @@ class Picture extends TestCase
     }
 
     /**
-     * Test mimetype guess
-     * FileInfo not installed, back to mime_content_type call
-     *
-     * Does not actually work :/
-     *
-     * @return void
-     */
-    /*public function testMimeContentTypeMimeType()
-    {
-        $url = realpath(GALETTE_ROOT . '../tests/fake_image.jpg');
-        $this->assertNotFalse($url);
-
-        $this->assert('FileInfo extension missing')
-            ->given($picture = new \Galette\Core\Picture())
-            ->if($this->function->function_exists = false)
-            ->then
-                ->variable($picture->getMimeType($url))->isIdenticalTo('image/jpeg');
-    }*/
-
-    /**
      * Test storage
      *
      * @return void

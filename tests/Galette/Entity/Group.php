@@ -81,7 +81,6 @@ class Group extends GaletteTestCase
         $group = new \Galette\Entity\Group();
         $this->logSuperAdmin();
         $group->setLogin($this->login);
-        //$this->assertFalse($group->isManager($this->login));
         $this->assertNull($group->getId());
         $this->assertSame(0, $group->getLevel());
         $this->assertNull($group->getName());
@@ -281,7 +280,6 @@ class Group extends GaletteTestCase
         $group->setName('A child group');
         $group->setParentGroup($parent_id);
         $this->assertTrue($group->store());
-        $child_id_1 = $group->getId();
         $this->assertSame($parent_id, $group->getParentGroup()->getId());
 
         $group = new \Galette\Entity\Group($parent_id);

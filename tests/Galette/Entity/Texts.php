@@ -34,8 +34,6 @@ use Laminas\Db\Adapter\Adapter;
  */
 class Texts extends GaletteTestCase
 {
-    private array $remove = [];
-
     /**
      * Test getList
      *

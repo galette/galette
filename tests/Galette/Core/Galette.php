@@ -435,7 +435,7 @@ class Galette extends GaletteTestCase
         global $login;
 
         $db = new \Galette\Core\Db();
-        $member = $this->getMemberOne();
+        $this->getMemberOne();
 
         $actions = \Galette\Core\Galette::getBatchActions();
         $this->assertCount(0, $actions);

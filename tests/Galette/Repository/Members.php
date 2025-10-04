@@ -427,8 +427,6 @@ class Members extends GaletteTestCase
 
         //search on contribution end date
         $filters = new \Galette\Filters\AdvancedMembersList();
-        //$contribdate = new \DateTime();
-        //$contribdate->modify('+2 years');
         $filters->contrib_begin_date_end = $contribdate->format('Y-m-d');
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
@@ -1247,7 +1245,6 @@ class Members extends GaletteTestCase
     public function testRemoveMembers(): void
     {
         $this->logSuperAdmin();
-        $members = new \Galette\Repository\Members();
 
         //Filter on inactive accounts
         $filters = new \Galette\Filters\MembersList();

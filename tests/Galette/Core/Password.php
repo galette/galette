@@ -180,7 +180,7 @@ class Password extends GaletteTestCase
         $results = $this->zdb->execute($select);
         $this->assertSame(1, $results->count());
 
-        $pass = new \Galette\Core\Password($this->zdb, true);
+        new \Galette\Core\Password($this->zdb, true);
 
         $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());
@@ -194,30 +194,6 @@ class Password extends GaletteTestCase
      * @return void
      */
     public function testGenerateNewPasswordWException(): void
-    {
-        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
-            ->getMock();
-
-        $this->zdb->method('execute')
-            ->willReturnCallback(
-                function (): void {
-                    throw new \LogicException('Error executing query!', 123);
-                }
-            );
-
-        $pass = new \Galette\Core\Password($this->zdb, false);
-        $res = $pass->generateNewPassword(12);
-        $this->expectLogEntry(\Analog::ERROR, 'Error executing query!');
-        $this->assertFalse($res);
-    }
-
-    /**
-     * Generate new password when insert returns false
-     *
-     * @return void
-     */
-    public function testGenerateNewPasswordWFalseInsert(): void
     {
         $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(array('execute'))

@@ -174,7 +174,7 @@ class Line extends GaletteTestCase
         $this->assertIsInt($id);
 
         //load from DB.
-        $tdf = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type'], $id);
+        \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $field_data['field_type'], $id);
     }
 
     /**

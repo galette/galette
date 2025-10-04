@@ -33,7 +33,6 @@ use Galette\GaletteTestCase;
 class Reminders extends GaletteTestCase
 {
     protected int $seed = 95842355;
-    private array $ids = [];
 
     /**
      * Set up tests

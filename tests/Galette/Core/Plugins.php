@@ -99,7 +99,7 @@ class Plugins extends TestCase
      */
     public function testLoadModules(): void
     {
-        $plugins = $this->getPlugins();
+        $this->getPlugins();
         $this->assertCount(3, $this->plugins->getModules());
 
         $loaded_plugin = $this->plugins->getModules('plugin-test2');
@@ -141,20 +141,6 @@ class Plugins extends TestCase
     {
         $this->assertSame($this->plugin2['root'], $this->plugins->moduleRoot('plugin-test2'));
     }
-
-    /**
-     * Test templates path
-     *
-     * @return void
-     */
-    /*public function testGetTemplatesPath()
-    {
-        //FIXME:
-        //  - at the moment, there is no config for preferences, so default theme is empty
-        //  - remove global $preferences to have this one working as expected...
-        $this->variable($this->plugins->getTemplatesPath('plugin-test2'))
-            ->isIdenticalTo($this->plugin2['root'] . '/templates/');
-    }*/
 
     /**
      * Test reset modules list

@@ -107,7 +107,7 @@ class Db extends TestCase
 
         $this->expectException(\Exception::class);
         $dsn['TYPE_DB'] = 'DOES_NOT_EXISTS';
-        $db = new \Galette\Core\Db($dsn);
+        new \Galette\Core\Db($dsn);
     }
 
     /**
@@ -135,7 +135,7 @@ class Db extends TestCase
      */
     public function testGrant(): void
     {
-        $result = $this->db->dropTestTable();
+        $this->db->dropTestTable();
 
         $expected = array(
             'create' => true,
@@ -352,7 +352,7 @@ class Db extends TestCase
         $select = $this->db->select('preferences', 'p');
         $select->where(array('p.nom_pref' => 'pref_nom'));
 
-        $results = $this->db->execute($select);
+        $this->db->execute($select);
 
         $query = $this->db->query_string;
 
@@ -392,7 +392,7 @@ class Db extends TestCase
             'long_label'    => 'Doctor'
         ];
         $insert->values($data);
-        $res = $this->db->execute($insert);
+        $this->db->execute($insert);
 
         $select = $this->db->select('titles', 't');
         $select->where(['t.id_title' => $data['id_title']]);
@@ -420,7 +420,7 @@ class Db extends TestCase
             'long_label'    => 'Doctor'
         ];
         $insert->values($data);
-        $res = $this->db->execute($insert);
+        $this->db->execute($insert);
 
         $update = $this->db->update('titles');
         $data = [
@@ -462,7 +462,7 @@ class Db extends TestCase
             'long_label'    => 'Doctor'
         ];
         $insert->values($data);
-        $res = $this->db->execute($insert);
+        $this->db->execute($insert);
 
         $delete = $this->db->delete('titles');
         $where = ['id_title' => 150];
@@ -550,7 +550,7 @@ class Db extends TestCase
     /**
      * Test tables count
      *
-     * FIXME: this test will fail if some plugins tables are present
+     * this test will fail if some plugins tables are present
      *
      * @return void
      */

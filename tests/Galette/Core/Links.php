@@ -32,10 +32,8 @@ use Galette\GaletteTestCase;
  */
 class Links extends GaletteTestCase
 {
-    //private $pass = null;
     protected int $seed = 95842355;
     private \Galette\Core\Links $links;
-    private array $ids = [];
     protected array $excluded_after_methods = ['testDuplicateLinkTarget'];
 
     /**
@@ -207,7 +205,7 @@ class Links extends GaletteTestCase
         $results = $this->zdb->execute($select);
         $this->assertSame(2, $results->count());
 
-        $links = new \Galette\Core\Links($this->zdb, true);
+        new \Galette\Core\Links($this->zdb, true);
 
         $results = $this->zdb->execute($select);
         $result = $results->current();
