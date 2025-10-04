@@ -200,16 +200,6 @@ class CsvController extends AbstractController
                             )
                         );
                         break;
-                    case false:
-                        $this->flash->addMessage(
-                            'error_detected',
-                            str_replace(
-                                '%export',
-                                $pn,
-                                _T("An error occurred running parameted export '%export'. Please check the logs.")
-                            )
-                        );
-                        break;
                     default:
                         //no error, file has been written to disk
                         $written[] = [
