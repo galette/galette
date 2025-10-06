@@ -90,7 +90,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->getEnvironment()->addFunction($function);
 
     $function = new \Twig\TwigFunction('_Tn', function ($singular, $plural, $count, $domain = 'galette') {
-        return _Tn($singular, $plural, $count, $domain);
+        return _Tn($singular, $plural, (int)$count, $domain);
     });
     $view->getEnvironment()->addFunction($function);
 
@@ -100,7 +100,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->getEnvironment()->addFunction($function);
 
     $function = new \Twig\TwigFunction('_Tnx', function ($context, $singular, $plural, $count, $domain = 'galette') {
-        return _Tnx($context, $singular, $plural, $count, $domain);
+        return _Tnx($context, $singular, $plural, (int)$count, $domain);
     });
     $view->getEnvironment()->addFunction($function);
 
