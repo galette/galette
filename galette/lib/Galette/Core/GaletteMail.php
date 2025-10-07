@@ -198,6 +198,7 @@ class GaletteMail
             $this->initMailer();
         }
 
+        $this->mail->ClearBCCs();
         if ($recipients !== []) {
             $this->recipients = [];
             foreach ($recipients as $mail => $name) {
@@ -219,8 +220,6 @@ class GaletteMail
                     break;
                 }
             }
-        } else {
-            $this->mail->ClearBCCs();
         }
 
         return $res;
