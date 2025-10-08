@@ -22,7 +22,6 @@
 
 {% block content %}
     <table class="listing ui celled striped table">
-        <!--<caption>{{ _T('Active plugins') }}</caption>-->
         <thead>
             <tr>
                 <th class="listing">{{ _T('Name') }}</th>
@@ -108,7 +107,7 @@
             </tr>
 {% else %}
             <tr>
-                <td colspan="5">{{ _T('No inactive plugin.') }}</td>
+                <td colspan="6">{{ _T('No inactive plugin.') }}</td>
             </tr>
 {% endfor %}
         </tbody>
