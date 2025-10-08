@@ -129,9 +129,13 @@ class Picture extends TestCase
         $this->assertNotFalse($url);
         $this->assertSame('image/jpeg', $this->picture->getMimeType($url));
 
-        $url = realpath(GALETTE_ROOT . '../galette/webroot/themes/default/images/galette.png');
+        $url = realpath(GALETTE_ROOT . '../galette/webroot/themes/default/images/default.png');
         $this->assertNotFalse($url);
         $this->assertSame('image/png', $this->picture->getMimeType($url));
+
+        $url = realpath(GALETTE_ROOT . '../galette/webroot/themes/default/images/galette.webp');
+        $this->assertNotFalse($url);
+        $this->assertSame('image/webp', $this->picture->getMimeType($url));
 
         $url = realpath(GALETTE_ROOT . '../tests/test.gif');
         $this->assertNotFalse($url);

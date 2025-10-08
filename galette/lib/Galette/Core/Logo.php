@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use DateTime;
 use Laminas\Db\Sql\Select;
 
 /**
@@ -56,7 +57,30 @@ class Logo extends Picture
      */
     protected function getDefaultPicture(): void
     {
-        $this->file_path = realpath(_CURRENT_THEME_PATH . 'images/galette.png');
+        $now = new DateTime();
+        $special = ''; //default logo
+
+        // Halloween special logo
+        $compare_date = new DateTime(date('Y') . '-10-31');
+        $date_diff = $compare_date->diff($now);
+        if ($date_diff->days == 0 || $date_diff->invert == 1 && $date_diff->days <= 30) {
+            $special = '_halloween';
+        }
+
+        // Xmas special logo
+        $compare_date = new DateTime(date('Y') . '-12-25');
+        $date_diff = $compare_date->diff($now);
+        if ($date_diff->days == 0 || $date_diff->invert == 1 && $date_diff->days <= 30) {
+            $special = '_xmas';
+        }
+
+        $this->file_path = realpath(
+            sprintf(
+                '%s/images/galette%s.webp',
+                _CURRENT_THEME_PATH,
+                $special
+            )
+        );
         $this->format = 'png';
         $this->mime = 'image/png';
         $this->custom = false;

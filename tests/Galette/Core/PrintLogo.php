@@ -71,8 +71,12 @@ class PrintLogo extends TestCase
         $this->assertNull($logo->getDestDir());
         $this->assertNull($logo->getFileName());
 
-        $expected_path = realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette.png');
-        $this->assertSame($expected_path, $logo->getPath());
+        $expected_paths = [
+            realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette.webp'),
+            realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette_halloween.webp'),
+            realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette_xmas.webp'),
+        ];
+        $this->assertTrue(in_array($logo->getPath(), $expected_paths, true));
 
         $this->assertSame('image/png', $logo->getMime());
         $this->assertSame('png', $logo->getFormat());

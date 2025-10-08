@@ -67,18 +67,22 @@ class Logo extends TestCase
     {
         global $zdb;
         $zdb = $this->zdb;
-        $expected_path = realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette.png');
+        $expected_paths = [
+            realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette.webp'),
+            realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette_halloween.webp'),
+            realpath(GALETTE_ROOT . 'webroot/themes/default/images/galette_xmas.webp'),
+        ];
 
         $instance = new \Galette\Core\Logo();
         $this->assertNull($instance->getDestDir());
         $this->assertNull($instance->getFileName());
-        $this->assertSame($expected_path, $instance->getPath());
+        $this->assertTrue(in_array($instance->getPath(), $expected_paths, true));
         $this->assertSame('image/png', $instance->getMime());
         $this->assertSame('png', $instance->getFormat());
         $this->assertFalse($instance->isCustom());
-        $this->assertSame(129, $instance->getOptimalWidth());
-        $this->assertSame(60, $instance->getOptimalHeight());
-        $this->assertSame(129, $instance->getWidth());
-        $this->assertSame(60, $instance->getHeight());
+        $this->assertSame(200, $instance->getOptimalWidth());
+        $this->assertSame(133, $instance->getOptimalHeight());
+        $this->assertSame(1536, $instance->getWidth());
+        $this->assertSame(1024, $instance->getHeight());
     }
 }

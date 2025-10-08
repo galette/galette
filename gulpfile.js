@@ -53,7 +53,9 @@ var paths = {
     css: './ui/css/**/*.css',
     js: './ui/js/*.js',
     favicon:'./ui/images/favicon.png',
-    logo: './ui/images/galette.png',
+    logo: './ui/images/galette.webp',
+    halloween_logo: './ui/images/galette_halloween.webp',
+    xmas_logo: './ui/images/galette_xmas.webp',
     photo:'./ui/images/default.png',
     emojis: './node_modules/twemoji-emojis/vendor/svg/*'
   },
@@ -124,11 +126,19 @@ function galette() {
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
+  halloween_logo =  gulp.src(paths.src.halloween_logo)
+    .pipe(gulp.dest(paths.assets.theme.images))
+    .pipe(browserSync.stream());
+
+  xmas_logo =  gulp.src(paths.src.xmas_logo)
+    .pipe(gulp.dest(paths.assets.theme.images))
+    .pipe(browserSync.stream());
+
   photo =  gulp.src(paths.src.photo)
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  return merge(favicon, logo, photo);
+  return merge(favicon, logo, halloween_logo, xmas_logo, photo);
 }
 
 function theme() {

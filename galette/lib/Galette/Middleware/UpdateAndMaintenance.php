@@ -130,7 +130,7 @@ class UpdateAndMaintenance
             <div id=\"main\" class=\"ui container\">
                 <div class=\"ui basic segment\">
                     <div class=\"ui basic center aligned fitted segment\">
-                        <img src=\"" . $theme_path . "images/galette.png\" alt=\"[ Galette ]\"/>
+                        <img src=\"" . $theme_path . "images/galette.webp\" alt=\"[ Galette ]\"/>
                     </div>
                     <div class=\"ui center aligned message\">" . $contents['body'] . "</div>
                 </div>
