@@ -1,0 +1,1 @@
+UPDATE galette_database SET version = 1.201;
