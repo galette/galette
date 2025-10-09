@@ -247,7 +247,7 @@ foreach ($i18n->getList() as $langue) {
             <section id="main" class="ui wide container">
                 <div class="ui basic segment">
                     <div class="ui basic center aligned fitted segment">
-                        <img class="icon" alt="[ Galette ]" src="./themes/default/images/galette.webp"/>
+                        <img class="icon" width="200" alt="[ Galette ]" src="./themes/default/images/galette.webp"/>
                     </div>
                     <a id="main-content" tabindex="-1"></a>
                     <h1 class="ui block center aligned header">
