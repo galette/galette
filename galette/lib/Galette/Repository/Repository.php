@@ -72,15 +72,15 @@ abstract class Repository
         if ($entity === null) {
             //no entity class name provided. Take Repository
             //class name and remove trailing 's'
-            $r = array_slice(explode('\\', get_class($this)), -1);
+            $r = array_slice(explode('\\', static::class), -1);
             $repo = $r[0];
             $ent = substr($repo, 0, -1);
             if ($ent != $repo) {
                 $entity = $ent;
             } else {
                 throw new \RuntimeException(
-                    'Unable to find entity name from repository one. Please ' .
-                    'provide entity name in repository constructor'
+                    'Unable to find entity name from repository one. Please '
+                    . 'provide entity name in repository constructor'
                 );
             }
         }
@@ -175,8 +175,8 @@ abstract class Repository
             return true;
         } else {
             Analog::log(
-                'Trying to order by ' . $field_name . ' while it is not in ' .
-                'selected fields.',
+                'Trying to order by ' . $field_name . ' while it is not in '
+                . 'selected fields.',
                 Analog::WARNING
             );
             return false;

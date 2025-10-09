@@ -111,7 +111,7 @@ class MemberListener implements ListenerSubscriber
     public function memberAdded(Adherent $member): void
     {
         Analog::log(
-            '[' . get_class($this) . '] Event member.add emitted for ' . $member->sfullname,
+            '[' . static::class . '] Event member.add emitted for ' . $member->sfullname,
             Analog::DEBUG
         );
 
@@ -132,7 +132,7 @@ class MemberListener implements ListenerSubscriber
     public function memberEdited(Adherent $member): void
     {
         Analog::log(
-            '[' . get_class($this) . '] Event member.edit emitted for ' . $member->sfullname,
+            '[' . static::class . '] Event member.edit emitted for ' . $member->sfullname,
             Analog::DEBUG
         );
 
@@ -210,9 +210,9 @@ class MemberListener implements ListenerSubscriber
         $mail = new GaletteMail($this->preferences);
         $mail->setSubject($texts->getSubject());
         $mail->setRecipients(
-            array(
+            [
                 $member->getEmail() => $member->sname
-            )
+            ]
         );
         $mail->setMessage($texts->getBody());
         $sent = $mail->send();
@@ -221,8 +221,8 @@ class MemberListener implements ListenerSubscriber
             $msg = str_replace(
                 '%s',
                 $member->sname . ' (' . $member->getEmail() . ')',
-                ($new) ?
-                _T("New account email sent to '%s'.") : _T("Account modification email sent to '%s'.")
+                ($new)
+                ? _T("New account email sent to '%s'.") : _T("Account modification email sent to '%s'.")
             );
             $this->history->add($msg);
             $success_detected[] = $msg;
@@ -286,8 +286,8 @@ class MemberListener implements ListenerSubscriber
         $sent = $mail->send();
 
         if ($sent == GaletteMail::MAIL_SENT) {
-            $msg = $new ?
-                str_replace(
+            $msg = $new
+                ? str_replace(
                     '%s',
                     $member->sname . ' (' . $member->email . ')',
                     _T("New account email sent to admin for '%s'.")
@@ -299,8 +299,8 @@ class MemberListener implements ListenerSubscriber
                 $msg
             );
         } else {
-            $msg = $new ?
-                str_replace(
+            $msg = $new
+                ? str_replace(
                     '%s',
                     $member->sname . ' (' . $member->email . ')',
                     _T("A problem happened while sending email to admin for account '%s'.")

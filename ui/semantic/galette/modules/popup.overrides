@@ -1,3 +1,8 @@
 /*******************************
          Galette Overrides
 *******************************/
+
+i.circular.basic.question.icon.tooltip:hover,
+div.inline-tooltip:hover {
+   cursor: help;
+}

@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Repository;
 
-use Analog\Analog;
 use ArrayObject;
 use Galette\Core\Db;
 use Galette\Core\Authentication;
@@ -62,9 +61,9 @@ class DynamicFieldsSet
     public static function getClasses(): array
     {
         return [
-            'adh' => 'Galette\Entity\Adherent',
-            'contrib' => 'Galette\Entity\Contribution',
-            'trans' => 'Galette\Entity\Transaction'
+            'adh' => \Galette\Entity\Adherent::class,
+            'contrib' => \Galette\Entity\Contribution::class,
+            'trans' => \Galette\Entity\Transaction::class,
         ];
     }
 
@@ -93,12 +92,12 @@ class DynamicFieldsSet
                 /** @var ArrayObject<string, int|string> $r */
                 $perm = $r['field_perm'];
                 if (
-                    ($perm == FieldsConfig::MANAGER &&
-                        $access_level < Authentication::ACCESS_MANAGER) ||
-                    ($perm == FieldsConfig::STAFF &&
-                         $access_level < Authentication::ACCESS_STAFF) ||
-                    ($perm == FieldsConfig::ADMIN &&
-                        $access_level < Authentication::ACCESS_ADMIN)
+                    ($perm == FieldsConfig::MANAGER
+                        && $access_level < Authentication::ACCESS_MANAGER)
+                    || ($perm == FieldsConfig::STAFF
+                         && $access_level < Authentication::ACCESS_STAFF)
+                    || ($perm == FieldsConfig::ADMIN
+                        && $access_level < Authentication::ACCESS_ADMIN)
                 ) {
                     continue;
                 }

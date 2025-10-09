@@ -91,7 +91,7 @@ class Group
 
         try {
             $select = $zdb->select(self::TABLE);
-            $select->where(array(self::PK => $id));
+            $select->where([self::PK => $id]);
 
             $results = $zdb->execute($select);
 
@@ -123,7 +123,7 @@ class Group
 
         try {
             $select = $zdb->select(self::TABLE);
-            $select->where(array('group_name' => $group_name));
+            $select->where(['group_name' => $group_name]);
 
             $results = $zdb->execute($select);
 
@@ -188,14 +188,14 @@ class Group
 
                 $select = $zdb->select(Adherent::TABLE, 'a');
                 $select->join(
-                    array('status' => PREFIX_DB . Status::TABLE),
+                    ['status' => PREFIX_DB . Status::TABLE],
                     'a.' . Status::PK . '=status.' . Status::PK,
-                    array('priorite_statut')
+                    ['priorite_statut']
                 );
                 $select->join(
-                    array('g' => $join),
+                    ['g' => $join],
                     'g.' . Adherent::PK . '=a.' . Adherent::PK,
-                    array()
+                    []
                 )->where([
                     'g.' . self::PK => $this->id
                 ])->order(
@@ -204,13 +204,13 @@ class Group
                 );
 
                 $results = $zdb->execute($select);
-                $members = array();
+                $members = [];
 
-                $deps = array(
+                $deps = [
                     'picture'   => false,
                     'groups'    => false,
                     'dues'      => false
-                );
+                ];
 
                 foreach ($results as $m) {
                     $members[] = new Adherent($zdb, $m, $deps);
@@ -250,9 +250,9 @@ class Group
 
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 $select->join(
-                    array('b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE),
+                    ['b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE],
                     'a.' . self::PK . '=b.' . self::PK,
-                    array()
+                    []
                 )->where(['b.' . Adherent::PK => $this->login->id]);
             }
 
@@ -260,7 +260,7 @@ class Group
                 ->order('group_name ASC');
 
             $results = $zdb->execute($select);
-            $groups = array();
+            $groups = [];
             $grppk = self::PK;
             foreach ($results as $m) {
                 $group = new Group((int)$m->$grppk);
@@ -270,8 +270,8 @@ class Group
             $this->groups = $groups;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot get subgroup for group ' . $this->group_name .
-                ' (' . $this->id . ')| ' . $e->getMessage(),
+                'Cannot get subgroup for group ' . $this->group_name
+                . ' (' . $this->id . ')| ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -300,8 +300,8 @@ class Group
                 $subgroups = $this->getGroups();
                 if (count($subgroups) > 0) {
                     Analog::log(
-                        'Cascading remove ' . $this->group_name .
-                        '. Subgroups, their members and managers will be detached.',
+                        'Cascading remove ' . $this->group_name
+                        . '. Subgroups, their members and managers will be detached.',
                         Analog::INFO
                     );
                     foreach ($subgroups as $subgroup) {
@@ -310,8 +310,8 @@ class Group
                 }
 
                 Analog::log(
-                    'Cascading remove ' . $this->group_name .
-                    '. Members and managers will be detached.',
+                    'Cascading remove ' . $this->group_name
+                    . '. Members and managers will be detached.',
                     Analog::INFO
                 );
 
@@ -353,8 +353,8 @@ class Group
                 $this->isempty = false;
             } else {
                 Analog::log(
-                    'Unable to delete group ' . $this->group_name .
-                    ' (' . $this->id . ') |' . $e->getMessage(),
+                    'Unable to delete group ' . $this->group_name
+                    . ' (' . $this->id . ') |' . $e->getMessage(),
                     Analog::ERROR
                 );
                 throw $e;
@@ -385,7 +385,7 @@ class Group
         try {
             $update = $zdb->update(self::TABLE);
             $update->set(
-                array('parent_group' => new Expression('NULL'))
+                ['parent_group' => new Expression('NULL')]
             )->where(
                 [self::PK => $this->id]
             );
@@ -405,10 +405,10 @@ class Group
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong detaching group `' . $this->group_name .
-                '` (' . $this->id . ') from its parent:\'( | ' .
-                $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
+                'Something went wrong detaching group `' . $this->group_name
+                . '` (' . $this->id . ') from its parent:\'( | '
+                . $e->getMessage() . "\n"
+                . $e->getTraceAsString(),
                 Analog::ERROR
             );
             throw $e;
@@ -429,25 +429,21 @@ class Group
             $parent_group = $this->parent_group->getId();
         }
         if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->id ?? null)) {
-            Analog::log(
-                'Group name is not unique at requested level',
-                Analog::WARNING
-            );
             throw new \RuntimeException(
                 _T("The group name you have requested already exists in the database.")
             );
         }
 
         try {
-            $values = array(
+            $values = [
                 'group_name' => $this->group_name
-            );
+            ];
 
             if ($this->parent_group) {
                 $values['parent_group'] = $parent_group;
             }
 
-            if (!isset($this->id) || $this->id == '') {
+            if (!isset($this->id)) {
                 //we're inserting a new group
                 $this->creation_date = date("Y-m-d H:i:s");
                 $values['creation_date'] = $this->creation_date;
@@ -493,8 +489,8 @@ class Group
             /** FIXME: also store members and managers? */
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
+                'Something went wrong :\'( | ' . $e->getMessage() . "\n"
+                . $e->getTraceAsString(),
                 Analog::ERROR
             );
             throw $e;
@@ -587,7 +583,7 @@ class Group
      */
     public function getIndentName(): ?string
     {
-        if (($level = $this->getLevel())) {
+        if ($level = $this->getLevel()) {
             return str_repeat("&nbsp;", 3 * $level) . '&raquo; ' . $this->group_name;
         }
         return $this->group_name ?? null;
@@ -682,12 +678,10 @@ class Group
             return count($this->members);
         } elseif (isset($this->count_members)) {
             return $this->count_members;
+        } elseif ($force === true) {
+            return count($this->getMembers());
         } else {
-            if ($force === true) {
-                return count($this->getMembers());
-            } else {
-                return 0;
-            }
+            return 0;
         }
     }
 
@@ -700,7 +694,7 @@ class Group
      */
     public function setName(string $name): self
     {
-        $this->group_name = $name;
+        $this->group_name = strip_tags($name);
         return $this;
     }
 
@@ -761,24 +755,24 @@ class Group
         try {
             $insert = $zdb->insert(self::GROUPSUSERS_TABLE);
             $insert->values(
-                array(
+                [
                     self::PK => $this->getId(),
                     Adherent::PK => $member->id
-                )
+                ]
             );
             $zdb->execute($insert);
             $this->members[] = $member;
         } catch (\OverflowException $e) {
             //nothing to do, member is already in group
             Analog::log(
-                'Member `' . $member->sname . '` already in group `' .
-                $this->group_name . '` (' . $this->id . ').',
+                'Member `' . $member->sname . '` already in group `'
+                . $this->group_name . '` (' . $this->id . ').',
                 Analog::INFO
             );
         } catch (\Throwable $e) {
             Analog::log(
-                'Cannot add member to group `' . $this->group_name .
-                '` (' . $this->id . ') | ' . $e->getMessage(),
+                'Cannot add member to group `' . $this->group_name
+                . '` (' . $this->id . ') | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -806,45 +800,45 @@ class Group
             $zdb->execute($delete);
 
             Analog::log(
-                'Group members has been removed for `' . $this->group_name .
-                '`, we can now store new ones.',
+                'Group members has been removed for `' . $this->group_name
+                . '`, we can now store new ones.',
                 Analog::INFO
             );
 
             $insert = $zdb->insert(self::GROUPSUSERS_TABLE);
             $insert->values(
-                array(
+                [
                     self::PK        => ':group',
                     Adherent::PK    => ':adh'
-                )
+                ]
             );
 
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ($members as $m) {
                 $result = $stmt->execute(
-                    array(
+                    [
                         'group' => $this->id,
                         'adh'   => $m->id
-                    )
+                    ]
                 );
 
                 if ($result) {
                     Analog::log(
-                        'Member `' . $m->sname . '` attached to group `' .
-                        $this->group_name . '`.',
+                        'Member `' . $m->sname . '` attached to group `'
+                        . $this->group_name . '`.',
                         Analog::DEBUG
                     );
                 } else {
                     Analog::log(
-                        'An error occurred trying to attach member `' .
-                        $m->sname . '` to group `' . $this->group_name .
-                        '` (' . $this->id . ').',
+                        'An error occurred trying to attach member `'
+                        . $m->sname . '` to group `' . $this->group_name
+                        . '` (' . $this->id . ').',
                         Analog::ERROR
                     );
                     throw new \Exception(
-                        'Unable to attach `' . $m->sname . '` ' .
-                        'to ' . $this->group_name . '(' . $this->id . ')'
+                        'Unable to attach `' . $m->sname . '` '
+                        . 'to ' . $this->group_name . '(' . $this->id . ')'
                     );
                 }
             }
@@ -859,15 +853,15 @@ class Group
 
             return true;
         } catch (Throwable $e) {
-            $te = clone $e;
+            $te = new \RuntimeException('Unable to attach members to group', $e->getCode(), $e);
             $zdb->connection->rollBack();
-            $messages = array();
+            $messages = [];
             do {
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
             Analog::log(
-                'Unable to attach members to group `' . $this->group_name .
-                '` (' . $this->id . ')|' . implode("\n", $messages),
+                'Unable to attach members to group `' . $this->group_name
+                . '` (' . $this->id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
             throw $te;
@@ -895,45 +889,45 @@ class Group
             $zdb->execute($delete);
 
             Analog::log(
-                'Group managers has been removed for `' . $this->group_name .
-                '`, we can now store new ones.',
+                'Group managers has been removed for `' . $this->group_name
+                . '`, we can now store new ones.',
                 Analog::INFO
             );
 
             $insert = $zdb->insert(self::GROUPSMANAGERS_TABLE);
             $insert->values(
-                array(
+                [
                     self::PK        => ':group',
                     Adherent::PK    => ':adh'
-                )
+                ]
             );
 
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ($members as $m) {
                 $result = $stmt->execute(
-                    array(
+                    [
                         'group' => $this->id,
                         'adh'   => $m->id
-                    )
+                    ]
                 );
 
                 if ($result) {
                     Analog::log(
-                        'Manager `' . $m->sname . '` attached to group `' .
-                        $this->group_name . '`.',
+                        'Manager `' . $m->sname . '` attached to group `'
+                        . $this->group_name . '`.',
                         Analog::DEBUG
                     );
                 } else {
                     Analog::log(
-                        'An error occurred trying to attach manager `' .
-                        $m->sname . '` to group `' . $this->group_name .
-                        '` (' . $this->id . ').',
+                        'An error occurred trying to attach manager `'
+                        . $m->sname . '` to group `' . $this->group_name
+                        . '` (' . $this->id . ').',
                         Analog::ERROR
                     );
                     throw new \Exception(
-                        'Unable to attach `' . $m->sname . '` ' .
-                        'to ' . $this->group_name . '(' . $this->id . ')'
+                        'Unable to attach `' . $m->sname . '` '
+                        . 'to ' . $this->group_name . '(' . $this->id . ')'
                     );
                 }
             }
@@ -950,13 +944,13 @@ class Group
         } catch (Throwable $e) {
             $te = clone $e;
             $zdb->connection->rollBack();
-            $messages = array();
+            $messages = [];
             do {
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
             Analog::log(
-                'Unable to attach managers to group `' . $this->group_name .
-                '` (' . $this->id . ')|' . implode("\n", $messages),
+                'Unable to attach managers to group `' . $this->group_name
+                . '` (' . $this->id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
             throw $te;
@@ -991,12 +985,7 @@ class Group
         if ($login->isAdmin() || $login->isStaff()) {
             return true;
         }
-
         //group managers can edit groups they manage when pref is on
-        if ($preferences->pref_bool_groupsmanagers_edit_groups && $this->isManager($login)) {
-            return true;
-        }
-
-        return false;
+        return $preferences->pref_bool_groupsmanagers_edit_groups && $this->isManager($login);
     }
 }

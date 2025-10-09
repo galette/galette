@@ -28,9 +28,6 @@ use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Entity\PdfModel;
-use Galette\Entity\PdfMain;
-use Galette\Entity\PdfInvoice;
-use Galette\Entity\PdfReceipt;
 
 /**
  * PDF models
@@ -50,7 +47,7 @@ class PdfModels extends Repository
             $select = $this->zdb->select(PdfModel::TABLE, 'a');
             $select->order(PdfModel::PK);
 
-            $models = array();
+            $models = [];
             $results = $this->zdb->execute($select);
             foreach ($results as $row) {
                 $class = PdfModel::getTypeClass((int)$row->model_type);
@@ -82,9 +79,9 @@ class PdfModels extends Repository
             if ($check_first === true) {
                 $select = $this->zdb->select(PdfModel::TABLE);
                 $select->columns(
-                    array(
+                    [
                         'counter' => new Expression('COUNT(' . $ent::PK . ')')
-                    )
+                    ]
                 );
 
                 $results = $this->zdb->execute($select);
@@ -107,6 +104,7 @@ class PdfModels extends Repository
 
             $this->zdb->handleSequence(
                 $ent::TABLE,
+                $ent::PK,
                 count($this->defaults)
             );
 
@@ -135,7 +133,7 @@ class PdfModels extends Repository
             $list = $this->zdb->execute($select);
             $list->buffer();
 
-            $missing = array();
+            $missing = [];
             foreach ($this->defaults as $key => $default) {
                 $exists = false;
                 foreach ($list as $model) {
@@ -182,7 +180,7 @@ class PdfModels extends Repository
     {
         $insert = $this->zdb->insert($table);
         $insert->values(
-            array(
+            [
                 'model_id'      => ':model_id',
                 'model_name'    => ':model_name',
                 'model_title'   => ':model_title',
@@ -192,7 +190,7 @@ class PdfModels extends Repository
                 'model_body'    => ':model_body',
                 'model_styles'  => ':model_styles',
                 'model_parent'  => ':model_parent'
-            )
+            ]
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 

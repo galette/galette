@@ -667,7 +667,6 @@
                         var _type = _field.type;
                         var _html;
                         switch(_type) {
-                            /* FIXME */
                             case '{{ constant('Galette\\DynamicFields\\DynamicField::BOOLEAN') }}':
                                 _html  = _getOperatorSelector(['op_equals']);
                                 _html += '<input type="radio" name="free_text[]" id="free_text_yes" value="1"/><label for="free_text_yes">{{ _T('Yes') }}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"/><label for="free_text_no">{{ _T('No') }}</label>';

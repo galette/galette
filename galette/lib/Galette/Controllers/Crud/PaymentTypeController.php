@@ -28,7 +28,6 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Repository\PaymentTypes;
 use Galette\Entity\PaymentType;
-use Analog\Analog;
 
 /**
  * Galette payment types controller
@@ -94,7 +93,7 @@ class PaymentTypeController extends CrudController
             $response,
             'pages/configuration_payment_types.html.twig',
             [
-                'page_title'        => _T("Payment types management"),
+                'page_title'        => _T("Payment types"),
                 'list'              => $list
             ]
         );
@@ -194,34 +193,28 @@ class PaymentTypeController extends CrudController
 
         if (!$res) {
             if ($id === null) {
-                $error_detected[] = preg_replace(
-                    '(%s)',
-                    $ptype->getName(),
-                    _T("Payment type '%s' has not been added!")
+                $error_detected[] = sprintf(
+                    _T('Payment type \'%1$s\' has not been added!'),
+                    $ptype->getName()
                 );
             } else {
-                $error_detected[] = preg_replace(
-                    '(%s)',
-                    $ptype->getName(),
-                    _T("Payment type '%s' has not been modified!")
+                $error_detected[] = sprintf(
+                    _T('Payment type \'%1$s\' has not been modified!'),
+                    $ptype->getName()
                 );
                 //redirect to payment type edition
                 $redirect_uri = $this->routeparser->urlFor('editPaymentType', ['id' => (string)$id]);
             }
+        } elseif ($id === null) {
+            $msg = sprintf(
+                _T('Payment type \'%1$s\' has been successfully added.'),
+                $ptype->getName()
+            );
         } else {
-            if ($id === null) {
-                $msg = preg_replace(
-                    '(%s)',
-                    $ptype->getName(),
-                    _T("Payment type '%s' has been successfully added.")
-                );
-            } else {
-                $msg = preg_replace(
-                    '(%s)',
-                    $ptype->getName(),
-                    _T("Payment type '%s' has been successfully modified.")
-                );
-            }
+            $msg = sprintf(
+                _T('Payment type \'%1$s\' has been successfully modified.'),
+                $ptype->getName()
+            );
         }
 
         $warning_detected = $ptype->getWarnings();

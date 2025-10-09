@@ -28,9 +28,40 @@
     }
 } %}
 
+{% set columns = [
+    {
+        'label': _T('ID'),
+        'collapse': true
+    },
+    {
+        'label': _T("Date"),
+        'order': constant("Galette\\Filters\\MailingsList::ORDERBY_DATE"),
+        'collapse': true
+    },
+    {
+        'label': _T('Sender'),
+        'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENDER")},
+    {
+        'label': _T('Recipients'),
+        'collapse': true
+    },
+    {
+        'label': _T('Subject'),
+        'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT")},
+    {
+        'label': _T('Att.'),
+        'collapse': true
+    },
+    {
+        'label': _T("Sent"),
+        'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENT"),
+        'collapse': true
+    }
+] %}
+
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count entry", "%count entries", history.getCount())|replace({"%count": history.getCount()}),
+        'label': _Tn("%1$s entry", "%1$s entries", history.getCount())|format(history.getCount()),
         'route': {
             'name': 'mailings_filter'
         }
@@ -61,22 +92,13 @@
 {% endblock %}
 
 {% block header %}
-    {% set columns = [
-        {'label': '#'},
-        {'label': _T("Date"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_DATE")},
-        {'label': _T('Sender'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENDER")},
-        {'label': _T('Recipients')},
-        {'label': _T('Subject'), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SUBJECT")},
-        {'label': _T('Att.')},
-        {'label': _T("Sent"), 'order': constant("Galette\\Filters\\MailingsList::ORDERBY_SENT")}
-    ] %}
     {{ parent() }}
 {% endblock %}
 
 {% block search %}
     <form action="{{ url_for('mailings_filter') }}" method="post" class="ui form filters">
         <div class="ui secondary yellow segment">
-            <div class="three fields">
+            <div class="two fields">
                 <div class="two fields">
                     <div class="field">
                         <label for="start_date_filter">{{ _T('since') }}</label>
@@ -101,6 +123,9 @@
                     <label for="subject_filter">{{ _T('Subject') }}</label>
                     <input type="text" name="subject_filter" id="subject_filter" value="{{ history.filters.subject_filter }}"/>
                 </div>
+            </div>
+
+            <div class="two fields last-child">
                 <div class="field">
                         <label for="sent_filter">{{ _T('Sent mailings:') }}</label>
                     <div class="inline fields">
@@ -124,16 +149,17 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="ui right aligned basic fitted segment field">
-                <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
-                    <i class="search icon" aria-hidden="true"></i>
-                    {{ _T('Filter') }}
-                </button>
-                <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
-                    <i class="trash alt red icon" aria-hidden="true"></i>
-                    {{ _T('Clear filter') }}
-                </button>
+
+                <div class="ui right aligned basic fitted segment field">
+                    <button type="submit"  class="tooltip action ui labeled icon primary button" title="{{ _T('Apply filters') }}" name="filter">
+                        <i class="search icon" aria-hidden="true"></i>
+                        {{ _T('Filter') }}
+                    </button>
+                    <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
+                        <i class="trash alt red icon" aria-hidden="true"></i>
+                        {{ _T('Clear filter') }}
+                    </button>
+                </div>
             </div>
         </div>
         {% include "components/forms/csrf.html.twig" %}
@@ -144,29 +170,22 @@
     {% for log in logs %}
         {% set date_format = _T('Y-m-d H:i:s') %}
         <tr>
-            <td data-scope="row">
-                {% if preferences.pref_show_id %}
-                    {{ log.mailing_id }}
-                {% else %}
-                    {{ loop.index }}
-                {% endif %}
-                <span class="visually-hidden">
-                            {{ _T('Mailing entry %id')|replace({'%id': log.mailing_id}) }}
-                        </span>
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
+                {{ log.mailing_id }}
             </td>
-            <td data-col-label="{{ _T('Date') }}">{{ log.mailing_date|date(date_format) }}</td>
+            <td class="collapsing" data-col-label="{{ _T('Date') }}">{{ log.mailing_date|date(date_format) }}</td>
             <td data-col-label="{{ _T('Sender') }}">{% if log.mailing_sender == 0 %}{{ _T('Superadmin') }}{% else %}{{ log.mailing_sender_name }}{% endif %}</td>
-            <td data-col-label="{{ _T('Recipients') }}">{{ log.mailing_recipients|length }}</td>
+            <td class="collapsing" data-col-label="{{ _T('Recipients') }}">{{ log.mailing_recipients|length }}</td>
             <td data-col-label="{{ _T('Subject') }}">{{ log.mailing_subject }}</td>
-            <td class="center" data-col-label="{{ _T('Attachments') }}">{{ log.attachments }}</td>
-            <td class="center{% if log.mailing_sent == 1 %} use{% endif %}" data-col-label="{{ _T('Sent') }}">
+            <td class="center collapsing" data-col-label="{{ _T('Attachments') }}">{{ log.attachments }}</td>
+            <td class="center collapsing{% if log.mailing_sent == 1 %} use{% endif %}" data-col-label="{{ _T('Sent') }}">
                 {% if log.mailing_sent == 1 %}
                     <i class="ui thumbs up green icon" aria-hidden="true"></i>
                 {% else %}
                     <i class="ui thumbs down red icon" aria-hidden="true"></i>
                 {% endif %}
             </td>
-            <td class="center actions_row">
+            <td class="center actions_row collapsing">
                 <a
                         href="{{ url_for("mailingPreview", {"id": log.mailing_id}) }}"
                         class="showdetails"

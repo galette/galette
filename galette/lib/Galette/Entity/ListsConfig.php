@@ -38,30 +38,30 @@ use Galette\Core\Authentication;
 class ListsConfig extends FieldsConfig
 {
     /** @var array<int,array<string,mixed>> */
-    protected array $listed_fields = array();
+    protected array $listed_fields = [];
 
     /**
      * Fields that are not part of lists
      *
      * @var array<string>
      */
-    private array $non_list_elements = array(
+    private array $non_list_elements = [
         'mdp_adh',
         'info_adh',
         'info_public_adh',
         'nom_adh',
         'prenom_adh'
-    );
+    ];
 
     /**
      * ACL mapping for list elements not present in form configuration
      *
      * @var array<string,string>
      */
-    private array $acl_mapping = array(
+    private array $acl_mapping = [
         'list_adh_name'             => 'nom_adh',
         'list_adh_contribstatus'    => 'id_statut'
-    );
+    ];
 
     /**
      * Prepare a field (required data, automation)
@@ -80,8 +80,8 @@ class ListsConfig extends FieldsConfig
     }
 
     /**
-     * Create field array configuration,
-     * Several lists of fields are kept (visible, requireds, etc), build them.
+     * Create field array configuration
+     * Several lists of fields are kept (visible, required, etc), build them.
      *
      * @return void
      */
@@ -131,8 +131,6 @@ class ListsConfig extends FieldsConfig
      */
     public function getDisplayElements(Login $login): array
     {
-        global $preferences;
-
         $display_elements = [];
         $access_level = $login->getAccessLevel();
         try {
@@ -144,10 +142,8 @@ class ListsConfig extends FieldsConfig
 
                 if ($o->field_id == 'id_adh') {
                     // ignore access control, as member ID is always needed
-                    //if (!isset($preferences) || !$preferences->pref_show_id) {
-                        $o->type = self::TYPE_STR;
-                        $display_elements[] = $o;
-                    //}
+                    $o->type = self::TYPE_STR;
+                    $display_elements[] = $o;
                 } else {
                     // skip fields blacklisted for display
                     if (in_array($o->field_id, $this->non_list_elements)) {
@@ -156,13 +152,13 @@ class ListsConfig extends FieldsConfig
 
                     // skip fields according to access control
                     if (
-                        $o->visible == self::NOBODY ||
-                        ($o->visible == self::ADMIN &&
-                            $access_level < Authentication::ACCESS_ADMIN) ||
-                        ($o->visible == self::STAFF &&
-                            $access_level < Authentication::ACCESS_STAFF) ||
-                        ($o->visible == self::MANAGER &&
-                            $access_level < Authentication::ACCESS_MANAGER)
+                        $o->visible == self::NOBODY
+                        || ($o->visible == self::ADMIN
+                            && $access_level < Authentication::ACCESS_ADMIN)
+                        || ($o->visible == self::STAFF
+                            && $access_level < Authentication::ACCESS_STAFF)
+                        || ($o->visible == self::MANAGER
+                            && $access_level < Authentication::ACCESS_MANAGER)
                     ) {
                         continue;
                     }
@@ -265,7 +261,7 @@ class ListsConfig extends FieldsConfig
      */
     private function storeList(): bool
     {
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             if (!count($this->listed_fields)) {
@@ -276,37 +272,37 @@ class ListsConfig extends FieldsConfig
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'list_visible'          => ':list_visible',
                     'list_position'         => ':list_position',
                     'width_in_forms'        => ':width_in_forms'
-                )
+                ]
             )->where(
-                array(
+                [
                     'field_id'      => ':field_id',
                     'table_name'    => $this->table
-                )
+                ]
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             $params = null;
 
             foreach ($this->listed_fields as $pos => $field) {
-                $params = array(
+                $params = [
                     'list_visible'   => $field['list_visible'],
                     'list_position'  => $pos,
                     'field_id'       => $field['field_id'],
                     'width_in_forms' => $field['width_in_forms']
-                );
+                ];
                 $stmt->execute($params);
             }
 
             foreach (array_keys($this->getRemainingFields()) as $field) {
-                $params = array(
+                $params = [
                     'list_visible'  => $this->zdb->isPostgres() ? 'false' : 0,
                     'list_position' => -1,
                     'field_id'      => $field
-                );
+                ];
                 $stmt->execute($params);
             }
 
@@ -314,8 +310,8 @@ class ListsConfig extends FieldsConfig
                 str_replace(
                     '%s',
                     $this->table,
-                    '[' . $class . '] List configuration for table %s stored ' .
-                    'successfully.'
+                    '[' . $class . '] List configuration for table %s stored '
+                    . 'successfully.'
                 ),
                 Analog::INFO
             );
@@ -325,9 +321,9 @@ class ListsConfig extends FieldsConfig
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                '[' . $class . '] An error occurred while storing list ' .
-                'configuration for table `' . $this->table . '`.' .
-                $e->getMessage(),
+                '[' . $class . '] An error occurred while storing list '
+                . 'configuration for table `' . $this->table . '`.'
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;

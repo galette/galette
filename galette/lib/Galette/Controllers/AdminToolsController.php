@@ -23,13 +23,13 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\DynamicFields\Date;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\CheckModules;
 use Galette\Entity\Texts;
 use Galette\Repository\Members;
 use Galette\Repository\PdfModels;
-use Analog\Analog;
 
 /**
  * Galette main controller
@@ -50,7 +50,8 @@ class AdminToolsController extends AbstractController
     public function adminTools(Request $request, Response $response): Response
     {
         $params = [
-            'page_title'        => _T('Administration tools')
+            'page_title'        => _T('Administration tools'),
+            'documentation'     => 'usermanual/avancee.html#administration-tools'
         ];
 
         $cm = new CheckModules();
@@ -121,7 +122,7 @@ class AdminToolsController extends AbstractController
 
         if (isset($post['emptylogins'])) {
             //proceed empty logins and passwords
-            //those ones cannot be null
+            //those cannot be null
             $members = new Members();
             $res = $members->emptylogins();
             if ($res === true) {
@@ -135,22 +136,29 @@ class AdminToolsController extends AbstractController
             }
         }
 
-        //flash messages
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
+        if (isset($post['dynamicdates'])) {
+            //proceed dynamic dates fix
+            $res = Date::resetLocalizedFormats($this->zdb);
+            if ($res === true) {
+                $success_detected[] = _T("Dynamic dates has been fixed.");
+            } else {
+                $error_detected[] = _T("An error occurred fixing dynamic dates :(");
             }
         }
-        if (count($success_detected) > 0) {
-            foreach ($success_detected as $success) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    $success
-                );
-            }
+
+        //flash messages
+        foreach ($error_detected as $error) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
+        }
+
+        foreach ($success_detected as $success) {
+            $this->flash->addMessage(
+                'success_detected',
+                $success
+            );
         }
 
         return $response

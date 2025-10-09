@@ -79,11 +79,11 @@ if (!$date_ok) {
     <ul class="leaders">
         <li>
             <span><?php echo _T("PHP version"); ?> (<?php echo PHP_VERSION . ' >= ' . GALETTE_PHP_MIN; ?>)</span>
-            <span><?php echo $install->getValidationImage($php_ok == true); ?></span>
+            <span><?php echo $install->getValidationImage($php_ok); ?></span>
         </li>
         <li>
             <span><?php echo _T("Date settings"); ?></span>
-            <span><?php echo $install->getValidationImage($date_ok == true); ?></span>
+            <span><?php echo $install->getValidationImage($date_ok); ?></span>
         </li>
     </ul>
 
@@ -120,7 +120,7 @@ if (!$perms_ok) {
     <?php
     if ($install->isInstall()) {
         echo _T("To work as excpected, Galette needs write permission on files listed above.");
-    } else if ($install->isUpgrade()) {
+    } elseif ($install->isUpgrade()) {
         echo _T("In order to be updated, Galette needs write permission on files listed above.");
     }
     ?>
@@ -146,7 +146,7 @@ if (!$perms_ok || !$modules_ok || !$php_ok || !$date_ok) {
 } else {
     ?>
         <form action="installer.php" method="POST" class="ui form">
-            <button type="submit" class="ui right labeled primary icon button"><i class="angle double right icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+            <button type="submit" class="ui right labeled primary icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
             <input type="hidden" name="install_permsok" value="1"/>
         </form>
     <?php

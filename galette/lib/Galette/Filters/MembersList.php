@@ -25,7 +25,6 @@ namespace Galette\Filters;
 
 use Analog\Analog;
 use Galette\Core\Pagination;
-use Galette\Core\Preferences;
 use Galette\Entity\Group;
 use Galette\Repository\Members;
 use Slim\Views\Twig;
@@ -64,7 +63,7 @@ class MembersList extends Pagination
     protected string $query = '';
 
     /** @var array<string> */
-    protected array $memberslist_fields = array(
+    protected array $memberslist_fields = [
         'filter_str',
         'field_filter',
         'membership_filter',
@@ -74,7 +73,7 @@ class MembersList extends Pagination
         'selected',
         'unreachable',
         'query'
-    );
+    ];
 
     /**
      * Default constructor
@@ -110,7 +109,7 @@ class MembersList extends Pagination
         $this->filter_account = $preferences->pref_filter_account;
         $this->email_filter = Members::FILTER_DC_EMAIL;
         $this->group_filter = null;
-        $this->selected = array();
+        $this->selected = [];
     }
 
     /**
@@ -124,16 +123,14 @@ class MembersList extends Pagination
     {
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
-        } else {
-            if (in_array($name, $this->memberslist_fields)) {
-                return $this->$name;
-            }
+        } elseif (in_array($name, $this->memberslist_fields)) {
+            return $this->$name;
         }
 
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );
@@ -183,8 +180,8 @@ class MembersList extends Pagination
                         $this->$name = $value;
                     } elseif ($value !== null) {
                         Analog::log(
-                            '[MembersList] Value for property `' . $name .
-                            '` should be an array (' . gettype($value) . ' given)',
+                            '[MembersList] Value for property `' . $name
+                            . '` should be an array (' . gettype($value) . ' given)',
                             Analog::WARNING
                         );
                     }
@@ -199,8 +196,8 @@ class MembersList extends Pagination
                         $this->$name = (int)$value;
                     } elseif ($value !== null) {
                         Analog::log(
-                            '[MembersList] Value for property `' . $name .
-                            '` should be an integer (' . gettype($value) . ' given)',
+                            '[MembersList] Value for property `' . $name
+                            . '` should be an integer (' . gettype($value) . ' given)',
                             Analog::WARNING
                         );
                     }
@@ -214,10 +211,10 @@ class MembersList extends Pagination
                             break;
                         default:
                             Analog::log(
-                                '[MembersList] Value for email filter should be either ' .
-                                Members::FILTER_DC_EMAIL . ', ' .
-                                Members::FILTER_W_EMAIL . ' or ' .
-                                Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
+                                '[MembersList] Value for email filter should be either '
+                                . Members::FILTER_DC_EMAIL . ', '
+                                . Members::FILTER_W_EMAIL . ' or '
+                                . Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
                                 Analog::WARNING
                             );
                             break;
@@ -263,26 +260,22 @@ class MembersList extends Pagination
     /**
      * Set commons filters for templates
      *
-     * @param Preferences $prefs Preferences instance
-     * @param Twig        $view  Template reference
+     * @param Twig $view Template reference
      *
      * @return void
      */
-    public function setViewCommonsFilters(Preferences $prefs, Twig $view): void
+    public function setViewCommonsFilters(Twig $view): void
     {
-        $filter_options = array(
+        $filter_options = [
             Members::FILTER_NAME            => _T("Name"),
             Members::FILTER_NUMBER          => _T("Member number"),
             Members::FILTER_COMPANY_NAME    => _T("Company name"),
             Members::FILTER_ADDRESS         => _T("Address"),
             Members::FILTER_MAIL            => _T("Email,URL,IM"),
             Members::FILTER_JOB             => _T("Job"),
-            Members::FILTER_INFOS           => _T("Infos")
-        );
-
-        if ($prefs->pref_show_id) {
-            $filter_options[Members::FILTER_ID] = _T("Member ID");
-        }
+            Members::FILTER_INFOS           => _T("Infos"),
+            Members::FILTER_ID              => _T("Member ID")
+        ];
 
         $view->getEnvironment()->addGlobal(
             'field_filter_options',
@@ -291,7 +284,7 @@ class MembersList extends Pagination
 
         $view->getEnvironment()->addGlobal(
             'membership_filter_options',
-            array(
+            [
                 Members::MEMBERSHIP_ALL     => _T("All members"),
                 Members::MEMBERSHIP_UP2DATE => _T("Up to date members"),
                 Members::MEMBERSHIP_NEARLY  => _T("Close expiries"),
@@ -300,16 +293,16 @@ class MembersList extends Pagination
                 Members::MEMBERSHIP_STAFF   => _T("Staff members"),
                 Members::MEMBERSHIP_ADMIN   => _T("Administrators"),
                 Members::MEMBERSHIP_NONE    => _T("Non members")
-            )
+            ]
         );
 
         $view->getEnvironment()->addGlobal(
             'filter_accounts_options',
-            array(
+            [
                 Members::ALL_ACCOUNTS       => _T("All accounts"),
                 Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
                 Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
-            )
+            ]
         );
     }
 }

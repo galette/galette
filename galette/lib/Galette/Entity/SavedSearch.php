@@ -106,8 +106,8 @@ class SavedSearch
             $this->loadFromRS($res);
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading saved search #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading saved search #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -130,8 +130,8 @@ class SavedSearch
             $this->parameters = Galette::jsonDecode($rs->parameters);
         } catch (\RuntimeException $e) {
             Analog::log(
-                'Unable to decode parameters for saved search #' . $this->id .
-                ' | ' . $e->getMessage(),
+                'Unable to decode parameters for saved search #' . $this->id
+                . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             $this->parameters = [];
@@ -177,7 +177,7 @@ class SavedSearch
             $this->author_id = $this->login->id;
         }
 
-        return (count($this->errors) === 0);
+        return count($this->errors) === 0;
     }
 
     /**
@@ -188,13 +188,13 @@ class SavedSearch
     public function store(): bool
     {
         $parameters = json_encode($this->parameters);
-        $data = array(
+        $data = [
             'name'              => $this->name,
             'parameters'        => $parameters,
             'id_adh'            => $this->author_id,
-            'creation_date'     => ($this->creation_date !== null ? $this->creation_date : date('Y-m-d H:i:s')),
+            'creation_date'     => $this->creation_date ?? date('Y-m-d H:i:s'),
             'form'              => $this->form
-        );
+        ];
 
         try {
             $insert = $this->zdb->insert(self::TABLE);
@@ -208,8 +208,8 @@ class SavedSearch
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing saved search: ' . $e->getMessage() .
-                "\n" . print_r($data, true),
+                'An error occurred storing saved search: ' . $e->getMessage()
+                . "\n" . print_r($data, true),
                 Analog::ERROR
             );
             throw $e;
@@ -270,8 +270,8 @@ class SavedSearch
                         } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
-                                'Bad date (' . $this->$name . ') | ' .
-                                $e->getMessage(),
+                                'Bad date (' . $this->$name . ') | '
+                                . $e->getMessage(),
                                 Analog::INFO
                             );
                             return $this->$name;
@@ -301,7 +301,7 @@ class SavedSearch
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );

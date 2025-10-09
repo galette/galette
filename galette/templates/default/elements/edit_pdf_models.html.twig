@@ -36,33 +36,40 @@
                         </div>
                     </div>
 {% endif %}
-                    <div class="field">
-                        <label for="header_{{ model.id }}">{{ _T("Header") }}</label>
-                        <div class="ui corner labeled input">
-                            <div class="ui corner label"></div>
-                            <textarea name="model_header" id="header_{{ model.id }}" class="codeeditor">{{ model.header }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label for="footer_{{ model.id }}">{{ _T("Footer") }}</label>
-                        <div class="ui corner labeled input">
-                            <div class="ui corner label"></div>
-                            <textarea name="model_footer" id="footer_{{ model.id }}" class="codeeditor">{{ model.footer }}</textarea>
-                        </div>
-                    </div>
+                    {% include "components/forms/textarea.html.twig" with {
+                        id: 'header_' ~ model.id,
+                        name: 'model_header',
+                        value: model.header,
+                        label: _T("Header"),
+                        withlegend: true,
+                        elt_class: 'codeeditor'
+                    } %}
+                    {% include "components/forms/textarea.html.twig" with {
+                        id: 'footer_' ~ model.id,
+                        name: 'model_footer',
+                        value: model.footer,
+                        label: _T("Footer"),
+                        withlegend: true,
+                        elt_class: 'codeeditor'
+                    } %}
 {% if model.id != 1 %}
-                    <div class="field">
-                        <label for="body_{{ model.id }}">{{ _T("Body") }}</label>
-                        <div class="ui corner labeled input">
-                            <div class="ui corner label"></div>
-                            <textarea name="model_body" id="body_{{ model.id }}" class="codeeditor">{{ model.body }}</textarea>
-                        </div>
-                    </div>
+                    {% include "components/forms/textarea.html.twig" with {
+                        id: 'body_' ~ model.id,
+                        name: 'model_body',
+                        value: model.body,
+                        label: _T("Body"),
+                        withlegend: true,
+                        elt_class: 'codeeditor'
+                    } %}
 {% endif %}
-                    <div class="field nolegend">
-                        <label for="styles_{{ model.id }}">{{ _T("CSS styles") }}</label>
-                        <textarea name="model_styles" id="styles_{{ model.id }}" class="codeeditor">{{ model.styles }}</textarea>
-                    </div>
+                    {% include "components/forms/textarea.html.twig" with {
+                        id: 'styles_' ~ model.id,
+                        name: 'model_styles',
+                        value: model.styles,
+                        label: _T("CSS styles"),
+                        elt_class: 'codeeditor',
+                        component_class: 'field nolegend'
+                    } %}
 {% if model.id > 4 %}
                     <div class="field">
                         <label for="type_{{ model.id }}">{{ _T("Type") }}</label>

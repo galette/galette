@@ -25,7 +25,6 @@ namespace Galette\IO;
 
 use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
-use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Galette\Repository\Members;
@@ -268,14 +267,13 @@ class PdfMembersCards extends Pdf
 
             $this->SetFontSize(8);
 
-            if (!empty($this->preferences->pref_show_id) || !empty($member->number)) {
-                $member_id = (!empty($member->number)) ? $member->number : $member->id;
-                $xid = $x0 + $this->wi - $this->GetStringWidth($member_id, self::FONT, 'B', 8) - 0.2;
-                $this->SetXY($xid, $y0 + 28);
-                $this->writeHTML('<strong>' . $member_id . '</strong>', false, false);
-            }
+            $member_id = (!empty($member->number)) ? $member->number : $member->id;
+            $xid = $x0 + $this->wi - $this->GetStringWidth($member_id, self::FONT, 'B', 8) - 0.2;
+            $this->SetXY($xid, $y0 + 28);
+            $this->writeHTML('<strong>' . $member_id . '</strong>', false, false);
+
             $this->SetFontSize($this->year_font_size);
-            $xan_cot = $xan_cot - 0.3;
+            $xan_cot -= 0.3;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
             $this->writeHTML('<strong>' . $an_cot . '</strong>', false, false);
             $y_an_cot = $this->getY();

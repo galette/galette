@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\DynamicFields;
 
-use Analog\Analog;
 use Galette\Core\Db;
 
 /**
@@ -57,5 +56,17 @@ class Text extends DynamicField
     public function getType(): int
     {
         return self::TEXT;
+    }
+
+    /**
+     * Get value to display for a field
+     *
+     * @param mixed $value Raw value to get displayed
+     *
+     * @return string
+     */
+    public function getDisplayValue(mixed $value): string
+    {
+        return nl2br($value);
     }
 }

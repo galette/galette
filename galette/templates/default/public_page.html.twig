@@ -20,36 +20,38 @@
 #}
 <!DOCTYPE html>
 
-<html lang="{{ galette_lang }}"{% if i18n.isRtl() %} dir="rtl"{% endif %} class="public_page{% if additionnal_html_class is defined %} {{ additionnal_html_class }}{% endif %}">
+<html lang="{{ galette_lang }}"{% if i18n.isRtl() %} dir="rtl"{% endif %} class="public_page{% if additional_html_class is defined %} {{ additional_html_class }}{% endif %}">
     <head>
         {% include 'elements/header.html.twig' with {
             galette_lang: galette_lang
         } %}
     </head>
-    <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() and ext_auth is not defined %} loggedin{% endif %} nojs">
+    <body class="{% if body_class is defined and body_class == "front_page" %}front-page {% endif %}pushable{% if login.isLogged() and ext_auth is not defined %} loggedin{% endif %}{% if preferences.pref_enable_custom_colors %} custom-colors{% endif %}{{ (preferences.pref_hide_bg_image) ? ' without-bg' : ' with-bg' }} nojs">
         <a href="#main-content" class="skiptocontent visually-hidden focusable">{{ _T("Skip to content") }}</a>
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
         <main class="pusher">
-            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" %}text {% endif %}{% if not login.isLogged() or ext_auth is defined %}ui container{% else %}full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
+            <div id="main" class="{% if cur_route == "login" or cur_route == "password-lost" or cur_route == "password-recovery" or cur_route == "directlink" or ext_auth is defined %}text {% endif %}{% if not login.isLogged() or ext_auth is defined %}ui container{% else %}full height{% if i18n.isRtl() %} rtl{% endif %}{% endif %}">
 {% if login.isLogged() and ext_auth is not defined %}
                 {% include "elements/navigation/navigation_aside.html.twig" %}
 {% endif %}
                 <section class="{% if login.isLogged() and ext_auth is not defined %}content{% else %}vertically centered{% endif %}">
 {% if not login.isLogged() or ext_auth is defined %}
+    {% if ext_auth is not defined %}
                     <div class="ui basic center aligned fitted segment">
-    {% if preferences.pref_website is not empty %}
+        {% if preferences.pref_website is not empty %}
                         <a href="{{ preferences.pref_website }}" target="_blank">
                             <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="logo" title="{{ _T("Open '%s' in a new window")|replace({"%s": preferences.pref_website}) }}"/>
                         </a>
-    {% else %}
+        {% else %}
                         <img src="{{ url_for("logo") }}" width="{{ logo.getOptimalWidth() }}" height="{{ logo.getOptimalHeight() }}" alt="{{ preferences.pref_nom }}" class="logo"/>
-    {% endif %}
+        {% endif %}
                         <div class="ui large header">
                             {{ preferences.pref_nom }}
                             <div class="sub header">{% if preferences.pref_slogan %}{{ __(preferences.pref_slogan) }}{% endif %}</div>
                         </div>
                     </div>
+    {% endif %}
                     <a id="main-content" tabindex="-1"></a>
                     <h1 class="ui block center aligned header" style="position: relative">
 {% else %}
@@ -77,5 +79,12 @@
         </a>
         {% include "elements/scripts.html.twig" %}
         {% block javascripts %}{% endblock %}
+        {# If some additional scripts should be added from plugins, we load the relevant template file
+           We have to use a template file, so Twig will do its work (like replacing variables). #}
+        {% if plugin_scripts|length != 0 %}
+            {% for mid, script in plugin_scripts %}
+                {% include script with {'module_id': mid} %}
+            {% endfor %}
+        {% endif %}
 </body>
 </html>

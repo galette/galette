@@ -51,6 +51,10 @@ class CsvController extends AbstractController
 {
     #[Inject]
     private CsvIn $csvin;
+    #[Inject]
+    private MembersCsv $members_csv;
+    #[Inject]
+    private ScheduledPaymentsCsv $scheduled_payments_csv;
 
     /**
      * Send response
@@ -63,30 +67,30 @@ class CsvController extends AbstractController
      */
     protected function sendResponse(Response $response, string $filepath, string $filename): Response
     {
-        if (file_exists($filepath)) {
-            $response = $response->withHeader('Content-Description', 'File Transfer')
-                ->withHeader('Content-Type', 'text/csv')
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
-                ->withHeader('Pragma', 'no-cache')
-                ->withHeader('Content-Transfer-Encoding', 'binary')
-                ->withHeader('Expires', '0')
-                ->withHeader('Cache-Control', 'must-revalidate')
-                ->withHeader('Pragma', 'public');
-
-            $stream = fopen('php://memory', 'r+');
-            fwrite($stream, file_get_contents($filepath));
-            rewind($stream);
-
-            return $response->withBody(new Stream($stream));
-        } else {
+        if (!file_exists($filepath)) {
             Analog::log(
-                'A request has been made to get a CSV file named `' .
-                $filename . '` that does not exists (' . $filepath . ').',
+                'A request has been made to get a CSV file named `'
+                . $filename . '` that does not exists (' . $filepath . ').',
                 Analog::WARNING
             );
             //FIXME: use a proper error page
             return $response->withStatus(404);
         }
+
+        $response = $response->withHeader('Content-Description', 'File Transfer')
+            ->withHeader('Content-Type', 'text/csv')
+            ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
+            ->withHeader('Pragma', 'no-cache')
+            ->withHeader('Content-Transfer-Encoding', 'binary')
+            ->withHeader('Expires', '0')
+            ->withHeader('Cache-Control', 'must-revalidate')
+            ->withHeader('Pragma', 'public');
+
+        $stream = fopen('php://memory', 'r+');
+        fwrite($stream, file_get_contents($filepath));
+        rewind($stream);
+
+        return $response->withBody(new Stream($stream));
     }
 
     /**
@@ -109,13 +113,14 @@ class CsvController extends AbstractController
         $this->view->render(
             $response,
             'pages/export.html.twig',
-            array(
-                'page_title'        => _T("CVS database Export"),
+            [
+                'page_title'        => _T("Exports"),
                 'tables_list'       => $tables_list,
                 'written'           => $this->flash->getMessage('written_exports'),
                 'existing'          => $existing,
-                'parameted'         => $parameted
-            )
+                'parameted'         => $parameted,
+                'documentation'     => 'usermanual/avancee.html#csv-exports'
+            ]
         );
         return $response;
     }
@@ -195,16 +200,6 @@ class CsvController extends AbstractController
                             )
                         );
                         break;
-                    case false:
-                        $this->flash->addMessage(
-                            'error_detected',
-                            str_replace(
-                                '%export',
-                                $pn,
-                                _T("An error occurred running parameted export '%export'. Please check the logs.")
-                            )
-                        );
-                        break;
                     default:
                         //no error, file has been written to disk
                         $written[] = [
@@ -241,19 +236,19 @@ class CsvController extends AbstractController
      */
     public function import(Request $request, Response $response): Response
     {
-        $csv = new CsvIn($this->zdb);
-        $existing = $csv->getExisting();
+        $existing = $this->csvin->getExisting();
 
         // display page
         $this->view->render(
             $response,
             'pages/import.html.twig',
-            array(
-                'page_title'        => _T("CSV members import"),
+            [
+                'page_title'        => _T("Imports"),
                 'existing'          => $existing,
                 'dryrun'            => true,
-                'import_file'       => $this->session->import_file
-            )
+                'import_file'       => $this->session->import_file,
+                'documentation'     => 'usermanual/adherents.html#csv-imports'
+            ]
         );
         return $response;
     }
@@ -272,7 +267,7 @@ class CsvController extends AbstractController
         $post = $request->getParsedBody();
         $dryrun = isset($post['dryrun']);
 
-        //store selected file to dispaly again in UI
+        //store selected file to display again in UI
         $this->session->import_file = $post['import_file'];
 
         $res = $csv->import(
@@ -332,46 +327,24 @@ class CsvController extends AbstractController
      */
     public function uploadImportFile(Request $request, Response $response): Response
     {
-        $csv = new CsvIn($this->zdb);
-        if (isset($_FILES['new_file'])) {
-            if ($_FILES['new_file']['error'] === UPLOAD_ERR_OK) {
-                if ($_FILES['new_file']['tmp_name'] != '') {
-                    if (is_uploaded_file($_FILES['new_file']['tmp_name'])) {
-                        $res = $csv->store($_FILES['new_file']);
-                        if ($res < 0) {
-                            $this->flash->addMessage(
-                                'error_detected',
-                                $csv->getErrorMessage($res)
-                            );
-                        } else {
-                            $this->flash->addMessage(
-                                'success_detected',
-                                _T("Your file has been successfully uploaded!")
-                            );
-                        }
-                    }
-                }
-            } elseif ($_FILES['new_file']['error'] !== UPLOAD_ERR_NO_FILE) {
-                Analog::log(
-                    $csv->getPhpErrorMessage($_FILES['new_file']['error']),
-                    Analog::WARNING
-                );
+        $request_files =  $request->getUploadedFiles();
+        $key = 'new_file';
+        if (!$this->csvin->upload(request_files: $request_files, key: $key)) {
+            foreach ($this->csvin->uploadErrors() as $error) {
                 $this->flash->addMessage(
                     'error_detected',
-                    $csv->getPhpErrorMessage(
-                        $_FILES['new_file']['error']
-                    )
-                );
-            } elseif (isset($_POST['upload'])) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("No files has been seleted for upload!")
+                    $error
                 );
             }
-        } else {
+        } elseif (!isset($request_files[$key])) {
             $this->flash->addMessage(
                 'warning_detected',
-                _T("No files has been uploaded!")
+                _T("No file has been uploaded!")
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Your file has been successfully uploaded!")
             );
         }
 
@@ -393,22 +366,10 @@ class CsvController extends AbstractController
     public function getFile(Request $request, Response $response, string $file, string $type): Response
     {
         $filename = $file;
-
-        //Exports main contain user confidential data, they're accessible only for
-        //admins or staff members
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $filepath = $type === 'export' ?
-                CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
-            $filepath .= $filename;
-            return $this->sendResponse($response, $filepath, $filename);
-        } else {
-            Analog::log(
-                'A non authorized person asked to retrieve ' . $type . ' file named `' .
-                $filename . '`. Access has not been granted.',
-                Analog::WARNING
-            );
-            return $response->withStatus(403);
-        }
+        $filepath = $type === 'export'
+            ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
+        $filepath .= $filename;
+        return $this->sendResponse($response, $filepath, $filename);
     }
 
     /**
@@ -437,7 +398,7 @@ class CsvController extends AbstractController
         $this->view->render(
             $response,
             'modals/confirm_removal.html.twig',
-            array(
+            [
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Remove %1$s file %2$s'),
@@ -453,7 +414,7 @@ class CsvController extends AbstractController
                 ),
                 'cancel_uri'    => $data['redirect_uri'],
                 'data'          => $data
-            )
+            ]
         );
         return $response;
     }
@@ -482,8 +443,8 @@ class CsvController extends AbstractController
                 _T("Removal has not been confirmed!")
             );
         } else {
-            $csv = $type === 'export' ?
-                new CsvOut() : new CsvIn($this->zdb);
+            $csv = $type === 'export'
+                ? new CsvOut() : $this->csvin;
             $res = $csv->remove($file);
             if ($res === true) {
                 $success = true;
@@ -540,13 +501,11 @@ class CsvController extends AbstractController
             $model->load();
         }
 
-        $csv = new CsvIn($this->zdb);
-
         /** FIXME:
          * - set fields that should not be part of import
          */
         $fields = $model->getFields();
-        $defaults = $csv->getDefaultFields();
+        $defaults = $this->csvin->getDefaultFields();
         $defaults_loaded = false;
 
         if ($fields === null) {
@@ -577,15 +536,16 @@ class CsvController extends AbstractController
         $this->view->render(
             $response,
             'pages/import_model.html.twig',
-            array(
+            [
                 'page_title'        => _T("CSV import model"),
                 'fields'            => $fields,
                 'model'             => $model,
                 'defaults'          => $defaults,
                 'members_fields'    => $import_fields,
                 'defaults_loaded'   => $defaults_loaded,
-                'tab'               => $tab
-            )
+                'tab'               => $tab,
+                'documentation'     => 'usermanual/adherents.html#model'
+            ]
         );
         return $response;
     }
@@ -603,10 +563,8 @@ class CsvController extends AbstractController
         $model = new ImportModel();
         $model->load();
 
-        $csv = new CsvIn($this->zdb);
-
         $fields = $model->getFields();
-        $defaults = $csv->getDefaultFields();
+        $defaults = $this->csvin->getDefaultFields();
 
         if ($fields === null) {
             $fields = $defaults;
@@ -683,23 +641,11 @@ class CsvController extends AbstractController
         $get = $request->getQueryParams();
 
         $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\MembersController::getDefaultFilterName());
+        $filters = $this->session->$session_var ?? new MembersList();
 
-        if (isset($this->session->$session_var)) {
-            $filters = $this->session->$session_var;
-        } else {
-            $filters = new MembersList();
-        }
-
-        $csv = new MembersCsv(
-            $this->zdb,
-            $this->login,
-            $this->members_fields,
-            $this->fields_config
-        );
-        $csv->exportMembers($filters);
-
-        $filepath = $csv->getPath();
-        $filename = $csv->getFileName();
+        $this->members_csv->exportMembers($filters);
+        $filepath = $this->members_csv->getPath();
+        $filename = $this->members_csv->getFileName();
 
         return $this->sendResponse($response, $filepath, $filename);
     }
@@ -720,11 +666,7 @@ class CsvController extends AbstractController
 
         $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName($type, ['suffix' => 'csvexport']);
 
-        if (isset($this->session->$session_var)) {
-            $filters = $this->session->$session_var;
-        } else {
-            $filters = new ContributionsList();
-        }
+        $filters = $this->session->$session_var ?? new ContributionsList();
 
         $csv = new ContributionsCsv(
             $this->zdb,
@@ -754,20 +696,11 @@ class CsvController extends AbstractController
 
         $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\ScheduledPaymentController::getDefaultFilterName(), ['suffix' => 'csvexport']);
 
-        if (isset($this->session->$session_var)) {
-            $filters = $this->session->$session_var;
-        } else {
-            $filters = new ScheduledPaymentsList();
-        }
+        $filters = $this->session->$session_var ?? new ScheduledPaymentsList();
 
-        $csv = new ScheduledPaymentsCsv(
-            $this->zdb,
-            $this->login
-        );
-        $csv->exportScheduledPayments($filters);
-
-        $filepath = $csv->getPath();
-        $filename = $csv->getFileName();
+        $this->scheduled_payments_csv->exportScheduledPayments($filters);
+        $filepath = $this->scheduled_payments_csv->getPath();
+        $filename = $this->scheduled_payments_csv->getFileName();
 
         return $this->sendResponse($response, $filepath, $filename);
     }

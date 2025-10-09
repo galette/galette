@@ -23,10 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Helpers;
 
-use DateTime;
-use Throwable;
-use Analog\Analog;
-
 /**
  * Entity helper trait
  *
@@ -89,7 +85,7 @@ trait EntityHelper
         if (isset($this->virtual_fields)) {
             $virtual_fields = $this->virtual_fields;
         }
-        return (in_array($name, $virtual_fields) || property_exists($this, $name));
+        return in_array($name, $virtual_fields) || property_exists($this, $name);
     }
 
     /**
@@ -118,9 +114,6 @@ trait EntityHelper
      */
     protected function getFieldPropertyName(string $field): string
     {
-        if (isset($this->fields[$field]['propname'])) {
-            return $this->fields[$field]['propname'];
-        }
-        return $field;
+        return $this->fields[$field]['propname'] ?? $field;
     }
 }

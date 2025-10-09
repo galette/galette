@@ -62,18 +62,18 @@ class ContributionsTypes
     public const ID_NOT_EXITS = -1;
 
     /** @var array<string> */
-    private array $errors = array();
+    private array $errors = [];
 
     /** @var array<int, array<string, mixed>> */
-    protected static array $defaults = array(
-        array('id' => 1, 'libelle' => 'annual fee', 'extension' => self::DEFAULT_TYPE),
-        array('id' => 2, 'libelle' => 'reduced annual fee', 'extension' => self::DEFAULT_TYPE),
-        array('id' => 3, 'libelle' => 'company fee', 'extension' => self::DEFAULT_TYPE),
-        array('id' => 4, 'libelle' => 'donation in kind', 'extension' => self::DONATION_TYPE),
-        array('id' => 5, 'libelle' => 'donation in money', 'extension' => self::DONATION_TYPE),
-        array('id' => 6, 'libelle' => 'partnership', 'extension' => self::DONATION_TYPE),
-        array('id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => self::DEFAULT_TYPE)
-    );
+    protected static array $defaults = [
+        ['id' => 1, 'libelle' => 'annual fee', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 2, 'libelle' => 'reduced annual fee', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 3, 'libelle' => 'company fee', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 4, 'libelle' => 'donation in kind', 'extension' => self::DONATION_TYPE],
+        ['id' => 5, 'libelle' => 'donation in money', 'extension' => self::DONATION_TYPE],
+        ['id' => 6, 'libelle' => 'partnership', 'extension' => self::DONATION_TYPE],
+        ['id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => self::DEFAULT_TYPE]
+    ];
 
     /**
      * Default constructor
@@ -121,8 +121,8 @@ class ContributionsTypes
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load contribution type #' . $id . ' | ' .
-                $e->getMessage(),
+                'Cannot load contribution type #' . $id . ' | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -191,30 +191,31 @@ class ContributionsTypes
 
             $this->zdb->handleSequence(
                 self::TABLE,
+                self::PK,
                 count(static::$defaults)
             );
 
             $fnames = array_values($values);
             foreach (self::$defaults as $d) {
                 $stmt->execute(
-                    array(
+                    [
                         $fnames[0]  => $d['id'],
                         $fnames[1]  => $d['libelle'],
                         $fnames[2]  => $d['extension']
-                    )
+                    ]
                 );
             }
 
             Analog::log(
-                'Defaults contributions types ' .
-                ') were successfully stored into database.',
+                'Defaults contributions types '
+                . ') were successfully stored into database.',
                 Analog::INFO
             );
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to initialize defaults contributions types' .
-                $e->getMessage(),
+                'Unable to initialize defaults contributions types'
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -231,11 +232,11 @@ class ContributionsTypes
      */
     public function getList(?bool $extent = null): array
     {
-        $list = array();
+        $list = [];
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $fields = array(self::PK, 'libelle_type_cotis', 'amount');
+            $fields = [self::PK, 'libelle_type_cotis', 'amount', 'cotis_extension'];
             $select->quantifier('DISTINCT');
             $select->columns($fields);
             $select->order(self::PK);
@@ -251,7 +252,8 @@ class ContributionsTypes
             foreach ($results as $r) {
                 $list[$r->{self::PK}] = [
                     'label' => _T($r->libelle_type_cotis),
-                    'amount' => $r->amount
+                    'amount' => $r->amount,
+                    'extension' => $r->cotis_extension
                 ];
             }
             return $list;
@@ -271,11 +273,11 @@ class ContributionsTypes
      */
     public function getCompleteList(): array
     {
-        $list = array();
+        $list = [];
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->order(array(self::PK));
+            $select->order([self::PK]);
 
             $results = $this->zdb->execute($select);
 
@@ -286,18 +288,19 @@ class ContributionsTypes
                 );
             } else {
                 foreach ($results as $r) {
-                    $list[$r->{self::PK}] = array(
-                        'name'  => _T($r->libelle_type_cotis),
+                    $list[$r->{self::PK}] = [
+                        'text_orig' => $r->libelle_type_cotis,
+                        'name' => _T($r->libelle_type_cotis),
                         'amount' => $r->amount,
                         'extra' => $r->cotis_extension
-                    );
+                    ];
                 }
             }
             return $list;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot list contributions types ' .
-                ' | ' . $e->getMessage(),
+                'Cannot list contributions types '
+                . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -365,8 +368,8 @@ class ContributionsTypes
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->columns(array(self::PK))
-                ->where(array('libelle_type_cotis' => $label));
+            $select->columns([self::PK])
+                ->where(['libelle_type_cotis' => $label]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -377,8 +380,8 @@ class ContributionsTypes
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to retrieve contribution type from label `' .
-                $label . '` | ' . $e->getMessage(),
+                'Unable to retrieve contribution type from label `'
+                . $label . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -410,11 +413,11 @@ class ContributionsTypes
 
         try {
             $this->zdb->connection->beginTransaction();
-            $values = array(
+            $values = [
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
                 'cotis_extension' => $extension
-            );
+            ];
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
@@ -423,8 +426,8 @@ class ContributionsTypes
 
             if ($ret->count() > 0) {
                 Analog::log(
-                    'New contribution type `' . $label .
-                    '` added successfully.',
+                    'New contribution type `' . $label
+                    . '` added successfully.',
                     Analog::INFO
                 );
 
@@ -439,8 +442,8 @@ class ContributionsTypes
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to add new contribution type `' . $label . '` | ' .
-                $e->getMessage(),
+                'Unable to add new contribution type `' . $label . '` | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -469,11 +472,11 @@ class ContributionsTypes
         try {
             $oldlabel = $ret->libelle_type_cotis;
             $this->zdb->connection->beginTransaction();
-            $values = array(
+            $values = [
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
                 'cotis_extension' => $extension
-            );
+            ];
 
             $update = $this->zdb->update(self::TABLE);
             $update->set($values);
@@ -495,8 +498,8 @@ class ContributionsTypes
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to update contribution type #' . $id . ' | ' .
-                $e->getMessage(),
+                'Unable to update contribution type #' . $id . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -541,8 +544,8 @@ class ContributionsTypes
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to delete contribution type #' . $id .
-                ' | ' . $e->getMessage(),
+                'Unable to delete contribution type #' . $id
+                . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -572,8 +575,8 @@ class ContributionsTypes
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to check if contribution type #' . $id .
-                ' is used. | ' . $e->getMessage(),
+                'Unable to check if contribution type #' . $id
+                . ' is used. | ' . $e->getMessage(),
                 Analog::ERROR
             );
             //in case of error, we consider that it is used, to avoid errors
@@ -590,8 +593,8 @@ class ContributionsTypes
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array();
-        $virtuals = array('extension', 'libelle');
+        $forbidden = [];
+        $virtuals = ['extension', 'libelle'];
         if (
             in_array($name, $virtuals)
             || !in_array($name, $forbidden)
@@ -618,17 +621,9 @@ class ContributionsTypes
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array();
-        $virtuals = array('extension', 'libelle');
-        if (
-            in_array($name, $virtuals)
-            || !in_array($name, $forbidden)
-            && isset($this->$name)
-        ) {
-            return true;
-        }
-
-        return false;
+        $forbidden = [];
+        $virtuals = ['extension', 'libelle'];
+        return in_array($name, $virtuals) || !in_array($name, $forbidden) && isset($this->$name);
     }
 
     /**

@@ -72,13 +72,16 @@
                         </div>
                         <span class="exemple">{{ _T("(Max 255 characters)") }}</span>
                     </div>
-                    <div class="field">
-                        <label id="body_label" for="text_body">{{ _T("Email Body:") }}</label>
-                        <div class="ui corner labeled input">
-                            <div class="ui corner label"></div>
-                            <textarea name="text_body" id="text_body" cols="64" rows="15" class="codeeditor">{{ mtxt.tbody }}</textarea>
-                        </div>
-                    </div>
+                    {% include "components/forms/textarea.html.twig" with {
+                        labelid: 'body_label',
+                        id: 'text_body',
+                        value: mtxt.tbody,
+                        label: _T("Email Body:"),
+                        withlegend: true,
+                        elt_class: 'codeeditor',
+                        cols: 64,
+                        rows: 15
+                    } %}
                 </div>
             </div>
             <div class="ui basic center aligned segment">

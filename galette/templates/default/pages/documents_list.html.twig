@@ -26,9 +26,29 @@
     }
 } %}
 
+{% set columns = [
+    {
+        'label': _T('ID'),
+        'collapse': true
+    },
+    {
+        'label': _T("Filename")
+    },
+    {
+        'label': _T('Type')
+    },
+    {
+        'label': _T('Visibility')
+    },
+    {
+        'label': _T("Creation date"),
+        'collapse': true
+    }
+] %}
+
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count document", "%count documents", nb)|replace({"%count": nb})
+        'label': _Tn("%1$s document", "%1$s documents", nb)|format(nb)
     } %}
     {{ parent() }}
 {% endblock %}
@@ -39,64 +59,50 @@
             class="ui tiny labeled icon button"
             href="{{ url_for("addDocument") }}"
         >
-            <i class="ui user check green icon" aria-hidden="true"></i>
+            <i class="plus circle green icon" aria-hidden="true"></i>
             {{ _T("Add a document") }}
         </a>
     {% endif %}
 {% endblock %}
 
 {% block header %}
-    {% set columns = [
-        {'label': '#'},
-        {'label': _T("Filename")},
-        {'label': _T('Type')},
-        {'label': _T('Visibility')},
-        {'label': _T("Creation date")}
-    ] %}
-
     {{ parent() }}
 {% endblock %}
 
 {% block body %}
     {% for document in documents %}
         <tr class="" id="row_{{ document.id }}">
-            <td data-scope="id" class="collapsing">
-                {% if preferences.pref_show_id %}
-                    {{ document.id }}
-                {% else %}
-                    {{ loop.index }}
-                {% endif %}
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
+                {{ document.id }}
             </td>
             <td data-col-label="{{ _T("Filename") }}">
                 <a href="{{ url_for('getDocumentFile', {'id': document.getID()}) }}">
                     {{ document.getDocumentFilename() }}
                 </a>
             </td>
-            <td data-col-label="{{ _T("Type") }}">{{ document.getType() }}</td>
+            <td data-col-label="{{ _T("Type") }}">{{ _T(document.getType()) }}</td>
             <td data-col-label="{{ _T("Visibility") }}">{{ document.getPermissionName() }}</td>
-            <td data-col-label="{{ _T("Creation date") }}">{{ document.getCreationDate() }}</td>
+            <td class="collapsing" data-col-label="{{ _T("Creation date") }}">{{ document.getCreationDate() }}</td>
             {% if mode != 'ajax' %}
-                <td class="actions_row center">
-                    {% if (login.isAdmin() or login.isStaff()) %}
-                        <a
-                                href="{{ url_for("editDocument", {"id": document.getID()}) }}"
-                                class="action"
-                        >
-                            <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Edit document") }}</span>
-                        </a>
-                        <a
-                                href="{{ url_for("removeDocument", {"id": document.getID()}) }}"
-                                class="delete"
-                        >
-                            <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Delete document") }}</span>
-                        </a>
-                    {% endif %}
+                <td class="actions_row center collapsing">
+                    <a
+                            href="{{ url_for("editDocument", {"id": document.getID()}) }}"
+                            class="action"
+                    >
+                        <i class="ui edit icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Edit document") }}</span>
+                    </a>
+                    <a
+                            href="{{ url_for("removeDocument", {"id": document.getID()}) }}"
+                            class="delete"
+                    >
+                        <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Delete document") }}</span>
+                    </a>
                 </td>
             {% endif %}
         </tr>
     {% else %}
-        <tr><td colspan="{% if login.isAdmin() or login.isStaff() %}6{% else %}5{% endif %}" class="emptylist">{{ _T("No document") }}</td></tr>
+        <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("No document") }}</td></tr>
     {% endfor %}
 {% endblock %}

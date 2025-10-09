@@ -65,11 +65,7 @@ class Transactions
         $this->zdb = $zdb;
         $this->login = $login;
 
-        if ($filters === null) {
-            $this->filters = new TransactionsList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters ?? new TransactionsList();
     }
 
     /**
@@ -88,7 +84,7 @@ class Transactions
             $select = $this->buildSelect($fields);
             $this->filters->setLimits($select);
 
-            $transactions = array();
+            $transactions = [];
             $results = $this->zdb->execute($select);
             if ($as_trans) {
                 foreach ($results as $row) {
@@ -120,19 +116,19 @@ class Transactions
         try {
             $select = $this->zdb->select(self::TABLE, 't');
             if ($fields === null || !count($fields)) {
-                $fields = array(
+                $fields = [
                     'trans_date',
                     'trans_id',
                     'trans_desc',
                     'id_adh',
                     'trans_amount',
                     'type_paiement_trans'
-                );
+                ];
             }
             $select->columns($fields)->join(
-                array('a' => PREFIX_DB . Adherent::TABLE),
+                ['a' => PREFIX_DB . Adherent::TABLE],
                 't.' . Adherent::PK . '=' . 'a.' . Adherent::PK,
-                array()
+                []
             );
 
             $this->buildWhereClause($select);
@@ -164,9 +160,9 @@ class Transactions
             $countSelect->reset($countSelect::COLUMNS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     self::PK => new Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);
@@ -191,27 +187,27 @@ class Transactions
      */
     private function buildOrderClause(): array
     {
-        $order = array();
+        $order = [];
 
         switch ($this->filters->orderby) {
             case TransactionsList::ORDERBY_ID:
-                $order[] = Transaction::PK . ' ' . $this->filters->ordered;
+                $order[] = Transaction::PK . ' ' . $this->filters->getDirection();
                 break;
             case TransactionsList::ORDERBY_DATE:
-                $order[] = 'trans_date' . ' ' . $this->filters->ordered;
+                $order[] = 'trans_date' . ' ' . $this->filters->getDirection();
                 break;
             case TransactionsList::ORDERBY_MEMBER:
-                $order[] = 'nom_adh' . ' ' . $this->filters->ordered;
-                $order[] = 'prenom_adh' . ' ' . $this->filters->ordered;
+                $order[] = 'nom_adh' . ' ' . $this->filters->getDirection();
+                $order[] = 'prenom_adh' . ' ' . $this->filters->getDirection();
                 break;
             case TransactionsList::ORDERBY_AMOUNT:
-                $order[] = 'trans_amount' . ' ' . $this->filters->ordered;
+                $order[] = 'trans_amount' . ' ' . $this->filters->getDirection();
                 break;
             case TransactionsList::ORDERBY_PAYMENT_TYPE:
-                $order[] = 'type_paiement_trans' . ' ' . $this->filters->ordered;
+                $order[] = 'type_paiement_trans' . ' ' . $this->filters->getDirection();
                 break;
             default:
-                $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
+                $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
                 break;
         }
 
@@ -265,16 +261,16 @@ class Transactions
                         ]
                     );
                     if (
-                        !$member->hasParent() ||
-                        $member->parent->id != $this->login->id
+                        !$member->hasParent()
+                        || $member->parent->id != $this->login->id
                     ) {
                         //check if member is part of logged-in user managed groups
                         $mgroup = $this->login->getManagedGroups();
                         $groups = $member->getGroups();
                         if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
                             Analog::log(
-                                'Trying to display transactions for member #' . $member->id .
-                                ' without appropriate ACLs',
+                                'Trying to display transactions for member #' . $member->id
+                                . ' without appropriate ACLs',
                                 Analog::WARNING
                             );
                             $this->filters->filtre_cotis_adh = $this->login->id;
@@ -310,9 +306,9 @@ class Transactions
                 $mgroups = $this->login->getManagedGroups();
 
                 $select->join(
-                    array('users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                     't.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                    array(),
+                    [],
                     $select::JOIN_LEFT
                 );
                 $select->where->nest()
@@ -326,9 +322,9 @@ class Transactions
 
             if ($member_clause !== null) {
                 $select->where(
-                    array(
+                    [
                         't.' . Adherent::PK => $member_clause
-                    )
+                    ]
                 );
             }
         } catch (Throwable $e) {
@@ -359,7 +355,7 @@ class Transactions
      */
     public function remove(array|int $ids, History $hist): bool
     {
-        $list = array();
+        $list = [];
         if (is_numeric($ids)) {
             //we've got only one identifier
             $list[] = $ids;
@@ -390,8 +386,8 @@ class Transactions
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'An error occurred trying to remove transactions | ' .
-                $e->getMessage(),
+                'An error occurred trying to remove transactions | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return false;

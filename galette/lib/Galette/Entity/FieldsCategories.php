@@ -81,8 +81,8 @@ class FieldsCategories
             return $categories;
         } catch (Throwable $e) {
             Analog::log(
-                '[' . static::class . '] Cannot get fields categories list | ' .
-                $e->getMessage(),
+                '[' . static::class . '] Cannot get fields categories list | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -104,21 +104,21 @@ class FieldsCategories
 
             $update = $zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'position' => ':position'
-                )
+                ]
             )->where(
-                array(
+                [
                     self::PK => ':pk'
-                )
+                ]
             );
             $stmt = $zdb->sql->prepareStatementForSqlObject($update);
 
             foreach ($categories as $k => $v) {
-                $params = array(
+                $params = [
                     'position'  => $k,
                     'pk'        => $v
-                );
+                ];
                 $stmt->execute($params);
             }
             $zdb->connection->commit();
@@ -144,23 +144,23 @@ class FieldsCategories
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values(
-                array(
+                [
                     self::PK        => ':' . self::PK,
                     'table_name'    => ':table_name',
                     'category'      => ':category',
                     'position'      => ':position'
-                )
+                ]
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ($this->defaults as $d) {
                 $stmt->execute(
-                    array(
+                    [
                         self::PK        => $d['id'],
                         'table_name'    => $d['table_name'],
                         'category'      => $d['category'],
                         'position'      => $d['position']
-                    )
+                    ]
                 );
             }
 
@@ -171,8 +171,8 @@ class FieldsCategories
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to initialize default fields configuration.' .
-                $e->getMessage(),
+                'Unable to initialize default fields configuration.'
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;

@@ -93,7 +93,6 @@ class PdfController extends AbstractController
                 $adh->disableDep('dues');
             }
             $adh->load($id_adh);
-
             if (!$adh->canEdit($this->login)) {
                 $this->flash->addMessage(
                     'error_detected',
@@ -106,41 +105,34 @@ class PdfController extends AbstractController
                         $this->routeparser->urlFor('me')
                     );
             }
-
             //check if member is up-to-date
-            if ($this->login->id == $id_adh) {
-                if (!$adh->isUp2Date()) {
-                    Analog::log(
-                        'Member ' . $id_adh . ' is not up to date; cannot get his PDF member card',
-                        Analog::WARNING
-                    );
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $this->routeparser->urlFor('slash'));
-                }
-            }
-
-            // If we are called from a member's card, get unique id value
-            $unique = $id_adh;
-        } else {
-            if (count($filters->selected) == 0) {
+            if ($this->login->id == $id_adh && !$adh->isUp2Date()) {
                 Analog::log(
-                    'No member selected to generate members cards',
-                    Analog::INFO
+                    'Member ' . $id_adh . ' is not up to date; cannot get his PDF member card',
+                    Analog::WARNING
                 );
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("No member was selected, please check at least one name.")
-                );
-
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('members'));
+                    ->withHeader('Location', $this->routeparser->urlFor('slash'));
             }
+            // If we are called from a member's card, get unique id value
+            $unique = $id_adh;
+        } elseif (count($filters->selected) == 0) {
+            Analog::log(
+                'No member selected to generate members cards',
+                Analog::INFO
+            );
+            $this->flash->addMessage(
+                'error_detected',
+                _T("No member was selected, please check at least one name.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
         // Fill array $selected with selected ids
-        $selected = array();
+        $selected = [];
         if (isset($unique)) {
             $selected[] = $unique;
         } else {
@@ -150,7 +142,7 @@ class PdfController extends AbstractController
         $m = new Members();
         $members = $m->getArrayList(
             $selected,
-            array('nom_adh', 'prenom_adh'),
+            ['nom_adh', 'prenom_adh'],
             true
         );
 
@@ -196,11 +188,7 @@ class PdfController extends AbstractController
 
         $session_var = $post['session_var'] ?? $get['session_var'] ?? $this->getFilterName(Crud\MembersController::getDefaultFilterName());
 
-        if (isset($this->session->$session_var)) {
-            $filters = $this->session->$session_var;
-        } else {
-            $filters = new MembersList();
-        }
+        $filters = $this->session->$session_var ?? new MembersList();
 
         $members = null;
         if (
@@ -227,7 +215,7 @@ class PdfController extends AbstractController
             $m = new Members();
             $members = $m->getArrayList(
                 $filters->selected,
-                array('nom_adh', 'prenom_adh')
+                ['nom_adh', 'prenom_adh']
             );
         }
 
@@ -313,7 +301,7 @@ class PdfController extends AbstractController
             $ajax = true;
 
             //retrieve selected members
-            $data = $post['selection'] ?? array();
+            $data = $post['selection'] ?? [];
 
             $filters->selected = $data;
             $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
@@ -353,27 +341,15 @@ class PdfController extends AbstractController
         }
 
         //retrieve selected members
-        $selection = (isset($post['selection'])) ? $post['selection'] : array();
+        $selection = $post['selection'] ?? [];
 
         $filters->selected = $selection;
         $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
 
-        if (count($filters->selected) == 0) {
-            Analog::log('No member selected to generate attendance sheet', Analog::INFO);
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member selected to generate attendance sheet")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('members'));
-        }
-
         $m = new Members();
         $members = $m->getArrayList(
             $filters->selected,
-            array('nom_adh', 'prenom_adh'),
+            ['nom_adh', 'prenom_adh'],
             true
         );
 
@@ -421,8 +397,8 @@ class PdfController extends AbstractController
      */
     public function contribution(Request $request, Response $response, int $id): Response
     {
-        $contribution = new Contribution($this->zdb, $this->login, $id);
-        if ($contribution->id == '') {
+        $contribution = new Contribution($this->zdb, $this->login);
+        if (!$contribution->load($id)) {
             //not possible to load contribution, exit
             $this->flash->addMessage(
                 'error_detected',
@@ -457,11 +433,7 @@ class PdfController extends AbstractController
     {
         $groups = new Groups($this->zdb, $this->login);
 
-        if ($id !== null) {
-            $groups_list = $groups->getList(true, $id);
-        } else {
-            $groups_list = $groups->getList();
-        }
+        $groups_list = $id !== null ? $groups->getList(true, $id) : $groups->getList();
 
         if (count($groups_list) < 1) {
             Analog::log(
@@ -532,6 +504,7 @@ class PdfController extends AbstractController
                 'page_title'        => _T("PDF models"),
                 'models'            => $models,
                 'html_editor'       => true,
+                'documentation'     => 'usermanual/pdf_models.html'
             ];
         }
 
@@ -666,7 +639,7 @@ class PdfController extends AbstractController
             $m = new Members();
             $members = $m->getArrayList(
                 [$id],
-                array('nom_adh', 'prenom_adh'),
+                ['nom_adh', 'prenom_adh'],
                 true
             );
 
@@ -689,8 +662,8 @@ class PdfController extends AbstractController
             $pdf = new PdfMembersCards($this->preferences);
             $pdf->drawCards($members);
         } else {
-            $contribution = new Contribution($this->zdb, $login, $id);
-            if ($contribution->id == '') {
+            $contribution = new Contribution($this->zdb, $login);
+            if (!$contribution->load($id)) {
                 //not possible to load contribution, exit
                 $this->flash->addMessage(
                     'error_detected',

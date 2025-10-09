@@ -1,0 +1,15 @@
+/*******************************
+       Galette Overrides
+*******************************/
+
+/*----------------------
+     Tooltips icons
+-----------------------*/
+i.circular.basic.question.icon.tooltip {
+  box-shadow: 0 0 0 .1em @textColor inset;
+  background: @white;
+
+  &:hover {
+    background: @galetteHeaderBackground;
+  }
+}

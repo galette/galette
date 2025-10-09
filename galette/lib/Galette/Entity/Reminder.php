@@ -96,8 +96,8 @@ class Reminder
             $this->loadFromRS($results->current());
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading reminder #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading reminder #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -143,31 +143,31 @@ class Reminder
     private function store(Db $zdb): bool
     {
         $now = new \DateTime();
-        $data = array(
+        $data = [
             'reminder_type'     => $this->type,
             'reminder_dest'     => $this->dest->id,
             'reminder_date'     => $now->format('Y-m-d'),
-            'reminder_success'  => ($this->success) ?
-                true :
-                ($zdb->isPostgres() ? 'false' : 0),
-            'reminder_nomail'   => ($this->nomail) ?
-                true :
-                ($zdb->isPostgres() ? 'false' : 0)
-        );
+            'reminder_success'  => ($this->success)
+                ? true
+                : ($zdb->isPostgres() ? 'false' : 0),
+            'reminder_nomail'   => ($this->nomail)
+                ? true
+                : ($zdb->isPostgres() ? 'false' : 0)
+        ];
         try {
             $insert = $zdb->insert(self::TABLE);
             $insert->values($data);
 
             $add = $zdb->execute($insert);
-            if (!($add->count() > 0)) {
+            if ($add->count() <= 0) {
                 Analog::log('Reminder not stored!', Analog::ERROR);
                 return false;
             }
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing reminder: ' . $e->getMessage() .
-                "\n" . print_r($data, true),
+                'An error occurred storing reminder: ' . $e->getMessage()
+                . "\n" . print_r($data, true),
                 Analog::ERROR
             );
             throw $e;
@@ -229,24 +229,24 @@ class Reminder
             $mail = new GaletteMail($preferences);
             $mail->setSubject($texts->getSubject());
             $mail->setRecipients(
-                array(
+                [
                     $this->dest->getEmail() => $this->dest->sname
-                )
+                ]
             );
             $mail->setMessage($texts->getBody());
             $sent = $mail->send();
 
             $details = str_replace(
-                array(
+                [
                     '%name',
                     '%mail',
                     '%days'
-                ),
-                array(
+                ],
+                [
                     $this->dest->sname,
                     $this->dest->getEmail(),
                     (string)$days_remaining
-                ),
+                ],
                 _T("%name <%mail> (%days days)")
             );
 
@@ -277,16 +277,16 @@ class Reminder
                 _T("Unable to send %membership reminder (no email address).")
             );
             $details = str_replace(
-                array(
+                [
                     '%name',
                     '%id',
                     '%days'
-                ),
-                array(
+                ],
+                [
                     $this->dest->sname,
                     (string)$this->dest->id,
                     (string)$days_remaining
-                ),
+                ],
                 _T("%name (#%id - %days days)")
             );
             $hist->add($str, $details);
@@ -329,7 +329,7 @@ class Reminder
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );
@@ -379,22 +379,19 @@ class Reminder
                 }
                 break;
             case 'dest':
-                if ($this->type !== null && $value instanceof Adherent) {
+                if (isset($this->type) && $value instanceof Adherent) {
                     $this->dest = $value;
-
                     if ($value->getEmail() != '') {
                         $this->nomail = false;
                     }
+                } elseif (!$value instanceof Adherent) {
+                    throw new \UnexpectedValueException(
+                        'Please provide a member object.'
+                    );
                 } else {
-                    if (!$value instanceof Adherent) {
-                        throw new \UnexpectedValueException(
-                            'Please provide a member object.'
-                        );
-                    } else {
-                        throw new \UnderflowException(
-                            'Please set reminder type first.'
-                        );
-                    }
+                    throw new \UnderflowException(
+                        'Please set reminder type first.'
+                    );
                 }
                 break;
             default:

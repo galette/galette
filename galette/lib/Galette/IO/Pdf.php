@@ -157,14 +157,6 @@ class Pdf extends TCPDF
     }
 
     /**
-     * Destructor
-     */
-    public function __destruct()
-    {
-        parent::__destruct();
-    }
-
-    /**
      * This method is automatically called in case of fatal error;
      * it simply outputs the message and halts the execution.
      * An inherited class may override it to customize the error
@@ -194,8 +186,7 @@ class Pdf extends TCPDF
             $msg
         );
 
-        $redirect = (isset($_SERVER['HTTP_REFERER']) ?
-            $_SERVER['HTTP_REFERER'] : $container->get(RouteParser::class)->urlFor('slash'));
+        $redirect = ($_SERVER['HTTP_REFERER'] ?? $container->get(RouteParser::class)->urlFor('slash'));
         header('Location: ' . $redirect);
         die();
     }
@@ -210,12 +201,11 @@ class Pdf extends TCPDF
      */
     public function colorHex2Dec(string $hex6): array
     {
-        $dec = array(
+        return [
             "R" => hexdec(substr($hex6, 1, 2)),
             "G" => hexdec(substr($hex6, 3, 2)),
             "B" => hexdec(substr($hex6, 5, 2))
-        );
-        return $dec;
+        ];
     }
 
     /**
@@ -261,8 +251,8 @@ class Pdf extends TCPDF
             $pdf->Cell(
                 0,
                 4,
-                $this->getAliasRightShift() . $this->PageNo() .
-                '/' . $this->getAliasNbPages(),
+                $this->getAliasRightShift() . $this->PageNo()
+                . '/' . $this->getAliasNbPages(),
                 0,
                 1,
                 ($this->i18n->isRTL() ? 'L' : 'R')
@@ -309,8 +299,8 @@ class Pdf extends TCPDF
         if (trim($this->model->title) !== '') {
             $htitle = '';
             if (trim($this->model->hstyles) !== '') {
-                $htitle .= "<style>\n" . $this->model->hstyles .
-                    "\n</style>\n\n";
+                $htitle .= "<style>\n" . $this->model->hstyles
+                    . "\n</style>\n\n";
             }
             $htitle .= '<div id="pdf_title">' . $this->model->htitle . '</div>';
             $this->writeHtml($htitle);
@@ -318,11 +308,11 @@ class Pdf extends TCPDF
         if (trim($this->model->subtitle) !== '') {
             $hsubtitle = '';
             if (trim($this->model->hstyles) !== '') {
-                $hsubtitle .= "<style>\n" . $this->model->hstyles .
-                    "\n</style>\n\n";
+                $hsubtitle .= "<style>\n" . $this->model->hstyles
+                    . "\n</style>\n\n";
             }
-            $hsubtitle .= '<div id="pdf_subtitle">' . $this->model->hsubtitle .
-                '</div>';
+            $hsubtitle .= '<div id="pdf_subtitle">' . $this->model->hsubtitle
+                . '</div>';
             $this->writeHtml($hsubtitle);
         }
         if (
@@ -349,25 +339,16 @@ class Pdf extends TCPDF
         // Set logo size to max width 30 mm or max height 25 mm
         $ratio = $print_logo->getWidth() / $print_logo->getHeight();
         if ($ratio < 1) {
-            if ($print_logo->getHeight() > 16) {
-                $hlogo = 25;
-            } else {
-                $hlogo = $print_logo->getHeight();
-            }
+            $hlogo = $print_logo->getHeight() > 16 ? 25 : $print_logo->getHeight();
             $wlogo = round($hlogo * $ratio);
         } else {
-            if ($print_logo->getWidth() > 16) {
-                $wlogo = 30;
-            } else {
-                $wlogo = $print_logo->getWidth();
-            }
+            $wlogo = $print_logo->getWidth() > 16 ? 30 : $print_logo->getWidth();
             $hlogo = round($wlogo / $ratio);
         }
 
         $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);
         $this->SetTextColor(0, 0, 0);
 
-        $y = $this->GetY();
         $this->Ln(2);
         $ystart = $this->GetY();
 
@@ -453,7 +434,7 @@ class Pdf extends TCPDF
      */
     protected function cut(string $str, int $length): string
     {
-        $length = $length - 2; //keep a margin
+        $length -= 2; //keep a margin
         if ((int)$this->GetStringWidth($str) > $length) {
             while ((int)$this->GetStringWidth($str . '...') > $length) {
                 $str = mb_substr($str, 0, -1, 'UTF-8');

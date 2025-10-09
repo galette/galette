@@ -108,14 +108,14 @@ class Db
             }
 
             $this->type_db = $_type_db;
-            $this->options = array(
+            $this->options = [
                 'driver'   => $_type,
                 'hostname' => $_host_db,
                 'port'     => $_port_db,
                 'username' => $_user_db,
                 'password' => $_pwd_db,
                 'database' => $_name_db
-            );
+            ];
             if (defined('GALETTE_TESTS') && GALETTE_TESTS === true) {
                 $this->options['driver_options'] = [
                     \PDO::ATTR_STRINGIFY_FETCHES => true
@@ -129,8 +129,8 @@ class Db
         } catch (Throwable $e) {
             // perhaps factory() failed to load the specified Adapter class
             Analog::log(
-                '[Db] Error (' . $e->getCode() . '|' .
-                $e->getMessage() . ')',
+                '[Db] Error (' . $e->getCode() . '|'
+                . $e->getMessage() . ')',
                 Analog::ALERT
             );
             throw $e;
@@ -156,20 +156,27 @@ class Db
     /**
      * To store Db in session
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function __sleep(): array
+    public function __serialize(): array
     {
-        return ['type_db', 'options'];
+        return [
+            'type_db' => $this->type_db,
+            'options' => $this->options
+        ];
     }
 
     /**
      * Connect again to the database on wakeup
      *
+     * @param array<string, mixed> $data Date to unserialize
+     *
      * @return void
      */
-    public function __wakeup(): void
+    public function __unserialize(array $data): void
     {
+        $this->type_db = $data['type_db'];
+        $this->options = $data['options'];
         $this->doConnection();
     }
 
@@ -185,16 +192,12 @@ class Db
     public function getDbVersion(bool $check_table = false): string
     {
         try {
-            if ($check_table === true) {
-                $exists = count($this->getTables(PREFIX_DB . 'database')) === 1;
-            } else {
-                $exists = true;
-            }
+            $exists = $check_table === true ? count($this->getTables(PREFIX_DB . 'database')) === 1 : true;
 
             if ($exists === true) {
                 $select = $this->select('database');
                 $select->columns(
-                    array('version')
+                    ['version']
                 )->limit(1);
 
                 $results = $this->execute($select);
@@ -213,7 +216,7 @@ class Db
                 'Cannot check database version: ' . $e->getMessage(),
                 Analog::ERROR
             );
-            throw new LogicException('Cannot check database version');
+            throw new LogicException('Cannot check database version', $e->getCode(), $e);
         }
     }
 
@@ -240,7 +243,7 @@ class Db
     }
 
     /**
-     * Peform a select query on the whole table
+     * Perform a select query on the whole table
      *
      * @param string $table Table name
      *
@@ -285,14 +288,14 @@ class Db
                 throw new Exception('Unknown database type');
             }
 
-            $_options = array(
+            $_options = [
                 'driver'   => $_type,
                 'hostname' => $host,
                 'port'     => $port,
                 'username' => $user,
                 'password' => $pass,
                 'database' => $db
-            );
+            ];
 
             $_db = new Adapter($_options);
             $_db->getDriver()->getConnection()->connect();
@@ -301,8 +304,8 @@ class Db
         } catch (Throwable $e) {
             // perhaps failed to load the specified Adapter class
             Analog::log(
-                '[' . __METHOD__ . '] Connection error (' . $e->getCode() . '|' .
-                $e->getMessage() . ')',
+                '[' . __METHOD__ . '] Connection error (' . $e->getCode() . '|'
+                . $e->getMessage() . ')',
                 Analog::ALERT
             );
             throw $e;
@@ -343,14 +346,14 @@ class Db
             Analog::DEBUG
         );
         $stop = false;
-        $results = array(
+        $results = [
             'create' => false,
             'insert' => false,
             'select' => false,
             'update' => false,
             'delete' => false,
             'drop'   => false
-        );
+        ];
         if ($mode === 'u') {
             $results['alter'] = false;
         }
@@ -373,7 +376,7 @@ class Db
             $results['create'] = $e;
         }
 
-        //all those tests need the table to exists
+        //all those tests need the table to exist
         if (!$stop) {
             if ($mode == 'u') {
                 //can Galette ALTER tables? (only for update mode)
@@ -390,11 +393,11 @@ class Db
                 }
             }
 
-            //can Galette INSERT records ?
-            $values = array(
+            //can Galette INSERT records?
+            $values = [
                 'test_id'      => 1,
                 'test_text'    => 'a simple text'
-            );
+            ];
             try {
                 $insert = $this->sql->insert('galette_test');
                 $insert->values($values);
@@ -411,21 +414,21 @@ class Db
                     'Cannot INSERT records | ' . $e->getMessage(),
                     Analog::WARNING
                 );
-                //if we cannot insert records, some others tests cannot be done
+                //if we cannot insert records, some other tests cannot be done
                 $stop = true;
                 $results['insert'] = $e;
             }
 
             //all those tests need that the first record exists
             if (!$stop) {
-                //can Galette UPDATE records ?
-                $values = array(
+                //can Galette UPDATE records?
+                $values = [
                     'test_text' => 'another simple text'
-                );
+                ];
                 try {
                     $update = $this->sql->update('galette_test');
                     $update->set($values)->where(
-                        array('test_id' => 1)
+                        ['test_id' => 1]
                     );
                     $res = $this->execute($update);
                     if ($res->count() === 1) {
@@ -441,7 +444,7 @@ class Db
                     $results['update'] = $e;
                 }
 
-                //can Galette SELECT records ?
+                //can Galette SELECT records?
                 try {
                     $select = $this->sql->select('galette_test');
                     $select->where(['test_id' => 1]);
@@ -461,10 +464,10 @@ class Db
                     $results['select'] = $e;
                 }
 
-                //can Galette DELETE records ?
+                //can Galette DELETE records?
                 try {
                     $delete = $this->sql->delete('galette_test');
-                    $delete->where(array('test_id' => 1));
+                    $delete->where(['test_id' => 1]);
                     $this->execute($delete);
                     $results['delete'] = true;
                 } catch (Throwable $e) {
@@ -476,7 +479,7 @@ class Db
                 }
             }
 
-            //can Galette DROP tables ?
+            //can Galette DROP tables?
             try {
                 $sql = 'DROP TABLE galette_test';
                 $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
@@ -509,7 +512,7 @@ class Db
             $prefix = PREFIX_DB;
         }
 
-        $tables_list = array();
+        $tables_list = [];
         //filter table_list: we only want PREFIX_DB tables
         foreach ($tmp_tables_list as $t) {
             if (preg_match('/^' . $prefix . '/', $t)) {
@@ -517,6 +520,28 @@ class Db
             }
         }
         return $tables_list;
+    }
+
+    /**
+     * Does a given table exists?
+     *
+     * @param string $name Table name
+     *
+     * @return bool
+     */
+    public function tableExists(string $name): bool
+    {
+        $metadata = Factory::createSourceFromAdapter($this->db);
+        try {
+            $metadata->getTable(PREFIX_DB . $name);
+            return true;
+        } catch (Throwable $e) {
+            Analog::log(
+                'Table "' . $name . '" does not exist',
+                Analog::INFO
+            );
+            return false;
+        }
     }
 
     /**
@@ -563,8 +588,8 @@ class Db
                     //Change whole table charset
                     //CONVERT TO instruction will take care of each fields,
                     //but converting data stay our problem.
-                    $query = 'ALTER TABLE ' . $table .
-                        ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
+                    $query = 'ALTER TABLE ' . $table
+                        . ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
 
                     $this->db->query(
                         $query,
@@ -584,8 +609,8 @@ class Db
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred while converting to utf table ' .
-                $table . ' (' . $e->getMessage() . ')',
+                'An error occurred while converting to utf table '
+                . $table . ' (' . $e->getMessage() . ')',
                 Analog::ERROR
             );
             throw $e;
@@ -593,7 +618,7 @@ class Db
     }
 
     /**
-     * Converts dtabase content to UTF-8
+     * Converts database content to UTF-8
      *
      * @param string $prefix Specified table prefix
      * @param string $table  the table we want to convert datas from
@@ -611,8 +636,8 @@ class Db
             );
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot SET NAMES on table `' . $table . '`. ' .
-                $e->getMessage(),
+                'Cannot SET NAMES on table `' . $table . '`. '
+                . $e->getMessage(),
                 Analog::ERROR
             );
         }
@@ -621,7 +646,7 @@ class Db
             $metadata = Factory::createSourceFromAdapter($this->db);
             $tbl = $metadata->getTable($table);
             $constraints = $tbl->getConstraints();
-            $pkeys = array();
+            $pkeys = [];
 
             foreach ($constraints as $constraint) {
                 if ($constraint->getType() === 'PRIMARY KEY') {
@@ -632,26 +657,26 @@ class Db
             if (count($pkeys) == 0) {
                 //no primary key! How to do an update without that?
                 //Prior to 0.7, l10n and dynamic_fields tables does not
-                //contains any primary key. Since encoding conversion is done
+                //contain any primary key. Since encoding conversion is done
                 //_before_ the SQL upgrade, we'll have to manually
                 //check these ones
                 if (preg_match('/' . $prefix . 'dynamic_fields/', $table) !== 0) {
-                    $pkeys = array(
+                    $pkeys = [
                         'item_id',
                         'field_id',
                         'field_form',
                         'val_index'
-                    );
+                    ];
                 } elseif (preg_match('/' . $prefix . 'l10n/', $table) !== 0) {
-                    $pkeys = array(
+                    $pkeys = [
                         'text_orig',
                         'text_locale'
-                    );
+                    ];
                 } else {
                     //not a know case, we do not perform any update.
                     throw new Exception(
-                        'Cannot define primary key for table `' . $table .
-                        '`, aborting'
+                        'Cannot define primary key for table `' . $table
+                        . '`, aborting'
                     );
                 }
             }
@@ -660,8 +685,8 @@ class Db
             $results = $this->execute($select);
 
             foreach ($results as $row) {
-                $data = array();
-                $where = array();
+                $data = [];
+                $where = [];
 
                 //build where
                 foreach ($pkeys as $k) {
@@ -680,8 +705,8 @@ class Db
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred while converting contents to UTF-8 for table ' .
-                $table . ' (' . $e->getMessage() . ')',
+                'An error occurred while converting contents to UTF-8 for table '
+                . $table . ' (' . $e->getMessage() . ')',
                 Analog::ERROR
             );
         }
@@ -714,9 +739,9 @@ class Db
         } else {
             return $this->sql->select(
                 //@phpstan-ignore-next-line
-                array(
+                [
                     $alias => PREFIX_DB . $table
-                )
+                ]
             );
         }
     }
@@ -885,8 +910,8 @@ class Db
             $infos['version']   = $result['version'];
             $infos['sql_mode']  = $result['mode'];
 
-            $size_sql = 'SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS dbsize' .
-                ' FROM information_schema.tables WHERE table_schema="' . NAME_DB . '"';
+            $size_sql = 'SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS dbsize'
+                . ' FROM information_schema.tables WHERE table_schema="' . NAME_DB . '"';
             $result = $this->db->query($size_sql, Adapter::QUERY_MODE_EXECUTE)
                 ->current();
 
@@ -907,17 +932,18 @@ class Db
      * @see https://bugs.galette.eu/issues/1374
      *
      * @param string  $table    Table name
-     * @param integer $expected Expected value
+     * @param string  $pkcol    Primary key column name
+     * @param integer $expected Expected sequence value
      *
      * @return void
      */
-    public function handleSequence(string $table, int $expected): void
+    public function handleSequence(string $table, string $pkcol, int $expected): void
     {
         if ($this->isPostgres()) {
             //check for Postgres sequence
             //see https://bugs.galette.eu/issues/1158
             //see https://bugs.galette.eu/issues/1374
-            $seq = $table . '_id_seq';
+            $seq = $this->getSequenceName($table, $pkcol);
 
             $select = $this->select($seq);
             $select->columns(['last_value']);
@@ -930,6 +956,25 @@ class Db
                 );
             }
         }
+    }
+
+    /**
+     * Get sequence name
+     *
+     * @param string  $table    Table name
+     * @param string  $pkcol    Primary key column name
+     * @param boolean $prefixed Whether to prefix the sequence name
+     *
+     * @return string
+     */
+    public function getSequenceName(string $table, string $pkcol, bool $prefixed = false): string
+    {
+        return sprintf(
+            '%s%s_%s_seq',
+            $prefixed ? PREFIX_DB : '',
+            $table,
+            $pkcol
+        );
     }
 
     /**
@@ -1014,8 +1059,8 @@ class Db
     {
         /** @phpstan-ignore-next-line */
         return (int)$this->driver->getLastGeneratedValue(
-            $this->isPostgres() ?
-                PREFIX_DB . $entity::TABLE . '_id_seq'
+            $this->isPostgres()
+                ? $this->getSequenceName($entity::TABLE, $entity::PK, true)
                 : null
         );
     }

@@ -26,14 +26,16 @@
 
         {% macro draw_field(field, field_data, disabled, loop, object, masschange) %}
             {% set valuedata = field_data.field_val|escape %}
+            {% if masschange %}
+                {# Add a checkbox for fields to change on mass edition #}
+                <span class="ui checkbox masschange">
+                    <input type="checkbox" name="mass_info_field_{{ field.getId() }}" class="mass_checkbox"/>
+                </span>
+            {% endif %}
             {% if get_class(field) == 'Galette\\DynamicFields\\File' %}
                 <label>{{ field.getName()|escape }}</label>
-            {% else %}
+            {% elseif get_class(field) != 'Galette\\DynamicFields\\Boolean' %}
                 <label for="info_field_{{ field.getId() }}_{{ loop }}">
-                    {% if masschange %}
-                        {# Add a checkbox for fields to change on mass edition #}
-                        <input type="checkbox" name="mass_info_field_{{ field.getId() }}" class="mass_checkbox"/>
-                    {% endif %}
                     {{ field.getName()|escape }}
                 </label>
             {% endif %}
@@ -90,7 +92,7 @@
                     </div>
                 </div>
             {% elseif get_class(field) == 'Galette\\DynamicFields\\Boolean' %}
-                <div class="ui toggle checkbox">
+                <div class="ui toggle right aligned checkbox">
                     <input type="checkbox" name="info_field_{{ field.getId() }}_{{ loop }}" id="info_field_{{ field.getId() }}_{{ loop }}" value="1"
                         {% if valuedata == 1%} checked="checked"{% endif %}
                         {% if field.isRepeatable() %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}
@@ -99,6 +101,9 @@
                     {% endif %}
                         {% if disabled %} disabled="disabled"{% endif %}
                     />
+                    <label for="info_field_{{ field.getId() }}_{{ loop }}">
+                        {{ field.getName()|escape }}
+                    </label>
                 </div>
             {% elseif get_class(field) == 'Galette\\DynamicFields\\File' %}
                 {% if object.id and valuedata %}
@@ -203,7 +208,7 @@
                                         {% set current_count = 1 %}
                                     {% endif %}
                                     {% set remaining = field.getRepeat() - current_count %}
-                                    <p class="exemple" id="repeat_msg">{{ _T("Enter up to %count more occurrences.")|replace({"%count": remaining}) }}</p>
+                                    <p class="exemple" id="repeat_msg">{{ _T("Enter up to %1$s more occurrences.")|format(remaining) }}</p>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -245,7 +250,7 @@
                             _lnkEvent(_b, _new, _parent);
                             _parent.append(_b);
                             if (_current < _total) {
-                                $('#repeat_msg').html('{{ _T("Enter up to %count more occurrences.")|replace({"%count": "COUNT"})|e('js') }}'.replace(/COUNT/, _total - _current));
+                                $('#repeat_msg').html('{{ _T("Enter up to %1$s more occurrences.")|format("COUNT")|e('js') }}'.replace(/COUNT/, _total - _current));
                             }
                         } else if (_current == _total) {
                             $('#repeat_msg').remove();

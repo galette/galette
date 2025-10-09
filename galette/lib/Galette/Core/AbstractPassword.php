@@ -25,9 +25,6 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use Analog\Analog;
-use Galette\Entity\Adherent;
-
 /**
  * Abstract password
  *
@@ -54,7 +51,7 @@ abstract class AbstractPassword
      */
     public function makeRandomPassword(?int $size = null): string
     {
-        $size = $size ?? static::DEFAULT_SIZE;
+        $size ??= static::DEFAULT_SIZE;
         $pass = '';
         $i = 0;
         while ($i <= $size - 1) {

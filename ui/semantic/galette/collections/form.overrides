@@ -47,9 +47,27 @@
   margin-bottom: 0;
 }
 
+.ui.ui.form .field .fields.inline .field:not(:only-child) .ui.checkbox {
+  margin-top: 0;
+}
+
+@media only screen and (min-width: @tabletBreakpoint) {
+  .ui .two.fields .right.aligned.field {
+    text-align: right;
+  }
+}
+
 /*-------------------------
       Filters' fields
 --------------------------*/
+.filters .yellow.segment {
+  padding-bottom: 0;
+
+  & > .last-child {
+    margin-bottom: 0;
+  }
+}
+
 .filters .fields .fields {
   margin: 0;
 }
@@ -64,6 +82,16 @@
 ---------------------------*/
 .ui.form .data.inline.fields {
   margin-bottom: 0;
+}
+
+/*--------------------------
+      Mass change + label
+---------------------------*/
+.ui.checkbox.masschange {
+  padding-top: .2rem;
+}
+.ui.checkbox.masschange + label {
+  display: inline-block;
 }
 
 /*--------------------------

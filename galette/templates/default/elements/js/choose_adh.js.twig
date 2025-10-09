@@ -197,6 +197,8 @@
                         success: function(res){
                             $('#contribution-rangeend').calendar('set date', res.date_debut_cotis);
                             $('#membership-rangeend').calendar('set date', res.date_fin_cotis);
+                            $('#date_debut_cotis').transition('glow');
+                            $('#date_fin_cotis').transition('glow');
                         },
                         error: function() {
                             {% include "elements/js/modal.js.twig" with {

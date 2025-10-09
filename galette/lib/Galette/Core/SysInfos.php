@@ -117,8 +117,8 @@ class SysInfos
     {
         $str = "\n" . 'Plugins:' . "\n";
         foreach ($plugins->getModules() as $p) {
-            $str .= '  ' . $p['name'] . ' ' . $p['version'] .
-                ' (' . $p['author'] . ")\n";
+            $str .= '  ' . $p['name'] . ' ' . $p['version']
+                . ' (' . $p['author'] . ")\n";
         }
         return $str;
     }

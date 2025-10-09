@@ -23,23 +23,23 @@ declare(strict_types=1);
 
 use Galette\Entity\Adherent;
 
-$members_fields_cats = array(
-    array(
+$members_fields_cats = [
+    [
         'id'         => 1,
         'table_name' => Adherent::TABLE,
         'category'   => "Identity:",
         'position'   => 1
-    ),
-    array(
+    ],
+    [
         'id'         => 2,
         'table_name' => Adherent::TABLE,
         'category'   => "Galette-related data:",
         'position'   => 3
-    ),
-    array(
+    ],
+    [
         'id'         => 3,
         'table_name' => Adherent::TABLE,
         'category'   => "Contact information:",
         'position'   => 2
-    )
-);
+    ]
+];

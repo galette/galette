@@ -23,9 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Filters;
 
-use Throwable;
-use Analog\Analog;
-use Galette\Core\Pagination;
 use Galette\Core\MailingHistory;
 
 /**
@@ -55,7 +52,7 @@ class MailingsList extends HistoryList
     protected ?string $subject_filter = null;
 
     /** @var array<string>  */
-    protected array $list_fields = array(
+    protected array $list_fields = [
         'start_date_filter',
         'raw_start_date_filter',
         'end_date_filter',
@@ -63,7 +60,7 @@ class MailingsList extends HistoryList
         'sender_filter',
         'sent_filter',
         'subject_filter'
-    );
+    ];
 
     /**
      * Default constructor

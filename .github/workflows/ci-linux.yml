@@ -25,22 +25,25 @@ jobs:
     strategy:
       matrix:
         include:
+          #8.5 is now beta
+          - { php-version: "8.5", db-image: "postgres:17", coverage: none, always: true }
           #always tests higher stable php version with lower db version
           #enable coverage on higher stable php version with higher PostgreSQL version
           #higher stable php version
-          - { php-version: "8.4", db-image: "postgres:11", coverage: none, always: true }
-          - { php-version: "8.4", db-image: "postgres:16", coverage: 'pcov', always: true }
-          - { php-version: "8.4", db-image: "mysql:5.7", coverage: none, always: true }
-          - { php-version: "8.4", db-image: "mysql:8.1", coverage: none, always: false }
-          - { php-version: "8.4", db-image: "mariadb:10.4", coverage: none, always: true }
-          - { php-version: "8.4", db-image: "mariadb:11.3", coverage: none, always: false }
+          - { php-version: "8.4", db-image: "postgres:13", coverage: none, always: true }
+          - { php-version: "8.4", db-image: "postgres:17", coverage: 'pcov', always: true }
+          - { php-version: "8.4", db-image: "mysql:8.0", coverage: none, always: true }
+          - { php-version: "8.4", db-image: "mysql:9.1", coverage: none, always: false }
+          - { php-version: "8.4", db-image: "mariadb:10.5", coverage: none, always: true }
+          - { php-version: "8.4", db-image: "mariadb:11.6", coverage: none, always: false }
+          #always one test with lower php version
           #lower php version
-          - { php-version: "8.1", db-image: "postgres:11", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "postgres:16", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "mysql:5.7", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "mysql:8.1", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "mariadb:10.4", coverage: none, always: false }
-          - { php-version: "8.1", db-image: "mariadb:11.3", coverage: none, always: false }
+          - { php-version: "8.2", db-image: "postgres:13", coverage: none, always: false }
+          - { php-version: "8.2", db-image: "postgres:17", coverage: none, always: true }
+          - { php-version: "8.2", db-image: "mysql:8.0", coverage: none, always: false }
+          - { php-version: "8.2", db-image: "mysql:9.1", coverage: none, always: false }
+          - { php-version: "8.2", db-image: "mariadb:10.5", coverage: none, always: false }
+          - { php-version: "8.2", db-image: "mariadb:11.6", coverage: none, always: false }
       fail-fast: false
 
     env:
@@ -79,7 +82,7 @@ jobs:
         if: env.skip != 'true'
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           tools: composer, pecl
           coverage: ${{ matrix.coverage }}
           extensions: apcu
@@ -120,12 +123,14 @@ jobs:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
         run: |
+          bin/console galette:install -v --dbprefix=latest_galette_ --dbtype=pgsql --dbhost=localhost --dbname=galette_tests --dbuser=galette_tests --dbpass=g@l3tte --admin=admin --password=admin --no-interaction
           PGPASSWORD=g@l3tte psql -d galette_tests -a -f tests/pgsql_06.sql -U galette_tests -h localhost
         if: env.skip != 'true' && startsWith(matrix.db-image, 'postgres')
 
       - name: Init for MariaDB (update)
         run: |
           mysql -e 'create database IF NOT EXISTS galette_tests;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
+          bin/console galette:install -v --dbprefix=latest_galette_ --dbtype=mysql --dbhost=127.0.0.1 --dbname=galette_tests --dbuser=galette_tests --dbpass=g@l3tte --admin=admin --password=admin --no-interaction
           mysql -e 'use galette_tests; source tests/mysql_06.sql;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
         if: env.skip != 'true' && (startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb'))
 
@@ -176,9 +181,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - { php-version: "8.4", db-image: "postgres:10", always: true}
-          - { php-version: "8.4", db-image: "mysql:5.6", always: false}
-          - { php-version: "8.4", db-image: "mariadb:10.3", always: false}
+          - { php-version: "8.4", db-image: "postgres:12", always: true}
+          - { php-version: "8.4", db-image: "mysql:5.7", always: false}
+          - { php-version: "8.4", db-image: "mariadb:10.4", always: false}
       fail-fast: false
 
     env:
@@ -261,7 +266,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: [ '8.1', '8.4' ]
+        php-versions: [ '8.2', '8.4' ]
 
     steps:
       - name: PHP
@@ -301,6 +306,14 @@ jobs:
       - name: CS
         run: |
           galette/vendor/bin/phpcs
+
+      - name: CS Fixer
+        run: |
+          galette/vendor/bin/php-cs-fixer check --show-progress=dots --verbose --diff
+
+      - name: Rector
+        run: |
+          galette/vendor/bin/rector process --dry-run --ansi
 
       - name: Twig CS
         run: |

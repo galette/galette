@@ -24,10 +24,6 @@ declare(strict_types=1);
 namespace Galette\Features;
 
 use Galette\Entity\FieldsConfig;
-use Throwable;
-use Analog\Analog;
-use Galette\Core\L10n;
-use Laminas\Db\Sql\Expression;
 
 /**
  * Permissions

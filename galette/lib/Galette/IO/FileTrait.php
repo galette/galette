@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use Analog\Analog;
+use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * Files
@@ -33,11 +34,22 @@ use Analog\Analog;
 
 trait FileTrait
 {
+    public const INVALID_FILENAME = -1;
+    public const INVALID_EXTENSION = -2;
+    public const FILE_TOO_BIG = -3;
+    public const IMAGE_TOO_SMALL = -4;
+    public const MIME_NOT_ALLOWED = -5;
+    public const NEW_FILE_EXISTS = -6;
+    public const INVALID_FILE = -7;
+    public const CANT_WRITE = -8;
+    public const MAX_FILE_SIZE = 2048;
+    public const MIN_CROP_SIZE = 267;
+
     //array keys contain literal value of each forbidden character
     //(to be used when showing an error).
     //Maybe is there a better way to handle this...
     /** @var array<string,string> */
-    protected array $bad_chars = array(
+    protected array $bad_chars = [
         '.'    =>    '\.',
         '\\'    =>    '\\\\',
         "'"    =>    "'",
@@ -50,21 +62,24 @@ trait FileTrait
         '<'    =>    '<',
         '>'    =>    '>',
         '|'    =>    '|'
-    );
+    ];
 
     protected ?string $name;
     protected ?string $name_wo_ext;
     protected ?string $extension;
     protected ?string $dest_dir;
     /** @var array<string> */
-    protected array $allowed_extensions = array();
+    protected array $allowed_extensions = [];
     /** @var array<string,string> */
-    protected array $allowed_mimes = array();
+    protected array $allowed_mimes = [];
     protected int $maxlength;
     protected int $mincropsize;
 
+    /** @var string[] */
+    protected array $upload_errors = [];
+
     /** @var array<string,string> */
-    public static array $mime_types = array(
+    public static array $mime_types = [
         'txt'       => 'text/plain',
         'htm'       => 'text/html',
         'html'      => 'text/html',
@@ -163,7 +178,7 @@ trait FileTrait
         'odb'       => 'application/vnd.oasis.opendocument.database',
         'odg'       => 'application/vnd.oasis.opendocument.graphics',
         'odp'       => 'application/vnd.oasis.opendocument.presentation',
-    );
+    ];
 
     /**
      * Initialization
@@ -194,16 +209,8 @@ trait FileTrait
         if ($mimes !== null) {
             $this->allowed_mimes = $mimes;
         }
-        if ($maxlength !== null) {
-            $this->maxlength = $maxlength;
-        } else {
-            $this->maxlength = self::MAX_FILE_SIZE;
-        }
-        if ($mincropsize !== null) {
-            $this->mincropsize = $mincropsize;
-        } else {
-            $this->mincropsize = self::MIN_CROP_SIZE;
-        }
+        $this->maxlength = $maxlength ?? self::MAX_FILE_SIZE;
+        $this->mincropsize = $mincropsize ?? self::MIN_CROP_SIZE;
     }
 
     /**
@@ -226,19 +233,92 @@ trait FileTrait
     }
 
     /**
+     * Do a file upload
+     *
+     * @param UploadedFileInterface[]|array<string, UploadedFileInterface []> $request_files Array of uploaded files (typically from PSR7 request)
+     * @param string                                                          $key           Key to look for in uploaded files
+     * @param callable|null                                                   $callback      Callback to use for storing the file. If null, will use $this->storeFile()
+     *
+     * @return bool
+     */
+    public function upload(array $request_files, string $key, ?callable $callback = null): bool
+    {
+        $this->upload_errors = []; //Reset errors
+
+        if ($callback === null) {
+            $callback = [$this, 'storeFile'];
+        }
+
+        if (!isset($request_files[$key]) || count($request_files) === 0) {
+            return true;
+        }
+
+        foreach ($request_files as $upload_key => $uploaded_files) {
+            if ($upload_key !== $key) {
+                continue;
+            }
+
+            if (!is_array($uploaded_files)) {
+                $uploaded_files = [$uploaded_files];
+            }
+
+            $this->handleUpload($uploaded_files, $callback);
+        }
+
+        return count($this->upload_errors) === 0;
+    }
+
+    /**
+     * Handle the upload of files
+     *
+     * @param UploadedFileInterface[] $uploaded_files Array of uploaded files
+     * @param callable                $callback       Callback to use for storing the file
+     *
+     * @return void
+     */
+    private function handleUpload(array $uploaded_files, callable $callback): void
+    {
+        foreach ($uploaded_files as $uploaded_file) {
+            if ($uploaded_file->getError() === UPLOAD_ERR_OK) {
+                $res = $callback($uploaded_file);
+                if ($res < 0) {
+                    //what to do if one of attachments fail? should other be removed?
+                    $this->upload_errors[] = $this->getErrorMessageFromCode($res);
+                }
+            } elseif ($uploaded_file->getError() !== UPLOAD_ERR_NO_FILE) {
+                Analog::log(
+                    $this->getPhpErrorMessage($uploaded_file->getError()),
+                    Analog::WARNING
+                );
+                $this->upload_errors[] = $this->getPhpErrorMessage(
+                    $uploaded_file->getError()
+                );
+            }
+        }
+    }
+
+    /**
+     * Get upload errors
+     *
+     * @return string[]
+     */
+    public function uploadErrors(): array
+    {
+        return $this->upload_errors;
+    }
+
+    /**
      * Stores a file on the disk
      *
-     * @param array<string, string|int> $file the uploaded file
-     * @param boolean                   $ajax If the file comes from an ajax call (dnd)
+     * @param UploadedFileInterface $file Uploaded file
      *
-     * @return bool|int result of the storage process
+     * @return true|int result of the storage process
      */
-    public function store(array $file, bool $ajax = false): bool|int
+    public function storeFile(UploadedFileInterface $file): bool|int
     {
-        $class = get_class($this);
+        $class = static::class;
 
-        $this->name = $file['name'];
-        $tmpfile = $file['tmp_name'];
+        $this->name = $file->getClientFilename();
 
         //First, does the file have a valid name?
         $reg = "/^([^" . implode('', $this->bad_chars) . "]+)\.";
@@ -271,8 +351,8 @@ trait FileTrait
                 $ret = self::INVALID_EXTENSION;
             } else {
                 $err_msg = 'Invalid filename `' . $this->name . '` (Tip: ';
-                $err_msg .= preg_replace(
-                    '|%s|',
+                $err_msg .= str_replace(
+                    '%s',
                     htmlentities($this->getBadChars()),
                     "file name should not contain any of: %s). "
                 );
@@ -287,11 +367,11 @@ trait FileTrait
         }
 
         //Second, let's check file size
-        if ($file['size'] > ($this->maxlength * 1024)) {
+        if ($file->getSize() > ($this->maxlength * 1024)) {
             Analog::log(
-                '[' . $class . '] File is too big (' . ($file['size'] * 1024) .
-                'Ko for maximum authorized ' . ($this->maxlength * 1024) .
-                'Ko',
+                '[' . $class . '] File is too big (' . ($file->getSize() * 1024)
+                . 'Ko for maximum authorized ' . ($this->maxlength * 1024)
+                . 'Ko',
                 Analog::ERROR
             );
             return self::FILE_TOO_BIG;
@@ -299,7 +379,7 @@ trait FileTrait
             Analog::log('[' . $class . '] Filesize is OK, proceed', Analog::DEBUG);
         }
 
-        $mime = $this->getMimeType($tmpfile);
+        $mime = $this->getMimeType($file->getStream()->getMetadata('uri'));
 
         if (
             count($this->allowed_mimes) > 0
@@ -317,7 +397,7 @@ trait FileTrait
             );
         }
 
-        return $this->writeOnDisk($tmpfile, $ajax);
+        return $this->writeOnDisk($file);
     }
 
     /**
@@ -333,32 +413,33 @@ trait FileTrait
     /**
      * Write file on disk
      *
-     * @param string $tmpfile Temporary file
-     * @param bool   $ajax    If the file comes from an ajax call (dnd)
+     * @param UploadedFileInterface $file Uploaded file
      *
-     * @return bool|int
+     * @return true|int
      */
-    public function writeOnDisk(string $tmpfile, bool $ajax): bool|int
+    public function writeOnDisk(UploadedFileInterface $file): bool|int
     {
         $new_file = $this->buildDestPath();
 
         if (file_exists($new_file)) {
             Analog::log(
-                '[' . get_class($this) . '] File `' . $new_file . '` already exists',
+                '[' . static::class . '] File `' . $new_file . '` already exists',
                 Analog::ERROR
             );
             return self::NEW_FILE_EXISTS;
         }
 
-        if ($ajax === true) {
-            $in_place = rename($tmpfile, $new_file);
-        } else {
-            $in_place = move_uploaded_file($tmpfile, $new_file);
-        }
-
-        if ($in_place === false) {
+        try {
+            $file->moveTo($new_file);
+        } catch (\Throwable $e) {
+            Analog::log(
+                '[' . static::class . '] Unable to write file: '
+                . $e->getMessage() . "\n" . $e->getTraceAsString(),
+                Analog::ERROR
+            );
             return self::CANT_WRITE;
         }
+
         return true;
     }
 
@@ -455,7 +536,6 @@ trait FileTrait
             );
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime = finfo_file($finfo, $file);
-            finfo_close($finfo);
         } elseif (function_exists('mime_content_type')) {
             Analog::log(
                 '[' . $class . '] Function mime_content_type exist ',
@@ -473,11 +553,7 @@ trait FileTrait
                 '[' . $class . '] Extension : ' . $ext,
                 Analog::DEBUG
             );
-            if (array_key_exists($ext, self::$mime_types)) {
-                $mime = self::$mime_types[$ext];
-            } else {
-                $mime = 'application/octet-stream';
-            }
+            $mime = array_key_exists($ext, self::$mime_types) ? self::$mime_types[$ext] : 'application/octet-stream';
         }
 
         Analog::log(
@@ -503,15 +579,15 @@ trait FileTrait
                 $error = _T("File name is invalid, it should not contain any special character or space.");
                 break;
             case self::INVALID_EXTENSION:
-                $error = preg_replace(
-                    '|%s|',
+                $error = str_replace(
+                    '%s',
                     $this->getAllowedExts(),
                     _T("File extension is not allowed, only %s files are.")
                 );
                 break;
             case self::FILE_TOO_BIG:
-                $error = preg_replace(
-                    '|%d|',
+                $error = str_replace(
+                    '%d',
                     (string)$this->maxlength,
                     _T("File is too big. Maximum allowed size is %dKo")
                 );
@@ -523,7 +599,6 @@ trait FileTrait
                 );
                 break;
             case self::MIME_NOT_ALLOWED:
-                /** FIXME: should be more descriptive */
                 $error = _T("Mime-Type not allowed");
                 break;
             case self::NEW_FILE_EXISTS:

@@ -101,8 +101,8 @@ class Social
             $this->loadFromRS($res);
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading social #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading social #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
         }
@@ -145,8 +145,8 @@ class Social
             return $socials;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading socials for member #' . $id_adh . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading socials for member #' . $id_adh . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;

@@ -38,22 +38,22 @@ use Laminas\Db\Sql\Expression;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property ?integer $id
  * @property string $name
  * @property integer $type
- * @property string $header
+ * @property ?string $header
  * @property-read string $hheader
- * @property string $footer
+ * @property ?string $footer
  * @property-read string $hfooter
- * @property string $title
+ * @property ?string $title
  * @property-read string $htitle
- * @property string $subtitle
+ * @property ?string $subtitle
  * @property-read string $hsubtitle
- * @property string $body
+ * @property ?string $body
  * @property-read string $hbody
- * @property string $styles
+ * @property ?string $styles
  * @property string $hstyles
- * @property PdfMain $parent
+ * @property ?PdfMain $parent
  */
 
 abstract class PdfModel
@@ -144,8 +144,8 @@ abstract class PdfModel
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading model #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading model #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -181,7 +181,6 @@ abstract class PdfModel
         $this->styles .= $rs->model_styles;
 
         if ($this->id > self::MAIN_MODEL) {
-            //FIXME: for now, parent will always be a PdfMain
             $this->parent = new PdfMain(
                 $this->zdb,
                 $this->preferences,
@@ -198,18 +197,16 @@ abstract class PdfModel
     public function store(): bool
     {
         $title = $this->title;
-        //@phpstan-ignore-next-line
         if ($title === null || trim($title) === '') {
             $title = new Expression('NULL');
         }
 
         $subtitle = $this->subtitle;
-        //@phpstan-ignore-next-line
         if ($subtitle === null || trim($subtitle) === '') {
             $subtitle = new Expression('NULL');
         }
 
-        $data = array(
+        $data = [
             'model_header'      => $this->header,
             'model_footer'      => $this->footer,
             'model_type'        => $this->type,
@@ -217,7 +214,7 @@ abstract class PdfModel
             'model_subtitle'    => $subtitle,
             'model_body'        => $this->body,
             'model_styles'      => $this->styles
-        );
+        ];
 
         try {
             if ($this->id !== null) {
@@ -231,7 +228,7 @@ abstract class PdfModel
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($data);
                 $add = $this->zdb->execute($insert);
-                if (!($add->count() > 0)) {
+                if ($add->count() <= 0) {
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }
@@ -239,8 +236,8 @@ abstract class PdfModel
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing model: ' . $e->getMessage() .
-                "\n" . print_r($data, true),
+                'An error occurred storing model: ' . $e->getMessage()
+                . "\n" . print_r($data, true),
                 Analog::ERROR
             );
             throw $e;
@@ -291,22 +288,20 @@ abstract class PdfModel
             if (mb_strlen($value) > $chars) {
                 throw new \LengthException(
                     str_replace(
-                        array('%field', '%chars'),
-                        array($field, (string)$chars),
+                        ['%field', '%chars'],
+                        [$field, (string)$chars],
                         _T("%field should be less than %chars characters long.")
                     )
                 );
             }
-        } else {
-            if ($empty === false) {
-                throw new \UnexpectedValueException(
-                    str_replace(
-                        '%field',
-                        $field,
-                        _T("%field should not be empty!")
-                    )
-                );
-            }
+        } elseif ($empty === false) {
+            throw new \UnexpectedValueException(
+                str_replace(
+                    '%field',
+                    $field,
+                    _T("%field should not be empty!")
+                )
+            );
         }
     }
 
@@ -365,14 +360,13 @@ abstract class PdfModel
                     $prop_value = $this->parent->$pname;
                 }
 
-                $value = $this->proceedReplacements($prop_value);
-                return $value;
+                return $this->proceedReplacements($prop_value);
         }
 
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );
@@ -442,36 +436,24 @@ abstract class PdfModel
                 }
                 break;
             case 'name':
-                try {
-                    $this->checkChars($value, 50, _T("Name"));
-                    $this->$name = $value;
-                } catch (Throwable $e) {
-                    throw $e;
-                }
+                $this->checkChars($value, 50, _T("Name"));
+                $this->$name = $value;
                 break;
             case 'title':
             case 'subtitle':
-                if ($name == 'title') {
-                    $field = _T("Title");
-                } else {
-                    $field = _T("Subtitle");
-                }
-                try {
-                    $this->checkChars($value, 100, $field, true);
-                    $this->$name = $value;
-                } catch (Throwable $e) {
-                    throw $e;
-                }
+                $field = $name == 'title' ? _T("Title") : _T("Subtitle");
+                $this->checkChars($value, 100, $field, true);
+                $this->$name = $value;
                 break;
             case 'header':
             case 'footer':
             case 'body':
                 if ($value === null || trim($value) === '') {
-                    if ($name !== 'body' && get_class($this) === PdfMain::class) {
+                    if ($name !== 'body' && static::class === PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("header and footer should not be empty!")
                         );
-                    } elseif ($name === 'body' && get_class($this) !== PdfMain::class) {
+                    } elseif ($name === 'body' && static::class !== PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("body should not be empty!")
                         );

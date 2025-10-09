@@ -66,9 +66,9 @@ class AuthController extends AbstractController
             $this->view->render(
                 $response,
                 'pages/index.html.twig',
-                array(
+                [
                     'page_title'    => _T("Login"),
-                )
+                ]
             );
             return $response;
         } else {
@@ -179,8 +179,8 @@ class AuthController extends AbstractController
                 //password is no longer valid with current rules, must be changed
                 $this->flash->addMessage(
                     'warning_detected',
-                    _T("Your password is too weak! Please consider updating it.") .
-                    '<br/> -' . implode('<br/>', $checkpass->getErrors())
+                    _T("Your password is too weak! Please consider updating it.")
+                    . '<br/> -' . implode('<br/>', $checkpass->getErrors())
                 );
             }
             $this->session->login = $this->login;
@@ -296,9 +296,9 @@ class AuthController extends AbstractController
         $this->view->render(
             $response,
             'pages/password_lost.html.twig',
-            array(
+            [
                 'page_title'    => _T("Password recovery")
-            )
+            ]
         );
         return $response;
     }
@@ -316,7 +316,7 @@ class AuthController extends AbstractController
     {
         $from_admin = false;
         $redirect_url = $this->routeparser->urlFor('slash');
-        if ((($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null)) {
+        if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
             $from_admin = true;
             $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$id_adh]);
         }
@@ -375,9 +375,9 @@ class AuthController extends AbstractController
                     $mail = new GaletteMail($this->preferences);
                     $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
-                        array(
+                        [
                             $adh->email => $adh->sname
-                        )
+                        ]
                     );
 
                     $mail->setMessage($texts->getBody());
@@ -496,10 +496,10 @@ class AuthController extends AbstractController
         $this->view->render(
             $response,
             'pages/password_recover.html.twig',
-            array(
+            [
                 'hash'          => $hash,
                 'page_title'    => _T("Password recovery")
-            )
+            ]
         );
         return $response;
     }
@@ -537,8 +537,8 @@ class AuthController extends AbstractController
 
                 if (!$checkpass->isValid($post['mdp_adh'])) {
                     //password is not valid with current rules
-                    $error = _T("Your password is too weak!") .
-                        '<br/> -' . implode('<br/>', $checkpass->getErrors());
+                    $error = _T("Your password is too weak!")
+                        . '<br/> -' . implode('<br/>', $checkpass->getErrors());
                 } else {
                     $res = Adherent::updatePassword(
                         $this->zdb,

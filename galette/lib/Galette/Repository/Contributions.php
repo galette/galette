@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Repository;
 
-use ArrayObject;
 use Galette\Entity\Group;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
@@ -70,11 +69,7 @@ class Contributions
         $this->zdb = $zdb;
         $this->login = $login;
 
-        if ($filters === null) {
-            $this->filters = new ContributionsList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters ?? new ContributionsList();
     }
 
     /**
@@ -133,7 +128,7 @@ class Contributions
 
             $this->filters->setLimits($select);
 
-            $contributions = array();
+            $contributions = [];
             $results = $this->zdb->execute($select);
             if ($as_contrib) {
                 foreach ($results as $row) {
@@ -171,9 +166,9 @@ class Contributions
             $select->columns($fieldsList);
 
             $select->join(
-                array('a' => PREFIX_DB . Adherent::TABLE),
+                ['a' => PREFIX_DB . Adherent::TABLE],
                 'c.' . Adherent::PK . '= a.' . Adherent::PK,
-                array()
+                []
             );
 
             $this->buildWhereClause($select);
@@ -207,9 +202,9 @@ class Contributions
             $countSelect->reset($countSelect::COLUMNS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     self::PK => new Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);
@@ -245,9 +240,9 @@ class Contributions
             $sumSelect->reset($sumSelect::COLUMNS);
             $sumSelect->reset($sumSelect::ORDER);
             $sumSelect->columns(
-                array(
+                [
                     'contribsum' => new Expression('SUM(montant_cotis)')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($sumSelect);
@@ -271,33 +266,33 @@ class Contributions
      */
     private function buildOrderClause(): array
     {
-        $order = array();
+        $order = [];
 
         switch ($this->filters->orderby) {
             case ContributionsList::ORDERBY_ID:
-                $order[] = Contribution::PK . ' ' . $this->filters->ordered;
+                $order[] = Contribution::PK . ' ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_DATE:
-                $order[] = 'date_enreg ' . $this->filters->ordered;
+                $order[] = 'date_enreg ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_BEGIN_DATE:
-                $order[] = 'date_debut_cotis ' . $this->filters->ordered;
+                $order[] = 'date_debut_cotis ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_END_DATE:
-                $order[] = 'date_fin_cotis ' . $this->filters->ordered;
+                $order[] = 'date_fin_cotis ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_MEMBER:
-                $order[] = 'nom_adh ' . $this->filters->ordered;
-                $order[] = 'prenom_adh ' . $this->filters->ordered;
+                $order[] = 'nom_adh ' . $this->filters->getDirection();
+                $order[] = 'prenom_adh ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_TYPE:
                 $order[] = ContributionsTypes::PK;
                 break;
             case ContributionsList::ORDERBY_AMOUNT:
-                $order[] = 'montant_cotis ' . $this->filters->ordered;
+                $order[] = 'montant_cotis ' . $this->filters->getDirection();
                 break;
             case ContributionsList::ORDERBY_PAYMENT_TYPE:
-                $order[] = 'type_paiement_cotis ' . $this->filters->ordered;
+                $order[] = 'type_paiement_cotis ' . $this->filters->getDirection();
                 break;
         }
 
@@ -314,20 +309,12 @@ class Contributions
     private function buildWhereClause(Select $select): void
     {
         global $preferences;
-        $field = 'date_debut_cotis';
 
-        switch ($this->filters->date_field) {
-            case ContributionsList::DATE_RECORD:
-                $field = 'date_enreg';
-                break;
-            case ContributionsList::DATE_END:
-                $field = 'date_fin_cotis';
-                break;
-            case ContributionsList::DATE_BEGIN:
-            default:
-                $field = 'date_debut_cotis';
-                break;
-        }
+        $field = match ($this->filters->date_field) {
+            ContributionsList::DATE_RECORD => 'date_enreg',
+            ContributionsList::DATE_END => 'date_fin_cotis',
+            default => 'date_debut_cotis',
+        };
 
         if (isset($this->current_selection)) {
             $select->where->in('c.' . self::PK, $this->current_selection);
@@ -373,8 +360,8 @@ class Contributions
 
             if ($this->filters->max_amount !== null) {
                 $select->where(
-                    '(montant_cotis <= ' . $this->filters->max_amount .
-                    ' OR montant_cotis IS NULL)'
+                    '(montant_cotis <= ' . $this->filters->max_amount
+                    . ' OR montant_cotis IS NULL)'
                 );
             }
 
@@ -397,16 +384,16 @@ class Contributions
                         ]
                     );
                     if (
-                        !$member->hasParent() ||
-                        $member->parent->id != $this->login->id
+                        !$member->hasParent()
+                        || $member->parent->id != $this->login->id
                     ) {
                         //check if member is part of logged-in user managed groups
                         $mgroup = $this->login->getManagedGroups();
                         $groups = $member->getGroups();
                         if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
                             Analog::log(
-                                'Trying to display contributions for member #' . $member->id .
-                                ' without appropriate ACLs',
+                                'Trying to display contributions for member #' . $member->id
+                                . ' without appropriate ACLs',
                                 Analog::WARNING
                             );
                             $this->filters->filtre_cotis_adh = $this->login->id;
@@ -442,9 +429,9 @@ class Contributions
                 $mgroups = $this->login->getManagedGroups();
 
                 $select->join(
-                    array('users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                    ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                     'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                    array(),
+                    [],
                     $select::JOIN_LEFT
                 );
                 $select->where->nest()
@@ -459,9 +446,9 @@ class Contributions
 
             if ($member_clause !== null) {
                 $select->where(
-                    array(
+                    [
                         'c.' . Adherent::PK => $member_clause
-                    )
+                    ]
                 );
             }
 
@@ -508,10 +495,8 @@ class Contributions
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
-        $list = array();
-        if (is_array($ids)) {
-            $list = $ids;
-        } else {
+        $list = $ids;
+        if (!is_array($ids)) {
             $list = [$ids];
         }
 
@@ -545,8 +530,8 @@ class Contributions
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred trying to remove contributions | ' .
-                $e->getMessage(),
+                'An error occurred trying to remove contributions | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;

@@ -21,6 +21,8 @@
 {% set mode = mode|default('') %}
 {% set is_paginated = is_paginated ?? (nb > 0) %}
 {% set is_public = is_public ?? false %}
+{% set columns = columns|default([]) %}
+{% set columns_count = mode != 'ajax' and (no_action is not defined or no_action == false) ? columns|length + 1 : columns|length %}
 
 {% extends (mode == 'ajax') ? "ajax.html.twig" : is_public ? "public_page.html.twig" : "page.html.twig" %}
 {% import "macros.twig" as macros %}
@@ -64,8 +66,6 @@
     {% endblock %}
     {% if form is defined %}
         <form action="{%  if form.route is defined %}{{ url_for(form.route.name, form.route.args|default([])) }}{% endif %}" method="post" id="listform" class="ui form">
-            <div class="ui basic fitted segment">
-
             {% if mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
                 {{ macros.drawBatchActionsList(batch_actions) }}
             {% endif %}
@@ -80,12 +80,12 @@
                             <tr>
                         {% block header %}
                             {% for column in columns %}
-                                <th class="left">
+                                <th class="left{% if column.collapse is defined %} collapsing{% endif %}">
                                     {% if form is defined and column.order is defined %}
                                     <a href="{{ url_for(form.order.name, form.order.args|default([])|merge({"option": "order", "value": column.order})) }}">
                                         {{ column.label }}
                                         {% if filters.orderby == column.order %}
-                                            {% if filters.ordered == constant('Galette\\Core\\Pagination::ORDER_ASC') %}
+                                            {% if filters.getDirection() == enum('Galette\\Enums\\SQLOrder').ASC.value %}
                                                 <i class="ui angle down icon tooltip" aria-hidden="true"></i>
                                             {% else %}
                                                 <i class="ui angle up icon tooltip" aria-hidden="true"></i>
@@ -98,7 +98,7 @@
                                 </th>
                             {% endfor %}
                             {% if mode != 'ajax' and (no_action is not defined or no_action == false) %}
-                                <th class="actions_row">{{ _T('Actions') }}</th>
+                                <th class="actions_row collapsing">{{ _T('Actions') }}</th>
                             {% endif %}
                         {% endblock %}
                             </tr>
@@ -113,7 +113,6 @@
                         </tfoot>
                     </table>
     {% endif %}
-
             </div>
 
             {% if form is defined and mode != 'ajax' and batch_actions is defined and batch_actions|length > 0 %}
@@ -138,7 +137,7 @@
     {% endif %}
         {% block legend %}{% endblock %}
     {% if mode == 'ajax' %}
-    </div>
+    </div>{# .main-container #}
     {% endif %}
 {% endblock %}
 
@@ -165,15 +164,15 @@
         }
     {% endif %}
         $(function(){
+    {% if _legend_block is not empty %}
+            var _legendlink = '<div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
+    {% endif %}
     {% if batch is defined and batch_actions is defined and batch_actions|length > 0 %}
             var _init_page = function(res){
         {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
                 {# Use of Javascript to draw specific elements that are not relevant if JS is inactive #}
                 var _checklinks = '<a href="#" class="checkall ui blue tertiary button">{{ _T("(Un)Check all")|e('js') }}</a>' +
                     ' | <a href="#" class="checkinvert ui blue tertiary button">{{ _T("Invert selection")|e('js') }}</a> | ';
-            {% if _legend_block is not empty %}
-                var _legendlink = '<div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{{ _T("Show legend")|e('js') }}</a></div></div>';
-            {% endif %}
                 $('.batch-select-action').before(_checklinks);
                 $('.batch-select-action').dropdown({
                     action: function(text, value, element) {
@@ -220,6 +219,11 @@
         {% endif %}
             }
             _init_page();
+    {% else %}
+        {% if _legend_block is not empty %}
+            $('.listing').after(_legendlink);
+            $('.listing').before(_legendlink);
+        {% endif %}
     {% endif %}
     {% if _legend_block is not empty %}
             _bind_legend();

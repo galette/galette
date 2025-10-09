@@ -159,6 +159,34 @@ td.emptylist {
     }
 }
 
+/*-----------------------------
+     <th> outside <thead>
+------------------------------*/
+.ui.table > tbody > tr > th {
+    padding: @cellVerticalPadding @cellHorizontalPadding;
+    text-align: @cellTextAlign;
+}
+tr.with-headers th {
+    background: @lightSecondaryColor;
+}
+
+.ui.definition.table tr th.definition,
+.ui.definition.table > tbody > tr > th:first-child:not(.ignored),
+.ui.definition.table > tr > th:first-child:not(.ignored) {
+    background: @definitionColumnBackground;
+    font-weight: @definitionColumnFontWeight;
+    color: @headerColor;
+    font-size: @definitionColumnFontSize;
+}
+.ui.definition.table > tbody > tr > th,
+.ui.definition.table > tr > th {
+  border-top: @rowBorder;
+}
+.ui.definition.table > tbody > tr:first-child > th,
+.ui.definition.table > tr:first-child > th {
+    border-top: none;
+}
+
 /*------------------
      Plugins list
 -------------------*/
@@ -174,12 +202,19 @@ tr.inactives.plugins th {
     border-bottom: @rowBorder;
 }
 @media only screen and (max-width: @largestMobileScreen) {
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.with-headers,
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.with-headers:hover,
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.with-headers > th {
+        background: @lightSecondaryColor !important;
+    }
     .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.plugins,
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.plugins:hover,
     .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.plugins > th {
-        background: @pluginsActiveBackground;
+        background: @pluginsActiveBackground !important;
     }
     .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.inactives.plugins,
+    .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.inactives.plugins:hover,
     .ui.ui.ui.ui.table:not(.unstackable) > tbody > tr.inactives.plugins > th {
-        background: @pluginsInactiveBackground;
+        background: @pluginsInactiveBackground !important;
     }
 }

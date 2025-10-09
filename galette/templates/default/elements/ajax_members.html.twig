@@ -23,7 +23,7 @@
         <table id="listing" class="listing select_members{% if not multiple %} single{% endif %} ui celled table">
             <thead>
                 <tr>
-                    <th class="listing id_row">#</th>
+                    <th class="listing id_row collapsing">#</th>
                     <th class="listing left">
                         {{ _T("Name") }}
                     </th>
@@ -36,7 +36,7 @@
 {% for member in members_list %}
     {% if excluded is not defined or excluded != member.id %}
                 <tr class="{{ member.getRowClass() }}">
-                    <td class="right">{{ member.id }}</td>
+                    <td class="right collapsing">{{ member.id }}</td>
                     <td class="username_row">
                     {% if member.isCompany() %}
                         <span>

@@ -23,21 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Features;
 
-use Galette\Core\Db;
-use Galette\Core\Login;
-use Galette\Core\Logo;
-use Galette\Core\Preferences;
-use Galette\DynamicFields\Choice;
-use Galette\DynamicFields\Separator;
-use Galette\Entity\Adherent;
-use Galette\Entity\Contribution;
-use Galette\Entity\PdfModel;
-use Galette\Entity\Texts;
-use Galette\Repository\DynamicFieldsSet;
-use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
-use NumberFormatter;
-use Slim\Router;
 
 /**
  * Dependencies feature
@@ -48,7 +34,7 @@ use Slim\Router;
 trait Dependencies
 {
     /** @var array<string, bool> */
-    protected array $deps = array(
+    protected array $deps = [
         'picture'   => true,
         'groups'    => true,
         'dues'      => true,
@@ -56,7 +42,7 @@ trait Dependencies
         'children'  => false,
         'dynamics'  => false,
         'socials'   => false
-    );
+    ];
 
     /**
      * Set dependencies

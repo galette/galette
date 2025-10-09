@@ -27,12 +27,10 @@ use Galette\Core\Galette;
 use Galette\Entity\Document;
 use Galette\Filters\DocumentsList;
 use Galette\IO\File;
-use Galette\Repository\DynamicFieldsSet;
 use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 
 /**
@@ -69,7 +67,8 @@ class DocumentsController extends CrudController
             'document'          => $document,
             'types'             => $document->getSystemTypes(),
             'perm_names'        => $document::getPermissionsList(true),
-            'html_editor'   => true,
+            'html_editor'       => true,
+            'documentation'     => 'usermanual/documents.html#management'
         ];
 
         // display page
@@ -106,14 +105,14 @@ class DocumentsController extends CrudController
         $document = new Document($this->zdb);
 
         try {
-            $document->store($post, $_FILES);
+            $document->store($post, $request->getUploadedFiles());
             $error_detected = $document->getErrors();
             $warning_detected = $document->getWarnings();
         } catch (Throwable $e) {
             $msg = 'An error occurred adding new document.';
             Analog::log(
-                $msg . ' | ' .
-                $e->getMessage(),
+                $msg . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             if (Galette::isDebugEnabled()) {
@@ -194,10 +193,11 @@ class DocumentsController extends CrudController
         $filters->setViewPagination($this->routeparser, $this->view);
 
         $params = [
-            'page_title' => _T("Documents list"),
+            'page_title' => _T("Documents"),
             'nb' => count($documents),
             'documents' => $documents,
-            'filters' => $filters
+            'filters' => $filters,
+            'documentation' => 'usermanual/documents.html'
         ];
 
         // display page
@@ -229,8 +229,9 @@ class DocumentsController extends CrudController
         $documents = $document->getTypedList();
 
         $params = [
-            'page_title' => _T("Documents list"),
-            'typed_documents' => $documents
+            'page_title' => _T("Documents"),
+            'typed_documents' => $documents,
+            'documentation' => 'usermanual/documents.html#public-list'
         ];
 
         // display page
@@ -307,8 +308,8 @@ class DocumentsController extends CrudController
             return $response->withBody(new \Slim\Psr7\Stream($stream));
         } else {
             Analog::log(
-                'A request has been made to get a document file named `' .
-                $document->getDocumentFilename() . '` that does not exists.',
+                'A request has been made to get a document file named `'
+                . $document->getDocumentFilename() . '` that does not exists.',
                 Analog::WARNING
             );
 
@@ -356,6 +357,7 @@ class DocumentsController extends CrudController
             'types'             => $document->getSystemTypes(),
             'perm_names'        => $document::getPermissionsList(true),
             'html_editor'       => true,
+            'documentation'     => 'usermanual/documents.html#management'
         ];
 
         // display page
@@ -392,14 +394,14 @@ class DocumentsController extends CrudController
         $document = new Document($this->zdb, $id);
 
         try {
-            $document->store($post, $_FILES);
+            $document->store($post, $request->getUploadedFiles());
             $error_detected = $document->getErrors();
             $warning_detected = $document->getWarnings();
         } catch (Throwable $e) {
             $msg = 'An error occurred adding new document.';
             Analog::log(
-                $msg . ' | ' .
-                $e->getMessage(),
+                $msg . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             if (Galette::isDebugEnabled()) {

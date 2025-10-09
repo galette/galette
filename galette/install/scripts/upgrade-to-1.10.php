@@ -106,14 +106,14 @@ class UpgradeTo110 extends AbstractUpdater
             $results = $results->toArray();
 
             $queries = array();
-            foreach ($ctypes as $k => $v) {
+            foreach (array_keys($ctypes) as $k) {
                 if (count($results) > 0) {
                     //for each entry in types, we want to get the associated amount
                     foreach ($results as $paypal) {
                         if ($paypal[ContributionsTypes::PK] == $k) {
                             $queries[] = array(
                                 'id'   => $k,
-                                'amount' => (double)$paypal['amount']
+                                'amount' => (float)$paypal['amount']
                             );
                         }
                     }

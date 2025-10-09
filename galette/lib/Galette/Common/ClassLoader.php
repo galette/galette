@@ -192,7 +192,7 @@ class ClassLoader
      */
     public function unregister(): void
     {
-        spl_autoload_unregister(array($this, 'loadClass'));
+        spl_autoload_unregister([$this, 'loadClass']);
     }
 
     /**
@@ -204,7 +204,7 @@ class ClassLoader
      */
     public function loadClass(string $className): bool
     {
-        if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
+        if ($this->namespace !== null && !str_starts_with($className, $this->namespace . $this->namespaceSeparator)) {
             return false;
         }
 
@@ -237,7 +237,7 @@ class ClassLoader
      */
     public function canLoadClass(string $className): bool
     {
-        if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
+        if ($this->namespace !== null && !str_starts_with($className, $this->namespace . $this->namespaceSeparator)) {
             return false;
         }
 
@@ -247,7 +247,7 @@ class ClassLoader
             return file_exists($this->includePath . DIRECTORY_SEPARATOR . $file);
         }
 
-        return (false !== stream_resolve_include_path($file));
+        return false !== stream_resolve_include_path($file);
     }
 
     /**

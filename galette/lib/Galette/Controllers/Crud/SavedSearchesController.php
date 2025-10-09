@@ -68,11 +68,7 @@ class SavedSearchesController extends CrudController
      */
     public function doAdd(Request $request, Response $response): Response
     {
-        if ($request->getMethod() === 'POST') {
-            $post = $request->getParsedBody();
-        } else {
-            $post = $request->getQueryParams();
-        }
+        $post = $request->getMethod() === 'POST' ? $request->getParsedBody() : $request->getQueryParams();
 
         $name = null;
         if (isset($post['search_title'])) {
@@ -150,15 +146,15 @@ class SavedSearchesController extends CrudController
             $filters = new SavedSearchesList();
         }
 
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            default:
+                break;
         }
 
         $searches = new SavedSearches($this->zdb, $this->login, $filters);
@@ -173,12 +169,13 @@ class SavedSearchesController extends CrudController
         $this->view->render(
             $response,
             'pages/saved_searches_list.html.twig',
-            array(
+            [
                 'page_title'        => _T("Saved searches"),
                 'searches'          => $list,
                 'nb'                => $searches->getCount(),
-                'filters'           => $filters
-            )
+                'filters'           => $filters,
+                'documentation'     => 'usermanual/recherche.html#saved-searches'
+            ]
         );
         return $response;
     }
@@ -274,10 +271,9 @@ class SavedSearchesController extends CrudController
         } else {
             //batch saved search removal
             $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
-            return str_replace(
-                '%count',
+            return sprintf(
+                _T('You are about to remove %1$s searches.'),
                 (string)count($filters->selected),
-                _T('You are about to remove %count searches.')
             );
         }
     }
@@ -299,14 +295,9 @@ class SavedSearchesController extends CrudController
         }
         $searches = new SavedSearches($this->zdb, $this->login, $filters);
 
-        if (!is_array($post['id'])) {
-            $ids = (array)$post['id'];
-        } else {
-            $ids = $post['id'];
-        }
+        $ids = !is_array($post['id']) ? (array)$post['id'] : $post['id'];
 
-        $del = $searches->remove($ids, $this->history);
-        return $del;
+        return $searches->remove($ids, $this->history);
     }
 
     // CRUD - Delete

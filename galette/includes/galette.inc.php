@@ -31,9 +31,9 @@ require_once GALETTE_ROOT . '/includes/sys_config/paths.inc.php';
 
 // check required PHP version...
 if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
-    echo 'Galette is NOT compliant with your current PHP version. ' .
-        'Galette requires PHP ' . GALETTE_PHP_MIN .
-        ' minimum and current version is ' . phpversion();
+    echo 'Galette is NOT compliant with your current PHP version. '
+        . 'Galette requires PHP ' . GALETTE_PHP_MIN
+        . ' minimum and current version is ' . phpversion();
     die(1);
 }
 
@@ -142,7 +142,8 @@ if (!defined('GALETTE_LOG_LVL')) {
 
 if (defined('GALETTE_TESTS')) {
     $log_path = GALETTE_LOGS_PATH . 'tests.log';
-    $galette_run_log = LevelName::init(Handler\File::init($log_path));
+    $galette_log_var = null;
+    $galette_run_log = LevelName::init(Handler\Variable::init($galette_log_var));
 } else {
     $galette_log_var = null;
 
@@ -162,9 +163,11 @@ if (defined('GALETTE_TESTS')) {
     }
 }
 
-Analog::handler($galette_run_log);
+$handler = Analog::handler($galette_run_log);
+$logger = new \Analog\Logger();
+$logger->handler($handler);
 
-if (!$installer and !defined('GALETTE_TESTS')) {
+if (!$installer && !defined('GALETTE_TESTS')) {
     //If we're not working from installer nor from tests
     include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 

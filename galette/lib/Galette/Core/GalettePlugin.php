@@ -24,9 +24,10 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Galette\Entity\Adherent;
+use Galette\IO\News\Entry;
 
 /**
- * Galette application instance
+ * Galette plugins
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -51,8 +52,7 @@ abstract class GalettePlugin
      */
     public static function getMenus(bool $public = false): array
     {
-        $menus = static::getMenusContents();
-        return $menus;
+        return static::getMenusContents();
     }
 
     /**
@@ -65,7 +65,7 @@ abstract class GalettePlugin
         global $preferences, $login;
 
         $menus = [];
-        if ($preferences->showPublicPages($login)) {
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_plugins')) {
             $menus = static::getPublicMenusItemsList();
         }
 
@@ -79,8 +79,7 @@ abstract class GalettePlugin
      */
     public static function getDashboards(): array
     {
-        $dashboards = static::getDashboardsContents();
-        return $dashboards;
+        return static::getDashboardsContents();
     }
 
     /**
@@ -90,8 +89,7 @@ abstract class GalettePlugin
      */
     public static function getMyDashboards(): array
     {
-        $dashboards = static::getMyDashboardsContents();
-        return $dashboards;
+        return static::getMyDashboardsContents();
     }
 
     /**
@@ -120,11 +118,7 @@ abstract class GalettePlugin
      *
      * @return array<int, string|array<string,mixed>>
      */
-    public static function getMyDashboardsContents(): array
-    {
-        //FIXME: should be abstract, but would require a Galette bump version in plugins
-        return [];
-    }
+    abstract public static function getMyDashboardsContents(): array;
 
     /**
      * Get member actions
@@ -135,8 +129,7 @@ abstract class GalettePlugin
      */
     public static function getListActions(Adherent $member): array
     {
-        $actions = static::getListActionsContents($member);
-        return $actions;
+        return static::getListActionsContents($member);
     }
 
     /**
@@ -148,8 +141,7 @@ abstract class GalettePlugin
      */
     public static function getDetailedActions(Adherent $member): array
     {
-        $actions = static::getDetailedActionsContents($member);
-        return $actions;
+        return static::getDetailedActionsContents($member);
     }
 
     /**
@@ -159,8 +151,7 @@ abstract class GalettePlugin
      */
     public static function getBatchActions(): array
     {
-        $actions = static::getBatchActionsContents();
-        return $actions;
+        return static::getBatchActionsContents();
     }
 
     /**
@@ -187,4 +178,25 @@ abstract class GalettePlugin
      * @return array<int, string|array<string,mixed>>
      */
     abstract public static function getDetailedActionsContents(Adherent $member): array;
+
+    /**
+     * Get news for this plugin
+     *
+     * @return ?Entry
+     */
+    public function getNews(): ?Entry
+    {
+        //per default, plugins do not have news to display.
+        return null;
+    }
+
+    /**
+     * Is the plugin fully installed (including database, extra configuration, etc)?
+     *
+     * @return bool
+     */
+    public function isInstalled(): bool
+    {
+        return true;
+    }
 }

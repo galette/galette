@@ -84,7 +84,7 @@ class Login extends Authentication
     public function logCron(string $name, Preferences $preferences): bool
     {
         //known cronable files
-        $ok = array('reminder');
+        $ok = ['reminder'];
 
         if (in_array($name, $ok)) {
             $this->logged = true;
@@ -150,7 +150,7 @@ class Login extends Authentication
                 $row = $results->current();
 
                 //check if member is active
-                if (!$row->activite_adh == true) {
+                if ($row->activite_adh != true) {
                     Analog::log(
                         'Member `' . $user . ' is inactive!`' . $log_suffix,
                         Analog::WARNING
@@ -158,7 +158,7 @@ class Login extends Authentication
                     return false;
                 }
 
-                //check if passwords matches
+                //check if passwords match
                 $pw_checked = password_verify($passe, $row->mdp_adh);
                 if (!$pw_checked) {
                     //if password did not match, we try old md5 method
@@ -195,7 +195,7 @@ class Login extends Authentication
     {
         $select = $this->zdb->select(self::TABLE, 'a');
         $select->columns(
-            array(
+            [
                 'id_adh',
                 'login_adh',
                 'bool_admin_adh',
@@ -206,11 +206,11 @@ class Login extends Authentication
                 'activite_adh',
                 'bool_exempt_adh',
                 'date_echeance'
-            )
+            ]
         )->join(
-            array('b' => PREFIX_DB . Status::TABLE),
+            ['b' => PREFIX_DB . Status::TABLE],
             'a.' . Status::PK . '=b.' . Status::PK,
-            array('priorite_statut')
+            ['priorite_statut']
         );
         return $select;
     }
@@ -237,22 +237,20 @@ class Login extends Authentication
         if ((int)$row->priorite_statut < Members::NON_STAFF_MEMBERS) {
             $this->staff = true;
         }
-        //check if member is up-to-date
+        //check if member is up to date
         if ($row->bool_exempt_adh) {
-            //member is due free, he's up-to-date.
+            //member is due free, he's up to date.
             $this->uptodate = true;
-        } else {
+        } elseif ($row->date_echeance == null) {
             //let's check from end date, if present
-            if ($row->date_echeance == null) {
-                $this->uptodate = false;
-            } else {
-                $ech = new \DateTime($row->date_echeance);
-                $now = new \DateTime();
-                $now->setTime(0, 0, 0);
-                $this->uptodate = $ech >= $now;
-            }
+            $this->uptodate = false;
+        } else {
+            $ech = new \DateTime($row->date_echeance);
+            $now = new \DateTime();
+            $now->setTime(0, 0, 0);
+            $this->uptodate = $ech >= $now;
         }
-        //staff members and admins are de facto groups managers. For all
+        //Staff members and admins are de facto groups managers. For all
         //others, get managed groups
         if (
             !$this->isSuperAdmin()
@@ -284,7 +282,7 @@ class Login extends Authentication
         Analog::log('Impersonating `' . $id . '`...', Analog::INFO);
         try {
             $select = $this->select();
-            $select->where(array(Adherent::PK => $id));
+            $select->where([Adherent::PK => $id]);
 
             $results = $this->zdb->execute($select);
             if ($results->count() == 0) {
@@ -311,8 +309,7 @@ class Login extends Authentication
     }
 
     /**
-     * Does this login already exists ?
-     * These function should be used for setting admin login into Preferences
+     * Does this login already exist?
      *
      * @param string $user the username
      *
@@ -322,16 +319,10 @@ class Login extends Authentication
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->where(array(self::PK => $user));
+            $select->where([self::PK => $user]);
             $results = $this->zdb->execute($select);
-
-            if ($results->count() > 0) {
-                /* We got results, user already exists */
-                return true;
-            } else {
-                /* No results, user does not exist yet :) */
-                return false;
-            }
+            /* We got results: user already exists */
+            return $results->count() > 0;
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot check if login exists | ' . $e->getMessage(),

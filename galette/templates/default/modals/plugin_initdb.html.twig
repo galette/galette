@@ -42,10 +42,12 @@
             {% if update_scripts is defined and update_scripts|length > 0 %}<div class="ui two stackable cards">{% endif %}
                 <div id="mode_new" class="ui fluid card">
                     <div class="content">
-                        <h3>
-                            <input type="radio" name="install_type" value="{{ constant('Galette\\Core\\PluginInstall::INSTALL') }}" checked="checked" id="install"/>
-                            <label for="install">{{ _T("New installation") }}</label>
-                        </h3>
+                        <div class="ui medium header">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="install_type" value="{{ constant('Galette\\Core\\PluginInstall::INSTALL') }}" checked="checked" id="install"/>
+                                <label for="install">{{ _T("New installation") }}</label>
+                            </div>
+                        </div>
                         <ul>
                             <li>{{ _T("you're installing %name for the first time")|replace({'%name': plugin.name}) }},</li>
                             <li>{{ _T("you wish to erase an older version of of %name without keeping your data")|replace({'%name': plugin.name}) }}.</li>
@@ -55,10 +57,12 @@
         {% if update_scripts is defined and update_scripts|length > 0 %}
                 <div id="mode_update" class="ui fluid card">
                     <div class="content">
-                        <h3>
-                            <input type="radio" name="install_type" value="{{ constant('Galette\\Core\\PluginInstall::UPDATE') }}" id="update"/>
-                            <label for="update">{{ _T("Update") }}</label>
-                        </h3>
+                        <div class="ui medium header">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="install_type" value="{{ constant('Galette\\Core\\PluginInstall::UPDATE') }}" id="update"/>
+                                <label for="update">{{ _T("Update") }}</label>
+                            </div>
+                        </div>
                         <ul>
                             <li>{{ _T("you already have installed %name, and you want to upgrade to the latest version")|replace({'%name': plugin.name}) }}.</li>
                         </ul>
@@ -97,7 +101,7 @@
             {% set last = val %}
                         </label>
                     </span>
-                    <span>
+                    <span class="ui radio checkbox">
                         <input type="radio" name="previous_version" value="{{ previous ?? 0 }}" id="upgrade-{{ val }}" required/>
                     </span>
                 </li>

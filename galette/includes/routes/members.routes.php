@@ -65,6 +65,11 @@ $app->get(
 )->setName('member')->add($authenticate);
 
 $app->get(
+    '/member/vcard/{id:\d+}',
+    [Crud\MembersController::class, 'vcard']
+)->setName('memberVCard')->add($authenticate);
+
+$app->get(
     '/member/edit/{id:\d+}',
     [Crud\MembersController::class, 'edit']
 )->setName('editMember')->add($authenticate);
@@ -88,6 +93,11 @@ $app->post(
     '/member/store',
     [Crud\MembersController::class, 'doAdd']
 )->setName('doAddMember');
+
+$app->post(
+    '/member/store/child',
+    [Crud\MembersController::class, 'doAddChild']
+)->setName('doAddMemberChild')->add($authenticate);
 
 $app->post(
     '/member/store/{id:\d+}',

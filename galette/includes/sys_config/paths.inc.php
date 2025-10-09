@@ -55,6 +55,9 @@ if (!defined('GALETTE_PLUGINS_PATH')) {
 if (!defined('GALETTE_DATA_PATH')) {
     define('GALETTE_DATA_PATH', GALETTE_ROOT . 'data/');
 }
+if (!defined('GALETTE_PLUGINS_DATA_PATH')) {
+    define('GALETTE_PLUGINS_DATA_PATH', GALETTE_DATA_PATH . 'plugins/');
+}
 if (!defined('GALETTE_THEMES_PATH')) {
     define('GALETTE_THEMES_PATH', GALETTE_ROOT . 'webroot/themes/');
 }

@@ -23,16 +23,13 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
-use Analog\Analog;
-use Galette\IO\FileTrait;
-
 /**
  * Files
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class File implements FileInterface
+class File
 {
     use FileTrait;
 

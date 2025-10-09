@@ -41,6 +41,8 @@ use Galette\Repository\PaymentTypes;
 
 class ScheduledPaymentController extends CrudController
 {
+    private bool $show_mine = false;
+
     // CRUD - Create
 
     /**
@@ -89,7 +91,8 @@ class ScheduledPaymentController extends CrudController
             [
                 'page_title'    => _T("Add scheduled payment"),
                 'scheduled'     => $scheduled,
-                'mode'          => $mode
+                'mode'          => $mode,
+                'documentation' => 'usermanual/contributions.html#scheduled-payments'
             ]
         );
         return $response;
@@ -143,19 +146,22 @@ class ScheduledPaymentController extends CrudController
             $filters = new ScheduledPaymentsList();
         }
 
-        if ($ajax && $get[Contribution::PK]) {
+        if (isset($get[Contribution::PK])) {
             $filters->from_contribution = (int)$get[Contribution::PK];
         }
 
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            case 'member':
+                $filters->member_filter = ($value === 'all' ? null : (int)$value);
+                break;
+            default:
+                break;
         }
 
         $scheduled = new ScheduledPayments(
@@ -171,18 +177,29 @@ class ScheduledPaymentController extends CrudController
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view);
 
+        $tpl_vars = [
+            'page_title'        => _T("List of scheduled payments"),
+            'scheduled'         => $scheduled,
+            'list'              => $list,
+            'nb'                => $scheduled->getCount(),
+            'filters'           => $filters,
+            'mode'              => $ajax ? 'ajax' : '',
+            'documentation'     => 'usermanual/contributions.html#scheduled-payments',
+            'show_mine'         => $this->show_mine
+        ];
+
+        if ($filters->member_filter != null) {
+            $member = new Adherent($this->zdb);
+            $member->enableDep('children');
+            $member->load($filters->member_filter);
+            $tpl_vars['member'] = $member;
+        }
+
         // display page
         $this->view->render(
             $response,
             'pages/scheduledpayments_list.html.twig',
-            [
-                'page_title'        => _T("Scheduled payments management"),
-                'scheduled'         => $scheduled,
-                'list'              => $list,
-                'nb'                => $scheduled->getCount(),
-                'filters'           => $filters,
-                'mode'              => $ajax ? 'ajax' : ''
-            ]
+            $tpl_vars
         );
         return $response;
     }
@@ -198,7 +215,29 @@ class ScheduledPaymentController extends CrudController
      */
     public function myList(Request $request, Response $response, ?string $type = null): Response
     {
+        $this->show_mine = true;
         return $this->list(
+            $request->withQueryParams(
+                $request->getQueryParams() + [
+                    Adherent::PK => $this->login->id
+                ]
+            ),
+            $response
+        );
+    }
+
+    /**
+     * Scheduled payments filtering
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function myFilter(Request $request, Response $response): Response
+    {
+        $this->show_mine = true;
+        return $this->filter(
             $request->withQueryParams(
                 $request->getQueryParams() + [
                     Adherent::PK => $this->login->id
@@ -238,14 +277,12 @@ class ScheduledPaymentController extends CrudController
         if (isset($post['clear_filter'])) {
             $filters->reinit($ajax);
         } else {
-            if (
-                (isset($post['nbshow']) && is_numeric($post['nbshow']))
-            ) {
+            if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
                 $filters->show = $post['nbshow'];
             }
 
             if (isset($post['date_field'])) {
-                $filters->date_field = $post['date_field'];
+                $filters->date_field = (int)$post['date_field'];
             }
 
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
@@ -273,6 +310,10 @@ class ScheduledPaymentController extends CrudController
                     $error_detected[] = _T("- Unknown payment type!");
                 }
             }
+
+            if (isset($post['paid_filter'])) {
+                $filters->paid = (int)$post['paid_filter'];
+            }
         }
 
         $this->session->$filter_name = $filters;
@@ -289,7 +330,7 @@ class ScheduledPaymentController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('scheduledPayments'));
+            ->withHeader('Location', $this->routeparser->urlFor($this->show_mine ? 'myScheduledPayments' : 'scheduledPayments'));
     }
 
     /**
@@ -439,12 +480,10 @@ class ScheduledPaymentController extends CrudController
                     //redirect to edition
                     $redirect_uri = $this->routeparser->urlFor('editScheduledPayment', ['id' => (string)$id]);
                 }
+            } elseif ($id === null) {
+                $msg = _T("Scheduled payment has been successfully added.");
             } else {
-                if ($id === null) {
-                    $msg = _T("Scheduled payment has been successfully added.");
-                } else {
-                    $msg = _T("Scheduled payment has been successfully modified.");
-                }
+                $msg = _T("Scheduled payment has been successfully modified.");
             }
         }
 
@@ -521,8 +560,7 @@ class ScheduledPaymentController extends CrudController
     protected function doDelete(array $args, array $post): bool
     {
         $scheduleds = new ScheduledPayments($this->zdb, $this->login);
-        $rm = $scheduleds->remove($args['ids'] ?? $args['id'], $this->history);
-        return $rm;
+        return $scheduleds->remove($args['ids'] ?? (int)$args['id'], $this->history);
     }
 
     // CRUD - Delete

@@ -28,6 +28,7 @@ use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 use Slim\Views\Twig;
 use Twig\Extra\String\StringExtension;
+use Twig\Extra\Intl\IntlExtension;
 
 $container = $app->getContainer();
 
@@ -46,7 +47,7 @@ $container->set(
 );
 
 // Register View helper
-$container->set('Slim\Views\Twig', function (ContainerInterface $c) {
+$container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 
     $templates = ['__main__' => GALETTE_TPL_THEME_DIR];
     foreach ($c->get('plugins')->getModules() as $module_id => $module) {
@@ -69,8 +70,11 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     //Twig extensions
     $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
     $view->addExtension(new StringExtension());
+    $view->addExtension(new IntlExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
         $view->addExtension(new \Twig\Extension\DebugExtension());
+        global $logger;
+        $view->addExtension(new AlisQI\TwigQI\Extension($logger));
     }
     //End Twig extensions
 
@@ -86,7 +90,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addFunction($function);
 
     $function = new \Twig\TwigFunction('_Tn', function ($singular, $plural, $count, $domain = 'galette') {
-        return _Tn($singular, $plural, $count, $domain);
+        return _Tn($singular, $plural, (int)$count, $domain);
     });
     $view->getEnvironment()->addFunction($function);
 
@@ -96,7 +100,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addFunction($function);
 
     $function = new \Twig\TwigFunction('_Tnx', function ($context, $singular, $plural, $count, $domain = 'galette') {
-        return _Tnx($context, $singular, $plural, $count, $domain);
+        return _Tnx($context, $singular, $plural, (int)$count, $domain);
     });
     $view->getEnvironment()->addFunction($function);
 
@@ -144,6 +148,7 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('logo', $c->get('logo'));
 
     $view->getEnvironment()->addGlobal('plugin_headers', $c->get('plugins')->getTplHeaders());
+    $view->getEnvironment()->addGlobal('plugin_scripts', $c->get('plugins')->getTplScripts());
 
     // galette_lang should be removed and languages used instead
     $view->getEnvironment()->addGlobal('galette_lang', $c->get('i18n')->getAbbrev());
@@ -183,9 +188,9 @@ $container->set('Slim\Views\Twig', function (ContainerInterface $c) {
 //TODO: old way - to drop
 $container->set(
     'flash',
-    DI\get('Slim\Flash\Messages')
+    DI\get(\Slim\Flash\Messages::class)
 );
-$container->set('Slim\Flash\Messages', DI\autowire());
+$container->set(\Slim\Flash\Messages::class, DI\autowire());
 
 //TODO: old way - to drop
 $container->set(
@@ -202,10 +207,10 @@ $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) us
 //TODO: old way - to drop
 $container->set(
     'i18n',
-    \DI\get('Galette\Core\I18n')
+    \DI\get(\Galette\Core\I18n::class)
 );
 
-$container->set('Galette\Core\I18n', function (ContainerInterface $c) {
+$container->set(\Galette\Core\I18n::class, function (ContainerInterface $c) {
     $i18n = $c->get('session')->i18n;
     if (!$i18n || !$i18n->getId() || isset($_GET['ui_pref_lang']) && $_GET['ui_pref_lang']) {
         $i18n = new Galette\Core\I18n($_GET['ui_pref_lang'] ?? false);
@@ -215,33 +220,32 @@ $container->set('Galette\Core\I18n', function (ContainerInterface $c) {
 });
 
 $container->set('l10n', function (ContainerInterface $c) {
-    $l10n = new Galette\Core\L10n(
+    return new Galette\Core\L10n(
         $c->get('zdb'),
         $c->get('i18n')
     );
-    return $l10n;
 });
 
 //TODO: old way - to drop
 $container->set(
     'zdb',
-    DI\get('Galette\Core\Db')
+    DI\get(\Galette\Core\Db::class)
 );
-$container->set('Galette\Core\Db', DI\autowire());
+$container->set(\Galette\Core\Db::class, DI\autowire());
 
 //TODO: old way - to drop
 $container->set(
     'preferences',
-    DI\get('Galette\Core\Preferences')
+    DI\get(\Galette\Core\Preferences::class)
 );
-$container->set('Galette\Core\Preferences', DI\autowire());
+$container->set(\Galette\Core\Preferences::class, DI\autowire());
 
 //TODO: old way - to drop
 $container->set(
     'login',
-    DI\get('Galette\Core\Login')
+    DI\get(\Galette\Core\Login::class)
 );
-$container->set('Galette\Core\Login', function (ContainerInterface $c) {
+$container->set(\Galette\Core\Login::class, function (ContainerInterface $c) {
     $login = $c->get('session')->login;
     if (!$login) {
         $login = new Galette\Core\Login(
@@ -255,23 +259,23 @@ $container->set('Galette\Core\Login', function (ContainerInterface $c) {
 //TODO: old way - to drop
 $container->set(
     'logo',
-    DI\get('Galette\Core\Logo')
+    DI\get(\Galette\Core\Logo::class)
 );
-$container->set('Galette\Core\Logo', DI\autowire());
+$container->set(\Galette\Core\Logo::class, DI\autowire());
 
 //TODO: old way - to drop
 $container->set(
     'print_logo',
-    DI\get('Galette\Core\PrintLogo')
+    DI\get(\Galette\Core\PrintLogo::class)
 );
-$container->set('Galette\Core\PrintLogo', DI\autowire());
+$container->set(\Galette\Core\PrintLogo::class, DI\autowire());
 
 //TODO: old way - to drop
 $container->set(
     'history',
-    DI\get('Galette\Core\History')
+    DI\get(\Galette\Core\History::class)
 );
-$container->set('Galette\Core\History', \DI\autowire());
+$container->set(\Galette\Core\History::class, \DI\autowire());
 
 $container->set('acls', function (ContainerInterface $c) {
     include GALETTE_ROOT . 'includes/core_acls.php';
@@ -282,7 +286,7 @@ $container->set('acls', function (ContainerInterface $c) {
     }
 
     //use + to be sure core ACLs are not overrided by plugins ones.
-    $acls = $acls + $c->get('plugins')->getAcls();
+    $acls += $c->get('plugins')->getAcls();
 
     //load user defined ACLs
     if (file_exists(GALETTE_CONFIG_PATH . 'local_acls.inc.php')) {
@@ -293,12 +297,12 @@ $container->set('acls', function (ContainerInterface $c) {
     return $acls;
 });
 
-$container->set('texts_fields', function (ContainerInterface $c) {
+$container->set('texts_fields', function () {
     include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
     return $texts_fields;
 });
 
-$container->set('members_fields', function (ContainerInterface $c) {
+$container->set('members_fields', function () {
     include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
     return $members_fields;
 });
@@ -313,7 +317,7 @@ $container->set('members_form_fields', function (ContainerInterface $c) {
     return $fields;
 });
 
-$container->set('members_fields_cats', function (ContainerInterface $c) {
+$container->set('members_fields_cats', function () {
     include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
     return $members_fields_cats;
 });
@@ -334,39 +338,37 @@ $container->set('logger', function (ContainerInterface $c) {
 //TODO: old way - to drop
 $container->set(
     'fields_config',
-    DI\get('Galette\Entity\FieldsConfig')
+    DI\get(\Galette\Entity\FieldsConfig::class)
 );
-$container->set('Galette\Entity\FieldsConfig', function (ContainerInterface $c) {
-    $fc = new Galette\Entity\FieldsConfig(
+$container->set(\Galette\Entity\FieldsConfig::class, function (ContainerInterface $c) {
+    return new Galette\Entity\FieldsConfig(
         $c->get('zdb'),
         Galette\Entity\Adherent::TABLE,
         $c->get('members_fields'),
         $c->get('members_fields_cats')
     );
-    return $fc;
 });
 
 //TODO: old way - to drop
 $container->set(
     'lists_config',
-    DI\get('Galette\Entity\ListsConfig')
+    DI\get(\Galette\Entity\ListsConfig::class)
 );
-$container->set('Galette\Entity\ListsConfig', function (ContainerInterface $c) {
-    $fc = new Galette\Entity\ListsConfig(
+$container->set(\Galette\Entity\ListsConfig::class, function (ContainerInterface $c) {
+    return new Galette\Entity\ListsConfig(
         $c->get('zdb'),
         Galette\Entity\Adherent::TABLE,
         $c->get('members_fields'),
         $c->get('members_fields_cats')
     );
-    return $fc;
 });
 
 //TODO: old way - to drop
 $container->set(
     'translator',
-    DI\get('Galette\Core\Translator')
+    DI\get(\Galette\Core\Translator::class)
 );
-$container->set('Galette\Core\Translator', function (ContainerInterface $c) {
+$container->set(\Galette\Core\Translator::class, function (ContainerInterface $c) {
     $translator = new Galette\Core\Translator();
 
     $domains = ['galette'];
@@ -398,11 +400,11 @@ $container->set(
     DI\create(\League\Event\EventDispatcher::class)
         ->method(
             'subscribeListenersFrom',
-            DI\get('Galette\Events\MemberListener')
+            DI\get(\Galette\Events\MemberListener::class)
         )
         ->method(
             'subscribeListenersFrom',
-            DI\get('Galette\Events\ContribListener')
+            DI\get(\Galette\Events\ContribListener::class)
         )
 );
 
@@ -435,7 +437,7 @@ $container->set(
             $route = $routeContext->getRoute();
 
             foreach ($exclusions as $exclusion) {
-                if (preg_match($exclusion, $route->getname())) {
+                if (preg_match($exclusion, (string)$route->getname())) {
                     //route is excluded form CSRF checks
                     return $response;
                 }

@@ -22,37 +22,41 @@
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count search", "%count searches", nb)|replace({"%count": nb}),
+        'label': _Tn("%1$s search", "%1$s searches", nb)|format(nb),
     } %}
     {{ parent() }}
 {% endblock %}
 
-{% block header %}
-    {% set columns = [
-        {'label': '#'},
-        {'label': _T("Creation date")},
-        {'label': _T("Name")},
-        {'label': _T("Parameters")}
-    ] %}
-    {{ parent() }}
-{% endblock %}
+{% set columns = [
+    {
+        'label': _T('ID'),
+        'collapse': true
+    },
+    {
+        'label': _T("Creation date"),
+        collapse: true
+    },
+    {
+        'label': _T("Name"),
+        collapse: true
+    },
+    {
+        'label': _T("Parameters")
+    }
+] %}
 
 {% block body %}
     {% for search in searches %}
-        <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
-            <td data-scope="row">
-                {% if preferences.pref_show_id %}
-                    {{ search.id }}
-                {% else %}
-                    {{ loop.index }}
-                {% endif %}
+        <tr>
+            <td class="collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
+                {{ search.id }}
             </td>
-            <td class="left" data-col-label="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
-            <td class="left" data-col-label="{{ _T("Name") }}">{{ search.name|default("-") }}</td>
+            <td class="left collapsing" data-col-label="{{ _T("Creation date") }}">{{ search.creation_date }}</td>
+            <td class="left collapsing" data-col-label="{{ _T("Name") }}">{{ search.name|default("-") }}</td>
             <td class="left" data-col-label="{{ _T("Search parameters") }}">
                 <details class="ui basic styled accordion">
                     <summary class="title">
-                        <i class="info circle primary icon" aria-hidden="true"></i> {{ _T("Show parameters") }}
+                        <i class="caret down icon" aria-hidden="true"></i> {{ _T("Show parameters") }}
                     </summary>
                     <div class="content">
         {% for key, parameter in search.sparameters %}
@@ -61,7 +65,7 @@
                     </div>
                 </details>
             </td>
-            <td class="center actions_row">
+            <td class="center actions_row collapsing">
                 <a
                         href="{{ url_for("loadSearch", {"id": search.id}) }}"
                 >
@@ -79,7 +83,7 @@
             </td>
         </tr>
     {% else %}
-        <tr><td colspan="5" class="emptylist">{{ _T("no search") }}</td></tr>
+        <tr><td colspan="{{ columns_count }}" class="emptylist">{{ _T("no search") }}</td></tr>
     {% endfor %}
 {% endblock %}
 

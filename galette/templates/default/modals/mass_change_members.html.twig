@@ -36,7 +36,12 @@
     {% endif %}
             <form action="{{ form_url }}" method="post" class="ui form">
             {% if changes is not defined %}
-                <p>{{ _T("Only checked fields will be updated.") }}</p>
+                <div class="ui icon info visible message">
+                    <i class="info circle blue icon" aria-hidden="true"></i>
+                    <div class="content">
+                        {{ _T("Only checked fields will be updated.") }}
+                    </div>
+                </div>
                 {# Form entries #}
                 {% include "components/form.html.twig" with {masschange: true} %}
                 {# Groups #}
@@ -44,6 +49,8 @@
                 {% include "components/forms/mass_groups.html.twig" %}
                 {# Dynamic entries #}
                 {% include "components/dynamic_fields.html.twig" with {object: member, masschange: true} %}
+            {% elseif changes|length == 0 %}
+                <p>{{ _T("No changes selected") }}</p>
             {% else %}
                 <p>{{ _T("You are about to proceed following changes for selected members:") }}</p>
                 <ul>

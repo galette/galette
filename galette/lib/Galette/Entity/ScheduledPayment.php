@@ -103,8 +103,8 @@ class ScheduledPayment
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading scheduled payment #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading scheduled payment #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -149,39 +149,35 @@ class ScheduledPayment
 
         if (!isset($data[Contribution::PK]) || !is_numeric($data[Contribution::PK])) {
             $this->errors[] = _T('Contribution is required');
+        } elseif (!$this->contribution->load((int)$data[Contribution::PK])) {
+            $this->errors[] = _T('Unable to load contribution');
         } else {
-            if (!$this->contribution->load((int)$data[Contribution::PK])) {
-                $this->errors[] = _T('Unable to load contribution');
-            } else {
-                if (isset($data['amount'])) {
-                    //Amount is not required (will defaults to contribution amount)
-                    if (!is_numeric($data['amount']) || $data['amount'] <= 0) {
-                        $this->errors[] = _T('Amount must be a positive number');
-                    } else {
-                        $not_allocated = $this->contribution->amount - $this->getAllocation($this->contribution->id);
-                        if (isset($this->id)) {
-                            $not_allocated += $this->amount;
-                        }
-                        if ($data['amount'] > $not_allocated) {
-                            $this->errors[] = _T('Amount cannot be greater than non allocated amount');
-                        }
+            if (isset($data['amount'])) {
+                //Amount is not required (will defaults to contribution amount)
+                if (!is_numeric($data['amount']) || $data['amount'] <= 0) {
+                    $this->errors[] = _T('Amount must be a positive number');
+                } else {
+                    $not_allocated = $this->contribution->amount - $this->getAllocation($this->contribution->id);
+                    if (isset($this->id)) {
+                        $not_allocated += $this->amount;
+                    }
+                    if ($data['amount'] > $not_allocated) {
+                        $this->errors[] = _T('Amount cannot be greater than non allocated amount');
                     }
                 }
-                if ($this->contribution->payment_type !== PaymentType::SCHEDULED) {
-                    $this->errors[] = _T('Payment type for contribution must be set to scheduled');
-                }
+            }
+            if ($this->contribution->payment_type !== PaymentType::SCHEDULED) {
+                $this->errors[] = _T('Payment type for contribution must be set to scheduled');
             }
         }
 
         if (!isset($data['id_paymenttype']) || !is_numeric($data['id_paymenttype'])) {
             $this->errors[] = _T('Payment type is required');
-        } else {
+        } elseif ((int)$data['id_paymenttype'] === PaymentType::SCHEDULED) {
             //no schedule inception allowed!
-            if ((int)$data['id_paymenttype'] === PaymentType::SCHEDULED) {
-                $this->errors[] = _T('Cannot schedule a scheduled payment!');
-            } else {
-                $this->payment_type = new PaymentType($this->zdb, (int)$data['id_paymenttype']);
-            }
+            $this->errors[] = _T('Cannot schedule a scheduled payment!');
+        } else {
+            $this->payment_type = new PaymentType($this->zdb, (int)$data['id_paymenttype']);
         }
 
         if (!isset($data['scheduled_date'])) {
@@ -211,14 +207,14 @@ class ScheduledPayment
      */
     public function store(): bool
     {
-        $data = array(
+        $data = [
             Contribution::PK => $this->contribution->id,
             'id_paymenttype' => $this->payment_type->id,
             'scheduled_date' => $this->scheduled_date,
             'amount' => $this->amount,
             'paid' => ($this->is_paid ? true : ($this->zdb->isPostgres() ? 'false' : 0)),
             'comment' => $this->comment
-        );
+        ];
         try {
             if (isset($this->id) && $this->id > 0) {
                 $update = $this->zdb->update(self::TABLE);
@@ -239,8 +235,8 @@ class ScheduledPayment
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing shceduled payment: ' . $e->getMessage() .
-                "\n" . print_r($data, true),
+                'An error occurred storing shceduled payment: ' . $e->getMessage()
+                . "\n" . print_r($data, true),
                 Analog::ERROR
             );
             throw $e;
@@ -261,7 +257,7 @@ class ScheduledPayment
             $delete->where([self::PK => $id]);
             $this->zdb->execute($delete);
             Analog::log(
-                'Scheduled Payment #' . $id .  ' deleted successfully.',
+                'Scheduled Payment #' . $id . ' deleted successfully.',
                 Analog::INFO
             );
             return true;
@@ -465,6 +461,18 @@ class ScheduledPayment
     }
 
     /**
+     * Is payment due?
+     *
+     * @return boolean
+     */
+    public function isDue(): bool
+    {
+        $now = time();
+        $date = $this->getScheduledDate(false)->getTimestamp();
+        return !$this->isPaid() && $date < $now;
+    }
+
+    /**
      * Get comment
      *
      * @return ?string
@@ -501,7 +509,7 @@ class ScheduledPayment
         $select->limit(1)->where([Contribution::PK => $id_cotis]);
 
         $results = $this->zdb->execute($select);
-        return ($results->count() > 0);
+        return $results->count() > 0;
     }
 
     /**
@@ -553,7 +561,7 @@ class ScheduledPayment
      */
     public function isFullyAllocated(Contribution $contrib): bool
     {
-        return !($this->getAllocation($contrib->id) < $contrib->amount);
+        return $this->getAllocation($contrib->id) >= $contrib->amount;
     }
 
     /**
@@ -568,10 +576,10 @@ class ScheduledPayment
         $select->quantifier('DISTINCT');
 
         $select->join(
-            array('s' => PREFIX_DB . self::TABLE),
+            ['s' => PREFIX_DB . self::TABLE],
             //$on,
             'c.' . Contribution::PK . '=s.' . Contribution::PK,
-            array('allocated' => new Expression('SUM(s.amount)')),
+            ['allocated' => new Expression('SUM(s.amount)')],
             $select::JOIN_LEFT
         );
 
@@ -579,7 +587,7 @@ class ScheduledPayment
         $select->where(['c.type_paiement_cotis' => PaymentType::SCHEDULED]);
         $select->having([
             new PredicateSet(
-                array(
+                [
                     new Operator(
                         /** @phpstan-ignore-next-line  */
                         new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'),
@@ -588,7 +596,7 @@ class ScheduledPayment
                     ),
                     /** @phpstan-ignore-next-line  */
                     new IsNull(new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'))
-                ),
+                ],
                 PredicateSet::OP_OR
             )
         ]);
@@ -615,40 +623,40 @@ class ScheduledPayment
      */
     protected function setFields(): self
     {
-        $this->fields = array(
-            self::PK            => array(
+        $this->fields = [
+            self::PK            => [
                 'label'    => _T('Scheduled payment ID'), //not a field in the form
                 'propname' => 'id'
-            ),
-            Contribution::PK       => array(
+            ],
+            Contribution::PK       => [
                 'label'    => _T('Contribution ID'), //not a field in the form
                 'propname' => 'contribution'
-            ),
-            'id_paymenttype'   => array(
+            ],
+            'id_paymenttype'   => [
                 'label'    => _T('Payment type:'),
                 'propname' => 'payment_type'
-            ),
-            'creation_date'    => array(
+            ],
+            'creation_date'    => [
                 'label'    => _T('Record date:'),
                 'propname' => 'creation_date'
-            ),
-            'scheduled_date'   => array(
+            ],
+            'scheduled_date'   => [
                 'label'    => _T('Scheduled date:'),
                 'propname' => 'scheduled_date'
-            ),
-            'amount'           => array(
+            ],
+            'amount'           => [
                 'label'    => _T('Amount:'),
                 'propname' => 'amount'
-            ),
-            'paid'          => array(
+            ],
+            'paid'          => [
                 'label'    => _T('Paid'),
                 'propname' => 'is_paid'
-            ),
-            'comment'          => array(
+            ],
+            'comment'          => [
                 'label'    => _T('Comments:'),
                 'propname' => 'comment'
-            )
-        );
+            ]
+        ];
 
         return $this;
     }

@@ -48,7 +48,7 @@ if (!$phpok) {
             <div id="main" class="ui container">
                 <div class="ui basic segment">
                     <div class="ui basic center aligned fitted segment">
-                        <img class="icon" alt="[ Galette ]" src="./themes/default/images/galette.png"/>
+                        <img class="icon" alt="[ Galette ]" src="./themes/default/images/galette.webp"/>
                     </div>
                     <h1 class="ui block center aligned header">Compatibility tests</h1>
                     <div class="ui segment">

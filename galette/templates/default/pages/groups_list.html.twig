@@ -24,10 +24,20 @@
 
 {% macro group_item(login, group, parents, selected) %}
     <div class="{% if group.getGroups()|length > 0 %}title{% if group.getName() in parents %} active{% endif %}{% else %}nochild{% endif %}">
-        <i class="{% if group.getGroups()|length > 0 %}dropdown{% else %}empty{% endif %} icon" aria-hidden="true"></i>
-        <a class="ui{% if group.getName() == selected %} primary{% endif %}{% if not login.isGroupManager(group.getId()) %} disabled{% endif %} label" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
-            {{ group.getName() }}
+        {% if group.getGroups()|length > 0 %}
+        <i class="dropdown icon" aria-hidden="true"></i>
+        {% endif %}
+        {% if login.isGroupManager(group.getId()) and group.getName() != selected %}
+        <a class="icon" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
+            <i class="edit icon" aria-hidden="true"></i>
+            <span class="visually-hidden">Edit</span>
         </a>
+        {% else %}
+        <i class="black folder open outline icon"></i>
+        {% endif %}
+        <span class="{% if group.getName() == selected %}active{% endif %}">
+            {{ group.getName() }}
+        </span>
     </div>
     {% if group.getGroups()|length > 0 %}
     <div class="content{% if group.getName() in parents %} active{% endif %}">

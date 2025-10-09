@@ -24,8 +24,6 @@ declare(strict_types=1);
 namespace Galette\Filters;
 
 use Galette\Helpers\DatesHelper;
-use Throwable;
-use Analog\Analog;
 use Galette\Core\Pagination;
 
 /**
@@ -41,6 +39,8 @@ use Galette\Core\Pagination;
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
  * @property integer[] $selected
+ * @property ?integer $member_filter
+ * @property integer $paid
  */
 
 class ScheduledPaymentsList extends Pagination
@@ -54,6 +54,11 @@ class ScheduledPaymentsList extends Pagination
     public const ORDERBY_AMOUNT = 5;
     public const ORDERBY_PAYMENT_TYPE = 7;
     public const ORDERBY_ID = 8;
+    public const ORDERBY_PAID = 9;
+
+    public const PAID_DC = 2;
+    public const PAID_YES = 1;
+    public const PAID_NO = 0;
 
     public const DATE_RECORD = 0;
 
@@ -65,26 +70,30 @@ class ScheduledPaymentsList extends Pagination
     private ?string $end_date_filter = null; //@phpstan-ignore-line
     private ?int $payment_type_filter = null; //@phpstan-ignore-line
     private int|false $from_contribution = false; //@phpstan-ignore-line
+    private ?int $member_filter = null;
+    private int $paid = self::PAID_DC;
 
 
     /** @var array<int> */
     private array $selected = [];
 
     /** @var array<string> */
-    protected array $list_fields = array(
+    protected array $list_fields = [
         'start_date_filter',
         'end_date_filter',
         'date_field',
         'payment_type_filter',
         'from_contribution',
-        'selected'
-    );
+        'selected',
+        'member_filter',
+        'paid'
+    ];
 
     /** @var array<string>  */
-    protected array $virtuals_list_fields = array(
+    protected array $virtuals_list_fields = [
         'rstart_date_filter',
         'rend_date_filter'
-    );
+    ];
 
     /**
      * Default constructor
@@ -119,6 +128,8 @@ class ScheduledPaymentsList extends Pagination
         $this->end_date_filter = null;
         $this->payment_type_filter = null;
         $this->selected = [];
+        $this->member_filter = null;
+        $this->paid = self::PAID_DC;
 
         if ($ajax === false) {
             $this->from_contribution = false;
@@ -136,27 +147,25 @@ class ScheduledPaymentsList extends Pagination
     {
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
-        } else {
-            if (in_array($name, $this->list_fields) || in_array($name, $this->virtuals_list_fields)) {
-                switch ($name) {
-                    case 'start_date_filter':
-                    case 'end_date_filter':
-                        return $this->getDate($name);
-                    case 'rstart_date_filter':
-                    case 'rend_date_filter':
-                        //same as above, but raw format
-                        $rname = substr($name, 1);
-                        return $this->getDate($rname, true, false);
-                    default:
-                        return $this->$name;
-                }
+        } elseif (in_array($name, $this->list_fields) || in_array($name, $this->virtuals_list_fields)) {
+            switch ($name) {
+                case 'start_date_filter':
+                case 'end_date_filter':
+                    return $this->getDate($name);
+                case 'rstart_date_filter':
+                case 'rend_date_filter':
+                    //same as above, but raw format
+                    $rname = substr($name, 1);
+                    return $this->getDate($rname, true, false);
+                default:
+                    return $this->$name;
             }
         }
 
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );
@@ -198,6 +207,9 @@ class ScheduledPaymentsList extends Pagination
                 case 'start_date_filter':
                 case 'end_date_filter':
                     $this->setFilterDate($name, $value, $name === 'start_date_filter');
+                    break;
+                case 'member_filter':
+                    $this->$name = (int)$value;
                     break;
                 default:
                     $this->$name = $value;

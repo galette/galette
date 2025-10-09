@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\DynamicFields;
 
-use Analog\Analog;
 use Galette\Core\Db;
 
 /**

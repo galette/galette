@@ -144,8 +144,8 @@ abstract class DynamicField
             }
         } catch (Throwable $e) {
             Analog::log(
-                __METHOD__ . ' | Unable to retrieve field `' . $id .
-                '` information | ' . $e->getMessage(),
+                __METHOD__ . ' | Unable to retrieve field `' . $id
+                . '` information | ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -164,33 +164,16 @@ abstract class DynamicField
      */
     public static function getFieldType(Db $zdb, int $t, ?int $id = null): DynamicField
     {
-        $df = null;
-        switch ($t) {
-            case self::SEPARATOR:
-                $df = new Separator($zdb, $id);
-                break;
-            case self::TEXT:
-                $df = new Text($zdb, $id);
-                break;
-            case self::LINE:
-                $df = new Line($zdb, $id);
-                break;
-            case self::CHOICE:
-                $df = new Choice($zdb, $id);
-                break;
-            case self::DATE:
-                $df = new Date($zdb, $id);
-                break;
-            case self::BOOLEAN:
-                $df = new Boolean($zdb, $id);
-                break;
-            case self::FILE:
-                $df = new File($zdb, $id);
-                break;
-            default:
-                throw new \Exception('Unknown field type ' . $t . '!');
-        }
-        return $df;
+        return match ($t) {
+            self::SEPARATOR => new Separator($zdb, $id),
+            self::TEXT => new Text($zdb, $id),
+            self::LINE => new Line($zdb, $id),
+            self::CHOICE => new Choice($zdb, $id),
+            self::DATE => new Date($zdb, $id),
+            self::BOOLEAN => new Boolean($zdb, $id),
+            self::FILE => new File($zdb, $id),
+            default => throw new \Exception('Unknown field type ' . $t . '!'),
+        };
     }
 
     /**
@@ -214,8 +197,8 @@ abstract class DynamicField
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to retrieve field type for field ' . $id . ' | ' .
-                $e->getMessage(),
+                'Unable to retrieve field type for field ' . $id . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -291,13 +274,13 @@ abstract class DynamicField
             );
 
             $val_select->columns(
-                array(
+                [
                     'val'
-                )
+                ]
             )->order('id');
 
             $results = $this->zdb->execute($val_select);
-            $this->values = array();
+            $this->values = [];
             if ($results->count() > 0) {
                 foreach ($results as $val) {
                     $this->values[] = $val->val;
@@ -618,31 +601,23 @@ abstract class DynamicField
 
         if (!isset($values['field_perm']) || $values['field_perm'] === '') {
             $this->errors[] = _T('Missing required field permissions!');
+        } elseif (in_array($values['field_perm'], array_keys(self::getPermissionsList()))) {
+            $this->permission = (int)$values['field_perm'];
         } else {
-            if (in_array($values['field_perm'], array_keys(self::getPermissionsList()))) {
-                $this->permission = (int)$values['field_perm'];
-            } else {
-                $this->errors[] = _T('Unknown permission!');
-            }
+            $this->errors[] = _T('Unknown permission!');
         }
 
         if (!isset($this->id)) {
             if (!isset($values['form_name']) || $values['form_name'] == '') {
                 $this->errors[] = _T('Missing required form!');
+            } elseif (in_array($values['form_name'], array_keys(self::getFormsNames()))) {
+                $this->form = $values['form_name'];
             } else {
-                if (in_array($values['form_name'], array_keys(self::getFormsNames()))) {
-                    $this->form = $values['form_name'];
-                } else {
-                    $this->errors[] = _T('Unknown form!');
-                }
+                $this->errors[] = _T('Unknown form!');
             }
         }
 
-        if (isset($values['field_required'])) {
-            $this->required = $values['field_required'] == 1;
-        } else {
-            $this->required = false;
-        }
+        $this->required = isset($values['field_required']) ? $values['field_required'] == 1 : false;
 
         $this->width_in_forms = (int)($values['field_width_in_forms'] ?? 1);
 
@@ -691,14 +666,9 @@ abstract class DynamicField
         }
 
         if (
-            $this->hasMinSize()
-                && $this->min_size !== null
-            && $this->hasSize()
-                && $this->size !== null
+            $this->hasMinSize() && $this->min_size !== null && $this->hasSize() && $this->size !== null && $this->min_size > $this->size
         ) {
-            if ($this->min_size > $this->size) {
-                $this->errors[] = _T("- Min size must be lower than size!");
-            }
+            $this->errors[] = _T("- Min size must be lower than size!");
         }
 
         if (isset($values['field_repeat'])) {
@@ -767,21 +737,21 @@ abstract class DynamicField
         }
 
         try {
-            $values = array(
+            $values = [
                 'field_name'              => strip_tags($this->name),
                 'field_perm'              => $this->permission,
                 'field_required'          => $this->required,
                 'field_width_in_forms'    => $this->width_in_forms,
-                'field_width'             => ($this->width === null ? new Expression('NULL') : $this->width),
-                'field_height'            => ($this->height === null ? new Expression('NULL') : $this->height),
-                'field_min_size'          => ($this->min_size === null ? new Expression('NULL') : $this->min_size),
-                'field_size'              => ($this->size === null ? new Expression('NULL') : $this->size),
-                'field_repeat'            => ($this->repeat === null ? new Expression('NULL') : $this->repeat),
+                'field_width'             => $this->width ?? new Expression('NULL'),
+                'field_height'            => $this->height ?? new Expression('NULL'),
+                'field_min_size'          => $this->min_size ?? new Expression('NULL'),
+                'field_size'              => $this->size ?? new Expression('NULL'),
+                'field_repeat'            => $this->repeat ?? new Expression('NULL'),
                 'field_form'              => $this->form,
                 'field_index'             => $this->index,
-                'field_information'       => ($this->information === null ? new Expression('NULL') : $this->information),
+                'field_information'       => $this->information ?? new Expression('NULL'),
                 'field_information_above' => $this->information_above,
-            );
+            ];
 
             if ($this->required === false) {
                 //Handle booleans for postgres ; bugs #18899 and #19354
@@ -824,15 +794,15 @@ abstract class DynamicField
                 $this->zdb->drop(str_replace(PREFIX_DB, '', $contents_table), true);
                 $field_size = ((int)$this->size > 0) ? $this->size : 1;
                 $this->zdb->db->query(
-                    'CREATE TABLE ' . $contents_table .
-                    ' (id INTEGER NOT NULL,val varchar(' . $field_size .
-                    ') NOT NULL)',
+                    'CREATE TABLE ' . $contents_table
+                    . ' (id INTEGER NOT NULL,val varchar(' . $field_size
+                    . ') NOT NULL)',
                     \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
             } catch (Throwable $e) {
                 Analog::log(
-                    'Unable to manage fields values table ' .
-                    $contents_table . ' | ' . $e->getMessage(),
+                    'Unable to manage fields values table '
+                    . $contents_table . ' | ' . $e->getMessage(),
                     Analog::ERROR
                 );
                 $this->errors[] = _T("An error occurred creating field values table");
@@ -845,28 +815,28 @@ abstract class DynamicField
 
                     $insert = $this->zdb->insert($contents_table);
                     $insert->values(
-                        array(
+                        [
                             'id'    => ':id',
                             'val'   => ':val'
-                        )
+                        ]
                     );
                     $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
                     $cnt_values = count($this->values);
                     for ($i = 0; $i < $cnt_values; $i++) {
                         $stmt->execute(
-                            array(
+                            [
                                 'id'    => $i,
                                 'val'   => $this->values[$i]
-                            )
+                            ]
                         );
                     }
                     $this->zdb->connection->commit();
                 } catch (Throwable $e) {
                     $this->zdb->connection->rollBack();
                     Analog::log(
-                        'Unable to store field ' . $this->id . ' values (' .
-                        $e->getMessage() . ')',
+                        'Unable to store field ' . $this->id . ' values ('
+                        . $e->getMessage() . ')',
                         Analog::ERROR
                     );
                     $this->warnings[] = _T('An error occurred storing dynamic field values :(');
@@ -890,9 +860,9 @@ abstract class DynamicField
     {
         $select = $this->zdb->select(self::TABLE);
         $select->columns(
-            array(
+            [
                 'idx' => new \Laminas\Db\Sql\Expression('COUNT(*) + 1')
-            )
+            ]
         );
         $select->where(['field_form' => $this->form]);
         $results = $this->zdb->execute($select);
@@ -913,21 +883,21 @@ abstract class DynamicField
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
-                array(
+                [
                     'cnt' => new \Laminas\Db\Sql\Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             )->where(
-                array(
+                [
                     'field_form' => $this->form,
                     'field_name' => $this->name
-                )
+                ]
             );
 
             if (isset($this->id)) {
                 $select->where->addPredicate(
                     new PredicateExpression(
                         'field_id NOT IN (?)',
-                        array($this->id)
+                        [$this->id]
                     )
                 );
             }
@@ -970,22 +940,22 @@ abstract class DynamicField
             $new_rank = $old_rank + $direction;
             $update = $this->zdb->update(self::TABLE);
             $update->set([
-                    'field_index' => $old_rank
+                'field_index' => $old_rank
             ])->where([
-                    'field_index'   => $new_rank,
-                    'field_form'    => $this->form
+                'field_index'   => $new_rank,
+                'field_form'    => $this->form
             ]);
             $this->zdb->execute($update);
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'field_index' => $new_rank
-                )
+                ]
             )->where(
-                array(
+                [
                     self::PK => $this->id
-                )
+                ]
             );
             $this->zdb->execute($update);
             $this->zdb->connection->commit();
@@ -994,8 +964,8 @@ abstract class DynamicField
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to change field ' . $this->id . ' rank | ' .
-                $e->getMessage(),
+                'Unable to change field ' . $this->id . ' rank | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -1020,9 +990,9 @@ abstract class DynamicField
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'field_index' => new \Laminas\Db\Sql\Expression('field_index-1')
-                )
+                ]
             )->where
                 ->greaterThan('field_index', $old_rank)
                 ->equalTo('field_form', $this->form);
@@ -1032,28 +1002,28 @@ abstract class DynamicField
             try {
                 $delete = $this->zdb->delete(DynamicFieldsHandle::TABLE);
                 $delete->where(
-                    array(
+                    [
                         'field_id'      => $this->id,
                         'field_form'    => $this->form
-                    )
+                    ]
                 );
                 $this->zdb->execute($delete);
             } catch (Throwable $e) {
-                throw new \RuntimeException('Unable to remove associated values for field ' . $this->id . '!');
+                throw new \RuntimeException('Unable to remove associated values for field ' . $this->id . '!', $e->getCode(), $e);
             }
 
             //remove field type
             try {
                 $delete = $this->zdb->delete(self::TABLE);
                 $delete->where(
-                    array(
+                    [
                         'field_id'      => $this->id,
                         'field_form'    => $this->form
-                    )
+                    ]
                 );
                 $this->zdb->execute($delete);
             } catch (Throwable $e) {
-                throw new \RuntimeException('Unable to remove field type ' . $this->id . '!');
+                throw new \RuntimeException('Unable to remove field type ' . $this->id . '!', $e->getCode(), $e);
             }
 
             $this->deleteTranslation($this->name);
@@ -1081,7 +1051,7 @@ abstract class DynamicField
      */
     public static function getFieldsTypesNames(): array
     {
-        $names = [
+        return [
             self::SEPARATOR => _T("separator"),
             self::TEXT      => _T("free text"),
             self::LINE      => _T("single line"),
@@ -1090,7 +1060,6 @@ abstract class DynamicField
             self::BOOLEAN   => _T("boolean"),
             self::FILE      => _T("file")
         ];
-        return $names;
     }
 
     /**
@@ -1111,5 +1080,17 @@ abstract class DynamicField
     public function getWarnings(): array
     {
         return $this->warnings;
+    }
+
+    /**
+     * Get value to display for a field
+     *
+     * @param mixed $value Raw value to get displayed
+     *
+     * @return string
+     */
+    public function getDisplayValue(mixed $value): string
+    {
+        return (string)$value;
     }
 }

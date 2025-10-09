@@ -43,8 +43,6 @@ class ScheduledPaymentsCsv extends CsvOut
 {
     private string $filename;
     private string $path;
-    private Db $zdb;
-    private Login $login;
 
     /**
      * Default constructor
@@ -52,12 +50,12 @@ class ScheduledPaymentsCsv extends CsvOut
      * @param Db    $zdb   Db instance
      * @param Login $login Login instance
      */
-    public function __construct(Db $zdb, Login $login)
-    {
+    public function __construct(
+        private readonly Db $zdb,
+        private readonly Login $login
+    ) {
         $this->filename = 'filtered_shceduledpaymentslist.csv';
         $this->path = self::DEFAULT_DIRECTORY . $this->filename;
-        $this->zdb = $zdb;
-        $this->login = $login;
         parent::__construct();
     }
 
@@ -72,9 +70,9 @@ class ScheduledPaymentsCsv extends CsvOut
     {
         $scheduled = new ScheduledPayment($this->zdb);
         $fields = $scheduled->getFields();
-        $labels = array();
+        $labels = [];
 
-        foreach ($fields as $k => $f) {
+        foreach ($fields as $f) {
             $label = $f['label'];
             $labels[] = $label;
         }

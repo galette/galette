@@ -44,7 +44,7 @@ if ($db_connected === true) {
     }
 
     if ($supported_db) {
-        /** FIXME: when tables already exists and DROP not allowed at this time
+        /** When tables already exists and DROP not allowed at this time
          * the showed error is about CREATE, whenever CREATE is allowed */
         //We delete the table if exists, no error at this time
         $zdb->dropTestTable();
@@ -173,7 +173,7 @@ if (!isset($install_plugin)) {
 if ($supported_db === false) {
     echo '<p class="ui red message">' . _T("Incompatible database version.") .
         '<br/>' . $zdb->getUnsupportedMessage() . '</p>';
-} else if ($db_connected === true && $permsdb_ok === true) {
+} elseif ($db_connected === true && $permsdb_ok === true) {
     if (!isset($install_plugin)) {
         echo '<p class="ui green message">' . _T("Connection to database successfull") .
             '<br/>' . _T("Permissions to database are OK.") . '</p>';
@@ -236,7 +236,7 @@ if (!isset($install_plugin)) {
     <form action="installer.php" method="POST" class="ui form">
         <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
             <div class="right aligned column">
-                <button type="submit"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?> class="ui right labeled primary icon button"><i class="angle double right icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+                <button type="submit"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?> class="ui right labeled primary icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
 <?php
 if ($conndb_ok && $permsdb_ok) {
 ?>
@@ -247,7 +247,7 @@ if ($conndb_ok && $permsdb_ok) {
 ?>
             </div>
             <div class="left aligned column">
-                <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon" aria-hidden="true"></i> <?php echo _T("Back"); ?></button>
+                <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'right' : 'left'; ?> icon" aria-hidden="true"></i> <?php echo _T("Back"); ?></button>
             </div>
         </div>
     </form>

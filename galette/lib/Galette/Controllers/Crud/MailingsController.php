@@ -74,7 +74,7 @@ class MailingsController extends CrudController
             unset($this->session->redirect_mailing);
         }
 
-        $params = array();
+        $params = [];
 
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
@@ -130,8 +130,7 @@ class MailingsController extends CrudController
                         _T('No member selected for mailing!')
                     );
 
-                    $redirect_url = ($this->session->redirect_mailing !== null) ?
-                        $this->session->redirect_mailing : $this->routeparser->urlFor('members');
+                    $redirect_url = $this->session->redirect_mailing ?? $this->routeparser->urlFor('members');
 
                     return $response
                         ->withStatus(301)
@@ -163,12 +162,13 @@ class MailingsController extends CrudController
 
             $params = array_merge(
                 $params,
-                array(
+                [
                     'mailing'           => $mailing,
                     'attachments'       => $mailing->attachments,
                     'html_editor'       => true,
-                    'html_editor_active' => $this->preferences->pref_editor_enabled
-                )
+                    'html_editor_active' => $this->preferences->pref_editor_enabled,
+                    'documentation'     => 'usermanual/adherents.html#e-mailing'
+                ]
             );
         }
 
@@ -177,9 +177,9 @@ class MailingsController extends CrudController
             $response,
             'pages/mailing_form.html.twig',
             array_merge(
-                array(
+                [
                     'page_title' => _T("Mailing")
-                ),
+                ],
                 $params
             )
         );
@@ -303,33 +303,9 @@ class MailingsController extends CrudController
                 $mailing->html = isset($post['mailing_html']);
 
                 //handle attachments
-                if (isset($_FILES['attachment'])) {
-                    $cnt_files = count($_FILES['attachment']['name']);
-                    for ($i = 0; $i < $cnt_files; $i++) {
-                        if ($_FILES['attachment']['error'][$i] === UPLOAD_ERR_OK) {
-                            if ($_FILES['attachment']['tmp_name'][$i] != '') {
-                                if (is_uploaded_file($_FILES['attachment']['tmp_name'][$i])) {
-                                    $da_file = array();
-                                    foreach (array_keys($_FILES['attachment']) as $key) {
-                                        $da_file[$key] = $_FILES['attachment'][$key][$i];
-                                    }
-                                    $res = $mailing->store($da_file);
-                                    if ($res < 0) {
-                                        //what to do if one of attachments fail? should other be removed?
-                                        $error_detected[] = $mailing->getAttachmentErrorMessage($res);
-                                    }
-                                }
-                            }
-                        } elseif ($_FILES['attachment']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
-                            Analog::log(
-                                $this->logo->getPhpErrorMessage($_FILES['attachment']['error'][$i]),
-                                Analog::WARNING
-                            );
-                            $error_detected[] = $this->logo->getPhpErrorMessage(
-                                $_FILES['attachment']['error'][$i]
-                            );
-                        }
-                    }
+                $res = $mailing->upload($request->getUploadedFiles(), 'attachment');
+                if (!$res) {
+                    $error_detected = array_merge($error_detected, $mailing->uploadErrors());
                 }
 
                 if (
@@ -352,8 +328,8 @@ class MailingsController extends CrudController
                 if ($sent == Mailing::MAIL_ERROR) {
                     $mailing->current_step = Mailing::STEP_START;
                     Analog::log(
-                        '[Mailings] Message was not sent. Errors: ' .
-                        print_r($mailing->errors, true),
+                        '[Mailings] Message was not sent. Errors: '
+                        . print_r($mailing->errors, true),
                         Analog::ERROR
                     );
                     foreach ($mailing->errors as $e) {
@@ -446,21 +422,21 @@ class MailingsController extends CrudController
 
         $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
 
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-                case 'reset':
-                    $mailhist->clean();
-                    //reinitialize object after flush
-                    $filters = new MailingsList();
-                    $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
-                    break;
-            }
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            case 'reset':
+                $mailhist->clean();
+                //reinitialize object after flush
+                $filters = new MailingsList();
+                $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
+                break;
+            default:
+                break;
         }
 
         $this->session->{$this->getFilterName('mailings')} = $filters;
@@ -475,12 +451,13 @@ class MailingsController extends CrudController
         $this->view->render(
             $response,
             'pages/mailings_list.html.twig',
-            array(
+            [
                 'page_title'        => _T("Mailings"),
                 'logs'              => $history_list,
                 'history'           => $mailhist,
-                'filters'           => $filters
-            )
+                'filters'           => $filters,
+                'documentation'     => 'usermanual/adherents.html#e-mailing'
+            ]
         );
         return $response;
     }
@@ -506,9 +483,7 @@ class MailingsController extends CrudController
         if (isset($post['clear_filter'])) {
             $filters->reinit();
         } else {
-            if (
-                (isset($post['nbshow']) && is_numeric($post['nbshow']))
-            ) {
+            if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
                 $filters->show = $post['nbshow'];
             }
 
@@ -697,8 +672,8 @@ class MailingsController extends CrudController
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
-                'sender'        => $mailing->getSenderName() . ' <' .
-                    $mailing->getSenderAddress() . '>',
+                'sender'        => $mailing->getSenderName() . ' <'
+                    . $mailing->getSenderAddress() . '>',
                 'attachments'   => $attachments
 
             ]

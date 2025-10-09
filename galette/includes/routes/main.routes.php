@@ -33,7 +33,7 @@ $app->get(
 $app->get(
     '/favicon.ico',
     [GaletteController::class, 'favicon']
-);
+)->setName('defaultFavicon');
 
 //logo route
 $app->get(
@@ -52,17 +52,6 @@ $app->get(
     '/photo/{id:\d+}',
     [ImagesController::class, 'photo']
 )->setName('photo');
-
-//system information - keep old route with typo ('s' on 'information') for now (0.9.4)
-$app->get(
-    '/system-informations',
-    function ($request, $response) use ($container) {
-        $routeparser = $container->get(\Slim\Routing\RouteParser::class);
-        return $response
-            ->withStatus(302)
-            ->withHeader('Location', $routeparser->urlFor('sysinfos'));
-    }
-);
 
 //system information
 $app->get(

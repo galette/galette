@@ -38,11 +38,9 @@ use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
 use Galette\Entity\Texts;
 use Galette\Filters\MembersList;
-use Galette\IO\News;
 use Galette\IO\Charts;
 use Galette\Repository\Members;
 use Galette\Repository\Reminders;
-use Analog\Analog;
 
 /**
  * Galette main controller
@@ -89,10 +87,11 @@ class GaletteController extends AbstractController
         $this->view->render(
             $response,
             'pages/sysinfos.html.twig',
-            array(
+            [
                 'page_title'    => _T("System information"),
-                'rawinfos'      => $raw_infos
-            )
+                'rawinfos'      => $raw_infos,
+                'documentation' => 'usermanual/avancee.html#galette-modes'
+            ]
         );
         return $response;
     }
@@ -107,13 +106,13 @@ class GaletteController extends AbstractController
      */
     public function dashboard(Request $request, Response $response): Response
     {
-        $news = new News($this->preferences->pref_rss_url);
-
+        $news = Galette::getNews();
         $params = [
             'page_title'        => _T("Dashboard"),
             'contentcls'        => 'desktop',
-            'news'              => $news->getPosts(),
-            'show_dashboard'    => $_COOKIE['show_galette_dashboard']
+            'news'              => $news,
+            'show_dashboard'    => $request->getCookieParams()['show_galette_dashboard'],
+            'documentation'     => 'usermanual'
         ];
 
         $hide_telemetry = true;
@@ -168,7 +167,7 @@ class GaletteController extends AbstractController
         }
 
         //List available themes
-        $themes = array();
+        $themes = [];
         $d = dir(GALETTE_THEMES_PATH);
         while (($entry = $d->read()) !== false) {
             $full_entry = GALETTE_THEMES_PATH . $entry;
@@ -200,30 +199,31 @@ class GaletteController extends AbstractController
         $this->view->render(
             $response,
             'pages/preferences.html.twig',
-            array(
+            [
                 'page_title'            => _T("Settings"),
                 'staff_members'         => $m->getStaffMembersList(true),
                 'time'                  => time(),
                 'pref'                  => $pref,
-                'pref_numrows_options'  => array(
+                'pref_numrows_options'  => [
                     10 => '10',
                     20 => '20',
                     50 => '50',
                     100 => '100'
-                ),
+                ],
                 'print_logo'            => $this->print_logo,
                 'required'              => $required,
                 'themes'                => $themes,
                 'statuts'               => $this->status->getList(),
-                'accounts_options'      => array(
+                'accounts_options'      => [
                     Members::ALL_ACCOUNTS       => _T("All accounts"),
                     Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
                     Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
-                ),
+                ],
                 'paymenttypes'          => $ptlist,
                 'osocials'              => new Social($this->zdb),
-                'tab'                   => $tab
-            )
+                'tab'                   => $tab,
+                'documentation'         => 'usermanual/preferences.html'
+            ]
         );
         return $response;
     }
@@ -253,66 +253,32 @@ class GaletteController extends AbstractController
                     );
                 }
 
-                // picture upload
-                if (!Galette::isDemo() && isset($_FILES['logo'])) {
-                    if ($_FILES['logo']['error'] === UPLOAD_ERR_OK) {
-                        if ($_FILES['logo']['tmp_name'] != '') {
-                            if (is_uploaded_file($_FILES['logo']['tmp_name'])) {
-                                $res = $this->logo->store($_FILES['logo']);
-                                if ($res < 0) {
-                                    $error_detected[] = $this->logo->getErrorMessage($res);
-                                } else {
-                                    $this->logo = new Logo();
-                                }
-                            }
+                if (!Galette::isDemo()) {
+                    $files = $request->getUploadedFiles();
+                    //handle logo
+                    if (isset($files['logo'])) {
+                        $file_res = $this->preferences->handleLogo($this->logo, $files['logo']);
+                        if (is_array($file_res)) {
+                            $error_detected = array_merge($error_detected, $file_res);
                         }
-                    } elseif ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                        Analog::log(
-                            $this->logo->getPhpErrorMessage($_FILES['logo']['error']),
-                            Analog::WARNING
-                        );
-                        $error_detected[] = $this->logo->getPhpErrorMessage(
-                            $_FILES['logo']['error']
-                        );
                     }
-                }
-
-                if (!Galette::isDemo() && isset($post['del_logo'])) {
-                    if (!$this->logo->delete()) {
+                    if (isset($post['del_logo']) && !$this->logo->delete()) {
                         $error_detected[] = _T("Delete failed");
-                    } else {
-                        $this->logo = new Logo(); //get default Logo
                     }
-                }
 
-                // Card logo upload
-                if (!Galette::isDemo() && isset($_FILES['card_logo'])) {
-                    if ($_FILES['card_logo']['error'] === UPLOAD_ERR_OK) {
-                        if ($_FILES['card_logo']['tmp_name'] != '') {
-                            if (is_uploaded_file($_FILES['card_logo']['tmp_name'])) {
-                                $res = $this->print_logo->store($_FILES['card_logo']);
-                                if ($res < 0) {
-                                    $error_detected[] = $this->print_logo->getErrorMessage($res);
-                                } else {
-                                    $this->print_logo = new PrintLogo();
-                                }
-                            }
+                    //handle card logo
+                    if (isset($files['card_logo'])) {
+                        $file_res = $this->preferences->handleLogo($this->print_logo, $files['card_logo']);
+                        if (is_array($file_res)) {
+                            $error_detected = array_merge($error_detected, $file_res);
                         }
-                    } elseif ($_FILES['card_logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                        Analog::log(
-                            $this->print_logo->getPhpErrorMessage($_FILES['card_logo']['error']),
-                            Analog::WARNING
-                        );
-                        $error_detected[] = $this->print_logo->getPhpErrorMessage(
-                            $_FILES['card_logo']['error']
-                        );
                     }
-                }
-
-                if (!Galette::isDemo() && isset($post['del_card_logo'])) {
-                    if (!$this->print_logo->delete()) {
+                    if (isset($post['del_card_logo']) && !$this->print_logo->delete()) {
                         $error_detected[] = _T("Delete failed");
-                    } else {
+                    }
+
+                    if (!count($error_detected)) {
+                        $this->logo = new Logo();
                         $this->print_logo = new PrintLogo();
                     }
                 }
@@ -331,11 +297,10 @@ class GaletteController extends AbstractController
                 }
             }
         }
-        if (isset($post['tab']) && $post['tab'] != 'general') {
-            $tab = '?tab=' . $post['tab'];
-        } else {
-            $tab = '';
-        }
+        $tab = isset($post['tab']) && $post['tab'] != 'general' ? '?tab=' . $post['tab'] : '';
+
+        // Reset dark mode CSS file if required
+        $this->preferences->resetDarkCss($this->flash);
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->routeparser->urlFor('preferences') . $tab);
@@ -359,14 +324,14 @@ class GaletteController extends AbstractController
             );
         } else {
             $get = $request->getQueryParams();
-            $dest = (isset($get['adress']) ? $get['adress'] : $this->preferences->pref_email_newadh);
+            $dest = ($get['adress'] ?? $this->preferences->pref_email_newadh);
             if (GaletteMail::isValidEmail($dest)) {
                 $mail = new GaletteMail($this->preferences);
                 $mail->setSubject(_T('Test message'));
                 $mail->setRecipients(
-                    array(
+                    [
                         $dest => _T("Galette admin")
-                    )
+                    ]
                 );
                 $mail->setMessage(_T('Test message.'));
                 $sent = $mail->send();
@@ -398,7 +363,7 @@ class GaletteController extends AbstractController
             }
         }
 
-        if (!($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')) {
+        if ($request->getHeaderLine('X-Requested-With') !== 'XMLHttpRequest') {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('preferences'));
@@ -423,24 +388,24 @@ class GaletteController extends AbstractController
     public function charts(Request $request, Response $response): Response
     {
         $charts = new Charts(
-            array(
+            [
                 Charts::MEMBERS_STATUS_PIE,
                 Charts::MEMBERS_STATEDUE_PIE,
                 Charts::CONTRIBS_TYPES_PIE,
                 Charts::COMPANIES_OR_NOT,
                 Charts::CONTRIBS_ALLTIME
-            )
+            ]
         );
 
         // display page
         $this->view->render(
             $response,
             'pages/charts.html.twig',
-            array(
+            [
                 'page_title'        => _T("Charts"),
                 'charts'            => $charts->getCharts(),
                 'require_charts'    => true
-            )
+            ]
         );
         return $response;
     }
@@ -458,12 +423,13 @@ class GaletteController extends AbstractController
         $fc = $this->fields_config;
 
         $params = [
-            'page_title'            => _T("Fields configuration"),
+            'page_title'            => _T("Core fields"),
             'time'                  => time(),
             'categories'            => FieldsCategories::getList($this->zdb),
             'categorized_fields'    => $fc->getCategorizedFields(),
             'non_required'          => $fc->getNonRequired(),
-            'perm_names'            => FieldsConfig::getPermissionsList()
+            'perm_names'            => FieldsConfig::getPermissionsList(),
+            'documentation'         => 'usermanual/configuration.html#mandatory-fields-and-access-rights'
         ];
 
         // display page
@@ -488,33 +454,24 @@ class GaletteController extends AbstractController
         $post = $request->getParsedBody();
         $fc = $this->fields_config;
 
-        $pos = 0;
         $current_cat = 0;
-        $res = array();
-        foreach ($post['fields'] as $abs_pos => $field) {
+        $res = [];
+        foreach ($post['fields'] as $field) {
             if ($current_cat != $post[$field . '_category']) {
-                //reset position when category has changed
-                $pos = 0;
                 //set new current category
                 $current_cat = $post[$field . '_category'];
             }
 
-            $required = null;
-            if (isset($post[$field . '_required'])) {
-                $required = $post[$field . '_required'];
-            } else {
-                $required = false;
-            }
+            $required = $post[$field . '_required'] ?? false;
 
-            $res[$current_cat][] = array(
+            $res[$current_cat][] = [
                 'field_id'      =>  $field,
                 'label'         =>  htmlspecialchars($post[$field . '_label'], ENT_QUOTES),
                 'category'      =>  $post[$field . '_category'],
                 'visible'       =>  $post[$field . '_visible'],
                 'required'      =>  $required,
                 'width_in_forms'  =>  $post[$field . '_width_in_forms'] ?? 1
-            );
-            $pos++;
+            ];
         }
         //okay, we've got the new array, we send it to the
         //Object that will store it in the database
@@ -548,17 +505,16 @@ class GaletteController extends AbstractController
      */
     public function configureListFields(Request $request, Response $response, string $table): Response
     {
-        //TODO: check if type table exists
-
         $lc = $this->lists_config;
 
         $params = [
-            'page_title'    => _T("Lists configuration"),
+            'page_title'    => _T("Core lists"),
             'table'         => $table,
             'time'          => time(),
             'listed_fields' => $lc->getListedFields(),
             'remaining_fields'  => $lc->getRemainingFields(),
-            'permissions' => $lc::getPermissionsList()
+            'permissions' => $lc::getPermissionsList(),
+            'documentation'  => 'usermanual/configuration.html#list-fields'
         ];
 
         // display page
@@ -618,10 +574,10 @@ class GaletteController extends AbstractController
     {
         $texts = new Texts($this->preferences, $this->routeparser);
 
-        $previews = array(
+        $previews = [
             'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
             'late'      => $texts->getTexts('lateduedate', $this->preferences->pref_lang)
-        );
+        ];
 
         $members = new Members();
         $reminders = $members->getRemindersCount();
@@ -636,7 +592,8 @@ class GaletteController extends AbstractController
                 'count_impending'           => $reminders['impending'],
                 'count_impending_nomail'    => $reminders['nomail']['impending'],
                 'count_late'                => $reminders['late'],
-                'count_late_nomail'         => $reminders['nomail']['late']
+                'count_late_nomail'         => $reminders['nomail']['late'],
+                'documentation'             => 'usermanual/contributions.html#reminders'
             ]
         );
         return $response;
@@ -665,7 +622,7 @@ class GaletteController extends AbstractController
         $reminders = new Reminders($selected);
 
         $labels = false;
-        $labels_members = array();
+        $labels_members = [];
         if (isset($post['reminder_wo_mail'])) {
             $labels = true;
         }
@@ -766,12 +723,12 @@ class GaletteController extends AbstractController
         $filters = new MembersList();
         $filters->filter_account = Members::ACTIVE_ACCOUNT;
 
-        $membership = ($membership === 'nearly' ?
-            Members::MEMBERSHIP_NEARLY : Members::MEMBERSHIP_LATE);
+        $membership = ($membership === 'nearly'
+            ? Members::MEMBERSHIP_NEARLY : Members::MEMBERSHIP_LATE);
         $filters->membership_filter = $membership;
 
-        $mail = ($mail === 'withmail' ?
-            Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
+        $mail = ($mail === 'withmail'
+            ? Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
         $filters->email_filter = $mail;
 
         $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
@@ -796,16 +753,16 @@ class GaletteController extends AbstractController
         $this->view->render(
             $response,
             'pages/directlink.html.twig',
-            array(
+            [
                 'hash'          => $hash,
                 'page_title'    => _T('Download document')
-            )
+            ]
         );
         return $response;
     }
 
     /**
-     * Main route
+     * Favicon route
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response

@@ -86,8 +86,8 @@ class Links
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error has occurred removing old temporary link ' .
-                $e->getMessage(),
+                'An error has occurred removing old temporary link '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -129,12 +129,12 @@ class Links
             $code = $result->email_adh;
             $hash = password_hash($code, PASSWORD_BCRYPT);
 
-            $values = array(
+            $values = [
                 'target'        => $target,
                 'id'            => $id,
                 'creation_date' => date('Y-m-d H:i:s'),
                 'hash'          => $hash
-            );
+            ];
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
@@ -147,8 +147,8 @@ class Links
             return base64_encode($hash);
         } catch (Throwable $e) {
             Analog::log(
-                "An error occurred trying to add temporary link entry. " .
-                $e->getMessage(),
+                "An error occurred trying to add temporary link entry. "
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -189,8 +189,8 @@ class Links
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred deleting expired temporary links. ' .
-                $e->getMessage(),
+                'An error occurred deleting expired temporary links. '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -210,7 +210,7 @@ class Links
         try {
             $hash = base64_decode($hash);
             $select = $this->zdb->select(self::TABLE);
-            $select->where(array('hash' => $hash));
+            $select->where(['hash' => $hash]);
 
             $date = $this->getExpirationDate();
             $select->where->greaterThanOrEqualTo(

@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Repository;
 
-use ArrayObject;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
 use Throwable;
@@ -63,11 +62,7 @@ class SavedSearches
         $this->zdb = $zdb;
         $this->login = $login;
 
-        if ($filters === null) {
-            $this->filters = new SavedSearchesList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters ?? new SavedSearchesList();
     }
 
     /**
@@ -86,7 +81,7 @@ class SavedSearches
             $select = $this->buildSelect($fields);
             $this->filters->setLimits($select);
 
-            $searches = array();
+            $searches = [];
             $results = $this->zdb->execute($select);
             if ($as_search) {
                 foreach ($results as $row) {
@@ -157,9 +152,9 @@ class SavedSearches
             $countSelect->reset($countSelect::JOINS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     self::PK => new Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);
@@ -184,8 +179,8 @@ class SavedSearches
      */
     private function buildOrderClause(): array
     {
-        $order = array();
-        $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
+        $order = [];
+        $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
 
         return $order;
     }
@@ -211,7 +206,7 @@ class SavedSearches
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
-        $list = array();
+        $list = [];
         if (is_numeric($ids)) {
             //we've got only one identifier
             $list[] = $ids;
@@ -250,8 +245,8 @@ class SavedSearches
                     $this->zdb->connection->rollBack();
                 }
                 Analog::log(
-                    'An error occurred trying to remove searches | ' .
-                    $e->getMessage(),
+                    'An error occurred trying to remove searches | '
+                    . $e->getMessage(),
                     Analog::ERROR
                 );
                 throw $e;

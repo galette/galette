@@ -27,6 +27,9 @@ use Analog\Analog;
 use ArrayObject;
 use Galette\Entity\Adherent;
 use Galette\IO\File;
+use Galette\IO\FileTrait;
+use PHPMailer\PHPMailer\PHPMailer;
+use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * Mailing features
@@ -41,11 +44,11 @@ use Galette\IO\File;
  * @property integer|string $id
  * @property-read string $alt_message
  * @property-read string $wrapped_message
- * @property-read \PHPMailer\PHPMailer\PHPMailer $mail
+ * @property-read PHPMailer $mail
  * @property-read string[] $errors
  * @property-read Adherent[] $recipients
  * @property-read Adherent[] $unreachables
- * @property-read string|false $tmp_path
+ * @property-read string|false|null $tmp_path
  * @property File[] $attachments
  * @property-read string $sender_name
  * @property-read string $sender_address
@@ -53,6 +56,8 @@ use Galette\IO\File;
  */
 class Mailing extends GaletteMail
 {
+    use FileTrait;
+
     public const STEP_START = 0;
     public const STEP_PREVIEW = 1;
     public const STEP_SEND = 2;
@@ -65,9 +70,9 @@ class Mailing extends GaletteMail
     private string|int $id;
 
     /** @var array<int, Adherent> */
-    private array $unreachables = array();
+    private array $unreachables = [];
     /** @var array<int, Adherent> */
-    private array $mrecipients = array();
+    private array $mrecipients = [];
     private int $current_step;
 
     private string $mime_type;
@@ -187,7 +192,7 @@ class Mailing extends GaletteMail
             $orig_recipients = [];
         }
 
-        $_recipients = array();
+        $_recipients = [];
         $mdeps = ['parent' => true];
         foreach ($orig_recipients as $k => $v) {
             $m = new Adherent($zdb, $k, $mdeps);
@@ -196,7 +201,7 @@ class Mailing extends GaletteMail
         $this->setRecipients($_recipients);
         $this->subject = $rs->mailing_subject;
         $this->message = $rs->mailing_body;
-        $this->html = $this->message != strip_tags($this->message) ? true : false;
+        $this->html = $this->message != strip_tags($this->message);
         if ($rs->mailing_sender_name !== null || $rs->mailing_sender_address !== null) {
             $this->setSender(
                 $rs->mailing_sender_name,
@@ -206,7 +211,7 @@ class Mailing extends GaletteMail
         //if mailing has already been sent, generate a new id and copy attachments
         if ($rs->mailing_sent && $new) {
             $this->generateNewId();
-            $this->copyAttachments($rs->mailing_id);
+            $this->copyAttachments((int)$rs->mailing_id);
         } else {
             $this->tmp_path = null;
             $this->id = (int)$rs->mailing_id;
@@ -243,7 +248,7 @@ class Mailing extends GaletteMail
                 //create directory
                 mkdir($dest_dir);
                 //copy attachments from source mailing and populate attachments
-                $this->attachments = array();
+                $this->attachments = [];
                 $files = glob($source_dir . '*.*');
                 foreach ($files as $file) {
                     $f = new File($source_dir);
@@ -267,7 +272,7 @@ class Mailing extends GaletteMail
      */
     public function send(): int
     {
-        $m = array();
+        $m = [];
         foreach ($this->mrecipients as $member) {
             $email = $member->getEmail();
             $m[$email] = $member->sname;
@@ -286,9 +291,9 @@ class Mailing extends GaletteMail
      */
     public function setRecipients(array $members): bool //@phpstan-ignore-line
     {
-        $m = array();
-        $this->mrecipients = array();
-        $this->unreachables = array();
+        $m = [];
+        $this->mrecipients = [];
+        $this->unreachables = [];
 
         foreach ($members as $member) {
             $email = $member->getEmail();
@@ -298,10 +303,8 @@ class Mailing extends GaletteMail
                     $this->mrecipients[] = $member;
                 }
                 $m[$email] = $member->sname;
-            } else {
-                if (!in_array($member, $this->unreachables)) {
-                    $this->unreachables[] = $member;
-                }
+            } elseif (!in_array($member, $this->unreachables)) {
+                $this->unreachables[] = $member;
             }
         }
         return parent::setRecipients($m);
@@ -310,11 +313,11 @@ class Mailing extends GaletteMail
     /**
      * Store mailing attachments
      *
-     * @param array<string, string|int> $files Array of uploaded files to store
+     * @param UploadedFileInterface $file Uploaded file
      *
      * @return true|int error code
      */
-    public function store(array $files): bool|int
+    public function storeFile(UploadedFileInterface $file): bool|int
     {
         if ($this->tmp_path === null) {
             $this->generateTmpPath();
@@ -333,7 +336,7 @@ class Mailing extends GaletteMail
 
         //store files
         $attachment = new File($this->tmp_path);
-        $res = $attachment->store($files);
+        $res = $attachment->storeFile($file);
         if ($res < 0) {
             return $res;
         } else {
@@ -359,8 +362,8 @@ class Mailing extends GaletteMail
         ) {
             foreach ($this->attachments as &$attachment) {
                 $old_path = $attachment->getDestDir() . $attachment->getFileName();
-                $new_path = GALETTE_ATTACHMENTS_PATH . $id . '/' .
-                    $attachment->getFileName();
+                $new_path = GALETTE_ATTACHMENTS_PATH . $id . '/'
+                    . $attachment->getFileName();
                 if (!file_exists(GALETTE_ATTACHMENTS_PATH . $id)) {
                     mkdir(GALETTE_ATTACHMENTS_PATH . $id);
                 }
@@ -505,7 +508,7 @@ class Mailing extends GaletteMail
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array('ordered');
+        $forbidden = ['ordered'];
         if (!in_array($name, $forbidden)) {
             switch ($name) {
                 case 'alt_message':
@@ -533,6 +536,7 @@ class Mailing extends GaletteMail
                         //no attachments
                         return false;
                     }
+                    // no break
                 case 'attachments':
                     return $this->attachments;
                 case 'sender_name':
@@ -543,14 +547,14 @@ class Mailing extends GaletteMail
                     return $this->$name;
                 default:
                     Analog::log(
-                        '[' . get_class($this) . 'Trying to get ' . $name,
+                        '[' . static::class . 'Trying to get ' . $name,
                         Analog::DEBUG
                     );
                     return $this->$name;
             }
         } else {
             Analog::log(
-                '[' . get_class($this) . 'Unable to get ' . $name,
+                '[' . static::class . '] Unable to get ' . $name,
                 Analog::ERROR
             );
             return false;
@@ -567,7 +571,7 @@ class Mailing extends GaletteMail
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array('ordered');
+        $forbidden = ['ordered'];
         if (!in_array($name, $forbidden)) {
             switch ($name) {
                 case 'alt_message':
@@ -613,9 +617,9 @@ class Mailing extends GaletteMail
                     $this->isHTML($value);
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '] Value for field `' . $name .
-                        '` should be boolean - (' . gettype($value) . ')' .
-                        $value . ' given',
+                        '[' . static::class . '] Value for field `' . $name
+                        . '` should be boolean - (' . gettype($value) . ')'
+                        . $value . ' given',
                         Analog::WARNING
                     );
                 }
@@ -628,12 +632,12 @@ class Mailing extends GaletteMail
                     || $value == self::STEP_SEND
                     || $value == self::STEP_SENT)
                 ) {
-                    $this->current_step = (int)$value;
+                    $this->current_step = $value;
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '] Value for field `' . $name .
-                        '` should be integer and know - (' . gettype($value) . ')' .
-                        $value . ' given',
+                        '[' . static::class . '] Value for field `' . $name
+                        . '` should be integer and know - (' . gettype($value) . ')'
+                        . $value . ' given',
                         Analog::WARNING
                     );
                 }
@@ -643,7 +647,7 @@ class Mailing extends GaletteMail
                 break;
             default:
                 Analog::log(
-                    '[' . get_class($this) . '] Unable to set property `' . $name . '`',
+                    '[' . static::class . '] Unable to set property `' . $name . '`',
                     Analog::WARNING
                 );
         }

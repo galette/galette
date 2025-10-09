@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace Galette\Filters;
 
 use Galette\Helpers\DatesHelper;
-use Throwable;
 use Analog\Analog;
 use Galette\Core\Pagination;
 
@@ -82,7 +81,7 @@ class ContributionsList extends Pagination
     private array $selected = [];
 
     /** @var array<string> */
-    protected array $list_fields = array(
+    protected array $list_fields = [
         'start_date_filter',
         'end_date_filter',
         'filtre_cotis_adh',
@@ -94,13 +93,13 @@ class ContributionsList extends Pagination
         'from_transaction',
         'max_amount',
         'selected'
-    );
+    ];
 
     /** @var array<string>  */
-    protected array $virtuals_list_fields = array(
+    protected array $virtuals_list_fields = [
         'rstart_date_filter',
         'rend_date_filter'
-    );
+    ];
 
     /**
      * Default constructor
@@ -157,27 +156,25 @@ class ContributionsList extends Pagination
     {
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
-        } else {
-            if (in_array($name, $this->list_fields) || in_array($name, $this->virtuals_list_fields)) {
-                switch ($name) {
-                    case 'start_date_filter':
-                    case 'end_date_filter':
-                        return $this->getDate($name);
-                    case 'rstart_date_filter':
-                    case 'rend_date_filter':
-                        //same as above, but raw format
-                        $rname = substr($name, 1);
-                        return $this->getDate($rname, true, false);
-                    default:
-                        return $this->$name;
-                }
+        } elseif (in_array($name, $this->list_fields) || in_array($name, $this->virtuals_list_fields)) {
+            switch ($name) {
+                case 'start_date_filter':
+                case 'end_date_filter':
+                    return $this->getDate($name);
+                case 'rstart_date_filter':
+                case 'rend_date_filter':
+                    //same as above, but raw format
+                    $rname = substr($name, 1);
+                    return $this->getDate($rname, true, false);
+                default:
+                    return $this->$name;
             }
         }
 
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );

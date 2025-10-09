@@ -23,21 +23,21 @@
         <table id="listing" class="select_members ui celled striped table">
             <thead>
                 <tr>
-                    <th class="listing id_row">#</th>
+                    <th class="listing id_row collapsing">#</th>
                     <th class="listing left">
                         {{ _T("Name") }}
                     </th>
                     <th class="listing left">
                         {{ _T("Manager(s)") }}
                     </th>
-                    <th class="listing"></th>
+                    <th class="listing collapsing"></th>
                 </tr>
             </thead>
             <tbody>
 {% for group in groups_list %}
     {% set managers = group.getManagers() %}
                 <tr>
-                    <td class="right">{{ group.getId() }}</td>
+                    <td class="right collapsing">{{ group.getId() }}</td>
                     <td class="username_row">
                         <a href="{{ url_for('groups', {'id': group.getId()}) }}">{{ group.getName() }}</a>
                     </td>
@@ -47,7 +47,7 @@
                         {{ manager.sname }}
     {% endfor %}
                     </td>
-                    <td class="right">{{ _T("%membercount members")|replace({'%membercount': group.getMemberCount(true)}) }}</td>
+                    <td class="right collapsing">{{ _T("%membercount members")|replace({'%membercount': group.getMemberCount(true)}) }}</td>
                 </tr>
 {% else %}
                 <tr><td colspan="3" class="emptylist">{{ _T("no group") }}</td></tr>

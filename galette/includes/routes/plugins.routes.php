@@ -48,7 +48,7 @@ $app->group(
                     'woff'  => 'application/font-woff',
                     'woff2' => 'application/font-woff2'
                 ];
-                if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
+                if (!str_contains($path, '../') && isset($auth_ext[$ext])) {
                     $file = $container->get('plugins')->getFile(
                         $plugin,
                         $path
@@ -105,7 +105,7 @@ $app->group(
                     )->setName($module['route'] . 'Info')->add($authenticate);
 
                     $f = $module['root'] . '/_routes.php';
-                    include_once $f;
+                    require $f;
                 }
             );
         }

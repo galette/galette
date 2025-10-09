@@ -31,31 +31,31 @@
         <table class="listing ui celled striped table">
             <thead>
                 <tr>
-                    <th class="id_row">#</th>
+                    <th class="id_row collapsing">#</th>
                     <th>{{ _T("Name") }}</th>
                     <th>{{ _T("Permissions") }}</th>
                     <th class="date_row">{{ _T("Type") }}</th>
-                    <th class="date_row">{{ _T("Required") }}</th>
+                    <th class="date_row{% if preferences.pref_member_form_grid == 'one' %} collapsing{% endif %}">{{ _T("Required") }}</th>
 {% if preferences.pref_member_form_grid != 'one' %}
-                    <th class="date_row">{{ _T("Width in forms") }}</th>
+                    <th class="date_row collapsing">{{ _T("Width in forms") }}</th>
 {% endif %}
-                    <th>{{ _T("Actions") }}</th>
+                    <th class="collapsing">{{ _T("Actions") }}</th>
                 </tr>
             </thead>
             <tbody>
 {% for field in fields_list %}
                 <tr>
-                    <td data-scope="id" class="collapsing">{{ field.getIndex() }}</td>
+                    <td class="collapsing" data-scope="id">{{ field.getIndex() }}</td>
                     <td class="left" data-scope="row">{{ field.getName()|escape }}</td>
                     <td class="left" data-col-label="{{ _T("Permissions") }}">{{ field.getPermissionName() }}</td>
                     <td class="left" data-col-label="{{ _T("Type") }}">{{ field.getTypeName() }}</td>
-                    <td data-col-label="{{ _T("Required") }}">
+                    <td{% if preferences.pref_member_form_grid == 'one' %} class="collapsing"{% endif %} data-col-label="{{ _T("Required") }}">
     {% if field.getType != 0 %}
         {% if field.isRequired() %}{{ _T("Yes") }}{% else %}{{ _T("No") }}{% endif %}
     {% endif %}
                     </td>
     {% if preferences.pref_member_form_grid != 'one' %}
-                    <td class="left" data-col-label="{{ _T("Width in forms") }}">
+                    <td class="left collapsing" data-col-label="{{ _T("Width in forms") }}">
         {% if preferences.pref_member_form_grid == 'three' and field.getWidthInForms() == 3  %}
                         {{ _T("Half") }}
         {% elseif field.getWidthInForms() == 2 %}
@@ -65,7 +65,7 @@
         {% endif %}
                     </td>
     {% endif %}
-                    <td class="center actions_row">
+                    <td class="center actions_row collapsing">
                         <a
                             href="{{ url_for('editDynamicField', {'form_name': form_name, 'id': field.getId()}) }}"
                             class="action single-edit"

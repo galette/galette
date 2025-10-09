@@ -74,7 +74,7 @@ class I18n
                 $preferred_locales = array_reduce(
                     explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']),
                     function ($res, $el) {
-                        list($l, $q) = array_merge(explode(';q=', $el), [1]);
+                        [$l, $q] = array_merge(explode(';q=', $el), [1]);
                         $res[$l] = (float)$q;
                         return $res;
                     },
@@ -166,7 +166,7 @@ class I18n
      */
     public function getList(): array
     {
-        $result = array();
+        $result = [];
         foreach (array_keys($this->langs) as $id) {
             $result[] = new I18n((string)$id);
         }
@@ -182,13 +182,8 @@ class I18n
     public function getArrayList(): array
     {
         $list = $this->getList();
-        $al = array();
+        $al = [];
         foreach ($list as $l) {
-            //FIXME: should use mb with something like:
-            //$strlen = mb_strlen($string, $encoding);
-            //$firstChar = mb_substr($string, 0, 1, $encoding);
-            //$then = mb_substr($string, 1, $strlen - 1, $encoding);
-            //return mb_strtoupper($firstChar, $encoding) . $then;
             $al[$l->getID()] = $l->getName();
         }
         return $al;
@@ -255,7 +250,7 @@ class I18n
     }
 
     /**
-     * Is a string seem to be UTF-8 one ?
+     * Does string seem to be encoded as UTF-8?
      *
      * @param string $str string to analyze
      *
@@ -314,5 +309,27 @@ class I18n
             $this->getAbbrev(),
             $this->rtl_langs
         );
+    }
+
+    /**
+     * Get current online documentation base URL
+     *
+     * @return string current online documentation base URL (language and branch included)
+     */
+    public function getDocumentationBaseUrl(): string
+    {
+        $url = 'https://doc.galette.eu/';
+        $lang = $this->abbrev . '/';
+        $branch = (str_contains(Galette::gitVersion(), '-git') ? 'develop' : 'master') . '/';
+        $not_translated = [
+            'ota',
+            'si'
+        ];
+        if (in_array($this->abbrev, $not_translated)) {
+            $lang = 'en/';
+        } elseif ($this->abbrev == 'nb') {
+            $lang = 'no/';
+        }
+        return $url . $lang . $branch;
     }
 }

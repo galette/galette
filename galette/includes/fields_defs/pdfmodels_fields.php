@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 use Galette\Entity\PdfModel;
 
-$pdfmodels_fields = array(
-    array(
+$pdfmodels_fields = [
+    [
         'model_id'  => PdfModel::MAIN_MODEL,
         'model_name'    => '_T("Main")',
         'model_title'   => null,
@@ -86,8 +86,8 @@ hr {
     phase:\'\';
 }',
         'model_parent'  => null
-    ),
-    array(
+    ],
+    [
         'model_id'  => PdfModel::INVOICE_MODEL,
         'model_name'    => '_T("Invoice")',
         'model_title'   => '_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
@@ -131,8 +131,8 @@ hr {
 </table>',
         'model_styles'  => null,
         'model_parent'  => PdfModel::MAIN_MODEL
-    ),
-    array(
+    ],
+    [
         'model_id'  => PdfModel::RECEIPT_MODEL,
         'model_name'    => '_T("Receipt")',
         'model_title'   => '_T("Receipt") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
@@ -176,8 +176,8 @@ hr {
 </table>',
         'model_styles'  => null,
         'model_parent'  => PdfModel::MAIN_MODEL
-    ),
-    array(
+    ],
+    [
         'model_id'  => PdfModel::ADHESION_FORM_MODEL,
         'model_name'    => '_T("Adhesion form")',
         'model_title'   => '_T("Adhesion form")',
@@ -312,5 +312,5 @@ td.box {
     width: 5%;
 }',
         'model_parent'  => PdfModel::MAIN_MODEL
-    )
-);
+    ]
+];

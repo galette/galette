@@ -40,7 +40,7 @@ $app->get(
 $app->post(
     '/{type:contributions|transactions}/filter',
     [Crud\ContributionsController::class, 'filter']
-)->setName('payments_filter')->add($authenticate);
+)->setName('filterContributions')->add($authenticate);
 
 $app->get(
     '/contribution/{type:' . Contribution::TYPE_FEE . '|' . Contribution::TYPE_DONATION . '}/add',
@@ -155,6 +155,11 @@ $app->get(
     '/scheduled-payments/mine',
     [Crud\ScheduledPaymentController::class, 'myList']
 )->setName('myScheduledPayments')->add($authenticate);
+
+$app->post(
+    '/scheduled-payments/mine/filter',
+    [Crud\ScheduledPaymentController::class, 'myFilter']
+)->setName('filterMyScheduledPayments')->add($authenticate);
 
 $app->get(
     '/scheduled-payments[/{option:page|order|member}/{value:\d+|all}]',

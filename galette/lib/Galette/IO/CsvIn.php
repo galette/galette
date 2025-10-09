@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
-use DI\Attribute\Inject;
 use Galette\Core\I18n;
 use Galette\Entity\Title;
 use Throwable;
@@ -44,7 +43,7 @@ use Galette\Repository\Members;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class CsvIn extends Csv implements FileInterface
+class CsvIn extends Csv
 {
     use FileTrait;
 
@@ -52,12 +51,12 @@ class CsvIn extends Csv implements FileInterface
     public const DATA_IMPORT_ERROR = -10;
 
     /** @var array<string> */
-    protected array $extensions = array('csv', 'txt');
+    protected array $extensions = ['csv', 'txt'];
 
     /** @var array<string> */
     private array $fields;
     /** @var array<string> */
-    private array $default_fields = array(
+    private array $default_fields = [
         'nom_adh',
         'prenom_adh',
         'ddn_adh',
@@ -76,7 +75,7 @@ class CsvIn extends Csv implements FileInterface
         'id_statut',
         'info_public_adh',
         'info_adh'
-    );
+    ];
 
     private bool $dryrun = true;
 
@@ -94,27 +93,26 @@ class CsvIn extends Csv implements FileInterface
     private array $langs;
     /** @var array<string,int> */
     private array $emails;
-    private Db $zdb;
     private Preferences $preferences;
     private History $history;
-    #[Inject]
-    private Status $status; // @phpstan-ignore property.onlyRead (this is what's expected here)
 
     /**
      * Default constructor
      *
-     * @param Db $zdb Database
+     * @param Db     $zdb    Database
+     * @param Status $status Status instance
      */
-    public function __construct(Db $zdb)
-    {
-        $this->zdb = $zdb;
+    public function __construct(
+        private Db $zdb,
+        private readonly Status $status
+    ) {
         $this->init(
             self::DEFAULT_DIRECTORY,
             $this->extensions,
-            array(
+            [
                 'csv'    =>    'text/csv',
                 'txt'    =>    'text/plain'
-            ),
+            ],
             2048
         );
 
@@ -174,10 +172,6 @@ class CsvIn extends Csv implements FileInterface
             !file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
         ) {
-            Analog::log(
-                'File ' . $filename . ' does not exists or cannot be read.',
-                Analog::ERROR
-            );
             $this->addError(
                 str_replace(
                     '%filename',
@@ -248,7 +242,7 @@ class CsvIn extends Csv implements FileInterface
             $this->members_fields_cats
         );
         $config_required = $fc->getRequired();
-        $this->required = array();
+        $this->required = [];
 
         foreach (array_keys($config_required) as $field) {
             if (in_array($field, $this->fields)) {
@@ -278,10 +272,11 @@ class CsvIn extends Csv implements FileInterface
             $count = count($data);
             if ($count != $cnt_fields) {
                 $this->addError(
-                    str_replace(
-                        array('%should_count', '%count', '%row'),
-                        array((string)$cnt_fields, (string)$count, (string)$row),
-                        _T("Fields count mismatch... There should be %should_count fields and there are %count (row %row)")
+                    sprintf(
+                        _T('Fields count mismatch... There should be %1$s fields and there are %2$s (row %3$s)'),
+                        (string)$cnt_fields,
+                        (string)$count,
+                        (string)$row
                     )
                 );
                 return false;
@@ -301,8 +296,8 @@ class CsvIn extends Csv implements FileInterface
                     ) {
                         $this->addError(
                             str_replace(
-                                array('%field', '%row'),
-                                array($this->fields[$col], (string)$row),
+                                ['%field', '%row'],
+                                [$this->fields[$col], (string)$row],
                                 _T("Field %field is required, but missing in row %row")
                             )
                         );
@@ -359,8 +354,9 @@ class CsvIn extends Csv implements FileInterface
                         }
                         if (isset($this->emails[$column])) {
                             $existing = $this->emails[$column];
-                            $extra = ($existing == -1 ?
-                                _T("from another member in import") : str_replace('%id_adh', (string)$existing, _T("from member %id_adh"))
+                            $extra = (
+                                $existing == -1
+                                ? _T("from another member in import") : str_replace('%id_adh', (string)$existing, _T("from member %id_adh"))
                             );
                             $this->addError(
                                 str_replace(
@@ -386,17 +382,15 @@ class CsvIn extends Csv implements FileInterface
                         }
                         if (empty($column)) {
                             $column = $this->preferences->pref_lang;
-                        } else {
-                            if (!isset($this->langs[$column])) {
-                                $this->addError(
-                                    str_replace(
-                                        '%lang',
-                                        $column,
-                                        _T("Lang %lang does not exists!")
-                                    )
-                                );
-                                return false;
-                            }
+                        } elseif (!isset($this->langs[$column])) {
+                            $this->addError(
+                                str_replace(
+                                    '%lang',
+                                    $column,
+                                    _T("Lang %lang does not exists!")
+                                )
+                            );
+                            return false;
                         }
                     }
 
@@ -405,7 +399,7 @@ class CsvIn extends Csv implements FileInterface
                         $this->fields['mdp_adh2'] = $column;
                     }
 
-                    if (substr($this->fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
+                    if (str_starts_with($this->fields[$col], 'dynfield_')) {
                         //dynamic field, keep to check later
                         $dfields[$this->fields[$col] . '_1'] = $column;
                     } else {
@@ -442,7 +436,7 @@ class CsvIn extends Csv implements FileInterface
         }
         fclose($handle);
 
-        if (!($row > 1)) {
+        if ($row <= 1) {
             //no data in file, just headers line
             $this->addError(
                 _T("File is empty!")
@@ -479,7 +473,7 @@ class CsvIn extends Csv implements FileInterface
             ) {
                 if ($row > 0) {
                     $col = 0;
-                    $values = array();
+                    $values = [];
                     foreach ($data as $column) {
                         if (substr($this->fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
                             //dynamic field, keep to check later
@@ -535,8 +529,8 @@ class CsvIn extends Csv implements FileInterface
                             if ($store !== true) {
                                 $this->addError(
                                     str_replace(
-                                        array('%row', '%name'),
-                                        array((string)$row, $member->sname),
+                                        ['%row', '%name'],
+                                        [(string)$row, $member->sname],
                                         _T("An error occurred storing member at row %row (%name):")
                                     )
                                 );
@@ -546,8 +540,8 @@ class CsvIn extends Csv implements FileInterface
                     } else {
                         $this->addError(
                             str_replace(
-                                array('%row', '%name'),
-                                array((string)$row, $member->sname),
+                                ['%row', '%name'],
+                                [(string)$row, $member->sname],
                                 _T("An error occurred storing member at row %row (%name):")
                             )
                         );

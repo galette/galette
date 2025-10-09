@@ -41,7 +41,6 @@ class Telemetry
     private Db $zdb;
     private Preferences $prefs;
     private Plugins $plugins;
-    private bool $quick = false;
 
     /**
      * Constructor
@@ -268,17 +267,10 @@ class Telemetry
             CURLOPT_POSTFIELDS      => $infos,
             CURLOPT_HTTPHEADER      => ['Content-Type:application/json']
         ];
-        if ($this->quick === true) {
-            //set entire curl call timeout
-            $opts[CURLOPT_TIMEOUT] = 3;
-            //set curl connection timeout
-            $opts[CURLOPT_CONNECTTIMEOUT] = 2;
-        }
 
         curl_setopt_array($ch, $opts);
         $content = json_decode(curl_exec($ch));
         $errstr = curl_error($ch);
-        curl_close($ch);
 
         if ($content && property_exists($content, 'message')) {
             if (property_exists($content, 'errors')) {
@@ -393,22 +385,8 @@ class Telemetry
     {
         $now = new \DateTime();
         $sent = new \DateTime($this->prefs->pref_telemetry_date);
-        $sent->add(new \DateInterval('P1Y')); // ask to resend telemetry after one year
-        if ($now > $sent && !isset($_COOKIE['renew_telemetry'])) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Set quick mode
-     * Will set a short timeout on curl calls
-     *
-     * @return self
-     */
-    public function setQuick(): self
-    {
-        $this->quick = true;
-        return $this;
+        $sent->add(new \DateInterval('P1Y'));
+        // ask to resend telemetry after one year
+        return $now > $sent && !isset($_COOKIE['renew_telemetry']);
     }
 }

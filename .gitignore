@@ -56,6 +56,8 @@ quick_gen_project_*
 # /galette/plugins/
 /galette/plugins/*
 !/galette/plugins/readme.txt
+/galette/data/plugins/*
+!/galette/data/plugins/readme.txt
 
 # /galette/data/tempimages/
 /galette/data/tempimages/*.png
@@ -100,3 +102,6 @@ build/
 #Working stuff
 dbs/
 dist/
+
+#local CS configuration files
+.php-cs-fixer.php

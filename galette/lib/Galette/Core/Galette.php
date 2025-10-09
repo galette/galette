@@ -26,7 +26,9 @@ namespace Galette\Core;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Document;
+use Galette\IO\News;
 use Galette\Util\Release;
+use Psr\Container\ContainerInterface;
 use RuntimeException;
 
 /**
@@ -41,6 +43,8 @@ class Galette
     public const MODE_MAINT = 'MAINT';
     public const MODE_DEMO = 'DEMO';
 
+    public const RSS_URL = 'https://galette.eu/dc/index.php/feed/atom';
+
     /**
      * Retrieve Galette version from git, if present.
      *
@@ -54,7 +58,7 @@ class Galette
 
         //used for both git and nightly installs
         $version = str_replace('-dev', '-git', GALETTE_VERSION);
-        if (strstr($version, '-git') === false) {
+        if (!str_contains($version, '-git')) {
             $version .= '-git';
         }
 
@@ -82,6 +86,13 @@ class Galette
      */
     public static function getNewRelease(): array
     {
+        if (defined('GALETTE_TESTS')) {
+            return [
+                'new' => false,
+                'version' => GALETTE_VERSION
+            ];
+        }
+
         $release = new Release();
         return [
             'new' => $release->checkNewRelease(),
@@ -112,8 +123,9 @@ class Galette
          * @var Login $login
          * @var Preferences $preferences
          * @var Plugins $plugins
+         * @var ContainerInterface $container
          */
-        global $login, $preferences, $plugins;
+        global $login, $preferences, $plugins, $container;
 
         $menus = [];
 
@@ -207,13 +219,22 @@ class Galette
                 || $login->isStaff()
                 || ($login->isGroupManager() && $preferences->pref_bool_groupsmanagers_create_member)
             ) {
-                $menus['members']['items'][] = [
-                    'label' => _T("Add a member"),
-                    'title' => _T("Add new member in database"),
-                    'route' => [
-                        'name' => 'addMember'
+                $menus['members']['items'] = array_merge($menus['members']['items'], [
+                    [
+                        'label' => _T("Add a member"),
+                        'title' => _T("Add new member in database"),
+                        'route' => [
+                            'name' => 'addMember'
+                        ]
+                    ],
+                    [
+                        'label' => _T("Empty adhesion form"),
+                        'title' => _T("Download empty adhesion form"),
+                        'route' => [
+                            'name' => 'emptyAdhesionForm'
+                        ]
                     ]
-                ];
+                ]);
             }
 
             // Contributions
@@ -317,7 +338,7 @@ class Galette
                     'icon' => 'dharmachakra',
                     'items' => [
                         [
-                            'label' => _T("Manage groups"),
+                            'label' => _T("Groups"),
                             'title' => _T("View and manage groups"),
                             'route' => [
                                 'name' => 'groups'
@@ -329,17 +350,25 @@ class Galette
                 if ($login->isAdmin() || $login->isStaff()) {
                     $menus['management']['items'] = array_merge($menus['management']['items'], [
                         [
-                            'label' => _T("Logs"),
-                            'title' => _T("View application's logs"),
+                            'label' => _T("Documents"),
+                            'title' => _T("Add documents to share related to your association (status, rules of procedure, ...)"),
                             'route' => [
-                                'name' => 'history'
+                                'name' => 'documentsList',
+                                'aliases' => ['editDocument', 'addDocument']
                             ]
                         ],
                         [
-                            'label' => _T("Manage mailings"),
+                            'label' => _T("Mailings"),
                             'title' => _T("Manage mailings that has been sent"),
                             'route' => [
                                 'name' => 'mailings'
+                            ]
+                        ],
+                        [
+                            'label' => _T("Charts"),
+                            'title' => _T("Various charts"),
+                            'route' => [
+                                'name' => 'charts'
                             ]
                         ],
                         [
@@ -358,17 +387,10 @@ class Galette
                             ]
                         ],
                         [
-                            'label' => _T("Charts"),
-                            'title' => _T("Various charts"),
+                            'label' => _T("Logs"),
+                            'title' => _T("View application's logs"),
                             'route' => [
-                                'name' => 'charts'
-                            ]
-                        ], [
-                            'label' => _T("Documents"),
-                            'title' => _T("Add documents to share related to your association (status, rules of procedure, ...)"),
-                            'route' => [
-                                'name' => 'documentsList',
-                                'aliases' => ['editDocument', 'addDocument']
+                                'name' => 'history'
                             ]
                         ]
                     ]);
@@ -417,20 +439,6 @@ class Galette
                                 ]
                             ],
                             [
-                                'label' => _T("Translate labels"),
-                                'title' => _T("Translate additional fields labels"),
-                                'route' => [
-                                    'name' => 'dynamicTranslations'
-                                ]
-                            ],
-                            [
-                                'label' => _T("Manage statuses"),
-                                'route' => [
-                                    'name' => 'status',
-                                    'aliases' => ['editStatus']
-                                ]
-                            ],
-                            [
                                 'label' => _T("Contributions types"),
                                 'title' => _T("Manage contributions types"),
                                 'route' => [
@@ -438,10 +446,18 @@ class Galette
                                 ]
                             ],
                             [
-                                'label' => _T("Emails content"),
-                                'title' => _T("Manage emails texts and subjects"),
+                                'label' => _T("Payment types"),
+                                'title' => _T("Manage payment types"),
                                 'route' => [
-                                    'name' => 'texts'
+                                    'name' => 'paymentTypes',
+                                    'aliases' => ['editPaymentType']
+                                ]
+                            ],
+                            [
+                                'label' => _T("User statuses"),
+                                'route' => [
+                                    'name' => 'status',
+                                    'aliases' => ['editStatus']
                                 ]
                             ],
                             [
@@ -460,18 +476,18 @@ class Galette
                                 ]
                             ],
                             [
-                                'label' => _T("Payment types"),
-                                'title' => _T("Manage payment types"),
+                                'label' => _T("Emails content"),
+                                'title' => _T("Manage emails texts and subjects"),
                                 'route' => [
-                                    'name' => 'paymentTypes',
-                                    'aliases' => ['editPaymentType']
+                                    'name' => 'texts'
                                 ]
                             ],
                             [
-                                'label' => _T("Empty adhesion form"),
-                                'title' => _T("Download empty adhesion form"),
+                                'label' => _T("Labels translation"),
+                                'title' => _T("Manage translatable labels"),
                                 'route' => [
-                                    'name' => 'emptyAdhesionForm'
+                                    'name' => 'dynamicTranslations',
+                                    'aliases' => ['dynamicTranslation']
                                 ]
                             ]
                         ]
@@ -479,7 +495,7 @@ class Galette
 
                     if ($login->isSuperAdmin()) {
                         $menus['configuration']['items'][] = [
-                            'label' => _T("Admin tools"),
+                            'label' => _T("Administration tools"),
                             'title' => _T("Various administrative tools"),
                             'route' => [
                                 'name' => 'adminTools'
@@ -494,7 +510,8 @@ class Galette
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
-                $plugin = new $plugin_class();
+                /** @var GalettePlugin $plugin */
+                $plugin = $container->get($plugin_class);
                 $menus = array_merge_recursive(
                     $menus,
                     $plugin->getMenus()
@@ -527,59 +544,112 @@ class Galette
          * @var Preferences $preferences
          * @var Login $login
          * @var Plugins $plugins
+         * @var ContainerInterface $container
          */
-        global $preferences, $login, $plugins, $zdb;
+        global $preferences, $login, $plugins, $container;
+
+        if (!$preferences->arePublicPagesEnabled()) {
+            return [];
+        }
 
         $menus = [];
-        if ($preferences->showPublicPages($login)) {
+        $items = [];
+
+        $galleries = [];
+        $lists = [];
+
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_memberslist')) {
+            $lists[] = [
+                'label' => _T("Members"),
+                'route' => [
+                    'name' => 'publicMembersList'
+                ],
+                'icon' => 'address book'
+            ];
+        }
+
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_membersgallery')) {
+            $galleries[] = [
+                'label' => _T('Gallery'),
+                'route' => [
+                    'name' => 'publicMembersGallery'
+                ],
+                'icon' => 'images'
+            ];
+        }
+
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_stafflist')) {
+            $lists[] = [
+                'label' => _T("Staff"),
+                'route' => [
+                    'name' => 'publicStaffList'
+                ],
+                'icon' => 'address book outline'
+            ];
+        }
+
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_staffgallery')) {
+            $galleries[] = [
+                'label' => _T('Staff gallery'),
+                'route' => [
+                    'name' => 'publicStaffGallery'
+                ],
+                'icon' => 'images outline'
+            ];
+        }
+
+        if (count($lists) > 1) {
+            //handle multiple lists
+            $items[] = [
+                'label' => _T("Directories"),
+                'icon' => 'address book',
+                'children' => $lists
+            ];
+        } else {
+            $items = array_merge($items, $lists);
+        }
+
+        if (count($galleries) > 1) {
+            //handle multiple galleries
+            $items[] = [
+                'label' => _T("Galleries"),
+                'icon' => 'images',
+                'children' => $galleries
+            ];
+        } else {
+            $items = array_merge($items, $galleries);
+        }
+
+        if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_documents')) {
+            $items[] = [
+                'label' => _T("Documents"),
+                'title' => _T("View documents related to your association"),
+                'route' => [
+                    'name' => 'documentsPublicList'
+                ],
+                'icon' => 'file alternate'
+            ];
+        }
+
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins public menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class)) {
+                /** @var GalettePlugin $plugin */
+                $plugin = $container->get($plugin_class);
+                $items = array_merge(
+                    $items,
+                    $plugin->getPublicMenuItems()
+                );
+            }
+        }
+
+        if (count($items)) {
             $menus['public'] = [
                 'title' => _T("Public pages"),
                 'icon' => 'eye outline',
-                'items' => [
-                    [
-                        'label' => _T("Members list"),
-                        'route' => [
-                            'name' => 'publicList',
-                            'args' => ['type' => 'list']
-                        ],
-                        'icon' => 'address book'
-                    ],
-                    [
-                        'label' => _T("Trombinoscope"),
-                        'route' => [
-                            'name' => 'publicList',
-                            'args' => ['type' => 'trombi']
-                        ],
-                        'icon' => 'user friends'
-                    ]
-                ]
+                'items' => $items
             ];
-
-            //display documents menu if at least one document is present with current ACLs
-            $document = new Document($zdb);
-            $documents = $document->getList();
-            if ($login->isSuperAdmin() || count($documents)) {
-                $menus['public']['items'][] = [
-                    'label' => _T("Documents"),
-                    'title' => _T("View documents related to your association"),
-                    'route' => [
-                        'name' => 'documentsPublicList'
-                    ],
-                    'icon' => 'file alternate'
-                ];
-            }
-
-            foreach (array_keys($plugins->getModules()) as $module_id) {
-                //get plugins public menus entries
-                $plugin_class = $plugins->getClassName($module_id, true);
-                if (class_exists($plugin_class)) {
-                    $plugin = new $plugin_class();
-                    $menus['public']['items'] = array_merge(
-                        $menus['public']['items'],
-                        $plugin->getPublicMenuItems()
-                    );
-                }
-            }
         }
 
         return $menus;
@@ -595,10 +665,9 @@ class Galette
         /**
          * @var Login $login
          * @var Plugins $plugins
-         * @var Db $zdb
-         * @var Preferences $preferences
+         * @var ContainerInterface $container
          */
-        global $login, $plugins, $zdb, $preferences;
+        global $login, $plugins, $container;
 
         $dashboards = [];
         if ($login->isLogged() && !$login->isSuperAdmin()) {
@@ -641,7 +710,7 @@ class Galette
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class) && method_exists($plugin_class, 'getMyDashboards')) {
                 /** @var GalettePlugin $plugin */
-                $plugin = new $plugin_class();
+                $plugin = $container->get($plugin_class);
                 $dashboards = array_merge_recursive(
                     $dashboards,
                     $plugin->getMyDashboards()
@@ -663,9 +732,9 @@ class Galette
          * @var Login $login
          * @var Plugins $plugins
          * @var Db $zdb
-         * @var Preferences $preferences
+         * @var ContainerInterface $container
          */
-        global $login, $plugins, $zdb, $preferences;
+        global $login, $plugins, $zdb, $container;
 
         $dashboards = [];
 
@@ -738,7 +807,7 @@ class Galette
         //display documents menu if at least one document is present with current ACLs
         $document = new Document($zdb);
         $documents = $document->getList();
-        if ($preferences->showPublicPages($login) && ($login->isSuperAdmin() || count($documents))) {
+        if ($login->isSuperAdmin() || count($documents)) {
             $dashboards = array_merge(
                 $dashboards,
                 [
@@ -783,7 +852,7 @@ class Galette
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
                 /** @var GalettePlugin $plugin */
-                $plugin = new $plugin_class();
+                $plugin = $container->get($plugin_class);
                 $dashboards = array_merge_recursive(
                     $dashboards,
                     $plugin->getDashboards()
@@ -806,8 +875,9 @@ class Galette
         /**
          * @var Login $login
          * @var Plugins $plugins
+         * @var ContainerInterface $container
          */
-        global $login, $plugins;
+        global $login, $plugins, $container;
 
         $actions = [];
 
@@ -882,12 +952,12 @@ class Galette
                 'label' => str_replace(
                     "%membername",
                     $member->sname,
-                    _T("Log in in as %membername")
+                    _T("Log in as %membername")
                 ),
                 'title' => str_replace(
                     "%membername",
                     $member->sname,
-                    _T("Log in in as %membername")
+                    _T("Log in as %membername")
                 ),
                 'route' => [
                     'name' => 'impersonate',
@@ -904,7 +974,7 @@ class Galette
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
                 /** @var GalettePlugin $plugin */
-                $plugin = new $plugin_class();
+                $plugin = $container->get($plugin_class);
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getListActions($member)
@@ -924,10 +994,10 @@ class Galette
     public static function getDetailedActions(Adherent $member): array
     {
         /**
-         * @var Login $login
          * @var Plugins $plugins
+         * @var ContainerInterface $container
          */
-        global $login, $plugins;
+        global $plugins, $container;
 
         $actions = [];
 
@@ -938,7 +1008,7 @@ class Galette
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
                 /** @var GalettePlugin $plugin */
-                $plugin = new $plugin_class();
+                $plugin = $container->get($plugin_class);
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getDetailedActions($member)
@@ -959,8 +1029,9 @@ class Galette
          * @var Login $login
          * @var Plugins $plugins
          * @var Preferences $preferences
+         * @var ContainerInterface $container
          */
-        global $login, $plugins, $preferences;
+        global $login, $plugins, $preferences, $container;
 
         $actions = [];
 
@@ -1042,7 +1113,7 @@ class Galette
             $plugin_class = $plugins->getClassName($module_id, true);
             if (class_exists($plugin_class)) {
                 /** @var GalettePlugin $plugin */
-                $plugin = new $plugin_class();
+                $plugin = $container->get($plugin_class);
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getBatchActions()
@@ -1053,6 +1124,65 @@ class Galette
     }
 
     /**
+     * Get Galette news
+     *
+     * @return array<int, News\Entry>
+     */
+    public static function getNews(): array
+    {
+        global $container;
+
+        /**
+         * @var Login $login
+         * @var Preferences $preferences
+         * @var Plugins $plugins
+         */
+        global $login, $preferences, $plugins;
+
+        $news = [];
+
+        //display Galette news for staff and admins
+        if ($login->isStaff() || $login->isAdmin()) {
+            $core_news = new News(self::RSS_URL);
+            $entry = new News\Entry(
+                _T("Galette news"),
+                $core_news->getPosts(),
+                50
+            );
+            $news[$entry->getPosition()] = $entry;
+        }
+        //if a custom RSS feed is set, we add it for everyone; and before Galette news
+        if (!empty($preferences->pref_rss_url) && $preferences->pref_rss_url != self::RSS_URL) {
+            $asso_news = new News($preferences->pref_rss_url);
+            $entry = new News\Entry(
+                _T("Association news"),
+                $asso_news->getPosts(),
+                20
+            );
+            $news[$entry->getPosition()] = $entry;
+        }
+
+        foreach (array_keys($plugins->getModules()) as $module_id) {
+            //get plugins menus entries
+            $plugin_class = $plugins->getClassName($module_id, true);
+            if (class_exists($plugin_class)) {
+                /** @var GalettePlugin $plugin */
+                $plugin = $container->get($plugin_class);
+                if ($plugin->isInstalled() && $entry = $plugin->getNews()) {
+                    $position = $entry->getPosition();
+                    while (isset($news[$position])) {
+                        ++$position;
+                    }
+                    $news[$position] = $entry;
+                }
+            }
+        }
+
+        ksort($news);
+        return $news;
+    }
+
+    /**
      * Is demonstration mode enabled
      *
      * @return bool
@@ -1060,16 +1190,6 @@ class Galette
     public static function isDemo(): bool
     {
         return GALETTE_MODE === static::MODE_DEMO;
-    }
-
-    /**
-     * Is a hosted instance
-     *
-     * @return bool
-     */
-    public static function isHosted(): bool
-    {
-        return defined('GALETTE_HOSTED') && GALETTE_HOSTED === true;
     }
 
     /**
@@ -1120,7 +1240,7 @@ class Galette
      */
     public static function isSerialized(string $string): bool
     {
-        return (@unserialize($string) !== false);
+        return @unserialize($string) !== false;
     }
 
     /**

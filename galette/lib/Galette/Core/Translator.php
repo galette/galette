@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use Analog\Analog;
 use Laminas\I18n\Translator\Translator as ZTranslator;
 
 /**
@@ -32,10 +31,10 @@ use Laminas\I18n\Translator\Translator as ZTranslator;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class Translator extends ZTranslator
+class Translator extends ZTranslator //@phpstan-ignore-line
 {
     /**
-     * Do a translation exist for string
+     * Does a translation exist for string
      *
      * @param string  $message    String to check for
      * @param string  $textDomain Translation domain, defaults to "default"

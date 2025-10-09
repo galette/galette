@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use Galette\Core\Preferences;
-use Analog\Analog;
 use Galette\Entity\Adherent;
 
 /**
@@ -129,12 +128,12 @@ class PdfMembersLabels extends Pdf
                 % $this->preferences->pref_etiq_rows;
             // Set label origin
             $x = $this->xorigin + $col * (
-                round($this->preferences->pref_etiq_hsize) +
-                round($this->preferences->pref_etiq_hspace)
+                round($this->preferences->pref_etiq_hsize)
+                + round($this->preferences->pref_etiq_hspace)
             );
             $y = $this->yorigin + $row * (
-                round($this->preferences->pref_etiq_vsize) +
-                round($this->preferences->pref_etiq_vspace)
+                round($this->preferences->pref_etiq_vsize)
+                + round($this->preferences->pref_etiq_vspace)
             );
             // Draw a frame around the label
             if ($this->preferences->pref_etiq_border) {
@@ -142,7 +141,7 @@ class PdfMembersLabels extends Pdf
             }
 
             // Prepare full address
-            $full_address_array = array();
+            $full_address_array = [];
             $full_address_array[] = $member->sfullname;
             // Transform member's address in array and merge it with $full_address_array
             $address_array = explode(PHP_EOL, $member->address);

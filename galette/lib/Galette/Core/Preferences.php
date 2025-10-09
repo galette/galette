@@ -29,6 +29,7 @@ use Galette\Features\Replacements;
 use Galette\Features\Socials;
 use Galette\Util\Text;
 use PHPMailer\PHPMailer\PHPMailer;
+use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
@@ -53,10 +54,13 @@ use Galette\Repository\Members;
  * @property string $pref_pays Country
  * @property integer $pref_postal_address Postal address to use, one of self::POSTAL_ADDRESS*
  * @property integer $pref_postal_staff_member Staff member ID from which retrieve postal address
+ * @property string $pref_org_phone_number Phone number
+ * @property integer $pref_org_phone Phone number to use, one of self::PHONE_NUMBER*
+ * @property integer $pref_org_phone_staff_member Staff member ID from which retrieve phone number
+ * @property string $pref_org_email Email address
  * @property boolean $pref_disable_members_socials Disable social networks for members
  * @property string $pref_lang Default instance language
  * @property integer $pref_numrows Default number of rows in lists
- * @property integer $pref_log History, one of self::LOG_*
  * @property integer $pref_statut Default status for new members
  * @property string $pref_email_nom
  * @property string $pref_email
@@ -108,15 +112,27 @@ use Galette\Repository\Members;
  * @property integer $pref_card_cols
  * @property integer $pref_card_rows
  * @property string $pref_theme Preferred theme
+ * @property boolean $pref_hide_bg_image
+ * @property boolean $pref_enable_custom_colors
+ * @property string $pref_cc_primary
+ * @property string $pref_cc_primary_text
+ * @property string $pref_cc_secondary
+ * @property string $pref_cc_secondary_text
  * @property boolean $pref_bool_publicpages
- * @property integer $pref_publicpages_visibility
+ * @property integer $pref_publicpages_visibility_generic
+ * @property integer $pref_publicpages_visibility_documents
+ * @property integer $pref_publicpages_visibility_memberslist
+ * @property integer $pref_publicpages_visibility_membersgallery
+ * @property integer $pref_publicpages_visibility_stafflist
+ * @property integer $pref_publicpages_visibility_staffgallery
+ * @property boolean $pref_bool_groupsmanagers_are_staff
  * @property boolean $pref_bool_selfsubscribe
+ * @property boolean $pref_bool_empty_form_link
  * @property string $pref_member_form_grid
  * @property string $pref_mail_sign
  * @property string $pref_new_contrib_script
  * @property boolean $pref_bool_wrap_mails
  * @property string $pref_rss_url
- * @property boolean $pref_show_id
  * @property string $pref_adhesion_form
  * @property boolean $pref_mail_allow_unsecure
  * @property string $pref_instance_uuid
@@ -163,16 +179,23 @@ class Preferences
     /** Postal address will be the one of the selected staff member */
     public const POSTAL_ADDRESS_FROM_STAFF = 1;
 
+    /** Phone number will be the one given in the preferences */
+    public const PHONE_NUMBER_FROM_PREFS = 0;
+    /** Phone number will be the one of the selected staff member */
+    public const PHONE_NUMBER_FROM_STAFF = 1;
+    /** Phone number will be the GSM of the selected staff member */
+    public const PHONE_NUMBER_MOBILE_FROM_STAFF = 2;
+
     /** Public pages stuff */
-    /** Public pages are publically visibles */
+    /** Public pages are publicly visibles */
     public const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
     /** Public pages are visibles for up-to-date members only */
     public const PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
     /** Public pages are visibles for admin and staff members only */
     public const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
-
-    public const LOG_DISABLED = 0;
-    public const LOG_ENABLED = 1;
+    /** Public pages are hidden */
+    public const PUBLIC_PAGES_VISIBILITY_HIDDEN = 3;
+    public const PUBLIC_PAGES_VISIBILITY_INHERIT = 4;
 
     /** No password strength */
     public const PWD_NONE = 0;
@@ -185,14 +208,16 @@ class Preferences
     /** Very strong password strength */
     public const PWD_VERY_STRONG = 4;
 
+    /** Dark mode CSS file should be deleted from cache */
+    private bool $delete_dark_css = false;
     /** @var array<string> */
-    private static array $fields = array(
+    private static array $fields = [
         'nom_pref',
         'val_pref'
-    );
+    ];
 
     /** @var array<string, bool|int|string> */
-    private static array $defaults = array(
+    private static array $defaults = [
         'pref_admin_login'    =>    'admin',
         'pref_admin_pass'    =>    'admin',
         'pref_nom'        =>    'Galette',
@@ -205,11 +230,21 @@ class Preferences
         'pref_pays'        =>    '',
         'pref_postal_address'  => self::POSTAL_ADDRESS_FROM_PREFS,
         'pref_postal_staff_member' => '',
+        'pref_org_phone_number' => '',
+        'pref_org_phone' => self::PHONE_NUMBER_FROM_PREFS,
+        'pref_org_phone_staff_member' => '',
+        'pref_org_email' => '',
         'pref_disable_members_socials' => false,
         'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
-        'pref_log'        =>    self::LOG_ENABLED,
         'pref_statut'        =>    Status::DEFAULT_STATUS,
+        /* Appearance */
+        'pref_hide_bg_image'    =>    false,
+        'pref_enable_custom_colors'    =>    false,
+        'pref_cc_primary'    =>    '#ffb619',
+        'pref_cc_primary_text'    =>    '#000000',
+        'pref_cc_secondary'    =>    '#ffda89',
+        'pref_cc_secondary_text'    =>    '#1b1c1d',
         /* Preferences for emails */
         'pref_email_nom'    =>    'Galette',
         'pref_email'        =>    'mail@domain.com',
@@ -264,17 +299,23 @@ class Preferences
         'pref_card_self'    =>    1,
         'pref_theme'        =>    'default',
         'pref_bool_publicpages' => true,
-        'pref_publicpages_visibility' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_generic' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_documents' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_memberslist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_membersgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_stafflist' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_publicpages_visibility_staffgallery' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
+        'pref_bool_groupsmanagers_are_staff' => false,
         'pref_mail_sign' => "{ASSO_NAME}\r\n\r\n{ASSO_WEBSITE}",
         /* Preferences for member/subscribe form */
         'pref_bool_selfsubscribe' => true,
         'pref_member_form_grid' => 'one',
+        'pref_bool_empty_form_link' => false,
         /* New contribution script */
         'pref_new_contrib_script' => '',
         'pref_bool_wrap_mails' => true,
-        'pref_rss_url' => 'https://galette.eu/dc/index.php/feed/atom',
-        'pref_show_id' => false,
-        'pref_adhesion_form' => '\Galette\IO\PdfAdhesionForm',
+        'pref_rss_url' => Galette::RSS_URL,
+        'pref_adhesion_form' => \Galette\IO\PdfAdhesionForm::class,
         'pref_mail_allow_unsecure' => false,
         'pref_instance_uuid' => '',
         'pref_registration_uuid' => '',
@@ -300,18 +341,17 @@ class Preferences
         'pref_bool_groupsmanagers_see_contributions' => false,
         'pref_bool_groupsmanagers_see_transactions' => false,
         'pref_noindex' => false
-    );
+    ];
 
     /** @var Social[] */
     private array $socials;
 
     // flagging required fields
     /** @var array<string,int> */
-    private array $required = array(
+    private array $required = [
         'pref_nom' => 1,
         'pref_lang' => 1,
         'pref_numrows' => 1,
-        'pref_log' => 1,
         'pref_statut' => 1,
         'pref_etiq_marges_v' => 1,
         'pref_etiq_marges_h' => 1,
@@ -326,7 +366,7 @@ class Preferences
         'pref_card_marges_h' => 1,
         'pref_card_hspace' => 1,
         'pref_card_vspace' => 1
-    );
+    ];
 
     /**
      * Default constructor
@@ -346,7 +386,7 @@ class Preferences
     }
 
     /**
-     * Check if all fields referenced in the default array does exists,
+     * Check if all fields referenced in the default array do exist,
      * create them if not
      *
      * @return boolean
@@ -354,7 +394,7 @@ class Preferences
     private function checkUpdate(): bool
     {
         $proceed = false;
-        $params = array();
+        $params = [];
         foreach (self::$defaults as $k => $v) {
             if (!isset($this->prefs[$k])) {
                 if ($k == 'pref_admin_pass' && $v == 'admin') {
@@ -366,29 +406,29 @@ class Preferences
                     Analog::INFO
                 );
                 $proceed = true;
-                $params[] = array(
+                $params[] = [
                     'nom_pref'  => $k,
                     'val_pref'  => $v
-                );
+                ];
             }
         }
         if ($proceed !== false) {
             try {
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values(
-                    array(
+                    [
                         'nom_pref'  => ':nom_pref',
                         'val_pref'  => ':val_pref'
-                    )
+                    ]
                 );
                 $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
                 foreach ($params as $p) {
                     $stmt->execute(
-                        array(
+                        [
                             'nom_pref' => $p['nom_pref'],
                             'val_pref' => $p['val_pref']
-                        )
+                        ]
                     );
                 }
             } catch (Throwable $e) {
@@ -415,7 +455,7 @@ class Preferences
      */
     public function load(): bool
     {
-        $this->prefs = array();
+        $this->prefs = [];
 
         try {
             $result = $this->zdb->selectAll(self::TABLE);
@@ -426,8 +466,8 @@ class Preferences
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Preferences cannot be loaded. Galette should not work without ' .
-                'preferences. Exiting.',
+                'Preferences cannot be loaded. Galette should not work without '
+                . 'preferences. Exiting.',
                 Analog::URGENT
             );
             return false;
@@ -435,7 +475,7 @@ class Preferences
     }
 
     /**
-     * Set default preferences at install time
+     * Set default preferences at installation time
      *
      * @param string $lang      language selected at install screen
      * @param string $adm_login admin login entered at install time
@@ -460,19 +500,19 @@ class Preferences
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values(
-                array(
+                [
                     'nom_pref'  => ':nom_pref',
                     'val_pref'  => ':val_pref'
-                )
+                ]
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ($values as $k => $v) {
                 $stmt->execute(
-                    array(
+                    [
                         'nom_pref' => $k,
                         'val_pref' => $v
-                    )
+                    ]
                 );
             }
 
@@ -511,17 +551,15 @@ class Preferences
     public function check(array $values, Login $login): bool
     {
         $this->errors = [];
-        $insert_values = array();
+        $insert_values = [];
         $this->getRequiredFields($login); //make sure required are all set
+
+        $this->checkCssImpacted($values);
 
         // obtain fields
         foreach ($this->getFieldsNames() as $fieldname) {
             if (isset($values[$fieldname])) {
-                if (is_string($values[$fieldname])) {
-                    $value = trim($values[$fieldname]);
-                } else {
-                    $value = $values[$fieldname];
-                }
+                $value = is_string($values[$fieldname]) ? trim($values[$fieldname]) : $values[$fieldname];
             } else {
                 $value = "";
             }
@@ -545,15 +583,6 @@ class Preferences
             && $insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED
         ) {
             if (
-                Galette::isHosted() &&
-                in_array(
-                    $insert_values['pref_mail_method'],
-                    [GaletteMail::METHOD_PHPMAIL, GaletteMail::METHOD_SENDMAIL, GaletteMail::METHOD_QMAIL]
-                )
-            ) {
-                $this->errors[] = _T("- Only SMTP and GMail are allowed on hosted instances.");
-            }
-            if (
                 !isset($insert_values['pref_email_nom'])
                 || $insert_values['pref_email_nom'] == ''
             ) {
@@ -565,13 +594,8 @@ class Preferences
             ) {
                 $this->errors[] = _T("- You must indicate an email address Galette should use to send emails!");
             }
-            if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP) {
-                if (
-                    !isset($insert_values['pref_mail_smtp_host'])
-                    || $insert_values['pref_mail_smtp_host'] == ''
-                ) {
-                    $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
-                }
+            if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP && (!isset($insert_values['pref_mail_smtp_host']) || $insert_values['pref_mail_smtp_host'] == '')) {
+                $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
             }
             if (
                 $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
@@ -625,11 +649,9 @@ class Preferences
             }
         }
 
-        if (!Galette::isDemo() && isset($values['pref_admin_pass_check'])) {
-            // Check passwords. Hash will be done into the Preferences class
-            if (strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
-                $this->errors[] = _T("Passwords mismatch");
-            }
+        // Check passwords. Hash will be done into the Preferences class
+        if (!Galette::isDemo() && isset($values['pref_admin_pass_check']) && strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
+            $this->errors[] = _T("Passwords mismatch");
         }
 
         //postal address
@@ -641,23 +663,38 @@ class Preferences
                 }
             } elseif ($value == Preferences::POSTAL_ADDRESS_FROM_STAFF) {
                 if (!isset($insert_values['pref_postal_staff_member']) || $insert_values['pref_postal_staff_member'] < 1) {
-                    $this->errors[] = _T("You have to select a staff member");
+                    $this->errors[] = _T("You have to select a staff member to retrieve its address");
+                }
+            }
+        }
+
+        //phone number
+        if (isset($insert_values['pref_org_phone'])) {
+            $value = $insert_values['pref_org_phone'];
+            if ($value == Preferences::PHONE_NUMBER_FROM_PREFS) {
+                if (isset($insert_values['pref_org_phone_staff_member'])) {
+                    unset($insert_values['pref_org_phone_staff_member']);
+                }
+            } elseif ($value == Preferences::PHONE_NUMBER_FROM_STAFF || $value == Preferences::PHONE_NUMBER_MOBILE_FROM_STAFF) {
+                if (!isset($insert_values['pref_org_phone_staff_member']) || $insert_values['pref_org_phone_staff_member'] < 1) {
+                    $this->errors[] = _T("You have to select a staff member to retrieve its phone number");
                 }
             }
         }
 
         // update preferences
         foreach ($insert_values as $champ => $valeur) {
-            if (
-                $login->isSuperAdmin()
-                || $champ != 'pref_admin_pass' && $champ != 'pref_admin_login'
-            ) {
-                if (
-                    ($champ == "pref_admin_pass" && ($_POST['pref_admin_pass'] ?? '') != '')
-                    || ($champ != "pref_admin_pass")
-                ) {
-                    $this->$champ = $valeur;
+            $checked = $login->isSuperAdmin();
+            if (!$checked) {
+                if ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login') {
+                    $checked = true;
                 }
+            } elseif ($champ == "pref_admin_pass" && empty($_POST['pref_admin_pass'] ?? '')) {
+                $checked = false;
+            }
+
+            if ($checked) {
+                $this->$champ = $valeur;
             }
         }
 
@@ -682,16 +719,13 @@ class Preferences
             case 'pref_email':
             case 'pref_email_newadh':
             case 'pref_email_reply_to':
+            case 'pref_org_email':
                 //check emails validity
-                //may be a comma separated list of valid emails:
+                //may be a comma-separated list of valid emails:
                 //"mail@domain.com,other@mail.com" only for pref_email_newadh.
                 $addresses = [];
                 if (trim($value) != '') {
-                    if ($fieldname == 'pref_email_newadh') {
-                        $addresses = explode(',', $value);
-                    } else {
-                        $addresses = [$value];
-                    }
+                    $addresses = $fieldname == 'pref_email_newadh' ? explode(',', $value) : [$value];
                 }
                 foreach ($addresses as $address) {
                     if (!GaletteMail::isValidEmail($address)) {
@@ -707,15 +741,11 @@ class Preferences
                         'Trying to set superadmin login while in DEMO.',
                         Analog::WARNING
                     );
-                } else {
-                    if (strlen($value) < 4) {
-                        $this->errors[] = _T("- The username must be composed of at least 4 characters!");
-                    } else {
-                        //check if login is already taken
-                        if ($login->loginExists($value)) {
-                            $this->errors[] = _T("- This username is already used by another member !");
-                        }
-                    }
+                } elseif (strlen($value) < 4) {
+                    $this->errors[] = _T("- The username must be composed of at least 4 characters!");
+                } elseif ($login->loginExists($value)) {
+                    //check if login is already taken
+                    $this->errors[] = _T("- This username is already used by another member !");
                 }
                 break;
             case 'pref_numrows':
@@ -817,17 +847,19 @@ class Preferences
     /**
      * Will store all preferences in the database
      *
+     * @param boolean $updating True if we're updating instance
+     *
      * @return boolean
      */
-    public function store(): bool
+    public function store(bool $updating = false): bool
     {
         try {
             $this->zdb->connection->beginTransaction();
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'val_pref'  => ':val_pref'
-                )
+                ]
             )->where->equalTo('nom_pref', ':nom_pref');
 
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
@@ -842,7 +874,7 @@ class Preferences
                 Analog::log('Storing ' . $k, Analog::DEBUG);
 
                 $value = $this->prefs[$k];
-                //do not store pdf_adhesion_form, it's designed to be overriden by plugin
+                //do not store pdf_adhesion_form, it's designed to be overridden by plugin
                 if ($k === 'pref_adhesion_form') {
                     if (trim($v) == '') {
                         //Reset to default, should not be empty
@@ -860,10 +892,10 @@ class Preferences
                 }
 
                 $stmt->execute(
-                    array(
+                    [
                         'val_pref'  => $value,
                         'nom_pref'  => $k
-                    )
+                    ]
                 );
             }
             $this->zdb->connection->commit();
@@ -872,7 +904,10 @@ class Preferences
                 Analog::INFO
             );
 
-            $this->storeSocials(null);
+            //prevent socials removal; see https://bugs.galette.eu/issues/1912
+            if ($updating === false) {
+                $this->storeSocials(null);
+            }
 
             return true;
         } catch (Throwable $e) {
@@ -880,7 +915,7 @@ class Preferences
                 $this->zdb->connection->rollBack();
             }
 
-            $messages = array();
+            $messages = [];
             do {
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
@@ -900,62 +935,92 @@ class Preferences
      */
     public function getPostalAddress(): string
     {
-        $regs = array(
+        $regs = [
             '/%name/',
             '/%complement/',
             '/%address/',
             '/%zip/',
             '/%town/',
             '/%country/',
-        );
+        ];
 
         $replacements = null;
 
         if ($this->prefs['pref_postal_address'] == self::POSTAL_ADDRESS_FROM_PREFS) {
             $_address = $this->prefs['pref_adresse'];
-            if ($this->prefs['pref_adresse2'] && $this->prefs['pref_adresse2'] != '') {
+            if ($this->prefs['pref_adresse2']) {
                 $_address .= "\n" . $this->prefs['pref_adresse2'];
             }
-            $replacements = array(
+            $_country = $this->prefs['pref_pays'] != '' ? '- ' . $this->prefs['pref_pays'] : '';
+            $replacements = [
                 $this->prefs['pref_nom'],
                 "\n",
                 $_address,
                 $this->prefs['pref_cp'],
                 $this->prefs['pref_ville'],
-                $this->prefs['pref_pays']
-            );
+                $_country
+            ];
         } else {
             //get selected staff member address
             $adh = new Adherent($this->zdb, (int)$this->prefs['pref_postal_staff_member']);
             $_complement = preg_replace(
-                array('/%name/', '/%status/'),
-                array($this->prefs['pref_nom'], $adh->sstatus),
+                ['/%name/', '/%status/'],
+                [$this->prefs['pref_nom'], $adh->sstatus],
                 _T("%name association's %status")
             ) . "\n";
             $_address = $adh->address;
+            $_country = $adh->country != '' ? '- ' . $adh->country : '';
 
-            $replacements = array(
+            $replacements = [
                 $adh->sfullname . "\n",
                 $_complement,
                 $_address,
                 $adh->zipcode,
                 $adh->town,
-                $adh->country
-            );
+                $_country
+            ];
         }
 
         /*FIXME: i18n fails :/ */
         /*$r = preg_replace(
             $regs,
             $replacements,
-            _T("%name\n%complement\n%address\n%zip %town - %country")
+            _T("%name\n%complement\n%address\n%zip %town %country")
         );*/
-        $r = preg_replace(
+        return preg_replace(
             $regs,
             $replacements,
-            "%name%complement%address\n%zip %town - %country"
+            "%name%complement%address\n%zip %town %country"
         );
-        return $r;
+    }
+
+    /**
+     * Returns phone number
+     *
+     * @return string phone number
+     */
+    public function getPhoneNumber(): string
+    {
+        $_phone = '';
+        if ($this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_PREFS) {
+            $_phone = $this->prefs['pref_org_phone_number'];
+        } else {
+            //get selected staff phone number
+            $adh = new Adherent($this->zdb, (int)$this->prefs['pref_org_phone_staff_member']);
+            $_phone = $this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_STAFF ? $adh->phone : $adh->gsm;
+        }
+
+        return $_phone;
+    }
+
+    /**
+     * Are public pages visible?
+     *
+     * @return boolean
+     */
+    public function arePublicPagesEnabled(): bool
+    {
+        return (bool)$this->prefs['pref_bool_publicpages'];
     }
 
     /**
@@ -964,40 +1029,60 @@ class Preferences
      * @param Authentication $login Authentication instance
      *
      * @return boolean
+     *
+     * @deprecated 1.2.0
      */
     public function showPublicPages(Authentication $login): bool
     {
-        if ($this->prefs['pref_bool_publicpages']) {
-            //if public pages are actives, let's check if we
-            //display them for curent call
-            switch ($this->prefs['pref_publicpages_visibility']) {
-                case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
-                    //pages are publicly visibles
-                    return true;
-                case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
-                    //pages should be displayed only for up-to-date members
-                    if (
-                        $login->isUp2Date()
-                        || $login->isAdmin()
-                        || $login->isStaff()
-                    ) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
-                    //pages should be displayed only for staff and admins
-                    if ($login->isAdmin() || $login->isStaff()) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                default:
-                    //should never be there
-                    return false;
-            }
-        } else {
+        Analog::log(
+            'Preferences::showPublicPages() is deprecated, use Preferences::showPublicPage() instead.',
+            Analog::WARNING
+        );
+        return $this->showPublicPage($login, 'pref_publicpages_visibility_memberslist')
+            || $this->showPublicPage($login, 'pref_publicpages_visibility_membersgallery');
+    }
+
+    /**
+     * Are public pages visible?
+     *
+     * @param Authentication $login Authentication instance
+     * @param string         $right Right to check
+     *
+     * @return boolean
+     */
+    public function showPublicPage(Authentication $login, string $right): bool
+    {
+        if (!$this->arePublicPagesEnabled()) {
             return false;
+        }
+
+        //if public pages are actives, let's check if we
+        //display them for curent call
+        if (!isset($this->prefs[$right])) {
+            //Core does not handle plugins permission, just a global right.
+            $right = 'pref_publicpages_visibility_generic';
+        }
+        switch ($this->prefs[$right]) {
+            case self::PUBLIC_PAGES_VISIBILITY_INHERIT:
+                //inherit from generic right
+                return $this->showPublicPage($login, 'pref_publicpages_visibility_generic');
+            case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
+                //pages are publicly visibles
+                return true;
+            case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
+                //pages should be displayed only for up-to-date members
+                return
+                    $login->isUp2Date()
+                    || $login->isAdmin()
+                    || $login->isStaff()
+                ;
+            case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
+                //pages should be displayed only for staff and admins
+                return $login->isAdmin() || $login->isStaff();
+            case self::PUBLIC_PAGES_VISIBILITY_HIDDEN:
+                return false;
+            default:
+                throw new \RuntimeException('Unknown public pages right: ' . $this->prefs[$right]);
         }
     }
 
@@ -1010,8 +1095,8 @@ class Preferences
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array('defaults');
-        $virtuals = array('vpref_email_newadh');
+        $forbidden = ['defaults'];
+        $virtuals = ['vpref_email_newadh'];
         $types = [
             'int' => [
                 'pref_card_address',
@@ -1032,15 +1117,21 @@ class Preferences
                 'pref_etiq_rows',
                 'pref_etiq_corps',
                 'pref_filter_account',
-                'pref_log',
                 'pref_mail_method',
                 'pref_membership_ext',
                 'pref_numrows',
                 'pref_postal_address',
                 'pref_postal_staff_member',
+                'pref_org_phone',
+                'pref_org_phone_staff',
                 'pref_password_length',
                 'pref_password_strength',
-                'pref_publicpages_visibility',
+                'pref_publicpages_visibility_generic',
+                'pref_publicpages_visibility_documents',
+                'pref_publicpages_visibility_memberslist',
+                'pref_publicpages_visibility_membersgallery',
+                'pref_publicpages_visibility_stafflist',
+                'pref_publicpages_visibility_staffgallery',
                 'pref_redirect_on_create',
                 'pref_statut'
             ],
@@ -1059,6 +1150,7 @@ class Preferences
                 'pref_bool_mailowner',
                 'pref_bool_publicpages',
                 'pref_bool_selfsubscribe',
+                'pref_bool_empty_form_link',
                 'pref_bool_wrap_mails',
                 'pref_disable_members_socials',
                 'pref_editor_enabled',
@@ -1068,7 +1160,8 @@ class Preferences
                 'pref_mail_smtp_secure',
                 'pref_mail_allow_unsecure',
                 'pref_password_blacklist',
-                'pref_show_id',
+                'pref_hide_bg_image',
+                'pref_enable_custom_colors'
             ]
         ];
 
@@ -1128,8 +1221,8 @@ class Preferences
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array('defaults');
-        $virtuals = array('vpref_email_newadh');
+        $forbidden = ['defaults'];
+        $virtuals = ['vpref_email_newadh'];
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             return true;
@@ -1166,7 +1259,7 @@ class Preferences
      */
     public function __set(string $name, mixed $value): void
     {
-        //does this pref exists ?
+        //does this pref exist?
         if (!array_key_exists($name, self::$defaults)) {
             Analog::log(
                 'Trying to set a preference value which does not seem to exist ('
@@ -1176,18 +1269,12 @@ class Preferences
             return;
         }
 
-        if (
-            $name == 'pref_email'
-            || $name == 'pref_email_newadh'
-            || $name == 'pref_email_reply_to'
-        ) {
-            if (Galette::isDemo()) {
-                Analog::log(
-                    'Trying to set pref_email while in DEMO.',
-                    Analog::WARNING
-                );
-                return;
-            }
+        if (($name == 'pref_email' || $name == 'pref_email_newadh' || $name == 'pref_email_reply_to') && Galette::isDemo()) {
+            Analog::log(
+                'Trying to set pref_email while in DEMO.',
+                Analog::WARNING
+            );
+            return;
         }
 
         // now, check validity
@@ -1195,7 +1282,7 @@ class Preferences
             $value = $this->validateValue($name, $value);
         }
 
-        //some values need to be changed (eg. passwords)
+        //some values need to be changed (e.g., passwords)
         if ($name == 'pref_admin_pass') {
             $value = password_hash($value, PASSWORD_BCRYPT);
         }
@@ -1236,8 +1323,7 @@ class Preferences
         }
 
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
-        $uri = $scheme . '://' . $_SERVER['HTTP_HOST'];
-        return $uri;
+        return $scheme . '://' . $_SERVER['HTTP_HOST'];
     }
 
     /**
@@ -1471,7 +1557,7 @@ class Preferences
         $config = \HTMLPurifier_Config::createDefault();
         $cache_dir = rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'htmlpurifier';
         if (!file_exists($cache_dir)) {
-            mkdir($cache_dir, 0755, true);
+            mkdir($cache_dir, 0o755, true);
         }
         $config->set('Cache.SerializerPath', $cache_dir);
         $purifier = new \HTMLPurifier($config);
@@ -1503,7 +1589,7 @@ class Preferences
             );
             return true;
         } catch (Throwable $e) {
-            $messages = array();
+            $messages = [];
             do {
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
@@ -1574,5 +1660,90 @@ class Preferences
             $this->required['pref_admin_login'] = 1;
         }
         return $this->required;
+    }
+
+    /**
+     * Check if CSS is impacted when storing preferences
+     *
+     * @param array<string, mixed> $values Values to check
+     *
+     * @return void
+     */
+    protected function checkCssImpacted(array $values): void
+    {
+        //check if custom CSS is enabled
+        if (($values['pref_enable_custom_colors'] ?? '') != $this->pref_enable_custom_colors) {
+            $this->delete_dark_css = true;
+            return;
+        }
+
+        $css_fields = array_filter(
+            array_keys($this->prefs),
+            fn($field) => str_starts_with($field, 'pref_cc_')
+        );
+        foreach ($css_fields as $css_field) {
+            if ($values[$css_field] != $this->$css_field) {
+                $this->delete_dark_css = true;
+                return;
+            }
+        }
+    }
+
+    /**
+     * Reset dark mode CSS file
+     *
+     * @param \Slim\Flash\Messages $flash Flash messages instance
+     *
+     * @return void
+     */
+    public function resetDarkCss(\Slim\Flash\Messages $flash): void
+    {
+        if (!$this->delete_dark_css) {
+            return;
+        }
+
+        $cssfile = GALETTE_CACHE_DIR . '/dark.css';
+        if (file_exists($cssfile)) {
+            unlink($cssfile);
+            // Inform user when the dark mode CSS file has been reset
+            $flash->addMessage(
+                'info_detected',
+                _T("Dark mode CSS file has been reset.")
+            );
+        }
+    }
+
+    /**
+     * Handle logo
+     *
+     * @param Logo|PrintLogo        $logo          Logo instance
+     * @param UploadedFileInterface $uploaded_file Uploaded file
+     *
+     * @return array<string>|true
+     */
+    public function handleLogo(Logo|PrintLogo $logo, UploadedFileInterface $uploaded_file): array|bool
+    {
+        $this->errors = [];
+        if ($uploaded_file->getError() === UPLOAD_ERR_OK) {
+            $res = $logo->storeFile($uploaded_file);
+            if ($res !== true) {
+                $this->errors[] = $logo->getErrorMessage($res);
+            }
+        } elseif ($uploaded_file->getError() !== UPLOAD_ERR_NO_FILE) {
+            $this->errors[] = $logo->getPhpErrorMessage(
+                $uploaded_file->getError()
+            );
+        }
+
+        if (count($this->errors) > 0) {
+            Analog::log(
+                'Some errors has been thew attempting to edit/store logo' . "\n"
+                . print_r($this->errors, true),
+                Analog::WARNING
+            );
+            return $this->errors;
+        } else {
+            return true;
+        }
     }
 }

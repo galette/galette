@@ -51,23 +51,23 @@ abstract class Csv
     protected int $current_line;
 
     /** @var array<string>  */
-    protected array $extensions = array('csv');
+    protected array $extensions = ['csv'];
 
     /** @var array<string>  */
-    protected array $accepted_separators = array(
+    protected array $accepted_separators = [
         ',',
         ';',
         '\t'
-    );
+    ];
 
     /** @var array<string>  */
-    protected array $accepted_quotes = array(
+    protected array $accepted_quotes = [
         '"',
         "'"
-    );
+    ];
 
     /** @var array<string> */
-    private array $errors = array();
+    private array $errors = [];
     private string $default_directory;
 
     /**
@@ -87,10 +87,10 @@ abstract class Csv
      */
     public function getExisting(): array
     {
-        $csv_files = array();
+        $csv_files = [];
         $files = glob(
-            $this->default_directory . '*.{' .
-            implode(',', $this->extensions) . '}',
+            $this->default_directory . '*.{'
+            . implode(',', $this->extensions) . '}',
             GLOB_BRACE
         );
         foreach ($files as $file) {
@@ -111,11 +111,11 @@ abstract class Csv
                 $size = $raw_size . ' octets';
             }
 
-            $csv_files[] = array(
+            $csv_files[] = [
                 'name'  => str_replace($this->default_directory, '', $file),
                 'size'  => $size,
                 'date'  => $mdate
-            );
+            ];
         }
         return $csv_files;
     }
@@ -138,8 +138,8 @@ abstract class Csv
             return $removed;
         } else {
             Analog::log(
-                'CSV file ' . $filename .
-                ' does not exists, no way to remove it!',
+                'CSV file ' . $filename
+                . ' does not exists, no way to remove it!',
                 Analog::ERROR
             );
             return false;
@@ -175,7 +175,7 @@ abstract class Csv
      */
     public function addError(string $msg): void
     {
-        $class = get_class($this);
+        $class = static::class;
         Analog::log(
             '[' . $class . '] ' . $msg,
             Analog::ERROR

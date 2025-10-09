@@ -26,10 +26,10 @@
             {{ _T("Social networks") }}
         </div>
         <div class="active content field">
-            <table class="ui very basic striped collapsing stackable padded table">
+            <table class="ui very basic definition striped stackable padded table">
     {% for social in socials %}
             <tr>
-                <th>{{ social.getSystemType(social.type) }}</th>
+                <th class="three wide column">{{ social.getSystemType(social.type) }}</th>
                 <td>{{ social.displayUrl()|raw }}</td>
             </tr>
     {% endfor %}

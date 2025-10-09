@@ -67,11 +67,7 @@ class ScheduledPayments
         $this->zdb = $zdb;
         $this->login = $login;
 
-        if ($filters === null) {
-            $this->filters = new ScheduledPaymentsList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters ?? new ScheduledPaymentsList();
     }
 
     /**
@@ -131,7 +127,7 @@ class ScheduledPayments
 
             $this->filters->setLimits($select);
 
-            $scheduleds = array();
+            $scheduleds = [];
             $results = $this->zdb->execute($select);
             if ($as_object) {
                 foreach ($results as $row) {
@@ -169,15 +165,15 @@ class ScheduledPayments
             $select->columns($fieldsList);
 
             $select->join(
-                array('c' => PREFIX_DB . Contribution::TABLE),
+                ['c' => PREFIX_DB . Contribution::TABLE],
                 's.' . Contribution::PK . '= c.' . Contribution::PK,
-                array()
+                []
             );
 
             $select->join(
-                array('a' => PREFIX_DB . Adherent::TABLE),
+                ['a' => PREFIX_DB . Adherent::TABLE],
                 'c.' . Adherent::PK . '= a.' . Adherent::PK,
-                array()
+                []
             );
 
             $this->buildWhereClause($select);
@@ -211,9 +207,9 @@ class ScheduledPayments
             $countSelect->reset($countSelect::COLUMNS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     self::PK => new Expression('COUNT(' . self::PK . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);
@@ -245,9 +241,9 @@ class ScheduledPayments
             $sumSelect->reset($sumSelect::COLUMNS);
             $sumSelect->reset($sumSelect::ORDER);
             $sumSelect->columns(
-                array(
+                [
                     'scheduledsum' => new Expression('SUM(amount)')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($sumSelect);
@@ -271,33 +267,36 @@ class ScheduledPayments
      */
     private function buildOrderClause(): array
     {
-        $order = array();
+        $order = [];
 
         switch ($this->filters->orderby) {
             case ScheduledPaymentsList::ORDERBY_ID:
-                $order[] = ScheduledPayment::PK . ' ' . $this->filters->ordered;
+                $order[] = ScheduledPayment::PK . ' ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_MEMBER:
                 $order[] = 'a.nom_adh ' . $this->filters->getDirection();
                 $order[] = 'a.prenom_adh ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_DATE:
-                $order[] = 'creation_date ' . $this->filters->ordered;
+                $order[] = 'creation_date ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_SCHEDULED_DATE:
-                $order[] = 'scheduled_date ' . $this->filters->ordered;
+                $order[] = 'scheduled_date ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_CONTRIBUTION:
-                $order[] = Contribution::PK . ' ' . $this->filters->ordered;
+                $order[] = Contribution::PK . ' ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_AMOUNT:
-                $order[] = 'amount ' . $this->filters->ordered;
+                $order[] = 'amount ' . $this->filters->getDirection();
                 break;
             case ScheduledPaymentsList::ORDERBY_PAYMENT_TYPE:
-                $order[] = 'id_paymenttype ' . $this->filters->ordered;
+                $order[] = 'id_paymenttype ' . $this->filters->getDirection();
+                break;
+            case ScheduledPaymentsList::ORDERBY_PAID:
+                $order[] = 'paid ' . $this->filters->getDirection();
                 break;
             default:
-                $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
+                $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
                 break;
         }
 
@@ -326,6 +325,8 @@ class ScheduledPayments
         if (isset($this->current_selection)) {
             $select->where->in('s.' . self::PK, $this->current_selection);
         }
+
+        $this->buildMemberWhereClause($select);
 
         try {
             if ($this->filters->start_date_filter != null) {
@@ -360,10 +361,17 @@ class ScheduledPayments
 
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 $select->where(
-                    array(
+                    [
                         'a.' . Adherent::PK => $this->login->id
-                    )
+                    ]
                 );
+            }
+
+            if ($this->filters->paid != ScheduledPaymentsList::PAID_DC) {
+                $paid = $this->filters->paid
+                    ? true
+                    : ($this->zdb->isPostgres() ? 'false' : 0);
+                $select->where(['s.paid' => $paid]);
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -372,6 +380,55 @@ class ScheduledPayments
             );
             throw $e;
         }
+    }
+
+    /**
+     * Builds where clause for filtering on member
+     *
+     * @param Select $select Original select
+     *
+     * @return void
+     */
+    private function buildMemberWhereClause(Select $select): void
+    {
+        if ($this->filters->member_filter == null) {
+            return;
+        }
+
+        //handle case when list is filtered on a single member id
+        if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->filters->member_filter != $this->login->id) {
+            $member = new Adherent(
+                $this->zdb,
+                (int)$this->filters->member_filter,
+                [
+                    'picture' => false,
+                    'groups' => false,
+                    'dues' => false,
+                    'parent' => true
+                ]
+            );
+            if (
+                !$member->hasParent()
+                || $member->parent->id != $this->login->id
+            ) {
+                //check if member is part of logged-in user managed groups
+                $mgroup = $this->login->getManagedGroups();
+                $groups = $member->getGroups();
+                if (count(array_intersect(array_keys($mgroup), array_keys($groups))) == 0) {
+                    Analog::log(
+                        'Trying to display scheduled payments for member #' . $member->id
+                        . ' without appropriate ACLs',
+                        Analog::WARNING
+                    );
+                    $this->filters->member_filter = $this->login->id;
+                }
+            }
+        }
+        $select->where(
+            [
+                'a.' . Adherent::PK => $this->filters->member_filter
+            ]
+        );
     }
 
     /**
@@ -405,12 +462,7 @@ class ScheduledPayments
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {
-        $list = array();
-        if (is_array($ids)) {
-            $list = $ids;
-        } else {
-            $list = [$ids];
-        }
+        $list = is_array($ids) ? $ids : [$ids];
 
         try {
             if ($transaction) {
@@ -442,8 +494,8 @@ class ScheduledPayments
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred trying to remove scheduled payments | ' .
-                $e->getMessage(),
+                'An error occurred trying to remove scheduled payments | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;

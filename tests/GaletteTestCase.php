@@ -40,18 +40,38 @@ abstract class GaletteTestCase extends TestCase
     protected \RKA\Session $session;
     protected \Galette\Core\Login $login;
     protected \Galette\Core\History $history;
-    protected string $logger_storage = '';
 
     protected \Galette\Entity\Adherent $adh;
     protected \Galette\Entity\Contribution $contrib;
+    protected \Galette\Core\Plugins $plugins;
     protected array $adh_ids = [];
     protected array $contrib_ids = [];
     /** @var array<string,array<string,array<int,string>> */
     protected array $flash_data;
     protected \Slim\Flash\Messages $flash;
+    protected \Slim\Routing\RouteParser $routeparser;
+    protected \Slim\Views\Twig $view;
     protected \DI\Container $container;
+    protected \Slim\App $app;
     protected int $seed;
     protected array $expected_mysql_warnings = [];
+    protected bool $check_logs = true;
+    protected bool $load_plugins = false;
+
+    /**
+     * @see see \Analog\Handler\Level::$log_levels
+     * @var string[]
+     */
+    private array $log_levels_names = [
+        \Analog\Analog::DEBUG    => 'DEBUG',
+        \Analog\Analog::INFO     => 'INFO',
+        \Analog\Analog::NOTICE   => 'NOTICE',
+        \Analog\Analog::WARNING  => 'WARNING',
+        \Analog\Analog::ERROR    => 'ERROR',
+        \Analog\Analog::CRITICAL => 'CRITICAL',
+        \Analog\Analog::ALERT    => 'ALERT',
+        \Analog\Analog::URGENT   => 'URGENT'
+    ];
 
     /**
      * Set up tests
@@ -66,7 +86,12 @@ abstract class GaletteTestCase extends TestCase
 
         $gapp =  new \Galette\Core\SlimApp();
         $app = $gapp->getApp();
+        $this->app = $app;
         $plugins = new \Galette\Core\Plugins();
+        $this->plugins = $plugins;
+        if ($this->load_plugins) {
+            $this->plugins->autoload(GALETTE_PLUGINS_PATH);
+        }
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
         /** @var \DI\Container $container */
         $container = $app->getContainer();
@@ -76,6 +101,7 @@ abstract class GaletteTestCase extends TestCase
         $container->set(\Slim\Flash\Messages::class, $this->flash);
 
         $app->addRoutingMiddleware();
+        $app->add(\Slim\Views\TwigMiddleware::createFromContainer($app, \Slim\Views\Twig::class));
 
         $this->container = $container;
 
@@ -87,6 +113,12 @@ abstract class GaletteTestCase extends TestCase
         $this->members_fields = $container->get('members_fields');
         $this->members_fields_cats = $container->get('members_fields_cats');
         $this->session = $container->get('session');
+        $this->routeparser = $container->get(\Slim\Routing\RouteParser::class);
+        $this->view = $container->get(\Slim\Views\Twig::class);
+
+        if ($this->load_plugins) {
+            $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        }
 
         global $zdb, $login, $hist, $i18n, $container, $galette_log_var, $routeparser;  // globals :(
         $zdb = $this->zdb;
@@ -94,8 +126,7 @@ abstract class GaletteTestCase extends TestCase
         $hist = $this->history;
         $i18n = $this->i18n;
         $container = $this->container;
-        $galette_log_var = $this->logger_storage;
-        $routeparser = $container->get(\Slim\Routing\RouteParser::class);
+        $routeparser = $this->routeparser;
 
         $this->initPaymentTypes();
         $this->initStatus();
@@ -123,10 +154,54 @@ abstract class GaletteTestCase extends TestCase
      */
     public function tearDown(): void
     {
+        if ($this->check_logs) {
+            $logs = $this->getCleanedLogs();
+            $this->assertCount(0, $logs, implode("\n", $logs));
+        }
+
         if (TYPE_DB === 'mysql') {
             $this->assertSame($this->expected_mysql_warnings, $this->zdb->getWarnings());
         }
         $this->cleanHistory();
+    }
+
+    /**
+     * Get logs as an array, cleaned of unwanted entries
+     *
+     * @param ?int $keep_level Level to keep explicitly (to check INFO or DEBUG logs messages)
+     *
+     * @return string[]
+     */
+    private function getCleanedLogs(?int $keep_level = null): array
+    {
+        global $galette_log_var;
+        $logs = explode("localhost - ", $galette_log_var ?? '');
+
+        $excluded_logs = [
+            'WARNING - Plugin plugin-oldversion',
+            'ERROR - Plugin Galette Unversionned'
+        ];
+
+        foreach ($logs as $i => $log) {
+            foreach ($excluded_logs as $excluded_log) {
+                if (str_contains($log, $excluded_log)) {
+                    unset($logs[$i]);
+                }
+            }
+
+            if (
+                empty($log)
+                || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::DEBUG] . ' - ')
+                && $keep_level !== \Analog\Analog::DEBUG
+                || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::INFO] . ' - ')
+                && $keep_level !== \Analog\Analog::INFO
+                || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::NOTICE] . ' - ')
+                && $keep_level !== \Analog\Analog::NOTICE
+            ) {
+                unset($logs[$i]);
+            }
+        }
+        return $logs;
     }
 
     /**
@@ -187,6 +262,7 @@ abstract class GaletteTestCase extends TestCase
             'date_crea_adh' => '2020-06-10',
             'pref_lang' => 'en_US',
             'fingerprint' => 'FAKER' . $this->seed,
+            'region_adh' => 'Caribbean'
         ];
         return $data;
     }
@@ -290,47 +366,32 @@ abstract class GaletteTestCase extends TestCase
             $adh = $this->adh;
         }
 
-        $expecteds = [
-            'nom_adh' => 'Durand',
-            'prenom_adh' => 'René',
-            'ville_adh' => 'Martel',
-            'adresse_adh' => '66, boulevard De Oliveira',
-            'email_adh' => 'meunier.josephine' .  $this->seed . '@ledoux.com',
-            'login_adh' => 'arthur.hamon' .  $this->seed,
-            'mdp_adh' => 'J^B-()f',
-            'bool_admin_adh' => false,
-            'bool_exempt_adh' => false,
-            'bool_display_info' => true,
-            'sexe_adh' => 0,
-            'prof_adh' => 'Chef de fabrication',
-            'titre_adh' => null,
-            'ddn_adh' => 'NOT USED',
-            'lieu_naissance' => 'Gonzalez-sur-Meunier',
-            'pseudo_adh' => 'ubertrand',
-            'cp_adh' => '39 069',
-            'pays_adh' => 'Antarctique',
-            'tel_adh' => '0439153432',
-            'activite_adh' => true,
-            'id_statut' => 9,
-            'pref_lang' => 'en_US',
-            'fingerprint' => 'FAKER95842354',
-            'societe_adh' => ''
-        ];
+        $expecteds = $this->dataAdherentOne();
+        unset($expecteds['mdp_adh2']);
         $expecteds = array_merge($expecteds, $new_expecteds);
 
         foreach ($expecteds as $key => $value) {
             $property = $this->members_fields[$key]['propname'];
+            $this->assertTrue(isset($adh->$property));
             switch ($key) {
                 case 'bool_admin_adh':
+                    $this->assertSame($value, $adh->$property);
+                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "admin" directly is discouraged.');
                     $this->assertSame($value, $adh->isAdmin());
                     break;
                 case 'bool_exempt_adh':
+                    $this->assertSame($value, $adh->$property);
+                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "due_free" directly is discouraged.');
                     $this->assertSame($value, $adh->isDueFree());
                     break;
                 case 'bool_display_info':
+                    $this->assertSame($value, $adh->$property);
+                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "appears_in_list" directly is discouraged.');
                     $this->assertSame($value, $adh->appearsInMembersList());
                     break;
                 case 'activite_adh':
+                    $this->assertSame($value, $adh->$property);
+                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "active" directly is discouraged.');
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
@@ -348,14 +409,12 @@ abstract class GaletteTestCase extends TestCase
                         $adh->$property,
                         "$property expected {$value} got {$adh->$property}"
                     );
-
                     break;
             }
         }
 
-        $d = \DateTime::createFromFormat('Y-m-d', $expecteds['ddn_adh']);
-
         $this->assertFalse($adh->hasChildren());
+        $this->expectLogEntry(\Analog::WARNING, 'Children has not been loaded!');
         $this->assertFalse($adh->hasParent());
         $this->assertFalse($adh->hasPicture());
 
@@ -374,6 +433,7 @@ abstract class GaletteTestCase extends TestCase
         $this->assertSame($expecteds['cp_adh'], $adh->getZipcode());
         $this->assertSame($expecteds['ville_adh'], $adh->getTown());
         $this->assertSame($expecteds['pays_adh'], $adh->getCountry());
+        $this->assertSame($expecteds['region_adh'], $adh->getRegion());
 
         $this->assertSame('DURAND René', $adh::getSName($this->zdb, $adh->id));
         $this->assertSame('active-account cotis-never', $adh->getRowClass());
@@ -393,47 +453,28 @@ abstract class GaletteTestCase extends TestCase
             $adh = $this->adh;
         }
 
-        $expecteds = [
-            'nom_adh' => 'Hoarau',
-            'prenom_adh' => 'Lucas',
-            'ville_adh' => 'Reynaudnec',
-            'cp_adh' => '63077',
-            'adresse_adh' => '2, boulevard Legros',
-            'email_adh' => 'phoarau' .  $this->seed . '@tele2.fr',
-            'login_adh' => 'nathalie51' .  $this->seed,
-            'mdp_adh' => 'T.u!IbKOi|06',
-            'bool_admin_adh' => false,
-            'bool_exempt_adh' => false,
-            'bool_display_info' => false,
-            'sexe_adh' => 1,
-            'prof_adh' => 'Extraction',
-            'titre_adh' => null,
-            'ddn_adh' => 'NOT USED',
-            'lieu_naissance' => 'Fischer',
-            'pseudo_adh' => 'vallet.camille',
-            'pays_adh' => '',
-            'tel_adh' => '05 59 53 59 43',
-            'activite_adh' => true,
-            'id_statut' => 9,
-            'pref_lang' => 'ca',
-            'fingerprint' => 'FAKER' . $this->seed,
-            'societe_adh' => 'Philippe'
-        ];
+        $expecteds = $this->dataAdherentTwo();
+        unset($expecteds['mdp_adh2']);
         $expecteds = array_merge($expecteds, $new_expecteds);
 
         foreach ($expecteds as $key => $value) {
             $property = $this->members_fields[$key]['propname'];
+            $this->assertTrue(isset($adh->$property));
             switch ($key) {
                 case 'bool_admin_adh':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->isAdmin());
                     break;
                 case 'bool_exempt_adh':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->isDueFree());
                     break;
                 case 'bool_display_info':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->appearsInMembersList());
                     break;
                 case 'activite_adh':
+                    $this->assertSame($value, $adh->$property);
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
@@ -455,8 +496,6 @@ abstract class GaletteTestCase extends TestCase
             }
         }
 
-        $d = \DateTime::createFromFormat('Y-m-d', $expecteds['ddn_adh']);
-
         $this->assertFalse($adh->hasChildren());
         $this->assertFalse($adh->hasParent());
         $this->assertFalse($adh->hasPicture());
@@ -476,6 +515,7 @@ abstract class GaletteTestCase extends TestCase
         $this->assertSame($expecteds['cp_adh'], $adh->getZipcode());
         $this->assertSame($expecteds['ville_adh'], $adh->getTown());
         $this->assertSame($expecteds['pays_adh'], $adh->getCountry());
+        $this->assertSame('', $adh->getRegion());
 
         $this->assertSame('HOARAU Lucas', $adh::getSName($this->zdb, $adh->id));
         $this->assertSame('active-account cotis-never', $adh->getRowClass());
@@ -572,11 +612,15 @@ abstract class GaletteTestCase extends TestCase
     public function createContrib(array $data, ?\Galette\Entity\Contribution $contrib = null): \Galette\Entity\Contribution
     {
         if ($contrib === null) {
-            $this->contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+            $this->contrib = new \Galette\Entity\Contribution(
+                $this->zdb,
+                $this->login,
+                ['type' => $data['id_type_cotis']]
+            );
             $contrib = $this->contrib;
         }
 
-        $check = $contrib->check($data, [], []);
+        $check = $contrib->check($data, $contrib->getRequired(), []);
         if (is_array($check)) {
             var_dump($check);
         }
@@ -589,11 +633,11 @@ abstract class GaletteTestCase extends TestCase
     }
 
     /**
-     * Create test contribution in database
+     * Get contribution data
      *
-     * @return void
+     * @return array<string,mixed>
      */
-    protected function createContribution(): void
+    protected function getContribData(): array
     {
         $now = new \DateTime(); // 2020-11-07
         $begin_date = clone $now;
@@ -604,7 +648,7 @@ abstract class GaletteTestCase extends TestCase
         $due_date->sub(new \DateInterval('P1D'));
         $due_date->add(new \DateInterval('P1Y'));
 
-        $data = [
+        return [
             'id_adh' => $this->adh->id,
             'id_type_cotis' => 1, //annual fee
             'montant_cotis' => 92,
@@ -614,7 +658,16 @@ abstract class GaletteTestCase extends TestCase
             'date_debut_cotis' => $begin_date->format('Y-m-d'),
             'date_fin_cotis' => $due_date->format('Y-m-d'),
         ];
-        $this->createContrib($data);
+    }
+
+    /**
+     * Create test contribution in database
+     *
+     * @return void
+     */
+    protected function createContribution(): void
+    {
+        $this->createContrib($this->getContribData());
         $this->checkContribExpected();
     }
 
@@ -649,10 +702,51 @@ abstract class GaletteTestCase extends TestCase
             'type_paiement_cotis' => '3',
             'info_cotis' => 'FAKER' . $this->seed,
             'date_fin_cotis' => $due_date->format('Y-m-d'),
+            'row_class' => 'active-account cotis-ok', //member is up-to-date
+            'type' => \Galette\Entity\Contribution::TYPE_FEE,
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
         $this->assertSame($expecteds['date_fin_cotis'], $contrib->raw_end_date->format('Y-m-d'));
+
+        //load member from db
+        $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+        $this->assertSame($expecteds['row_class'], $this->adh->getRowClass());
+        unset($expecteds['row_class']);
+        if ($expecteds['type'] === \Galette\Entity\Contribution::TYPE_FEE) {
+            $this->assertSame($this->contrib->end_date, $this->adh->due_date);
+            $this->assertTrue($this->adh->isUp2Date());
+            $this->assertTrue($contrib->isFee());
+            $this->assertSame('Membership', $contrib->getTypeLabel());
+            $this->assertSame('membership', $contrib->getRawType());
+            $this->assertSame(
+                $this->contrib->getRequired(),
+                [
+                    'id_type_cotis'     => 1,
+                    'id_adh'            => 1,
+                    'date_enreg'        => 1,
+                    'date_debut_cotis'  => 1,
+                    'date_fin_cotis'    => 1,
+                    'montant_cotis'     => 1
+                ]
+            );
+        } else {
+            $this->assertFalse($contrib->isFee());
+            $this->assertSame('Donation', $contrib->getTypeLabel());
+            $this->assertSame('donation', $contrib->getRawType());
+            $this->assertSame(
+                $this->contrib->getRequired(),
+                [
+                    'id_type_cotis'     => 1,
+                    'id_adh'            => 1,
+                    'date_enreg'        => 1,
+                    'date_debut_cotis'  => 1,
+                    'date_fin_cotis'    => 0,
+                    'montant_cotis'     => 0
+                ]
+            );
+        }
+        unset($expecteds['type']);
 
         foreach ($expecteds as $key => $value) {
             $property = $this->contrib->fields[$key]['propname'];
@@ -670,27 +764,6 @@ abstract class GaletteTestCase extends TestCase
                     break;
             }
         }
-
-        //load member from db
-        $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
-        //member is now up-to-date
-        $this->assertSame('active-account cotis-ok', $this->adh->getRowClass());
-        $this->assertSame($this->contrib->end_date, $this->adh->due_date);
-        $this->assertTrue($this->adh->isUp2Date());
-        $this->assertTrue($contrib->isFee());
-        $this->assertSame('Membership', $contrib->getTypeLabel());
-        $this->assertSame('membership', $contrib->getRawType());
-        $this->assertSame(
-            $this->contrib->getRequired(),
-            [
-                'id_type_cotis'     => 1,
-                'id_adh'            => 1,
-                'date_enreg'        => 1,
-                'date_debut_cotis'  => 1,
-                'date_fin_cotis'    => 1,
-                'montant_cotis'     => 1
-            ]
-        );
     }
 
     /**
@@ -717,7 +790,7 @@ abstract class GaletteTestCase extends TestCase
     {
         $ct = new \Galette\Entity\ContributionsTypes($this->zdb);
         if (count($ct->getCompleteList()) === 0) {
-            //contributions types are not yet instanciated.
+            //contributions types are not yet instantiated.
             $res = $ct->installInit();
             $this->assertTrue($res);
         }
@@ -787,5 +860,199 @@ abstract class GaletteTestCase extends TestCase
         $this->login->logAdmin('superadmin', $this->preferences);
         $this->assertTrue($this->login->isLogged());
         $this->assertTrue($this->login->isSuperAdmin());
+    }
+
+    /**
+     * Check for expected log entry. If found, it will be removed from logs.
+     *
+     * @param int    $level   Log lovel
+     * @param string $message Log message
+     *
+     * @return void
+     */
+    protected function expectLogEntry(int $level, string $message): void
+    {
+        global $galette_log_var;
+        $this->assertNotEmpty($galette_log_var);
+
+        $logs = $this->getCleanedLogs(keep_level: $level);
+        $found = false;
+        foreach ($logs as $i => $log) {
+            if (str_contains($log, $this->log_levels_names[$level] . ' - ') && str_contains($log, $message)) {
+                $found = true;
+                unset($logs[$i]);
+            }
+        }
+
+        $galette_log_var = implode("\n", $logs);
+        $this->assertTrue(
+            $found,
+            "Log message '{$message}' not found in log storage for level '{$this->log_levels_names[$level]}'."
+        );
+    }
+
+    /**
+     * Check there is no log entry.
+     *
+     * @return void
+     */
+    protected function expectNoLogEntry(): void
+    {
+        $logs = $this->getCleanedLogs();
+        $this->assertCount(0, $logs, print_r($logs, true));
+    }
+
+    /**
+     * Clean created contributions
+     *
+     * @return void
+     */
+    protected function cleanContributions(): void
+    {
+        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
+        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Transaction::TABLE);
+        $delete->where(['trans_desc' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
+    }
+
+    /**
+     * Clean created members and groups
+     *
+     * @return void
+     */
+    protected function cleanMembers(): void
+    {
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
+        $delete->where('parent_id IS NOT NULL');
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
+    }
+
+    /**
+     * Set given member as staff
+     *
+     * @param \Galette\Entity\Adherent $member Member to edit
+     *
+     * @return \Galette\Entity\Adherent
+     */
+    protected function getStaffMember(\Galette\Entity\Adherent $member): \Galette\Entity\Adherent
+    {
+        $this->logSuperAdmin();
+
+        $staff_member = clone $member;
+        $check = $staff_member->check(['id_statut' => '1'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($staff_member->store());
+
+        $this->login->logout();
+
+        return $staff_member;
+    }
+
+    /**
+     * Reset given staff member to given member status
+     *
+     * @param \Galette\Entity\Adherent $staff_member Staff member to edit
+     * @param \Galette\Entity\Adherent $member       Member to get status from
+     *
+     * @return void
+     */
+    protected function resetStaffStatus(\Galette\Entity\Adherent $staff_member, \Galette\Entity\Adherent $member): void
+    {
+        $this->logSuperAdmin();
+        $check = $staff_member->check(['id_statut' => $member->status], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($staff_member->store());
+        $this->assertTrue($member->load($member->id));
+        $this->login->logout();
+    }
+
+    /**
+     * Set given member as admin
+     *
+     * @param \Galette\Entity\Adherent $member Member to edit
+     *
+     * @return \Galette\Entity\Adherent
+     */
+    protected function getAdminMember(\Galette\Entity\Adherent $member): \Galette\Entity\Adherent
+    {
+        $this->logSuperAdmin();
+
+        $adm_member = clone $member;
+        $check = $adm_member->check(['bool_admin_adh' => '1'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($adm_member->store());
+
+        $this->login->logout();
+
+        return $adm_member;
+    }
+
+    /**
+     * Reset given admin member flag
+     *
+     * @param \Galette\Entity\Adherent $admin_member Admin member to edit
+     *
+     * @return void
+     */
+    protected function resetAdminStatus(\Galette\Entity\Adherent $admin_member): void
+    {
+        $this->logSuperAdmin();
+        $check = $admin_member->check(['bool_admin_adh' => '0'], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+        $this->assertTrue($admin_member->store());
+        $this->login->logout();
+    }
+
+    /**
+     * Get mocked document instance
+     *
+     * @return \Galette\Entity\Document
+     */
+    protected function getDocumentInstance(): \Galette\Entity\Document
+    {
+        $document = $this->getMockBuilder(\Galette\Entity\Document::class)
+            ->setConstructorArgs(array($this->zdb))
+            ->onlyMethods(array('handleFiles'))
+            ->getMock();
+
+        $document->method('handleFiles')
+            ->willReturnCallback(
+                function (array $files) use ($document) {
+                    $reflection = new \ReflectionClass(\Galette\Entity\Document::class);
+                    $reflection_property = $reflection->getProperty('filename');
+                    $reflection_property->setValue($document, $files['document_file']->getClientFilename());
+
+                    return true;
+                }
+            );
+        return $document;
     }
 }

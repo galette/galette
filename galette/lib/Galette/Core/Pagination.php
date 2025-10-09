@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Galette\Enums\SQLOrder;
 use Slim\Routing\RouteParser;
 use Analog\Analog;
 use Laminas\Db\Sql\Select;
@@ -35,7 +36,7 @@ use Slim\Views\Twig;
  *
  * @property integer $current_page
  * @property string $orderby
- * @property string $ordered
+ * @property SQLOrder $ordered
  * @property integer $show
  * @property integer $pages
  * @property integer $counter
@@ -45,7 +46,7 @@ abstract class Pagination
 {
     private int $current_page;
     private int|string $orderby;
-    private string $ordered;
+    private SQLOrder $ordered;
     private int $show;
     private int $pages = 1;
     private ?int $counter = null;
@@ -54,18 +55,15 @@ abstract class Pagination
     /** @var array<string> */
     protected array $errors = [];
 
-    public const ORDER_ASC = 'ASC';
-    public const ORDER_DESC = 'DESC';
-
     /** @var array<string> */
-    protected array $pagination_fields = array(
+    protected array $pagination_fields = [
         'current_page',
         'orderby',
         'ordered',
         'show',
         'pages',
         'counter'
-    );
+    ];
 
     /**
      * Default constructor
@@ -85,11 +83,11 @@ abstract class Pagination
     /**
      * Return the default direction for ordering
      *
-     * @return string ASC or DESC
+     * @return SQLOrder
      */
-    protected function getDefaultDirection(): string
+    protected function getDefaultDirection(): SQLOrder
     {
-        return self::ORDER_ASC;
+        return SQLOrder::ASC;
     }
 
     /**
@@ -115,43 +113,50 @@ abstract class Pagination
     public function invertorder(): void
     {
         $actual = $this->ordered;
-        if ($actual == self::ORDER_ASC) {
-            $this->ordered = self::ORDER_DESC;
+        if ($actual === SQLOrder::ASC) {
+            $this->ordered = SQLOrder::DESC;
         }
-        if ($actual == self::ORDER_DESC) {
-            $this->ordered = self::ORDER_ASC;
+        if ($actual === SQLOrder::DESC) {
+            $this->ordered = SQLOrder::ASC;
         }
     }
 
     /**
      * Get current sort direction
      *
-     * @return self::ORDER_ASC|self::ORDER_DESC
+     * @return string
      */
     public function getDirection(): string
     {
-        return $this->ordered;
+        return $this->ordered->value;
     }
 
     /**
      * Set sort direction
      *
-     * @param string $direction self::ORDER_ASC|self::ORDER_DESC
+     * @param SQLOrder|string|null $direction Order direction
      *
-     * @return void
+     * @return self
      */
-    public function setDirection(string $direction): void
+    public function setDirection(SQLOrder|string|null $direction): self
     {
-        if ($direction == self::ORDER_ASC || $direction == self::ORDER_DESC) {
+        if (($direction ?? $this->getDefaultDirection()) instanceof SQLOrder) {
             $this->ordered = $direction;
-        } else {
+            return $this;
+        }
+
+        try {
+            $odirection = SQLOrder::from($direction);
+            $this->ordered = $odirection;
+        } catch (\ValueError $e) {
             Analog::log(
-                'Trying to set a sort direction that is not know (`' .
-                $direction . '`). Reverting to default value.',
+                '[' . static::class
+                . '|Pagination] ' . $e->getMessage(),
                 Analog::WARNING
             );
-            $this->ordered = self::ORDER_ASC;
         }
+
+        return $this;
     }
 
     /**
@@ -213,7 +218,7 @@ abstract class Pagination
      *
      * @param RouteParser $routeparser Application instance
      * @param Twig        $view        View instance
-     * @param boolean     $restricted  Do not permit to display all
+     * @param boolean     $restricted  Do not permit displaying all
      *
      * @return void
      */
@@ -225,16 +230,8 @@ abstract class Pagination
         $this->routeparser = $routeparser;
 
         //Create pagination links
-        if ($this->current_page < 11) {
-            $idepart = 1;
-        } else {
-            $idepart = $this->current_page - 10;
-        }
-        if ($this->current_page + 10 < $this->pages) {
-            $ifin = $this->current_page + 10;
-        } else {
-            $ifin = $this->pages;
-        }
+        $idepart = $this->current_page < 11 ? 1 : $this->current_page - 10;
+        $ifin = $this->current_page + 10 < $this->pages ? $this->current_page + 10 : $this->pages;
 
         $next = $this->current_page + 1;
         $previous = $this->current_page - 1;
@@ -243,13 +240,13 @@ abstract class Pagination
             $paginate .= $this->getLink(
                 '<i class="fast backward small icon" aria-hidden="true"></i>',
                 $this->getHref(1),
-                preg_replace("(%i)", (string)$next, _T("First page"))
+                _T('First page')
             );
 
             $paginate .= $this->getLink(
                 '<i class="step backward small icon" aria-hidden="true"></i>',
                 $this->getHref($previous),
-                preg_replace("(%i)", (string)$previous, _T("Previous page (%i)"))
+                sprintf(_T('Previous page (%1$s)'), (string)$previous)
             );
         }
 
@@ -258,18 +255,14 @@ abstract class Pagination
                 $paginate .= $this->getLink(
                     "$i",
                     $this->getHref($this->current_page),
-                    preg_replace(
-                        "(%i)",
-                        (string)$this->current_page,
-                        _T("Current page (%i)")
-                    ),
+                    sprintf(_T('Current page (%1$s)'), (string)$this->current_page),
                     true
                 );
             } else {
                 $paginate .= $this->getLink(
                     (string)$i,
                     $this->getHref($i),
-                    preg_replace("(%i)", (string)$i, _T("Page %i"))
+                    sprintf(_T('Page %1$s'), (string)$i)
                 );
             }
         }
@@ -277,25 +270,25 @@ abstract class Pagination
             $paginate .= $this->getLink(
                 '<i class="step forward small icon" aria-hidden="true"></i>',
                 $this->getHref($next),
-                preg_replace("(%i)", (string)$next, _T("Next page (%i)"))
+                sprintf(_T('Next page (%1$s)'), (string)$next)
             );
 
             $paginate .= $this->getLink(
                 '<i class="fast forward small icon" aria-hidden="true"></i>',
                 $this->getHref($this->pages),
-                preg_replace("(%i)", (string)$this->pages, _T("Last page (%i)"))
+                sprintf(_T('Last page (%1$s)'), (string)$this->pages)
             );
         }
         if ($this->current_page == 1 && $this->current_page == $this->pages) {
             $is_paginated = false;
         }
 
-        $options = array(
+        $options = [
             10 => "10",
             20 => "20",
             50 => "50",
             100 => "100"
-        );
+        ];
 
         if ($restricted === false) {
             $options[0] = _T("All");
@@ -327,13 +320,9 @@ abstract class Pagination
      */
     private function getLink(string $content, string $url, string $title, bool $current = false): string
     {
-        if ($current === true) {
-            $active = "active ";
-        } else {
-            $active = "";
-        }
-        $link = "<a href=\"" . $url . "\" " .
-            "title=\"" . $title . "\" class=\"" . $active . "item\">" . $content . "</a>\n";
+        $active = $current === true ? "active " : "";
+        $link = "<a href=\"" . $url . "\" "
+            . "title=\"" . $title . "\" class=\"" . $active . "item\">" . $content . "</a>\n";
         return $link;
     }
 
@@ -351,12 +340,12 @@ abstract class Pagination
             'value'     => (string)$page
         ];
 
-        if ($this->view->getEnvironment()->mergeGlobals([])['cur_subroute']) {
-            $args['type'] = $this->view->getEnvironment()->mergeGlobals([])['cur_subroute'];
+        if ($this->view->getEnvironment()->getGlobals()['cur_subroute']) {
+            $args['type'] = $this->view->getEnvironment()->getGlobals()['cur_subroute'];
         }
 
         $href = $this->routeparser->urlFor(
-            $this->view->getEnvironment()->mergeGlobals([])['cur_route'],
+            $this->view->getEnvironment()->getGlobals()['cur_route'],
             $args
         );
         return $href;
@@ -371,6 +360,15 @@ abstract class Pagination
      */
     public function __get(string $name): mixed
     {
+        if ($name === 'ordered') {
+            Analog::log(
+                '[' . static::class
+                . '|Pagination] ' . $name . ' is deprecated, use getDirection() instead',
+                Analog::WARNING
+            );
+            return $this->getDirection();
+        }
+
         if (in_array($name, $this->pagination_fields)) {
             return $this->$name;
         }
@@ -378,7 +376,7 @@ abstract class Pagination
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );
@@ -412,24 +410,19 @@ abstract class Pagination
     {
         switch ($name) {
             case 'ordered':
-                if ($value == self::ORDER_ASC || $value == self::ORDER_DESC) {
-                    $this->$name = $value;
-                } else {
-                    Analog::log(
-                        '[' . get_class($this) .
-                        '|Pagination] Possibles values for field `' .
-                        $name . '` are: `' . self::ORDER_ASC . '` or `' .
-                        self::ORDER_DESC . '` - `' . $value . '` given',
-                        Analog::WARNING
-                    );
-                }
+                Analog::log(
+                    '[' . static::class
+                    . '|Pagination] ' . $name . ' is deprecated, use setDirection() instead',
+                    Analog::WARNING
+                );
+                $this->setDirection($value);
                 break;
             case 'orderby':
                 if ($this->$name == $value) {
                     $this->invertorder();
                 } else {
                     $this->$name = $value;
-                    $this->setDirection(self::ORDER_ASC);
+                    $this->setDirection($this->getDefaultDirection());
                 }
                 break;
             case 'current_page':
@@ -439,10 +432,10 @@ abstract class Pagination
                     $this->$name = $value;
                 } else {
                     Analog::log(
-                        '[' . get_class($this) .
-                        '|Pagination] Value for field `' .
-                        $name . '` should be a positive integer - (' .
-                        gettype($value) . ')' . $value . ' given',
+                        '[' . static::class
+                        . '|Pagination] Value for field `'
+                        . $name . '` should be a positive integer - ('
+                        . gettype($value) . ')' . $value . ' given',
                         Analog::WARNING
                     );
                 }
@@ -456,17 +449,17 @@ abstract class Pagination
                     $this->$name = (int)$value;
                 } else {
                     Analog::log(
-                        '[' . get_class($this) . '|Pagination] Value for `' .
-                        $name . '` should be a positive integer or \'all\' - (' .
-                        gettype($value) . ')' . $value . ' given',
+                        '[' . static::class . '|Pagination] Value for `'
+                        . $name . '` should be a positive integer or \'all\' - ('
+                        . gettype($value) . ')' . $value . ' given',
                         Analog::WARNING
                     );
                 }
                 break;
             default:
                 Analog::log(
-                    '[' . get_class($this) .
-                    '|Pagination] Unable to set property `' . $name . '`',
+                    '[' . static::class
+                    . '|Pagination] Unable to set property `' . $name . '`',
                     Analog::WARNING
                 );
                 break;

@@ -28,6 +28,8 @@ use DateInterval;
 use DateTime;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
+use Galette\Interfaces\AccessManagementInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -46,25 +48,25 @@ use Galette\Helpers\EntityHelper;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property integer $id
- * @property string $date
- * @property DateTime $raw_date
- * @property integer $member
- * @property ContributionsTypes $type
- * @property double $amount
- * @property integer $payment_type
- * @property double $orig_amount
- * @property string $info
- * @property string $begin_date
- * @property DateTime $raw_begin_date
- * @property string $end_date
- * @property DateTime $raw_end_date
- * @property Transaction|null $transaction
- * @property integer $extension
+ * @property ?string $date
+ * @property ?DateTime $raw_date
+ * @property ?integer $member
+ * @property ?ContributionsTypes $type
+ * @property ?double $amount
+ * @property ?integer $payment_type
+ * @property ?double $orig_amount
+ * @property ?string $info
+ * @property ?string $begin_date
+ * @property ?DateTime $raw_begin_date
+ * @property ?string $end_date
+ * @property ?DateTime $raw_end_date
+ * @property ?Transaction $transaction
+ * @property ?integer $extension
  * @property integer $duration
- * @property integer $model
+ * @property ?integer $model
  * @property array<string, array<string, string>> $fields
  */
-class Contribution
+class Contribution implements AccessManagementInterface
 {
     use Dynamics;
     use HasEvent;
@@ -154,12 +156,16 @@ class Contribution
             if (isset($args['adh']) && $args['adh'] != '') {
                 $this->member = (int)$args['adh'];
             }
+            if (isset($args['amount'])) {
+                $this->amount = $args['amount'];
+            }
             if (isset($args['trans'])) {
                 $this->transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
                 if (!isset($this->member)) {
                     $this->member = $this->transaction->member;
                 }
                 $this->amount = $this->transaction->getMissingAmount();
+                $this->payment_type = $this->transaction->payment_type;
             }
             $this->setContributionType((int)$args['type']);
             if (!$this->isFee()) {
@@ -189,7 +195,7 @@ class Contribution
                 //calculate begin date for membership fee with beginning of membership date
                 $begin_date = new \DateTime();
                 $begin_date->sub(new DateInterval('P1Y'));
-                list($j, $m) = explode('/', $preferences->pref_beg_membership);
+                [$j, $m] = explode('/', $preferences->pref_beg_membership);
                 $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
                 while ($next_begin_date <= $begin_date) {
                     $next_begin_date->add(new DateInterval('P1Y'));
@@ -214,55 +220,55 @@ class Contribution
      */
     protected function setFields(): self
     {
-        $this->fields = array(
-            'id_cotis'            => array(
+        $this->fields = [
+            'id_cotis'            => [
                 'label'    => _T('Contribution id'), //not a field in the form
                 'propname' => 'id'
-            ),
-            Adherent::PK          => array(
+            ],
+            Adherent::PK          => [
                 'label'    => _T("Contributor:"),
                 'propname' => 'member'
-            ),
-            ContributionsTypes::PK => array(
+            ],
+            ContributionsTypes::PK => [
                 'label'    => _T("Contribution type:"),
                 'propname' => 'type'
-            ),
-            'montant_cotis'       => array(
+            ],
+            'montant_cotis'       => [
                 'label'    => _T("Amount:"),
                 'propname' => 'amount'
-            ),
-            'type_paiement_cotis' => array(
+            ],
+            'type_paiement_cotis' => [
                 'label'    => _T("Payment type:"),
                 'propname' => 'payment_type'
-            ),
-            'info_cotis'          => array(
+            ],
+            'info_cotis'          => [
                 'label'    => _T("Comments:"),
                 'propname' => 'info'
-            ),
-            'date_enreg'          => array(
+            ],
+            'date_enreg'          => [
                 'label'    => _T('Date'), //not a field in the form
                 'propname' => 'date'
-            ),
-            'date_debut_cotis'    => array(
+            ],
+            'date_debut_cotis'    => [
                 'label'    => _T("Date of contribution:"),
                 'cotlabel' => _T("Start date of membership:"), //if contribution is a membership fee, label differs
                 'propname' => 'begin_date'
-            ),
-            'date_fin_cotis'      => array(
+            ],
+            'date_fin_cotis'      => [
                 'label'    => _T("End date of membership:"),
                 'propname' => 'end_date'
-            ),
-            Transaction::PK       => array(
+            ],
+            Transaction::PK       => [
                 'label'    => _T('Transaction ID'), //not a field in the form
                 'propname' => 'transaction'
-            ),
+            ],
             //this one is not really a field, but is required in some cases...
             //adding it here make more simple to check required fields
-            'duree_mois_cotis'    => array(
+            'duree_mois_cotis'    => [
                 'label'    => _T("Membership extension:"),
                 'propname' => 'extension'
-            )
-        );
+            ]
+        ];
 
         return $this;
     }
@@ -279,12 +285,12 @@ class Contribution
         $now = new \DateTime();
         $begin_date = new \DateTime($this->begin_date);
 
-        if ($this->type->extension > ContributionsTypes::DONATION_TYPE) {
+        if ($this->type->extension > ContributionsTypes::DONATION_TYPE && $preferences->pref_beg_membership == '') {
             $dext = new DateInterval('P' . $this->type->extension . 'M');
             $end_date = $begin_date->add($dext);
         } elseif ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            list($j, $m) = explode('/', $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', $preferences->pref_beg_membership);
             $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
             while ($next_begin_date <= $begin_date) {
                 $next_begin_date->add(new DateInterval('P1Y'));
@@ -344,19 +350,19 @@ class Contribution
         try {
             $select = $this->zdb->select(self::TABLE, 'c');
             $select->join(
-                array('a' => PREFIX_DB . Adherent::TABLE),
+                ['a' => PREFIX_DB . Adherent::TABLE],
                 'c.' . Adherent::PK . '=a.' . Adherent::PK,
-                array()
+                []
             );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                if ($this->login->isGroupManager() && $preferences->pref_bool_groupsmanagers_create_transactions) {
+                if ($this->login->isGroupManager() && ($preferences->pref_bool_groupsmanagers_create_transactions || $preferences->pref_bool_groupsmanagers_see_transactions)) {
                     //limit to managed members from managed groups
                     $mgroups = $this->login->getManagedGroups();
                     $select->join(
-                        array('users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                        ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                         'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                        array(),
+                        [],
                         $select::JOIN_LEFT
                     );
                     $select->where
@@ -399,8 +405,8 @@ class Contribution
             }
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred attempting to load contribution #' . $id .
-                $e->getMessage(),
+                'An error occurred attempting to load contribution #' . $id
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -419,9 +425,9 @@ class Contribution
         $pk = self::PK;
         $this->id = (int)$r->$pk;
         $this->date = $r->date_enreg;
-        $this->amount = (double)$r->montant_cotis;
+        $this->amount = (float)$r->montant_cotis;
         //save original amount, we need it for transactions parts calculations
-        $this->orig_amount = (double)$r->montant_cotis;
+        $this->orig_amount = (float)$r->montant_cotis;
         $this->payment_type = (int)$r->type_paiement_cotis;
         $this->info = $r->info_cotis;
         $this->begin_date = $r->date_debut_cotis;
@@ -442,6 +448,8 @@ class Contribution
         $transpk = Transaction::PK;
         if ($r->$transpk != '') {
             $this->transaction = new Transaction($this->zdb, $this->login, (int)$r->$transpk);
+        } else {
+            $this->transaction = null;
         }
 
         $this->setContributionType((int)$r->id_type_cotis);
@@ -460,7 +468,8 @@ class Contribution
      */
     public function check(array $values, array $required, array $disabled): bool|array
     {
-        $this->errors = array();
+        global $preferences;
+        $this->errors = [];
 
         $fields = array_keys($this->fields);
         foreach ($fields as $key) {
@@ -493,7 +502,17 @@ class Contribution
                         break;
                     case Adherent::PK:
                         if ($value != '') {
-                            $this->member = (int)$value;
+                            $member = new Adherent($this->zdb, (int)$value, false);
+                            if (
+                                !$this->login->isStaff()
+                                && !$this->login->isAdmin()
+                                && !$this->login->isGroupManager(array_keys($member->getGroups()))
+                            ) {
+                                $this->errors[] = _T("- Please select a member from a group you manage.");
+                                unset($this->member);
+                            } else {
+                                $this->member = (int)$value;
+                            }
                         }
                         break;
                     case ContributionsTypes::PK:
@@ -505,7 +524,7 @@ class Contribution
                         //FIXME: this is a hack to allow comma as decimal separator
                         $value = strtr((string)$value, ',', '.');
                         if (!empty($value) || $value === '0') {
-                            $this->amount = (double)$value;
+                            $this->amount = (float)$value;
                         }
                         if (!is_numeric($value) && $value !== '') {
                             $this->errors[] = _T("- The amount must be an integer!");
@@ -522,10 +541,13 @@ class Contribution
                     case Transaction::PK:
                         if ($value != '') {
                             $this->transaction = new Transaction($this->zdb, $this->login, (int)$value);
+                            if (!isset($values['type_paiement_cotis']) && isset($this->transaction->payment_type)) {
+                                $this->payment_type = $this->transaction->payment_type;
+                            }
                         }
                         break;
                     case 'duree_mois_cotis':
-                        if ($value != '') {
+                        if ($preferences->pref_membership_ext != ''  && $value != '') {
                             if (!is_numeric($value) || $value <= 0) {
                                 $this->errors[] = _T("- The duration must be a positive integer!");
                             } else {
@@ -538,22 +560,29 @@ class Contribution
             }
         }
 
+        //check end date
+        if (
+            $preferences->pref_membership_ext == ''
+            && $this->isFee()
+            && new DateTime($this->end_date) <= new DateTime($this->begin_date)
+        ) {
+            $this->errors[] = _T("- The end date must be after the start date!");
+        }
+
+
         // missing required fields?
         foreach ($required as $key => $val) {
-            if ($val === 1) {
-                $prop = $this->fields[$key]['propname'];
-                if (
-                    !isset($disabled[$key])
-                    && (!isset($this->$prop)
-                    || (!is_object($this->$prop) && empty($this->$prop))
-                    || (is_object($this->$prop) && empty($this->$prop->id)))
-                ) {
-                    $this->errors[] = str_replace(
-                        '%field',
-                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
-                        _T("- Mandatory field %field empty.")
-                    );
-                }
+            if ($val == 0) {
+                continue;
+            }
+            $prop = $this->fields[$key]['propname'];
+
+            if (!isset($disabled[$key]) && (!isset($this->$prop) || $this->$prop == '')) {
+                $this->errors[] = str_replace(
+                    '%field',
+                    '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
+                    _T("- Mandatory field %field empty.")
+                );
             }
         }
 
@@ -578,8 +607,8 @@ class Contribution
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been threw attempting to edit/store a contribution' .
-                print_r($this->errors, true),
+                'Some errors has been threw attempting to edit/store a contribution'
+                . print_r($this->errors, true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -604,11 +633,11 @@ class Contribution
             $select = $this->zdb->select(self::TABLE, 'c');
             //@phpstan-ignore-next-line
             $select->columns(
-                array('date_debut_cotis', 'date_fin_cotis')
+                ['date_debut_cotis', 'date_fin_cotis']
             )->join(
-                array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
+                ['ct' => PREFIX_DB . ContributionsTypes::TABLE],
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
-                array()
+                []
             )->where([Adherent::PK => $this->member])
                 ->where->notEqualTo('cotis_extension', ContributionsTypes::DONATION_TYPE)
                 ->where->nest->nest
@@ -635,8 +664,8 @@ class Contribution
                     return true;
                 }
 
-                return _T("- Membership period overlaps period starting at ") .
-                    $d_begin->format(__("Y-m-d"));
+                return _T("- Membership period overlaps period starting at ")
+                    . $d_begin->format(__("Y-m-d"));
             }
             return true;
         } catch (Throwable $e) {
@@ -661,14 +690,14 @@ class Contribution
 
         if (count($this->errors) > 0) {
             throw new \RuntimeException(
-                'Existing errors prevents storing contribution: ' .
-                print_r($this->errors, true)
+                'Existing errors prevents storing contribution: '
+                . print_r($this->errors, true)
             );
         }
 
         try {
             $this->zdb->connection->beginTransaction();
-            $values = array();
+            $values = [];
             $fields = self::getDbFields($this->zdb);
             foreach ($fields as $field) {
                 $prop = $this->fields[$field]['propname'];
@@ -686,12 +715,12 @@ class Contribution
                 }
             }
 
-            //no end date, let's take database defaults
-            if (!$this->isFee() && !$this->end_date) {
-                unset($values['date_fin_cotis']);
+            //no end date for donation
+            if (!$this->isFee()) {
+                $values['date_fin_cotis'] = new Expression('NULL');
             }
 
-            if (!isset($this->id) || $this->id == '') {
+            if (!isset($this->id)) {
                 //we're inserting a new contribution
                 unset($values[self::PK]);
 
@@ -766,15 +795,11 @@ class Contribution
         try {
             $due_date = self::getDueDate($this->zdb, $this->member);
 
-            if ($due_date != '') {
-                $due_date_update = $due_date;
-            } else {
-                $due_date_update = new Expression('NULL');
-            }
+            $due_date_update = $due_date != '' ? $due_date : new Expression('NULL');
 
             $update = $this->zdb->update(Adherent::TABLE);
             $update->set(
-                array('date_echeance' => $due_date_update)
+                ['date_echeance' => $due_date_update]
             )->where(
                 [Adherent::PK => $this->member]
             );
@@ -782,9 +807,9 @@ class Contribution
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred updating member ' . $this->member .
-                '\'s deadline |' .
-                $e->getMessage(),
+                'An error occurred updating member ' . $this->member
+                . '\'s deadline |'
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -830,8 +855,8 @@ class Contribution
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred trying to remove contribution #' .
-                $this->id . ' | ' . $e->getMessage(),
+                'An error occurred trying to remove contribution #'
+                . $this->id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -864,7 +889,7 @@ class Contribution
     public static function getDbFields(Db $zdb): array
     {
         $columns = $zdb->getColumns(self::TABLE);
-        $fields = array();
+        $fields = [];
         foreach ($columns as $col) {
             $fields[] = $col->getName();
         }
@@ -878,8 +903,8 @@ class Contribution
      */
     public function getRowClass(): string
     {
-        return ($this->end_date != $this->begin_date && $this->is_cotis) ?
-            'cotis-normal' : 'cotis-give';
+        return ($this->end_date != $this->begin_date && $this->is_cotis)
+            ? 'cotis-normal' : 'cotis-give';
     }
 
     /**
@@ -898,13 +923,13 @@ class Contribution
         try {
             $select = $zdb->select(self::TABLE, 'c');
             $select->columns(
-                array(
+                [
                     'max_date' => new Expression('MAX(date_fin_cotis)')
-                )
+                ]
             )->join(
-                array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
+                ['ct' => PREFIX_DB . ContributionsTypes::TABLE],
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
-                array()
+                []
             )->where(
                 [Adherent::PK => $member_id]
             )
@@ -931,39 +956,36 @@ class Contribution
     /**
      * Detach a contribution from a transaction
      *
-     * @param Db    $zdb        Database instance
-     * @param Login $login      Login instance
-     * @param int   $trans_id   Transaction identifier
-     * @param int   $contrib_id Contribution identifier
+     * @param int $trans_id Transaction identifier
      *
      * @return boolean
      */
-    public static function unsetTransactionPart(Db $zdb, Login $login, int $trans_id, int $contrib_id): bool
+    public function unsetTransactionPart(int $trans_id): bool
     {
         try {
             //first, we check if contribution is part of transaction
-            $c = new Contribution($zdb, $login, (int)$contrib_id);
+            $c = new Contribution($this->zdb, $this->login, $this->id);
             if ($c->isTransactionPartOf($trans_id)) {
-                $update = $zdb->update(self::TABLE);
+                $update = $this->zdb->update(self::TABLE);
                 $update->set(
-                    array(Transaction::PK => null)
+                    [Transaction::PK => null]
                 )->where(
-                    [self::PK => $contrib_id]
+                    [self::PK => $this->id]
                 );
-                $zdb->execute($update);
+                $this->zdb->execute($update);
                 return true;
             } else {
                 Analog::log(
-                    'Contribution #' . $contrib_id .
-                    ' is not actually part of transaction #' . $trans_id,
+                    'Contribution #' . $this->id
+                    . ' is not actually part of transaction #' . $trans_id,
                     Analog::WARNING
                 );
                 return false;
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to detach contribution #' . $contrib_id .
-                ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
+                'Unable to detach contribution #' . $this->id
+                . ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -973,26 +995,24 @@ class Contribution
     /**
      * Set a contribution as a transaction part
      *
-     * @param Db  $zdb        Database instance
-     * @param int $trans_id   Transaction identifier
-     * @param int $contrib_id Contribution identifier
+     * @param int $trans_id Transaction identifier
      *
      * @return boolean
      */
-    public static function setTransactionPart(Db $zdb, int $trans_id, int $contrib_id): bool
+    public function setTransactionPart(int $trans_id): bool
     {
         try {
-            $update = $zdb->update(self::TABLE);
+            $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(Transaction::PK => $trans_id)
-            )->where([self::PK => $contrib_id]);
+                [Transaction::PK => $trans_id]
+            )->where([self::PK => $this->id]);
 
-            $zdb->execute($update);
+            $this->zdb->execute($update);
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to attach contribution #' . $contrib_id .
-                ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
+                'Unable to attach contribution #' . $this->id
+                . ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -1053,9 +1073,9 @@ class Contribution
     ): string|bool {
         global $preferences;
 
-        $payment = array(
+        $payment = [
             'type'  => $this->getPaymentType()
-        );
+        ];
 
         if ($pextra !== null) {
             $payment = array_merge($payment, $pextra);
@@ -1072,32 +1092,32 @@ class Contribution
             $voucher_path = $voucher->getPath();
         }
 
-        $contrib = array(
+        $contrib = [
             'id'        => $this->id,
             'date'      => $this->date,
             'type'      => $this->getRawType(),
             'amount'    => $this->amount,
             'voucher'   => $voucher_path,
-            'category'  => array(
+            'category'  => [
                 'id'    => $this->type->id,
                 'label' => $this->type->libelle
-            ),
+            ],
             'payment'   => $payment
-        );
+        ];
 
         if ($this->member !== null) {
             $m = new Adherent($this->zdb, (int)$this->member);
-            $member = array(
+            $member = [
                 'id'            => (int)$this->member,
                 'name'          => $m->sfullname,
                 'email'         => $m->email,
                 'organization'  => ($m->isCompany() ? 1 : 0),
-                'status'        => array(
+                'status'        => [
                     'id'    => $m->status,
                     'label' => $m->sstatus
-                ),
+                ],
                 'country'       => $m->country
-            );
+            ];
 
             if ($m->isCompany()) {
                 $member['organization_name'] = $m->company_name;
@@ -1114,8 +1134,8 @@ class Contribution
 
         if ($res !== true) {
             Analog::log(
-                'An error occurred calling post contribution ' .
-                "script:\n" . $es->getOutput(),
+                'An error occurred calling post contribution '
+                . "script:\n" . $es->getOutput(),
                 Analog::ERROR
             );
             $res = _T("Contribution information") . "\n";
@@ -1216,21 +1236,22 @@ class Contribution
                     } else {
                         return '';
                     }
+                    // no break
                 case 'model':
                     if (!isset($this->is_cotis)) {
                         return null;
                     }
-                    return ($this->isFee()) ?
-                        PdfModel::INVOICE_MODEL : PdfModel::RECEIPT_MODEL;
+                    return ($this->isFee())
+                        ? PdfModel::INVOICE_MODEL : PdfModel::RECEIPT_MODEL;
                 case 'fields':
                     return $this->fields;
                 default:
                     if (property_exists($this, $name)) {
                         if (isset($this->$name)) {
-                            return $this->$name;
+                            return $this->$name ?? null;
                         }
                     } else {
-                        throw new \LogicException("Property '" . __CLASS__ . "::$name' does not exist!");
+                        throw new \LogicException("Property '" . static::class . "::$name' does not exist!");
                     }
             }
         } else {
@@ -1253,7 +1274,7 @@ class Contribution
      */
     public function __set(string $name, mixed $value): void
     {
-        $forbidden = array('fields', 'is_cotis', 'end_date');
+        $forbidden = ['fields', 'is_cotis', 'end_date'];
 
         if (!in_array($name, $forbidden)) {
             switch ($name) {
@@ -1278,8 +1299,8 @@ class Contribution
                         $this->$name = (float)$value;
                     } else {
                         Analog::log(
-                            'Trying to set an amount with a non numeric value, ' .
-                            'or with a zero value',
+                            'Trying to set an amount with a non numeric value, '
+                            . 'or with a zero value',
                             Analog::WARNING
                         );
                     }
@@ -1295,8 +1316,8 @@ class Contribution
                     break;
                 default:
                     Analog::log(
-                        '[' . __CLASS__ . ']: Trying to set an unknown property (' .
-                        $name . ')',
+                        '[' . static::class . ']: Trying to set an unknown property ('
+                        . $name . ')',
                         Analog::WARNING
                     );
                     break;
@@ -1330,7 +1351,7 @@ class Contribution
     /**
      * Handle files (dynamics files)
      *
-     * @param array<string, mixed> $files Files sent
+     * @param array<UploadedFileInterface> $files Files sent
      *
      * @return array<string>|true
      */
@@ -1342,8 +1363,8 @@ class Contribution
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been threw attempting to edit/store a contribution files' . "\n" .
-                print_r($this->errors, true),
+                'Some errors has been threw attempting to edit/store a contribution files' . "\n"
+                . print_r($this->errors, true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -1370,7 +1391,28 @@ class Contribution
     }
 
     /**
-     * Can current logged-in user display contribution
+     * Can current logged-in user create a contribution?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canCreate(Login $login): bool
+    {
+        global $preferences;
+
+        if (!$login->isLogged()) {
+            return false;
+        }
+
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+        return $preferences->pref_bool_groupsmanagers_create_contributions && $login->isGroupManager();
+    }
+
+    /**
+     * Can current logged-in user display contribution?
      *
      * @param Login $login Login instance
      *
@@ -1378,6 +1420,8 @@ class Contribution
      */
     public function canShow(Login $login): bool
     {
+        global $preferences;
+
         //non-logged-in members cannot show contributions
         if (!$login->isLogged()) {
             return false;
@@ -1388,12 +1432,18 @@ class Contribution
             return true;
         }
 
+        //groups managers can see contributions of their group members - if preferences is enabled
+        if ($preferences->pref_bool_groupsmanagers_see_contributions && $login->isGroupManager()) {
+            $member = new Adherent($this->zdb, (int)$this->member, false);
+            return $login->isGroupManager(array_keys($member->getGroups()));
+        }
+
         //parent can see their children contributions
         $parent = new Adherent($this->zdb);
         $parent
             ->disableAllDeps()
             ->enableDep('children')
-            ->load($this->login->id);
+            ->load($login->id);
         if ($parent->hasChildren()) {
             foreach ($parent->children as $child) {
                 if ($child->id === $this->member) {
@@ -1404,6 +1454,33 @@ class Contribution
         }
 
         return false;
+    }
+
+    /**
+     * Can current logged-in user edit a contribution?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canEdit(Login $login): bool
+    {
+        if (!$login->isLogged()) {
+            return false;
+        }
+        return $login->isAdmin() || $login->isStaff();
+    }
+
+    /**
+     * Can current logged-in user delete a contribution?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canDelete(Login $login): bool
+    {
+        return $this->canEdit($login);
     }
 
     /**
@@ -1418,11 +1495,7 @@ class Contribution
         //set type
         $this->type = new ContributionsTypes($this->zdb, $type);
         //set is_cotis according to type
-        if ($this->type->extension == ContributionsTypes::DONATION_TYPE) {
-            $this->is_cotis = false;
-        } else {
-            $this->is_cotis = true;
-        }
+        $this->is_cotis = $this->type->extension != ContributionsTypes::DONATION_TYPE;
 
         return $this;
     }

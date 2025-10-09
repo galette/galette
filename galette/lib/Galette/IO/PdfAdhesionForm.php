@@ -28,7 +28,6 @@ use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\PdfModel;
 use Galette\Entity\PdfAdhesionFormModel;
-use Galette\IO\Pdf;
 use Analog\Analog;
 
 /**
@@ -62,8 +61,8 @@ class PdfAdhesionForm extends Pdf
         $model = $this->getModel();
         parent::__construct($prefs, $model);
 
-        $this->filename = $adh->id ?
-            __("adherent_form") . '.' . $adh->id . '.pdf' : __("adherent_form") . '.pdf';
+        $this->filename = $adh->id
+            ? __("adherent_form") . '.' . $adh->id . '.pdf' : __("adherent_form") . '.pdf';
 
         if ($model !== null) {
             $this->PageHeader();
@@ -93,14 +92,14 @@ class PdfAdhesionForm extends Pdf
      */
     public function store(string $path): bool
     {
-        if (file_exists($path) && is_dir($path) && is_writeable($path)) {
+        if (file_exists($path) && is_dir($path) && is_writable($path)) {
             $this->path = $path . '/' . $this->filename;
             $this->Output($this->path, 'F');
             return true;
         } else {
             Analog::log(
-                __METHOD__ . ' ' . $path .
-                ' does not exists or is not a directory or is not writeable.',
+                __METHOD__ . ' ' . $path
+                . ' does not exists or is not a directory or is not writeable.',
                 Analog::ERROR
             );
         }

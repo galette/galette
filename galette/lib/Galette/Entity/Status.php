@@ -58,21 +58,21 @@ class Status
     public const ID_NOT_EXISTS = -1;
 
     /** @var array<string> */
-    private array $errors = array();
+    private array $errors = [];
 
     /** @var array<int, array<string, mixed>> */
-    protected static array $defaults = array(
-        array('id' => 1, 'libelle' => 'President', 'priority' => 0),
-        array('id' => 2, 'libelle' => 'Treasurer', 'priority' => 10),
-        array('id' => 3, 'libelle' => 'Secretary', 'priority' => 20),
-        array('id' => 4, 'libelle' => 'Active member', 'priority' => 30),
-        array('id' => 5, 'libelle' => 'Benefactor member', 'priority' => 40),
-        array('id' => 6, 'libelle' => 'Founder member', 'priority' => 50),
-        array('id' => 7, 'libelle' => 'Old-timer', 'priority' => 60),
-        array('id' => 8, 'libelle' => 'Society', 'priority' => 70),
-        array('id' => 9, 'libelle' => 'Non-member', 'priority' => 80),
-        array('id' => 10, 'libelle' => 'Vice-president', 'priority' => 5)
-    );
+    protected static array $defaults = [
+        ['id' => 1, 'libelle' => 'President', 'priority' => 0],
+        ['id' => 2, 'libelle' => 'Treasurer', 'priority' => 10],
+        ['id' => 3, 'libelle' => 'Secretary', 'priority' => 20],
+        ['id' => 4, 'libelle' => 'Active member', 'priority' => 30],
+        ['id' => 5, 'libelle' => 'Benefactor member', 'priority' => 40],
+        ['id' => 6, 'libelle' => 'Founder member', 'priority' => 50],
+        ['id' => 7, 'libelle' => 'Old-timer', 'priority' => 60],
+        ['id' => 8, 'libelle' => 'Society', 'priority' => 70],
+        ['id' => 9, 'libelle' => 'Non-member', 'priority' => 80],
+        ['id' => 10, 'libelle' => 'Vice-president', 'priority' => 5]
+    ];
 
     /**
      * Default constructor
@@ -119,8 +119,8 @@ class Status
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load status #' . $id . ' | ' .
-                $e->getMessage(),
+                'Cannot load status #' . $id . ' | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -166,30 +166,31 @@ class Status
 
             $this->zdb->handleSequence(
                 self::TABLE,
+                self::PK,
                 count(static::$defaults)
             );
 
             $fnames = array_values($values);
             foreach (self::$defaults as $d) {
                 $stmt->execute(
-                    array(
+                    [
                         $fnames[0]  => $d['id'],
                         $fnames[1]  => $d['libelle'],
                         $fnames[2]  => $d['priority']
-                    )
+                    ]
                 );
             }
 
             Analog::log(
-                'Defaults status ' .
-                ') were successfully stored into database.',
+                'Defaults status '
+                . ') were successfully stored into database.',
                 Analog::INFO
             );
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to initialize defaults status ' .
-                $e->getMessage(),
+                'Unable to initialize defaults status '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -204,11 +205,11 @@ class Status
      */
     public function getList(): array
     {
-        $list = array();
+        $list = [];
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $fields = array(self::PK, 'libelle_statut', 'priorite_statut');
+            $fields = [self::PK, 'libelle_statut', 'priorite_statut'];
             $select->quantifier('DISTINCT');
             $select->columns($fields);
             $select->order('priorite_statut');
@@ -242,11 +243,11 @@ class Status
      */
     public function getCompleteList(): array
     {
-        $list = array();
+        $list = [];
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->order(array('priorite_statut', self::PK));
+            $select->order(['priorite_statut', self::PK]);
 
             $results = $this->zdb->execute($select);
 
@@ -257,17 +258,18 @@ class Status
                 );
             } else {
                 foreach ($results as $r) {
-                    $list[$r->{self::PK}] = array(
-                        'name'  => _T($r->libelle_statut),
+                    $list[$r->{self::PK}] = [
+                        'text_orig' => $r->libelle_statut,
+                        'name' => _T($r->libelle_statut),
                         'extra' => $r->priorite_statut
-                    );
+                    ];
                 }
             }
             return $list;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot list status ' .
-                ' | ' . $e->getMessage(),
+                'Cannot list status '
+                . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -320,7 +322,7 @@ class Status
         if ($res === false) {
             //get() already logged
             return self::ID_NOT_EXITS;
-        };
+        }
         return ($translated) ? _T($res->libelle_statut) : $res->libelle_statut;
     }
 
@@ -335,8 +337,8 @@ class Status
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            $select->columns(array(self::PK))
-                ->where(array('libelle_statut' => $label));
+            $select->columns([self::PK])
+                ->where(['libelle_statut' => $label]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -347,8 +349,8 @@ class Status
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to retrieve status from label `' .
-                $label . '` | ' . $e->getMessage(),
+                'Unable to retrieve status from label `'
+                . $label . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -380,10 +382,10 @@ class Status
 
         try {
             $this->zdb->connection->beginTransaction();
-            $values = array(
+            $values = [
                 'libelle_statut'  => $label,
                 'priorite_statut' => $extra
-            );
+            ];
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
@@ -392,8 +394,8 @@ class Status
 
             if ($ret->count() > 0) {
                 Analog::log(
-                    'New status `' . $label .
-                    '` added successfully.',
+                    'New status `' . $label
+                    . '` added successfully.',
                     Analog::INFO
                 );
 
@@ -408,8 +410,8 @@ class Status
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to add new status `' . $label . '` | ' .
-                $e->getMessage(),
+                'Unable to add new status `' . $label . '` | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -438,10 +440,10 @@ class Status
         try {
             $oldlabel = $ret->libelle_statut;
             $this->zdb->connection->beginTransaction();
-            $values = array(
+            $values = [
                 'libelle_statut' => $label,
                 'priorite_statut' => $extra
-            );
+            ];
 
             $update = $this->zdb->update(self::TABLE);
             $update->set($values);
@@ -463,8 +465,8 @@ class Status
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to update status #' . $id . ' | ' .
-                $e->getMessage(),
+                'Unable to update status #' . $id . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -513,8 +515,8 @@ class Status
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to delete status  #' . $id .
-                ' | ' . $e->getMessage(),
+                'Unable to delete status  #' . $id
+                . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -544,8 +546,8 @@ class Status
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to check if status #' . $id .
-                ' is used. | ' . $e->getMessage(),
+                'Unable to check if status #' . $id
+                . ' is used. | ' . $e->getMessage(),
                 Analog::ERROR
             );
             //in case of error, we consider that it is used, to avoid errors
@@ -562,8 +564,8 @@ class Status
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array();
-        $virtuals = array('extension', 'libelle');
+        $forbidden = [];
+        $virtuals = ['extension', 'libelle'];
         if (
             in_array($name, $virtuals)
             || !in_array($name, $forbidden)
@@ -590,17 +592,9 @@ class Status
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array();
-        $virtuals = array('extension', 'libelle');
-        if (
-            in_array($name, $virtuals)
-            || !in_array($name, $forbidden)
-            && isset($this->$name)
-        ) {
-            return true;
-        }
-
-        return false;
+        $forbidden = [];
+        $virtuals = ['extension', 'libelle'];
+        return in_array($name, $virtuals) || !in_array($name, $forbidden) && isset($this->$name);
     }
 
     /**

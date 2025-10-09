@@ -83,8 +83,8 @@ trait Cacheable
                 return !$has_expired;
             } catch (Throwable $e) {
                 Analog::log(
-                    'Unable check cache expiry. Are you sure you have ' .
-                    'properly configured PHP timezone settings on your server?',
+                    'Unable check cache expiry. Are you sure you have '
+                    . 'properly configured PHP timezone settings on your server?',
                     Analog::WARNING
                 );
                 return false;
@@ -123,7 +123,7 @@ trait Cacheable
         $cfile = $this->getCacheFilename();
         $cdir = dirname($cfile);
         if (!file_exists($cdir)) {
-            mkdir($cdir, 0755, true);
+            mkdir($cdir, 0o755, true);
         }
         $stream = fopen($cfile, 'w+');
         fwrite(

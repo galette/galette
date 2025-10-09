@@ -36,7 +36,7 @@
 } %}
 
 {% macro draw_actions(member, login) %}
-                    <td class="center actions_row">
+                    <td class="center actions_row collapsing">
     {% set actions = callstatic('\\Galette\\Core\\Galette', 'getListActions', member) %}
     {% for action in actions %}
         {{ macros.drawListAction(action.label, action.route, action.icon, action.extra_class ?? null) }}
@@ -46,7 +46,7 @@
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%count member", "%count members", nb_members)|replace({'%count': nb_members}),
+        'label': _Tn("%1$s member", "%1$s members", nb_members)|format(nb_members),
         'route': {
             'name': 'filter-memberslist'
         }
@@ -70,18 +70,21 @@
     {% set columns = [] %}
     {% for column in galette_list %}
         {% if column.field_id == 'id_adh' %}
-            {% if preferences.pref_show_id %}
-                {% set columns = columns|merge([
-                    {
-                        label: _T('Mbr id'),
-                        order: constant("Galette\\Repository\\Members::ORDERBY_ID")
-                    }
-                ]) %}
-            {% else %}
-                {% set columns = columns|merge([
-                    {label: '#'}
-                ]) %}
-            {% endif %}
+            {% set columns = columns|merge([
+                {
+                    label: _T('ID'),
+                    order: constant("Galette\\Repository\\Members::ORDERBY_ID"),
+                    collapse: true
+                }
+            ]) %}
+        {% elseif column.field_id starts with 'date_' %}
+            {% set columns = columns|merge([
+                {
+                    label: column.label,
+                    order: column.field_id,
+                    collapse: true
+                }
+            ]) %}
         {% else %}
             {% set columns = columns|merge([
                 {
@@ -138,7 +141,7 @@
                     </select>
                 </div>
             </div>
-            <div class="two fields">
+            <div class="two fields last-child">
                 <div class="field">
                     <div class="inline fields">
                         <label for="email_filter">{{ _T('Members that have an email address:') }}</label>
@@ -210,33 +213,33 @@
 {% endblock %}
 
 {% block legend %}
-    {% if nb_members != 0 %}
+    {% if mode != 'ajax' %}
         <div id="legende" title="{{ _T('Legend') }}" class="ui modal">
             <div class="header">{{ _T('Legend') }}</div>
             <div class="content">
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th class="" colspan="4">{{ _T('Reading the list') }}</th>
+                            <th scope="colgroup" colspan="4">{{ _T('Reading the list') }}</th>
                         </tr>
                     <thead>
                     <tbody>
                         <tr>
-                            <th class="back">{{ _T('Name') }}</th>
+                            <th scope="row"  class="back">{{ _T('Name') }}</th>
                             <td class="back">{{ _T('Active account') }}</td>
-                            <th class="inactive-account back">{{ _T('Name') }}</th>
+                            <th scope="row"  class="inactive-account back">{{ _T('Name') }}</th>
                             <td class="back">{{ _T('Inactive account') }}</td>
                         </tr>
                         <tr>
-                            <th class="cotis-ok color-sample">&nbsp;</th>
+                            <th scope="row"  class="cotis-ok color-sample">&nbsp;</th>
                             <td class="back">{{ _T('Membership in order') }}</td>
-                            <th class="cotis-soon color-sample">&nbsp;</th>
-                            <td class="back">{{ _T('Membership will expire soon (&lt;30d)') }}</td>
+                            <th scope="row"  class="cotis-soon color-sample">&nbsp;</th>
+                            <td class="back">{{ _T('Membership will expire soon (<30d)') }}</td>
                         </tr>
                         <tr>
-                            <th class="cotis-never color-sample">&nbsp;</th>
+                            <th scope="row"  class="cotis-never color-sample">&nbsp;</th>
                             <td class="back">{{ _T('Never contributed') }}</td>
-                            <th class="cotis-late color-sample">&nbsp;</th>
+                            <th scope="row"  class="cotis-late color-sample">&nbsp;</th>
                             <td class="back">{{ _T('Lateness in fee') }}</td>
                         </tr>
                     </tbody>
@@ -244,58 +247,69 @@
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th class="" colspan="4">{{ _T('Actions') }}</th>
+                            <th scope="colgroup" colspan="4">{{ _T('Actions') }}</th>
                         </tr>
                     <thead>
                     <tbody>
                         <tr>
-                            <th class="action">
+                            <th scope="row">
                                 <i class="ui user edit blue icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Modification') }}</td>
-                            <th>
+        {% if login.isAdmin() or login.isStaff() %}
+                            <th scope="row" >
                                 <i class="ui receipt green icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Contributions') }}</td>
                         </tr>
                         <tr>
-                            <th class="delete">
+                            <th scope="row"  class="delete">
                                 <i class="ui user times red icon" aria-hidden="true"></i>
                             </th>
                             <td class="back">{{ _T('Deletion') }}</td>
+        {% endif %}
+        {% if login.isSuperAdmin() %}
+                            <th scope="row"  class="delete">
+                                <i class="ui user secret grey icon" aria-hidden="true"></i>
+                            </th>
+                            <td class="back">{{ _T('Log in as %membername')|replace({'%membername': _T('Member')}) }}</td>
+        {% endif %}
                         </tr>
                     </tbody>
                 </table>
                 <table class="ui stripped table">
                     <thead>
                         <tr>
-                            <th colspan="4">{{ _T('User status/interactions') }}</th>
+                            <th scope="colgroup" colspan="4">{{ _T('Statuses and interactions') }}</th>
                         </tr>
-                    <thead>
+                    </thead>
                     <tbody>
                         <tr>
-                            <th><i class="ui envelope outline teal icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui envelope outline teal icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Send an email') }}</td>
-                            <th><i class="ui building icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui building outline icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a company') }}</td>
                         </tr>
 
                         <tr>
-                            <th><i class="ui male icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui mars icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a man') }}</td>
-                            <th><i class="ui female icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui venus icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Is a woman') }}</td>
                         </tr>
                         <tr>
-                            <th><i class="ui user shield red icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui user shield red icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Admin') }}</td>
-                            <th><i class="ui user tie orange icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui user tie orange icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Staff member') }}</td>
                         </tr>
                         <tr>
-                            <th><i class="ui users cog orange icon" aria-hidden="true"></i></th>
+                            <th scope="row" ><i class="ui users cog orange icon" aria-hidden="true"></i></th>
                             <td class="back">{{ _T('Group manager') }}</td>
-
+        {% if login.isAdmin() or login.isStaff() %}
+                            <th scope="row" ><i class="ui donate green icon" aria-hidden="true"></i></th>
+                            <td class="back">{{ _T('Is a sponsor') }}</td>
+        {% endif %}
                         </tr>
                     </tbody>
                 </table>
@@ -310,16 +324,14 @@
                     <tr class="{{ member.getRowClass() }}">
     {% for column in galette_list %}
         {% if column.field_id == 'id_adh' %}
-                        <td class="right" data-scope="id">
-            {% if preferences.pref_show_id %}
-                        {{ member.id }}
-            {% else %}
-                        {{ ordre + 1 + (filters.current_page - 1) * numrows }}
-            {% endif %}
+                        <td class="right collapsing" data-scope="row" data-col-label="{{ _T('ID') }}">
+                            <span class="ui checkbox">
+                                <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
+                            </span>
+                            {{ member.id }}
                         </td>
         {% elseif column.field_id == 'list_adh_name' %}
-                        <td class="username_row" data-scope="row">
-                            <input type="checkbox" name="entries_sel[]" value="{{ member.__get('id') }}"/>
+                        <td class="username_row" data-scope="row" data-col-label="{{ column.label }}">
             {% if member.isCompany() %}
                             <span>
                                 <i class="ui building outline icon tooltip" aria-hidden="true"></i>
@@ -327,12 +339,12 @@
                             </span>
             {%  elseif member.isMan() %}
                             <span>
-                                <i class="ui male icon tooltip" aria-hidden="true"></i>
+                                <i class="ui mars icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Is a man') }}</span>
                             </span>
             {%  elseif member.isWoman() %}
                             <span>
-                                <i class="ui female icon tooltip" aria-hidden="true"></i>
+                                <i class="ui venus icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Is a woman') }}</span>
                             </span>
             {% else %}
@@ -422,7 +434,7 @@
                 {% set value = value|e('html') %}
             {% endif %}
 
-                        <td data-col-label="{{ column.label }}">
+                        <td{% if column.field_id starts with 'date_' %} class="collapsing"{% endif %} data-col-label="{{ column.label }}">
             {# Display column.
                 A check is done here to adapt display, this is may not the best way to go
                 but for now, that works as expected.

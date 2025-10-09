@@ -39,11 +39,9 @@ echo '<p>' . _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT
 if ($install->isUpgrade()) {
     echo '<div class="ui orange message"><p>' . _T("Enter connection data for the existing database.") . '</p></div>';
     $install->loadExistingConfig($_POST, $error_detected);
-} else {
-    if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
-        echo '<div class="ui orange message"><p>' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . '</p></div>';
-        $install->loadExistingConfig($_POST, $error_detected);
-    }
+} elseif (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
+    echo '<div class="ui orange message"><p>' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . '</p></div>';
+    $install->loadExistingConfig($_POST, $error_detected);
 }
 ?>
         <div class="inline required field">
@@ -89,10 +87,10 @@ if ($install->isUpgrade()) {
         <div class="ui section divider"></div>
         <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
             <div class="right aligned column">
-                <button type="submit" class="ui right labeled primary icon button"><i class="angle double right icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+                <button type="submit" class="ui right labeled primary icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
             </div>
             <div class="left aligned column">
-                <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon" aria-hidden="true"></i> <?php echo _T("Back"); ?></button>
+                <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'right' : 'left'; ?> icon" aria-hidden="true"></i> <?php echo _T("Back"); ?></button>
             </div>
         </div>
     </form>

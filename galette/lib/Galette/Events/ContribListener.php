@@ -105,7 +105,7 @@ class ContribListener implements ListenerSubscriber
     public function contributionAdded(Contribution $contrib): void
     {
         Analog::log(
-            '[' . get_class($this) . '] Event contribution.add emitted for #' . $contrib->id,
+            '[' . static::class . '] Event contribution.add emitted for #' . $contrib->id,
             Analog::DEBUG
         );
 
@@ -167,30 +167,30 @@ class ContribListener implements ListenerSubscriber
         $mail = new GaletteMail($this->preferences);
         $mail->setSubject($texts->getSubject());
         $mail->setRecipients(
-            array(
+            [
                 $member->getEmail() => $member->sname
-            )
+            ]
         );
 
         $link_card = '';
-        if (strpos($mtxt->tbody, '{LINK_MEMBERCARD}') !== false) {
+        if (str_contains($mtxt->tbody, '{LINK_MEMBERCARD}')) {
             //member card link is present in mail model, let's add it
             $links = new Links($this->zdb);
             if ($hash = $links->generateNewLink(Links::TARGET_MEMBERCARD, $contrib->member)) {
-                $link_card = $this->preferences->getURL() .
-                    $this->routeparser->urlFor('directlink', ['hash' => $hash]);
+                $link_card = $this->preferences->getURL()
+                    . $this->routeparser->urlFor('directlink', ['hash' => $hash]);
             }
         }
         $texts->setMemberCardLink($link_card);
 
         $link_pdf = '';
-        if (strpos($mtxt->tbody, '{LINK_CONTRIBPDF}') !== false) {
+        if (str_contains($mtxt->tbody, '{LINK_CONTRIBPDF}')) {
             //contribution receipt link is present in mail model, let's add it
             $links = new Links($this->zdb);
             $ltype = $contrib->type->isExtension() ? Links::TARGET_INVOICE : Links::TARGET_RECEIPT;
             if ($hash = $links->generateNewLink($ltype, $contrib->id)) {
-                $link_pdf = $this->preferences->getURL() .
-                    $this->routeparser->urlFor('directlink', ['hash' => $hash]);
+                $link_pdf = $this->preferences->getURL()
+                    . $this->routeparser->urlFor('directlink', ['hash' => $hash]);
             }
         }
         $texts->setContribLink($link_pdf);
@@ -201,15 +201,15 @@ class ContribListener implements ListenerSubscriber
         if ($sent) {
             $this->history->add(
                 preg_replace(
-                    array('/%name/', '/%email/'),
-                    array($member->sname, $member->getEmail()),
+                    ['/%name/', '/%email/'],
+                    [$member->sname, $member->getEmail()],
                     _T("Email sent to user %name (%email)")
                 )
             );
         } else {
             $txt = preg_replace(
-                array('/%name/', '/%email/'),
-                array($member->sname, $member->getEmail()),
+                ['/%name/', '/%email/'],
+                [$member->sname, $member->getEmail()],
                 _T("A problem happened while sending contribution receipt to user %name (%email)")
             );
             $this->history->add($txt);
@@ -273,15 +273,15 @@ class ContribListener implements ListenerSubscriber
         if ($sent) {
             $this->history->add(
                 preg_replace(
-                    array('/%name/', '/%email/'),
-                    array($member->sname, $member->getEmail()),
+                    ['/%name/', '/%email/'],
+                    [$member->sname, $member->getEmail()],
                     _T("Email sent to admin for user %name (%email)")
                 )
             );
         } else {
             $txt = preg_replace(
-                array('/%name/', '/%email/'),
-                array($member->sname, $member->getEmail()),
+                ['/%name/', '/%email/'],
+                [$member->sname, $member->getEmail()],
                 _T("A problem happened while sending to admin notification for user %name (%email) contribution")
             );
             $this->history->add($txt);
@@ -334,16 +334,16 @@ class ContribListener implements ListenerSubscriber
                         $warning_detected[] = $txt;
                         //Mails are disabled... We log (not safe, but)...
                         Analog::log(
-                            'Email to admin has not been sent. Here was the data: ' .
-                            "\n" . print_r($res, true),
+                            'Email to admin has not been sent. Here was the data: '
+                            . "\n" . print_r($res, true),
                             Analog::ERROR
                         );
                     }
                 } else {
                     //Mails are disabled... We log (not safe, but)...
                     Analog::log(
-                        'Post contribution script has failed. Here was the data: ' .
-                        "\n" . print_r($res, true),
+                        'Post contribution script has failed. Here was the data: '
+                        . "\n" . print_r($res, true),
                         Analog::ERROR
                     );
                 }

@@ -69,8 +69,8 @@ class ImportModel
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load import model | ' . $e->getMessage() .
-                "\n" . $e->__toString(),
+                'Cannot load import model | ' . $e->getMessage()
+                . "\n" . $e->__toString(),
                 Analog::ERROR
             );
             throw $e;
@@ -133,11 +133,11 @@ class ImportModel
     public function store(Db $zdb): bool
     {
         try {
-            $values = array(
+            $values = [
                 'model_fields'  => Galette::jsonEncode($this->fields)
-            );
+            ];
 
-            if (!isset($this->id) || $this->id == '') {
+            if (!isset($this->id)) {
                 //we're inserting a new model
                 $this->creation_date = date("Y-m-d H:i:s");
                 $values['model_creation_date'] = $this->creation_date;
@@ -164,8 +164,8 @@ class ImportModel
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Something went wrong storing import model :\'( | ' .
-                $e->getMessage() . "\n" . $e->getTraceAsString(),
+                'Something went wrong storing import model :\'( | '
+                . $e->getMessage() . "\n" . $e->getTraceAsString(),
                 Analog::ERROR
             );
             throw $e;

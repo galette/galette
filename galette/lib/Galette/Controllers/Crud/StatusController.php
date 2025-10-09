@@ -26,10 +26,8 @@ namespace Galette\Controllers\Crud;
 use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Galette\Entity\ContributionsTypes;
 use Galette\Entity\Status;
 use Galette\Repository\Members;
-use Analog\Analog;
 
 /**
  * Galette status controller
@@ -219,14 +217,14 @@ class StatusController extends CrudController
         $redirect_uri = $this->routeparser->urlFor('status');
 
         if ($ret !== true) {
-            $error_detected[] = $action === 'add' ?
-                _T("Status has not been added :(") : _T("Status #%id has not been updated");
+            $error_detected[] = $action === 'add'
+                ? _T("Status has not been added :(") : _T("Status #%id has not been updated");
             if ($action === 'edit') {
                 $redirect_uri = $this->routeparser->urlFor('editStatus', ['id' => (string)$id]);
             }
         } else {
-            $msg = $action === 'add' ?
-                _T("Status has been successfully added!") : _T("Status #%id has been successfully updated!");
+            $msg = $action === 'add'
+                ? _T("Status has been successfully added!") : _T("Status #%id has been successfully updated!");
         }
 
         if (count($error_detected) > 0) {

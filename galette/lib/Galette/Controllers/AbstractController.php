@@ -140,29 +140,27 @@ abstract class AbstractController
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $urlRedirect);
-            } else {
+            } elseif (
+                $this->login->isSuperAdmin()
+                || $this->login->isAdmin()
+                || $this->login->isStaff()
+            ) {
                 if (
-                    $this->login->isSuperAdmin()
-                    || $this->login->isAdmin()
-                    || $this->login->isStaff()
+                    !isset($_COOKIE['show_galette_dashboard'])
+                    || $_COOKIE['show_galette_dashboard'] == 1
                 ) {
-                    if (
-                        !isset($_COOKIE['show_galette_dashboard'])
-                        || $_COOKIE['show_galette_dashboard'] == 1
-                    ) {
-                        return $response
-                            ->withStatus(301)
-                            ->withHeader('Location', $this->routeparser->urlFor('dashboard'));
-                    } else {
-                        return $response
-                            ->withStatus(301)
-                            ->withHeader('Location', $this->routeparser->urlFor('members'));
-                    }
-                } else {
                     return $response
                         ->withStatus(301)
                         ->withHeader('Location', $this->routeparser->urlFor('dashboard'));
+                } else {
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $this->routeparser->urlFor('members'));
                 }
+            } else {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->routeparser->urlFor('dashboard'));
             }
         } else {
             return $response
@@ -183,8 +181,7 @@ abstract class AbstractController
     {
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
-        $args = $route->getArguments();
-        return $args;
+        return $route->getArguments();
     }
 
     /**
@@ -232,5 +229,30 @@ abstract class AbstractController
 
         $filter_name = Text::slugify($filter_name);
         return $filter_name;
+    }
+
+    /**
+     * Redirect with errors
+     *
+     * @param Response $response     PSR Response
+     * @param string[] $errors       Errors to report
+     * @param string   $redirect_uri URI to redirect to
+     *
+     * @return Response
+     */
+    protected function redirectWithErrors(Response $response, array $errors, string $redirect_uri): Response
+    {
+        //report errors
+        foreach ($errors as $error) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
+        }
+
+        //redirect to calling action
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $redirect_uri);
     }
 }

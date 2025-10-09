@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Entity;
 
-use ArrayObject;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Separator;
 use Laminas\Db\ResultSet\ResultSet;
@@ -45,6 +44,7 @@ use Galette\Repository\DynamicFieldsSet;
 class DynamicFieldsHandle
 {
     public const TABLE = 'dynamic_fields';
+    public const PK = 'item_id';
 
     /** @var DynamicField[] */
     private array $dynamic_fields = [];
@@ -54,7 +54,7 @@ class DynamicFieldsHandle
     private ?int $item_id;
 
     /** @var array<string> */
-    private array $errors = array();
+    private array $errors = [];
 
     private Db $zdb;
     private Login $login;
@@ -131,8 +131,8 @@ class DynamicFieldsHandle
                         );
                     } else {
                         Analog::log(
-                            'Dynamic values found for ' . get_class($object) . ' #' . $this->item_id .
-                            '; but no dynamic field configured!',
+                            'Dynamic values found for ' . $object::class . ' #' . $this->item_id
+                            . '; but no dynamic field configured!',
                             Analog::WARNING
                         );
                     }
@@ -307,8 +307,8 @@ class DynamicFieldsHandle
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred storing dynamic field. Form name: ' . $this->form_name .
-                ' | Error was: ' . $e->getMessage(),
+                'An error occurred storing dynamic field. Form name: ' . $this->form_name
+                . ' | Error was: ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -465,10 +465,10 @@ class DynamicFieldsHandle
 
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
-                array(
+                [
                     'item_id'       => $this->item_id,
                     'field_form'    => $this->form_name
-                )
+                ]
             );
             $this->zdb->execute($delete);
 
@@ -481,8 +481,8 @@ class DynamicFieldsHandle
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred removing dynamic field. Form name: ' . $this->form_name .
-                ' | Error was: ' . $e->getMessage(),
+                'An error occurred removing dynamic field. Form name: ' . $this->form_name
+                . ' | Error was: ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -498,14 +498,14 @@ class DynamicFieldsHandle
     {
         $select = $this->zdb->select(self::TABLE, 'd');
         $select->join(
-            array('t' => PREFIX_DB . DynamicField::TABLE),
+            ['t' => PREFIX_DB . DynamicField::TABLE],
             'd.' . DynamicField::PK . '=t.' . DynamicField::PK,
-            array('field_id')
+            ['field_id']
         )->where(
-            array(
+            [
                 'item_id'       => $this->item_id,
                 'd.field_form'  => $this->form_name
-            )
+            ]
         );
 
         /** only load values for accessible fields*/
@@ -515,12 +515,12 @@ class DynamicFieldsHandle
         foreach ($this->dynamic_fields as $field) {
             $perm = $field->getPermission();
             if (
-                ($perm == FieldsConfig::MANAGER &&
-                    $access_level < Authentication::ACCESS_MANAGER) ||
-                ($perm == FieldsConfig::STAFF &&
-                        $access_level < Authentication::ACCESS_STAFF) ||
-                ($perm == FieldsConfig::ADMIN &&
-                    $access_level < Authentication::ACCESS_ADMIN)
+                ($perm == FieldsConfig::MANAGER
+                    && $access_level < Authentication::ACCESS_MANAGER)
+                || ($perm == FieldsConfig::STAFF
+                        && $access_level < Authentication::ACCESS_STAFF)
+                || ($perm == FieldsConfig::ADMIN
+                    && $access_level < Authentication::ACCESS_ADMIN)
             ) {
                 continue;
             }

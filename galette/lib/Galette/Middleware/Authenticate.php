@@ -182,11 +182,9 @@ class Authenticate
         } else {
             //handle routes regexps
             foreach ($this->acls as $regex => $route_acl) {
-                if (preg_match('@/(.+)/[imsxADU]?@', $regex)) {
-                    //looks like a regular expression, go
-                    if (preg_match($regex, $name)) {
-                        return $route_acl;
-                    }
+                //looks like a regular expression, go
+                if (preg_match('@/(.+)/[imsxADU]?@', $regex) && preg_match($regex, $name)) {
+                    return $route_acl;
                 }
             }
         }

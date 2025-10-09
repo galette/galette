@@ -23,20 +23,8 @@ declare(strict_types=1);
 
 namespace Galette\Util;
 
-use Analog\Analog;
-use Galette\Core\Db;
-use Galette\Core\I18n;
-use Galette\Core\Preferences;
-use Galette\Core\History;
-use Galette\Core\Login;
 use Galette\Entity\Adherent;
-use Galette\Entity\Contribution;
-use Galette\Repository\Titles;
-use Galette\Entity\Status;
-use Galette\Entity\ContributionsTypes;
-use Galette\Entity\Group;
-use Galette\Entity\Transaction;
-use Galette\Entity\PaymentType;
+use Slim\Psr7\UploadedFile;
 
 /**
  * Generate random data
@@ -64,23 +52,17 @@ class FakeData
     public function addPhoto(Adherent $member): bool
     {
         $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
-        if (!defined('GALETTE_TESTS')) {
-            $url = 'https://loremflickr.com/800/600/people';
-        } else {
-            $url = GALETTE_ROOT . '../tests/fake_image.jpg';
-        }
+        $url = !defined('GALETTE_TESTS') ? 'https://loremflickr.com/800/600/people' : GALETTE_ROOT . '../tests/fake_image.jpg';
 
         if (copy($url, $file)) {
-            $_FILES = array(
-                'photo' => array(
-                    'name'      => 'fakephoto.jpg',
-                    'type'      => 'image/jpeg',
-                    'size'      => filesize($file),
-                    'tmp_name'  => $file,
-                    'error'     => 0
-                )
+            $uploaded_file = new UploadedFile(
+                $file,
+                'fakephoto.jpg',
+                'image/jpeg',
+                filesize($file),
+                UPLOAD_ERR_OK
             );
-            $res = $member->picture->store($_FILES['photo'], true);
+            $res = $member->picture->storeFile($uploaded_file);
             if ($res < 0) {
                 $this->addError(
                     _T("Photo has not been stored!")

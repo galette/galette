@@ -37,8 +37,18 @@ details.ui.basic.styled.accordion .title {
 /*--------------------------------
      Tree accordion style
 ---------------------------------*/
-.ui.accordion.tree .nochild {
-   padding: .5em 0;
+.ui.accordion.tree {
+     .accordion > .title,
+     .nochild {
+        padding: .7em 0;
+     }
+     .nochild {
+       margin-left: 1.75em;
+     }
+     span.active {
+        font-weight: bold;
+        color: @black;
+     }
 }
 
 /*-------------

@@ -120,6 +120,24 @@
         </div>
         <div class="sixteen wide tablet ten wide computer eleven wide widescreen column">
     {% endif %}
+
+    {% if (member.id is empty or self_adh and members.list is not defined) and preferences.pref_bool_empty_form_link %}
+            <div class="ui icon info visible message">
+                <i class="info circle blue icon" aria-hidden="true"></i>
+                <div class="content">
+                    {{ _T("If you'd rather not subscribe online, you can download an empty adhesion form") }}
+                    <a
+                        href="{{ url_for("emptyAdhesionForm") }}"
+                        class="ui right floated labeled icon button"
+                        title="{{ _T("Download empty adhesion form") }}"
+                    >
+                        <i class="red file pdf outline icon" aria-hidden="true"></i>
+                        <span>{{ _T("Empty adhesion form") }}</span>
+                    </a>
+                </div>
+            </div>
+    {% endif %}
+
             {# Main form entries #}
             {% include "components/form.html.twig" %}
 

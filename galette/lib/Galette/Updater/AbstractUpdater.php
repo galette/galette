@@ -50,10 +50,10 @@ abstract class AbstractUpdater
      *
      * @var array<string,string>
      */
-    private array $engines = array(
+    private array $engines = [
         Db::MYSQL   => Db::MYSQL,
         Db::PGSQL   => Db::PGSQL,
-    );
+    ];
     protected Db $zdb;
     protected Install $installer;
     /**
@@ -61,7 +61,7 @@ abstract class AbstractUpdater
      *
      * @var array<string,array<int|string>>
      */
-    private array $report = array();
+    private array $report = [];
 
     /**
      * Main constructor
@@ -84,7 +84,7 @@ abstract class AbstractUpdater
      */
     private function hasSql(): bool
     {
-        return !($this->sql_scripts === null);
+        return $this->sql_scripts !== null;
     }
 
     /**
@@ -224,8 +224,8 @@ abstract class AbstractUpdater
             return $checked;
         } else {
             Analog::log(
-                'Unable to see SQL scripts. Please check that scripts exists ' .
-                'in scripts/sql directory, for all supported SQL engines.',
+                'Unable to see SQL scripts. Please check that scripts exists '
+                . 'in scripts/sql directory, for all supported SQL engines.',
                 Analog::ERROR
             );
             return false;
@@ -242,14 +242,12 @@ abstract class AbstractUpdater
     private function getSqlScripts(string $version): array
     {
         $dh = opendir(GALETTE_ROOT . '/install/scripts/sql');
-        $scripts = array();
+        $scripts = [];
 
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver)) {
-                    if ($ver[1] == $version) {
-                        $scripts[$ver[2]] = GALETTE_ROOT . '/install/scripts/sql/' . $file;
-                    }
+                if (preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver) && $ver[1] == $version) {
+                    $scripts[$ver[2]] = GALETTE_ROOT . '/install/scripts/sql/' . $file;
                 }
             }
             closedir($dh);
@@ -272,11 +270,11 @@ abstract class AbstractUpdater
         if ($type === self::REPORT_ERROR) {
             $res = false;
         }
-        $this->report[] = array(
+        $this->report[] = [
             'message'   => $msg,
             'type'      => $type,
             'res'       => $res
-        );
+        ];
     }
 
     /**
@@ -325,7 +323,7 @@ abstract class AbstractUpdater
     {
         $update = $this->zdb->update('database');
         $update->set(
-            array('version' => $this->db_version)
+            ['version' => $this->db_version]
         );
         $this->zdb->execute($update);
     }

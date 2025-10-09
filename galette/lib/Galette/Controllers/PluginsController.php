@@ -29,7 +29,6 @@ use Slim\Psr7\Response;
 use Galette\Core\Galette;
 use Galette\Core\Install;
 use Galette\Core\PluginInstall;
-use Laminas\Db\Adapter\Adapter;
 use Analog\Analog;
 
 /**
@@ -59,11 +58,12 @@ class PluginsController extends AbstractController
         $this->view->render(
             $response,
             'pages/plugins.html.twig',
-            array(
+            [
                 'page_title'            => _T("Plugins"),
                 'plugins_list'          => $plugins_list,
-                'plugins_disabled_list' => $disabled_plugins
-            )
+                'plugins_disabled_list' => $disabled_plugins,
+                'documentation'         => 'plugins/#plugins-management-interface'
+            ]
         );
         return $response;
     }
@@ -206,11 +206,7 @@ class PluginsController extends AbstractController
         }
 
         if (isset($post['install_dbperms_ok'])) {
-            if ($post['install_type'] === PluginInstall::INSTALL) {
-                $istep = 4;
-            } else {
-                $istep = 3;
-            }
+            $istep = $post['install_type'] === PluginInstall::INSTALL ? 4 : 3;
         }
 
         if (isset($post['previous_version'])) {
@@ -262,7 +258,7 @@ class PluginsController extends AbstractController
         $this->session->$mdplugin = $install;
 
         $params += [
-            'page_title'    => $install->getStepTitle(),
+            'page_title'    => $install->getStepDetail('title'),
             'step'          => $step,
             'istep'         => $istep,
             'plugid'        => $plugid,

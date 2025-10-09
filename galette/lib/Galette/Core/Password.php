@@ -82,8 +82,8 @@ class Password extends AbstractPassword
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error has occurred removing old tmppasswords ' .
-                $e->getMessage(),
+                'An error has occurred removing old tmppasswords '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -107,11 +107,11 @@ class Password extends AbstractPassword
         $hash = password_hash($password, PASSWORD_BCRYPT);
 
         try {
-            $values = array(
+            $values = [
                 self::PK               => $id_adh,
                 'tmp_passwd'           => $hash,
                 'date_crea_tmp_passwd' => date('Y-m-d H:i:s')
-            );
+            ];
 
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
@@ -126,8 +126,8 @@ class Password extends AbstractPassword
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                "An error occurred trying to add temporary password entry. " .
-                $e->getMessage(),
+                "An error occurred trying to add temporary password entry. "
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -158,8 +158,8 @@ class Password extends AbstractPassword
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred deleting expired temporary passwords. ' .
-                $e->getMessage(),
+                'An error occurred deleting expired temporary passwords. '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             return false;
@@ -178,8 +178,8 @@ class Password extends AbstractPassword
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
-                array(self::PK)
-            )->where(array('tmp_passwd' => $hash));
+                [self::PK]
+            )->where(['tmp_passwd' => $hash]);
 
             $results = $this->zdb->execute($select);
 
@@ -211,7 +211,7 @@ class Password extends AbstractPassword
         try {
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
-                array('tmp_passwd' => $hash)
+                ['tmp_passwd' => $hash]
             );
 
             $this->zdb->execute($delete);
@@ -222,8 +222,8 @@ class Password extends AbstractPassword
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred attempting to delete used hash' .
-                $e->getMessage(),
+                'An error occurred attempting to delete used hash'
+                . $e->getMessage(),
                 Analog::WARNING
             );
             return false;

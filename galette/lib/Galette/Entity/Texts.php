@@ -174,8 +174,8 @@ class Texts
     public function setChangePasswordURI(Password $password): self
     {
         $this->setReplacements([
-            'change_pass_uri'   => $this->preferences->getURL() .
-                $this->routeparser->urlFor(
+            'change_pass_uri'   => $this->preferences->getURL()
+                . $this->routeparser->urlFor(
                     'password-recovery',
                     ['hash' => base64_encode($password->getHash())]
                 )
@@ -246,8 +246,8 @@ class Texts
 
         if ($is_lang_ok !== true) {
             Analog::log(
-                'Language ' . $lang .
-                ' does not exists. Falling back to default Galette lang.',
+                'Language ' . $lang
+                . ' does not exists. Falling back to default Galette lang.',
                 Analog::ERROR
             );
             $lang = $i18n->getID();
@@ -256,10 +256,10 @@ class Texts
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->where(
-                array(
+                [
                     'tref' => $ref,
                     'tlang' => $lang
-                )
+                ]
             );
             $results = $this->zdb->execute($select);
             $result = $results->current();
@@ -277,28 +277,28 @@ class Texts
                     }
                 }
                 if ($default !== null) {
-                    $values = array(
+                    $values = [
                         'tref'      => $default['tref'],
                         'tsubject'  => $default['tsubject'],
                         'tbody'     => $default['tbody'],
                         'tlang'     => $default['tlang'],
                         'tcomment'  => $default['tcomment']
-                    );
+                    ];
 
                     try {
                         $this->insert([$values]);
                         return $this->getTexts($ref, $lang);
                     } catch (Throwable $e) {
                         Analog::log(
-                            'Unable to add missing requested text "' . $ref .
-                            ' (' . $lang . ') | ' . $e->getMessage(),
+                            'Unable to add missing requested text "' . $ref
+                            . ' (' . $lang . ') | ' . $e->getMessage(),
                             Analog::WARNING
                         );
                     }
                 } else {
                     Analog::log(
-                        'Unable to find missing requested text "' . $ref .
-                        ' (' . $lang . ')',
+                        'Unable to find missing requested text "' . $ref
+                        . ' (' . $lang . ')',
                         Analog::WARNING
                     );
                 }
@@ -318,8 +318,8 @@ class Texts
             return $this->all_texts;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' .
-                $e->getMessage(),
+                'Cannot get text `' . $ref . '` for lang `' . $lang . '` | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -339,25 +339,25 @@ class Texts
     public function setTexts(string $ref, string $lang, string $subject, string $body): bool
     {
         try {
-            $values = array(
+            $values = [
                 'tsubject' => $subject,
                 'tbody'    => $body,
-            );
+            ];
 
             $update = $this->zdb->update(self::TABLE);
             $update->set($values)->where(
-                array(
+                [
                     'tref'  => $ref,
                     'tlang' => $lang
-                )
+                ]
             );
             $this->zdb->execute($update);
 
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error has occurred while storing email text. | ' .
-                $e->getMessage(),
+                'An error has occurred while storing email text. | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -376,8 +376,8 @@ class Texts
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
-                array('tref', 'tcomment')
-            )->where(array('tlang' => $lang));
+                ['tref', 'tcomment']
+            )->where(['tlang' => $lang]);
 
             $refs = [];
             $results = $this->zdb->execute($select);
@@ -387,8 +387,8 @@ class Texts
             return $refs;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot get refs for lang `' . $lang . '` | ' .
-                $e->getMessage(),
+                'Cannot get refs for lang `' . $lang . '` | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -412,9 +412,9 @@ class Texts
             if ($check_first === true) {
                 $select = $this->zdb->select(self::TABLE);
                 $select->columns(
-                    array(
+                    [
                         'counter' => new Expression('COUNT(' . self::PK . ')')
-                    )
+                    ]
                 );
 
                 $results = $this->zdb->execute($select);
@@ -431,6 +431,7 @@ class Texts
 
             $this->zdb->handleSequence(
                 self::TABLE,
+                self::PK,
                 count($this->defaults)
             );
 
@@ -466,7 +467,7 @@ class Texts
                 $list[] = $dbentry;
             }
 
-            $missing = array();
+            $missing = [];
             foreach ($this->defaults as $default) {
                 $exists = false;
                 foreach ($list as $text) {
@@ -535,13 +536,13 @@ class Texts
     {
         $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
-            array(
+            [
                 'tref'      => ':tref',
                 'tsubject'  => ':tsubject',
                 'tbody'     => ':tbody',
                 'tlang'     => ':tlang',
                 'tcomment'  => ':tcomment'
-            )
+            ]
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 

@@ -31,8 +31,6 @@ use Galette\DynamicFields\Choice;
 use Galette\DynamicFields\Separator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
-use Galette\Entity\PdfModel;
-use Galette\Entity\Reminder;
 use Galette\Entity\Texts;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\DynamicFields\DynamicField;
@@ -186,6 +184,14 @@ trait Replacements
             'asso_address_multi'    => [
                 'title'     => sprintf('%s (%s)', _T('Your organisation address'), _T('with break lines')),
                 'pattern'   => '/{ASSO_ADDRESS_MULTI}/',
+            ],
+            'asso_phone_number' => [
+                'title'     => _T('Your organisation phone number'),
+                'pattern'   => '/{ASSO_PHONE}/'
+            ],
+            'asso_email' => [
+                'title'     => _T('Your organisation email address'),
+                'pattern'   => '/{ASSO_EMAIL}/'
             ],
             'asso_website'          => [
                 'title'     => _T('Your organisation website'),
@@ -469,8 +475,8 @@ trait Replacements
 
         $website = '';
         if ($this->preferences->pref_website !== '') {
-            $website = '<a href="' . $this->preferences->pref_website . '">' .
-                $this->preferences->pref_website . '</a>';
+            $website = '<a href="' . $this->preferences->pref_website . '">'
+                . $this->preferences->pref_website . '</a>';
         }
 
         $logo = new Logo();
@@ -500,11 +506,13 @@ trait Replacements
         );
 
         $this->setReplacements(
-            array(
+            [
                 'asso_name'          => $this->preferences->pref_nom,
                 'asso_slogan'        => $this->preferences->pref_slogan,
                 'asso_address'       => $address,
                 'asso_address_multi' => $address_multi,
+                'asso_phone_number'  => $this->preferences->getPhoneNumber(),
+                'asso_email'         => $this->preferences->pref_org_email,
                 'asso_website'       => $website,
                 'asso_logo'          => $logo_elt,
                 'asso_print_logo'    => $print_logo_elt,
@@ -512,7 +520,7 @@ trait Replacements
                 'date_now'           => date(_T('Y-m-d')),
                 'login_uri'          => $this->preferences->getURL() . $this->routeparser->urlFor('login'),
                 'asso_footer'        => $this->preferences->pref_footer
-            )
+            ]
         );
 
         return $this;
@@ -641,7 +649,7 @@ trait Replacements
         }
 
         $this->setReplacements(
-            array(
+            [
                 'adh_title'         => $member->stitle,
                 'adh_id'            => $member->id,
                 'adh_num'           => $member->number,
@@ -676,7 +684,7 @@ trait Replacements
                 '_adh_first_name'   => $member->surname,
                 '_adh_login'        => $member->login,
                 '_adh_email'        => $member->email
-            )
+            ]
         );
 
         /** the list of all dynamic fields */
@@ -755,9 +763,10 @@ trait Replacements
                             if (empty($field_value)) {
                                 continue;
                             }
-                            $spattern = (($this instanceof Texts) ?
-                                '%3$s (%1$s%2$s)' :
-                                '<a href="%1$s%2$s">%3$s</a>'
+                            $spattern = (
+                                ($this instanceof Texts)
+                                ? '%3$s (%1$s%2$s)'
+                                : '<a href="%1$s%2$s">%3$s</a>'
                             );
                             $value .= sprintf(
                                 $spattern,
@@ -784,7 +793,7 @@ trait Replacements
                 }
             }
 
-            $this->setReplacements(array($key => $value));
+            $this->setReplacements([$key => $value]);
             Analog::log("adding dynamic replacement $key => $value", Analog::DEBUG);
         }
 

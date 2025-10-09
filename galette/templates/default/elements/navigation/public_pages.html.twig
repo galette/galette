@@ -25,7 +25,7 @@
         {% set public_menus = callstatic('\\Galette\\Core\\Galette', 'getPublicMenus') %}
         {% for public_menu in public_menus %}
             {% for public_item in public_menu.items %}
-                {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route, public_item.icon ?? null, null, tips_position, mode) }}
+                {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route ?? null, public_item.icon ?? null, null, tips_position, mode, public_item.children ?? null) }}
             {% endfor %}
         {% endfor %}
     {% endif %}
@@ -37,6 +37,14 @@
             'label': _T("Subscribe"),
             'route': {'name': 'subscribe'},
             'icon': 'add user',
+            'class': 'ui basic button'
+        }]) %}
+    {% elseif (not is_current_url("subscribe") and ext_auth is not defined) and preferences.pref_bool_empty_form_link %}
+        {% set public_items = public_items|merge([{
+            'label': _T("Empty adhesion form"),
+            'title': _T("Download empty adhesion form"),
+            'route': {'name': 'emptyAdhesionForm'},
+            'icon': 'red file pdf outline',
             'class': 'ui basic button'
         }]) %}
     {% endif %}

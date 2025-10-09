@@ -28,7 +28,6 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Repository\Titles;
 use Galette\Entity\Title;
-use Analog\Analog;
 
 /**
  * Galette Titles controller
@@ -89,7 +88,7 @@ class TitlesController extends CrudController
             $response,
             'pages/configuration_titles.html.twig',
             [
-                'page_title'        => _T("Titles management"),
+                'page_title'        => _T("Titles"),
                 'titles_list'       => $titles->getList()
             ]
         );
@@ -189,34 +188,28 @@ class TitlesController extends CrudController
 
         if (!$res) {
             if ($id === null) {
-                $error_detected[] = preg_replace(
-                    '(%s)',
-                    $title->short !== null ? $title->short : '',
-                    _T("Title '%s' has not been added!")
+                $error_detected[] = sprintf(
+                    _T('Title \'%1$s\' has not been added!'),
+                    $title->short ?? '',
                 );
             } else {
-                $error_detected[] = preg_replace(
-                    '(%s)',
-                    $title->short !== null ? $title->short : '',
-                    _T("Title '%s' has not been modified!")
+                $error_detected[] = sprintf(
+                    _T('Title \'%1$s\' has not been modified!'),
+                    $title->short ?? '',
                 );
 
                 $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => (string)$id]);
             }
+        } elseif ($id === null) {
+            $msg = sprintf(
+                _T('Title \'%1$s\' has been successfully added.'),
+                $title->short
+            );
         } else {
-            if ($id === null) {
-                $msg = preg_replace(
-                    '(%s)',
-                    $title->short,
-                    _T("Title '%s' has been successfully added.")
-                );
-            } else {
-                $msg = preg_replace(
-                    '(%s)',
-                    $title->short,
-                    _T("Title '%s' has been successfully modified.")
-                );
-            }
+            $msg = sprintf(
+                _T('Title \'%1$s\' has been successfully modified.'),
+                $title->short
+            );
         }
 
         if (count($error_detected) > 0) {

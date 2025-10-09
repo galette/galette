@@ -51,13 +51,13 @@ class Install
 
     //db version/galette version mapper
     /** @var array<string, string> */
-    private array $versions_mapper = array(
+    private array $versions_mapper = [
         '0.700' => '0.70',
         '0.701' => '0.71',
         '0.702' => '0.74',
         '0.703' => '0.75',
         '0.704' => '0.76'
-    );
+    ];
 
     protected int $step;
     private ?string $mode;
@@ -92,49 +92,71 @@ class Install
     }
 
     /**
-     * Return current step title
+     * Return current step details
+     *
+     * @param string $detail Requested detail
      *
      * @return string
      */
-    public function getStepTitle(): string
+    public function getStepDetail(string $detail): string
     {
         $step_title = null;
+        $step_documentation = null;
         switch ($this->step) {
             case self::STEP_CHECK:
                 $step_title = _T("Checks");
+                $step_documentation = 'installation/galette.html';
                 break;
             case self::STEP_TYPE:
                 $step_title = _T("Installation mode");
+                $step_documentation = 'installation/galette.html#installation-type';
                 break;
             case self::STEP_DB:
                 $step_title = _T("Database");
+                $step_documentation = 'installation/galette.html#database';
                 break;
             case self::STEP_DB_CHECKS:
                 $step_title = _T("Database access and permissions");
+                $step_documentation = 'installation/galette.html#id1';
                 break;
             case self::STEP_VERSION:
                 $step_title = _T("Previous version selection");
+                $step_documentation = 'installation/update.html#previous-version-selection';
                 break;
             case self::STEP_DB_UPGRADE:
                 $step_title = _T("Datapase upgrade");
+                $step_documentation = 'installation/update.html#updating-database';
                 break;
             case self::STEP_DB_INSTALL:
                 $step_title = _T("Tables Creation");
+                $step_documentation = 'installation/galette.html#create-tables';
                 break;
             case self::STEP_ADMIN:
                 $step_title = _T("Admin parameters");
+                $step_documentation = 'installation/galette.html#admin-parameters';
                 break;
             case self::STEP_TELEMETRY:
                 $step_title = _T("Telemetry");
+                $step_documentation = 'installation/galette.html#telemetry';
                 break;
             case self::STEP_GALETTE_INIT:
                 $step_title = _T("Galette initialization");
+                $step_documentation = 'installation/galette.html#initialize';
                 break;
             case self::STEP_END:
                 $step_title = _T("End!");
+                $step_documentation = 'installation/galette.html#installation-end';
                 break;
         }
-        return $step_title;
+
+        $step_detail = null;
+        if ($detail == 'title') {
+            $step_detail = $step_title;
+        }
+        if ($detail == 'documentation') {
+            $step_detail = $step_documentation;
+        }
+        return $step_detail;
     }
 
     /**
@@ -148,8 +170,7 @@ class Install
     {
         $img_name = ($arg === true) ? 'green check' : 'red times';
         $alt = ($arg === true) ? _T("Ok") : _T("Ko");
-        $img = '<i class="ui ' . $img_name . ' icon" aria-hidden="true"></i><span class="visually-hidden">' . $alt . '</span>';
-        return $img;
+        return '<i class="ui ' . $img_name . ' icon" aria-hidden="true"></i><span class="visually-hidden">' . $alt . '</span>';
     }
 
     /**
@@ -207,28 +228,30 @@ class Install
      */
     public function atPreviousStep(): void
     {
-        if ($this->step > 0) {
-            if (
-                $this->step - 1 !== self::STEP_DB_INSTALL
-                && $this->step !== self::STEP_END
-            ) {
-                if ($this->step === self::STEP_DB_INSTALL) {
-                    $this->step = self::STEP_DB_CHECKS;
-                } else {
-                    if ($this->step === self::STEP_DB_UPGRADE) {
-                        $this->setInstalledVersion(null);
-                    }
-                    $this->step = $this->step - 1;
-                }
+        if ($this->step <= self::STEP_CHECK) {
+            return;
+        }
+
+        if (
+            $this->step - 1 !== self::STEP_DB_INSTALL
+            && $this->step !== self::STEP_END
+        ) {
+            if ($this->step === self::STEP_DB_INSTALL) {
+                $this->step = self::STEP_DB_CHECKS;
             } else {
-                $msg = null;
-                if ($this->step === self::STEP_END) {
-                    $msg = 'Ok man, install is finished already!';
-                } else {
-                    $msg = 'It is forbidden to rerun database install!';
+                if ($this->step === self::STEP_DB_UPGRADE) {
+                    $this->setInstalledVersion(null);
                 }
-                Analog::log($msg, Analog::WARNING);
+                $this->step -= 1;
             }
+        } else {
+            $msg = null;
+            if ($this->step === self::STEP_END) {
+                $msg = 'Ok man, install is finished already!';
+            } else {
+                $msg = 'It is forbidden to rerun database install!';
+            }
+            Analog::log($msg, Analog::WARNING);
         }
     }
 
@@ -539,7 +562,7 @@ class Install
         if ($path === null) {
             $path = GALETTE_ROOT . '/install';
         }
-        $update_scripts = array();
+        $update_scripts = [];
 
         if ($this->isUpgrade()) {
             $update_scripts = self::getUpdateScripts(
@@ -572,18 +595,16 @@ class Install
         ?string $version = null
     ): array {
         $dh = opendir($path . '/scripts');
-        $php_update_scripts = array();
-        $sql_update_scripts = array();
+        $php_update_scripts = [];
+        $sql_update_scripts = [];
         $update_scripts = [];
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
                 if (preg_match("/upgrade-to-(.*).php/", $file, $ver)) {
                     if ($version === null) {
                         $php_update_scripts[$ver[1]] = $ver[1];
-                    } else {
-                        if ($version < $ver[1]) {
-                            $php_update_scripts[$ver[1]] = $file;
-                        }
+                    } elseif ($version < $ver[1]) {
+                        $php_update_scripts[$ver[1]] = $file;
                     }
                 }
                 if (
@@ -595,10 +616,8 @@ class Install
                 ) {
                     if ($version === null) {
                         $sql_update_scripts[$ver[1]] = $ver[1];
-                    } else {
-                        if ($version < $ver[1]) {
-                            $sql_update_scripts[$ver[1]] = $file;
-                        }
+                    } elseif ($version < $ver[1]) {
+                        $sql_update_scripts[$ver[1]] = $file;
                     }
                 }
             }
@@ -621,7 +640,7 @@ class Install
     {
         $fatal_error = false;
         $update_scripts = $this->getScripts($spath);
-        $this->report = array();
+        $this->report = [];
         $scripts_path = ($spath ?? GALETTE_ROOT . '/install') . '/scripts/';
 
         foreach ($update_scripts as $key => $val) {
@@ -647,12 +666,12 @@ class Install
             } else {
                 //we got an update class
                 include_once $scripts_path . $val;
-                $className = '\Galette\Updates\UpgradeTo' .
-                    str_replace('.', '', $key);
-                $ret = array(
+                $className = '\Galette\Updates\UpgradeTo'
+                    . str_replace('.', '', $key);
+                $ret = [
                     'message'   => null,
                     'res'       => false
-                );
+                ];
                 try {
                     $updater = new $className();
                     if ($updater instanceof \Galette\Updater\AbstractUpdater) {
@@ -708,29 +727,29 @@ class Install
      */
     public function executeSql(Db $zdb, string $sql_query): bool
     {
-        $queries_results = array();
+        $queries_results = [];
         $fatal_error = false;
 
-        // begin : copyright (2002) the phpbb group (support@phpbb.com)
-        // load in the sql parser
+        // begin: copyright (2002) the phpbb group (support@phpbb.com)
+        // load in the SQL parser
         include_once GALETTE_ROOT . 'includes/sql_parse.php';
 
-        $sql_query = preg_replace('/galette_/', $this->db_prefix, $sql_query);
+        $sql_query = str_replace('galette_', $this->db_prefix, $sql_query);
         $sql_query = remove_remarks($sql_query);
 
         $sql_query = split_sql_file($sql_query, ';');
 
         $zdb->connection->beginTransaction();
 
-        $sql_size = sizeof($sql_query);
+        $sql_size = count($sql_query);
         for ($i = 0; $i < $sql_size; $i++) {
             $query = trim($sql_query[$i]);
             if ($query != '' && $query[0] != '-') {
                 //some output infos
-                $ret = array(
+                $ret = [
                     'message'   => $query,
                     'res'       => false
-                );
+                ];
 
                 try {
                     $zdb->db->query(
@@ -805,7 +824,7 @@ class Install
      */
     public function reinitReport(): void
     {
-        $this->report = array();
+        $this->report = [];
     }
 
     /**
@@ -950,16 +969,16 @@ class Install
      *
      * @return array<string, ?string>
      */
-    private function loadExistingConfigFile(array $post_data = array(), bool $pass = false): array
+    private function loadExistingConfigFile(array $post_data = [], bool $pass = false): array
     {
-        $existing = array(
+        $existing = [
             'db_type'   => null,
             'db_host'   => null,
             'db_port'   => null,
             'db_user'   => null,
             'db_name'   => null,
             'prefix'    => null
-        );
+        ];
 
         if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
             $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
@@ -1051,13 +1070,13 @@ class Install
     public function writeConfFile(): bool
     {
         $error = false;
-        $ret = array(
+        $ret = [
             'message'   => _T("Write configuration file"),
             'res'       => false
-        );
+        ];
 
         //if config file is already up-to-date, nothing to write
-        $existing = $this->loadExistingConfigFile(array(), true);
+        $existing = $this->loadExistingConfigFile([], true);
 
         if (
             isset($existing['db_type'])
@@ -1080,10 +1099,10 @@ class Install
                 Analog::INFO
             );
 
-            $this->report[] = array(
+            $this->report[] = [
                 'message'   => _T("Config file already exists and is up to date"),
                 'res'       => true
-            );
+            ];
             return true;
         }
 
@@ -1199,7 +1218,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             return !$this->error;
         } elseif ($this->isUpgrade()) {
             $preferences = new Preferences($zdb);
-            $preferences->store();
+            $preferences->store(true); //set update flags to prevent socials removal; see https://bugs.galette.eu/issues/1912
             $this->proceedReport(_T("Update preferences"), true);
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n));
@@ -1225,10 +1244,10 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      */
     private function proceedReport(string $msg, bool|Throwable $res): void
     {
-        $ret = array(
+        $ret = [
             'message'   => $msg,
             'res'       => false
-        );
+        ];
 
         if ($res instanceof \Exception) {
             $ret['debug'] = $res->getMessage();

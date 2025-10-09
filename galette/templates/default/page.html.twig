@@ -26,7 +26,7 @@
             galette_lang: galette_lang
         } %}
     </head>
-    <body id="galette_body" class="pushable dimmable{% if login.isLogged() %} loggedin{% endif %} nojs">
+    <body id="galette_body" class="pushable dimmable{% if login.isLogged() %} loggedin{% endif %}{% if preferences.pref_enable_custom_colors %} custom-colors{% endif %}{{ (preferences.pref_hide_bg_image) ? ' without-bg' : ' with-bg' }} nojs">
         <a href="#main-content" class="skiptocontent visually-hidden focusable">{{ _T("Skip to content") }}</a>
         {% include 'elements/navigation/navigation_sidebar.html.twig' %}
         {% include 'elements/navigation/navigation_topbar.html.twig' %}
@@ -54,13 +54,6 @@
                     <h1 class="ui block center aligned header" style="position: relative">
 {% else %}
                     <div class="ui horizontal basic segments header">
-                        <div class="ui right aligned compact segment">
-                            <nav class="ui compact tiny menu" aria-label="{{ _T('Language menu') }}">
-                                {% include "elements/language.html.twig" with {
-                                        ui: "dropdown"
-                                } %}
-                            </nav>
-                        </div>
                         <a id="main-content" tabindex="-1"></a>
                         <div class="ui center aligned segment">
                             <h1>
@@ -68,6 +61,29 @@
                                 {% block page_title %}{{ page_title }}{% endblock %}
                             </h1>
 {% if login.isLogged() %}
+                        </div>
+    {% if login.isAdmin() or login.isStaff() or login.isGroupManager() %}
+        {% set documentation_path = documentation ?? '' %}
+        {% if documentation_path is not empty %}
+            {% if documentation_path starts with 'https' %}
+                {% set documentation_url = documentation_path %}
+            {% else %}
+                {% set documentation_url = i18n.getDocumentationBaseUrl() ~ documentation_path %}
+            {% endif %}
+                        <div class="ui compact segment">
+                            <a class="circular ui basic mini icon button" href="{{ documentation_url }}" target="_blank" data-position="left center" title="{{ _T("Read the manual") }}">
+                                <i class="question icon" aria-hidden="true"></i>
+                                <span class="visually-hidden">{{ _T("Read the manual") }}</span>
+                            </a>
+                        </div>
+        {% endif %}
+    {% endif %}
+                        <div class="ui compact segment languages">
+                            <nav class="ui compact tiny menu" aria-label="{{ _T('Language menu') }}">
+                                {% include "elements/language.html.twig" with {
+                                        ui: "dropdown"
+                                } %}
+                            </nav>
                         </div>
                     </div>
 {% endif %}
@@ -84,5 +100,12 @@
         </a>
         {% include "elements/scripts.html.twig" %}
         {% block javascripts %}{% endblock %}
+        {# If some additional scripts should be added from plugins, we load the relevant template file
+           We have to use a template file, so Twig will do its work (like replacing variables). #}
+        {% if plugin_scripts|length != 0 %}
+            {% for mid, script in plugin_scripts %}
+                {% include script with {'module_id': mid} %}
+            {% endfor %}
+        {% endif %}
     </body>
 </html>

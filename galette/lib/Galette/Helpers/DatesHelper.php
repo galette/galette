@@ -36,6 +36,32 @@ use Analog\Analog;
 trait DatesHelper
 {
     /**
+     * Builds a Date
+     *
+     * @param string $value Date to build
+     *
+     * @return string
+     */
+    protected function buildDate(string $value): string
+    {
+        //first, try with localized date
+        $date = DateTime::createFromFormat(__("Y-m-d"), $value);
+        if ($date === false) {
+            //try with non localized date
+            $date = DateTime::createFromFormat("Y-m-d", $value);
+            if ($date === false) {
+                throw new \Exception('Incorrect format');
+            }
+        }
+        $derrors = \DateTime::getLastErrors();
+        if (!empty($derrors['warning_count'])) {
+            throw new \Exception('Incorrect date ' . implode("\n", $derrors['warnings']));
+        }
+
+        return $date->format('Y-m-d');
+    }
+
+    /**
      * Set a Date
      *
      * @param string $field Field to store date
@@ -46,37 +72,19 @@ trait DatesHelper
     protected function setDate(string $field, string $value): self
     {
         try {
-            //first, try with localized date
-            $date = DateTime::createFromFormat(__("Y-m-d"), $value);
-            if ($date === false) {
-                //try with non localized date
-                $date = DateTime::createFromFormat("Y-m-d", $value);
-                if ($date === false) {
-                    throw new \Exception('Incorrect format');
-                }
-            }
-
             /** @phpstan-ignore-next-line */
-            if (method_exists($this, 'getFieldPropertyName')) {
-                $fieldPropertyName = $this->getFieldPropertyName($field);
-            } else {
-                $fieldPropertyName = $field;
-            }
-            $this->$fieldPropertyName = $date->format('Y-m-d');
+            $fieldPropertyName = method_exists($this, 'getFieldPropertyName') ? $this->getFieldPropertyName($field) : $field;
+            $this->$fieldPropertyName = $this->buildDate($value);
         } catch (Throwable $e) {
             Analog::log(
-                'Wrong date format. field: ' . $field .
-                ', value: ' . $field . ', expected fmt: ' .
-                __("Y-m-d") . ' | ' . $e->getMessage(),
+                'Wrong date format. field: ' . $field
+                . ', value: ' . $field . ', expected fmt: '
+                . __("Y-m-d") . ' | ' . $e->getMessage(),
                 Analog::INFO
             );
 
             /** @phpstan-ignore-next-line */
-            if (method_exists($this, 'getFieldLabel')) {
-                $fieldLabel = $this->getFieldLabel($field);
-            } else {
-                $fieldLabel = $field;
-            }
+            $fieldLabel = method_exists($this, 'getFieldLabel') ? $this->getFieldLabel($field) : $field;
 
             $this->errors[] = sprintf(
                 //TRANS: %1$s is the date format, %2$s is the field name
@@ -100,11 +108,11 @@ trait DatesHelper
      */
     protected function setFilterDate(string $field, string $value, bool $start): self
     {
-        $formats = array(
+        $formats = [
             __("Y"),
             __("Y-m"),
             __("Y-m-d"),
-        );
+        ];
 
         try {
             if ($value !== '') {
@@ -127,35 +135,46 @@ trait DatesHelper
 
                 $ym = \DateTime::createFromFormat(__("Y-m"), $value);
                 if ($ym !== false) {
-                    $day = 1;
-                    if ($start === false) {
-                        $day = (int)$ym->format('t');
+                    $derrors = \DateTime::getLastErrors();
+                    if (!empty($derrors['warning_count'])) {
+                        Analog::log(
+                            'Invalid date: ' . implode("\n", $derrors['warnings']),
+                            Analog::ERROR
+                        );
+                    } else {
+                        $day = 1;
+                        if ($start === false) {
+                            $day = (int)$ym->format('t');
+                        }
+                        $ym->setDate(
+                            (int)$ym->format('Y'),
+                            (int)$ym->format('m'),
+                            $day
+                        );
+                        $this->$field = $ym->format('Y-m-d');
+                        return $this;
                     }
-                    $ym->setDate(
-                        (int)$ym->format('Y'),
-                        (int)$ym->format('m'),
-                        $day
-                    );
-                    $this->$field = $ym->format('Y-m-d');
-                    return $this;
                 }
 
                 $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
                 if ($d !== false) {
-                    $this->$field = $d->format('Y-m-d');
-                    return $this;
+                    $derrors = \DateTime::getLastErrors();
+                    if (!empty($derrors['warning_count'])) {
+                        Analog::log(
+                            'Invalid date: ' . implode("\n", $derrors['warnings']),
+                            Analog::ERROR
+                        );
+                    } else {
+                        $this->$field = $d->format('Y-m-d');
+                        return $this;
+                    }
                 }
 
-                $field = null;
-                if ($start === true) {
-                    $field = _T("start date filter");
-                } else {
-                    $field = _T("end date filter");
-                }
+                $field = $start === true ? _T("start date filter") : _T("end date filter");
 
                 throw new \Exception(
                     sprintf(
-                    //TRANS: %1$s is field name, %2$s is list of known date formats
+                        //TRANS: %1$s is field name, %2$s is list of known date formats
                         _T('Unknown date format for %1$s.<br/>Know formats are: %2$s'),
                         $field,
                         implode(', ', $formats)
@@ -166,18 +185,14 @@ trait DatesHelper
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Wrong date format. field: ' . $field .
-                ', value: ' . $value . ', known formats: ' .
-                implode(', ', $formats) . ' | ' . $e->getMessage(),
+                'Wrong date format. field: ' . $field
+                . ', value: ' . $value . ', known formats: '
+                . implode(', ', $formats) . ' | ' . $e->getMessage(),
                 Analog::INFO
             );
 
             /** @phpstan-ignore-next-line */
-            if (method_exists($this, 'getFieldLabel')) {
-                $fieldLabel = $this->getFieldLabel($field);
-            } else {
-                $fieldLabel = $field;
-            }
+            $fieldLabel = method_exists($this, 'getFieldLabel') ? $this->getFieldLabel($field) : $field;
 
             $this->errors[] = sprintf(
                 //TRANS: %1$s is the date format, %2$s is the field name
@@ -204,11 +219,7 @@ trait DatesHelper
     public function getDate(string $field, bool $formatted = true, bool $translated = true): string|DateTime|null
     {
         /** @phpstan-ignore-next-line */
-        if (method_exists($this, 'getFieldPropertyName')) {
-            $fieldPropertyName = $this->getFieldPropertyName($field);
-        } else {
-            $fieldPropertyName = $field;
-        }
+        $fieldPropertyName = method_exists($this, 'getFieldPropertyName') ? $this->getFieldPropertyName($field) : $field;
 
         if ($this->$fieldPropertyName !== null && $this->$fieldPropertyName != '') {
             try {
@@ -223,8 +234,8 @@ trait DatesHelper
             } catch (Throwable $e) {
                 //oops, we've got a bad date :/
                 Analog::log(
-                    'Bad date (' . $this->$fieldPropertyName . ') | ' .
-                    $e->getMessage(),
+                    'Bad date (' . $this->$fieldPropertyName . ') | '
+                    . $e->getMessage(),
                     Analog::INFO
                 );
                 return $this->$fieldPropertyName;

@@ -70,11 +70,7 @@ class History
         $this->login = $login;
         $this->preferences = $preferences;
 
-        if ($filters === null) {
-            $this->filters = new HistoryList();
-        } else {
-            $this->filters = $filters;
-        }
+        $this->filters = $filters ?? new HistoryList();
     }
 
     /**
@@ -120,27 +116,17 @@ class History
      */
     public function add(string $action, string $argument = '', string $query = ''): bool
     {
-        if ($this->preferences->pref_log == Preferences::LOG_DISABLED) {
-            //logs are disabled
-            return true;
-        }
-
-        $ip = null;
-        if (PHP_SAPI === 'cli') {
-            $ip = '127.0.0.1';
-        } else {
-            $ip = self::findUserIpAddress();
-        }
+        $ip = PHP_SAPI === 'cli' ? '127.0.0.1' : self::findUserIpAddress();
 
         try {
-            $values = array(
+            $values = [
                 'date_log'   => date('Y-m-d H:i:s'),
                 'ip_log'     => $ip,
                 'adh_log'    => $this->login->login ?? '',
                 'action_log' => $action,
                 'text_log'   => $argument,
                 'sql_log'    => $query
-            );
+            ];
 
             $insert = $this->zdb->insert($this->getTableName());
             $insert->values($values);
@@ -277,20 +263,20 @@ class History
      */
     protected function buildOrderClause(): array
     {
-        $order = array();
+        $order = [];
 
         switch ($this->filters->orderby) {
             case HistoryList::ORDERBY_DATE:
-                $order[] = 'date_log ' . $this->filters->ordered;
+                $order[] = 'date_log ' . $this->filters->getDirection();
                 break;
             case HistoryList::ORDERBY_IP:
-                $order[] = 'ip_log ' . $this->filters->ordered;
+                $order[] = 'ip_log ' . $this->filters->getDirection();
                 break;
             case HistoryList::ORDERBY_USER:
-                $order[] = 'adh_log ' . $this->filters->ordered;
+                $order[] = 'adh_log ' . $this->filters->getDirection();
                 break;
             case HistoryList::ORDERBY_ACTION:
-                $order[] = 'action_log ' . $this->filters->ordered;
+                $order[] = 'action_log ' . $this->filters->getDirection();
                 break;
         }
 
@@ -365,9 +351,9 @@ class History
             $countSelect->reset($countSelect::JOINS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
-                array(
+                [
                     $this->getPk() => new Expression('COUNT(' . $this->getPk() . ')')
-                )
+                ]
             );
 
             $results = $this->zdb->execute($countSelect);
@@ -407,10 +393,7 @@ class History
      */
     public function __isset(string $name): bool
     {
-        if (isset($this->$name)) {
-            return true;
-        }
-        return false;
+        return isset($this->$name);
     }
 
     /**
@@ -423,11 +406,6 @@ class History
      */
     public function __set(string $name, mixed $value): void
     {
-        Analog::log(
-            '[History] Setting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
         $this->$name = $value;
     }
 

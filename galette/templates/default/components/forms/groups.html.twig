@@ -62,13 +62,13 @@
     </div>
     {% endif %}
     {% if login.isGroupManager() %}
-    <a class="jsonly disabled ui icon button" id="btngroups" tabindex="0">
+    <a class="jsonly disabled ui icon button" id="btngroups" href="#">
         <i class="user tag icon" aria-hidden="true"></i>
         {{ _T("Manage user's groups") }}
     </a>
     {% endif %}
     {% if login.isAdmin() or login.isStaff() %}
-    <a class="jsonly disabled ui icon button" id="btnmanagedgroups" tabindex="0">
+    <a class="jsonly disabled ui icon button" id="btnmanagedgroups" href="#">
         <i class="user shield icon" aria-hidden="true"></i>
         {{ _T("Manage user's managed groups") }}
     </a>

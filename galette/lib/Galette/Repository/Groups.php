@@ -28,7 +28,6 @@ use Galette\Entity\Status;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
-use Laminas\Db\Sql\Predicate\PredicateSet;
 use Galette\Entity\Group;
 use Galette\Entity\Adherent;
 use Galette\Core\Login;
@@ -71,20 +70,16 @@ class Groups
             $select = $zdb->select(Group::TABLE);
             if ($as_groups === false) {
                 $select->columns(
-                    array(Group::PK, 'group_name')
+                    [Group::PK, 'group_name']
                 );
             }
-            $groups = array();
+            $groups = [];
             $gpk = Group::PK;
 
             $results = $zdb->execute($select);
 
             foreach ($results as $row) {
-                if ($as_groups === false) {
-                    $groups[$row->$gpk] = $row->group_name;
-                } else {
-                    $groups[$row->$gpk] = new Group($row);
-                }
+                $groups[$row->$gpk] = $as_groups === false ? $row->group_name : new Group($row);
             }
             return $groups;
         } catch (Throwable $e) {
@@ -111,16 +106,16 @@ class Groups
 
             if (!$this->login->isAdmin() && !$this->login->isStaff() && $full === true) {
                 $select->join(
-                    array('gmanagers' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                    ['gmanagers' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
                     'ggroup.' . Group::PK . '=gmanagers.' . Group::PK,
-                    array()
+                    []
                 )->where(['gmanagers.' . Adherent::PK => $this->login->id]);
             }
 
             $select->join(
-                array('gusers' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                ['gusers' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                 'ggroup.' . Group::PK . '=gusers.' . Group::PK,
-                array('members' => new Expression('count(gusers.' . Group::PK . ')')),
+                ['members' => new Expression('count(gusers.' . Group::PK . ')')],
                 $select::JOIN_LEFT
             );
 
@@ -144,7 +139,7 @@ class Groups
                 ->group('ggroup.parent_group')
                 ->order('ggroup.group_name ASC');
 
-            $groups = array();
+            $groups = [];
 
             $results = $this->zdb->execute($select);
 
@@ -193,34 +188,30 @@ class Groups
     {
         global $zdb;
         try {
-            $join_table = ($managed) ?
-                Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
+            $join_table = ($managed)
+                ? Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
 
             $select = $zdb->select(Group::TABLE, 'group');
             $select->join(
-                array(
+                [
                     'b' => PREFIX_DB . $join_table
-                ),
+                ],
                 'group.' . Group::PK . '=b.' . Group::PK,
-                array()
-            )->where(array('b.' . Adherent::PK => $id));
+                []
+            )->where(['b.' . Adherent::PK => $id]);
 
             $results = $zdb->execute($select);
 
-            $groups = array();
+            $groups = [];
             $gpk = Group::PK;
             foreach ($results as $r) {
-                if ($as_group === true) {
-                    $groups[$r->$gpk] = new Group($r);
-                } else {
-                    $groups[$r->$gpk] = $r->$gpk;
-                }
+                $groups[$r->$gpk] = $as_group === true ? new Group($r) : $r->$gpk;
             }
             return $groups;
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load member groups for id `' . $id . '` | ' .
-                $e->getMessage(),
+                'Cannot load member groups for id `' . $id . '` | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
             throw $e;
@@ -254,12 +245,7 @@ class Groups
                 $zdb->connection->beginTransaction();
             }
 
-            $table = null;
-            if ($manager === true) {
-                $table = Group::GROUPSMANAGERS_TABLE;
-            } else {
-                $table = Group::GROUPSUSERS_TABLE;
-            }
+            $table = $manager === true ? Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
 
             //first, remove current groups members
             $delete = $zdb->delete($table);
@@ -284,30 +270,30 @@ class Groups
             if (count($groups)) {
                 $insert = $zdb->insert($table);
                 $insert->values(
-                    array(
+                    [
                         Group::PK       => ':group',
                         Adherent::PK    => ':adh'
-                    )
+                    ]
                 );
                 $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
                 foreach ($groups as $group) {
-                    list($gid, $gname) = explode('|', $group);
+                    [$gid, $gname] = explode('|', $group);
 
                     if (count($managed_groups) && !in_array($gid, $managed_groups)) {
                         continue;
                     }
 
                     $result = $stmt->execute(
-                        array(
+                        [
                             'group' => $gid,
                             'adh'   => $adh->id
-                        )
+                        ]
                     );
 
                     if ($result) {
-                        $msg = 'Member `' . $adh->sname . '` attached to group `' .
-                            $gname . '` (' . $gid . ')';
+                        $msg = 'Member `' . $adh->sname . '` attached to group `'
+                            . $gname . '` (' . $gid . ')';
                         if ($manager === true) {
                             $msg .= ' as a manager';
                         }
@@ -316,9 +302,9 @@ class Groups
                             Analog::DEBUG
                         );
                     } else {
-                        $msg = 'Unable to attach member `' .
-                            $adh->sname . '` (' . $adh->id . ') to group `' .
-                            $gname . '` (' . $gid . ').';
+                        $msg = 'Unable to attach member `'
+                            . $adh->sname . '` (' . $adh->id . ') to group `'
+                            . $gname . '` (' . $gid . ').';
                         if ($manager === true) {
                             $msg .= ' as a manager';
                         }
@@ -340,8 +326,8 @@ class Groups
             if ($transaction === false) {
                 $zdb->connection->rollBack();
             }
-            $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
-                ') to specified groups ' . print_r($groups, true);
+            $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id
+                . ') to specified groups ' . print_r($groups, true);
             if ($manager === true) {
                 $msg .= ' as a manager';
             }
@@ -377,8 +363,8 @@ class Groups
             $zdb->execute($del_qry);
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to remove member #' . implode(', ', $ids) . ' from his groups: ' .
-                $e->getMessage(),
+                'Unable to remove member #' . implode(', ', $ids) . ' from his groups: '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -425,7 +411,7 @@ class Groups
             }
 
             $results = $zdb->execute($select);
-            return !($results->count() > 0);
+            return $results->count() <= 0;
         } catch (Throwable $e) {
             Analog::log(
                 'Cannot check group name uniqueness | ' . $e->getMessage(),
@@ -456,18 +442,18 @@ class Groups
         $select->columns(
             [Adherent::PK]
         )->join(
-            array('status' => PREFIX_DB . Status::TABLE),
+            ['status' => PREFIX_DB . Status::TABLE],
             'adh.' . Status::PK . '=status.' . Status::PK,
-            array('priorite_statut')
+            ['priorite_statut']
         )->join(
-            array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+            ['b' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
             'adh.' . Adherent::PK . '=b.' . Adherent::PK,
             []
         )->where->in('b.' . Group::PK, $groups);
 
         $results = $this->zdb->execute($select);
 
-        $ids_adh = array();
+        $ids_adh = [];
         foreach ($results as $r) {
             $ids_adh[] = $r->id_adh;
         }

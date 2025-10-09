@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Util;
 
-use Analog\Analog;
 use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 
@@ -85,10 +84,10 @@ class Password
         }
 
         if (mb_strlen($password) < $this->preferences->pref_password_length) {
-            $this->errors[] = str_replace(
-                ['%length', '%count'],
-                [(string)$this->preferences->pref_password_length, (string)mb_strlen($password)],
-                _T('Too short (%length characters minimum, %count found)')
+            $this->errors[] = sprintf(
+                _T('Too short (%1$s characters minimum, %2$s found)'),
+                (string)$this->preferences->pref_password_length,
+                (string)mb_strlen($password)
             );
         }
 
@@ -97,14 +96,12 @@ class Password
             $this->errors = array_merge($this->errors, $this->strength_errors);
         }
 
-        if ($this->preferences->pref_password_strength > Preferences::PWD_NONE) {
-            //check also against personal information
-            if (in_array(mb_strtolower($password), $this->personal_infos)) {
-                $this->errors[] = _T('Do not use any of your personal information as password!');
-            }
+        //check also against personal information
+        if ($this->preferences->pref_password_strength > Preferences::PWD_NONE && in_array(mb_strtolower($password), $this->personal_infos)) {
+            $this->errors[] = _T('Do not use any of your personal information as password!');
         }
 
-        return (count($this->errors) === 0);
+        return count($this->errors) === 0;
     }
 
     /**

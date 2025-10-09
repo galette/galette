@@ -73,12 +73,11 @@ abstract class Authentication
     abstract public function logIn(string $user, string $passe): bool;
 
     /**
-     * Does this login already exists ?
-     * These function should be used for setting admin login into Preferences
+     * Does this login already exist?
      *
      * @param string $user the username
      *
-     * @return boolean true if the username already exists, false otherwise
+     * @return boolean
      */
     abstract public function loginExists(string $user): bool;
 
@@ -88,7 +87,7 @@ abstract class Authentication
      * @param string      $login       name
      * @param Preferences $preferences Preferences instance
      *
-     * @return bool
+     * @return boolean
      */
     public function logAdmin(string $login, Preferences $preferences): bool
     {
@@ -137,7 +136,7 @@ abstract class Authentication
     }
 
     /**
-     * Is user logged-in?
+     * Is user logged in?
      *
      * @return bool
      */
@@ -210,17 +209,17 @@ abstract class Authentication
         $manager = false;
         if ($this->isAdmin() || $this->isStaff()) {
             return true;
-        } else {
-            if ($id_group === null) {
-                $manager = count($this->managed_groups) > 0;
-            } else {
-                $groups = is_array($id_group) ? $id_group : (array)$id_group;
+        }
 
-                foreach ($groups as $group) {
-                    if (in_array($group, $this->managed_groups)) {
-                        $manager = true;
-                        break;
-                    }
+        if ($id_group === null) {
+            $manager = count($this->managed_groups) > 0;
+        } else {
+            $groups = is_array($id_group) ? $id_group : (array)$id_group;
+
+            foreach ($groups as $group) {
+                if (in_array($group, $this->managed_groups)) {
+                    $manager = true;
+                    break;
                 }
             }
         }
@@ -299,7 +298,7 @@ abstract class Authentication
      */
     public function __get(string $name): mixed
     {
-        $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
+        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate'];
         if (in_array($name, $forbidden)) {
             throw new \RuntimeException('Property ' . $name . ' is forbidden!');
         }
@@ -312,10 +311,7 @@ abstract class Authentication
                 return null;
             case 'login':
             case 'lang':
-                if (isset($this->$name)) {
-                    return $this->$name;
-                }
-                return null;
+                return $this->$name ?? null;
             default:
                 if (!isset($this->$name)) {
                     throw new \RuntimeException('Property ' . $name . ' is not set!');
@@ -334,12 +330,8 @@ abstract class Authentication
      */
     public function __isset(string $name): bool
     {
-        $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
-        if (isset($this->$name) && !in_array($name, $forbidden)) {
-            return true;
-        } else {
-            return false;
-        }
+        $forbidden = ['logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate'];
+        return isset($this->$name) && !in_array($name, $forbidden);
     }
 
 

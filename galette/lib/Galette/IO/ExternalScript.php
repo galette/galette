@@ -36,7 +36,7 @@ class ExternalScript
     private string $protocol;
     private string $method;
     private string $uri;
-    private bool $as_json = true; //TODO: parametize?
+    private bool $as_json = true;
     private string $output;
 
     /**
@@ -47,7 +47,7 @@ class ExternalScript
     public function __construct(Preferences $pref)
     {
         $uri = $pref->pref_new_contrib_script;
-        list($protocol,) = explode('://', $uri);
+        [$protocol, ] = explode('://', $uri);
 
         if ($protocol == $uri) {
             Analog::log(
@@ -67,8 +67,8 @@ class ExternalScript
                 $selfs = explode('/', $_SERVER['PHP_SELF']);
                 array_pop($selfs);
                 $self = implode('/', $selfs);
-                $uri = $protocol . '://' . $_SERVER['SERVER_NAME'] . $self .
-                    '/' . GALETTE_BASE_PATH . str_replace($protocol . '://', '', $uri);
+                $uri = $protocol . '://' . $_SERVER['SERVER_NAME'] . $self
+                    . '/' . GALETTE_BASE_PATH . str_replace($protocol . '://', '', $uri);
                 break;
             case 'file':
                 $this->protocol = $protocol;
@@ -90,8 +90,8 @@ class ExternalScript
         }
 
         Analog::log(
-            __CLASS__ . ' instanced with method ' . $this->method .
-            ' and protocol ' . $this->protocol,
+            static::class . ' instanced with method ' . $this->method
+            . ' and protocol ' . $this->protocol,
             Analog::INFO
         );
 
@@ -101,22 +101,20 @@ class ExternalScript
                 $this->protocol . '://',
                 $uri
             );
+        } elseif (file_exists($uri)) {
+            $this->uri = str_replace(
+                $protocol . '://',
+                '',
+                $uri
+            );
         } else {
-            if (file_exists($uri)) {
-                $this->uri = str_replace(
-                    $protocol . '://',
-                    '',
-                    $uri
-                );
-            } else {
-                throw new \RuntimeException(
-                    __METHOD__ . 'File ' . $uri . ' does not exists!'
-                );
-            }
+            throw new \RuntimeException(
+                __METHOD__ . 'File ' . $uri . ' does not exists!'
+            );
         }
 
         Analog::log(
-            __CLASS__ . ' URI set to ' . $this->uri,
+            static::class . ' URI set to ' . $this->uri,
             Analog::INFO
         );
     }
@@ -148,12 +146,7 @@ class ExternalScript
                 curl_setopt($ch, CURLOPT_URL, $uri);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $this->output = curl_exec($ch);
-                if ($this->output !== false) {
-                    $result = true;
-                } else {
-                    $result = false;
-                }
-                curl_close($ch);
+                $result = (bool) $this->output;
                 break;
             case 'galette':
             case 'post':
@@ -165,20 +158,15 @@ class ExternalScript
                     curl_setopt(
                         $ch,
                         CURLOPT_POSTFIELDS,
-                        array(
+                        [
                             'params' => json_encode($params)
-                        )
+                        ]
                     );
                 } else {
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
                 }
                 $this->output = curl_exec($ch);
-                if ($this->output !== false) {
-                    $result = true;
-                } else {
-                    $result = false;
-                }
-                curl_close($ch);
+                $result = (bool) $this->output;
                 break;
             case 'file':
                 $this->output = '';
@@ -192,11 +180,11 @@ class ExternalScript
                     $params = $imploded;
                 }
 
-                $descriptors = array(
-                    0   => array('pipe', 'r'),
-                    1   => array('pipe', 'w'),
-                    2   => array('pipe', 'w')
-                );
+                $descriptors = [
+                    0   => ['pipe', 'r'],
+                    1   => ['pipe', 'w'],
+                    2   => ['pipe', 'w']
+                ];
 
                 $process = proc_open(
                     $uri,
@@ -223,11 +211,7 @@ class ExternalScript
                 fclose($pipes[2]);
                 proc_close($process);
 
-                if (trim($this->output) === '') {
-                    $result = true;
-                } else {
-                    $result = false;
-                }
+                $result = trim($this->output) === '';
                 break;
             default:
                 throw new \RuntimeException(

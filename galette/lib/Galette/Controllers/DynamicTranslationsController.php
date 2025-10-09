@@ -26,7 +26,6 @@ namespace Galette\Controllers;
 use Throwable;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Galette\Core\L10n;
 use Analog\Analog;
 
 /**
@@ -52,83 +51,54 @@ class DynamicTranslationsController extends AbstractController
             $text_orig = $_GET['text_orig'];
         }
 
+        return $this->dynamicTranslation($request, $response, $text_orig ?? '');
+    }
+
+    /**
+     * Dynamic fields translations
+     *
+     * @param Request  $request       PSR Request
+     * @param Response $response      PSR Response
+     * @param string   $text_orig_sum Original text MD5 sum
+     *
+     * @return Response
+     */
+    public function dynamicTranslation(Request $request, Response $response, string $text_orig_sum): Response
+    {
         $params = [
-            'page_title'    => _T("Translate labels")
+            'page_title'    => _T("Labels translation"),
+            'documentation' => 'usermanual/configuration.html#labels-translation'
         ];
 
-        $nb_fields = 0;
         try {
-            $select = $this->zdb->select(L10n::TABLE);
-            $select->columns(
-                array('nb' => new \Laminas\Db\Sql\Expression('COUNT(text_orig)'))
-            );
-            $results = $this->zdb->execute($select);
-            $result = $results->current();
-            $nb_fields = $result->nb;
+            $orig = $this->l10n->getStringsToTranslate();
+            $text_exists = false;
+
+            if ($text_orig_sum === '') {
+                $text_orig_sum = array_key_first($orig);
+            }
+
+            if (isset($orig[$text_orig_sum]) || isset($orig[md5($text_orig_sum)])) {
+                $sum = isset($orig[$text_orig_sum]) ? $text_orig_sum : md5($text_orig_sum);
+                $text_exists = true;
+                $text_trans = $this->l10n->getDynamicTranslations($sum);
+                $text_orig = $orig[$sum];
+            } else {
+                $text_trans = $this->l10n->getDynamicTranslations($text_orig_sum);
+                $text_orig = $text_orig_sum;
+            }
+
+            $params['exists'] = $text_exists;
+            $params['orig'] = $orig;
+            $params['trans'] = $text_trans;
+            $params['text_orig'] = $text_orig;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred counting l10n entries | ' .
-                $e->getMessage(),
+                'An error occurred retrieving l10n entries | '
+                . $e->getMessage(),
                 Analog::WARNING
             );
         }
-
-        if (is_numeric($nb_fields) && $nb_fields > 0) {
-            try {
-                $select = $this->zdb->select(L10n::TABLE);
-                $select->quantifier('DISTINCT')->columns(
-                    array('text_orig')
-                )->order('text_orig');
-
-                $all_texts = $this->zdb->execute($select);
-
-                $orig = array();
-                foreach ($all_texts as $idx => $row) {
-                    $orig[] = $row->text_orig ?? '';
-                }
-                $exists = true;
-                if ($text_orig == '') {
-                    $text_orig = $orig[0];
-                } elseif (!in_array($text_orig, $orig)) {
-                    $exists = false;
-                    $this->flash->addMessage(
-                        'error_detected',
-                        str_replace(
-                            '%s',
-                            $text_orig,
-                            _T("No translation for '%s'!<br/>Please fill and submit above form to create it.")
-                        )
-                    );
-                }
-
-                $trans = array();
-                /**
-                 * FIXME : it would be faster to get all translations at once
-                 * for a specific string
-                 */
-                foreach ($this->i18n->getList() as $l) {
-                    $text_trans = $this->l10n->getDynamicTranslation($text_orig, $l->getLongID());
-                    $lang_name = $l->getName();
-                    $trans[] = array(
-                        'key'  => $l->getLongID(),
-                        'name' => ucwords($lang_name),
-                        'text' => $text_trans
-                    );
-                }
-
-                $params['exists'] = $exists;
-                $params['orig'] = $orig;
-                $params['trans'] = $trans;
-            } catch (Throwable $e) {
-                Analog::log(
-                    'An error occurred retrieving l10n entries | ' .
-                    $e->getMessage(),
-                    Analog::WARNING
-                );
-            }
-        }
-
-        $params['text_orig'] = $text_orig;
 
         $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
 
@@ -158,6 +128,7 @@ class DynamicTranslationsController extends AbstractController
         } else {
             $redirect_url = $this->routeparser->urlFor(
                 'dynamicTranslations',
+                [],
                 ['text_orig' => $post['text_orig']]
             );
         }
@@ -171,14 +142,14 @@ class DynamicTranslationsController extends AbstractController
                 );
                 if (!$res) {
                     $error_detected[] = preg_replace(
-                        array(
+                        [
                             '/%label/',
                             '/%lang/'
-                        ),
-                        array(
+                        ],
+                        [
                             $post['text_orig'],
                             $this->i18n->getLongID()
-                        ),
+                        ],
                         _T("An error occurred saving label `%label` for language `%lang`")
                     );
                 }
@@ -186,7 +157,7 @@ class DynamicTranslationsController extends AbstractController
 
             // Validate form
             foreach ($post as $key => $value) {
-                if (substr($key, 0, 11) == 'text_trans_') {
+                if (str_starts_with($key, 'text_trans_')) {
                     $trans_lang = substr($key, 11);
                     $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
                     $res = $this->l10n->updateDynamicTranslation(
@@ -196,14 +167,14 @@ class DynamicTranslationsController extends AbstractController
                     );
                     if (!$res) {
                         $error_detected[] = preg_replace(
-                            array(
+                            [
                                 '/%label/',
                                 '/%lang/'
-                            ),
-                            array(
+                            ],
+                            [
                                 $post['text_orig'],
                                 $trans_lang
-                            ),
+                            ],
                             _T("An error occurred saving label `%label` for language `%lang`")
                         );
                     }

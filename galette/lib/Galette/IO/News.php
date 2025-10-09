@@ -25,6 +25,8 @@ namespace Galette\IO;
 
 use Galette\Core\Galette;
 use Galette\Features\Cacheable;
+use Galette\IO\News\Post;
+use Galette\Util\Text;
 use Throwable;
 use Analog\Analog;
 
@@ -40,7 +42,7 @@ class News
     protected string $cache_filename = '%feed.cache';
     private int $show = 10;
     private ?string $feed_url = null;
-    /** @var array<int, array<string, string>> */
+    /** @var Post[] */
     private array $posts = [];
     /** @var array<string, array<string, int|string>> */
     private array $stream_opts = [
@@ -143,15 +145,15 @@ class News
                 throw new \Exception();
             }
 
-            $posts = array();
+            $posts = [];
 
             if (isset($xml->entry)) {
                 //Reading an atom feed
                 foreach ($xml->entry as $post) {
-                    $posts[] = array(
-                        'title' => (string)$post->title,
-                        'url'   => (string)$post->link['href'],
-                        'date'  => (string)$post->published
+                    $posts[] = new Post(
+                        (string)$post->title,
+                        (string)$post->link['href'],
+                        (string)$post->published
                     );
                     if (count($posts) == $this->show) {
                         break;
@@ -160,10 +162,14 @@ class News
             } elseif (isset($xml->channel->item)) {
                 //Reading a RSS feed
                 foreach ($xml->channel->item as $post) {
-                    $posts[] = array(
-                        'title' => (string)$post->title,
-                        'url'   => (string)$post->link,
-                        'date'  => (string)$post->pubDate
+                    $title = (string)$post->title;
+                    if (empty($title) && isset($post->description)) {
+                        $title = Text::truncateOnWords((string)$post->description);
+                    }
+                    $posts[] = new Post(
+                        $title,
+                        (string)$post->link,
+                        (string)$post->pubDate
                     );
                     if (count($posts) == $this->show) {
                         break;
@@ -177,8 +183,8 @@ class News
             $this->posts = $posts;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to load feed from "' . $this->feed_url .
-                '" :( | ' . $e->getMessage(),
+                'Unable to load feed from "' . $this->feed_url
+                . '" :( | ' . $e->getMessage(),
                 Analog::ERROR
             );
         }
@@ -187,7 +193,7 @@ class News
     /**
      * Get posts
      *
-     * @return array<int, array<string, string>>
+     * @return Post[]
      */
     public function getPosts(): array
     {
@@ -205,9 +211,9 @@ class News
     {
         global $i18n;
 
-        if (strpos($url, 'galette.eu') !== false || trim($url) == '') {
+        if (str_contains($url, 'galette.eu') || trim($url) == '') {
             $url = 'https://galette.eu/site';
-        } elseif (strpos($url, 'localhost:4000') !== false) {
+        } elseif (str_contains($url, 'localhost:4000')) {
             $url = 'http://localhost:4000/site';
         } else {
             return $url;
@@ -224,8 +230,8 @@ class News
             $url .= '/feed.xml';
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to load feed languages from "' . $url .
-                '" :( | ' . $e->getMessage(),
+                'Unable to load feed languages from "' . $url
+                . '" :( | ' . $e->getMessage(),
                 Analog::ERROR
             );
         }

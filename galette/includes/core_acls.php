@@ -59,6 +59,7 @@ $core_acls = [
     '/(.+)?contribution(.+)?/i'         => 'staff',
     '/(.*)?addTransaction/i'            => 'groupmanager',
     '/(.*)?editTransaction/i'           => 'groupmanager',
+    '/doEditTransaction/i'              => 'staff',
     '/(.+)?transaction(.+)?/i'          => 'staff',
     // /Contributions rules
     // Members rules
@@ -66,15 +67,14 @@ $core_acls = [
     'member'                            => 'member',
     'pdf-members-cards'                 => 'member',
     'editMember'                        => 'member',
-    'addMemberChild'                    => 'member',
+    '/(.+)?addMemberChild/i'            => 'member',
     //most of members routes are accessible to groups manager, including mass changes pages
     '/(.+)?member(.+)?/i'               => 'groupmanager',
     'ajaxGroupMembers'                  => 'staff',
     'duplicateMember'                   => 'staff',
-    'payments_filter'                   => 'member',
+    'filterContributions'               => 'member',
     'adhesionForm'                      => 'member',
     'getDynamicFile'                    => 'member',
-    'photoDnd'                          => 'staff',
     // /Members rules
     // Groups rules
     '/(.+)?group(.+)?/i'                => 'groupmanager',
@@ -94,6 +94,6 @@ $core_acls = [
     'attendance_sheet_details'          => 'groupmanager',
     'attendance_sheet'                  => 'groupmanager',
     '/(.+)?document(.+)?/i'             => 'staff',
-    'myScheduledPayments'               => 'member',
-    '/(.+)?scheduledPayment(.+)?/i'      => 'staff'
+    '/(.+)?myScheduledPayments/i'       => 'member',
+    '/(.+)?scheduledPayment(.+)?/i'     => 'staff'
 ];

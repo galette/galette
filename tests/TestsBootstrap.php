@@ -42,7 +42,7 @@ $db = 'mysql';
 $dbenv = getenv('DB');
 if (
     $dbenv === 'pgsql'
-    || substr($dbenv, 0, strlen('postgres')) === 'postgres'
+    || str_starts_with($dbenv, 'postgres')
 ) {
     $db = 'pgsql';
 }
@@ -91,7 +91,9 @@ $directories = [
     'photos',
     'attachments',
     'files',
-    'tempimages'
+    'tempimages',
+    'plugins',
+    'documents'
 ];
 foreach ($directories as $directory) {
     mkdir(GALETTE_DATA_PATH . $directory);
@@ -99,6 +101,10 @@ foreach ($directories as $directory) {
 
 $logfile = 'galette_tests';
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
+
+//disabled news and disabled plugins
+touch(GALETTE_PLUGINS_DATA_PATH . '/plugin_plugin-news_disabled');
+touch(GALETTE_PLUGINS_DATA_PATH . '/plugin_plugin-disabled_disabled');
 
 $session_name = 'galette_tests';
 $session = new \RKA\SessionMiddleware([
@@ -111,13 +117,8 @@ $gapp =  new \Galette\Core\SlimApp();
 $app = $gapp->getApp();
 $app->add($session);
 
-require_once GALETTE_BASE_PATH . '/includes/dependencies.php';
-//Globals... :(
-global $preferences, $emitter, $zdb;
-$zdb = $container->get('zdb');
-$preferences = $container->get('preferences');
-$emitter = $container->get('event_manager');
-$i18n->changeLanguage('en_US');
+$zdb = new \Galette\Core\Db();
+$preferences = new \Galette\Core\Preferences($zdb);
 
 if (!defined('_CURRENT_THEME_PATH')) {
     define(
@@ -126,13 +127,21 @@ if (!defined('_CURRENT_THEME_PATH')) {
     );
 }
 
+require_once GALETTE_BASE_PATH . 'includes/main.inc.php';
+//Globals... :(
+global $preferences, $emitter, $zdb;
+$zdb = $container->get('zdb');
+$preferences = $container->get('preferences');
+$emitter = $container->get('event_manager');
+$i18n->changeLanguage('en_US');
+
 if (
     $testenv !== 'UPDATE'
     && $testenv !== 'FAIL'
 ) {
     //do not initialize Tiles on update nor fail tests
     $titles = new \Galette\Repository\Titles($zdb);
-    $res = $titles->installInit($zdb);
+    $res = $titles->installInit();
 
     $fc = $container->get(\Galette\Entity\FieldsConfig::class);
     $categorized_fields = $fc->getCategorizedFields();
@@ -146,3 +155,4 @@ if (
     $fc->setFields($categorized_fields);
 }
 require_once __DIR__ . '/GaletteTestCase.php';
+require_once __DIR__ . '/GaletteRoutingTestCase.php';

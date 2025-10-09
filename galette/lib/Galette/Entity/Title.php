@@ -89,8 +89,8 @@ class Title
             $this->long = $res->long_label;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading title #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading title #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -126,10 +126,10 @@ class Title
      */
     public function store(Db $zdb): bool
     {
-        $data = array(
+        $data = [
             'short_label'   => strip_tags($this->short),
             'long_label'    => strip_tags($this->long)
-        );
+        ];
         try {
             if (isset($this->id) && $this->id > 0) {
                 $update = $zdb->update(self::TABLE);
@@ -149,8 +149,8 @@ class Title
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing title: ' . $e->getMessage() .
-                "\n" . print_r($data, true),
+                'An error occurred storing title: ' . $e->getMessage()
+                . "\n" . print_r($data, true),
                 Analog::ERROR
             );
             throw $e;
@@ -220,13 +220,11 @@ class Title
                 $rname = null;
                 if ($name === 'tshort') {
                     $rname = 'short';
+                } elseif ($this->long !== null && trim($this->long) !== '') {
+                    $rname = 'long';
                 } else {
-                    if ($this->long !== null && trim($this->long) !== '') {
-                        $rname = 'long';
-                    } else {
-                        //switch back to short version if long does not exists
-                        $rname = 'short';
-                    }
+                    //switch back to short version if long does not exists
+                    $rname = 'short';
                 }
                 if (isset($lang) && isset($lang[$this->$rname])) {
                     return _T($this->$rname);
@@ -238,7 +236,7 @@ class Title
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );

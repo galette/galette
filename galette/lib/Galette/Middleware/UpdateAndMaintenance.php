@@ -66,15 +66,13 @@ class UpdateAndMaintenance
         $this->routeParser = $routeParser;
 
         if ($callback === self::MAINTENANCE) {
-            $this->callback = array($this, 'maintenancePage');
+            $this->callback = [$this, 'maintenancePage'];
         } elseif ($callback === self::NEED_UPDATE) {
-            $this->callback = array($this, 'needsUpdatePage');
+            $this->callback = [$this, 'needsUpdatePage'];
+        } elseif (!is_callable($callback)) {
+            throw new \InvalidArgumentException('argument callback must be callable');
         } else {
-            if (!is_callable($callback)) {
-                throw new \InvalidArgumentException('argument callback must be callable');
-            } else {
-                $this->callback = $callback;
-            }
+            $this->callback = $callback;
         }
     }
 
@@ -99,12 +97,12 @@ class UpdateAndMaintenance
     /**
      * Renders the page
      *
-     * @param Request $request  PSR7 request
-     * @param string  $contents HTML page contents
+     * @param Request              $request  PSR7 request
+     * @param array<string, mixed> $contents HTML page contents
      *
      * @return string
      */
-    private function renderPage(Request $request, string $contents): string
+    private function renderPage(Request $request, array $contents): string
     {
         $path = $this->routeParser->urlFor('slash');
 
@@ -112,7 +110,7 @@ class UpdateAndMaintenance
         if (
             $path === ''
             || $path !== '/'
-            && substr($path, -1) !== '/'
+            && !str_ends_with($path, '/')
         ) {
             $path .= '/';
         }
@@ -122,7 +120,7 @@ class UpdateAndMaintenance
         $body = "<!DOCTYPE html>
 <html class=\"public_page\" lang=\"" . $this->i18n->getAbbrev() . "\">
     <head>
-        <title>" . _T("Galette needs update!") . "</title>
+        <title>" . $contents['title'] . "</title>
         <meta charset=\"UTF-8\"/>
         <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $theme_path . "ui/semantic.min.css\"/>
         <link rel=\"shortcut icon\" href=\"" . $theme_path . "images/favicon.png\"/>
@@ -132,9 +130,9 @@ class UpdateAndMaintenance
             <div id=\"main\" class=\"ui container\">
                 <div class=\"ui basic segment\">
                     <div class=\"ui basic center aligned fitted segment\">
-                        <img src=\"" . $theme_path . "images/galette.png\" alt=\"[ Galette ]\"/>
+                        <img src=\"" . $theme_path . "images/galette.webp\" alt=\"[ Galette ]\"/>
                     </div>
-                    <div class=\"ui center aligned message\">" . $contents . "</div>
+                    <div class=\"ui center aligned message\">" . $contents['body'] . "</div>
                 </div>
             </div>
         </div>
@@ -152,7 +150,9 @@ class UpdateAndMaintenance
      */
     private function maintenancePage(Request $request): string
     {
-        $contents = "<div class=\"header\">" . _T("Galette is currently under maintenance!") . "</div>
+        $contents = [];
+        $contents['title'] = _T("Galette is currently under maintenance!");
+        $contents['body'] = "<h1>" . $contents['title'] . "</h1>
             <p>" . _T("The Galette instance you are requesting is currently under maintenance. Please come back later.") . "</p>";
         return $this->renderPage($request, $contents);
     }
@@ -166,7 +166,9 @@ class UpdateAndMaintenance
      */
     private function needsUpdatePage(Request $request): string
     {
-        $contents = "<h1>" . _T("Galette needs update!") . "</h1>
+        $contents = [];
+        $contents['title'] = _T("Galette needs update!");
+        $contents['body'] = "<h1>" . $contents['title'] . "</h1>
             <p>" . _T("Your Galette database is not present, or not up to date.") . "</p>
             <p><em>" . _T("Please run install or upgrade procedure (check the documentation)") . "</em></p>";
         return $this->renderPage($request, $contents);

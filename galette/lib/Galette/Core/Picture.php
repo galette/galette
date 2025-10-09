@@ -26,12 +26,12 @@ namespace Galette\Core;
 use ArrayObject;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Select;
+use Psr\Http\Message\UploadedFileInterface;
 use Slim\Psr7\Response;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Repository\Members;
-use Galette\IO\FileInterface;
 use Galette\IO\FileTrait;
 
 /**
@@ -40,12 +40,13 @@ use Galette\IO\FileTrait;
  * @author Frédéric Jacquot <gna@logeek.com>
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Picture implements FileInterface
+class Picture
 {
     use FileTrait {
         writeOnDisk as protected trait_writeOnDisk;
-        store as protected trait_store;
+        storeFile as protected trait_store;
         getMimeType as protected trait_getMimeType;
+        upload as protected trait_upload;
     }
 
     //constants that will not be overridden
@@ -84,13 +85,13 @@ class Picture implements FileInterface
     {
         $this->init(
             null,
-            array('jpeg', 'jpg', 'png', 'gif', 'webp'),
-            array(
+            ['jpeg', 'jpg', 'png', 'gif', 'webp'],
+            [
                 'jpg'    =>    'image/jpeg',
                 'png'    =>    'image/png',
                 'gif'    =>    'image/gif',
                 'webp'   =>    'image/webp'
-            )
+            ]
         );
 
         // '!==' needed, otherwise ''==0
@@ -124,10 +125,15 @@ class Picture implements FileInterface
     /**
      * "Magic" function called on unserialize
      *
+     * @param array<string, mixed> $data Data to unserialize
+     *
      * @return void
      */
-    public function __wakeup(): void
+    public function __unserialize(array $data): void
     {
+        if (isset($data['id'])) {
+            $this->id = $data['id'];
+        }
         //if file has been deleted since we store our object in the session,
         //we try to retrieve it
         if (isset($this->id) && !$this->checkFileOnFS()) {
@@ -236,16 +242,16 @@ class Picture implements FileInterface
     protected function getCheckFileQuery(): Select
     {
         global $zdb;
-        $class = get_class($this);
+        $class = static::class;
 
         $select = $zdb->select($this->tbl_prefix . $class::TABLE);
         $select->columns(
-            array(
+            [
                 'picture',
                 'format'
-            )
+            ]
         );
-        $select->where(array($class::PK => $this->db_id));
+        $select->where([$class::PK => $this->db_id]);
         return $select;
     }
 
@@ -269,7 +275,7 @@ class Picture implements FileInterface
      */
     private function setSizes(): void
     {
-        list($width, $height) = getimagesize($this->file_path);
+        [$width, $height] = getimagesize($this->file_path);
         $this->height = $height;
         $this->width = $width;
         $this->optimal_height = $height;
@@ -281,12 +287,10 @@ class Picture implements FileInterface
                 $this->optimal_height = $this->max_height;
                 $this->optimal_width = (int)($this->width * $ratio);
             }
-        } else {
-            if ($this->width > $this->max_width) {
-                $ratio = $this->max_width / $this->width;
-                $this->optimal_width = $this->max_width;
-                $this->optimal_height = (int)($this->height * $ratio);
-            }
+        } elseif ($this->width > $this->max_width) {
+            $ratio = $this->max_width / $this->width;
+            $this->optimal_width = $this->max_width;
+            $this->optimal_height = (int)($this->height * $ratio);
         }
     }
 
@@ -332,7 +336,7 @@ class Picture implements FileInterface
     public function delete(bool $transaction = true): bool
     {
         global $zdb;
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             if ($transaction === true) {
@@ -385,8 +389,8 @@ class Picture implements FileInterface
                     $zdb->connection->rollBack();
                 }
                 Analog::log(
-                    'The file ' . $_file .
-                    ' was found on the disk but cannot be removed.',
+                    'The file ' . $_file
+                    . ' was found on the disk but cannot be removed.',
                     Analog::ERROR
                 );
                 return false;
@@ -402,8 +406,8 @@ class Picture implements FileInterface
                 $zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred attempting to delete picture ' . $this->db_id .
-                'from database | ' . $e->getMessage(),
+                'An error occurred attempting to delete picture ' . $this->db_id
+                . 'from database | ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -411,18 +415,42 @@ class Picture implements FileInterface
     }
 
     /**
+     * Do a file upload
+     *
+     * @param UploadedFileInterface[] $request_files Array of uploaded files (typically from PSR7 request)
+     * @param string                  $key           Key to look for in uploaded files
+     * @param callable|null           $callback      Callback to use for storing the file. If null, will use $this->storeFile()
+     * @param ?array<string,mixed>    $cropping      Cropping properties
+     *
+     * @return bool
+     */
+    public function upload(array $request_files, string $key, ?callable $callback = null, ?array $cropping = null): bool
+    {
+        global $preferences;
+
+        $callback = function ($uploaded_file) use ($cropping, $preferences) {
+            if ($preferences->pref_force_picture_ratio == 1 && isset($cropping)) {
+                return $this->storeFile($uploaded_file, $cropping);
+            } else {
+                return $this->storeFile($uploaded_file);
+            }
+        };
+
+        return $this->trait_upload($request_files, $key, $callback);
+    }
+
+    /**
      * Stores an image on the disk and in the database
      *
-     * @param array<string, mixed>  $file     The uploaded file
-     * @param boolean               $ajax     If the image comes from an ajax call (dnd)
+     * @param UploadedFileInterface $file     The uploaded file
      * @param ?array<string, mixed> $cropping Cropping properties
      *
-     * @return bool|int
+     * @return true|int
      */
-    public function store(array $file, bool $ajax = false, ?array $cropping = null): bool|int
+    public function storeFile(UploadedFileInterface $file, ?array $cropping = null): bool|int
     {
         $this->cropping = $cropping;
-        return $this->trait_store($file, $ajax);
+        return $this->trait_store($file);
     }
 
     /**
@@ -456,17 +484,16 @@ class Picture implements FileInterface
     /**
      * Write file on disk
      *
-     * @param string $tmpfile Temporary file
-     * @param bool   $ajax    If the file comes from an ajax call (dnd)
+     * @param UploadedFileInterface $file Uploaded file
      *
-     * @return bool|int
+     * @return true|int
      */
-    public function writeOnDisk(string $tmpfile, bool $ajax): bool|int
+    public function writeOnDisk(UploadedFileInterface $file): bool|int
     {
         global $zdb;
 
         $this->setDestDir($this->store_path);
-        $current = getimagesize($tmpfile);
+        $current = getimagesize($file->getStream()->getMetadata('uri'));
 
         // Source image must have minimum dimensions to match the cropping process requirements
         // and ensure the final picture will fit the maximum allowed resizing dimensions.
@@ -474,26 +501,26 @@ class Picture implements FileInterface
             if ($current[0] < $this->mincropsize || $current[1] < $this->mincropsize) {
                 $min_current = min($current[0], $current[1]);
                 Analog::log(
-                    '[' . get_class($this) . '] Image is too small. The minimum image side size allowed is ' .
-                    $this->mincropsize . 'px, but current is ' . $min_current . 'px.',
+                    '[' . static::class . '] Image is too small. The minimum image side size allowed is '
+                    . $this->mincropsize . 'px, but current is ' . $min_current . 'px.',
                     Analog::ERROR
                 );
                 return self::IMAGE_TOO_SMALL;
             } else {
-                Analog::log('[' . get_class($this) . '] Image dimensions are OK, proceed', Analog::DEBUG);
+                Analog::log('[' . static::class . '] Image dimensions are OK, proceed', Analog::DEBUG);
             }
         }
         $this->delete();
 
-        $result = $this->trait_writeOnDisk($tmpfile, $ajax);
+        $result = $this->trait_writeOnDisk($file);
         if ($result !== true) {
             return $result;
         }
 
-        // current[0] gives width ; current[1] gives height
+        // current[0] gives width; current[1] gives height
         if ($current[0] > $this->max_width || $current[1] > $this->max_height) {
             /** FIXME: what if image cannot be resized?
-            Should'nt we want to stop the process here? */
+            Shouldn't we want to stop the process here? */
             $this->resizeImage($this->buildDestPath(), $this->extension, null, $this->cropping);
         }
 
@@ -508,7 +535,7 @@ class Picture implements FileInterface
      * @param string $file File path on disk
      * @param string $ext  File extension
      *
-     * @return bool|int
+     * @return true|int
      */
     private function storeInDb(Db $zdb, int $id, string $file, string $ext): bool|int
     {
@@ -519,7 +546,7 @@ class Picture implements FileInterface
         }
         fclose($f);
 
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             $zdb->connection->beginTransaction();
@@ -529,11 +556,11 @@ class Picture implements FileInterface
             } else {
                 $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
                 $insert->values(
-                    array(
+                    [
                         $class::PK  => ':' . $class::PK,
                         'picture'   => ':picture',
                         'format'    => ':format'
-                    )
+                    ]
                 );
                 $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
                 $container = $stmt->getParameterContainer();
@@ -547,19 +574,19 @@ class Picture implements FileInterface
             }
 
             $stmt->execute(
-                array(
+                [
                     $class::PK  => $id,
                     'picture'   => $picture,
                     'format'    => $ext
-                )
+                ]
             );
             $zdb->connection->commit();
             $this->has_picture = true;
         } catch (Throwable $e) {
             $zdb->connection->rollBack();
             Analog::log(
-                'An error occurred storing picture in database: ' .
-                $e->getMessage(),
+                'An error occurred storing picture in database: '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             return self::SQL_ERROR;
@@ -577,13 +604,13 @@ class Picture implements FileInterface
      */
     public function missingInDb(Db $zdb): void
     {
-        $existing_disk = array();
+        $existing_disk = [];
 
         //retrieve files on disk
         if ($handle = opendir($this->store_path)) {
             while (false !== ($entry = readdir($handle))) {
-                $reg = "/^(\d+)\.(" .
-                    implode('|', $this->allowed_extensions) . ")$/i";
+                $reg = "/^(\d+)\.("
+                    . implode('|', $this->allowed_extensions) . ")$/i";
                 if (preg_match($reg, $entry, $matches)) {
                     $id = $matches[1];
                     $extension = strtolower($matches[2]);
@@ -592,11 +619,11 @@ class Picture implements FileInterface
                         //but we change it to jpg to reduce further tests :)
                         $extension = 'jpg';
                     }
-                    $existing_disk[$id] = array(
+                    $existing_disk[$id] = [
                         'name'  => $entry,
                         'id'    => $id,
                         'ext'   => $extension
-                    );
+                    ];
                 }
             }
             closedir($handle);
@@ -607,15 +634,15 @@ class Picture implements FileInterface
             }
 
             //retrieve files in database
-            $class = get_class($this);
+            $class = static::class;
             $select = $zdb->select($this->tbl_prefix . $class::TABLE);
             $select
-                ->columns(array($class::PK))
+                ->columns([$class::PK])
                 ->where->in($class::PK, array_keys($existing_disk));
 
             $results = $zdb->execute($select);
 
-            $existing_db = array();
+            $existing_db = [];
             foreach ($results as $result) {
                 $existing_db[] = (int)$result[self::PK];
             }
@@ -629,7 +656,7 @@ class Picture implements FileInterface
                 null,
                 false,
                 false,
-                array(self::PK)
+                [self::PK]
             );
 
             foreach ($valids as $valid) {
@@ -644,8 +671,8 @@ class Picture implements FileInterface
             }
         } else {
             Analog::log(
-                'Something went wrong opening images directory ' .
-                $this->store_path,
+                'Something went wrong opening images directory '
+                . $this->store_path,
                 Analog::ERROR
             );
         }
@@ -664,12 +691,12 @@ class Picture implements FileInterface
      */
     private function resizeImage(string $source, string $ext, ?string $dest = null, ?array $cropping = null): bool
     {
-        $class = get_class($this);
+        $class = static::class;
 
         if (!function_exists("gd_info")) {
             Analog::log(
-                '[' . $class . '] GD is not present - ' .
-                'pictures could not be resized!',
+                '[' . $class . '] GD is not present - '
+                . 'pictures could not be resized!',
                 Analog::ERROR
             );
             return false;
@@ -686,8 +713,8 @@ class Picture implements FileInterface
             case 'jpg':
                 if (!$gdinfo['JPEG Support']) {
                     Analog::log(
-                        '[' . $class . '] GD has no JPEG Support - ' .
-                        'pictures could not be resized!',
+                        '[' . $class . '] GD has no JPEG Support - '
+                        . 'pictures could not be resized!',
                         Analog::ERROR
                     );
                     return false;
@@ -696,8 +723,8 @@ class Picture implements FileInterface
             case 'png':
                 if (!$gdinfo['PNG Support']) {
                     Analog::log(
-                        '[' . $class . '] GD has no PNG Support - ' .
-                        'pictures could not be resized!',
+                        '[' . $class . '] GD has no PNG Support - '
+                        . 'pictures could not be resized!',
                         Analog::ERROR
                     );
                     return false;
@@ -706,8 +733,8 @@ class Picture implements FileInterface
             case 'gif':
                 if (!$gdinfo['GIF Create Support']) {
                     Analog::log(
-                        '[' . $class . '] GD has no GIF Support - ' .
-                        'pictures could not be resized!',
+                        '[' . $class . '] GD has no GIF Support - '
+                        . 'pictures could not be resized!',
                         Analog::ERROR
                     );
                     return false;
@@ -716,8 +743,8 @@ class Picture implements FileInterface
             case 'webp':
                 if (!$gdinfo['WebP Support']) {
                     Analog::log(
-                        '[' . $class . '] GD has no WebP Support - ' .
-                        'pictures could not be resized!',
+                        '[' . $class . '] GD has no WebP Support - '
+                        . 'pictures could not be resized!',
                         Analog::ERROR
                     );
                     return false;
@@ -728,7 +755,7 @@ class Picture implements FileInterface
                 return false;
         }
 
-        list($cur_width, $cur_height, $cur_type, $curattr)
+        [$cur_width, $cur_height, $cur_type, $curattr]
             = getimagesize($source);
 
         $ratio = $cur_width / $cur_height;
@@ -795,13 +822,11 @@ class Picture implements FileInterface
             $thumb_cropped = imagecreatetruecolor((int)$crop_width, (int)$crop_height);
             // Cropped ratio.
             $ratio = $crop_width / $crop_height;
-        // Otherwise, calculate image size according to the source's ratio.
+        } elseif ($cur_width > $cur_height) {
+            // Otherwise, calculate image size according to the source's ratio.
+            $h = round($w / $ratio);
         } else {
-            if ($cur_width > $cur_height) {
-                $h = round($w / $ratio);
-            } else {
-                $w = round($h * $ratio);
-            }
+            $w = round($h * $ratio);
         }
 
         //fix typehints
@@ -821,14 +846,13 @@ class Picture implements FileInterface
         switch ($ext) {
             case 'jpg':
                 $image = imagecreatefromjpeg($source);
-                // Crop
                 if ($thumb_cropped !== false) {
-                    // First, crop.
+                    // Crop: first, crop.
                     imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
                     // Then, resize.
                     imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                // Resize
                 } else {
+                    // Resize
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                 }
                 imagejpeg($thumb, $dest);
@@ -841,44 +865,42 @@ class Picture implements FileInterface
                 imagesavealpha($image, true);
                 imagealphablending($thumb, false);
                 imagesavealpha($thumb, true);
-                // Crop
                 if ($thumb_cropped !== false) {
+                    // Crop
                     imagealphablending($thumb_cropped, false);
                     imagesavealpha($thumb_cropped, true);
                     // First, crop.
                     imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
                     // Then, resize.
                     imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                // Resize
                 } else {
+                    // Resize
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                 }
                 imagepng($thumb, $dest);
                 break;
             case 'gif':
                 $image = imagecreatefromgif($source);
-                // Crop
                 if ($thumb_cropped !== false) {
-                    // First, crop.
+                    // Crop: first, crop.
                     imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
                     // Then, resize.
                     imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                // Resize
                 } else {
+                    // Resize
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                 }
                 imagegif($thumb, $dest);
                 break;
             case 'webp':
                 $image = imagecreatefromwebp($source);
-                // Crop
                 if ($thumb_cropped !== false) {
-                    // First, crop.
+                    // Crop: first, crop.
                     imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
                     // Then, resize.
                     imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                // Resize
                 } else {
+                    // Resize
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                 }
                 imagewebp($thumb, $dest);
@@ -939,7 +961,7 @@ class Picture implements FileInterface
     }
 
     /**
-     * Have we got a picture ?
+     * Have we got a picture?
      *
      * @return bool True if a picture matches adherent's id, false otherwise
      */

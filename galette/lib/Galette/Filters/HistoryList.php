@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace Galette\Filters;
 
+use Galette\Enums\SQLOrder;
 use Galette\Helpers\DatesHelper;
-use Throwable;
 use Analog\Analog;
 use Galette\Core\Pagination;
 
@@ -57,14 +57,14 @@ class HistoryList extends Pagination
     private ?string $action_filter = null; //@phpstan-ignore-line
 
     /** @var array<string>  */
-    protected array $list_fields = array(
+    protected array $list_fields = [
         'start_date_filter',
         'raw_start_date_filter',
         'end_date_filter',
         'raw_end_date_filter',
         'user_filter',
         'action_filter'
-    );
+    ];
 
     /**
      * Default constructor
@@ -87,11 +87,11 @@ class HistoryList extends Pagination
     /**
      * Return the default direction for ordering
      *
-     * @return string ASC or DESC
+     * @return SQLOrder
      */
-    protected function getDefaultDirection(): string
+    protected function getDefaultDirection(): SQLOrder
     {
-        return self::ORDER_DESC;
+        return SQLOrder::DESC;
     }
 
     /**
@@ -119,26 +119,24 @@ class HistoryList extends Pagination
     {
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
-        } else {
-            if (in_array($name, $this->list_fields)) {
-                switch ($name) {
-                    case 'raw_start_date_filter':
-                        return $this->getDate('start_date_filter', true, false);
-                    case 'raw_end_date_filter':
-                        return $this->getDate('end_date_filter', true, false);
-                    case 'start_date_filter':
-                    case 'end_date_filter':
-                        return $this->getDate($name);
-                    default:
-                        return $this->$name;
-                }
+        } elseif (in_array($name, $this->list_fields)) {
+            switch ($name) {
+                case 'raw_start_date_filter':
+                    return $this->getDate('start_date_filter', true, false);
+                case 'raw_end_date_filter':
+                    return $this->getDate('end_date_filter', true, false);
+                case 'start_date_filter':
+                case 'end_date_filter':
+                    return $this->getDate($name);
+                default:
+                    return $this->$name;
             }
         }
 
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );

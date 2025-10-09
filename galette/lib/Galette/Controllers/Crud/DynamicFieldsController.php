@@ -109,8 +109,8 @@ class DynamicFieldsController extends CrudController
         } catch (Throwable $e) {
             $msg = 'An error occurred adding new dynamic field.';
             Analog::log(
-                $msg . ' | ' .
-                $e->getMessage(),
+                $msg . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             if (Galette::isDebugEnabled()) {
@@ -215,9 +215,10 @@ class DynamicFieldsController extends CrudController
             'fields_list'       => $fields_list,
             'form_name'         => $form_name,
             'form_title'        => DynamicField::getFormTitle($form_name),
-            'page_title'        => _T("Dynamic fields configuration"),
+            'page_title'        => _T("Dynamic fields"),
             'html_editor'       => true,
-            'html_editor_active' => $this->preferences->pref_editor_enabled
+            'html_editor_active' => $this->preferences->pref_editor_enabled,
+            'documentation'     => 'usermanual/configuration.html#dynamic-fields'
 
         ];
 
@@ -356,8 +357,8 @@ class DynamicFieldsController extends CrudController
             return $response->withBody(new \Slim\Psr7\Stream($stream));
         } else {
             Analog::log(
-                'A request has been made to get a dynamic file named `' .
-                $filename . '` that does not exists.',
+                'A request has been made to get a dynamic file named `'
+                . $filename . '` that does not exists.',
                 Analog::WARNING
             );
 
@@ -466,8 +467,8 @@ class DynamicFieldsController extends CrudController
         } catch (Throwable $e) {
             $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
             Analog::log(
-                $msg . ' | ' .
-                $e->getMessage(),
+                $msg . ' | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             if (Galette::isDebugEnabled()) {
@@ -575,10 +576,6 @@ class DynamicFieldsController extends CrudController
     {
         $field = DynamicField::loadFieldType($this->zdb, (int)$args['id']);
         if ($field === false) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Requested field does not exists!")
-            );
             return _T("Requested field does not exists!");
         }
 
@@ -600,6 +597,13 @@ class DynamicFieldsController extends CrudController
     {
         $field_id = (int)$post['id'];
         $field = DynamicField::loadFieldType($this->zdb, $field_id);
+        if ($field === false) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Requested field does not exists!")
+            );
+            return false;
+        }
         return $field->remove();
     }
 
@@ -625,7 +629,7 @@ class DynamicFieldsController extends CrudController
         string $direction
     ): Response {
         $field = DynamicField::loadFieldType($this->zdb, $id);
-        if ($field->move($direction)) {
+        if ($field !== false && $field->move($direction)) {
             $this->flash->addMessage(
                 'success_detected',
                 _T("Field has been successfully moved")

@@ -59,13 +59,13 @@ class GaletteMail
     private int $timeout = 300;
 
     /** @var array<int, string> */
-    private array $errors = array();
+    private array $errors = [];
     /** @var array<string, string> */
-    private array $recipients = array();
+    private array $recipients = [];
 
     private PHPMailer $mail;
     /** @var array<int,File> */
-    protected array $attachments = array();
+    protected array $attachments = [];
 
     private Preferences $preferences;
 
@@ -81,6 +81,9 @@ class GaletteMail
             $preferences->pref_email_nom,
             $preferences->pref_email
         );
+        if (!$this->preferences->pref_bool_wrap_mails) {
+            $this->word_wrap = 0;
+        }
     }
 
     /**
@@ -123,29 +126,29 @@ class GaletteMail
 
                     if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
                         //Allow "unsecure" SMTP connections if user has asked fot it or
-                        //if user did not request TLS explicitely
-                        $this->mail->SMTPOptions = array(
-                            'ssl' => array(
+                        //if user did not request TLS explicitly
+                        $this->mail->SMTPOptions = [
+                            'ssl' => [
                                 'verify_peer' => false,
                                 'verify_peer_name' => false,
                                 'allow_self_signed' => true
-                            )
-                        );
+                            ]
+                        ];
                     }
 
-                    if (
-                        $this->preferences->pref_mail_smtp_port
-                        && $this->preferences->pref_mail_smtp_port != ''
-                    ) {
+                    if ($this->preferences->pref_mail_smtp_port) {
                         // set the SMTP port for the SMTP server
                         $this->mail->Port = $this->preferences->pref_mail_smtp_port;
                     } else {
+                        $this->mail->Port = $this->preferences->pref_mail_smtp_secure ? 587 : 25;
                         Analog::log(
-                            '[' . get_class($this) .
-                            ']No SMTP port provided. Switch to default (25).',
+                            sprintf(
+                                '[%1$s]No SMTP port provided. Switch to default (%2$s).',
+                                static::class,
+                                $this->mail->Port
+                            ),
                             Analog::INFO
                         );
-                        $this->mail->Port = $this->preferences->pref_mail_smtp_secure ? 587 : 25;
                     }
 
                     if ($this->preferences->pref_mail_smtp_secure && $this->mail->Port == 465) {
@@ -173,16 +176,14 @@ class GaletteMail
         $this->mail->CharSet = 'UTF-8';
         $this->mail->SetLanguage($i18n->getAbbrev());
 
-        if ($this->preferences->pref_bool_wrap_mails) {
+        if ($this->word_wrap > 0) {
             $this->mail->WordWrap = $this->word_wrap;
-        } else {
-            $this->word_wrap = 0;
         }
     }
 
     /**
      * Sets the recipients
-     * For mailing convenience, all recipients will be added as BCC,
+     * For mailing convenience; all recipients will be added as BCC,
      * regular recipient will be the sender.
      *
      * @param array<string, string> $recipients Array (mail=>name) of all recipients
@@ -197,29 +198,28 @@ class GaletteMail
             $this->initMailer();
         }
 
-        if (!empty($recipients)) {
-            $this->recipients = array();
+        $this->mail->ClearBCCs();
+        if ($recipients !== []) {
+            $this->recipients = [];
             foreach ($recipients as $mail => $name) {
                 if (self::isValidEmail($mail)) {
                     $this->recipients[$mail] = $name;
                     $this->mail->AddBCC($mail, $name);
                 } else {
-                    //one of addresses is not valid :
+                    //one of addresses is not valid:
                     //- set $res to false
                     //- clear BCCs
                     //- log an INFO
                     $res = false;
                     Analog::log(
-                        '[' . get_class($this) .
-                        '] One of recipients address is not valid.',
+                        '[' . static::class
+                        . '] One of recipients address is not valid.',
                         Analog::INFO
                     );
                     $this->mail->ClearBCCs();
                     break;
                 }
             }
-        } else {
-            $this->mail->ClearBCCs();
         }
 
         return $res;
@@ -281,16 +281,16 @@ class GaletteMail
         $signature = $this->preferences->getMailSignature($this->mail);
         if ($signature != '') {
             if ($this->html) {
-                //we are sending html message
+                //we are sending HTML message
                 //apply email sign to text version
                 $this->mail->AltBody .= $signature;
-                //then apply email sign to html version
+                //then apply email sign to HTML version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
-                $hsign = '<div style="' . $sign_style . '">' .
-                    nl2br($signature) . '</div>';
+                $hsign = '<div style="' . $sign_style . '">'
+                    . nl2br($signature) . '</div>';
                 $this->mail->Body .= $hsign;
             } else {
-                $this->mail->Body .= $signature;
+                $this->mail->Body .= Html2Text::convert($signature);
             }
         }
 
@@ -305,14 +305,14 @@ class GaletteMail
 
         try {
             //reinit errors array
-            $this->errors = array();
+            $this->errors = [];
             //let's send the email
             if (!$this->mail->Send()) {
                 $this->errors[] = $this->mail->ErrorInfo;
                 Analog::log(
-                    'An error occurred sending email to: ' .
-                    implode(', ', array_keys($this->recipients)) .
-                    "\n" . $this->mail->ErrorInfo,
+                    'An error occurred sending email to: '
+                    . implode(', ', array_keys($this->recipients))
+                    . "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
                 );
                 unset($this->mail);
@@ -360,16 +360,16 @@ class GaletteMail
     }
 
     /**
-     * Check if a string is an url
+     * Check if a string is a URL
      *
-     * @param string $url the url to check
+     * @param string $url the URL to check
      *
      * @return bool
      */
     public static function isUrl(string $url): bool
     {
         $valid = preg_match(
-            '|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i',
+            '|^http(s)?://\[?[a-z0-9-]+(.[a-z0-9-]+)*\]?(:[0-9]+)?(/.*)?$|i',
             $url
         );
         if (!$valid) {
@@ -383,15 +383,14 @@ class GaletteMail
     }
 
     /**
-     * Clean a string embedding html, producing AltText for html emails
+     * Clean a string embedding HTML, producing AltText for HTML emails
      *
      * @return string current message in plaintext format
      */
     protected function cleanedHtml(): string
     {
         $html = $this->message;
-        $txt = Html2Text::convert($html);
-        return $txt;
+        return Html2Text::convert($html);
     }
 
     /**
@@ -401,6 +400,10 @@ class GaletteMail
      */
     protected function getPhpMailer(): PHPMailer
     {
+        if (!isset($this->mail)) {
+            $this->initMailer();
+        }
+
         return $this->mail;
     }
 
@@ -450,7 +453,7 @@ class GaletteMail
     }
 
     /**
-     * Retrieve array of errors
+     * Retrieve errors
      *
      * @return array<int,string>
      */

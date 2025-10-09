@@ -36,7 +36,8 @@ var _bindFomanticComponents = function() {
         $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
         $tabulation      = $('.ui.tabbed .item'),
         $popup           = $('a[title], .tooltip'),
-        $infoPopup       = $('i.circular.primary.icon.info.tooltip'),
+        $inlinePopup     = $('.inline-tooltip'),
+        $infoPopup       = $('i.circular.basic.question.icon.tooltip'),
         $menuPopupRight  = $('.ui.vertical.accordion.menu a[title]'),
         $menuPopupBottom = $('.ui.top.fixed.menu a.item[title]'),
         $menuPopupLeft   = $('.ui.dropdown.right-aligned a[title]')
@@ -83,6 +84,13 @@ var _bindFomanticComponents = function() {
         .popup({
             variation: 'inverted',
             inline: false,
+            addTouchEvents: false,
+        })
+    ;
+    $inlinePopup
+        .popup({
+            variation: 'inverted',
+            inline: true,
             addTouchEvents: false,
         })
     ;

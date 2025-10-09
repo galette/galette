@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
-use Galette\Controllers\CrudController;
+use Analog\Analog;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\Adherent;
@@ -31,8 +31,6 @@ use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
 use Galette\Repository\Contributions;
 use Galette\Repository\Members;
-use Galette\Repository\Transactions;
-use Analog\Analog;
 
 /**
  * Galette transactions controller
@@ -69,7 +67,21 @@ class TransactionsController extends ContributionsController
      */
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
-        return $this->doEdit($request, $response, null, $type);
+        $trans = new Transaction($this->zdb, $this->login);
+        if (!$trans->canCreate($this->login)) {
+            Analog::log(
+                'Trying to add transaction without appropriate ACLs',
+                Analog::WARNING
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
+                );
+        }
+
+        return $this->storeTransaction($request, $response, 'add', $trans);
     }
 
     // /CRUD - Create
@@ -90,7 +102,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, ?int $id = null, string|null $action = 'edit'): Response
+    public function edit(Request $request, Response $response, ?int $id = null, ?string $action = 'edit'): Response
     {
         if ($this->session->transaction !== null) {
             $trans = $this->session->transaction;
@@ -99,26 +111,58 @@ class TransactionsController extends ContributionsController
             $trans = new Transaction($this->zdb, $this->login);
         }
 
-        $trans_id = null;
-        if ($id !== null) {
-            $trans_id = $id;
-        }
-
         // flagging required fields
-        $required = array(
+        $required = [
             'trans_amount'  =>  1,
             'trans_date'    =>  1,
             'trans_desc'    =>  1,
             'id_adh'        =>  1
-        );
+        ];
 
         if ($action === 'edit') {
             // initialize transactions structure with database values
-            $trans->load($trans_id);
+            $trans->load($id);
             if ($trans->id == '') {
                 //not possible to load transaction, exit
-                throw new \RuntimeException('Transaction does not exists!');
+                //not possible to load contribution, exit
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace(
+                        '%id',
+                        (string)$id,
+                        _T("Unable to load transaction #%id!")
+                    )
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->routeparser->urlFor(
+                        'contributions',
+                        ['type' => 'transactions']
+                    ));
             }
+            if (!$trans->canEdit($this->login) && !$trans->canAttachAndDetach($this->login)) {
+                Analog::log(
+                    'Trying to edit transaction without appropriate ACLs',
+                    Analog::WARNING
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader(
+                        'Location',
+                        $this->routeparser->urlFor('slash')
+                    );
+            }
+        } elseif (!$trans->canCreate($this->login)) {
+            Analog::log(
+                'Trying to add transaction without appropriate ACLs',
+                Analog::WARNING
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
+                );
         }
 
         // template variable declaration
@@ -132,13 +176,15 @@ class TransactionsController extends ContributionsController
         $params = [
             'page_title'        => $title,
             'required'          => $required,
-            'transaction'       => $trans
+            'transaction'       => $trans,
+            'documentation'     => 'usermanual/contributions.html#transactions'
         ];
 
         if ($trans->id != '') {
             $contribs = new Contributions($this->zdb, $this->login);
             $params['contribs'] = $contribs->getListFromTransaction($trans->id);
         }
+        $params['contribution'] = new Contribution($this->zdb, $this->login);
 
         // members
         $m = new Members();
@@ -172,149 +218,146 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Transaction id
+     * @param integer  $id       Transaction id
      * @param ?string  $type     Transaction type
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, ?int $id = null, ?string $type = null): Response
+    public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
-        $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
 
-        $action = 'add';
-        $trans_id = null;
-        if ($id !== null) {
-            $action = 'edit';
-            $trans_id = $id;
+        // initialize transactions structure with database values
+        if (!$trans->load($id)) {
+            //not possible to load transaction, exit
+            $this->flash->addMessage(
+                'error_detected',
+                str_replace(
+                    '%id',
+                    (string)$id,
+                    _T("Unable to load transaction #%id!")
+                )
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor(
+                    'contributions',
+                    ['type' => 'transactions']
+                ));
         }
-
-        $transaction['trans_id'] = $trans_id;
-        $transaction['trans_amount'] = $post['trans_amount'];
-        $transaction['trans_date'] = $post['trans_date'];
-        $transaction['trans_desc'] = $post['trans_desc'];
-        $transaction['id_adh'] = $post['id_adh'];
-
-        // flagging required fields
-        $required = array(
-            'trans_amount'  =>  1,
-            'trans_date'    =>  1,
-            'trans_desc'    =>  1,
-            'id_adh'        =>  1
-        );
-        $disabled = array();
-
-        if ($action === 'edit') {
-            // initialize transactions structure with database values
-            $trans->load($trans_id);
-            if ($trans->id == '') {
-                //not possible to load transaction, exit
-                throw new \RuntimeException('Transaction does not exists!');
-            }
-        }
-
-        $error_detected = [];
-        // regular fields
-        $valid = $trans->check($_POST, $required, $disabled);
-        if ($valid !== true) {
-            $error_detected = array_merge($error_detected, $valid);
-        }
-
-        if (count($error_detected) == 0) {
-            //all goes well, we can proceed
-            $new = false;
-            if ($trans->id == '') {
-                $new = true;
-            }
-
-            $store = $trans->store($this->history);
-            if ($store === true) {
-                //transaction has been stored :)
-                if ($new) {
-                    $transaction['trans_id'] = $trans->id;
-                }
-            } else {
-                //something went wrong :'(
-                $error_detected[] = _T("An error occurred while storing the transaction.");
-            }
-        }
-
-        if (count($error_detected) === 0) {
-            $files_res = $trans->handleFiles($_FILES);
-            if (is_array($files_res)) {
-                $error_detected = array_merge($error_detected, $files_res);
-            }
-        }
-
-        if (count($error_detected) == 0) {
-            if (isset($post['contrib_type']) && $trans->getMissingAmount() > 0) {
-                $rparams = [
-                    'type' => $post['contrib_type']
-                ];
-
-                if (isset($trans->member)) {
-                    $rparams['id_adh'] = (string)$trans->member;
-                }
-
-                return $response
-                    ->withStatus(301)
-                    ->withHeader(
-                        'Location',
-                        $this->routeparser->urlFor(
-                            'addContribution',
-                            $rparams
-                        ) . '?' . Transaction::PK . '=' . $trans->id .
-                            '&' . Adherent::PK . '=' . $trans->member
-                    );
-            } else {
-                //report success
-                $this->flash->addMessage(
-                    'success_detected',
-                    _T("Transaction has been successfully stored")
-                );
-
-                //get back to transactions list
-                $redirect_url = $this->routeparser->urlFor('contributions', ['type' => 'transactions']);
-                if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                    //or slash URL for non staff nor admin
-                    $redirect_url = $this->routeparser->urlFor('slash');
-                }
-
-                return $response
-                    ->withStatus(301)
-                    ->withHeader(
-                        'Location',
-                        $redirect_url
-                    );
-            }
-        } else {
-            //something went wrong.
-            //store entity in session
-            $this->session->transaction = $trans;
-
-            //report errors
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-
-            $args = [];
-            if ($trans_id !== null) {
-                $args['id'] = (string)$id;
-            }
-            //redirect to calling action
+        if (!$trans->canEdit($this->login)) {
+            Analog::log(
+                'Trying to edit transaction without appropriate ACLs',
+                Analog::WARNING
+            );
             return $response
                 ->withStatus(301)
                 ->withHeader(
                     'Location',
-                    $this->routeparser->urlFor(
-                        ($action == 'add' ? 'addTransaction' : 'editTransaction'),
-                        $args
-                    )
+                    $this->routeparser->urlFor('slash')
                 );
         }
+
+        return $this->storeTransaction($request, $response, 'edit', $trans, $id);
+    }
+
+    /**
+     * Store contribution (new or existing)
+     *
+     * @param Request     $request  PSR Request
+     * @param Response    $response PSR Response
+     * @param string      $action   Action ('edit' or 'add')
+     * @param Transaction $trans    Transaction instance
+     * @param ?integer    $id       Contribution id
+     *
+     * @return Response
+     */
+    public function storeTransaction(Request $request, Response $response, string $action, Transaction $trans, ?int $id = null): Response
+    {
+        $post = $request->getParsedBody();
+        // flagging required fields
+        $required = [
+            'trans_amount'  =>  1,
+            'trans_date'    =>  1,
+            'trans_desc'    =>  1,
+            'id_adh'        =>  1
+        ];
+        $disabled = [];
+
+        $args = [];
+        if ($id !== null) {
+            $args['id'] = (string)$id;
+        }
+        $redirect_url = $this->routeparser->urlFor(
+            ($action == 'add' ? 'addTransaction' : 'editTransaction'),
+            $args
+        );
+
+        // regular fields
+        $valid = $trans->check($post, $required, $disabled);
+        //store entity in session
+        $this->session->transaction = $trans;
+
+        if ($valid !== true) {
+            return $this->redirectWithErrors(
+                $response,
+                $valid,
+                $redirect_url
+            );
+        }
+
+        //all goes well, we can proceed
+        if (!$trans->store($this->history)) {
+            //something went wrong :'(
+            return $this->redirectWithErrors(
+                $response,
+                [_T("An error occurred while storing the transaction.")],
+                $redirect_url
+            );
+        }
+
+        $this->session->transaction = null;
+        $this->flash->addMessage(
+            'success_detected',
+            _T("Transaction has been successfully stored")
+        );
+
+        //get back to transactions list
+        $redirect_url = $this->routeparser->urlFor('contributions', ['type' => 'transactions']);
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            //or slash URL for non staff nor admin
+            $redirect_url = $this->routeparser->urlFor('slash');
+        }
+
+        $files_res = $trans->handleFiles($request->getUploadedFiles());
+        if (is_array($files_res)) {
+            foreach ($files_res as $res) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $res
+                );
+            }
+        }
+
+        if (isset($post['contrib_type']) && $trans->getMissingAmount() > 0) {
+            $rparams = [
+                'type' => $post['contrib_type']
+            ];
+
+            if (isset($trans->member)) {
+                $rparams['id_adh'] = (string)$trans->member;
+            }
+
+            $redirect_url = $this->routeparser->urlFor(
+                'addContribution',
+                $rparams
+            ) . '?' . Transaction::PK . '=' . $trans->id
+                . '&' . Adherent::PK . '=' . $trans->member;
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $redirect_url);
     }
 
     /**
@@ -329,24 +372,37 @@ class TransactionsController extends ContributionsController
      */
     public function attach(Request $request, Response $response, int $id, int $cid): Response
     {
-        if (!Contribution::setTransactionPart($this->zdb, $id, $cid)) {
+        $transaction = new Transaction($this->zdb, $this->login, $id);
+        $done = false;
+        if ($transaction->canAttachAndDetach($this->login)) {
+            $contribution = new Contribution($this->zdb, $this->login, $cid);
+            if ($contribution->canShow($this->login) && $contribution->setTransactionPart($id)) {
+                $done = true;
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T("Contribution has been successfully attached to current transaction")
+                );
+            }
+        }
+
+        if (!$done) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("Unable to attach contribution to transaction")
             );
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                _T("Contribution has been successfully attached to current transaction")
+        }
+
+        $redirect_url = $this->routeparser->urlFor('slash');
+        if ($transaction->canEdit($this->login)) {
+            $redirect_url = $this->routeparser->urlFor(
+                'editTransaction',
+                ['id' => (string)$id]
             );
         }
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor(
-                'editTransaction',
-                ['id' => (string)$id]
-            ));
+            ->withHeader('Location', $redirect_url);
     }
 
     /**
@@ -361,24 +417,37 @@ class TransactionsController extends ContributionsController
      */
     public function detach(Request $request, Response $response, int $id, int $cid): Response
     {
-        if (!Contribution::unsetTransactionPart($this->zdb, $this->login, $id, $cid)) {
+        $transaction = new Transaction($this->zdb, $this->login, $id);
+        $done = false;
+        if ($transaction->canAttachAndDetach($this->login)) {
+            $contribution = new Contribution($this->zdb, $this->login, $cid);
+            if ($contribution->canShow($this->login) && $contribution->unsetTransactionPart($id)) {
+                $done = true;
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T("Contribution has been successfully detached from current transaction")
+                );
+            }
+        }
+
+        if (!$done) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("Unable to detach contribution from transaction")
             );
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                _T("Contribution has been successfully detached from current transaction")
+        }
+
+        $redirect_url = $this->routeparser->urlFor('slash');
+        if ($transaction->canEdit($this->login)) {
+            $redirect_url = $this->routeparser->urlFor(
+                'editTransaction',
+                ['id' => (string)$id]
             );
         }
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor(
-                'editTransaction',
-                ['id' => (string)$id]
-            ));
+            ->withHeader('Location', $redirect_url);
     }
 
     // /CRUD - Update

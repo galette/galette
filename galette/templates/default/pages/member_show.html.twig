@@ -130,7 +130,7 @@
                             {{ _T("Family") }}
                         </div>
                         <div class="active content field">
-                            <table class="ui very basic striped collapsing stackable padded table">
+                            <table class="ui very basic definition striped collapsing stackable padded table">
                 {% if member.hasParent() %}
                                 <tr>
                                     <th>{{ _T("Attached to:") }}</th>
@@ -166,7 +166,7 @@
                         {{ _T(display_element.label) }}
                     </div>
                     <div class="active content field">
-                        <table class="ui very basic striped stackable padded table">
+                        <table class="ui very basic definition striped stackable padded table">
     {% for element in elements %}
                 {% if element.field_id == 'parent_id' %}
                     {continue}
@@ -224,7 +224,7 @@
                                 <td>
                 {% if element.field_id == 'nom_adh' %}
                     {% if member.isCompany() %}
-                                    <i class="ui industry icon" aria-hidden="true"></i>
+                                    <i class="ui building outline icon" aria-hidden="true"></i>
                     {% elseif member.isMan() %}
                                     <i class="ui mars icon" aria-hidden="true"></i>
                     {% elseif member.isWoman() %}
@@ -265,8 +265,6 @@
     {% if login.isAdmin() or login.isStaff() or login.login == member.login %}
     <script type="text/javascript">
         $(function() {
-            {% include "elements/js/photo_dnd.js.twig" %}
-
             $('.notmanaged').click(function(){
                 {% include "elements/js/modal.js.twig" with {
                     modal_title_twig: _T("Not managed group")|e("js"),

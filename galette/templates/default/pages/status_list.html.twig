@@ -32,15 +32,15 @@
             <table class="listing ui celled striped table">
                 <thead>
                 <tr>
-                    <th class="id_row">#</th>
+                    <th class="id_row collapsing">#</th>
                     <th>{{ _T("Name") }}</th>
                     <th>{{ _T("Priority") }}</th>
-                    <th>{{ _T("Actions") }}</th>
+                    <th class="collapsing">{{ _T("Actions") }}</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <td data-scope="row">
+                    <td class="collapsing" data-scope="row">
                         <span class="visually-hidden">
                             {{ _T("New status") }}
                         </span>
@@ -54,7 +54,7 @@
                     <td class="left" data-col-label="{{ _T("Priority") }}">
                         <input size="4" type="text" name="priorite_statut" value="99" />
                     </td>
-                    <td class="center actions_row">
+                    <td class="center actions_row collapsing">
                         <input type="hidden" name="new" value="1" />
                         <button type="submit" name="valid" class="ui labeled icon button">
                             <i class="plus green icon" aria-hidden="true"></i>
@@ -66,7 +66,7 @@
                 <tbody>
                 {% for eid, entry in entries %}
                     <tr>
-                        <td data-scope="id" class="collapsing">
+                        <td class="collapsing" data-scope="id">
                             {{ eid }}
                         </td>
                         <td class="left" data-col-label="{{ _T("Name") }}">
@@ -83,20 +83,27 @@
                         <td data-col-label="{{ _T("Priority") }}">
                             {{ entry.extra }}
                         </td>
-                        <td class="center actions_row">
+                        <td class="center actions_row collapsing">
                             <a
                                     href="{{ url_for('editStatus', {'id': eid}) }}"
                                     class="action single-edit"
                             >
                                 <i class="ui edit icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">{{ _T("Edit '%s' field")|replace({'%s': entry.name|escape}) }}</span>
+                                <span class="ui special popup">{{ _T("Edit '%s' field")|replace({'%s': entry.name}) }}</span>
                             </a>
+                        <a
+                            href="{{ url_for('dynamicTranslations', {}, {'text_orig': entry.text_orig}) }}"
+                            class="action single-translate"
+                        >
+                            <i class="ui language grey icon tooltip" aria-hidden="true"></i>
+                            <span class="ui special popup">{{ _T("Translate '%s'")|replace({'%s': entry.name}) }}</span>
+                        </a>
                             <a
                                     href="{{ url_for('removeStatus', {'id': eid}) }}"
                                     class="delete"
                             >
                                 <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                                <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': entry.name|escape}) }}</span>
+                                <span class="ui special popup">{{ _T("Delete '%s' field")|replace({'%s': entry.name}) }}</span>
                             </a>
                         </td>
                     </tr>
@@ -121,6 +128,44 @@
                 selector: ".single-edit",
                 modal_title_twig: modal_title_twig,
                 modal_class: "mini",
+                modal_onapprove: modal_onapprove
+            } %}
+
+            {% set extra_success = "
+                $('.modal-form form').on('submit', function(event) {
+                    event.preventDefault();
+                    var _form = $(this);
+                    var _data = _form.serialize();
+                    $.ajax({
+                        url: _form.attr('action'),
+                        type: 'POST',
+                        datatype: 'json',
+                        data: _data,
+                        error: function() {
+                            $.modal({
+                                title: '%error%',
+                                class: 'mini',
+                                actions: [{
+                                    text: '%close%',
+                                    icon: 'times',
+                                    class: 'icon labeled cancel'
+                                }],
+                                className: {
+                                    modal: 'ui redalert modal',
+                                    title: 'center aligned header',
+                                    content: 'center aligned content',
+                                    actions: 'center aligned actions'
+                                }
+                            }).modal('show');
+                        }
+                    });
+                });
+            " %}
+            {% include "elements/js/modal_action.js.twig" with {
+                selector: ".single-translate",
+                extra_success: extra_success|replace({'%error%': _T("An error occurred :(")|e("js"), '%close%': _T("Close")|e("js")}),
+                modal_title_twig: _T("Translate labels")|e("js"),
+                modal_content_class: "scrolling",
                 modal_onapprove: modal_onapprove
             } %}
 

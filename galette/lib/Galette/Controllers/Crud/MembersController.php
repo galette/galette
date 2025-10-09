@@ -55,6 +55,7 @@ use Analog\Analog;
 class MembersController extends CrudController
 {
     private bool $is_self_membership = false;
+    private bool $add_child = false;
 
     #[Inject]
     private Status $status;
@@ -84,7 +85,13 @@ class MembersController extends CrudController
      */
     public function addChild(Request $request, Response $response): Response
     {
-        return $this->edit($request, $response, null, 'addchild');
+        if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
+        }
+        $this->setAddChild();
+        return $this->edit($request, $response, null, 'add');
     }
 
     /**
@@ -146,7 +153,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/member_form.html.twig',
-            array(
+            [
                 'page_title'        => _T("Subscription"),
                 'parent_tpl'        => 'public_page.html.twig',
                 'member'            => $member,
@@ -160,7 +167,7 @@ class MembersController extends CrudController
                 'hidden_elements'   => $form_elements['hiddens'],
                 //self_adh specific
                 'gaptcha'           => $gaptcha
-            ) + $params
+            ] + $params
         );
         return $response;
     }
@@ -179,6 +186,25 @@ class MembersController extends CrudController
     }
 
     /**
+     * Add child action
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function doAddChild(Request $request, Response $response): Response
+    {
+        if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
+        }
+        $this->setAddChild();
+        return $this->store($request, $response);
+    }
+
+    /**
      * Self subscription add action
      *
      * @param Request  $request  PSR Request
@@ -188,6 +214,12 @@ class MembersController extends CrudController
      */
     public function doSelfSubscribe(Request $request, Response $response): Response
     {
+        if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->routeparser->urlFor('slash'));
+        }
+
         $this->setSelfMembership();
         return $this->doAdd($request, $response);
     }
@@ -256,6 +288,7 @@ class MembersController extends CrudController
             );
 
             return $response
+                ->withStatus(301)
                 ->withHeader(
                     'Location',
                     $this->routeparser->urlFor('slash')
@@ -270,7 +303,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/member_show.html.twig',
-            array(
+            [
                 'page_title'        => _T("Member Profile"),
                 'member'            => $member,
                 'pref_lang'         => $this->i18n->getNameFromId($member->language),
@@ -280,8 +313,59 @@ class MembersController extends CrudController
                 'display_elements'  => $display_elements,
                 'osocials'          => new Social($this->zdb),
                 'navigate'          => $this->handleNavigationLinks($member->id)
-            )
+            ]
         );
+        return $response;
+    }
+
+    /**
+     * Get member VCard
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param integer  $id       Member ID
+     *
+     * @return Response
+     */
+    public function vcard(Request $request, Response $response, int $id): Response
+    {
+        $member = new Adherent($this->zdb);
+        $member
+            ->enableAllDeps()
+            ->load($id);
+
+        if (!$member->canShow($this->login)) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('me')
+                );
+        }
+
+        if ($member->id == null) {
+            //member does not exist!
+            $this->flash->addMessage(
+                'error_detected',
+                str_replace('%id', (string)$id, _T("No member #%id."))
+            );
+
+            return $response
+                ->withHeader(
+                    'Location',
+                    $this->routeparser->urlFor('slash')
+                );
+        }
+
+        $response = $response
+            ->withHeader('Content-type', 'text/x-vcard')
+            ->withHeader('Content-Disposition', 'attachment;filename="vcard_member_' . $member->id . '.vcf"');
+        $response->getBody()->write($member->getVCard()->serialize());
         return $response;
     }
 
@@ -304,43 +388,177 @@ class MembersController extends CrudController
     }
 
     /**
-     * Public pages (trombinoscope, public list)
+     * Public members list
      *
      * @param Request             $request  PSR Request
      * @param Response            $response PSR Response
      * @param string|null         $option   One of 'page' or 'order'
      * @param string|integer|null $value    Value of the option
-     * @param string|null         $type     List type (either list or trombi)
      *
      * @return Response
      */
-    public function publicList(
+    public function publicMembersList(
         Request $request,
         Response $response,
         ?string $option = null,
         string|int|null $value = null,
-        ?string $type = null
     ): Response {
-        $varname = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => $type]);
-        if (isset($this->session->$varname)) {
-            $filters = $this->session->$varname;
-        } else {
-            $filters = new MembersList();
-        }
+        return $this->publicList(
+            $request,
+            $response,
+            [
+                'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
+                'with_photos' => false,
+                'page_title' => _T("Members"),
+                'template' => 'pages/public/members_list.html.twig',
+                'html_class' => '',
+            ],
+            $option,
+            $value
+        );
+    }
 
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
+    /**
+     * Public members gallery
+     *
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
+     *
+     * @return Response
+     */
+    public function publicMembersGallery(
+        Request $request,
+        Response $response,
+        ?string $option = null,
+        string|int|null $value = null,
+    ): Response {
+        return $this->publicList(
+            $request,
+            $response,
+            [
+                'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
+                'with_photos' => true,
+                'page_title' => _T("Gallery"),
+                'template' => 'pages/public/members_gallery.html.twig',
+                'html_class' => 'gallery',
+            ],
+            $option,
+            $value
+        );
+    }
+
+    /**
+     * Public members list
+     *
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
+     *
+     * @return Response
+     */
+    public function publicStaffList(
+        Request $request,
+        Response $response,
+        ?string $option = null,
+        string|int|null $value = null,
+    ): Response {
+        $filter_name = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafflist']);
+        $filters = new MembersList();
+        $this->session->$filter_name = $filters;
+
+        return $this->publicList(
+            $request,
+            $response,
+            [
+                'filter_name' => $filter_name,
+                'with_photos' => false,
+                'page_title' => _T("Staff"),
+                'template' => 'pages/public/staff_list.html.twig',
+                'html_class' => '',
+                'staff' => true,
+            ],
+            $option,
+            $value
+        );
+    }
+
+    /**
+     * Public staff gallery
+     *
+     * @param Request             $request  PSR Request
+     * @param Response            $response PSR Response
+     * @param string|null         $option   One of 'page' or 'order'
+     * @param string|integer|null $value    Value of the option
+     *
+     * @return Response
+     */
+    public function publicStaffGallery(
+        Request $request,
+        Response $response,
+        ?string $option = null,
+        string|int|null $value = null,
+    ): Response {
+        $filter_name = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafftrombi']);
+        $filters = new MembersList();
+        $this->session->$filter_name = $filters;
+
+        return $this->publicList(
+            $request,
+            $response,
+            [
+                'filter_name' => $filter_name,
+                'with_photos' => true,
+                'page_title' => _T("Staff gallery"),
+                'template' => 'pages/public/staff_gallery.html.twig',
+                'html_class' => 'gallery',
+                'staff' => true,
+            ],
+            $option,
+            $value
+        );
+    }
+
+    /**
+     * Public pages (gallery, list)
+     *
+     * @param Request              $request  PSR Request
+     * @param Response             $response PSR Response
+     * @param array<string, mixed> $args     Route arguments
+     * @param string|null          $option   One of 'page' or 'order'
+     * @param string|integer|null  $value    Value of the option
+     *
+     * @return Response
+     */
+    private function publicList(
+        Request $request,
+        Response $response,
+        array $args,
+        ?string $option = null,
+        string|int|null $value = null,
+    ): Response {
+        $varname = $args['filter_name'];
+        $filters = $this->session->$varname ?? new MembersList();
+
+        switch ($option) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            default:
+                break;
         }
 
         $m = new Members($filters);
-        $members = $m->getPublicList($type === 'trombi');
+        if ($args['staff'] ?? false) {
+            $members = $m->getPublicStaffList($args['with_photos'] ?? false);
+        } else {
+            $members = $m->getPublicList($args['with_photos'] ?? false);
+        }
 
         $this->session->$varname = $filters;
 
@@ -350,56 +568,76 @@ class MembersController extends CrudController
         // display page
         $this->view->render(
             $response,
-            ($type === 'list' ? 'pages/members_public_list' : 'pages/members_public_gallery') . '.html.twig',
-            array(
-                'page_title'    => ($type === 'list' ? _T("Members list") : _T('Trombinoscope')),
-                'additionnal_html_class'    => ($type === 'list' ? '' : 'trombinoscope'),
-                'type'          => $type,
-                'members'       => $members,
-                'nb_members'    => $m->getCount(),
-                'filters'       => $filters,
+            $args['template'],
+            [
+                'page_title' => $args['page_title'],
+                'additional_html_class' => $args['html_class'] ?? '',
+                'members' => $members,
+                'nb_members' => $m->getCount(),
+                'filters' => $filters,
                 // pseudo random int
-                'time'              => time(),
-            )
+                'time' => time(),
+            ]
         );
         return $response;
     }
 
     /**
-     * Public pages (trombinoscope, public list)
+     * Public members list
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function filterPublicMembersList(Request $request, Response $response): Response
+    {
+        return $this->filterPublicList($request, $response, 'list', 'publicMembersList');
+    }
+
+    /**
+     * Public members list
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function filterPublicMembersGallery(Request $request, Response $response): Response
+    {
+        return $this->filterPublicList($request, $response, 'trombi', 'publicMembersGallery');
+    }
+
+    /**
+     * Public pages filtering (gallery, list)
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $type     Type
+     * @param string   $route    Filter route
      *
      * @return Response
      */
-    public function filterPublicList(Request $request, Response $response, string $type): Response
+    private function filterPublicList(Request $request, Response $response, string $type, string $route): Response
     {
         $post = $request->getParsedBody();
 
         $varname = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => $type]);
-        if (isset($this->session->$varname)) {
-            $filters = $this->session->$varname;
-        } else {
-            $filters = new MembersList();
-        }
+        $filters = $this->session->$varname ?? new MembersList();
 
         //reintialize filters
         if (isset($post['clear_filter'])) {
             $filters->reinit();
-        } else {
+        } elseif (isset($post['nbshow'])) {
             //number of rows to show
-            if (isset($post['nbshow'])) {
-                $filters->show = (int)$post['nbshow'];
-            }
+            $filters->show = (int)$post['nbshow'];
         }
 
         $this->session->$varname = $filters;
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('publicList', ['type' => $type]));
+            ->withHeader('Location', $this->routeparser->urlFor($route));
     }
 
     /**
@@ -433,7 +671,7 @@ class MembersController extends CrudController
 
         $members = new Members($filters);
 
-        $members_list = array();
+        $members_list = [];
         if ($this->login->isAdmin() || $this->login->isStaff()) {
             $members_list = $members->getMembersList(true);
         } else {
@@ -445,7 +683,7 @@ class MembersController extends CrudController
 
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
-        $filters->setViewCommonsFilters($this->preferences, $this->view);
+        $filters->setViewCommonsFilters($this->view);
 
         $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
 
@@ -453,16 +691,17 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/members_list.html.twig',
-            array(
-                'page_title'            => _T("Members management"),
+            [
+                'page_title'            => _T("List of members"),
                 'require_mass'          => true,
                 'members'               => $members_list,
                 'filter_groups_options' => $groups_list,
                 'nb_members'            => $members->getCount(),
                 'filters'               => $filters,
                 'adv_filters'           => $filters instanceof AdvancedMembersList,
-                'galette_list'          => $this->lists_config->getDisplayElements($this->login)
-            )
+                'galette_list'          => $this->lists_config->getDisplayElements($this->login),
+                'documentation'         => 'usermanual/adherents.html#members-list'
+            ]
         );
         return $response;
     }
@@ -500,23 +739,16 @@ class MembersController extends CrudController
                 $filters->filter_str = $post['filter_str'];
             }
             //field to filter
-            if (isset($post['field_filter'])) {
-                if (is_numeric($post['field_filter'])) {
-                    $filters->field_filter = $post['field_filter'];
-                }
+            if (isset($post['field_filter']) && is_numeric($post['field_filter'])) {
+                $filters->field_filter = $post['field_filter'];
             }
             //membership to filter
-            if (isset($post['membership_filter'])) {
-                if (is_numeric($post['membership_filter'])) {
-                    $filters->membership_filter
-                        = $post['membership_filter'];
-                }
+            if (isset($post['membership_filter']) && is_numeric($post['membership_filter'])) {
+                $filters->membership_filter = $post['membership_filter'];
             }
             //account status to filter
-            if (isset($post['filter_account'])) {
-                if (is_numeric($post['filter_account'])) {
-                    $filters->filter_account = $post['filter_account'];
-                }
+            if (isset($post['filter_account']) && is_numeric($post['filter_account'])) {
+                $filters->filter_account = $post['filter_account'];
             }
             //email filter
             if (isset($post['email_filter'])) {
@@ -524,11 +756,7 @@ class MembersController extends CrudController
             }
             //group filter
             if (isset($post['group_filter'])) {
-                if ($post['group_filter'] > 0) {
-                    $filters->group_filter = (int)$post['group_filter'];
-                } else {
-                    $filters->group_filter = null;
-                }
+                $filters->group_filter = $post['group_filter'] > 0 ? (int)$post['group_filter'] : null;
             }
             //number of rows to show
             if (isset($post['nbshow'])) {
@@ -544,7 +772,7 @@ class MembersController extends CrudController
                 unset($post['advanced_filtering']);
                 $freed = false;
                 foreach ($post as $k => $v) {
-                    if (strpos($k, 'free_', 0) === 0) {
+                    if (str_starts_with($k, 'free_')) {
                         if (!$freed) {
                             $i = 0;
                             foreach ($post['free_field'] as $f) {
@@ -558,14 +786,14 @@ class MembersController extends CrudController
                                     $qry_op
                                         = (int)$post['free_query_operator'][$i];
                                     $type = (int)$post['free_type'][$i];
-                                    $fs = array(
+                                    $fs = [
                                         'idx'       => $i,
                                         'field'     => $f,
                                         'type'      => $type,
                                         'search'    => $fs_search,
                                         'log_op'    => $log_op,
                                         'qry_op'    => $qry_op
-                                    );
+                                    ];
                                     $filters->free_search = $fs;
                                 }
                                 $i++;
@@ -577,10 +805,10 @@ class MembersController extends CrudController
                         $filters->groups_search_log_op = (int)$post['groups_logical_operator'];
                         foreach ($post['groups_search'] as $g) {
                             if (trim($g) !== '') {
-                                $gs = array(
+                                $gs = [
                                     'idx'       => $i,
                                     'group'     => $g
-                                );
+                                ];
                                 $filters->groups_search = $gs;
                             }
                             $i++;
@@ -589,11 +817,7 @@ class MembersController extends CrudController
                         switch ($k) {
                             case 'contrib_min_amount':
                             case 'contrib_max_amount':
-                                if (trim($v) !== '') {
-                                    $v = (float)$v;
-                                } else {
-                                    $v = null;
-                                }
+                                $v = trim($v) !== '' ? (float)$v : null;
                                 break;
                         }
                         $filters->$k = $v;
@@ -670,7 +894,7 @@ class MembersController extends CrudController
         );
         $ptlist = $ptypes->getList();
 
-        $filters->setViewCommonsFilters($this->preferences, $this->view);
+        $filters->setViewCommonsFilters($this->view);
 
         $social = new Social($this->zdb);
         $types = $member->getMemberRegisteredTypes();
@@ -683,7 +907,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/advanced_search.html.twig',
-            array(
+            [
                 'page_title'            => _T("Advanced search"),
                 'filter_groups_options' => $groups_list,
                 'search_fields'         => $fields,
@@ -693,8 +917,9 @@ class MembersController extends CrudController
                 'statuts'               => $this->status->getList(),
                 'contributions_types'   => $ct->getList(),
                 'filters'               => $filters,
-                'payments_types'        => $ptlist
-            )
+                'payments_types'        => $ptlist,
+                'documentation'         => 'usermanual/recherche.html#advanced-search'
+            ]
         );
         return $response;
     }
@@ -774,7 +999,7 @@ class MembersController extends CrudController
                     }
                     if (!isset($post['members'])) {
                         $group = new Group((int)$post['gid']);
-                        $selected_members = array();
+                        $selected_members = [];
                         if (!isset($post['mode']) || $post['mode'] == 'members') {
                             $selected_members = $group->getMembers();
                         } elseif ($post['mode'] == 'managers') {
@@ -921,7 +1146,18 @@ class MembersController extends CrudController
 
         if ($id !== null) {
             //load requested member
-            $member->load($id);
+            if (!$member->load($id)) {
+                //not possible to load member, exit
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace('%id', (string)$id, _T("No member #%id."))
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->routeparser->urlFor(
+                        'members'
+                    ));
+            }
             $can = $member->canEdit($this->login);
         } else {
             $can = $member->canCreate($this->login);
@@ -934,6 +1170,7 @@ class MembersController extends CrudController
             );
 
             return $response
+                ->withStatus(301)
                 ->withHeader(
                     'Location',
                     $this->routeparser->urlFor('me')
@@ -941,7 +1178,7 @@ class MembersController extends CrudController
         }
 
         //if adding a child, force parent here
-        if ($action === 'addchild') {
+        if ($this->isAddChild()) {
             $member->setParent((int)$this->login->id);
         }
 
@@ -1020,7 +1257,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/member_form.html.twig',
-            array(
+            [
                 'parent_tpl'        => 'page.html.twig',
                 'autocomplete'      => true,
                 'page_title'        => $title,
@@ -1035,8 +1272,9 @@ class MembersController extends CrudController
                 'hidden_elements'   => $form_elements['hiddens'],
                 'parent_fields'     => $tpl_parent_fields,
                 'addchild'          => ($action === 'addchild'),
-                'osocials'          => new Social($this->zdb)
-            ) + $route_params
+                'osocials'          => new Social($this->zdb),
+                'documentation'     => 'usermanual/adherents.html'
+            ] + $route_params
         );
         return $response;
     }
@@ -1090,12 +1328,11 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'modals/mass_change_members.html.twig',
-            array(
+            [
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
-                'page_title'    => str_replace(
-                    '%count',
-                    (string)count($data['id']),
-                    _T('Mass change %count members')
+                'page_title'    => sprintf(
+                    _T('Mass change %1$s members'),
+                    (string)count($data['id'])
                 ),
                 'form_url'      => $this->routeparser->urlFor('masschangeMembersReview'),
                 'cancel_uri'    => $this->routeparser->urlFor('members'),
@@ -1106,7 +1343,7 @@ class MembersController extends CrudController
                 'statuts'       => $this->status->getList(),
                 'require_mass'  => true,
                 'groups'        => $groups_list
-            )
+            ]
         );
         return $response;
     }
@@ -1208,12 +1445,11 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'modals/mass_change_members.html.twig',
-            array(
+            [
                 'mode'          => ($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest') ? 'ajax' : '',
-                'page_title'    => str_replace(
-                    '%count',
-                    (string)count($data['id']),
-                    _T('Review mass change %count members')
+                'page_title'    => sprintf(
+                    _T('Review mass change %1$s members'),
+                    (string)count($data['id'])
                 ),
                 'form_url'      => $this->routeparser->urlFor('massstoremembers'),
                 'cancel_uri'    => $this->routeparser->urlFor('members'),
@@ -1222,7 +1458,7 @@ class MembersController extends CrudController
                 'statuts'       => $this->status->getList(),
                 'groups'        => $groups->getSimpleList(),
                 'changes'       => $changes
-            )
+            ]
         );
         return $response;
     }
@@ -1238,7 +1474,7 @@ class MembersController extends CrudController
     public function doMassChange(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $redirect_url = $post['redirect_uri'];
+        $redirect_url = $post['redirect_uri'] ?? $this->redirectUri([]);
         $error_detected = [];
         $mass = 0;
         $dynamic_fields = null;
@@ -1248,7 +1484,7 @@ class MembersController extends CrudController
             $error_detected[] = _T("Mass changes has not been confirmed!");
         } else {
             unset($post['confirm']);
-            $ids = $post['id'];
+            $ids = $post['id'] ?? [];
             unset($post['id']);
 
             $fc = $this->fields_config;
@@ -1263,13 +1499,11 @@ class MembersController extends CrudController
                     }
                 }
 
-                if (!$found) {
+                if (!$found && ($key == 'group_to_add' || $key == 'group_to_remove')) {
                     //try to check group to add or remove
-                    if ($key == 'group_to_add' || $key == 'group_to_remove') {
-                        $post[$key] = (int)$post[$key];
-                        if ($this->login->isGroupManager($post[$key])) {
-                            $found = true;
-                        }
+                    $post[$key] = (int)$post[$key];
+                    if ($this->login->isGroupManager($post[$key])) {
+                        $found = true;
                     }
                 }
 
@@ -1345,12 +1579,16 @@ class MembersController extends CrudController
                                 $groups_adh = [];
                                 foreach ($current_groups as $group) {
                                     if (
-                                        !isset($post['group_to_remove'])
-                                        || $group->getId() !== (int)$post['group_to_remove']
+                                        (
+                                            !isset($post['group_to_remove'])
+                                            || $group->getId() !== (int)$post['group_to_remove']
+                                        )
+                                        && $group->getId() !== (int)$post['group_to_add']
                                     ) {
                                         $groups_adh[] = $group->getId() . '|' . $group->getName();
                                     }
                                 }
+
                                 if (isset($post['group_to_add'])) {
                                     $new_group = new Group((int)$post['group_to_add']);
                                     $groups_adh[] = $new_group->getId() . '|' . $new_group->getName();
@@ -1373,9 +1611,7 @@ class MembersController extends CrudController
             }
         }
 
-        if ($mass == 0 && !count($error_detected)) {
-            $error_detected[] = _T('Something went wrong during mass edition!');
-        } else {
+        if ($mass !== 0) {
             $this->flash->addMessage(
                 'success_detected',
                 sprintf(
@@ -1388,6 +1624,8 @@ class MembersController extends CrudController
                     $mass
                 )
             );
+        } elseif (!count($error_detected)) {
+            $error_detected[] = _T('Something went wrong during mass edition!');
         }
 
         if (count($error_detected) > 0) {
@@ -1399,7 +1637,7 @@ class MembersController extends CrudController
             }
         }
 
-        if (!($request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest')) {
+        if ($request->getHeaderLine('X-Requested-With') !== 'XMLHttpRequest') {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $redirect_url);
@@ -1423,9 +1661,10 @@ class MembersController extends CrudController
      */
     public function store(Request $request, Response $response): Response
     {
-        if (!$this->preferences->pref_bool_selfsubscribe && !$this->login->isLogged()) {
+        if (!($this->login->isLogged() || $this->preferences->pref_bool_selfsubscribe && $this->isSelfMembership())) {
+            $this->flash->addMessage('error_detected', _T("Login required"));
             return $response
-                ->withStatus(301)
+                ->withStatus(302)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
 
@@ -1454,6 +1693,11 @@ class MembersController extends CrudController
             }
         }
 
+        //if adding a child, force parent here
+        if ($this->isAddChild()) {
+            $member->setParent((int)$this->login->id);
+        }
+
         // new or edit
         if (isset($post['id_adh'])) {
             $member->load((int)$post['id_adh']);
@@ -1467,10 +1711,11 @@ class MembersController extends CrudController
                     )
                 );
             }
-        } else {
-            if ($member->id != '') {
-                $member->load($this->login->id);
-            }
+        } elseif ($member->id != '') {
+            $member->load($this->login->id);
+        } elseif (!$this->isSelfMembership() && !$member->canCreate($this->login)) {
+            //redirection should have been done before. Just throw an Exception.
+            throw new \RuntimeException('No right to store new member!');
         }
 
         // flagging required fields
@@ -1505,8 +1750,8 @@ class MembersController extends CrudController
             $this->isSelfMembership()
         );
         $fieldsets     = $form_elements['fieldsets'];
-        $required      = array();
-        $disabled      = array();
+        $required      = [];
+        $disabled      = [];
 
         foreach ($fieldsets as $category) {
             foreach ($category->elements as $field) {
@@ -1528,8 +1773,6 @@ class MembersController extends CrudController
             }
         }
 
-        $real_requireds = array_diff(array_keys($required), $disabled);
-
         // send email to member
         if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
             $member->setSendmail(); //flag to send creation email
@@ -1537,171 +1780,166 @@ class MembersController extends CrudController
 
         // Validation
         $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
-        if (!count($real_requireds) || isset($post[array_shift($real_requireds)])) {
-            // regular fields
-            $valid = $member->check($post, $required, $disabled);
-            if ($valid !== true) {
-                $error_detected = array_merge($error_detected, $valid);
+
+        // regular fields
+        $valid = $member->check($post, $required, $disabled);
+        if ($valid !== true) {
+            $error_detected = array_merge($error_detected, $valid);
+        }
+
+        if (count($error_detected) == 0) {
+            //all goes well, we can proceed
+
+            $new = false;
+            if ($member->id == '') {
+                $new = true;
             }
 
-            if (count($error_detected) == 0) {
-                //all goes well, we can proceed
-
-                $new = false;
-                if ($member->id == '') {
-                    $new = true;
-                }
-
-                $store = $member->store();
-                if ($store === true) {
-                    //member has been stored :)
-                    if ($new) {
-                        if ($this->isSelfMembership()) {
-                            $success_detected[] = _T("Your account has been created!");
-                            if (
-                                $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
-                                && $member->getEmail() != ''
-                            ) {
-                                $success_detected[] = _T("An email has been sent to you, check your inbox.");
-                            }
-                        } else {
-                            $success_detected[] = _T("New member has been successfully added.");
+            $store = $member->store();
+            if ($store === true) {
+                //member has been stored :)
+                if ($new) {
+                    if ($this->isSelfMembership()) {
+                        $success_detected[] = _T("Your account has been created!");
+                        if (
+                            $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                            && $member->getEmail() != ''
+                        ) {
+                            $success_detected[] = _T("An email has been sent to you, check your inbox.");
                         }
                     } else {
-                        $success_detected[] = _T("Member account has been modified.");
-                    }
-
-                    if ($this->login->isGroupManager()) {
-                        //add/remove user from groups
-                        $groups_adh = $post['groups_adh'] ?? [];
-                        $add_groups = Groups::addMemberToGroups(
-                            $member,
-                            $groups_adh
-                        );
-
-                        if ($add_groups === false) {
-                            $error_detected[] = _T("An error occurred adding member to its groups.");
-                        }
-                    }
-                    if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
-                        //add/remove manager from groups
-                        $managed_groups_adh = $post['groups_managed_adh'] ?? [];
-                        $add_groups = Groups::addMemberToGroups(
-                            $member,
-                            $managed_groups_adh,
-                            true
-                        );
-                        $member->loadGroups();
-
-                        if ($add_groups === false) {
-                            $error_detected[] = _T("An error occurred adding member to its groups as manager.");
-                        }
+                        $success_detected[] = _T("New member has been successfully added.");
                     }
                 } else {
-                    //something went wrong :'(
-                    $error_detected[] = _T("An error occurred while storing the member.");
-                }
-            }
-
-            if (count($error_detected) === 0) {
-                $cropping = null;
-                if ($this->preferences->pref_force_picture_ratio == 1) {
-                    $cropping = [];
-                    $cropping['ratio'] = isset($this->preferences->pref_member_picture_ratio) ? $this->preferences->pref_member_picture_ratio : 'square_ratio';
-                    $cropping['focus'] = isset($post['crop_focus']) ? $post['crop_focus'] : 'center';
-                }
-                $files_res = $member->handleFiles($_FILES, $cropping);
-                if (is_array($files_res)) {
-                    $error_detected = array_merge($error_detected, $files_res);
+                    $success_detected[] = _T("Member account has been modified.");
                 }
 
-                if (isset($post['del_photo'])) {
-                    if (!$member->picture->delete()) {
-                        $error_detected[] = _T("Delete failed");
-                        $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
-                        Analog::log(
-                            'Unable to delete picture for member ' . $str_adh,
-                            Analog::ERROR
-                        );
+                if ($this->login->isGroupManager()) {
+                    //add/remove user from groups
+                    $groups_adh = $post['groups_adh'] ?? [];
+                    $add_groups = Groups::addMemberToGroups(
+                        $member,
+                        $groups_adh
+                    );
+
+                    if ($add_groups === false) {
+                        $error_detected[] = _T("An error occurred adding member to its groups.");
                     }
                 }
+                if ($this->login->isSuperAdmin() || $this->login->isAdmin() || $this->login->isStaff()) {
+                    //add/remove manager from groups
+                    $managed_groups_adh = $post['groups_managed_adh'] ?? [];
+                    $add_groups = Groups::addMemberToGroups(
+                        $member,
+                        $managed_groups_adh,
+                        true
+                    );
+                    $member->loadGroups();
+
+                    if ($add_groups === false) {
+                        $error_detected[] = _T("An error occurred adding member to its groups as manager.");
+                    }
+                }
+            } else {
+                //something went wrong :'(
+                $error_detected[] = _T("An error occurred while storing the member.");
+            }
+        }
+
+        if (count($error_detected) === 0) {
+            $cropping = null;
+            if ($this->preferences->pref_force_picture_ratio == 1) {
+                $cropping = [];
+                $cropping['ratio'] = $this->preferences->pref_member_picture_ratio ?? 'square_ratio';
+                $cropping['focus'] = $post['crop_focus'] ?? 'center';
+            }
+            $files_res = $member->handleFiles($request->getUploadedFiles(), $cropping);
+            if (is_array($files_res)) {
+                $error_detected = array_merge($error_detected, $files_res);
             }
 
-            if (count($error_detected) > 0) {
-                foreach ($error_detected as $error) {
-                    if (strpos($error, '%member_url_') !== false) {
-                        preg_match('/%member_url_(\d+)/', $error, $matches);
-                        $url = $this->routeparser->urlFor('member', ['id' => $matches[1]]);
-                        $error = str_replace(
-                            '%member_url_' . $matches[1],
-                            $url,
-                            $error
-                        );
-                    }
-                    $this->flash->addMessage(
-                        'error_detected',
+            if (isset($post['del_photo']) && !$member->picture->delete()) {
+                $error_detected[] = _T("Delete failed");
+                $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
+                Analog::log(
+                    'Unable to delete picture for member ' . $str_adh,
+                    Analog::ERROR
+                );
+            }
+        }
+
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                if (str_contains($error, '%member_url_')) {
+                    preg_match('/%member_url_(\d+)/', $error, $matches);
+                    $url = $this->routeparser->urlFor('member', ['id' => $matches[1]]);
+                    $error = str_replace(
+                        '%member_url_' . $matches[1],
+                        $url,
                         $error
                     );
                 }
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
             }
+        }
 
-            if (count($success_detected) > 0) {
-                foreach ($success_detected as $success) {
-                    $this->flash->addMessage(
-                        'success_detected',
-                        $success
-                    );
-                }
+        if (count($success_detected) > 0) {
+            foreach ($success_detected as $success) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    $success
+                );
             }
+        }
 
-            if (count($error_detected) === 0) {
-                if ($this->isSelfMembership()) {
-                    $redirect_url = $this->routeparser->urlFor('login');
-                } elseif (
-                    isset($post['redirect_on_create'])
-                    && $post['redirect_on_create'] > Adherent::AFTER_ADD_DEFAULT
-                ) {
-                    switch ($post['redirect_on_create']) {
-                        case Adherent::AFTER_ADD_TRANS:
-                            $redirect_url = $this->routeparser->urlFor('addTransaction');
-                            break;
-                        case Adherent::AFTER_ADD_NEW:
-                            $redirect_url = $this->routeparser->urlFor('addMember');
-                            break;
-                        case Adherent::AFTER_ADD_SHOW:
-                            $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
-                            break;
-                        case Adherent::AFTER_ADD_LIST:
-                            $redirect_url = $this->routeparser->urlFor('members');
-                            break;
-                        case Adherent::AFTER_ADD_HOME:
-                            $redirect_url = $this->routeparser->urlFor('slash');
-                            break;
-                    }
-                } elseif (!isset($post['id_adh']) && !$member->isDueFree()) {
-                    $redirect_url = $this->routeparser->urlFor(
-                        'addContribution',
-                        ['type' => 'fee']
-                    ) . '?id_adh=' . $member->id;
-                } else {
-                    $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
+        if (count($error_detected) === 0) {
+            if ($this->isSelfMembership()) {
+                $redirect_url = $this->routeparser->urlFor('login');
+            } elseif (
+                isset($post['redirect_on_create'])
+                && $post['redirect_on_create'] > Adherent::AFTER_ADD_DEFAULT
+            ) {
+                switch ($post['redirect_on_create']) {
+                    case Adherent::AFTER_ADD_TRANS:
+                        $redirect_url = $this->routeparser->urlFor('addTransaction');
+                        break;
+                    case Adherent::AFTER_ADD_NEW:
+                        $redirect_url = $this->routeparser->urlFor('addMember');
+                        break;
+                    case Adherent::AFTER_ADD_SHOW:
+                        $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
+                        break;
+                    case Adherent::AFTER_ADD_LIST:
+                        $redirect_url = $this->routeparser->urlFor('members');
+                        break;
+                    case Adherent::AFTER_ADD_HOME:
+                        $redirect_url = $this->routeparser->urlFor('slash');
+                        break;
                 }
+            } elseif (!isset($post['id_adh']) && !$member->isDueFree()) {
+                $redirect_url = $this->routeparser->urlFor(
+                    'addContribution',
+                    ['type' => 'fee']
+                ) . '?id_adh=' . $member->id;
             } else {
-                //store entity in session
-                $this->session->member = $member;
+                $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$member->id]);
+            }
+        } else {
+            //store entity in session
+            $this->session->member = $member;
 
-                if ($this->isSelfMembership()) {
-                    $redirect_url = $this->routeparser->urlFor('subscribe');
-                } else {
-                    if ($member->id) {
-                        $redirect_url = $this->routeparser->urlFor(
-                            'editMember',
-                            ['id'    => (string)$member->id]
-                        );
-                    } else {
-                        $redirect_url = $this->routeparser->urlFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
-                    }
-                }
+            if ($this->isSelfMembership()) {
+                $redirect_url = $this->routeparser->urlFor('subscribe');
+            } elseif ($member->id) {
+                $redirect_url = $this->routeparser->urlFor(
+                    'editMember',
+                    ['id'    => (string)$member->id]
+                );
+            } else {
+                $redirect_url = $this->routeparser->urlFor((isset($post['addchild']) ? 'addMemberChild' : 'addMember'));
             }
         }
 
@@ -1762,10 +2000,9 @@ class MembersController extends CrudController
             //batch members removal
             $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
             $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])} = $filters;
-            return str_replace(
-                '%count',
-                (string)count($filters->selected),
-                _T('You are about to remove %count members.')
+            return sprintf(
+                _T('You are about to remove %1$s members.'),
+                (string)count($filters->selected)
             );
         }
     }
@@ -1787,11 +2024,7 @@ class MembersController extends CrudController
         }
         $members = new Members($filters);
 
-        if (!is_array($post['id'])) {
-            $ids = (array)$post['id'];
-        } else {
-            $ids = $post['id'];
-        }
+        $ids = !is_array($post['id']) ? (array)$post['id'] : $post['id'];
 
         return $members->removeMembers($ids);
     }
@@ -1820,6 +2053,27 @@ class MembersController extends CrudController
     }
 
     /**
+     * Set add child flag
+     *
+     * @return MembersController
+     */
+    private function setAddChild(): MembersController
+    {
+        $this->add_child = true;
+        return $this;
+    }
+
+    /**
+     * Is adding child?
+     *
+     * @return bool
+     */
+    private function isAddChild(): bool
+    {
+        return $this->add_child;
+    }
+
+    /**
      * Handle navigation links
      *
      * @param int $id_adh Current member ID
@@ -1828,7 +2082,7 @@ class MembersController extends CrudController
      */
     private function handleNavigationLinks(int $id_adh): array
     {
-        $navigate = array();
+        $navigate = [];
 
         if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
             $filters = clone $this->session->{$this->getFilterName($this->getDefaultFilterName())};
@@ -1845,7 +2099,7 @@ class MembersController extends CrudController
         ) {
             $m = new Members($filters);
 
-            $ids = array();
+            $ids = [];
             $fields = [Adherent::PK, 'nom_adh', 'prenom_adh'];
             if ($this->login->isAdmin() || $this->login->isStaff()) {
                 $ids = $m->getMembersList(false, $fields);
@@ -1856,11 +2110,11 @@ class MembersController extends CrudController
             $ids = $ids->toArray();
             foreach ($ids as $k => $m) {
                 if ($m['id_adh'] == $id_adh) {
-                    $navigate = array(
+                    $navigate = [
                         'cur'  => $m['id_adh'],
                         'count' => $filters->counter,
                         'pos' => $k + 1
-                    );
+                    ];
                     if ($k > 0) {
                         $navigate['prev'] = $ids[$k - 1]['id_adh'];
                     }

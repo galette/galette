@@ -79,9 +79,9 @@ class ContributionsCsv extends CsvOut
         $fields = $contrib->fields;
         //not a real data
         unset($fields['duree_mois_cotis']);
-        $labels = array();
+        $labels = [];
 
-        foreach ($fields as $k => $f) {
+        foreach ($fields as $f) {
             $label = $f['label'];
             if (isset($f['cotlabel'])) {
                 $label = $f['cotlabel'] . ' / ' . $label;
@@ -103,7 +103,7 @@ class ContributionsCsv extends CsvOut
             }
 
             //add textual type
-            $contribution->id_type_cotis = $ctype->getLabel($contribution->id_type_cotis);
+            $contribution->id_type_cotis = $ctype->getLabel((int)$contribution->id_type_cotis);
 
             //handle dates
             if (isset($contribution->date)) {
@@ -144,7 +144,7 @@ class ContributionsCsv extends CsvOut
 
             //member name
             if (isset($contribution->{Adherent::PK})) {
-                $contribution->{Adherent::PK} = Adherent::getSName($this->zdb, $contribution->{Adherent::PK});
+                $contribution->{Adherent::PK} = Adherent::getSName($this->zdb, (int)$contribution->{Adherent::PK});
             }
         }
 

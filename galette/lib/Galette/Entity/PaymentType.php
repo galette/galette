@@ -95,8 +95,8 @@ class PaymentType
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred loading payment type #' . $id . "Message:\n" .
-                $e->getMessage(),
+                'An error occurred loading payment type #' . $id . "Message:\n"
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -124,9 +124,9 @@ class PaymentType
      */
     public function store(): bool
     {
-        $data = array(
+        $data = [
             'type_name' => $this->name
-        );
+        ];
         try {
             if (isset($this->id) && $this->id > 0) {
                 if ($this->old_name !== null) {
@@ -153,8 +153,8 @@ class PaymentType
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing payment type: ' . $e->getMessage() .
-                "\n" . print_r($data, true),
+                'An error occurred storing payment type: ' . $e->getMessage()
+                . "\n" . print_r($data, true),
                 Analog::ERROR
             );
             throw $e;
@@ -211,7 +211,7 @@ class PaymentType
         throw new \RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
-                __CLASS__,
+                static::class,
                 $name
             )
         );

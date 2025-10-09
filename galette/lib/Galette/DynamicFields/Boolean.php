@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\DynamicFields;
 
-use Analog\Analog;
 use Galette\Core\Db;
 
 /**
@@ -55,5 +54,17 @@ class Boolean extends DynamicField
     public function getType(): int
     {
         return self::BOOLEAN;
+    }
+
+    /**
+     * Get value to display for a field
+     *
+     * @param mixed $value Raw value to get displayed
+     *
+     * @return string
+     */
+    public function getDisplayValue(mixed $value): string
+    {
+        return $value ? _T("Yes") : _T("No");
     }
 }

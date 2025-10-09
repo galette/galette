@@ -135,7 +135,7 @@ class PdfGroups extends Pdf
             $this->SetFont('', '', self::SHEET_FONT);
 
             $managers_list = $group->getManagers();
-            $managers = array();
+            $managers = [];
             foreach ($managers_list as $m) {
                 $managers[] = $m->sfullname;
             }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>Galette RSS feed</title>
+    <link>https://galette.eu/</link>
+    <item>
+      <title>Test post</title>
+      <link>https://galette.eu/post1</link>
+      <description>Test post description</description>
+      <pubDate>Fri, 15 Aug 2025 07:54:16 GMT</pubDate>
+    </item>
+    <item>
+      <link>https://galette.eu/post2</link>
+      <description>&lt;p&gt;This is a test post description &lt;strong&gt;without title&lt;/strong&gt;, so Galette will use a truncated version of this description as post title, this is better than just an URL displayed to the user :)&lt;/p&gt;</description>
+      <pubDate>Fri, 15 Aug 2025 07:40:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Test post 3</title>
+      <link>https://galette.eu/post3</link>
+      <description>Test post 3 description</description>
+      <pubDate>Fri, 14 Aug 2025 07:54:16 GMT</pubDate>
+    </item>
+    <item>
+      <title>Test post 4</title>
+      <link>https://galette.eu/post4</link>
+      <description>Test post 4 description</description>
+      <pubDate>Fri, 13 Aug 2025 07:54:16 GMT</pubDate>
+    </item>
+    <item>
+      <title>Test post 5</title>
+      <link>https://galette.eu/post5</link>
+      <description>Test post 5 description</description>
+      <pubDate>Fri, 12 Aug 2025 07:54:16 GMT</pubDate>
+    </item>
+    <item>
+      <title>Test post 6</title>
+      <link>https://galette.eu/post6</link>
+      <description>Test post 6 description</description>
+      <pubDate>Fri, 11 Aug 2025 07:54:16 GMT</pubDate>
+    </item>
+    <item>
+      <title>Test post 7</title>
+      <link>https://galette.eu/post7</link>
+      <description>Test post 7 description</description>
+      <pubDate>Fri, 10 Aug 2025 07:54:16 GMT</pubDate>
+    </item>
+    <item>
+      <title>Test post 8</title>
+      <link>https://galette.eu/post8</link>
+      <description>Test post 8 description</description>
+      <pubDate>Fri, 09 Aug 2025 07:54:16 GMT</pubDate>
+    </item>
+    <item>
+      <title>Test post 9</title>
+      <link>https://galette.eu/post9</link>
+      <description>Test post 9 description</description>
+      <pubDate>Fri, 08 Aug 2025 07:54:16 GMT</pubDate>
+    </item>
+    <item>
+      <title>Test post 10</title>
+      <link>https://galette.eu/post10</link>
+      <description>Test post 10 description</description>
+      <pubDate>Fri, 07 Aug 2025 07:54:16 GMT</pubDate>
+    </item>
+    <item>
+      <title>Test post 11</title>
+      <link>https://galette.eu/post11</link>
+      <description>Test post 11 description</description>
+      <pubDate>Fri, 06 Aug 2025 07:54:16 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

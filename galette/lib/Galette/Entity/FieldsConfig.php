@@ -66,13 +66,13 @@ class FieldsConfig
 
     protected Db $zdb;
     /** @var array<string, array<string, mixed>> */
-    protected array $core_db_fields = array();
+    protected array $core_db_fields = [];
     /** @var array<string, bool> */
-    protected array $all_required = array();
+    protected array $all_required = [];
     /** @var array<string, int> */
-    protected array $all_visibles = array();
+    protected array $all_visibles = [];
     /** @var array<int, array<int, array<string, mixed>>> */
-    protected array $categorized_fields = array();
+    protected array $categorized_fields = [];
     protected string $table;
     /** @var array<string, mixed>|null  */
     protected ?array $defaults = null;
@@ -80,17 +80,17 @@ class FieldsConfig
     protected ?array $cats_defaults = null;
 
     /** @var array<string> */
-    private array $staff_fields = array(
+    private array $staff_fields = [
         'activite_adh',
         'id_statut',
         'bool_exempt_adh',
         'date_crea_adh',
         'info_adh'
-    );
+    ];
     /** @var array<string> */
-    private array $admin_fields = array(
+    private array $admin_fields = [
         'bool_admin_adh'
-    );
+    ];
 
     public const TABLE = 'fields_config';
 
@@ -100,7 +100,7 @@ class FieldsConfig
      *
      * @var array<string>
      */
-    private array $non_required = array(
+    private array $non_required = [
         'id_adh',
         'date_echeance',
         'bool_display_info',
@@ -115,22 +115,22 @@ class FieldsConfig
         'pref_lang',
         'sexe_adh',
         'parent_id'
-    );
+    ];
 
     /** @var array<string> */
-    private array $non_form_elements = array(
+    private array $non_form_elements = [
         'date_echeance',
         'date_modif_adh'
-    );
+    ];
 
     /** @var array<string> */
-    private array $non_display_elements = array(
+    private array $non_display_elements = [
         'date_echeance',
         'mdp_adh',
         'titre_adh',
         'sexe_adh',
         'prenom_adh'
-    );
+    ];
 
     /**
      * Default constructor
@@ -164,8 +164,8 @@ class FieldsConfig
         try {
             $select = $this->zdb->select(self::TABLE);
             $select
-                ->where(array('table_name' => $this->table))
-                ->order(array(FieldsCategories::PK, 'position ASC'));
+                ->where(['table_name' => $this->table])
+                ->order([FieldsCategories::PK, 'position ASC']);
 
             $results = $this->zdb->execute($select);
             $this->core_db_fields = [];
@@ -213,7 +213,7 @@ class FieldsConfig
     protected function buildField(ArrayObject $rset): array
     {
         $rset = $this->prepareField($rset);
-        $f = array(
+        $f = [
             'field_id'       => $rset->field_id,
             'label'          => $this->defaults[$rset->field_id]['label'],
             'category'       => (int)$rset->id_field_category,
@@ -223,7 +223,7 @@ class FieldsConfig
             'position'       => (int)$rset->position,
             'disabled'       => false,
             'width_in_forms' => (int)$rset->width_in_forms,
-        );
+        ];
         return $f;
     }
 
@@ -311,10 +311,10 @@ class FieldsConfig
      */
     private function checkUpdate(): void
     {
-        $class = get_class($this);
+        $class = static::class;
 
         try {
-            $_all_fields = array();
+            $_all_fields = [];
             if (count($this->core_db_fields)) {
                 array_walk(
                     $this->core_db_fields,
@@ -336,21 +336,21 @@ class FieldsConfig
 
             if (count($this->defaults) != count($_all_fields)) {
                 Analog::log(
-                    'Fields configuration count for `' . $this->table .
-                    '` columns does not match records. Is : ' .
-                    count($_all_fields) . ' and should be ' .
-                    count($this->defaults),
+                    'Fields configuration count for `' . $this->table
+                    . '` columns does not match records. Is : '
+                    . count($_all_fields) . ' and should be '
+                    . count($this->defaults),
                     Analog::WARNING
                 );
 
-                $params = array();
+                $params = [];
                 foreach ($this->defaults as $k => $f) {
                     if (!isset($_all_fields[$k])) {
                         Analog::log(
                             'Missing field configuration for field `' . $k . '`',
                             Analog::INFO
                         );
-                        $params[] = array(
+                        $params[] = [
                             'field_id'       => $k,
                             'table_name'     => $this->table,
                             'required'       => $f['required'],
@@ -360,7 +360,7 @@ class FieldsConfig
                             'list_visible'   => $f['list_visible'] ?? false,
                             'list_position'  => $f['list_position'] ?? null,
                             'width_in_forms' => $f['width_in_forms'] ?? 1
-                        );
+                        ];
                     }
                 }
 
@@ -371,9 +371,9 @@ class FieldsConfig
             }
         } catch (Throwable $e) {
             Analog::log(
-                '[' . $class . '] An error occurred while checking update for ' .
-                'fields configuration for table `' . $this->table . '`. ' .
-                $e->getMessage(),
+                '[' . $class . '] An error occurred while checking update for '
+                . 'fields configuration for table `' . $this->table . '`. '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -396,7 +396,7 @@ class FieldsConfig
             //first, we drop all values
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
-                array('table_name' => $this->table)
+                ['table_name' => $this->table]
             );
             $this->zdb->execute($delete);
             //take care of fields categories, for db relations
@@ -405,7 +405,7 @@ class FieldsConfig
             $params = [];
             foreach ($fields as $f) {
                 //build default config for each field
-                $params[] = array(
+                $params[] = [
                     'field_id'       => $f,
                     'table_name'     => $this->table,
                     'required'       => $this->defaults[$f]['required'],
@@ -415,7 +415,7 @@ class FieldsConfig
                     'list_visible'   => $this->defaults[$f]['list_visible'] ?? false,
                     'list_position'  => $this->defaults[$f]['list_position'] ?? -1,
                     'width_in_forms' => $this->defaults[$f]['width_in_forms'] ?? 1
-                );
+                ];
             }
             $this->insert($params);
 
@@ -455,8 +455,6 @@ class FieldsConfig
      */
     public function getFormElements(Login $login, bool $new, bool $selfs = false): array
     {
-        global $preferences;
-
         $hidden_elements = [];
         $form_elements = [];
 
@@ -478,14 +476,14 @@ class FieldsConfig
                 if ($cat_label === null) {
                     $cat_label = $c->category;
                 }
-                $cat = (object)array(
+                $cat = (object)[
                     'id'        => (int)$c->$cpk,
                     'label'     => $cat_label,
-                    'elements'  => array()
-                );
+                    'elements'  => []
+                ];
 
                 $elements = $this->categorized_fields[$c->$cpk];
-                $cat->elements = array();
+                $cat->elements = [];
 
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
@@ -493,7 +491,7 @@ class FieldsConfig
 
                     if ($o->field_id == 'id_adh') {
                         // ignore access control, as member ID is always needed
-                        if (!$preferences->pref_show_id || $new === true) {
+                        if ($new === true) {
                             $hidden_elements[$o->field_id] = $o;
                         } else {
                             $o->type = self::TYPE_STR;
@@ -511,8 +509,11 @@ class FieldsConfig
                             continue;
                         }
 
-                        // enforce access control on admin only fields
-                        if (in_array($o->field_id, $this->admin_fields)) {
+                        // enforce access control on admin only visible fields
+                        if (
+                            $o->visible !== self::NOBODY
+                            && in_array($o->field_id, $this->admin_fields)
+                        ) {
                             $o->visible = self::ADMIN;
                         }
 
@@ -523,13 +524,13 @@ class FieldsConfig
 
                         // skip fields according to access control
                         if (
-                            $o->visible == self::NOBODY ||
-                            ($o->visible == self::ADMIN &&
-                                $access_level < Authentication::ACCESS_ADMIN) ||
-                            ($o->visible == self::STAFF &&
-                                $access_level < Authentication::ACCESS_STAFF) ||
-                            ($o->visible == self::MANAGER &&
-                                $access_level < Authentication::ACCESS_MANAGER)
+                            $o->visible == self::NOBODY
+                            || ($o->visible == self::ADMIN
+                                && $access_level < Authentication::ACCESS_ADMIN)
+                            || ($o->visible == self::STAFF
+                                && $access_level < Authentication::ACCESS_STAFF)
+                            || ($o->visible == self::MANAGER
+                                && $access_level < Authentication::ACCESS_MANAGER)
                         ) {
                             continue;
                         }
@@ -564,8 +565,8 @@ class FieldsConfig
 
                         // disabled field according to access control
                         if (
-                            $o->visible == self::USER_READ &&
-                                $access_level == Authentication::ACCESS_USER
+                            $o->visible == self::USER_READ
+                                && $access_level == Authentication::ACCESS_USER
                         ) {
                             $o->disabled = true;
                         } else {
@@ -587,10 +588,10 @@ class FieldsConfig
                     $form_elements[] = $cat;
                 }
             }
-            return array(
+            return [
                 'fieldsets' => $form_elements,
                 'hiddens'   => $hidden_elements
-            );
+            ];
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred getting form elements',
@@ -644,21 +645,21 @@ class FieldsConfig
                 if ($cat_label === null) {
                     $cat_label = $c->category;
                 }
-                $cat = (object)array(
+                $cat = (object)[
                     'id'        => (int)$c->$cpk,
                     'label'     => $cat_label,
-                    'elements'  => array()
-                );
+                    'elements'  => []
+                ];
 
                 $elements = $this->categorized_fields[$c->$cpk];
-                $cat->elements = array();
+                $cat->elements = [];
 
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
 
                     if ($o->field_id == 'id_adh') {
                         // ignore access control, as member ID is always needed
-                        if (!isset($preferences) || !$preferences->pref_show_id) {
+                        if (!isset($preferences)) {
                             $hidden_elements[] = $o;
                         } else {
                             $o->type = self::TYPE_STR;
@@ -672,13 +673,13 @@ class FieldsConfig
 
                         // skip fields according to access control
                         if (
-                            $o->visible == self::NOBODY ||
-                            ($o->visible == self::ADMIN &&
-                                $access_level < Authentication::ACCESS_ADMIN) ||
-                            ($o->visible == self::STAFF &&
-                                $access_level < Authentication::ACCESS_STAFF) ||
-                            ($o->visible == self::MANAGER &&
-                                $access_level < Authentication::ACCESS_MANAGER)
+                            $o->visible == self::NOBODY
+                            || ($o->visible == self::ADMIN
+                                && $access_level < Authentication::ACCESS_ADMIN)
+                            || ($o->visible == self::STAFF
+                                && $access_level < Authentication::ACCESS_STAFF)
+                            || ($o->visible == self::MANAGER
+                                && $access_level < Authentication::ACCESS_MANAGER)
                         ) {
                             continue;
                         }
@@ -763,25 +764,25 @@ class FieldsConfig
      */
     private function store(): bool
     {
-        $class = get_class($this);
+        $class = static::class;
 
         try {
             $this->zdb->connection->beginTransaction();
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'required'              => ':required',
                     'visible'               => ':visible',
                     'position'              => ':position',
                     FieldsCategories::PK    => ':' . FieldsCategories::PK,
                     'width_in_forms'          => ':width_in_forms'
-                )
+                ]
             )->where(
-                array(
+                [
                     'field_id'      => ':field_id',
                     'table_name'    => $this->table
-                )
+                ]
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
@@ -795,14 +796,14 @@ class FieldsConfig
                         $field['visible'] = 0;
                     }
 
-                    $params = array(
+                    $params = [
                         'required'              => $field['required'],
                         'visible'               => $field['visible'],
                         'position'              => $pos,
                         FieldsCategories::PK    => $field['category'],
                         'field_id'              => $field['field_id'],
                         'width_in_forms'          => $field['width_in_forms']
-                    );
+                    ];
 
                     $stmt->execute($params);
                 }
@@ -816,8 +817,8 @@ class FieldsConfig
                 str_replace(
                     '%s',
                     $this->table,
-                    '[' . $class . '] Fields configuration for table %s stored ' .
-                    'successfully.'
+                    '[' . $class . '] Fields configuration for table %s stored '
+                    . 'successfully.'
                 ),
                 Analog::INFO
             );
@@ -827,9 +828,9 @@ class FieldsConfig
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                '[' . $class . '] An error occurred while storing fields ' .
-                'configuration for table `' . $this->table . '`.' .
-                $e->getMessage(),
+                '[' . $class . '] An error occurred while storing fields '
+                . 'configuration for table `' . $this->table . '`.'
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -852,8 +853,8 @@ class FieldsConfig
             $old_required = $this->zdb->execute($select);
         } catch (\Exception $pe) {
             Analog::log(
-                'Unable to retrieve required fields_config. Maybe ' .
-                'the table does not exists?',
+                'Unable to retrieve required fields_config. Maybe '
+                . 'the table does not exists?',
                 Analog::WARNING
             );
             //not a blocker
@@ -864,35 +865,35 @@ class FieldsConfig
         try {
             $update = $this->zdb->update(self::TABLE);
             $update->set(
-                array(
+                [
                     'required'  => ':required'
-                )
+                ]
             )->where(
-                array(
+                [
                     'field_id'      => ':field_id',
                     'table_name'    => $this->table
-                )
+                ]
             );
 
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             foreach ($old_required as $or) {
                 $stmt->execute(
-                    array(
-                        'required'  => ($or->required === false) ?
-                            ($this->zdb->isPostgres() ? 'false' : 0) : true,
+                    [
+                        'required'  => ($or->required === false)
+                            ? ($this->zdb->isPostgres() ? 'false' : 0) : true,
                         'field_id'  => $or->field_id
-                    )
+                    ]
                 );
             }
 
-            $class = get_class($this);
+            $class = static::class;
             Analog::log(
                 str_replace(
                     '%s',
                     $this->table,
-                    '[' . $class . '] Required fields for table %s upgraded ' .
-                    'successfully.'
+                    '[' . $class . '] Required fields for table %s upgraded '
+                    . 'successfully.'
                 ),
                 Analog::INFO
             );
@@ -907,8 +908,8 @@ class FieldsConfig
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'An error occurred migrating old required fields. | ' .
-                $e->getMessage(),
+                'An error occurred migrating old required fields. | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -926,7 +927,7 @@ class FieldsConfig
     {
         $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
-            array(
+            [
                 'field_id'              => ':field_id',
                 'table_name'            => ':table_name',
                 'required'              => ':required',
@@ -936,7 +937,7 @@ class FieldsConfig
                 'list_visible'          => ':list_visible',
                 'list_position'         => ':list_position',
                 'width_in_forms'          => ':width_in_forms'
-            )
+            ]
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
         foreach ($values as $d) {
@@ -951,7 +952,7 @@ class FieldsConfig
             }
 
             $stmt->execute(
-                array(
+                [
                     'field_id'              => $d['field_id'],
                     'table_name'            => $d['table_name'],
                     'required'              => $required,
@@ -961,7 +962,7 @@ class FieldsConfig
                     'list_visible'          => $list_visible,
                     'list_position'         => $d['list_position'] ?? -1,
                     'width_in_forms'        => $d['width_in_forms'] ?? 1
-                )
+                ]
             );
         }
     }
@@ -1000,15 +1001,15 @@ class FieldsConfig
         //remove not searchable fields
         unset($fields['mdp_adh']);
 
-        foreach ($fields as $k => $f) {
+        foreach (array_keys($fields) as $k) {
             if (
-                $visibles[$k] == FieldsConfig::NOBODY ||
-                ($visibles[$k] == FieldsConfig::ADMIN &&
-                    $access_level < Authentication::ACCESS_ADMIN) ||
-                ($visibles[$k] == FieldsConfig::STAFF &&
-                    $access_level < Authentication::ACCESS_STAFF) ||
-                ($visibles[$k] == FieldsConfig::MANAGER &&
-                    $access_level < Authentication::ACCESS_MANAGER)
+                $visibles[$k] == FieldsConfig::NOBODY
+                || ($visibles[$k] == FieldsConfig::ADMIN
+                    && $access_level < Authentication::ACCESS_ADMIN)
+                || ($visibles[$k] == FieldsConfig::STAFF
+                    && $access_level < Authentication::ACCESS_STAFF)
+                || ($visibles[$k] == FieldsConfig::MANAGER
+                    && $access_level < Authentication::ACCESS_MANAGER)
             ) {
                 unset($fields[$k]);
             }

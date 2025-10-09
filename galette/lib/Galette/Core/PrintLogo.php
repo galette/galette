@@ -33,8 +33,8 @@ namespace Galette\Core;
 class PrintLogo extends Logo
 {
     protected string|int $id = 'custom_print_logo';
-    //database wants a member id (integer), not a string.
-    //Will be used to query the correct id
+    // Database wants a member id (integer), not a string.
+    // Will be used to query the correct id
     protected int $db_id = 999999;
 
     /**

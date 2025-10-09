@@ -163,11 +163,23 @@
             {% endif %}
                                     </div>
             {% if contribution.id == '' %}
-                                    <div class="inline field">
-                                        <label>{{ _T("Dispatch type:") }}</label>
-                                        <i class="circular inverted primary small icon info tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>
-                                        <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %} checked="checked"{% endif %}/> <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
-                                        <input type="radio" name="contrib_type" id="contrib_type_donation" value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_DONATION') %} checked="checked"{% endif %}/> <label for="contrib_type_donation">{{ _T("Donation") }}</label>
+                                    <div class="inline fields">
+                                        <label>
+                                            {{ _T("Dispatch type:") }}
+                                            <i class="circular small basic question icon tooltip" title="{{ _T("Select a contribution type to create for dispatch transaction") }}" aria-hidden="true"></i>
+                                        </label>
+                                        <div class="field inline">
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="contrib_type" id="contrib_type_fee" value="{{ constant('Galette\\Entity\\Contribution::TYPE_FEE') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %} checked="checked"{% endif %}/>
+                                                <label for="contrib_type_fee">{{ _T("Membership fee") }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="field inline">
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="contrib_type" id="contrib_type_donation" value="{{ constant('Galette\\Entity\\Contribution::TYPE_DONATION') }}"{% if type == constant('Galette\\Entity\\Contribution::TYPE_DONATION') %} checked="checked"{% endif %}/>
+                                                <label for="contrib_type_donation">{{ _T("Donation") }}</label>
+                                            </div>
+                                        </div>
                                     </div>
             {% endif %}
                                 </div>
@@ -244,9 +256,10 @@
                                 {% set ptype = preferences.pref_default_paymenttype %}
                             {% endif %}
                             {% include 'components/forms/payment_types.html.twig' with {
-                                    'current': ptype,
-                                    'varname': 'type_paiement_cotis',
-                                    'disabled': contribution.hasSchedule()
+                                'current': ptype,
+                                'varname': 'type_paiement_cotis',
+                                'disabled': contribution.hasSchedule(),
+                                'tip_html': not contribution.hasSchedule() and (login.isAdmin() or login.isStaff()) ? _T('When selecting the type <strong>scheduled payment</strong>, a contribution will be added and you will be asked to create the corresponding scheduled payments afterwards. In that case the amount of the contribution on the present form must equal the total of all the scheduled payments you will define next.') : false
                             } %}
                         </div>
                         <div class="{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}three{% else %}two{% endif %} fields">
@@ -359,56 +372,85 @@
     {% endif %}
 
     $(function() {
-    {% if not contribution.id -%}
-        var _types_amounts = {
-            {%- for key, values in type_cotis_options -%}
-               {%- if values.amount > 0 -%}
-                    {{ key }}: {{ values.amount }},
-                {%- endif -%}
-            {%- endfor -%}
-        };
-        $('#id_type_cotis').dropdown({
-            onChange: function(value) {
-                //change to predefined amount if there is one, and if user has not entered data himself
-                if ($('#montant_cotis').data('userset') != true && _types_amounts[value]) {
-                    var _amount = _types_amounts[value];
-                    $('#montant_cotis').val(_amount);
+        {% if not contribution.id -%}
+            var _types_amounts = {
+                {%- for key, values in type_cotis_options -%}
+                   {%- if values.amount >= 0 and values.amount != '' -%}
+                        {{ key }}: {{ values.amount }},
+                    {%- elseif values.amount == '' -%}
+                        {{ key }}: '',
+                    {%- endif -%}
+                {%- endfor -%}
+            };
+            $('#montant_cotis').on('keyup', function() {
+                //keep trace of user entered data
+                if ($(this).val() == '') {
+                    $(this).data('userset', false);
+                } else {
+                    $(this).data('userset', true);
                 }
-            }
-        });
-        $('#montant_cotis').on('keyup', function() {
-            //keep trace of user entered data
-            if ($(this).val() == '') {
-                $(this).data('userset', false);
-            } else {
-                $(this).data('userset', true);
-            }
-        });
+            });
+            {% if preferences.pref_membership_ext != "" %}
+                var _types_extensions = {
+                    {%- for key, values in type_cotis_options -%}
+                       {%- if values.extension < 0 -%}
+                            {{ key }}: {{ preferences.pref_membership_ext }},
+                        {%- elseif values.extension > 0 -%}
+                            {{ key }}: {{ values.extension }},
+                        {%- endif -%}
+                    {%- endfor -%}
+                };
+                $('#duree_mois_cotis').on('keyup', function() {
+                    //keep trace of user entered data
+                    if ($(this).val() == '') {
+                        $(this).data('userset', false);
+                    } else {
+                        $(this).data('userset', true);
+                    }
+                });
+            {% endif %}
+            $('#id_type_cotis').dropdown({
+                onChange: function(value) {
+                    //change to amount defined in settings if user has not entered data himself
+                    if ($('#montant_cotis').data('userset') != true) {
+                        var _amount = _types_amounts[value];
+                        $('#montant_cotis').val(_amount);
+                        $('#montant_cotis').transition('glow');
+                    }
+                    {% if preferences.pref_membership_ext != "" %}
+                        if ($('#duree_mois_cotis').data('userset') != true) {
+                            var _extension = _types_extensions[value];
+                            $('#duree_mois_cotis').val(_extension);
+                            $('#duree_mois_cotis').transition('glow');
+                        }
+                    {% endif %}
+                }
+            });
         {%- endif %}
 
         {% if contribution.isTransactionPart() and contribution.transaction.getMissingAmount() %}
-        $('#transaction_related').hide();
-        $('#montant_cotis').on('change', function() {
-            var _amount = {{ contribution.transaction.getMissingAmount() }};
-            var _current = $(this).val();
-            if (_current < _amount) {
-                $('#transaction_related').show();
-            } else if (_current > _amount) {
-                {% include "elements/js/modal.js.twig" with {
-                    modal_title_twig: _T("Contribution amount should not be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js"),
-                    modal_without_content: true,
-                    modal_class: "mini",
-                    modal_deny_only: true,
-                    modal_cancel_text: _T("Close")|e("js"),
-                    modal_classname: "redalert",
-                } %}
-            } else {
-                $('#transaction_related').hide();
-            }
-        });
-    {% endif %}
+            $('#transaction_related').hide();
+            $('#montant_cotis').on('change', function() {
+                var _amount = {{ contribution.transaction.getMissingAmount() }};
+                var _current = $(this).val();
+                if (_current < _amount) {
+                    $('#transaction_related').show();
+                } else if (_current > _amount) {
+                    {% include "elements/js/modal.js.twig" with {
+                        modal_title_twig: _T("Contribution amount should not be greater than %max")|replace({'%max': contribution.transaction.getMissingAmount()})|e("js"),
+                        modal_without_content: true,
+                        modal_class: "mini",
+                        modal_deny_only: true,
+                        modal_cancel_text: _T("Close")|e("js"),
+                        modal_classname: "redalert",
+                    } %}
+                } else {
+                    $('#transaction_related').hide();
+                }
+            });
+        {% endif %}
 
-    {% if contribution.hasSchedule() %}
+        {% if contribution.hasSchedule() %}
             {# Contributions popup #}
             var _btnuser_mapping = function(){
                 $('#scheduledslist').click(function(){
@@ -424,7 +466,7 @@
                             loader: 'button'
                         } %},
                         success: function(res){
-                            _contribs_dialog(res, '{{ contribution.id }}');
+                            _contribs_dialog(res);
                         },
                         error: function() {
                             {% include "elements/js/modal.js.twig" with {
@@ -441,7 +483,7 @@
             }
             _btnuser_mapping();
 
-            var _contribs_dialog = function(res, id_cotis){
+            var _contribs_dialog = function(res){
                 {% include "elements/js/modal.js.twig" with {
                     modal_title_twig: _T("Scheduled payments")|e("js"),
                     modal_content: "res",
@@ -450,17 +492,14 @@
                     modal_deny_only: true,
                     modal_cancel_text: _T("Close")|e('js')
                 } %}
-                _contribs_ajax_mapper(res, id_cotis);
+                _contribs_ajax_mapper(res);
             }
 
-            var _contribs_ajax_mapper = function(res, id_cotis){
-                /*$('.scheduledpayments .filter.icon').remove();
-                $('.scheduledpayments .infoline .button').remove();
-                $('.scheduledpayments .contribution_row input[type=checkbox]').hide();
-
+            var _contribs_ajax_mapper = function(res){
+                $('.scheduledpayments .schedule_row input[type=checkbox]').hide();
+                $('.infoline .right.segment').hide();
                 //Initialize Fomantic components
                 $('.scheduledpayments .dropdown').dropdown();
-                {% include "elements/js/calendar.js.twig" %}
 
                 //Deactivate contributions list links
                 $('.scheduledpayments tbody a').click(function(){
@@ -468,45 +507,14 @@
                     return false;
                 });
 
-                //Use JS to send forms
-                $('.scheduledpayments form').on('submit', function(){
-                    var _form = $(this);
-                    $.ajax({
-                        url: _form.attr('action'),
-                        type: "POST",
-                        data: _form.serialize(),
-                        {% include "elements/js/loader.js.twig" with {
-                            selector: '.scheduledpayments'
-                        } %},
-                        success: function(res){
-                            $('#main-container').remove();
-                            $('.scheduledpayments .content').append(res);
-                            _contribs_ajax_mapper(res, max_amount);
-                        },
-                        error: function() {
-                            {% include "elements/js/modal.js.twig" with {
-                                modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
-                                modal_without_content: true,
-                                modal_class: "mini",
-                                modal_deny_only: true,
-                                modal_cancel_text: _T("Close")|e("js"),
-                                modal_classname: "redalert",
-                            } %}
-                        }
-                    });
-                    return false;
-                });
-
-                _bindDropdownsAutosubmit();*/
-
                 //Bind pagination and ordering links
-                /*$('.scheduledpayments .pagination a, .scheduledpayments thead a').click(function() {
+                $('.scheduledpayments .pagination a, .scheduledpayments thead a').click(function(event) {
+                    event.preventDefault();
                     $.ajax({
                         url: this.href,
                         type: "GET",
                         data: {
-                            ajax: true,
-                            max_amount: max_amount
+                            id_cotis: '{{ contribution.id }}'
                         },
                         {% include "elements/js/loader.js.twig" with {
                             selector: '.scheduledpayments'
@@ -514,11 +522,11 @@
                         success: function(res){
                             $('#main-container').remove();
                             $('.scheduledpayments .content').append(res);
-                            _contribs_ajax_mapper(res, max_amount);
+                            _contribs_ajax_mapper(res);
                         },
                         error: function() {
                             {% include "elements/js/modal.js.twig" with {
-                                modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
+                                modal_title_twig: _T("An error occurred displaying scheduled payments :(")|e("js"),
                                 modal_without_content: true,
                                 modal_class: "mini",
                                 modal_deny_only: true,
@@ -528,42 +536,9 @@
                         },
                     });
                     return false;
-                });*/
-
-                //Bind reset filters button
-                /*$('#clear_filter').click(function(event) {
-                    var _this = $(this);
-                    _this.closest('form').submit(function(event) {
-                        var _form = $(this);
-                        $.ajax({
-                            url: _form.attr('action'),
-                            type: "POST",
-                            data: {
-                                clear_filter: true
-                            },
-                            {% include "elements/js/loader.js.twig" with {
-                                selector: '.scheduledpayments'
-                            } %},
-                            success: function(res){
-                                $('#main-container').remove();
-                                $('.scheduledpayments .content').append(res);
-                                _contribs_ajax_mapper(res, max_amount);
-                            },
-                            error: function() {
-                                {% include "elements/js/modal.js.twig" with {
-                                    modal_title_twig: _T("An error occurred displaying contributions :(")|e("js"),
-                                    modal_without_content: true,
-                                    modal_class: "mini",
-                                    modal_deny_only: true,
-                                    modal_cancel_text: _T("Close")|e("js"),
-                                    modal_classname: "redalert",
-                                } %}
-                            }
-                        });
-                    });
-                });*/
+                });
             }
-    {% endif %}
+        {% endif %}
     });
 </script>
 {% endblock %}

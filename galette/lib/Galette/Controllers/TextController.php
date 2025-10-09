@@ -67,7 +67,7 @@ class TextController extends AbstractController
             $response,
             'pages/configuration_texts.html.twig',
             [
-                'page_title'        => _T("Automatic emails texts edition"),
+                'page_title'        => _T("Emails content"),
                 'texts'             => $texts,
                 'reflist'           => $texts->getRefs($lang),
                 'langlist'          => $this->i18n->getList(),
@@ -75,6 +75,7 @@ class TextController extends AbstractController
                 'cur_lang_name'     => $this->i18n->getNameFromId($lang),
                 'cur_ref'           => $ref,
                 'mtxt'              => $mtxt,
+                'documentation'     => 'usermanual/configuration.html#emails-contents'
             ]
         );
         return $response;
@@ -134,19 +135,17 @@ class TextController extends AbstractController
         if (!$res) {
             $this->flash->addMessage(
                 'error_detected',
-                preg_replace(
-                    '(%s)',
+                sprintf(
+                    _T('Email: \'%1$s\' has not been modified!'),
                     $mtxt->tcomment,
-                    _T("Email: '%s' has not been modified!")
                 )
             );
         } else {
             $this->flash->addMessage(
                 'success_detected',
-                preg_replace(
-                    '(%s)',
-                    $mtxt->tcomment,
-                    _T("Email: '%s' has been successfully modified.")
+                sprintf(
+                    _T('Email: \'%1$s\' has been successfully modified.'),
+                    $mtxt->tcomment
                 )
             );
         }

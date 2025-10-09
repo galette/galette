@@ -26,6 +26,7 @@ namespace Galette\Features;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Repository\DynamicFieldsSet;
+use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
 use Galette\DynamicFields\File;
@@ -88,10 +89,6 @@ trait Dynamics
     protected function dynamicsCheck(array $post, array $required, array $disabled): bool
     {
         if (!isset($this->dynamics)) {
-            Analog::log(
-                'Dynamics fields have not been loaded, cannot be checked. (from: ' . __METHOD__ . ')',
-                Analog::WARNING
-            );
             $this->loadDynamicFields();
         }
 
@@ -107,7 +104,7 @@ trait Dynamics
                     continue;
                 }
 
-                list($field_id, $val_index) = explode('_', str_replace($this->name_pattern, '', $key));
+                [$field_id, $val_index] = explode('_', str_replace($this->name_pattern, '', $key));
                 if (!is_numeric($field_id) || !is_numeric($val_index)) {
                     continue;
                 }
@@ -131,7 +128,7 @@ trait Dynamics
                 }
             }
 
-            foreach ($dynamic_fields as $key => $dfield_values) {
+            foreach ($dynamic_fields as $dfield_values) {
                 $field_id = (int)$dfield_values['field_id'];
                 $value = $dfield_values['value'];
                 $val_index = (int)$dfield_values['val_index'];
@@ -142,53 +139,57 @@ trait Dynamics
                         $fields[$field_id]->getName(),
                         _T('Missing required field %field')
                     );
+                } elseif ($fields[$field_id] instanceof File) {
+                    //delete checkbox
+                    $filename = $fields[$field_id]->getFileName($this->id, $val_index);
+                    if (file_exists(GALETTE_FILES_PATH . $filename)) {
+                        unlink(GALETTE_FILES_PATH . $filename);
+                    } elseif (!$this instanceof Adherent) {
+                        $test_filename = $fields[$field_id]->getFileName($this->id, $val_index, 'member');
+                        if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
+                            unlink(GALETTE_FILES_PATH . $test_filename);
+                        }
+                    }
+                    $this->dynamics->setValue($this->id, $field_id, $val_index, '');
                 } else {
-                    if ($fields[$field_id] instanceof File) {
-                        //delete checkbox
-                        $filename = $fields[$field_id]->getFileName($this->id, $val_index);
-                        if (file_exists(GALETTE_FILES_PATH . $filename)) {
-                            unlink(GALETTE_FILES_PATH . $filename);
-                        } elseif (!$this instanceof Adherent) {
-                            $test_filename = $fields[$field_id]->getFileName($this->id, $val_index, 'member');
-                            if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
-                                unlink(GALETTE_FILES_PATH . $test_filename);
-                            }
-                        }
-                        $this->dynamics->setValue($this->id, $field_id, $val_index, '');
-                    } else {
-                        if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
-                            //check date format
-                            try {
-                                $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                    if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
+                        //check date format
+                        try {
+                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                            if ($d === false) {
+                                //try with non localized date
+                                $d = \DateTime::createFromFormat("Y-m-d", $value);
                                 if ($d === false) {
-                                    //try with non localized date
-                                    $d = \DateTime::createFromFormat("Y-m-d", $value);
-                                    if ($d === false) {
-                                        throw new \Exception('Incorrect format');
-                                    }
+                                    throw new \Exception('Incorrect format');
                                 }
-                            } catch (Throwable $e) {
-                                $valid = false;
-                                Analog::log(
-                                    'Wrong date format. field: ' . $field_id .
-                                    ', value: ' . $value . ', expected fmt: ' .
-                                    __("Y-m-d") . ' | ' . $e->getMessage(),
-                                    Analog::INFO
-                                );
-                                $this->errors[] = sprintf(
-                                    //TRANS: %1$s date format, %2$s is the field name
-                                    _T('- Wrong date format (%1$s) for %2$s!'),
-                                    __("Y-m-d"),
-                                    $fields[$field_id]->getName()
-                                );
                             }
+                            $derrors = \DateTime::getLastErrors();
+                            if (!empty($derrors['warning_count'])) {
+                                throw new \Exception(implode("\n", $derrors['warnings']));
+                            }
+                            //always store date with default format
+                            $value = $d->format('Y-m-d');
+                        } catch (Throwable $e) {
+                            $valid = false;
+                            Analog::log(
+                                'Wrong date format. field: ' . $field_id
+                                . ', value: ' . $value . ', expected fmt: '
+                                . __("Y-m-d") . ' | ' . $e->getMessage(),
+                                Analog::INFO
+                            );
+                            $this->errors[] = sprintf(
+                                //TRANS: %1$s date format, %2$s is the field name
+                                _T('- Wrong date format (%1$s) for %2$s!'),
+                                __("Y-m-d"),
+                                $fields[$field_id]->getName()
+                            );
                         }
-                        //actual field value
-                        if ($value !== null && trim($value) !== '') {
-                            $this->dynamics->setValue($this->id ?? null, $field_id, $val_index, $value);
-                        } else {
-                            $this->dynamics->unsetValue($field_id, $val_index);
-                        }
+                    }
+                    //actual field value
+                    if ($value !== null && trim($value) !== '') {
+                        $this->dynamics->setValue($this->id ?? null, $field_id, $val_index, $value);
+                    } else {
+                        $this->dynamics->unsetValue($field_id, $val_index);
                     }
                 }
             }
@@ -208,10 +209,6 @@ trait Dynamics
     protected function dynamicsStore(bool $transaction = false): bool
     {
         if (!isset($this->dynamics)) {
-            Analog::log(
-                'Dynamics fields have not been loaded, cannot be stored. (from: ' . __METHOD__ . ')',
-                Analog::WARNING
-            );
             $this->loadDynamicFields();
         }
         $return = $this->dynamics->storeValues($this->id, $transaction);
@@ -225,7 +222,7 @@ trait Dynamics
     /**
      * Store dynamic Files
      *
-     * @param array<string, mixed> $files Posted files
+     * @param array<UploadedFileInterface> $files Posted files
      *
      * @return void
      */
@@ -240,40 +237,28 @@ trait Dynamics
                 continue;
             }
 
-            list($field_id, $val_index) = explode('_', str_replace($this->name_pattern, '', $key));
+            [$field_id, $val_index] = explode('_', str_replace($this->name_pattern, '', $key));
             if (!is_numeric($field_id) || !is_numeric($val_index)) {
                 continue;
             }
 
             if (
-                $file['error'] == UPLOAD_ERR_NO_FILE
-                && $file['name'] == ''
-                && $file['tmp_name'] == ''
+                $file->getError() == UPLOAD_ERR_NO_FILE
+                && $file->getClientFilename() == ''
             ) {
                 //not upload atempt.
                 continue;
-            } elseif ($file['error'] !== UPLOAD_ERR_OK) {
+            } elseif ($file->getError() !== UPLOAD_ERR_OK) {
                 Analog::log("file upload error", Analog::ERROR);
                 continue;
             }
 
-            $tmp_filename = $file['tmp_name'];
-            if ($tmp_filename == '') {
-                Analog::log("empty temporary filename", Analog::ERROR);
-                continue;
-            }
-
-            if (!is_uploaded_file($tmp_filename)) {
-                Analog::log("not an uploaded file", Analog::ERROR);
-                continue;
-            }
-
-            $max_size =
-                $fields[$field_id]->getSize() ?
-                $fields[$field_id]->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
-            if ($file['size'] > $max_size) {
+            $max_size
+                = $fields[$field_id]->getSize()
+                ? $fields[$field_id]->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
+            if ($file->getSize() > $max_size) {
                 Analog::log(
-                    "file too large: " . $file['size'] . " Ko, vs $max_size Ko allowed",
+                    "file too large: " . $file->getSize() . " Ko, vs $max_size Ko allowed",
                     Analog::ERROR
                 );
                 $this->errors[] = preg_replace(
@@ -297,11 +282,8 @@ trait Dynamics
             );
             Analog::log("new file: $new_filename", Analog::DEBUG);
 
-            move_uploaded_file(
-                $tmp_filename,
-                GALETTE_FILES_PATH . $new_filename
-            );
-            $this->dynamics->setValue($this->id, (int)$field_id, (int)$val_index, $file['name']);
+            $file->moveTo(GALETTE_FILES_PATH . $new_filename);
+            $this->dynamics->setValue($this->id, (int)$field_id, (int)$val_index, $file->getClientFilename());
             $store = true;
         }
 
@@ -320,14 +302,9 @@ trait Dynamics
     protected function dynamicsRemove(bool $transaction = false): bool
     {
         if (!isset($this->dynamics)) {
-            Analog::log(
-                'Dynamics fields have not been loaded, cannot be removed. (from: ' . __METHOD__ . ')',
-                Analog::WARNING
-            );
             $this->loadDynamicFields();
         }
-        $return = $this->dynamics->removeValues($this->id, $transaction);
-        return $return;
+        return $this->dynamics->removeValues($this->id, $transaction);
     }
 
     /**
@@ -365,6 +342,6 @@ trait Dynamics
      */
     public function getFormName(): string
     {
-        return array_search(get_class($this), DynamicFieldsSet::getClasses());
+        return array_search(static::class, DynamicFieldsSet::getClasses());
     }
 }

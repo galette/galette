@@ -25,7 +25,9 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use Galette\Events\GaletteEvent;
+use Galette\Interfaces\AccessManagementInterface;
 use Galette\Repository\PaymentTypes;
+use Psr\Http\Message\UploadedFileInterface;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -48,7 +50,7 @@ use Galette\Helpers\EntityHelper;
  * @property ?integer $member
  * @property ?integer $payment_type
  */
-class Transaction
+class Transaction implements AccessManagementInterface
 {
     use Dynamics;
     use EntityHelper;
@@ -107,32 +109,32 @@ class Transaction
      */
     protected function setFields(): self
     {
-        $this->fields = array(
-            self::PK            => array(
+        $this->fields = [
+            self::PK            => [
                 'label'    => null, //not a field in the form
                 'propname' => 'id'
-            ),
-            'trans_date'          => array(
+            ],
+            'trans_date'          => [
                 'label'    => _T("Date:"), //not a field in the form
                 'propname' => 'date'
-            ),
-            'trans_amount'       => array(
+            ],
+            'trans_amount'       => [
                 'label'    => _T("Amount:"),
                 'propname' => 'amount'
-            ),
-            'trans_desc'          => array(
+            ],
+            'trans_desc'          => [
                 'label'    => _T("Description:"),
                 'propname' => 'description'
-            ),
-            Adherent::PK          => array(
+            ],
+            Adherent::PK          => [
                 'label'    => _T("Originator:"),
                 'propname' => 'member'
-            ),
-            'type_paiement_trans' => array(
+            ],
+            'type_paiement_trans' => [
                 'label'    => _T("Payment type:"),
                 'propname' => 'payment_type'
-            )
-        );
+            ]
+        ];
         return $this;
     }
 
@@ -147,7 +149,7 @@ class Transaction
     {
         if (!$this->login->isLogged()) {
             Analog::log(
-                'Non-logged-in users cannot load transaction id `' . $id,
+                'Non-logged-in users cannot load transaction id `' . $id . '`',
                 Analog::ERROR
             );
             return false;
@@ -157,9 +159,9 @@ class Transaction
             $select = $this->zdb->select(self::TABLE, 't');
             $select->where([self::PK => $id]);
             $select->join(
-                array('a' => PREFIX_DB . Adherent::TABLE),
+                ['a' => PREFIX_DB . Adherent::TABLE],
                 't.' . Adherent::PK . '=a.' . Adherent::PK,
-                array()
+                []
             );
 
             //restrict query on current member id if he's not admin nor staff member
@@ -185,16 +187,16 @@ class Transaction
                 return true;
             } else {
                 Analog::log(
-                    'Transaction id `' . $id . '` does not exists',
-                    Analog::WARNING
+                    'No transaction #' . $id . ' (user ' . $this->login->id . ')',
+                    Analog::ERROR
                 );
                 return false;
             }
         } catch (Throwable $e) {
             Analog::log(
-                'Cannot load transaction form id `' . $id . '` | ' .
-                $e->getMessage(),
-                Analog::WARNING
+                'An error occurred attempting to load contribution #' . $id
+                . $e->getMessage(),
+                Analog::ERROR
             );
             throw $e;
         }
@@ -221,7 +223,7 @@ class Transaction
             if ($this->getDispatchedAmount() > 0) {
                 $c = new Contributions($this->zdb, $this->login);
                 $clist = $c->getListFromTransaction($this->id);
-                $cids = array();
+                $cids = [];
                 foreach ($clist as $cid) {
                     $cids[] = $cid->id;
                 }
@@ -253,8 +255,8 @@ class Transaction
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occurred trying to remove transaction #' .
-                $this->id . ' | ' . $e->getMessage(),
+                'An error occurred trying to remove transaction #'
+                . $this->id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -299,13 +301,12 @@ class Transaction
     public function check(array $values, array $required, array $disabled): bool|array
     {
         global $preferences;
-        $this->errors = array();
+        $this->errors = [];
 
         $fields = array_keys($this->fields);
         foreach ($fields as $key) {
             //first, let's sanitize values
             $key = strtolower($key);
-            $prop = $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
                 $value = $values[$key];
@@ -317,49 +318,59 @@ class Transaction
             }
 
             // if the field is enabled, check it
-            if (!isset($disabled[$key])) {
-                // now, check validity
-                if ($value != '') {
-                    switch ($key) {
-                        // dates
-                        case 'trans_date':
-                            $this->setDate($key, $value);
-                            break;
-                        case Adherent::PK:
-                            $this->member = (int)$value;
-                            break;
-                        case 'trans_amount':
-                            //FIXME: this is a hack to allow comma as decimal separator
-                            $value = strtr((string)$value, ',', '.');
-                            $this->amount = (double)$value;
-                            if (!is_numeric($value)) {
-                                $this->errors[] = _T("- The amount must be an integer!");
-                            }
-                            break;
-                        case 'trans_desc':
-                            /** TODO: retrieve field length from database and check that */
-                            $this->description = strip_tags($value);
-                            if (mb_strlen($value) > 150) {
-                                $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
-                            }
-                            break;
-                        case 'type_paiement_trans':
-                            if ($value == 0) {
-                                break;
-                            }
-                            $ptypes = new PaymentTypes(
-                                $this->zdb,
-                                $preferences,
-                                $this->login
-                            );
-                            $ptlist = $ptypes->getList();
-                            if (isset($ptlist[$value])) {
-                                $this->payment_type = (int)$value;
+            // now, check validity
+            if (!isset($disabled[$key]) && $value != '') {
+                switch ($key) {
+                    // dates
+                    case 'trans_date':
+                        $this->setDate($key, $value);
+                        break;
+                    case Adherent::PK:
+                        if ($value != '') {
+                            $member = new Adherent($this->zdb, (int)$value, false);
+                            if (
+                                !$this->login->isStaff()
+                                && !$this->login->isAdmin()
+                                && !$this->login->isGroupManager(array_keys($member->getGroups()))
+                            ) {
+                                $this->errors[] = _T("- Please select a member from a group you manage.");
+                                $this->member = null;
                             } else {
-                                $this->errors[] = _T("- Unknown payment type");
+                                $this->member = (int)$value;
                             }
+                        }
+                        break;
+                    case 'trans_amount':
+                        //FIXME: this is a hack to allow comma as decimal separator
+                        $value = strtr((string)$value, ',', '.');
+                        $this->amount = (float)$value;
+                        if (!is_numeric($value)) {
+                            $this->errors[] = _T("- The amount must be an integer!");
+                        }
+                        break;
+                    case 'trans_desc':
+                        /** TODO: retrieve field length from database and check that */
+                        $this->description = strip_tags($value);
+                        if (mb_strlen($value) > 150) {
+                            $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
+                        }
+                        break;
+                    case 'type_paiement_trans':
+                        if ($value == 0) {
                             break;
-                    }
+                        }
+                        $ptypes = new PaymentTypes(
+                            $this->zdb,
+                            $preferences,
+                            $this->login
+                        );
+                        $ptlist = $ptypes->getList();
+                        if (isset($ptlist[$value])) {
+                            $this->payment_type = (int)$value;
+                        } else {
+                            $this->errors[] = _T("- Unknown payment type");
+                        }
+                        break;
                 }
             }
         }
@@ -389,9 +400,9 @@ class Transaction
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store a transaction' .
-                print_r($this->errors, true),
-                Analog::DEBUG
+                'Some errors has been thew attempting to edit/store a transaction'
+                . print_r($this->errors, true),
+                Analog::ERROR
             );
             return $this->errors;
         } else {
@@ -416,9 +427,8 @@ class Transaction
 
         try {
             $this->zdb->connection->beginTransaction();
-            $values = array();
+            $values = [];
             $fields = $this->getDbFields($this->zdb);
-            /** FIXME: quote? */
             foreach ($fields as $field) {
                 $prop = $this->fields[$field]['propname'];
                 if (isset($this->$prop)) {
@@ -426,7 +436,7 @@ class Transaction
                 }
             }
 
-            if (!isset($this->id) || $this->id == '') {
+            if (!isset($this->id)) {
                 //we're inserting a new transaction
                 unset($values[self::PK]);
                 $insert = $this->zdb->insert(self::TABLE);
@@ -475,8 +485,8 @@ class Transaction
         } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
-                $e->getTraceAsString(),
+                'Something went wrong :\'( | ' . $e->getMessage() . "\n"
+                . $e->getTraceAsString(),
                 Analog::ERROR
             );
             throw $e;
@@ -491,25 +501,25 @@ class Transaction
     public function getDispatchedAmount(): float
     {
         if (empty($this->id)) {
-            return (double)0;
+            return (float)0;
         }
 
         try {
             $select = $this->zdb->select(Contribution::TABLE);
             $select->columns(
-                array(
+                [
                     'sum' => new Expression('SUM(montant_cotis)')
-                )
+                ]
             )->where([self::PK => $this->id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $dispatched_amount = $result->sum;
-            return (double)$dispatched_amount;
+            return (float)$dispatched_amount;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred retrieving dispatched amounts | ' .
-                $e->getMessage(),
+                'An error occurred retrieving dispatched amounts | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -530,19 +540,19 @@ class Transaction
         try {
             $select = $this->zdb->select(Contribution::TABLE);
             $select->columns(
-                array(
+                [
                     'sum' => new Expression('SUM(montant_cotis)')
-                )
+                ]
             )->where([self::PK => $this->id]);
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $dispatched_amount = $result->sum;
-            return (double)$this->amount - (double)$dispatched_amount;
+            return (float)$this->amount - (float)$dispatched_amount;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred retrieving missing amounts | ' .
-                $e->getMessage(),
+                'An error occurred retrieving missing amounts | '
+                . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -574,7 +584,7 @@ class Transaction
     public function getDbFields(Db $zdb): array
     {
         $columns = $zdb->getColumns(self::TABLE);
-        $fields = array();
+        $fields = [];
         foreach ($columns as $col) {
             $fields[] = $col->getName();
         }
@@ -588,8 +598,8 @@ class Transaction
      */
     public function getRowClass(): string
     {
-        return ($this->getMissingAmount() == 0) ?
-            'transaction-normal' : 'transaction-uncomplete';
+        return ($this->getMissingAmount() == 0)
+            ? 'transaction-normal' : 'transaction-uncomplete';
     }
 
     /**
@@ -606,13 +616,13 @@ class Transaction
                 case 'date':
                     return $this->getDate($name);
                 case 'id':
-                    if (isset($this->$name) && $this->$name !== null) {
+                    if (isset($this->$name)) {
                         return (int)$this->$name;
                     }
                     return null;
                 case 'amount':
                     if (isset($this->$name)) {
-                        return (double)$this->$name;
+                        return (float)$this->$name;
                     }
                     return null;
                 case 'fields':
@@ -623,7 +633,7 @@ class Transaction
         } else {
             Analog::log(
                 sprintf(
-                    'Property %1$s does not exists for transaction',
+                    'Property %1$s does not exist for transaction',
                     $name
                 ),
                 Analog::WARNING
@@ -635,7 +645,7 @@ class Transaction
     /**
      * Handle files (dynamics files)
      *
-     * @param array<string,mixed> $files Files sent
+     * @param array<UploadedFileInterface> $files Files sent
      *
      * @return array<string>|true
      */
@@ -647,8 +657,8 @@ class Transaction
 
         if (count($this->errors) > 0) {
             Analog::log(
-                'Some errors has been thew attempting to edit/store a transaction files' . "\n" .
-                print_r($this->errors, true),
+                'Some errors has been thew attempting to edit/store a transaction files' . "\n"
+                . print_r($this->errors, true),
                 Analog::ERROR
             );
             return $this->errors;
@@ -658,7 +668,28 @@ class Transaction
     }
 
     /**
-     * Can current logged-in user display transaction
+     * Can current logged-in user create a transaction?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canCreate(Login $login): bool
+    {
+        global $preferences;
+
+        if (!$login->isLogged()) {
+            return false;
+        }
+
+        if ($login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+        return $preferences->pref_bool_groupsmanagers_create_transactions && $login->isGroupManager();
+    }
+
+    /**
+     * Can current logged-in user display transactions?
      *
      * @param Login $login Login instance
      *
@@ -699,5 +730,50 @@ class Transaction
         }
 
         return false;
+    }
+
+    /**
+     * Can current logged-in user edit a transaction?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canEdit(Login $login): bool
+    {
+        return $this->canDelete($login);
+    }
+
+    /**
+     * Can current logged-in user display transaction edit page?
+     * Specific right for groups managers to attach/detach contributions from a transaction -_-
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canAttachAndDetach(Login $login): bool
+    {
+        if ($this->canEdit($login)) {
+            return true;
+        }
+
+        global $preferences;
+        return isset($this->id) && $login->isGroupManager() && ($preferences->pref_bool_groupsmanagers_create_contributions || $preferences->pref_bool_groupsmanagers_see_contributions);
+    }
+
+    /**
+     * Can current logged-in user delete a transaction?
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canDelete(Login $login): bool
+    {
+        if (!$login->isLogged()) {
+            return false;
+        }
+        return $login->isAdmin() || $login->isStaff();
     }
 }

@@ -27,13 +27,7 @@ use DateTime;
 use Galette\Core\Db;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
-use Analog\Analog;
 use Laminas\Db\Adapter\Driver\StatementInterface;
-use Laminas\Db\Sql\Expression;
-use Laminas\Db\Sql\Predicate\IsNull;
-use Laminas\Db\Sql\Predicate\Operator;
-use Laminas\Db\Sql\Predicate\PredicateSet;
-use Laminas\Db\Sql\Select;
 use Throwable;
 
 /**
@@ -65,7 +59,7 @@ class Reminders
         if (isset($selected)) {
             $this->selected = array_map('intval', $selected);
         } else {
-            $this->selected = array(Reminder::IMPENDING, Reminder::LATE);
+            $this->selected = [Reminder::IMPENDING, Reminder::LATE];
         }
     }
 
@@ -119,11 +113,9 @@ class Reminders
                 } elseif ($now > $first && $first > $last_reminder) {
                     $toremind = true;
                 }
-            } else {
+            } elseif ($now >= $first) {
                 //no existing reminder. Just check if we exceed first reminder date to send it
-                if ($now >= $first) {
-                    $toremind = true;
-                }
+                $toremind = true;
             }
 
             if ($toremind === true) {
@@ -176,10 +168,8 @@ class Reminders
             if ($reminders->count() > 0) {
                 //a reminder of this type already exists in period. Do not remind until date has been checked.
                 $toremind = false;
-
                 $reminder = $reminders->current();
                 $last_reminder = new DateTime($reminder['reminder_date']);
-
                 if ($now >= $second && $second > $last_reminder) {
                     //current date is after second reminder
                     $toremind = true;
@@ -187,11 +177,9 @@ class Reminders
                     //current date is after first reminder
                     $toremind = true;
                 }
-            } else {
+            } elseif ($now >= $first) {
                 //no existing reminder. Just check if we exceed first reminder date to send it
-                if ($now >= $first) {
-                    $toremind = true;
-                }
+                $toremind = true;
             }
 
             if ($toremind === true) {
@@ -214,7 +202,7 @@ class Reminders
         $limit_now->setTime(23, 59, 59);
         if ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            list($j, $m) = explode('/', $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', $preferences->pref_beg_membership);
             $limit_date = new \DateTime($limit_now->format('Y') . '-' . $m . '-' . $j);
             while ($limit_now <= $limit_date) {
                 $limit_date->sub(new \DateInterval('P1Y'));
@@ -265,8 +253,7 @@ class Reminders
 
         $this->select_stmt = $this->zdb->sql->prepareStatementForSqlObject($select);
 
-        $reminders = array();
-        $m = new Members();
+        $reminders = [];
 
         if (in_array(Reminder::LATE, $this->selected)) {
             $this->loadLate($nomail);

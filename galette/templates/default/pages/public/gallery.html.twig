@@ -1,0 +1,77 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends 'elements/list.html.twig' %}
+
+{% set nb = nb_members %}
+{% set is_public = not login.isLogged() %}
+{% set list_type = nb_members > 0 ? 'cards' : 'empty' %}
+
+{% macro drawEntry(member) %}
+    <div class="ui fluid card">
+        {% set mid = member.id %}
+        <div class="image">
+            <img
+                src="{{ url_for("photo", {"id": member.id, "rand": random()}) }}"
+                width="{{ member.picture.getOptimalWidth() }}"
+                height="{{ member.picture.getOptimalHeight() }}"
+                alt="{{ member.sfullname }}{% if member.nickname != '' %} ({{ member.nickname|escape }}){% endif %}"
+            />
+        </div>
+        <div class="center aligned content">
+            <div class="header">{{ member.sfullname }}</div>
+    {% if member.nickname != '' %}
+            <div class="meta">
+                {{ member.nickname|escape }}
+            </div>
+    {% endif %}
+        </div>
+
+    {% set mgroups = member.getManagedGroups() %}
+    {% if member.isStaff() or mgroups|length %}
+        <div class="extra content">
+            <div class="ui labels">
+        {% if member.isStaff() %}
+                <div class="ui fluid label">
+                    <i class="ui user tie orange icon" aria-hidden="true"></i>
+                    {{ member.sstatus }}
+                </div>
+        {% endif %}
+        {% if mgroups|length %}
+                <div class="ui fluid label inline-tooltip" data-position="top right">
+                    <i class="ui users cog orange icon" aria-hidden="true"></i>
+                    {{ __('Group manager') }}
+                </div>
+                <div class="ui popup">
+                    <div class="header">{{ __('Manages:') }}</div>
+                    <div class="content">
+                        <div class="ui bulleted list">
+                        {% for group in mgroups %}
+                            <div class="item">{{ group.getName() }}</div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+        {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    </div>
+{% endmacro %}
