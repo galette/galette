@@ -1440,11 +1440,12 @@ class Preferences
     /**
      * Get email signature
      *
-     * @param PHPMailer $mail PHPMailer instance
+     * @param PHPMailer $mail    PHPMailer instance
+     * @param boolean   $as_text Whether to return signature as text or HTML (default)
      *
      * @return string
      */
-    public function getMailSignature(PHPMailer $mail): string
+    public function getMailSignature(PHPMailer $mail, bool $as_text = false): string
     {
         global $routeparser;
 
@@ -1464,6 +1465,9 @@ class Preferences
             ->setSocialReplacements();
 
         $signature = $this->proceedReplacements($signature);
+        if ($as_text) {
+            $signature = Text::convertHtmlToText($signature);
+        }
 
         return "\r\n-- \r\n" . $signature;
     }

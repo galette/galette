@@ -37,6 +37,18 @@ class Preferences extends GaletteTestCase
     protected int $seed = 20240917074915;
 
     /**
+     * Tear down tests
+     *
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        $delete = $this->zdb->delete(\Galette\Entity\Social::TABLE);
+        $this->zdb->execute($delete);
+        parent::tearDown();
+    }
+
+    /**
      * Test preferences initialization
      *
      * @return void
@@ -599,6 +611,10 @@ class Preferences extends GaletteTestCase
             "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu",
             $this->preferences->getMailSignature($mail)
         );
+        $this->assertSame(
+            "\r\n-- \r\nGalette https://galette.eu",
+            $this->preferences->getMailSignature($mail, true)
+        );
 
         //with legacy values
         $this->preferences->pref_mail_sign = "{NAME}\r\n\r\n{WEBSITE}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}";
@@ -641,6 +657,16 @@ class Preferences extends GaletteTestCase
         $this->assertSame(
             "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette, Galette mastodon URL - the return",
             $this->preferences->getMailSignature($mail)
+        );
+
+        $this->preferences->pref_mail_sign = "{NAME}\r\n\r\n{ASSO_LOGO} <a href=\"{WEBSITE}\">our website</a>\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}";
+        $this->assertSame(
+            "\r\n-- \r\nGalette\r\n\r\n<img src=\"http:///logo\" width=\"200\" height=\"133\" alt=\"\" /> <a href=\"https://galette.eu\">our website</a>",
+            $this->preferences->getMailSignature($mail)
+        );
+        $this->assertSame(
+            "\r\n-- \r\nGalette  [our website](https://galette.eu)",
+            $this->preferences->getMailSignature($mail, true)
         );
     }
 

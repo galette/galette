@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Galette\IO\File;
-use Soundasleep\Html2Text;
+use Galette\Util\Text;
 use Throwable;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -251,7 +251,7 @@ class GaletteMail
 
         if ($this->html) {
             //the email is html :(
-            $this->mail->AltBody = $this->cleanedHtml();
+            $this->mail->AltBody = $this->getTextMessage();
             $this->mail->IsHTML(true);
         } else {
             //the email is plaintext :)
@@ -283,14 +283,14 @@ class GaletteMail
             if ($this->html) {
                 //we are sending HTML message
                 //apply email sign to text version
-                $this->mail->AltBody .= $signature;
+                $this->mail->AltBody .= $this->preferences->getMailSignature($this->mail, true);
                 //then apply email sign to HTML version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
                 $hsign = '<div style="' . $sign_style . '">'
                     . nl2br($signature) . '</div>';
                 $this->mail->Body .= $hsign;
             } else {
-                $this->mail->Body .= Html2Text::convert($signature);
+                $this->mail->Body .= $this->preferences->getMailSignature($this->mail, true);
             }
         }
 
@@ -383,14 +383,13 @@ class GaletteMail
     }
 
     /**
-     * Clean a string embedding HTML, producing AltText for HTML emails
+     * Get AltText for HTML emails
      *
      * @return string current message in plaintext format
      */
-    protected function cleanedHtml(): string
+    protected function getTextMessage(): string
     {
-        $html = $this->message;
-        return Html2Text::convert($html);
+        return Text::convertHtmlToText($this->message);
     }
 
     /**

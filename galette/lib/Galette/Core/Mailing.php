@@ -512,7 +512,7 @@ class Mailing extends GaletteMail
         if (!in_array($name, $forbidden)) {
             switch ($name) {
                 case 'alt_message':
-                    return $this->cleanedHtml();
+                    return $this->getTextMessage();
                 case 'step':
                     return $this->current_step;
                 case 'subject':

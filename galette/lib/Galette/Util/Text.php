@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace Galette\Util;
 
+use Soundasleep\Html2Text;
+
 /**
  * Text utilities
  *
@@ -98,5 +100,17 @@ class Text
             return implode(' ', array_slice($words, 0, $max_words)) . $suffix;
         }
         return $text;
+    }
+
+    /**
+     * Convert HTML to text
+     *
+     * @param string $html HTML to convert
+     *
+     * @return string
+     */
+    public static function convertHtmlToText(string $html): string
+    {
+        return Html2Text::convert($html);
     }
 }
