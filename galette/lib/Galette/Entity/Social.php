@@ -339,7 +339,6 @@ class Social
         if ($translated) {
             $systypes = [
                 self::MASTODON => _T('Mastodon'),
-                self::TWITTER => _T('Twitter'),
                 self::FACEBOOK => _T('Facebook'),
                 self::LINKEDIN => _T('LinkedIn'),
                 self::VIADEO => _T('Viadeo'),
@@ -352,7 +351,6 @@ class Social
         } else {
             $systypes = [
                 self::MASTODON => 'mastodon',
-                self::TWITTER => 'twitter',
                 self::FACEBOOK => 'facebook',
                 self::LINKEDIN => 'linkedin',
                 self::VIADEO => 'viadeo',

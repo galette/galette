@@ -1507,7 +1507,7 @@ class Preferences
 
             foreach ([Social::FACEBOOK, Social::TWITTER, Social::LINKEDIN, Social::VIADEO] as $legacy_type) {
                 $s_patterns['_asso_social_' . $legacy_type] = [
-                    'title' => $s_patterns['asso_social_' . $legacy_type]['title'],
+                    'title' => $s_patterns['asso_social_' . $legacy_type]['title'] ?? $legacy_type,
                     'pattern' => '/{' . strtoupper($legacy_type) . '}/'
                 ];
             }

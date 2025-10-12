@@ -617,7 +617,7 @@ class Preferences extends GaletteTestCase
         );
 
         //with legacy values
-        $this->preferences->pref_mail_sign = "{NAME}\r\n\r\n{WEBSITE}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}";
+        $this->preferences->pref_mail_sign = "{NAME}\r\n\r\n{WEBSITE}\r\n{FACEBOOK}\r\n{LINKEDIN}\r\n{VIADEO}";
         $this->assertSame(
             "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu",
             $this->preferences->getMailSignature($mail)
@@ -680,7 +680,7 @@ class Preferences extends GaletteTestCase
         $legend = $this->preferences->getLegend();
         $this->assertCount(2, $legend);
         $this->assertCount(12, $legend['main']['patterns']);
-        $this->assertCount(10, $legend['socials']['patterns']);
+        $this->assertCount(9, $legend['socials']['patterns']);
         $this->assertSame(
             [
             'title' => __('Mastodon'),
@@ -700,7 +700,7 @@ class Preferences extends GaletteTestCase
 
         $legend = $this->preferences->getLegend();
         $this->assertCount(2, $legend);
-        $this->assertCount(11, $legend['socials']['patterns']);
+        $this->assertCount(10, $legend['socials']['patterns']);
         $this->assertTrue(isset($legend['socials']['patterns']['asso_social_mynewtype']));
         $this->assertSame(
             [

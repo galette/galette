@@ -101,12 +101,12 @@ class Social extends GaletteTestCase
     public function testGetSystemTypes(): void
     {
         $social = new \Galette\Entity\Social($this->zdb);
-        $this->assertCount(10, $social->getSystemTypes());
+        $this->assertCount(9, $social->getSystemTypes());
         $this->assertSame($social->getSystemTypes(true), $social->getSystemTypes());
-        $this->assertCount(10, $social->getSystemTypes(false));
+        $this->assertCount(9, $social->getSystemTypes(false));
 
-        $this->assertSame('Twitter', $social->getSystemType(\Galette\Entity\Social::TWITTER));
-        $this->assertSame('twitter', $social->getSystemType(\Galette\Entity\Social::TWITTER, false));
+        $this->assertSame('Mastodon', $social->getSystemType(\Galette\Entity\Social::MASTODON));
+        $this->assertSame('mastodon', $social->getSystemType(\Galette\Entity\Social::MASTODON, false));
     }
 
     /**
