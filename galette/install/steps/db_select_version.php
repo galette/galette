@@ -21,7 +21,7 @@
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 
-$versions = $install->getScripts();
+$versions = array_keys($install->getScripts());
 $current = $install->getCurrentVersion($zdb);
 $raw_current = $zdb->getDbVersion(true);
 $last = '0.00';
@@ -74,8 +74,10 @@ if (count($versions) == 0) {
         <ul class="leaders">
     <?php
     $is_current = false;
-    $previous = null;
+    $i = 0;
     foreach ($versions as $version) {
+        $previous = $versions[$i-1] ?? null;
+        $next = $versions[$i+1] ?? null;
         ?>
             <li>
         <?php
@@ -84,23 +86,28 @@ if (count($versions) == 0) {
         }
         ?>
                 <span>
-                    <label for="upgrade-<?php echo $version; ?>">
         <?php
         if ($last === '0.00') {
-            echo str_replace(
+            $label = str_replace(
                 '%version',
                 number_format($version, 2),
                 _T("older than %version")
             );
+            $title = "< $version";
+        } elseif ($i == count($versions) - 1) {
+            $label = $last;
+            $title = "= $version";
         } elseif ($last != number_format($version - 0.01, 2)) {
-            echo _T("comprised between") . " " .
-                $last . " " . _T("and") . " " . number_format($version - 0.01, 2);
+            $label = _T("comprised between") . " " .
+                    $previous . " " . _T("and") . " " . $version;
+            $title = ">= $previous & < $version";
         } else {
-            echo " " . number_format($version - 0.01, 2);
+            $label = $previous;
+            $title = "= $previous";
         }
         $last = $version;
         ?>
-                    </label>
+                    <label for="upgrade-<?php echo $version; ?>" class="tooltip" title="<?php echo $title; ?>"><?php echo $label; ?></label>
                 </span>
                 <span class="ui radio checkbox">
                     <input type="radio" name="previous_version" value="<?php echo $previous ?? 0; ?>" id="upgrade-<?php echo $version; ?>"<?php if ($is_current) { echo ' checked="checked"'; } ?> required/>
@@ -114,7 +121,7 @@ if (count($versions) == 0) {
 
             </li>
     <?php
-        $previous = $version;
+        ++$i;
     }
     ?>
         </ul>
