@@ -29,9 +29,9 @@
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-09-08 22:05+0200\n"
-"PO-Revision-Date: 2025-05-29 17:11+0000\n"
+"PO-Revision-Date: 2025-10-13 09:07+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -39,14 +39,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:133
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:238
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load transaction #%id!"
-msgstr "Impossibile caricare il contributo #%id!"
+msgstr "Impossibile caricare la transazione #%id!"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:169
 msgid "Transaction"
@@ -1024,8 +1022,8 @@ msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
-"Ti è stata inviata un’e-mail all'indirizzo.<br> Controlla la tua casella di "
-"posta elettronica e segui le istruzioni."
+"Ti è stata inviata un’email al indirizzo registrato.<br/> Controllare la "
+"propria casella di posta elettronica e seguire le istruzioni."
 
 #: ../lib/Galette/Controllers/AuthController.php:397
 msgid "An email has been sent to the member."
@@ -1104,8 +1102,8 @@ msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
-"Mancano alcuni moduli PHP. Per favore installali o contatta il supporto."
-"<br>Maggiori informazioni sui moduli richiesti sono disponibili nella "
+"Mancano alcuni moduli PHP. Installarli o contattare il proprio supporto web.<"
+"br/>Maggiori informazioni sui moduli richiesti sono disponibili nella "
 "documentazione."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:95
@@ -1169,7 +1167,7 @@ msgstr "Elimina gli accessi"
 #: ../lib/Galette/Controllers/PluginsController.php:62
 #: ../lib/Galette/Core/Galette.php:412 ../lib/Galette/Core/Galette.php:839
 msgid "Plugins"
-msgstr "Plugins"
+msgstr "Plugin"
 
 #: ../lib/Galette/Controllers/PluginsController.php:94
 msgid "Plugin %name has been enabled"
@@ -1787,16 +1785,12 @@ msgid "Export as CSV"
 msgstr "Esporta come CSV"
 
 #: ../lib/Galette/Core/Galette.php:1148
-#, fuzzy
-#| msgid "Galette admin"
 msgid "Galette news"
-msgstr "Amministratore Galette"
+msgstr "Novità di Galette"
 
 #: ../lib/Galette/Core/Galette.php:1158
-#, fuzzy
-#| msgid "Association %s"
 msgid "Association news"
-msgstr "Associazione %s"
+msgstr "Novità dell'associazione"
 
 #: ../lib/Galette/Core/Preferences.php:588
 msgid "- You must indicate a sender name for emails!"
@@ -2431,7 +2425,7 @@ msgstr "Etichette dei membri"
 #: ../lib/Galette/IO/PdfMembersLabels.php:65
 #: ../../tempcache/pages/preferences.html.twig:109
 msgid "Labels"
-msgstr "Etichetta"
+msgstr "Etichette"
 
 #: ../lib/Galette/IO/CsvIn.php:181 ../lib/Galette/IO/CsvIn.php:231
 #, php-format
@@ -3140,7 +3134,7 @@ msgstr "Modalità di pagamento:"
 #: ../lib/Galette/Entity/Transaction.php:335
 #: ../lib/Galette/Entity/Contribution.php:505
 msgid "- Please select a member from a group you manage."
-msgstr ""
+msgstr "- Selezionare un membro da un gruppo che si gestisce."
 
 #: ../lib/Galette/Entity/Transaction.php:347
 #: ../lib/Galette/Entity/Contribution.php:524
@@ -5154,10 +5148,8 @@ msgid "Only checked fields will be updated."
 msgstr "Verranno aggiornati solo i campi selezionati."
 
 #: ../../tempcache/modals/mass_change_members.html.twig:129
-#, fuzzy
-#| msgid "No file selected"
 msgid "No changes selected"
-msgstr "Nessun file selezionato"
+msgstr "Nessun cambiamento selezionato"
 
 #: ../../tempcache/modals/mass_change_members.html.twig:135
 msgid "You are about to proceed following changes for selected members:"
@@ -5939,10 +5931,8 @@ msgstr "Immagine"
 
 #: ../../tempcache/elements/member_card.html.twig:83
 #: ../../tempcache/elements/member_card.html.twig:88
-#, fuzzy
-#| msgid "Download document"
 msgid "Download VCard"
-msgstr "Scarica documento"
+msgstr "Scarica VCard"
 
 #: ../../tempcache/elements/member_card.html.twig:96
 #: ../../tempcache/elements/member_card.html.twig:101
@@ -5952,10 +5942,8 @@ msgstr "Scarica documento"
 #: ../../tempcache/elements/member_card.html.twig:174
 #: ../../tempcache/elements/member_card.html.twig:208
 #: ../../tempcache/elements/member_card.html.twig:213
-#, fuzzy
-#| msgid "Display"
 msgid "Display QR Code"
-msgstr "Mostra"
+msgstr "Mostra QR Code"
 
 #: ../../tempcache/elements/mailing_recipients.html.twig:55
 #, php-format
@@ -6459,7 +6447,7 @@ msgstr ""
 #: ../../tempcache/pages/transactions_list.html.twig:61
 #: ../../tempcache/pages/transactions_list.html.twig:357
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: ../../tempcache/pages/contributions_list.html.twig:93
 msgid "Show contributions by"
@@ -6565,7 +6553,7 @@ msgstr "Modifica transazione #%id"
 #: ../../tempcache/pages/contributions_list.html.twig:1105
 #: ../../tempcache/pages/contributions_list.html.twig:1123
 msgid "Amount is not fully dispatched"
-msgstr ""
+msgstr "L'importo non è stato completamente inviato"
 
 #: ../../tempcache/pages/contributions_list.html.twig:622
 #: ../../tempcache/pages/contributions_list.html.twig:790
@@ -6577,10 +6565,8 @@ msgstr "Visualizza i pagamenti programmati"
 #: ../../tempcache/pages/contributions_list.html.twig:753
 #: ../../tempcache/pages/contributions_list.html.twig:1096
 #: ../../tempcache/pages/contributions_list.html.twig:1103
-#, fuzzy
-#| msgid "List of transactions"
 msgid "Is part of a transaction"
-msgstr "Elenco delle transazioni"
+msgstr "È parte di una transazione"
 
 #: ../../tempcache/pages/contributions_list.html.twig:719
 #: ../../tempcache/pages/contributions_list.html.twig:1114
@@ -6656,16 +6642,14 @@ msgstr "Eliminazione"
 #: ../../tempcache/pages/members_list.html.twig:619
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:762
 #: ../../tempcache/pages/transactions_list.html.twig:633
-#, fuzzy
-#| msgid "User status/interactions"
 msgid "Statuses and interactions"
-msgstr "Stato/interazioni utente"
+msgstr "Stati e interazioni"
 
 #: ../../tempcache/pages/contributions_list.html.twig:1132
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:830
 #: ../../tempcache/pages/transactions_list.html.twig:651
 msgid "Filter on corresponding member"
-msgstr ""
+msgstr "Filtra sul membro corrispondente"
 
 #: ../../tempcache/pages/admintools.html.twig:66
 msgid ""
@@ -7196,7 +7180,7 @@ msgstr "Esecuzione di prova"
 
 #: ../../tempcache/pages/import.html.twig:230
 msgid "Import"
-msgstr "Importa"
+msgstr "Importazione"
 
 #: ../../tempcache/pages/import.html.twig:242
 msgid "No import file actually exists."
@@ -7386,6 +7370,11 @@ msgid ""
 "present form must equal the total of all the scheduled payments you will "
 "define next."
 msgstr ""
+"Selezionando il tipo di <strong>pagamento programmato</strong>, verrà "
+"aggiunto un contributo e verrà richiesto di creare successivamente i "
+"pagamenti programmati corrispondenti. In tal caso, l'importo del contributo "
+"nel modulo attuale dovrà essere pari al totale di tutti i pagamenti "
+"programmati che si definirà in seguito."
 
 #: ../../tempcache/pages/contribution_form.html.twig:707
 msgid "months"
@@ -8672,32 +8661,23 @@ msgid "Show payments by"
 msgstr "Mostra parametri per"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:173
-#, fuzzy
-#| msgid "Has scheduled payments"
 msgid "Paid scheduled payments:"
-msgstr "Ha pagamenti previsti"
+msgstr "Pagamenti programmati pagati:"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:219
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:606
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:628
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:810
-#, fuzzy
-#| msgctxt "contribution"
-#| msgid "Not paid"
 msgid "Not paid"
 msgstr "Non pagato"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:278
-#, fuzzy
-#| msgid "My scheduled payments"
 msgid "Show all your scheduled payments"
-msgstr "I miei pagamenti programmati"
+msgstr "Mostra tutti i propri pagamenti programmati"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:284
-#, fuzzy
-#| msgid "Has scheduled payments"
 msgid "Show all members scheduled payments"
-msgstr "Ha pagamenti previsti"
+msgstr "Mostra tutti i pagamenti programmati dei membri"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:347
 #, php-format
@@ -8713,33 +8693,26 @@ msgstr "Trovato totale in programma %f"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:502
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:781
-#, fuzzy, php-format
-#| msgid "Add a membership fee"
+#, php-format
 msgid "Edit membership fee %1$s"
-msgstr "Aggiungi una quota associativa"
+msgstr "Modifica la quota associativa %1$s"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:508
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:791
-#, fuzzy, php-format
-#| msgid "Edit transaction #%id"
+#, php-format
 msgid "Edit donation %1$s"
-msgstr "Modifica transazione #%id"
+msgstr "Modifica donazione %1$s"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:537
-#, fuzzy, php-format
-#| msgid "%1$s shceduled payment"
-#| msgid_plural "%1$s scheduled payments"
+#, php-format
 msgid "Show only '%1$s' scheduled payments"
-msgstr "%1$s pagamento programmato"
+msgstr "Mostra solo '%1$s' pagamenti programmati"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:602
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:615
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:819
-#, fuzzy
-#| msgctxt "contribution"
-#| msgid "Not paid"
 msgid "Not paid and due"
-msgstr "Non pagato"
+msgstr "Non pagato e dovuto"
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:673
 msgid "Delete scheduled payment"
@@ -8869,10 +8842,8 @@ msgid "Uncomplete dispatched transaction"
 msgstr "Transazione non completata"
 
 #: ../../tempcache/pages/transactions_list.html.twig:644
-#, fuzzy
-#| msgid "View and filter contributions"
 msgid "View corresponding contributions"
-msgstr "Visualizza e filtra le contribuzioni"
+msgstr "Visualizza i contributi corrispondenti"
 
 #: ../../tempcache/pages/configuration_dynamic_translations.html.twig:71
 #, php-format
