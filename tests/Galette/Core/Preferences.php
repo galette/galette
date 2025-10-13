@@ -665,7 +665,7 @@ class Preferences extends GaletteTestCase
             $this->preferences->getMailSignature($mail)
         );
         $this->assertSame(
-            "\r\n-- \r\nGalette  [our website](https://galette.eu)",
+            "\r\n-- \r\nGalette (http:///logo) [our website](https://galette.eu)",
             $this->preferences->getMailSignature($mail, true)
         );
     }

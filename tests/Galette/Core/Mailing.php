@@ -73,7 +73,7 @@ class Mailing extends GaletteTestCase
         $mailing = new \Galette\Core\Mailing($this->preferences);
         $html = '<html><body><h1>Hello</h1><script>alert("XSS")</script><p>Welcome to <a href="https://galette.eu" onclick="stealCookies()">Galette</a>!</p></body></html>';
         $mailing->setMessage($html);
-        $expected = "Hello\n\nWelcome to [Galette](https://galette.eu)!";
+        $expected = "# Hello\n\nWelcome to [Galette](https://galette.eu)!";
         $this->assertSame($expected, $mailing->alt_message);
     }
 
