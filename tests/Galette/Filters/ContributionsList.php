@@ -42,7 +42,7 @@ class ContributionsList extends GaletteTestCase
     protected function testDefaults(\Galette\Filters\ContributionsList $filters): void
     {
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
         $this->assertSame(\Galette\Filters\ContributionsList::DATE_BEGIN, $filters->date_field);
         $this->assertNull($filters->start_date_filter);
         $this->assertNull($filters->end_date_filter);
@@ -69,17 +69,17 @@ class ContributionsList extends GaletteTestCase
         //change order field
         $filters->orderby = \Galette\Filters\ContributionsList::ORDERBY_AMOUNT;
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
 
         //same order field again: direction inverted
         $filters->orderby = \Galette\Filters\ContributionsList::ORDERBY_AMOUNT;
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
+        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
 
         //not existing order, same kept
         $filters->setDirection('abcde');
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
+        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
         $this->expectLogEntry(
             \Analog::WARNING,
             sprintf(
@@ -89,18 +89,18 @@ class ContributionsList extends GaletteTestCase
         );
 
         //change direction only
-        $filters->setDirection(\Galette\Enums\SQLOrder::ASC);
+        $filters->setDirection(\Galette\Enums\SQLOrder::DESC);
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
 
         //change direction only -- deprecated notation
-        $filters->ordered = \Galette\Enums\SQLOrder::ASC;
+        $filters->ordered = \Galette\Enums\SQLOrder::DESC;
         $this->expectLogEntry(
             \Analog::WARNING,
             '[Galette\Filters\ContributionsList|Pagination] ordered is deprecated, use setDirection() instead'
         );
         $this->assertSame(\Galette\Filters\ContributionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->ordered);
         $this->expectLogEntry(
             \Analog::WARNING,
             '[Galette\Filters\ContributionsList|Pagination] ordered is deprecated, use getDirection() instead'

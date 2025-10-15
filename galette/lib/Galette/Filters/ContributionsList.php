@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Filters;
 
+use Galette\Enums\SQLOrder;
 use Galette\Helpers\DatesHelper;
 use Analog\Analog;
 use Galette\Core\Pagination;
@@ -117,6 +118,16 @@ class ContributionsList extends Pagination
     protected function getDefaultOrder(): int|string
     {
         return self::ORDERBY_BEGIN_DATE;
+    }
+
+    /**
+     * Return the default direction for ordering
+     *
+     * @return SQLOrder
+     */
+    protected function getDefaultDirection(): SQLOrder
+    {
+        return SQLOrder::DESC;
     }
 
     /**
