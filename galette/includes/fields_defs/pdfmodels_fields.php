@@ -42,7 +42,7 @@ $pdfmodels_fields = [
         'model_body'    => null,
         'model_styles'  => 'div#pdf_title {
     font-size: 1.4em;
-    font-wieght:bold;
+    font-weight:bold;
     text-align: center;
 }
 

@@ -27,6 +27,7 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Logo;
 use Galette\Core\Preferences;
+use Galette\Core\PrintLogo;
 use Galette\DynamicFields\Choice;
 use Galette\DynamicFields\Separator;
 use Galette\Entity\Adherent;
@@ -492,7 +493,7 @@ trait Replacements
             $logo->getOptimalHeight()
         );
 
-        $print_logo = new Logo();
+        $print_logo = new PrintLogo();
         if ($this->mail !== null) {
             $print_logo_content = $this->preferences->getURL() . $this->routeparser->urlFor('printLogo');
         } else {

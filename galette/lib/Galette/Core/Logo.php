@@ -81,8 +81,8 @@ class Logo extends Picture
                 $special
             )
         );
-        $this->format = 'png';
-        $this->mime = 'image/png';
+        $this->format = 'webp';
+        $this->mime = 'image/webp';
         $this->custom = false;
     }
 

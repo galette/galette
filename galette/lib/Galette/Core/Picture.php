@@ -33,6 +33,7 @@ use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Repository\Members;
 use Galette\IO\FileTrait;
+use UnhandledMatchError;
 
 /**
  * Picture handling
@@ -842,72 +843,38 @@ class Picture
         // Resized image.
         $thumb = imagecreatetruecolor($w, $h);
 
-        $image = false;
-        switch ($ext) {
-            case 'jpg':
-                $image = imagecreatefromjpeg($source);
-                if ($thumb_cropped !== false) {
-                    // Crop: first, crop.
-                    imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
-                    // Then, resize.
-                    imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                } else {
-                    // Resize
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-                }
-                imagejpeg($thumb, $dest);
-                break;
-            case 'png':
-                $image = imagecreatefrompng($source);
-                // Turn off alpha blending and set alpha flag. That prevent alpha
-                // transparency to be saved as an arbitrary color (black in my tests)
-                imagealphablending($image, false);
-                imagesavealpha($image, true);
-                imagealphablending($thumb, false);
-                imagesavealpha($thumb, true);
-                if ($thumb_cropped !== false) {
-                    // Crop
-                    imagealphablending($thumb_cropped, false);
-                    imagesavealpha($thumb_cropped, true);
-                    // First, crop.
-                    imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
-                    // Then, resize.
-                    imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                } else {
-                    // Resize
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-                }
-                imagepng($thumb, $dest);
-                break;
-            case 'gif':
-                $image = imagecreatefromgif($source);
-                if ($thumb_cropped !== false) {
-                    // Crop: first, crop.
-                    imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
-                    // Then, resize.
-                    imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                } else {
-                    // Resize
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-                }
-                imagegif($thumb, $dest);
-                break;
-            case 'webp':
-                $image = imagecreatefromwebp($source);
-                if ($thumb_cropped !== false) {
-                    // Crop: first, crop.
-                    imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
-                    // Then, resize.
-                    imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                } else {
-                    // Resize
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-                }
-                imagewebp($thumb, $dest);
-                break;
+        $image = match ($ext) {
+            'jpg' => imagecreatefromjpeg($source),
+            'png' => imagecreatefrompng($source),
+            'gif' => imagecreatefromgif($source),
+            'webp' => imagecreatefromwebp($source),
+            default => throw new UnhandledMatchError($ext),
+        };
+
+        // Turn off alpha blending and set alpha flag. That prevent alpha
+        // transparency to be saved as an arbitrary color (black in my tests)
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
+        imagealphablending($thumb, false);
+        imagesavealpha($thumb, true);
+        if ($thumb_cropped !== false) { // Crop
+            imagealphablending($thumb_cropped, false);
+            imagesavealpha($thumb_cropped, true);
+            // First, crop.
+            imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
+            // Then, resize.
+            imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
+        } else { // Resize
+            imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
         }
 
-        return true;
+        return match ($ext) {
+            'jpg' => imagejpeg($thumb, $dest),
+            'png' => imagepng($thumb, $dest),
+            'gif' => imagegif($thumb, $dest),
+            'webp' => imagewebp($thumb, $dest),
+            default => false
+        };
     }
 
     /**
