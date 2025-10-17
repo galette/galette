@@ -124,12 +124,16 @@ class AuthController extends AbstractController
                 || $this->login->isStaff()
             ) {
                 $deprecated_constants = [
-                    'NON_UTF_DBCONNECT',
-                    'GALETTE_CARD_WIDTH',
-                    'GALETTE_CARD_HEIGHT',
-                    'GALETTE_CARD_COLS',
-                    'GALETTE_CARD_ROWS'
+                    'NON_UTF_DBCONNECT'
                 ];
+                if (GALETTE_ADAPTATIVE_CARDS) { //@phpstan-ignore-line
+                    $deprecated_constants += [
+                        'GALETTE_CARD_WIDTH',
+                        'GALETTE_CARD_HEIGHT',
+                        'GALETTE_CARD_COLS',
+                        'GALETTE_CARD_ROWS'
+                    ];
+                }
 
                 foreach ($deprecated_constants as $deprecated_constant) {
                     if (defined($deprecated_constant)) {

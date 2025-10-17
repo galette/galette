@@ -27,6 +27,7 @@ use Galette\Entity\PaymentType;
 use Galette\Entity\Social;
 use Galette\Features\Replacements;
 use Galette\Features\Socials;
+use Galette\IO\PdfMembersCardsAdaptative;
 use Galette\Util\Text;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
@@ -288,8 +289,6 @@ class Preferences
         'pref_bool_display_title'    =>    false,
         'pref_card_hsize'    =>    PdfMembersCards::WIDTH,
         'pref_card_vsize'    =>    PdfMembersCards::HEIGHT,
-        'pref_card_rows'    =>    PdfMembersCards::ROWS,
-        'pref_card_cols'    =>    PdfMembersCards::COLS,
         'pref_card_address'    =>    1,
         'pref_card_year'    =>    '',
         'pref_card_marges_v'    =>    15,
@@ -882,14 +881,6 @@ class Preferences
                     }
                     $value = $v;
                 }
-                if ($k === 'pref_card_cols') {
-                    $v = PdfMembersCards::getCols();
-                    $value = $v;
-                }
-                if ($k === 'pref_card_rows') {
-                    $v = PdfMembersCards::getRows();
-                    $value = $v;
-                }
 
                 $stmt->execute(
                     [
@@ -1164,6 +1155,24 @@ class Preferences
                 'pref_enable_custom_colors'
             ]
         ];
+
+        //Following conditions are due to PdfMembersCards/PdfMembersCardsAdaptative switching. COde will be simplified once PdfMembersCardsAdaptative will be the only one
+        if ($name === 'pref_card_cols') {
+            //@phpstan-ignore-next-line
+            return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getCols() : PdfMembersCards::getCols();
+        }
+        if ($name === 'pref_card_rows') {
+            //@phpstan-ignore-next-line
+            return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getRows() : PdfMembersCards::getRows();
+        }
+
+        if ($name === 'pref_card_vsize' && empty($this->prefs['pref_card_vsize'])) {
+            return PdfMembersCards::HEIGHT;
+        }
+
+        if ($name === 'pref_card_hsize' && empty($this->prefs['pref_card_hsize'])) {
+            return PdfMembersCards::WIDTH;
+        }
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             if (
