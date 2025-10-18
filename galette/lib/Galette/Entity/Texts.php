@@ -44,6 +44,7 @@ class Texts
 {
     use Replacements {
         getLegend as protected trait_getLegend;
+        setReplacements as protected trait_setReplacements;
     }
 
     /** @var ArrayObject<string, int|string> */
@@ -608,6 +609,9 @@ class Texts
     {
         $legend = $this->trait_getLegend();
 
+        //Mails are send as text, logo won't show anything
+        unset($legend['main']['patterns']['asso_logo'], $legend['main']['patterns']['asso_print_logo']);
+
         $contribs = ['contrib', 'newcont', 'donation', 'newdonation'];
         if ($this->current !== null && in_array($this->current, $contribs)) {
             $patterns = $this->getContributionPatterns(false);
@@ -624,6 +628,24 @@ class Texts
         ];
 
         return $legend;
+    }
+
+    /**
+     * Set replacements
+     *
+     * @param array<string,?mixed> $replaces Replacements to add
+     *
+     * @return void
+     */
+    public function setReplacements(array $replaces): void
+    {
+        //some replacements may produce HTML code; while system texts are text only
+        foreach ($replaces as &$replace) {
+            if (is_string($replace)) {
+                $replace = \Galette\Util\Text::convertHtmlToText($replace);
+            }
+        }
+        $this->trait_setReplacements($replaces);
     }
 
     /**
