@@ -88,10 +88,9 @@ class PluginsController extends AbstractController
                     $plugins->activateModule($module_id);
                     $this->flash->addMessage(
                         'success_detected',
-                        str_replace(
-                            '%name',
-                            $module_id,
-                            _T("Plugin %name has been enabled")
+                        sprintf(
+                            _T('Plugin %1$s has been enabled'),
+                            $module_id
                         )
                     );
                     $reload_plugins = true;
@@ -106,10 +105,9 @@ class PluginsController extends AbstractController
                     $plugins->deactivateModule($module_id);
                     $this->flash->addMessage(
                         'success_detected',
-                        str_replace(
-                            '%name',
-                            $module_id,
-                            _T("Plugin %name has been disabled")
+                        sprintf(
+                            _T('Plugin %1$s has been disabled'),
+                            $module_id
                         )
                     );
                     $reload_plugins = true;

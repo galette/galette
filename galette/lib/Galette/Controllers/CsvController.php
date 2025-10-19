@@ -305,10 +305,9 @@ class CsvController extends AbstractController
             }
             $this->flash->addMessage(
                 'success_detected',
-                str_replace(
-                    '%filename%',
-                    $post['import_file'],
-                    _T("File '%filename%' has been successfully imported :)")
+                sprintf(
+                    _T('File \'%1$s\' has been successfully imported :)'),
+                    $post['import_file']
                 )
             );
         }

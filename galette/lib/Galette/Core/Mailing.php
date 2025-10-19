@@ -416,10 +416,9 @@ class Mailing extends GaletteMail
                 }
             } else {
                 Analog::log(
-                    str_replace(
-                        '%file',
-                        $name,
-                        'File %file does not exists and cannot be removed!'
+                    sprintf(
+                        'File %1$s does not exists and cannot be removed!',
+                        $name
                     ),
                     Analog::WARNING
                 );

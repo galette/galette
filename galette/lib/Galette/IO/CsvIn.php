@@ -173,10 +173,9 @@ class CsvIn extends Csv
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
         ) {
             $this->addError(
-                str_replace(
-                    '%filename',
-                    $filename,
-                    _T('File %filename cannot be open!')
+                sprintf(
+                    _T('File %1$s cannot be open!'),
+                    $filename
                 )
             );
 
@@ -223,10 +222,9 @@ class CsvIn extends Csv
                 Analog::ERROR
             );
             $this->addError(
-                str_replace(
-                    '%filename',
-                    $filename,
-                    _T('File %filename cannot be open!')
+                sprintf(
+                    _T('File %1$s cannot be open!'),
+                    $filename
                 )
             );
             return false;

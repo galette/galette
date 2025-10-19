@@ -371,10 +371,9 @@ class GroupsController extends CrudController
             if ($store === true) {
                 $this->flash->addMessage(
                     'success_detected',
-                    str_replace(
-                        '%groupname',
+                    sprintf(
+                        _T('Group `%1$s` has been successfully saved.'),
                         $group->getName(),
-                        _T("Group `%groupname` has been successfully saved.")
                     )
                 );
             } else {

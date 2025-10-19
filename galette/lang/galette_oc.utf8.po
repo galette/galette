@@ -165,8 +165,8 @@ msgstr "Gropes"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
 #, php-format
-msgid "Group `%groupname` has been successfully saved."
-msgstr "Lo grope \"%groupname\" es estat enregistrat correctament."
+msgid "Group `%1$s` has been successfully saved."
+msgstr "Lo grope \"%1$s\" es estat enregistrat correctament."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:384
 msgid "An error occurred while storing the group."
@@ -777,13 +777,13 @@ msgstr "Messatge d'assai."
 
 #: ../lib/Galette/Controllers/GaletteController.php:344
 #, php-format
-msgid "An email has been sent to %email"
-msgstr "Un corriel es estat mandat a %email"
+msgid "An email has been sent to %1$s"
+msgstr "Un corriel es estat mandat a %1$s"
 
 #: ../lib/Galette/Controllers/GaletteController.php:353
 #, php-format
-msgid "No email sent to %email"
-msgstr "Ges de corrier electronic mandat a %email"
+msgid "No email sent to %1$s"
+msgstr "Ges de corrier electronic mandat a %1$s"
 
 #: ../lib/Galette/Controllers/GaletteController.php:360
 msgid "Invalid email adress!"
@@ -1158,12 +1158,12 @@ msgid "Plugins"
 msgstr "Ajustons"
 
 #: ../lib/Galette/Controllers/PluginsController.php:94
-msgid "Plugin %name has been enabled"
-msgstr "L'ajuston %name es estat activat"
+msgid "Plugin %1$s has been enabled"
+msgstr "L'ajuston %1$s es estat activat"
 
 #: ../lib/Galette/Controllers/PluginsController.php:112
-msgid "Plugin %name has been disabled"
-msgstr "L'ajuston %name es estat desactivat"
+msgid "Plugin %1$s has been disabled"
+msgstr "L'ajuston %1$s es estat desactivat"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:69
 #: ../lib/Galette/Core/Galette.php:486
@@ -1222,8 +1222,8 @@ msgstr "Una error capitèt per l'importacion dau fichier :("
 
 #: ../lib/Galette/Controllers/CsvController.php:318
 #, php-format
-msgid "File '%filename%' has been successfully imported :)"
-msgstr "Lo fichier '%filename%' es estat importat correctament :)"
+msgid "File '%1$s' has been successfully imported :)"
+msgstr "Lo fichier '%1$s' es estat importat correctament :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:350
 msgid "Your file has been successfully uploaded!"
@@ -2419,8 +2419,8 @@ msgstr "Etiquetas"
 
 #: ../lib/Galette/IO/CsvIn.php:181 ../lib/Galette/IO/CsvIn.php:231
 #, php-format
-msgid "File %filename cannot be open!"
-msgstr "Lo fichier %filename se duèrbe pas !"
+msgid "File %1$s cannot be open!"
+msgstr "Lo fichier %1$s se duèrbe pas !"
 
 #: ../lib/Galette/IO/CsvIn.php:278
 #, php-format
@@ -2960,8 +2960,8 @@ msgstr "Dispensat d'escotisson"
 
 #: ../lib/Galette/Entity/Adherent.php:786
 #, php-format
-msgid "Never contributed: Registered %days days ago (since %date)"
-msgstr "A jamai cotisat : marcat despuei %days jorns (despuei lo %date)"
+msgid "Never contributed: Registered %1$s days ago (since %2$s)"
+msgstr "A jamai cotisat : marcat despuei %1$s jorns (despuei lo %2$s)"
 
 #: ../lib/Galette/Entity/Adherent.php:789
 #: ../lib/Galette/Filters/MembersList.php:292
@@ -2979,13 +2979,13 @@ msgstr "Un jorn de retard !"
 
 #: ../lib/Galette/Entity/Adherent.php:804
 #, php-format
-msgid "%days days remaining (ending on %date)"
-msgstr "%days jorns demòran (s’acaba lo %date)"
+msgid "%1$s days remaining (ending on %2$s)"
+msgstr "%1$s jorns demòran (s’acaba lo %2$s)"
 
 #: ../lib/Galette/Entity/Adherent.php:818
 #, php-format
-msgid "Late of %days days (since %date)"
-msgstr "En retard de %days jorns (despuei lo %date)"
+msgid "Late of %1$s days (since %2$s)"
+msgstr "En retard de %1$s jorns (despuei lo %2$s)"
 
 #: ../lib/Galette/Entity/Adherent.php:821
 msgid "No longer member"
@@ -3587,26 +3587,26 @@ msgstr ""
 "d'adreiça !"
 
 #: ../lib/Galette/Events/ContribListener.php:206
-msgid "Email sent to user %name (%email)"
-msgstr "Un messatge es estat mandat a l'utilizator %name (%email)"
+msgid "Email sent to user %1$s (%2$s)"
+msgstr "Un messatge es estat mandat a l'utilizator %1$s (%2$s)"
 
 #: ../lib/Galette/Events/ContribListener.php:213
 msgid ""
-"A problem happened while sending contribution receipt to user %name (%email)"
+"A problem happened while sending contribution receipt to user %1$s (%2$s)"
 msgstr ""
-"A mau capitat per mandar lo recebut de contribucion au membre %name (% email)"
+"A mau capitat per mandar lo recebut de contribucion au membre %1$s (%2$s)"
 
 #: ../lib/Galette/Events/ContribListener.php:278
-msgid "Email sent to admin for user %name (%email)"
-msgstr "Messatge mandat a l'administrator per l'utlizator %name (%email)"
+msgid "Email sent to admin for user %1$s (%2$s)"
+msgstr "Messatge mandat a l'administrator per l'utlizator %1$s (%2$s)"
 
 #: ../lib/Galette/Events/ContribListener.php:285
 msgid ""
-"A problem happened while sending to admin notification for user %name "
-"(%email) contribution"
+"A problem happened while sending to admin notification for user %1$s "
+"(%2$s) contribution"
 msgstr ""
-"A mau capitat per avisar l'administrator de la contribucion dau membre %name "
-"(%email)"
+"A mau capitat per avisar l'administrator de la contribucion dau membre %1$s "
+"(%2$s)"
 
 #: ../lib/Galette/Events/ContribListener.php:314
 msgid "Post contribution script failed"
@@ -4466,8 +4466,8 @@ msgstr "Impossible de crear lo dorsier dins %dir !"
 
 #: ../install/scripts/upgrade-to-0.8.php:166
 #, php-format
-msgid "File %file has not been moved :-/"
-msgstr "Lo fichier %file es pas estat desplaçat :-/"
+msgid "File %1$s has not been moved :-/"
+msgstr "Lo fichier %1$s es pas estat desplaçat :-/"
 
 #: ../install/scripts/upgrade-to-0.8.php:179
 #, php-format
@@ -6558,8 +6558,8 @@ msgstr "Veire solament lei contribucions de '%name'"
 #: ../../tempcache/pages/contributions_list.html.twig:882
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:552
 #: ../../tempcache/pages/transactions_list.html.twig:455
-msgid "Show '%name' card"
-msgstr "Veire la ficha de '%name'"
+msgid "Show '%1$s' card"
+msgstr "Veire la ficha de '%1$s'"
 
 #: ../../tempcache/pages/contributions_list.html.twig:931
 #: ../../tempcache/pages/contributions_list.html.twig:1073
@@ -6779,8 +6779,8 @@ msgstr "Camps predefinits"
 
 #: ../../tempcache/pages/import_model.html.twig:94
 #, php-format
-msgid "Model parameted on %date"
-msgstr "Modèle parametrat lo %date"
+msgid "Model parameted on %1$s"
+msgstr "Modèle parametrat lo %1$s"
 
 #: ../../tempcache/pages/import_model.html.twig:104
 #: ../../tempcache/pages/import_model.html.twig:194
@@ -7144,7 +7144,7 @@ msgstr "veire"
 #: ../../tempcache/pages/import.html.twig:189
 #: ../../tempcache/pages/export.html.twig:216
 #, php-format
-msgid "Remove '%file' from disk"
+msgid "Remove '%1$s' from disk"
 msgstr ""
 
 #: ../../tempcache/pages/import.html.twig:213

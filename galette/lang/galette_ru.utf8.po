@@ -173,8 +173,8 @@ msgstr "Группы"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
 #, php-format
-msgid "Group `%groupname` has been successfully saved."
-msgstr "Группа `%groupname` была успешно сохранена."
+msgid "Group `%1$s` has been successfully saved."
+msgstr "Группа `%1$s` была успешно сохранена."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:384
 msgid "An error occurred while storing the group."
@@ -777,13 +777,13 @@ msgstr "Тестовое сообщение."
 
 #: ../lib/Galette/Controllers/GaletteController.php:344
 #, php-format
-msgid "An email has been sent to %email"
-msgstr "На %email было отправлено письмо"
+msgid "An email has been sent to %1$s"
+msgstr "На %1$s было отправлено письмо"
 
 #: ../lib/Galette/Controllers/GaletteController.php:353
 #, php-format
-msgid "No email sent to %email"
-msgstr "Не отправлено письмо на %email"
+msgid "No email sent to %1$s"
+msgstr "Не отправлено письмо на %1$s"
 
 #: ../lib/Galette/Controllers/GaletteController.php:360
 msgid "Invalid email adress!"
@@ -1144,11 +1144,11 @@ msgid "Plugins"
 msgstr "Плагины"
 
 #: ../lib/Galette/Controllers/PluginsController.php:94
-msgid "Plugin %name has been enabled"
+msgid "Plugin %1$s has been enabled"
 msgstr ""
 
 #: ../lib/Galette/Controllers/PluginsController.php:112
-msgid "Plugin %name has been disabled"
+msgid "Plugin %1$s has been disabled"
 msgstr ""
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:69
@@ -1205,7 +1205,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:318
 #, php-format
-msgid "File '%filename%' has been successfully imported :)"
+msgid "File '%1$s' has been successfully imported :)"
 msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:350
@@ -2378,7 +2378,7 @@ msgstr "Метки"
 
 #: ../lib/Galette/IO/CsvIn.php:181 ../lib/Galette/IO/CsvIn.php:231
 #, php-format
-msgid "File %filename cannot be open!"
+msgid "File %1$s cannot be open!"
 msgstr ""
 
 #: ../lib/Galette/IO/CsvIn.php:278
@@ -2909,7 +2909,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:786
 #, php-format
-msgid "Never contributed: Registered %days days ago (since %date)"
+msgid "Never contributed: Registered %1$s days ago (since %2$s)"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:789
@@ -2928,12 +2928,12 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:804
 #, php-format
-msgid "%days days remaining (ending on %date)"
+msgid "%1$s days remaining (ending on %2$s)"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:818
 #, php-format
-msgid "Late of %days days (since %date)"
+msgid "Late of %1$s days (since %2$s)"
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:821
@@ -3522,16 +3522,16 @@ msgid ""
 msgstr ""
 
 #: ../lib/Galette/Events/ContribListener.php:206
-msgid "Email sent to user %name (%email)"
+msgid "Email sent to user %1$s (%2$s)"
 msgstr ""
 
 #: ../lib/Galette/Events/ContribListener.php:213
 msgid ""
-"A problem happened while sending contribution receipt to user %name (%email)"
+"A problem happened while sending contribution receipt to user %1$s (%2$s)"
 msgstr ""
 
 #: ../lib/Galette/Events/ContribListener.php:278
-msgid "Email sent to admin for user %name (%email)"
+msgid "Email sent to admin for user %1$s (%2$s)"
 msgstr ""
 
 #: ../lib/Galette/Events/ContribListener.php:285
@@ -4343,7 +4343,7 @@ msgstr ""
 
 #: ../install/scripts/upgrade-to-0.8.php:166
 #, php-format
-msgid "File %file has not been moved :-/"
+msgid "File %1$s has not been moved :-/"
 msgstr ""
 
 #: ../install/scripts/upgrade-to-0.8.php:179
@@ -6404,7 +6404,7 @@ msgstr ""
 #: ../../tempcache/pages/contributions_list.html.twig:882
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:552
 #: ../../tempcache/pages/transactions_list.html.twig:455
-msgid "Show '%name' card"
+msgid "Show '%1$s' card"
 msgstr ""
 
 #: ../../tempcache/pages/contributions_list.html.twig:931
@@ -6621,7 +6621,7 @@ msgstr ""
 
 #: ../../tempcache/pages/import_model.html.twig:94
 #, php-format
-msgid "Model parameted on %date"
+msgid "Model parameted on %1$s"
 msgstr ""
 
 #: ../../tempcache/pages/import_model.html.twig:104
@@ -6981,7 +6981,7 @@ msgstr ""
 #: ../../tempcache/pages/import.html.twig:189
 #: ../../tempcache/pages/export.html.twig:216
 #, php-format
-msgid "Remove '%file' from disk"
+msgid "Remove '%1$s' from disk"
 msgstr ""
 
 #: ../../tempcache/pages/import.html.twig:213

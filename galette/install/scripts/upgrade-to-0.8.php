@@ -160,10 +160,9 @@ class UpgradeTo08 extends AbstractUpdater
                         if (!$moved) {
                             $moved = false;
                             $this->addError(
-                                str_replace(
-                                    '%file',
-                                    $entry,
-                                    _T("File %file has not been moved :-/")
+                                sprintf(
+                                    _T('File %1$s has not been moved :-/'),
+                                    $entry
                                 )
                             );
                         }

@@ -31,7 +31,7 @@
             {% if defaults_loaded %}
                 {{ _T('Default fields') }}
             {% else %}
-                {{ _T('Model parameted on %date')|replace({'%date': model.getCreationDate()}) }}
+                {{ _T('Model parameted on %1$s')|format(model.getCreationDate()) }}
             {% endif %}
         </div>
         <thead>

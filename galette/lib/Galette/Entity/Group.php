@@ -343,10 +343,9 @@ class Group
             }
             if ($zdb->isForeignKeyException($e)) {
                 Analog::log(
-                    str_replace(
-                        '%group',
+                    sprintf(
+                        'Group "%1$s" still have members!',
                         $this->group_name,
-                        'Group "%group" still have members!'
                     ),
                     Analog::WARNING
                 );

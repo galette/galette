@@ -339,19 +339,17 @@ class GaletteController extends AbstractController
                 if ($sent) {
                     $this->flash->addMessage(
                         'success_detected',
-                        str_replace(
-                            '%email',
-                            $dest,
-                            _T("An email has been sent to %email")
+                        sprintf(
+                            _T('An email has been sent to %1$s'),
+                            $dest
                         )
                     );
                 } else {
                     $this->flash->addMessage(
                         'error_detected',
-                        str_replace(
-                            '%email',
-                            $dest,
-                            _T("No email sent to %email")
+                        sprintf(
+                            _T('No email sent to %1$s'),
+                            $dest
                         )
                     );
                 }

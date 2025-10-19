@@ -1158,12 +1158,12 @@ msgid "Plugins"
 msgstr "செருகுநிரல்கள்"
 
 #: ../lib/Galette/Controllers/PluginsController.php:94
-msgid "Plugin %name has been enabled"
-msgstr "சொருகி %பெயர் இயக்கப்பட்டது"
+msgid "Plugin %1$s has been enabled"
+msgstr "சொருகி %1$s இயக்கப்பட்டது"
 
 #: ../lib/Galette/Controllers/PluginsController.php:112
-msgid "Plugin %name has been disabled"
-msgstr "சொருகி %பெயர் முடக்கப்பட்டுள்ளது"
+msgid "Plugin %1$s has been disabled"
+msgstr "சொருகி %1$s முடக்கப்பட்டுள்ளது"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:69
 #: ../lib/Galette/Core/Galette.php:486
@@ -2956,8 +2956,8 @@ msgstr "நிலுவைத் தொகையிலிருந்து வ�
 
 #: ../lib/Galette/Entity/Adherent.php:786
 #, fuzzy, php-format
-msgid "Never contributed: Registered %days days ago (since %date)"
-msgstr "ஒருபோதும் பங்களிக்கவில்லை: பதிவுசெய்யப்பட்ட %days முன்பு (தேதியிலிருந்து %date)"
+msgid "Never contributed: Registered %1$s days ago (since %2$s)"
+msgstr "ஒருபோதும் பங்களிக்கவில்லை: பதிவுசெய்யப்பட்ட %1$s முன்பு (தேதியிலிருந்து %2$s)"
 
 #: ../lib/Galette/Entity/Adherent.php:789
 #: ../lib/Galette/Filters/MembersList.php:292
@@ -2975,13 +2975,13 @@ msgstr "இன்று முதல் தாமதமாக!"
 
 #: ../lib/Galette/Entity/Adherent.php:804
 #, fuzzy, php-format
-msgid "%days days remaining (ending on %date)"
-msgstr "%days மீதமுள்ள ( %date முடிவடையும்)"
+msgid "%1$s days remaining (ending on %2$s)"
+msgstr "%1$s மீதமுள்ள ( %2$s முடிவடையும்)"
 
 #: ../lib/Galette/Entity/Adherent.php:818
 #, fuzzy, php-format
-msgid "Late of %days days (since %date)"
-msgstr "%days பிற்பகுதியில் (தேதியிலிருந்து %date)"
+msgid "Late of %1$s days (since %2$s)"
+msgstr "%1$s பிற்பகுதியில் (தேதியிலிருந்து %2$s)"
 
 #: ../lib/Galette/Entity/Adherent.php:821
 msgid "No longer member"
@@ -7108,8 +7108,8 @@ msgstr "பார்க்க"
 #: ../../tempcache/pages/import.html.twig:189
 #: ../../tempcache/pages/export.html.twig:216
 #, php-format
-msgid "Remove '%file' from disk"
-msgstr "வட்டில் இருந்து '%கோப்பு' ஐ அகற்று"
+msgid "Remove '%1$s' from disk"
+msgstr "வட்டில் இருந்து '%1$s' ஐ அகற்று"
 
 #: ../../tempcache/pages/import.html.twig:213
 msgid "Run the import process, but do *not* store anything in the database"

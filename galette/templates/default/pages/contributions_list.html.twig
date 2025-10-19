@@ -397,7 +397,7 @@
                     {% endif %}
                     <a
                             href="{{ url_for("member", {"id": mid}) }}"
-                            title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
+                            title="{{ _T("Show '%1$s' card")|format(mname) }}"
                     >
                         {{ mname }}
                     </a>

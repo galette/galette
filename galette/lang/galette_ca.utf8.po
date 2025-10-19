@@ -190,8 +190,8 @@ msgstr "Grups"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
 #, php-format
-msgid "Group `%groupname` has been successfully saved."
-msgstr "El grup «%groupname» s'ha desat correctament."
+msgid "Group `%1$s` has been successfully saved."
+msgstr "El grup «%1$s» s'ha desat correctament."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:384
 msgid "An error occurred while storing the group."
@@ -846,13 +846,13 @@ msgstr "Missatge de prova."
 
 #: ../lib/Galette/Controllers/GaletteController.php:344
 #, php-format
-msgid "An email has been sent to %email"
-msgstr "S'ha enviat un correu electrònic a %email"
+msgid "An email has been sent to %1$s"
+msgstr "S'ha enviat un correu electrònic a %1$s"
 
 #: ../lib/Galette/Controllers/GaletteController.php:353
 #, php-format
-msgid "No email sent to %email"
-msgstr "No s'ha enviat cap correu electrònic a %email"
+msgid "No email sent to %1$s"
+msgstr "No s'ha enviat cap correu electrònic a %1$s"
 
 #: ../lib/Galette/Controllers/GaletteController.php:360
 #, fuzzy
@@ -1362,8 +1362,8 @@ msgstr "S'ha produït un error en importar el fitxer ("
 
 #: ../lib/Galette/Controllers/CsvController.php:318
 #, php-format
-msgid "File '%filename%' has been successfully imported :)"
-msgstr "El fitxer '%filename%' s'ha importat correctament :)"
+msgid "File '%1$s' has been successfully imported :)"
+msgstr "El fitxer '%1$s' s'ha importat correctament :)"
 
 #: ../lib/Galette/Controllers/CsvController.php:350
 #, fuzzy
@@ -4089,27 +4089,27 @@ msgstr ""
 "una adreça!"
 
 #: ../lib/Galette/Events/ContribListener.php:206
-msgid "Email sent to user %name (%email)"
-msgstr "S'ha enviat un correu electrònic al usuari %name (%email)"
+msgid "Email sent to user %1$s (%2$s)"
+msgstr "S'ha enviat un correu electrònic al usuari %1$s (%2$s)"
 
 #: ../lib/Galette/Events/ContribListener.php:213
 msgid ""
-"A problem happened while sending contribution receipt to user %name (%email)"
+"A problem happened while sending contribution receipt to user %1$s (%2$s)"
 msgstr ""
-"S'ha produït un problema en enviar el rebut de contribució del usuari %name "
-"(%email)"
+"S'ha produït un problema en enviar el rebut de contribució del usuari %1$s "
+"(%2$s)"
 
 #: ../lib/Galette/Events/ContribListener.php:278
-msgid "Email sent to admin for user %name (%email)"
-msgstr "Correu electrònic enviat a l'administrador pel usuari %name (%email)"
+msgid "Email sent to admin for user %1$s (%2$s)"
+msgstr "Correu electrònic enviat a l'administrador pel usuari %1$s (%2$s)"
 
 #: ../lib/Galette/Events/ContribListener.php:285
 msgid ""
-"A problem happened while sending to admin notification for user %name "
-"(%email) contribution"
+"A problem happened while sending to admin notification for user %1$s "
+"(%2$s) contribution"
 msgstr ""
 "S'ha produït un problema mentre s'enviava una notificació d'administrador "
-"per a la contribució del usuari %name (%email)"
+"per a la contribució del usuari %1$s (%2$s)"
 
 #: ../lib/Galette/Events/ContribListener.php:314
 #, fuzzy
@@ -7515,8 +7515,8 @@ msgstr ""
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:552
 #: ../../tempcache/pages/transactions_list.html.twig:455
 #, fuzzy
-msgid "Show '%name' card"
-msgstr "Mostra la tarjeta de '%name'"
+msgid "Show '%1$s' card"
+msgstr "Mostra la tarjeta de '%1$s'"
 
 #: ../../tempcache/pages/contributions_list.html.twig:931
 #: ../../tempcache/pages/contributions_list.html.twig:1073
@@ -7774,7 +7774,7 @@ msgstr "Camps per defecte"
 
 #: ../../tempcache/pages/import_model.html.twig:94
 #, php-format
-msgid "Model parameted on %date"
+msgid "Model parameted on %1$s"
 msgstr ""
 
 #: ../../tempcache/pages/import_model.html.twig:104
@@ -8207,8 +8207,8 @@ msgstr "vegeu"
 #: ../../tempcache/pages/import.html.twig:189
 #: ../../tempcache/pages/export.html.twig:216
 #, php-format
-msgid "Remove '%file' from disk"
-msgstr "Elimina «%file» del disc"
+msgid "Remove '%1$s' from disk"
+msgstr "Elimina «%1$s» del disc"
 
 #: ../../tempcache/pages/import.html.twig:213
 #, fuzzy

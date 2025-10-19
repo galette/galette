@@ -818,20 +818,16 @@ class Adherent implements AccessManagementInterface
             $ret = _T("Freed of dues");
         } elseif ($never_contributed === true) {
             if ($this->active) {
-                $patterns = ['/%days/', '/%date/'];
                 $cdate = new DateTime($this->creation_date);
                 if (!isset($this->oldness)) {
                     $this->checkDues();
                 }
-                $replace = [
-                    $this->oldness,
-                    $cdate->format(__("Y-m-d"))
-                ];
 
-                $ret = preg_replace(
-                    $patterns,
-                    $replace,
-                    _T("Never contributed: Registered %days days ago (since %date)")
+                $ret = sprintf(
+                    //TRANS: first parameter is number of late days, second is registration date
+                    _T('Never contributed: Registered %1$s days ago (since %2$s)'),
+                    $this->oldness,
+                    $cdate->format(__('Y-m-d'))
                 );
             } else {
                 $ret = _T("Never contributed");
@@ -841,29 +837,21 @@ class Adherent implements AccessManagementInterface
             $ret = $date_diff->invert == 0 ? _T("Last day!") : _T("Late since today!");
         } elseif ($date_diff->invert == 0 && $this->days_remaining > 0) {
             // Active
-            $patterns = ['/%days/', '/%date/'];
-            $replace = [
+            $ret = sprintf(
+                //TRANS: first parameter is number of remaining days, second is end membership date
+                _T('%1$s days remaining (ending on %2$s)'),
                 $this->days_remaining,
                 $due_date->format(__("Y-m-d"))
-            ];
-            $ret = preg_replace(
-                $patterns,
-                $replace,
-                _T("%days days remaining (ending on %date)")
             );
         } elseif ($date_diff->invert == 1 && $this->days_remaining > 0) {
             // Expired
-            $patterns = ['/%days/', '/%date/'];
-            $replace = [
-                // We need the number of days expired, not the number of days remaining.
-                $this->days_remaining + 1,
-                $due_date->format(__("Y-m-d"))
-            ];
             if ($this->active) {
-                $ret = preg_replace(
-                    $patterns,
-                    $replace,
-                    _T("Late of %days days (since %date)")
+                $ret = sprintf(
+                    //TRANS: first parameter is number of late days, second is end membership date
+                    _T('Late of %1$s days (since %2$s)'),
+                    // We need the number of days expired, not the number of days remaining.
+                    $this->days_remaining + 1,
+                    $due_date->format(__("Y-m-d"))
                 );
             } else {
                 $ret = _T("No longer member");
