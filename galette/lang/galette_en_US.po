@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-19 10:48+0200\n"
-"PO-Revision-Date: 2025-10-19 10:48+0200\n"
+"POT-Creation-Date: 2025-10-20 11:14+0200\n"
+"PO-Revision-Date: 2025-10-20 11:14+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -1853,47 +1853,49 @@ msgstr "- Invalid year for cards."
 msgid "- Invalid website URL."
 msgstr "- Invalid website URL."
 
-#: ../lib/Galette/Core/Preferences.php:960
-msgid "%name association's %status"
-msgstr "%name association's %status"
+#. TRANS: first parameter is name, second is status
+#: ../lib/Galette/Core/Preferences.php:959
+#, php-format
+msgid "%1$s association's %2$s"
+msgstr "%1$s association's %2$s"
 
-#: ../lib/Galette/Core/Preferences.php:1330
+#: ../lib/Galette/Core/Preferences.php:1325
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr "Please define constant \"GALETTE_URI\" with the path to your instance."
 
-#: ../lib/Galette/Core/Preferences.php:1348
-#: ../lib/Galette/Core/Preferences.php:1364 ../lib/Galette/IO/Csv.php:100
+#: ../lib/Galette/Core/Preferences.php:1343
+#: ../lib/Galette/Core/Preferences.php:1359 ../lib/Galette/IO/Csv.php:100
 #: ../lib/Galette/Entity/Document.php:446 ../lib/Galette/Entity/Texts.php:196
 #: ../../tempcache/pages/history.html.twig:331
 #: ../../tempcache/pages/mailings_list.html.twig:316
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d H:i:s"
 
-#: ../lib/Galette/Core/Preferences.php:1350
+#: ../lib/Galette/Core/Preferences.php:1345
 msgid "Never"
 msgstr "Never"
 
-#: ../lib/Galette/Core/Preferences.php:1388
+#: ../lib/Galette/Core/Preferences.php:1383
 msgid "Current cards configuration may exceed page width!"
 msgstr "Current cards configuration may exceed page width!"
 
-#: ../lib/Galette/Core/Preferences.php:1399
+#: ../lib/Galette/Core/Preferences.php:1394
 msgid "Current cards configuration may exceed page height!"
 msgstr "Current cards configuration may exceed page height!"
 
-#: ../lib/Galette/Core/Preferences.php:1425
+#: ../lib/Galette/Core/Preferences.php:1420
 #: ../lib/Galette/Features/Replacements.php:814
 msgid "Main information"
 msgstr "Main information"
 
-#: ../lib/Galette/Core/Preferences.php:1432
+#: ../lib/Galette/Core/Preferences.php:1427
 #: ../../tempcache/elements/display_socials.html.twig:50
 #: ../../tempcache/elements/edit_socials.html.twig:81
 #: ../../tempcache/pages/preferences.html.twig:77
 msgid "Social networks"
 msgstr "Social networks"
 
-#: ../lib/Galette/Core/Preferences.php:1724
+#: ../lib/Galette/Core/Preferences.php:1719
 msgid "Dark mode CSS file has been reset."
 msgstr "Dark mode CSS file has been reset."
 
@@ -2416,11 +2418,13 @@ msgstr "Lang %lang does not exists!"
 msgid "File is empty!"
 msgstr "File is empty!"
 
-#: ../lib/Galette/IO/CsvIn.php:532 ../lib/Galette/IO/CsvIn.php:543
-msgid "An error occurred storing member at row %row (%name):"
-msgstr "An error occurred storing member at row %row (%name):"
+#. TRANS: first parameter is row, second member name
+#: ../lib/Galette/IO/CsvIn.php:531 ../lib/Galette/IO/CsvIn.php:543
+#, php-format
+msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "An error occurred storing member at row %1$s (%2$s):"
 
-#: ../lib/Galette/IO/CsvIn.php:576
+#: ../lib/Galette/IO/CsvIn.php:578
 msgid "An error occurred while importing members"
 msgstr "An error occurred while importing members"
 
@@ -2873,33 +2877,37 @@ msgstr "Is admin"
 msgid "Modified"
 msgstr "Modified"
 
-#: ../lib/Galette/Entity/Reminder.php:250
-msgid "%name <%mail> (%days days)"
-msgstr "%name <%mail> (%days days)"
+#. TRANS first param is name, second email, third days interval
+#: ../lib/Galette/Entity/Reminder.php:241
+#, php-format
+msgid "%1$s <%2$s> (%3$s days)"
+msgstr "%1$s <%2$s> (%3$s days)"
 
-#: ../lib/Galette/Entity/Reminder.php:257
+#: ../lib/Galette/Entity/Reminder.php:251
 msgid "Sent reminder email for late membership"
 msgstr "Sent reminder email for late membership"
 
-#: ../lib/Galette/Entity/Reminder.php:259
+#: ../lib/Galette/Entity/Reminder.php:253
 msgid "Sent reminder email for impending membership"
 msgstr "Sent reminder email for impending membership"
 
-#: ../lib/Galette/Entity/Reminder.php:265
+#: ../lib/Galette/Entity/Reminder.php:259
 msgid "A problem happened while sending late membership email"
 msgstr "A problem happened while sending late membership email"
 
-#: ../lib/Galette/Entity/Reminder.php:267
+#: ../lib/Galette/Entity/Reminder.php:261
 msgid "A problem happened while sending impending membership email"
 msgstr "A problem happened while sending impending membership email"
 
-#: ../lib/Galette/Entity/Reminder.php:277
+#: ../lib/Galette/Entity/Reminder.php:271
 msgid "Unable to send %membership reminder (no email address)."
 msgstr "Unable to send %membership reminder (no email address)."
 
-#: ../lib/Galette/Entity/Reminder.php:290
-msgid "%name (#%id - %days days)"
-msgstr "%name (#%id - %days days)"
+#. TRANS: first parameter is name, second the id, this days interval
+#: ../lib/Galette/Entity/Reminder.php:275
+#, php-format
+msgid "%1$s (#%2$s - %3$s days)"
+msgstr "%1$s (#%2$s - %3$s days)"
 
 #: ../lib/Galette/Entity/Adherent.php:818
 msgid "Freed of dues"
@@ -3029,9 +3037,11 @@ msgstr "Inactive"
 msgid " (%age years old)"
 msgstr " (%age years old)"
 
-#: ../lib/Galette/Entity/Adherent.php:2222
-msgid "Duplicated from %name (%id)"
-msgstr "Duplicated from %name (%id)"
+#. TRANS: first parameter is member name, second his id
+#: ../lib/Galette/Entity/Adherent.php:2221
+#, php-format
+msgid "Duplicated from %1$s (%2$s)"
+msgstr "Duplicated from %1$s (%2$s)"
 
 #: ../lib/Galette/Entity/Transaction.php:118
 #: ../../tempcache/pages/transaction_form.html.twig:116
@@ -3477,9 +3487,10 @@ msgstr "Group `%1$s` cannot be set as parent!"
 msgid "Unknown ACL rule '%acl'!"
 msgstr "Unknown ACL rule '%acl'!"
 
-#: ../lib/Galette/Middleware/Authenticate.php:196
-msgid "Route '%name' is not registered in ACLs!"
-msgstr "Route '%name' is not registered in ACLs!"
+#: ../lib/Galette/Middleware/Authenticate.php:194
+#, php-format
+msgid "Route '%1$s' is not registered in ACLs!"
+msgstr "Route '%1$s' is not registered in ACLs!"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:154
 msgid "Galette is currently under maintenance!"
@@ -4947,26 +4958,29 @@ msgid "OK"
 msgstr "OK"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:137
-msgid "you're installing %name for the first time"
-msgstr "you're installing %name for the first time"
+#, php-format
+msgid "you're installing %1$s for the first time"
+msgstr "you're installing %1$s for the first time"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:141
-msgid ""
-"you wish to erase an older version of of %name without keeping your data"
+#, php-format
+msgid "you wish to erase an older version of of %1$s without keeping your data"
 msgstr ""
-"you wish to erase an older version of of %name without keeping your data"
+"you wish to erase an older version of of %1$s without keeping your data"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:167
+#, php-format
 msgid ""
-"you already have installed %name, and you want to upgrade to the latest "
+"you already have installed %1$s, and you want to upgrade to the latest "
 "version"
 msgstr ""
-"you already have installed %name, and you want to upgrade to the latest "
+"you already have installed %1$s, and you want to upgrade to the latest "
 "version"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:204
-msgid "You current %name version is..."
-msgstr "You current %name version is..."
+#, php-format
+msgid "You current %1$s version is..."
+msgstr "You current %1$s version is..."
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:286
 msgid "(Errors on DROP and RENAME operations can be ignored)"
@@ -4987,12 +5001,14 @@ msgid "Your database is maybe not usable, try to restore the older version."
 msgstr "Your database is maybe not usable, try to restore the older version."
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:330
-msgid "Plugin '%name' has been successfully installed!"
-msgstr "Plugin '%name' has been successfully installed!"
+#, php-format
+msgid "Plugin '%1$s' has been successfully installed!"
+msgstr "Plugin '%1$s' has been successfully installed!"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:336
-msgid "Plugin '%name' has been successfully updated!"
-msgstr "Plugin '%name' has been successfully updated!"
+#, php-format
+msgid "Plugin '%1$s' has been successfully updated!"
+msgstr "Plugin '%1$s' has been successfully updated!"
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:407
 msgid "Back to plugins managment page"
@@ -5960,12 +5976,14 @@ msgid "Active plugins"
 msgstr "Active plugins"
 
 #: ../../tempcache/pages/plugins.html.twig:143
-msgid "Click here to deactivate plugin '%name'"
-msgstr "Click here to deactivate plugin '%name'"
+#, php-format
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "Click here to deactivate plugin '%1$s'"
 
 #: ../../tempcache/pages/plugins.html.twig:164
-msgid "Initialize '%name' database"
-msgstr "Initialize '%name' database"
+#, php-format
+msgid "Initialize '%1$s' database"
+msgstr "Initialize '%1$s' database"
 
 #: ../../tempcache/pages/plugins.html.twig:185
 msgid "No active plugin."
@@ -5997,8 +6015,9 @@ msgid "Unknown"
 msgstr "Unknown"
 
 #: ../../tempcache/pages/plugins.html.twig:271
-msgid "Activate plugin '%name'"
-msgstr "Activate plugin '%name'"
+#, php-format
+msgid "Activate plugin '%1$s'"
+msgstr "Activate plugin '%1$s'"
 
 #: ../../tempcache/pages/plugins.html.twig:286
 msgid "No inactive plugin."
@@ -6020,8 +6039,9 @@ msgstr ""
 "An error occurred displaying plugin database initialization interface :("
 
 #: ../../tempcache/pages/plugins.html.twig:356
-msgid "Plugin database initialization: %name"
-msgstr "Plugin database initialization: %name"
+#, php-format
+msgid "Plugin database initialization: %1$s"
+msgstr "Plugin database initialization: %1$s"
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:70
 #, php-format
@@ -6284,8 +6304,9 @@ msgid "Click on a contribution row to attach it to the current transaction"
 msgstr "Click on a contribution row to attach it to the current transaction"
 
 #: ../../tempcache/pages/plugin_info.html.twig:70
-msgid "By %name"
-msgstr "By %name"
+#, php-format
+msgid "By %1$s"
+msgstr "By %1$s"
 
 #: ../../tempcache/pages/plugin_info.html.twig:97
 msgid "Version:"
@@ -6481,8 +6502,9 @@ msgid "Has scheduled payments"
 msgstr "Has scheduled payments"
 
 #: ../../tempcache/pages/contributions_list.html.twig:867
-msgid "Show only '%name' contributions"
-msgstr "Show only '%name' contributions"
+#, php-format
+msgid "Show only '%1$s' contributions"
+msgstr "Show only '%1$s' contributions"
 
 #: ../../tempcache/pages/contributions_list.html.twig:882
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:552
@@ -8633,8 +8655,9 @@ msgid "View contributions"
 msgstr "View contributions"
 
 #: ../../tempcache/pages/member_show.html.twig:229
-msgid "Create a new member with %name information."
-msgstr "Create a new member with %name information."
+#, php-format
+msgid "Create a new member with %1$s information."
+msgstr "Create a new member with %1$s information."
 
 #: ../../tempcache/pages/member_show.html.twig:236
 msgid "Duplicate"
@@ -8705,8 +8728,9 @@ msgstr[0] "%1$s transaction"
 msgstr[1] "%1$s transactions"
 
 #: ../../tempcache/pages/transactions_list.html.twig:440
-msgid "Show only '%name' transactions"
-msgstr "Show only '%name' transactions"
+#, php-format
+msgid "Show only '%1$s' transactions"
+msgstr "Show only '%1$s' transactions"
 
 #: ../../tempcache/pages/transactions_list.html.twig:516
 msgid "Remove transaction #%id"

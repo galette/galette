@@ -526,10 +526,11 @@ class CsvIn extends Csv
                             $store = $member->store();
                             if ($store !== true) {
                                 $this->addError(
-                                    str_replace(
-                                        ['%row', '%name'],
-                                        [(string)$row, $member->sname],
-                                        _T("An error occurred storing member at row %row (%name):")
+                                    sprintf(
+                                        //TRANS: first parameter is row, second member name
+                                        _T('An error occurred storing member at row %1$s (%2$s):'),
+                                        (string)$row,
+                                        $member->sname
                                     )
                                 );
                                 return false;
@@ -537,10 +538,11 @@ class CsvIn extends Csv
                         }
                     } else {
                         $this->addError(
-                            str_replace(
-                                ['%row', '%name'],
-                                [(string)$row, $member->sname],
-                                _T("An error occurred storing member at row %row (%name):")
+                            sprintf(
+                                //TRANS: first parameter is row, second member name
+                                _T('An error occurred storing member at row %1$s (%2$s):'),
+                                (string)$row,
+                                $member->sname
                             )
                         );
                         foreach ($valid as $e) {

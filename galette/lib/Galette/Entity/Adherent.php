@@ -2216,10 +2216,11 @@ class Adherent implements AccessManagementInterface
         //mark as duplicated
         $this->duplicate = true;
         $infos = $this->others_infos_admin;
-        $this->others_infos_admin = str_replace(
-            ['%name', '%id'],
-            [$this->sname, (string)$this->id],
-            _T('Duplicated from %name (%id)')
+        $this->others_infos_admin = sprintf(
+            //TRANS: first parameter is member name, second his id
+            _T('Duplicated from %1$s (%2$s)'),
+            $this->sname,
+            (string)$this->id
         );
         if (!empty($infos)) {
             $this->others_infos_admin .= "\n" . $infos;

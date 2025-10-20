@@ -236,18 +236,12 @@ class Reminder
             $mail->setMessage($texts->getBody());
             $sent = $mail->send();
 
-            $details = str_replace(
-                [
-                    '%name',
-                    '%mail',
-                    '%days'
-                ],
-                [
-                    $this->dest->sname,
-                    $this->dest->getEmail(),
-                    (string)$days_remaining
-                ],
-                _T("%name <%mail> (%days days)")
+            $details = sprintf(
+                //TRANS first param is name, second email, third days interval
+                _T('%1$s <%2$s> (%3$s days)'),
+                $this->dest->sname,
+                $this->dest->getEmail(),
+                (string)$days_remaining
             );
 
             if ($sent == GaletteMail::MAIL_SENT) {
@@ -276,18 +270,12 @@ class Reminder
                 $type_name,
                 _T("Unable to send %membership reminder (no email address).")
             );
-            $details = str_replace(
-                [
-                    '%name',
-                    '%id',
-                    '%days'
-                ],
-                [
-                    $this->dest->sname,
-                    (string)$this->dest->id,
-                    (string)$days_remaining
-                ],
-                _T("%name (#%id - %days days)")
+            $details = sprintf(
+                //TRANS: first parameter is name, second the id, this days interval
+                _T('%1$s (#%2$s - %3$s days)'),
+                $this->dest->sname,
+                (string)$this->dest->id,
+                (string)$days_remaining
             );
             $hist->add($str, $details);
             $this->msg = $this->dest->sname;

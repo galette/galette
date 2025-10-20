@@ -1566,9 +1566,8 @@ msgstr "- Any invàlid per a targetes."
 msgid "- Invalid website URL."
 msgstr ""
 
-#, fuzzy
 msgid "%name association's %status"
-msgstr "percentatge de l'associació"
+msgstr ""
 
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
@@ -1954,9 +1953,9 @@ msgstr "Lang %lang no existeix!"
 msgid "File is empty!"
 msgstr "El fitxer és buit!"
 
-msgid "An error occurred storing member at row %row (%name):"
+msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr ""
-"S'ha produït un error en emmagatzemar el membre a la fila %row (%name):"
+"S'ha produït un error en emmagatzemar el membre a la fila %1$s (%2$s):"
 
 #, fuzzy
 msgid "An error occurred while importing members"
@@ -2318,8 +2317,8 @@ msgstr "És administrador"
 msgid "Modified"
 msgstr "Modificat"
 
-msgid "%name <%mail> (%days days)"
-msgstr "%name <%mail> (%days dies)"
+msgid "%1$s <%2$s> (%3$s days)"
+msgstr "%1$s <%2$s> (%3$s dies)"
 
 #, fuzzy
 msgid "Sent reminder email for late membership"
@@ -2348,8 +2347,8 @@ msgstr ""
 "No s'ha pogut enviar el recordatori del %membership (sense adreça "
 "electrònica)."
 
-msgid "%name (#%id - %days days)"
-msgstr "%name (#%id - %days dia)"
+msgid "%1$s (#%2$s - %3$s days)"
+msgstr "%1$s (#%2$s - %3$s dia)"
 
 #, fuzzy
 msgid "Freed of dues"
@@ -2465,8 +2464,8 @@ msgstr "Inactiu"
 msgid " (%age years old)"
 msgstr " (edat de %age anys)"
 
-msgid "Duplicated from %name (%id)"
-msgstr "Duplicat des del nom %name (%id)"
+msgid "Duplicated from %1$s (%2$s)"
+msgstr "Duplicat des del nom %1$s (%2$s)"
 
 #, fuzzy
 msgid "Date:"
@@ -2839,8 +2838,8 @@ msgstr "El grup `%1$s` no es pot establir com a pare!"
 msgid "Unknown ACL rule '%acl'!"
 msgstr "Regla ACL desconeguda '%acl'!"
 
-msgid "Route '%name' is not registered in ACLs!"
-msgstr "La ruta '%name' no està registrada a ACLs!"
+msgid "Route '%1$s' is not registered in ACLs!"
+msgstr "La ruta '%1$s' no està registrada a ACLs!"
 
 #, fuzzy
 msgid "Galette is currently under maintenance!"
@@ -4167,9 +4166,9 @@ msgstr "per primera vegada instal·leu el nom del 5%"
 
 #, fuzzy
 msgid ""
-"you wish to erase an older version of of %name without keeping your data"
+"you wish to erase an older version of of %1$s without keeping your data"
 msgstr ""
-"voleu esborrar una versió anterior del nom del percentatge sense mantenir "
+"voleu esborrar una versió anterior dé %1$s sense mantenir "
 "les dades"
 
 #, fuzzy
@@ -4179,8 +4178,8 @@ msgid ""
 msgstr ""
 "ja teniu instal·lat el nom del 5% i voleu actualitzar a la darrera versió"
 
-msgid "You current %name version is..."
-msgstr "La versió actual de %name és..."
+msgid "You current %1$s version is..."
+msgstr "La versió actual de %1$s és..."
 
 #, fuzzy
 msgid "(Errors on DROP and RENAME operations can be ignored)"
@@ -4203,11 +4202,11 @@ msgstr ""
 "La base de dades potser no es pot utilitzar proveu de restaurar la versió "
 "anterior."
 
-msgid "Plugin '%name' has been successfully installed!"
-msgstr "El connector «%name» s'ha instal·lat correctament!"
+msgid "Plugin '%1$s' has been successfully installed!"
+msgstr "El connector «%1$s» s'ha instal·lat correctament!"
 
-msgid "Plugin '%name' has been successfully updated!"
-msgstr "El connector «%name» s'ha actualitzat correctament!"
+msgid "Plugin '%1$s' has been successfully updated!"
+msgstr "El connector «%1$s» s'ha actualitzat correctament!"
 
 #, fuzzy
 msgid "Back to plugins managment page"
@@ -4853,11 +4852,11 @@ msgstr "Data de publicació"
 msgid "Active plugins"
 msgstr "Connectors actius"
 
-msgid "Click here to deactivate plugin '%name'"
-msgstr "Feu clic aquí per desactivar el connector '%name'"
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "Feu clic aquí per desactivar el connector '%1$s'"
 
-msgid "Initialize '%name' database"
-msgstr "IVA '%name' base de dades"
+msgid "Initialize '%1$s' database"
+msgstr "IVA '%1$s' base de dades"
 
 #, fuzzy
 msgid "No active plugin."
@@ -4887,8 +4886,8 @@ msgstr "Explícitament desactivat"
 msgid "Unknown"
 msgstr "Desconegut"
 
-msgid "Activate plugin '%name'"
-msgstr "Activa el connector '%name'"
+msgid "Activate plugin '%1$s'"
+msgstr "Activa el connector '%1$s'"
 
 #, fuzzy
 msgid "No inactive plugin."
@@ -4908,7 +4907,7 @@ msgstr ""
 "Hi ha hagut un error en mostrar la interfície d'inicialització de la base de "
 "dades de connectors ("
 
-msgid "Plugin database initialization: %name"
+msgid "Plugin database initialization: %1$s"
 msgstr ""
 
 #, php-format
@@ -5117,8 +5116,8 @@ msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
 "Feu clic a una fila de contribució per adjuntar-la a la transacció actual"
 
-msgid "By %name"
-msgstr "Per %name"
+msgid "By %1$s"
+msgstr "Per %1$s"
 
 #, fuzzy
 msgid "Version:"
@@ -5241,7 +5240,7 @@ msgstr "Llista de transaccions"
 msgid "Has scheduled payments"
 msgstr ""
 
-msgid "Show only '%name' contributions"
+msgid "Show only '%1$s' contributions"
 msgstr ""
 
 #, fuzzy, php-format
@@ -7122,8 +7121,8 @@ msgstr "Genera una targeta de membre"
 msgid "View contributions"
 msgstr "Visualitza les contribucions"
 
-msgid "Create a new member with %name information."
-msgstr "Crea un membre nou amb informació %name."
+msgid "Create a new member with %1$s information."
+msgstr "Crea un membre nou amb informació %1$s."
 
 #, fuzzy
 msgid "Duplicate"
@@ -7187,7 +7186,7 @@ msgid_plural "%1$s transactions"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "Show only '%name' transactions"
+msgid "Show only '%1$s' transactions"
 msgstr ""
 
 msgid "Remove transaction #%id"

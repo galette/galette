@@ -2054,7 +2054,7 @@ msgstr ""
 msgid " (%age years old)"
 msgstr ""
 
-msgid "Duplicated from %name (%id)"
+msgid "Duplicated from %1$s (%2$s)"
 msgstr ""
 
 msgid "Date:"
@@ -3361,10 +3361,10 @@ msgstr ""
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
-msgid "Plugin '%name' has been successfully installed!"
+msgid "Plugin '%1$s' has been successfully installed!"
 msgstr ""
 
-msgid "Plugin '%name' has been successfully updated!"
+msgid "Plugin '%1$s' has been successfully updated!"
 msgstr ""
 
 msgid "Back to plugins managment page"
@@ -3891,10 +3891,10 @@ msgstr ""
 msgid "Active plugins"
 msgstr ""
 
-msgid "Click here to deactivate plugin '%name'"
+msgid "Click here to deactivate plugin '%1$s'"
 msgstr ""
 
-msgid "Initialize '%name' database"
+msgid "Initialize '%1$s' database"
 msgstr ""
 
 msgid "No active plugin."
@@ -3918,7 +3918,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-msgid "Activate plugin '%name'"
+msgid "Activate plugin '%1$s'"
 msgstr ""
 
 msgid "No inactive plugin."
@@ -3932,7 +3932,7 @@ msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 
-msgid "Plugin database initialization: %name"
+msgid "Plugin database initialization: %1$s"
 msgstr ""
 
 #, php-format
@@ -4209,7 +4209,7 @@ msgstr ""
 msgid "Has scheduled payments"
 msgstr ""
 
-msgid "Show only '%name' contributions"
+msgid "Show only '%1$s' contributions"
 msgstr ""
 
 #, php-format
@@ -5674,7 +5674,7 @@ msgstr ""
 msgid "View contributions"
 msgstr ""
 
-msgid "Create a new member with %name information."
+msgid "Create a new member with %1$s information."
 msgstr ""
 
 msgid "Duplicate"
@@ -5728,7 +5728,7 @@ msgstr[2] ""
 msgstr[3] ""
 msgstr[4] ""
 
-msgid "Show only '%name' transactions"
+msgid "Show only '%1$s' transactions"
 msgstr ""
 
 msgid "Remove transaction #%id"

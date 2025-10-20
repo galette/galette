@@ -954,10 +954,11 @@ class Preferences
         } else {
             //get selected staff member address
             $adh = new Adherent($this->zdb, (int)$this->prefs['pref_postal_staff_member']);
-            $_complement = preg_replace(
-                ['/%name/', '/%status/'],
-                [$this->prefs['pref_nom'], $adh->sstatus],
-                _T("%name association's %status")
+            $_complement = sprintf(
+                //TRANS: first parameter is name, second is status
+                _T('%1$s association\'s %2$s'),
+                $this->prefs['pref_nom'],
+                $adh->sstatus,
             ) . "\n";
             $_address = $adh->address;
             $_country = $adh->country != '' ? '- ' . $adh->country : '';
@@ -972,12 +973,6 @@ class Preferences
             ];
         }
 
-        /*FIXME: i18n fails :/ */
-        /*$r = preg_replace(
-            $regs,
-            $replacements,
-            _T("%name\n%complement\n%address\n%zip %town %country")
-        );*/
         return preg_replace(
             $regs,
             $replacements,

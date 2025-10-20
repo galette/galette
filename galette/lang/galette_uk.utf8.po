@@ -1304,8 +1304,8 @@ msgstr "- Неприпустимий рік для карток."
 msgid "- Invalid website URL."
 msgstr "- Недійсна URL-адреса веб-сайту."
 
-msgid "%name association's %status"
-msgstr "%name - %status товариства"
+msgid "%1$s association's %2$s"
+msgstr "%1$s - %2$s товариства"
 
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
@@ -1610,8 +1610,8 @@ msgstr "Мови %lang не існує!"
 msgid "File is empty!"
 msgstr "Файл порожній!"
 
-msgid "An error occurred storing member at row %row (%name):"
-msgstr "Сталася помилка під час зберігання члена в рядку %row (%name):"
+msgid "An error occurred storing member at row %1$s (%2$s):"
+msgstr "Сталася помилка під час зберігання члена в рядку %1$s (%2$s):"
 
 msgid "An error occurred while importing members"
 msgstr "Під час імпортування членів сталася помилка"
@@ -1897,8 +1897,8 @@ msgstr "Є адміністратором"
 msgid "Modified"
 msgstr "Змінено"
 
-msgid "%name <%mail> (%days days)"
-msgstr "%name <%mail> (%days днів)"
+msgid "%1$s <%2$s> (%3$s days)"
+msgstr "%1$s <%2$s> (%3$s днів)"
 
 msgid "Sent reminder email for late membership"
 msgstr "Надіслано електронний лист із нагадуванням про закінчуване членство"
@@ -1920,8 +1920,8 @@ msgstr ""
 msgid "Unable to send %membership reminder (no email address)."
 msgstr "Не вдається надіслати нагадування %membership (немає е-пошти)."
 
-msgid "%name (#%id - %days days)"
-msgstr "%name (#%id - %days днів)"
+msgid "%1$s (#%2$s - %3$s days)"
+msgstr "%1$s (#%2$s - %3$s днів)"
 
 msgid "Freed of dues"
 msgstr "Звільнений від внесків"
@@ -2014,8 +2014,8 @@ msgstr "Незадіяний"
 msgid " (%age years old)"
 msgstr " (вік: %age)"
 
-msgid "Duplicated from %name (%id)"
-msgstr "Повторюється з %name (%id)"
+msgid "Duplicated from %1$s (%2$s)"
+msgstr "Повторюється з %1$s (%2$s)"
 
 msgid "Date:"
 msgstr "Дата:"
@@ -2308,8 +2308,8 @@ msgstr "Групу \"%1$s\" не можна встановити як батьк
 msgid "Unknown ACL rule '%acl'!"
 msgstr "Невідоме правило ACL \"%acl\"!"
 
-msgid "Route '%name' is not registered in ACLs!"
-msgstr "Маршрут '%name' не зареєстровано в ACL!"
+msgid "Route '%1$s' is not registered in ACLs!"
+msgstr "Маршрут '%1$s' не зареєстровано в ACL!"
 
 msgid "Galette is currently under maintenance!"
 msgstr "Наразі в Galette проводиться техобслуговування!"
@@ -3377,20 +3377,20 @@ msgstr "Вид внеску"
 msgid "OK"
 msgstr "Гаразд"
 
-msgid "you're installing %name for the first time"
-msgstr "ви встановлюєте %name вперше"
+msgid "you're installing %1$s for the first time"
+msgstr "ви встановлюєте %1$s вперше"
 
 msgid ""
-"you wish to erase an older version of of %name without keeping your data"
-msgstr "ви хочете стерти стару версію %name, не зберігаючи свої дані"
+"you wish to erase an older version of of %1$s without keeping your data"
+msgstr "ви хочете стерти стару версію %1$s, не зберігаючи свої дані"
 
 msgid ""
-"you already have installed %name, and you want to upgrade to the latest "
+"you already have installed %1$s, and you want to upgrade to the latest "
 "version"
-msgstr "ви вже встановили %name і хочете оновитися до останньої версії"
+msgstr "ви вже встановили %1$s і хочете оновитися до останньої версії"
 
-msgid "You current %name version is..."
-msgstr "Ваша поточна версія %name..."
+msgid "You current %1$s version is..."
+msgstr "Ваша поточна версія %1$s..."
 
 msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr "(Помилками операцій ПЕРЕТЯГНУТИ та ПЕРЕНАЗВАТИ можна нехтувати)"
@@ -3407,11 +3407,11 @@ msgstr ""
 "Можливо, база даних не придатна до використання, спробуйте відновити старішу "
 "версію."
 
-msgid "Plugin '%name' has been successfully installed!"
-msgstr "Втулок '%name' успішно встановлено!"
+msgid "Plugin '%1$s' has been successfully installed!"
+msgstr "Втулок '%1$s' успішно встановлено!"
 
-msgid "Plugin '%name' has been successfully updated!"
-msgstr "Розширення '%name' успішно оновлено!"
+msgid "Plugin '%1$s' has been successfully updated!"
+msgstr "Розширення '%1$s' успішно оновлено!"
 
 msgid "Back to plugins managment page"
 msgstr "Повернутись до сторінки управління розширеннями"
@@ -3934,11 +3934,11 @@ msgstr "Дата виходу"
 msgid "Active plugins"
 msgstr "Діяльні розширення"
 
-msgid "Click here to deactivate plugin '%name'"
-msgstr "Клацніть тут, щоб знедіяти розширення\"%name\""
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "Клацніть тут, щоб знедіяти розширення\"%1$s\""
 
-msgid "Initialize '%name' database"
-msgstr "Ініціалізувати базу даних \"%name\""
+msgid "Initialize '%1$s' database"
+msgstr "Ініціалізувати базу даних \"%1$s\""
 
 msgid "No active plugin."
 msgstr "Немає діяльного розширення."
@@ -3961,8 +3961,8 @@ msgstr "Явно вимкнено"
 msgid "Unknown"
 msgstr "Невідомо"
 
-msgid "Activate plugin '%name'"
-msgstr "Задіяти розширення \"%name\""
+msgid "Activate plugin '%1$s'"
+msgstr "Задіяти розширення \"%1$s\""
 
 msgid "No inactive plugin."
 msgstr "Немає незадіяних втулків."
@@ -3978,8 +3978,8 @@ msgid ""
 msgstr ""
 "Сталася помилка під час відображення інтерфейсу ініціалізації бази даних :("
 
-msgid "Plugin database initialization: %name"
-msgstr "Ініціалізація бази даних розширення: %name"
+msgid "Plugin database initialization: %1$s"
+msgstr "Ініціалізація бази даних розширення: %1$s"
 
 #, php-format
 msgid "Edit field %field"
@@ -4141,8 +4141,8 @@ msgstr "Вибір внесків"
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr "Клацніть на рядок внеску, щоб додати його до поточного переказу"
 
-msgid "By %name"
-msgstr "За %name"
+msgid "By %1$s"
+msgstr "За %1$s"
 
 msgid "Version:"
 msgstr "Версія:"
@@ -4243,8 +4243,8 @@ msgstr "Є частиною транзакції"
 msgid "Has scheduled payments"
 msgstr "Має заплановані платежі"
 
-msgid "Show only '%name' contributions"
-msgstr "Показати внески лише від '%name'"
+msgid "Show only '%1$s' contributions"
+msgstr "Показати внески лише від '%1$s'"
 
 #, php-format
 msgid "Show '%1$s' card"
@@ -5773,8 +5773,8 @@ msgstr "Створення членської картки"
 msgid "View contributions"
 msgstr "Переглянути внески"
 
-msgid "Create a new member with %name information."
-msgstr "Створіть нового учасника з %name-відомостями."
+msgid "Create a new member with %1$s information."
+msgstr "Створіть нового учасника з %1$s-відомостями."
 
 msgid "Duplicate"
 msgstr "Подвоїти"
@@ -5825,8 +5825,8 @@ msgstr[0] "%1$s переказ"
 msgstr[1] "%1$s перекази"
 msgstr[2] "%1$s переказів"
 
-msgid "Show only '%name' transactions"
-msgstr "Показати перекази лише від '%name'"
+msgid "Show only '%1$s' transactions"
+msgstr "Показати перекази лише від '%1$s'"
 
 msgid "Remove transaction #%id"
 msgstr "Видалити переказ #%id"

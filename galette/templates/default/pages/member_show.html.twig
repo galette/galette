@@ -101,7 +101,7 @@
                     {% if login.isAdmin() or login.isStaff() %}
                                     <a
                                         href="{{ url_for("duplicateMember", {"id_adh": member.id}) }}"
-                                        title="{{ _T("Create a new member with %name information.")|replace({"%name": member.sfullname}) }}"
+                                        title="{{ _T("Create a new member with %1$s information.")|format(member.sfullname) }}"
                                         class="ui item"
                                     >
                                         <i class="clone icon" aria-hidden="true"></i>

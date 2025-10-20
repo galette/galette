@@ -2102,7 +2102,7 @@ msgstr "غير نَشِط"
 msgid " (%age years old)"
 msgstr ""
 
-msgid "Duplicated from %name (%id)"
+msgid "Duplicated from %1$s (%2$s)"
 msgstr ""
 
 msgid "Date:"
@@ -3990,7 +3990,7 @@ msgstr "الإضافات النشطة"
 msgid "Click here to deactivate plugin '%name'"
 msgstr ""
 
-msgid "Initialize '%name' database"
+msgid "Initialize '%1$s' database"
 msgstr ""
 
 msgid "No active plugin."
@@ -4014,7 +4014,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-msgid "Activate plugin '%name'"
+msgid "Activate plugin '%1$s'"
 msgstr ""
 
 msgid "No inactive plugin."
@@ -4028,7 +4028,7 @@ msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 
-msgid "Plugin database initialization: %name"
+msgid "Plugin database initialization: %1$s"
 msgstr ""
 
 #, php-format
@@ -5811,7 +5811,7 @@ msgstr "توليد بطاقة العضو"
 msgid "View contributions"
 msgstr "عرض الإشتراكات"
 
-msgid "Create a new member with %name information."
+msgid "Create a new member with %1$s information."
 msgstr ""
 
 msgid "Duplicate"

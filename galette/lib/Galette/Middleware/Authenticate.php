@@ -190,10 +190,9 @@ class Authenticate
         }
 
         throw new \RuntimeException(
-            str_replace(
-                '%name',
+            sprintf(
+                _T('Route \'%1$s\' is not registered in ACLs!'),
                 $name,
-                _T("Route '%name' is not registered in ACLs!")
             )
         );
     }

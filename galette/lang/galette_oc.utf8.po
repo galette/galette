@@ -1331,8 +1331,8 @@ msgstr "- L’an per lei cartas convèn pas."
 msgid "- Invalid website URL."
 msgstr "- URL dau site invalide."
 
-msgid "%name association's %status"
-msgstr "%estatuts de l’associacion %name"
+msgid "%1$s association's %2$s"
+msgstr "%2$s de l’associacion %1$s"
 
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
@@ -1639,9 +1639,9 @@ msgstr "La lenga %lang se tròba pas !"
 msgid "File is empty!"
 msgstr "Lo fichier es vuege !"
 
-msgid "An error occurred storing member at row %row (%name):"
+msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr ""
-"Capitèt una error per l'enregistrament dau membre a la linha %row (%name):"
+"Capitèt una error per l'enregistrament dau membre a la linha %1$s (%2$s):"
 
 msgid "An error occurred while importing members"
 msgstr "Capitèt una error per importar lei membres"
@@ -1929,8 +1929,8 @@ msgstr "Es administrator -tritz"
 msgid "Modified"
 msgstr "Modificat"
 
-msgid "%name <%mail> (%days days)"
-msgstr "%name <%mail> (%days jorns)"
+msgid "%1$s <%2$s> (%3$s days)"
+msgstr "%1$s <%2$s> (%3$s jorns)"
 
 msgid "Sent reminder email for late membership"
 msgstr "Corriel de rampèu mandat per adesion en retard"
@@ -1948,8 +1948,8 @@ msgid "Unable to send %membership reminder (no email address)."
 msgstr ""
 "Impossible de madar lo rampèu %membership (manca l'adreiça electronica)."
 
-msgid "%name (#%id - %days days)"
-msgstr "%name (#%id - %days jorns)"
+msgid "%1$s (#%2$s - %3$s days)"
+msgstr "%1$s (#%2$s - %3$s jorns)"
 
 msgid "Freed of dues"
 msgstr "Dispensat d'escotisson"
@@ -2044,8 +2044,8 @@ msgstr "Inactiu"
 msgid " (%age years old)"
 msgstr " (edat de %age ans)"
 
-msgid "Duplicated from %name (%id)"
-msgstr "Duplicat dau nom %name (%id)"
+msgid "Duplicated from %1$s (%2$s)"
+msgstr "Duplicat dau nom %1$s (%2$s)"
 
 msgid "Date:"
 msgstr "Data :"
@@ -3418,12 +3418,12 @@ msgstr "Mena de contribucion"
 msgid "OK"
 msgstr "D’ACÒRDI"
 
-msgid "you're installing %name for the first time"
-msgstr "installatz %name per premier còp"
+msgid "you're installing %1$s for the first time"
+msgstr "installatz %1$s per premier còp"
 
 msgid ""
-"you wish to erase an older version of of %name without keeping your data"
-msgstr "volètz escafar una version vièlha de %name sensa conservar sei donadas"
+"you wish to erase an older version of of %1$s without keeping your data"
+msgstr "volètz escafar una version vièlha de %1$s sensa conservar sei donadas"
 
 msgid ""
 "you already have installed %name, and you want to upgrade to the latest "
@@ -3446,10 +3446,10 @@ msgstr ""
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
-msgid "Plugin '%name' has been successfully installed!"
+msgid "Plugin '%1$s' has been successfully installed!"
 msgstr ""
 
-msgid "Plugin '%name' has been successfully updated!"
+msgid "Plugin '%1$s' has been successfully updated!"
 msgstr ""
 
 msgid "Back to plugins managment page"
@@ -3975,11 +3975,11 @@ msgstr "Data de sortida"
 msgid "Active plugins"
 msgstr "Ajustons actius"
 
-msgid "Click here to deactivate plugin '%name'"
-msgstr "Clicatz aicí per desactivar l’ajuston '%name'"
+msgid "Click here to deactivate plugin '%1$s'"
+msgstr "Clicatz aicí per desactivar l’ajuston '%1$s'"
 
-msgid "Initialize '%name' database"
-msgstr "Inicializar la basa de donadas '%name'"
+msgid "Initialize '%1$s' database"
+msgstr "Inicializar la basa de donadas '%1$s'"
 
 msgid "No active plugin."
 msgstr "Ges d’ajuston actiu."
@@ -4002,8 +4002,8 @@ msgstr "Explicitament desactivat"
 msgid "Unknown"
 msgstr "Desconeguda"
 
-msgid "Activate plugin '%name'"
-msgstr "Activar l’ajuston '%name'"
+msgid "Activate plugin '%1$s'"
+msgstr "Activar l’ajuston '%1$s'"
 
 msgid "No inactive plugin."
 msgstr "Ges d’ajuston inactiu."
@@ -4018,7 +4018,7 @@ msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 
-msgid "Plugin database initialization: %name"
+msgid "Plugin database initialization: %1$s"
 msgstr ""
 
 #, php-format
@@ -4186,8 +4186,8 @@ msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
 "Clicatz sus una linha de contribucion per l'estacar a la transaccion correnta"
 
-msgid "By %name"
-msgstr "Per %name"
+msgid "By %1$s"
+msgstr "Per %1$s"
 
 msgid "Version:"
 msgstr "Version :"
@@ -4289,8 +4289,8 @@ msgstr "Lista dei transaccions"
 msgid "Has scheduled payments"
 msgstr "A de pagaments a escasenças"
 
-msgid "Show only '%name' contributions"
-msgstr "Veire solament lei contribucions de '%name'"
+msgid "Show only '%1$s' contributions"
+msgstr "Veire solament lei contribucions de '%1$s'"
 
 #, php-format
 msgid "Show '%1$s' card"
@@ -5791,8 +5791,8 @@ msgstr "Generar la Carta de membre"
 msgid "View contributions"
 msgstr "Veire lei contribuccions"
 
-msgid "Create a new member with %name information."
-msgstr "Crear un membre novèu amb leis informacions de %name."
+msgid "Create a new member with %1$s information."
+msgstr "Crear un membre novèu amb leis informacions de %1$s."
 
 msgid "Duplicate"
 msgstr ""
@@ -5842,8 +5842,8 @@ msgid_plural "%1$s transactions"
 msgstr[0] "Part de transaccions mostrada : %1$s"
 msgstr[1] "Parts de transaccions mostrada : %1$s"
 
-msgid "Show only '%name' transactions"
-msgstr "Veire solament lei contribucions de '%name'"
+msgid "Show only '%1$s' transactions"
+msgstr "Veire solament lei contribucions de '%1$s'"
 
 msgid "Remove transaction #%id"
 msgstr "Levar la transaccion #%id"
