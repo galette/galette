@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-19 10:48+0200\n"
+"POT-Creation-Date: 2025-10-20 11:14+0200\n"
 "PO-Revision-Date: 2025-06-02 18:46+0000\n"
 "Last-Translator: Pèire Bréchet <oxytanistzero@tutanota.com>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -1331,6 +1331,8 @@ msgstr "- L’an per lei cartas convèn pas."
 msgid "- Invalid website URL."
 msgstr "- URL dau site invalide."
 
+#. TRANS: first parameter is name, second is status
+#, php-format
 msgid "%1$s association's %2$s"
 msgstr "%2$s de l’associacion %1$s"
 
@@ -1639,6 +1641,8 @@ msgstr "La lenga %lang se tròba pas !"
 msgid "File is empty!"
 msgstr "Lo fichier es vuege !"
 
+#. TRANS: first parameter is row, second member name
+#, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr ""
 "Capitèt una error per l'enregistrament dau membre a la linha %1$s (%2$s):"
@@ -1929,6 +1933,8 @@ msgstr "Es administrator -tritz"
 msgid "Modified"
 msgstr "Modificat"
 
+#. TRANS first param is name, second email, third days interval
+#, php-format
 msgid "%1$s <%2$s> (%3$s days)"
 msgstr "%1$s <%2$s> (%3$s jorns)"
 
@@ -1948,6 +1954,8 @@ msgid "Unable to send %membership reminder (no email address)."
 msgstr ""
 "Impossible de madar lo rampèu %membership (manca l'adreiça electronica)."
 
+#. TRANS: first parameter is name, second the id, this days interval
+#, php-format
 msgid "%1$s (#%2$s - %3$s days)"
 msgstr "%1$s (#%2$s - %3$s jorns)"
 
@@ -2044,6 +2052,8 @@ msgstr "Inactiu"
 msgid " (%age years old)"
 msgstr " (edat de %age ans)"
 
+#. TRANS: first parameter is member name, second his id
+#, php-format
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "Duplicat dau nom %1$s (%2$s)"
 
@@ -2346,7 +2356,8 @@ msgstr "Lo grop `%1$s` se pòt pas definir per parent !"
 msgid "Unknown ACL rule '%acl'!"
 msgstr ""
 
-msgid "Route '%name' is not registered in ACLs!"
+#, php-format
+msgid "Route '%1$s' is not registered in ACLs!"
 msgstr ""
 
 msgid "Galette is currently under maintenance!"
@@ -3418,20 +3429,27 @@ msgstr "Mena de contribucion"
 msgid "OK"
 msgstr "D’ACÒRDI"
 
+#, php-format
 msgid "you're installing %1$s for the first time"
 msgstr "installatz %1$s per premier còp"
 
-msgid ""
-"you wish to erase an older version of of %1$s without keeping your data"
+#, php-format
+msgid "you wish to erase an older version of of %1$s without keeping your data"
 msgstr "volètz escafar una version vièlha de %1$s sensa conservar sei donadas"
 
+#, fuzzy, php-format
+#| msgid ""
+#| "you already have installed Galette, and you want to upgrade to the latest "
+#| "version"
 msgid ""
-"you already have installed %name, and you want to upgrade to the latest "
+"you already have installed %1$s, and you want to upgrade to the latest "
 "version"
-msgstr ""
+msgstr "avètz ja installat Galeta, e volètz actualizar la darriera version"
 
-msgid "You current %name version is..."
-msgstr ""
+#, fuzzy, php-format
+#| msgid "Your current Galette version is..."
+msgid "You current %1$s version is..."
+msgstr "La version actuala de Galeta es..."
 
 msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr ""
@@ -3446,9 +3464,11 @@ msgstr ""
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
+#, php-format
 msgid "Plugin '%1$s' has been successfully installed!"
 msgstr ""
 
+#, php-format
 msgid "Plugin '%1$s' has been successfully updated!"
 msgstr ""
 
@@ -3975,9 +3995,11 @@ msgstr "Data de sortida"
 msgid "Active plugins"
 msgstr "Ajustons actius"
 
+#, php-format
 msgid "Click here to deactivate plugin '%1$s'"
 msgstr "Clicatz aicí per desactivar l’ajuston '%1$s'"
 
+#, php-format
 msgid "Initialize '%1$s' database"
 msgstr "Inicializar la basa de donadas '%1$s'"
 
@@ -4002,6 +4024,7 @@ msgstr "Explicitament desactivat"
 msgid "Unknown"
 msgstr "Desconeguda"
 
+#, php-format
 msgid "Activate plugin '%1$s'"
 msgstr "Activar l’ajuston '%1$s'"
 
@@ -4018,6 +4041,7 @@ msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 
+#, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr ""
 
@@ -4186,6 +4210,7 @@ msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
 "Clicatz sus una linha de contribucion per l'estacar a la transaccion correnta"
 
+#, php-format
 msgid "By %1$s"
 msgstr "Per %1$s"
 
@@ -4289,6 +4314,7 @@ msgstr "Lista dei transaccions"
 msgid "Has scheduled payments"
 msgstr "A de pagaments a escasenças"
 
+#, php-format
 msgid "Show only '%1$s' contributions"
 msgstr "Veire solament lei contribucions de '%1$s'"
 
@@ -5791,6 +5817,7 @@ msgstr "Generar la Carta de membre"
 msgid "View contributions"
 msgstr "Veire lei contribuccions"
 
+#, php-format
 msgid "Create a new member with %1$s information."
 msgstr "Crear un membre novèu amb leis informacions de %1$s."
 
@@ -5842,6 +5869,7 @@ msgid_plural "%1$s transactions"
 msgstr[0] "Part de transaccions mostrada : %1$s"
 msgstr[1] "Parts de transaccions mostrada : %1$s"
 
+#, php-format
 msgid "Show only '%1$s' transactions"
 msgstr "Veire solament lei contribucions de '%1$s'"
 

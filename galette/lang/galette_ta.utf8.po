@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-19 10:48+0200\n"
+"POT-Creation-Date: 2025-10-20 11:14+0200\n"
 "PO-Revision-Date: 2025-06-27 16:28+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -1335,7 +1335,10 @@ msgstr "- அட்டைகளுக்கு தவறான ஆண்டு."
 msgid "- Invalid website URL."
 msgstr "- தவறான வலைத்தள முகவரி."
 
-msgid "%name association's %status"
+#. TRANS: first parameter is name, second is status
+#, fuzzy, php-format
+#| msgid "%name association's %status"
+msgid "%1$s association's %2$s"
 msgstr "%பெயர் சங்கத்தின் %நிலை"
 
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
@@ -1645,7 +1648,10 @@ msgstr "லாங் %லாங் இல்லை!"
 msgid "File is empty!"
 msgstr "கோப்பு காலியாக உள்ளது!"
 
-msgid "An error occurred storing member at row %row (%name):"
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred storing member at row %row (%name):"
+msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr "வரிசை %வரிசையில் ( %பெயர்) உறுப்பினரை சேமிக்கும் பிழை ஏற்பட்டது:"
 
 msgid "An error occurred while importing members"
@@ -1933,7 +1939,10 @@ msgstr "நிர்வாகி"
 msgid "Modified"
 msgstr "மாற்றியமைக்கப்பட்ட"
 
-msgid "%name <%mail> (%days days)"
+#. TRANS first param is name, second email, third days interval
+#, fuzzy, php-format
+#| msgid "%name <%mail> (%days days)"
+msgid "%1$s <%2$s> (%3$s days)"
 msgstr "%பெயர் <%அஞ்சல்> (%நாட்கள்)"
 
 msgid "Sent reminder email for late membership"
@@ -1951,7 +1960,10 @@ msgstr "வரவிருக்கும் உறுப்பினர் ம�
 msgid "Unable to send %membership reminder (no email address)."
 msgstr "%உறுப்பினர் நினைவூட்டலை அனுப்ப முடியவில்லை (மின்னஞ்சல் முகவரி இல்லை)."
 
-msgid "%name (#%id - %days days)"
+#. TRANS: first parameter is name, second the id, this days interval
+#, fuzzy, php-format
+#| msgid "%name (#%id - %days days)"
+msgid "%1$s (#%2$s - %3$s days)"
 msgstr "%பெயர் (# %ஐடி - %நாட்கள்)"
 
 msgid "Freed of dues"
@@ -2045,7 +2057,10 @@ msgstr "செயலற்றது"
 msgid " (%age years old)"
 msgstr " (%வயது)"
 
-msgid "Duplicated from %name (%id)"
+#. TRANS: first parameter is member name, second his id
+#, fuzzy, php-format
+#| msgid "Duplicated from %name (%id)"
+msgid "Duplicated from %1$s (%2$s)"
 msgstr "%பெயரிலிருந்து ( %ஐடி) நகல்"
 
 msgid "Date:"
@@ -2339,7 +2354,9 @@ msgstr "குழு `%1$s` பெற்றோராக அமைக்க ம�
 msgid "Unknown ACL rule '%acl'!"
 msgstr "அறியப்படாத ACL விதி '%ACL'!"
 
-msgid "Route '%name' is not registered in ACLs!"
+#, fuzzy, php-format
+#| msgid "Route '%name' is not registered in ACLs!"
+msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "பாதை '%பெயர்' ACLS இல் பதிவு செய்யப்படவில்லை!"
 
 msgid "Galette is currently under maintenance!"
@@ -3393,21 +3410,31 @@ msgstr "பங்களிப்பு வகை"
 msgid "OK"
 msgstr "சரி"
 
-msgid "you're installing %name for the first time"
+#, fuzzy, php-format
+#| msgid "you're installing %name for the first time"
+msgid "you're installing %1$s for the first time"
 msgstr "நீங்கள் முதல் முறையாக %பெயரை நிறுவுகிறீர்கள்"
 
-msgid ""
-"you wish to erase an older version of of %name without keeping your data"
+#, fuzzy, php-format
+#| msgid ""
+#| "you wish to erase an older version of of %name without keeping your data"
+msgid "you wish to erase an older version of of %1$s without keeping your data"
 msgstr "உங்கள் தரவை வைத்திருக்காமல் %பெயரின் பழைய பதிப்பை அழிக்க விரும்புகிறீர்கள்"
 
+#, fuzzy, php-format
+#| msgid ""
+#| "you already have installed %name, and you want to upgrade to the latest "
+#| "version"
 msgid ""
-"you already have installed %name, and you want to upgrade to the latest "
+"you already have installed %1$s, and you want to upgrade to the latest "
 "version"
 msgstr ""
 "நீங்கள் ஏற்கனவே %பெயரை நிறுவியுள்ளீர்கள், மேலும் அண்மைக் கால பதிப்பிற்கு மேம்படுத்த "
 "விரும்புகிறீர்கள்"
 
-msgid "You current %name version is..."
+#, fuzzy, php-format
+#| msgid "You current %name version is..."
+msgid "You current %1$s version is..."
 msgstr "நீங்கள் தற்போதைய %பெயர் பதிப்பு ..."
 
 msgid "(Errors on DROP and RENAME operations can be ignored)"
@@ -3423,10 +3450,14 @@ msgstr "அட்டவணைகள் முற்றிலுமாக உர�
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr "உங்கள் தரவுத்தளம் பயன்படுத்த முடியாதது, பழைய பதிப்பை மீட்டெடுக்க முயற்சிக்கவும்."
 
-msgid "Plugin '%name' has been successfully installed!"
+#, fuzzy, php-format
+#| msgid "Plugin '%name' has been successfully installed!"
+msgid "Plugin '%1$s' has been successfully installed!"
 msgstr "சொருகி '%பெயர்' வெற்றிகரமாக நிறுவப்பட்டுள்ளது!"
 
-msgid "Plugin '%name' has been successfully updated!"
+#, fuzzy, php-format
+#| msgid "Plugin '%name' has been successfully updated!"
+msgid "Plugin '%1$s' has been successfully updated!"
 msgstr "சொருகி '%பெயர்' வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
 
 msgid "Back to plugins managment page"
@@ -3953,10 +3984,14 @@ msgstr "வெளியீட்டு தேதி"
 msgid "Active plugins"
 msgstr "செயலில் உள்ள செருகுநிரல்கள்"
 
-msgid "Click here to deactivate plugin '%name'"
+#, fuzzy, php-format
+#| msgid "Click here to deactivate plugin '%name'"
+msgid "Click here to deactivate plugin '%1$s'"
 msgstr "சொருகி '%பெயர்' ஐ செயலிழக்க இங்கே சொடுக்கு செய்க"
 
-msgid "Initialize '%name' database"
+#, fuzzy, php-format
+#| msgid "Initialize '%name' database"
+msgid "Initialize '%1$s' database"
 msgstr "'%பெயர்' தரவுத்தளத்தைத் தொடங்கவும்"
 
 msgid "No active plugin."
@@ -3980,7 +4015,9 @@ msgstr "வெளிப்படையாக முடக்கப்பட்�
 msgid "Unknown"
 msgstr "தெரியவில்லை"
 
-msgid "Activate plugin '%name'"
+#, fuzzy, php-format
+#| msgid "Activate plugin '%name'"
+msgid "Activate plugin '%1$s'"
 msgstr "சொருகி '%பெயர்' செயல்படுத்தவும்"
 
 msgid "No inactive plugin."
@@ -3995,7 +4032,9 @@ msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr "சொருகி தரவுத்தள துவக்க இடைமுகத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
 
-msgid "Plugin database initialization: %name"
+#, fuzzy, php-format
+#| msgid "Plugin database initialization: %name"
+msgid "Plugin database initialization: %1$s"
 msgstr "சொருகி தரவுத்தள துவக்கம்: %பெயர்"
 
 #, php-format
@@ -4162,8 +4201,10 @@ msgstr "பங்களிப்பு தேர்வு"
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr "தற்போதைய பரிவர்த்தனையுடன் இணைக்க பங்களிப்பு வரிசையில் சொடுக்கு செய்க"
 
-msgid "By %name"
-msgstr "%பெயர்"
+#, fuzzy, php-format
+#| msgid "Page %1$s"
+msgid "By %1$s"
+msgstr "பக்கம் %1$s"
 
 msgid "Version:"
 msgstr "பதிப்பு:"
@@ -4265,7 +4306,9 @@ msgstr "பரிவர்த்தனைகளின் பட்டியல�
 msgid "Has scheduled payments"
 msgstr "திட்டமிட்ட கொடுப்பனவுகள்"
 
-msgid "Show only '%name' contributions"
+#, fuzzy, php-format
+#| msgid "Show only '%name' contributions"
+msgid "Show only '%1$s' contributions"
 msgstr "'%பெயர்' பங்களிப்புகளை மட்டும் காட்டு"
 
 #, fuzzy, php-format
@@ -5812,7 +5855,9 @@ msgstr "உறுப்பினர் அட்டையை உருவாக�
 msgid "View contributions"
 msgstr "பங்களிப்புகளைக் காண்க"
 
-msgid "Create a new member with %name information."
+#, fuzzy, php-format
+#| msgid "Create a new member with %name information."
+msgid "Create a new member with %1$s information."
 msgstr "%பெயர் தகவலுடன் புதிய உறுப்பினரை உருவாக்கவும்."
 
 msgid "Duplicate"
@@ -5864,7 +5909,9 @@ msgid_plural "%1$s transactions"
 msgstr[0] "பரிவர்த்தனை"
 msgstr[1] "பரிவர்த்தனை"
 
-msgid "Show only '%name' transactions"
+#, fuzzy, php-format
+#| msgid "Show only '%name' transactions"
+msgid "Show only '%1$s' transactions"
 msgstr "'%பெயர்' பரிவர்த்தனைகளை மட்டும் காட்டு"
 
 msgid "Remove transaction #%id"
@@ -6230,6 +6277,9 @@ msgstr "மொழி பட்டியல்"
 
 msgid "Page content"
 msgstr "பக்க உள்ளடக்கம்"
+
+#~ msgid "By %name"
+#~ msgstr "%பெயர்"
 
 #, php-format
 #~ msgid ""

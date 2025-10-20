@@ -15,8 +15,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2025-10-19 10:48+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-20 11:14+0200\n"
 "PO-Revision-Date: 2025-10-20 06:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -1334,6 +1334,8 @@ msgstr "- Année invalide pour les cartes."
 msgid "- Invalid website URL."
 msgstr "- URL du site web invalide."
 
+#. TRANS: first parameter is name, second is status
+#, php-format
 msgid "%1$s association's %2$s"
 msgstr "%2$s de l’association %1$s"
 
@@ -1653,6 +1655,9 @@ msgstr "La langue %lang n'existe pas !"
 msgid "File is empty!"
 msgstr "Le fichier est vide !"
 
+#. TRANS: first parameter is row, second member name
+#, fuzzy, php-format
+#| msgid "An error occurred storing member at row %1$s (%2$s):"
 msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr ""
 "Une erreur est survenue lors de l'enregistrement de l'adhérent ligne %1$ "
@@ -1941,6 +1946,8 @@ msgstr "Est admin"
 msgid "Modified"
 msgstr "Modifié"
 
+#. TRANS first param is name, second email, third days interval
+#, php-format
 msgid "%1$s <%2$s> (%3$s days)"
 msgstr "%1$s <%2$s> (%3$s jours)"
 
@@ -1962,6 +1969,8 @@ msgstr ""
 msgid "Unable to send %membership reminder (no email address)."
 msgstr "Impossible d’envoyer le rappel %membership (pas d’adresse courriel)."
 
+#. TRANS: first parameter is name, second the id, this days interval
+#, php-format
 msgid "%1$s (#%2$s - %3$s days)"
 msgstr "%1$s (#%2$s - %3$s jours)"
 
@@ -2058,6 +2067,8 @@ msgstr "Inactif"
 msgid " (%age years old)"
 msgstr " (%age ans)"
 
+#. TRANS: first parameter is member name, second his id
+#, php-format
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "Dupliqué depuis %1$s (%2$s)"
 
@@ -2355,6 +2366,7 @@ msgstr "Le groupe `%1$s` ne peut être défini comme parent !"
 msgid "Unknown ACL rule '%acl'!"
 msgstr "Règle ACL « %acl » inconnue !"
 
+#, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "La route %1$s n’est pas enregistrée dans les ACL !"
 
@@ -3442,15 +3454,17 @@ msgstr "Type de contribution"
 msgid "OK"
 msgstr "OK"
 
+#, php-format
 msgid "you're installing %1$s for the first time"
 msgstr "vous installez %1$s pour la première fois"
 
-msgid ""
-"you wish to erase an older version of of %1$s without keeping your data"
+#, php-format
+msgid "you wish to erase an older version of of %1$s without keeping your data"
 msgstr ""
 "vous souhaitez effacer une ancienne version de %1$s sans conserver vos "
 "données"
 
+#, php-format
 msgid ""
 "you already have installed %1$s, and you want to upgrade to the latest "
 "version"
@@ -3458,6 +3472,7 @@ msgstr ""
 "vous avez déjà installé %1$s, et vous souhaitez mettre à jour à la dernière "
 "version"
 
+#, php-format
 msgid "You current %1$s version is..."
 msgstr "Votre version actuelle de %1$s est..."
 
@@ -3480,9 +3495,11 @@ msgstr ""
 "Votre base est peut-être inutilisable, essayez de restaurer une ancienne "
 "version."
 
+#, php-format
 msgid "Plugin '%1$s' has been successfully installed!"
 msgstr "Le plugin « %1$s » été installé avec succès !"
 
+#, php-format
 msgid "Plugin '%1$s' has been successfully updated!"
 msgstr "Le plugin « %1$s » a été mis à jour avec succès !"
 
@@ -4013,9 +4030,11 @@ msgstr "Date de sortie"
 msgid "Active plugins"
 msgstr "Plugins actifs"
 
+#, php-format
 msgid "Click here to deactivate plugin '%1$s'"
 msgstr "Cliquez ici pour désactiver le plugin « %1$s »"
 
+#, php-format
 msgid "Initialize '%1$s' database"
 msgstr "Initialiser la base de données de « %1$s »"
 
@@ -4040,6 +4059,7 @@ msgstr "Désactivé explicitement"
 msgid "Unknown"
 msgstr "Inconnu"
 
+#, php-format
 msgid "Activate plugin '%1$s'"
 msgstr "Activer le plugin « %1$s »"
 
@@ -4058,6 +4078,7 @@ msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface d'initialisation "
 "de la base de données :("
 
+#, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr "Initialisation de base de données des plugins : %1$s"
 
@@ -4224,6 +4245,7 @@ msgstr ""
 "Cliquez sur une ligne de contribution pour l’attacher à la transaction "
 "courante"
 
+#, php-format
 msgid "By %1$s"
 msgstr "Par %1$s"
 
@@ -4325,6 +4347,7 @@ msgstr "Fait partie d'une transaction"
 msgid "Has scheduled payments"
 msgstr "A des paiements planifiés"
 
+#, php-format
 msgid "Show only '%1$s' contributions"
 msgstr "Voir uniquement les contributions « %1$s »"
 
@@ -5865,6 +5888,7 @@ msgstr "Générer la carte de membre"
 msgid "View contributions"
 msgstr "Voir les contributions"
 
+#, php-format
 msgid "Create a new member with %1$s information."
 msgstr "Créer un nouvel adhérent avec les informations de %1$s."
 
@@ -5916,6 +5940,7 @@ msgid_plural "%1$s transactions"
 msgstr[0] "%1$s transaction"
 msgstr[1] "%1$s transactions"
 
+#, php-format
 msgid "Show only '%1$s' transactions"
 msgstr "Voir uniquement les transaction de « %1$s »"
 

@@ -42,7 +42,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-19 10:48+0200\n"
+"POT-Creation-Date: 2025-10-20 11:14+0200\n"
 "PO-Revision-Date: 2024-10-19 07:02+0000\n"
 "Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -1387,6 +1387,8 @@ msgstr "- Año inválido para las tarjetas."
 msgid "- Invalid website URL."
 msgstr "- Dirección URL de sitio web no válida."
 
+#. TRANS: first parameter is name, second is status
+#, php-format
 msgid "%1$s association's %2$s"
 msgstr "%1$s del %2$s de la organización"
 
@@ -1699,9 +1701,10 @@ msgstr "¡El lenguaje %lang no existe!"
 msgid "File is empty!"
 msgstr "¡El archivo está vacío!"
 
+#. TRANS: first parameter is row, second member name
+#, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
-msgstr ""
-"Se ha producido un error al guardar el miembro en la fila %1$s (%2$s):"
+msgstr "Se ha producido un error al guardar el miembro en la fila %1$s (%2$s):"
 
 msgid "An error occurred while importing members"
 msgstr "Se ha producido un error al importar los miembros"
@@ -1993,6 +1996,8 @@ msgstr "Es administrador"
 msgid "Modified"
 msgstr "Modificado"
 
+#. TRANS first param is name, second email, third days interval
+#, php-format
 msgid "%1$s <%2$s> (%3$s days)"
 msgstr "%1$s <%2$s> {%3$s días}"
 
@@ -2019,6 +2024,8 @@ msgstr ""
 "No se pudo enviar el recordatorio de la %membership {falta correo "
 "electrónico}."
 
+#. TRANS: first parameter is name, second the id, this days interval
+#, php-format
 msgid "%1$s (#%2$s - %3$s days)"
 msgstr "%1$s (#%2$s - %3$s días)"
 
@@ -2113,6 +2120,9 @@ msgstr "Inactiva"
 msgid " (%age years old)"
 msgstr " (%age años)"
 
+#. TRANS: first parameter is member name, second his id
+#, fuzzy, php-format
+#| msgid "Duplicated from %1$s (%2$s)"
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "Duplicado de %2$s (%2$s)"
 
@@ -2411,6 +2421,7 @@ msgstr "¡El grupo `%1$s` no se puede establecer como padre!"
 msgid "Unknown ACL rule '%acl'!"
 msgstr "¡Regla ACL desconocida '%acl'!"
 
+#, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "¡La ruta «%1$s» no está registrada con los ACL!"
 
@@ -3493,19 +3504,22 @@ msgstr "Tipo de contribución"
 msgid "OK"
 msgstr "Aceptar"
 
+#, php-format
 msgid "you're installing %1$s for the first time"
 msgstr "estás instalando %1$s por primera vez"
 
-msgid ""
-"you wish to erase an older version of of %1$s without keeping your data"
+#, php-format
+msgid "you wish to erase an older version of of %1$s without keeping your data"
 msgstr "deseas eliminar una versión anterior de %1$s sin mantener tus datos"
 
+#, php-format
 msgid ""
 "you already have installed %1$s, and you want to upgrade to the latest "
 "version"
 msgstr ""
 "ya tienes instalado %1$s, y quieres actualizar a la versión más reciente"
 
+#, php-format
 msgid "You current %1$s version is..."
 msgstr "Su versión actual de %1$s es..."
 
@@ -3526,9 +3540,11 @@ msgstr ""
 "Tal vez la base de datos no esté en condiciones operativas. Pruebe a "
 "restaurar la versión anterior."
 
+#, php-format
 msgid "Plugin '%1$s' has been successfully installed!"
 msgstr "¡Se instaló el complemento «%1$s» correctamente!"
 
+#, php-format
 msgid "Plugin '%1$s' has been successfully updated!"
 msgstr "¡Se ha actualizado con éxito el complemento '%1$s'!"
 
@@ -4065,9 +4081,11 @@ msgstr "Fecha de publicación"
 msgid "Active plugins"
 msgstr "Complementos activos"
 
+#, php-format
 msgid "Click here to deactivate plugin '%1$s'"
 msgstr "Haz clic aquí para desactivar el complemento '%1$s'"
 
+#, php-format
 msgid "Initialize '%1$s' database"
 msgstr "Inicializar base de datos «%1$s»"
 
@@ -4092,6 +4110,7 @@ msgstr "Desactivado explícitamente"
 msgid "Unknown"
 msgstr "Desconocido"
 
+#, php-format
 msgid "Activate plugin '%1$s'"
 msgstr "Activar plugin '%1$s'"
 
@@ -4110,6 +4129,7 @@ msgstr ""
 "Se ha producido un error al mostrar la interfaz de inicialización de la base "
 "de datos del complemento :("
 
+#, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr "Inicialización de base de datos de plugin: '%1$s'"
 
@@ -4277,6 +4297,7 @@ msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
 "Haz clic en una fila de contribución para adjuntarla a la transacción actual"
 
+#, php-format
 msgid "By %1$s"
 msgstr "Por %1$s"
 
@@ -4380,6 +4401,7 @@ msgstr "Lista de transacciones"
 msgid "Has scheduled payments"
 msgstr "Tiene pagos programados"
 
+#, php-format
 msgid "Show only '%1$s' contributions"
 msgstr "Mostrar solo las contribuciones de '%1$s'"
 
@@ -5950,6 +5972,7 @@ msgstr "Generar tarjeta de miembro"
 msgid "View contributions"
 msgstr "Ver contribuciones"
 
+#, php-format
 msgid "Create a new member with %1$s information."
 msgstr "Crear un nuevo miembro con la información de %1$s."
 
@@ -6001,6 +6024,7 @@ msgid_plural "%1$s transactions"
 msgstr[0] "%1$s transacción"
 msgstr[1] "%1$s transacciones"
 
+#, php-format
 msgid "Show only '%1$s' transactions"
 msgstr "Mostrar solo transacciones '%1$s'"
 

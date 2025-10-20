@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2025-10-19 10:48+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-20 11:14+0200\n"
 "PO-Revision-Date: 2025-10-20 11:54+0000\n"
 "Last-Translator: Максим Горпиніч <gorpinicmaksim0@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -24,9 +24,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural="
-"(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? "
-"1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.14-dev\n"
 
 msgid "Unable to load transaction #%id!"
@@ -1305,6 +1304,8 @@ msgstr "- Неприпустимий рік для карток."
 msgid "- Invalid website URL."
 msgstr "- Недійсна URL-адреса веб-сайту."
 
+#. TRANS: first parameter is name, second is status
+#, php-format
 msgid "%1$s association's %2$s"
 msgstr "%1$s - %2$s товариства"
 
@@ -1611,6 +1612,8 @@ msgstr "Мови %lang не існує!"
 msgid "File is empty!"
 msgstr "Файл порожній!"
 
+#. TRANS: first parameter is row, second member name
+#, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr "Сталася помилка під час зберігання члена в рядку %1$s (%2$s):"
 
@@ -1898,6 +1901,8 @@ msgstr "Є адміністратором"
 msgid "Modified"
 msgstr "Змінено"
 
+#. TRANS first param is name, second email, third days interval
+#, php-format
 msgid "%1$s <%2$s> (%3$s days)"
 msgstr "%1$s <%2$s> (%3$s днів)"
 
@@ -1921,6 +1926,8 @@ msgstr ""
 msgid "Unable to send %membership reminder (no email address)."
 msgstr "Не вдається надіслати нагадування %membership (немає е-пошти)."
 
+#. TRANS: first parameter is name, second the id, this days interval
+#, php-format
 msgid "%1$s (#%2$s - %3$s days)"
 msgstr "%1$s (#%2$s - %3$s днів)"
 
@@ -2015,6 +2022,8 @@ msgstr "Незадіяний"
 msgid " (%age years old)"
 msgstr " (вік: %age)"
 
+#. TRANS: first parameter is member name, second his id
+#, php-format
 msgid "Duplicated from %1$s (%2$s)"
 msgstr "Повторюється з %1$s (%2$s)"
 
@@ -2307,6 +2316,7 @@ msgstr "Групу \"%1$s\" не можна встановити як батьк
 msgid "Unknown ACL rule '%acl'!"
 msgstr "Невідоме правило ACL \"%acl\"!"
 
+#, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "Маршрут '%1$s' не зареєстровано в ACL!"
 
@@ -3376,18 +3386,21 @@ msgstr "Вид внеску"
 msgid "OK"
 msgstr "Гаразд"
 
+#, php-format
 msgid "you're installing %1$s for the first time"
 msgstr "ви встановлюєте %1$s вперше"
 
-msgid ""
-"you wish to erase an older version of of %1$s without keeping your data"
+#, php-format
+msgid "you wish to erase an older version of of %1$s without keeping your data"
 msgstr "ви хочете стерти стару версію %1$s, не зберігаючи свої дані"
 
+#, php-format
 msgid ""
 "you already have installed %1$s, and you want to upgrade to the latest "
 "version"
 msgstr "ви вже встановили %1$s і хочете оновитися до останньої версії"
 
+#, php-format
 msgid "You current %1$s version is..."
 msgstr "Ваша поточна версія %1$s..."
 
@@ -3406,9 +3419,11 @@ msgstr ""
 "Можливо, база даних не придатна до використання, спробуйте відновити старішу "
 "версію."
 
+#, php-format
 msgid "Plugin '%1$s' has been successfully installed!"
 msgstr "Втулок '%1$s' успішно встановлено!"
 
+#, php-format
 msgid "Plugin '%1$s' has been successfully updated!"
 msgstr "Розширення '%1$s' успішно оновлено!"
 
@@ -3933,9 +3948,11 @@ msgstr "Дата виходу"
 msgid "Active plugins"
 msgstr "Діяльні розширення"
 
+#, php-format
 msgid "Click here to deactivate plugin '%1$s'"
 msgstr "Клацніть тут, щоб знедіяти розширення\"%1$s\""
 
+#, php-format
 msgid "Initialize '%1$s' database"
 msgstr "Ініціалізувати базу даних \"%1$s\""
 
@@ -3960,6 +3977,7 @@ msgstr "Явно вимкнено"
 msgid "Unknown"
 msgstr "Невідомо"
 
+#, php-format
 msgid "Activate plugin '%1$s'"
 msgstr "Задіяти розширення \"%1$s\""
 
@@ -3977,6 +3995,7 @@ msgid ""
 msgstr ""
 "Сталася помилка під час відображення інтерфейсу ініціалізації бази даних :("
 
+#, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr "Ініціалізація бази даних розширення: %1$s"
 
@@ -4140,6 +4159,7 @@ msgstr "Вибір внесків"
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr "Клацніть на рядок внеску, щоб додати його до поточного переказу"
 
+#, php-format
 msgid "By %1$s"
 msgstr "За %1$s"
 
@@ -4242,6 +4262,7 @@ msgstr "Є частиною транзакції"
 msgid "Has scheduled payments"
 msgstr "Має заплановані платежі"
 
+#, php-format
 msgid "Show only '%1$s' contributions"
 msgstr "Показати внески лише від '%1$s'"
 
@@ -5772,6 +5793,7 @@ msgstr "Створення членської картки"
 msgid "View contributions"
 msgstr "Переглянути внески"
 
+#, php-format
 msgid "Create a new member with %1$s information."
 msgstr "Створіть нового учасника з %1$s-відомостями."
 
@@ -5824,6 +5846,7 @@ msgstr[0] "%1$s переказ"
 msgstr[1] "%1$s перекази"
 msgstr[2] "%1$s переказів"
 
+#, php-format
 msgid "Show only '%1$s' transactions"
 msgstr "Показати перекази лише від '%1$s'"
 

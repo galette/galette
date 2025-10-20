@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-19 10:48+0200\n"
+"POT-Creation-Date: 2025-10-20 11:14+0200\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Turkish (Ottoman) <https://hosted.weblate.org/projects/"
@@ -1268,7 +1268,9 @@ msgstr ""
 msgid "- Invalid website URL."
 msgstr ""
 
-msgid "%name association's %status"
+#. TRANS: first parameter is name, second is status
+#, php-format
+msgid "%1$s association's %2$s"
 msgstr ""
 
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
@@ -1571,7 +1573,9 @@ msgstr ""
 msgid "File is empty!"
 msgstr ""
 
-msgid "An error occurred storing member at row %row (%name):"
+#. TRANS: first parameter is row, second member name
+#, php-format
+msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr ""
 
 msgid "An error occurred while importing members"
@@ -1854,7 +1858,9 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-msgid "%name <%mail> (%days days)"
+#. TRANS first param is name, second email, third days interval
+#, php-format
+msgid "%1$s <%2$s> (%3$s days)"
 msgstr ""
 
 msgid "Sent reminder email for late membership"
@@ -1872,7 +1878,9 @@ msgstr ""
 msgid "Unable to send %membership reminder (no email address)."
 msgstr ""
 
-msgid "%name (#%id - %days days)"
+#. TRANS: first parameter is name, second the id, this days interval
+#, php-format
+msgid "%1$s (#%2$s - %3$s days)"
 msgstr ""
 
 msgid "Freed of dues"
@@ -1966,6 +1974,8 @@ msgstr ""
 msgid " (%age years old)"
 msgstr ""
 
+#. TRANS: first parameter is member name, second his id
+#, php-format
 msgid "Duplicated from %1$s (%2$s)"
 msgstr ""
 
@@ -2258,7 +2268,8 @@ msgstr ""
 msgid "Unknown ACL rule '%acl'!"
 msgstr ""
 
-msgid "Route '%name' is not registered in ACLs!"
+#, php-format
+msgid "Route '%1$s' is not registered in ACLs!"
 msgstr ""
 
 msgid "Galette is currently under maintenance!"
@@ -3231,19 +3242,22 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-msgid "you're installing %name for the first time"
+#, php-format
+msgid "you're installing %1$s for the first time"
 msgstr ""
 
-msgid ""
-"you wish to erase an older version of of %name without keeping your data"
+#, php-format
+msgid "you wish to erase an older version of of %1$s without keeping your data"
 msgstr ""
 
+#, php-format
 msgid ""
-"you already have installed %name, and you want to upgrade to the latest "
+"you already have installed %1$s, and you want to upgrade to the latest "
 "version"
 msgstr ""
 
-msgid "You current %name version is..."
+#, php-format
+msgid "You current %1$s version is..."
 msgstr ""
 
 msgid "(Errors on DROP and RENAME operations can be ignored)"
@@ -3259,9 +3273,11 @@ msgstr ""
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
 
+#, php-format
 msgid "Plugin '%1$s' has been successfully installed!"
 msgstr ""
 
+#, php-format
 msgid "Plugin '%1$s' has been successfully updated!"
 msgstr ""
 
@@ -3776,9 +3792,11 @@ msgstr ""
 msgid "Active plugins"
 msgstr ""
 
+#, php-format
 msgid "Click here to deactivate plugin '%1$s'"
 msgstr ""
 
+#, php-format
 msgid "Initialize '%1$s' database"
 msgstr ""
 
@@ -3803,6 +3821,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
+#, php-format
 msgid "Activate plugin '%1$s'"
 msgstr ""
 
@@ -3817,6 +3836,7 @@ msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 
+#, php-format
 msgid "Plugin database initialization: %1$s"
 msgstr ""
 
@@ -3977,7 +3997,8 @@ msgstr ""
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
 
-msgid "By %name"
+#, php-format
+msgid "By %1$s"
 msgstr ""
 
 msgid "Version:"
@@ -4076,6 +4097,7 @@ msgstr ""
 msgid "Has scheduled payments"
 msgstr ""
 
+#, php-format
 msgid "Show only '%1$s' contributions"
 msgstr ""
 
@@ -5504,6 +5526,7 @@ msgstr ""
 msgid "View contributions"
 msgstr ""
 
+#, php-format
 msgid "Create a new member with %1$s information."
 msgstr ""
 
@@ -5555,6 +5578,7 @@ msgid_plural "%1$s transactions"
 msgstr[0] ""
 msgstr[1] ""
 
+#, php-format
 msgid "Show only '%1$s' transactions"
 msgstr ""
 
