@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-10-19 10:48+0200\n"
-"PO-Revision-Date: 2025-09-08 20:27+0000\n"
+"PO-Revision-Date: 2025-10-20 06:31+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -2139,10 +2139,8 @@ msgstr "Extension d’adhésion :"
 msgid "- The duration must be a positive integer!"
 msgstr "- La durée doit être un entier positif !"
 
-#, fuzzy
-#| msgid "- Birthdate must be set in the past!"
 msgid "- The end date must be after the start date!"
-msgstr "- La date de naissance doit être définie dans le passé !"
+msgstr "- La date de fin doit être après la date de début !"
 
 msgid "- Membership period overlaps period starting at "
 msgstr "- La période d’adhésion chevauche la période commençant le "
