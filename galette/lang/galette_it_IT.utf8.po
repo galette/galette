@@ -29,9 +29,9 @@
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-10-19 10:48+0200\n"
-"PO-Revision-Date: 2025-10-13 09:07+0000\n"
+"PO-Revision-Date: 2025-10-20 06:31+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -2139,10 +2139,8 @@ msgstr "Estensione dell'iscrizione:"
 msgid "- The duration must be a positive integer!"
 msgstr "- La durata deve essere un numero intero positivo!"
 
-#, fuzzy
-#| msgid "- Birthdate must be set in the past!"
 msgid "- The end date must be after the start date!"
-msgstr "- La data di nascita deve essere impostata nel passato!"
+msgstr "- La data di inizio deve precedere la data di fine!"
 
 msgid "- Membership period overlaps period starting at "
 msgstr "- Il periodo di adesione si sovrappone al periodo che inizia a "
