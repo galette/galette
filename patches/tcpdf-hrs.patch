@@ -1,0 +1,39 @@
+diff -up galette/vendor/tecnickcom/tcpdf/tcpdf.php.patch galette/vendor/tecnickcom/tcpdf/tcpdf.php
+--- galette/vendor/tecnickcom/tcpdf/tcpdf.php.patch	2025-10-17 04:56:26.931892838 +0200
++++ galette/vendor/tecnickcom/tcpdf/tcpdf.php	2025-10-20 06:41:20.346219775 +0200
+@@ -19091,34 +19091,7 @@ class TCPDF {
+ 				$prevlinewidth = $this->GetLineWidth();
+ 				$this->setLineWidth($hrHeight);
+ 
+-				$lineStyle = array();
+-				if (isset($tag['fgcolor'])) {
+-					$lineStyle['color'] = $tag['fgcolor'];
+-				}
+-
+-				if (isset($tag['fgcolor'])) {
+-					$lineStyle['color'] = $tag['fgcolor'];
+-				}
+-
+-				if (isset($tag['style']['cap'])) {
+-					$lineStyle['cap'] = $tag['style']['cap'];
+-				}
+-
+-				if (isset($tag['style']['join'])) {
+-					$lineStyle['join'] = $tag['style']['join'];
+-				}
+-
+-				if (isset($tag['style']['dash'])) {
+-					$lineStyle['dash'] = $tag['style']['dash'];
+-				}
+-
+-				if (isset($tag['style']['phase'])) {
+-					$lineStyle['phase'] = $tag['style']['phase'];
+-				}
+-
+-				$lineStyle = array_filter($lineStyle);
+-
+-				$this->Line($x, $y, $x + $hrWidth, $y, $lineStyle);
++				$this->Line($x, $y, $x + $hrWidth, $y);
+ 				$this->setLineWidth($prevlinewidth);
+ 				$this->addHTMLVertSpace(max($hbc, ($hrHeight / 2)), 0, $cell, !isset($dom[($key + 1)]));
+ 				break;
