@@ -82,7 +82,7 @@ td[dir=rtl]#pdf_assoname {
 hr {
     cap:\'\';
     join:\'\';
-    dash:\'\';
+    dash:1;
     phase:\'\';
 }',
         'model_parent'  => null
