@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-10-20 11:14+0200\n"
-"PO-Revision-Date: 2025-10-20 06:31+0000\n"
+"PO-Revision-Date: 2025-10-21 08:38+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -1656,12 +1656,11 @@ msgid "File is empty!"
 msgstr "Le fichier est vide !"
 
 #. TRANS: first parameter is row, second member name
-#, fuzzy, php-format
-#| msgid "An error occurred storing member at row %1$s (%2$s):"
+#, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr ""
-"Une erreur est survenue lors de l'enregistrement de l'adhérent ligne %1$ "
-"(%2$s) :"
+"Une erreur est survenue lors de l'enregistrement de l'adhérent ligne %1$s "
+"(%2$s) :"
 
 msgid "An error occurred while importing members"
 msgstr "Une erreur est survenue lors de l'enregistrement des adhérents"
