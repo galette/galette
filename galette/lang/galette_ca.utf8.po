@@ -1,6 +1,6 @@
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023, 2024.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020, 2021, 2022, 2023, 2024, 2025.
 # Joan Montané <joan@montane.cat>, 2020.
 # Pol Casares Civit <pol.casares@e-campus.uab.cat>, 2020.
 # Kilian Niubó Vinuesa <kilian.niubo@qubiq.es>, 2021.
@@ -13,9 +13,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-10-20 11:14+0200\n"
-"PO-Revision-Date: 2024-04-21 07:17+0000\n"
+"PO-Revision-Date: 2025-10-21 08:39+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 #, fuzzy
 #| msgid "Unable to load contribution #%id!"
@@ -195,7 +195,6 @@ msgstr "Elimina el mailing #%1$s"
 msgid "Mailing preview"
 msgstr "Vista prèvia del correu"
 
-#, fuzzy
 msgid "Contributions types"
 msgstr "Tipus de contribucions"
 
@@ -1103,7 +1102,6 @@ msgstr "El fitxer Config ja existeix i està actualitzat"
 msgid "Unable to create configuration file (%path)"
 msgstr "No s'ha pogut crear el fitxer de configuració (%path)"
 
-#, fuzzy
 msgid "Status"
 msgstr "Estat"
 
@@ -1255,7 +1253,6 @@ msgstr "Forma d'adhesió buida"
 msgid "Download empty adhesion form"
 msgstr "Baixa un formulari d'adhesió buit"
 
-#, fuzzy
 msgid "Contributions"
 msgstr "Contribucions"
 
@@ -4361,9 +4358,8 @@ msgstr "Afegeix"
 msgid "Permissions"
 msgstr "Permisos"
 
-#, fuzzy
 msgid "Type"
-msgstr "Tipus"
+msgstr ""
 
 #, fuzzy
 msgid "Required"
@@ -6060,7 +6056,6 @@ msgstr "Forma llarga"
 msgid "General"
 msgstr "General"
 
-#, fuzzy
 msgid "Parameters"
 msgstr "Paràmetres"
 
