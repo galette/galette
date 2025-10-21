@@ -1,4 +1,4 @@
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023, 2024.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
@@ -41,10 +41,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-10-20 11:14+0200\n"
-"PO-Revision-Date: 2024-10-19 07:02+0000\n"
-"Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2025-10-21 08:38+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -52,7 +52,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8-rc\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 #, fuzzy
 #| msgid "Unable to load contribution #%id!"
@@ -2121,10 +2121,9 @@ msgid " (%age years old)"
 msgstr " (%age años)"
 
 #. TRANS: first parameter is member name, second his id
-#, fuzzy, php-format
-#| msgid "Duplicated from %1$s (%2$s)"
+#, php-format
 msgid "Duplicated from %1$s (%2$s)"
-msgstr "Duplicado de %2$s (%2$s)"
+msgstr "Duplicado de %1$s (%2$s)"
 
 msgid "Date:"
 msgstr "Fecha:"
@@ -5930,10 +5929,9 @@ msgstr "Se ha encontrado el total programado %f"
 msgid "Edit membership fee %1$s"
 msgstr "Añadir una cuota de afiliación"
 
-#, fuzzy, php-format
-#| msgid "Edit transaction #%id"
+#, php-format
 msgid "Edit donation %1$s"
-msgstr "Editar transacción %id"
+msgstr "Editar donación %1$s"
 
 #, fuzzy, php-format
 #| msgid "%1$s shceduled payment"
@@ -6056,10 +6054,8 @@ msgstr ""
 "No hay traducción para «%s».<br>Por favor, llene y envíe el formulario de "
 "arriba para crearlo."
 
-#, fuzzy
-#| msgid "Original text: '%s'"
 msgid "Original text:"
-msgstr "Texto original: '%s'"
+msgstr "Texto original:"
 
 msgid "Choose label to translate"
 msgstr "Elegir etiqueta para traducir"
