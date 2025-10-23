@@ -38,13 +38,14 @@
 # Javier <javier.fserrador@gmail.com>, 2022.
 # gallegonovato <fran-carro@hotmail.es>, 2022, 2023, 2024.
 # Kamborio <Kamborio15@users.noreply.hosted.weblate.org>, 2024.
+# Marco Moreno <hibarioath@proton.me>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-10-20 11:14+0200\n"
-"PO-Revision-Date: 2025-10-21 08:38+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2025-10-24 21:05+0000\n"
+"Last-Translator: Marco Moreno <hibarioath@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -52,12 +53,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.14.1-dev\n"
 
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load transaction #%id!"
-msgstr "¡No se ha podido cargar la contribución #%id!"
+msgstr "¡No se ha podido cargar la transacción #%id!"
 
 msgid "Transaction"
 msgstr "Transacción"
@@ -288,10 +287,8 @@ msgstr "Trombinoscopio"
 msgid "Staff"
 msgstr "[personal]"
 
-#, fuzzy
-#| msgid "Staff member"
 msgid "Staff gallery"
-msgstr "Miembro del personal"
+msgstr "Galería del personal"
 
 msgid "List of members"
 msgstr "Lista de miembros"
@@ -310,15 +307,11 @@ msgstr "Cambio masivo %1$s de miembros"
 msgid "Mass changes has not been confirmed!"
 msgstr "¡No se han confirmado los cambios masivos!"
 
-#, fuzzy
-#| msgid "Add a new group"
 msgid "Add to group"
-msgstr "Añadir grupo nuevo"
+msgstr "Añadir a grupo"
 
-#, fuzzy
-#| msgid "Remove group %1$s"
 msgid "Remove from group"
-msgstr "Quitar grupo %1$s"
+msgstr "Eliminar de grupo"
 
 #, php-format
 msgid "Review mass change %1$s members"
@@ -435,11 +428,10 @@ msgstr "Cuota de afiliación"
 msgid "Donation"
 msgstr "Donación"
 
-#, fuzzy
-#| msgid "No contribution was selected, please check at least one."
 msgid "No related contribution type available, please create a new one."
 msgstr ""
-"No se ha seleccionado ninguna contribución, por favor marque una al menos."
+"No hay ningún tipo de contribución relacionado disponible, por favor, cree "
+"uno nuevo."
 
 #, php-format
 msgid "Mass add contribution on %1$s members"
@@ -822,15 +814,11 @@ msgstr ""
 "Se ha producido un error al llenar los inicios de sesión y las contraseñas "
 "vacías :("
 
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "Dynamic dates has been fixed."
-msgstr "Se ha modificado el miembro de la cuenta."
+msgstr "Se han corregido las fechas dinámicas."
 
-#, fuzzy
-#| msgid "An error occurred editing dynamic field :("
 msgid "An error occurred fixing dynamic dates :("
-msgstr "Se ha producido un error al editar el campo dinámico :("
+msgstr "Se ha producido un error al corregir las fechas dinámicas :("
 
 msgid "Logs"
 msgstr "Registros"
@@ -855,10 +843,8 @@ msgstr "El complemento %1$s ha sido activado"
 msgid "Plugin %1$s has been disabled"
 msgstr "El complemento %1$s ha sido desactivado"
 
-#, fuzzy
-#| msgid "View transaction"
 msgid "Labels translation"
-msgstr "Ver transacción"
+msgstr "Traducción de etiquetas"
 
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
@@ -1230,23 +1216,17 @@ msgstr "Gestionar modelos PDF"
 msgid "Manage emails texts and subjects"
 msgstr "Gestionar textos y asuntos de los correos electrónicos"
 
-#, fuzzy
-#| msgid "Translate labels"
 msgid "Manage translatable labels"
-msgstr "Traducir etiquetas"
+msgstr "Gestionar etiquetas traducibles"
 
 msgid "Various administrative tools"
 msgstr "Diversas herramientas administrativas"
 
-#, fuzzy
-#| msgid "entries"
 msgid "Directories"
-msgstr "entradas"
+msgstr "Directorios"
 
-#, fuzzy
-#| msgid "Gallery"
 msgid "Galleries"
-msgstr "Trombinoscopio"
+msgstr "Galerías"
 
 msgid "View documents related to your association"
 msgstr "Ver documentos relacionados a tu organización"
@@ -1290,15 +1270,11 @@ msgstr "Generar tarjetas de miembro"
 msgid "Export as CSV"
 msgstr "Exportar como CSV"
 
-#, fuzzy
-#| msgid "Galette admin"
 msgid "Galette news"
-msgstr "Administrador de Galette"
+msgstr "Noticias de Galette"
 
-#, fuzzy
-#| msgid "Association %s"
 msgid "Association news"
-msgstr "Organización %s"
+msgstr "Noticias de la asociación"
 
 msgid "- You must indicate a sender name for emails!"
 msgstr "- ¡Debes indicar un nombre de remitente para los correos electrónicos!"
@@ -1340,15 +1316,12 @@ msgstr "- Campo obligatorio %field vacío."
 msgid "Passwords mismatch"
 msgstr "Las contraseñas no coinciden"
 
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a staff member to retrieve its address"
-msgstr "Tienes que seleccionar a un miembro del personal"
+msgstr "Debes seleccionar un miembro del personal para ver su dirección"
 
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a staff member to retrieve its phone number"
-msgstr "Tienes que seleccionar a un miembro del personal"
+msgstr ""
+"Debes seleccionar un miembro del personal para ver su número de teléfono"
 
 #, php-format
 msgid "Invalid E-Mail address: %s"
@@ -1419,7 +1392,7 @@ msgid "Social networks"
 msgstr "Redes sociales"
 
 msgid "Dark mode CSS file has been reset."
-msgstr ""
+msgstr "Se ha restablecido el archivo CSS del modo oscuro."
 
 msgid "Unknown lang (%lang)"
 msgstr "Idioma desconocido (%lang)"
@@ -1854,15 +1827,11 @@ msgstr "Direccion de su organizacion"
 msgid "with break lines"
 msgstr "con líneas de interrupción"
 
-#, fuzzy
-#| msgid "Your organisation name"
 msgid "Your organisation phone number"
-msgstr "Nombre de su organizacion"
+msgstr "Número de teléfono de tu organización"
 
-#, fuzzy
-#| msgid "Your organisation address"
 msgid "Your organisation email address"
-msgstr "Direccion de su organizacion"
+msgstr "Correo electrónico de tu organización"
 
 msgid "Your organisation website"
 msgstr "Sitio web de su organización"
@@ -2141,7 +2110,7 @@ msgid "Payment type:"
 msgstr "Tipo de remuneración:"
 
 msgid "- Please select a member from a group you manage."
-msgstr ""
+msgstr "- Selecciona un miembro de un grupo que administras."
 
 msgid "- The amount must be an integer!"
 msgstr "- ¡El monto debe ser un número entero!"
