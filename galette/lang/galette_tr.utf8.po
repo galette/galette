@@ -11,13 +11,14 @@
 # Muhammed YILMAZ <yilmazmu15@itu.edu.tr>, 2022.
 # Siyabend Ürün <urunsiyabend@gmail.com>, 2022.
 # Onur Akkas <jon_onur_akkas@hotmail.com>, 2022.
+# Erdem Yanardağ <erdemynrd@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-10-20 11:14+0200\n"
-"PO-Revision-Date: 2023-11-19 06:42+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2025-10-24 21:05+0000\n"
+"Last-Translator: Erdem Yanardağ <erdemynrd@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -25,12 +26,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.2\n"
+"X-Generator: Weblate 5.14.1-dev\n"
 
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load transaction #%id!"
-msgstr "#%id numaralı katılım yüklenemedi!"
+msgstr "#%id no'lu ödeme yüklenemedi!"
 
 msgid "Transaction"
 msgstr "İşlem"
@@ -60,13 +59,13 @@ msgid "Unable to detach contribution from transaction"
 msgstr "Katkı işlemden ayrıştırılamadı"
 
 msgid "Payment types"
-msgstr ""
+msgstr "Ödeme türleri"
 
 msgid "Edit payment type"
 msgstr "Ödeme türünü düzenle"
 
 msgid "Missing required payment type's name!"
-msgstr ""
+msgstr "Ödeme türü seçilmemiş!"
 
 #, php-format
 msgid "Payment type '%1$s' has not been added!"
@@ -88,36 +87,26 @@ msgstr "Ödeme tpi '%1$s' başarıyla değiştirildi."
 msgid "Remove payment type %1$s"
 msgstr "%1$s ödeme tipini sil"
 
-#, fuzzy
-#| msgid "Contribution has been successfully stored"
 msgid "Contribution is fully scheduled!"
-msgstr "Katılım başarıyla kaydedildi"
+msgstr "Katılım zamanı başarıyla planlandı!"
 
-#, fuzzy
-#| msgid "Download document"
 msgid "Add scheduled payment"
-msgstr "Dokümanı indir"
+msgstr "Planlı ödeme ekle"
 
 msgid "List of scheduled payments"
-msgstr ""
+msgstr "Planlanmış Ödemeler"
 
 msgid "- Unknown payment type!"
 msgstr "- Bilinmeyen ödeme türü!"
 
-#, fuzzy
-#| msgid "No member was selected, please check at least one name."
 msgid "No scheduled payment was selected, please check at least one."
-msgstr "Hiç üye seçilmedi, lütfen en az bir üye seçiniz."
+msgstr "Hiçbir planlı ödeme seçilmedi, lütfen en az birini seçiniz."
 
-#, fuzzy
-#| msgid "Download document"
 msgid "Edit scheduled payment"
-msgstr "Dokümanı indir"
+msgstr "Planlı ödemeyi düzenle"
 
-#, fuzzy
-#| msgid "Payment type '%1$s' has not been added!"
 msgid "Scheduled payment has not been added!"
-msgstr "Ödeme tipi '%s' eklenemedi!"
+msgstr "Planlı ödeme eklenmedi!"
 
 #, fuzzy
 #| msgid "Payment type '%1$s' has not been modified!"
