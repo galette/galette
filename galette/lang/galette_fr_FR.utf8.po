@@ -15,8 +15,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2025-10-20 11:14+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-26 09:26+0100\n"
 "PO-Revision-Date: 2025-10-21 08:38+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -1282,6 +1282,8 @@ msgstr ""
 "- Offrir les derniers mois n'est compatible qu'avec une date de début "
 "d'exercice."
 
+#. TRANS: parameter is a field name
+#. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
 msgstr "- Champ obligatoire %1$s vide."
@@ -1630,6 +1632,8 @@ msgstr ""
 "Le nombre de champs ne correspond pas... Il devrait y avoir %1$s champs mais "
 "il y en a %2$s (ligne %3$s)"
 
+#. TRANS: first parameter is a field name, second the row in error
+#, php-format
 msgid "Field %1$s is required, but missing in row %2$s"
 msgstr "Le champ %1$s est requis mais manquant à la ligne %2$s"
 
@@ -1771,14 +1775,17 @@ msgstr "Membre du bureau"
 msgid "Administrator"
 msgstr "Administrateur"
 
+#. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to add dynamic translation for %1$s :("
 msgstr "Impossible d’ajouter la traduction dynamique pour %1$s :("
 
+#. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to update dynamic translation for %1$s :("
 msgstr "Impossible de mettre à jour la traduction dynamique pour %1$s :("
 
+#. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to remove old dynamic translation for %1$s :("
 msgstr "Impossible de supprimer l’ancienne traduction dynamique pour %1$s :("
@@ -1928,6 +1935,7 @@ msgstr "Informations sur la contribution"
 msgid "Member information"
 msgstr "Informations adhérent"
 
+#. TRANS: parameter is a field name
 #, php-format
 msgid "Missing required field %1$s"
 msgstr "Champ requis %1$s manquant"
@@ -2286,10 +2294,12 @@ msgstr "Blog"
 msgid "Discord"
 msgstr "Discord"
 
+#. TRANS: first parameter is a field name, second its maximum length
 #, php-format
 msgid "%1$s should be less than %2$s characters long."
 msgstr "Le champ %1$s doit compter moins de %2$s caractères."
 
+#. TRANS: parameter is a field name
 #, php-format
 msgid "%1$s should not be empty!"
 msgstr "Le champ %1$s ne doit pas être vide !"
@@ -5712,8 +5722,7 @@ msgstr "Envois passés :"
 #, php-format
 msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
-"Afficher les détails de l'envoi « %1$s » dans la fenêtre de "
-"prévisualisation"
+"Afficher les détails de l'envoi « %1$s » dans la fenêtre de prévisualisation"
 
 #, php-format
 msgid "Use mailing '%1$s' as a template for a new one"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-20 11:14+0200\n"
+"POT-Creation-Date: 2025-10-26 09:26+0100\n"
 "PO-Revision-Date: 2025-09-03 01:01+0000\n"
 "Last-Translator: MrSliv69 <mrsliv6969@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -1245,6 +1245,8 @@ msgstr ""
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr ""
 
+#. TRANS: parameter is a field name
+#. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
 msgstr ""
@@ -1576,6 +1578,8 @@ msgid ""
 "%3$s)"
 msgstr ""
 
+#. TRANS: first parameter is a field name, second the row in error
+#, php-format
 msgid "Field %1$s is required, but missing in row %2$s"
 msgstr ""
 
@@ -1713,14 +1717,17 @@ msgstr ""
 msgid "Administrator"
 msgstr "Администратор"
 
+#. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to add dynamic translation for %1$s :("
 msgstr ""
 
+#. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to update dynamic translation for %1$s :("
 msgstr ""
 
+#. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to remove old dynamic translation for %1$s :("
 msgstr ""
@@ -1870,6 +1877,7 @@ msgstr ""
 msgid "Member information"
 msgstr ""
 
+#. TRANS: parameter is a field name
 #, php-format
 msgid "Missing required field %1$s"
 msgstr ""
@@ -2224,10 +2232,12 @@ msgstr "Блог"
 msgid "Discord"
 msgstr ""
 
+#. TRANS: first parameter is a field name, second its maximum length
 #, php-format
 msgid "%1$s should be less than %2$s characters long."
 msgstr ""
 
+#. TRANS: parameter is a field name
 #, php-format
 msgid "%1$s should not be empty!"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-20 11:14+0200\n"
+"POT-Creation-Date: 2025-10-26 09:26+0100\n"
 "PO-Revision-Date: 2025-06-27 16:28+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -760,8 +760,7 @@ msgid "An error occurred reinitializing PDF models :("
 msgstr "பிழையில் PDF மாதிரிகளை மறுசீரமைத்தல் :("
 
 msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr ""
-"உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் வெற்றிகரமாக நிரப்பப்பட்டுள்ளன (%i செயலாக்கினேன்)."
+msgstr "உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் வெற்றிகரமாக நிரப்பப்பட்டுள்ளன (%i செயலாக்கினேன்)."
 
 msgid "An error occurred filling empty logins and passwords :("
 msgstr "வெற்று உள்நுழைவுகள் மற்றும் கடவுச்சொற்களை நிரப்புவதில் பிழை ஏற்பட்டது :("
@@ -1272,6 +1271,8 @@ msgstr "- இயல்புநிலை உறுப்பினர் நீ�
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- மாதங்கள் வழங்குவது உறுப்பினரின் தொடக்கத்துடன் மட்டுமே ஒத்துப்போகும்."
 
+#. TRANS: parameter is a field name
+#. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
 msgstr "- கட்டாய புலம் %1$s காலியாக உள்ளது."
@@ -1608,6 +1609,8 @@ msgstr ""
 "புலங்கள் பொருந்தாத தன்மையை எண்ணுகின்றன ... %1$s வேண்டிய_கவுண்ட் புலங்கள் இருக்க வேண்டும் "
 "மற்றும் %2$s (வரிசை %3$s) இருக்க வேண்டும்"
 
+#. TRANS: first parameter is a field name, second the row in error
+#, php-format
 msgid "Field %1$s is required, but missing in row %2$s"
 msgstr "புலம் %1$s தேவை, ஆனால் வரிசை %2$s காணவில்லை"
 
@@ -1745,14 +1748,17 @@ msgstr "பணியாளர் உறுப்பினர்"
 msgid "Administrator"
 msgstr "நிர்வாகி"
 
+#. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to add dynamic translation for %1$s :("
 msgstr "%1$s மாறும் மொழிபெயர்ப்பைச் சேர்க்க முடியவில்லை :("
 
+#. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to update dynamic translation for %1$s :("
 msgstr "%1$s மாறும் மொழிபெயர்ப்பைப் புதுப்பிக்க முடியவில்லை :("
 
+#. TRANS: paramter is a field name
 #, php-format
 msgid "Unable to remove old dynamic translation for %1$s :("
 msgstr "%1$s பழைய மாறும் மொழிபெயர்ப்பை அகற்ற முடியவில்லை :("
@@ -1906,6 +1912,7 @@ msgstr "பங்களிப்பு செய்தி"
 msgid "Member information"
 msgstr "உறுப்பினர் செய்தி"
 
+#. TRANS: parameter is a field name
 #, php-format
 msgid "Missing required field %1$s"
 msgstr "தேவையான புலம் %1$s இல்லை"
@@ -2257,10 +2264,12 @@ msgstr "வலைப்பதிவு"
 msgid "Discord"
 msgstr "முரண்பாடு"
 
+#. TRANS: first parameter is a field name, second its maximum length
 #, fuzzy, php-format
 msgid "%1$s should be less than %2$s characters long."
 msgstr "%1$s %2$s கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
 
+#. TRANS: parameter is a field name
 #, php-format
 msgid "%1$s should not be empty!"
 msgstr "%1$s காலியாக இருக்கக்கூடாது!"
@@ -2397,8 +2406,7 @@ msgid ""
 "A problem happened while sending to admin notification for user %1$s (%2$s) "
 "contribution"
 msgstr ""
-"பயனர் %1$s (%2$s) பங்களிப்புக்கான நிர்வாக அறிவிப்பை அனுப்பும்போது ஒரு சிக்கல் "
-"நடந்தது"
+"பயனர் %1$s (%2$s) பங்களிப்புக்கான நிர்வாக அறிவிப்பை அனுப்பும்போது ஒரு சிக்கல் நடந்தது"
 
 msgid "Post contribution script failed"
 msgstr "பிந்தைய பங்களிப்பு ச்கிரிப்ட் தோல்வியடைந்தது"
@@ -6240,8 +6248,7 @@ msgstr "பக்க உள்ளடக்கம்"
 #~ msgid ""
 #~ "An error occurred running parameted export '%export'. Please check the "
 #~ "logs."
-#~ msgstr ""
-#~ "அளவுரு ஏற்றுமதி '%export' இயங்கும் பிழை ஏற்பட்டது. பதிவுகளை சரிபார்க்கவும்."
+#~ msgstr "அளவுரு ஏற்றுமதி '%export' இயங்கும் பிழை ஏற்பட்டது. பதிவுகளை சரிபார்க்கவும்."
 
 #~ msgid "No file has been selected for upload!"
 #~ msgstr "பதிவேற்றுவதற்கு கோப்புகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை!"
