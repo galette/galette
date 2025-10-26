@@ -380,10 +380,10 @@ class Transaction implements AccessManagementInterface
             if ($val === 1) {
                 $prop = $this->fields[$key]['propname'];
                 if (!isset($disabled[$key]) && !isset($this->$prop)) {
-                    $this->errors[] = str_replace(
-                        '%field',
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is an hTML link to the field with its name
+                        _T('- Mandatory field %1$s empty.'),
                         '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
-                        _T("- Mandatory field %field empty.")
                     );
                 }
             }

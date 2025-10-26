@@ -191,20 +191,20 @@
                         class="showdetails"
                 >
                     <i class="ui eye green icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Display mailing '%subject' details in preview window")|replace({'%subject': log.mailing_subject}) }}</span>
+                    <span class="ui special popup">{{ _T("Display mailing '%1$s' details in preview window")|format(log.mailing_subject) }}</span>
                 </a>
                 <a
                         href="{{ url_for('mailing') }}?from={{ log.mailing_id }}"
                 >
                     <i class="ui clone blue icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Use mailing '%subject' as a template for a new one")|replace({'%subject': log.mailing_subject}) }}</span>
+                    <span class="ui special popup">{{ _T("Use mailing '%1$s' as a template for a new one")|format(log.mailing_subject) }}</span>
                 </a>
                 <a
                         href="{{ url_for("removeMailing", {"id": log.mailing_id}) }}"
                         class="delete"
                 >
                     <i class="ui trash red icon tooltip" aria-hidden="true"></i>
-                    <span class="ui special popup">{{ _T("Delete mailing '%subject'")|replace({'%subject': log.mailing_subject}) }}</span>
+                    <span class="ui special popup">{{ _T("Delete mailing '%1$s'")|format(log.mailing_subject) }}</span>
                 </a>
             </td>
         </tr>

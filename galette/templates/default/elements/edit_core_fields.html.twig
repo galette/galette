@@ -47,7 +47,7 @@
                         <label for="{{ fid }}_visible">{{ field.label }}</label>
                     </td>
                     <td class="visibility_cell" data-col-label="{{ _T("Permissions") }}">
-                        <span data-prop-label="{{ _T("Permissions") }}" class="visible" title="{{ _T("Change '%field' permissions")|replace({'%field': field.label}) }}">
+                        <span data-prop-label="{{ _T("Permissions") }}" class="visible" title="{{ _T("Change '%1$s' permissions")|format(field.label) }}">
                             <select name="{{ fid }}_visible" id="{{ fid }}_visible" class="ui dropdown">
                                 {% for key, value in perm_names %}
                                     {% set display_option = true %}
@@ -66,7 +66,7 @@
                         </span>
                     </td>
                     <td class="required_cell{% if preferences.pref_member_form_grid == 'one' %} collapsing{% endif %}" data-col-label="{{ _T("Required") }}">
-                        <span data-prop-label="{{ _T("Required") }}" class="required" title="{% if fid in non_required %}{{ _T("Field '%field' cannot be set as required.")|replace({'%field': field.label}) }}{% else %}{{ _T("Mark '%field' as (not) required")|replace({'%field': field.label}) }}{% endif %}">
+                        <span data-prop-label="{{ _T("Required") }}" class="required" title="{% if fid in non_required %}{{ _T("Field '%1$s' cannot be set as required.")|format(field.label) }}{% else %}{{ _T("Mark '%1$s' as (not) required")|format(field.label) }}{% endif %}">
                             <div class="inline fields">
                                 <div class="field inline">
                                     <div class="ui radio checkbox">

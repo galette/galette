@@ -23,7 +23,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Unable to load contribution #%id!"
 msgid "Unable to load transaction #%id!"
-msgstr "பங்களிப்பை ஏற்ற முடியவில்லை #%ஐடி!"
+msgstr "பங்களிப்பை ஏற்ற முடியவில்லை #%id!"
 
 msgid "Transaction"
 msgstr "பரிவர்த்தனை"
@@ -124,10 +124,9 @@ msgstr "குழு பெயர் காணவில்லை!"
 msgid "Groups"
 msgstr "குழுக்கள்"
 
-#, fuzzy, php-format
-#| msgid "Group `%groupname` has been successfully saved."
+#, php-format
 msgid "Group `%1$s` has been successfully saved."
-msgstr "குழு `%குழு பெயர்` வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது."
+msgstr "குழு `%1$s` வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது."
 
 msgid "An error occurred while storing the group."
 msgstr "குழுவை சேமிக்கும் போது பிழை ஏற்பட்டது."
@@ -184,16 +183,16 @@ msgid "Contribution type has not been added :("
 msgstr "பங்களிப்பு வகை சேர்க்கப்படவில்லை :("
 
 msgid "Contribution type #%id has not been updated"
-msgstr "பங்களிப்பு வகை #%ஐடி புதுப்பிக்கப்படவில்லை"
+msgstr "பங்களிப்பு வகை #%id புதுப்பிக்கப்படவில்லை"
 
 msgid "Contribution type has been successfully added!"
 msgstr "பங்களிப்பு வகை வெற்றிகரமாக சேர்க்கப்பட்டுள்ளது!"
 
 msgid "Contribution type #%id has been successfully updated!"
-msgstr "பங்களிப்பு வகை #%ஐடி வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
+msgstr "பங்களிப்பு வகை #%id வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
 
 msgid "Remove contribution type '%label'"
-msgstr "பங்களிப்பு வகை '%லேபிள்' வகையை அகற்று"
+msgstr "பங்களிப்பு வகை '%label' வகையை அகற்று"
 
 msgid "Add field"
 msgstr "புலத்தைச் சேர்க்கவும்"
@@ -239,7 +238,7 @@ msgid "Subscription"
 msgstr "சந்தா"
 
 msgid "No member #%id."
-msgstr "உறுப்பினர் #%ஐடி இல்லை."
+msgstr "உறுப்பினர் #%id இல்லை."
 
 msgid "Member Profile"
 msgstr "உறுப்பினர் சுயவிவரம்"
@@ -269,10 +268,9 @@ msgstr ""
 "எந்த உறுப்பினரும் தேர்ந்தெடுக்கப்படவில்லை, தயவுசெய்து குறைந்தது ஒரு பெயரையாவது "
 "சரிபார்க்கவும்."
 
-#, fuzzy, php-format
-#| msgid "Mass change %count members"
+#, php-format
 msgid "Mass change %1$s members"
-msgstr "வெகுசன மாற்றம் %எண்ணிக்கை உறுப்பினர்கள்"
+msgstr "வெகுசன மாற்றம் %1$s உறுப்பினர்கள்"
 
 msgid "Mass changes has not been confirmed!"
 msgstr "வெகுசன மாற்றங்கள் உறுதிப்படுத்தப்படவில்லை!"
@@ -283,10 +281,9 @@ msgstr "குழுவில் சேர்க்கவும்"
 msgid "Remove from group"
 msgstr "குழுவிலிருந்து அகற்று"
 
-#, fuzzy, php-format
-#| msgid "Review mass change %count members"
+#, php-format
 msgid "Review mass change %1$s members"
-msgstr "வெகுசன மாற்றம் %எண்ணிக்கை உறுப்பினர்களை மதிப்பாய்வு செய்யவும்"
+msgstr "வெகுசன மாற்றம் %1$s உறுப்பினர்களை மதிப்பாய்வு செய்யவும்"
 
 msgid "Nothing to do!"
 msgstr "செய்ய எதுவும் இல்லை!"
@@ -334,10 +331,9 @@ msgstr "நீக்கு தோல்வியுற்றது"
 msgid "Remove member %1$s"
 msgstr "உறுப்பினர் %1$s ஐ அகற்று"
 
-#, fuzzy, php-format
-#| msgid "You are about to remove %count members."
+#, php-format
 msgid "You are about to remove %1$s members."
-msgstr "நீங்கள் %எண்ணிக்கை உறுப்பினர்களை அகற்ற உள்ளீர்கள்."
+msgstr "நீங்கள் %1$s உறுப்பினர்களை அகற்ற உள்ளீர்கள்."
 
 msgid "Titles"
 msgstr "தலைப்புகள்"
@@ -381,16 +377,16 @@ msgid "Status has not been added :("
 msgstr "நிலை சேர்க்கப்படவில்லை :("
 
 msgid "Status #%id has not been updated"
-msgstr "நிலை #%ஐடி புதுப்பிக்கப்படவில்லை"
+msgstr "நிலை #%id புதுப்பிக்கப்படவில்லை"
 
 msgid "Status has been successfully added!"
 msgstr "நிலை வெற்றிகரமாக சேர்க்கப்பட்டுள்ளது!"
 
 msgid "Status #%id has been successfully updated!"
-msgstr "நிலை #%ஐடி வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
+msgstr "நிலை #%id வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
 
 msgid "Remove status '%label'"
-msgstr "நிலையை அகற்று '%லேபிள்'"
+msgstr "நிலையை அகற்று '%label'"
 
 msgid "Membership fee"
 msgstr "உறுப்பினர் கட்டணம்"
@@ -402,10 +398,9 @@ msgid "No related contribution type available, please create a new one."
 msgstr ""
 "தொடர்புடைய பங்களிப்பு வகை எதுவும் கிடைக்கவில்லை, தயவுசெய்து புதிய ஒன்றை உருவாக்கவும்."
 
-#, fuzzy, php-format
-#| msgid "Mass add contribution on %count members"
+#, php-format
 msgid "Mass add contribution on %1$s members"
-msgstr "%எண்ணிக்கை உறுப்பினர்களுக்கு வெகுசன சேர்க்கவும் பங்களிப்பு"
+msgstr "%1$s உறுப்பினர்களுக்கு வெகுசன சேர்க்கவும் பங்களிப்பு"
 
 msgid "List of contributions"
 msgstr "பங்களிப்புகளின் பட்டியல்"
@@ -421,7 +416,7 @@ msgstr ""
 "பங்களிப்பு எதுவும் தேர்ந்தெடுக்கப்படவில்லை, தயவுசெய்து குறைந்தபட்சம் ஒன்றைச் சரிபார்க்கவும்."
 
 msgid "Unable to load contribution #%id!"
-msgstr "பங்களிப்பை ஏற்ற முடியவில்லை #%ஐடி!"
+msgstr "பங்களிப்பை ஏற்ற முடியவில்லை #%id!"
 
 msgid "An error occurred while storing the contribution."
 msgstr "பங்களிப்பை சேமிக்கும் போது பிழை ஏற்பட்டது."
@@ -479,10 +474,9 @@ msgstr "சேமித்த தேடல்கள்"
 msgid "Remove saved search"
 msgstr "சேமித்த தேடலை அகற்று"
 
-#, fuzzy, php-format
-#| msgid "You are about to remove %count searches."
+#, php-format
 msgid "You are about to remove %1$s searches."
-msgstr "நீங்கள் %எண்ணிக்கை தேடல்களை அகற்ற உள்ளீர்கள்."
+msgstr "நீங்கள் %1$s தேடல்களை அகற்ற உள்ளீர்கள்."
 
 msgid "Saved search loaded"
 msgstr "சேமிக்கப்பட்ட தேடல் ஏற்றப்பட்டது"
@@ -534,15 +528,13 @@ msgstr "கேலட் நிர்வாகி"
 msgid "Test message."
 msgstr "சோதனை செய்தி."
 
-#, fuzzy, php-format
-#| msgid "An email has been sent to %email"
+#, php-format
 msgid "An email has been sent to %1$s"
-msgstr "ஒரு மின்னஞ்சல் %மின்னஞ்சலுக்கு அனுப்பப்பட்டுள்ளது"
+msgstr "ஒரு மின்னஞ்சல் %1$s அனுப்பப்பட்டுள்ளது"
 
-#, fuzzy, php-format
-#| msgid "No email sent to %email"
+#, php-format
 msgid "No email sent to %1$s"
-msgstr "%மின்னஞ்சலுக்கு மின்னஞ்சல் அனுப்பப்படவில்லை"
+msgstr "%1$s மின்னஞ்சல் அனுப்பப்படவில்லை"
 
 msgid "Invalid email adress!"
 msgstr "தவறான மின்னஞ்சல் முகவரி!"
@@ -664,10 +656,10 @@ msgstr "உள்நுழைக"
 
 #, php-format
 msgid "Impersonating as %login"
-msgstr "%உள்நுழைவாக ஆள்மாறாட்டம் செய்தல்"
+msgstr "%login ஆள்மாறாட்டம் செய்தல்"
 
 msgid "Unable to impersonate as %id"
-msgstr "%ஐடியாக ஆள்மாறாட்டம் செய்ய முடியவில்லை"
+msgstr "%idயாக ஆள்மாறாட்டம் செய்ய முடியவில்லை"
 
 msgid "Impersonating ended"
 msgstr "ஆள்மாறாட்டம் முடிந்தது"
@@ -769,7 +761,7 @@ msgstr "பிழையில் PDF மாதிரிகளை மறுசீ
 
 msgid "Logins and passwords have been successfully filled (%i processed)."
 msgstr ""
-"உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் வெற்றிகரமாக நிரப்பப்பட்டுள்ளன (%நான் செயலாக்கினேன்)."
+"உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் வெற்றிகரமாக நிரப்பப்பட்டுள்ளன (%i செயலாக்கினேன்)."
 
 msgid "An error occurred filling empty logins and passwords :("
 msgstr "வெற்று உள்நுழைவுகள் மற்றும் கடவுச்சொற்களை நிரப்புவதில் பிழை ஏற்பட்டது :("
@@ -813,28 +805,28 @@ msgid "Labels translation"
 msgstr "பரிவர்த்தனையைக் காண்க"
 
 msgid "An error occurred saving label `%label` for language `%lang`"
-msgstr "மொழி `%லாங்` லேபிள்`%லேபிள்` சேமிக்கும் பிழை ஏற்பட்டது"
+msgstr "மொழி `%lang` லேபிள் `%label` சேமிக்கும் பிழை ஏற்பட்டது"
 
-msgid "Labels has been sucessfully translated!"
+msgid "Labels has been successfully translated!"
 msgstr "சிட்டை வெற்றிகரமாக மொழிபெயர்க்கப்பட்டுள்ளது!"
 
 msgid "Exports"
 msgstr "ஏற்றுமதி"
 
 msgid "Table %table is empty, and has not been exported."
-msgstr "அட்டவணை %அட்டவணை காலியாக உள்ளது, ஏற்றுமதி செய்யப்படவில்லை."
+msgstr "அட்டவணை %table காலியாக உள்ளது, ஏற்றுமதி செய்யப்படவில்லை."
 
 #, php-format
 msgid ""
 "Export file could not be write on disk for '%export'. Make sure web server "
 "can write in the exports directory."
 msgstr ""
-"ஏற்றுமதி கோப்பை '%ஏற்றுமதி' க்கு வட்டில் எழுத முடியாது. வலை சேவையகம் ஏற்றுமதி "
+"ஏற்றுமதி கோப்பை '%export' க்கு வட்டில் எழுத முடியாது. வலை சேவையகம் ஏற்றுமதி "
 "கோப்பகத்தில் எழுத முடியும் என்பதை உறுதிப்படுத்தவும்."
 
 #, php-format
 msgid "An error occurred running parameted export '%export'."
-msgstr "அளவுரு ஏற்றுமதி '%ஏற்றுமதி' இயங்கும் பிழை ஏற்பட்டது."
+msgstr "அளவுரு ஏற்றுமதி '%export' இயங்கும் பிழை ஏற்பட்டது."
 
 msgid "Imports"
 msgstr "இறக்குமதிகள்"
@@ -842,10 +834,9 @@ msgstr "இறக்குமதிகள்"
 msgid "An error occurred importing the file :("
 msgstr "கோப்பை இறக்குமதி செய்வதில் பிழை ஏற்பட்டது :("
 
-#, fuzzy, php-format
-#| msgid "File '%filename%' has been successfully imported :)"
+#, php-format
 msgid "File '%1$s' has been successfully imported :)"
-msgstr "கோப்பு '%கோப்பு பெயர்%' வெற்றிகரமாக இறக்குமதி செய்யப்பட்டது :)"
+msgstr "கோப்பு '%1$s' வெற்றிகரமாக இறக்குமதி செய்யப்பட்டது :)"
 
 msgid "No file has been uploaded!"
 msgstr "கோப்புகள் பதிவேற்றப்படவில்லை!"
@@ -859,11 +850,11 @@ msgstr "%1$s கோப்பு %2$s ஐ அகற்று"
 
 #, php-format
 msgid "'%export' file has been removed from disk."
-msgstr "'%ஏற்றுமதி' கோப்பு வட்டில் இருந்து அகற்றப்பட்டுள்ளது."
+msgstr "'%export' கோப்பு வட்டில் இருந்து அகற்றப்பட்டுள்ளது."
 
 #, php-format
 msgid "Cannot remove '%export' from disk :/"
-msgstr "வட்டில் இருந்து '%ஏற்றுமதி' அகற்ற முடியாது:/"
+msgstr "வட்டில் இருந்து '%export' அகற்ற முடியாது:/"
 
 msgid "CSV import model"
 msgstr "சி.எச்.வி இறக்குமதி மாதிரி"
@@ -883,12 +874,12 @@ msgstr "மின்னஞ்சல்கள் உள்ளடக்கம்"
 #, fuzzy, php-format
 #| msgid "Email: '%s' has not been modified!"
 msgid "Email: '%1$s' has not been modified!"
-msgstr "மின்னஞ்சல்: '%s' மாற்றியமைக்கப்படவில்லை!"
+msgstr "மின்னஞ்சல்: '%1$s' மாற்றியமைக்கப்படவில்லை!"
 
 #, fuzzy, php-format
 #| msgid "Email: '%s' has been successfully modified."
 msgid "Email: '%1$s' has been successfully modified."
-msgstr "மின்னஞ்சல்: '%s' வெற்றிகரமாக மாற்றியமைக்கப்பட்டுள்ளது."
+msgstr "மின்னஞ்சல்: '%1$ss' வெற்றிகரமாக மாற்றியமைக்கப்பட்டுள்ளது."
 
 msgid "None"
 msgstr "எதுவுமில்லை"
@@ -936,10 +927,10 @@ msgid "Database type unknown"
 msgstr "தரவுத்தள வகை தெரியவில்லை"
 
 msgid "%version script has been successfully executed :)"
-msgstr "%பதிப்பு ச்கிரிப்ட் வெற்றிகரமாக செயல்படுத்தப்பட்டுள்ளது :)"
+msgstr "%version ச்கிரிப்ட் வெற்றிகரமாக செயல்படுத்தப்பட்டுள்ளது :)"
 
 msgid "Unable to run %version update script :("
-msgstr "%பதிப்பு புதுப்பிப்பு ச்கிரிப்டை இயக்க முடியவில்லை :("
+msgstr "%version புதுப்பிப்பு ச்கிரிப்டை இயக்க முடியவில்லை :("
 
 msgid "Write configuration file"
 msgstr "உள்ளமைவு கோப்பை எழுதுங்கள்"
@@ -948,7 +939,7 @@ msgid "Config file already exists and is up to date"
 msgstr "கட்டமைப்பு கோப்பு ஏற்கனவே உள்ளது மற்றும் புதுப்பித்த நிலையில் உள்ளது"
 
 msgid "Unable to create configuration file (%path)"
-msgstr "உள்ளமைவு கோப்பை உருவாக்க முடியவில்லை (%பாதை)"
+msgstr "உள்ளமைவு கோப்பை உருவாக்க முடியவில்லை (%path)"
 
 msgid "Status"
 msgstr "நிலை"
@@ -1027,7 +1018,7 @@ msgstr "அனைத்தும்"
 
 #, php-format
 msgid "Logged in as:<br/>%login"
-msgstr "உள்நுழைந்தது: <br>%உள்நுழைவு"
+msgstr "உள்நுழைந்தது: <br>%login"
 
 msgid "Delete mailing entries"
 msgstr "அஞ்சல் உள்ளீடுகளை நீக்கு"
@@ -1210,16 +1201,16 @@ msgid "Transactions"
 msgstr "பரிவர்த்தனைகள்"
 
 msgid "%membername: edit information"
-msgstr "%உறுப்பினர் பெயர்: தகவலைத் திருத்தவும்"
+msgstr "%membername: தகவலைத் திருத்தவும்"
 
 msgid "%membername: contributions"
-msgstr "%உறுப்பினர் பெயர்: பங்களிப்புகள்"
+msgstr "%membername: பங்களிப்புகள்"
 
 msgid "%membername: remove from database"
-msgstr "%உறுப்பினர் பெயர்: தரவுத்தளத்திலிருந்து அகற்று"
+msgstr "%membername: தரவுத்தளத்திலிருந்து அகற்று"
 
 msgid "Log in as %membername"
-msgstr "%உறுப்பினர் பெயரில் உள்நுழைக"
+msgstr "%membername உள்நுழைக"
 
 msgid "Mass change"
 msgstr "வெகுசன மாற்றம்"
@@ -1282,8 +1273,8 @@ msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- மாதங்கள் வழங்குவது உறுப்பினரின் தொடக்கத்துடன் மட்டுமே ஒத்துப்போகும்."
 
 #, php-format
-msgid "- Mandatory field %field empty."
-msgstr "- கட்டாய புலம் %புலம் காலியாக உள்ளது."
+msgid "- Mandatory field %1$s empty."
+msgstr "- கட்டாய புலம் %1$s காலியாக உள்ளது."
 
 msgid "Passwords mismatch"
 msgstr "கடவுச்சொற்கள் பொருந்தவில்லை"
@@ -1336,13 +1327,12 @@ msgid "- Invalid website URL."
 msgstr "- தவறான வலைத்தள முகவரி."
 
 #. TRANS: first parameter is name, second is status
-#, fuzzy, php-format
-#| msgid "%name association's %status"
+#, php-format
 msgid "%1$s association's %2$s"
-msgstr "%பெயர் சங்கத்தின் %நிலை"
+msgstr "%1$s சங்கத்தின் %2$s"
 
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
-msgstr "உங்கள் நிகழ்வுக்கான பாதையுடன் நிலையான \"கேலட்_ரி\" ஐ வரையறுக்கவும்."
+msgstr "உங்கள் நிகழ்வுக்கான பாதையுடன் நிலையான \"GALETTE_URI\" ஐ வரையறுக்கவும்."
 
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d h: i: s"
@@ -1366,14 +1356,14 @@ msgid "Dark mode CSS file has been reset."
 msgstr ""
 
 msgid "Unknown lang (%lang)"
-msgstr "தெரியாத மட்டும் (%மட்டும்)"
+msgstr "தெரியாத மட்டும் (%lang)"
 
 #, php-format
 msgid "'%s' module"
 msgstr "'%s' தொகுதி"
 
 msgid "either 'mysql' or 'pgsql' PDO driver"
-msgstr "ஒன்று 'MySQL' அல்லது 'PGSQL' PDO இயக்கி"
+msgstr "ஒன்று 'mysql' அல்லது 'pgsql' PDO இயக்கி"
 
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
@@ -1407,21 +1397,20 @@ msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr "இன்னும் சார்புகளைக் கொண்ட ஒரு உறுப்பினரை அகற்ற முடியாது (அஞ்சல்கள், ...)"
 
 msgid "Searches deleted (%list)"
-msgstr "நீக்கப்பட்ட தேடல்கள் (%பட்டியல்)"
+msgstr "நீக்கப்பட்ட தேடல்கள் (%list)"
 
 msgid "Scheduled payments deleted (%list)"
-msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகள் நீக்கப்பட்டன (%பட்டியல்)"
+msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகள் நீக்கப்பட்டன (%list)"
 
 msgid "Contributions deleted (%list)"
-msgstr "பங்களிப்புகள் நீக்கப்பட்டன (%பட்டியல்)"
+msgstr "பங்களிப்புகள் நீக்கப்பட்டன (%list)"
 
 msgid "Password is blacklisted!"
 msgstr "கடவுச்சொல் தடுப்புப்பட்டியலில் உள்ளது!"
 
-#, fuzzy, php-format
-#| msgid "Too short (%length characters minimum, %count found)"
+#, php-format
 msgid "Too short (%1$s characters minimum, %2$s found)"
-msgstr "மிகக் குறுகிய ( %நீள எழுத்துக்கள் குறைந்தபட்சம், %எண்ணிக்கை கிடைத்தது)"
+msgstr "மிகக் குறுகிய (%1$s எழுத்துக்கள் குறைந்தபட்சம், %2$s கிடைத்தது)"
 
 msgid "Do not use any of your personal information as password!"
 msgstr "உங்கள் தனிப்பட்ட தகவல்களை கடவுச்சொல்லாக பயன்படுத்த வேண்டாம்!"
@@ -1607,31 +1596,27 @@ msgstr "உறுப்பினரின் லேபிள்கள்"
 msgid "Labels"
 msgstr "சிட்டைகள்"
 
-#, fuzzy, php-format
-#| msgid "File %filename cannot be open!"
+#, php-format
 msgid "File %1$s cannot be open!"
-msgstr "கோப்பு %கோப்பு பெயர் திறந்திருக்க முடியாது!"
+msgstr "கோப்பு %1$s திறந்திருக்க முடியாது!"
 
-#, fuzzy, php-format
-#| msgid ""
-#| "Fields count mismatch... There should be %should_count fields and there "
-#| "are %count (row %row)"
+#, php-format
 msgid ""
 "Fields count mismatch... There should be %1$s fields and there are %2$s (row "
 "%3$s)"
 msgstr ""
-"புலங்கள் பொருந்தாத தன்மையை எண்ணுகின்றன ... %செய்ய வேண்டிய_கவுண்ட் புலங்கள் இருக்க வேண்டும் "
-"மற்றும் %எண்ணிக்கை (வரிசை %வரிசை) இருக்க வேண்டும்"
+"புலங்கள் பொருந்தாத தன்மையை எண்ணுகின்றன ... %1$s வேண்டிய_கவுண்ட் புலங்கள் இருக்க வேண்டும் "
+"மற்றும் %2$s (வரிசை %3$s) இருக்க வேண்டும்"
 
-msgid "Field %field is required, but missing in row %row"
-msgstr "புலம் %புலம் தேவை, ஆனால் வரிசை %வரிசையில் காணவில்லை"
+msgid "Field %1$s is required, but missing in row %2$s"
+msgstr "புலம் %1$s தேவை, ஆனால் வரிசை %2$s காணவில்லை"
 
 #, php-format
 msgid "Status %status does not exists!"
-msgstr "நிலை %நிலை இல்லை!"
+msgstr "நிலை %status இல்லை!"
 
 msgid "Title %title does not exists!"
-msgstr "தலைப்பு %தலைப்பு இல்லை!"
+msgstr "தலைப்பு %title இல்லை!"
 
 msgid "from another member in import"
 msgstr "இறக்குமதியில் உள்ள மற்றொரு உறுப்பினரிடமிருந்து"
@@ -1640,19 +1625,18 @@ msgid "from member %id_adh"
 msgstr "உறுப்பினரிடமிருந்து %id_adh"
 
 msgid "Email address %address is already used! (%extra)"
-msgstr "மின்னஞ்சல் முகவரி %முகவரி ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது! (%கூடுதல்)"
+msgstr "மின்னஞ்சல் முகவரி %address ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது! (%extra)"
 
 msgid "Lang %lang does not exists!"
-msgstr "லாங் %லாங் இல்லை!"
+msgstr "லாங் %lang இல்லை!"
 
 msgid "File is empty!"
 msgstr "கோப்பு காலியாக உள்ளது!"
 
 #. TRANS: first parameter is row, second member name
-#, fuzzy, php-format
-#| msgid "An error occurred storing member at row %row (%name):"
+#, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
-msgstr "வரிசை %வரிசையில் ( %பெயர்) உறுப்பினரை சேமிக்கும் பிழை ஏற்பட்டது:"
+msgstr "வரிசை %1$s (%2$s) உறுப்பினரை சேமிக்கும் பிழை ஏற்பட்டது:"
 
 msgid "An error occurred while importing members"
 msgstr "உறுப்பினர்களை இறக்குமதி செய்யும் போது பிழை ஏற்பட்டது"
@@ -1762,16 +1746,16 @@ msgid "Administrator"
 msgstr "நிர்வாகி"
 
 #, php-format
-msgid "Unable to add dynamic translation for %field :("
-msgstr "%புலத்திற்கு மாறும் மொழிபெயர்ப்பைச் சேர்க்க முடியவில்லை :("
+msgid "Unable to add dynamic translation for %1$s :("
+msgstr "%1$s மாறும் மொழிபெயர்ப்பைச் சேர்க்க முடியவில்லை :("
 
 #, php-format
-msgid "Unable to update dynamic translation for %field :("
-msgstr "%புலத்திற்கான மாறும் மொழிபெயர்ப்பைப் புதுப்பிக்க முடியவில்லை :("
+msgid "Unable to update dynamic translation for %1$s :("
+msgstr "%1$s மாறும் மொழிபெயர்ப்பைப் புதுப்பிக்க முடியவில்லை :("
 
 #, php-format
-msgid "Unable to remove old dynamic translation for %field :("
-msgstr "%புலத்திற்கான பழைய மாறும் மொழிபெயர்ப்பை அகற்ற முடியவில்லை :("
+msgid "Unable to remove old dynamic translation for %1$s :("
+msgstr "%1$s பழைய மாறும் மொழிபெயர்ப்பை அகற்ற முடியவில்லை :("
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
@@ -1923,8 +1907,8 @@ msgid "Member information"
 msgstr "உறுப்பினர் செய்தி"
 
 #, php-format
-msgid "Missing required field %field"
-msgstr "தேவையான புலம் %புலம் இல்லை"
+msgid "Missing required field %1$s"
+msgstr "தேவையான புலம் %1$s இல்லை"
 
 #. TRANS: %1$s date format, %2$s is the field name
 #. TRANS %1$s is the expected dat format, %2$s the field label
@@ -1940,10 +1924,9 @@ msgid "Modified"
 msgstr "மாற்றியமைக்கப்பட்ட"
 
 #. TRANS first param is name, second email, third days interval
-#, fuzzy, php-format
-#| msgid "%name <%mail> (%days days)"
+#, php-format
 msgid "%1$s <%2$s> (%3$s days)"
-msgstr "%பெயர் <%அஞ்சல்> (%நாட்கள்)"
+msgstr "%1$s <%2$s> (%3$s நாட்கள்)"
 
 msgid "Sent reminder email for late membership"
 msgstr "தாமதமாக உறுப்பினருக்கு நினைவூட்டல் மின்னஞ்சல் அனுப்பப்பட்டது"
@@ -1958,13 +1941,12 @@ msgid "A problem happened while sending impending membership email"
 msgstr "வரவிருக்கும் உறுப்பினர் மின்னஞ்சலை அனுப்பும் போது ஒரு சிக்கல் நடந்தது"
 
 msgid "Unable to send %membership reminder (no email address)."
-msgstr "%உறுப்பினர் நினைவூட்டலை அனுப்ப முடியவில்லை (மின்னஞ்சல் முகவரி இல்லை)."
+msgstr "%membership நினைவூட்டலை அனுப்ப முடியவில்லை (மின்னஞ்சல் முகவரி இல்லை)."
 
 #. TRANS: first parameter is name, second the id, this days interval
-#, fuzzy, php-format
-#| msgid "%name (#%id - %days days)"
+#, php-format
 msgid "%1$s (#%2$s - %3$s days)"
-msgstr "%பெயர் (# %ஐடி - %நாட்கள்)"
+msgstr "%1$s (#%2$s - %3$s நாட்கள்)"
 
 msgid "Freed of dues"
 msgstr "நிலுவைத் தொகையிலிருந்து விடுபடுகிறது"
@@ -2003,7 +1985,7 @@ msgid "- Birthdate must be set in the past!"
 msgstr "- பிறந்த தேதி கடந்த காலத்தில் அமைக்கப்பட வேண்டும்!"
 
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr "- உறுப்பினர்கள் 200 வயதுக்கு குறைவாக இருக்க வேண்டும் (தற்போது %ஆண்டுகள்)!"
+msgstr "- உறுப்பினர்கள் 200 வயதுக்கு குறைவாக இருக்க வேண்டும் (தற்போது %years)!"
 
 msgid "- Non-valid E-Mail address!"
 msgstr "-செல்லுபடியாகாத மின்னஞ்சல் முகவரி!"
@@ -2027,11 +2009,11 @@ msgid "Password misrepeated: "
 msgstr "கடவுச்சொல் தவறாகப் பயன்படுத்தப்பட்டது: "
 
 msgid "Status #%id does not exists in database."
-msgstr "நிலை #%ஐடி தரவுத்தளத்தில் இல்லை."
+msgstr "நிலை #%id தரவுத்தளத்தில் இல்லை."
 
 #, php-format
 msgid "Gender %gender does not exists!"
-msgstr "பாலின %பாலினம் இல்லை!"
+msgstr "பாலினம் %gender இல்லை!"
 
 msgid "A member cannot be its own parent!"
 msgstr "ஒரு உறுப்பினர் அதன் சொந்த பெற்றோராக இருக்க முடியாது!"
@@ -2055,13 +2037,13 @@ msgid "Inactive"
 msgstr "செயலற்றது"
 
 msgid " (%age years old)"
-msgstr " (%வயது)"
+msgstr ""
 
 #. TRANS: first parameter is member name, second his id
 #, fuzzy, php-format
 #| msgid "Duplicated from %name (%id)"
 msgid "Duplicated from %1$s (%2$s)"
-msgstr "%பெயரிலிருந்து ( %ஐடி) நகல்"
+msgstr "%பெயரிலிருந்து (%2$s) நகல்"
 
 msgid "Date:"
 msgstr "தேதி:"
@@ -2276,12 +2258,12 @@ msgid "Discord"
 msgstr "முரண்பாடு"
 
 #, fuzzy, php-format
-msgid "%field should be less than %chars characters long."
-msgstr "%field %கரிச் கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
+msgid "%1$s should be less than %2$s characters long."
+msgstr "%1$s %2$s கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
 
 #, php-format
-msgid "%field should not be empty!"
-msgstr "%புலம் காலியாக இருக்கக்கூடாது!"
+msgid "%1$s should not be empty!"
+msgstr "%1$s காலியாக இருக்கக்கூடாது!"
 
 msgid "Unknown type %type!"
 msgstr "தெரியாத வகை %வகை!"
@@ -2327,7 +2309,7 @@ msgstr "படிவம் கட்டாயமாகும்!"
 
 #, php-format
 msgid "Unknown form %form!"
-msgstr "அறியப்படாத வடிவம் %வடிவம்!"
+msgstr "அறியப்படாத வடிவம் %form!"
 
 msgid "Name cannot be empty!"
 msgstr "பெயர் காலியாக இருக்க முடியாது!"
@@ -2354,10 +2336,9 @@ msgstr "குழு `%1$s` பெற்றோராக அமைக்க ம�
 msgid "Unknown ACL rule '%acl'!"
 msgstr "அறியப்படாத ACL விதி '%ACL'!"
 
-#, fuzzy, php-format
-#| msgid "Route '%name' is not registered in ACLs!"
+#, php-format
 msgid "Route '%1$s' is not registered in ACLs!"
-msgstr "பாதை '%பெயர்' ACLS இல் பதிவு செய்யப்படவில்லை!"
+msgstr "பாதை '%1$s' ACLS இல் பதிவு செய்யப்படவில்லை!"
 
 msgid "Galette is currently under maintenance!"
 msgstr "கேலட் தற்போது பராமரிப்பில் உள்ளது!"
@@ -2395,36 +2376,28 @@ msgstr ""
 "- உறுப்பினருக்கு முகவரி இல்லையென்றால் மின்னஞ்சல் மூலம் உறுதிப்படுத்தலை அனுப்ப முடியாது!"
 
 #. TRANS: first parameter is the use name, second his email address
-#, fuzzy, php-format
-#| msgid "Email sent to user %name (%email)"
+#, php-format
 msgid "Email sent to user %1$s (%2$s)"
-msgstr "மின்னஞ்சல் பயனர் %பெயருக்கு அனுப்பப்பட்டது ( %மின்னஞ்சல்)"
+msgstr "மின்னஞ்சல் பயனர் %1$s அனுப்பப்பட்டது (%2$s)"
 
 #. TRANS: first parameter is the use name, second his email address
-#, fuzzy, php-format
-#| msgid ""
-#| "A problem happened while sending contribution receipt to user %name "
-#| "(%email)"
+#, php-format
 msgid ""
 "A problem happened while sending contribution receipt to user %1$s (%2$s)"
-msgstr "பயனர் %பெயருக்கு ( %மின்னஞ்சல்) பங்களிப்பு ரசீதை அனுப்பும் போது ஒரு சிக்கல் நடந்தது"
+msgstr "பயனர் %1$s (%2$s) பங்களிப்பு ரசீதை அனுப்பும் போது ஒரு சிக்கல் நடந்தது"
 
 #. TRANS: first parameter is member name, second his email address
-#, fuzzy, php-format
-#| msgid "Email sent to admin for user %name (%email)"
+#, php-format
 msgid "Email sent to admin for user %1$s (%2$s)"
-msgstr "பயனர் %பெயருக்காக நிர்வாகிக்கு அனுப்பப்பட்ட மின்னஞ்சல் ( %மின்னஞ்சல்)"
+msgstr "பயனர் %1$s நிர்வாகிக்கு அனுப்பப்பட்ட மின்னஞ்சல் (%2$s)"
 
 #. TRANS: first parameter is member name, second his email address
-#, fuzzy, php-format
-#| msgid ""
-#| "A problem happened while sending to admin notification for user %name "
-#| "(%email) contribution"
+#, php-format
 msgid ""
 "A problem happened while sending to admin notification for user %1$s (%2$s) "
 "contribution"
 msgstr ""
-"பயனர் %பெயர் ( %மின்னஞ்சல்) பங்களிப்புக்கான நிர்வாக அறிவிப்பை அனுப்பும்போது ஒரு சிக்கல் "
+"பயனர் %1$s (%2$s) பங்களிப்புக்கான நிர்வாக அறிவிப்பை அனுப்பும்போது ஒரு சிக்கல் "
 "நடந்தது"
 
 msgid "Post contribution script failed"
@@ -3410,32 +3383,25 @@ msgstr "பங்களிப்பு வகை"
 msgid "OK"
 msgstr "சரி"
 
-#, fuzzy, php-format
-#| msgid "you're installing %name for the first time"
+#, php-format
 msgid "you're installing %1$s for the first time"
-msgstr "நீங்கள் முதல் முறையாக %பெயரை நிறுவுகிறீர்கள்"
+msgstr "நீங்கள் முதல் முறையாக %1$s நிறுவுகிறீர்கள்"
 
-#, fuzzy, php-format
-#| msgid ""
-#| "you wish to erase an older version of of %name without keeping your data"
+#, php-format
 msgid "you wish to erase an older version of of %1$s without keeping your data"
-msgstr "உங்கள் தரவை வைத்திருக்காமல் %பெயரின் பழைய பதிப்பை அழிக்க விரும்புகிறீர்கள்"
+msgstr "உங்கள் தரவை வைத்திருக்காமல் %1$s பழைய பதிப்பை அழிக்க விரும்புகிறீர்கள்"
 
-#, fuzzy, php-format
-#| msgid ""
-#| "you already have installed %name, and you want to upgrade to the latest "
-#| "version"
+#, php-format
 msgid ""
 "you already have installed %1$s, and you want to upgrade to the latest "
 "version"
 msgstr ""
-"நீங்கள் ஏற்கனவே %பெயரை நிறுவியுள்ளீர்கள், மேலும் அண்மைக் கால பதிப்பிற்கு மேம்படுத்த "
+"நீங்கள் ஏற்கனவே %1$s நிறுவியுள்ளீர்கள், மேலும் அண்மைக் கால பதிப்பிற்கு மேம்படுத்த "
 "விரும்புகிறீர்கள்"
 
-#, fuzzy, php-format
-#| msgid "You current %name version is..."
+#, php-format
 msgid "You current %1$s version is..."
-msgstr "நீங்கள் தற்போதைய %பெயர் பதிப்பு ..."
+msgstr "நீங்கள் தற்போதைய %1$s பதிப்பு ..."
 
 msgid "(Errors on DROP and RENAME operations can be ignored)"
 msgstr "(துளி மற்றும் மறுபெயரிடு செயல்பாடுகளில் உள்ள பிழைகள் புறக்கணிக்கப்படலாம்)"
@@ -3450,17 +3416,15 @@ msgstr "அட்டவணைகள் முற்றிலுமாக உர�
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr "உங்கள் தரவுத்தளம் பயன்படுத்த முடியாதது, பழைய பதிப்பை மீட்டெடுக்க முயற்சிக்கவும்."
 
-#, fuzzy, php-format
-#| msgid "Plugin '%name' has been successfully installed!"
+#, php-format
 msgid "Plugin '%1$s' has been successfully installed!"
-msgstr "சொருகி '%பெயர்' வெற்றிகரமாக நிறுவப்பட்டுள்ளது!"
+msgstr "சொருகி '%1$s' வெற்றிகரமாக நிறுவப்பட்டுள்ளது!"
 
-#, fuzzy, php-format
-#| msgid "Plugin '%name' has been successfully updated!"
+#, php-format
 msgid "Plugin '%1$s' has been successfully updated!"
-msgstr "சொருகி '%பெயர்' வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
+msgstr "சொருகி '%1$s' வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது!"
 
-msgid "Back to plugins managment page"
+msgid "Back to plugins management page"
 msgstr "சொருகி மேலாண்மை பக்கத்திற்குத் திரும்பு"
 
 msgid "Access permissions to database"
@@ -3518,7 +3482,7 @@ msgstr "உங்கள் வருகை தாள் பற்றிய ச�
 
 #, php-format
 msgid "%s attendees"
-msgstr "எச் பங்கேற்பாளர்கள்"
+msgstr "%s பங்கேற்பாளர்கள்"
 
 msgid "Sheet type"
 msgstr "தாள் வகை"
@@ -3563,7 +3527,7 @@ msgstr "உங்கள் மொழியைத் தேர்வுசெய�
 
 #, php-format
 msgid "Switch locale to '%locale'"
-msgstr "இருப்பிடத்தை '%லோகேல்' க்கு மாற்றவும்"
+msgstr "இருப்பிடத்தை '%locale' க்கு மாற்றவும்"
 
 msgid "Add"
 msgstr "கூட்டு"
@@ -3602,7 +3566,7 @@ msgstr "'%s' புலம் மொழிபெயர்க்கவும்"
 
 #, php-format
 msgid "Delete '%s' field"
-msgstr "'%A' புலத்தை நீக்கு"
+msgstr "'%s' புலத்தை நீக்கு"
 
 #, php-format
 msgid "Move up '%s' field"
@@ -3891,16 +3855,16 @@ msgid "No manager attached"
 msgstr "மேலாளர் இணைக்கப்படவில்லை"
 
 #, php-format
-msgid "Change '%field' permissions"
-msgstr "'%புலம்' அனுமதிகளை மாற்றவும்"
+msgid "Change '%1$s' permissions"
+msgstr "'%1$s' அனுமதிகளை மாற்றவும்"
 
 #, php-format
-msgid "Field '%field' cannot be set as required."
-msgstr "புலம் '%புலம்' தேவைக்கேற்ப அமைக்க முடியாது."
+msgid "Field '%1$s' cannot be set as required."
+msgstr "புலம் '%1$s' தேவைக்கேற்ப அமைக்க முடியாது."
 
 #, php-format
-msgid "Mark '%field' as (not) required"
-msgstr "'%புலம்' தேவை (இல்லை) தேவை"
+msgid "Mark '%1$s' as (not) required"
+msgstr "'%1$s' தேவை (இல்லை) தேவை"
 
 msgid "Change field's width with in forms"
 msgstr "புல அகலத்தை வடிவங்களுடன் மாற்றவும்"
@@ -3920,7 +3884,7 @@ msgstr "காட்சி"
 
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
-msgstr "உங்கள் செய்தி <strong>%உறுப்பினர்கள் </strong> க்கு அனுப்பப்பட்டுள்ளது"
+msgstr "உங்கள் செய்தி <strong>%s உறுப்பினர்கள் </strong> க்கு அனுப்பப்பட்டுள்ளது"
 
 #, php-format
 msgid "You are about to send an e-mail to <strong>%s members</strong>"
@@ -3949,7 +3913,7 @@ msgid "Disable social networks on member form"
 msgstr "உறுப்பினர் வடிவத்தில் சமூக வலைப்பின்னல்களை முடக்கு"
 
 msgid "Remove %type"
-msgstr "%வகையை அகற்று"
+msgstr "%type அகற்று"
 
 msgid "Add new social network"
 msgstr "புதிய சமூக வலைப்பின்னலைச் சேர்க்கவும்"
@@ -3984,15 +3948,13 @@ msgstr "வெளியீட்டு தேதி"
 msgid "Active plugins"
 msgstr "செயலில் உள்ள செருகுநிரல்கள்"
 
-#, fuzzy, php-format
-#| msgid "Click here to deactivate plugin '%name'"
+#, php-format
 msgid "Click here to deactivate plugin '%1$s'"
-msgstr "சொருகி '%பெயர்' ஐ செயலிழக்க இங்கே சொடுக்கு செய்க"
+msgstr "சொருகி '%1$s' ஐ செயலிழக்க இங்கே சொடுக்கு செய்க"
 
-#, fuzzy, php-format
-#| msgid "Initialize '%name' database"
+#, php-format
 msgid "Initialize '%1$s' database"
-msgstr "'%பெயர்' தரவுத்தளத்தைத் தொடங்கவும்"
+msgstr "'%1$s' தரவுத்தளத்தைத் தொடங்கவும்"
 
 msgid "No active plugin."
 msgstr "செயலில் சொருகி இல்லை."
@@ -4015,10 +3977,9 @@ msgstr "வெளிப்படையாக முடக்கப்பட்�
 msgid "Unknown"
 msgstr "தெரியவில்லை"
 
-#, fuzzy, php-format
-#| msgid "Activate plugin '%name'"
+#, php-format
 msgid "Activate plugin '%1$s'"
-msgstr "சொருகி '%பெயர்' செயல்படுத்தவும்"
+msgstr "சொருகி '%1$s' செயல்படுத்தவும்"
 
 msgid "No inactive plugin."
 msgstr "செயலற்ற சொருகி இல்லை."
@@ -4032,14 +3993,13 @@ msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr "சொருகி தரவுத்தள துவக்க இடைமுகத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
 
-#, fuzzy, php-format
-#| msgid "Plugin database initialization: %name"
+#, php-format
 msgid "Plugin database initialization: %1$s"
-msgstr "சொருகி தரவுத்தள துவக்கம்: %பெயர்"
+msgstr "சொருகி தரவுத்தள துவக்கம்: %1$s"
 
 #, php-format
-msgid "Edit field %field"
-msgstr "புலம் %புலத்தைத் திருத்து"
+msgid "Edit field %1$s"
+msgstr "புலம் %1$s திருத்து"
 
 msgid "Permissions:"
 msgstr "அனுமதிகள்:"
@@ -4290,7 +4250,7 @@ msgid "Found contributions total %f"
 msgstr "மொத்தம் %f பங்களிப்புகள் காணப்பட்டன"
 
 msgid "Edit transaction #%id"
-msgstr "பரிவர்த்தனை #%ஐடியைத் திருத்தவும்"
+msgstr "பரிவர்த்தனை #%idயைத் திருத்தவும்"
 
 msgid "Amount is not fully dispatched"
 msgstr ""
@@ -4306,15 +4266,13 @@ msgstr "பரிவர்த்தனைகளின் பட்டியல�
 msgid "Has scheduled payments"
 msgstr "திட்டமிட்ட கொடுப்பனவுகள்"
 
-#, fuzzy, php-format
-#| msgid "Show only '%name' contributions"
+#, php-format
 msgid "Show only '%1$s' contributions"
-msgstr "'%பெயர்' பங்களிப்புகளை மட்டும் காட்டு"
+msgstr "'%1$s' பங்களிப்புகளை மட்டும் காட்டு"
 
-#, fuzzy, php-format
-#| msgid "Show '%name' card"
+#, php-format
 msgid "Show '%1$s' card"
-msgstr "'%பெயர்' அட்டையைக் காட்டு"
+msgstr "'%1$s' அட்டையைக் காட்டு"
 
 msgid "Print an invoice or a receipt (depending on contribution type)"
 msgstr "விலைப்பட்டியல் அல்லது ரசீதை அச்சிடுக (பங்களிப்பு வகையைப் பொறுத்து)"
@@ -4458,14 +4416,14 @@ msgstr "இயல்புநிலை புலங்கள்"
 #, fuzzy, php-format
 #| msgid "Model parameted on %date"
 msgid "Model parameted on %1$s"
-msgstr "மாதிரி அளவு %தேதியில்"
+msgstr "மாதிரி அளவு %1$s"
 
 msgid "Field"
 msgstr "புலம்"
 
 #, php-format
-msgid "Missing field '%field'"
-msgstr "புலம் '%புலம்' காணவில்லை"
+msgid "Missing field '%1$s'"
+msgstr "புலம் '%1$s' காணவில்லை"
 
 msgid "Generate empty CSV file"
 msgstr "வெற்று காபிம கோப்பை உருவாக்குங்கள்"
@@ -4746,7 +4704,7 @@ msgstr "முன்னுரிமை:"
 msgid ""
 "Note: members with a status priority lower than %priority are staff members."
 msgstr ""
-"குறிப்பு: ஒரு நிலை முன்னுரிமையைக் கொண்ட உறுப்பினர்கள் %முன்னுரிமையை விடக் குறைவானவர்கள் "
+"குறிப்பு: ஒரு நிலை முன்னுரிமையைக் கொண்ட உறுப்பினர்கள் %priority விடக் குறைவானவர்கள் "
 "ஊழியர்கள்."
 
 msgid "Add payment type"
@@ -4761,7 +4719,7 @@ msgstr "'%s' கட்டண வகையைத் திருத்து"
 
 #, php-format
 msgid "Delete '%s' payment type"
-msgstr "'%A' கட்டண வகையை நீக்கு"
+msgstr "'%s' கட்டண வகையை நீக்கு"
 
 msgid "Priority"
 msgstr "முன்னுரிமை"
@@ -4777,11 +4735,11 @@ msgstr "முன்னோட்டம்"
 
 #, php-format
 msgid "%s members with an email address"
-msgstr "மின்னஞ்சல் முகவரியுடன் %உறுப்பினர்கள்"
+msgstr "மின்னஞ்சல் முகவரியுடன் %s"
 
 #, php-format
 msgid "%s members without email address"
-msgstr "மின்னஞ்சல் முகவரி இல்லாமல் %உறுப்பினர்கள்"
+msgstr "மின்னஞ்சல் முகவரி இல்லாமல் %s"
 
 msgid "Generate labels for members without email address"
 msgstr "மின்னஞ்சல் முகவரி இல்லாமல் உறுப்பினர்களுக்கான லேபிள்களை உருவாக்குங்கள்"
@@ -4849,7 +4807,7 @@ msgid "Member will receive a notification by email, if he has an address."
 msgstr "உறுப்பினர் அவருக்கு முகவரி இருந்தால் மின்னஞ்சல் மூலம் அறிவிப்பைப் பெறுவார்."
 
 msgid "Contribution amount should not be greater than %max"
-msgstr "பங்களிப்பு தொகை %அதிகபட்சத்தை விட அதிகமாக இருக்கக்கூடாது"
+msgstr "பங்களிப்பு தொகை %max விட அதிகமாக இருக்கக்கூடாது"
 
 msgid "An error occurred displaying scheduled payments :("
 msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகளைக் காண்பிப்பதில் பிழை ஏற்பட்டது :("
@@ -5260,7 +5218,7 @@ msgid ""
 "parameter if the current page URL is not:<br/>%galette_url"
 msgstr ""
 "உங்கள் கேலட் நிகழ்வுக்கு அடிப்படை முகவரி ஐ உள்ளிடவும். தற்போதைய பக்க முகவரி இல்லாவிட்டால் "
-"மட்டுமே இந்த அளவுருவை மாற்ற வேண்டும்: <br>%கேலட்_ஆர்ல்"
+"மட்டுமே இந்த அளவுருவை மாற்ற வேண்டும்: <br>%galette_url"
 
 msgid "Post new contribution script URI"
 msgstr "புதிய பங்களிப்பு ச்கிரிப்ட் யூரி ஐ இடுங்கள்"
@@ -5668,16 +5626,16 @@ msgid "Sent mailings:"
 msgstr "அனுப்பப்பட்ட அஞ்சல்கள்:"
 
 #, php-format
-msgid "Display mailing '%subject' details in preview window"
-msgstr "முன்னோட்ட சாளரத்தில் அஞ்சல் '%பொருள்' விவரங்களைக் காண்பி"
+msgid "Display mailing '%1$s' details in preview window"
+msgstr "முன்னோட்ட சாளரத்தில் அஞ்சல் '%1$s' விவரங்களைக் காண்பி"
 
 #, php-format
-msgid "Use mailing '%subject' as a template for a new one"
-msgstr "புதிய ஒன்றிற்கான வார்ப்புருவாக '%பொருள்' அஞ்சலைப் பயன்படுத்தவும்"
+msgid "Use mailing '%1$s' as a template for a new one"
+msgstr "புதிய ஒன்றிற்கான வார்ப்புருவாக '%1$s' அஞ்சலைப் பயன்படுத்தவும்"
 
 #, php-format
-msgid "Delete mailing '%subject'"
-msgstr "'%பொருள்' என்ற அஞ்சல் அனுப்பவும்"
+msgid "Delete mailing '%1$s'"
+msgstr "'%1$s' என்ற அஞ்சல் அனுப்பவும்"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr "அனுப்பப்பட்ட அஞ்சல் எதுவும் இதுவரை தரவுத்தளத்தில் சேமிக்கப்படவில்லை."
@@ -5798,16 +5756,16 @@ msgid "Show all members scheduled payments"
 msgstr "திட்டமிட்ட கொடுப்பனவுகள்"
 
 #, fuzzy, php-format
-#| msgid "%count shceduled payment"
+#| msgid "%count scheduled payment"
 #| msgid_plural "%count scheduled payments"
-msgid "%1$s shceduled payment"
+msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
 msgstr[0] "திட்டமிடப்பட்ட கட்டணத்தை எண்ணுங்கள்"
 msgstr[1] "திட்டமிடப்பட்ட கொடுப்பனவுகளை எண்ணுங்கள்"
 
 #, php-format
 msgid "Found total scheduled %f"
-msgstr "மொத்த திட்டமிடப்பட்ட %எஃப்"
+msgstr "மொத்த திட்டமிடப்பட்ட %f"
 
 #, fuzzy, php-format
 #| msgid "Add a membership fee"
@@ -5817,10 +5775,10 @@ msgstr "உறுப்பினர் கட்டணத்தைச் சே�
 #, fuzzy, php-format
 #| msgid "Edit transaction #%id"
 msgid "Edit donation %1$s"
-msgstr "பரிவர்த்தனை #%ஐடியைத் திருத்தவும்"
+msgstr "பரிவர்த்தனை #%1$sயைத் திருத்தவும்"
 
 #, fuzzy, php-format
-#| msgid "%count shceduled payment"
+#| msgid "%count scheduled payment"
 #| msgid_plural "%count scheduled payments"
 msgid "Show only '%1$s' scheduled payments"
 msgstr "திட்டமிடப்பட்ட கட்டணத்தை எண்ணுங்கள்"
@@ -5855,10 +5813,9 @@ msgstr "உறுப்பினர் அட்டையை உருவாக�
 msgid "View contributions"
 msgstr "பங்களிப்புகளைக் காண்க"
 
-#, fuzzy, php-format
-#| msgid "Create a new member with %name information."
+#, php-format
 msgid "Create a new member with %1$s information."
-msgstr "%பெயர் தகவலுடன் புதிய உறுப்பினரை உருவாக்கவும்."
+msgstr "%1$s தகவலுடன் புதிய உறுப்பினரை உருவாக்கவும்."
 
 msgid "Duplicate"
 msgstr "நகல்"
@@ -5909,13 +5866,12 @@ msgid_plural "%1$s transactions"
 msgstr[0] "பரிவர்த்தனை"
 msgstr[1] "பரிவர்த்தனை"
 
-#, fuzzy, php-format
-#| msgid "Show only '%name' transactions"
+#, php-format
 msgid "Show only '%1$s' transactions"
-msgstr "'%பெயர்' பரிவர்த்தனைகளை மட்டும் காட்டு"
+msgstr "'%1$s' பரிவர்த்தனைகளை மட்டும் காட்டு"
 
 msgid "Remove transaction #%id"
-msgstr "பரிவர்த்தனை #%ஐடியை அகற்று"
+msgstr "பரிவர்த்தனை #%idயை அகற்று"
 
 msgid "no transaction"
 msgstr "பரிவர்த்தனை இல்லை"
@@ -6247,15 +6203,14 @@ msgid ""
 "final ratio defined in the settings : %ratio"
 msgstr ""
 "அமைப்புகளில் வரையறுக்கப்பட்ட இறுதி விகிதத்திற்கு பயிர் செய்த பின் பாதுகாக்க அசல் படத்தின் "
-"பகுதியைத் தேர்வுசெய்க: %விகிதம்"
+"பகுதியைத் தேர்வுசெய்க: %ratio"
 
 msgid "Enter as many occurrences you want."
 msgstr "நீங்கள் விரும்பும் பல நிகழ்வுகளை உள்ளிடவும்."
 
-#, fuzzy, php-format
-#| msgid "Enter up to %count more occurrences."
+#, php-format
 msgid "Enter up to %1$s more occurrences."
-msgstr "%எண்ணிக்கை அதிக நிகழ்வுகளை உள்ளிடவும்."
+msgstr "%1$s அதிக நிகழ்வுகளை உள்ளிடவும்."
 
 msgid "Select an option"
 msgstr "ஒரு விருப்பத்தைத் தேர்ந்தெடுக்கவும்"
@@ -6279,14 +6234,14 @@ msgid "Page content"
 msgstr "பக்க உள்ளடக்கம்"
 
 #~ msgid "By %name"
-#~ msgstr "%பெயர்"
+#~ msgstr "%name"
 
 #, php-format
 #~ msgid ""
 #~ "An error occurred running parameted export '%export'. Please check the "
 #~ "logs."
 #~ msgstr ""
-#~ "அளவுரு ஏற்றுமதி '%ஏற்றுமதி' இயங்கும் பிழை ஏற்பட்டது. பதிவுகளை சரிபார்க்கவும்."
+#~ "அளவுரு ஏற்றுமதி '%export' இயங்கும் பிழை ஏற்பட்டது. பதிவுகளை சரிபார்க்கவும்."
 
 #~ msgid "No file has been selected for upload!"
 #~ msgstr "பதிவேற்றுவதற்கு கோப்புகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை!"
@@ -6311,7 +6266,7 @@ msgstr "பக்க உள்ளடக்கம்"
 #~ msgstr "பங்களிப்புகள்"
 
 #~ msgid "Contribution %id"
-#~ msgstr "பங்களிப்பு %ஐடி"
+#~ msgstr "பங்களிப்பு %id"
 
 #, php-format
 #~ msgid "Transaction: %s"
@@ -6323,7 +6278,7 @@ msgstr "பக்க உள்ளடக்கம்"
 #~ msgstr "முற்றிலும் அனுப்பப்பட்ட பரிவர்த்தனை"
 
 #~ msgid "History entry %id"
-#~ msgstr "வரலாறு நுழைவு %ஐடி"
+#~ msgstr "வரலாறு நுழைவு %id"
 
 #~ msgid "Mbr id"
 #~ msgstr "MBR ஐடி"
@@ -6340,10 +6295,10 @@ msgstr "பக்க உள்ளடக்கம்"
 #~ msgstr "பங்களிப்புகளைக் காணவும் வடிகட்டவும்"
 
 #~ msgid "Mailing entry %id"
-#~ msgstr "அஞ்சல் நுழைவு %ஐடி"
+#~ msgstr "அஞ்சல் நுழைவு %id"
 
 #~ msgid "Transaction %id"
-#~ msgstr "பரிவர்த்தனை %ஐடி"
+#~ msgstr "பரிவர்த்தனை %id"
 
 #~ msgid "- Only SMTP and GMail are allowed on hosted instances."
 #~ msgstr ""
@@ -6352,7 +6307,7 @@ msgstr "பக்க உள்ளடக்கம்"
 #, php-format
 #~ msgid "%count document"
 #~ msgid_plural "%count documents"
-#~ msgstr[0] "%எண்ணிக்கை ஆவணம்"
+#~ msgstr[0] "%count ஆவணம்"
 #~ msgstr[1] "%ஆவணங்களை எண்ணுங்கள்"
 
 #, php-format
@@ -6370,8 +6325,8 @@ msgstr "பக்க உள்ளடக்கம்"
 #, php-format
 #~ msgid "%count entry"
 #~ msgid_plural "%count entries"
-#~ msgstr[0] "நுழைவு எண்ணிக்கை"
-#~ msgstr[1] "உள்ளீடுகளை எண்ணுங்கள்"
+#~ msgstr[0] "நுழைவு %count"
+#~ msgstr[1] "உள்ளீடுகளை %count"
 
 #, php-format
 #~ msgid "%count search"

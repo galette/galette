@@ -235,7 +235,7 @@ class ScheduledPayment
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing shceduled payment: ' . $e->getMessage()
+                'An error occurred storing scheduled payment: ' . $e->getMessage()
                 . "\n" . print_r($data, true),
                 Analog::ERROR
             );

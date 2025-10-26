@@ -287,19 +287,20 @@ abstract class PdfModel
         if (trim($value) !== '') {
             if (mb_strlen($value) > $chars) {
                 throw new \LengthException(
-                    str_replace(
-                        ['%field', '%chars'],
-                        [$field, (string)$chars],
-                        _T("%field should be less than %chars characters long.")
+                    sprintf(
+                        //TRANS: first parameter is a field name, second its maximum length
+                        _T('%1$s should be less than %2$s characters long.'),
+                        $field,
+                        (string)$chars,
                     )
                 );
             }
         } elseif ($empty === false) {
             throw new \UnexpectedValueException(
-                str_replace(
-                    '%field',
+                sprintf(
+                    //TRANS: parameter is a field name
+                    _T('%1$s should not be empty!'),
                     $field,
-                    _T("%field should not be empty!")
                 )
             );
         }

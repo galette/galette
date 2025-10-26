@@ -48,10 +48,10 @@ trait I18n
 
         $result = $l10n->addDynamicTranslation($text_orig);
         if ($result === false) {
-            $this->warnings[] = str_replace(
-                '%field',
-                $text_orig,
-                _T('Unable to add dynamic translation for %field :(')
+            $this->warnings[] = sprintf(
+                //TRANS: paramter is a field name
+                _T('Unable to add dynamic translation for %1$s :('),
+                $text_orig
             );
         };
 
@@ -74,10 +74,10 @@ trait I18n
 
         $result = $l10n->updateDynamicTranslation($text_orig, $text_locale, $text_trans);
         if ($result === false) {
-            $this->warnings[] = str_replace(
-                '%field',
-                $text_orig,
-                _T('Unable to update dynamic translation for %field :(')
+            $this->warnings[] = sprintf(
+                //TRANS: paramter is a field name
+                _T('Unable to update dynamic translation for %1$s :('),
+                $text_orig
             );
         };
 
@@ -98,10 +98,10 @@ trait I18n
 
         $result = $l10n->deleteDynamicTranslation($text_orig);
         if ($result === false) {
-            $this->warnings[] = str_replace(
-                '%field',
-                $text_orig,
-                _T('Unable to remove old dynamic translation for %field :(')
+            $this->warnings[] = sprintf(
+                //TRANS: paramter is a field name
+                _T('Unable to remove old dynamic translation for %1$s :('),
+                $text_orig
             );
         }
 

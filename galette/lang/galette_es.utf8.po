@@ -851,7 +851,7 @@ msgstr ""
 "Se ha producido un error guardando la etiqueta `%label` para el idioma "
 "`%lang`"
 
-msgid "Labels has been sucessfully translated!"
+msgid "Labels has been successfully translated!"
 msgstr "¡Las etiquetas han sido traducidas con éxito!"
 
 msgid "Exports"
@@ -1310,8 +1310,8 @@ msgstr ""
 "- La oferta de meses sólo es compatible con el inicio de la afiliación."
 
 #, php-format
-msgid "- Mandatory field %field empty."
-msgstr "- Campo obligatorio %field vacío."
+msgid "- Mandatory field %1$s empty."
+msgstr "- Campo obligatorio %1$s vacío."
 
 msgid "Passwords mismatch"
 msgstr "Las contraseñas no coinciden"
@@ -1649,8 +1649,8 @@ msgstr ""
 "El número de campos no corresponde… Debe haber %1$s campos, pero hay %2$s "
 "(fila %3$s)"
 
-msgid "Field %field is required, but missing in row %row"
-msgstr "Se requiere el campo %field , pero no se encuentra en la fila %row"
+msgid "Field %1$s is required, but missing in row %2$s"
+msgstr "Se requiere el campo %1$s, pero no se encuentra en la fila %2$s"
 
 #, php-format
 msgid "Status %status does not exists!"
@@ -1792,16 +1792,16 @@ msgid "Administrator"
 msgstr "Administrador"
 
 #, php-format
-msgid "Unable to add dynamic translation for %field :("
-msgstr "No es posible añadir traducción dinámica para %field :("
+msgid "Unable to add dynamic translation for %1$s :("
+msgstr "No es posible añadir traducción dinámica para %1$s :("
 
 #, php-format
-msgid "Unable to update dynamic translation for %field :("
-msgstr "No se puede actualizar la traducción dinámica para %field :("
+msgid "Unable to update dynamic translation for %1$s :("
+msgstr "No se puede actualizar la traducción dinámica para %1$s :("
 
 #, php-format
-msgid "Unable to remove old dynamic translation for %field :("
-msgstr "Imposibel de remover a antiga traduccion dinamica para %field"
+msgid "Unable to remove old dynamic translation for %1$s :("
+msgstr "Imposibel de remover a antiga traduccion dinamica para %1$s"
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
@@ -1949,8 +1949,8 @@ msgid "Member information"
 msgstr "Información del miembro"
 
 #, php-format
-msgid "Missing required field %field"
-msgstr "Falta el campo requerido %field"
+msgid "Missing required field %1$s"
+msgstr "Falta el campo requerido %1$s"
 
 #. TRANS: %1$s date format, %2$s is the field name
 #. TRANS %1$s is the expected dat format, %2$s the field label
@@ -2311,12 +2311,12 @@ msgid "Discord"
 msgstr "Discord"
 
 #, php-format
-msgid "%field should be less than %chars characters long."
-msgstr "El campo %field debe tener menos de %chars carácteres."
+msgid "%1$s should be less than %2$s characters long."
+msgstr "El campo %1$s debe tener menos de %2$s carácteres."
 
 #, php-format
-msgid "%field should not be empty!"
-msgstr "¡%field no debe estar vacío!"
+msgid "%1$s should not be empty!"
+msgstr "¡%1$s no debe estar vacío!"
 
 msgid "Unknown type %type!"
 msgstr "¡Tipo %type desconocido!"
@@ -3516,7 +3516,7 @@ msgstr "¡Se instaló el complemento «%1$s» correctamente!"
 msgid "Plugin '%1$s' has been successfully updated!"
 msgstr "¡Se ha actualizado con éxito el complemento '%1$s'!"
 
-msgid "Back to plugins managment page"
+msgid "Back to plugins management page"
 msgstr "Volver a la página de gestión de complementos"
 
 msgid "Access permissions to database"
@@ -3952,16 +3952,16 @@ msgid "No manager attached"
 msgstr "Ningún directivo adjunto"
 
 #, php-format
-msgid "Change '%field' permissions"
-msgstr "Cambiar permisos '%field'"
+msgid "Change '%1$s' permissions"
+msgstr "Cambiar permisos '%1$s'"
 
 #, php-format
-msgid "Field '%field' cannot be set as required."
-msgstr "El campo '%field' no se puede marcar como obligatorio."
+msgid "Field '%1$s' cannot be set as required."
+msgstr "El campo '%1$s' no se puede marcar como obligatorio."
 
 #, php-format
-msgid "Mark '%field' as (not) required"
-msgstr "Marcar '%field' como (no) obligatorio"
+msgid "Mark '%1$s' as (not) required"
+msgstr "Marcar '%1$s' como (no) obligatorio"
 
 msgid "Change field's width with in forms"
 msgstr "Cambiar la anchura del campo en los formularios"
@@ -4102,8 +4102,8 @@ msgid "Plugin database initialization: %1$s"
 msgstr "Inicialización de base de datos de plugin: '%1$s'"
 
 #, php-format
-msgid "Edit field %field"
-msgstr "Editar campo %field"
+msgid "Edit field %1$s"
+msgstr "Editar campo %1$s"
 
 msgid "Permissions:"
 msgstr "Permisos:"
@@ -4524,8 +4524,8 @@ msgid "Field"
 msgstr "Campo"
 
 #, php-format
-msgid "Missing field '%field'"
-msgstr "Falta el campo '%filed'"
+msgid "Missing field '%1$s'"
+msgstr "Falta el campo '%1$s'"
 
 msgid "Generate empty CSV file"
 msgstr "Generar archivo CSV vacío"
@@ -5749,17 +5749,17 @@ msgid "Sent mailings:"
 msgstr "Correspondencia enviada:"
 
 #, php-format
-msgid "Display mailing '%subject' details in preview window"
+msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
-"Mostrar detalles de correspondencia '%subject' en la ventana de vista previa"
+"Mostrar detalles de correspondencia '%1$s' en la ventana de vista previa"
 
 #, php-format
-msgid "Use mailing '%subject' as a template for a new one"
-msgstr "Utilizar la correspondencia '%subject' como plantilla para uno nuevo"
+msgid "Use mailing '%1$s' as a template for a new one"
+msgstr "Utilizar la correspondencia '%1$s' como plantilla para uno nuevo"
 
 #, php-format
-msgid "Delete mailing '%subject'"
-msgstr "Eliminar la correspondencia '%subject'"
+msgid "Delete mailing '%1$s'"
+msgstr "Eliminar la correspondencia '%1$s'"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr ""
@@ -5884,7 +5884,7 @@ msgid "Show all members scheduled payments"
 msgstr "Tiene pagos programados"
 
 #, php-format
-msgid "%1$s shceduled payment"
+msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
 msgstr[0] "%1$s pago programado"
 msgstr[1] "%1$s pagos programados"
@@ -5903,7 +5903,7 @@ msgid "Edit donation %1$s"
 msgstr "Editar donación %1$s"
 
 #, fuzzy, php-format
-#| msgid "%1$s shceduled payment"
+#| msgid "%1$s scheduled payment"
 #| msgid_plural "%1$s scheduled payments"
 msgid "Show only '%1$s' scheduled payments"
 msgstr "%1$s pago programado"

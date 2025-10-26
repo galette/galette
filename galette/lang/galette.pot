@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-20 11:14+0200\n"
+"POT-Creation-Date: 2025-10-26 09:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1144,7 +1144,7 @@ msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:194
-msgid "Labels has been sucessfully translated!"
+msgid "Labels has been successfully translated!"
 msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:117
@@ -1761,12 +1761,14 @@ msgstr ""
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:646
-#: ../lib/Galette/Entity/Adherent.php:1249
-#: ../lib/Galette/Entity/Transaction.php:386
-#: ../lib/Galette/Entity/Contribution.php:584
+#. TRANS: parameter is a field name
+#. TRANS: parameter is an hTML link to the field with its name
+#: ../lib/Galette/Core/Preferences.php:645
+#: ../lib/Galette/Entity/Adherent.php:1248
+#: ../lib/Galette/Entity/Transaction.php:385
+#: ../lib/Galette/Entity/Contribution.php:583
 #, php-format
-msgid "- Mandatory field %field empty."
+msgid "- Mandatory field %1$s empty."
 msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:653 ../webroot/installer.php:176
@@ -2192,7 +2194,7 @@ msgstr ""
 #: ../lib/Galette/IO/PdfGroups.php:156
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:167
 #: ../lib/Galette/Features/Replacements.php:249
-#: ../lib/Galette/Entity/PdfModel.php:439
+#: ../lib/Galette/Entity/PdfModel.php:440
 #: ../lib/Galette/Filters/MembersList.php:270
 #: ../includes/fields_defs/members_fields.php:317
 #: ../../tempcache/elements/edit_dynamic_fields.html.twig:64
@@ -2360,46 +2362,48 @@ msgid ""
 "%3$s)"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:299
-msgid "Field %field is required, but missing in row %row"
+#. TRANS: first parameter is a field name, second the row in error
+#: ../lib/Galette/IO/CsvIn.php:298
+#, php-format
+msgid "Field %1$s is required, but missing in row %2$s"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:320
+#: ../lib/Galette/IO/CsvIn.php:321
 #, php-format
 msgid "Status %status does not exists!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:340
+#: ../lib/Galette/IO/CsvIn.php:341
 msgid "Title %title does not exists!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:357
+#: ../lib/Galette/IO/CsvIn.php:358
 msgid "from another member in import"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:357
+#: ../lib/Galette/IO/CsvIn.php:358
 msgid "from member %id_adh"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:363
+#: ../lib/Galette/IO/CsvIn.php:364
 msgid "Email address %address is already used! (%extra)"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:388
+#: ../lib/Galette/IO/CsvIn.php:389
 msgid "Lang %lang does not exists!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:440
+#: ../lib/Galette/IO/CsvIn.php:441
 msgid "File is empty!"
 msgstr ""
 
 #. TRANS: first parameter is row, second member name
-#: ../lib/Galette/IO/CsvIn.php:531 ../lib/Galette/IO/CsvIn.php:543
+#: ../lib/Galette/IO/CsvIn.php:532 ../lib/Galette/IO/CsvIn.php:544
 #, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:578
+#: ../lib/Galette/IO/CsvIn.php:579
 msgid "An error occurred while importing members"
 msgstr ""
 
@@ -2565,19 +2569,22 @@ msgstr ""
 msgid "Administrator"
 msgstr ""
 
-#: ../lib/Galette/Features/I18n.php:54
+#. TRANS: paramter is a field name
+#: ../lib/Galette/Features/I18n.php:53
 #, php-format
-msgid "Unable to add dynamic translation for %field :("
+msgid "Unable to add dynamic translation for %1$s :("
 msgstr ""
 
-#: ../lib/Galette/Features/I18n.php:80
+#. TRANS: paramter is a field name
+#: ../lib/Galette/Features/I18n.php:79
 #, php-format
-msgid "Unable to update dynamic translation for %field :("
+msgid "Unable to update dynamic translation for %1$s :("
 msgstr ""
 
-#: ../lib/Galette/Features/I18n.php:104
+#. TRANS: paramter is a field name
+#: ../lib/Galette/Features/I18n.php:103
 #, php-format
-msgid "Unable to remove old dynamic translation for %field :("
+msgid "Unable to remove old dynamic translation for %1$s :("
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:102
@@ -2648,7 +2655,7 @@ msgid "Footer text:"
 msgstr ""
 
 #: ../lib/Galette/Features/Replacements.php:237
-#: ../lib/Galette/Entity/PdfModel.php:444
+#: ../lib/Galette/Entity/PdfModel.php:445
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:118
 #: ../../tempcache/elements/edit_pdf_models.html.twig:55
 msgid "Title"
@@ -2825,9 +2832,10 @@ msgstr ""
 msgid "Member information"
 msgstr ""
 
-#: ../lib/Galette/Features/Dynamics.php:140
+#. TRANS: parameter is a field name
+#: ../lib/Galette/Features/Dynamics.php:139
 #, php-format
-msgid "Missing required field %field"
+msgid "Missing required field %1$s"
 msgstr ""
 
 #. TRANS: %1$s date format, %2$s is the field name
@@ -3352,31 +3360,33 @@ msgstr ""
 msgid "Discord"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:293
+#. TRANS: first parameter is a field name, second its maximum length
+#: ../lib/Galette/Entity/PdfModel.php:292
 #, php-format
-msgid "%field should be less than %chars characters long."
+msgid "%1$s should be less than %2$s characters long."
 msgstr ""
 
+#. TRANS: parameter is a field name
 #: ../lib/Galette/Entity/PdfModel.php:302
 #, php-format
-msgid "%field should not be empty!"
+msgid "%1$s should not be empty!"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:433
+#: ../lib/Galette/Entity/PdfModel.php:434
 msgid "Unknown type %type!"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:444
+#: ../lib/Galette/Entity/PdfModel.php:445
 #: ../../tempcache/modals/members_attendance_sheet.html.twig:125
 #: ../../tempcache/elements/edit_pdf_models.html.twig:72
 msgid "Subtitle"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:454
+#: ../lib/Galette/Entity/PdfModel.php:455
 msgid "header and footer should not be empty!"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:458
+#: ../lib/Galette/Entity/PdfModel.php:459
 msgid "body should not be empty!"
 msgstr ""
 
@@ -4894,7 +4904,7 @@ msgid "Plugin '%1$s' has been successfully updated!"
 msgstr ""
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:407
-msgid "Back to plugins managment page"
+msgid "Back to plugins management page"
 msgstr ""
 
 #: ../../tempcache/modals/plugin_initdb.html.twig:452
@@ -5711,17 +5721,17 @@ msgstr ""
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:146
 #, php-format
-msgid "Change '%field' permissions"
+msgid "Change '%1$s' permissions"
 msgstr ""
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:220
 #, php-format
-msgid "Field '%field' cannot be set as required."
+msgid "Field '%1$s' cannot be set as required."
 msgstr ""
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:222
 #, php-format
-msgid "Mark '%field' as (not) required"
+msgid "Mark '%1$s' as (not) required"
 msgstr ""
 
 #: ../../tempcache/elements/edit_core_fields.html.twig:286
@@ -5918,7 +5928,7 @@ msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:70
 #, php-format
-msgid "Edit field %field"
+msgid "Edit field %1$s"
 msgstr ""
 
 #: ../../tempcache/pages/configuration_dynamic_field_form.html.twig:99
@@ -6606,7 +6616,7 @@ msgstr ""
 
 #: ../../tempcache/pages/import_model.html.twig:121
 #, php-format
-msgid "Missing field '%field'"
+msgid "Missing field '%1$s'"
 msgstr ""
 
 #: ../../tempcache/pages/import_model.html.twig:149
@@ -8208,17 +8218,17 @@ msgstr ""
 
 #: ../../tempcache/pages/mailings_list.html.twig:394
 #, php-format
-msgid "Display mailing '%subject' details in preview window"
+msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
 
 #: ../../tempcache/pages/mailings_list.html.twig:408
 #, php-format
-msgid "Use mailing '%subject' as a template for a new one"
+msgid "Use mailing '%1$s' as a template for a new one"
 msgstr ""
 
 #: ../../tempcache/pages/mailings_list.html.twig:421
 #, php-format
-msgid "Delete mailing '%subject'"
+msgid "Delete mailing '%1$s'"
 msgstr ""
 
 #: ../../tempcache/pages/mailings_list.html.twig:433
@@ -8371,7 +8381,7 @@ msgstr ""
 
 #: ../../tempcache/pages/scheduledpayments_list.html.twig:347
 #, php-format
-msgid "%1$s shceduled payment"
+msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
 msgstr[0] ""
 msgstr[1] ""

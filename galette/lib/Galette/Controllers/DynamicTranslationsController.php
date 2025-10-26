@@ -191,7 +191,7 @@ class DynamicTranslationsController extends AbstractController
             } else {
                 $this->flash->addMessage(
                     'success_detected',
-                    _T("Labels has been sucessfully translated!")
+                    _T("Labels has been successfully translated!")
                 );
             }
         }

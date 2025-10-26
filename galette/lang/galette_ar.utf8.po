@@ -879,7 +879,7 @@ msgstr "معاملة"
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
 
-msgid "Labels has been sucessfully translated!"
+msgid "Labels has been successfully translated!"
 msgstr "تمت ترجمة الملصقات بنجاح!"
 
 msgid "Exports"
@@ -1345,7 +1345,7 @@ msgid "- Offering months is only compatible with beginning of membership."
 msgstr ""
 
 #, php-format
-msgid "- Mandatory field %field empty."
+msgid "- Mandatory field %1$s empty."
 msgstr ""
 
 msgid "Passwords mismatch"
@@ -1677,7 +1677,7 @@ msgid ""
 "%3$s)"
 msgstr ""
 
-msgid "Field %field is required, but missing in row %row"
+msgid "Field %1$s is required, but missing in row %2$s"
 msgstr ""
 
 #, php-format
@@ -1815,15 +1815,15 @@ msgid "Administrator"
 msgstr "مسؤول إداري"
 
 #, php-format
-msgid "Unable to add dynamic translation for %field :("
+msgid "Unable to add dynamic translation for %1$s :("
 msgstr ""
 
 #, php-format
-msgid "Unable to update dynamic translation for %field :("
+msgid "Unable to update dynamic translation for %1$s :("
 msgstr ""
 
 #, php-format
-msgid "Unable to remove old dynamic translation for %field :("
+msgid "Unable to remove old dynamic translation for %1$s :("
 msgstr ""
 
 #, php-format
@@ -1980,7 +1980,7 @@ msgid "Member information"
 msgstr "معلومات العضو"
 
 #, php-format
-msgid "Missing required field %field"
+msgid "Missing required field %1$s"
 msgstr ""
 
 #. TRANS: %1$s date format, %2$s is the field name
@@ -2346,11 +2346,11 @@ msgid "Discord"
 msgstr ""
 
 #, php-format
-msgid "%field should be less than %chars characters long."
+msgid "%1$s should be less than %2$s characters long."
 msgstr ""
 
 #, php-format
-msgid "%field should not be empty!"
+msgid "%1$s should not be empty!"
 msgstr ""
 
 msgid "Unknown type %type!"
@@ -3449,7 +3449,7 @@ msgstr "تم تحديث الإضافة '%name' بنجاح!"
 msgid "Plugin '%1$s' has been successfully updated!"
 msgstr "تم تحديث الإضافة '%name' بنجاح!"
 
-msgid "Back to plugins managment page"
+msgid "Back to plugins management page"
 msgstr "العودة إلى صفحة إدارة الإضافات"
 
 msgid "Access permissions to database"
@@ -3909,15 +3909,15 @@ msgid "No manager attached"
 msgstr ""
 
 #, php-format
-msgid "Change '%field' permissions"
+msgid "Change '%1$s' permissions"
 msgstr ""
 
 #, php-format
-msgid "Field '%field' cannot be set as required."
+msgid "Field '%1$s' cannot be set as required."
 msgstr ""
 
 #, php-format
-msgid "Mark '%field' as (not) required"
+msgid "Mark '%1$s' as (not) required"
 msgstr ""
 
 msgid "Change field's width with in forms"
@@ -4056,7 +4056,7 @@ msgid "Plugin database initialization: %1$s"
 msgstr ""
 
 #, php-format
-msgid "Edit field %field"
+msgid "Edit field %1$s"
 msgstr ""
 
 msgid "Permissions:"
@@ -4489,7 +4489,7 @@ msgid "Field"
 msgstr ""
 
 #, php-format
-msgid "Missing field '%field'"
+msgid "Missing field '%1$s'"
 msgstr ""
 
 msgid "Generate empty CSV file"
@@ -5646,15 +5646,15 @@ msgid "Sent mailings:"
 msgstr ""
 
 #, php-format
-msgid "Display mailing '%subject' details in preview window"
+msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
 
 #, php-format
-msgid "Use mailing '%subject' as a template for a new one"
-msgstr "استخدم '%subject' البريد كقالب لإنشاء واحد جديد"
+msgid "Use mailing '%1$s' as a template for a new one"
+msgstr "استخدم '%1$s' البريد كقالب لإنشاء واحد جديد"
 
 #, php-format
-msgid "Delete mailing '%subject'"
+msgid "Delete mailing '%1$s'"
 msgstr ""
 
 msgid "No sent mailing has been stored in the database yet."
@@ -5781,7 +5781,7 @@ msgid "Show all members scheduled payments"
 msgstr "عرض وتصفية جميع المساهمات بلدي"
 
 #, php-format
-msgid "%1$s shceduled payment"
+msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
 msgstr[0] ""
 msgstr[1] ""

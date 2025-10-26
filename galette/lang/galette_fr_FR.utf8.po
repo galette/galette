@@ -822,7 +822,7 @@ msgstr ""
 "Une erreur est survenue lors de l'enregistrement de l'étiquette « %label » "
 "pour la langue « %lang »"
 
-msgid "Labels has been sucessfully translated!"
+msgid "Labels has been successfully translated!"
 msgstr "Les étiquettes ont été traduites avec succès !"
 
 msgid "Exports"
@@ -1283,8 +1283,8 @@ msgstr ""
 "d'exercice."
 
 #, php-format
-msgid "- Mandatory field %field empty."
-msgstr "- Champ obligatoire %field vide."
+msgid "- Mandatory field %1$s empty."
+msgstr "- Champ obligatoire %1$s vide."
 
 msgid "Passwords mismatch"
 msgstr "Les mots de passe ne correspondent pas"
@@ -1630,8 +1630,8 @@ msgstr ""
 "Le nombre de champs ne correspond pas... Il devrait y avoir %1$s champs mais "
 "il y en a %2$s (ligne %3$s)"
 
-msgid "Field %field is required, but missing in row %row"
-msgstr "Le champ %field est requis mais manquant à la ligne %row"
+msgid "Field %1$s is required, but missing in row %2$s"
+msgstr "Le champ %1$s est requis mais manquant à la ligne %2$s"
 
 #, php-format
 msgid "Status %status does not exists!"
@@ -1772,16 +1772,16 @@ msgid "Administrator"
 msgstr "Administrateur"
 
 #, php-format
-msgid "Unable to add dynamic translation for %field :("
-msgstr "Impossible d’ajouter la traduction dynamique pour %field :("
+msgid "Unable to add dynamic translation for %1$s :("
+msgstr "Impossible d’ajouter la traduction dynamique pour %1$s :("
 
 #, php-format
-msgid "Unable to update dynamic translation for %field :("
-msgstr "Impossible de mettre à jour la traduction dynamique pour %field :("
+msgid "Unable to update dynamic translation for %1$s :("
+msgstr "Impossible de mettre à jour la traduction dynamique pour %1$s :("
 
 #, php-format
-msgid "Unable to remove old dynamic translation for %field :("
-msgstr "Impossible de supprimer l’ancienne traduction dynamique pour %field :("
+msgid "Unable to remove old dynamic translation for %1$s :("
+msgstr "Impossible de supprimer l’ancienne traduction dynamique pour %1$s :("
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
@@ -1929,8 +1929,8 @@ msgid "Member information"
 msgstr "Informations adhérent"
 
 #, php-format
-msgid "Missing required field %field"
-msgstr "Champ requis %field manquant"
+msgid "Missing required field %1$s"
+msgstr "Champ requis %1$s manquant"
 
 #. TRANS: %1$s date format, %2$s is the field name
 #. TRANS %1$s is the expected dat format, %2$s the field label
@@ -2287,12 +2287,12 @@ msgid "Discord"
 msgstr "Discord"
 
 #, php-format
-msgid "%field should be less than %chars characters long."
-msgstr "Le champ %field doit compter moins de %chars caractères."
+msgid "%1$s should be less than %2$s characters long."
+msgstr "Le champ %1$s doit compter moins de %2$s caractères."
 
 #, php-format
-msgid "%field should not be empty!"
-msgstr "Le champ %field ne doit pas être vide !"
+msgid "%1$s should not be empty!"
+msgstr "Le champ %1$s ne doit pas être vide !"
 
 msgid "Unknown type %type!"
 msgstr "Type %type inconnu !"
@@ -3502,7 +3502,7 @@ msgstr "Le plugin « %1$s » été installé avec succès !"
 msgid "Plugin '%1$s' has been successfully updated!"
 msgstr "Le plugin « %1$s » a été mis à jour avec succès !"
 
-msgid "Back to plugins managment page"
+msgid "Back to plugins management page"
 msgstr "Retour à la page de gestion des plugins"
 
 msgid "Access permissions to database"
@@ -3938,16 +3938,16 @@ msgid "No manager attached"
 msgstr "Aucun responsable attaché"
 
 #, php-format
-msgid "Change '%field' permissions"
-msgstr "Modifier les permissions du champ « %field »"
+msgid "Change '%1$s' permissions"
+msgstr "Modifier les permissions du champ « %1$s »"
 
 #, php-format
-msgid "Field '%field' cannot be set as required."
-msgstr "Le champ « %field » ne peut être marqué comme requis."
+msgid "Field '%1$s' cannot be set as required."
+msgstr "Le champ « %1$s » ne peut être marqué comme requis."
 
 #, php-format
-msgid "Mark '%field' as (not) required"
-msgstr "Marquer le champ « %field » comme (non) obligatoire"
+msgid "Mark '%1$s' as (not) required"
+msgstr "Marquer le champ « %1$s » comme (non) obligatoire"
 
 msgid "Change field's width with in forms"
 msgstr "Changer la largeur du champ dans les formulaires"
@@ -4082,8 +4082,8 @@ msgid "Plugin database initialization: %1$s"
 msgstr "Initialisation de base de données des plugins : %1$s"
 
 #, php-format
-msgid "Edit field %field"
-msgstr "Édition du champ %field"
+msgid "Edit field %1$s"
+msgstr "Édition du champ %1$s"
 
 msgid "Permissions:"
 msgstr "Permissions :"
@@ -4496,8 +4496,8 @@ msgid "Field"
 msgstr "Champ"
 
 #, php-format
-msgid "Missing field '%field'"
-msgstr "Champ « %field » manquant"
+msgid "Missing field '%1$s'"
+msgstr "Champ « %1$s » manquant"
 
 msgid "Generate empty CSV file"
 msgstr "Générer un fichier CSV vide"
@@ -5710,18 +5710,18 @@ msgid "Sent mailings:"
 msgstr "Envois passés :"
 
 #, php-format
-msgid "Display mailing '%subject' details in preview window"
+msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
-"Afficher les détails de l'envoi « %subject » dans la fenêtre de "
+"Afficher les détails de l'envoi « %1$s » dans la fenêtre de "
 "prévisualisation"
 
 #, php-format
-msgid "Use mailing '%subject' as a template for a new one"
-msgstr "Utiliser l'envoi « %subject » comme gabarit pour en créer un nouveau"
+msgid "Use mailing '%1$s' as a template for a new one"
+msgstr "Utiliser l'envoi « %1$s » comme gabarit pour en créer un nouveau"
 
 #, php-format
-msgid "Delete mailing '%subject'"
-msgstr "Supprimer l'envoi « %subject »"
+msgid "Delete mailing '%1$s'"
+msgstr "Supprimer l'envoi « %1$s »"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr "Aucun envoi n’a encore été stocké."
@@ -5838,7 +5838,7 @@ msgid "Show all members scheduled payments"
 msgstr "Voir les paiements planifiés de tous les adhérents"
 
 #, php-format
-msgid "%1$s shceduled payment"
+msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
 msgstr[0] "%1$s paiement planifié"
 msgstr[1] "%1$s paiements planifiés"

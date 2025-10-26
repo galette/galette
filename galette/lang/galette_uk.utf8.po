@@ -804,7 +804,7 @@ msgstr "Переклад етикеток"
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr "Не вдалося зберегти мітку `%label` для мови`%lang`"
 
-msgid "Labels has been sucessfully translated!"
+msgid "Labels has been successfully translated!"
 msgstr "Мітки успішно перекладено!"
 
 msgid "Exports"
@@ -1255,8 +1255,8 @@ msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- Пропонування місяців сумісне лише з початком членства."
 
 #, php-format
-msgid "- Mandatory field %field empty."
-msgstr "- Обов’язкове поле %field порожнє."
+msgid "- Mandatory field %1$s empty."
+msgstr "- Обов’язкове поле %1$s порожнє."
 
 msgid "Passwords mismatch"
 msgstr "Невідповідність паролів"
@@ -1587,8 +1587,8 @@ msgid ""
 "%3$s)"
 msgstr "Невідповідність полів ... Поле має бути %1$s, а є %2$s (рядок %3$s)"
 
-msgid "Field %field is required, but missing in row %row"
-msgstr "Поле %field обов'язкове, але відсутнє в рядку %row"
+msgid "Field %1$s is required, but missing in row %2$s"
+msgstr "Поле %1$s обов'язкове, але відсутнє в рядку %2$s"
 
 #, php-format
 msgid "Status %status does not exists!"
@@ -1728,16 +1728,16 @@ msgid "Administrator"
 msgstr "Адміністратор"
 
 #, php-format
-msgid "Unable to add dynamic translation for %field :("
-msgstr "Не вдалося додати динамічний переклад для %field :("
+msgid "Unable to add dynamic translation for %1$s :("
+msgstr "Не вдалося додати динамічний переклад для %1$s :("
 
 #, php-format
-msgid "Unable to update dynamic translation for %field :("
-msgstr "Не вдалося оновити динамічний переклад для %field :("
+msgid "Unable to update dynamic translation for %1$s :("
+msgstr "Не вдалося оновити динамічний переклад для %1$s :("
 
 #, php-format
-msgid "Unable to remove old dynamic translation for %field :("
-msgstr "Неможливо видалити старий динамічний переклад для поля %field :("
+msgid "Unable to remove old dynamic translation for %1$s :("
+msgstr "Неможливо видалити старий динамічний переклад для поля %1$s :("
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
@@ -1885,8 +1885,8 @@ msgid "Member information"
 msgstr "Відомості про члена"
 
 #, php-format
-msgid "Missing required field %field"
-msgstr "Відсутнє обов'язкове поле %field"
+msgid "Missing required field %1$s"
+msgstr "Відсутнє обов'язкове поле %1$s"
 
 #. TRANS: %1$s date format, %2$s is the field name
 #. TRANS %1$s is the expected dat format, %2$s the field label
@@ -2238,12 +2238,12 @@ msgid "Discord"
 msgstr "Розбрат"
 
 #, php-format
-msgid "%field should be less than %chars characters long."
-msgstr "%field має бути менше довжини %chars."
+msgid "%1$s should be less than %2$s characters long."
+msgstr "%1$s має бути менше довжини %2$s."
 
 #, php-format
-msgid "%field should not be empty!"
-msgstr "%field не має бути порожнім!"
+msgid "%1$s should not be empty!"
+msgstr "%1$s не має бути порожнім!"
 
 msgid "Unknown type %type!"
 msgstr "Невідомий тип %type!"
@@ -3427,7 +3427,7 @@ msgstr "Втулок '%1$s' успішно встановлено!"
 msgid "Plugin '%1$s' has been successfully updated!"
 msgstr "Розширення '%1$s' успішно оновлено!"
 
-msgid "Back to plugins managment page"
+msgid "Back to plugins management page"
 msgstr "Повернутись до сторінки управління розширеннями"
 
 msgid "Access permissions to database"
@@ -3858,16 +3858,16 @@ msgid "No manager attached"
 msgstr "Менеджера не долучено"
 
 #, php-format
-msgid "Change '%field' permissions"
-msgstr "Змінення дозволів \"%field\""
+msgid "Change '%1$s' permissions"
+msgstr "Змінення дозволів \"%1$s\""
 
 #, php-format
-msgid "Field '%field' cannot be set as required."
-msgstr "Поле \"%field\" неможливо встановити як потрібно."
+msgid "Field '%1$s' cannot be set as required."
+msgstr "Поле \"%1$s\" неможливо встановити як потрібно."
 
 #, php-format
-msgid "Mark '%field' as (not) required"
-msgstr "Позначити \"%field\" як (не) обов'язковий"
+msgid "Mark '%1$s' as (not) required"
+msgstr "Позначити \"%1$s\" як (не) обов'язковий"
 
 msgid "Change field's width with in forms"
 msgstr "Зміна ширини поля за допомогою форм"
@@ -4000,8 +4000,8 @@ msgid "Plugin database initialization: %1$s"
 msgstr "Ініціалізація бази даних розширення: %1$s"
 
 #, php-format
-msgid "Edit field %field"
-msgstr "Редагування поля %field"
+msgid "Edit field %1$s"
+msgstr "Редагування поля %1$s"
 
 msgid "Permissions:"
 msgstr "Права:"
@@ -4412,8 +4412,8 @@ msgid "Field"
 msgstr "Поле"
 
 #, php-format
-msgid "Missing field '%field'"
-msgstr "Відсутнє поле \"%field\""
+msgid "Missing field '%1$s'"
+msgstr "Відсутнє поле \"%1$s\""
 
 msgid "Generate empty CSV file"
 msgstr "Утворити порожній файл CSV"
@@ -5616,18 +5616,18 @@ msgid "Sent mailings:"
 msgstr "Надіслані розсилання:"
 
 #, php-format
-msgid "Display mailing '%subject' details in preview window"
+msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
-"Відображувати відомості про поштове розсилання \"%subject\" у вікні "
+"Відображувати відомості про поштове розсилання \"%1$s\" у вікні "
 "попереднього перегляду"
 
 #, php-format
-msgid "Use mailing '%subject' as a template for a new one"
-msgstr "Використовувати поштове розсилання ''%subject'' як шаблон для нового"
+msgid "Use mailing '%1$s' as a template for a new one"
+msgstr "Використовувати поштове розсилання '%1$s' як шаблон для нового"
 
 #, php-format
-msgid "Delete mailing '%subject'"
-msgstr "Видалити розсилання '%subject'"
+msgid "Delete mailing '%1$s'"
+msgstr "Видалити розсилання '%1$s'"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr "Жодна надіслана розсилка ще не зберігалася в базі даних."
@@ -5742,7 +5742,7 @@ msgid "Show all members scheduled payments"
 msgstr "Показати всі заплановані платежі учасників"
 
 #, php-format
-msgid "%1$s shceduled payment"
+msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
 msgstr[0] "%1$s запланований платіж"
 msgstr[1] "%1$s заплановані платежі"

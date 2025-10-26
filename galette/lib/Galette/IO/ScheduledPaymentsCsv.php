@@ -54,7 +54,7 @@ class ScheduledPaymentsCsv extends CsvOut
         private readonly Db $zdb,
         private readonly Login $login
     ) {
-        $this->filename = 'filtered_shceduledpaymentslist.csv';
+        $this->filename = 'filtered_scheduledpaymentslist.csv';
         $this->path = self::DEFAULT_DIRECTORY . $this->filename;
         parent::__construct();
     }

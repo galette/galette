@@ -697,7 +697,7 @@ class CsvController extends GaletteRoutingTestCase
         $expected_headers = [
             'Content-Description' => ['File Transfer'],
             'Content-Type' => ['text/csv'],
-            'Content-Disposition' => ['attachment;filename="filtered_shceduledpaymentslist.csv"'],
+            'Content-Disposition' => ['attachment;filename="filtered_scheduledpaymentslist.csv"'],
             'Pragma' => ['public'],
             'Content-Transfer-Encoding' => ['binary'],
             'Expires' => ['0'],

@@ -134,10 +134,10 @@ trait Dynamics
                 $val_index = (int)$dfield_values['val_index'];
 
                 if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
-                    $this->errors[] = str_replace(
-                        '%field',
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is a field name
+                        _T('Missing required field %1$s'),
                         $fields[$field_id]->getName(),
-                        _T('Missing required field %field')
                     );
                 } elseif ($fields[$field_id] instanceof File) {
                     //delete checkbox

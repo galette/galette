@@ -814,7 +814,7 @@ msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
 "Capitèt mau l’enregistrament de l’etiqueta `%label` per la lenga `%lang`"
 
-msgid "Labels has been sucessfully translated!"
+msgid "Labels has been successfully translated!"
 msgstr "Leis etiquetas son estadas traduchas !"
 
 msgid "Exports"
@@ -1279,8 +1279,8 @@ msgstr ""
 "l’exercici."
 
 #, php-format
-msgid "- Mandatory field %field empty."
-msgstr "- Lo camp obligatòri %field es vuege."
+msgid "- Mandatory field %1$s empty."
+msgstr "- Lo camp obligatòri %1$s es vuege."
 
 msgid "Passwords mismatch"
 msgstr "Lei senhaus fornits correspòndon pas"
@@ -1617,8 +1617,8 @@ msgstr ""
 "Lo nombre de camps correspònd pas… S'i deuriá trobar %1$s camps mai se n'en "
 "tròba %2$s (linha %3$s)"
 
-msgid "Field %field is required, but missing in row %row"
-msgstr "Lo camp %field es obligatori mai manca a la linha %row"
+msgid "Field %1$s is required, but missing in row %2$s"
+msgstr "Lo camp %1$s es obligatori mai manca a la linha %2$s"
 
 #, php-format
 msgid "Status %status does not exists!"
@@ -1757,16 +1757,16 @@ msgid "Administrator"
 msgstr "Administrator -tritz"
 
 #, php-format
-msgid "Unable to add dynamic translation for %field :("
-msgstr "Impossible d’ajustar la traduccion dinamica per %field :("
+msgid "Unable to add dynamic translation for %1$s :("
+msgstr "Impossible d’ajustar la traduccion dinamica per %1$s :("
 
 #, php-format
-msgid "Unable to update dynamic translation for %field :("
-msgstr "Impossible d’actualizar la traduccion dinamica per %field :("
+msgid "Unable to update dynamic translation for %1$s :("
+msgstr "Impossible d’actualizar la traduccion dinamica per %1$s :("
 
 #, php-format
-msgid "Unable to remove old dynamic translation for %field :("
-msgstr "Impossible de levar l’anciana traduccion dinamica per %field :("
+msgid "Unable to remove old dynamic translation for %1$s :("
+msgstr "Impossible de levar l’anciana traduccion dinamica per %1$s :("
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
@@ -1918,8 +1918,8 @@ msgid "Member information"
 msgstr "Informacions dau membre"
 
 #, php-format
-msgid "Missing required field %field"
-msgstr "Lo camp obligatòri %field manca"
+msgid "Missing required field %1$s"
+msgstr "Lo camp obligatòri %1$s manca"
 
 #. TRANS: %1$s date format, %2$s is the field name
 #. TRANS %1$s is the expected dat format, %2$s the field label
@@ -2277,12 +2277,12 @@ msgid "Discord"
 msgstr "Enregistrament"
 
 #, php-format
-msgid "%field should be less than %chars characters long."
-msgstr "Lo camp %field deu comptar mens de %chars caractèrs."
+msgid "%1$s should be less than %2$s characters long."
+msgstr "Lo camp %1$s deu comptar mens de %2$s caractèrs."
 
 #, php-format
-msgid "%field should not be empty!"
-msgstr "Lo camp %field deu pas èstre vuege !"
+msgid "%1$s should not be empty!"
+msgstr "Lo camp %1$s deu pas èstre vuege !"
 
 msgid "Unknown type %type!"
 msgstr "Tipe %type inconegut !"
@@ -3473,7 +3473,7 @@ msgstr ""
 msgid "Plugin '%1$s' has been successfully updated!"
 msgstr ""
 
-msgid "Back to plugins managment page"
+msgid "Back to plugins management page"
 msgstr "Tornar a la pagina d’administracion deis ajustons"
 
 msgid "Access permissions to database"
@@ -3901,16 +3901,16 @@ msgid "No manager attached"
 msgstr "Ges de responsable/a designat-da"
 
 #, php-format
-msgid "Change '%field' permissions"
-msgstr "Cambiar lei permés de '%field'"
+msgid "Change '%1$s' permissions"
+msgstr "Cambiar lei permés de '%1$s'"
 
 #, php-format
-msgid "Field '%field' cannot be set as required."
-msgstr "Lo camp '%field' se pòt pas definir per necessari."
+msgid "Field '%1$s' cannot be set as required."
+msgstr "Lo camp '%1$s' se pòt pas definir per necessari."
 
 #, php-format
-msgid "Mark '%field' as (not) required"
-msgstr "Marcar lo '%field' per (non) obligatòri"
+msgid "Mark '%1$s' as (not) required"
+msgstr "Marcar lo '%1$s' per (non) obligatòri"
 
 msgid "Change field's width with in forms"
 msgstr "Cambiar la largor dau camp dins lei formularis"
@@ -4047,8 +4047,8 @@ msgid "Plugin database initialization: %1$s"
 msgstr ""
 
 #, php-format
-msgid "Edit field %field"
-msgstr "Modificar lo camp %field"
+msgid "Edit field %1$s"
+msgstr "Modificar lo camp %1$s"
 
 msgid "Permissions:"
 msgstr "Permissions :"
@@ -4464,8 +4464,8 @@ msgid "Field"
 msgstr "Camp"
 
 #, php-format
-msgid "Missing field '%field'"
-msgstr "Manca lo camp \"%field\""
+msgid "Missing field '%1$s'"
+msgstr "Manca lo camp \"%1$s\""
 
 msgid "Generate empty CSV file"
 msgstr "Generar un fichier CSV vuege"
@@ -5632,17 +5632,17 @@ msgid "Sent mailings:"
 msgstr "Mandadís passats :"
 
 #, php-format
-msgid "Display mailing '%subject' details in preview window"
+msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
-"Mostrar lo mandadís '%subject' per lo menut dins un fenestron de prevista"
+"Mostrar lo mandadís '%1$s' per lo menut dins un fenestron de prevista"
 
 #, php-format
-msgid "Use mailing '%subject' as a template for a new one"
-msgstr "Se servir dau mandadís '%subject' per gabarit per n'en crear un novèu"
+msgid "Use mailing '%1$s' as a template for a new one"
+msgstr "Se servir dau mandadís '%1$s' per gabarit per n'en crear un novèu"
 
 #, php-format
-msgid "Delete mailing '%subject'"
-msgstr "Levar lo mandadís '%subject'"
+msgid "Delete mailing '%1$s'"
+msgstr "Levar lo mandadís '%1$s'"
 
 msgid "No sent mailing has been stored in the database yet."
 msgstr "Ges de mandadís en resèrva."
@@ -5763,7 +5763,7 @@ msgid "Show all members scheduled payments"
 msgstr "A de pagaments a escasenças"
 
 #, php-format
-msgid "%1$s shceduled payment"
+msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
 msgstr[0] "%1$s pagament a escasenças"
 msgstr[1] "%1$s pagaments a escasenças"
@@ -5783,7 +5783,7 @@ msgid "Edit donation %1$s"
 msgstr "Modificar la transaccion #%id"
 
 #, fuzzy, php-format
-#| msgid "%1$s shceduled payment"
+#| msgid "%1$s scheduled payment"
 #| msgid_plural "%1$s scheduled payments"
 msgid "Show only '%1$s' scheduled payments"
 msgstr "%1$s pagament a escasenças"

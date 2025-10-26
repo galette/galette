@@ -640,10 +640,10 @@ class Preferences
         // missing required fields?
         foreach (array_keys($this->required) as $val) {
             if (!isset($values[$val]) || is_string($values[$val]) && trim($values[$val]) == '') {
-                $this->errors[] = str_replace(
-                    '%field',
-                    $val,
-                    _T("- Mandatory field %field empty.")
+                $this->errors[] = sprintf(
+                    //TRANS: parameter is a field name
+                    _T('- Mandatory field %1$s empty.'),
+                    $val
                 );
             }
         }

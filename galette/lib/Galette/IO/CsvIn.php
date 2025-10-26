@@ -293,10 +293,11 @@ class CsvIn extends Csv
                         && empty($column)
                     ) {
                         $this->addError(
-                            str_replace(
-                                ['%field', '%row'],
-                                [$this->fields[$col], (string)$row],
-                                _T("Field %field is required, but missing in row %row")
+                            sprintf(
+                                //TRANS: first parameter is a field name, second the row in error
+                                _T('Field %1$s is required, but missing in row %2$s'),
+                                $this->fields[$col],
+                                (string)$row
                             )
                         );
                         return false;
