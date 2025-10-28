@@ -36,13 +36,14 @@
 # rabbitmc <weblate@sternwelt.org>, 2024.
 # Niklas Meyer <email@quotermusic.de>, 2025.
 # Zeik0s <zeik0s@zeik0s.at>, 2025.
+# Norah-14 <norah.nygard14@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-10-26 09:26+0100\n"
-"PO-Revision-Date: 2025-10-21 08:38+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2025-10-30 04:24+0000\n"
+"Last-Translator: Norah-14 <norah.nygard14@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -50,7 +51,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.14.1-dev\n"
 
 #, fuzzy
 #| msgid "Unable to load contribution #%id!"
@@ -809,10 +810,8 @@ msgstr ""
 "Beim Füllen leerer Anmeldungsinfos und Passwörter ist ein Fehler "
 "aufgetreten :("
 
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "Dynamic dates has been fixed."
-msgstr "Mitgliedskonto wurde geändert."
+msgstr "Dynamic dates wurde repariert."
 
 #, fuzzy
 #| msgid "An error occurred editing dynamic field :("
@@ -842,10 +841,8 @@ msgstr "Das Plugin %1$s wurde aktiviert"
 msgid "Plugin %1$s has been disabled"
 msgstr "Das Plugin %1$s wurde deaktiviert"
 
-#, fuzzy
-#| msgid "View transaction"
 msgid "Labels translation"
-msgstr "Transaktion anzeigen"
+msgstr "Label Übersetzung"
 
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
