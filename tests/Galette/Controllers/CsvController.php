@@ -153,10 +153,12 @@ class CsvController extends GaletteRoutingTestCase
         $group->setName('Group one' . $this->seed);
         $this->assertTrue($group->store());
         $group_one_id = $group->getId();
+        $group_one_creation_date = (new \DateTime($group->getCreationDate(false)))->format('Y-m-d H:i:s');
         $group = new \Galette\Entity\Group();
         $group->setName('Group two' . $this->seed);
         $this->assertTrue($group->store());
         $group_two_id = $group->getId();
+        $group_two_creation_date = (new \DateTime($group->getCreationDate(false)))->format('Y-m-d H:i:s');
 
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('export')]], $test_response->getHeaders());
@@ -188,13 +190,12 @@ class CsvController extends GaletteRoutingTestCase
         ];
         $this->expectOK($test_response, $expected_headers);
         $body = (string)$test_response->getBody();
-        $creation_date = (new \DateTime($group->getCreationDate(false)))->format('Y-m-d H:i:s');
         $this->assertSame(
             sprintf(
                 "%s\r\n%s\r\n%s\r\n",
                 '"id_group";"group_name";"creation_date";"parent_group"',
-                '"' . $group_one_id . '";"Group one' . $this->seed . '";"' . $creation_date . '";""',
-                '"' . $group_two_id . '";"Group two' . $this->seed . '";"' . $creation_date . '";""'
+                '"' . $group_one_id . '";"Group one' . $this->seed . '";"' . $group_one_creation_date . '";""',
+                '"' . $group_two_id . '";"Group two' . $this->seed . '";"' . $group_two_creation_date . '";""'
             ),
             $body
         );
