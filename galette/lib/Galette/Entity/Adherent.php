@@ -82,8 +82,8 @@ use Galette\Features\Dynamics;
  * @property ?string $password Encrypted password
  * @property string $creation_date Localized creation date
  * @property string $modification_date Localized modification date
- * @property string $due_date Localized due date
- * @property string $rdue_date Due date
+ * @property ?string $due_date Localized due date
+ * @property ?string $rdue_date Due date
  * @property ?string $others_infos
  * @property ?string $others_infos_admin
  * @property Picture $picture
@@ -135,7 +135,7 @@ class Adherent implements AccessManagementInterface
 
     private ?int $id;
     //Identity
-    private Title|string|null $title = null; //@phpstan-ignore-line
+    private Title|string|null $title = null;
     private ?string $company_name;
     private ?string $name;
     private ?string $surname;
@@ -178,7 +178,7 @@ class Adherent implements AccessManagementInterface
     private array $managed_groups = [];
     private int|Adherent|null $parent;
     /** @var array<int, Adherent>|null */
-    private ?array $children; //@phpstan-ignore-line
+    private ?array $children;
     private bool $duplicate = false;
     /** @var array<int,Social> */
     private array $socials;
@@ -2139,7 +2139,7 @@ class Adherent implements AccessManagementInterface
      */
     public function getAge(): string
     {
-        if (!isset($this->birthdate) && $this->birthdate == null) {
+        if (empty($this->birthdate)) {
             return '';
         }
 

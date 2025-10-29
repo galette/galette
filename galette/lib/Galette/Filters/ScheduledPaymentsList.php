@@ -66,10 +66,10 @@ class ScheduledPaymentsList extends Pagination
 
     //filters
     private ?int $date_field = null;
-    private ?string $start_date_filter = null; //@phpstan-ignore-line
-    private ?string $end_date_filter = null; //@phpstan-ignore-line
-    private ?int $payment_type_filter = null; //@phpstan-ignore-line
-    private int|false $from_contribution = false; //@phpstan-ignore-line
+    private ?string $start_date_filter = null;
+    private ?string $end_date_filter = null;
+    private ?int $payment_type_filter = null;
+    private int|false $from_contribution = false;
     private ?int $member_filter = null;
     private int $paid = self::PAID_DC;
 

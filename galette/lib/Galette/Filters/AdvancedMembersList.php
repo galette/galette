@@ -95,23 +95,23 @@ class AdvancedMembersList extends MembersList
     public const OP_BEFORE = 6;
     public const OP_AFTER = 7;
 
-    private ?string $creation_date_begin = null; //@phpstan-ignore-line
-    private ?string $creation_date_end = null; //@phpstan-ignore-line
-    private ?string $modif_date_begin = null; //@phpstan-ignore-line
-    private ?string $modif_date_end = null; //@phpstan-ignore-line
-    private ?string $due_date_begin = null; //@phpstan-ignore-line
-    private ?string $due_date_end = null; //@phpstan-ignore-line
-    private ?string $birth_date_begin = null; //@phpstan-ignore-line
-    private ?string $birth_date_end = null; //@phpstan-ignore-line
+    private ?string $creation_date_begin = null;
+    private ?string $creation_date_end = null;
+    private ?string $modif_date_begin = null;
+    private ?string $modif_date_end = null;
+    private ?string $due_date_begin = null;
+    private ?string $due_date_end = null;
+    private ?string $birth_date_begin = null;
+    private ?string $birth_date_end = null;
     private int $show_public_infos = Members::FILTER_DC_PUBINFOS;
     /** @var array<int> */
     private array $status = [];
-    private ?string $contrib_creation_date_begin = null; //@phpstan-ignore-line
-    private ?string $contrib_creation_date_end = null; //@phpstan-ignore-line
-    private ?string $contrib_begin_date_begin = null; //@phpstan-ignore-line
-    private ?string $contrib_begin_date_end = null; //@phpstan-ignore-line
-    private ?string $contrib_end_date_begin = null; //@phpstan-ignore-line
-    private ?string $contrib_end_date_end = null; //@phpstan-ignore-line
+    private ?string $contrib_creation_date_begin = null;
+    private ?string $contrib_creation_date_end = null;
+    private ?string $contrib_begin_date_begin = null;
+    private ?string $contrib_begin_date_end = null;
+    private ?string $contrib_end_date_begin = null;
+    private ?string $contrib_end_date_end = null;
     /** @var array<int> */
     private array $contributions_types = [];
     /** @var array<int> */

@@ -55,7 +55,7 @@ class Texts
 
     /** @var array<int, mixed> */
     private array $defaults;
-    private ?string $current; //@phpstan-ignore-line
+    private ?string $current;
 
     /**
      * Main constructor

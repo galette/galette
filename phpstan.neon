@@ -1,4 +1,5 @@
 parameters:
+    reportUnmatchedIgnoredErrors: false
     parallel:
         maximumNumberOfProcesses: 2
     level: 6
@@ -21,3 +22,4 @@ parameters:
         - '/Cannot access property .* on .*ArrayObject.*/'
         - '/Access to an undefined property ArrayObject.*/'
         - '/Parameter #3 \$right of class Laminas\\Db\\Sql\\Predicate\\Operator constructor expects bool\|float\|int\|string\|null, Laminas\\Db\\Sql\\Predicate\\Expression given./'
+        - '/Cannot unset property .* because it might have hooks in a subclass./'

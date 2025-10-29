@@ -263,7 +263,7 @@ class Telemetry
         $opts = [
             CURLOPT_URL             => $uri,
             CURLOPT_USERAGENT       => 'Galette/' . GALETTE_VERSION,
-            CURLOPT_RETURNTRANSFER  => 1,
+            CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_POSTFIELDS      => $infos,
             CURLOPT_HTTPHEADER      => ['Content-Type:application/json']
         ];
