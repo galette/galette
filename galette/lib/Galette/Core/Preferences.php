@@ -1327,6 +1327,9 @@ class Preferences
         }
 
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
+        if ($scheme === 'http' && isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            $scheme = 'https';
+        }
         return $scheme . '://' . $_SERVER['HTTP_HOST'];
     }
 
