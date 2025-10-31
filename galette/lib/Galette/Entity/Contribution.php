@@ -111,6 +111,7 @@ class Contribution implements AccessManagementInterface
     protected array $errors = [];
 
     private bool $sendmail = false;
+    private bool $checklogin = true;
 
     /** @var string[] */
     protected array $forbidden_fields = ['is_cotis'];
@@ -504,7 +505,8 @@ class Contribution implements AccessManagementInterface
                         if ($value != '') {
                             $member = new Adherent($this->zdb, (int)$value, false);
                             if (
-                                !$this->login->isStaff()
+                                $this->checklogin
+                                && !$this->login->isStaff()
                                 && !$this->login->isAdmin()
                                 && !$this->login->isGroupManager(array_keys($member->getGroups()))
                             ) {
@@ -1567,5 +1569,16 @@ class Contribution implements AccessManagementInterface
             );
             $this->errors[] = _T("- Unknown payment type");
         }
+    }
+
+    /**
+     * Disable login on checks
+     *
+     * @return self
+     */
+    public function setNoCheckLogin(): self
+    {
+        $this->checklogin = false;
+        return $this;
     }
 }

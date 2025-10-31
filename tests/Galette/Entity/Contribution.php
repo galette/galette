@@ -1524,4 +1524,52 @@ class Contribution extends GaletteTestCase
         $this->expectLogEntry(\Analog::ERROR, '- The end date must be after the start date!');
         $this->assertSame(['- The end date must be after the start date!'], $check);
     }
+
+    /**
+     * Test login checks
+     *
+     * @return void
+     */
+    public function testCheckLogin(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->login->logout();
+
+        $now = new \DateTime(); // 2020-11-07
+        $begin_date = clone $now;
+
+        $due_date = clone $now; //due date is before begin date
+        $due_date->sub(new \DateInterval('P1Y')); // 2019-11-07
+
+        $contrib_data = $this->getContribData();
+        $contrib_data['date_debut_cotis'] = $begin_date->format('Y-m-d');
+        $contrib_data['duree_mois_cotis'] = 6;
+        $contrib_data['date_fin_cotis'] = $due_date->format('Y-m-d');
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] //annual fee
+        );
+
+        //user not logged-in, check fails.
+        $check = $contrib->check($contrib_data, [], []);
+        $this->assertNotTrue($check);
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            'Please select a member from a group you manage.'
+        );
+        $this->assertSame(
+            $check,
+            [
+                '- Please select a member from a group you manage.',
+            ]
+        );
+
+        //force no check login, check passes
+        $check = $contrib->setNoCheckLogin()->check($contrib_data, [], []);
+        $this->assertTrue($check);
+        $this->expectNoLogEntry();
+    }
 }
