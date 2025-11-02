@@ -660,8 +660,9 @@ class Preferences extends GaletteTestCase
         );
 
         $this->preferences->pref_mail_sign = "{NAME}\r\n\r\n{ASSO_LOGO} <a href=\"{WEBSITE}\">our website</a>\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}";
+        $logo = new \Galette\Core\Logo();
         $this->assertSame(
-            "\r\n-- \r\nGalette\r\n\r\n<img src=\"http:///logo\" width=\"200\" height=\"133\" alt=\"\" /> <a href=\"https://galette.eu\">our website</a>",
+            "\r\n-- \r\nGalette\r\n\r\n<img src=\"http:///logo\" width=\"" . $logo->getOptimalWidth() . "\" height=\"" . $logo->getOptimalHeight() . "\" alt=\"\" /> <a href=\"https://galette.eu\">our website</a>",
             $this->preferences->getMailSignature($mail)
         );
         $this->assertSame(
