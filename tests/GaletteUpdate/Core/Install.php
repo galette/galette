@@ -58,12 +58,11 @@ class Install extends TestCase
         $container = $app->getContainer();
         $_SERVER['HTTP_HOST'] = '';
 
-        $container->set('flash', $this->flash);
-        $container->set(Slim\Flash\Messages::class, $this->flash);
+        $container->set(\Slim\Flash\Messages::class, $this->flash);
 
         $this->container = $container;
 
-        $this->zdb = $container->get('zdb');
+        $this->zdb = $container->get(\Galette\Core\Db::class);
     }
 
     /**

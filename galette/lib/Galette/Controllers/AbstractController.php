@@ -76,7 +76,7 @@ abstract class AbstractController
     protected I18n $i18n;
     #[Inject]
     protected L10n $l10n;
-    #[Inject("session")]
+    #[Inject]
     protected Session $session;
     #[Inject]
     protected Messages $flash;
@@ -125,7 +125,7 @@ abstract class AbstractController
         $flashes = $this->flash->getMessages();
         foreach ($flashes as $type => $messages) {
             foreach ($messages as $message) {
-                $this->container->get('flash')->addMessage($type, $message);
+                $this->container->get(Messages::class)->addMessage($type, $message);
             }
         }
 

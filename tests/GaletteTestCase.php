@@ -97,7 +97,6 @@ abstract class GaletteTestCase extends TestCase
         $container = $app->getContainer();
         $_SERVER['HTTP_HOST'] = '';
 
-        $container->set('flash', $this->flash);
         $container->set(\Slim\Flash\Messages::class, $this->flash);
 
         $app->addRoutingMiddleware();
@@ -105,14 +104,14 @@ abstract class GaletteTestCase extends TestCase
 
         $this->container = $container;
 
-        $this->zdb = $container->get('zdb');
-        $this->i18n = $container->get('i18n');
-        $this->login = $container->get('login');
-        $this->preferences = $container->get('preferences');
-        $this->history = $container->get('history');
+        $this->zdb = $container->get(\Galette\Core\Db::class);
+        $this->i18n = $container->get(\Galette\Core\I18n::class);
+        $this->login = $container->get(\Galette\Core\Login::class);
+        $this->preferences = $container->get(\Galette\Core\Preferences::class);
+        $this->history = $container->get(\Galette\Core\History::class);
         $this->members_fields = $container->get('members_fields');
         $this->members_fields_cats = $container->get('members_fields_cats');
-        $this->session = $container->get('session');
+        $this->session = $container->get(\RKA\Session::class);
         $this->routeparser = $container->get(\Slim\Routing\RouteParser::class);
         $this->view = $container->get(\Slim\Views\Twig::class);
 

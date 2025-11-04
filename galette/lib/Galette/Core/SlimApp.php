@@ -57,8 +57,7 @@ class SlimApp
                 ]
             ],
             'mode'              => GALETTE_MODE,
-            'galette.mode'      => GALETTE_MODE,
-            'session'           => \DI\autowire('\RKA\Session')
+            'galette.mode'      => GALETTE_MODE
         ]);
         $container = $builder->build();
 

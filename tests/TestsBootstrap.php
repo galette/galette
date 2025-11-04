@@ -130,8 +130,8 @@ if (!defined('_CURRENT_THEME_PATH')) {
 require_once GALETTE_BASE_PATH . 'includes/main.inc.php';
 //Globals... :(
 global $preferences, $emitter, $zdb;
-$zdb = $container->get('zdb');
-$preferences = $container->get('preferences');
+$zdb = $container->get(\Galette\Core\Db::class);
+$preferences = $container->get(\Galette\Core\Preferences::class);
 $emitter = $container->get('event_manager');
 $i18n->changeLanguage('en_US');
 

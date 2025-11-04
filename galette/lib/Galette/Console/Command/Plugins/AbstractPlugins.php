@@ -53,7 +53,7 @@ abstract class AbstractPlugins extends AbstractCommand
         global $container;
 
         parent::__construct($basepath);
-        $this->plugins = $container->get('plugins');
+        $this->plugins = $container->get(\Galette\Core\Plugins::class);
     }
 
     /**

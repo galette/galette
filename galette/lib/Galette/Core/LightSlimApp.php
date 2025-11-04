@@ -65,8 +65,7 @@ class LightSlimApp
                 ]
             ],
             'mode'          => $this->mode,
-            'galette.mode'  => $this->mode,
-            'session'       => \DI\autowire(\RKA\Session::class)
+            'galette.mode'  => $this->mode
         ]);
         $container = $builder->build();
 

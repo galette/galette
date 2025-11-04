@@ -61,9 +61,9 @@ class Authenticate
      */
     public function __construct(Container $container)
     {
-        $this->login = $container->get('login');
-        $this->session = $container->get('session');
-        $this->flash = $container->get('flash');
+        $this->login = $container->get(Login::class);
+        $this->session = $container->get(Session::class);
+        $this->flash = $container->get(Messages::class);
         $this->acls = $container->get('acls');
         $this->routeparser = $container->get(RouteParser::class);
     }

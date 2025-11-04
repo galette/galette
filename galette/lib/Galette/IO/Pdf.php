@@ -27,6 +27,7 @@ use Galette\Core\I18n;
 use Galette\Core\Preferences;
 use Galette\Entity\PdfModel;
 use Analog\Analog;
+use Slim\Flash\Messages;
 use Slim\Routing\RouteParser;
 use TCPDF;
 
@@ -181,7 +182,7 @@ class Pdf extends TCPDF
             Analog::ERROR
         );
 
-        $container->get('flash')->addMessage(
+        $container->get(Messages::class)->addMessage(
             'error_detected',
             $msg
         );

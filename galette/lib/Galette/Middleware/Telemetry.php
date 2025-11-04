@@ -51,9 +51,9 @@ class Telemetry
      */
     public function __construct(Container $container)
     {
-        $this->zdb = $container->get('zdb');
-        $this->preferences = $container->get('preferences');
-        $this->plugins = $container->get('plugins');
+        $this->zdb = $container->get(Db::class);
+        $this->preferences = $container->get(Preferences::class);
+        $this->plugins = $container->get(Plugins::class);
     }
 
     /**

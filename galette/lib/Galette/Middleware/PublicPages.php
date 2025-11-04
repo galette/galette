@@ -54,10 +54,10 @@ class PublicPages
      */
     public function __construct(Container $container)
     {
-        $this->login = $container->get('login');
-        $this->flash = $container->get('flash');
+        $this->login = $container->get(Login::class);
+        $this->flash = $container->get(Messages::class);
         $this->routeparser = $container->get(RouteParser::class);
-        $this->preferences = $container->get('preferences');
+        $this->preferences = $container->get(Preferences::class);
     }
 
     /**

@@ -21,6 +21,10 @@
 
 declare(strict_types=1);
 
+use Galette\Core\I18n;
+use Galette\Core\LightSlimApp;
+use Galette\Core\Login;
+use Galette\Core\SlimApp;
 use Galette\Middleware\Authenticate;
 use Galette\Middleware\Language;
 use Galette\Middleware\Telemetry;
@@ -57,9 +61,9 @@ require_once GALETTE_ROOT . 'includes/galette.inc.php';
 //Galette needs database update!
 if ($needs_update) {
     define('GALETTE_THEME', 'themes/default/');
-    $gapp = new \Galette\Core\LightSlimApp();
+    $gapp = new LightSlimApp();
 } else {
-    $gapp = new \Galette\Core\SlimApp();
+    $gapp = new SlimApp();
 }
 $app = $gapp->getApp();
 $app->setBasePath((function () {
@@ -115,7 +119,7 @@ require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 if ($needs_update) {
     $app->add(
         new UpdateAndMaintenance(
-            $container->get('i18n'),
+            $container->get(I18n::class),
             $container->get(RouteParser::class),
             UpdateAndMaintenance::NEED_UPDATE
         )
@@ -126,10 +130,10 @@ if ($needs_update) {
 }
 
 //Maintenance middleware
-if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
+if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get(Login::class)->isSuperAdmin()) {
     $app->add(
         new UpdateAndMaintenance(
-            $container->get('i18n'),
+            $container->get(I18n::class),
             $container->get(RouteParser::class),
             UpdateAndMaintenance::MAINTENANCE
         )

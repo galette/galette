@@ -50,12 +50,12 @@ $container->set(
 $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 
     $templates = ['__main__' => GALETTE_TPL_THEME_DIR];
-    foreach ($c->get('plugins')->getModules() as $module_id => $module) {
-        $dir = $module['root'] . '/templates/' . $c->get('preferences')->pref_theme;
+    foreach ($c->get(\Galette\Core\Plugins::class)->getModules() as $module_id => $module) {
+        $dir = $module['root'] . '/templates/' . $c->get(\Galette\Core\Preferences::class)->pref_theme;
         if (!is_dir($dir)) {
             continue;
         }
-        $templates[$c->get('plugins')->getClassName($module_id)] = $dir;
+        $templates[$c->get(\Galette\Core\Plugins::class)->getClassName($module_id)] = $dir;
     }
 
     $view = Twig::create(
@@ -118,7 +118,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 
     $function = new \Twig\TwigFunction('memberName', function (...$params) use ($c) {
         extract($params[0]);
-        return Galette\Entity\Adherent::getSName($c->get('zdb'), $id);
+        return Galette\Entity\Adherent::getSName($c->get(\Galette\Core\Db::class), $id);
     });
     $view->getEnvironment()->addFunction($function);
 
@@ -145,30 +145,30 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     //End Twig functions
 
     //Twig globals
-    $view->getEnvironment()->addGlobal('flash', $c->get('flash'));
-    $view->getEnvironment()->addGlobal('login', $c->get('login'));
-    $view->getEnvironment()->addGlobal('logo', $c->get('logo'));
+    $view->getEnvironment()->addGlobal('flash', $c->get(\Slim\Flash\Messages::class));
+    $view->getEnvironment()->addGlobal('login', $c->get(\Galette\Core\Login::class));
+    $view->getEnvironment()->addGlobal('logo', $c->get(\Galette\Core\Logo::class));
 
-    $view->getEnvironment()->addGlobal('plugin_headers', $c->get('plugins')->getTplHeaders());
-    $view->getEnvironment()->addGlobal('plugin_scripts', $c->get('plugins')->getTplScripts());
+    $view->getEnvironment()->addGlobal('plugin_headers', $c->get(\Galette\Core\Plugins::class)->getTplHeaders());
+    $view->getEnvironment()->addGlobal('plugin_scripts', $c->get(\Galette\Core\Plugins::class)->getTplScripts());
 
     // galette_lang should be removed and languages used instead
-    $view->getEnvironment()->addGlobal('galette_lang', $c->get('i18n')->getAbbrev());
-    $view->getEnvironment()->addGlobal('galette_lang_name', $c->get('i18n')->getName());
-    $view->getEnvironment()->addGlobal('languages', $c->get('i18n')->getList());
-    $view->getEnvironment()->addGlobal('i18n', $c->get('i18n'));
-    $view->getEnvironment()->addGlobal('plugins', $c->get('plugins'));
-    $view->getEnvironment()->addGlobal('preferences', $c->get('preferences'));
-    $view->getEnvironment()->addGlobal('existing_mailing', $c->get('session')->mailing !== null);
+    $view->getEnvironment()->addGlobal('galette_lang', $c->get(\Galette\Core\I18n::class)->getAbbrev());
+    $view->getEnvironment()->addGlobal('galette_lang_name', $c->get(\Galette\Core\I18n::class)->getName());
+    $view->getEnvironment()->addGlobal('languages', $c->get(\Galette\Core\I18n::class)->getList());
+    $view->getEnvironment()->addGlobal('i18n', $c->get(\Galette\Core\I18n::class));
+    $view->getEnvironment()->addGlobal('plugins', $c->get(\Galette\Core\Plugins::class));
+    $view->getEnvironment()->addGlobal('preferences', $c->get(\Galette\Core\Preferences::class));
+    $view->getEnvironment()->addGlobal('existing_mailing', $c->get(\RKA\Session::class)->mailing !== null);
     $view->getEnvironment()->addGlobal('html_editor', false);
     $view->getEnvironment()->addGlobal('require_charts', false);
     $view->getEnvironment()->addGlobal('require_mass', false);
     $view->getEnvironment()->addGlobal('autocomplete', false);
-    if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
+    if ($c->get(\Galette\Core\Login::class)->isAdmin() && $c->get(\Galette\Core\Preferences::class)->pref_telemetry_date) {
         $telemetry = new \Galette\Util\Telemetry(
-            $c->get('zdb'),
-            $c->get('preferences'),
-            $c->get('plugins')
+            $c->get(\Galette\Core\Db::class),
+            $c->get(\Galette\Core\Preferences::class),
+            $c->get(\Galette\Core\Plugins::class)
         );
         if ($telemetry->shouldRenew()) {
             $view->getEnvironment()->addGlobal('renew_telemetry', true);
@@ -187,108 +187,54 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 });
 
 // Flash messages
-//TODO: old way - to drop
-$container->set(
-    'flash',
-    DI\get(\Slim\Flash\Messages::class)
-);
 $container->set(\Slim\Flash\Messages::class, DI\autowire());
 
-//TODO: old way - to drop
-$container->set(
-    'plugins',
-    \DI\get(Galette\Core\Plugins::class)
-);
-
 $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) use ($plugins) {
-    $i18n = $c->get('i18n');
-    $plugins->loadModules($c->get('preferences'), GALETTE_PLUGINS_PATH, $i18n->getLongID());
+    $i18n = $c->get(\Galette\Core\I18n::class);
+    $plugins->loadModules($c->get(\Galette\Core\Preferences::class), GALETTE_PLUGINS_PATH, $i18n->getLongID());
     return $plugins;
 });
 
-//TODO: old way - to drop
-$container->set(
-    'i18n',
-    \DI\get(\Galette\Core\I18n::class)
-);
-
 $container->set(\Galette\Core\I18n::class, function (ContainerInterface $c) {
-    $i18n = $c->get('session')->i18n;
+    $i18n = $c->get(\RKA\Session::class)->i18n;
     if (!$i18n || !$i18n->getId() || isset($_GET['ui_pref_lang']) && $_GET['ui_pref_lang']) {
         $i18n = new Galette\Core\I18n($_GET['ui_pref_lang'] ?? false);
-        $c->get('session')->i18n = $i18n;
+        $c->get(\RKA\Session::class)->i18n = $i18n;
     }
     return $i18n;
 });
 
-$container->set('l10n', function (ContainerInterface $c) {
-    return new Galette\Core\L10n(
-        $c->get('zdb'),
-        $c->get('i18n')
-    );
-});
-
-//TODO: old way - to drop
-$container->set(
-    'zdb',
-    DI\get(\Galette\Core\Db::class)
-);
 $container->set(\Galette\Core\Db::class, DI\autowire());
 
-//TODO: old way - to drop
-$container->set(
-    'preferences',
-    DI\get(\Galette\Core\Preferences::class)
-);
 $container->set(\Galette\Core\Preferences::class, DI\autowire());
 
-//TODO: old way - to drop
-$container->set(
-    'login',
-    DI\get(\Galette\Core\Login::class)
-);
 $container->set(\Galette\Core\Login::class, function (ContainerInterface $c) {
-    $login = $c->get('session')->login;
+    $login = $c->get(\RKA\Session::class)->login;
     if (!$login) {
         $login = new Galette\Core\Login(
-            $c->get('zdb'),
-            $c->get('i18n')
+            $c->get(\Galette\Core\Db::class),
+            $c->get(\Galette\Core\I18n::class)
         );
     }
     return $login;
 });
 
-//TODO: old way - to drop
-$container->set(
-    'logo',
-    DI\get(\Galette\Core\Logo::class)
-);
 $container->set(\Galette\Core\Logo::class, DI\autowire());
 
-//TODO: old way - to drop
-$container->set(
-    'print_logo',
-    DI\get(\Galette\Core\PrintLogo::class)
-);
 $container->set(\Galette\Core\PrintLogo::class, DI\autowire());
 
-//TODO: old way - to drop
-$container->set(
-    'history',
-    DI\get(\Galette\Core\History::class)
-);
 $container->set(\Galette\Core\History::class, \DI\autowire());
 
 $container->set('acls', function (ContainerInterface $c) {
     include GALETTE_ROOT . 'includes/core_acls.php';
     $acls = $core_acls;
 
-    foreach ($c->get('plugins')->getModules() as $plugin) {
+    foreach ($c->get(\Galette\Core\Plugins::class)->getModules() as $plugin) {
         $acls[$plugin['route'] . 'Info'] = 'member';
     }
 
-    //use + to be sure core ACLs are not overrided by plugins ones.
-    $acls += $c->get('plugins')->getAcls();
+    //use + to be sure core ACLs are not overridden by plugins ones.
+    $acls += $c->get(\Galette\Core\Plugins::class)->getAcls();
 
     //load user defined ACLs
     if (file_exists(GALETTE_CONFIG_PATH . 'local_acls.inc.php')) {
@@ -337,39 +283,24 @@ $container->set('logger', function (ContainerInterface $c) {
     return $logger;
 });
 
-//TODO: old way - to drop
-$container->set(
-    'fields_config',
-    DI\get(\Galette\Entity\FieldsConfig::class)
-);
 $container->set(\Galette\Entity\FieldsConfig::class, function (ContainerInterface $c) {
     return new Galette\Entity\FieldsConfig(
-        $c->get('zdb'),
+        $c->get(\Galette\Core\Db::class),
         Galette\Entity\Adherent::TABLE,
         $c->get('members_fields'),
         $c->get('members_fields_cats')
     );
 });
 
-//TODO: old way - to drop
-$container->set(
-    'lists_config',
-    DI\get(\Galette\Entity\ListsConfig::class)
-);
 $container->set(\Galette\Entity\ListsConfig::class, function (ContainerInterface $c) {
     return new Galette\Entity\ListsConfig(
-        $c->get('zdb'),
+        $c->get(\Galette\Core\Db::class),
         Galette\Entity\Adherent::TABLE,
         $c->get('members_fields'),
         $c->get('members_fields_cats')
     );
 });
 
-//TODO: old way - to drop
-$container->set(
-    'translator',
-    DI\get(\Galette\Core\Translator::class)
-);
 $container->set(\Galette\Core\Translator::class, function (ContainerInterface $c) {
     $translator = new Galette\Core\Translator();
 
@@ -392,7 +323,7 @@ $container->set(\Galette\Core\Translator::class, function (ContainerInterface $c
         );
     }
 
-    $translator->setLocale($c->get('i18n')->getLongID());
+    $translator->setLocale($c->get(\Galette\Core\I18n::class)->getLongID());
     return $translator;
 });
 
@@ -413,7 +344,7 @@ $container->set(
 $container->set(
     'CsrfExclusions',
     function (ContainerInterface $c): array {
-        return $c->get('plugins')->getCsrfExclusions();
+        return $c->get(\Galette\Core\Plugins::class)->getCsrfExclusions();
     }
 );
 
@@ -455,6 +386,44 @@ $container->set(
     }
 );
 
+/**
+ * TODO: to remove in next major
+ * @deprecated 1.2.1
+ */
+$deprecateds = [
+    'flash' => \Slim\Flash\Messages::class,
+    'plugins' => \Galette\Core\Plugins::class,
+    'i18n' => \Galette\Core\I18n::class,
+    'l10n' => \Galette\Core\L10n::class,
+    'zdb' => \Galette\Core\Db::class,
+    'preferences' => \Galette\Core\Preferences::class,
+    'login' => \Galette\Core\Login::class,
+    'logo' => \Galette\Core\Logo::class,
+    'print_logo' => \Galette\Core\PrintLogo::class,
+    'history' => \Galette\Core\History::class,
+    'fields_config' => \Galette\Entity\FieldsConfig::class,
+    'lists_config' => \Galette\Entity\ListsConfig::class,
+    'translator' => \Galette\Core\Translator::class,
+];
+
+foreach ($deprecateds as $deprecated => $class) {
+    $container->set(
+        $deprecated,
+        function (ContainerInterface $c) use ($deprecated, $class) {
+            Analog::log(
+                sprintf(
+                    'Calling "%1$s" on DI will be removed in a future version, use "%2$s::class" instead.',
+                    $deprecated,
+                    $class
+                ),
+                Analog::WARNING,
+            );
+            return $c->get($class);
+        }
+    );
+}
+//END TODO
+
 //For bad existing globals can be used...
 global $translator, $i18n;
 if (
@@ -464,14 +433,14 @@ if (
     && !defined('GALETTE_INSTALLER')
 ) {
     global $zdb, $preferences, $login, $hist, $l10n, $emitter;
-    $zdb = $container->get('zdb');
-    $preferences = $container->get('preferences');
-    $login = $container->get('login');
-    $hist = $container->get('history');
-    $l10n = $container->get('l10n');
+    $zdb = $container->get(\Galette\Core\Db::class);
+    $preferences = $container->get(\Galette\Core\Preferences::class);
+    $login = $container->get(\Galette\Core\Login::class);
+    $hist = $container->get(\Galette\Core\History::class);
+    $l10n = $container->get(\Galette\Core\L10n::class);
     $emitter = $container->get('event_manager');
     $routeparser = $container->get(RouteParser::class);
 }
-$i18n = $container->get('i18n');
-$translator = $container->get('translator');
+$i18n = $container->get(\Galette\Core\I18n::class);
+$translator = $container->get(\Galette\Core\Translator::class);
 require_once GALETTE_ROOT . 'includes/i18n.inc.php';

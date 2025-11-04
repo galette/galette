@@ -26,6 +26,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use Exception;
 use Galette\Core\I18n;
+use Galette\Core\Login;
 use Galette\Features\Replacements;
 use Slim\Routing\RouteParser;
 use Throwable;
@@ -71,7 +72,7 @@ class Texts
             $routeparser = $container->get(RouteParser::class);
         }
         if ($login === null) {
-            $login = $container->get('login');
+            $login = $container->get(Login::class);
         }
         $this->routeparser = $routeparser;
         $this
