@@ -885,7 +885,7 @@ class Contribution extends GaletteTestCase
         $due_date->add(new \DateInterval('P1Y'));
         $due_date->sub(new \DateInterval('P1D'));
 
-        //instanciate contribution as annual fee
+        //instantiate contribution as annual fee
         $this->contrib = new \Galette\Entity\Contribution(
             $this->zdb,
             $this->login,

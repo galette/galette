@@ -1818,7 +1818,7 @@ class Members
     }
 
     /**
-     * Get members list to instanciate dropdowns
+     * Get members list to instantiate dropdowns
      *
      * @param Db       $zdb     Database instance
      * @param Login    $login   Login instance

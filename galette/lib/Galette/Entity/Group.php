@@ -65,7 +65,7 @@ class Group
      *
      * @param null|int|ArrayObject<string,int|string> $args Either a ResultSet row or its id for to load
      *                                                      a specific group, or null to just
-     *                                                      instanciate object
+     *                                                      instantiate object
      */
     public function __construct(ArrayObject|int|null $args = null)
     {

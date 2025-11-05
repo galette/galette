@@ -804,7 +804,7 @@ abstract class GaletteTestCase extends TestCase
     {
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
         if (count($types->getList()) === 0) {
-            //payment types are not yet instanciated.
+            //payment types are not yet instantiated.
             $res = $types->installInit();
             $this->assertTrue($res);
         }

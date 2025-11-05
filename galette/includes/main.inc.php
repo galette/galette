@@ -89,7 +89,7 @@ if (!defined('GALETTE_TIMEOUT')) {
 }
 
 $session_name = '';
-//since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
+//since PREFIX_DB and NAME_DB are required to properly instantiate sessions,
 // we have to check here if they're assigned
 if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
     $session_name = 'install_' . str_replace('.', '_', GALETTE_VERSION);
