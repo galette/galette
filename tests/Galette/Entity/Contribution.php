@@ -1194,8 +1194,8 @@ class Contribution extends GaletteTestCase
     {
         global $login;
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin'])
             ->getMock();
         $this->login->method('isLogged')->willReturn(true);
         $this->login->method('isStaff')->willReturn(true);
@@ -1447,7 +1447,7 @@ class Contribution extends GaletteTestCase
 
         $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
         $update->set(
-            array('date_echeance' => $due_date->format('Y-m-d'))
+            ['date_echeance' => $due_date->format('Y-m-d')]
         )->where(
             [\Galette\Entity\Adherent::PK => $this->adh->id]
         );

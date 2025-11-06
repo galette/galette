@@ -71,7 +71,7 @@ class CheckModules extends TestCase
     {
         $checks = $this->getMockBuilder(\Galette\Core\CheckModules::class)
             ->setConstructorArgs([false])
-            ->onlyMethods(array('isExtensionLoaded'))
+            ->onlyMethods(['isExtensionLoaded'])
             ->getMock();
         $checks->method('isExtensionLoaded')->willReturn(false);
 

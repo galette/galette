@@ -127,9 +127,9 @@ class ContributionsTypes extends TestCase
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
-            array(
+            [
                 'text_orig'     => 'Test contribution type'
-            )
+            ]
         );
         $results = $this->zdb->execute($select);
         $result = (array)$results->current();
@@ -172,9 +172,9 @@ class ContributionsTypes extends TestCase
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
-            array(
+            [
                 'text_orig'     => 'Tested contribution type'
-            )
+            ]
         );
         $results = $this->zdb->execute($select);
         $result = (array)$results->current();
@@ -195,9 +195,9 @@ class ContributionsTypes extends TestCase
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
-            array(
+            [
                 'text_orig'     => 'Tested contribution type'
-            )
+            ]
         );
         $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());

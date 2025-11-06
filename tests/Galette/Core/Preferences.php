@@ -166,17 +166,17 @@ class Preferences extends GaletteTestCase
     {
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
-            array(
+            [
                 \Galette\Core\Preferences::PK => 'pref_footer'
-            )
+            ]
         );
         $this->zdb->execute($delete);
 
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
-            array(
+            [
                 \Galette\Core\Preferences::PK => 'pref_new_contrib_script'
-            )
+            ]
         );
         $this->zdb->execute($delete);
 
@@ -224,21 +224,21 @@ class Preferences extends GaletteTestCase
         $this->preferences->pref_bool_publicpages = true;
 
         $superadmin_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isSuperAdmin', 'isAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isSuperAdmin', 'isAdmin'])
             ->getMock();
         $superadmin_login->method('isSuperAdmin')->willReturn(true);
         $superadmin_login->method('isAdmin')->willReturn(true);
 
         $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $admin_login->method('isAdmin')->willReturn(true);
 
         $user_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isUp2Date'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isUp2Date'])
             ->getMock();
         $user_login->method('isUp2Date')->willReturn(true);
 

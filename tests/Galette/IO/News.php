@@ -148,8 +148,8 @@ class News extends TestCase
     public function testLoadNewsWExeption(): void
     {
         $news = $this->getMockBuilder(\Galette\IO\News::class)
-            ->setConstructorArgs(array($this->local_url, true))
-            ->onlyMethods(array('allowURLFOpen'))
+            ->setConstructorArgs([$this->local_url, true])
+            ->onlyMethods(['allowURLFOpen'])
             ->getMock();
         $news->method('allowURLFOpen')->willReturn(false);
 

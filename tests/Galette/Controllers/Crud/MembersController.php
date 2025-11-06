@@ -2160,7 +2160,7 @@ class MembersController extends GaletteRoutingTestCase
                 $this->members_fields,
                 $this->members_fields_cats
             ])
-            ->onlyMethods(array('getAllowedFields'))
+            ->onlyMethods(['getAllowedFields'])
             ->getMock();
         $orig_fields = $fc->getCategorizedFields();
         $fields = [];

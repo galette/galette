@@ -115,7 +115,7 @@ class Telemetry extends TestCase
 
         $telemetry = $this->getMockBuilder(\Galette\Util\Telemetry::class)
             ->setConstructorArgs([$this->zdb, $this->preferences, $this->plugins])
-            ->onlyMethods(array('getCount'))
+            ->onlyMethods(['getCount'])
             ->getMock();
         $telemetry->method('getCount')
             ->willReturnCallback(

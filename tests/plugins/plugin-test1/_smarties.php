@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-$_tpl_assignments = array(
+$_tpl_assignments = [
     'one' => 'one',
     'two' => 'two'
-);
+];

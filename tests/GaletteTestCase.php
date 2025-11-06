@@ -530,10 +530,10 @@ abstract class GaletteTestCase extends TestCase
         $mdata = $this->dataAdherentOne();
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
         $select->where(
-            array(
+            [
                 'a.fingerprint' => 'FAKER' . $this->seed,
                 'a.login_adh' => $mdata['login_adh']
-            )
+            ]
         );
 
         $results = $this->zdb->execute($select);
@@ -554,10 +554,10 @@ abstract class GaletteTestCase extends TestCase
         $mdata = $this->dataAdherentTwo();
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
         $select->where(
-            array(
+            [
                 'a.fingerprint' => 'FAKER' . $this->seed,
                 'a.login_adh' => $mdata['login_adh']
-            )
+            ]
         );
 
         $results = $this->zdb->execute($select);
@@ -1038,8 +1038,8 @@ abstract class GaletteTestCase extends TestCase
     protected function getDocumentInstance(): \Galette\Entity\Document
     {
         $document = $this->getMockBuilder(\Galette\Entity\Document::class)
-            ->setConstructorArgs(array($this->zdb))
-            ->onlyMethods(array('handleFiles'))
+            ->setConstructorArgs([$this->zdb])
+            ->onlyMethods(['handleFiles'])
             ->getMock();
 
         $document->method('handleFiles')

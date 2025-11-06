@@ -417,8 +417,8 @@ class Adherent extends GaletteTestCase
     {
         global $login;
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $login->method('isAdmin')->willReturn(true);
 
@@ -489,8 +489,8 @@ class Adherent extends GaletteTestCase
 
         global $login;
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isStaff'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isStaff'])
             ->getMock();
         $login->method('isStaff')->willReturn(true);
 
@@ -503,19 +503,19 @@ class Adherent extends GaletteTestCase
         //tests for group managers
         //test insert failing
         $g1 = $this->getMockBuilder(\Galette\Entity\Group::class)
-            ->onlyMethods(array('getId'))
+            ->onlyMethods(['getId'])
             ->getMock();
         $g1->method('getId')->willReturn(1);
 
         $g2 = $this->getMockBuilder(\Galette\Entity\Group::class)
-            ->onlyMethods(array('getId'))
+            ->onlyMethods(['getId'])
             ->getMock();
         $g2->method('getId')->willReturn(2);
 
         //groups managers must specify a group they manage
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isGroupManager'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isGroupManager'])
             ->getMock();
         $login->method('isGroupManager')->willReturnCallback(
             function ($gid) use ($g1) {
@@ -541,8 +541,8 @@ class Adherent extends GaletteTestCase
 
         //staff cannot set admin flag
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isStaff'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isStaff'])
             ->getMock();
         $login->method('isStaff')->willReturn(true);
 
@@ -554,7 +554,7 @@ class Adherent extends GaletteTestCase
                 $this->members_fields,
                 $this->members_fields_cats
             ])
-            ->onlyMethods(array('getAllowedFields'))
+            ->onlyMethods(['getAllowedFields'])
             ->getMock();
         $orig_fields = $fc->getCategorizedFields();
         $fields = [];
@@ -609,48 +609,48 @@ class Adherent extends GaletteTestCase
 
         //non authorized
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isGroupManager'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isGroupManager'])
             ->getMock();
         $this->assertFalse($adh->canEdit($login));
 
         //admin => authorized
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $login->method('isAdmin')->willReturn(true);
         $this->assertTrue($adh->canEdit($login));
 
         //staff => authorized
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isStaff'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isStaff'])
             ->getMock();
         $login->method('isStaff')->willReturn(true);
         $this->assertTrue($adh->canEdit($login));
 
         //group managers
         $adh = $this->getMockBuilder(\Galette\Entity\Adherent::class)
-            ->setConstructorArgs(array($this->zdb))
-            ->onlyMethods(array('getGroups'))
+            ->setConstructorArgs([$this->zdb])
+            ->onlyMethods(['getGroups'])
             ->getMock();
 
         $g1 = $this->getMockBuilder(\Galette\Entity\Group::class)
-            ->onlyMethods(array('getId'))
+            ->onlyMethods(['getId'])
             ->getMock();
         $g1->method('getId')->willReturn(1);
 
         $g2 = $this->getMockBuilder(\Galette\Entity\Group::class)
-            ->onlyMethods(array('getId'))
+            ->onlyMethods(['getId'])
             ->getMock();
         $g2->method('getId')->willReturn(2);
 
         $adh->method('getGroups')->willReturn([$g1, $g2]);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isGroupManager'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isGroupManager'])
             ->getMock();
 
         $this->assertFalse($adh->canEdit($login));
@@ -683,48 +683,48 @@ class Adherent extends GaletteTestCase
 
         //non authorized
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isGroupManager'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isGroupManager'])
             ->getMock();
         $this->assertFalse($adh->canDelete($login));
 
         //admin => authorized
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $login->method('isAdmin')->willReturn(true);
         $this->assertTrue($adh->canDelete($login));
 
         //staff => authorized
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isStaff'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isStaff'])
             ->getMock();
         $login->method('isStaff')->willReturn(true);
         $this->assertTrue($adh->canDelete($login));
 
         //group managers
         $adh = $this->getMockBuilder(\Galette\Entity\Adherent::class)
-            ->setConstructorArgs(array($this->zdb))
-            ->onlyMethods(array('getGroups'))
+            ->setConstructorArgs([$this->zdb])
+            ->onlyMethods(['getGroups'])
             ->getMock();
 
         $g1 = $this->getMockBuilder(\Galette\Entity\Group::class)
-            ->onlyMethods(array('getId'))
+            ->onlyMethods(['getId'])
             ->getMock();
         $g1->method('getId')->willReturn(1);
 
         $g2 = $this->getMockBuilder(\Galette\Entity\Group::class)
-            ->onlyMethods(array('getId'))
+            ->onlyMethods(['getId'])
             ->getMock();
         $g2->method('getId')->willReturn(2);
 
         $adh->method('getGroups')->willReturn([$g1, $g2]);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isGroupManager'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isGroupManager'])
             ->getMock();
 
         $this->assertFalse($adh->canDelete($login));

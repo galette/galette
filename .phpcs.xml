@@ -28,6 +28,8 @@
      <!-- Include the whole PSR12 standard -->
      <rule ref="PSR12"/>
 
+     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
      <!-- Comments rules from PEAR standard -->
      <rule ref="PEAR.Commenting.ClassComment">
          <exclude name="PEAR.Commenting.ClassComment.MissingCategoryTag"/>

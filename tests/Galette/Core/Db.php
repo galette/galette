@@ -81,14 +81,14 @@ class Db extends TestCase
         $type = $db->type_db;
         $this->assertSame(TYPE_DB, $type);
 
-        $dsn = array(
+        $dsn = [
             'TYPE_DB'   => TYPE_DB,
             'USER_DB'   => USER_DB,
             'PWD_DB'    => PWD_DB,
             'HOST_DB'   => HOST_DB,
             'PORT_DB'   => PORT_DB,
             'NAME_DB'   => NAME_DB
-        );
+        ];
         $db = new \Galette\Core\Db($dsn);
 
         $is_pg = $db->isPostgres();
@@ -137,14 +137,14 @@ class Db extends TestCase
     {
         $this->db->dropTestTable();
 
-        $expected = array(
+        $expected = [
             'create' => true,
             'insert' => true,
             'select' => true,
             'update' => true,
             'delete' => true,
             'drop'   => true
-        );
+        ];
         $result = $this->db->grantCheck();
 
         $this->assertSame($expected, $result);
@@ -165,7 +165,7 @@ class Db extends TestCase
     {
         //test insert failing
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->db->method('execute')
@@ -189,7 +189,7 @@ class Db extends TestCase
 
         //test select failing
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->db->method('execute')
@@ -199,7 +199,7 @@ class Db extends TestCase
                         throw new \LogicException('Error executing query!', 123);
                     } else {
                         $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
-                            ->onlyMethods(array('count'))
+                            ->onlyMethods(['count'])
                             ->getMock();
                         $rs->method('count')
                             ->willReturn(1);
@@ -220,7 +220,7 @@ class Db extends TestCase
 
         //test update failing
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->db->method('execute')
@@ -230,7 +230,7 @@ class Db extends TestCase
                         throw new \LogicException('Error executing query!', 123);
                     } else {
                         $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
-                            ->onlyMethods(array('count'))
+                            ->onlyMethods(['count'])
                             ->getMock();
                         $rs->method('count')
                             ->willReturn(1);
@@ -251,7 +251,7 @@ class Db extends TestCase
 
         //test delete failing
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $this->db->method('execute')
@@ -261,7 +261,7 @@ class Db extends TestCase
                         throw new \LogicException('Error executing query!', 123);
                     } else {
                         $rs = $this->getMockBuilder(\Laminas\Db\ResultSet\ResultSet::class)
-                            ->onlyMethods(array('count'))
+                            ->onlyMethods(['count'])
                             ->getMock();
                         $rs->method('count')
                             ->willReturn(1);
@@ -350,7 +350,7 @@ class Db extends TestCase
     public function testSelect(): void
     {
         $select = $this->db->select('preferences', 'p');
-        $select->where(array('p.nom_pref' => 'pref_nom'));
+        $select->where(['p.nom_pref' => 'pref_nom']);
 
         $this->db->execute($select);
 
@@ -502,7 +502,7 @@ class Db extends TestCase
     public function testDbVersionWException(): void
     {
         $this->db = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
         $this->db->method('execute')
             ->willReturnCallback(
@@ -532,17 +532,17 @@ class Db extends TestCase
 
         $this->assertCount(3, $cols);
 
-        $columns = array();
+        $columns = [];
         foreach ($cols as $c) {
             $columns[] = $c->getName();
         }
 
         $this->assertSame(
-            array(
+            [
                 'id_pref',
                 'nom_pref',
                 'val_pref'
-            ),
+            ],
             array_values($columns)
         );
     }
@@ -556,7 +556,7 @@ class Db extends TestCase
      */
     public function testTables(): void
     {
-        $expected = array (
+        $expected =  [
             'galette_groups_members',
             'galette_transactions',
             'galette_titles',
@@ -587,7 +587,7 @@ class Db extends TestCase
             'galette_searches',
             'galette_tmplinks',
             'galette_documents'
-        );
+        ];
 
         $tables = $this->db->getTables();
 

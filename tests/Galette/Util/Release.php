@@ -62,7 +62,7 @@ class Release extends TestCase
     {
         $release = $this->getMockBuilder(\Galette\Util\Release::class)
             ->setConstructorArgs([true])
-            ->onlyMethods(array('getCurrentRelease', 'getLatestRelease', 'findLatestRelease'))
+            ->onlyMethods(['getCurrentRelease', 'getLatestRelease', 'findLatestRelease'])
             ->getMock();
 
         $release->method('getCurrentRelease')->willReturn($current);
@@ -236,7 +236,7 @@ div.foot { font: 90% monospace; color: #787878; padding-top: 4px;}
     {
         $release = $this->getMockBuilder(\Galette\Util\Release::class)
             ->setConstructorArgs([true])
-            ->onlyMethods(array('setupClient', 'getCurrentRelease'))
+            ->onlyMethods(['setupClient', 'getCurrentRelease'])
             ->getMock();
 
         // Create a mock and queue two responses.

@@ -273,7 +273,7 @@ class L10n extends TestCase
     public function testAddWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
@@ -298,7 +298,7 @@ class L10n extends TestCase
     public function testUpdateWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
@@ -329,7 +329,7 @@ class L10n extends TestCase
     public function testDeleteWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
@@ -354,7 +354,7 @@ class L10n extends TestCase
     public function testGetWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
@@ -380,7 +380,7 @@ class L10n extends TestCase
     public function testGetsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
