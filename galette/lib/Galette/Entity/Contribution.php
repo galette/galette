@@ -194,7 +194,7 @@ class Contribution implements AccessManagementInterface
                 //calculate begin date for membership fee with beginning of membership date
                 $begin_date = new \DateTime();
                 $begin_date->sub(new DateInterval('P1Y'));
-                [$j, $m] = explode('/', $preferences->pref_beg_membership);
+                [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
                 $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
                 while ($next_begin_date <= $begin_date) {
                     $next_begin_date->add(new DateInterval('P1Y'));
@@ -289,7 +289,7 @@ class Contribution implements AccessManagementInterface
             $end_date = $begin_date->add($dext);
         } elseif ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            [$j, $m] = explode('/', $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
             $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
             while ($next_begin_date <= $begin_date) {
                 $next_begin_date->add(new DateInterval('P1Y'));
@@ -704,15 +704,10 @@ class Contribution implements AccessManagementInterface
                 if (!isset($this->$prop)) {
                     continue;
                 }
-                switch ($field) {
-                    case ContributionsTypes::PK:
-                    case Transaction::PK:
-                        $values[$field] = $this->$prop->id;
-                        break;
-                    default:
-                        $values[$field] = $this->$prop;
-                        break;
-                }
+                $values[$field] = match ($field) {
+                    ContributionsTypes::PK, Transaction::PK => $this->$prop->id,
+                    default => $this->$prop,
+                };
             }
 
             //no end date for donation
@@ -1204,12 +1199,10 @@ class Contribution implements AccessManagementInterface
                 Analog::WARNING
             );
 
-            switch ($name) {
-                case 'is_cotis':
-                    return $this->isFee();
-                default:
-                    throw new \RuntimeException("Call to __get for '$name' is forbidden!");
-            }
+            return match ($name) {
+                'is_cotis' => $this->isFee(),
+                default => throw new \RuntimeException("Call to __get for '$name' is forbidden!"),
+            };
         } elseif (
             property_exists($this, $name)
             || in_array($name, $this->virtual_fields)

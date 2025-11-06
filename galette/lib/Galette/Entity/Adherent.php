@@ -133,17 +133,17 @@ class Adherent implements AccessManagementInterface
     public const AFTER_ADD_LIST = 4;
     public const AFTER_ADD_HOME = 5;
 
-    private ?int $id;
+    private ?int $id = null;
     //Identity
     private Title|string|null $title = null;
-    private ?string $company_name;
-    private ?string $name;
-    private ?string $surname;
-    private ?string $nickname;
-    private ?string $birthdate;
-    private ?string $birth_place;
+    private ?string $company_name = null;
+    private ?string $name = null;
+    private ?string $surname = null;
+    private ?string $nickname = null;
+    private ?string $birthdate = null;
+    private ?string $birth_place = null;
     private int $gender;
-    private ?string $job;
+    private ?string $job = null;
     private string $language;
     private bool $active;
     private int $status;
@@ -152,23 +152,23 @@ class Adherent implements AccessManagementInterface
     private ?string $zipcode = null;
     private ?string $town = null;
     private ?string $country = null;
-    private ?string $phone;
-    private ?string $gsm;
-    private ?string $email;
-    private ?string $gnupgid;
-    private ?string $fingerprint;
+    private ?string $phone = null;
+    private ?string $gsm = null;
+    private ?string $email = null;
+    private ?string $gnupgid = null;
+    private ?string $fingerprint = null;
     //Galette relative information
     private bool $appears_in_list;
     private bool $admin;
     private bool $staff = false;
     private bool $due_free;
-    private ?string $login;
-    private ?string $password;
+    private ?string $login = null;
+    private ?string $password = null;
     private string $creation_date;
     private string $modification_date;
-    private ?string $due_date;
-    private ?string $others_infos;
-    private ?string $others_infos_admin;
+    private ?string $due_date = null;
+    private ?string $others_infos = null;
+    private ?string $others_infos_admin = null;
     private ?Picture $picture = null;
     private int $oldness;
     private ?int $days_remaining = null;
@@ -176,9 +176,9 @@ class Adherent implements AccessManagementInterface
     private array $groups = [];
     /** @var array<int, Group> */
     private array $managed_groups = [];
-    private int|Adherent|null $parent;
+    private int|Adherent|null $parent = null;
     /** @var array<int, Adherent>|null */
-    private ?array $children;
+    private ?array $children = null;
     private bool $duplicate = false;
     /** @var array<int,Social> */
     private array $socials;
@@ -871,7 +871,7 @@ class Adherent implements AccessManagementInterface
 
         //calculate begin date of period
         if ($preferences->pref_beg_membership != '') { //classical membership date + 1 year
-            [$j, $m] = explode('/', $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
             $sdate = new DateTime($date_now->format('Y') . '-' . $m . '-' . $j);
         } elseif ($preferences->pref_membership_ext != '') { //classical membership date + N months
             $dext = new DateInterval('P' . $preferences->pref_membership_ext . 'M');
@@ -1165,32 +1165,15 @@ class Adherent implements AccessManagementInterface
                     $value = trim($value);
                 }
             } elseif (empty($this->id)) {
-                switch ($key) {
-                    case 'bool_admin_adh':
-                    case 'bool_exempt_adh':
-                    case 'bool_display_info':
-                        $value = false;
-                        break;
-                    case 'activite_adh':
-                        //values that are set at object instantiation
-                        $value = true;
-                        break;
-                    case 'date_crea_adh':
-                    case 'sexe_adh':
-                    case 'titre_adh':
-                    case 'id_statut':
-                    case 'pref_lang':
-                    case 'parent_id':
-                        //values that are set at object instantiation
-                        $value = $this->$prop;
-                        break;
-                    case self::PK:
-                        $value = null;
-                        break;
-                    default:
-                        $value = '';
-                        break;
-                }
+                $value = match ($key) {
+                    'bool_admin_adh', 'bool_exempt_adh', 'bool_display_info' => false,
+                    //values that are set at object instantiation
+                    'activite_adh' => true,
+                    //values that are set at object instantiation
+                    'date_crea_adh', 'sexe_adh', 'titre_adh', 'id_statut', 'pref_lang', 'parent_id' => $this->$prop,
+                    self::PK => null,
+                    default => '',
+                };
             } elseif ($prop != 'password' || isset($values['mdp_adh']) && isset($values['mdp_adh2'])) {
                 //keep stored value on update
                 $value = $this->$prop;
@@ -1439,7 +1422,7 @@ class Adherent implements AccessManagementInterface
                     if ($results->count() !== 0) {
                         $this->errors[] = _T("- This E-Mail address is already used by another member!");
                     }
-                } catch (Throwable $e) {
+                } catch (Throwable) {
                     Analog::log(
                         'An error occurred checking member email uniqueness.',
                         Analog::ERROR
@@ -1450,13 +1433,13 @@ class Adherent implements AccessManagementInterface
             case 'login_adh':
                 $this->$prop = $value;
                 /** FIXME: add a preference for login length */
-                if (strlen($value) < 2) {
+                if (strlen((string) $value) < 2) {
                     $this->errors[] = str_replace(
                         '%i',
                         '2',
                         _T("- The username must be composed of at least %i characters!")
                     );
-                } elseif (str_contains($value, '@')) {
+                } elseif (str_contains((string) $value, '@')) {
                     //check if login does not contain the @ character
                     $this->errors[] = _T("- The username cannot contain the @ character");
                 } else {
@@ -1480,7 +1463,7 @@ class Adherent implements AccessManagementInterface
                         ) {
                             $this->errors[] = _T("- This username is already in use, please choose another one!");
                         }
-                    } catch (Throwable $e) {
+                    } catch (Throwable) {
                         Analog::log(
                             'An error occurred checking member login uniqueness.',
                             Analog::ERROR
@@ -1498,7 +1481,7 @@ class Adherent implements AccessManagementInterface
                     $this->errors[] = _T("- The passwords don't match!");
                 } elseif (
                     $this->self_adh === true
-                    && !crypt($value, $values['mdp_crypt']) == $values['mdp_crypt']
+                    && !crypt((string) $value, (string) $values['mdp_crypt']) == $values['mdp_crypt']
                 ) {
                     $this->errors[] = _T("Password misrepeated: ");
                 } else {
@@ -1506,7 +1489,7 @@ class Adherent implements AccessManagementInterface
                     //check if value is already a hash
                     if ($pinfos['algo'] == 0) {
                         $this->$prop = password_hash(
-                            $value,
+                            (string) $value,
                             PASSWORD_BCRYPT
                         );
 
@@ -1724,7 +1707,7 @@ class Adherent implements AccessManagementInterface
                     if ($this->self_adh) {
                         $hist->add(
                             _T("Self_subscription as a member: ")
-                            . $this->getNameWithCase($this->name, $this->surname),
+                            . static::getNameWithCase($this->name, $this->surname),
                             $this->sname
                         );
                     } else {
@@ -1901,29 +1884,21 @@ class Adherent implements AccessManagementInterface
                     $status = new Status($this->zdb);
                     return $status->getLabel($this->status);
                 case 'sfullname':
-                    return $this->getNameWithCase(
-                        $this->name ?? '',
-                        $this->surname ?? '',
-                        ($this->title ?? false)
-                    );
+                    return static::getNameWithCase($this->name ?? '', $this->surname ?? '', ($this->title ?? false));
                 case 'saddress':
                     return $this->address;
                 case 'sname':
-                    return $this->getNameWithCase($this->name ?? '', $this->surname ?? '');
+                    return static::getNameWithCase($this->name ?? '', $this->surname ?? '');
                 case 'rbirthdate':
                     return $this->birthdate ?? null;
                 case 'rdue_date':
                     return $this->due_date ?? null;
                 case 'sgender':
-                    switch ($this->gender) {
-                        case self::MAN:
-                            return _T('Man');
-                        case self::WOMAN:
-                            return _T('Woman');
-                        default:
-                            return _T('Unspecified');
-                    }
-                    // no break - already returned
+                    return match ($this->gender) {
+                        self::MAN => _T('Man'),
+                        self::WOMAN => _T('Woman'),
+                        default => _T('Unspecified'),
+                    };
                 case 'contribstatus':
                     return $this->getDues();
                 default:

@@ -47,9 +47,9 @@ class PublicPages
      * @param Messages    $flash       Flash messages instance
      */
     public function __construct(
-        private Login $login,
-        private RouteParser $routeparser,
-        private Preferences $preferences,
+        private readonly Login $login,
+        private readonly RouteParser $routeparser,
+        private readonly Preferences $preferences,
         protected Messages $flash
     ) {
     }

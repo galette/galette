@@ -34,7 +34,7 @@ class Install extends TestCase
 {
     private \Galette\Core\Db $zdb;
     /** @var array<string> */
-    private array $flash_data;
+    protected array $flash_data;
     private \Slim\Flash\Messages $flash;
     private \DI\Container $container;
 

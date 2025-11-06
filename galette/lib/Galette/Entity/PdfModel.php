@@ -70,11 +70,11 @@ abstract class PdfModel
 
     private ?int $id = null;
     private string $name;
-    private ?string $header;
-    private ?string $footer;
-    private ?string $title;
-    private ?string $subtitle;
-    private ?string $body;
+    private ?string $header = null;
+    private ?string $footer = null;
+    private ?string $title = null;
+    private ?string $subtitle = null;
+    private ?string $body = null;
     private ?string $styles = '';
     private ?PdfModel $parent = null;
 
@@ -100,7 +100,7 @@ abstract class PdfModel
         } elseif ($args instanceof ArrayObject) {
             $this->loadFromRS($args);
         } else {
-            $this->load($type);
+            $this->load($this->type);
         }
 
         $this->setPatterns($this->getMainPatterns());
@@ -162,9 +162,7 @@ abstract class PdfModel
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
 
-        $callback = function ($matches) {
-            return _T($matches[1]);
-        };
+        $callback = (fn($matches) => _T($matches[1]));
         $this->name = preg_replace_callback(
             '/_T\("([^\"]+)"\)/',
             $callback,
@@ -252,20 +250,12 @@ abstract class PdfModel
     public static function getTypeClass(int $type): string
     {
         $class = null;
-        switch ($type) {
-            case self::INVOICE_MODEL:
-                $class = 'PdfInvoice';
-                break;
-            case self::RECEIPT_MODEL:
-                $class = 'PdfReceipt';
-                break;
-            case self::ADHESION_FORM_MODEL:
-                $class = 'PdfAdhesionFormModel';
-                break;
-            default:
-                $class = 'PdfMain';
-                break;
-        }
+        $class = match ($type) {
+            self::INVOICE_MODEL => 'PdfInvoice',
+            self::RECEIPT_MODEL => 'PdfReceipt',
+            self::ADHESION_FORM_MODEL => 'PdfAdhesionFormModel',
+            default => 'PdfMain',
+        };
         $class = 'Galette\\Entity\\' . $class;
         return $class;
     }
@@ -381,28 +371,10 @@ abstract class PdfModel
      */
     public function __isset(string $name): bool
     {
-        switch ($name) {
-            case 'id':
-            case 'name':
-            case 'header':
-            case 'footer':
-            case 'body':
-            case 'title':
-            case 'subtitle':
-            case 'type':
-            case 'styles':
-            case 'patterns':
-            case 'replaces':
-            case 'hstyles':
-            case 'hheader':
-            case 'hfooter':
-            case 'htitle':
-            case 'hsubtitle':
-            case 'hbody':
-                return true;
-        }
-
-        return false;
+        return match ($name) {
+            'id', 'name', 'header', 'footer', 'body', 'title', 'subtitle', 'type', 'styles', 'patterns', 'replaces', 'hstyles', 'hheader', 'hfooter', 'htitle', 'hsubtitle', 'hbody' => true,
+            default => false,
+        };
     }
 
     /**
@@ -447,7 +419,7 @@ abstract class PdfModel
             case 'header':
             case 'footer':
             case 'body':
-                if ($value === null || trim($value) === '') {
+                if ($value === null || trim((string) $value) === '') {
                     if ($name !== 'body' && static::class === PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("header and footer should not be empty!")

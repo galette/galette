@@ -58,7 +58,7 @@ class Db extends TestCase
                 $this->assertSame($know_warning['Level'], $dbwarning['Level']);
                 $this->assertEquals($know_warning['Code'], $dbwarning['Code']);
                 $this->assertStringContainsString(
-                    strtolower($know_warning['Message']),
+                    strtolower((string) $know_warning['Message']),
                     strtolower($dbwarning['Message'])
                 );
             }
@@ -290,14 +290,10 @@ class Db extends TestCase
     {
         $is_pg = $this->db->isPostgres();
 
-        switch (TYPE_DB) {
-            case 'pgsql':
-                $this->assertTrue($is_pg);
-                break;
-            default:
-                $this->assertFalse($is_pg);
-                break;
-        }
+        match (TYPE_DB) {
+            'pgsql' => $this->assertTrue($is_pg),
+            default => $this->assertFalse($is_pg),
+        };
     }
 
     /**
@@ -319,16 +315,16 @@ class Db extends TestCase
         }
 
         $db = $this->db->db;
-        $this->assertInstanceOf('Laminas\Db\Adapter\Adapter', $db);
+        $this->assertInstanceOf(\Laminas\Db\Adapter\Adapter::class, $db);
 
         $sql = $this->db->sql;
-        $this->assertInstanceOf('Laminas\Db\Sql\Sql', $sql);
+        $this->assertInstanceOf(\Laminas\Db\Sql\Sql::class, $sql);
 
         $connection = $this->db->connection;
-        $this->assertInstanceOf('Laminas\Db\Adapter\Driver\Pdo\Connection', $connection);
+        $this->assertInstanceOf(\Laminas\Db\Adapter\Driver\Pdo\Connection::class, $connection);
 
         $driver = $this->db->driver;
-        $this->assertInstanceOf('Laminas\Db\Adapter\Driver\Pdo\Pdo', $driver);
+        $this->assertInstanceOf(\Laminas\Db\Adapter\Driver\Pdo\Pdo::class, $driver);
     }
 
     /**
@@ -375,7 +371,7 @@ class Db extends TestCase
     public function testSelectAll(): void
     {
         $all = $this->db->selectAll('preferences');
-        $this->assertInstanceOf('Laminas\Db\ResultSet\ResultSet', $all);
+        $this->assertInstanceOf(\Laminas\Db\ResultSet\ResultSet::class, $all);
     }
 
     /**
@@ -514,7 +510,7 @@ class Db extends TestCase
         $exception_thrown = false;
         try {
             $this->db->getDbVersion();
-        } catch (\LogicException $exception) {
+        } catch (\LogicException) {
             $exception_thrown = true;
         }
         $this->assertTrue($exception_thrown);
@@ -652,7 +648,7 @@ class Db extends TestCase
         $select->where(['p.nom_pref' => 'azerty']);
         $results = $this->db->execute($select);
 
-        $this->assertInstanceOf('\Laminas\Db\ResultSet\ResultSet', $results);
+        $this->assertInstanceOf(\Laminas\Db\ResultSet\ResultSet::class, $results);
     }
 
     /**
@@ -691,7 +687,7 @@ class Db extends TestCase
         $this->assertNotNull($serialized);
 
         $unserialized = unserialize($serialized);
-        $this->assertInstanceOf('Galette\Core\Db', $unserialized);
+        $this->assertInstanceOf(\Galette\Core\Db::class, $unserialized);
     }
 
     /**
@@ -732,12 +728,10 @@ class Db extends TestCase
 
         $zdb->method('isPostgres')->willReturn(false);
         $zdb->method('getInfos')->willReturnCallback(
-            function () {
-                return [
-                    'engine' => 'MariaDB Server',
-                    'version' => GALETTE_MARIADB_MIN
-                ];
-            }
+            fn() => [
+                'engine' => 'MariaDB Server',
+                'version' => GALETTE_MARIADB_MIN
+            ]
         );
         $this->assertTrue($zdb->isEngineSUpported());
 
@@ -747,12 +741,10 @@ class Db extends TestCase
 
         $zdb->method('isPostgres')->willReturn(false);
         $zdb->method('getInfos')->willReturnCallback(
-            function () {
-                return [
-                    'engine' => 'MariaDB Server',
-                    'version' => '10.4-MariaDB'
-                ];
-            }
+            fn() => [
+                'engine' => 'MariaDB Server',
+                'version' => '10.4-MariaDB'
+            ]
         );
         $this->assertFalse($zdb->isEngineSUpported());
         $this->assertSame(
@@ -766,12 +758,10 @@ class Db extends TestCase
 
         $zdb->method('isPostgres')->willReturn(true);
         $zdb->method('getInfos')->willReturnCallback(
-            function () {
-                return [
-                    'engine' => 'PostgreSQL',
-                    'version' => GALETTE_PGSQL_MIN
-                ];
-            }
+            fn() => [
+                'engine' => 'PostgreSQL',
+                'version' => GALETTE_PGSQL_MIN
+            ]
         );
         $this->assertTrue($zdb->isEngineSUpported());
 
@@ -781,12 +771,10 @@ class Db extends TestCase
 
         $zdb->method('isPostgres')->willReturn(true);
         $zdb->method('getInfos')->willReturnCallback(
-            function () {
-                return [
-                    'engine' => 'PostgreSQL',
-                    'version' => '12'
-                ];
-            }
+            fn() => [
+                'engine' => 'PostgreSQL',
+                'version' => '12'
+            ]
         );
         $this->assertFalse($zdb->isEngineSUpported());
         $this->assertFalse($zdb->isEngineSUpported());

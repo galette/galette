@@ -138,7 +138,7 @@ class ScheduledPaymentController extends CrudController
             $ajax = true;
             $filter_args['suffix'] = 'ajax';
         }
-        $session_varname = $this->getFilterName($this->getDefaultFilterName(), $filter_args);
+        $session_varname = $this->getFilterName(static::getDefaultFilterName(), $filter_args);
 
         if (isset($this->session->$session_varname)) {
             $filters = $this->session->$session_varname;
@@ -263,7 +263,7 @@ class ScheduledPaymentController extends CrudController
             $ajax = true;
             $filter_args['suffix'] = 'ajax';
         }
-        $filter_name = $this->getFilterName($this->getDefaultFilterName(), $filter_args);
+        $filter_name = $this->getFilterName(static::getDefaultFilterName(), $filter_args);
 
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -343,7 +343,7 @@ class ScheduledPaymentController extends CrudController
      */
     public function handleBatch(Request $request, Response $response): Response
     {
-        $filter_name = $this->getFilterName($this->getDefaultFilterName());
+        $filter_name = $this->getFilterName(static::getDefaultFilterName());
         $post = $request->getParsedBody();
 
         if (isset($post['entries_sel'])) {
@@ -351,14 +351,14 @@ class ScheduledPaymentController extends CrudController
             $filters->selected = $post['entries_sel'];
 
             if (isset($post['csv'])) {
-                $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'csvexport'])} = $filters;
+                $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'csvexport'])} = $filters;
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->routeparser->urlFor('csv-scheduledPaymentslist'));
             }
 
             if (isset($post['delete'])) {
-                $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])} = $filters;
+                $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])} = $filters;
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->routeparser->urlFor('removeScheduledPayments'));

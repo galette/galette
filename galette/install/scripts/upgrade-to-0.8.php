@@ -50,7 +50,7 @@ class UpgradeTo08 extends AbstractUpdater
      */
     protected function update(): bool
     {
-        $dirs = array(
+        $dirs = [
             'logs',
             'templates_c',
             'cache',
@@ -60,7 +60,7 @@ class UpgradeTo08 extends AbstractUpdater
             'attachments',
             'tempimages',
             'files'
-        );
+        ];
 
         if (!file_exists(GALETTE_ROOT . 'data')) {
             $created = @mkdir(GALETTE_ROOT . 'data');
@@ -106,11 +106,11 @@ class UpgradeTo08 extends AbstractUpdater
     private function moveDataDir(string $dirname): void
     {
         //all directories should not be moved
-        $nomove = array(
+        $nomove = [
             'templates_c',
             'cache',
             'tempimages'
-        );
+        ];
 
         if (!in_array($dirname, $nomove)) {
             $origdir = GALETTE_ROOT . $dirname . '/';

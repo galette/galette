@@ -51,7 +51,7 @@ class Links
      * @param Db      $zdb   Database instance:
      * @param boolean $clean Whether we should clean expired links in database
      */
-    public function __construct(private Db $zdb, bool $clean = true)
+    public function __construct(private readonly Db $zdb, bool $clean = true)
     {
         if ($clean === true) {
             $this->cleanExpired();
@@ -124,7 +124,7 @@ class Links
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $code = $result->email_adh;
-            $hash = password_hash($code, PASSWORD_BCRYPT);
+            $hash = password_hash((string) $code, PASSWORD_BCRYPT);
 
             $values = [
                 'target'        => $target,
@@ -219,7 +219,7 @@ class Links
 
             if ($results->count() > 0) {
                 $result = $results->current();
-                if (password_verify($code, $result->hash)) {
+                if (password_verify($code, (string) $result->hash)) {
                     return [(int)$result->target, (int)$result->id];
                 }
             }

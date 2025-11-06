@@ -39,7 +39,7 @@ use Galette\Features\Translatable;
  * @property string $name
  */
 
-class PaymentType
+class PaymentType implements \Stringable
 {
     use Translatable;
     use I18n;
@@ -202,19 +202,16 @@ class PaymentType
      */
     public function __get(string $name): mixed
     {
-        switch ($name) {
-            case 'id':
-            case 'name':
-                return $this->$name;
-        }
-
-        throw new \RuntimeException(
-            sprintf(
-                'Unable to get property "%s::%s"!',
-                static::class,
-                $name
-            )
-        );
+        return match ($name) {
+            'id', 'name' => $this->$name,
+            default => throw new \RuntimeException(
+                sprintf(
+                    'Unable to get property "%s::%s"!',
+                    static::class,
+                    $name
+                )
+            ),
+        };
     }
 
     /**
@@ -227,13 +224,10 @@ class PaymentType
      */
     public function __isset(string $name): bool
     {
-        switch ($name) {
-            case 'id':
-            case 'name':
-                return true;
-        }
-
-        return false;
+        return match ($name) {
+            'id', 'name' => true,
+            default => false,
+        };
     }
 
     /**
@@ -248,7 +242,7 @@ class PaymentType
     {
         switch ($name) {
             case 'name':
-                if (trim($value) === '') {
+                if (trim((string) $value) === '') {
                     Analog::log(
                         'Name cannot be empty',
                         Analog::WARNING

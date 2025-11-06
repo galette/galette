@@ -119,16 +119,11 @@ class Telemetry extends TestCase
             ->getMock();
         $telemetry->method('getCount')
             ->willReturnCallback(
-                function ($table) {
-                    switch ($table) {
-                        case \Galette\Entity\Adherent::TABLE:
-                            return 56;
-                        case \Galette\Entity\Contribution::TABLE:
-                            return 402;
-                        case \Galette\Entity\Transaction::TABLE:
-                            return 100;
-                    }
-                    return 0;
+                fn($table) => match ($table) {
+                    \Galette\Entity\Adherent::TABLE => 56,
+                    \Galette\Entity\Contribution::TABLE => 402,
+                    \Galette\Entity\Transaction::TABLE => 100,
+                    default => 0,
                 }
             );
         $result = $telemetry->grabGaletteInfos();

@@ -37,7 +37,7 @@ class GaletteApplication extends Application
      *
      * @param string $basepath Base path to Galette installation
      */
-    public function __construct(protected string $basepath)
+    public function __construct(private readonly string $basepath)
     {
         parent::__construct('Galette', GALETTE_VERSION);
     }

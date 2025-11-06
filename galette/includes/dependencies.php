@@ -41,9 +41,7 @@ $container->set(RouteParser::class, $routeParser);
 
 $container->set(
     \Slim\Routing\RouteCollector::class,
-    function () use ($app) {
-        return $app->getRouteCollector();
-    }
+    fn() => $app->getRouteCollector()
 );
 
 // Register View helper
@@ -73,7 +71,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->addExtension(new IntlExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
         $view->addExtension(new \Twig\Extension\DebugExtension());
-        if (class_exists('AlisQI\TwigQI\Extension')) {
+        if (class_exists(\AlisQI\TwigQI\Extension::class)) {
             global $logger;
             $view->addExtension(new AlisQI\TwigQI\Extension($logger));
         }
@@ -81,39 +79,25 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     //End Twig extensions
 
     //Twig functions
-    $function = new \Twig\TwigFunction('__', function ($string, $domain = 'galette') {
-        return __($string, $domain);
-    });
+    $function = new \Twig\TwigFunction('__', fn($string, $domain = 'galette') => __($string, $domain));
     $view->getEnvironment()->addFunction($function);
 
-    $function = new \Twig\TwigFunction('_T', function ($string, $domain = 'galette') {
-        return _T($string, $domain);
-    });
+    $function = new \Twig\TwigFunction('_T', fn($string, $domain = 'galette') => _T($string, $domain));
     $view->getEnvironment()->addFunction($function);
 
-    $function = new \Twig\TwigFunction('_Tn', function ($singular, $plural, $count, $domain = 'galette') {
-        return _Tn($singular, $plural, (int)$count, $domain);
-    });
+    $function = new \Twig\TwigFunction('_Tn', fn($singular, $plural, $count, $domain = 'galette') => _Tn($singular, $plural, (int)$count, $domain));
     $view->getEnvironment()->addFunction($function);
 
-    $function = new \Twig\TwigFunction('_Tx', function ($context, $string, $domain = 'galette') {
-        return _Tx($context, $string, $domain);
-    });
+    $function = new \Twig\TwigFunction('_Tx', fn($context, $string, $domain = 'galette') => _Tx($context, $string, $domain));
     $view->getEnvironment()->addFunction($function);
 
-    $function = new \Twig\TwigFunction('_Tnx', function ($context, $singular, $plural, $count, $domain = 'galette') {
-        return _Tnx($context, $singular, $plural, (int)$count, $domain);
-    });
+    $function = new \Twig\TwigFunction('_Tnx', fn($context, $singular, $plural, $count, $domain = 'galette') => _Tnx($context, $singular, $plural, (int)$count, $domain));
     $view->getEnvironment()->addFunction($function);
 
-    $function = new \Twig\TwigFunction('file_exists', function ($file) {
-        return file_exists($file);
-    });
+    $function = new \Twig\TwigFunction('file_exists', file_exists(...));
     $view->getEnvironment()->addFunction($function);
 
-    $function = new \Twig\TwigFunction('get_class', function ($object) {
-        return get_class($object);
-    });
+    $function = new \Twig\TwigFunction('get_class', get_class(...));
     $view->getEnvironment()->addFunction($function);
 
     $function = new \Twig\TwigFunction('memberName', function (...$params) use ($c) {
@@ -283,23 +267,19 @@ $container->set('logger', function (ContainerInterface $c) {
     return $logger;
 });
 
-$container->set(\Galette\Entity\FieldsConfig::class, function (ContainerInterface $c) {
-    return new Galette\Entity\FieldsConfig(
-        $c->get(\Galette\Core\Db::class),
-        Galette\Entity\Adherent::TABLE,
-        $c->get('members_fields'),
-        $c->get('members_fields_cats')
-    );
-});
+$container->set(\Galette\Entity\FieldsConfig::class, fn(ContainerInterface $c) => new Galette\Entity\FieldsConfig(
+    $c->get(\Galette\Core\Db::class),
+    Galette\Entity\Adherent::TABLE,
+    $c->get('members_fields'),
+    $c->get('members_fields_cats')
+));
 
-$container->set(\Galette\Entity\ListsConfig::class, function (ContainerInterface $c) {
-    return new Galette\Entity\ListsConfig(
-        $c->get(\Galette\Core\Db::class),
-        Galette\Entity\Adherent::TABLE,
-        $c->get('members_fields'),
-        $c->get('members_fields_cats')
-    );
-});
+$container->set(\Galette\Entity\ListsConfig::class, fn(ContainerInterface $c) => new Galette\Entity\ListsConfig(
+    $c->get(\Galette\Core\Db::class),
+    Galette\Entity\Adherent::TABLE,
+    $c->get('members_fields'),
+    $c->get('members_fields_cats')
+));
 
 $container->set(\Galette\Core\Translator::class, function (ContainerInterface $c) {
     $translator = new Galette\Core\Translator();
@@ -343,9 +323,7 @@ $container->set(
 
 $container->set(
     'CsrfExclusions',
-    function (ContainerInterface $c): array {
-        return $c->get(\Galette\Core\Plugins::class)->getCsrfExclusions();
-    }
+    fn(ContainerInterface $c): array => $c->get(\Galette\Core\Plugins::class)->getCsrfExclusions()
 );
 
 $container->set(

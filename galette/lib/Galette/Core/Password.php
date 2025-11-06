@@ -51,7 +51,7 @@ class Password extends AbstractPassword
      * @param Db      $zdb   Database instance:
      * @param boolean $clean Whether we should clean expired passwords in database
      */
-    public function __construct(private Db $zdb, bool $clean = true)
+    public function __construct(private readonly Db $zdb, bool $clean = true)
     {
         if ($clean === true) {
             $this->cleanExpired();

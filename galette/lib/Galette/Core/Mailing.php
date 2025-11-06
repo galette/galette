@@ -77,7 +77,7 @@ class Mailing extends GaletteMail
 
     private string $mime_type;
 
-    private ?string $tmp_path;
+    private ?string $tmp_path = null;
     private int $history_id;
 
     /**
@@ -184,7 +184,7 @@ class Mailing extends GaletteMail
             } else {
                 $orig_recipients = Galette::jsonDecode($rs->mailing_recipients);
             }
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             Analog::log(
                 'Unable to retrieve recipients for mailing ' . $rs->mailing_id,
                 Analog::ERROR
@@ -572,23 +572,10 @@ class Mailing extends GaletteMail
     {
         $forbidden = ['ordered'];
         if (!in_array($name, $forbidden)) {
-            switch ($name) {
-                case 'alt_message':
-                case 'step':
-                case 'subject':
-                case 'message':
-                case 'wrapped_message':
-                case 'html':
-                case 'mail':
-                case 'errors':
-                case 'recipients':
-                case 'tmp_path':
-                case 'attachments':
-                case 'sender_name':
-                case 'sender_address':
-                    return true;
-            }
-            return isset($this->$name);
+            return match ($name) {
+                'alt_message', 'step', 'subject', 'message', 'wrapped_message', 'html', 'mail', 'errors', 'recipients', 'tmp_path', 'attachments', 'sender_name', 'sender_address' => true,
+                default => isset($this->$name),
+            };
         }
 
         return false;

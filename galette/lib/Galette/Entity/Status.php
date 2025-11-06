@@ -569,12 +569,10 @@ class Status
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
-            switch ($name) {
-                case 'libelle':
-                    return _T($this->label);
-                default:
-                    return $this->$name;
-            }
+            return match ($name) {
+                'libelle' => _T($this->label),
+                default => $this->$name,
+            };
         } else {
             return false;
         }

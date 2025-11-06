@@ -194,7 +194,7 @@ abstract class CrudController extends AbstractController
 
         //type
         if (is_array($ids)) {
-            $ids = array_map('intval', $ids);
+            $ids = array_map(intval(...), $ids);
         } elseif (is_string($ids)) {
             $ids = (int)$ids;
         }

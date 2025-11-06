@@ -60,9 +60,9 @@ class ScheduledPayments
      * @param ?ScheduledPaymentsList $filters Filtering
      */
     public function __construct(
-        private Db $zdb,
-        private Login $login,
-        private ?ScheduledPaymentsList $filters = new ScheduledPaymentsList()
+        private readonly Db $zdb,
+        private readonly Login $login,
+        private readonly ?ScheduledPaymentsList $filters = new ScheduledPaymentsList()
     ) {
     }
 
@@ -308,15 +308,10 @@ class ScheduledPayments
      */
     private function buildWhereClause(Select $select): void
     {
-        switch ($this->filters->date_field) {
-            case ScheduledPaymentsList::DATE_RECORD:
-                $field = 'creation_date';
-                break;
-            case ScheduledPaymentsList::DATE_SCHEDULED:
-            default:
-                $field = 'scheduled_date';
-                break;
-        }
+        $field = match ($this->filters->date_field) {
+            ScheduledPaymentsList::DATE_RECORD => 'creation_date',
+            default => 'scheduled_date',
+        };
 
         if (isset($this->current_selection)) {
             $select->where->in('s.' . self::PK, $this->current_selection);

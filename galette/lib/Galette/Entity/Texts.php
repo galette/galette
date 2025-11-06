@@ -56,7 +56,7 @@ class Texts
 
     /** @var array<int, mixed> */
     private array $defaults;
-    private ?string $current;
+    private ?string $current = null;
 
     /**
      * Main constructor

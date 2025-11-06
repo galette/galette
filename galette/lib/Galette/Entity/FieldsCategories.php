@@ -49,7 +49,7 @@ class FieldsCategories
      * @param Db                  $zdb      Database
      * @param array<string,mixed> $defaults default values
      */
-    public function __construct(private Db $zdb, private array $defaults)
+    public function __construct(private readonly Db $zdb, private readonly array $defaults)
     {
     }
 

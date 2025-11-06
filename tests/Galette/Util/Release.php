@@ -252,9 +252,7 @@ div.foot { font: 90% monospace; color: #787878; padding-top: 4px;}
         $client = new \GuzzleHttp\Client(['handler' => $handlerStack]);
 
         $release->method('getCurrentRelease')->willReturn($current);
-        $release->method('setupClient')->willReturnCallback(function () use ($client) {
-            return $client;
-        });
+        $release->method('setupClient')->willReturnCallback(fn() => $client);
 
         $this->assertSame($expected, $release->checkNewRelease());
         $this->assertSame($latest, $release->getLatestRelease());

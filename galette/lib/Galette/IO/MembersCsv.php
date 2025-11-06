@@ -43,8 +43,8 @@ use Galette\Filters\MembersList;
 
 class MembersCsv extends CsvOut
 {
-    private string $filename;
-    private string $path;
+    private readonly string $filename;
+    private readonly string $path;
 
     /**
      * Default constructor

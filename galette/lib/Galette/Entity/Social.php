@@ -62,7 +62,7 @@ class Social
     private int $id;
     private string $type;
     private string $url;
-    private ?int $id_adh;
+    private ?int $id_adh = null;
     private ?Adherent $member = null;
 
     /**

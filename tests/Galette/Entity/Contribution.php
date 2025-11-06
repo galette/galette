@@ -692,7 +692,7 @@ class Contribution extends GaletteTestCase
             \Analog::ERROR,
             'Non-logged-in users cannot load transaction id `46`'
         );
-        $this->assertInstanceOf('\Galette\Entity\Transaction', $contrib->transaction);
+        $this->assertInstanceOf(\Galette\Entity\Transaction::class, $contrib->transaction);
         $this->assertNull($contrib->transaction->id);
 
         $contrib->member = 'not a member';
@@ -1339,7 +1339,7 @@ class Contribution extends GaletteTestCase
         $this->assertTrue($child->load($cid));
 
         $this->assertSame($child_data['nom_adh'], $child->name);
-        $this->assertInstanceOf('\Galette\Entity\Adherent', $child->parent);
+        $this->assertInstanceOf(\Galette\Entity\Adherent::class, $child->parent);
         $this->assertSame($member->id, $child->parent->id);
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 

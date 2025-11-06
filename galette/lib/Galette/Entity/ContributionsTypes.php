@@ -54,7 +54,7 @@ class ContributionsTypes
 
     private int $id;
     private string $label;
-    private ?float $amount; //@phpstan-ignore-line
+    private ?float $amount = null; //@phpstan-ignore-line
     private int $extension;
 
     public const ID_NOT_EXITS = -1;
@@ -599,12 +599,10 @@ class ContributionsTypes
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
-            switch ($name) {
-                case 'libelle':
-                    return _T($this->label);
-                default:
-                    return $this->$name;
-            }
+            return match ($name) {
+                'libelle' => _T($this->label),
+                default => $this->$name,
+            };
         } else {
             return false;
         }

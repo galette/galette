@@ -78,7 +78,7 @@ class Password extends GaletteTestCase
     {
         try {
             $this->deleteMember();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             //empty catch
         }
 

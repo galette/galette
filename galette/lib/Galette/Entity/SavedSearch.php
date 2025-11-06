@@ -67,8 +67,8 @@ class SavedSearch
      * @param ArrayObject<string,int|string>|int|null $args  Arguments
      */
     public function __construct(
-        private Db $zdb,
-        private Login $login,
+        private readonly Db $zdb,
+        private readonly Login $login,
         ArrayObject|int|null $args = null
     ) {
         $this->creation_date = date('Y-m-d H:i:s');
@@ -323,13 +323,10 @@ class SavedSearch
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
-            switch ($name) {
-                case 'creation_date':
-                case 'sparameters':
-                    return true;
-                default:
-                    return property_exists($this, $name);
-            }
+            return match ($name) {
+                'creation_date', 'sparameters' => true,
+                default => property_exists($this, $name),
+            };
         }
         return false;
     }
@@ -361,7 +358,7 @@ class SavedSearch
                 $this->parameters = $value;
                 break;
             case 'name':
-                if (trim($value) === '') {
+                if (trim((string) $value) === '') {
                     $this->errors[] = _T("Name cannot be empty!");
                 }
                 $this->name = $value;

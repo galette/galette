@@ -205,7 +205,7 @@ class DynamicFieldsController extends CrudController
         int|string|null $value = null,
         string $form_name = 'adh'
     ): Response {
-        if (isset($_POST['form_name']) && trim($_POST['form_name']) != '') {
+        if (isset($_POST['form_name']) && trim((string) $_POST['form_name']) != '') {
             $form_name = $_POST['form_name'];
         }
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
@@ -282,7 +282,7 @@ class DynamicFieldsController extends CrudController
         string $name
     ): Response {
         $object_class = DynamicFieldsSet::getClasses()[$form_name];
-        if ($object_class === 'Galette\Entity\Adherent') {
+        if ($object_class === \Galette\Entity\Adherent::class) {
             $object = new $object_class($this->zdb);
         } else {
             $object = new $object_class($this->zdb, $this->login);

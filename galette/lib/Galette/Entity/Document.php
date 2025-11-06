@@ -208,24 +208,15 @@ class Document
     public function canShow(Login $login): bool
     {
         $access_level = $login->getAccessLevel();
-
-        switch ($this->getPermission()) {
-            case FieldsConfig::ALL:
-                return true;
-            case FieldsConfig::NOBODY:
-                return false;
-            case FieldsConfig::ADMIN:
-                return $access_level >= Authentication::ACCESS_ADMIN;
-            case FieldsConfig::STAFF:
-                return $access_level >= Authentication::ACCESS_STAFF;
-            case FieldsConfig::MANAGER:
-                return $access_level >= Authentication::ACCESS_MANAGER;
-            case FieldsConfig::USER_WRITE:
-            case FieldsConfig::USER_READ:
-                return $access_level >= Authentication::ACCESS_USER;
-        }
-
-        return false;
+        return match ($this->getPermission()) {
+            FieldsConfig::ALL => true,
+            FieldsConfig::NOBODY => false,
+            FieldsConfig::ADMIN => $access_level >= Authentication::ACCESS_ADMIN,
+            FieldsConfig::STAFF => $access_level >= Authentication::ACCESS_STAFF,
+            FieldsConfig::MANAGER => $access_level >= Authentication::ACCESS_MANAGER,
+            FieldsConfig::USER_WRITE, FieldsConfig::USER_READ => $access_level >= Authentication::ACCESS_USER,
+            default => false,
+        };
     }
 
     /**

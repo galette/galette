@@ -206,7 +206,7 @@ class CsvIn extends GaletteTestCase
                     } else {
                         //manage dynamic fields
                         $matches = [];
-                        if (preg_match('/^dynfield_(\d+)/', $field, $matches)) {
+                        if (preg_match('/^dynfield_(\d+)/', (string) $field, $matches)) {
                             $adh = new Adherent($this->zdb, (int)$member->id_adh, ['dynamics' => true]);
                             $expected = [
                                 [
@@ -699,7 +699,7 @@ class CsvIn extends GaletteTestCase
         $members_list = $this->getMemberData1();
         foreach ($members_list as &$data) {
             //two lines without required dynamic field.
-            $data['dynfield_' . $cdf->getId()] = rand(0, 2);
+            $data['dynfield_' . $cdf->getId()] = random_int(0, 2);
         }
         unset($data);
 

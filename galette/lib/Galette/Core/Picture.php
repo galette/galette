@@ -75,7 +75,7 @@ class Picture
     protected int $max_height = 200;
     private StatementInterface $insert_stmt;
     /** @var ?array<string, mixed> */
-    private ?array $cropping;
+    private ?array $cropping = null;
 
     /**
      * Default constructor.
@@ -229,7 +229,7 @@ class Picture
                 $this->file_path = realpath($file_wo_ext . '.' . $this->format);
                 return true;
             }
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             return false;
         }
         return false;
@@ -653,7 +653,7 @@ class Picture
             //retrieve valid members ids
             $members = new Members();
             $valids = $members->getArrayList(
-                array_map('intval', $existing_diff),
+                array_map(intval(...), $existing_diff),
                 null,
                 false,
                 false,

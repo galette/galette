@@ -72,7 +72,7 @@ class GaletteMail
      *
      * @param Preferences $preferences Preferences instance
      */
-    public function __construct(private Preferences $preferences)
+    public function __construct(private readonly Preferences $preferences)
     {
         $this->setSender(
             $preferences->pref_email_nom,

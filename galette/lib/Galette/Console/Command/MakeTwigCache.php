@@ -276,7 +276,7 @@ class MakeTwigCache extends AbstractCommand
     private function getTwigCacheHandler(string $directory): CacheInterface
     {
         return new class ($directory) extends FilesystemCache {
-            private string $directory;
+            private readonly string $directory;
 
             /**
              * Default constructor

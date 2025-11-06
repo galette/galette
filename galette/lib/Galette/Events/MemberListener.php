@@ -55,12 +55,12 @@ class MemberListener implements ListenerSubscriber
      * @param Db          $zdb         Db instance
      */
     public function __construct(
-        private Preferences $preferences,
-        private RouteParser $routeparser,
-        private History $history,
-        private Messages $flash,
-        private Login $login,
-        private Db $zdb
+        private readonly Preferences $preferences,
+        private readonly RouteParser $routeparser,
+        private readonly History $history,
+        private readonly Messages $flash,
+        private readonly Login $login,
+        private readonly Db $zdb
     ) {
     }
 

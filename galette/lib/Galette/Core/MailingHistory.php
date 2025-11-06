@@ -54,8 +54,8 @@ class MailingHistory extends History
     /** @var array<int, mixed> */
     private array $recipients;
     private int $sender;
-    private ?string $sender_name; //@phpstan-ignore-line
-    private ?string $sender_address; //@phpstan-ignore-line
+    private ?string $sender_name = null; //@phpstan-ignore-line
+    private ?string $sender_address = null; //@phpstan-ignore-line
     private bool $sent = false;
 
     /**
@@ -72,7 +72,7 @@ class MailingHistory extends History
         Login $login,
         Preferences $preferences,
         ?MailingsList $filters = null,
-        private ?Mailing $mailing = null
+        private readonly ?Mailing $mailing = null
     ) {
         if ($filters === null) {
             $filters = new MailingsList();
@@ -221,7 +221,7 @@ class MailingHistory extends History
 
             if ($this->filters->subject_filter != '') {
                 $token = $this->zdb->platform->quoteValue(
-                    '%' . strtolower($this->filters->subject_filter) . '%'
+                    '%' . strtolower((string) $this->filters->subject_filter) . '%'
                 );
 
                 $select->where(
@@ -542,7 +542,7 @@ class MailingHistory extends History
             } else {
                 $recipients = Galette::jsonDecode($row['mailing_recipients']);
             }
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             Analog::log(
                 'Unable to retrieve recipients for mailing history ' . $row['mailing_id'],
                 Analog::ERROR

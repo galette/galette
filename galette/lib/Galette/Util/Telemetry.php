@@ -46,9 +46,9 @@ class Telemetry
      * @param Plugins     $plugins Plugins instance
      */
     public function __construct(
-        private Db $zdb,
-        private Preferences $prefs,
-        private Plugins $plugins
+        private readonly Db $zdb,
+        private readonly Preferences $prefs,
+        private readonly Plugins $plugins
     ) {
     }
 

@@ -98,7 +98,7 @@ class Members extends GaletteTestCase
         $this->logSuperAdmin();
         try {
             $this->deleteMembers();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             //empty catch
         }
 

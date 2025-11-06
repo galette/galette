@@ -56,9 +56,9 @@ class Authenticate
      * @param Messages    $flash       Flash messages instance
      */
     public function __construct(
-        private Login $login,
-        private Session $session,
-        private RouteParser $routeparser,
+        private readonly Login $login,
+        private readonly Session $session,
+        private readonly RouteParser $routeparser,
         protected Messages $flash
     ) {
     }

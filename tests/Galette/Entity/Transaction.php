@@ -440,7 +440,7 @@ class Transaction extends GaletteTestCase
         $this->assertTrue($child->load($cid));
 
         $this->assertSame($child_data['nom_adh'], $child->name);
-        $this->assertInstanceOf('\Galette\Entity\Adherent', $child->parent);
+        $this->assertInstanceOf(\Galette\Entity\Adherent::class, $child->parent);
         $this->assertSame($member_one->id, $child->parent->id);
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 

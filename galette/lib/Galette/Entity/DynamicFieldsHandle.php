@@ -51,7 +51,7 @@ class DynamicFieldsHandle
     /** @var array<int, array<int, mixed>> */
     private array $current_values = [];
     private string $form_name;
-    private ?int $item_id;
+    private ?int $item_id = null;
 
     /** @var array<string> */
     private array $errors = [];
@@ -70,8 +70,8 @@ class DynamicFieldsHandle
      * @param ?object $instance Object instance
      */
     public function __construct(
-        private Db $zdb,
-        private Login $login,
+        private readonly Db $zdb,
+        private readonly Login $login,
         ?object $instance = null
     ) {
         if ($instance !== null) {
@@ -122,9 +122,7 @@ class DynamicFieldsHandle
                         }
                         $this->current_values[$f->{DynamicField::PK}][] = array_filter(
                             (array)$f,
-                            static function ($k) {
-                                return $k != DynamicField::PK;
-                            },
+                            static fn($k) => $k != DynamicField::PK,
                             ARRAY_FILTER_USE_KEY
                         );
                     } else {

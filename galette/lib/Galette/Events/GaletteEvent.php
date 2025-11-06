@@ -39,8 +39,8 @@ class GaletteEvent implements HasEventName
      * @param object $object Event object
      */
     public function __construct(
-        private string $name,
-        private object $object
+        private readonly string $name,
+        private readonly object $object
     ) {
     }
 

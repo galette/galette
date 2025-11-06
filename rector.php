@@ -26,7 +26,7 @@ return RectorConfig::configure()
     )
     ->withParallel(timeoutSeconds: 300)
     // uncomment to reach your current PHP version
-    //->withPhpSets(php81: true)
+    ->withPhpSets(php82: true)
     ->withRules([
         CodeQuality\Assign\CombinedAssignRector::class,
         CodeQuality\BooleanAnd\RemoveUselessIsObjectCheckRector::class,

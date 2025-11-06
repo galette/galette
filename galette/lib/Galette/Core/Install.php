@@ -68,10 +68,10 @@ class Install
     private string $db_port;
     private string $db_name;
     private string $db_user;
-    private ?string $db_pass;
+    private ?string $db_pass = null;
     private ?string $db_prefix = null;
 
-    private bool $db_connected;
+    private readonly bool $db_connected;
     /** @var array<string, string> */
     private array $report;
 
@@ -743,7 +743,7 @@ class Install
 
         $sql_size = count($sql_query);
         for ($i = 0; $i < $sql_size; $i++) {
-            $query = trim($sql_query[$i]);
+            $query = trim((string) $sql_query[$i]);
             if ($query != '' && $query[0] != '-') {
                 //some output infos
                 $ret = [
@@ -1316,7 +1316,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             } else {
                 return $db_ver;
             }
-        } catch (\LogicException $e) {
+        } catch (\LogicException) {
             return false;
         }
     }

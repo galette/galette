@@ -50,8 +50,8 @@ abstract class Pagination
     private int $show;
     private int $pages = 1;
     private ?int $counter = null;
-    protected ?Twig $view;
-    protected ?RouteParser $routeparser;
+    protected ?Twig $view = null;
+    protected ?RouteParser $routeparser = null;
     /** @var array<string> */
     protected array $errors = [];
 

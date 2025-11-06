@@ -55,7 +55,6 @@ class FieldsConfig
     public const TYPE_URL = 9;
     public const TYPE_RADIO = 10;
     public const TYPE_SELECT = 11;
-
     /** @var array<string, array<string, mixed>> */
     protected array $core_db_fields = [];
     /** @var array<string, bool> */
@@ -522,9 +521,9 @@ class FieldsConfig
                             continue;
                         }
 
-                        if (preg_match('/date/', $o->field_id)) {
+                        if (preg_match('/date/', (string) $o->field_id)) {
                             $o->type = self::TYPE_DATE;
-                        } elseif (preg_match('/bool/', $o->field_id)) {
+                        } elseif (preg_match('/bool/', (string) $o->field_id)) {
                             $o->type = self::TYPE_BOOL;
                         } elseif (
                             $o->field_id == 'titre_adh'
@@ -838,7 +837,7 @@ class FieldsConfig
             $select->from(PREFIX_DB . 'required');
 
             $old_required = $this->zdb->execute($select);
-        } catch (\Exception $pe) {
+        } catch (\Exception) {
             Analog::log(
                 'Unable to retrieve required fields_config. Maybe '
                 . 'the table does not exists?',

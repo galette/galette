@@ -115,7 +115,7 @@ class News
     {
         return GALETTE_CACHE_DIR . str_replace(
             '%feed',
-            md5($this->feed_url),
+            md5((string) $this->feed_url),
             $this->cache_filename
         );
     }

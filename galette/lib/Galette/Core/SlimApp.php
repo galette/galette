@@ -38,7 +38,7 @@ use Slim\App;
 class SlimApp
 {
     /** @var App<TContainerInterface> */
-    private App $app;
+    private readonly App $app;
 
     /**
      * Create a new Slim application

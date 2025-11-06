@@ -38,9 +38,9 @@ class Entry
      * @param int    $position Position of entry in the list
      */
     public function __construct(
-        private string $title,
-        private array $posts,
-        private int $position = 0
+        private readonly string $title,
+        private readonly array $posts,
+        private readonly int $position = 0
     ) {
     }
 

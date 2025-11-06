@@ -97,7 +97,6 @@ class ClassLoader
         if (!file_exists($includePath)) {
             throw new \RuntimeException('Include path "' . $includePath . '" doesn\'t exists');
         }
-
         $this->includePath = $includePath;
     }
 
@@ -186,7 +185,7 @@ class ClassLoader
      */
     public function unregister(): void
     {
-        spl_autoload_unregister([$this, 'loadClass']);
+        spl_autoload_unregister($this->loadClass(...));
     }
 
     /**

@@ -73,7 +73,7 @@ class Contributions extends GaletteTestCase
         $this->logSuperAdmin();
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
 
-        $list = $contributions->getList(true, null, true);
+        $list = $contributions->getList(true, null);
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
         $this->assertSame(0, $contributions->getCount());
@@ -302,7 +302,7 @@ class Contributions extends GaletteTestCase
         $this->logSuperAdmin();
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
 
-        $list = $contributions->getList(true, null, true);
+        $list = $contributions->getList(true, null);
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
         $this->assertSame(0, $contributions->getCount());

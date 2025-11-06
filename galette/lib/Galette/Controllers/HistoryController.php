@@ -54,8 +54,8 @@ class HistoryController extends AbstractController
         ?string $option = null,
         string|int|null $value = null
     ): Response {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
         } else {
             $filters = new HistoryList();
         }
@@ -75,7 +75,7 @@ class HistoryController extends AbstractController
                 break;
         }
 
-        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
+        $this->session->{$this->getFilterName(static::getDefaultFilterName())} = $filters;
 
         $this->history->setFilters($filters);
         $logs = $this->history->getHistory();
@@ -108,8 +108,8 @@ class HistoryController extends AbstractController
     {
         $post = $request->getParsedBody();
 
-        if ($this->session->{$this->getFilterName($this->getDefaultFilterName())} !== null) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if ($this->session->{$this->getFilterName(static::getDefaultFilterName())} !== null) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
         } else {
             $filters = new HistoryList();
         }
@@ -139,7 +139,7 @@ class HistoryController extends AbstractController
             }
         }
 
-        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
+        $this->session->{$this->getFilterName(static::getDefaultFilterName())} = $filters;
 
         return $response
             ->withStatus(301)
@@ -173,7 +173,7 @@ class HistoryController extends AbstractController
                 //reinitialize object after flush
                 $this->history = new History($this->zdb, $this->login, $this->preferences);
                 $filters = new HistoryList();
-                $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
+                $this->session->{$this->getFilterName(static::getDefaultFilterName())} = $filters;
 
                 $this->flash->addMessage(
                     'success_detected',

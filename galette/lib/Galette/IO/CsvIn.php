@@ -285,7 +285,7 @@ class CsvIn extends Csv
                 $col = 0;
                 $errors = [];
                 foreach ($data as $column) {
-                    $column = trim($column);
+                    $column = trim((string) $column);
 
                     //check required fields
                     if (
@@ -398,7 +398,7 @@ class CsvIn extends Csv
                         $this->fields['mdp_adh2'] = $column;
                     }
 
-                    if (str_starts_with($this->fields[$col], 'dynfield_')) {
+                    if (str_starts_with((string) $this->fields[$col], 'dynfield_')) {
                         //dynamic field, keep to check later
                         $dfields[$this->fields[$col] . '_1'] = $column;
                     } else {
@@ -474,7 +474,7 @@ class CsvIn extends Csv
                     $col = 0;
                     $values = [];
                     foreach ($data as $column) {
-                        if (substr($this->fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
+                        if (str_starts_with($this->fields[$col], 'dynfield_')) {
                             //dynamic field, keep to check later
                             $values[str_replace('dynfield_', 'info_field_', $this->fields[$col] . '_1')] = $column;
                             $col++;
@@ -496,11 +496,11 @@ class CsvIn extends Csv
                             $values[$this->fields[$col]] = 0; //defaults to 0 as in Adherent
                         }
 
-                        if ($this->fields[$col] == Status::PK && empty(trim($column))) {
+                        if ($this->fields[$col] == Status::PK && empty(trim((string) $column))) {
                             $values[Status::PK] = $this->preferences->pref_statut ?? Status::DEFAULT_STATUS;
                         }
 
-                        if ($this->fields[$col] == 'pref_lang' && empty(trim($column))) {
+                        if ($this->fields[$col] == 'pref_lang' && empty(trim((string) $column))) {
                             $values[$this->fields[$col]] = $this->preferences->pref_lang;
                         }
 

@@ -62,7 +62,7 @@ class Titles
      *
      * @param Db $zdb Database instance
      */
-    public function __construct(private Db $zdb)
+    public function __construct(private readonly Db $zdb)
     {
     }
 

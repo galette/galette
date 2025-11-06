@@ -46,9 +46,9 @@ class Language
      * @param RouteParser $routeparser Route parser instance
      */
     public function __construct(
-        private I18n $i18n,
-        private Session $session,
-        private RouteParser $routeparser
+        private readonly I18n $i18n,
+        private readonly Session $session,
+        private readonly RouteParser $routeparser
     ) {
     }
 

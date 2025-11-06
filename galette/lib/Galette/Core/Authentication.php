@@ -49,7 +49,7 @@ abstract class Authentication
 
     protected string $login;
     protected string $name;
-    protected ?string $surname;
+    protected ?string $surname = null;
     protected bool $admin = false;
     protected int $id;
     protected string $lang;

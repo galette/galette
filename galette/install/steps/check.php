@@ -35,7 +35,7 @@ $date_ok = false;
 try {
     $test_date = new DateTime();
     $date_ok = true;
-} catch (Throwable $e) {
+} catch (Throwable) {
     //do nothing
 }
 
@@ -45,7 +45,7 @@ $modules_ok = $cm->isValid();
 
 // check file permissions
 $perms_ok = true;
-$files_need_rw = array(
+$files_need_rw = [
     _T("Photos")            => GALETTE_PHOTOS_PATH,
     _T("Cache")             => str_replace(GALETTE_VERSION, '', GALETTE_CACHE_DIR),
     _T("Temporary images")  => GALETTE_TEMPIMAGES_PATH,
@@ -55,7 +55,7 @@ $files_need_rw = array(
     _T("Logs")              => GALETTE_LOGS_PATH,
     _T("Attachments")       => GALETTE_ATTACHMENTS_PATH,
     _T("Files")             => GALETTE_FILES_PATH
-);
+];
 
 $files_perms_class = $class . 'ok';
 

@@ -328,7 +328,7 @@ trait FileTrait
             $reg .= "(.*)";
         }
         $reg .= "$/i";
-        if (preg_match($reg, $this->name, $matches)) {
+        if (preg_match($reg, (string) $this->name, $matches)) {
             Analog::log(
                 '[' . $class . '] Filename and extension are OK, proceed.',
                 Analog::DEBUG
@@ -342,7 +342,7 @@ trait FileTrait
             }
         } else {
             $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
-            $m = preg_match($erreg, $this->name, $errmatches);
+            $m = preg_match($erreg, (string) $this->name, $errmatches);
 
             $err_msg = '[' . $class . '] ';
             if ($m == 1) {
@@ -527,7 +527,7 @@ trait FileTrait
     public static function getMimeType(string $file): string
     {
         $mime = null;
-        $class = get_called_class();
+        $class = static::class;
 
         if (function_exists('finfo_open')) {
             Analog::log(
@@ -574,43 +574,28 @@ trait FileTrait
     {
         $error = _T("An error occurred.");
 
-        switch ($code) {
-            case self::INVALID_FILENAME:
-                $error = _T("File name is invalid, it should not contain any special character or space.");
-                break;
-            case self::INVALID_EXTENSION:
-                $error = str_replace(
-                    '%s',
-                    $this->getAllowedExts(),
-                    _T("File extension is not allowed, only %s files are.")
-                );
-                break;
-            case self::FILE_TOO_BIG:
-                $error = str_replace(
-                    '%d',
-                    (string)$this->maxlength,
-                    _T("File is too big. Maximum allowed size is %dKo")
-                );
-                break;
-            case self::IMAGE_TOO_SMALL:
-                $error = sprintf(
-                    _T("Image is too small. The minimum image side size allowed is %spx"),
-                    $this->mincropsize
-                );
-                break;
-            case self::MIME_NOT_ALLOWED:
-                $error = _T("Mime-Type not allowed");
-                break;
-            case self::NEW_FILE_EXISTS:
-                $error = _T("A file with that name already exists!");
-                break;
-            case self::INVALID_FILE:
-                $error = _T("File does not comply with requirements.");
-                break;
-            case self::CANT_WRITE:
-                $error = _T("Unable to write file or temporary file");
-                break;
-        }
+        $error = match ($code) {
+            self::INVALID_FILENAME => _T("File name is invalid, it should not contain any special character or space."),
+            self::INVALID_EXTENSION => str_replace(
+                '%s',
+                $this->getAllowedExts(),
+                _T("File extension is not allowed, only %s files are.")
+            ),
+            self::FILE_TOO_BIG => str_replace(
+                '%d',
+                (string)$this->maxlength,
+                _T("File is too big. Maximum allowed size is %dKo")
+            ),
+            self::IMAGE_TOO_SMALL => sprintf(
+                _T("Image is too small. The minimum image side size allowed is %spx"),
+                $this->mincropsize
+            ),
+            self::MIME_NOT_ALLOWED => _T("Mime-Type not allowed"),
+            self::NEW_FILE_EXISTS => _T("A file with that name already exists!"),
+            self::INVALID_FILE => _T("File does not comply with requirements."),
+            self::CANT_WRITE => _T("Unable to write file or temporary file"),
+            default => $error,
+        };
 
         return $error;
     }
@@ -636,23 +621,15 @@ trait FileTrait
      */
     public function getPhpErrorMessage(int $error_code): string
     {
-        switch ($error_code) {
-            case UPLOAD_ERR_INI_SIZE:
-                return _T("The uploaded file exceeds the upload_max_filesize directive in php.ini");
-            case UPLOAD_ERR_FORM_SIZE:
-                return _T("The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form");
-            case UPLOAD_ERR_PARTIAL:
-                return _T("The uploaded file was only partially uploaded");
-            case UPLOAD_ERR_NO_FILE:
-                return _T("No file was uploaded");
-            case UPLOAD_ERR_NO_TMP_DIR:
-                return _T("Missing a temporary folder");
-            case UPLOAD_ERR_CANT_WRITE:
-                return _T("Failed to write file to disk");
-            case UPLOAD_ERR_EXTENSION:
-                return _T("File upload stopped by extension");
-            default:
-                return _T("Unknown upload error");
-        }
+        return match ($error_code) {
+            UPLOAD_ERR_INI_SIZE => _T("The uploaded file exceeds the upload_max_filesize directive in php.ini"),
+            UPLOAD_ERR_FORM_SIZE => _T("The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form"),
+            UPLOAD_ERR_PARTIAL => _T("The uploaded file was only partially uploaded"),
+            UPLOAD_ERR_NO_FILE => _T("No file was uploaded"),
+            UPLOAD_ERR_NO_TMP_DIR => _T("Missing a temporary folder"),
+            UPLOAD_ERR_CANT_WRITE => _T("Failed to write file to disk"),
+            UPLOAD_ERR_EXTENSION => _T("File upload stopped by extension"),
+            default => _T("Unknown upload error"),
+        };
     }
 }

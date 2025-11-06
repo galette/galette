@@ -38,7 +38,7 @@ use Analog\Analog;
 
 class PdfContribution extends Pdf
 {
-    private PdfModel $model;
+    private readonly PdfModel $model;
     private string $path;
 
     /**
@@ -49,7 +49,7 @@ class PdfContribution extends Pdf
      * @param Preferences  $prefs   Preferences instance
      */
     public function __construct(
-        private Contribution $contrib,
+        private readonly Contribution $contrib,
         Db $zdb,
         Preferences $prefs
     ) {

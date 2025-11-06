@@ -644,7 +644,7 @@ class ContributionsController extends CrudController
         if ($this->session->$filter_name !== null) {
             $filters = $this->session->$filter_name;
         } else {
-            $filter_class = '\\Galette\\Filters\\' . ucwords($type) . 'List';
+            $filter_class = '\\Galette\\Filters\\' . ucwords((string) $type) . 'List';
             $filters = new $filter_class();
         }
 
@@ -1030,15 +1030,11 @@ class ContributionsController extends CrudController
      */
     protected function doDelete(array $args, array $post): bool
     {
-        $raw_type = null;
-        switch ($args['type']) {
-            case 'transactions':
-                $raw_type = 'transactions';
-                break;
-            case 'contributions':
-                $raw_type = 'contributions';
-                break;
-        }
+        $raw_type = match ($args['type']) {
+            'transactions' => 'transactions',
+            'contributions' => 'contributions',
+            default => throw new \OverflowException('Unknown type ' . $args['type']),
+        };
 
         $class = '\\Galette\Repository\\' . ucwords($raw_type);
         $contribs = new $class($this->zdb, $this->login);

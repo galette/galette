@@ -44,7 +44,7 @@ class DynamicFieldsSet
      * @param Db    $zdb   Database instance
      * @param Login $login Login instance
      */
-    public function __construct(private Db $zdb, private Login $login)
+    public function __construct(private readonly Db $zdb, private readonly Login $login)
     {
     }
 

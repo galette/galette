@@ -61,9 +61,9 @@ class History
      * @param ?HistoryList $filters     Filtering
      */
     public function __construct(
-        protected Db $zdb,
-        protected Login $login,
-        protected Preferences $preferences,
+        protected readonly Db $zdb,
+        protected readonly Login $login,
+        protected readonly Preferences $preferences,
         protected ?HistoryList $filters = new HistoryList()
     ) {
     }
@@ -84,7 +84,7 @@ class History
             defined('GALETTE_X_FORWARDED_FOR_INDEX')
             && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
         ) {
-            $split_xff = preg_split('/,\s*/', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $split_xff = preg_split('/,\s*/', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);
             $ip = $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];

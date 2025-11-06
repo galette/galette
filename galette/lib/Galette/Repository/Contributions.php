@@ -62,9 +62,9 @@ class Contributions
      * @param ?ContributionsList $filters Filtering
      */
     public function __construct(
-        private Db $zdb,
-        private Login $login,
-        private ?ContributionsList $filters = new ContributionsList()
+        private readonly Db $zdb,
+        private readonly Login $login,
+        private readonly ?ContributionsList $filters = new ContributionsList()
     ) {
     }
 

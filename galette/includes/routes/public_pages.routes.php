@@ -83,12 +83,11 @@ $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): v
 
     $app->get(
         '/{trombinoscope|trombi}',
-        function ($request, $response) use ($routeparser) {
+        fn($request, $response)
             //trombi deprecated since 1.2.0
             //trombinoscope deprecated since 0.9.3
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $routeparser->urlFor('publicMembersGallery'));
-        }
+            => $response
+            ->withStatus(301)
+            ->withHeader('Location', $routeparser->urlFor('publicMembersGallery'))
     );
 })->add(\Galette\Middleware\PublicPages::class);

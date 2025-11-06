@@ -144,13 +144,13 @@ class PdfMembersLabels extends Pdf
             $full_address_array = [];
             $full_address_array[] = $member->sfullname;
             // Transform member's address in array and merge it with $full_address_array
-            $address_array = explode(PHP_EOL, $member->address);
+            $address_array = explode(PHP_EOL, (string) $member->address);
             $full_address_array = array_merge($full_address_array, $address_array);
             $full_address_array[] = $member->zipcode . ' ' . $member->town;
             $full_address_array[] = $member->country;
             $full_address = implode(PHP_EOL, $full_address_array);
             // Find longest line in full address
-            $address_lengths = array_map('strlen', $full_address_array);
+            $address_lengths = array_map(strlen(...), $full_address_array);
             $address_longest = $full_address_array[array_search(max($address_lengths), $address_lengths)];
             // Calculate font size to always display full address inside the frame
             $max_text_size = $this->preferences->pref_etiq_hsize;

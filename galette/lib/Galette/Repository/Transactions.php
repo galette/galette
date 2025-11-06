@@ -58,11 +58,10 @@ class Transactions
      * @param ?TransactionsList $filters Filtering
      */
     public function __construct(
-        private Db $zdb,
-        private Login $login,
-        private ?TransactionsList $filters = null
+        private readonly Db $zdb,
+        private readonly Login $login,
+        private readonly ?TransactionsList $filters = new TransactionsList()
     ) {
-        $this->filters = $filters ?? new TransactionsList();
     }
 
     /**

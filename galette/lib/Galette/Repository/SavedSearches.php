@@ -55,9 +55,9 @@ class SavedSearches
      * @param ?SavedSearchesList $filters Filtering
      */
     public function __construct(
-        private Db $zdb,
-        private Login $login,
-        private ?SavedSearchesList $filters = new SavedSearchesList()
+        private readonly Db $zdb,
+        private readonly Login $login,
+        private readonly ?SavedSearchesList $filters = new SavedSearchesList()
     ) {
     }
 

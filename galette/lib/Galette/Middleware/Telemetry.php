@@ -45,9 +45,9 @@ class Telemetry
      * @param Plugins     $plugins     Plugins instance
      */
     public function __construct(
-        private Db $zdb,
-        private Preferences $preferences,
-        private Plugins $plugins,
+        private readonly Db $zdb,
+        private readonly Preferences $preferences,
+        private readonly Plugins $plugins,
     ) {
     }
 
@@ -119,7 +119,7 @@ class Telemetry
                         }
                     }
                 }
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 //empty catch
             }
         }
