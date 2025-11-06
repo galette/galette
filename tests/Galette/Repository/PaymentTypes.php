@@ -90,11 +90,11 @@ class PaymentTypes extends GaletteTestCase
 
         //non admin users will not see scheduled payment type
         $list = $types->getList();
-        $this->assertCount(6, $list);
+        $this->assertCount(8, $list);
 
         $this->logSuperadmin();
         $list = $types->getList();
-        $this->assertCount(7, $list);
+        $this->assertCount(9, $list);
         $this->login->logout();
 
         if ($this->zdb->isPostgres()) {
@@ -102,7 +102,7 @@ class PaymentTypes extends GaletteTestCase
             $select->columns(['last_value']);
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->assertGreaterThanOrEqual(7, $result->last_value, 'Incorrect payments types sequence');
+            $this->assertGreaterThanOrEqual(9, $result->last_value, 'Incorrect payments types sequence');
         }
 
         //reinstall payment types
@@ -110,7 +110,7 @@ class PaymentTypes extends GaletteTestCase
 
         $this->logSuperadmin();
         $list = $types->getList();
-        $this->assertCount(7, $list);
+        $this->assertCount(9, $list);
         $this->login->logout();
 
         if ($this->zdb->isPostgres()) {
@@ -119,7 +119,7 @@ class PaymentTypes extends GaletteTestCase
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $this->assertGreaterThanOrEqual(
-                7,
+                9,
                 $result->last_value,
                 'Incorrect payment types sequence ' . $result->last_value
             );

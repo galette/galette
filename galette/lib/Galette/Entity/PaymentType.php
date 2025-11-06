@@ -56,6 +56,8 @@ class PaymentType implements \Stringable
     public const CHECK = 3;
     public const TRANSFER = 4;
     public const PAYPAL = 5;
+    public const STRIPE = 8;
+    public const HELLOASSO = 9;
 
     /**
      * Main constructor
@@ -278,6 +280,8 @@ class PaymentType implements \Stringable
                 self::CHECK         => _T("Check"),
                 self::TRANSFER      => _T("Transfer"),
                 self::PAYPAL        => _T("Paypal"),
+                self::STRIPE        => _T("Stripe"),
+                self::HELLOASSO     => _T("HelloAsso"),
                 self::SCHEDULED     => _T("Payment schedule")
             ];
         } else {
@@ -288,6 +292,8 @@ class PaymentType implements \Stringable
                 self::CHECK         => "Check",
                 self::TRANSFER      => "Transfer",
                 self::PAYPAL        => "Paypal",
+                self::STRIPE        => "Stripe",
+                self::HELLOASSO     => "HelloAsso",
                 self::SCHEDULED     => "Payment schedule"
             ];
         }
