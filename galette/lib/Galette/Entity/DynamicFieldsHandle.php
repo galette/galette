@@ -56,9 +56,6 @@ class DynamicFieldsHandle
     /** @var array<string> */
     private array $errors = [];
 
-    private Db $zdb;
-    private Login $login;
-
     private StatementInterface $insert_stmt;
     private StatementInterface $update_stmt;
     private StatementInterface $delete_stmt;
@@ -72,10 +69,11 @@ class DynamicFieldsHandle
      * @param Login   $login    Login instance
      * @param ?object $instance Object instance
      */
-    public function __construct(Db $zdb, Login $login, ?object $instance = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
+    public function __construct(
+        private Db $zdb,
+        private Login $login,
+        ?object $instance = null
+    ) {
         if ($instance !== null) {
             $this->load($instance);
         }

@@ -31,7 +31,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Analog\Analog;
-use DI\Container;
 
 /**
  * Galette Slim telemetry middleware
@@ -40,20 +39,16 @@ use DI\Container;
  */
 class Telemetry
 {
-    private Db $zdb;
-    private Preferences $preferences;
-    private Plugins $plugins;
-
     /**
-     * Constructor
-     *
-     * @param Container $container Container instance
+     * @param Db          $zdb         DB instance
+     * @param Preferences $preferences Preferences instance
+     * @param Plugins     $plugins     Plugins instance
      */
-    public function __construct(Container $container)
-    {
-        $this->zdb = $container->get(Db::class);
-        $this->preferences = $container->get(Preferences::class);
-        $this->plugins = $container->get(Plugins::class);
+    public function __construct(
+        private Db $zdb,
+        private Preferences $preferences,
+        private Plugins $plugins,
+    ) {
     }
 
     /**

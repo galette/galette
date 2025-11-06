@@ -23,8 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Features;
 
-use Galette\Entity\FieldsConfig;
-
 /**
  * Permissions
  *

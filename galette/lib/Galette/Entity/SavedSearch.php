@@ -48,7 +48,6 @@ class SavedSearch
     public const TABLE = 'searches';
     public const PK = 'search_id';
 
-    private Db $zdb;
     private int $id;
     private string $name;
     /** @var array<string, mixed> */
@@ -57,7 +56,6 @@ class SavedSearch
     private ?string $creation_date;
     private string $form;
 
-    private Login $login;
     /** @var array<string> */
     private array $errors = [];
 
@@ -68,10 +66,11 @@ class SavedSearch
      * @param Login                                   $login Login instance
      * @param ArrayObject<string,int|string>|int|null $args  Arguments
      */
-    public function __construct(Db $zdb, Login $login, ArrayObject|int|null $args = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
+    public function __construct(
+        private Db $zdb,
+        private Login $login,
+        ArrayObject|int|null $args = null
+    ) {
         $this->creation_date = date('Y-m-d H:i:s');
 
         if (is_int($args)) {

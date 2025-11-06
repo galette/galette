@@ -47,7 +47,6 @@ class Status
 
     public const ID_NOT_EXITS = -1;
 
-    private Db $zdb;
 
     private int $id;
     private string $label;
@@ -80,9 +79,8 @@ class Status
      * @param Db                                      $zdb  Database
      * @param int|ArrayObject<string,int|string>|null $args Optional existing result set
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
+    public function __construct(private Db $zdb, int|ArrayObject|null $args = null)
     {
-        $this->zdb = $zdb;
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {

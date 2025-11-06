@@ -49,9 +49,6 @@ class Transactions
     public const PK = Transaction::PK;
 
     private int $count = 0;
-    private Db $zdb;
-    private Login $login;
-    private TransactionsList $filters;
 
     /**
      * Default constructor
@@ -60,11 +57,11 @@ class Transactions
      * @param Login             $login   Login
      * @param ?TransactionsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?TransactionsList $filters = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
+    public function __construct(
+        private Db $zdb,
+        private Login $login,
+        private ?TransactionsList $filters = null
+    ) {
         $this->filters = $filters ?? new TransactionsList();
     }
 

@@ -38,7 +38,6 @@ use Analog\Analog;
 
 class PdfContribution extends Pdf
 {
-    private Contribution $contrib;
     private PdfModel $model;
     private string $path;
 
@@ -49,10 +48,11 @@ class PdfContribution extends Pdf
      * @param Db           $zdb     Database instance
      * @param Preferences  $prefs   Preferences instance
      */
-    public function __construct(Contribution $contrib, Db $zdb, Preferences $prefs)
-    {
-        $this->contrib = $contrib;
-
+    public function __construct(
+        private Contribution $contrib,
+        Db $zdb,
+        Preferences $prefs
+    ) {
         $class = PdfModel::getTypeClass($this->contrib->model);
         $this->model = new $class($zdb, $prefs);
 

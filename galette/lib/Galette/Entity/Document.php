@@ -58,7 +58,6 @@ class Document
     public const MINUTES = 'minutes';
     public const VOTES = 'votes';
 
-    private Db $zdb;
     private int $id;
     private string $type;
     private string $filename;
@@ -75,9 +74,8 @@ class Document
      * @param Db                                      $zdb  Database instance
      * @param int|ArrayObject<string,int|string>|null $args Arguments
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
+    public function __construct(private Db $zdb, int|ArrayObject|null $args = null)
     {
-        $this->zdb = $zdb;
         $this->can_public = true;
 
         $this->init($this->store_path);

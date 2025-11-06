@@ -45,13 +45,6 @@ use Slim\Routing\RouteParser;
  */
 class ContribListener implements ListenerSubscriber
 {
-    private Preferences $preferences;
-    private RouteParser $routeparser;
-    private History $history;
-    private Messages $flash;
-    private Login $login;
-    private Db $zdb;
-
     /**
      * Constructor
      *
@@ -63,19 +56,13 @@ class ContribListener implements ListenerSubscriber
      * @param Db          $zdb         Db instance
      */
     public function __construct(
-        Preferences $preferences,
-        RouteParser $routeparser,
-        History $history,
-        Messages $flash,
-        Login $login,
-        Db $zdb
+        private Preferences $preferences,
+        private RouteParser $routeparser,
+        private History $history,
+        private Messages $flash,
+        private Login $login,
+        private Db $zdb
     ) {
-        $this->preferences = $preferences;
-        $this->routeparser = $routeparser;
-        $this->history = $history;
-        $this->flash = $flash;
-        $this->login = $login;
-        $this->zdb = $zdb;
     }
 
     /**

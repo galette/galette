@@ -38,7 +38,6 @@ class Gaptcha
     private int $max = 12;
     private int $min = 0;
 
-    private I18n $i18n;
     private int $current_left;
     private int $current_right;
     private int $current_op;
@@ -49,9 +48,8 @@ class Gaptcha
      *
      * @param I18n $i18n I18n instance
      */
-    public function __construct(I18n $i18n)
+    public function __construct(private I18n $i18n)
     {
-        $this->i18n = $i18n;
         $this->current_left = random_int($this->min, $this->max);
         $this->current_right = random_int($this->min, $this->max);
         $this->current_op = random_int(1, 2);

@@ -42,8 +42,6 @@ class Login extends Authentication
     public const TABLE = Adherent::TABLE;
     public const PK = 'login_adh';
 
-    private Db $zdb;
-    private I18n $i18n;
     private bool $impersonated = false;
 
     /**
@@ -52,10 +50,8 @@ class Login extends Authentication
      * @param Db   $zdb  Database instance
      * @param I18n $i18n I18n instance
      */
-    public function __construct(Db $zdb, I18n $i18n)
+    public function __construct(private Db $zdb, private I18n $i18n)
     {
-        $this->zdb = $zdb;
-        $this->i18n = $i18n;
     }
 
     /**

@@ -59,7 +59,6 @@ class Social
     public const BLOG = 'blog';
     public const DISCORD = 'discord';
 
-    private Db $zdb;
     private int $id;
     private string $type;
     private string $url;
@@ -72,9 +71,10 @@ class Social
      * @param Db                                      $zdb  Database instance
      * @param int|ArrayObject<string,int|string>|null $args Arguments
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
-    {
-        $this->zdb = $zdb;
+    public function __construct(
+        private Db $zdb,
+        int|ArrayObject|null $args = null
+    ) {
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {

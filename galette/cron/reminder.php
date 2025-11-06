@@ -44,7 +44,7 @@ if (isset($needs_update) && $needs_update === true) {
 /**
  * Authentication middleware
  */
-$authenticate = new Authenticate($container);
+$authenticate = $container->get(Authenticate::class);
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';

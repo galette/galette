@@ -33,7 +33,6 @@ use Galette\Entity\Adherent;
  */
 class Password
 {
-    protected Preferences $preferences;
     /**
      * Errors
      *
@@ -58,11 +57,10 @@ class Password
     /**
      * Default constructor
      *
-     * @param Preferences $prefs Preferences instance
+     * @param Preferences $preferences Preferences instance
      */
-    public function __construct(Preferences $prefs)
+    public function __construct(protected Preferences $preferences)
     {
-        $this->preferences = $prefs;
     }
 
     /**

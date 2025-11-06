@@ -67,16 +67,13 @@ class GaletteMail
     /** @var array<int,File> */
     protected array $attachments = [];
 
-    private Preferences $preferences;
-
     /**
      * Constructor
      *
      * @param Preferences $preferences Preferences instance
      */
-    public function __construct(Preferences $preferences)
+    public function __construct(private Preferences $preferences)
     {
-        $this->preferences = $preferences;
         $this->setSender(
             $preferences->pref_email_nom,
             $preferences->pref_email

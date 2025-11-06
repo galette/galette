@@ -38,6 +38,7 @@ use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 use NumberFormatter;
 use PHPMailer\PHPMailer\PHPMailer;
+use RuntimeException;
 use Slim\Routing\RouteParser;
 use DI\Attribute\Inject;
 
@@ -84,7 +85,7 @@ trait Replacements
         $dynamic_patterns = [];
         foreach ($dynamic_fields as $dynamic_field) {
             //no pattern for separators
-            if ($dynamic_field instanceof  Separator) {
+            if ($dynamic_field instanceof Separator) {
                 continue;
             }
             $key = strtoupper('DYNFIELD_' . $dynamic_field->getId() . '_' . $form_name);
@@ -909,7 +910,7 @@ trait Replacements
         ksort($this->replaces, SORT_NATURAL);
 
         if (array_keys($this->patterns) !== array_keys($this->replaces)) {
-            throw new \RuntimeException('Patterns and replacements does not match!');
+            throw new RuntimeException('Patterns and replacements does not match!');
         }
 
         //handle replacements

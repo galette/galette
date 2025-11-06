@@ -100,18 +100,14 @@ abstract class DynamicField
     /** @var array<string> */
     protected array $errors = [];
 
-    protected Db $zdb;
-
     /**
      * Default constructor
      *
      * @param Db    $zdb  Database instance
      * @param mixed $args Arguments
      */
-    public function __construct(Db $zdb, mixed $args = null)
+    public function __construct(protected Db $zdb, mixed $args = null)
     {
-        $this->zdb = $zdb;
-
         if (is_int($args)) {
             $this->load($args);
         } elseif (is_object($args)) {

@@ -23,12 +23,12 @@ declare(strict_types=1);
 
 namespace Galette\Middleware;
 
+use DI\Attribute\Inject;
 use Galette\Core\Login;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Analog\Analog;
-use DI\Container;
 use RKA\Session;
 use Slim\Flash\Messages;
 use Slim\Routing\RouteContext;
@@ -41,31 +41,26 @@ use Slim\Routing\RouteParser;
  */
 class Authenticate
 {
-    protected Messages $flash;
-
     /**
      * @var array<string, string>
      */
+    #[Inject('acls')]
     protected array $acls;
-
-    private Login $login;
-
-    private Session $session;
-
-    private RouteParser $routeparser;
 
     /**
      * Constructor
      *
-     * @param Container $container Container instance
+     * @param Login       $login       Login instance
+     * @param Session     $session     Session instance
+     * @param RouteParser $routeparser Route parser instance
+     * @param Messages    $flash       Flash messages instance
      */
-    public function __construct(Container $container)
-    {
-        $this->login = $container->get(Login::class);
-        $this->session = $container->get(Session::class);
-        $this->flash = $container->get(Messages::class);
-        $this->acls = $container->get('acls');
-        $this->routeparser = $container->get(RouteParser::class);
+    public function __construct(
+        private Login $login,
+        private Session $session,
+        private RouteParser $routeparser,
+        protected Messages $flash
+    ) {
     }
 
     /**

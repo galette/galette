@@ -189,7 +189,6 @@ class Adherent implements AccessManagementInterface
 
     private bool $self_adh = false;
 
-    private Db $zdb;
     private Preferences $preferences;
     /** @var array<string, mixed> */
     private array $fields;
@@ -219,13 +218,11 @@ class Adherent implements AccessManagementInterface
      *                                                              member, or null to just instantiate object
      * @param false|array<string,bool>|null                   $deps Dependencies configuration, see Adherent::$_deps
      */
-    public function __construct(Db $zdb, ArrayObject|int|string|null $args = null, array|false|null $deps = null)
-    {
-        /** @var I18n $i18n */
-        global $i18n;
-
-        $this->zdb = $zdb;
-
+    public function __construct(
+        private Db $zdb,
+        ArrayObject|int|string|null $args = null,
+        array|false|null $deps = null
+    ) {
         if ($deps === false) {
             $this->disableAllDeps();
         }

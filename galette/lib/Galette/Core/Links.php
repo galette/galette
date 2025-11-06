@@ -45,17 +45,14 @@ class Links
     public const TARGET_INVOICE    = 2;
     public const TARGET_RECEIPT    = 3;
 
-    private Db $zdb;
-
     /**
      * Default constructor
      *
      * @param Db      $zdb   Database instance:
      * @param boolean $clean Whether we should clean expired links in database
      */
-    public function __construct(Db $zdb, bool $clean = true)
+    public function __construct(private Db $zdb, bool $clean = true)
     {
-        $this->zdb = $zdb;
         if ($clean === true) {
             $this->cleanExpired();
         }

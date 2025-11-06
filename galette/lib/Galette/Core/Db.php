@@ -80,8 +80,6 @@ class Db
      */
     public function __construct(?array $dsn = null)
     {
-        $_type = null;
-
         if (is_array($dsn)) {
             $_type_db = $dsn['TYPE_DB'];
             $_host_db = $dsn['HOST_DB'];

@@ -38,10 +38,6 @@ use Galette\Core\Plugins;
  */
 class Telemetry
 {
-    private Db $zdb;
-    private Preferences $prefs;
-    private Plugins $plugins;
-
     /**
      * Constructor
      *
@@ -49,11 +45,11 @@ class Telemetry
      * @param Preferences $prefs   Preferences instance
      * @param Plugins     $plugins Plugins instance
      */
-    public function __construct(Db $zdb, Preferences $prefs, Plugins $plugins)
-    {
-        $this->zdb = $zdb;
-        $this->prefs = $prefs;
-        $this->plugins = $plugins;
+    public function __construct(
+        private Db $zdb,
+        private Preferences $prefs,
+        private Plugins $plugins
+    ) {
     }
 
     /**

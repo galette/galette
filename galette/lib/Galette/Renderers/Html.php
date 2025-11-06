@@ -27,6 +27,7 @@ use Galette\Exception\PHPStartupException;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Flash\Messages;
 use Slim\Interfaces\ErrorRendererInterface;
+use Slim\Psr7\Response;
 use Slim\Views\Twig;
 use Throwable;
 
@@ -37,19 +38,16 @@ use Throwable;
  */
 class Html implements ErrorRendererInterface
 {
-    protected Twig $view;
-    protected Messages $flash;
-
     /**
      * Constructor
      *
      * @param Twig     $view  View instance
      * @param Messages $flash Flash messages
      */
-    public function __construct(Twig $view, Messages $flash)
-    {
-        $this->view = $view;
-        $this->flash = $flash;
+    public function __construct(
+        protected Twig $view,
+        protected Messages $flash
+    ) {
     }
 
     /**
@@ -75,7 +73,7 @@ class Html implements ErrorRendererInterface
             $exception = new PHPStartupException($php_error['message'], $php_error['type'], $exception);
         }
 
-        $response = (new \Slim\Psr7\Response())->withStatus($code);
+        $response = (new Response())->withStatus($code);
         $response = $this->view->render(
             $response,
             'pages/' . (string)$code . '.html.twig',

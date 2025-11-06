@@ -48,11 +48,8 @@ class Contributions
     public const TABLE = Contribution::TABLE;
     public const PK = Contribution::PK;
 
-    private ContributionsList $filters;
     private int $count = 0;
 
-    private Db $zdb;
-    private Login $login;
     private float $sum = 0;
     /** @var array<int> */
     private array $current_selection;
@@ -64,12 +61,11 @@ class Contributions
      * @param Login              $login   Login
      * @param ?ContributionsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?ContributionsList $filters = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
-        $this->filters = $filters ?? new ContributionsList();
+    public function __construct(
+        private Db $zdb,
+        private Login $login,
+        private ?ContributionsList $filters = new ContributionsList()
+    ) {
     }
 
     /**

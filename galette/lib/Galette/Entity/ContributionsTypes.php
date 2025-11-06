@@ -52,8 +52,6 @@ class ContributionsTypes
     public const TABLE = 'types_cotisation';
     public const PK = 'id_type_cotis';
 
-    private Db $zdb;
-
     private int $id;
     private string $label;
     private ?float $amount; //@phpstan-ignore-line
@@ -81,9 +79,10 @@ class ContributionsTypes
      * @param Db                                      $zdb  Database
      * @param int|ArrayObject<string,int|string>|null $args Optional existing result set
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
-    {
-        $this->zdb = $zdb;
+    public function __construct(
+        private Db $zdb,
+        int|ArrayObject|null $args = null
+    ) {
         $this->extension = self::DEFAULT_TYPE;
         if (is_int($args)) {
             $this->load($args);

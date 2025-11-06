@@ -65,9 +65,6 @@ class Transaction implements AccessManagementInterface
     private ?int $member = null;
     private ?int $payment_type = null;
 
-    private Db $zdb;
-    private Login $login;
-
     /** @var array<string> */
     protected array $errors;
     /** @var string[] */
@@ -82,10 +79,11 @@ class Transaction implements AccessManagementInterface
      *                                                        a specific transaction, or null to just
      *                                                        instantiate object
      */
-    public function __construct(Db $zdb, Login $login, ArrayObject|int|null $args = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
+    public function __construct(
+        private Db $zdb,
+        private Login $login,
+        ArrayObject|int|null $args = null
+    ) {
         $this->setFields();
 
         if ($args === null || is_int($args)) {

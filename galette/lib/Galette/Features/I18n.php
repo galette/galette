@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace Galette\Features;
 
+use Galette\Core\L10n;
+
 /**
  * Files
  *
@@ -43,7 +45,7 @@ trait I18n
      */
     protected function addTranslation(string $text_orig): bool
     {
-        /** @var \Galette\Core\L10n $l10n */
+        /** @var L10n $l10n */
         global $l10n;
 
         $result = $l10n->addDynamicTranslation($text_orig);
@@ -69,7 +71,7 @@ trait I18n
      */
     protected function updateTranslation(string $text_orig, string $text_locale, string $text_trans): bool
     {
-        /** @var \Galette\Core\L10n $l10n */
+        /** @var L10n $l10n */
         global $l10n;
 
         $result = $l10n->updateDynamicTranslation($text_orig, $text_locale, $text_trans);
@@ -93,7 +95,7 @@ trait I18n
      */
     protected function deleteTranslation(string $text_orig): bool
     {
-        /** @var \Galette\Core\L10n $l10n */
+        /** @var L10n $l10n */
         global $l10n;
 
         $result = $l10n->deleteDynamicTranslation($text_orig);

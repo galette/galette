@@ -24,7 +24,10 @@ declare(strict_types=1);
 namespace Galette\Features;
 
 use Analog\Analog;
+use DateInterval;
+use DateTime;
 use Galette\Core\Galette;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -68,7 +71,7 @@ trait Cacheable
         if (file_exists($cfile)) {
             try {
                 $dformat = 'Y-m-d H:i:s';
-                $mdate = \DateTime::createFromFormat(
+                $mdate = DateTime::createFromFormat(
                     $dformat,
                     date(
                         $dformat,
@@ -76,9 +79,9 @@ trait Cacheable
                     )
                 );
                 $expire = $mdate->add(
-                    new \DateInterval('PT' . $this->cache_timeout . 'H')
+                    new DateInterval('PT' . $this->cache_timeout . 'H')
                 );
-                $now = new \DateTime();
+                $now = new DateTime();
                 $has_expired = $now > $expire;
                 return !$has_expired;
             } catch (Throwable $e) {
@@ -140,7 +143,7 @@ trait Cacheable
      */
     protected function getDataTocache(): string
     {
-        throw new \RuntimeException('Method not implemented');
+        throw new RuntimeException('Method not implemented');
     }
 
     /**

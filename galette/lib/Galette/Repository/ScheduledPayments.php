@@ -46,12 +46,9 @@ class ScheduledPayments
     public const TABLE = ScheduledPayment::TABLE;
     public const PK = ScheduledPayment::PK;
 
-    private ScheduledPaymentsList $filters;
     private int $count = 0;
-
-    private Db $zdb;
-    private Login $login;
     private float $sum = 0;
+
     /** @var array<int> */
     private array $current_selection;
 
@@ -62,12 +59,11 @@ class ScheduledPayments
      * @param Login                  $login   Login
      * @param ?ScheduledPaymentsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?ScheduledPaymentsList $filters = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
-        $this->filters = $filters ?? new ScheduledPaymentsList();
+    public function __construct(
+        private Db $zdb,
+        private Login $login,
+        private ?ScheduledPaymentsList $filters = new ScheduledPaymentsList()
+    ) {
     }
 
     /**

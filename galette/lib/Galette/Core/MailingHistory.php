@@ -47,7 +47,6 @@ class MailingHistory extends History
     public const FILTER_SENT = 1;
     public const FILTER_NOT_SENT = 2;
 
-    private ?Mailing $mailing = null;
     private int $id;
     private string $date;
     private string $subject;
@@ -68,14 +67,18 @@ class MailingHistory extends History
      * @param MailingsList|null $filters     Filtering
      * @param Mailing|null      $mailing     Mailing
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, ?MailingsList $filters = null, ?Mailing $mailing = null)
-    {
+    public function __construct(
+        Db $zdb,
+        Login $login,
+        Preferences $preferences,
+        ?MailingsList $filters = null,
+        private ?Mailing $mailing = null
+    ) {
         if ($filters === null) {
             $filters = new MailingsList();
         }
 
         parent::__construct($zdb, $login, $preferences, $filters);
-        $this->mailing = $mailing;
     }
 
     /**

@@ -28,7 +28,6 @@ use Galette\Core\Preferences;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use DI\Container;
 use Slim\Flash\Messages;
 use Slim\Routing\RouteParser;
 
@@ -39,25 +38,20 @@ use Slim\Routing\RouteParser;
  */
 class PublicPages
 {
-    protected Messages $flash;
-
-    private Login $login;
-
-    private RouteParser $routeparser;
-
-    private Preferences $preferences;
-
     /**
      * Constructor
      *
-     * @param Container $container Container instance
+     * @param Login       $login       Login instance
+     * @param RouteParser $routeparser Route parser instance
+     * @param Preferences $preferences Preferences instance
+     * @param Messages    $flash       Flash messages instance
      */
-    public function __construct(Container $container)
-    {
-        $this->login = $container->get(Login::class);
-        $this->flash = $container->get(Messages::class);
-        $this->routeparser = $container->get(RouteParser::class);
-        $this->preferences = $container->get(Preferences::class);
+    public function __construct(
+        private Login $login,
+        private RouteParser $routeparser,
+        private Preferences $preferences,
+        protected Messages $flash
+    ) {
     }
 
     /**

@@ -44,10 +44,6 @@ class History
     public const PK = 'id_log';
 
     protected int $count;
-    protected Db $zdb;
-    protected Login $login;
-    protected Preferences $preferences;
-    protected HistoryList $filters;
 
     /** @var array<int, string> */
     protected array $users;
@@ -64,13 +60,12 @@ class History
      * @param Preferences  $preferences Preferences
      * @param ?HistoryList $filters     Filtering
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, ?HistoryList $filters = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-        $this->preferences = $preferences;
-
-        $this->filters = $filters ?? new HistoryList();
+    public function __construct(
+        protected Db $zdb,
+        protected Login $login,
+        protected Preferences $preferences,
+        protected ?HistoryList $filters = new HistoryList()
+    ) {
     }
 
     /**

@@ -133,7 +133,7 @@ abstract class GaletteTestCase extends TestCase
         $this->initModels();
         $this->initTitles();
 
-        $authenticate = new \Galette\Middleware\Authenticate($container);
+        $authenticate = $container->get(\Galette\Middleware\Authenticate::class);
 
         require GALETTE_ROOT . 'includes/routes/main.routes.php';
         require GALETTE_ROOT . 'includes/routes/authentication.routes.php';
@@ -394,7 +394,7 @@ abstract class GaletteTestCase extends TestCase
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
-                    $pw_checked = password_verify($value, $adh->password);
+                    $pw_checked = password_verify((string) $value, (string) $adh->password);
                     $this->assertTrue($pw_checked);
                     break;
                 case 'ddn_adh':
@@ -477,7 +477,7 @@ abstract class GaletteTestCase extends TestCase
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
-                    $pw_checked = password_verify($value, $adh->password);
+                    $pw_checked = password_verify((string) $value, (string) $adh->password);
                     $this->assertTrue($pw_checked);
                     break;
                 case 'ddn_adh':

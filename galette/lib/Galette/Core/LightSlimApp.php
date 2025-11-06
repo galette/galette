@@ -37,7 +37,6 @@ use Slim\App;
  */
 class LightSlimApp
 {
-    private string $mode;
     /** @var App<TContainerInterface> */
     private App $app;
 
@@ -46,10 +45,8 @@ class LightSlimApp
      *
      * @param string $mode Galette mode
      */
-    public function __construct(string $mode = 'NEED_UPDATE')
+    public function __construct(private string $mode = 'NEED_UPDATE')
     {
-        $this->mode = $mode;
-
         $builder = new ContainerBuilder();
         $builder->useAttributes(true);
         $builder->addDefinitions([

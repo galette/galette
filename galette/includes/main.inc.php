@@ -112,7 +112,7 @@ $app->add($app->getContainer()->get('csrf'));
 /**
  * Authentication middleware
  */
-$authenticate = new Authenticate($container);
+$authenticate = $container->get(Authenticate::class);
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 

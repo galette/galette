@@ -70,7 +70,6 @@ abstract class PdfModel
 
     private ?int $id = null;
     private string $name;
-    private int $type;
     private ?string $header;
     private ?string $footer;
     private ?string $title;
@@ -87,7 +86,7 @@ abstract class PdfModel
      * @param int                                     $type        Model type
      * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
-    public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int|null $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, private int $type, ArrayObject|int|null $args = null)
     {
         global $container, $login;
         $this->routeparser = $container->get(RouteParser::class);
@@ -95,7 +94,6 @@ abstract class PdfModel
         $this
             ->setDb($zdb)
             ->setLogin($login);
-        $this->type = $type;
 
         if (is_int($args)) {
             $this->load($args);

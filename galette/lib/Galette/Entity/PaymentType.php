@@ -47,7 +47,6 @@ class PaymentType
     public const TABLE = 'paymenttypes';
     public const PK = 'type_id';
 
-    private Db $zdb;
     private int $id;
 
     public const SCHEDULED = 7;
@@ -64,9 +63,10 @@ class PaymentType
      * @param Db                                      $zdb  Database instance
      * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
-    public function __construct(Db $zdb, ArrayObject|int|null $args = null)
-    {
-        $this->zdb = $zdb;
+    public function __construct(
+        private Db $zdb,
+        ArrayObject|int|null $args = null
+    ) {
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {

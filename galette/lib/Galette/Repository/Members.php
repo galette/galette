@@ -104,7 +104,6 @@ class Members
 
     public const NON_STAFF_MEMBERS = 30;
 
-    private MembersList|AdvancedMembersList $filters;
     private int $count = 0;
     /** @var array<string> */
     private array $errors = [];
@@ -116,9 +115,8 @@ class Members
      *
      * @param MembersList|AdvancedMembersList|null $filters Filtering
      */
-    public function __construct(MembersList|AdvancedMembersList|null $filters = null)
+    public function __construct(private MembersList|AdvancedMembersList|null $filters = new MembersList())
     {
-        $this->filters = $filters ?? new MembersList();
     }
 
     /**

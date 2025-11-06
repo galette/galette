@@ -43,9 +43,6 @@ class ContributionsCsv extends CsvOut
 {
     private string $filename;
     private string $path;
-    private Db $zdb;
-    private Login $login;
-    private string $type;
 
     /**
      * Default constructor
@@ -54,13 +51,13 @@ class ContributionsCsv extends CsvOut
      * @param Login  $login Login instance
      * @param string $type  One of 'contributions' or 'transactions'
      */
-    public function __construct(Db $zdb, Login $login, string $type)
-    {
+    public function __construct(
+        private Db $zdb,
+        private Login $login,
+        private string $type
+    ) {
         $this->filename = 'filtered_' . $type . 'list.csv';
         $this->path = self::DEFAULT_DIRECTORY . $this->filename;
-        $this->zdb = $zdb;
-        $this->login = $login;
-        $this->type = $type;
         parent::__construct();
     }
 

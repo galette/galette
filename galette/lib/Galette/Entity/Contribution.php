@@ -105,8 +105,6 @@ class Contribution implements AccessManagementInterface
     /** @var array<int, PaymentType> */
     private array $ptypes_list;
 
-    private Db $zdb;
-    private Login $login;
     /** @var array<string> */
     protected array $errors = [];
 
@@ -134,11 +132,11 @@ class Contribution implements AccessManagementInterface
      *                                                                           a specific contribution, or a type id
      *                                                                           to just instantiate object
      */
-    public function __construct(Db $zdb, Login $login, int|array|ArrayObject|null $args = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
+    public function __construct(
+        private Db $zdb,
+        private Login $login,
+        int|array|ArrayObject|null $args = null
+    ) {
         global $preferences;
         $this->payment_type = $preferences->pref_default_paymenttype;
 

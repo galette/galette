@@ -48,9 +48,7 @@ class Pdf extends TCPDF
     public const FONT = 'DejaVuSans';
     public const FONT_SIZE = 10;
 
-    protected Preferences $preferences;
     protected I18n $i18n;
-    private PdfModel $model;
     private bool $paginated = false;
     protected string $filename;
     private bool $has_footer = true;
@@ -59,14 +57,15 @@ class Pdf extends TCPDF
     /**
      * Main constructor, set creator and author
      *
-     * @param Preferences $prefs Preferences
-     * @param ?PdfModel   $model Related model
+     * @param Preferences $preferences Preferences
+     * @param ?PdfModel   $model       Related model
      */
-    public function __construct(Preferences $prefs, ?PdfModel $model = null)
-    {
+    public function __construct(
+        protected Preferences $preferences,
+        private ?PdfModel $model = null
+    ) {
         global $i18n;
 
-        $this->preferences = $prefs;
         $this->i18n = $i18n;
         parent::__construct('P', 'mm', 'A4', true, 'UTF-8');
         //set some values

@@ -49,10 +49,6 @@ class UpdateAndMaintenance
      */
     protected $callback;
 
-    protected I18n $i18n;
-
-    protected RouteParser $routeParser;
-
     /**
      * Constructor
      *
@@ -60,11 +56,11 @@ class UpdateAndMaintenance
      * @param RouteParser  $routeParser Route parser
      * @param callable|int $callback    Callable or local constant
      */
-    public function __construct(I18n $i18n, RouteParser $routeParser, callable|int $callback = self::MAINTENANCE)
-    {
-        $this->i18n = $i18n;
-        $this->routeParser = $routeParser;
-
+    public function __construct(
+        protected I18n $i18n,
+        protected RouteParser $routeParser,
+        callable|int $callback = self::MAINTENANCE
+    ) {
         if ($callback === self::MAINTENANCE) {
             $this->callback = [$this, 'maintenancePage'];
         } elseif ($callback === self::NEED_UPDATE) {
