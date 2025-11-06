@@ -43,14 +43,6 @@ class FieldsConfig
 {
     use Permissions;
 
-    public const NOBODY = 0;
-    public const USER_WRITE = 1;
-    public const ADMIN = 2;
-    public const STAFF = 3;
-    public const MANAGER = 4;
-    public const USER_READ = 5;
-    public const ALL = 10;
-
     public const TYPE_STR = 0;
     public const TYPE_HIDDEN = 1;
     public const TYPE_BOOL = 2;
@@ -1003,12 +995,12 @@ class FieldsConfig
 
         foreach (array_keys($fields) as $k) {
             if (
-                $visibles[$k] == FieldsConfig::NOBODY
-                || ($visibles[$k] == FieldsConfig::ADMIN
+                $visibles[$k] == self::NOBODY
+                || ($visibles[$k] == self::ADMIN
                     && $access_level < Authentication::ACCESS_ADMIN)
-                || ($visibles[$k] == FieldsConfig::STAFF
+                || ($visibles[$k] == self::STAFF
                     && $access_level < Authentication::ACCESS_STAFF)
-                || ($visibles[$k] == FieldsConfig::MANAGER
+                || ($visibles[$k] == self::MANAGER
                     && $access_level < Authentication::ACCESS_MANAGER)
             ) {
                 unset($fields[$k]);
@@ -1018,7 +1010,7 @@ class FieldsConfig
 
     /**
      * Get fields for massive changes
-     * @see FieldsConfig::getFormElements
+     * @see self::getFormElements
      *
      * @param array<string,mixed> $fields Member fields
      * @param Login               $login  Login instance

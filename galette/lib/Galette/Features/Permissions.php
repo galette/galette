@@ -36,14 +36,13 @@ trait Permissions
     protected ?int $permission = null;
     protected bool $can_public = false;
 
-    /* FIXME/ requires PHP 8.2
     public const NOBODY = 0;
     public const USER_WRITE = 1;
     public const ADMIN = 2;
     public const STAFF = 3;
     public const MANAGER = 4;
     public const USER_READ = 5;
-    public const ALL = 10;*/
+    public const ALL = 10;
 
     /**
      * Get permissions list
@@ -55,19 +54,19 @@ trait Permissions
     public static function getPermissionsList(bool $can_public = false): array
     {
         $list = [
-            FieldsConfig::NOBODY => _T("Inaccessible"),
+            self::NOBODY => _T("Inaccessible"),
         ];
 
         if ($can_public) {
-            $list += [FieldsConfig::ALL => _T("Public")];
+            $list += [self::ALL => _T("Public")];
         }
 
         $list += [
-            FieldsConfig::USER_READ => _T("User, read only"),
-            FieldsConfig::USER_WRITE => _T("User, read/write"),
-            FieldsConfig::MANAGER => _T("Group manager"),
-            FieldsConfig::STAFF => _T("Staff member"),
-            FieldsConfig::ADMIN => _T("Administrator"),
+            self::USER_READ => _T("User, read only"),
+            self::USER_WRITE => _T("User, read/write"),
+            self::MANAGER => _T("Group manager"),
+            self::STAFF => _T("Staff member"),
+            self::ADMIN => _T("Administrator"),
         ];
 
         return $list;
