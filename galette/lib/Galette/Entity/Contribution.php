@@ -151,60 +151,7 @@ class Contribution implements AccessManagementInterface
         if (is_int($args)) {
             $this->load($args);
         } elseif (is_array($args)) {
-            $this->date = date("Y-m-d");
-            if (isset($args['adh']) && $args['adh'] != '') {
-                $this->member = (int)$args['adh'];
-            }
-            if (isset($args['amount'])) {
-                $this->amount = $args['amount'];
-            }
-            if (isset($args['trans'])) {
-                $this->transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
-                if (!isset($this->member)) {
-                    $this->member = $this->transaction->member;
-                }
-                $this->amount = $this->transaction->getMissingAmount();
-                $this->payment_type = $this->transaction->payment_type;
-            }
-            $this->setContributionType((int)$args['type']);
-            if (!$this->isFee()) {
-                //for donations, begin date is current date
-                $this->begin_date = $this->date;
-            } elseif ($preferences->pref_membership_ext != '') {
-                //calculate begin date for membership fee with membership extension
-                $this->begin_date = $this->date;
-                if ($this->is_cotis) {
-                    $due_date = self::getDueDate($this->zdb, $this->member);
-                    if ($due_date != '') {
-                        $now = new \DateTime();
-                        $due_date = new \DateTime($due_date);
-                        if ($due_date < $now) {
-                            // Member didn't renew on time
-                            $this->begin_date = $now->format('Y-m-d');
-                        } else {
-                            // Caution : the next_begin_date is the day after the due_date.
-                            $next_begin_date = clone $due_date;
-                            $next_begin_date->add(new DateInterval('P1D'));
-                            $this->begin_date = $next_begin_date->format('Y-m-d');
-                        }
-                    }
-                    $this->retrieveEndDate();
-                }
-            } else {
-                //calculate begin date for membership fee with beginning of membership date
-                $begin_date = new \DateTime();
-                $begin_date->sub(new DateInterval('P1Y'));
-                [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
-                $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
-                while ($next_begin_date <= $begin_date) {
-                    $next_begin_date->add(new DateInterval('P1Y'));
-                }
-                $this->begin_date = $next_begin_date->format('Y-m-d');
-                $this->retrieveEndDate();
-            }
-            if (isset($args['payment_type'])) {
-                $this->setPaymentType((int)$args['payment_type']);
-            }
+            $this->loadFromArray($args);
         } elseif (is_object($args)) {
             $this->loadFromRS($args);
         }
@@ -453,6 +400,94 @@ class Contribution implements AccessManagementInterface
 
         $this->setContributionType((int)$r->id_type_cotis);
         $this->loadDynamicFields();
+    }
+
+    /**
+     * Populate object from an array
+     *
+     * @param array<string,mixed> $args Instanciation arguments
+     *
+     * @return void
+     */
+    private function loadFromArray(array $args): void
+    {
+        global $preferences;
+
+        $this->date = date("Y-m-d");
+        if (isset($args['adh']) && $args['adh'] != '') {
+            $this->member = (int)$args['adh'];
+        }
+        if (isset($args['amount'])) {
+            $this->amount = $args['amount'];
+        }
+        if (isset($args['trans'])) {
+            $this->transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
+            if (!isset($this->member)) {
+                $this->member = $this->transaction->member;
+            }
+            $this->amount = $this->transaction->getMissingAmount();
+            $this->payment_type = $this->transaction->payment_type;
+        }
+        $this->setContributionType((int)$args['type']);
+        if (!$this->isFee()) {
+            //for donations, begin date is current date
+            $this->begin_date = $this->date;
+        } else {
+            if ($preferences->pref_membership_ext != '') {
+                //calculate begin date for membership fee with membership extension
+                $this->loadWithMembershipExt();
+            } else {
+                //calculate begin date for membership fee with beginning of membership date
+                $this->loadWithEndofMembershipDate();
+            }
+            $this->retrieveEndDate();
+        }
+        if (isset($args['payment_type'])) {
+            $this->setPaymentType((int)$args['payment_type']);
+        }
+    }
+
+    /**
+     * Contribution created with a membership extension
+     *
+     * @return void
+     */
+    private function loadWithMembershipExt(): void
+    {
+        $this->begin_date = $this->date;
+        $due_date = self::getDueDate($this->zdb, $this->member);
+        if ($due_date != '') {
+            $now = new \DateTime();
+            $due_date = new \DateTime($due_date);
+            if ($due_date < $now) {
+                // Member didn't renew on time
+                $this->begin_date = $now->format('Y-m-d');
+            } else {
+                // Caution : the next_begin_date is the day after the due_date.
+                $next_begin_date = clone $due_date;
+                $next_begin_date->add(new DateInterval('P1D'));
+                $this->begin_date = $next_begin_date->format('Y-m-d');
+            }
+        }
+    }
+
+    /**
+     * Contribution created with an en date of membership
+     *
+     * @return void
+     */
+    private function loadWithEndofMembershipDate(): void
+    {
+        global $preferences;
+
+        $begin_date = new \DateTime();
+        $begin_date->sub(new DateInterval('P1Y'));
+        [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
+        $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
+        while ($next_begin_date <= $begin_date) {
+            $next_begin_date->add(new DateInterval('P1Y'));
+        }
+        $this->begin_date = $next_begin_date->format('Y-m-d');
     }
 
     /**
