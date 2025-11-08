@@ -91,78 +91,8 @@ class DocumentsController extends CrudController
      */
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
-        $post = $request->getParsedBody();
-
-        $error_detected = [];
-        $warning_detected = [];
-
-        if (isset($post['cancel'])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
-        }
-
         $document = new Document($this->zdb);
-
-        try {
-            $document->store($post, $request->getUploadedFiles());
-            $error_detected = $document->getErrors();
-            $warning_detected = $document->getWarnings();
-        } catch (Throwable $e) {
-            $msg = 'An error occurred adding new document.';
-            Analog::log(
-                $msg . ' | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
-            if (Galette::isDebugEnabled()) {
-                throw $e;
-            }
-            $error_detected[] = _T('An error occurred adding document :(');
-        }
-
-        //flash messages
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                _T('Document has been successfully stored!')
-            );
-        }
-
-        if (count($warning_detected) > 0) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage(
-                    'warning_detected',
-                    $warning
-                );
-            }
-        }
-
-        //handle redirections
-        if (count($error_detected) > 0) {
-            //something went wrong :'(
-            $this->session->document = $document;
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('addDocument')
-                );
-        } else {
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('documentsList')
-                );
-        }
+        return $this->store($request, $response, $document);
     }
 
     // /CRUD - Create
@@ -380,18 +310,32 @@ class DocumentsController extends CrudController
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
+        $document = new Document($this->zdb, $id);
+        return $this->store($request, $response, $document);
+    }
+
+    /**
+     * Store a document
+     *
+     * @param Request  $request  PSR request
+     * @param Response $response PSR response
+     * @param Document $document Document to work on
+     *
+     * @return Response
+     */
+    private function store(Request $request, Response $response, Document $document): Response
+    {
         $post = $request->getParsedBody();
 
         $error_detected = [];
         $warning_detected = [];
+        $success_detected = [];
 
         if (isset($post['cancel'])) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
-
-        $document = new Document($this->zdb, $id);
 
         try {
             $document->store($post, $request->getUploadedFiles());
@@ -410,48 +354,22 @@ class DocumentsController extends CrudController
             $error_detected[] = _T('An error occurred adding document :(');
         }
 
-        //flash messages
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                _T('Document has been successfully stored!')
-            );
-        }
-
-        if (count($warning_detected) > 0) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage(
-                    'warning_detected',
-                    $warning
-                );
-            }
-        }
-
         //handle redirections
         if (count($error_detected) > 0) {
             //something went wrong :'(
             $this->session->document = $document;
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('addDocument')
-                );
+            $redirect_url = $this->routeparser->urlFor('addDocument');
         } else {
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('documentsList')
-                );
+            $success_detected[] = _T('Document has been successfully stored!');
+            $redirect_url = $this->routeparser->urlFor('documentsList');
         }
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            successes: $success_detected,
+            warnings: $warning_detected,
+            errors: $error_detected
+        );
     }
 
     // /CRUD - Update

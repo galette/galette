@@ -234,11 +234,11 @@ abstract class AbstractController
      *
      * @param Response $response     PSR Response
      * @param string[] $errors       Errors to report
-     * @param string   $redirect_uri URI to redirect to
+     * @param string   $redirect_url URL to redirect to
      *
      * @return Response
      */
-    protected function redirectWithErrors(Response $response, array $errors, string $redirect_uri): Response
+    protected function redirectWithErrors(Response $response, array $errors, string $redirect_url): Response
     {
         //report errors
         foreach ($errors as $error) {
@@ -251,6 +251,54 @@ abstract class AbstractController
         //redirect to calling action
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $redirect_uri);
+            ->withHeader('Location', $redirect_url);
+    }
+
+    /**
+     * Redirect with errors
+     *
+     * @param Response $response     PSR Response
+     * @param string   $redirect_url URL to redirect to
+     * @param string[] $successes    Successes to report
+     * @param string[] $warnings     Warnings to report
+     * @param string[] $errors       Errors to report
+     *
+     * @return Response
+     */
+    protected function redirect(
+        Response $response,
+        string $redirect_url,
+        array $successes = [],
+        array $warnings = [],
+        array $errors = []
+    ): Response {
+        //report successes
+        foreach ($successes as $success) {
+            $this->flash->addMessage(
+                'success_detected',
+                $success
+            );
+        }
+
+        //report warnings
+        foreach ($warnings as $warning) {
+            $this->flash->addMessage(
+                'warning_detected',
+                $warning
+            );
+        }
+
+        //report errors
+        foreach ($errors as $error) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
+        }
+
+        //redirect to calling action
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $redirect_url);
     }
 }
