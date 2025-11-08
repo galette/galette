@@ -79,9 +79,6 @@ class Install extends TestCase
         $is_upgrade = $install->isUpgrade();
         $this->assertFalse($is_upgrade);
 
-        $connected = $install->isDbConnected();
-        $this->assertFalse($connected);
-
         $title = $install->getStepDetail('title');
         $this->assertSame('Checks', $title);
 

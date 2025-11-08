@@ -71,7 +71,6 @@ class Install
     private ?string $db_pass = null;
     private ?string $db_prefix = null;
 
-    private readonly bool $db_connected;
     /** @var array<string, string> */
     private array $report;
 
@@ -87,7 +86,6 @@ class Install
     {
         $this->step = self::STEP_CHECK;
         $this->mode = null;
-        $this->db_connected = false;
         $this->db_prefix = null;
     }
 
@@ -477,16 +475,6 @@ class Install
             $this->db_port,
             $this->db_name
         );
-    }
-
-    /**
-     * Is database connexion ok?
-     *
-     * @return boolean
-     */
-    public function isDbConnected(): bool
-    {
-        return $this->db_connected;
     }
 
     /**

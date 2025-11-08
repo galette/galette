@@ -249,7 +249,6 @@ abstract class PdfModel
      */
     public static function getTypeClass(int $type): string
     {
-        $class = null;
         $class = match ($type) {
             self::INVOICE_MODEL => 'PdfInvoice',
             self::RECEIPT_MODEL => 'PdfReceipt',
