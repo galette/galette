@@ -58,17 +58,9 @@ class ExternalScript
 
         switch ($protocol) {
             case 'galette':
-                //FIXME: should probably be changed to use pref_galette_url and Slim routing
-                $this->protocol = 'http';
-                if (isset($_SERVER['HTTPS'])) {
-                    $this->protocol = 'https';
-                }
                 $this->method = 'galette';
-                $selfs = explode('/', (string) $_SERVER['PHP_SELF']);
-                array_pop($selfs);
-                $self = implode('/', $selfs);
-                $uri = $protocol . '://' . $_SERVER['SERVER_NAME'] . $self
-                    . '/' . GALETTE_BASE_PATH . str_replace($protocol . '://', '', $uri);
+                $uri = $pref->getURL() . str_replace($protocol . '://', '/', $uri);
+                $this->protocol = explode('://', $uri)[0];
                 break;
             case 'file':
                 $this->protocol = $protocol;

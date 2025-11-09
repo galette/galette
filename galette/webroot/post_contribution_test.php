@@ -1,14 +1,7 @@
-#!/usr/bin/php
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
- * Post configuration script test
- *
- * PHP version 5
- *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2003-2025 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -24,18 +17,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
- *
- * @category  Core
- * @package   Galette
- *
- * @author Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
- * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      https://galette.eu
- * @since     Available since 0.7.5dev - 2013-06-10
  */
 
-$args = array();
+declare(strict_types=1);
+
+
+/**
+ * Post configuration script test
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
+
+$args = [];
 $internal = false;
 
 if (defined('STDIN')) {
@@ -47,7 +40,7 @@ if (defined('STDIN')) {
     //check if we're called from galette internal
     if (isset($_POST['galette_internal'])) {
         $internal = true;
-        include_once 'includes/galette.inc.php';
+        include_once __DIR__ . '/../includes/galette.inc.php';
         unset($_POST['galette_internal']);
         Analog\Analog::info(
             'Requested as Galette HTTP POST with parameters:' . "\n" .
@@ -68,13 +61,11 @@ if (count($args) == 0) {
 }
 
 if (defined('STDIN')) {
-    //a successfull script returns 0, we do not output anything
+    //a successful script returns 0, we do not output anything
     $fp = fopen(__DIR__ . '/cache/galette_post_contrib_file.txt', 'w');
     fwrite($fp, $args);
     fclose($fp);
 } else {
-    $json_args = json_decode($args);
-    foreach ($json_args as $k => $v) {
-        echo 'key: ' . htmlspecialchars($k) . ' | value: ' . htmlspecialchars($v);
-    }
+    $json_args = json_decode((string) $args['params']);
+    echo json_encode($json_args, JSON_PRETTY_PRINT);
 }
