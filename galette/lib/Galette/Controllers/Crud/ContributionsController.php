@@ -166,13 +166,11 @@ class ContributionsController extends CrudController
             $ct = new ContributionsTypes($this->zdb);
             $contributions_types = $ct->getList($type === Contribution::TYPE_FEE);
             if (!count($contributions_types)) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T('No related contribution type available, please create a new one.')
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [_T('No related contribution type available, please create a new one.')],
+                    redirect_url: $this->routeparser->urlFor('contributions', ['type' => 'contributions'])
                 );
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('contributions', ['type' => 'contributions']));
             }
 
             $cparams = ['type' => array_keys($contributions_types)[0]];
@@ -385,21 +383,14 @@ class ContributionsController extends CrudController
             $redirect_url = $this->routeparser->urlFor('members');
         } else {
             //something went wrong.
-            //store entity in session
             $redirect_url = $this->routeparser->urlFor('massAddContributions');
-            //report errors
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
         }
 
-        //redirect to calling action
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_url);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            errors: $error_detected
+        );
     }
 
     // /CRUD - Create
@@ -705,19 +696,11 @@ class ContributionsController extends CrudController
 
         $this->session->$filter_name = $filters;
 
-        if (count($error_detected) > 0) {
-            //report errors
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('contributions', ['type' => $type]));
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('contributions', ['type' => $type]),
+            errors: $error_detected
+        );
     }
 
     /**
@@ -755,14 +738,11 @@ class ContributionsController extends CrudController
 
             throw new \RuntimeException('Does not know what to batch :(');
         } else {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No contribution was selected, please check at least one.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("No contribution was selected, please check at least one.")],
+                redirect_url: $this->routeparser->urlFor('contributions', ['type' => $type])
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('contributions', ['type' => $type]));
         }
     }
 
@@ -774,7 +754,7 @@ class ContributionsController extends CrudController
      *
      * @param Request     $request  PSR Request
      * @param Response    $response PSR Response
-     * @param int         $id       Contribution id
+     * @param ?int        $id       Contribution id
      * @param string|null $type     Contribution type
      *
      * @return Response
@@ -788,20 +768,17 @@ class ContributionsController extends CrudController
             $contrib = new Contribution($this->zdb, $this->login);
             if (!$contrib->load($id)) {
                 //not possible to load contribution, exit
-                $this->flash->addMessage(
-                    'error_detected',
-                    str_replace(
-                        '%id',
-                        (string)$id,
-                        _T("Unable to load contribution #%id!")
-                    )
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [
+                        str_replace(
+                            '%id',
+                            (string)$id,
+                            _T("Unable to load contribution #%id!")
+                        )
+                    ],
+                    redirect_url: $this->routeparser->urlFor('contributions', ['type' => 'contributions'])
                 );
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor(
-                        'contributions',
-                        ['type' => 'contributions']
-                    ));
             }
         }
 
@@ -810,12 +787,10 @@ class ContributionsController extends CrudController
                 'Trying to edit contribution without appropriate ACLs',
                 Analog::WARNING
             );
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('slash')
-                );
+            return $this->redirect(
+                response: $response,
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
         }
 
         return $this->addEditPage($request, $response, $type, $contrib);
@@ -839,12 +814,10 @@ class ContributionsController extends CrudController
                 'Trying to edit contribution without appropriate ACLs',
                 Analog::WARNING
             );
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('slash')
-                );
+            return $this->redirect(
+                response: $response,
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
         }
 
         return $this->store($request, $response, 'edit', $type, $contrib, $id);
@@ -906,17 +879,12 @@ class ContributionsController extends CrudController
         }
 
         $this->session->contribution = null;
-        $this->flash->addMessage(
-            'success_detected',
-            _T('Contribution has been successfully stored')
-        );
+        $success_detected = [_T('Contribution has been successfully stored')];
+        $error_detected = [];
         $files_res = $contrib->handleFiles($request->getUploadedFiles());
         if (is_array($files_res)) {
             foreach ($files_res as $res) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $res
-                );
+                $error_detected[] = $res;
             }
         }
 
@@ -949,10 +917,12 @@ class ContributionsController extends CrudController
             $redirect_url = $this->routeparser->urlFor('slash');
         }
 
-        //redirect to calling action
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_url);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
     // /CRUD - Update

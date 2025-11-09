@@ -204,19 +204,11 @@ class DocumentsController extends CrudController
         $document = new Document($this->zdb, $id);
 
         if (!$document->canShow($this->login)) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
+            return $this->redirectWithErrors(
+                response: $response,
+                redirect_url: $this->routeparser->urlFor('slash'),
+                errors: [_T("You do not have permission for requested URL.")]
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor(
-                        'slash'
-                    )
-                );
         }
 
         if (file_exists($document->getDestDir() . $document->getDocumentFilename())) {

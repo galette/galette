@@ -240,18 +240,11 @@ abstract class AbstractController
      */
     protected function redirectWithErrors(Response $response, array $errors, string $redirect_url): Response
     {
-        //report errors
-        foreach ($errors as $error) {
-            $this->flash->addMessage(
-                'error_detected',
-                $error
-            );
-        }
-
-        //redirect to calling action
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_url);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            errors: $errors
+        );
     }
 
     /**

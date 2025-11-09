@@ -183,7 +183,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/member/me']], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame(301, $test_response->getStatusCode());
         $this->expectFlashData(
             [
                 'error_detected' => [
@@ -387,7 +387,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/member/me']], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame(301, $test_response->getStatusCode());
         $this->expectFlashData(
             [
                 'error_detected' => [

@@ -118,6 +118,8 @@ class TextController extends AbstractController
     {
         $post = $request->getParsedBody();
         $texts = new Texts($this->preferences, $this->routeparser);
+        $error_detected = [];
+        $success_detected = [];
 
         //set the language
         $cur_lang = $post['cur_lang'];
@@ -133,34 +135,28 @@ class TextController extends AbstractController
         );
 
         if (!$res) {
-            $this->flash->addMessage(
-                'error_detected',
-                sprintf(
-                    _T('Email: \'%1$s\' has not been modified!'),
-                    $mtxt->tcomment,
-                )
+            $error_detected[] = sprintf(
+                _T('Email: \'%1$s\' has not been modified!'),
+                $mtxt->tcomment,
             );
         } else {
-            $this->flash->addMessage(
-                'success_detected',
-                sprintf(
-                    _T('Email: \'%1$s\' has been successfully modified.'),
-                    $mtxt->tcomment
-                )
+            $success_detected[] = sprintf(
+                _T('Email: \'%1$s\' has been successfully modified.'),
+                $mtxt->tcomment
             );
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader(
-                'Location',
-                $this->routeparser->urlFor(
-                    'texts',
-                    [
-                        'lang'  => $cur_lang,
-                        'ref'   => $cur_ref
-                    ]
-                )
-            );
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor(
+                'texts',
+                [
+                    'lang'  => $cur_lang,
+                    'ref'   => $cur_ref
+                ]
+            ),
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 }

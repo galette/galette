@@ -240,6 +240,7 @@ class GaletteController extends AbstractController
     {
         $post = $request->getParsedBody();
         $error_detected = [];
+        $success_detected = [];
 
         // Validation
         if (isset($post['valid']) && $post['valid'] == '1') {
@@ -247,10 +248,7 @@ class GaletteController extends AbstractController
                 if (!$this->preferences->store()) {
                     $error_detected[] = _T("An SQL error has occurred while storing preferences. Please try again, and contact the administrator if the problem persists.");
                 } else {
-                    $this->flash->addMessage(
-                        'success_detected',
-                        _T("Preferences has been saved.")
-                    );
+                    $success_detected[] = _T("Preferences has been saved.");
                 }
 
                 if (!Galette::isDemo()) {
@@ -288,22 +286,18 @@ class GaletteController extends AbstractController
 
             if (count($error_detected) > 0) {
                 $this->session->entered_preferences = $post;
-                //report errors
-                foreach ($error_detected as $error) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $error
-                    );
-                }
             }
         }
         $tab = isset($post['tab']) && $post['tab'] != 'general' ? '?tab=' . $post['tab'] : '';
 
         // Reset dark mode CSS file if required
         $this->preferences->resetDarkCss($this->flash);
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('preferences') . $tab);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('preferences' . $tab),
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
     /**

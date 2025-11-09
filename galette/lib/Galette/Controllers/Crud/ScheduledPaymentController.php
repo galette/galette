@@ -66,22 +66,17 @@ class ScheduledPaymentController extends CrudController
         $mode = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
 
         if ($scheduled->getMissingAmount() == 0) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Contribution is fully scheduled!")
+            $this->redirectWithErrors(
+                response: $response,
+                redirect_url: $this->routeparser->urlFor(
+                    'editContribution',
+                    [
+                        'type' => ($scheduled->getContribution()->isFee() ? Contribution::TYPE_FEE : Contribution::TYPE_DONATION),
+                        'id' => (string)$id_cotis
+                    ]
+                ),
+                errors: [_T("Contribution is fully scheduled!")]
             );
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor(
-                        'editContribution',
-                        [
-                            'type' => ($scheduled->getContribution()->isFee() ? Contribution::TYPE_FEE : Contribution::TYPE_DONATION),
-                            'id' => (string)$id_cotis
-                        ]
-                    )
-                );
         }
 
         // display page
@@ -318,19 +313,11 @@ class ScheduledPaymentController extends CrudController
 
         $this->session->$filter_name = $filters;
 
-        if (count($error_detected) > 0) {
-            //report errors
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor($this->show_mine ? 'myScheduledPayments' : 'scheduledPayments'));
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor($this->show_mine ? 'myScheduledPayments' : 'scheduledPayments'),
+            errors: $error_detected
+        );
     }
 
     /**
@@ -366,14 +353,11 @@ class ScheduledPaymentController extends CrudController
 
             throw new \RuntimeException('Does not know what to batch :(');
         } else {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No scheduled payment was selected, please check at least one.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("No scheduled payment was selected, please check at least one.")],
+                redirect_url: $this->routeparser->urlFor('scheduledPayments')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('scheduledPayments'));
         }
     }
 
@@ -446,6 +430,7 @@ class ScheduledPaymentController extends CrudController
         }
 
         $error_detected = [];
+        $success_detected = [];
         $msg = null;
 
         $redirect_uri = $this->redirectUri($this->getArgs($request));
@@ -487,25 +472,17 @@ class ScheduledPaymentController extends CrudController
             }
         }
 
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                $msg
-            );
+        if (count($error_detected) === 0) {
+            $success_detected[] = $msg;
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_uri);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_uri,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
-
 
     // /CRUD - Update
     // CRUD - Delete

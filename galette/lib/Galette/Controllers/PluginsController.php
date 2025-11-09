@@ -80,42 +80,33 @@ class PluginsController extends AbstractController
      */
     public function togglePlugin(Request $request, Response $response, string $action, string $module_id): Response
     {
+        $error_detected = [];
+        $success_detected = [];
+
         if (!Galette::isDemo()) {
             $plugins = $this->plugins;
             $reload_plugins = false;
             if ($action == 'activate') {
                 try {
                     $plugins->activateModule($module_id);
-                    $this->flash->addMessage(
-                        'success_detected',
-                        sprintf(
-                            _T('Plugin %1$s has been enabled'),
-                            $module_id
-                        )
+                    $success_detected[] = sprintf(
+                        _T('Plugin %1$s has been enabled'),
+                        $module_id
                     );
                     $reload_plugins = true;
                 } catch (Throwable $e) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $e->getMessage()
-                    );
+                    $error_detected[] = $e->getMessage();
                 }
             } elseif ($action == 'deactivate') {
                 try {
                     $plugins->deactivateModule($module_id);
-                    $this->flash->addMessage(
-                        'success_detected',
-                        sprintf(
-                            _T('Plugin %1$s has been disabled'),
-                            $module_id
-                        )
+                    $success_detected[] = sprintf(
+                        _T('Plugin %1$s has been disabled'),
+                        $module_id
                     );
                     $reload_plugins = true;
                 } catch (Throwable $e) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $e->getMessage()
-                    );
+                    $error_detected[] = $e->getMessage();
                 }
             }
 
@@ -125,9 +116,12 @@ class PluginsController extends AbstractController
             }
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('plugins'));
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('plugins'),
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
     /**

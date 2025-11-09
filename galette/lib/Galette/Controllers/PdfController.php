@@ -94,16 +94,11 @@ class PdfController extends AbstractController
             }
             $adh->load($id_adh);
             if (!$adh->canEdit($this->login)) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("You do not have permission for requested URL.")
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [_T("You do not have permission for requested URL.")],
+                    redirect_url: $this->routeparser->urlFor('me')
                 );
-
-                return $response
-                    ->withHeader(
-                        'Location',
-                        $this->routeparser->urlFor('me')
-                    );
             }
             //check if member is up-to-date
             if ($this->login->id == $id_adh && !$adh->isUp2Date()) {
@@ -122,13 +117,11 @@ class PdfController extends AbstractController
                 'No member selected to generate members cards',
                 Analog::INFO
             );
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member was selected, please check at least one name.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("No member was selected, please check at least one name.")],
+                redirect_url: $this->routeparser->urlFor('members')
             );
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
         // Fill array $selected with selected ids
@@ -152,14 +145,11 @@ class PdfController extends AbstractController
                 Analog::ERROR
             );
 
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Unable to get members list.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("Unable to get members list.")],
+                redirect_url: $this->routeparser->urlFor('members')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
         $class = PdfMembersCards::class;
@@ -202,14 +192,11 @@ class PdfController extends AbstractController
         } else {
             if (count($filters->selected) == 0) {
                 Analog::log('No member selected to generate labels', Analog::INFO);
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("No member was selected, please check at least one name.")
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [_T("No member was selected, please check at least one name.")],
+                    redirect_url: $this->routeparser->urlFor('members')
                 );
-
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('members'));
             }
 
             $m = new Members();
@@ -225,14 +212,11 @@ class PdfController extends AbstractController
                 Analog::ERROR
             );
 
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Unable to get members list.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("Unable to get members list.")],
+                redirect_url: $this->routeparser->urlFor('members')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
         $pdf = new PdfMembersLabels($this->preferences);
@@ -255,16 +239,11 @@ class PdfController extends AbstractController
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
 
         if ($id_adh !== null && !$adh->canEdit($this->login)) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('me')
             );
-
-            return $response
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('me')
-                );
         }
 
         $form = $this->preferences->pref_adhesion_form;
@@ -355,14 +334,11 @@ class PdfController extends AbstractController
 
         if (!is_array($members) || count($members) < 1) {
             Analog::log('No member selected to generate attendance sheet', Analog::INFO);
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member selected to generate attendance sheet")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("No member selected to generate attendance sheet")],
+                redirect_url: $this->routeparser->urlFor('members')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
 
         $doc_title = _T("Attendance sheet");
@@ -400,20 +376,20 @@ class PdfController extends AbstractController
         $contribution = new Contribution($this->zdb, $this->login);
         if (!$contribution->load($id)) {
             //not possible to load contribution, exit
-            $this->flash->addMessage(
-                'error_detected',
-                str_replace(
-                    '%id',
-                    (string)$id,
-                    _T("Unable to load contribution #%id!")
-                )
-            );
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor(
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [
+                    str_replace(
+                        '%id',
+                        (string)$id,
+                        _T("Unable to load contribution #%id!")
+                    )
+                ],
+                redirect_url: $this->routeparser->urlFor(
                     'contributions',
                     ['type' => 'contributions']
-                ));
+                )
+            );
         }
 
         $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
@@ -441,14 +417,11 @@ class PdfController extends AbstractController
                 Analog::ERROR
             );
 
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Unable to get groups list.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("Unable to get groups list.")],
+                redirect_url: $this->routeparser->urlFor('groups')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('groups'));
         }
 
         $pdf = new PdfGroups($this->preferences);
@@ -529,6 +502,7 @@ class PdfController extends AbstractController
     {
         $post = $request->getParsedBody();
         $error_detected = [];
+        $success_detected = [];
 
         if (!isset($post['model_type'])) {
             $error_detected[] = _T("Missing PDF model type!");
@@ -564,10 +538,7 @@ class PdfController extends AbstractController
 
                 $res = $model->store();
                 if ($res === true) {
-                    $this->flash->addMessage(
-                        'success_detected',
-                        _T("Model has been successfully stored!")
-                    );
+                    $success_detected[] = _T("Model has been successfully stored!");
                 } else {
                     $error_detected[] = _T("Model has not been stored :(");
                 }
@@ -576,18 +547,12 @@ class PdfController extends AbstractController
             }
         }
 
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('pdfModels', ['id' => $model->id ?? null]));
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('pdfModels', ['id' => $model->id ?? null]),
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
 
@@ -609,13 +574,11 @@ class PdfController extends AbstractController
         $valid = $links->isHashValid($hash, $email);
 
         if ($valid === false) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Invalid link!")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("Invalid link!")],
+                redirect_url: $this->routeparser->urlFor('directlink', ['hash' => $hash])
             );
-
-            return $response->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('directlink', ['hash' => $hash]));
         }
 
         $target = $valid[0];
@@ -648,15 +611,11 @@ class PdfController extends AbstractController
                     'An error has occurred, unable to get members list.',
                     Analog::ERROR
                 );
-
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("Unable to get members list.")
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [_T("Unable to get members list.")],
+                    redirect_url: $this->routeparser->urlFor('directlink', ['hash' => $hash])
                 );
-
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor('directlink', ['hash' => $hash]));
             }
 
             $pdf = new PdfMembersCards($this->preferences);
@@ -665,20 +624,17 @@ class PdfController extends AbstractController
             $contribution = new Contribution($this->zdb, $login);
             if (!$contribution->load($id)) {
                 //not possible to load contribution, exit
-                $this->flash->addMessage(
-                    'error_detected',
-                    str_replace(
-                        '%id',
-                        (string)$id,
-                        _T("Unable to load contribution #%id!")
-                    )
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [
+                        str_replace(
+                            '%id',
+                            (string)$id,
+                            _T("Unable to load contribution #%id!")
+                        )
+                    ],
+                    redirect_url: $this->routeparser->urlFor('directlink', ['hash' => $hash])
                 );
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor(
-                        'directlink',
-                        ['hash' => $hash]
-                    ));
             }
             $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
         }

@@ -124,21 +124,20 @@ class TransactionsController extends ContributionsController
             $trans->load($id);
             if ($trans->id == '') {
                 //not possible to load transaction, exit
-                //not possible to load contribution, exit
-                $this->flash->addMessage(
-                    'error_detected',
-                    str_replace(
-                        '%id',
-                        (string)$id,
-                        _T("Unable to load transaction #%id!")
-                    )
-                );
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor(
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [
+                        str_replace(
+                            '%id',
+                            (string)$id,
+                            _T("Unable to load transaction #%id!")
+                        )
+                    ],
+                    redirect_url: $this->routeparser->urlFor(
                         'contributions',
                         ['type' => 'transactions']
-                    ));
+                    )
+                );
             }
             if (!$trans->canEdit($this->login) && !$trans->canAttachAndDetach($this->login)) {
                 Analog::log(
@@ -230,20 +229,20 @@ class TransactionsController extends ContributionsController
         // initialize transactions structure with database values
         if (!$trans->load($id)) {
             //not possible to load transaction, exit
-            $this->flash->addMessage(
-                'error_detected',
-                str_replace(
-                    '%id',
-                    (string)$id,
-                    _T("Unable to load transaction #%id!")
-                )
-            );
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor(
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [
+                    str_replace(
+                        '%id',
+                        (string)$id,
+                        _T("Unable to load transaction #%id!")
+                    )
+                ],
+                redirect_url: $this->routeparser->urlFor(
                     'contributions',
                     ['type' => 'transactions']
-                ));
+                )
+            );
         }
         if (!$trans->canEdit($this->login)) {
             Analog::log(

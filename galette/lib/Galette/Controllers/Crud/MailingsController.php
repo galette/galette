@@ -83,13 +83,11 @@ class MailingsController extends CrudController
             $this->history->add(
                 _T("Trying to load mailing while email is disabled in preferences.")
             );
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Trying to load mailing while email is disabled in preferences.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("Trying to load mailing while email is disabled in preferences.")],
+                redirect_url: $this->routeparser->urlFor('slash')
             );
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('slash'));
         } else {
             if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
                 $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
@@ -125,16 +123,12 @@ class MailingsController extends CrudController
                         Analog::WARNING
                     );
 
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T('No member selected for mailing!')
-                    );
-
                     $redirect_url = $this->session->redirect_mailing ?? $this->routeparser->urlFor('members');
-
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $redirect_url);
+                    return $this->redirectWithErrors(
+                        response: $response,
+                        redirect_url: $redirect_url,
+                        errors: [_T('No member selected for mailing!')]
+                    );
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
@@ -248,14 +242,11 @@ class MailingsController extends CrudController
                         Analog::WARNING
                     );
 
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T('No member selected for mailing!')
+                    return $this->redirectWithErrors(
+                        response: $response,
+                        redirect_url: $redirect_url,
+                        errors: [_T('No member selected for mailing!')]
                     );
-
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $redirect_url);
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
@@ -378,21 +369,12 @@ class MailingsController extends CrudController
             }
         }
 
-        //flash messages if any
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage('error_detected', $error);
-            }
-        }
-        if (count($success_detected) > 0) {
-            foreach ($success_detected as $success) {
-                $this->flash->addMessage('success_detected', $success);
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $goto);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $goto,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
     // /CRUD - Create

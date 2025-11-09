@@ -167,12 +167,14 @@ class TitlesController extends CrudController
         $post = $request->getParsedBody();
 
         if (isset($post['cancel'])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
+            return $this->redirect(
+                response: $response,
+                redirect_url: $this->cancelUri($this->getArgs($request))
+            );
         }
 
         $error_detected = [];
+        $success_detected = [];
         $msg = null;
 
         $title = new Title($id);
@@ -212,23 +214,16 @@ class TitlesController extends CrudController
             );
         }
 
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                $msg
-            );
+        if (count($error_detected) === 0) {
+            $success_detected[] = $msg;
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_uri);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_uri,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
     // /CRUD - Update

@@ -133,6 +133,7 @@ class DynamicTranslationsController extends AbstractController
             );
         }
         $error_detected = [];
+        $success_detected = [];
 
         if (isset($post['trans']) && isset($post['text_orig'])) {
             if (isset($post['new']) && $post['new'] == 'true') {
@@ -181,23 +182,16 @@ class DynamicTranslationsController extends AbstractController
                 }
             }
 
-            if (count($error_detected)) {
-                foreach ($error_detected as $err) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $err
-                    );
-                }
-            } else {
-                $this->flash->addMessage(
-                    'success_detected',
-                    _T("Labels has been successfully translated!")
-                );
+            if (count($error_detected) === 0) {
+                $success_detected[] = _T("Labels has been successfully translated!");
             }
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_url);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 }

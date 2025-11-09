@@ -267,32 +267,20 @@ class MembersController extends CrudController
             ->load($id);
 
         if (!$member->canShow($this->login)) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('me')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('me')
-                );
         }
 
         if ($member->id == null) {
             //member does not exist!
-            $this->flash->addMessage(
-                'error_detected',
-                str_replace('%id', (string)$id, _T("No member #%id."))
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [str_replace('%id', (string)$id, _T("No member #%id."))],
+                redirect_url: $this->routeparser->urlFor('slash')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('slash')
-                );
         }
 
         // flagging fields visibility
@@ -335,31 +323,20 @@ class MembersController extends CrudController
             ->load($id);
 
         if (!$member->canShow($this->login)) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('me')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('me')
-                );
         }
 
         if ($member->id == null) {
             //member does not exist!
-            $this->flash->addMessage(
-                'error_detected',
-                str_replace('%id', (string)$id, _T("No member #%id."))
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [str_replace('%id', (string)$id, _T("No member #%id."))],
+                redirect_url: $this->routeparser->urlFor('slash')
             );
-
-            return $response
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('slash')
-                );
         }
 
         $response = $response
@@ -1103,14 +1080,11 @@ class MembersController extends CrudController
 
             throw new \RuntimeException('Does not know what to batch :(');
         } else {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member was selected, please check at least one name.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("No member was selected, please check at least one name.")],
+                redirect_url: $this->routeparser->urlFor('members')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
     }
 
@@ -1148,15 +1122,11 @@ class MembersController extends CrudController
             //load requested member
             if (!$member->load($id)) {
                 //not possible to load member, exit
-                $this->flash->addMessage(
-                    'error_detected',
-                    str_replace('%id', (string)$id, _T("No member #%id."))
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [str_replace('%id', (string)$id, _T("No member #%id."))],
+                    redirect_url: $this->routeparser->urlFor('members')
                 );
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor(
-                        'members'
-                    ));
             }
             $can = $member->canEdit($this->login);
         } else {
@@ -1164,17 +1134,11 @@ class MembersController extends CrudController
         }
 
         if (!$can) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('me')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('me')
-                );
         }
 
         //if adding a child, force parent here
@@ -1869,7 +1833,7 @@ class MembersController extends CrudController
         }
 
         if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
+            foreach ($error_detected as &$error) {
                 if (str_contains($error, '%member_url_')) {
                     preg_match('/%member_url_(\d+)/', $error, $matches);
                     $url = $this->routeparser->urlFor('member', ['id' => $matches[1]]);
@@ -1879,19 +1843,6 @@ class MembersController extends CrudController
                         $error
                     );
                 }
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-
-        if (count($success_detected) > 0) {
-            foreach ($success_detected as $success) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    $success
-                );
             }
         }
 
@@ -1943,9 +1894,12 @@ class MembersController extends CrudController
             }
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_url);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
 

@@ -179,6 +179,7 @@ class PaymentTypeController extends CrudController
         }
 
         $error_detected = [];
+        $success_detected = [];
         $msg = null;
 
         $ptype = new PaymentType($this->zdb, $id);
@@ -218,34 +219,19 @@ class PaymentTypeController extends CrudController
         }
 
         $warning_detected = $ptype->getWarnings();
-        if (count($warning_detected)) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage(
-                    'warning_detected',
-                    $warning
-                );
-            }
+
+        if (count($error_detected) === 0) {
+            $success_detected[] = $msg;
         }
 
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                $msg
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_uri);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_uri,
+            successes: $success_detected,
+            warnings: $warning_detected,
+            errors: $error_detected
+        );
     }
-
 
     // /CRUD - Update
     // CRUD - Delete

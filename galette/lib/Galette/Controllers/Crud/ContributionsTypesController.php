@@ -194,6 +194,8 @@ class ContributionsTypesController extends CrudController
         }
 
         $error_detected = [];
+        $success_detected = [];
+
         $msg = null;
         $ctype = new ContributionsTypes($this->zdb);
 
@@ -223,31 +225,20 @@ class ContributionsTypesController extends CrudController
                 ? _T("Contribution type has been successfully added!") : _T("Contribution type #%id has been successfully updated!");
         }
 
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    str_replace(
-                        ['%id'],
-                        [(string)$id],
-                        $error
-                    )
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                str_replace(
-                    ['%id'],
-                    [(string)$id],
-                    $msg
-                )
+        if (count($error_detected) == 0) {
+            $success_detected[] = str_replace(
+                ['%id'],
+                [(string)$id],
+                $msg
             );
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_uri);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_uri,
+            successes: $success_detected,
+            errors: $error_detected,
+        );
     }
 
 
