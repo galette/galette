@@ -491,6 +491,12 @@ class Texts
             if (count($missing) > 0) {
                 $this->insert($missing);
 
+                $this->zdb->handleSequence(
+                    self::TABLE,
+                    self::PK,
+                    count($this->defaults)
+                );
+
                 Analog::log(
                     'Missing texts were successfully stored into database.',
                     Analog::INFO

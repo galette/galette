@@ -152,6 +152,13 @@ class PdfModels extends Repository
             if (count($missing) > 0) {
                 $this->zdb->connection->beginTransaction();
                 $this->insert($ent::TABLE, $missing);
+
+                $this->zdb->handleSequence(
+                    $ent::TABLE,
+                    $ent::PK,
+                    count($this->defaults)
+                );
+
                 Analog::log(
                     'Missing texts were successfully stored into database.',
                     Analog::INFO

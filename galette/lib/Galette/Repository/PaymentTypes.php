@@ -171,6 +171,13 @@ class PaymentTypes extends Repository
                     'Missing payment types were successfully stored into database.',
                     Analog::INFO
                 );
+
+                $this->zdb->handleSequence(
+                    $ent::TABLE,
+                    $ent::PK,
+                    count($this->defaults)
+                );
+
                 $this->zdb->connection->commit();
                 return true;
             }
