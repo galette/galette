@@ -121,6 +121,7 @@ class Install extends TestCase
             '1.10'  => 'upgrade-to-1.10.php',
             '1.20'  => 'upgrade-to-1.20.php',
             '1.201' => 'upgrade-to-1.201-pgsql.sql',
+            '1.21'  => 'upgrade-to-1.21.php',
         ];
 
         $this->assertSame($knowns, $update_scripts);

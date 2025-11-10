@@ -342,7 +342,7 @@ class Install extends TestCase
     }
 
     /**
-     * Check forgeign keys rules
+     * Check foreign keys rules
      *
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $latest_constraint Constraint from installed database
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $constraint        Constraint from updated database

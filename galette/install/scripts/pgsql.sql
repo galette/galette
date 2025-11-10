@@ -366,4 +366,4 @@ DROP TABLE IF EXISTS galette_database CASCADE;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(1.201);
+INSERT INTO galette_database (version) VALUES(1.210);
