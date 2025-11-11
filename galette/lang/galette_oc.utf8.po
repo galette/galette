@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 08:52+0100\n"
+"POT-Creation-Date: 2025-11-11 09:01+0100\n"
 "PO-Revision-Date: 2025-10-21 08:39+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -121,17 +121,20 @@ msgstr "Manca lo nom dau grope !"
 msgid "Groups"
 msgstr "Gropes"
 
-msgid "new parent is %1"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "Next page (%1$s)"
+msgid "New parent is %1$s"
+msgstr "Pagina seguenta (%1$s)"
 
 #, fuzzy
 #| msgid "Parent member"
-msgid "parent removed"
+msgid "Parent removed"
 msgstr "Membre parent"
 
-#, fuzzy
+#, fuzzy, php-format
 #| msgid "Payment type '%1$s' has been successfully modified."
-msgid "The parent of the following groups has been successfully modified : %1"
+msgid ""
+"The parent of the following groups has been successfully modified : %1$s"
 msgstr "Lo mòde de pagament \"%1$s\" es estat modificat."
 
 #, php-format

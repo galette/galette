@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 08:52+0100\n"
+"POT-Creation-Date: 2025-11-11 09:01+0100\n"
 "PO-Revision-Date: 2025-10-31 05:43+0000\n"
 "Last-Translator: vt729830 <vt729830@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -130,17 +130,20 @@ msgstr "Название группы отсутствует!"
 msgid "Groups"
 msgstr "Группы"
 
-msgid "new parent is %1"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "Remove payment type %1$s"
+msgid "New parent is %1$s"
+msgstr "Удалить тип платежа %1$s"
 
 #, fuzzy
 #| msgid "Members"
-msgid "parent removed"
+msgid "Parent removed"
 msgstr "Пользователи"
 
-#, fuzzy
+#, fuzzy, php-format
 #| msgid "Payment type '%1$s' has been successfully modified."
-msgid "The parent of the following groups has been successfully modified : %1"
+msgid ""
+"The parent of the following groups has been successfully modified : %1$s"
 msgstr "Тип платежа '%1$s' был успешно изменен."
 
 #, php-format

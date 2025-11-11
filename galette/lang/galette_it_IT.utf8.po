@@ -30,7 +30,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 08:52+0100\n"
+"POT-Creation-Date: 2025-11-11 09:01+0100\n"
 "PO-Revision-Date: 2025-10-20 06:31+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -142,17 +142,20 @@ msgstr "Nome del gruppo mancante!"
 msgid "Groups"
 msgstr "Gruppi"
 
-msgid "new parent is %1"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "Next page (%1$s)"
+msgid "New parent is %1$s"
+msgstr "Pagina successiva (%1$s)"
 
 #, fuzzy
 #| msgid "Parent member"
-msgid "parent removed"
+msgid "Parent removed"
 msgstr "Membro genitore"
 
-#, fuzzy
+#, fuzzy, php-format
 #| msgid "Payment type '%1$s' has been successfully modified."
-msgid "The parent of the following groups has been successfully modified : %1"
+msgid ""
+"The parent of the following groups has been successfully modified : %1$s"
 msgstr "La tipologia di pagamento \"%1$s\" è stata modificata correttamente."
 
 #, php-format

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 08:52+0100\n"
+"POT-Creation-Date: 2025-11-11 09:01+0100\n"
 "PO-Revision-Date: 2025-10-20 11:54+0000\n"
 "Last-Translator: Максим Горпиніч <gorpinicmaksim0@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -129,17 +129,20 @@ msgstr "Назва групи відсутня!"
 msgid "Groups"
 msgstr "Групи"
 
-msgid "new parent is %1"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "Next page (%1$s)"
+msgid "New parent is %1$s"
+msgstr "Наступна сторінка (%1$s)"
 
 #, fuzzy
 #| msgid "Parent member"
-msgid "parent removed"
+msgid "Parent removed"
 msgstr "Батьківський член"
 
-#, fuzzy
+#, fuzzy, php-format
 #| msgid "Payment type '%1$s' has been successfully modified."
-msgid "The parent of the following groups has been successfully modified : %1"
+msgid ""
+"The parent of the following groups has been successfully modified : %1$s"
 msgstr "Вид оплати \"%1$s\" успішно змінено."
 
 #, php-format

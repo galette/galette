@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 08:52+0100\n"
+"POT-Creation-Date: 2025-11-11 09:01+0100\n"
 "PO-Revision-Date: 2025-06-27 16:28+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -124,17 +124,20 @@ msgstr "குழு பெயர் காணவில்லை!"
 msgid "Groups"
 msgstr "குழுக்கள்"
 
-msgid "new parent is %1"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "Next page (%1$s)"
+msgid "New parent is %1$s"
+msgstr "அடுத்த பக்கம் (%1$s)"
 
 #, fuzzy
 #| msgid "Parent member"
-msgid "parent removed"
+msgid "Parent removed"
 msgstr "பெற்றோர் உறுப்பினர்"
 
-#, fuzzy
+#, fuzzy, php-format
 #| msgid "Payment type '%1$s' has been successfully modified."
-msgid "The parent of the following groups has been successfully modified : %1"
+msgid ""
+"The parent of the following groups has been successfully modified : %1$s"
 msgstr "கட்டண வகை '%1$s' வெற்றிகரமாக மாற்றப்பட்டுள்ளது."
 
 #, php-format

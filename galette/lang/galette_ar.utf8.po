@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 08:52+0100\n"
+"POT-Creation-Date: 2025-11-11 09:01+0100\n"
 "PO-Revision-Date: 2025-01-04 16:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -154,17 +154,20 @@ msgstr "اسم المجموعة مفقود!"
 msgid "Groups"
 msgstr "الفِرَق"
 
-msgid "new parent is %1"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "Remove payment type %1$s"
+msgid "New parent is %1$s"
+msgstr "إزالة نوع الدفع %1$s"
 
 #, fuzzy
 #| msgid "Benefactor member"
-msgid "parent removed"
+msgid "Parent removed"
 msgstr "عضو مُحسِن"
 
-#, fuzzy
+#, fuzzy, php-format
 #| msgid "Payment type '%s' has been successfully modified."
-msgid "The parent of the following groups has been successfully modified : %1"
+msgid ""
+"The parent of the following groups has been successfully modified : %1$s"
 msgstr "تم تعديل وسيلة الدفع \"%s\" بنجاح."
 
 #, fuzzy, php-format

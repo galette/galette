@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 08:52+0100\n"
+"POT-Creation-Date: 2025-11-11 09:01+0100\n"
 "PO-Revision-Date: 2025-10-24 21:05+0000\n"
 "Last-Translator: Erdem Yanardağ <erdemynrd@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
@@ -134,17 +134,20 @@ msgstr "Grup adı eksik!"
 msgid "Groups"
 msgstr "Gruplar"
 
-msgid "new parent is %1"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "Remove payment type %1$s"
+msgid "New parent is %1$s"
+msgstr "%1$s ödeme tipini sil"
 
 #, fuzzy
 #| msgid "No member #%id."
-msgid "parent removed"
+msgid "Parent removed"
 msgstr "Üye numarası #%id bulunamadı."
 
-#, fuzzy
+#, fuzzy, php-format
 #| msgid "Payment type '%1$s' has been successfully modified."
-msgid "The parent of the following groups has been successfully modified : %1"
+msgid ""
+"The parent of the following groups has been successfully modified : %1$s"
 msgstr "Ödeme tpi '%1$s' başarıyla değiştirildi."
 
 #, php-format

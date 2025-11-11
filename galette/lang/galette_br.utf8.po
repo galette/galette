@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 08:52+0100\n"
+"POT-Creation-Date: 2025-11-11 09:01+0100\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
@@ -143,17 +143,20 @@ msgstr ""
 msgid "Groups"
 msgstr "Strolladoù"
 
-msgid "new parent is %1"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "Next page (%1$s)"
+msgid "New parent is %1$s"
+msgstr "Pajenn da-heul (%1$s)"
 
 #, fuzzy
 #| msgid "No member #%id."
-msgid "parent removed"
+msgid "Parent removed"
 msgstr "Ezel ebet gant #%id."
 
-#, fuzzy
+#, fuzzy, php-format
 #| msgid "Title '%s' has been successfully modified."
-msgid "The parent of the following groups has been successfully modified : %1"
+msgid ""
+"The parent of the following groups has been successfully modified : %1$s"
 msgstr "Kemmet eo bet an titl \"%s\" gant berzh."
 
 #, php-format
