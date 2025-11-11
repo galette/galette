@@ -349,6 +349,39 @@ class MailingHistory extends History
     }
 
     /**
+     * Prepare values fo insert/update
+     *
+     * @return array<string,mixed>
+     */
+    private function getPrepareValues(): array
+    {
+        $_recipients = [];
+        if ($this->recipients != null) {
+            foreach ($this->recipients as $_r) {
+                $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
+            }
+        }
+
+        $sender = ($this->sender === 0)
+            ? new Expression('NULL') : $this->sender;
+        $sender_name = $this->sender_name ?? new Expression('NULL');
+        $sender_address = $this->sender_address ?? new Expression('NULL');
+
+        return [
+            'mailing_sender'            => $sender,
+            'mailing_sender_name'       => $sender_name,
+            'mailing_sender_address'    => $sender_address,
+            'mailing_subject'           => $this->subject,
+            'mailing_body'              => $this->message,
+            'mailing_date'              => $this->date,
+            'mailing_recipients'        => Galette::jsonEncode($_recipients),
+            'mailing_sent'              => ($this->sent)
+                ? true
+                : ($this->zdb->isPostgres() ? 'false' : 0)
+        ];
+    }
+
+    /**
      * Update in the database
      *
      * @return boolean
@@ -356,33 +389,8 @@ class MailingHistory extends History
     public function update(): bool
     {
         try {
-            $_recipients = [];
-            if ($this->recipients != null) {
-                foreach ($this->recipients as $_r) {
-                    $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
-                }
-            }
-
-            $sender = ($this->sender === 0)
-                ? new Expression('NULL') : $this->sender;
-            $sender_name = $this->sender_name ?? new Expression('NULL');
-            $sender_address = $this->sender_address ?? new Expression('NULL');
-
-            $values = [
-                'mailing_sender'            => $sender,
-                'mailing_sender_name'       => $sender_name,
-                'mailing_sender_address'    => $sender_address,
-                'mailing_subject'           => $this->subject,
-                'mailing_body'              => $this->message,
-                'mailing_date'              => $this->date,
-                'mailing_recipients'        => Galette::jsonEncode($_recipients),
-                'mailing_sent'              => ($this->sent)
-                    ? true
-                    : ($this->zdb->isPostgres() ? 'false' : 0)
-            ];
-
             $update = $this->zdb->update(self::TABLE);
-            $update->set($values);
+            $update->set($this->getPrepareValues());
             $update->where([self::PK => $this->mailing->history_id]);
             $this->zdb->execute($update);
             return true;
@@ -403,32 +411,8 @@ class MailingHistory extends History
     public function store(): bool
     {
         try {
-            $_recipients = [];
-            if ($this->recipients != null) {
-                foreach ($this->recipients as $_r) {
-                    $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
-                }
-            }
-
-            $sender = $this->sender === 0 ? new Expression('NULL') : $this->sender;
-            $sender_name = $this->sender_name ?? new Expression('NULL');
-            $sender_address = $this->sender_address ?? new Expression('NULL');
-
-            $values = [
-                'mailing_sender'            => $sender,
-                'mailing_sender_name'       => $sender_name,
-                'mailing_sender_address'    => $sender_address,
-                'mailing_subject'           => $this->subject,
-                'mailing_body'              => $this->message,
-                'mailing_date'              => $this->date,
-                'mailing_recipients'        => Galette::jsonEncode($_recipients),
-                'mailing_sent'              => ($this->sent)
-                    ? true
-                    : ($this->zdb->isPostgres() ? 'false' : 0)
-            ];
-
             $insert = $this->zdb->insert(self::TABLE);
-            $insert->values($values);
+            $insert->values($this->getPrepareValues());
             $this->zdb->execute($insert);
 
             $this->id = $this->zdb->getLastGeneratedValue($this);
