@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 09:26+0100\n"
+"POT-Creation-Date: 2025-11-11 08:52+0100\n"
 "PO-Revision-Date: 2025-10-21 08:39+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -145,6 +145,18 @@ msgstr "Falta el nom del grup!"
 
 msgid "Groups"
 msgstr "Grups"
+
+msgid "new parent is %1"
+msgstr ""
+
+#, fuzzy
+msgid "parent removed"
+msgstr "cap membre"
+
+#, fuzzy
+#| msgid "Payment type '%1$s' has been successfully modified."
+msgid "The parent of the following groups has been successfully modified : %1"
+msgstr "El tipus de pagament «%1$s» s'ha modificat amb èxit."
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -2808,6 +2820,12 @@ msgstr "Transferència"
 msgid "Paypal"
 msgstr "Paypale"
 
+msgid "Stripe"
+msgstr ""
+
+msgid "HelloAsso"
+msgstr ""
+
 #, fuzzy
 msgid "Payment schedule"
 msgstr "Tipus de pagament"
@@ -4684,12 +4702,12 @@ msgid "Information"
 msgstr "Informació"
 
 #, fuzzy
-msgid "Managers"
-msgstr "Gestors"
-
-#, fuzzy
 msgid "Parent group:"
 msgstr "Grup pare"
+
+#, fuzzy
+msgid "Managers"
+msgstr "Gestors"
 
 #, fuzzy
 msgid "Manage managers"
@@ -4698,14 +4716,6 @@ msgstr "Gestiona els gestors"
 #, fuzzy
 msgid "Manage members"
 msgstr "Gestiona els membres"
-
-#, fuzzy
-msgid "Current group (and attached people) as PDF"
-msgstr "Grup actual (i persones adjuntades) com a PDF"
-
-#, fuzzy
-msgid "Group PDF"
-msgstr "Grup PDF"
 
 #, fuzzy
 msgid "Deactivate HTML editor"
@@ -5667,9 +5677,14 @@ msgstr "Tradueix '%s'"
 msgid "Translate labels"
 msgstr "Traduir etiquetes"
 
-#, fuzzy
-msgid "Select a group"
-msgstr "Seleccioneu un grup"
+msgid "This feature requires javascript."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] "Grup no gestionat"
+msgstr[1] "Grup no gestionat"
 
 #, fuzzy
 msgid "Export all groups and their members as PDF"
@@ -5682,6 +5697,19 @@ msgstr "Tots els grups PDF"
 #, fuzzy
 msgid "New group"
 msgstr "Grup nou"
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
+msgstr ""
 
 #, fuzzy
 msgid "Add a new group"
@@ -5700,24 +5728,11 @@ msgid "Create"
 msgstr "Crea"
 
 #, fuzzy
-msgid "An error occurred displaying members interface :("
-msgstr "Hi ha hagut un error en mostrar la interfície de membres ("
+msgid "Export as PDF"
+msgstr "Exporta com a CSV"
 
-#, fuzzy
-msgid "Group members selection"
-msgstr "Selecció de membres del grup"
-
-#, fuzzy
-msgid "Group managers selection"
-msgstr "Selecció dels gestors de grups"
-
-msgid ""
-"Items in this list have been modified. Don't forget to save your changes."
+msgid "Display"
 msgstr ""
-
-#, fuzzy
-msgid "Click on a row to select a member"
-msgstr "Heu de seleccionar un membre del personal"
 
 #, fuzzy
 msgid "Filename"
@@ -5976,9 +5991,6 @@ msgstr "Torna a la llista de membres"
 msgid "Manage selected members"
 msgstr "Gestiona els membres seleccionats"
 
-msgid "This feature requires javascript."
-msgstr ""
-
 #, fuzzy
 msgid "Existing attachments:"
 msgstr "Fitxers adjunts existents"
@@ -6032,8 +6044,16 @@ msgid "An error occurred displaying preview :("
 msgstr "S'ha produït un error en mostrar la vista prèvia ("
 
 #, fuzzy
+msgid "An error occurred displaying members interface :("
+msgstr "Hi ha hagut un error en mostrar la interfície de membres ("
+
+#, fuzzy
 msgid "Members selection"
 msgstr "Selecció de membres"
+
+#, fuzzy
+msgid "Click on a row to select a member"
+msgstr "Heu de seleccionar un membre del personal"
 
 #, fuzzy
 msgid "Are you sure you want to remove this attachment?"
@@ -6976,9 +6996,6 @@ msgstr "Carrega la cerca desada"
 msgid "no search"
 msgstr "sense cerca"
 
-msgid "Display"
-msgstr ""
-
 #, fuzzy
 msgid "Attached to:"
 msgstr "Adjuntat a"
@@ -7256,6 +7273,14 @@ msgid "No fields to translate."
 msgstr "No hi ha camps per traduir."
 
 #, fuzzy
+msgid "Group members selection"
+msgstr "Selecció de membres del grup"
+
+#, fuzzy
+msgid "Group managers selection"
+msgstr "Selecció dels gestors de grups"
+
+#, fuzzy
 msgid "Members by status"
 msgstr "Membres per estat"
 
@@ -7298,6 +7323,10 @@ msgstr "Estat de la pertinença"
 #, fuzzy
 msgid "Account activity"
 msgstr "Activitat del compte"
+
+#, fuzzy
+msgid "Select a group"
+msgstr "Seleccioneu un grup"
 
 msgid "With email:"
 msgstr "Amb correu electrònic:"
@@ -7666,6 +7695,14 @@ msgstr "Llengua:"
 #, fuzzy
 msgid "Page content"
 msgstr "Contingut de la pàgina"
+
+#, fuzzy
+#~ msgid "Current group (and attached people) as PDF"
+#~ msgstr "Grup actual (i persones adjuntades) com a PDF"
+
+#, fuzzy
+#~ msgid "Group PDF"
+#~ msgstr "Grup PDF"
 
 #, php-format
 #~ msgid ""

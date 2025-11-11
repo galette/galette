@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 09:26+0100\n"
+"POT-Creation-Date: 2025-11-11 08:52+0100\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Turkish (Ottoman) <https://hosted.weblate.org/projects/"
@@ -117,6 +117,15 @@ msgid "Group name is missing!"
 msgstr ""
 
 msgid "Groups"
+msgstr ""
+
+msgid "new parent is %1"
+msgstr ""
+
+msgid "parent removed"
+msgstr ""
+
+msgid "The parent of the following groups has been successfully modified : %1"
 msgstr ""
 
 #, php-format
@@ -2240,6 +2249,12 @@ msgstr ""
 msgid "Paypal"
 msgstr ""
 
+msgid "Stripe"
+msgstr ""
+
+msgid "HelloAsso"
+msgstr ""
+
 msgid "Payment schedule"
 msgstr ""
 
@@ -3657,22 +3672,16 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-msgid "Managers"
+msgid "Parent group:"
 msgstr ""
 
-msgid "Parent group:"
+msgid "Managers"
 msgstr ""
 
 msgid "Manage managers"
 msgstr ""
 
 msgid "Manage members"
-msgstr ""
-
-msgid "Current group (and attached people) as PDF"
-msgstr ""
-
-msgid "Group PDF"
 msgstr ""
 
 msgid "Deactivate HTML editor"
@@ -4415,8 +4424,14 @@ msgstr ""
 msgid "Translate labels"
 msgstr ""
 
-msgid "Select a group"
+msgid "This feature requires javascript."
 msgstr ""
+
+#, php-format
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Export all groups and their members as PDF"
 msgstr ""
@@ -4425,6 +4440,19 @@ msgid "All groups PDF"
 msgstr ""
 
 msgid "New group"
+msgstr ""
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
 msgid "Add a new group"
@@ -4439,20 +4467,10 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-msgid "An error occurred displaying members interface :("
+msgid "Export as PDF"
 msgstr ""
 
-msgid "Group members selection"
-msgstr ""
-
-msgid "Group managers selection"
-msgstr ""
-
-msgid ""
-"Items in this list have been modified. Don't forget to save your changes."
-msgstr ""
-
-msgid "Click on a row to select a member"
+msgid "Display"
 msgstr ""
 
 msgid "Filename"
@@ -4657,9 +4675,6 @@ msgstr ""
 msgid "Manage selected members"
 msgstr ""
 
-msgid "This feature requires javascript."
-msgstr ""
-
 msgid "Existing attachments:"
 msgstr ""
 
@@ -4698,7 +4713,13 @@ msgstr ""
 msgid "An error occurred displaying preview :("
 msgstr ""
 
+msgid "An error occurred displaying members interface :("
+msgstr ""
+
 msgid "Members selection"
+msgstr ""
+
+msgid "Click on a row to select a member"
 msgstr ""
 
 msgid "Are you sure you want to remove this attachment?"
@@ -5412,9 +5433,6 @@ msgstr ""
 msgid "no search"
 msgstr ""
 
-msgid "Display"
-msgstr ""
-
 msgid "Attached to:"
 msgstr ""
 
@@ -5622,6 +5640,12 @@ msgstr ""
 msgid "No fields to translate."
 msgstr ""
 
+msgid "Group members selection"
+msgstr ""
+
+msgid "Group managers selection"
+msgstr ""
+
 msgid "Members by status"
 msgstr ""
 
@@ -5653,6 +5677,9 @@ msgid "Membership status"
 msgstr ""
 
 msgid "Account activity"
+msgstr ""
+
+msgid "Select a group"
 msgstr ""
 
 msgid "With email:"

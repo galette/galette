@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 09:26+0100\n"
+"POT-Creation-Date: 2025-11-11 08:52+0100\n"
 "PO-Revision-Date: 2025-10-20 11:54+0000\n"
 "Last-Translator: Максим Горпиніч <gorpinicmaksim0@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -128,6 +128,19 @@ msgstr "Назва групи відсутня!"
 
 msgid "Groups"
 msgstr "Групи"
+
+msgid "new parent is %1"
+msgstr ""
+
+#, fuzzy
+#| msgid "Parent member"
+msgid "parent removed"
+msgstr "Батьківський член"
+
+#, fuzzy
+#| msgid "Payment type '%1$s' has been successfully modified."
+msgid "The parent of the following groups has been successfully modified : %1"
+msgstr "Вид оплати \"%1$s\" успішно змінено."
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -2288,6 +2301,12 @@ msgstr "Переказ"
 msgid "Paypal"
 msgstr "PayPal"
 
+msgid "Stripe"
+msgstr ""
+
+msgid "HelloAsso"
+msgstr ""
+
 msgid "Payment schedule"
 msgstr "Графік платежів"
 
@@ -3807,23 +3826,17 @@ msgstr "Додаткові поля:"
 msgid "Information"
 msgstr "Відомості"
 
-msgid "Managers"
-msgstr "Менеджери"
-
 msgid "Parent group:"
 msgstr "Батьківська група:"
+
+msgid "Managers"
+msgstr "Менеджери"
 
 msgid "Manage managers"
 msgstr "Управління менеджерами"
 
 msgid "Manage members"
 msgstr "Управління членами"
-
-msgid "Current group (and attached people) as PDF"
-msgstr "Поточна група (та долучені люди) у форматі PDF"
-
-msgid "Group PDF"
-msgstr "PDF групи"
 
 msgid "Deactivate HTML editor"
 msgstr "Знедіяти редактор HTML"
@@ -4591,8 +4604,16 @@ msgstr "Переклад \"%s\""
 msgid "Translate labels"
 msgstr "Переклад мітки"
 
-msgid "Select a group"
-msgstr "Вибрати групу"
+msgid "This feature requires javascript."
+msgstr "Для цієї функції потрібен javascript."
+
+#, fuzzy, php-format
+#| msgid "Not managed group"
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] "Група, що не управляється"
+msgstr[1] "Група, що не управляється"
+msgstr[2] "Група, що не управляється"
 
 msgid "Export all groups and their members as PDF"
 msgstr "Експорт усіх груп та їх членів у форматі PDF"
@@ -4602,6 +4623,19 @@ msgstr "Усі групи PDF"
 
 msgid "New group"
 msgstr "Нова група"
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
+msgstr "Елементи цього списку було змінено. Не забудьте зберегти зміни."
 
 msgid "Add a new group"
 msgstr "Додати нову групу"
@@ -4615,21 +4649,13 @@ msgstr "У плейаді вказати назву групи"
 msgid "Create"
 msgstr "Створити"
 
-msgid "An error occurred displaying members interface :("
-msgstr "Під час відображення інтерфейсу членів сталася помилка :("
+#, fuzzy
+#| msgid "Export as CSV"
+msgid "Export as PDF"
+msgstr "Експорт у форматі CSV"
 
-msgid "Group members selection"
-msgstr "Вибір учасників групи"
-
-msgid "Group managers selection"
-msgstr "Вибір менеджерів групи"
-
-msgid ""
-"Items in this list have been modified. Don't forget to save your changes."
-msgstr "Елементи цього списку було змінено. Не забудьте зберегти зміни."
-
-msgid "Click on a row to select a member"
-msgstr "Натисніть рядок, щоб вибрати учасника"
+msgid "Display"
+msgstr "Дисплей"
 
 msgid "Filename"
 msgstr "Ім'я файлу"
@@ -4840,9 +4866,6 @@ msgstr "Повернутися до списку членів"
 msgid "Manage selected members"
 msgstr "Управляти вибраними членами"
 
-msgid "This feature requires javascript."
-msgstr "Для цієї функції потрібен javascript."
-
 msgid "Existing attachments:"
 msgstr "Наявні долучення:"
 
@@ -4884,8 +4907,14 @@ msgstr "Модифікувати розсилку"
 msgid "An error occurred displaying preview :("
 msgstr "Під час відображення попереднього перегляду сталася помилка :("
 
+msgid "An error occurred displaying members interface :("
+msgstr "Під час відображення інтерфейсу членів сталася помилка :("
+
 msgid "Members selection"
 msgstr "Вибір членів"
+
+msgid "Click on a row to select a member"
+msgstr "Натисніть рядок, щоб вибрати учасника"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Ви впевнені, що хочете видалити цей додаток?"
@@ -5670,9 +5699,6 @@ msgstr "Завантажити збережений пошук"
 msgid "no search"
 msgstr "немає пошуку"
 
-msgid "Display"
-msgstr "Дисплей"
-
 msgid "Attached to:"
 msgstr "Долучено до:"
 
@@ -5892,6 +5918,12 @@ msgstr "Виберіть мітку для перекладу"
 msgid "No fields to translate."
 msgstr "Немає полів для перекладу."
 
+msgid "Group members selection"
+msgstr "Вибір учасників групи"
+
+msgid "Group managers selection"
+msgstr "Вибір менеджерів групи"
+
 msgid "Members by status"
 msgstr "Члени за станом"
 
@@ -5924,6 +5956,9 @@ msgstr "Стан членства"
 
 msgid "Account activity"
 msgstr "Діяльність облікового запису"
+
+msgid "Select a group"
+msgstr "Вибрати групу"
 
 msgid "With email:"
 msgstr "З е-поштою:"
@@ -6216,6 +6251,12 @@ msgstr "Мовне меню"
 
 msgid "Page content"
 msgstr "Вміст сторінки"
+
+#~ msgid "Current group (and attached people) as PDF"
+#~ msgstr "Поточна група (та долучені люди) у форматі PDF"
+
+#~ msgid "Group PDF"
+#~ msgstr "PDF групи"
 
 #, php-format
 #~ msgid ""

@@ -40,8 +40,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2025-10-26 09:26+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-11 08:52+0100\n"
 "PO-Revision-Date: 2025-10-30 04:24+0000\n"
 "Last-Translator: Norah-14 <norah.nygard14@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -155,6 +155,19 @@ msgstr "Der Gruppenname fehlt!"
 
 msgid "Groups"
 msgstr "Gruppen"
+
+msgid "new parent is %1"
+msgstr ""
+
+#, fuzzy
+#| msgid "no member"
+msgid "parent removed"
+msgstr "kein Mitglied"
+
+#, fuzzy
+#| msgid "Payment type '%1$s' has been successfully modified."
+msgid "The parent of the following groups has been successfully modified : %1"
+msgstr "Zahlungsart „%1$s“ wurde erfolgreich geändert."
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -1743,8 +1756,8 @@ msgstr "Konnte die (temporäre) Datei nicht schreiben"
 
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr ""
-"Die hochgeladene Datei ist größer als die maximal erlaubte Größe in der php."
-"ini Datei"
+"Die hochgeladene Datei ist größer als die maximal erlaubte Größe in der "
+"php.ini Datei"
 
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
@@ -2387,6 +2400,12 @@ msgstr "Überweisung"
 
 msgid "Paypal"
 msgstr "Paypal"
+
+msgid "Stripe"
+msgstr ""
+
+msgid "HelloAsso"
+msgstr ""
 
 #, fuzzy
 #| msgid "Payment type"
@@ -3941,23 +3960,17 @@ msgstr "Zusätzliche Felder:"
 msgid "Information"
 msgstr "Informationen"
 
-msgid "Managers"
-msgstr "Manager"
-
 msgid "Parent group:"
 msgstr "Übergeordnete Gruppe:"
+
+msgid "Managers"
+msgstr "Manager"
 
 msgid "Manage managers"
 msgstr "Manager verwalten"
 
 msgid "Manage members"
 msgstr "Mitglieder verwalten"
-
-msgid "Current group (and attached people) as PDF"
-msgstr "Aktuelle Gruppe (und dazugehörige Personen) als PDF"
-
-msgid "Group PDF"
-msgstr "Gruppe-PDF"
 
 msgid "Deactivate HTML editor"
 msgstr "HTML-Editor deaktivieren"
@@ -4756,8 +4769,15 @@ msgstr "Übersetze „%s“"
 msgid "Translate labels"
 msgstr "Beschreibungen übersetzen"
 
-msgid "Select a group"
-msgstr "Bitte wählen Sie ein Gruppe"
+msgid "This feature requires javascript."
+msgstr "Diese Funktion erfordert Javascript."
+
+#, fuzzy, php-format
+#| msgid "Not managed group"
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] "Kein Gruppen"
+msgstr[1] "Kein Gruppen"
 
 msgid "Export all groups and their members as PDF"
 msgstr "Alle Gruppen inkl. ihrer Mitglieder als PDF exportieren"
@@ -4767,6 +4787,21 @@ msgstr "Alle-Gruppen-PDF"
 
 msgid "New group"
 msgstr "Neue Gruppe"
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
+msgstr ""
+"Die Elemente dieser Liste wurden bearbeitet. Vergessen Sie nicht Ihre "
+"Änderungen zu speichern."
 
 msgid "Add a new group"
 msgstr "Neue Gruppe hinzufügen"
@@ -4781,26 +4816,13 @@ msgstr "Bitte geben Sie einen Gruppennamen ein"
 msgid "Create"
 msgstr "Erstellen"
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
-"Bei der Anzeige der Mitglieder-Schnittstelle ist ein fehler aufgetreten :("
-
-msgid "Group members selection"
-msgstr "Auswahl der Gruppenmitglieder"
-
-msgid "Group managers selection"
-msgstr "Auswahl der Gruppenmanager"
-
-msgid ""
-"Items in this list have been modified. Don't forget to save your changes."
-msgstr ""
-"Die Elemente dieser Liste wurden bearbeitet. Vergessen Sie nicht Ihre "
-"Änderungen zu speichern."
-
 #, fuzzy
-#| msgid "You have to select a staff member"
-msgid "Click on a row to select a member"
-msgstr "Sie müssen einen Mitarbeiter auswählen"
+#| msgid "Export as CSV"
+msgid "Export as PDF"
+msgstr "Als CSV exportieren"
+
+msgid "Display"
+msgstr "Anzeigen"
 
 #, fuzzy
 #| msgid "file_name"
@@ -5020,9 +5042,6 @@ msgstr "Zurück zur Mitgliedsliste"
 msgid "Manage selected members"
 msgstr "Gewählte Mitglieder verwalten"
 
-msgid "This feature requires javascript."
-msgstr "Diese Funktion erfordert Javascript."
-
 msgid "Existing attachments:"
 msgstr "Vorhandene Anhänge:"
 
@@ -5063,8 +5082,17 @@ msgstr "E-Mails anpassen"
 msgid "An error occurred displaying preview :("
 msgstr "Beim Anzeigen der Vorschau ist ein Fehler aufgetreten :("
 
+msgid "An error occurred displaying members interface :("
+msgstr ""
+"Bei der Anzeige der Mitglieder-Schnittstelle ist ein fehler aufgetreten :("
+
 msgid "Members selection"
 msgstr "Mitgliedsauswahl"
+
+#, fuzzy
+#| msgid "You have to select a staff member"
+msgid "Click on a row to select a member"
+msgstr "Sie müssen einen Mitarbeiter auswählen"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Wollen Sie diesen Anhang wirklich entfernen?"
@@ -5459,8 +5487,8 @@ msgid ""
 "Groups managers will be allowed to export members as csv, pdf cards, "
 "attendence sheetss and groups pdf"
 msgstr ""
-"Dürfen Gruppenmanager Mitglieder in verschiedenen Formaten exportieren (z."
-"B. .csv, PDF-Cards, usw.)"
+"Dürfen Gruppenmanager Mitglieder in verschiedenen Formaten exportieren "
+"(z.B. .csv, PDF-Cards, usw.)"
 
 msgid "Can group managers see contributions?"
 msgstr "Dürfen Gruppenmanager Mitglieder sehen?"
@@ -5874,9 +5902,6 @@ msgstr "Gespeicherte Suche laden"
 msgid "no search"
 msgstr "keine Suche"
 
-msgid "Display"
-msgstr "Anzeigen"
-
 msgid "Attached to:"
 msgstr "Verbunden mit:"
 
@@ -6133,6 +6158,12 @@ msgstr "Beschreibungen zum Übersetzen auswählen"
 msgid "No fields to translate."
 msgstr "Keine Felder zum Übersetzen vorhanden."
 
+msgid "Group members selection"
+msgstr "Auswahl der Gruppenmitglieder"
+
+msgid "Group managers selection"
+msgstr "Auswahl der Gruppenmanager"
+
 msgid "Members by status"
 msgstr "Mitglieder nach Status"
 
@@ -6165,6 +6196,9 @@ msgstr "Status der Mitgliedschaft"
 
 msgid "Account activity"
 msgstr "Kontenaktivität"
+
+msgid "Select a group"
+msgstr "Bitte wählen Sie ein Gruppe"
 
 msgid "With email:"
 msgstr "Mit E-Mail:"
@@ -6478,6 +6512,12 @@ msgstr "Sprache:"
 
 msgid "Page content"
 msgstr "Seiteninhalt"
+
+#~ msgid "Current group (and attached people) as PDF"
+#~ msgstr "Aktuelle Gruppe (und dazugehörige Personen) als PDF"
+
+#~ msgid "Group PDF"
+#~ msgstr "Gruppe-PDF"
 
 #, php-format
 #~ msgid ""

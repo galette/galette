@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 09:26+0100\n"
+"POT-Creation-Date: 2025-11-11 08:52+0100\n"
 "PO-Revision-Date: 2025-10-21 08:39+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -120,6 +120,19 @@ msgstr "Manca lo nom dau grope !"
 
 msgid "Groups"
 msgstr "Gropes"
+
+msgid "new parent is %1"
+msgstr ""
+
+#, fuzzy
+#| msgid "Parent member"
+msgid "parent removed"
+msgstr "Membre parent"
+
+#, fuzzy
+#| msgid "Payment type '%1$s' has been successfully modified."
+msgid "The parent of the following groups has been successfully modified : %1"
+msgstr "Lo mòde de pagament \"%1$s\" es estat modificat."
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -2327,6 +2340,12 @@ msgstr "Virament"
 msgid "Paypal"
 msgstr "Paypal"
 
+msgid "Stripe"
+msgstr ""
+
+msgid "HelloAsso"
+msgstr ""
+
 #, fuzzy
 #| msgid "Payment type"
 msgid "Payment schedule"
@@ -3853,23 +3872,17 @@ msgstr "Camp suplementari :"
 msgid "Information"
 msgstr "Informacions"
 
-msgid "Managers"
-msgstr "Administrators"
-
 msgid "Parent group:"
 msgstr "Grope parent :"
+
+msgid "Managers"
+msgstr "Administrators"
 
 msgid "Manage managers"
 msgstr "Governar leis administrators"
 
 msgid "Manage members"
 msgstr "Governar lei membres"
-
-msgid "Current group (and attached people) as PDF"
-msgstr "PDF dau grope corrent (e mai lei personas restacadas)"
-
-msgid "Group PDF"
-msgstr "PDF dau grope"
 
 msgid "Deactivate HTML editor"
 msgstr "Desactivar l’editor HTML"
@@ -4639,8 +4652,15 @@ msgstr "Tradurre '%s'"
 msgid "Translate labels"
 msgstr "Traduccion d'etiquetas"
 
-msgid "Select a group"
-msgstr "Chausissètz un grope"
+msgid "This feature requires javascript."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Not managed group"
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] "Grope non administrat"
+msgstr[1] "Grope non administrat"
 
 msgid "Export all groups and their members as PDF"
 msgstr "Expòrt de l'ensems dei gropes amb sei membres en PDF"
@@ -4650,6 +4670,21 @@ msgstr "PDF de l'ensems dei gropes"
 
 msgid "New group"
 msgstr "Grope nòu"
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
+msgstr ""
+"Avètz modificat d'elements de la lista. Oblidètz pas d'enregistrar lei "
+"modificacions."
 
 msgid "Add a new group"
 msgstr "Ajustar un grope novèu"
@@ -4663,23 +4698,13 @@ msgstr "Vos fau donar un nom au grope"
 msgid "Create"
 msgstr "Crear"
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
+#, fuzzy
+#| msgid "Export as CSV"
+msgid "Export as PDF"
+msgstr "Teledescargar en CSV"
 
-msgid "Group members selection"
-msgstr "Seleccion dei membres dau grope"
-
-msgid "Group managers selection"
-msgstr "Chausir lei responsables dau grope"
-
-msgid ""
-"Items in this list have been modified. Don't forget to save your changes."
-msgstr ""
-"Avètz modificat d'elements de la lista. Oblidètz pas d'enregistrar lei "
-"modificacions."
-
-msgid "Click on a row to select a member"
-msgstr ""
+msgid "Display"
+msgstr "Mostrar"
 
 msgid "Filename"
 msgstr "Nom dau fichier"
@@ -4891,9 +4916,6 @@ msgstr "Tornar a la lista dei membres"
 msgid "Manage selected members"
 msgstr "Governar lei membres seleccionats"
 
-msgid "This feature requires javascript."
-msgstr ""
-
 msgid "Existing attachments:"
 msgstr "Pèças jonchas existentas :"
 
@@ -4932,8 +4954,14 @@ msgstr "Modificar lo mandadís"
 msgid "An error occurred displaying preview :("
 msgstr ""
 
+msgid "An error occurred displaying members interface :("
+msgstr ""
+
 msgid "Members selection"
 msgstr "Seleccion de membres"
+
+msgid "Click on a row to select a member"
+msgstr ""
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr ""
@@ -5682,9 +5710,6 @@ msgstr "Teledescargar la recèrca enregistrada"
 msgid "no search"
 msgstr "ges de recèrca"
 
-msgid "Display"
-msgstr "Mostrar"
-
 msgid "Attached to:"
 msgstr ""
 
@@ -5922,6 +5947,12 @@ msgstr ""
 msgid "No fields to translate."
 msgstr ""
 
+msgid "Group members selection"
+msgstr "Seleccion dei membres dau grope"
+
+msgid "Group managers selection"
+msgstr "Chausir lei responsables dau grope"
+
 msgid "Members by status"
 msgstr "Membres segon l'estatut"
 
@@ -5954,6 +5985,9 @@ msgstr "Estatut de l'adesion"
 
 msgid "Account activity"
 msgstr "Activitat dau còmpte"
+
+msgid "Select a group"
+msgstr "Chausissètz un grope"
 
 msgid "With email:"
 msgstr "Amb adreiça electronica :"
@@ -6250,6 +6284,12 @@ msgstr "Lenga :"
 
 msgid "Page content"
 msgstr ""
+
+#~ msgid "Current group (and attached people) as PDF"
+#~ msgstr "PDF dau grope corrent (e mai lei personas restacadas)"
+
+#~ msgid "Group PDF"
+#~ msgstr "PDF dau grope"
 
 #, php-format
 #~ msgid ""

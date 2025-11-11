@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 09:26+0100\n"
+"POT-Creation-Date: 2025-11-11 08:52+0100\n"
 "PO-Revision-Date: 2025-06-27 16:28+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -123,6 +123,19 @@ msgstr "குழு பெயர் காணவில்லை!"
 
 msgid "Groups"
 msgstr "குழுக்கள்"
+
+msgid "new parent is %1"
+msgstr ""
+
+#, fuzzy
+#| msgid "Parent member"
+msgid "parent removed"
+msgstr "பெற்றோர் உறுப்பினர்"
+
+#, fuzzy
+#| msgid "Payment type '%1$s' has been successfully modified."
+msgid "The parent of the following groups has been successfully modified : %1"
+msgstr "கட்டண வகை '%1$s' வெற்றிகரமாக மாற்றப்பட்டுள்ளது."
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -2307,6 +2320,12 @@ msgstr "இடமாற்றம்"
 msgid "Paypal"
 msgstr "பேபால்"
 
+msgid "Stripe"
+msgstr ""
+
+msgid "HelloAsso"
+msgstr ""
+
 msgid "Payment schedule"
 msgstr "கட்டண அட்டவணை"
 
@@ -3802,23 +3821,17 @@ msgstr "கூடுதல் புலங்கள்:"
 msgid "Information"
 msgstr "தகவல்"
 
-msgid "Managers"
-msgstr "மேலாளர்கள்"
-
 msgid "Parent group:"
 msgstr "பெற்றோர் குழு:"
+
+msgid "Managers"
+msgstr "மேலாளர்கள்"
 
 msgid "Manage managers"
 msgstr "மேலாளர்களை நிர்வகிக்கவும்"
 
 msgid "Manage members"
 msgstr "உறுப்பினர்களை நிர்வகிக்கவும்"
-
-msgid "Current group (and attached people) as PDF"
-msgstr "தற்போதைய குழு (மற்றும் இணைக்கப்பட்ட நபர்கள்) PDF ஆக"
-
-msgid "Group PDF"
-msgstr "குழு PDF"
 
 msgid "Deactivate HTML editor"
 msgstr "உஉகுமொ எடிட்டரை செயலிழக்கச் செய்யுங்கள்"
@@ -4596,8 +4609,15 @@ msgstr "'%s' என்று மொழிபெயர்க்கவும்"
 msgid "Translate labels"
 msgstr "லேபிள்களை மொழிபெயர்க்கவும்"
 
-msgid "Select a group"
-msgstr "ஒரு குழுவைத் தேர்ந்தெடுக்கவும்"
+msgid "This feature requires javascript."
+msgstr "இந்த அம்சத்திற்கு சாவாச்கிரிப்ட் தேவைப்படுகிறது."
+
+#, fuzzy, php-format
+#| msgid "Not managed group"
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] "நிர்வகிக்கப்பட்ட குழு அல்ல"
+msgstr[1] "நிர்வகிக்கப்பட்ட குழு அல்ல"
 
 msgid "Export all groups and their members as PDF"
 msgstr "அனைத்து குழுக்களையும் அவற்றின் உறுப்பினர்களையும் PDF ஆக ஏற்றுமதி செய்யுங்கள்"
@@ -4607,6 +4627,21 @@ msgstr "அனைத்து குழுக்களும் PDF"
 
 msgid "New group"
 msgstr "புதிய குழு"
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
+msgstr ""
+"இந்த பட்டியலில் உள்ள உருப்படிகள் மாற்றியமைக்கப்பட்டுள்ளன. உங்கள் மாற்றங்களைச் சேமிக்க "
+"மறக்காதீர்கள்."
 
 msgid "Add a new group"
 msgstr "ஒரு புதிய குழுவைச் சேர்க்கவும்"
@@ -4620,23 +4655,13 @@ msgstr "குழு பெயரை வழங்கவும்"
 msgid "Create"
 msgstr "உருவாக்கு"
 
-msgid "An error occurred displaying members interface :("
-msgstr "உறுப்பினர்களின் இடைமுகத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
+#, fuzzy
+#| msgid "Export as CSV"
+msgid "Export as PDF"
+msgstr "காபிம ஆக ஏற்றுமதி"
 
-msgid "Group members selection"
-msgstr "குழு உறுப்பினர்கள் தேர்வு"
-
-msgid "Group managers selection"
-msgstr "குழு மேலாளர்கள் தேர்வு"
-
-msgid ""
-"Items in this list have been modified. Don't forget to save your changes."
-msgstr ""
-"இந்த பட்டியலில் உள்ள உருப்படிகள் மாற்றியமைக்கப்பட்டுள்ளன. உங்கள் மாற்றங்களைச் சேமிக்க "
-"மறக்காதீர்கள்."
-
-msgid "Click on a row to select a member"
-msgstr "ஒரு உறுப்பினரைத் தேர்ந்தெடுக்க வரிசையில் சொடுக்கு செய்க"
+msgid "Display"
+msgstr "காட்சி"
 
 msgid "Filename"
 msgstr "கோப்புப்பெயர்"
@@ -4844,9 +4869,6 @@ msgstr "உறுப்பினர்கள் பட்டியலுக்�
 msgid "Manage selected members"
 msgstr "தேர்ந்தெடுக்கப்பட்ட உறுப்பினர்களை நிர்வகிக்கவும்"
 
-msgid "This feature requires javascript."
-msgstr "இந்த அம்சத்திற்கு சாவாச்கிரிப்ட் தேவைப்படுகிறது."
-
 msgid "Existing attachments:"
 msgstr "தற்போதுள்ள இணைப்புகள்:"
 
@@ -4887,8 +4909,14 @@ msgstr "அஞ்சலை மாற்றவும்"
 msgid "An error occurred displaying preview :("
 msgstr "முன்னோட்டத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
 
+msgid "An error occurred displaying members interface :("
+msgstr "உறுப்பினர்களின் இடைமுகத்தைக் காண்பிக்கும் பிழை ஏற்பட்டது :("
+
 msgid "Members selection"
 msgstr "உறுப்பினர்கள் தேர்வு"
+
+msgid "Click on a row to select a member"
+msgstr "ஒரு உறுப்பினரைத் தேர்ந்தெடுக்க வரிசையில் சொடுக்கு செய்க"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "இந்த இணைப்பை அகற்ற விரும்புகிறீர்களா?"
@@ -5676,9 +5704,6 @@ msgstr "சேமித்த தேடலை ஏற்றவும்"
 msgid "no search"
 msgstr "தேடல் இல்லை"
 
-msgid "Display"
-msgstr "காட்சி"
-
 msgid "Attached to:"
 msgstr "இணைக்கப்பட்டுள்ளது:"
 
@@ -5917,6 +5942,12 @@ msgstr "மொழிபெயர்க்க லேபிளைத் தேர�
 msgid "No fields to translate."
 msgstr "மொழிபெயர்க்க புலங்கள் இல்லை."
 
+msgid "Group members selection"
+msgstr "குழு உறுப்பினர்கள் தேர்வு"
+
+msgid "Group managers selection"
+msgstr "குழு மேலாளர்கள் தேர்வு"
+
 msgid "Members by status"
 msgstr "அந்தச்தால் உறுப்பினர்கள்"
 
@@ -5949,6 +5980,9 @@ msgstr "உறுப்பினர் நிலை"
 
 msgid "Account activity"
 msgstr "கணக்கு செயல்பாடு"
+
+msgid "Select a group"
+msgstr "ஒரு குழுவைத் தேர்ந்தெடுக்கவும்"
 
 msgid "With email:"
 msgstr "மின்னஞ்சலுடன்:"
@@ -6240,6 +6274,12 @@ msgstr "மொழி பட்டியல்"
 
 msgid "Page content"
 msgstr "பக்க உள்ளடக்கம்"
+
+#~ msgid "Current group (and attached people) as PDF"
+#~ msgstr "தற்போதைய குழு (மற்றும் இணைக்கப்பட்ட நபர்கள்) PDF ஆக"
+
+#~ msgid "Group PDF"
+#~ msgstr "குழு PDF"
 
 #~ msgid "By %name"
 #~ msgstr "%name"

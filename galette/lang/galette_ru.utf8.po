@@ -13,8 +13,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2025-10-26 09:26+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-11 08:52+0100\n"
 "PO-Revision-Date: 2025-10-31 05:43+0000\n"
 "Last-Translator: vt729830 <vt729830@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -23,9 +23,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural="
-"(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? "
-"1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.14.1-dev\n"
 
 #, fuzzy
@@ -130,6 +129,19 @@ msgstr "Название группы отсутствует!"
 
 msgid "Groups"
 msgstr "Группы"
+
+msgid "new parent is %1"
+msgstr ""
+
+#, fuzzy
+#| msgid "Members"
+msgid "parent removed"
+msgstr "Пользователи"
+
+#, fuzzy
+#| msgid "Payment type '%1$s' has been successfully modified."
+msgid "The parent of the following groups has been successfully modified : %1"
+msgstr "Тип платежа '%1$s' был успешно изменен."
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -2277,6 +2289,12 @@ msgstr "Перевод"
 msgid "Paypal"
 msgstr "Paypal"
 
+msgid "Stripe"
+msgstr ""
+
+msgid "HelloAsso"
+msgstr ""
+
 msgid "Payment schedule"
 msgstr ""
 
@@ -3710,22 +3728,16 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-msgid "Managers"
+msgid "Parent group:"
 msgstr ""
 
-msgid "Parent group:"
+msgid "Managers"
 msgstr ""
 
 msgid "Manage managers"
 msgstr ""
 
 msgid "Manage members"
-msgstr ""
-
-msgid "Current group (and attached people) as PDF"
-msgstr ""
-
-msgid "Group PDF"
 msgstr ""
 
 msgid "Deactivate HTML editor"
@@ -4480,8 +4492,15 @@ msgstr ""
 msgid "Translate labels"
 msgstr ""
 
-msgid "Select a group"
+msgid "This feature requires javascript."
 msgstr ""
+
+#, php-format
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "Export all groups and their members as PDF"
 msgstr ""
@@ -4490,6 +4509,19 @@ msgid "All groups PDF"
 msgstr ""
 
 msgid "New group"
+msgstr ""
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
 msgid "Add a new group"
@@ -4504,20 +4536,12 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
+#, fuzzy
+#| msgid "Exports"
+msgid "Export as PDF"
+msgstr "Экспорт"
 
-msgid "Group members selection"
-msgstr ""
-
-msgid "Group managers selection"
-msgstr ""
-
-msgid ""
-"Items in this list have been modified. Don't forget to save your changes."
-msgstr ""
-
-msgid "Click on a row to select a member"
+msgid "Display"
 msgstr ""
 
 msgid "Filename"
@@ -4722,9 +4746,6 @@ msgstr ""
 msgid "Manage selected members"
 msgstr ""
 
-msgid "This feature requires javascript."
-msgstr ""
-
 msgid "Existing attachments:"
 msgstr ""
 
@@ -4763,7 +4784,13 @@ msgstr ""
 msgid "An error occurred displaying preview :("
 msgstr ""
 
+msgid "An error occurred displaying members interface :("
+msgstr ""
+
 msgid "Members selection"
+msgstr ""
+
+msgid "Click on a row to select a member"
 msgstr ""
 
 msgid "Are you sure you want to remove this attachment?"
@@ -5483,9 +5510,6 @@ msgstr ""
 msgid "no search"
 msgstr ""
 
-msgid "Display"
-msgstr ""
-
 msgid "Attached to:"
 msgstr ""
 
@@ -5708,6 +5732,12 @@ msgstr ""
 msgid "No fields to translate."
 msgstr ""
 
+msgid "Group members selection"
+msgstr ""
+
+msgid "Group managers selection"
+msgstr ""
+
 msgid "Members by status"
 msgstr ""
 
@@ -5739,6 +5769,9 @@ msgid "Membership status"
 msgstr ""
 
 msgid "Account activity"
+msgstr ""
+
+msgid "Select a group"
 msgstr ""
 
 msgid "With email:"

@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 09:26+0100\n"
+"POT-Creation-Date: 2025-11-11 08:52+0100\n"
 "PO-Revision-Date: 2025-01-04 16:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -153,6 +153,19 @@ msgstr "اسم المجموعة مفقود!"
 
 msgid "Groups"
 msgstr "الفِرَق"
+
+msgid "new parent is %1"
+msgstr ""
+
+#, fuzzy
+#| msgid "Benefactor member"
+msgid "parent removed"
+msgstr "عضو مُحسِن"
+
+#, fuzzy
+#| msgid "Payment type '%s' has been successfully modified."
+msgid "The parent of the following groups has been successfully modified : %1"
+msgstr "تم تعديل وسيلة الدفع \"%s\" بنجاح."
 
 #, fuzzy, php-format
 #| msgid "Group `%groupname` has been successfully saved."
@@ -2396,6 +2409,12 @@ msgstr ""
 msgid "Paypal"
 msgstr "بايبال"
 
+msgid "Stripe"
+msgstr ""
+
+msgid "HelloAsso"
+msgstr ""
+
 #, fuzzy
 #| msgid "Payment type"
 msgid "Payment schedule"
@@ -3861,10 +3880,10 @@ msgstr "حقول إضافية:"
 msgid "Information"
 msgstr "معلومات عن النظام"
 
-msgid "Managers"
+msgid "Parent group:"
 msgstr ""
 
-msgid "Parent group:"
+msgid "Managers"
 msgstr ""
 
 msgid "Manage managers"
@@ -3872,12 +3891,6 @@ msgstr ""
 
 msgid "Manage members"
 msgstr "إدارة الأعضاء"
-
-msgid "Current group (and attached people) as PDF"
-msgstr ""
-
-msgid "Group PDF"
-msgstr ""
 
 msgid "Deactivate HTML editor"
 msgstr ""
@@ -4668,8 +4681,19 @@ msgstr "ترجمة ” %s “"
 msgid "Translate labels"
 msgstr "ترجمة الملصقات"
 
-msgid "Select a group"
-msgstr "اختر فريقا"
+msgid "This feature requires javascript."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Manage groups"
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] "إدارة الفِرَق"
+msgstr[1] "إدارة الفِرَق"
+msgstr[2] "إدارة الفِرَق"
+msgstr[3] "إدارة الفِرَق"
+msgstr[4] "إدارة الفِرَق"
+msgstr[5] "إدارة الفِرَق"
 
 msgid "Export all groups and their members as PDF"
 msgstr ""
@@ -4679,6 +4703,19 @@ msgstr ""
 
 msgid "New group"
 msgstr "فريق جديد"
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
+msgstr ""
 
 msgid "Add a new group"
 msgstr "إضافة فريق جديد"
@@ -4692,20 +4729,12 @@ msgstr ""
 msgid "Create"
 msgstr "إنشاء"
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
+#, fuzzy
+#| msgid "Exports"
+msgid "Export as PDF"
+msgstr "التصديرات"
 
-msgid "Group members selection"
-msgstr ""
-
-msgid "Group managers selection"
-msgstr ""
-
-msgid ""
-"Items in this list have been modified. Don't forget to save your changes."
-msgstr ""
-
-msgid "Click on a row to select a member"
+msgid "Display"
 msgstr ""
 
 #, fuzzy
@@ -4920,9 +4949,6 @@ msgstr "العودة إلى قائمة الأعضاء"
 msgid "Manage selected members"
 msgstr "إدارة الأعضاء الذين تم اختيارهم"
 
-msgid "This feature requires javascript."
-msgstr ""
-
 msgid "Existing attachments:"
 msgstr ""
 
@@ -4961,7 +4987,13 @@ msgstr ""
 msgid "An error occurred displaying preview :("
 msgstr ""
 
+msgid "An error occurred displaying members interface :("
+msgstr ""
+
 msgid "Members selection"
+msgstr ""
+
+msgid "Click on a row to select a member"
 msgstr ""
 
 msgid "Are you sure you want to remove this attachment?"
@@ -5700,9 +5732,6 @@ msgstr ""
 msgid "no search"
 msgstr ""
 
-msgid "Display"
-msgstr ""
-
 msgid "Attached to:"
 msgstr ""
 
@@ -5942,6 +5971,12 @@ msgstr ""
 msgid "No fields to translate."
 msgstr ""
 
+msgid "Group members selection"
+msgstr ""
+
+msgid "Group managers selection"
+msgstr ""
+
 msgid "Members by status"
 msgstr ""
 
@@ -5976,6 +6011,9 @@ msgstr ""
 
 msgid "Account activity"
 msgstr "نشاط الحساب"
+
+msgid "Select a group"
+msgstr "اختر فريقا"
 
 msgid "With email:"
 msgstr ""
@@ -6326,9 +6364,6 @@ msgstr "محتوى الصفحة"
 
 #~ msgid "Lists configuration"
 #~ msgstr "إعدادت القوائم"
-
-#~ msgid "Manage groups"
-#~ msgstr "إدارة الفِرَق"
 
 #~ msgid "Manage mailings"
 #~ msgstr "إدارة البريد الإلكتروني"

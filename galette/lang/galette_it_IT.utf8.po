@@ -30,7 +30,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 09:26+0100\n"
+"POT-Creation-Date: 2025-11-11 08:52+0100\n"
 "PO-Revision-Date: 2025-10-20 06:31+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -141,6 +141,19 @@ msgstr "Nome del gruppo mancante!"
 
 msgid "Groups"
 msgstr "Gruppi"
+
+msgid "new parent is %1"
+msgstr ""
+
+#, fuzzy
+#| msgid "Parent member"
+msgid "parent removed"
+msgstr "Membro genitore"
+
+#, fuzzy
+#| msgid "Payment type '%1$s' has been successfully modified."
+msgid "The parent of the following groups has been successfully modified : %1"
+msgstr "La tipologia di pagamento \"%1$s\" è stata modificata correttamente."
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -2338,6 +2351,12 @@ msgstr "Trasferimento"
 msgid "Paypal"
 msgstr "Paypal"
 
+msgid "Stripe"
+msgstr ""
+
+msgid "HelloAsso"
+msgstr ""
+
 msgid "Payment schedule"
 msgstr "Piano pagamenti"
 
@@ -3876,23 +3895,17 @@ msgstr "Campi aggiuntivi:"
 msgid "Information"
 msgstr "Informazioni"
 
-msgid "Managers"
-msgstr "Gestori"
-
 msgid "Parent group:"
 msgstr "Gruppo genitore:"
+
+msgid "Managers"
+msgstr "Gestori"
 
 msgid "Manage managers"
 msgstr "Gestione amministratori"
 
 msgid "Manage members"
 msgstr "Gestisci soci"
-
-msgid "Current group (and attached people) as PDF"
-msgstr "Gruppo attuale (e persone collegate) come PDF"
-
-msgid "Group PDF"
-msgstr "Raggruppa PDF"
 
 msgid "Deactivate HTML editor"
 msgstr "Disattiva l'editor HTML"
@@ -4657,8 +4670,15 @@ msgstr "Traduci '%s'"
 msgid "Translate labels"
 msgstr "Traduci etichette"
 
-msgid "Select a group"
-msgstr "Seleziona un gruppo"
+msgid "This feature requires javascript."
+msgstr "Questa funzione richiede javascript."
+
+#, fuzzy, php-format
+#| msgid "Not managed group"
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] "Gruppo non gestito"
+msgstr[1] "Gruppo non gestito"
 
 msgid "Export all groups and their members as PDF"
 msgstr "Esporta tutti i gruppi e i loro membri in formato PDF"
@@ -4668,6 +4688,21 @@ msgstr "Tutti i gruppi in PDF"
 
 msgid "New group"
 msgstr "Nuovo gruppo"
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
+msgstr ""
+"Gli articoli in questo elenco sono stati modificati. Ricordarsi di salvare i "
+"cambiamenti."
 
 msgid "Add a new group"
 msgstr "Aggiungi un nuovo gruppo"
@@ -4681,23 +4716,13 @@ msgstr "Fornire un nome di gruppo"
 msgid "Create"
 msgstr "Crea"
 
-msgid "An error occurred displaying members interface :("
-msgstr "Errore di visualizzazione dell'interfaccia dei membri :("
+#, fuzzy
+#| msgid "Export as CSV"
+msgid "Export as PDF"
+msgstr "Esporta come CSV"
 
-msgid "Group members selection"
-msgstr "Selezione dei membri del gruppo"
-
-msgid "Group managers selection"
-msgstr "Selezione gestori di gruppo"
-
-msgid ""
-"Items in this list have been modified. Don't forget to save your changes."
-msgstr ""
-"Gli articoli in questo elenco sono stati modificati. Ricordarsi di salvare i "
-"cambiamenti."
-
-msgid "Click on a row to select a member"
-msgstr "Fare clic su una riga per selezionare un socio"
+msgid "Display"
+msgstr "Mostra"
 
 msgid "Filename"
 msgstr "Nomefile"
@@ -4911,9 +4936,6 @@ msgstr "Torna alla lista dei soci"
 msgid "Manage selected members"
 msgstr "Gestisci i soci selezionati"
 
-msgid "This feature requires javascript."
-msgstr "Questa funzione richiede javascript."
-
 msgid "Existing attachments:"
 msgstr "Allegati esistenti:"
 
@@ -4955,8 +4977,14 @@ msgstr "Modifica l'invio postale"
 msgid "An error occurred displaying preview :("
 msgstr "Errore durante la visualizzazione dell'anteprima :("
 
+msgid "An error occurred displaying members interface :("
+msgstr "Errore di visualizzazione dell'interfaccia dei membri :("
+
 msgid "Members selection"
 msgstr "Selezione soci"
+
+msgid "Click on a row to select a member"
+msgstr "Fare clic su una riga per selezionare un socio"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Sicuri di voler rimuovere questo allegato?"
@@ -5744,9 +5772,6 @@ msgstr "Carica ricerca salvata"
 msgid "no search"
 msgstr "nessuna ricerca"
 
-msgid "Display"
-msgstr "Mostra"
-
 msgid "Attached to:"
 msgstr "Collegato a:"
 
@@ -5968,6 +5993,12 @@ msgstr "Scegliere l'etichetta da tradurre"
 msgid "No fields to translate."
 msgstr "Nessun campo da tradurre."
 
+msgid "Group members selection"
+msgstr "Selezione dei membri del gruppo"
+
+msgid "Group managers selection"
+msgstr "Selezione gestori di gruppo"
+
 msgid "Members by status"
 msgstr "Membri per stato"
 
@@ -6000,6 +6031,9 @@ msgstr "Stato iscrizione"
 
 msgid "Account activity"
 msgstr "Attività dell'account"
+
+msgid "Select a group"
+msgstr "Seleziona un gruppo"
 
 msgid "With email:"
 msgstr "Con email:"
@@ -6296,6 +6330,12 @@ msgstr "Menu lingua"
 
 msgid "Page content"
 msgstr "Contenuti della pagina"
+
+#~ msgid "Current group (and attached people) as PDF"
+#~ msgstr "Gruppo attuale (e persone collegate) come PDF"
+
+#~ msgid "Group PDF"
+#~ msgstr "Raggruppa PDF"
 
 #, php-format
 #~ msgid ""

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 09:26+0100\n"
+"POT-Creation-Date: 2025-11-11 08:52+0100\n"
 "PO-Revision-Date: 2025-10-21 08:38+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -129,6 +129,19 @@ msgstr "Le nom de groupe est manquant !"
 
 msgid "Groups"
 msgstr "Groupes"
+
+msgid "new parent is %1"
+msgstr ""
+
+#, fuzzy
+#| msgid "Parent member"
+msgid "parent removed"
+msgstr "Adhérent parent"
+
+#, fuzzy
+#| msgid "Payment type '%1$s' has been successfully modified."
+msgid "The parent of the following groups has been successfully modified : %1"
+msgstr "Le type de paiement « %1$s » a été modifié avec succès."
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -2337,6 +2350,12 @@ msgstr "Virement"
 msgid "Paypal"
 msgstr "Paypal"
 
+msgid "Stripe"
+msgstr ""
+
+msgid "HelloAsso"
+msgstr ""
+
 msgid "Payment schedule"
 msgstr "Paiement planifié"
 
@@ -3885,23 +3904,17 @@ msgstr "Champs supplémentaires :"
 msgid "Information"
 msgstr "Informations"
 
-msgid "Managers"
-msgstr "Responsables"
-
 msgid "Parent group:"
 msgstr "Groupe parent :"
+
+msgid "Managers"
+msgstr "Responsables"
 
 msgid "Manage managers"
 msgstr "Gestion des responsables"
 
 msgid "Manage members"
 msgstr "Gestion des membres"
-
-msgid "Current group (and attached people) as PDF"
-msgstr "PDF du groupe courant (et des personnes rattachées)"
-
-msgid "Group PDF"
-msgstr "PDF du groupe"
 
 msgid "Deactivate HTML editor"
 msgstr "Désactiver l’éditeur HTML"
@@ -4677,8 +4690,15 @@ msgstr "Traduire « %s »"
 msgid "Translate labels"
 msgstr "Traduction de libellés"
 
-msgid "Select a group"
-msgstr "Sélectionnez un groupe"
+msgid "This feature requires javascript."
+msgstr "Cette fonctionnalité nécessite javascript."
+
+#, fuzzy, php-format
+#| msgid "Not managed group"
+msgid "%1$s managed group"
+msgid_plural "%1$s managed groups"
+msgstr[0] "Groupe non géré"
+msgstr[1] "Groupe non géré"
 
 msgid "Export all groups and their members as PDF"
 msgstr "Export de l’ensemble des groupes ainsi que leurs membres en PDF"
@@ -4688,6 +4708,21 @@ msgstr "PDF de l'ensemble des groupes"
 
 msgid "New group"
 msgstr "Nouveau groupe"
+
+msgid "Move an item at the top of the list to reset its parent"
+msgstr ""
+
+msgid ""
+"Some of the changes you made (highlighted in red above) are not allowed. "
+"Saving your changes in the list will only be possible if all of them are "
+"allowed."
+msgstr ""
+
+msgid ""
+"Items in this list have been modified. Don't forget to save your changes."
+msgstr ""
+"Les éléments de cette liste ont été modifiés. N'oubliez pas d'enregistrer "
+"vos modifications."
 
 msgid "Add a new group"
 msgstr "Ajouter un nouveau groupe"
@@ -4701,24 +4736,13 @@ msgstr "Veuillez spécifier un nom de groupe"
 msgid "Create"
 msgstr "Créer"
 
-msgid "An error occurred displaying members interface :("
-msgstr ""
-"Une erreur est survenue lors de l'affichage de l'interface des membres :("
+#, fuzzy
+#| msgid "Export as CSV"
+msgid "Export as PDF"
+msgstr "Exporter en CSV"
 
-msgid "Group members selection"
-msgstr "Sélection des membres du groupe"
-
-msgid "Group managers selection"
-msgstr "Sélection des responsables du groupe"
-
-msgid ""
-"Items in this list have been modified. Don't forget to save your changes."
-msgstr ""
-"Les éléments de cette liste ont été modifiés. N'oubliez pas d'enregistrer "
-"vos modifications."
-
-msgid "Click on a row to select a member"
-msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
+msgid "Display"
+msgstr "Afficher"
 
 msgid "Filename"
 msgstr "Nom du fichier"
@@ -4932,9 +4956,6 @@ msgstr "Retour à la liste des membres"
 msgid "Manage selected members"
 msgstr "Gestion des adhérents sélectionnés"
 
-msgid "This feature requires javascript."
-msgstr "Cette fonctionnalité nécessite javascript."
-
 msgid "Existing attachments:"
 msgstr "Pièces jointes existantes :"
 
@@ -4976,8 +4997,15 @@ msgstr "Modifier l'envoi"
 msgid "An error occurred displaying preview :("
 msgstr "Une erreur est survenue lors de l'affichage de l'aperçu :("
 
+msgid "An error occurred displaying members interface :("
+msgstr ""
+"Une erreur est survenue lors de l'affichage de l'interface des membres :("
+
 msgid "Members selection"
 msgstr "Sélection d’adhérents"
+
+msgid "Click on a row to select a member"
+msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Voulez-vous vraiment effacer cette pièce jointe ?"
@@ -5763,9 +5791,6 @@ msgstr "Exécuter une recherche enregistrée"
 msgid "no search"
 msgstr "pas de recherches"
 
-msgid "Display"
-msgstr "Afficher"
-
 msgid "Attached to:"
 msgstr "Attaché à :"
 
@@ -5984,6 +6009,12 @@ msgstr "Choisissez le libellé à traduire"
 msgid "No fields to translate."
 msgstr "Aucun libellé à traduire."
 
+msgid "Group members selection"
+msgstr "Sélection des membres du groupe"
+
+msgid "Group managers selection"
+msgstr "Sélection des responsables du groupe"
+
 msgid "Members by status"
 msgstr "Adhérents par statut"
 
@@ -6016,6 +6047,9 @@ msgstr "Statut de l’adhésion"
 
 msgid "Account activity"
 msgstr "Activité du compte"
+
+msgid "Select a group"
+msgstr "Sélectionnez un groupe"
 
 msgid "With email:"
 msgstr "Avec courriel :"
@@ -6314,13 +6348,19 @@ msgstr "Menu des langues"
 msgid "Page content"
 msgstr "Contenu de la page"
 
+#~ msgid "Current group (and attached people) as PDF"
+#~ msgstr "PDF du groupe courant (et des personnes rattachées)"
+
+#~ msgid "Group PDF"
+#~ msgstr "PDF du groupe"
+
 #, php-format
 #~ msgid ""
 #~ "An error occurred running parameted export '%export'. Please check the "
 #~ "logs."
 #~ msgstr ""
-#~ "Une erreur est survenue lors de l'exécution de l'export paramétré « "
-#~ "%export ». Veuillez vérifier les logs."
+#~ "Une erreur est survenue lors de l'exécution de l'export paramétré "
+#~ "« %export ». Veuillez vérifier les logs."
 
 #~ msgid "No file has been selected for upload!"
 #~ msgstr "Aucun fichier n’a encore été sélectionné pour l’envoi !"
@@ -6396,8 +6436,8 @@ msgstr "Contenu de la page"
 #~ msgstr ""
 #~ "Cette page ne montre que les membres qui ont choisi d’être visibles sur "
 #~ "la liste publique, et sont à jour de leurs cotisations. Si vous souhaitez "
-#~ "que votre compte soit affiché ici, modifiez votre profil et cochez « "
-#~ "Apparaître dans la liste des membres »."
+#~ "que votre compte soit affiché ici, modifiez votre profil et cochez "
+#~ "« Apparaître dans la liste des membres »."
 
 #~ msgid "Payment types management"
 #~ msgstr "Gestion des types de paiement"
@@ -7083,8 +7123,8 @@ msgstr "Contenu de la page"
 #~ "Your password has been changed. Please click on the 'home' button to go "
 #~ "to the login page."
 #~ msgstr ""
-#~ "Votre mot de passe a été changé. Veuillez cliquer sur le bouton « accueil "
-#~ "» pour accéder à la page de connexion."
+#~ "Votre mot de passe a été changé. Veuillez cliquer sur le bouton "
+#~ "« accueil » pour accéder à la page de connexion."
 
 #~ msgid "$catname"
 #~ msgstr "$catname"
