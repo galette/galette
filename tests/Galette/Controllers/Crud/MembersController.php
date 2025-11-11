@@ -1085,7 +1085,7 @@ class MembersController extends GaletteRoutingTestCase
         //member that does not exists
         $request = $this->createRequest($route_name, ['id' => 999999]);
         $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('members')]], $test_response->getHeaders());
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(\Analog::ERROR, 'No member #999999');
         $this->expectFlashData(['error_detected' => ['No member #999999.']]);

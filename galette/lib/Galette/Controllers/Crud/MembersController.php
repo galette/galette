@@ -276,11 +276,7 @@ class MembersController extends CrudController
 
         if ($member->id == null) {
             //member does not exist!
-            return $this->redirectWithErrors(
-                response: $response,
-                errors: [str_replace('%id', (string)$id, _T("No member #%id."))],
-                redirect_url: $this->routeparser->urlFor('slash')
-            );
+            return $this->redirectNoMember($response, $id);
         }
 
         // flagging fields visibility
@@ -332,11 +328,7 @@ class MembersController extends CrudController
 
         if ($member->id == null) {
             //member does not exist!
-            return $this->redirectWithErrors(
-                response: $response,
-                errors: [str_replace('%id', (string)$id, _T("No member #%id."))],
-                redirect_url: $this->routeparser->urlFor('slash')
-            );
+            return $this->redirectNoMember($response, $id);
         }
 
         $response = $response
@@ -1122,11 +1114,7 @@ class MembersController extends CrudController
             //load requested member
             if (!$member->load($id)) {
                 //not possible to load member, exit
-                return $this->redirectWithErrors(
-                    response: $response,
-                    errors: [str_replace('%id', (string)$id, _T("No member #%id."))],
-                    redirect_url: $this->routeparser->urlFor('members')
-                );
+                return $this->redirectNoMember($response, $id);
             }
             $can = $member->canEdit($this->login);
         } else {
@@ -2091,5 +2079,22 @@ class MembersController extends CrudController
     public static function getDefaultFilterName(): string
     {
         return 'members';
+    }
+
+    /**
+     * Redirection when member does not exist
+     *
+     * @param Response $response PSR Response
+     * @param int      $id       Requested member id
+     *
+     * @return Response
+     */
+    private function redirectNoMember(Response $response, int $id): Response
+    {
+        return $this->redirectWithErrors(
+            response: $response,
+            errors: [str_replace('%id', (string)$id, _T("No member #%id."))],
+            redirect_url: $this->routeparser->urlFor('slash')
+        );
     }
 }
