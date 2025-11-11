@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-11 09:01+0100\n"
-"PO-Revision-Date: 2025-10-20 11:54+0000\n"
+"PO-Revision-Date: 2025-11-12 17:51+0000\n"
 "Last-Translator: Максим Горпиніч <gorpinicmaksim0@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -24,9 +24,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.14-dev\n"
+"Plural-Forms: nplurals=3; plural="
+"(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? "
+"1 : 2);\n"
+"X-Generator: Weblate 5.15-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Не вдалося завантажити транзакцію #%id!"
@@ -129,21 +130,17 @@ msgstr "Назва групи відсутня!"
 msgid "Groups"
 msgstr "Групи"
 
-#, fuzzy, php-format
-#| msgid "Next page (%1$s)"
+#, php-format
 msgid "New parent is %1$s"
-msgstr "Наступна сторінка (%1$s)"
+msgstr "Новий батько/мати – %1$s"
 
-#, fuzzy
-#| msgid "Parent member"
 msgid "Parent removed"
-msgstr "Батьківський член"
+msgstr "Батьківський обліковий запис вилучено"
 
-#, fuzzy, php-format
-#| msgid "Payment type '%1$s' has been successfully modified."
+#, php-format
 msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
-msgstr "Вид оплати \"%1$s\" успішно змінено."
+msgstr "Батьківський елемент наступних груп успішно змінено: %1$s"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -2305,10 +2302,10 @@ msgid "Paypal"
 msgstr "PayPal"
 
 msgid "Stripe"
-msgstr ""
+msgstr "Смуга"
 
 msgid "HelloAsso"
-msgstr ""
+msgstr "ПривітАссо"
 
 msgid "Payment schedule"
 msgstr "Графік платежів"
@@ -4610,13 +4607,12 @@ msgstr "Переклад мітки"
 msgid "This feature requires javascript."
 msgstr "Для цієї функції потрібен javascript."
 
-#, fuzzy, php-format
-#| msgid "Not managed group"
+#, php-format
 msgid "%1$s managed group"
 msgid_plural "%1$s managed groups"
-msgstr[0] "Група, що не управляється"
-msgstr[1] "Група, що не управляється"
-msgstr[2] "Група, що не управляється"
+msgstr[0] "Керована група %1$s"
+msgstr[1] "%1$s керованих груп"
+msgstr[2] "Керовані групи: %1$s"
 
 msgid "Export all groups and their members as PDF"
 msgstr "Експорт усіх груп та їх членів у форматі PDF"
@@ -4629,12 +4625,15 @@ msgstr "Нова група"
 
 msgid "Move an item at the top of the list to reset its parent"
 msgstr ""
+"Перемістіть елемент на початок списку, щоб скинути його батьківський елемент"
 
 msgid ""
 "Some of the changes you made (highlighted in red above) are not allowed. "
 "Saving your changes in the list will only be possible if all of them are "
 "allowed."
 msgstr ""
+"Деякі з внесених вами змін (виділені червоним кольором вище) заборонені. "
+"Збереження змін у списку буде можливим, лише якщо всі вони дозволені."
 
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
@@ -4652,10 +4651,8 @@ msgstr "У плейаді вказати назву групи"
 msgid "Create"
 msgstr "Створити"
 
-#, fuzzy
-#| msgid "Export as CSV"
 msgid "Export as PDF"
-msgstr "Експорт у форматі CSV"
+msgstr "Експортувати як PDF"
 
 msgid "Display"
 msgstr "Дисплей"
