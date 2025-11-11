@@ -199,7 +199,7 @@ class GroupsController extends CrudController
             $list .= '</ul>';
             $this->flash->addMessage(
                 'success_detected',
-                str_replace(
+                sprintf(
                     _T('The parent of the following groups has been successfully modified : %1$s'),
                     $list
                 )
