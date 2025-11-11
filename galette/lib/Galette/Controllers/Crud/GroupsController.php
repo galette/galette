@@ -185,14 +185,13 @@ class GroupsController extends CrudController
                 $parentGroup = new Group((int)$parentId);
                 if ($parentId != '0') {
                     $group->setParentGroup((int)$parentId);
-                    $change = str_replace(
-                        '%1',
-                        $parentGroup->getName(),
-                        _T("new parent is %1")
+                    $change = sprintf(
+                        _T('New parent is %1$s'),
+                        $parentGroup->getName()
                     );
                 } else {
                     $group->detach();
-                    $change = _T("parent removed");
+                    $change = _T("Parent removed");
                 }
                 $group->store();
                 $list .= '<li>' . $group->getName() . ' (' . $change . ')</li>';
@@ -201,9 +200,8 @@ class GroupsController extends CrudController
             $this->flash->addMessage(
                 'success_detected',
                 str_replace(
-                    '%1',
-                    $list,
-                    _T("The parent of the following groups has been successfully modified : %1")
+                    _T('The parent of the following groups has been successfully modified : %1$s'),
+                    $list
                 )
             );
         }

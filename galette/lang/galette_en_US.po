@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 08:52+0100\n"
-"PO-Revision-Date: 2025-11-11 08:52+0100\n"
+"POT-Creation-Date: 2025-11-11 09:01+0100\n"
+"PO-Revision-Date: 2025-11-11 09:01+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -160,33 +160,37 @@ msgstr "Group name is missing!"
 msgid "Groups"
 msgstr "Groups"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:191
-msgid "new parent is %1"
-msgstr "new parent is %1"
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:189
+#, php-format
+msgid "New parent is %1$s"
+msgstr "New parent is %1$s"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:195
-msgid "parent removed"
-msgstr "parent removed"
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:194
+msgid "Parent removed"
+msgstr "Parent removed"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:206
-msgid "The parent of the following groups has been successfully modified : %1"
-msgstr "The parent of the following groups has been successfully modified : %1"
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:203
+#, php-format
+msgid ""
+"The parent of the following groups has been successfully modified : %1$s"
+msgstr ""
+"The parent of the following groups has been successfully modified : %1$s"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:426
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:424
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
 msgstr "Group `%1$s` has been successfully saved."
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:434
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:432
 msgid "An error occurred while storing the group."
 msgstr "An error occurred while storing the group."
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:534
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:532
 #, php-format
 msgid "Remove group %1$s"
 msgstr "Remove group %1$s"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:557
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:555
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgstr "Group is not empty, it cannot be deleted. Use cascade delete instead."
 
