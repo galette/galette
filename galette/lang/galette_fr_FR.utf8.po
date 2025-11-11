@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-11 09:01+0100\n"
-"PO-Revision-Date: 2025-11-11 08:02+0000\n"
+"PO-Revision-Date: 2025-11-11 08:03+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -130,21 +130,17 @@ msgstr "Le nom de groupe est manquant !"
 msgid "Groups"
 msgstr "Groupes"
 
-#, fuzzy, php-format
-#| msgid "Next page (%1$s)"
+#, php-format
 msgid "New parent is %1$s"
-msgstr "Page suivante (%1$s)"
+msgstr "Le nouveau parent est %1$s"
 
-#, fuzzy
-#| msgid "Parent member"
 msgid "Parent removed"
-msgstr "Adhérent parent"
+msgstr "Parent supprimé"
 
-#, fuzzy, php-format
-#| msgid "Payment type '%1$s' has been successfully modified."
+#, php-format
 msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
-msgstr "Le type de paiement « %1$s » a été modifié avec succès."
+msgstr "Les parents des groupes suivants ont été modifiés avec succès : %1$s"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
