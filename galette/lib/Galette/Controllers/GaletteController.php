@@ -294,7 +294,7 @@ class GaletteController extends AbstractController
         $this->preferences->resetDarkCss($this->flash);
         return $this->redirect(
             response: $response,
-            redirect_url: $this->routeparser->urlFor('preferences' . $tab),
+            redirect_url: $this->routeparser->urlFor('preferences') . $tab,
             successes: $success_detected,
             errors: $error_detected
         );
