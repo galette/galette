@@ -73,6 +73,9 @@
     "TYPE_DB",
     "USER_DB",
 
+    "// Galette post contribution script constants (not detected as they are dynamically declared)",
+    "SCRIPT_AUTH_TOKEN",
+
     "//XHProf constants",
 
     "//know but not detected Galette function,",

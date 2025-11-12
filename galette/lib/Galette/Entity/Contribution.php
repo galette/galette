@@ -1157,6 +1157,8 @@ class Contribution implements AccessManagementInterface
             $contrib['member'] = $member;
         }
 
+        $contrib['auth_token'] = defined('SCRIPT_AUTH_TOKEN') ? SCRIPT_AUTH_TOKEN : '';
+
         if ($extra !== null) {
             $contrib = array_merge($contrib, $extra);
         }

@@ -23,10 +23,14 @@ declare(strict_types=1);
 
 
 /**
- * Post configuration script test
+ * Post contribution script test
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @author Guillaume AGNIERAY <dev@agnieray.net>
  */
+
+//use the SCRIPT_AUTH_TOKEN constant defined in your config.inc.php file
+$script_auth_token = 'change_this_value_with_a_very_strong_password';
 
 $args = [];
 $internal = false;
@@ -55,17 +59,28 @@ if (defined('STDIN')) {
     $args = $_GET;
 }
 
-if (count($args) == 0) {
+if (empty($args)) {
     //we're called without arguments => exit.
-    die('No arguments.');
+    echo 'No arguments.';
+    die(1);
+}
+
+if (defined('STDIN')) {
+    $json_args = json_decode((string) $args);
+} else {
+    $json_args = isset($args['params']) ? json_decode((string) $args['params']) : json_decode('{"auth_token": ""}');
+}
+if ($script_auth_token !== $json_args->auth_token) {
+    //we're called without authentication token => exit.
+    echo 'Unauthorized call.';
+    die(1);
 }
 
 if (defined('STDIN')) {
     //a successful script returns 0, we do not output anything
-    $fp = fopen(__DIR__ . '/cache/galette_post_contrib_file.txt', 'w');
+    $fp = fopen(__DIR__ . '/../data/cache/galette_post_contrib_file.txt', 'w');
     fwrite($fp, $args);
     fclose($fp);
 } else {
-    $json_args = json_decode((string) $args['params']);
     echo json_encode($json_args, JSON_PRETTY_PRINT);
 }
