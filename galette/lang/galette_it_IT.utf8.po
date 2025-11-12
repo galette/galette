@@ -29,9 +29,9 @@
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-11 09:01+0100\n"
-"PO-Revision-Date: 2025-10-20 06:31+0000\n"
+"PO-Revision-Date: 2025-11-12 17:51+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -39,7 +39,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.15-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Impossibile caricare la transazione #%id!"
@@ -142,21 +142,17 @@ msgstr "Nome del gruppo mancante!"
 msgid "Groups"
 msgstr "Gruppi"
 
-#, fuzzy, php-format
-#| msgid "Next page (%1$s)"
+#, php-format
 msgid "New parent is %1$s"
-msgstr "Pagina successiva (%1$s)"
+msgstr "Il nuovo genitore è %1$s"
 
-#, fuzzy
-#| msgid "Parent member"
 msgid "Parent removed"
-msgstr "Membro genitore"
+msgstr "Genitore rimosso"
 
-#, fuzzy, php-format
-#| msgid "Payment type '%1$s' has been successfully modified."
+#, php-format
 msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
-msgstr "La tipologia di pagamento \"%1$s\" è stata modificata correttamente."
+msgstr "Il genitore dei seguenti gruppi è stato modificato con successo: %1$s"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -2355,10 +2351,10 @@ msgid "Paypal"
 msgstr "Paypal"
 
 msgid "Stripe"
-msgstr ""
+msgstr "Stripe"
 
 msgid "HelloAsso"
-msgstr ""
+msgstr "HelloAsso"
 
 msgid "Payment schedule"
 msgstr "Piano pagamenti"
@@ -4676,12 +4672,11 @@ msgstr "Traduci etichette"
 msgid "This feature requires javascript."
 msgstr "Questa funzione richiede javascript."
 
-#, fuzzy, php-format
-#| msgid "Not managed group"
+#, php-format
 msgid "%1$s managed group"
 msgid_plural "%1$s managed groups"
-msgstr[0] "Gruppo non gestito"
-msgstr[1] "Gruppo non gestito"
+msgstr[0] "%1$s gruppo gestito"
+msgstr[1] "%1$s gruppi gestiti"
 
 msgid "Export all groups and their members as PDF"
 msgstr "Esporta tutti i gruppi e i loro membri in formato PDF"
@@ -4693,13 +4688,16 @@ msgid "New group"
 msgstr "Nuovo gruppo"
 
 msgid "Move an item at the top of the list to reset its parent"
-msgstr ""
+msgstr "Sposta un elemento in cima all'elenco per reimpostare il suo genitore"
 
 msgid ""
 "Some of the changes you made (highlighted in red above) are not allowed. "
 "Saving your changes in the list will only be possible if all of them are "
 "allowed."
 msgstr ""
+"Alcune delle modifiche apportate (evidenziate in rosso sopra) non sono "
+"consentite. Il salvataggio delle modifiche nell'elenco sarà possibile solo "
+"se tutte le modifiche sono consentite."
 
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
@@ -4719,10 +4717,8 @@ msgstr "Fornire un nome di gruppo"
 msgid "Create"
 msgstr "Crea"
 
-#, fuzzy
-#| msgid "Export as CSV"
 msgid "Export as PDF"
-msgstr "Esporta come CSV"
+msgstr "Esporta come PDF"
 
 msgid "Display"
 msgstr "Mostra"
