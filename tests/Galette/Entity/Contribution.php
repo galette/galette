@@ -709,21 +709,45 @@ class Contribution extends GaletteTestCase
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CASH;
         $this->assertSame('Cash', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::CASH, $contrib->getPaymentTypeId());
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CHECK;
         $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::CHECK, $contrib->getPaymentTypeId());
 
         $contrib->payment_type = \Galette\Entity\PaymentType::OTHER;
         $this->assertSame('Other', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::OTHER, $contrib->getPaymentTypeId());
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CREDITCARD;
         $this->assertSame('Credit card', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::CREDITCARD, $contrib->getPaymentTypeId());
 
         $contrib->payment_type = \Galette\Entity\PaymentType::TRANSFER;
         $this->assertSame('Transfer', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::TRANSFER, $contrib->getPaymentTypeId());
 
         $contrib->payment_type = \Galette\Entity\PaymentType::PAYPAL;
         $this->assertSame('Paypal', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::PAYPAL, $contrib->getPaymentTypeId());
+
+        $contrib->payment_type = \Galette\Entity\PaymentType::STRIPE;
+        $this->assertSame('Stripe', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::STRIPE, $contrib->getPaymentTypeId());
+
+        $contrib->payment_type = \Galette\Entity\PaymentType::HELLOASSO;
+        $this->assertSame('HelloAsso', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::HELLOASSO, $contrib->getPaymentTypeId());
+
+        $this->logSuperAdmin();
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1]
+        );
+        $contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertSame('Payment schedule', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::SCHEDULED, $contrib->getPaymentTypeId());
     }
 
     /**

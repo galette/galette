@@ -1104,6 +1104,7 @@ class Contribution implements AccessManagementInterface
         global $preferences;
 
         $payment = [
+            'id'    => $this->getPaymentTypeId(),
             'type'  => $this->getPaymentType()
         ];
 
@@ -1202,6 +1203,21 @@ class Contribution implements AccessManagementInterface
         } else {
             return _T("Donation");
         }
+    }
+
+    /**
+     * Get payment type id
+     *
+     * @return int
+     */
+    public function getPaymentTypeId(): int
+    {
+        if ($this->payment_type === null) {
+            return 0;
+        }
+
+        $ptype = new PaymentType($this->zdb, $this->payment_type);
+        return $ptype->id;
     }
 
     /**
