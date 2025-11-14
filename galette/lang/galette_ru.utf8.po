@@ -11,13 +11,14 @@
 # MrSliv69 <mrsliv6969@gmail.com>, 2025.
 # vt729830 <vt729830@gmail.com>, 2025.
 # OdiNoKiY KoT <vlad.dorozhko.77@gmail.com>, 2025.
+# Alexis Said He <alexshelmec@outlook.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-11 09:01+0100\n"
-"PO-Revision-Date: 2025-11-11 16:59+0000\n"
-"Last-Translator: OdiNoKiY KoT <vlad.dorozhko.77@gmail.com>\n"
+"PO-Revision-Date: 2025-11-15 07:27+0000\n"
+"Last-Translator: Alexis Said He <alexshelmec@outlook.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -133,18 +134,16 @@ msgstr "Группы"
 #, fuzzy, php-format
 #| msgid "Remove payment type %1$s"
 msgid "New parent is %1$s"
-msgstr "Удалить тип платежа %1$s"
+msgstr "Новый  родитель  в 1$с"
 
-#, fuzzy
-#| msgid "Members"
 msgid "Parent removed"
-msgstr "Пользователи"
+msgstr "Исходник удалён"
 
 #, fuzzy, php-format
 #| msgid "Payment type '%1$s' has been successfully modified."
 msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
-msgstr "Тип платежа '%1$s' был успешно изменен."
+msgstr "Исхходные каталоги были успешно изменены: %1$s"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -655,7 +654,6 @@ msgstr "Логин"
 msgid "You must provide both login and password."
 msgstr "Вы должны указать логин и пароль."
 
-#, fuzzy
 msgid "A new Galette release is available."
 msgstr "Доступен новый релиз Galette."
 
