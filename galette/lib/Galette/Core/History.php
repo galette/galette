@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use ArrayObject;
 use Safe\DateTime;
 use Throwable;
 use Analog\Analog;
@@ -168,7 +169,7 @@ class History
     /**
      * Get the entire history list
      *
-     * @return array<int, object>
+     * @return ArrayObject<string, mixed>[]
      */
     public function getHistory(): array
     {

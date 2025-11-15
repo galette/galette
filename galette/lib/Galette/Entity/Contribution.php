@@ -501,9 +501,9 @@ class Contribution implements AccessManagementInterface
      * @param array<string,int>   $required Array of required fields
      * @param array<string>       $disabled Array of disabled fields
      *
-     * @return true|array<string>
+     * @return true|string[]
      */
-    public function check(array $values, array $required, array $disabled): bool|array
+    public function check(array $values, array $required, array $disabled): true|array
     {
         global $preferences;
         $this->errors = [];
