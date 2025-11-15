@@ -23,7 +23,9 @@ declare(strict_types=1);
 
 namespace Galette\Repository;
 
+use ArrayObject;
 use Galette\Entity\Group;
+use Laminas\Db\Adapter\Driver\Pdo\Result;
 use Laminas\Db\ResultSet\ResultSet;
 use Throwable;
 use Analog\Analog;
@@ -90,7 +92,9 @@ class Contributions
      * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
      *                                   an array. If null, all fields will be returned
      *
-     * @return array<int, Contribution>|false
+     * @return Contribution[]|ArrayObject[]|false
+     *
+     * @psalm-return false|($as_contrib is true ? list<Contribution> : list<Result>)
      */
     public function getArrayList(array $ids, bool $as_contrib = false, ?array $fields = null): array|false
     {
@@ -116,9 +120,11 @@ class Contributions
      * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
      *                                   an array. If null, all fields will be returned
      *
-     * @return array<int, Contribution>|ResultSet
+     * @return Contribution[]|ResultSet|Result
+     *
+     * @psalm-return ($as_contrib is true ? list<Contribution> : ResultSet|Result)
      */
-    public function getList(bool $as_contrib = false, ?array $fields = null): array|ResultSet
+    public function getList(bool $as_contrib = false, ?array $fields = null): array|ResultSet|Result
     {
         try {
             $select = $this->buildSelect($fields);
