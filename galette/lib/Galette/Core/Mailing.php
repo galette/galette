@@ -147,7 +147,6 @@ class Mailing extends GaletteMail
      */
     private function loadAttachments(): void
     {
-        $dir = '';
         if (
             isset($this->tmp_path)
             && trim($this->tmp_path) !== ''

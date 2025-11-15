@@ -344,7 +344,6 @@ class Charts
             'date'      => null,
             'amount'    => new Expression('SUM(montant_cotis)')
         ];
-        $groupby = null;
 
         if ($zdb->isPostgres()) {
             $cols['date'] = new Expression('date_trunc(\'month\', date_enreg)');

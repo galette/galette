@@ -360,7 +360,6 @@ class DynamicFieldsController extends CrudController
      */
     public function edit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
-        $df = null;
         if ($this->session->dynamicfieldtype) {
             $df = $this->session->dynamicfieldtype;
             $this->session->dynamicfieldtype = null;

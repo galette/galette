@@ -250,7 +250,6 @@ class Groups
             }
             $zdb->execute($delete);
 
-            $msg = null;
             if ($manager === true) {
                 $msg = 'Member `' . $adh->sname . '` has been detached from groups he manages';
             } else {

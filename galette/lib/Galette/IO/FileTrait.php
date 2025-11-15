@@ -526,7 +526,6 @@ trait FileTrait
      */
     public static function getMimeType(string $file): string
     {
-        $mime = null;
         $class = static::class;
 
         if (function_exists('finfo_open')) {

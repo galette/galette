@@ -1463,7 +1463,6 @@ class Members
         ) {
             foreach ($this->filters->free_search as $fs) {
                 $fs['search'] = mb_strtolower((string)$fs['search']);
-                $qop = null;
                 switch ($fs['qry_op']) {
                     case AdvancedMembersList::OP_EQUALS:
                         $qop = '=';

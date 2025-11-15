@@ -285,7 +285,6 @@ class ListsConfig extends FieldsConfig
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
-            $params = null;
 
             foreach ($this->listed_fields as $pos => $field) {
                 $params = [

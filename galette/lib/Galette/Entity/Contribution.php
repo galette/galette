@@ -721,8 +721,6 @@ class Contribution implements AccessManagementInterface
     {
         global $hist, $emitter;
 
-        $event = null;
-
         if (count($this->errors) > 0) {
             throw new \RuntimeException(
                 'Existing errors prevents storing contribution: '
@@ -802,7 +800,7 @@ class Contribution implements AccessManagementInterface
             $this->orig_amount = $this->amount;
 
             //send event at the end of process, once all has been stored
-            if ($event !== null && $this->areEventsEnabled()) {
+            if ($this->areEventsEnabled()) {
                 $emitter->dispatch(new GaletteEvent($event, $this));
             }
 

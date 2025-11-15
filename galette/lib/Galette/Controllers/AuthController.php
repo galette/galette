@@ -341,8 +341,6 @@ class AuthController extends AbstractController
                 ->withHeader('Location', $redirect_url);
         }
 
-        $adh = null;
-        $login_adh = null;
         if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
             $adh = new Adherent($this->zdb, $id_adh);
             $login_adh = $adh->login;

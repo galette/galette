@@ -180,7 +180,6 @@ class PdfController extends AbstractController
 
         $filters = $this->session->$session_var ?? new MembersList();
 
-        $members = null;
         if (
             isset($get['from'])
             && $get['from'] === 'mailing'
@@ -460,7 +459,6 @@ class PdfController extends AbstractController
             }
         }
 
-        $tpl = null;
         $params = ['model' => $model];
 
         //Render directly template if we called from ajax,

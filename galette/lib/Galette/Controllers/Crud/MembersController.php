@@ -640,7 +640,6 @@ class MembersController extends CrudController
 
         $members = new Members($filters);
 
-        $members_list = [];
         if ($this->login->isAdmin() || $this->login->isStaff()) {
             $members_list = $members->getMembersList(true);
         } else {
@@ -2041,7 +2040,6 @@ class MembersController extends CrudController
         ) {
             $m = new Members($filters);
 
-            $ids = [];
             $fields = [Adherent::PK, 'nom_adh', 'prenom_adh'];
             if ($this->login->isAdmin() || $this->login->isStaff()) {
                 $ids = $m->getMembersList(false, $fields);

@@ -1614,7 +1614,6 @@ class Adherent implements AccessManagementInterface
     public function store(): bool
     {
         global $hist, $emitter, $login;
-        $event = null;
 
         $this->applyDefaultValues();
         if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '' && $this->preferences->pref_bool_create_member) {
@@ -1761,7 +1760,7 @@ class Adherent implements AccessManagementInterface
             $this->storeSocials($this->id);
 
             //send event at the end of process, once all has been stored
-            if ($event !== null && $this->areEventsEnabled()) {
+            if ($this->areEventsEnabled()) {
                 $emitter->dispatch(new GaletteEvent($event, $this));
             }
             return true;

@@ -243,7 +243,6 @@ class Install
                 $this->step -= 1;
             }
         } else {
-            $msg = null;
             if ($this->step === self::STEP_END) {
                 $msg = 'Ok man, install is finished already!';
             } else {

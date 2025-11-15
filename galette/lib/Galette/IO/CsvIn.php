@@ -283,7 +283,6 @@ class CsvIn extends Csv
             if ($row > 0) {
                 //header line is the first one. Here comes data
                 $col = 0;
-                $errors = [];
                 foreach ($data as $column) {
                     $column = trim((string) $column);
 

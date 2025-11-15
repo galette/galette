@@ -249,7 +249,6 @@ class MemberListener implements ListenerSubscriber
         );
         $texts->setMember($member)->setNoContribution();
 
-        $txt_id = null;
         if ($new) {
             $txt_id = ($member->self_adh ? 'newselfadh' : 'newadh');
         } else {

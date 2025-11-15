@@ -935,7 +935,6 @@ class Preferences
             '/%country/',
         ];
 
-        $replacements = null;
 
         if ($this->prefs['pref_postal_address'] == self::POSTAL_ADDRESS_FROM_PREFS) {
             $_address = $this->prefs['pref_adresse'];
@@ -1302,7 +1301,6 @@ class Preferences
      */
     public function getURL(): string
     {
-        $url = null;
         if (isset($this->prefs['pref_galette_url']) && !empty($this->prefs['pref_galette_url'])) {
             $url = $this->prefs['pref_galette_url'];
         } else {

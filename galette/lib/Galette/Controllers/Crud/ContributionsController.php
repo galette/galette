@@ -350,8 +350,6 @@ class ContributionsController extends CrudController
 
         // flagging required fields for first step only
         $disabled = [];
-        $success = 0;
-        $errors = 0;
 
         foreach ($members_ids as $member_id) {
             $post[Adherent::PK] = (int)$member_id;
@@ -368,13 +366,10 @@ class ContributionsController extends CrudController
             if (count($error_detected) == 0) {
                 $store = $contrib->store();
                 if ($store === true) {
-                    ++$success;
                     $files_res = $contrib->handleFiles($request->getUploadedFiles());
                     if (is_array($files_res)) {
                         $error_detected = array_merge($error_detected, $files_res);
                     }
-                } else {
-                    ++$errors;
                 }
             }
         }

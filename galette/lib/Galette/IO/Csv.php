@@ -98,7 +98,6 @@ abstract class Csv
             $mdate = date(__("Y-m-d H:i:s"), filemtime($file));
 
             $raw_size = filesize($file);
-            $size = 0;
             if ($raw_size >= 1024 * 1024 * 1024) { // Go
                 $size = round(($raw_size / 1024) / 1024 / 1024, 2) . ' Go';
             } elseif ($raw_size >= 1024 * 1024) { // Mo

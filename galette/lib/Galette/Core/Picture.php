@@ -821,8 +821,6 @@ class Picture
             }
             // Cropped image.
             $thumb_cropped = imagecreatetruecolor((int)$crop_width, (int)$crop_height);
-            // Cropped ratio.
-            $ratio = $crop_width / $crop_height;
         } elseif ($cur_width > $cur_height) {
             // Otherwise, calculate image size according to the source's ratio.
             $h = round($w / $ratio);
