@@ -416,15 +416,11 @@ class CsvIn extends Csv
                 }
 
                 //check dynamic fields
-                $errcnt = count($errors);
                 $member->dynamicsValidate($dfields);
                 $errors = $member->getErrors();
-                if (count($errors) > $errcnt) {
-                    //@phpstan-ignore-next-line
-                    $lcnt = ($errcnt > 0 ? $errcnt - 1 : 0);
-                    $cnt_err = count($errors);
-                    for ($i = $lcnt; $i < $cnt_err; ++$i) {
-                        $this->addError($errors[$i]);
+                if (count($errors)) {
+                    foreach ($errors as $error) {
+                        $this->addError($error);
                     }
                     return false;
                 }
@@ -440,9 +436,9 @@ class CsvIn extends Csv
                 _T("File is empty!")
             );
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**

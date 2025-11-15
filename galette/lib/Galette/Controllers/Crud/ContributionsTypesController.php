@@ -304,23 +304,17 @@ class ContributionsTypesController extends CrudController
     protected function doDelete(array $args, array $post): bool
     {
         $ctype = new ContributionsTypes($this->zdb);
-
-        $label = $ctype->getLabel((int)$args['id']);
-        $ret = false;
-        if ($label !== $ctype::ID_NOT_EXITS) {
-            $ret = $ctype->delete((int)$args['id']);
-
-            if (!$ret) {
-                foreach ($ctype->getErrors() as $error) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $error
-                    );
-                }
+        if ($ctype->delete((int)$args['id']) !== true) {
+            foreach ($ctype->getErrors() as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
             }
+            return false;
         }
 
-        return $ret;
+        return true;
     }
 
     // CRUD - Delete

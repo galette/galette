@@ -308,23 +308,18 @@ class StatusController extends CrudController
     protected function doDelete(array $args, array $post): bool
     {
         $class = new Status($this->zdb);
-        $label = $class->getLabel((int)$args['id']);
-        $ret = false;
 
-        if ($label !== $class::ID_NOT_EXITS) {
-            $ret = $class->delete((int)$args['id']);
-
-            if (!$ret) {
-                foreach ($class->getErrors() as $error) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $error
-                    );
-                }
+        if ($class->delete((int)$args['id']) !== true) {
+            foreach ($class->getErrors() as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
             }
+            return false;
         }
 
-        return $ret;
+        return true;
     }
 
     // CRUD - Delete
