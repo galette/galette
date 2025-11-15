@@ -57,6 +57,7 @@ class Logo extends Picture
      *
      * @return void
      */
+    #[\Override]
     protected function getDefaultPicture(): void
     {
         $now = new DateTime();
@@ -95,6 +96,7 @@ class Logo extends Picture
      *
      * @return Select SELECT query
      */
+    #[\Override]
     protected function getCheckFileQuery(): Select
     {
         global $zdb;

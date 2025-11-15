@@ -48,6 +48,7 @@ class PluginsList extends AbstractCommand
      *
      * @return void
      */
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -65,6 +66,7 @@ class PluginsList extends AbstractCommand
      *
      * @return int
      */
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         global $container;

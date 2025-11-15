@@ -51,6 +51,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
@@ -66,6 +67,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doAdd(Request $request, Response $response, ?string $name = null): Response
     {
         $group = new Group();
@@ -129,6 +131,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function list(
         Request $request,
         Response $response,
@@ -315,6 +318,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function filter(Request $request, Response $response): Response
     {
         //no filters
@@ -333,6 +337,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $groups = new Groups($this->zdb, $this->login);
@@ -380,6 +385,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         $post = $request->getParsedBody();
@@ -498,6 +504,7 @@ class GroupsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('groups');
@@ -510,6 +517,7 @@ class GroupsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
@@ -525,6 +533,7 @@ class GroupsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function confirmRemoveTitle(array $args): string
     {
         $group = new Group((int)$args['id']);
@@ -542,6 +551,7 @@ class GroupsController extends CrudController
      *
      * @return bool
      */
+    #[\Override]
     protected function doDelete(array $args, array $post): bool
     {
         $group = new Group((int)$post['id']);
@@ -566,6 +576,7 @@ class GroupsController extends CrudController
      *
      * @return array<string,mixed>
      */
+    #[\Override]
     protected function getconfirmDeleteParams(Request $request): array
     {
         return parent::getconfirmDeleteParams($request) + ['with_cascade' => true];

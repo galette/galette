@@ -72,6 +72,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return array<string, int|string>
      */
+    #[\Override]
     protected function buildField(ArrayObject $rset): array
     {
         $f = parent::buildField($rset);
@@ -87,6 +88,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return void
      */
+    #[\Override]
     protected function buildLists(): void
     {
         //Specific list fields does not have rights; fix this from mapping
@@ -112,6 +114,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return void
      */
+    #[\Override]
     protected function addToLists(array $field): void
     {
         if (in_array($field['field_id'], $this->non_list_elements)) {
@@ -131,6 +134,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return array<int,object>
      */
+    #[\Override]
     public function getDisplayElements(Login $login): array
     {
         $display_elements = [];
@@ -348,6 +352,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return int
      */
+    #[\Override]
     public function getVisibility(string $field): int
     {
         if (in_array($field, $this->non_list_elements)) {

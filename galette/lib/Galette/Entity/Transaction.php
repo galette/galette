@@ -105,6 +105,7 @@ class Transaction implements AccessManagementInterface
      *
      * @return self
      */
+    #[\Override]
     protected function setFields(): self
     {
         $this->fields = [
@@ -672,6 +673,7 @@ class Transaction implements AccessManagementInterface
      *
      * @return bool
      */
+    #[\Override]
     public function canCreate(Login $login): bool
     {
         global $preferences;
@@ -693,6 +695,7 @@ class Transaction implements AccessManagementInterface
      *
      * @return bool
      */
+    #[\Override]
     public function canShow(Login $login): bool
     {
         global $preferences;
@@ -737,6 +740,7 @@ class Transaction implements AccessManagementInterface
      *
      * @return bool
      */
+    #[\Override]
     public function canEdit(Login $login): bool
     {
         return $this->canDelete($login);
@@ -767,6 +771,7 @@ class Transaction implements AccessManagementInterface
      *
      * @return bool
      */
+    #[\Override]
     public function canDelete(Login $login): bool
     {
         if (!$login->isLogged()) {

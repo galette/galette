@@ -44,6 +44,7 @@ class PluginInstall extends Install
      *
      * @return bool
      */
+    #[\Override]
     public function testDbConnexion(): bool
     {
         //installing plugin, DB connection is already ok
@@ -59,6 +60,7 @@ class PluginInstall extends Install
      *
      * @return bool
      */
+    #[\Override]
     public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
         return false;

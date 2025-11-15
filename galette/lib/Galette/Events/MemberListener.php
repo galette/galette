@@ -71,6 +71,7 @@ class MemberListener implements ListenerSubscriber
      *
      * @return void
      */
+    #[\Override]
     public function subscribeListeners(ListenerRegistry $acceptor): void
     {
         $acceptor->subscribeTo(

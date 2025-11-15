@@ -54,6 +54,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function add(Request $request, Response $response, int $id_cotis = 0): Response
     {
         if (isset($this->session->scheduled_payment)) {
@@ -101,6 +102,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response, null);
@@ -119,6 +121,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         $get = $request->getQueryParams();
@@ -250,6 +253,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function filter(Request $request, Response $response): Response
     {
         $ajax = false;
@@ -373,6 +377,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function edit(Request $request, Response $response, int $id): Response
     {
         if (isset($this->session->scheduled_payment)) {
@@ -405,6 +410,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);
@@ -494,6 +500,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('scheduledPayments');
@@ -506,6 +513,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
@@ -521,6 +529,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function confirmRemoveTitle(array $args): string
     {
         return _Tn('Remove scheduled payment', 'Remove scheduled payments', (count($args['ids'] ?? []) > 1 ? 3 : 1));
@@ -534,6 +543,7 @@ class ScheduledPaymentController extends CrudController
      *
      * @return bool
      */
+    #[\Override]
     protected function doDelete(array $args, array $post): bool
     {
         $scheduleds = new ScheduledPayments($this->zdb, $this->login);

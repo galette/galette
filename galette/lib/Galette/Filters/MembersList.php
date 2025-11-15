@@ -88,6 +88,7 @@ class MembersList extends Pagination
      *
      * @return int|string
      */
+    #[\Override]
     protected function getDefaultOrder(): int|string
     {
         return 'nom_adh';
@@ -98,6 +99,7 @@ class MembersList extends Pagination
      *
      * @return void
      */
+    #[\Override]
     public function reinit(): void
     {
         global $preferences;
@@ -119,6 +121,7 @@ class MembersList extends Pagination
      *
      * @return mixed the called property
      */
+    #[\Override]
     public function __get(string $name): mixed
     {
         if (in_array($name, $this->pagination_fields)) {
@@ -144,6 +147,7 @@ class MembersList extends Pagination
      *
      * @return bool
      */
+    #[\Override]
     public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
@@ -163,6 +167,7 @@ class MembersList extends Pagination
      *
      * @return void
      */
+    #[\Override]
     public function __set(string $name, mixed $value): void
     {
         if (in_array($name, $this->pagination_fields)) {

@@ -49,6 +49,7 @@ class CsrfExtension extends AbstractExtension implements GlobalsInterface
      *
      * @return array<string,null|string>
      */
+    #[\Override]
     public function getGlobals(): array
     {
         // CSRF token name and value

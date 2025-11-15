@@ -48,6 +48,7 @@ class PluginInstallDb extends AbstractPlugins
      *
      * @return int
      */
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         global $zdb;
@@ -81,6 +82,7 @@ class PluginInstallDb extends AbstractPlugins
      *
      * @return array<string, array<string, string>>
      */
+    #[\Override]
     protected function getRelevantPlugins(SymfonyStyle $io): array
     {
         $enabled_plugins = $this->plugins->getModules();

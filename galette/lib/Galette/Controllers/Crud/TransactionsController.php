@@ -51,6 +51,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
+    #[\Override]
     public function add(Request $request, Response $response, ?string $type = null): Response
     {
         return $this->edit($request, $response, null, 'add');
@@ -65,6 +66,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
+    #[\Override]
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
         $trans = new Transaction($this->zdb, $this->login);
@@ -102,6 +104,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
+    #[\Override]
     public function edit(Request $request, Response $response, ?int $id = null, ?string $action = 'edit'): Response
     {
         if ($this->session->transaction !== null) {
@@ -222,6 +225,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
+    #[\Override]
     public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
         $trans = new Transaction($this->zdb, $this->login);

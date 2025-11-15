@@ -155,6 +155,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function add(Request $request, Response $response, ?string $type = null): Response
     {
         if ($this->session->contribution !== null) {
@@ -221,6 +222,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
         $post = $request->getParsedBody();
@@ -402,6 +404,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function list(
         Request $request,
         Response $response,
@@ -614,6 +617,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function filter(Request $request, Response $response, ?string $type = null): Response
     {
         $ajax = false;
@@ -754,6 +758,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function edit(Request $request, Response $response, ?int $id, ?string $type = null): Response
     {
         if ($this->session->contribution !== null) {
@@ -801,6 +806,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
         $contrib = new Contribution($this->zdb, $this->login, $id);
@@ -930,6 +936,7 @@ class ContributionsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('contributions', ['type' => $args['type']]);
@@ -942,6 +949,7 @@ class ContributionsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
@@ -957,6 +965,7 @@ class ContributionsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function confirmRemoveTitle(array $args): string
     {
         $raw_type = null;
@@ -993,6 +1002,7 @@ class ContributionsController extends CrudController
      *
      * @return bool
      */
+    #[\Override]
     protected function doDelete(array $args, array $post): bool
     {
         $raw_type = match ($args['type']) {

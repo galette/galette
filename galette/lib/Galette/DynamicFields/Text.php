@@ -53,6 +53,7 @@ class Text extends DynamicField
      *
      * @return int
      */
+    #[\Override]
     public function getType(): int
     {
         return self::TEXT;
@@ -65,6 +66,7 @@ class Text extends DynamicField
      *
      * @return string
      */
+    #[\Override]
     public function getDisplayValue(mixed $value): string
     {
         return nl2br((string) $value);

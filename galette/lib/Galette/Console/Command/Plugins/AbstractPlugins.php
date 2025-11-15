@@ -61,6 +61,7 @@ abstract class AbstractPlugins extends AbstractCommand
      *
      * @return void
      */
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -77,6 +78,7 @@ abstract class AbstractPlugins extends AbstractCommand
      *
      * @return void
      */
+    #[\Override]
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);

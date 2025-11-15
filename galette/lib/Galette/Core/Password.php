@@ -96,6 +96,7 @@ class Password extends AbstractPassword
      *
      * @return bool
      */
+    #[\Override]
     public function generateNewPassword(int $id_adh): bool
     {
         //first of all, we'll remove all existant entries for specified id
@@ -138,6 +139,7 @@ class Password extends AbstractPassword
      *
      * @return bool
      */
+    #[\Override]
     public function cleanExpired(): bool
     {
         $date = new DateTime();

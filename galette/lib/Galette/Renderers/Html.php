@@ -58,6 +58,7 @@ class Html implements ErrorRendererInterface
      *
      * @return string
      */
+    #[\Override]
     public function __invoke(Throwable $exception, bool $displayErrorDetails): string
     {
         $code = 500;

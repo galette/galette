@@ -58,6 +58,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
         $params = [
@@ -92,6 +93,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
         $post = $request->getParsedBody();
@@ -176,6 +178,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function list(
         Request $request,
         Response $response,
@@ -231,6 +234,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function filter(Request $request, Response $response): Response
     {
         //no filtering
@@ -364,6 +368,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function edit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
         if ($this->session->dynamicfieldtype) {
@@ -410,6 +415,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doEdit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
         $post = $request->getParsedBody();
@@ -490,6 +496,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('configureDynamicFields', ['form_name' => $args['form_name']]);
@@ -502,6 +509,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
@@ -517,6 +525,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function confirmRemoveTitle(array $args): string
     {
         $field = DynamicField::loadFieldType($this->zdb, (int)$args['id']);
@@ -538,6 +547,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return bool
      */
+    #[\Override]
     protected function doDelete(array $args, array $post): bool
     {
         $field_id = (int)$post['id'];

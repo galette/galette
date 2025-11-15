@@ -49,6 +49,7 @@ class GaletteEvent implements HasEventName
      *
      * @return string
      */
+    #[\Override]
     public function eventName(): string
     {
         return $this->name;

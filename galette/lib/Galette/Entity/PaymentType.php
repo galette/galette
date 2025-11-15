@@ -316,6 +316,7 @@ class PaymentType implements \Stringable
      *
      * @return string
      */
+    #[\Override]
     public function __toString(): string
     {
         return $this->getName();

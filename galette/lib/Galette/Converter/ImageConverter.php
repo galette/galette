@@ -41,6 +41,7 @@ class ImageConverter extends \League\HTMLToMarkdown\Converter\ImageConverter
      *
      * @return string
      */
+    #[\Override]
     public function convert(ElementInterface $element): string
     {
         $src   = $element->getAttribute('src');

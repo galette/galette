@@ -56,6 +56,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function add(Request $request, Response $response): Response
     {
         $get = $request->getQueryParams();
@@ -190,6 +191,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doAdd(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -392,6 +394,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName('mailings')})) {
@@ -454,6 +457,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -510,6 +514,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function edit(Request $request, Response $response, int $id): Response
     {
         //no edit page, just to satisfy inheritance
@@ -525,6 +530,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         //no edit page, just to satisfy inheritance
@@ -541,6 +547,7 @@ class MailingsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('mailings');
@@ -553,6 +560,7 @@ class MailingsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
@@ -568,6 +576,7 @@ class MailingsController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function confirmRemoveTitle(array $args): string
     {
         return sprintf(
@@ -584,6 +593,7 @@ class MailingsController extends CrudController
      *
      * @return bool
      */
+    #[\Override]
     protected function doDelete(array $args, array $post): bool
     {
         $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences);

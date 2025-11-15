@@ -52,6 +52,7 @@ class StatusController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
@@ -66,6 +67,7 @@ class StatusController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response, null, 'add');
@@ -84,6 +86,7 @@ class StatusController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function list(
         Request $request,
         Response $response,
@@ -124,6 +127,7 @@ class StatusController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function filter(Request $request, Response $response): Response
     {
         //no filters
@@ -142,6 +146,7 @@ class StatusController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $status = new Status($this->zdb);
@@ -172,6 +177,7 @@ class StatusController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);
@@ -256,6 +262,7 @@ class StatusController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('status');
@@ -268,6 +275,7 @@ class StatusController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
@@ -285,6 +293,7 @@ class StatusController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function confirmRemoveTitle(array $args): string
     {
         $class = new Status($this->zdb);
@@ -305,6 +314,7 @@ class StatusController extends CrudController
      *
      * @return bool
      */
+    #[\Override]
     protected function doDelete(array $args, array $post): bool
     {
         $class = new Status($this->zdb);

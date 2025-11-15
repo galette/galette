@@ -41,6 +41,7 @@ class SavedSearchesList extends Pagination
      *
      * @return int|string
      */
+    #[\Override]
     protected function getDefaultOrder(): int|string
     {
         return 'creation_date';
@@ -51,6 +52,7 @@ class SavedSearchesList extends Pagination
      *
      * @return SQLOrder
      */
+    #[\Override]
     protected function getDefaultDirection(): SQLOrder
     {
         return SQLOrder::DESC;

@@ -621,6 +621,7 @@ class ScheduledPayment
      *
      * @return self
      */
+    #[\Override]
     protected function setFields(): self
     {
         $this->fields = [

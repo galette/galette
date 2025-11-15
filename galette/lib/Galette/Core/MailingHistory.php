@@ -87,6 +87,7 @@ class MailingHistory extends History
      *
      * @return array<int, object>
      */
+    #[\Override]
     public function getHistory(): array
     {
         try {
@@ -147,6 +148,7 @@ class MailingHistory extends History
      *
      * @return array<int, string> SQL ORDER clauses
      */
+    #[\Override]
     protected function buildOrderClause(): array
     {
         $order = [];
@@ -480,6 +482,7 @@ class MailingHistory extends History
      *
      * @return string
      */
+    #[\Override]
     protected function getTableName(bool $prefixed = false): string
     {
         if ($prefixed === true) {
@@ -494,6 +497,7 @@ class MailingHistory extends History
      *
      * @return string
      */
+    #[\Override]
     protected function getPk(): string
     {
         return self::PK;
@@ -504,6 +508,7 @@ class MailingHistory extends History
      *
      * @return int
      */
+    #[\Override]
     public function getCount(): int
     {
         return $this->count;

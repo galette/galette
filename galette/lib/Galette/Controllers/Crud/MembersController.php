@@ -72,6 +72,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function add(Request $request, Response $response): Response
     {
         return $this->edit($request, $response, null, 'add');
@@ -182,6 +183,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response);
@@ -621,6 +623,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
@@ -684,6 +687,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
@@ -1094,6 +1098,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function edit(
         Request $request,
         Response $response,
@@ -1241,6 +1246,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response);
@@ -1902,6 +1908,7 @@ class MembersController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('members');
@@ -1914,6 +1921,7 @@ class MembersController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
@@ -1929,6 +1937,7 @@ class MembersController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function confirmRemoveTitle(array $args): string
     {
         if (isset($args['id_adh']) || isset($args['id'])) {
@@ -1958,6 +1967,7 @@ class MembersController extends CrudController
      *
      * @return bool
      */
+    #[\Override]
     protected function doDelete(array $args, array $post): bool
     {
         if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])})) {

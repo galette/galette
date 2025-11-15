@@ -63,6 +63,7 @@ class Login extends Authentication
      *
      * @return bool
      */
+    #[\Override]
     public function logAdmin(string $login, Preferences $preferences): bool
     {
         parent::logAdmin($login, $preferences);
@@ -78,6 +79,7 @@ class Login extends Authentication
      *
      * @return bool
      */
+    #[\Override]
     public function logCron(string $name, Preferences $preferences): bool
     {
         //known cronable files
@@ -101,6 +103,7 @@ class Login extends Authentication
      *
      * @return bool
      */
+    #[\Override]
     public function logOut(): bool
     {
         parent::logOut();
@@ -116,6 +119,7 @@ class Login extends Authentication
      *
      * @return bool
      */
+    #[\Override]
     public function logIn(string $user, string $passe): bool
     {
         try {
@@ -312,6 +316,7 @@ class Login extends Authentication
      *
      * @return bool
      */
+    #[\Override]
     public function loginExists(string $user): bool
     {
         try {

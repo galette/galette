@@ -49,6 +49,7 @@ class PluginDisable extends AbstractPlugins
      *
      * @return int
      */
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -72,6 +73,7 @@ class PluginDisable extends AbstractPlugins
      *
      * @return array<string, array<string, string>>
      */
+    #[\Override]
     protected function getRelevantPlugins(SymfonyStyle $io): array
     {
         return $this->plugins->getModules();

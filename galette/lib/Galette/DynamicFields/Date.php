@@ -54,6 +54,7 @@ class Date extends DynamicField
      *
      * @return int
      */
+    #[\Override]
     public function getType(): int
     {
         return self::DATE;
@@ -177,6 +178,7 @@ class Date extends DynamicField
      *
      * @return string
      */
+    #[\Override]
     public function getDisplayValue(mixed $value): string
     {
         if (empty($value)) {

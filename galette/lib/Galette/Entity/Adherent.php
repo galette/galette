@@ -2259,6 +2259,7 @@ class Adherent implements AccessManagementInterface
      *
      * @return bool
      */
+    #[\Override]
     public function canCreate(Login $login): bool
     {
         global $preferences;
@@ -2280,6 +2281,7 @@ class Adherent implements AccessManagementInterface
      *
      * @return bool
      */
+    #[\Override]
     public function canShow(Login $login): bool
     {
         //group managers can show members of groups they manage
@@ -2301,6 +2303,7 @@ class Adherent implements AccessManagementInterface
      *
      * @return bool
      */
+    #[\Override]
     public function canEdit(Login $login): bool
     {
         global $preferences;
@@ -2334,6 +2337,7 @@ class Adherent implements AccessManagementInterface
      *
      * @return bool
      */
+    #[\Override]
     public function canDelete(Login $login): bool
     {
         //FIXME: too large.
@@ -2402,6 +2406,7 @@ class Adherent implements AccessManagementInterface
      *
      * @return string
      */
+    #[\Override]
     protected function getEventsPrefix(): string
     {
         return 'member';

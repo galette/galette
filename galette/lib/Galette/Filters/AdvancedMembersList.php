@@ -250,6 +250,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return void
      */
+    #[\Override]
     public function reinit(): void
     {
         parent::reinit();
@@ -301,6 +302,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return mixed the called property
      */
+    #[\Override]
     public function __get(string $name): mixed
     {
         if (
@@ -374,6 +376,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return bool
      */
+    #[\Override]
     public function __isset(string $name): bool
     {
         return
@@ -391,6 +394,7 @@ class AdvancedMembersList extends MembersList
      *
      * @return void
      */
+    #[\Override]
     public function __set(string $name, mixed $value): void
     {
         global $zdb, $preferences, $login;

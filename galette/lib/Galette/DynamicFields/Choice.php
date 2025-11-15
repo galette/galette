@@ -51,6 +51,7 @@ class Choice extends DynamicField
      *
      * @return int
      */
+    #[\Override]
     public function getType(): int
     {
         return self::CHOICE;
@@ -63,6 +64,7 @@ class Choice extends DynamicField
      *
      * @return string
      */
+    #[\Override]
     public function getDisplayValue(mixed $value): string
     {
         return $this->values[$value ?? ''] ?? '';

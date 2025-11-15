@@ -201,6 +201,7 @@ class Release
      *
      * @return bool
      */
+    #[\Override]
     protected function cacheLoaded(mixed $content): bool
     {
         if ($content === null) {
@@ -216,6 +217,7 @@ class Release
      *
      * @return string
      */
+    #[\Override]
     protected function getCacheFilename(): string
     {
         return GALETTE_CACHE_DIR . $this->cache_filename;
@@ -226,6 +228,7 @@ class Release
      *
      * @return void
      */
+    #[\Override]
     protected function prepareForCache(): void
     {
         if (!isset($this->latest)) {

@@ -57,6 +57,7 @@ class Install extends AbstractCommand
      *
      * @return void
      */
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -82,6 +83,7 @@ class Install extends AbstractCommand
      *
      * @return int
      */
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         global $installer;

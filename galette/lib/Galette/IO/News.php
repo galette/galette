@@ -93,6 +93,7 @@ class News
      *
      * @return bool
      */
+    #[\Override]
     protected function cacheLoaded(mixed $contents): bool
     {
         if (Galette::isSerialized($contents)) {
@@ -116,6 +117,7 @@ class News
      *
      * @return string
      */
+    #[\Override]
     protected function getCacheFilename(): string
     {
         return GALETTE_CACHE_DIR . str_replace(
@@ -259,6 +261,7 @@ class News
      *
      * @return void
      */
+    #[\Override]
     protected function prepareForCache(): void
     {
         $this->parseFeed();

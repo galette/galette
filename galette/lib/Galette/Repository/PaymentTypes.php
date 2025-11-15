@@ -57,6 +57,7 @@ class PaymentTypes extends Repository
      *
      * @return array<int, PaymentType>|ResultSet
      */
+    #[\Override]
     public function getList(bool $schedulable = true): array|ResultSet
     {
         global $login;
@@ -90,6 +91,7 @@ class PaymentTypes extends Repository
      *
      * @return bool
      */
+    #[\Override]
     public function installInit(bool $check_first = true): bool
     {
         try {
@@ -223,6 +225,7 @@ class PaymentTypes extends Repository
      *
      * @return array<string, mixed>
      */
+    #[\Override]
     protected function loadDefaults(): array
     {
         if (!count($this->defaults)) {

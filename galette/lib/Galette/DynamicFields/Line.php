@@ -54,6 +54,7 @@ class Line extends DynamicField
      *
      * @return int
      */
+    #[\Override]
     public function getType(): int
     {
         return self::LINE;

@@ -47,6 +47,7 @@ class PrintLogo extends Logo
      *
      * @return void
      */
+    #[\Override]
     protected function getDefaultPicture(): void
     {
         //if we are here, we want to serve default logo
@@ -63,6 +64,7 @@ class PrintLogo extends Logo
      *
      * @return string full file path
      */
+    #[\Override]
     public function getPath(): string
     {
         if ($this->getFormat() !== 'webp') {

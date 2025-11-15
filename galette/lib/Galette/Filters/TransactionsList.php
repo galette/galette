@@ -85,6 +85,7 @@ class TransactionsList extends Pagination
      *
      * @return int|string
      */
+    #[\Override]
     protected function getDefaultOrder(): int|string
     {
         return self::ORDERBY_DATE;
@@ -95,6 +96,7 @@ class TransactionsList extends Pagination
      *
      * @return SQLOrder
      */
+    #[\Override]
     protected function getDefaultDirection(): SQLOrder
     {
         return SQLOrder::DESC;
@@ -105,6 +107,7 @@ class TransactionsList extends Pagination
      *
      * @return void
      */
+    #[\Override]
     public function reinit(): void
     {
         parent::reinit();
@@ -121,6 +124,7 @@ class TransactionsList extends Pagination
      *
      * @return mixed the called property
      */
+    #[\Override]
     public function __get(string $name): mixed
     {
         if (in_array($name, $this->pagination_fields)) {
@@ -157,6 +161,7 @@ class TransactionsList extends Pagination
      *
      * @return bool
      */
+    #[\Override]
     public function __isset(string $name): bool
     {
         if (in_array($name, $this->pagination_fields)) {
@@ -176,6 +181,7 @@ class TransactionsList extends Pagination
      *
      * @return void
      */
+    #[\Override]
     public function __set(string $name, mixed $value): void
     {
         if (in_array($name, $this->pagination_fields)) {

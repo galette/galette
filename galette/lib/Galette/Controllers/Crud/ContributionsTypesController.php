@@ -46,6 +46,7 @@ class ContributionsTypesController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
@@ -60,6 +61,7 @@ class ContributionsTypesController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response, null, 'add');
@@ -78,6 +80,7 @@ class ContributionsTypesController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function list(
         Request $request,
         Response $response,
@@ -118,6 +121,7 @@ class ContributionsTypesController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function filter(Request $request, Response $response): Response
     {
         //no filters
@@ -136,6 +140,7 @@ class ContributionsTypesController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $ctype = new ContributionsTypes($this->zdb);
@@ -164,6 +169,7 @@ class ContributionsTypesController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);
@@ -252,6 +258,7 @@ class ContributionsTypesController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('contributionsTypes');
@@ -264,6 +271,7 @@ class ContributionsTypesController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
@@ -281,6 +289,7 @@ class ContributionsTypesController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function confirmRemoveTitle(array $args): string
     {
         $ctype = new ContributionsTypes($this->zdb);
@@ -301,6 +310,7 @@ class ContributionsTypesController extends CrudController
      *
      * @return bool
      */
+    #[\Override]
     protected function doDelete(array $args, array $post): bool
     {
         $ctype = new ContributionsTypes($this->zdb);

@@ -276,6 +276,7 @@ class Mailing extends GaletteMail
      *
      * @return int
      */
+    #[\Override]
     public function send(): int
     {
         $m = [];
@@ -295,6 +296,7 @@ class Mailing extends GaletteMail
      * @return bool
      * FIXME: same name as parent method, but different arguments
      */
+    #[\Override]
     public function setRecipients(array $members): bool //@phpstan-ignore method.childParameterType (see FIXME)
     {
         $m = [];

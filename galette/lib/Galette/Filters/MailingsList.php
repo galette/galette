@@ -75,6 +75,7 @@ class MailingsList extends HistoryList
      *
      * @return int|string
      */
+    #[\Override]
     protected function getDefaultOrder(): int|string
     {
         return self::ORDERBY_DATE;
@@ -85,6 +86,7 @@ class MailingsList extends HistoryList
      *
      * @return void
      */
+    #[\Override]
     public function reinit(): void
     {
         parent::reinit();
@@ -101,6 +103,7 @@ class MailingsList extends HistoryList
      *
      * @return void
      */
+    #[\Override]
     public function __set(string $name, mixed $value): void
     {
         switch ($name) {

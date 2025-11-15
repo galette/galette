@@ -57,6 +57,7 @@ abstract class PdfContribution extends PdfModel
      *
      * @return array<string,array<string,mixed>>
      */
+    #[\Override]
     public function getLegend(): array
     {
         $legend = parent::getLegend();

@@ -41,6 +41,7 @@ class PdfModels extends Repository
      *
      * @return array<int, PdfModel>|ResultSet
      */
+    #[\Override]
     public function getList(): array|ResultSet
     {
         try {
@@ -70,6 +71,7 @@ class PdfModels extends Repository
      *
      * @return bool
      */
+    #[\Override]
     public function installInit(bool $check_first = true): bool
     {
         try {
@@ -211,6 +213,7 @@ class PdfModels extends Repository
      *
      * @return array<string,mixed>
      */
+    #[\Override]
     protected function loadDefaults(): array
     {
         if (!count($this->defaults)) {

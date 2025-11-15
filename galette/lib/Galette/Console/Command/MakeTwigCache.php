@@ -64,6 +64,7 @@ class MakeTwigCache extends AbstractCommand
      *
      * @return void
      */
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -79,6 +80,7 @@ class MakeTwigCache extends AbstractCommand
      *
      * @return int
      */
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $directory_path = sprintf(
@@ -224,6 +226,7 @@ class MakeTwigCache extends AbstractCommand
              *
              * @return TwigFunction
              */
+            #[\Override]
             public function getFunction(string $name): TwigFunction
             {
                 $translation_functions = [
@@ -250,6 +253,7 @@ class MakeTwigCache extends AbstractCommand
              *
              * @return TwigFilter
              */
+            #[\Override]
             public function getFilter(string $name): TwigFilter
             {
                 return parent::getFilter($name) ?? new TwigFilter($name, function (): void {
@@ -263,6 +267,7 @@ class MakeTwigCache extends AbstractCommand
              *
              * @return ?TwigTest
              */
+            #[\Override]
             public function getTest(string $name): ?TwigTest
             {
                 if (in_array($name, ['divisible', 'same'])) {
@@ -310,6 +315,7 @@ class MakeTwigCache extends AbstractCommand
              *
              * @return string
              */
+            #[\Override]
             public function generateKey(string $name, string $className): string
             {
                 return $this->directory . $name;

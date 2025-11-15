@@ -47,6 +47,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
@@ -61,6 +62,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doAdd(Request $request, Response $response): Response
     {
         return $this->store($request, $response, null);
@@ -79,6 +81,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
         $ptypes = new PaymentTypes(
@@ -108,6 +111,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function filter(Request $request, Response $response): Response
     {
         //no filters
@@ -126,6 +130,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function edit(Request $request, Response $response, int $id): Response
     {
         $ptype = new PaymentType($this->zdb, $id);
@@ -154,6 +159,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
+    #[\Override]
     public function doEdit(Request $request, Response $response, int $id): Response
     {
         return $this->store($request, $response, $id);
@@ -243,6 +249,7 @@ class PaymentTypeController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function redirectUri(array $args): string
     {
         return $this->routeparser->urlFor('paymentTypes');
@@ -255,6 +262,7 @@ class PaymentTypeController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function formUri(array $args): string
     {
         return $this->routeparser->urlFor(
@@ -270,6 +278,7 @@ class PaymentTypeController extends CrudController
      *
      * @return string
      */
+    #[\Override]
     public function confirmRemoveTitle(array $args): string
     {
         $ptype = new PaymentType($this->zdb, (int)$args['id']);
@@ -287,6 +296,7 @@ class PaymentTypeController extends CrudController
      *
      * @return bool
      */
+    #[\Override]
     protected function doDelete(array $args, array $post): bool
     {
         $ptype = new PaymentType($this->zdb, (int)$args['id']);
