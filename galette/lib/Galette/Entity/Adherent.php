@@ -73,8 +73,8 @@ use Galette\Features\Dynamics;
  * @property ?string $zipcode
  * @property ?string $town
  * @property ?string $country
- * @property string $phone
- * @property string $gsm
+ * @property ?string $phone
+ * @property ?string $gsm
  * @property ?string $email
  * @property string $gnupgid
  * @property string $fingerprint
