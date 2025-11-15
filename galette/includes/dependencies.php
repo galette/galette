@@ -410,7 +410,7 @@ if (
     && $container->get('galette.mode') !== 'NEED_UPDATE'
     && !defined('GALETTE_INSTALLER')
 ) {
-    global $zdb, $preferences, $login, $hist, $l10n, $emitter;
+    global $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser;
     $zdb = $container->get(\Galette\Core\Db::class);
     $preferences = $container->get(\Galette\Core\Preferences::class);
     $login = $container->get(\Galette\Core\Login::class);
