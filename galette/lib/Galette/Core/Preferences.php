@@ -986,16 +986,15 @@ class Preferences
      */
     public function getPhoneNumber(): string
     {
-        $_phone = '';
         if ($this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_PREFS) {
             $_phone = $this->prefs['pref_org_phone_number'];
         } else {
             //get selected staff phone number
             $adh = new Adherent($this->zdb, (int)$this->prefs['pref_org_phone_staff_member']);
-            $_phone = $this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_STAFF ? $adh->phone : $adh->gsm;
+            $_phone = $this->prefs['pref_org_phone'] == self::PHONE_NUMBER_MOBILE_FROM_STAFF ? $adh->gsm : $adh->phone;
         }
 
-        return $_phone;
+        return $_phone ?? '';
     }
 
     /**
@@ -1150,7 +1149,7 @@ class Preferences
             ]
         ];
 
-        //Following conditions are due to PdfMembersCards/PdfMembersCardsAdaptative switching. COde will be simplified once PdfMembersCardsAdaptative will be the only one
+        //Following conditions are due to PdfMembersCards/PdfMembersCardsAdaptative switching. Code will be simplified once PdfMembersCardsAdaptative will be the only one
         if ($name === 'pref_card_cols') {
             //@phpstan-ignore-next-line
             return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getCols() : PdfMembersCards::getCols();
