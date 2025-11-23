@@ -247,9 +247,9 @@ class Telemetry
     /**
      * Send telemetry information
      *
-     * @return boolean
+     * @return void
      */
-    public function send(): bool
+    public function send(): void
     {
         $data = $this->getTelemetryInfos();
         $infos = json_encode(['data' => $data]);
@@ -265,7 +265,7 @@ class Telemetry
         ];
 
         curl_setopt_array($ch, $opts);
-        $content = json_decode(curl_exec($ch));
+        $content = json_decode(curl_exec($ch), null, 512, JSON_THROW_ON_ERROR);
         $errstr = curl_error($ch);
 
         if ($content && property_exists($content, 'message')) {
@@ -278,9 +278,6 @@ class Telemetry
             }
 
             $this->prefs->updateTelemetryDate();
-
-            //all is OK!
-            return true;
         } else {
             $message = 'Something went wrong sending telemetry information';
             if ($errstr != '') {
