@@ -261,6 +261,7 @@ class Telemetry
     /**
      * Send telemetry information
      *
+     * @psalm-suppress PossiblyFalseArgument (curl_init false handling is not documented)
      * @return void
      */
     public function send(): void
