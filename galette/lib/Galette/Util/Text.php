@@ -43,17 +43,17 @@ class Text
      */
     public static function slugify(string $string, string $prefix = ''): string
     {
-        $string = $prefix . $string;
-        $string = transliterator_transliterate("Any-Latin; Latin-ASCII; [^a-zA-Z0-9\.\ -_] Remove;", $string);
-        $string = str_replace(' ', '-', mb_strtolower($string, 'UTF-8'));
-        $string = preg_replace('~[^0-9a-z_\.]+~i', '-', $string);
-        $string = trim((string) $string, '-');
-        if ($string == '') {
+        $slug_string = $prefix . $string;
+        $slug_string = transliterator_transliterate("Any-Latin; Latin-ASCII; [^a-zA-Z0-9\.\ -_] Remove;", $slug_string);
+        $slug_string = str_replace(' ', '-', mb_strtolower((string)$slug_string, 'UTF-8'));
+        $slug_string = preg_replace('~[^0-9a-z_\.]+~i', '-', $slug_string);
+        $slug_string = trim((string)$slug_string, '-');
+        if ($slug_string == '') {
             throw new \RuntimeException(
                 'Cannot create a slug from the given string ' . $string
             );
         }
-        return $string;
+        return $slug_string;
     }
 
     /**
