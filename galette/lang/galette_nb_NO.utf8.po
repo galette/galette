@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 09:01+0100\n"
+"POT-Creation-Date: 2025-11-24 08:28+0100\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
@@ -259,9 +259,6 @@ msgstr ""
 msgid "Subscription"
 msgstr ""
 
-msgid "No member #%id."
-msgstr ""
-
 msgid "Member Profile"
 msgstr "Medlemsprofil"
 
@@ -353,6 +350,9 @@ msgstr ""
 
 #, php-format
 msgid "You are about to remove %1$s members."
+msgstr ""
+
+msgid "No member #%id."
 msgstr ""
 
 msgid "Titles"
@@ -468,12 +468,6 @@ msgstr ""
 msgid "Add document"
 msgstr ""
 
-msgid "An error occurred adding document :("
-msgstr ""
-
-msgid "Document has been successfully stored!"
-msgstr ""
-
 msgid "Documents"
 msgstr ""
 
@@ -481,6 +475,12 @@ msgstr ""
 #| msgid "Edit payment type"
 msgid "Edit document"
 msgstr "Rediger betalingstype"
+
+msgid "An error occurred adding document :("
+msgstr ""
+
+msgid "Document has been successfully stored!"
+msgstr ""
 
 msgid "Delete document"
 msgstr ""
@@ -900,7 +900,7 @@ msgstr ""
 msgid "Previous version selection"
 msgstr ""
 
-msgid "Datapase upgrade"
+msgid "Database upgrade"
 msgstr ""
 
 msgid "Tables Creation"
@@ -2514,9 +2514,6 @@ msgid "Read the manual"
 msgstr ""
 
 msgid "Version selection"
-msgstr ""
-
-msgid "Database upgrade"
 msgstr ""
 
 msgid "Database installation"

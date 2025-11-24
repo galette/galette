@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 09:01+0100\n"
+"POT-Creation-Date: 2025-11-24 08:28+0100\n"
 "PO-Revision-Date: 2025-10-24 21:05+0000\n"
 "Last-Translator: Erdem Yanardağ <erdemynrd@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
@@ -275,9 +275,6 @@ msgstr "Alan taşınırken bir hata oluştu :("
 msgid "Subscription"
 msgstr "Üyelik"
 
-msgid "No member #%id."
-msgstr "Üye numarası #%id bulunamadı."
-
 msgid "Member Profile"
 msgstr "Üye Profili"
 
@@ -375,6 +372,9 @@ msgstr "%1$s üyeyi çıkar"
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr "%1$s üyeyi çıkarmak üzeresiniz."
+
+msgid "No member #%id."
+msgstr "Üye numarası #%id bulunamadı."
 
 msgid "Titles"
 msgstr ""
@@ -503,16 +503,6 @@ msgid "Add document"
 msgstr "Dokümanı indir"
 
 #, fuzzy
-#| msgid "An error occurred adding dynamic field :("
-msgid "An error occurred adding document :("
-msgstr "Dinamik alan eklenirken bir hata oluştu :("
-
-#, fuzzy
-#| msgid "Model has been successfully stored!"
-msgid "Document has been successfully stored!"
-msgstr "Model başarıyla depo edildi!"
-
-#, fuzzy
 #| msgid "Download document"
 msgid "Documents"
 msgstr "Dokümanı indir"
@@ -521,6 +511,16 @@ msgstr "Dokümanı indir"
 #| msgid "Download document"
 msgid "Edit document"
 msgstr "Dokümanı indir"
+
+#, fuzzy
+#| msgid "An error occurred adding dynamic field :("
+msgid "An error occurred adding document :("
+msgstr "Dinamik alan eklenirken bir hata oluştu :("
+
+#, fuzzy
+#| msgid "Model has been successfully stored!"
+msgid "Document has been successfully stored!"
+msgstr "Model başarıyla depo edildi!"
 
 #, fuzzy
 #| msgid "Download document"
@@ -960,7 +960,7 @@ msgstr ""
 msgid "Previous version selection"
 msgstr ""
 
-msgid "Datapase upgrade"
+msgid "Database upgrade"
 msgstr ""
 
 msgid "Tables Creation"
@@ -2581,9 +2581,6 @@ msgid "Read the manual"
 msgstr ""
 
 msgid "Version selection"
-msgstr ""
-
-msgid "Database upgrade"
 msgstr ""
 
 msgid "Database installation"

@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 09:01+0100\n"
+"POT-Creation-Date: 2025-11-24 08:28+0100\n"
 "PO-Revision-Date: 2025-01-04 16:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -296,9 +296,6 @@ msgstr "حدث خطأ أثناء نقل الحقل :("
 msgid "Subscription"
 msgstr "الاشتراك"
 
-msgid "No member #%id."
-msgstr "لايوجد عضو #%id."
-
 msgid "Member Profile"
 msgstr "ملف العضو"
 
@@ -403,6 +400,9 @@ msgstr "إزالة العضو %1$s"
 #| msgid "You are about to remove %count members."
 msgid "You are about to remove %1$s members."
 msgstr "سوف تحذف %c من الاعضاء."
+
+msgid "No member #%id."
+msgstr "لايوجد عضو #%id."
 
 msgid "Titles"
 msgstr ""
@@ -538,16 +538,6 @@ msgid "Add document"
 msgstr "إضافة تبرع"
 
 #, fuzzy
-#| msgid "An error occurred adding dynamic field :("
-msgid "An error occurred adding document :("
-msgstr "حدث خطأ اثناء اضافة الحقل"
-
-#, fuzzy
-#| msgid "Dynamic field has been successfully stored!"
-msgid "Document has been successfully stored!"
-msgstr "تم تخزين الحقل بنجاح !"
-
-#, fuzzy
 #| msgid "Documentation"
 msgid "Documents"
 msgstr "الدليل"
@@ -556,6 +546,16 @@ msgstr "الدليل"
 #| msgid "Edit payment type"
 msgid "Edit document"
 msgstr "تعديل نوع الدفع"
+
+#, fuzzy
+#| msgid "An error occurred adding dynamic field :("
+msgid "An error occurred adding document :("
+msgstr "حدث خطأ اثناء اضافة الحقل"
+
+#, fuzzy
+#| msgid "Dynamic field has been successfully stored!"
+msgid "Document has been successfully stored!"
+msgstr "تم تخزين الحقل بنجاح !"
 
 #, fuzzy
 #| msgid "Delete image"
@@ -985,7 +985,7 @@ msgstr ""
 msgid "Previous version selection"
 msgstr ""
 
-msgid "Datapase upgrade"
+msgid "Database upgrade"
 msgstr ""
 
 msgid "Tables Creation"
@@ -2631,9 +2631,6 @@ msgid "Read the manual"
 msgstr ""
 
 msgid "Version selection"
-msgstr ""
-
-msgid "Database upgrade"
 msgstr ""
 
 msgid "Database installation"

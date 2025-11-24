@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 09:01+0100\n"
+"POT-Creation-Date: 2025-11-24 08:28+0100\n"
 "PO-Revision-Date: 2025-06-27 16:28+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -253,9 +253,6 @@ msgstr "நகரும் புலம் ஒரு பிழை ஏற்ப�
 msgid "Subscription"
 msgstr "சந்தா"
 
-msgid "No member #%id."
-msgstr "உறுப்பினர் #%id இல்லை."
-
 msgid "Member Profile"
 msgstr "உறுப்பினர் சுயவிவரம்"
 
@@ -350,6 +347,9 @@ msgstr "உறுப்பினர் %1$s ஐ அகற்று"
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr "நீங்கள் %1$s உறுப்பினர்களை அகற்ற உள்ளீர்கள்."
+
+msgid "No member #%id."
+msgstr "உறுப்பினர் #%id இல்லை."
 
 msgid "Titles"
 msgstr "தலைப்புகள்"
@@ -463,17 +463,17 @@ msgstr "பரிவர்த்தனை"
 msgid "Add document"
 msgstr "ஆவணத்தைச் சேர்க்கவும்"
 
-msgid "An error occurred adding document :("
-msgstr "ஆவணத்தைச் சேர்ப்பது பிழை ஏற்பட்டது :("
-
-msgid "Document has been successfully stored!"
-msgstr "ஆவணம் வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது!"
-
 msgid "Documents"
 msgstr "ஆவணங்கள்"
 
 msgid "Edit document"
 msgstr "ஆவணத்தைத் திருத்து"
+
+msgid "An error occurred adding document :("
+msgstr "ஆவணத்தைச் சேர்ப்பது பிழை ஏற்பட்டது :("
+
+msgid "Document has been successfully stored!"
+msgstr "ஆவணம் வெற்றிகரமாக சேமிக்கப்பட்டுள்ளது!"
 
 msgid "Delete document"
 msgstr "ஆவணத்தை நீக்கு"
@@ -914,7 +914,7 @@ msgstr "தரவுத்தள அணுகல் மற்றும் அன
 msgid "Previous version selection"
 msgstr "முந்தைய பதிப்பு தேர்வு"
 
-msgid "Datapase upgrade"
+msgid "Database upgrade"
 msgstr "தரவுத்தள மேம்படுத்தல்"
 
 msgid "Tables Creation"
@@ -2546,9 +2546,6 @@ msgstr "பட்டியலைப் படித்தல்"
 
 msgid "Version selection"
 msgstr "பதிப்பு தேர்வு"
-
-msgid "Database upgrade"
-msgstr "தரவுத்தள மேம்படுத்தல்"
 
 msgid "Database installation"
 msgstr "தரவுத்தள நிறுவல்"
@@ -6277,6 +6274,9 @@ msgstr "மொழி பட்டியல்"
 
 msgid "Page content"
 msgstr "பக்க உள்ளடக்கம்"
+
+#~ msgid "Datapase upgrade"
+#~ msgstr "தரவுத்தள மேம்படுத்தல்"
 
 #~ msgid "Current group (and attached people) as PDF"
 #~ msgstr "தற்போதைய குழு (மற்றும் இணைக்கப்பட்ட நபர்கள்) PDF ஆக"

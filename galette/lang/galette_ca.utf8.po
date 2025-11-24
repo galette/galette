@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 09:01+0100\n"
+"POT-Creation-Date: 2025-11-24 08:28+0100\n"
 "PO-Revision-Date: 2025-10-21 08:39+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -289,9 +289,6 @@ msgstr "S'ha produït un error en moure el camp :("
 msgid "Subscription"
 msgstr "Subscripció"
 
-msgid "No member #%id."
-msgstr "Cap membre #%id."
-
 msgid "Member Profile"
 msgstr "Perfil del membre"
 
@@ -391,6 +388,9 @@ msgstr "Elimina el membre %1$s"
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr "Esteu a punt d'eliminar %1$s membres."
+
+msgid "No member #%id."
+msgstr "Cap membre #%id."
 
 #, fuzzy
 msgid "Titles"
@@ -524,6 +524,14 @@ msgid "Add document"
 msgstr "Afegeix un adjunt"
 
 #, fuzzy
+msgid "Documents"
+msgstr "Documentació"
+
+#, fuzzy
+msgid "Edit document"
+msgstr "Obtenir el meu document"
+
+#, fuzzy
 #| msgid "An error occurred adding dynamic field :("
 msgid "An error occurred adding document :("
 msgstr "S'ha produït un error en afegir un camp dinàmic:("
@@ -531,14 +539,6 @@ msgstr "S'ha produït un error en afegir un camp dinàmic:("
 #, fuzzy
 msgid "Document has been successfully stored!"
 msgstr "El model s'ha desat correctament!"
-
-#, fuzzy
-msgid "Documents"
-msgstr "Documentació"
-
-#, fuzzy
-msgid "Edit document"
-msgstr "Obtenir el meu document"
 
 #, fuzzy
 msgid "Delete document"
@@ -1064,8 +1064,8 @@ msgid "Previous version selection"
 msgstr "Selecció de versió anterior"
 
 #, fuzzy
-msgid "Datapase upgrade"
-msgstr "Actualització de dades"
+msgid "Database upgrade"
+msgstr "Actualització de la base de dades"
 
 #, fuzzy
 msgid "Tables Creation"
@@ -3102,10 +3102,6 @@ msgstr "Llegint la llista"
 #, fuzzy
 msgid "Version selection"
 msgstr "Selecció de versió"
-
-#, fuzzy
-msgid "Database upgrade"
-msgstr "Actualització de la base de dades"
 
 #, fuzzy
 msgid "Database installation"
@@ -7698,6 +7694,10 @@ msgstr "Llengua:"
 #, fuzzy
 msgid "Page content"
 msgstr "Contingut de la pàgina"
+
+#, fuzzy
+#~ msgid "Datapase upgrade"
+#~ msgstr "Actualització de dades"
 
 #, fuzzy
 #~ msgid "Current group (and attached people) as PDF"

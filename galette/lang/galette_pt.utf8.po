@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 09:01+0100\n"
+"POT-Creation-Date: 2025-11-24 08:28+0100\n"
 "PO-Revision-Date: 2025-09-15 15:52+0000\n"
 "Last-Translator: Nelson JESUS <jesus.nels@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
@@ -253,9 +253,6 @@ msgstr "Ocorreu um erro ao mover o campo :("
 msgid "Subscription"
 msgstr "Subscrição"
 
-msgid "No member #%id."
-msgstr "Nenhum membro #%id."
-
 msgid "Member Profile"
 msgstr "Perfil do Membro"
 
@@ -350,6 +347,9 @@ msgstr "Remover membro %1$s"
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr "Está prestes a remover %1$s membro(s)."
+
+msgid "No member #%id."
+msgstr "Nenhum membro #%id."
 
 msgid "Titles"
 msgstr "Títulos"
@@ -463,17 +463,17 @@ msgstr "transação"
 msgid "Add document"
 msgstr "Adicionar documento"
 
-msgid "An error occurred adding document :("
-msgstr "Ocorreu um erro ao adicionar o documento :("
-
-msgid "Document has been successfully stored!"
-msgstr "O documento foi guardado com sucesso!"
-
 msgid "Documents"
 msgstr "Documentos"
 
 msgid "Edit document"
 msgstr "Editar documento"
+
+msgid "An error occurred adding document :("
+msgstr "Ocorreu um erro ao adicionar o documento :("
+
+msgid "Document has been successfully stored!"
+msgstr "O documento foi guardado com sucesso!"
 
 msgid "Delete document"
 msgstr "Eliminar documento"
@@ -916,8 +916,8 @@ msgstr "Acesso e permissões ao banco de dados"
 msgid "Previous version selection"
 msgstr "Seleção da versão anterior"
 
-msgid "Datapase upgrade"
-msgstr "Atualização do banco de dados"
+msgid "Database upgrade"
+msgstr ""
 
 msgid "Tables Creation"
 msgstr "Criação de tabelas"
@@ -2515,9 +2515,6 @@ msgid "Read the manual"
 msgstr ""
 
 msgid "Version selection"
-msgstr ""
-
-msgid "Database upgrade"
 msgstr ""
 
 msgid "Database installation"
@@ -6042,6 +6039,9 @@ msgstr ""
 
 msgid "Page content"
 msgstr ""
+
+#~ msgid "Datapase upgrade"
+#~ msgstr "Atualização do banco de dados"
 
 #, php-format
 #~ msgid ""

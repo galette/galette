@@ -29,8 +29,8 @@
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2025-11-11 09:01+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-24 08:28+0100\n"
 "PO-Revision-Date: 2025-11-12 17:51+0000\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -269,9 +269,6 @@ msgstr "Si è verificato un errore nel muovere il campo :("
 msgid "Subscription"
 msgstr "Iscrizione"
 
-msgid "No member #%id."
-msgstr "Non esiste nessun socio #%id."
-
 msgid "Member Profile"
 msgstr "Profilo del socio"
 
@@ -364,6 +361,9 @@ msgstr "Rimuovi socio %1$s"
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr "Stai per rimuovere %1$s membri."
+
+msgid "No member #%id."
+msgstr "Non esiste nessun socio #%id."
 
 msgid "Titles"
 msgstr "Titoli"
@@ -476,17 +476,17 @@ msgstr "transazione"
 msgid "Add document"
 msgstr "Aggiungi documento"
 
-msgid "An error occurred adding document :("
-msgstr "Errore nell'aggiunta di un documento:("
-
-msgid "Document has been successfully stored!"
-msgstr "Il documento è stato archiviato con successo!"
-
 msgid "Documents"
 msgstr "Documenti"
 
 msgid "Edit document"
 msgstr "Modifica documento"
+
+msgid "An error occurred adding document :("
+msgstr "Errore nell'aggiunta di un documento:("
+
+msgid "Document has been successfully stored!"
+msgstr "Il documento è stato archiviato con successo!"
 
 msgid "Delete document"
 msgstr "Cancella documento"
@@ -924,7 +924,7 @@ msgstr "Accesso alla banca dati e permessi"
 msgid "Previous version selection"
 msgstr "Seleziona versione precedente"
 
-msgid "Datapase upgrade"
+msgid "Database upgrade"
 msgstr "Aggiornamento della banca dati"
 
 msgid "Tables Creation"
@@ -2582,9 +2582,6 @@ msgstr "Leggi il manuale"
 
 msgid "Version selection"
 msgstr "Selezione versione"
-
-msgid "Database upgrade"
-msgstr "Aggiornamento della banca dati"
 
 msgid "Database installation"
 msgstr "Installazione della banca dati"
@@ -6329,6 +6326,9 @@ msgstr "Menu lingua"
 
 msgid "Page content"
 msgstr "Contenuti della pagina"
+
+#~ msgid "Datapase upgrade"
+#~ msgstr "Aggiornamento della banca dati"
 
 #~ msgid "Current group (and attached people) as PDF"
 #~ msgstr "Gruppo attuale (e persone collegate) come PDF"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 09:01+0100\n"
+"POT-Creation-Date: 2025-11-24 08:28+0100\n"
 "PO-Revision-Date: 2025-10-21 08:39+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -254,9 +254,6 @@ msgstr "Capitèt una error per lo desplaçament dau camp :("
 msgid "Subscription"
 msgstr "Inscripcion"
 
-msgid "No member #%id."
-msgstr "Ges de membre #%id."
-
 msgid "Member Profile"
 msgstr "Ficha dau membre"
 
@@ -353,6 +350,9 @@ msgstr "Escafar lo membre %1$s"
 #, php-format
 msgid "You are about to remove %1$s members."
 msgstr "Siatz a mand d'escafar %1$s membres."
+
+msgid "No member #%id."
+msgstr "Ges de membre #%id."
 
 msgid "Titles"
 msgstr "Títols"
@@ -466,17 +466,17 @@ msgstr "transaccion"
 msgid "Add document"
 msgstr "Ajustar lo document"
 
-msgid "An error occurred adding document :("
-msgstr "A pas capitat per ajustar lo document :("
-
-msgid "Document has been successfully stored!"
-msgstr "L'enregistrament dau document a ben capitat !"
-
 msgid "Documents"
 msgstr "Documents"
 
 msgid "Edit document"
 msgstr "Modificar lo document"
+
+msgid "An error occurred adding document :("
+msgstr "A pas capitat per ajustar lo document :("
+
+msgid "Document has been successfully stored!"
+msgstr "L'enregistrament dau document a ben capitat !"
 
 msgid "Delete document"
 msgstr "Levar lo document"
@@ -918,7 +918,7 @@ msgstr "Accès e permissions per la basa de donadas"
 msgid "Previous version selection"
 msgstr "Seleccion de la version anteriora"
 
-msgid "Datapase upgrade"
+msgid "Database upgrade"
 msgstr "Actualizacion de la basa de donadas"
 
 msgid "Tables Creation"
@@ -2575,9 +2575,6 @@ msgstr "Legir la lista"
 
 msgid "Version selection"
 msgstr "Seleccion de la version"
-
-msgid "Database upgrade"
-msgstr "Actualizacion de la basa de donadas"
 
 msgid "Database installation"
 msgstr "Installacion de basa de donadas"
@@ -6287,6 +6284,9 @@ msgstr "Lenga :"
 
 msgid "Page content"
 msgstr ""
+
+#~ msgid "Datapase upgrade"
+#~ msgstr "Actualizacion de la basa de donadas"
 
 #~ msgid "Current group (and attached people) as PDF"
 #~ msgstr "PDF dau grope corrent (e mai lei personas restacadas)"
