@@ -42,16 +42,16 @@ class QrCode
     /**
      * Default constructor
      *
-     * @param string  $data  QR code data
-     * @param ?string $label Label for the QR code
-     * @param ?string $url   URL to encode
-     * @param ?string $logo  Path to logo to embed in the QR code
+     * @param string  $data      QR code data
+     * @param ?string $label     Label for the QR code
+     * @param ?string $url       URL to encode
+     * @param ?string $logo_path Path to logo to embed in the QR code
      */
     public function __construct(
         private readonly string $data,
         ?string $label = null,
         private readonly ?string $url = null,
-        private readonly ?string $logo = null
+        private readonly ?string $logo_path = null
     ) {
         $this->label = $label ?? $this->data;
 
@@ -75,9 +75,9 @@ class QrCode
             roundBlockSizeMode: RoundBlockSizeMode::Margin,
         );
 
-        if (isset($this->logo)) {
+        if (isset($this->logo_path)) {
             $logo = new Logo(
-                path: $this->logo,
+                path: $this->logo_path,
                 resizeToWidth: 50,
                 resizeToHeight: 50
             );

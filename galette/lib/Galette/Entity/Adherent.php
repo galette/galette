@@ -2428,7 +2428,7 @@ class Adherent implements AccessManagementInterface
             data: $this->getVCard()->serialize(),
             label: $this->sname,
             url: $routeparser->urlFor('memberVCard', ['id' => $this->id]),
-            logo: GALETTE_ROOT . '/includes/qr-logos/address-card-o.svg'
+            logo_path: GALETTE_ROOT . '/includes/qr-logos/address-card-o.svg'
         );
 
         if (!empty($this->getEmail())) {
@@ -2436,7 +2436,7 @@ class Adherent implements AccessManagementInterface
                 data: 'mailto:' . $this->getEmail(),
                 label: $this->getEmail(),
                 url: 'mailto:' . $this->getEmail(),
-                logo: GALETTE_ROOT . '/includes/qr-logos/envelope-o.svg'
+                logo_path: GALETTE_ROOT . '/includes/qr-logos/envelope-o.svg'
             );
         }
 
@@ -2445,7 +2445,7 @@ class Adherent implements AccessManagementInterface
                 data: 'tel:' . $this->phone,
                 label: $this->phone,
                 url: 'tel:' . $this->phone,
-                logo: GALETTE_ROOT . '/includes/qr-logos/fax.svg'
+                logo_path: GALETTE_ROOT . '/includes/qr-logos/fax.svg'
             );
         }
 
@@ -2454,7 +2454,7 @@ class Adherent implements AccessManagementInterface
                 data: 'tel:' . $this->gsm,
                 label: $this->gsm,
                 url: 'tel:' . $this->gsm,
-                logo: GALETTE_ROOT . '/includes/qr-logos/mobile-phone.svg'
+                logo_path: GALETTE_ROOT . '/includes/qr-logos/mobile-phone.svg'
             );
         }
 
