@@ -122,7 +122,7 @@ class Install
                 $step_documentation = 'installation/update.html#previous-version-selection';
                 break;
             case self::STEP_DB_UPGRADE:
-                $step_title = _T("Datapase upgrade");
+                $step_title = _T("Database upgrade");
                 $step_documentation = 'installation/update.html#updating-database';
                 break;
             case self::STEP_DB_INSTALL:
