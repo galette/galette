@@ -12,21 +12,23 @@
 # vt729830 <vt729830@gmail.com>, 2025.
 # OdiNoKiY KoT <vlad.dorozhko.77@gmail.com>, 2025.
 # Alexis Said He <alexshelmec@outlook.com>, 2025.
+# "Н. А." <asadbek170820@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2025-11-15 07:27+0000\n"
-"Last-Translator: Alexis Said He <alexshelmec@outlook.com>\n"
+"PO-Revision-Date: 2025-11-27 05:00+0000\n"
+"Last-Translator: \"Н. А.\" <asadbek170820@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural="
+"(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? "
+"1 : 2);\n"
 "X-Generator: Weblate 5.15-dev\n"
 
 msgid "Unable to load transaction #%id!"
@@ -130,19 +132,17 @@ msgstr "Название группы отсутствует!"
 msgid "Groups"
 msgstr "Группы"
 
-#, fuzzy, php-format
-#| msgid "Remove payment type %1$s"
+#, php-format
 msgid "New parent is %1$s"
-msgstr "Новый  родитель  в 1$с"
+msgstr "Новый каталог теперь %1$s"
 
 msgid "Parent removed"
 msgstr "Исходник удалён"
 
-#, fuzzy, php-format
-#| msgid "Payment type '%1$s' has been successfully modified."
+#, php-format
 msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
-msgstr "Исхходные каталоги были успешно изменены: %1$s"
+msgstr "Исходные каталоги были успешно изменены: %1$s"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -672,100 +672,109 @@ msgstr "Ошибка аутентификации"
 msgid "Log off"
 msgstr "Выход"
 
-#, php-format
+#, fuzzy, php-format
 msgid "Impersonating as %login"
-msgstr ""
+msgstr "Притворяеться как %login"
 
 msgid "Unable to impersonate as %id"
-msgstr ""
+msgstr "Не удалось притвориться как %id"
 
 msgid "Impersonating ended"
-msgstr ""
+msgstr "Выдача себя за другого окончено"
 
 msgid "Password recovery"
-msgstr ""
+msgstr "Восстановление пароля"
 
 msgid "Email sent is disabled in the preferences. Ask galette admin"
-msgstr ""
+msgstr "Отправка эл.писем отключена в настройках. Обратитесь к админу Галлет"
 
 #, php-format
 msgid "Email sent to '%s' for password recovery."
-msgstr ""
+msgstr "Почта отправлено в '%s' для восстонавление пароля."
 
 msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
+"Почта была отправлено в вашу эл.почту.<br/>Пожалуйста проверьте вкладку "
+"\"входящие\" и следуйте по инструкции."
 
 msgid "An email has been sent to the member."
-msgstr ""
+msgstr "Почта была отправлено участнику."
 
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
-msgstr ""
+msgstr "Случилась проблема при отправке пароля на аккаунт '%s'"
 
 #, php-format
 msgid ""
 "An error occurred storing temporary password for %s. Please inform an admin."
 msgstr ""
+"Произошла ошибка при временом хранение пароля для %s. Пожалуйста сообщите об "
+"этом админу."
 
 #, php-format
 msgid "Your account (%s) do not contain any valid email address"
-msgstr ""
+msgstr "Ваш аккаунт (%s) не имеет ни одного действительного эл.почты"
 
 #, php-format
 msgid "Mails address %s does not exist"
-msgstr ""
+msgstr "Почтовый адресс %s не существует"
 
 #, php-format
 msgid "Login %s does not exist"
-msgstr ""
+msgstr "Логин %s не существует"
 
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
+"Эта ссылка больше не действительна. Вам следует повторно запросить "
+"восстонавление пароля."
 
 msgid "No password"
-msgstr ""
+msgstr "Нету пароля"
 
 msgid "- The passwords don't match!"
-msgstr ""
+msgstr "- Пароли не совпадают!"
 
 msgid "Your password is too weak!"
-msgstr ""
+msgstr "Ваш пароль очень слаб!"
 
 msgid "An error occurred while updating your password."
-msgstr ""
+msgstr "Произошла ошибка при обновлений вашего пароля."
 
 #, php-format
 msgid "Password changed for member '%s'."
-msgstr ""
+msgstr "Пароль участника '%s' была обновлена."
 
 msgid "Your password has been changed!"
-msgstr ""
+msgstr "Ваш пароль был изменён!"
 
 msgid "Administration tools"
-msgstr ""
+msgstr "Инструменты администратора"
 
 msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
 msgstr ""
+"Какие то модули PHP не найдены. Пожалуйста скачайте их или свяжитесь с "
+"поддержкой.<br/>Больше информации по необходимым модулям можно найти в "
+"документации."
 
 msgid "Texts has been successfully reinitialized."
-msgstr ""
+msgstr "Тексты успешно реинициализированы."
 
 msgid "An error occurred reinitializing texts :("
-msgstr ""
+msgstr "Произошла ошибка при повторной инициализации текстов ;C"
 
 msgid "Fields configuration has been successfully reinitialized."
-msgstr ""
+msgstr "Конфигурация полей успешно переинициализирована."
 
 msgid "An error occurred reinitializing fields configuration :("
-msgstr ""
+msgstr "Произошла ошибка при повторной инициализации конфигурации полей :C"
 
 msgid "PDF models has been successfully reinitialized."
-msgstr ""
+msgstr "PDF-модели успешно реинициализированы."
 
 msgid "An error occurred reinitializing PDF models :("
 msgstr ""
@@ -1313,10 +1322,9 @@ msgid "- Invalid website URL."
 msgstr ""
 
 #. TRANS: first parameter is name, second is status
-#, fuzzy, php-format
-#| msgid "Actions"
+#, php-format
 msgid "%1$s association's %2$s"
-msgstr "Действия"
+msgstr "%2$s ассоциации %1$s"
 
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
@@ -1621,10 +1629,9 @@ msgid "File is empty!"
 msgstr ""
 
 #. TRANS: first parameter is row, second member name
-#, fuzzy, php-format
-#| msgid "An error occurred adding member to its groups."
+#, php-format
 msgid "An error occurred storing member at row %1$s (%2$s):"
-msgstr "Произошла ошибка при добавлении участника в его группы."
+msgstr "Произошла ошибка при сохранении элемента в строке %1$s (%2$s):"
 
 msgid "An error occurred while importing members"
 msgstr ""
@@ -3581,10 +3588,8 @@ msgstr ""
 msgid "April"
 msgstr ""
 
-#, fuzzy
-#| msgid "Man"
 msgid "May"
-msgstr "Мужчина"
+msgstr "Май"
 
 msgid "June"
 msgstr ""
@@ -3595,36 +3600,26 @@ msgstr ""
 msgid "August"
 msgstr ""
 
-#, fuzzy
-#| msgid "Members"
 msgid "September"
-msgstr "Пользователи"
+msgstr "Сентябрь"
 
 msgid "October"
 msgstr ""
 
-#, fuzzy
-#| msgid "Members"
 msgid "November"
-msgstr "Пользователи"
+msgstr "Ноябрь"
 
-#, fuzzy
-#| msgid "Members"
 msgid "December"
-msgstr "Пользователи"
+msgstr "Декабрь"
 
-#, fuzzy
-#| msgid "Man"
 msgid "Jan"
-msgstr "Мужчина"
+msgstr "Янв"
 
 msgid "Feb"
 msgstr ""
 
-#, fuzzy
-#| msgid "Man"
 msgid "Mar"
-msgstr "Мужчина"
+msgstr "Мар"
 
 msgid "Apr"
 msgstr ""
@@ -3644,10 +3639,8 @@ msgstr ""
 msgid "Oct"
 msgstr ""
 
-#, fuzzy
-#| msgid "No"
 msgid "Nov"
-msgstr "Нет"
+msgstr "Ноя"
 
 msgid "Dec"
 msgstr ""
@@ -3655,10 +3648,8 @@ msgstr ""
 msgid "Today"
 msgstr "Сегодня"
 
-#, fuzzy
-#| msgid "No"
 msgid "Now"
-msgstr "Нет"
+msgstr "Сейчас"
 
 msgid "Loading..."
 msgstr "Загрузка..."
@@ -3988,8 +3979,9 @@ msgstr[2] ""
 #, php-format
 msgid "%1$s member"
 msgid_plural "%1$s members"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s участник"
+msgstr[1] "%1$s участники"
+msgstr[2] "%1$s участники"
 
 #, fuzzy
 #| msgid "Members"
@@ -4142,10 +4134,8 @@ msgstr ""
 msgid "Clear filter"
 msgstr ""
 
-#, fuzzy
-#| msgid "contributions"
 msgid "Show all your contributions"
-msgstr "вклады"
+msgstr "Покажи ваши вклады"
 
 msgid "Show all members contributions"
 msgstr ""
@@ -4156,8 +4146,9 @@ msgstr ""
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s вклад"
+msgstr[1] "%1$s вкладов"
+msgstr[2] "%1$s вкладов"
 
 #, php-format
 msgid "Found contributions total %f"
@@ -4284,8 +4275,9 @@ msgstr ""
 #, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s заход"
+msgstr[1] "%1$s заходов"
+msgstr[2] "%1$s заходов"
 
 msgid "IP"
 msgstr ""
@@ -5493,8 +5485,9 @@ msgstr ""
 #, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s поиск"
+msgstr[1] "%1$s поисков"
+msgstr[2] "%1$s поисков"
 
 msgid "Search parameters"
 msgstr ""
@@ -5571,10 +5564,8 @@ msgstr ""
 msgid "Show payments by"
 msgstr ""
 
-#, fuzzy
-#| msgid "Add scheduled payment"
 msgid "Paid scheduled payments:"
-msgstr "Добавить запланированный платеж"
+msgstr "Оплаченные плановые платежи:"
 
 msgid "Not paid"
 msgstr ""
@@ -5609,10 +5600,9 @@ msgstr ""
 msgid "Edit donation %1$s"
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "List of scheduled payments"
+#, php-format
 msgid "Show only '%1$s' scheduled payments"
-msgstr "Список запланированных платежей"
+msgstr "Показывать только запланированные платежи '%1$s'"
 
 msgid "Not paid and due"
 msgstr ""
@@ -5680,10 +5670,8 @@ msgstr ""
 msgid "Show transactions since"
 msgstr ""
 
-#, fuzzy
-#| msgid "transactions"
 msgid "Show all your transactions"
-msgstr "транзакции"
+msgstr "Показать все ваши транзакции"
 
 msgid "Show all members transactions"
 msgstr ""
@@ -5691,8 +5679,9 @@ msgstr ""
 #, php-format
 msgid "%1$s transaction"
 msgid_plural "%1$s transactions"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s транзакция"
+msgstr[1] "%1$s транзакции"
+msgstr[2] "%1$s транзакции"
 
 #, php-format
 msgid "Show only '%1$s' transactions"
