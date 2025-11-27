@@ -143,8 +143,7 @@ class Document
                 // skip entries according to access control
                 if (
                     $r->visible == FieldsConfig::NOBODY
-                    //@phpstan-ignore-next-line
-                    && ($this->public_list === true || ($this->public_list === false && !$login->isAdmin()))
+                    && (($this->public_list === false && !$login->isAdmin()) || $this->public_list === true)
                     || ($r->visible == FieldsConfig::ADMIN
                         && $access_level < Authentication::ACCESS_ADMIN)
                     || ($r->visible == FieldsConfig::STAFF

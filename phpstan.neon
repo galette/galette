@@ -3,6 +3,8 @@ parameters:
     parallel:
         maximumNumberOfProcesses: 2
     level: 6
+    bootstrapFiles:
+        - stubs/constants.php
     paths:
         - galette/lib/
     scanFiles:
@@ -13,8 +15,34 @@ parameters:
     scanDirectories:
         - galette/includes/
     dynamicConstantNames:
-        - GALETTE_NIGHTLY
+        - GALETTE_BASE_PATH
+        - GALETTE_ROOT
+        - GALETTE_CONFIG_PATH
+        - GALETTE_PLUGINS_PATH
+        - GALETTE_DATA_PATH
+        - GALETTE_THEMES_PATH
+        - GALETTE_LOGS_PATH
+        - GALETTE_CACHE_DIR
+        - GALETTE_EXPORTS_PATH
+        - GALETTE_IMPORTS_PATH
+        - GALETTE_PHOTOS_PATH
+        - GALETTE_DOCUMENTS_PATH
+        - GALETTE_ATTACHMENTS_PATH
+        - GALETTE_FILES_PATH
+        - GALETTE_TEMPIMAGES_PATH
+        - GALETTE_TELEMETRY_URI
+        - GALETTE_TPL_THEME_DIR
+        - GALETTE_DOWNLOADS_URI
+        - GALETTE_CRON
+        - GALETTE_INSTALLER
+        - GALETTE_LOGGER_CHECKED
+        - GALETTE_MODE
         - GALETTE_DEBUG
+        - GALETTE_ADAPTATIVE_CARDS
+        - GALETTE_LOG_LVL
+        - GALETTE_THEME
+        - GALETTE_TIMEOUT
+        - GALETTE_NIGHTLY
     universalObjectCratesClasses:
         - RKA\Session
     ignoreErrors:

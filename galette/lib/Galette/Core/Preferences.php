@@ -1151,11 +1151,9 @@ class Preferences
 
         //Following conditions are due to PdfMembersCards/PdfMembersCardsAdaptative switching. Code will be simplified once PdfMembersCardsAdaptative will be the only one
         if ($name === 'pref_card_cols') {
-            //@phpstan-ignore-next-line
             return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getCols() : PdfMembersCards::getCols();
         }
         if ($name === 'pref_card_rows') {
-            //@phpstan-ignore-next-line
             return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getRows() : PdfMembersCards::getRows();
         }
 

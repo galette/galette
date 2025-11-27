@@ -126,7 +126,7 @@ class AuthController extends AbstractController
                 $deprecated_constants = [
                     'NON_UTF_DBCONNECT'
                 ];
-                if (GALETTE_ADAPTATIVE_CARDS) { //@phpstan-ignore-line
+                if (GALETTE_ADAPTATIVE_CARDS) {
                     $deprecated_constants += [
                         'GALETTE_CARD_WIDTH',
                         'GALETTE_CARD_HEIGHT',

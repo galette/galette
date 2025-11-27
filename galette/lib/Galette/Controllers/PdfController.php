@@ -153,7 +153,6 @@ class PdfController extends AbstractController
         }
 
         $class = PdfMembersCards::class;
-        /** @phpstan-ignore-next-line */
         if (GALETTE_ADAPTATIVE_CARDS === true) {
             $class = PdfMembersCardsAdaptative::class;
         }

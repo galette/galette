@@ -76,7 +76,6 @@ class ScheduledPayments
     public function getListFromContribution(int $contrib_id): array
     {
         $this->filters->from_contribution = $contrib_id;
-        /** @phpstan-ignore-next-line */
         return $this->getList(true);
     }
 
@@ -88,7 +87,7 @@ class ScheduledPayments
      * @param ?array<string> $fields    field(s) name(s) to get. Should be a string or
      *                                  an array. If null, all fields will be returned
      *
-     * @return array<int, Contribution>|false
+     * @return array<int, ScheduledPayment>|false
      */
     public function getArrayList(array $ids, bool $as_object = false, ?array $fields = null): array|false
     {
@@ -114,7 +113,7 @@ class ScheduledPayments
      * @param ?array<string> $fields    field(s) name(s) to get. Should be a string or
      *                                  an array. If null, all fields will be returned
      *
-     * @return array<int, Contribution>|ResultSet
+     * @return array<int, ScheduledPayment>|ResultSet
      */
     public function getList(bool $as_object = true, ?array $fields = null): array|ResultSet
     {
