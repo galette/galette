@@ -25,17 +25,15 @@ jobs:
     strategy:
       matrix:
         include:
-          #8.5 is now beta
-          - { php-version: "8.5", db-image: "postgres:17", coverage: none, always: true }
           #always tests higher stable php version with lower db version
           #enable coverage on higher stable php version with higher PostgreSQL version
           #higher stable php version
-          - { php-version: "8.4", db-image: "postgres:13", coverage: none, always: true }
-          - { php-version: "8.4", db-image: "postgres:17", coverage: 'pcov', always: true }
-          - { php-version: "8.4", db-image: "mysql:8.0", coverage: none, always: true }
-          - { php-version: "8.4", db-image: "mysql:9.1", coverage: none, always: false }
-          - { php-version: "8.4", db-image: "mariadb:10.5", coverage: none, always: true }
-          - { php-version: "8.4", db-image: "mariadb:11.6", coverage: none, always: false }
+          - { php-version: "8.5", db-image: "postgres:13", coverage: none, always: true }
+          - { php-version: "8.5", db-image: "postgres:17", coverage: 'pcov', always: true }
+          - { php-version: "8.5", db-image: "mysql:8.0", coverage: none, always: true }
+          - { php-version: "8.5", db-image: "mysql:9.1", coverage: none, always: false }
+          - { php-version: "8.5", db-image: "mariadb:10.5", coverage: none, always: true }
+          - { php-version: "8.5", db-image: "mariadb:11.6", coverage: none, always: false }
           #always one test with lower php version
           #lower php version
           - { php-version: "8.2", db-image: "postgres:13", coverage: none, always: false }
@@ -181,9 +179,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - { php-version: "8.4", db-image: "postgres:12", always: true}
-          - { php-version: "8.4", db-image: "mysql:5.7", always: false}
-          - { php-version: "8.4", db-image: "mariadb:10.4", always: false}
+          - { php-version: "8.5", db-image: "postgres:12", always: true}
+          - { php-version: "8.5", db-image: "mysql:5.7", always: false}
+          - { php-version: "8.5", db-image: "mariadb:10.4", always: false}
       fail-fast: false
 
     env:
@@ -266,7 +264,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: [ '8.2', '8.4' ]
+        php-versions: [ '8.2', '8.5' ]
 
     steps:
       - name: PHP
@@ -319,13 +317,9 @@ jobs:
         run: |
           galette/vendor/bin/twigcs galette/templates/default --severity error --display blocking
 
-      - name: Install checker
-        working-directory: galette
-        run: composer require maglnet/composer-require-checker -W --optimize-autoloader --ignore-platform-reqs
-
-      - name: Check missing symbols
+      - name: Check dependencies
         run: |
-          galette/vendor/bin/composer-require-checker check --config-file=.composer-require-checker.config.json galette/composer.json
+          galette/vendor/bin/composer-dependency-analyser --composer-json galette/composer.json
 
       - name: PHPStan checks
         run: |
