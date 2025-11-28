@@ -12,13 +12,14 @@
 # Siyabend Ürün <urunsiyabend@gmail.com>, 2022.
 # Onur Akkas <jon_onur_akkas@hotmail.com>, 2022.
 # Erdem Yanardağ <erdemynrd@gmail.com>, 2025.
+# BlokEvren <kukesen17@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2025-10-24 21:05+0000\n"
-"Last-Translator: Erdem Yanardağ <erdemynrd@gmail.com>\n"
+"PO-Revision-Date: 2025-11-29 06:07+0000\n"
+"Last-Translator: BlokEvren <kukesen17@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.1-dev\n"
+"X-Generator: Weblate 5.15-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "#%id no'lu ödeme yüklenemedi!"
@@ -108,25 +109,21 @@ msgstr "Planlı ödemeyi düzenle"
 msgid "Scheduled payment has not been added!"
 msgstr "Planlı ödeme eklenmedi!"
 
-#, fuzzy
-#| msgid "Payment type '%1$s' has not been modified!"
 msgid "Scheduled payment has not been modified!"
-msgstr "Ödeme tipi '%s' değiştirilemedi!"
+msgstr "Planlanmış ödeme değiştirilmedi!"
 
-#, fuzzy
-#| msgid "New member has been successfully added."
 msgid "Scheduled payment has been successfully added."
-msgstr "Yeni üye başarıyla eklendi."
+msgstr "Planlanmış ödeme başarıyla eklendi"
 
 #, fuzzy
 #| msgid "Payment type '%1$s' has been successfully modified."
 msgid "Scheduled payment has been successfully modified."
-msgstr "Ödeme tpi '%s' başarıyla değiştirildi."
+msgstr "Planlanmış ödeme başarıyla değiştirildi."
 
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Planlanmış ödemeyi kaldır"
+msgstr[1] "Planlanmış ödemeleri kaldır"
 
 msgid "Group name is missing!"
 msgstr "Grup adı eksik!"
@@ -134,21 +131,17 @@ msgstr "Grup adı eksik!"
 msgid "Groups"
 msgstr "Gruplar"
 
-#, fuzzy, php-format
-#| msgid "Remove payment type %1$s"
+#, php-format
 msgid "New parent is %1$s"
-msgstr "%1$s ödeme tipini sil"
+msgstr "Yeni üst öğe %1$s'dir"
 
-#, fuzzy
-#| msgid "No member #%id."
 msgid "Parent removed"
-msgstr "Üye numarası #%id bulunamadı."
+msgstr "Üst öğe kaldırıldı"
 
-#, fuzzy, php-format
-#| msgid "Payment type '%1$s' has been successfully modified."
+#, php-format
 msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
-msgstr "Ödeme tpi '%1$s' başarıyla değiştirildi."
+msgstr "Aşağıdaki grupların üst öğesi başarıyla değiştirildi: %1$s"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -197,30 +190,22 @@ msgid "Mailing preview"
 msgstr "Posta önizlemesi"
 
 msgid "Contributions types"
-msgstr ""
+msgstr "Katkı türleri"
 
 msgid "Edit contribution type"
 msgstr "Katılım türünü güncelle"
 
-#, fuzzy
-#| msgid "Edit contribution type"
 msgid "Missing required contribution type name!"
-msgstr "Katılım türünü güncelle"
+msgstr "Zorunlu olan katkı türü adı eksik!"
 
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Contribution type has not been added :("
-msgstr "%type türü eklenemedi :("
+msgstr "Katkı türü eklenemedi :("
 
-#, fuzzy
-#| msgid "%type #%id has not been updated"
 msgid "Contribution type #%id has not been updated"
-msgstr "%type #%id güncellenemedi"
+msgstr "Katkı türü #%id güncellenemedi"
 
-#, fuzzy
-#| msgid "Contribution has been successfully stored"
 msgid "Contribution type has been successfully added!"
-msgstr "Katılım başarıyla kaydedildi"
+msgstr "Katkı türü başarıyla eklendi!"
 
 #, fuzzy
 #| msgid "%type #%id has been successfully updated!"
@@ -282,15 +267,13 @@ msgid "Members"
 msgstr ""
 
 msgid "Gallery"
-msgstr "Gallery"
+msgstr "Galeri"
 
 msgid "Staff"
-msgstr ""
+msgstr "Personel"
 
-#, fuzzy
-#| msgid "Gallery"
 msgid "Staff gallery"
-msgstr "Gallery"
+msgstr "Personel galerisi"
 
 msgid "List of members"
 msgstr ""
