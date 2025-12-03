@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="3"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedBaselineEntry="true"
+    findUnusedCode="true"
+    allConstantsGlobal="true"
+>
+    <projectFiles>
+        <file name="galette/includes/dependencies.php" />
+        <directory name="galette/lib/" />
+        <ignoreFiles>
+            <directory name="galette/vendor" />
+            <file name="galette/lib/Galette/IO/Pdf.php" />
+            <file name="galette/lib/Galette/IO/PdfAdhesionForm.php" />
+            <file name="galette/lib/Galette/IO/PdfAttendanceSheet.php" />
+            <file name="galette/lib/Galette/IO/PdfContribution.php" />
+            <file name="galette/lib/Galette/IO/PdfGroups.php" />
+            <file name="galette/lib/Galette/IO/PdfMembersCards.php" />
+            <file name="galette/lib/Galette/IO/PdfMembersCardsAdaptative.php" />
+            <file name="galette/lib/Galette/IO/PdfMembersLabels.php" />
+        </ignoreFiles>
+    </projectFiles>
+</psalm>

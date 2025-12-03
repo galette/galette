@@ -328,3 +328,6 @@ jobs:
       - name: Headers checks
         run: |
           ./galette/vendor/bin/docheader check galette/config galette/lib galette/includes galette/install galette/webroot test
+      - name: Psalm checks
+        run: |
+          ./galette/vendor/bin/psalm --long-progress --output-format=github

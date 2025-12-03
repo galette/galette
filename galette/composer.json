@@ -85,7 +85,8 @@
         "friendsofphp/php-cs-fixer": "^3.91",
         "rector/rector": "^2.0",
         "shipmonk/composer-dependency-analyser": "^1.8",
-        "thecodingmachine/phpstan-safe-rule": "^1.4"
+        "thecodingmachine/phpstan-safe-rule": "^1.4",
+        "vimeo/psalm": "^6.13"
     },
     "config": {
         "optimize-autoloader": true,
