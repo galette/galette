@@ -13,22 +13,22 @@
 # OdiNoKiY KoT <vlad.dorozhko.77@gmail.com>, 2025.
 # Alexis Said He <alexshelmec@outlook.com>, 2025.
 # "Н. А." <asadbek170820@gmail.com>, 2025.
+# 4ipset <228gus228uu@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2025-11-27 05:00+0000\n"
-"Last-Translator: \"Н. А.\" <asadbek170820@gmail.com>\n"
+"PO-Revision-Date: 2025-12-04 10:00+0000\n"
+"Last-Translator: 4ipset <228gus228uu@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural="
-"(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? "
-"1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.15-dev\n"
 
 msgid "Unable to load transaction #%id!"
@@ -680,23 +680,23 @@ msgid "Unable to impersonate as %id"
 msgstr "Не удалось притвориться как %id"
 
 msgid "Impersonating ended"
-msgstr "Выдача себя за другого окончено"
+msgstr "Выдача себя за другого окончена"
 
 msgid "Password recovery"
 msgstr "Восстановление пароля"
 
 msgid "Email sent is disabled in the preferences. Ask galette admin"
-msgstr "Отправка эл.писем отключена в настройках. Обратитесь к админу Галлет"
+msgstr "Отправка эл.писем отключена в настройках. Обратитесь к админу Galette"
 
 #, php-format
 msgid "Email sent to '%s' for password recovery."
-msgstr "Почта отправлено в '%s' для восстонавление пароля."
+msgstr "Эл.письмо для восстановления пароля отправлено на '%s'."
 
 msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
-"Почта была отправлено в вашу эл.почту.<br/>Пожалуйста проверьте вкладку "
+"Эл.письмо была отправлено в вашу эл.почту.<br/>Пожалуйста проверьте вкладку "
 "\"входящие\" и следуйте по инструкции."
 
 msgid "An email has been sent to the member."
@@ -704,7 +704,7 @@ msgstr "Почта была отправлено участнику."
 
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
-msgstr "Случилась проблема при отправке пароля на аккаунт '%s'"
+msgstr "Случилась проблема при отправке пароля для аккаунта '%s'"
 
 #, php-format
 msgid ""
@@ -715,7 +715,7 @@ msgstr ""
 
 #, php-format
 msgid "Your account (%s) do not contain any valid email address"
-msgstr "Ваш аккаунт (%s) не имеет ни одного действительного эл.почты"
+msgstr "Ваш аккаунт (%s) не имеет ни одного действительного адреса эл.почты"
 
 #, php-format
 msgid "Mails address %s does not exist"
@@ -738,7 +738,7 @@ msgid "- The passwords don't match!"
 msgstr "- Пароли не совпадают!"
 
 msgid "Your password is too weak!"
-msgstr "Ваш пароль очень слаб!"
+msgstr "Ваш пароль слишком ненадежен!"
 
 msgid "An error occurred while updating your password."
 msgstr "Произошла ошибка при обновлений вашего пароля."
@@ -765,7 +765,7 @@ msgid "Texts has been successfully reinitialized."
 msgstr "Тексты успешно реинициализированы."
 
 msgid "An error occurred reinitializing texts :("
-msgstr "Произошла ошибка при повторной инициализации текстов ;C"
+msgstr "Произошла ошибка при повторной инициализации текстов :("
 
 msgid "Fields configuration has been successfully reinitialized."
 msgstr "Конфигурация полей успешно переинициализирована."
@@ -777,120 +777,124 @@ msgid "PDF models has been successfully reinitialized."
 msgstr "PDF-модели успешно реинициализированы."
 
 msgid "An error occurred reinitializing PDF models :("
-msgstr ""
+msgstr "Произошла ошибка при повторной инициализации моделей PDF :("
 
 msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr ""
+msgstr "Логины и пароли успешно заполнены (%i обработано)."
 
 msgid "An error occurred filling empty logins and passwords :("
-msgstr ""
+msgstr "Произошла ошибка при заполнении пустых логинов и паролей :("
 
 msgid "Dynamic dates has been fixed."
-msgstr ""
+msgstr "Динамические даты были исправлены."
 
 msgid "An error occurred fixing dynamic dates :("
-msgstr ""
+msgstr "Произошла ошибка при исправлении динамических дат :("
 
 msgid "Logs"
 msgstr "Логи"
 
 msgid "Logs have been flushed!"
-msgstr ""
+msgstr "Журналы очищены!"
 
 msgid "An error occurred trying to flush logs :("
-msgstr ""
+msgstr "Произошла ошибка при попытке очистить журналы :("
 
 msgid "Flush the logs"
-msgstr ""
+msgstr "Очистить журналы"
 
 msgid "Plugins"
 msgstr "Плагины"
 
 #, php-format
 msgid "Plugin %1$s has been enabled"
-msgstr ""
+msgstr "Плагин %1$s был включён"
 
 #, php-format
 msgid "Plugin %1$s has been disabled"
-msgstr ""
+msgstr "Плагин %1$s был отключён"
 
 #, fuzzy
 #| msgid "transaction"
 msgid "Labels translation"
-msgstr "транзакция"
+msgstr "Перевод меток"
 
+#, fuzzy
 msgid "An error occurred saving label `%label` for language `%lang`"
-msgstr ""
+msgstr "Произошла ошибка при сохранении метки `%label` для языка `%lang`"
 
+#, fuzzy
 msgid "Labels has been successfully translated!"
-msgstr ""
+msgstr "Метки успешно переведены!"
 
 msgid "Exports"
 msgstr "Экспорт"
 
 msgid "Table %table is empty, and has not been exported."
-msgstr ""
+msgstr "Таблица %table пуста и не была экспортирована."
 
 #, php-format
 msgid ""
 "Export file could not be write on disk for '%export'. Make sure web server "
 "can write in the exports directory."
 msgstr ""
+"Экспортируемый файл для '%export' не удалось записать на диск. Убедитесь что "
+"веб-сервер имеет право на запись в каталоге экспорта."
 
 #, php-format
 msgid "An error occurred running parameted export '%export'."
-msgstr ""
+msgstr "Произошла ошибка при выполнении параметризованного экспорта '%export'."
 
 msgid "Imports"
 msgstr "Импорт"
 
 msgid "An error occurred importing the file :("
-msgstr ""
+msgstr "Произошла ошибка при импортировании файла :("
 
 #, php-format
 msgid "File '%1$s' has been successfully imported :)"
-msgstr ""
+msgstr "Файл '%1$s' был успешно импортирован :)"
 
 msgid "No file has been uploaded!"
-msgstr ""
+msgstr "Файл не был загружен!"
 
 msgid "Your file has been successfully uploaded!"
-msgstr ""
+msgstr "Ваш файл был успешно загружен!"
 
-#, php-format
+#, fuzzy, php-format
 msgid "Remove %1$s file %2$s"
-msgstr ""
+msgstr "Удалить %1$s файл %2$s"
 
 #, php-format
 msgid "'%export' file has been removed from disk."
-msgstr ""
+msgstr "Файл '%export' был удалён с диска."
 
 #, php-format
 msgid "Cannot remove '%export' from disk :/"
-msgstr ""
+msgstr "Не удалось удалить '%export' с диска :/"
 
 msgid "CSV import model"
-msgstr ""
+msgstr "Импорт модель CSV"
 
 msgid "galette_import_model.csv"
 msgstr "galette_import_model.csv"
 
 msgid "Import model has been successfully stored :)"
-msgstr ""
+msgstr "Импорт модель была успешно сохранена :)"
 
 msgid "Import model has not been stored :("
-msgstr ""
+msgstr "Импорт модель не была сохранена :("
 
 msgid "Emails content"
-msgstr ""
+msgstr "Содержимое писем"
 
-#, php-format
+#, fuzzy, php-format
 msgid "Email: '%1$s' has not been modified!"
-msgstr ""
+msgstr "Емейл: '%1$s' не был изменен!"
 
 #, php-format
 msgid "Email: '%1$s' has been successfully modified."
-msgstr ""
+msgstr "Емейл: '%1$s' был успешно изменен."
 
 msgid "None"
 msgstr "Ничего"
@@ -899,22 +903,22 @@ msgid "Checks"
 msgstr "Проверки"
 
 msgid "Installation mode"
-msgstr ""
+msgstr "Режим установки"
 
 msgid "Database"
 msgstr "База данных"
 
 msgid "Database access and permissions"
-msgstr ""
+msgstr "Доступ к базе данных и права доступа"
 
 msgid "Previous version selection"
-msgstr ""
+msgstr "Выбор предыдущей версии"
 
 msgid "Database upgrade"
-msgstr ""
+msgstr "Обновление базы данных"
 
 msgid "Tables Creation"
-msgstr ""
+msgstr "Создание таблиц"
 
 msgid "Admin parameters"
 msgstr "Параметры администратора"
@@ -923,7 +927,7 @@ msgid "Telemetry"
 msgstr "Телеметрия"
 
 msgid "Galette initialization"
-msgstr ""
+msgstr "Инициализация Galette"
 
 msgid "End!"
 msgstr "Конец!"
@@ -935,31 +939,31 @@ msgid "Ko"
 msgstr "Ко"
 
 msgid "Database type unknown"
-msgstr ""
+msgstr "Тип базы данных неизвестен"
 
 msgid "%version script has been successfully executed :)"
-msgstr ""
+msgstr "Скрипт %version успешно выполнен :)"
 
 msgid "Unable to run %version update script :("
-msgstr ""
+msgstr "Не удалось выполнить скрипт обновления %version :("
 
 msgid "Write configuration file"
-msgstr ""
+msgstr "Записать файл конфигурации"
 
 msgid "Config file already exists and is up to date"
-msgstr ""
+msgstr "Файл конфигурации уже существует и актуален"
 
 msgid "Unable to create configuration file (%path)"
-msgstr ""
+msgstr "Не удалось создать файл конфигурации (%path)"
 
 msgid "Status"
 msgstr "Статус"
 
 msgid "Fields config and categories"
-msgstr ""
+msgstr "Конфигурация полей и категорий"
 
 msgid "Mails texts"
-msgstr ""
+msgstr "Тексты писем"
 
 msgid "Update preferences"
 msgstr ""
