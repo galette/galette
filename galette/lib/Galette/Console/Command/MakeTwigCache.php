@@ -198,6 +198,12 @@ class MakeTwigCache extends AbstractCommand
             );
         }
 
+        if (!count($files)) {
+            throw new InvalidOptionException(
+                sprintf('Unable to find templates in directory "%s"', $directory)
+            );
+        }
+
         return $files;
     }
 
