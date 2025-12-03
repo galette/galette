@@ -39,7 +39,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 abstract class AbstractPlugins extends AbstractCommand
 {
-    public const ALL = '*';
+    public const string ALL = '*';
 
     protected \Galette\Core\Plugins $plugins;
 

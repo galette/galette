@@ -38,8 +38,8 @@ use Safe\DateTimeImmutable;
 
 class PdfAttendanceSheet extends Pdf
 {
-    public const SHEET_FONT = self::FONT_SIZE - 2;
-    public const ATT_SHEET_MODEL = 100;
+    public const int SHEET_FONT = self::FONT_SIZE - 2;
+    public const int ATT_SHEET_MODEL = 100;
 
     public ?string $doc_title = null;
     public ?string $sheet_title = null;

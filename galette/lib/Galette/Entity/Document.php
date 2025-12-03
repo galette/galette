@@ -49,14 +49,14 @@ class Document
         writeOnDisk as protected trait_writeOnDisk;
     }
 
-    public const TABLE = 'documents';
-    public const PK = 'id_document';
+    public const string TABLE = 'documents';
+    public const string PK = 'id_document';
 
-    public const STATUS = 'status';
-    public const RULES = 'rules';
-    public const ADHESION = 'adhesion';
-    public const MINUTES = 'minutes';
-    public const VOTES = 'votes';
+    public const string STATUS = 'status';
+    public const string RULES = 'rules';
+    public const string ADHESION = 'adhesion';
+    public const string MINUTES = 'minutes';
+    public const string VOTES = 'votes';
 
     private int $id;
     private string $type;

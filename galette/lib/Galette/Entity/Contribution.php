@@ -78,19 +78,19 @@ class Contribution implements AccessManagementInterface
         __isset as protected trait___isset;
     }
 
-    public const TABLE = 'cotisations';
-    public const PK = 'id_cotis';
+    public const string TABLE = 'cotisations';
+    public const string PK = 'id_cotis';
 
-    public const TYPE_FEE = 'fee';
-    public const TYPE_DONATION = 'donation';
+    public const string TYPE_FEE = 'fee';
+    public const string TYPE_DONATION = 'donation';
 
-    public const STATUS_NEVER = -1;
-    public const STATUS_UNKNOWN = 0;
-    public const STATUS_UPTODATE = 1;
-    public const STATUS_DUEFREE = 2;
-    public const STATUS_IMPENDING = 3;
-    public const STATUS_LATE = 4;
-    public const STATUS_OLD = 5;
+    public const int STATUS_NEVER = -1;
+    public const int STATUS_UNKNOWN = 0;
+    public const int STATUS_UPTODATE = 1;
+    public const int STATUS_DUEFREE = 2;
+    public const int STATUS_IMPENDING = 3;
+    public const int STATUS_LATE = 4;
+    public const int STATUS_OLD = 5;
 
     #[Column(name: 'id_cotis', insertable: false, updatable: false)]
     private int $id;

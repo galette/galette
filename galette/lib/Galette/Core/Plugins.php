@@ -41,9 +41,9 @@ use function Safe\realpath;
 
 class Plugins
 {
-    public const DISABLED_COMPAT   = 0;
-    public const DISABLED_MISS     = 1;
-    public const DISABLED_EXPLICIT = 2;
+    public const int DISABLED_COMPAT   = 0;
+    public const int DISABLED_MISS     = 1;
+    public const int DISABLED_EXPLICIT = 2;
 
     /** @var array<string> */
     protected array $path;

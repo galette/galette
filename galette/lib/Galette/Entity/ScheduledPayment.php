@@ -44,8 +44,8 @@ class ScheduledPayment
 {
     use EntityHelper;
 
-    public const TABLE = 'payments_schedules';
-    public const PK = 'id_schedule';
+    public const string TABLE = 'payments_schedules';
+    public const string PK = 'id_schedule';
     private int $id;
     private Contribution $contribution;
     private PaymentType $payment_type;

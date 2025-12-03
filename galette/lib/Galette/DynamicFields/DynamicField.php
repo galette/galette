@@ -48,29 +48,29 @@ abstract class DynamicField
     use I18n;
     use Permissions;
 
-    public const TABLE = 'field_types';
-    public const PK = 'field_id';
+    public const string TABLE = 'field_types';
+    public const string PK = 'field_id';
 
     /** Separator field */
-    public const SEPARATOR = 0;
+    public const int SEPARATOR = 0;
     /** Simple text field */
-    public const TEXT = 1;
+    public const int TEXT = 1;
     /** Line field */
-    public const LINE = 2;
+    public const int LINE = 2;
     /** Choice field (listbox) */
-    public const CHOICE = 3;
+    public const int CHOICE = 3;
     /** Date field */
-    public const DATE = 4;
+    public const int DATE = 4;
     /** Boolean field (checkbox) */
-    public const BOOLEAN = 5;
+    public const int BOOLEAN = 5;
     /** File field (upload) */
-    public const FILE = 6;
+    public const int FILE = 6;
 
-    public const MOVE_UP = 'up';
-    public const MOVE_DOWN = 'down';
+    public const string MOVE_UP = 'up';
+    public const string MOVE_DOWN = 'down';
 
-    public const DEFAULT_MAX_FILE_SIZE = 1024;
-    public const VALUES_FIELD_LENGTH = 100;
+    public const int DEFAULT_MAX_FILE_SIZE = 1024;
+    public const int VALUES_FIELD_LENGTH = 100;
 
     protected bool $has_data = false;
     protected bool $has_width = false;

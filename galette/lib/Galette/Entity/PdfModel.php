@@ -62,13 +62,13 @@ abstract class PdfModel
 {
     use Replacements;
 
-    public const TABLE = 'pdfmodels';
-    public const PK = 'model_id';
+    public const string TABLE = 'pdfmodels';
+    public const string PK = 'model_id';
 
-    public const MAIN_MODEL = 1;
-    public const INVOICE_MODEL = 2;
-    public const RECEIPT_MODEL = 3;
-    public const ADHESION_FORM_MODEL = 4;
+    public const int MAIN_MODEL = 1;
+    public const int INVOICE_MODEL = 2;
+    public const int RECEIPT_MODEL = 3;
+    public const int ADHESION_FORM_MODEL = 4;
 
     private ?int $id = null;
     private string $name;

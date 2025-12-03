@@ -44,8 +44,8 @@ use Safe\DateTime;
  */
 class ScheduledPayments
 {
-    public const TABLE = ScheduledPayment::TABLE;
-    public const PK = ScheduledPayment::PK;
+    public const string TABLE = ScheduledPayment::TABLE;
+    public const string PK = ScheduledPayment::PK;
 
     private int $count = 0;
     private float $sum = 0;

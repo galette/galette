@@ -52,18 +52,18 @@ class ContributionsList extends Pagination
 {
     use DatesHelper;
 
-    public const ORDERBY_DATE = 0;
-    public const ORDERBY_BEGIN_DATE = 1;
-    public const ORDERBY_END_DATE = 2;
-    public const ORDERBY_MEMBER = 3;
-    public const ORDERBY_TYPE = 4;
-    public const ORDERBY_AMOUNT = 5;
-    public const ORDERBY_PAYMENT_TYPE = 6;
-    public const ORDERBY_ID = 7;
+    public const int ORDERBY_DATE = 0;
+    public const int ORDERBY_BEGIN_DATE = 1;
+    public const int ORDERBY_END_DATE = 2;
+    public const int ORDERBY_MEMBER = 3;
+    public const int ORDERBY_TYPE = 4;
+    public const int ORDERBY_AMOUNT = 5;
+    public const int ORDERBY_PAYMENT_TYPE = 6;
+    public const int ORDERBY_ID = 7;
 
-    public const DATE_BEGIN = 0;
-    public const DATE_END = 1;
-    public const DATE_RECORD = 2;
+    public const int DATE_BEGIN = 0;
+    public const int DATE_END = 1;
+    public const int DATE_RECORD = 2;
 
     //filters
     private ?int $date_field = null;

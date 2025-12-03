@@ -45,11 +45,11 @@ class TransactionsList extends Pagination
 {
     use DatesHelper;
 
-    public const ORDERBY_DATE = 0;
-    public const ORDERBY_MEMBER = 3;
-    public const ORDERBY_AMOUNT = 5;
-    public const ORDERBY_PAYMENT_TYPE = 7;
-    public const ORDERBY_ID = 8;
+    public const int ORDERBY_DATE = 0;
+    public const int ORDERBY_MEMBER = 3;
+    public const int ORDERBY_AMOUNT = 5;
+    public const int ORDERBY_PAYMENT_TYPE = 7;
+    public const int ORDERBY_ID = 8;
 
     //filters
     private ?string $start_date_filter = null;

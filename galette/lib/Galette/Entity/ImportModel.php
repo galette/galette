@@ -39,8 +39,8 @@ use Laminas\Db\Adapter\Adapter;
  */
 class ImportModel
 {
-    public const TABLE = 'import_model';
-    public const PK = 'model_id';
+    public const string TABLE = 'import_model';
+    public const string PK = 'model_id';
 
     private ?int $id = null;
     /** @var array<string>|null */

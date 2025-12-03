@@ -34,10 +34,10 @@ use Galette\Enums\SQLOrder;
 
 class DocumentsList extends Pagination
 {
-    public const ORDERBY_DATE = 0;
-    public const ORDERBY_TYPE = 1;
-    public const ORDERBY_NAME = 2;
-    public const ORDERBY_ID = 3;
+    public const int ORDERBY_DATE = 0;
+    public const int ORDERBY_TYPE = 1;
+    public const int ORDERBY_NAME = 2;
+    public const int ORDERBY_ID = 3;
 
     /**
      * Returns the field we want to default set order to

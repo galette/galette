@@ -45,20 +45,20 @@ use function Safe\preg_match;
  */
 class Install
 {
-    public const STEP_CHECK = 0;
-    public const STEP_TYPE = 1;
-    public const STEP_DB = 2;
-    public const STEP_DB_CHECKS = 3;
-    public const STEP_VERSION = 4; //only for update
-    public const STEP_DB_UPGRADE = 5;
-    public const STEP_DB_INSTALL = 6;
-    public const STEP_ADMIN = 7;
-    public const STEP_TELEMETRY = 8;
-    public const STEP_GALETTE_INIT = 9;
-    public const STEP_END = 10;
+    public const int STEP_CHECK = 0;
+    public const int STEP_TYPE = 1;
+    public const int STEP_DB = 2;
+    public const int STEP_DB_CHECKS = 3;
+    public const int STEP_VERSION = 4; //only for update
+    public const int STEP_DB_UPGRADE = 5;
+    public const int STEP_DB_INSTALL = 6;
+    public const int STEP_ADMIN = 7;
+    public const int STEP_TELEMETRY = 8;
+    public const int STEP_GALETTE_INIT = 9;
+    public const int STEP_END = 10;
 
-    public const INSTALL = 'i';
-    public const UPDATE = 'u';
+    public const string INSTALL = 'i';
+    public const string UPDATE = 'u';
 
     //db version/galette version mapper
     /** @var array<string, string> */

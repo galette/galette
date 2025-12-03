@@ -49,8 +49,8 @@ class Reminder
 {
     use Replacements;
 
-    public const TABLE = 'reminders';
-    public const PK = 'reminder_id';
+    public const string TABLE = 'reminders';
+    public const string PK = 'reminder_id';
 
     private int $id;
     private int $type;
@@ -61,8 +61,8 @@ class Reminder
     private string $comment;
     private string $msg;
 
-    public const IMPENDING = 1;
-    public const LATE = 2;
+    public const int IMPENDING = 1;
+    public const int LATE = 2;
 
     /**
      * Main constructor

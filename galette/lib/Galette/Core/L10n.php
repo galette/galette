@@ -35,7 +35,7 @@ use Laminas\Db\Sql\Expression;
 
 class L10n
 {
-    public const TABLE = 'l10n';
+    public const string TABLE = 'l10n';
 
     /**
      * Default constructor.

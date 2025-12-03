@@ -39,8 +39,8 @@ use Throwable;
 
 class Reminders
 {
-    public const TABLE = 'reminders';
-    public const PK = 'reminder_id';
+    public const string TABLE = 'reminders';
+    public const string PK = 'reminder_id';
 
     private Db $zdb;
 

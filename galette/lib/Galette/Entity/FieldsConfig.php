@@ -45,18 +45,18 @@ class FieldsConfig
 {
     use Permissions;
 
-    public const TYPE_STR = 0;
-    public const TYPE_HIDDEN = 1;
-    public const TYPE_BOOL = 2;
-    public const TYPE_INT = 3;
-    public const TYPE_DEC = 4;
-    public const TYPE_DATE = 5;
-    public const TYPE_TXT = 6;
-    public const TYPE_PASS = 7;
-    public const TYPE_EMAIL = 8;
-    public const TYPE_URL = 9;
-    public const TYPE_RADIO = 10;
-    public const TYPE_SELECT = 11;
+    public const int TYPE_STR = 0;
+    public const int TYPE_HIDDEN = 1;
+    public const int TYPE_BOOL = 2;
+    public const int TYPE_INT = 3;
+    public const int TYPE_DEC = 4;
+    public const int TYPE_DATE = 5;
+    public const int TYPE_TXT = 6;
+    public const int TYPE_PASS = 7;
+    public const int TYPE_EMAIL = 8;
+    public const int TYPE_URL = 9;
+    public const int TYPE_RADIO = 10;
+    public const int TYPE_SELECT = 11;
     /** @var array<string, array<string, mixed>> */
     protected array $core_db_fields = [];
     /** @var array<string, bool> */
@@ -79,7 +79,7 @@ class FieldsConfig
         'bool_admin_adh'
     ];
 
-    public const TABLE = 'fields_config';
+    public const string TABLE = 'fields_config';
 
     /**
      * Fields that are not visible in the

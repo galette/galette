@@ -49,11 +49,11 @@ class ContributionsTypes
 {
     use I18n;
 
-    public const DEFAULT_TYPE = -1;
-    public const DONATION_TYPE = 0;
+    public const int DEFAULT_TYPE = -1;
+    public const int DONATION_TYPE = 0;
 
-    public const TABLE = 'types_cotisation';
-    public const PK = 'id_type_cotis';
+    public const string TABLE = 'types_cotisation';
+    public const string PK = 'id_type_cotis';
 
     private int $id;
     private string $label;
@@ -61,7 +61,7 @@ class ContributionsTypes
     private ?float $amount = null;
     private int $extension;
 
-    public const ID_NOT_EXITS = -1;
+    public const int ID_NOT_EXITS = -1;
 
     /** @var array<string> */
     private array $errors = [];

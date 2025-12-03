@@ -57,53 +57,53 @@ use ArrayObject;
  */
 class Members
 {
-    public const TABLE = Adherent::TABLE;
-    public const PK = Adherent::PK;
+    public const string TABLE = Adherent::TABLE;
+    public const string PK = Adherent::PK;
 
-    public const ALL_ACCOUNTS = 0;
-    public const ACTIVE_ACCOUNT = 1;
-    public const INACTIVE_ACCOUNT = 2;
+    public const int ALL_ACCOUNTS = 0;
+    public const int ACTIVE_ACCOUNT = 1;
+    public const int INACTIVE_ACCOUNT = 2;
 
-    public const SHOW_LIST = 0;
-    public const SHOW_PUBLIC_LIST = 1;
-    public const SHOW_ARRAY_LIST = 2;
-    public const SHOW_STAFF = 3;
-    public const SHOW_MANAGED = 4;
-    public const SHOW_EXPORT = 5;
-    public const SHOW_STAFF_PUBLIC_LIST = 6;
+    public const int SHOW_LIST = 0;
+    public const int SHOW_PUBLIC_LIST = 1;
+    public const int SHOW_ARRAY_LIST = 2;
+    public const int SHOW_STAFF = 3;
+    public const int SHOW_MANAGED = 4;
+    public const int SHOW_EXPORT = 5;
+    public const int SHOW_STAFF_PUBLIC_LIST = 6;
 
-    public const FILTER_NAME = 0;
-    public const FILTER_ADDRESS = 1;
-    public const FILTER_MAIL = 2;
-    public const FILTER_JOB = 3;
-    public const FILTER_INFOS = 4;
-    public const FILTER_DC_EMAIL = 5;
-    public const FILTER_W_EMAIL = 6;
-    public const FILTER_WO_EMAIL = 7;
-    public const FILTER_COMPANY_NAME = 8;
-    public const FILTER_DC_PUBINFOS = 9;
-    public const FILTER_W_PUBINFOS = 10;
-    public const FILTER_WO_PUBINFOS = 11;
-    public const FILTER_ID = 12;
-    public const FILTER_NUMBER = 13;
+    public const int FILTER_NAME = 0;
+    public const int FILTER_ADDRESS = 1;
+    public const int FILTER_MAIL = 2;
+    public const int FILTER_JOB = 3;
+    public const int FILTER_INFOS = 4;
+    public const int FILTER_DC_EMAIL = 5;
+    public const int FILTER_W_EMAIL = 6;
+    public const int FILTER_WO_EMAIL = 7;
+    public const int FILTER_COMPANY_NAME = 8;
+    public const int FILTER_DC_PUBINFOS = 9;
+    public const int FILTER_W_PUBINFOS = 10;
+    public const int FILTER_WO_PUBINFOS = 11;
+    public const int FILTER_ID = 12;
+    public const int FILTER_NUMBER = 13;
 
-    public const MEMBERSHIP_ALL = 0;
-    public const MEMBERSHIP_UP2DATE = 3;
-    public const MEMBERSHIP_NEARLY = 1;
-    public const MEMBERSHIP_LATE = 2;
-    public const MEMBERSHIP_NEVER = 4;
-    public const MEMBERSHIP_STAFF = 5;
-    public const MEMBERSHIP_ADMIN = 6;
-    public const MEMBERSHIP_NONE = 7;
+    public const int MEMBERSHIP_ALL = 0;
+    public const int MEMBERSHIP_UP2DATE = 3;
+    public const int MEMBERSHIP_NEARLY = 1;
+    public const int MEMBERSHIP_LATE = 2;
+    public const int MEMBERSHIP_NEVER = 4;
+    public const int MEMBERSHIP_STAFF = 5;
+    public const int MEMBERSHIP_ADMIN = 6;
+    public const int MEMBERSHIP_NONE = 7;
 
-    public const ORDERBY_NAME = 'name';
-    public const ORDERBY_NICKNAME = 'nickname';
-    public const ORDERBY_STATUS = 'status';
-    public const ORDERBY_FEE_STATUS = 'fee_status';
-    public const ORDERBY_MODIFDATE = 'modif_date';
-    public const ORDERBY_ID = 'id';
+    public const string ORDERBY_NAME = 'name';
+    public const string ORDERBY_NICKNAME = 'nickname';
+    public const string ORDERBY_STATUS = 'status';
+    public const string ORDERBY_FEE_STATUS = 'fee_status';
+    public const string ORDERBY_MODIFDATE = 'modif_date';
+    public const string ORDERBY_ID = 'id';
 
-    public const NON_STAFF_MEMBERS = 30;
+    public const int NON_STAFF_MEMBERS = 30;
 
     private int $count = 0;
     /** @var array<string> */

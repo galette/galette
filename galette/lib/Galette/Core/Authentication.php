@@ -40,12 +40,12 @@ use Galette\Entity\Group;
 
 abstract class Authentication
 {
-    public const ACCESS_PUBLIC = -1;
-    public const ACCESS_USER = 0;
-    public const ACCESS_MANAGER = 1;
-    public const ACCESS_STAFF = 2;
-    public const ACCESS_ADMIN = 3;
-    public const ACCESS_SUPERADMIN = 4;
+    public const int ACCESS_PUBLIC = -1;
+    public const int ACCESS_USER = 0;
+    public const int ACCESS_MANAGER = 1;
+    public const int ACCESS_STAFF = 2;
+    public const int ACCESS_ADMIN = 3;
+    public const int ACCESS_SUPERADMIN = 4;
 
     protected string $login;
     protected string $name;

@@ -42,12 +42,12 @@ use function Safe\json_encode;
  */
 class Charts
 {
-    public const DEFAULT_CHART = 'MembersStatusPie';
-    public const MEMBERS_STATUS_PIE = 'MembersStatusPie';
-    public const MEMBERS_STATEDUE_PIE = 'MembersStateDuePie';
-    public const CONTRIBS_TYPES_PIE = 'ContribsTypesPie';
-    public const COMPANIES_OR_NOT = 'CompaniesOrNot';
-    public const CONTRIBS_ALLTIME = 'ContribsAllTime';
+    public const string DEFAULT_CHART = 'MembersStatusPie';
+    public const string MEMBERS_STATUS_PIE = 'MembersStatusPie';
+    public const string MEMBERS_STATEDUE_PIE = 'MembersStateDuePie';
+    public const string CONTRIBS_TYPES_PIE = 'ContribsTypesPie';
+    public const string COMPANIES_OR_NOT = 'CompaniesOrNot';
+    public const string CONTRIBS_ALLTIME = 'ContribsAllTime';
 
     /** @var array<string>  */
     private readonly array $types;

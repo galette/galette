@@ -43,8 +43,8 @@ use function Safe\preg_split;
 
 class History
 {
-    public const TABLE = 'logs';
-    public const PK = 'id_log';
+    public const string TABLE = 'logs';
+    public const string PK = 'id_log';
 
     protected int $count;
 

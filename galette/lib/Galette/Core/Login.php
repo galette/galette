@@ -40,8 +40,8 @@ use Analog\Analog;
  */
 class Login extends Authentication
 {
-    public const TABLE = Adherent::TABLE;
-    public const PK = 'login_adh';
+    public const string TABLE = Adherent::TABLE;
+    public const string PK = 'login_adh';
 
     private bool $impersonated = false;
 

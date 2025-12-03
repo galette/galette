@@ -59,4 +59,9 @@
      </rule>
      <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
      <rule ref="SlevomatCodingStandard.Variables.UnusedVariable"/>
+     <rule ref="SlevomatCodingStandard.TypeHints.ClassConstantTypeHint">
+       <properties>
+         <property name="enableNativeTypeHint" value="1"/>
+       </properties>
+     </rule>
 </ruleset>

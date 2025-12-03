@@ -36,7 +36,7 @@ namespace Galette\Core;
 abstract class AbstractPassword
 {
     /** Default password size */
-    public const DEFAULT_SIZE = 8;
+    public const int DEFAULT_SIZE = 8;
 
     protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
     protected ?string $hash = null;

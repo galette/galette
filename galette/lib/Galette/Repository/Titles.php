@@ -36,12 +36,12 @@ use Analog\Analog;
 
 class Titles
 {
-    public const TABLE = 'titles';
-    public const PK = 'id_title';
+    public const string TABLE = 'titles';
+    public const string PK = 'id_title';
 
-    public const MR = 1;
-    public const MRS = 2;
-    public const MISS = 3;
+    public const int MR = 1;
+    public const int MRS = 2;
+    public const int MISS = 3;
 
     /** @var array<array<string,mixed>> */
     private static array $defaults = [

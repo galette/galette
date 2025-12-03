@@ -34,7 +34,7 @@ use Galette\Enums\SQLOrder;
 
 class SavedSearchesList extends Pagination
 {
-    public const ORDERBY_DATE = 0;
+    public const int ORDERBY_DATE = 0;
 
     /**
      * Returns the field we want to default set order to

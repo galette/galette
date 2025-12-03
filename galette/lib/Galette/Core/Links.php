@@ -41,12 +41,12 @@ use function Safe\base64_decode;
 
 class Links
 {
-    public const TABLE = 'tmplinks';
-    public const PK = 'hash';
+    public const string TABLE = 'tmplinks';
+    public const string PK = 'hash';
 
-    public const TARGET_MEMBERCARD = 1;
-    public const TARGET_INVOICE    = 2;
-    public const TARGET_RECEIPT    = 3;
+    public const int TARGET_MEMBERCARD = 1;
+    public const int TARGET_INVOICE    = 2;
+    public const int TARGET_RECEIPT    = 3;
 
     /**
      * Default constructor

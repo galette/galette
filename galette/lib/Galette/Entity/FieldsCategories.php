@@ -36,12 +36,12 @@ use Galette\Core\Db;
 
 class FieldsCategories
 {
-    public const TABLE = 'fields_categories';
-    public const PK = 'id_field_category';
+    public const string TABLE = 'fields_categories';
+    public const string PK = 'id_field_category';
 
-    public const ADH_CATEGORY_IDENTITY = 1;
-    public const ADH_CATEGORY_GALETTE = 2;
-    public const ADH_CATEGORY_CONTACT = 3;
+    public const int ADH_CATEGORY_IDENTITY = 1;
+    public const int ADH_CATEGORY_GALETTE = 2;
+    public const int ADH_CATEGORY_CONTACT = 3;
 
     /**
      * Default constructor

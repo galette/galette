@@ -49,8 +49,8 @@ use function Safe\json_encode;
 
 class SavedSearch
 {
-    public const TABLE = 'searches';
-    public const PK = 'search_id';
+    public const string TABLE = 'searches';
+    public const string PK = 'search_id';
 
     private int $id;
     private string $name;

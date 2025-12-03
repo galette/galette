@@ -43,8 +43,8 @@ use Analog\Analog;
 
 class Title extends AbstractEntity
 {
-    public const TABLE = 'titles';
-    public const PK = 'id_title';
+    public const string TABLE = 'titles';
+    public const string PK = 'id_title';
 
     #[Column(self::PK)]
     protected int $id;
@@ -54,9 +54,9 @@ class Title extends AbstractEntity
     #[Column('long_label')]
     private ?string $long = null;
 
-    public const MR = 1;
-    public const MRS = 2;
-    public const MISS = 3;
+    public const int MR = 1;
+    public const int MRS = 2;
+    public const int MISS = 3;
 
     /**
      * Main constructor

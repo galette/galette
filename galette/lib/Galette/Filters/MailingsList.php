@@ -41,10 +41,10 @@ use Galette\Core\MailingHistory;
 
 class MailingsList extends HistoryList
 {
-    public const ORDERBY_DATE = 0;
-    public const ORDERBY_SENDER = 1;
-    public const ORDERBY_SUBJECT = 2;
-    public const ORDERBY_SENT = 3;
+    public const int ORDERBY_DATE = 0;
+    public const int ORDERBY_SENDER = 1;
+    public const int ORDERBY_SUBJECT = 2;
+    public const int ORDERBY_SENT = 3;
 
     //filters
     protected int $sender_filter = 0;

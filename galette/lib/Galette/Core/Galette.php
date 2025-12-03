@@ -41,12 +41,12 @@ use function Safe\exec;
  */
 class Galette
 {
-    public const MODE_PROD = 'PROD';
-    public const MODE_DEV = 'DEV';
-    public const MODE_MAINT = 'MAINT';
-    public const MODE_DEMO = 'DEMO';
+    public const string MODE_PROD = 'PROD';
+    public const string MODE_DEV = 'DEV';
+    public const string MODE_MAINT = 'MAINT';
+    public const string MODE_DEMO = 'DEMO';
 
-    public const RSS_URL = 'https://galette.eu/dc/index.php/feed/atom';
+    public const string RSS_URL = 'https://galette.eu/dc/index.php/feed/atom';
 
     /**
      * Retrieve Galette version from git, if present.

@@ -42,8 +42,8 @@ use Galette\Entity\Adherent;
  */
 class SavedSearches
 {
-    public const TABLE = SavedSearch::TABLE;
-    public const PK = SavedSearch::PK;
+    public const string TABLE = SavedSearch::TABLE;
+    public const string PK = SavedSearch::PK;
 
     private ?int $count = null;
 

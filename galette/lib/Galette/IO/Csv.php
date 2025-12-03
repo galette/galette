@@ -37,15 +37,15 @@ use function Safe\glob;
 
 abstract class Csv
 {
-    public const NEWLINE = "\r\n";
-    public const BUFLINES = 100;
+    public const string NEWLINE = "\r\n";
+    public const int BUFLINES = 100;
 
-    public const DEFAULT_SEPARATOR = ';';
-    public const DEFAULT_QUOTE = '"';
-    public const DEFAULT_ESCAPE = '\\';
+    public const string DEFAULT_SEPARATOR = ';';
+    public const string DEFAULT_QUOTE = '"';
+    public const string DEFAULT_ESCAPE = '\\';
 
-    public const FILE_NOT_WRITABLE = -1;
-    public const DB_ERROR = -2;
+    public const int FILE_NOT_WRITABLE = -1;
+    public const int DB_ERROR = -2;
 
     protected string $separator;
     protected string $quote;

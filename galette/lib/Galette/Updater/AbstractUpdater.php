@@ -41,9 +41,9 @@ use function Safe\preg_match;
  */
 abstract class AbstractUpdater
 {
-    public const REPORT_SUCCESS = 0;
-    public const REPORT_ERROR = 1;
-    public const REPORT_WARNING = 2;
+    public const int REPORT_SUCCESS = 0;
+    public const int REPORT_ERROR = 1;
+    public const int REPORT_WARNING = 2;
 
     /**
      * SQL scripts to run

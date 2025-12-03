@@ -51,8 +51,8 @@ class CsvIn extends Csv
 {
     use FileTrait;
 
-    public const DEFAULT_DIRECTORY = GALETTE_IMPORTS_PATH;
-    public const DATA_IMPORT_ERROR = -10;
+    public const string DEFAULT_DIRECTORY = GALETTE_IMPORTS_PATH;
+    public const int DATA_IMPORT_ERROR = -10;
 
     /** @var array<string> */
     protected array $extensions = ['csv', 'txt'];

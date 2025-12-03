@@ -34,13 +34,13 @@ trait Permissions
     protected ?int $permission = null;
     protected bool $can_public = false;
 
-    public const NOBODY = 0;
-    public const USER_WRITE = 1;
-    public const ADMIN = 2;
-    public const STAFF = 3;
-    public const MANAGER = 4;
-    public const USER_READ = 5;
-    public const ALL = 10;
+    public const int NOBODY = 0;
+    public const int USER_WRITE = 1;
+    public const int ADMIN = 2;
+    public const int STAFF = 3;
+    public const int MANAGER = 4;
+    public const int USER_READ = 5;
+    public const int ALL = 10;
 
     /**
      * Get permissions list

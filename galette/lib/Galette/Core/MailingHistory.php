@@ -41,12 +41,12 @@ use Laminas\Db\Sql\Expression;
  */
 class MailingHistory extends History
 {
-    public const TABLE = 'mailing_history';
-    public const PK = 'mailing_id';
+    public const string TABLE = 'mailing_history';
+    public const string PK = 'mailing_id';
 
-    public const FILTER_DC_SENT = 0;
-    public const FILTER_SENT = 1;
-    public const FILTER_NOT_SENT = 2;
+    public const int FILTER_DC_SENT = 0;
+    public const int FILTER_SENT = 1;
+    public const int FILTER_NOT_SENT = 2;
 
     private int $id;
     private string $date;

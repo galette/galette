@@ -83,17 +83,17 @@ class AdvancedMembersList extends MembersList
 {
     use DatesHelper;
 
-    public const OP_AND = 0;
-    public const OP_OR = 1;
+    public const int OP_AND = 0;
+    public const int OP_OR = 1;
 
-    public const OP_EQUALS = 0;
-    public const OP_CONTAINS = 1;
-    public const OP_NOT_EQUALS = 2;
-    public const OP_NOT_CONTAINS = 3;
-    public const OP_STARTS_WITH = 4;
-    public const OP_ENDS_WITH = 5;
-    public const OP_BEFORE = 6;
-    public const OP_AFTER = 7;
+    public const int OP_EQUALS = 0;
+    public const int OP_CONTAINS = 1;
+    public const int OP_NOT_EQUALS = 2;
+    public const int OP_NOT_CONTAINS = 3;
+    public const int OP_STARTS_WITH = 4;
+    public const int OP_ENDS_WITH = 5;
+    public const int OP_BEFORE = 6;
+    public const int OP_AFTER = 7;
 
     private ?string $creation_date_begin = null;
     private ?string $creation_date_end = null;

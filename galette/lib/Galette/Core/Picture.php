@@ -70,12 +70,12 @@ class Picture
     }
 
     //constants that will not be overridden
-    public const SQL_ERROR = -10;
-    public const SQL_BLOB_ERROR = -11;
+    public const int SQL_ERROR = -10;
+    public const int SQL_BLOB_ERROR = -11;
     //constants that can be overridden
     //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
-    public const TABLE = 'pictures';
-    public const PK = Adherent::PK;
+    public const string TABLE = 'pictures';
+    public const string PK = Adherent::PK;
 
     protected string $tbl_prefix = '';
 

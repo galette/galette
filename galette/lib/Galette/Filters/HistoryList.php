@@ -45,10 +45,10 @@ class HistoryList extends Pagination
 {
     use DatesHelper;
 
-    public const ORDERBY_DATE = 0;
-    public const ORDERBY_IP = 1;
-    public const ORDERBY_USER = 2;
-    public const ORDERBY_ACTION = 3;
+    public const int ORDERBY_DATE = 0;
+    public const int ORDERBY_IP = 1;
+    public const int ORDERBY_USER = 2;
+    public const int ORDERBY_ACTION = 3;
 
     //filters
     private ?string $start_date_filter = null;

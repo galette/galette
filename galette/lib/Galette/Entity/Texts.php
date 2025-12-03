@@ -52,9 +52,9 @@ class Texts
 
     /** @var ArrayObject<string, int|string> */
     private ArrayObject $all_texts;
-    public const TABLE = "texts";
-    public const PK = 'tid';
-    public const DEFAULT_REF = 'sub';
+    public const string TABLE = "texts";
+    public const string PK = 'tid';
+    public const string DEFAULT_REF = 'sub';
 
     /** @var array<int, mixed> */
     private array $defaults;

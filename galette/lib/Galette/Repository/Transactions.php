@@ -47,8 +47,8 @@ use Safe\DateTime;
  */
 class Transactions
 {
-    public const TABLE = Transaction::TABLE;
-    public const PK = Transaction::PK;
+    public const string TABLE = Transaction::TABLE;
+    public const string PK = Transaction::PK;
 
     private int $count = 0;
 

@@ -46,8 +46,8 @@ use Safe\DateTime;
  */
 class Contributions
 {
-    public const TABLE = Contribution::TABLE;
-    public const PK = Contribution::PK;
+    public const string TABLE = Contribution::TABLE;
+    public const string PK = Contribution::PK;
 
     private int $count = 0;
 

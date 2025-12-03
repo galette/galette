@@ -64,14 +64,14 @@ class Mailing extends GaletteMail
 {
     use FileTrait;
 
-    public const STEP_START = 0;
-    public const STEP_PREVIEW = 1;
-    public const STEP_SEND = 2;
-    public const STEP_SENT = 3;
+    public const int STEP_START = 0;
+    public const int STEP_PREVIEW = 1;
+    public const int STEP_SEND = 2;
+    public const int STEP_SENT = 3;
 
-    public const MIME_HTML = 'text/html';
-    public const MIME_TEXT = 'text/plain';
-    public const MIME_DEFAULT = self::MIME_TEXT;
+    public const string MIME_HTML = 'text/html';
+    public const string MIME_TEXT = 'text/plain';
+    public const string MIME_DEFAULT = self::MIME_TEXT;
 
     private string|int $id;
 

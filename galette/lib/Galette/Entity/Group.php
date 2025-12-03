@@ -41,14 +41,14 @@ use Laminas\Db\Sql\Expression;
  */
 class Group
 {
-    public const TABLE = 'groups';
-    public const PK = 'id_group';
+    public const string TABLE = 'groups';
+    public const string PK = 'id_group';
     //relations tables
-    public const GROUPSUSERS_TABLE = 'groups_members';
-    public const GROUPSMANAGERS_TABLE = 'groups_managers';
+    public const string GROUPSUSERS_TABLE = 'groups_members';
+    public const string GROUPSMANAGERS_TABLE = 'groups_managers';
 
-    public const MEMBER_TYPE = 0;
-    public const MANAGER_TYPE = 1;
+    public const int MEMBER_TYPE = 0;
+    public const int MANAGER_TYPE = 1;
 
     private int $id;
     private string $group_name;

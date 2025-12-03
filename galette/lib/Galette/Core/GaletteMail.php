@@ -38,19 +38,19 @@ use function Safe\preg_match;
  */
 class GaletteMail
 {
-    public const MAIL_ERROR = 0;
-    public const MAIL_SENT = 1;
+    public const int MAIL_ERROR = 0;
+    public const int MAIL_SENT = 1;
 
-    public const METHOD_DISABLED = 0;
-    public const METHOD_PHPMAIL = 1;
-    public const METHOD_SMTP = 2;
-    public const METHOD_QMAIL = 3;
-    public const METHOD_GMAIL = 4;
-    public const METHOD_SENDMAIL = 5;
+    public const int METHOD_DISABLED = 0;
+    public const int METHOD_PHPMAIL = 1;
+    public const int METHOD_SMTP = 2;
+    public const int METHOD_QMAIL = 3;
+    public const int METHOD_GMAIL = 4;
+    public const int METHOD_SENDMAIL = 5;
 
-    public const SENDER_PREFS = 0;
-    public const SENDER_CURRENT = 1;
-    public const SENDER_OTHER = 2;
+    public const int SENDER_PREFS = 0;
+    public const int SENDER_CURRENT = 1;
+    public const int SENDER_OTHER = 2;
 
     private string $sender_name;
     private string $sender_address;

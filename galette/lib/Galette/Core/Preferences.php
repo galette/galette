@@ -180,42 +180,42 @@ class Preferences
     /** @var array<string> */
     private array $errors = [];
 
-    public const TABLE = 'preferences';
-    public const PK = 'id_pref';
+    public const string TABLE = 'preferences';
+    public const string PK = 'id_pref';
 
     /** Postal address will be the one given in the preferences */
-    public const POSTAL_ADDRESS_FROM_PREFS = 0;
+    public const int POSTAL_ADDRESS_FROM_PREFS = 0;
     /** Postal address will be the one of the selected staff member */
-    public const POSTAL_ADDRESS_FROM_STAFF = 1;
+    public const int POSTAL_ADDRESS_FROM_STAFF = 1;
 
     /** Phone number will be the one given in the preferences */
-    public const PHONE_NUMBER_FROM_PREFS = 0;
+    public const int PHONE_NUMBER_FROM_PREFS = 0;
     /** Phone number will be the one of the selected staff member */
-    public const PHONE_NUMBER_FROM_STAFF = 1;
+    public const int PHONE_NUMBER_FROM_STAFF = 1;
     /** Phone number will be the GSM of the selected staff member */
-    public const PHONE_NUMBER_MOBILE_FROM_STAFF = 2;
+    public const int PHONE_NUMBER_MOBILE_FROM_STAFF = 2;
 
     /** Public pages stuff */
     /** Public pages are publicly visibles */
-    public const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
+    public const int PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
     /** Public pages are visibles for up-to-date members only */
-    public const PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
+    public const int PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
     /** Public pages are visibles for admin and staff members only */
-    public const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
+    public const int PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
     /** Public pages are hidden */
-    public const PUBLIC_PAGES_VISIBILITY_HIDDEN = 3;
-    public const PUBLIC_PAGES_VISIBILITY_INHERIT = 4;
+    public const int PUBLIC_PAGES_VISIBILITY_HIDDEN = 3;
+    public const int PUBLIC_PAGES_VISIBILITY_INHERIT = 4;
 
     /** No password strength */
-    public const PWD_NONE = 0;
+    public const int PWD_NONE = 0;
     /** Weak password strength */
-    public const PWD_WEAK = 1;
+    public const int PWD_WEAK = 1;
     /** Medium password strength */
-    public const PWD_MEDIUM = 2;
+    public const int PWD_MEDIUM = 2;
     /** Strong password strength */
-    public const PWD_STRONG = 3;
+    public const int PWD_STRONG = 3;
     /** Very strong password strength */
-    public const PWD_VERY_STRONG = 4;
+    public const int PWD_VERY_STRONG = 4;
 
     /** Dark mode CSS file should be deleted from cache */
     private bool $delete_dark_css = false;

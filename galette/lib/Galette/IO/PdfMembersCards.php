@@ -37,12 +37,12 @@ use Galette\Repository\Members;
 
 class PdfMembersCards extends Pdf
 {
-    public const PAGE_WIDTH = 210;
-    public const PAGE_HEIGHT = 297;
-    public const WIDTH = 75;
-    public const HEIGHT = 40;
-    public const COLS = 2;
-    public const ROWS = 6;
+    public const int PAGE_WIDTH = 210;
+    public const int PAGE_HEIGHT = 297;
+    public const int WIDTH = 75;
+    public const int HEIGHT = 40;
+    public const int COLS = 2;
+    public const int ROWS = 6;
 
     /** @var array<string,float|int> */
     protected array $tcol;

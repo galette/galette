@@ -41,8 +41,8 @@ use Slim\Routing\RouteParser;
  */
 class UpdateAndMaintenance
 {
-    public const MAINTENANCE = 0;
-    public const NEED_UPDATE = 1;
+    public const int MAINTENANCE = 0;
+    public const int NEED_UPDATE = 1;
 
     /**
      * @var callable

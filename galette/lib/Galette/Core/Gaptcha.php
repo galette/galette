@@ -32,8 +32,8 @@ use NumberFormatter;
  */
 class Gaptcha
 {
-    public const OP_ADD = 1;
-    public const OP_SUB = 2;
+    public const int OP_ADD = 1;
+    public const int OP_SUB = 2;
 
     private int $max = 12;
     private int $min = 0;

@@ -120,19 +120,19 @@ class Adherent implements AccessManagementInterface
     use Socials;
     use HasEvent;
 
-    public const TABLE = 'adherents';
-    public const PK = 'id_adh';
+    public const string TABLE = 'adherents';
+    public const string PK = 'id_adh';
 
-    public const NC = 0;
-    public const MAN = 1;
-    public const WOMAN = 2;
+    public const int NC = 0;
+    public const int MAN = 1;
+    public const int WOMAN = 2;
 
-    public const AFTER_ADD_DEFAULT = 0;
-    public const AFTER_ADD_TRANS = 1;
-    public const AFTER_ADD_NEW = 2;
-    public const AFTER_ADD_SHOW = 3;
-    public const AFTER_ADD_LIST = 4;
-    public const AFTER_ADD_HOME = 5;
+    public const int AFTER_ADD_DEFAULT = 0;
+    public const int AFTER_ADD_TRANS = 1;
+    public const int AFTER_ADD_NEW = 2;
+    public const int AFTER_ADD_SHOW = 3;
+    public const int AFTER_ADD_LIST = 4;
+    public const int AFTER_ADD_HOME = 5;
 
     private ?int $id = null;
     //Identity

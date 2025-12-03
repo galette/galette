@@ -43,7 +43,7 @@ use function Safe\simplexml_load_file;
 
 class CsvOut extends Csv
 {
-    public const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
+    public const string DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 
     private string $legacy_parameted_file = 'exports.xml';
     private string $parameted_file = 'exports.yaml';

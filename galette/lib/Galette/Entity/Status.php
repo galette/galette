@@ -41,11 +41,11 @@ class Status
 {
     use I18n;
 
-    public const DEFAULT_STATUS = 9;
-    public const TABLE = 'statuts';
-    public const PK = 'id_statut';
+    public const int DEFAULT_STATUS = 9;
+    public const string TABLE = 'statuts';
+    public const string PK = 'id_statut';
 
-    public const ID_NOT_EXITS = -1;
+    public const int ID_NOT_EXITS = -1;
 
 
     private int $id;
@@ -54,7 +54,7 @@ class Status
     #[Inject]
     private Login $login;
 
-    public const ID_NOT_EXISTS = -1;
+    public const int ID_NOT_EXISTS = -1;
 
     /** @var array<string> */
     private array $errors = [];

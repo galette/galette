@@ -40,16 +40,16 @@ use function Safe\preg_match;
 
 trait FileTrait
 {
-    public const INVALID_FILENAME = -1;
-    public const INVALID_EXTENSION = -2;
-    public const FILE_TOO_BIG = -3;
-    public const IMAGE_TOO_SMALL = -4;
-    public const MIME_NOT_ALLOWED = -5;
-    public const NEW_FILE_EXISTS = -6;
-    public const INVALID_FILE = -7;
-    public const CANT_WRITE = -8;
-    public const MAX_FILE_SIZE = 2048;
-    public const MIN_CROP_SIZE = 267;
+    public const int INVALID_FILENAME = -1;
+    public const int INVALID_EXTENSION = -2;
+    public const int FILE_TOO_BIG = -3;
+    public const int IMAGE_TOO_SMALL = -4;
+    public const int MIME_NOT_ALLOWED = -5;
+    public const int NEW_FILE_EXISTS = -6;
+    public const int INVALID_FILE = -7;
+    public const int CANT_WRITE = -8;
+    public const int MAX_FILE_SIZE = 2048;
+    public const int MIN_CROP_SIZE = 267;
 
     //array keys contain literal value of each forbidden character
     //(to be used when showing an error).

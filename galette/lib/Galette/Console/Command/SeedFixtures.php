@@ -66,10 +66,10 @@ use function Safe\unlink;
 class SeedFixtures extends AbstractCommand
 {
     /** Fingerprint marker for idempotence */
-    public const FIXTURE_FINGERPRINT = 'E2E_FIXTURE';
+    public const string FIXTURE_FINGERPRINT = 'E2E_FIXTURE';
 
     /** Default password for all fixture members */
-    public const FIXTURE_PASSWORD = 'G@l3tte-E2E!';
+    public const string FIXTURE_PASSWORD = 'G@l3tte-E2E!';
 
     private Db $zdb;
     private Login $login;

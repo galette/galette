@@ -41,7 +41,7 @@ class I18n
     private string $name;
     private string $abbrev;
 
-    public const DEFAULT_LANG = 'en_US';
+    public const string DEFAULT_LANG = 'en_US';
 
     private string $dir = 'lang/';
     private readonly string $path;

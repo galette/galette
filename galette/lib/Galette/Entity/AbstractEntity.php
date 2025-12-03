@@ -45,13 +45,13 @@ abstract class AbstractEntity
      * Database table name
      * MUST be overridden in child classes
      */
-    public const TABLE = '';
+    public const string TABLE = '';
 
     /**
      * Primary key field name
      * MUST be overridden in child classes
      */
-    public const PK = '';
+    public const string PK = '';
 
     //must be declared in child class with the appropriate Column attribute
     protected int $id;

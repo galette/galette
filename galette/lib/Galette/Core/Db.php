@@ -71,11 +71,11 @@ class Db
     private string $last_query;
     private bool $no_commit = false;
 
-    public const MYSQL = 'mysql';
-    public const PGSQL = 'pgsql';
+    public const string MYSQL = 'mysql';
+    public const string PGSQL = 'pgsql';
 
-    public const MYSQL_DEFAULT_PORT = 3306;
-    public const PGSQL_DEFAULT_PORT = 5432;
+    public const int MYSQL_DEFAULT_PORT = 3306;
+    public const int PGSQL_DEFAULT_PORT = 5432;
 
     /**
      * Main constructor

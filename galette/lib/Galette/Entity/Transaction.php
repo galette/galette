@@ -55,8 +55,8 @@ class Transaction implements AccessManagementInterface
     use Dynamics;
     use EntityHelper;
 
-    public const TABLE = 'transactions';
-    public const PK = 'trans_id';
+    public const string TABLE = 'transactions';
+    public const string PK = 'trans_id';
 
     private int $id;
     private string $date;

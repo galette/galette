@@ -47,19 +47,19 @@ class Social
 {
     use I18n;
 
-    public const TABLE = 'socials';
-    public const PK = 'id_social';
+    public const string TABLE = 'socials';
+    public const string PK = 'id_social';
 
-    public const MASTODON = 'mastodon';
-    public const TWITTER = 'twitter';
-    public const FACEBOOK = 'facebook';
-    public const LINKEDIN = 'linkedin';
-    public const VIADEO = 'viadeo';
-    public const JABBER = 'jabber';
-    public const ICQ = 'icq';
-    public const WEBSITE = 'website';
-    public const BLOG = 'blog';
-    public const DISCORD = 'discord';
+    public const string MASTODON = 'mastodon';
+    public const string TWITTER = 'twitter';
+    public const string FACEBOOK = 'facebook';
+    public const string LINKEDIN = 'linkedin';
+    public const string VIADEO = 'viadeo';
+    public const string JABBER = 'jabber';
+    public const string ICQ = 'icq';
+    public const string WEBSITE = 'website';
+    public const string BLOG = 'blog';
+    public const string DISCORD = 'discord';
 
     private int $id;
     private string $type;

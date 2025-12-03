@@ -33,14 +33,14 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class Column
 {
-    public const TYPE_STRING = 'string';
-    public const TYPE_INT = 'int';
-    public const TYPE_BOOL = 'bool';
-    public const TYPE_DATE = 'date';
-    public const TYPE_DATETIME = 'datetime';
-    public const TYPE_TIMESTAMP = 'timestamp';
-    public const TYPE_FLOAT = 'float';
-    public const TYPE_JSON = 'json';
+    public const string TYPE_STRING = 'string';
+    public const string TYPE_INT = 'int';
+    public const string TYPE_BOOL = 'bool';
+    public const string TYPE_DATE = 'date';
+    public const string TYPE_DATETIME = 'datetime';
+    public const string TYPE_TIMESTAMP = 'timestamp';
+    public const string TYPE_FLOAT = 'float';
+    public const string TYPE_JSON = 'json';
 
     /**
      * @param string|null  $name       Column name in database (if different from property name)

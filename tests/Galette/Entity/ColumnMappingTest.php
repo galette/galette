@@ -335,8 +335,8 @@ class ColumnMappingTest extends GaletteTestCase
  */
 class TestEntityWithColumns extends AbstractEntity
 {
-    public const TABLE = 'test_table';
-    public const PK = 'test_id';
+    public const string TABLE = 'test_table';
+    public const string PK = 'test_id';
 
     #[Column(name: 'test_id', type: Column::TYPE_INT, insertable: false, updatable: false)]
     protected int $id;

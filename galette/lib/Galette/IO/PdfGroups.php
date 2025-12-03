@@ -36,7 +36,7 @@ use Galette\Entity\Group;
 
 class PdfGroups extends Pdf
 {
-    public const SHEET_FONT = self::FONT_SIZE - 2;
+    public const int SHEET_FONT = self::FONT_SIZE - 2;
 
     private string $doc_title;
 

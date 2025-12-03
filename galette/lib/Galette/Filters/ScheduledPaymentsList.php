@@ -47,22 +47,22 @@ class ScheduledPaymentsList extends Pagination
 {
     use DatesHelper;
 
-    public const ORDERBY_DATE = 0;
-    public const ORDERBY_MEMBER = 1;
-    public const ORDERBY_SCHEDULED_DATE = 2;
-    public const ORDERBY_CONTRIBUTION = 3;
-    public const ORDERBY_AMOUNT = 5;
-    public const ORDERBY_PAYMENT_TYPE = 7;
-    public const ORDERBY_ID = 8;
-    public const ORDERBY_PAID = 9;
+    public const int ORDERBY_DATE = 0;
+    public const int ORDERBY_MEMBER = 1;
+    public const int ORDERBY_SCHEDULED_DATE = 2;
+    public const int ORDERBY_CONTRIBUTION = 3;
+    public const int ORDERBY_AMOUNT = 5;
+    public const int ORDERBY_PAYMENT_TYPE = 7;
+    public const int ORDERBY_ID = 8;
+    public const int ORDERBY_PAID = 9;
 
-    public const PAID_DC = 2;
-    public const PAID_YES = 1;
-    public const PAID_NO = 0;
+    public const int PAID_DC = 2;
+    public const int PAID_YES = 1;
+    public const int PAID_NO = 0;
 
-    public const DATE_RECORD = 0;
+    public const int DATE_RECORD = 0;
 
-    public const DATE_SCHEDULED = 1;
+    public const int DATE_SCHEDULED = 1;
 
     //filters
     private ?int $date_field = null;
