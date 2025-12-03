@@ -114,9 +114,9 @@ class Install extends AbstractCommand
                     '<comment>Using existing configuration for database type</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_type = $install->getDbType();
+                $db_type = (string)$install->getDbType();
             } else {
-                $db_type = $io->choice(
+                $db_type = (string)$io->choice(
                     'Database type',
                     $this->db_types
                 );
@@ -130,9 +130,9 @@ class Install extends AbstractCommand
                     '<comment>Using existing configuration for database name</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_name = $install->getDbName();
+                $db_name = (string)$install->getDbName();
             } else {
-                $db_name = $io->ask('Database name', 'galette');
+                $db_name = (string)$io->ask('Database name', 'galette');
             }
         }
 
@@ -143,9 +143,9 @@ class Install extends AbstractCommand
                     '<comment>Using existing configuration for database prefix</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_prefix = $install->getTablesPrefix();
+                $db_prefix = (string)$install->getTablesPrefix();
             } else {
-                $db_prefix = $io->ask('Database prefix', 'galette_');
+                $db_prefix = (string)$io->ask('Database prefix', 'galette_');
             }
         }
 
@@ -156,9 +156,9 @@ class Install extends AbstractCommand
                     '<comment>Using existing configuration for database host</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_host = $install->getDbHost();
+                $db_host = (string)$install->getDbHost();
             } else {
-                $db_host = $io->ask('Database host', 'localhost');
+                $db_host = (string)$io->ask('Database host', 'localhost');
             }
         }
 
@@ -169,9 +169,9 @@ class Install extends AbstractCommand
                     '<comment>Using existing configuration for database port</comment>',
                     OutputInterface::VERBOSITY_VERBOSE
                 );
-                $db_port = $install->getDbPort();
+                $db_port = (string)$install->getDbPort();
             } else {
-                $db_port = $io->ask('Database port', $db_type === 'mysql' ? '3306' : '5432');
+                $db_port = (string)$io->ask('Database port', $db_type === 'mysql' ? '3306' : '5432');
             }
         }
 
@@ -184,7 +184,7 @@ class Install extends AbstractCommand
                 );
                 $db_user = USER_DB;
             } else {
-                $db_user = $io->ask('Database user', 'galette');
+                $db_user = (string)$io->ask('Database user', 'galette');
             }
         }
 
