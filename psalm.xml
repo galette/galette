@@ -11,6 +11,7 @@
 >
     <projectFiles>
         <file name="galette/includes/dependencies.php" />
+        <file name="stubs/constants.php" />
         <directory name="galette/lib/" />
         <ignoreFiles>
             <directory name="galette/vendor" />
