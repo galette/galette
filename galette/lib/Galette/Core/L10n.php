@@ -52,7 +52,7 @@ class L10n
      *
      * @param string $text_orig Text to translate
      *
-     * @return boolean
+     * @return bool
      */
     public function addDynamicTranslation(string $text_orig): bool
     {
@@ -126,7 +126,7 @@ class L10n
      *
      * @param string $text_orig Text to translate
      *
-     * @return boolean
+     * @return bool
      */
     public function deleteDynamicTranslation(string $text_orig): bool
     {
@@ -157,7 +157,7 @@ class L10n
      * @param string $text_locale The locale
      * @param string $text_trans  Translated text
      *
-     * @return boolean
+     * @return bool
      */
     public function updateDynamicTranslation(string $text_orig, string $text_locale, string $text_trans): bool
     {

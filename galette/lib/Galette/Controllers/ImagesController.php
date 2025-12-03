@@ -90,7 +90,7 @@ class ImagesController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Member id
+     * @param int      $id       Member id
      *
      * @return Response
      */

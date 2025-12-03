@@ -134,7 +134,7 @@ class MemberListener implements ListenerSubscriber
      * Send account email to member
      *
      * @param Adherent $member Member
-     * @param boolean  $new    New member or editing existing one
+     * @param bool     $new    New member or editing existing one
      *
      * @return void
      */
@@ -228,7 +228,7 @@ class MemberListener implements ListenerSubscriber
      * Send account email to admin
      *
      * @param Adherent $member Member
-     * @param boolean  $new    New member or editing existing one
+     * @param bool     $new    New member or editing existing one
      *
      * @return void
      */

@@ -230,7 +230,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id_adh   Member ID to duplicate
+     * @param int      $id_adh   Member ID to duplicate
      *
      * @return Response
      */
@@ -255,7 +255,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Member ID
+     * @param int      $id       Member ID
      *
      * @return Response
      */
@@ -307,7 +307,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Member ID
+     * @param int      $id       Member ID
      *
      * @return Response
      */
@@ -359,10 +359,10 @@ class MembersController extends CrudController
     /**
      * Public members list
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */
@@ -390,10 +390,10 @@ class MembersController extends CrudController
     /**
      * Public members gallery
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */
@@ -421,10 +421,10 @@ class MembersController extends CrudController
     /**
      * Public members list
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */
@@ -457,10 +457,10 @@ class MembersController extends CrudController
     /**
      * Public staff gallery
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */
@@ -497,7 +497,7 @@ class MembersController extends CrudController
      * @param Response             $response PSR Response
      * @param array<string, mixed> $args     Route arguments
      * @param string|null          $option   One of 'page' or 'order'
-     * @param string|integer|null  $value    Value of the option
+     * @param string|int|null      $value    Value of the option
      *
      * @return Response
      */
@@ -612,10 +612,10 @@ class MembersController extends CrudController
     /**
      * Members list
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
@@ -895,10 +895,10 @@ class MembersController extends CrudController
     /**
      * Members list for ajax
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */
@@ -1087,7 +1087,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Member id/array of members id
+     * @param ?int     $id       Member id/array of members id
      * @param string   $action   null or 'add'
      *
      * @return Response
@@ -1235,7 +1235,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Member id
+     * @param int      $id       Member id
      *
      * @return Response
      */

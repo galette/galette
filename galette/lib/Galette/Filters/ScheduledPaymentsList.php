@@ -33,14 +33,14 @@ use Galette\Core\Pagination;
  *
  * @property ?string $start_date_filter
  * @property ?string $end_date_filter
- * @property integer $date_field
- * @property ?integer $payment_type_filter
- * @property integer|false $from_contribution
+ * @property int $date_field
+ * @property ?int $payment_type_filter
+ * @property int|false $from_contribution
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
- * @property integer[] $selected
- * @property ?integer $member_filter
- * @property integer $paid
+ * @property int[] $selected
+ * @property ?int $member_filter
+ * @property int $paid
  */
 
 class ScheduledPaymentsList extends Pagination
@@ -116,7 +116,7 @@ class ScheduledPaymentsList extends Pagination
     /**
      * Reinit default parameters
      *
-     * @param boolean $ajax Called form an ajax query
+     * @param bool $ajax Called form an ajax query
      *
      * @return void
      */

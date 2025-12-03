@@ -344,10 +344,10 @@ class Transactions
     /**
      * Remove specified transactions
      *
-     * @param array<int>|integer $ids  Transactions identifiers to delete
-     * @param History            $hist History
+     * @param array<int>|int $ids  Transactions identifiers to delete
+     * @param History        $hist History
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(array|int $ids, History $hist): bool
     {

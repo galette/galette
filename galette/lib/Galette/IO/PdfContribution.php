@@ -92,7 +92,7 @@ class PdfContribution extends Pdf
      *
      * @param string $path Path
      *
-     * @return boolean
+     * @return bool
      */
     public function store(string $path): bool
     {

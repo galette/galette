@@ -54,8 +54,8 @@ class News
     /**
      * Default constructor
      *
-     * @param string  $url     Feed URL
-     * @param boolean $nocache Do not try to cache
+     * @param string $url     Feed URL
+     * @param bool   $nocache Do not try to cache
      */
     public function __construct(string $url, bool $nocache = false)
     {
@@ -242,7 +242,7 @@ class News
     /**
      * Check if allow_url_fopen is enabled
      *
-     * @return boolean
+     * @return bool
      */
     protected function allowURLFOpen(): bool
     {

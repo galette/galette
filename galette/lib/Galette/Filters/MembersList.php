@@ -35,13 +35,13 @@ use Slim\Views\Twig;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property ?string $filter_str
- * @property ?integer $field_filter
- * @property ?integer $membership_filter
- * @property ?integer $filter_account
- * @property ?integer $email_filter
- * @property ?integer $group_filter
- * @property integer[] $selected
- * @property integer[] $unreachable
+ * @property ?int $field_filter
+ * @property ?int $membership_filter
+ * @property ?int $filter_account
+ * @property ?int $email_filter
+ * @property ?int $group_filter
+ * @property int[] $selected
+ * @property int[] $unreachable
  * @property string $query
  */
 

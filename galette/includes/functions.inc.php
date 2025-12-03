@@ -31,7 +31,7 @@ const NOT_TRANSLATED = ' (not translated)';
  *
  * @param string $url The URL to check
  *
- * @return boolean
+ * @return bool
  */
 function isValidWebUrl(string $url): bool
 {
@@ -44,9 +44,9 @@ function isValidWebUrl(string $url): bool
 /**
  * Translate a string, or return original one
  *
- * @param string  $string The string to translate
- * @param string  $domain Translation domain. Default to galette
- * @param boolean $nt     Indicate not translated strings; defaults to true
+ * @param string $string The string to translate
+ * @param string $domain Translation domain. Default to galette
+ * @param bool   $nt     Indicate not translated strings; defaults to true
  *
  * @return string
  */
@@ -86,11 +86,11 @@ function _T(string $string, string $domain = 'galette', bool $nt = true): string
 /**
  * Pluralized translation
  *
- * @param string  $singular Singular form of the string to translate
- * @param string  $plural   Plural form of the string to translate
- * @param integer $count    Number for count
- * @param string  $domain   Translation domain. Default to galette
- * @param boolean $nt       Indicate not translated strings; defaults to true
+ * @param string $singular Singular form of the string to translate
+ * @param string $plural   Plural form of the string to translate
+ * @param int    $count    Number for count
+ * @param string $domain   Translation domain. Default to galette
+ * @param bool   $nt       Indicate not translated strings; defaults to true
  *
  * @return string
  */
@@ -138,10 +138,10 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
 /**
  * Contextualized translation
  *
- * @param string  $context Context
- * @param string  $string  The string to translate
- * @param string  $domain  Translation domain (defaults to galette)
- * @param boolean $nt      Indicate not translated strings; defaults to true
+ * @param string $context Context
+ * @param string $string  The string to translate
+ * @param string $domain  Translation domain (defaults to galette)
+ * @param bool   $nt      Indicate not translated strings; defaults to true
  *
  * @return string
  */
@@ -176,12 +176,12 @@ function _Tx(string $context, string $string, string $domain = 'galette', bool $
 /**
  * Pluralized and contextualized translation
  *
- * @param string  $context  Context
- * @param string  $singular Singular form of the string to translate
- * @param string  $plural   Plural form of the string to translate
- * @param integer $count    Number for count
- * @param string  $domain   Translation domain. Default to galette
- * @param boolean $nt       Indicate not translated strings; defaults to true
+ * @param string $context  Context
+ * @param string $singular Singular form of the string to translate
+ * @param string $plural   Plural form of the string to translate
+ * @param int    $count    Number for count
+ * @param string $domain   Translation domain. Default to galette
+ * @param bool   $nt       Indicate not translated strings; defaults to true
  *
  * @return string
  */

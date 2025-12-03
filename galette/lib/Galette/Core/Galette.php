@@ -48,7 +48,7 @@ class Galette
     /**
      * Retrieve Galette version from git, if present.
      *
-     * @param boolean $time Include time and timezone. Defaults to false.
+     * @param bool $time Include time and timezone. Defaults to false.
      *
      * @return string
      */

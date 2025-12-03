@@ -122,7 +122,7 @@ abstract class Csv
      *
      * @param string $name File name
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(string $name): bool
     {

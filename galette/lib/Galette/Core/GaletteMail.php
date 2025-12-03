@@ -225,7 +225,7 @@ class GaletteMail
     /**
      * Apply final header to email and send it :-)
      *
-     * @return integer Either GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
+     * @return int Either GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
      */
     public function send(): int
     {
@@ -406,7 +406,7 @@ class GaletteMail
     /**
      * Is the email HTML formatted?
      *
-     * @param ?boolean $set The value to set
+     * @param ?bool $set The value to set
      *
      * @return bool
      */
@@ -533,7 +533,7 @@ class GaletteMail
     /**
      * Set timeout on SMTP connexion
      *
-     * @param integer $timeout SMTP timeout
+     * @param int $timeout SMTP timeout
      *
      * @return self
      */

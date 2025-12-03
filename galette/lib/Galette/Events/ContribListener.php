@@ -108,7 +108,7 @@ class ContribListener implements ListenerSubscriber
      * Send account email to member
      *
      * @param Contribution $contrib Contribution
-     * @param boolean      $new     New contribution or editing existing one
+     * @param bool         $new     New contribution or editing existing one
      *
      * @return void
      */
@@ -213,7 +213,7 @@ class ContribListener implements ListenerSubscriber
      * Send new contribution email to admin
      *
      * @param Contribution $contrib Contribution
-     * @param boolean      $new     New contribution or editing existing one
+     * @param bool         $new     New contribution or editing existing one
      *
      * @return void
      */

@@ -383,10 +383,10 @@ class MailingsController extends CrudController
     /**
      * Mailings history page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
@@ -504,7 +504,7 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Record id
+     * @param int      $id       Record id
      *
      * @return Response
      */
@@ -519,7 +519,7 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Record id
+     * @param int      $id       Record id
      *
      * @return Response
      */
@@ -580,7 +580,7 @@ class MailingsController extends CrudController
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -595,7 +595,7 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Mailing id
+     * @param ?int     $id       Mailing id
      *
      * @return Response
      */
@@ -668,8 +668,8 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Mailing id
-     * @param integer  $pos      Attachment position in list
+     * @param int      $id       Mailing id
+     * @param int      $pos      Attachment position in list
      *
      * @return Response
      */

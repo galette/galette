@@ -122,7 +122,7 @@ class Title
      *
      * @param Db $zdb Database instance
      *
-     * @return boolean
+     * @return bool
      */
     public function store(Db $zdb): bool
     {
@@ -162,7 +162,7 @@ class Title
      *
      * @param Db $zdb Database instance
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(Db $zdb): bool
     {

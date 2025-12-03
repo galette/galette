@@ -35,7 +35,7 @@ use Galette\Features\Translatable;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  */
 
@@ -79,7 +79,7 @@ class PaymentType implements \Stringable
     /**
      * Load a payment type from its identifier
      *
-     * @param integer $id Identifier
+     * @param int $id Identifier
      *
      * @return bool
      */
@@ -122,7 +122,7 @@ class PaymentType implements \Stringable
     /**
      * Store payment type in database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -166,7 +166,7 @@ class PaymentType implements \Stringable
     /**
      * Remove current title
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(): bool
     {
@@ -266,7 +266,7 @@ class PaymentType implements \Stringable
     /**
      * Get system payment types
      *
-     * @param boolean $translated Return translated types (default) or not
+     * @param bool $translated Return translated types (default) or not
      *
      * @return array<int,string>
      */
@@ -303,7 +303,7 @@ class PaymentType implements \Stringable
     /**
      * Is current payment a system one
      *
-     * @return boolean
+     * @return bool
      *
      */
     public function isSystemType(): bool

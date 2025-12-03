@@ -80,7 +80,7 @@ abstract class AbstractUpdater
     /**
      * Does upgrade have a SQL script to run
      *
-     * @return boolean
+     * @return bool
      */
     private function hasSql(): bool
     {
@@ -144,7 +144,7 @@ abstract class AbstractUpdater
     /**
      * Update instructions
      *
-     * @return boolean
+     * @return bool
      */
     abstract protected function update(): bool;
 
@@ -152,7 +152,7 @@ abstract class AbstractUpdater
      * Pre stuff, if any.
      * Will be executed first.
      *
-     * @return boolean
+     * @return bool
      */
     protected function preUpdate(): bool
     {
@@ -165,7 +165,7 @@ abstract class AbstractUpdater
      * @param Db      $zdb       Database instance
      * @param Install $installer Installer instance
      *
-     * @return boolean
+     * @return bool
      */
     private function sql(Db $zdb, Install $installer): bool
     {
@@ -187,7 +187,7 @@ abstract class AbstractUpdater
      * Post stuff, if any.
      * Will be executed at the end.
      *
-     * @return boolean
+     * @return bool
      */
     protected function postUpdate(): bool
     {
@@ -199,7 +199,7 @@ abstract class AbstractUpdater
      *
      * @param string $version Version for scripts
      *
-     * @return boolean
+     * @return bool
      */
     protected function setSqlScripts(string $version): bool
     {
@@ -292,7 +292,7 @@ abstract class AbstractUpdater
     /**
      * Has current update errors?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasErrors(): bool
     {

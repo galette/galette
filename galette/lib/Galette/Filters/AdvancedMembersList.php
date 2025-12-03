@@ -46,21 +46,21 @@ use Galette\Repository\PaymentTypes;
  * @property ?string $birth_date_begin
  * @property ?string $birth_date_end
  * @property int $show_public_infos
- * @property integer[]|integer $status
+ * @property int[]|int $status
  * @property ?string $contrib_creation_date_begin
  * @property ?string $contrib_creation_date_end
  * @property ?string $contrib_begin_date_begin
  * @property ?string $contrib_begin_date_end
  * @property ?string $contrib_end_date_begin
  * @property ?string $contrib_end_date_end
- * @property integer[] $contributions_types
- * @property integer[] $payments_types
+ * @property int[] $contributions_types
+ * @property int[] $payments_types
  * @property ?float $contrib_min_amount
  * @property ?float $contrib_max_amount
  * @property array<int, mixed> $contrib_dynamic
  * @property array<mixed, mixed> $free_search
  * @property array<mixed, mixed> $groups_search
- * @property integer $groups_search_log_op
+ * @property int $groups_search_log_op
  *
  * @property-read ?string $rcreation_date_begin
  * @property-read ?string $rcreation_date_end
@@ -222,7 +222,7 @@ class AdvancedMembersList extends MembersList
     /**
      * Do we want to filter within contributions?
      *
-     * @return boolean
+     * @return bool
      */
     public function withinContributions(): bool
     {
@@ -652,7 +652,7 @@ class AdvancedMembersList extends MembersList
      *
      * @param array<string,mixed> $data Array to validate
      *
-     * @return boolean
+     * @return bool
      */
     public static function isValidFreeSearch(array $data): bool
     {

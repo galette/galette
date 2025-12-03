@@ -43,12 +43,12 @@ use Galette\Helpers\EntityHelper;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property int $id
  * @property string $date
  * @property float $amount
  * @property ?string $description
- * @property ?integer $member
- * @property ?integer $payment_type
+ * @property ?int $member
+ * @property ?int $payment_type
  */
 class Transaction implements AccessManagementInterface
 {
@@ -204,9 +204,9 @@ class Transaction implements AccessManagementInterface
      * Remove transaction (and all associated contributions) from database
      *
      * @param History $hist        History
-     * @param boolean $transaction Activate transaction mode (defaults to true)
+     * @param bool    $transaction Activate transaction mode (defaults to true)
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(History $hist, bool $transaction = true): bool
     {
@@ -417,7 +417,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param History $hist History
      *
-     * @return boolean
+     * @return bool
      */
     public function store(History $hist): bool
     {
@@ -670,7 +670,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canCreate(Login $login): bool
     {
@@ -691,7 +691,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -735,7 +735,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canEdit(Login $login): bool
     {
@@ -748,7 +748,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canAttachAndDetach(Login $login): bool
     {
@@ -765,7 +765,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canDelete(Login $login): bool
     {

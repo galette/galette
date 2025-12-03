@@ -59,7 +59,7 @@ class Text
     /**
      * Get a random string
      *
-     * @param integer $length of the random string
+     * @param int $length of the random string
      *
      * @return string
      *

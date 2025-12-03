@@ -53,46 +53,46 @@ use Galette\Repository\Members;
  * @property string $pref_ville Association
  * @property string $pref_region Region
  * @property string $pref_pays Country
- * @property integer $pref_postal_address Postal address to use, one of self::POSTAL_ADDRESS*
- * @property integer $pref_postal_staff_member Staff member ID from which retrieve postal address
+ * @property int $pref_postal_address Postal address to use, one of self::POSTAL_ADDRESS*
+ * @property int $pref_postal_staff_member Staff member ID from which retrieve postal address
  * @property string $pref_org_phone_number Phone number
- * @property integer $pref_org_phone Phone number to use, one of self::PHONE_NUMBER*
- * @property integer $pref_org_phone_staff_member Staff member ID from which retrieve phone number
+ * @property int $pref_org_phone Phone number to use, one of self::PHONE_NUMBER*
+ * @property int $pref_org_phone_staff_member Staff member ID from which retrieve phone number
  * @property string $pref_org_email Email address
- * @property boolean $pref_disable_members_socials Disable social networks for members
+ * @property bool $pref_disable_members_socials Disable social networks for members
  * @property string $pref_lang Default instance language
- * @property integer $pref_numrows Default number of rows in lists
- * @property integer $pref_statut Default status for new members
+ * @property int $pref_numrows Default number of rows in lists
+ * @property int $pref_statut Default status for new members
  * @property string $pref_email_nom
  * @property string $pref_email
  * @property string $pref_email_newadh
- * @property boolean $pref_bool_mailadh
- * @property boolean $pref_bool_mailowner
- * @property boolean $pref_editor_enabled
- * @property integer $pref_mail_method Mail method, see GaletteMail::METHOD_*
+ * @property bool $pref_bool_mailadh
+ * @property bool $pref_bool_mailowner
+ * @property bool $pref_editor_enabled
+ * @property int $pref_mail_method Mail method, see GaletteMail::METHOD_*
  * @property string $pref_mail_smtp
  * @property string $pref_mail_smtp_host
- * @property boolean $pref_mail_smtp_auth
- * @property boolean $pref_mail_smtp_secure
- * @property integer $pref_mail_smtp_port
+ * @property bool $pref_mail_smtp_auth
+ * @property bool $pref_mail_smtp_secure
+ * @property int $pref_mail_smtp_port
  * @property string $pref_mail_smtp_user
  * @property string $pref_mail_smtp_password
- * @property integer $pref_membership_ext
+ * @property int $pref_membership_ext
  * @property string $pref_beg_membership
- * @property integer $pref_membership_offermonths
+ * @property int $pref_membership_offermonths
  * @property string $pref_email_reply_to
  * @property string $pref_website
- * @property integer $pref_etiq_marges_v
- * @property integer $pref_etiq_marges_h
- * @property integer $pref_etiq_hspace
- * @property integer $pref_etiq_vspace
- * @property integer $pref_etiq_hsize
- * @property integer $pref_etiq_vsize
- * @property integer $pref_etiq_cols
- * @property integer $pref_etiq_rows
- * @property integer $pref_etiq_corps
- * @property boolean $pref_etiq_border
- * @property boolean $pref_force_picture_ratio
+ * @property int $pref_etiq_marges_v
+ * @property int $pref_etiq_marges_h
+ * @property int $pref_etiq_hspace
+ * @property int $pref_etiq_vspace
+ * @property int $pref_etiq_hsize
+ * @property int $pref_etiq_vsize
+ * @property int $pref_etiq_cols
+ * @property int $pref_etiq_rows
+ * @property int $pref_etiq_corps
+ * @property bool $pref_etiq_border
+ * @property bool $pref_force_picture_ratio
  * @property string $pref_member_picture_ratio
  * @property string $pref_card_abrev
  * @property string $pref_card_strip
@@ -101,65 +101,65 @@ use Galette\Repository\Members;
  * @property string $pref_card_bcol
  * @property string $pref_card_hcol
  * @property string $pref_bool_display_title
- * @property integer $pref_card_address
+ * @property int $pref_card_address
  * @property string $pref_card_year
- * @property integer $pref_card_marges_v
- * @property integer $pref_card_marges_h
- * @property integer $pref_card_vspace
- * @property integer $pref_card_hspace
+ * @property int $pref_card_marges_v
+ * @property int $pref_card_marges_h
+ * @property int $pref_card_vspace
+ * @property int $pref_card_hspace
  * @property string $pref_card_self
- * @property integer $pref_card_hsize
- * @property integer $pref_card_vsize
- * @property integer $pref_card_cols
- * @property integer $pref_card_rows
+ * @property int $pref_card_hsize
+ * @property int $pref_card_vsize
+ * @property int $pref_card_cols
+ * @property int $pref_card_rows
  * @property string $pref_theme Preferred theme
- * @property boolean $pref_hide_bg_image
- * @property boolean $pref_enable_custom_colors
+ * @property bool $pref_hide_bg_image
+ * @property bool $pref_enable_custom_colors
  * @property string $pref_cc_primary
  * @property string $pref_cc_primary_text
  * @property string $pref_cc_secondary
  * @property string $pref_cc_secondary_text
- * @property boolean $pref_bool_publicpages
- * @property integer $pref_publicpages_visibility_generic
- * @property integer $pref_publicpages_visibility_documents
- * @property integer $pref_publicpages_visibility_memberslist
- * @property integer $pref_publicpages_visibility_membersgallery
- * @property integer $pref_publicpages_visibility_stafflist
- * @property integer $pref_publicpages_visibility_staffgallery
- * @property boolean $pref_bool_groupsmanagers_are_staff
- * @property boolean $pref_bool_selfsubscribe
- * @property boolean $pref_bool_empty_form_link
+ * @property bool $pref_bool_publicpages
+ * @property int $pref_publicpages_visibility_generic
+ * @property int $pref_publicpages_visibility_documents
+ * @property int $pref_publicpages_visibility_memberslist
+ * @property int $pref_publicpages_visibility_membersgallery
+ * @property int $pref_publicpages_visibility_stafflist
+ * @property int $pref_publicpages_visibility_staffgallery
+ * @property bool $pref_bool_groupsmanagers_are_staff
+ * @property bool $pref_bool_selfsubscribe
+ * @property bool $pref_bool_empty_form_link
  * @property string $pref_member_form_grid
  * @property string $pref_mail_sign
  * @property string $pref_new_contrib_script
- * @property boolean $pref_bool_wrap_mails
+ * @property bool $pref_bool_wrap_mails
  * @property string $pref_rss_url
  * @property string $pref_adhesion_form
- * @property boolean $pref_mail_allow_unsecure
+ * @property bool $pref_mail_allow_unsecure
  * @property string $pref_instance_uuid
  * @property string $pref_registration_uuid
  * @property string $pref_telemetry_date
  * @property string $pref_registration_date
  * @property string $pref_footer
- * @property integer $pref_filter_account
+ * @property int $pref_filter_account
  * @property string $pref_galette_url
- * @property integer $pref_redirect_on_create
- * @property integer $pref_password_length
- * @property boolean $pref_password_blacklist
- * @property integer $pref_password_strength
- * @property integer $pref_default_paymenttype
- * @property boolean $pref_bool_create_member
- * @property boolean $pref_bool_groupsmanagers_create_member
- * @property boolean $pref_bool_groupsmanagers_edit_member
- * @property boolean $pref_bool_groupsmanagers_edit_groups
- * @property boolean $pref_bool_groupsmanagers_mailings
- * @property boolean $pref_bool_groupsmanagers_exports
- * @property boolean $pref_bool_groupsmanagers_create_contributions
- * @property boolean $pref_bool_groupsmanagers_create_transactions
- * @property boolean $pref_bool_groupsmanagers_see_contributions
- * @property boolean $pref_bool_groupsmanagers_see_transactions
+ * @property int $pref_redirect_on_create
+ * @property int $pref_password_length
+ * @property bool $pref_password_blacklist
+ * @property int $pref_password_strength
+ * @property int $pref_default_paymenttype
+ * @property bool $pref_bool_create_member
+ * @property bool $pref_bool_groupsmanagers_create_member
+ * @property bool $pref_bool_groupsmanagers_edit_member
+ * @property bool $pref_bool_groupsmanagers_edit_groups
+ * @property bool $pref_bool_groupsmanagers_mailings
+ * @property bool $pref_bool_groupsmanagers_exports
+ * @property bool $pref_bool_groupsmanagers_create_contributions
+ * @property bool $pref_bool_groupsmanagers_create_transactions
+ * @property bool $pref_bool_groupsmanagers_see_contributions
+ * @property bool $pref_bool_groupsmanagers_see_transactions
  * @property-read string[] $vpref_email_newadh list of mail senders
- * @property boolean $pref_noindex
+ * @property bool $pref_noindex
  */
 class Preferences
 {
@@ -370,8 +370,8 @@ class Preferences
     /**
      * Default constructor
      *
-     * @param Db      $zdb  Db instance
-     * @param boolean $load Automatically load preferences on load
+     * @param Db   $zdb  Db instance
+     * @param bool $load Automatically load preferences on load
      *
      * @return void
      */
@@ -388,7 +388,7 @@ class Preferences
      * Check if all fields referenced in the default array do exist,
      * create them if not
      *
-     * @return boolean
+     * @return bool
      */
     private function checkUpdate(): bool
     {
@@ -450,7 +450,7 @@ class Preferences
     /**
      * Load current preferences from database.
      *
-     * @return boolean
+     * @return bool
      */
     public function load(): bool
     {
@@ -480,7 +480,7 @@ class Preferences
      * @param string $adm_login admin login entered at install time
      * @param string $adm_pass  admin password entered at install time
      *
-     * @return boolean
+     * @return bool
      * @throws Throwable
      */
     public function installInit(string $lang, string $adm_login, string $adm_pass): bool
@@ -545,7 +545,7 @@ class Preferences
      * @param array<string, mixed> $values Values
      * @param Login                $login  Logged in user
      *
-     * @return boolean
+     * @return bool
      */
     public function check(array $values, Login $login): bool
     {
@@ -846,9 +846,9 @@ class Preferences
     /**
      * Will store all preferences in the database
      *
-     * @param boolean $updating True if we're updating instance
+     * @param bool $updating True if we're updating instance
      *
-     * @return boolean
+     * @return bool
      */
     public function store(bool $updating = false): bool
     {
@@ -1000,7 +1000,7 @@ class Preferences
     /**
      * Are public pages visible?
      *
-     * @return boolean
+     * @return bool
      */
     public function arePublicPagesEnabled(): bool
     {
@@ -1012,7 +1012,7 @@ class Preferences
      *
      * @param Authentication $login Authentication instance
      *
-     * @return boolean
+     * @return bool
      *
      * @deprecated 1.2.0
      */
@@ -1032,7 +1032,7 @@ class Preferences
      * @param Authentication $login Authentication instance
      * @param string         $right Right to check
      *
-     * @return boolean
+     * @return bool
      */
     public function showPublicPage(Authentication $login, string $right): bool
     {
@@ -1434,7 +1434,7 @@ class Preferences
      * Get email signature
      *
      * @param PHPMailer $mail    PHPMailer instance
-     * @param boolean   $as_text Whether to return signature as text or HTML (default)
+     * @param bool      $as_text Whether to return signature as text or HTML (default)
      *
      * @return string
      */
@@ -1468,7 +1468,7 @@ class Preferences
     /**
      * Get patterns for mail signature
      *
-     * @param boolean $legacy Whether to load legacy patterns
+     * @param bool $legacy Whether to load legacy patterns
      *
      * @return array<string, array<string, string>>
      */

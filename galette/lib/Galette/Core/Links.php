@@ -48,8 +48,8 @@ class Links
     /**
      * Default constructor
      *
-     * @param Db      $zdb   Database instance:
-     * @param boolean $clean Whether we should clean expired links in database
+     * @param Db   $zdb   Database instance:
+     * @param bool $clean Whether we should clean expired links in database
      */
     public function __construct(private readonly Db $zdb, bool $clean = true)
     {
@@ -64,7 +64,7 @@ class Links
      * @param int $target Target (one of self::TARGET_* constants)
      * @param int $id     Target identifier
      *
-     * @return boolean
+     * @return bool
      */
     private function removeOldEntry(int $target, int $id): bool
     {
@@ -167,7 +167,7 @@ class Links
     /**
      * Remove expired links queries (older than 1 week)
      *
-     * @return boolean
+     * @return bool
      */
     protected function cleanExpired(): bool
     {

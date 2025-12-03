@@ -42,7 +42,7 @@ class PluginInstall extends Install
     /**
      * Test database connection
      *
-     * @return boolean
+     * @return bool
      */
     public function testDbConnexion(): bool
     {
@@ -57,7 +57,7 @@ class PluginInstall extends Install
      * @param Db    $zdb   Database instance
      * @param Login $login Logged in instance
      *
-     * @return boolean
+     * @return bool
      */
     public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {

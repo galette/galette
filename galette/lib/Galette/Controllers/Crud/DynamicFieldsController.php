@@ -162,11 +162,11 @@ class DynamicFieldsController extends CrudController
     /**
      * List page
      *
-     * @param Request             $request   PSR Request
-     * @param Response            $response  PSR Response
-     * @param string|null         $option    One of 'page' or 'order'
-     * @param integer|string|null $value     Value of the option
-     * @param string              $form_name Form name
+     * @param Request         $request   PSR Request
+     * @param Response        $response  PSR Response
+     * @param string|null     $option    One of 'page' or 'order'
+     * @param int|string|null $value     Value of the option
+     * @param string          $form_name Form name
      *
      * @return Response
      */
@@ -237,9 +237,9 @@ class DynamicFieldsController extends CrudController
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
      * @param string   $form_name Form name
-     * @param integer  $id        Object ID
-     * @param integer  $fid       Dynamic fields ID
-     * @param integer  $pos       Dynamic field position
+     * @param int      $id        Object ID
+     * @param int      $fid       Dynamic fields ID
+     * @param int      $pos       Dynamic field position
      * @param string   $name      File name
      *
      * @return Response
@@ -353,7 +353,7 @@ class DynamicFieldsController extends CrudController
      *
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
-     * @param integer  $id        Dynamic field id
+     * @param int      $id        Dynamic field id
      * @param ?string  $form_name Form name
      *
      * @return Response
@@ -399,7 +399,7 @@ class DynamicFieldsController extends CrudController
      *
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
-     * @param integer  $id        Dynamic field id
+     * @param int      $id        Dynamic field id
      * @param ?string  $form_name Form name
      *
      * @return Response
@@ -530,7 +530,7 @@ class DynamicFieldsController extends CrudController
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -554,7 +554,7 @@ class DynamicFieldsController extends CrudController
      *
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
-     * @param integer  $id        Field id
+     * @param int      $id        Field id
      * @param string   $form_name Form name
      * @param string   $direction One of DynamicField::MOVE_*
      *

@@ -51,7 +51,7 @@ class Text extends DynamicField
     /**
      * Get field type
      *
-     * @return integer
+     * @return int
      */
     public function getType(): int
     {

@@ -55,7 +55,7 @@ class CheckModules
     /**
      * Constructor
      *
-     * @param boolean $do Whether to do checks, defaults to true
+     * @param bool $do Whether to do checks, defaults to true
      */
     public function __construct(bool $do = true)
     {
@@ -71,7 +71,7 @@ class CheckModules
      * - should: modules that should be present but are not,
      * - missing: required modules that are missing
      *
-     * @param boolean $translated Use translations (default to true)
+     * @param bool $translated Use translations (default to true)
      *
      * @return void
      */
@@ -111,7 +111,7 @@ class CheckModules
     /**
      * HTML formatted results for checks
      *
-     * @param boolean $translated Use translations (default to true)
+     * @param bool $translated Use translations (default to true)
      *
      * @return string
      */
@@ -151,7 +151,7 @@ class CheckModules
     /**
      * Check if it is ok to use Galette with current modules
      *
-     * @return boolean
+     * @return bool
      */
     public function isValid(): bool
     {
@@ -163,7 +163,7 @@ class CheckModules
      *
      * @param string $module Module name to check
      *
-     * @return boolean
+     * @return bool
      */
     public function isGood(string $module): bool
     {

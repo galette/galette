@@ -254,7 +254,7 @@ class I18n
      *
      * @param string $str string to analyze
      *
-     * @return  boolean
+     * @return  bool
      */
     public static function seemUtf8(string $str): bool
     {
@@ -301,7 +301,7 @@ class I18n
     /**
      * Is current language RTL?
      *
-     * @return boolean
+     * @return bool
      */
     public function isRTL(): bool
     {

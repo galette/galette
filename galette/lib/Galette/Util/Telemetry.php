@@ -204,7 +204,7 @@ class Telemetry
      *
      * @param string $table Table to query
      *
-     * @return integer
+     * @return int
      */
     public function getCount(string $table): int
     {
@@ -351,7 +351,7 @@ class Telemetry
     /**
      * Does telemetry infos has been sent already?
      *
-     * @return boolean
+     * @return bool
      */
     public function isSent(): bool
     {
@@ -361,7 +361,7 @@ class Telemetry
     /**
      * Is instance registered?
      *
-     * @return boolean
+     * @return bool
      */
     public function isRegistered(): bool
     {

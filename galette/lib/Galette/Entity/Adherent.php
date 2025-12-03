@@ -53,8 +53,8 @@ use Galette\Features\Dynamics;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property ?integer $id
- * @property integer|Title|null $title Either a title id or an instance of Title
+ * @property ?int $id
+ * @property int|Title|null $title Either a title id or an instance of Title
  * @property ?string $stitle Title label
  * @property string $company_name
  * @property string $name
@@ -63,11 +63,11 @@ use Galette\Features\Dynamics;
  * @property ?string $birthdate Localized birthdate
  * @property ?string $rbirthdate Raw birthdate
  * @property string $birth_place
- * @property integer $gender
+ * @property int $gender
  * @property string $sgender Gender label
  * @property ?string $job
  * @property string $language
- * @property integer $status
+ * @property int $status
  * @property string $sstatus Status label
  * @property ?string $address
  * @property ?string $zipcode
@@ -89,14 +89,14 @@ use Galette\Features\Dynamics;
  * @property Picture $picture
  * @property Group[] $groups
  * @property Group[] $managed_groups
- * @property integer|Adherent|null $parent Parent id if parent dep is not loaded, Adherent instance otherwise
+ * @property int|Adherent|null $parent Parent id if parent dep is not loaded, Adherent instance otherwise
  * @property Adherent[] $children
- * @property boolean $admin better to rely on isAdmin()
- * @property boolean $staff better to rely on isStaff()
- * @property boolean $due_free better to rely on isDueFree()
- * @property boolean $appears_in_list better to rely on appearsInMembersList()
- * @property boolean $active better to rely on isActive()
- * @property boolean $duplicate better to rely on isDuplicate()
+ * @property bool $admin better to rely on isAdmin()
+ * @property bool $staff better to rely on isStaff()
+ * @property bool $due_free better to rely on isDueFree()
+ * @property bool $appears_in_list better to rely on appearsInMembersList()
+ * @property bool $active better to rely on isActive()
+ * @property bool $duplicate better to rely on isDuplicate()
  * @property string $sadmin yes/no
  * @property string $sstaff yes/no
  * @property string $sdue_free yes/no
@@ -106,8 +106,8 @@ use Galette\Features\Dynamics;
  * @property string $sname
  * @property string $saddress
  * @property string $contribstatus State of member contributions
- * @property integer $days_remaining
- * @property-read integer $parent_id
+ * @property int $days_remaining
+ * @property-read int $parent_id
  * @property Social $social Social networks/Contact
  * @property string $number Member number
  * @property-read bool $self_adh
@@ -352,7 +352,7 @@ class Adherent implements AccessManagementInterface
      *
      * @param string $login login for the member to load
      *
-     * @return boolean
+     * @return bool
      */
     public function loadFromLoginOrMail(string $login): bool
     {
@@ -530,7 +530,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Retrieve status from preferences
      *
-     * @return integer
+     * @return int
      *
      */
     private function getDefaultStatus(): int
@@ -642,7 +642,7 @@ class Adherent implements AccessManagementInterface
      *
      * @param string $group_name Group name
      *
-     * @return boolean
+     * @return bool
      */
     public function isGroupMember(string $group_name): bool
     {
@@ -663,7 +663,7 @@ class Adherent implements AccessManagementInterface
      *
      * @param ?string $group_name Group name
      *
-     * @return boolean
+     * @return bool
      */
     public function isGroupManager(?string $group_name): bool
     {
@@ -688,7 +688,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Does current member represents a company?
      *
-     * @return boolean
+     * @return bool
      */
     public function isCompany(): bool
     {
@@ -698,7 +698,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Is current member a man?
      *
-     * @return boolean
+     * @return bool
      */
     public function isMan(): bool
     {
@@ -708,7 +708,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Is current member a woman?
      *
-     * @return boolean
+     * @return bool
      */
     public function isWoman(): bool
     {
@@ -779,7 +779,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Get row class related to current fee status
      *
-     * @param boolean $public we want the class for public pages
+     * @param bool $public we want the class for public pages
      *
      * @return string the class to apply
      */
@@ -916,10 +916,10 @@ class Adherent implements AccessManagementInterface
     /**
      * Retrieve Full name and surname for the specified member id
      *
-     * @param Db      $zdb   Database instance
-     * @param integer $id    Member id
-     * @param boolean $wid   Add member id
-     * @param boolean $wnick Add member nickname
+     * @param Db   $zdb   Database instance
+     * @param int  $id    Member id
+     * @param bool $wid   Add member id
+     * @param bool $wnick Add member nickname
      *
      * @return string formatted Name and Surname
      */
@@ -942,11 +942,11 @@ class Adherent implements AccessManagementInterface
     /**
      * Get member name with correct case
      *
-     * @param ?string       $name    Member name
-     * @param ?string       $surname Member surname
-     * @param false|Title   $title   Member title to show or false
-     * @param false|integer $id      Member id to display or false
-     * @param false|string  $nick    Member nickname to display or false
+     * @param ?string      $name    Member name
+     * @param ?string      $surname Member surname
+     * @param false|Title  $title   Member title to show or false
+     * @param false|int    $id      Member id to display or false
+     * @param false|string $nick    Member nickname to display or false
      *
      * @return string
      */
@@ -987,11 +987,11 @@ class Adherent implements AccessManagementInterface
     /**
      * Change password for a given user
      *
-     * @param Db      $zdb    Database instance
-     * @param integer $id_adh Member identifier
-     * @param string  $pass   New password
+     * @param Db     $zdb    Database instance
+     * @param int    $id_adh Member identifier
+     * @param string $pass   New password
      *
-     * @return boolean
+     * @return bool
      */
     public static function updatePassword(Db $zdb, int $id_adh, string $pass): bool
     {
@@ -1068,7 +1068,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Is member up to date?
      *
-     * @return boolean
+     * @return bool
      */
     public function isUp2Date(): bool
     {
@@ -1609,7 +1609,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Store the member
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -2257,7 +2257,7 @@ class Adherent implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canCreate(Login $login): bool
     {
@@ -2278,7 +2278,7 @@ class Adherent implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -2299,7 +2299,7 @@ class Adherent implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canEdit(Login $login): bool
     {
@@ -2332,7 +2332,7 @@ class Adherent implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canDelete(Login $login): bool
     {
@@ -2343,7 +2343,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Are we currently duplicated a member?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDuplicate(): bool
     {
@@ -2353,7 +2353,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Flag creation mail sending
      *
-     * @param boolean $send True (default) to send creation email
+     * @param bool $send True (default) to send creation email
      *
      * @return Adherent
      */
@@ -2366,7 +2366,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Should we send administrative emails to member?
      *
-     * @return boolean
+     * @return bool
      */
     public function sendEMail(): bool
     {
@@ -2376,7 +2376,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Set member parent
      *
-     * @param integer $id Parent identifier
+     * @param int $id Parent identifier
      *
      * @return $this
      */

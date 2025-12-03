@@ -116,7 +116,7 @@ class ExternalScript
      *
      * @param array<string,mixed> $params Array of params to send
      *
-     * @return boolean
+     * @return bool
      */
     public function send(array $params): bool
     {

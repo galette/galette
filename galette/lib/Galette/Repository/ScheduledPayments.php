@@ -444,11 +444,11 @@ class ScheduledPayments
     /**
      * Remove specified scheduled payments
      *
-     * @param integer|array<int> $ids         Scheduled payments identifiers to delete
-     * @param History            $hist        History
-     * @param boolean            $transaction True to begin a database transaction
+     * @param int|array<int> $ids         Scheduled payments identifiers to delete
+     * @param History        $hist        History
+     * @param bool           $transaction True to begin a database transaction
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {

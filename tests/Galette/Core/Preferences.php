@@ -395,11 +395,11 @@ class Preferences extends GaletteTestCase
      *
      * @dataProvider sizesProvider
      *
-     * @param integer $vm    Vertical margin
-     * @param integer $hm    Horizontal margin
-     * @param integer $vs    Vertical spacing
-     * @param integer $hs    Horizontal spacing
-     * @param integer $count Number of expected errors
+     * @param int $vm    Vertical margin
+     * @param int $hm    Horizontal margin
+     * @param int $vs    Vertical spacing
+     * @param int $hs    Horizontal spacing
+     * @param int $count Number of expected errors
      *
      * @return void
      */

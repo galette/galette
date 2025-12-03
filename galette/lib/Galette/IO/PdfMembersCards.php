@@ -341,7 +341,7 @@ class PdfMembersCards extends Pdf
     /**
      * Get card width
      *
-     * @return integer
+     * @return int
      */
     public static function getWidth(): int
     {
@@ -354,7 +354,7 @@ class PdfMembersCards extends Pdf
     /**
      * Get card height
      *
-     * @return integer
+     * @return int
      */
     public static function getHeight(): int
     {
@@ -367,7 +367,7 @@ class PdfMembersCards extends Pdf
     /**
      * Get number of columns
      *
-     * @return integer
+     * @return int
      */
     public static function getCols(): int
     {
@@ -377,7 +377,7 @@ class PdfMembersCards extends Pdf
     /**
      * Get number of rows
      *
-     * @return integer
+     * @return int
      */
     public static function getRows(): int
     {

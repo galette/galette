@@ -36,8 +36,8 @@ use Galette\Core\History;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property-read integer $member_id
- * @property integer $type
+ * @property-read int $member_id
+ * @property int $type
  * @property Adherent $dest
  * @property string $date
  */
@@ -138,7 +138,7 @@ class Reminder
      *
      * @param Db $zdb Database instance
      *
-     * @return boolean
+     * @return bool
      */
     private function store(Db $zdb): bool
     {
@@ -177,7 +177,7 @@ class Reminder
     /**
      * Was reminder sent successfully?
      *
-     * @return boolean
+     * @return bool
      */
     public function isSuccess(): bool
     {
@@ -187,7 +187,7 @@ class Reminder
     /**
      * Did member had an email when reminder was sent?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasMail(): bool
     {
@@ -201,7 +201,7 @@ class Reminder
      * @param History $hist  History
      * @param Db      $zdb   Database instance
      *
-     * @return boolean
+     * @return bool
      */
     public function send(Texts $texts, History $hist, Db $zdb): bool
     {

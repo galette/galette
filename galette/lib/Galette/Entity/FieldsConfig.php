@@ -124,7 +124,7 @@ class FieldsConfig
      * @param string               $table         the table for which to get fields configuration
      * @param array<string, mixed> $defaults      default values
      * @param array<string, mixed> $cats_defaults default categories values
-     * @param boolean              $install       Are we calling from installer?
+     * @param bool                 $install       Are we calling from installer?
      */
     public function __construct(
         protected Db $zdb,
@@ -143,7 +143,7 @@ class FieldsConfig
     /**
      * Load current fields configuration from database.
      *
-     * @return boolean
+     * @return bool
      */
     public function load(): bool
     {
@@ -257,7 +257,7 @@ class FieldsConfig
      *
      * @param string $field Field name
      *
-     * @return boolean
+     * @return bool
      */
     public function isRequired(string $field): bool
     {
@@ -370,7 +370,7 @@ class FieldsConfig
      * Set default fields configuration at install time. All previous
      * existing values will be dropped first, including fields categories.
      *
-     * @return boolean
+     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -433,9 +433,9 @@ class FieldsConfig
     /**
      * Retrieve form elements
      *
-     * @param Login   $login Login instance
-     * @param boolean $new   True when adding a new member
-     * @param boolean $selfs True if we're called from self subscription page
+     * @param Login $login Login instance
+     * @param bool  $new   True when adding a new member
+     * @param bool  $selfs True if we're called from self subscription page
      *
      * @return array<string, array<int,object>>
      */
@@ -713,7 +713,7 @@ class FieldsConfig
      *
      * @param string $field The requested field
      *
-     * @return integer
+     * @return int
      */
     public function getVisibility(string $field): int
     {
@@ -735,7 +735,7 @@ class FieldsConfig
      *
      * @param array<int, array<int, array<string, mixed>>> $fields categorized fields array
      *
-     * @return boolean
+     * @return bool
      */
     public function setFields(array $fields): bool
     {
@@ -746,7 +746,7 @@ class FieldsConfig
     /**
      * Store config in database
      *
-     * @return boolean
+     * @return bool
      */
     private function store(): bool
     {
@@ -828,7 +828,7 @@ class FieldsConfig
      * Only needed for 0.7.4 upgrade
      * (should have been 0.7.3 - but I missed that.)
      *
-     * @return boolean
+     * @return bool
      */
     public function migrateRequired(): bool
     {
@@ -958,7 +958,7 @@ class FieldsConfig
      *
      * @param string $name Field name
      *
-     * @return boolean
+     * @return bool
      */
     public function isSelfExcluded(string $name): bool
     {

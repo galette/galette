@@ -68,7 +68,7 @@ class Password
      *
      * @param string $password Password to test
      *
-     * @return boolean
+     * @return bool
      */
     public function isValid(string $password): bool
     {
@@ -107,7 +107,7 @@ class Password
      *
      * @param string $password Password to check
      *
-     * @return boolean
+     * @return bool
      */
     public function isBlacklisted(string $password): bool
     {
@@ -126,7 +126,7 @@ class Password
      *
      * @param string $password Password to check
      *
-     * @return integer
+     * @return int
      */
     public function calculateStrength(string $password): int
     {
@@ -164,7 +164,7 @@ class Password
     /**
      * Get current strength
      *
-     * @return integer
+     * @return int
      */
     public function getStrenght(): int
     {

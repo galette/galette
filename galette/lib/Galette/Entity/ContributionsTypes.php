@@ -35,7 +35,7 @@ use Throwable;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property int $id
  * @property string $label
  * @property string $libelle
  * @property ?float $amount
@@ -96,7 +96,7 @@ class ContributionsTypes
      *
      * @param int $id Entry ID
      *
-     * @return boolean true if query succeed, false otherwise
+     * @return bool true if query succeed, false otherwise
      */
     public function load(int $id): bool
     {
@@ -148,7 +148,7 @@ class ContributionsTypes
     /**
      * Does current type give membership extension?
      *
-     * @return boolean
+     * @return bool
      */
     public function isExtension(): bool
     {
@@ -168,7 +168,7 @@ class ContributionsTypes
     /**
      * Set defaults at install time
      *
-     * @return boolean
+     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -225,7 +225,7 @@ class ContributionsTypes
      * Get list in an array built as:
      * $array[id] = "translated label"
      *
-     * @param boolean|null $extent Filter on (non) contributions types
+     * @param bool|null $extent Filter on (non) contributions types
      *
      * @return array<int, array<string, mixed>>
      */
@@ -309,7 +309,7 @@ class ContributionsTypes
     /**
      * Get an entry
      *
-     * @param integer $id Entry ID
+     * @param int $id Entry ID
      *
      * @return ArrayObject<string, int|string>|false Row if succeed ; false: no such id
      */
@@ -340,9 +340,9 @@ class ContributionsTypes
     /**
      * Get a label
      *
-     * @param integer $id         Id
-     * @param boolean $translated Do we want translated or original label?
-     *                            Defaults to true.
+     * @param int  $id         Id
+     * @param bool $translated Do we want translated or original label?
+     *                         Defaults to true.
      *
      * @return string|int
      */
@@ -394,7 +394,7 @@ class ContributionsTypes
      * @param ?float $amount    The amount
      * @param int    $extension Membership extension in months, 0 for a donation or -1 for preferences default
      *
-     * @return bool|integer  -2 : label already exists
+     * @return bool|int  -2 : label already exists
      */
     public function add(string $label, ?float $amount, int $extension): bool|int
     {
@@ -452,12 +452,12 @@ class ContributionsTypes
     /**
      * Update in database.
      *
-     * @param integer $id        Entry ID
-     * @param string  $label     The label
-     * @param ?float  $amount    The amount
-     * @param int     $extension Membership extension in months, 0 for a donation or -1 for preferences default
+     * @param int    $id        Entry ID
+     * @param string $label     The label
+     * @param ?float $amount    The amount
+     * @param int    $extension Membership extension in months, 0 for a donation or -1 for preferences default
      *
-     * @return self::ID_NOT_EXITS|boolean
+     * @return self::ID_NOT_EXITS|bool
      */
     public function update(int $id, string $label, ?float $amount, int $extension): int|bool
     {
@@ -508,9 +508,9 @@ class ContributionsTypes
     /**
      * Delete entry
      *
-     * @param integer $id Entry ID
+     * @param int $id Entry ID
      *
-     * @return self::ID_NOT_EXITS|boolean
+     * @return self::ID_NOT_EXITS|bool
      */
     public function delete(int $id): int|bool
     {
@@ -554,9 +554,9 @@ class ContributionsTypes
     /**
      * Check if this entry is used.
      *
-     * @param integer $id Entry ID
+     * @param int $id Entry ID
      *
-     * @return boolean
+     * @return bool
      */
     public function isUsed(int $id): bool
     {

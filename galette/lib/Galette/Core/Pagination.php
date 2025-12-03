@@ -34,12 +34,12 @@ use Slim\Views\Twig;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $current_page
+ * @property int $current_page
  * @property string $orderby
  * @property SQLOrder $ordered
- * @property integer $show
- * @property integer $pages
- * @property integer $counter
+ * @property int $show
+ * @property int $pages
+ * @property int $counter
  */
 
 abstract class Pagination
@@ -218,7 +218,7 @@ abstract class Pagination
      *
      * @param RouteParser $routeparser Application instance
      * @param Twig        $view        View instance
-     * @param boolean     $restricted  Do not permit displaying all
+     * @param bool        $restricted  Do not permit displaying all
      *
      * @return void
      */

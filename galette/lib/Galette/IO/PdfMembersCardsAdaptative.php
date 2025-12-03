@@ -392,7 +392,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
     /**
      * Get card width
      *
-     * @return integer
+     * @return int
      */
     public static function getWidth(): int
     {
@@ -404,7 +404,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
     /**
      * Get card height
      *
-     * @return integer
+     * @return int
      */
     public static function getHeight(): int
     {
@@ -416,7 +416,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
     /**
      * Get number of columns
      *
-     * @return integer
+     * @return int
      */
     public static function getCols(): int
     {
@@ -439,7 +439,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
     /**
      * Get number of rows
      *
-     * @return integer
+     * @return int
      */
     public static function getRows(): int
     {

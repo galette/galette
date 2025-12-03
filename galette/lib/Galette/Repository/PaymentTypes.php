@@ -39,7 +39,7 @@ class PaymentTypes extends Repository
     /**
      * Get payments types
      *
-     * @param boolean $schedulable Types that can be used in schedules only
+     * @param bool $schedulable Types that can be used in schedules only
      *
      * @return array<int, PaymentType>
      */
@@ -53,7 +53,7 @@ class PaymentTypes extends Repository
     /**
      * Get list
      *
-     * @param boolean $schedulable Types that can be used in schedules only
+     * @param bool $schedulable Types that can be used in schedules only
      *
      * @return array<int, PaymentType>|ResultSet
      */
@@ -86,9 +86,9 @@ class PaymentTypes extends Repository
     /**
      * Add default payment types in database
      *
-     * @param boolean $check_first Check first if it seems initialized
+     * @param bool $check_first Check first if it seems initialized
      *
-     * @return boolean
+     * @return bool
      */
     public function installInit(bool $check_first = true): bool
     {
@@ -138,7 +138,7 @@ class PaymentTypes extends Repository
     /**
      * Checks for missing payment types in the database
      *
-     * @return boolean
+     * @return bool
      */
     protected function checkUpdate(): bool
     {

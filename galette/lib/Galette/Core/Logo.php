@@ -111,7 +111,7 @@ class Logo extends Picture
     /**
      * Returns custom state
      *
-     * @return boolean
+     * @return bool
      */
     public function isCustom(): bool
     {

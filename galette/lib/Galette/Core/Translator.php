@@ -40,7 +40,7 @@ class Translator extends ZTranslator //@phpstan-ignore-line
      * @param string  $textDomain Translation domain, defaults to "default"
      * @param ?string $locale     Locale, defaults to null
      *
-     * @return boolean
+     * @return bool
      */
     public function translationExists(string $message, string $textDomain = 'default', ?string $locale = null): bool
     {

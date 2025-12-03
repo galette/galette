@@ -400,8 +400,8 @@ class Pdf extends TCPDF
      * Fix text size
      *
      * @param string  $text      Text content
-     * @param integer $maxsize   Maximal size
-     * @param integer $fontsize  Font size
+     * @param int     $maxsize   Maximal size
+     * @param int     $fontsize  Font size
      * @param string  $fontstyle Font style (defaults to '')
      * @param ?string $fontname  Font name (defaults to static::FONT)
      *
@@ -427,8 +427,8 @@ class Pdf extends TCPDF
     /**
      * Cut a string
      *
-     * @param string  $str    Original string
-     * @param integer $length Max length
+     * @param string $str    Original string
+     * @param int    $length Max length
      *
      * @return string
      */
@@ -447,8 +447,8 @@ class Pdf extends TCPDF
     /**
      * Stretch a header string
      *
-     * @param string  $str    Original string
-     * @param integer $length Max length
+     * @param string $str    Original string
+     * @param int    $length Max length
      *
      * @return string
      */

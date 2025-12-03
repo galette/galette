@@ -90,7 +90,7 @@ class Document
     /**
      * Load a document from its identifier
      *
-     * @param integer $id Identifier
+     * @param int $id Identifier
      *
      * @return void
      */
@@ -202,7 +202,7 @@ class Document
      *
      * @param Login $login Login
      *
-     * @return boolean
+     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -241,7 +241,7 @@ class Document
      * @param array<string,mixed>          $post  POST data
      * @param array<UploadedFileInterface> $files Uploaded files
      *
-     * @return boolean
+     * @return bool
      */
     public function store(array $post, array $files): bool
     {
@@ -297,7 +297,7 @@ class Document
      *
      * @param array<int>|null $ids IDs to remove, default to current id
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(?array $ids = null): bool
     {
@@ -424,7 +424,7 @@ class Document
     /**
      * Get creation date
      *
-     * @param boolean $formatted Return formatted date (default) or not
+     * @param bool $formatted Return formatted date (default) or not
      *
      * @return string|DateTime
      */
@@ -439,7 +439,7 @@ class Document
     /**
      * Get system social types
      *
-     * @param boolean $translated Return translated types (default) or not
+     * @param bool $translated Return translated types (default) or not
      *
      * @return array<string,string>
      */
@@ -468,8 +468,8 @@ class Document
     /**
      * Get system documents types
      *
-     * @param string  $type       Document type
-     * @param boolean $translated Return translated types (default) or not
+     * @param string $type       Document type
+     * @param bool   $translated Return translated types (default) or not
      *
      * @return string
      */

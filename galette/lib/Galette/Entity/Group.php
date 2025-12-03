@@ -273,9 +273,9 @@ class Group
     /**
      * Remove specified group
      *
-     * @param boolean $cascade Also remove members and managers
+     * @param bool $cascade Also remove members and managers
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(bool $cascade = false): bool
     {
@@ -357,7 +357,7 @@ class Group
     /**
      * Is group empty? (after first deletion try)
      *
-     * @return boolean
+     * @return bool
      */
     public function isEmpty(): bool
     {
@@ -367,7 +367,7 @@ class Group
     /**
      * Detach a group from its parent
      *
-     * @return boolean
+     * @return bool
      */
     public function detach(): bool
     {
@@ -409,7 +409,7 @@ class Group
     /**
      * Store the group
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -493,7 +493,7 @@ class Group
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function isManager(Login $login): bool
     {
@@ -518,7 +518,7 @@ class Group
     /**
      * Get group id
      *
-     * @return integer
+     * @return int
      */
     public function getId(): ?int
     {
@@ -528,7 +528,7 @@ class Group
     /**
      * Get Level of the group
      *
-     * @return integer
+     * @return int
      */
     public function getLevel(): int
     {
@@ -642,7 +642,7 @@ class Group
     /**
      * Get group creation date
      *
-     * @param boolean $formatted Return date formatted, raw if false
+     * @param bool $formatted Return date formatted, raw if false
      *
      * @return string
      */
@@ -659,7 +659,7 @@ class Group
     /**
      * Get member count
      *
-     * @param boolean $force Force members load, defaults to false
+     * @param bool $force Force members load, defaults to false
      *
      * @return int
      */
@@ -694,7 +694,7 @@ class Group
      *
      * @param Group $group Parent group
      *
-     * @return boolean
+     * @return bool
      */
     public function canSetParentGroup(Group $group): bool
     {
@@ -966,7 +966,7 @@ class Group
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canEdit(Login $login): bool
     {

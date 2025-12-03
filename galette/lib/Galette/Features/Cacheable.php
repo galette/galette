@@ -45,7 +45,7 @@ trait Cacheable
     /**
      * Handle cache
      *
-     * @param boolean $nocache Do not try to cache
+     * @param bool $nocache Do not try to cache
      *
      * @return void
      */
@@ -63,7 +63,7 @@ trait Cacheable
     /**
      * Check if cache is valid
      *
-     * @return boolean
+     * @return bool
      */
     private function checkCache(): bool
     {

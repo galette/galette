@@ -66,7 +66,7 @@ class Reminders
     /**
      * Load late members
      *
-     * @param boolean $nomail Get reminders for members who do not have email address
+     * @param bool $nomail Get reminders for members who do not have email address
      *
      * @return void
      */
@@ -127,7 +127,7 @@ class Reminders
     /**
      * Load late members
      *
-     * @param boolean $nomail Get reminders for members who do not have email address
+     * @param bool $nomail Get reminders for members who do not have email address
      *
      * @return void
      */
@@ -223,8 +223,8 @@ class Reminders
     /**
      * Get the list of reminders
      *
-     * @param Db      $zdb    Database instance
-     * @param boolean $nomail Get reminders for members who do not have email address
+     * @param Db   $zdb    Database instance
+     * @param bool $nomail Get reminders for members who do not have email address
      *
      * @return array<Reminder>
      */

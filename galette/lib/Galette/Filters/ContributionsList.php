@@ -35,17 +35,17 @@ use Galette\Core\Pagination;
  *
  * @property ?string $start_date_filter
  * @property ?string $end_date_filter
- * @property ?integer $filtre_cotis_adh
- * @property integer|false $filtre_cotis_children
- * @property integer $date_field
- * @property ?integer $payment_type_filter
- * @property ?integer $contrib_type_filter
- * @property boolean $filtre_transactions
- * @property integer|false $from_transaction
- * @property ?integer $max_amount
+ * @property ?int $filtre_cotis_adh
+ * @property int|false $filtre_cotis_children
+ * @property int $date_field
+ * @property ?int $payment_type_filter
+ * @property ?int $contrib_type_filter
+ * @property bool $filtre_transactions
+ * @property int|false $from_transaction
+ * @property ?int $max_amount
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
- * @property integer[] $selected
+ * @property int[] $selected
  */
 
 class ContributionsList extends Pagination
@@ -133,7 +133,7 @@ class ContributionsList extends Pagination
     /**
      * Reinit default parameters
      *
-     * @param boolean $ajax Called form an ajax query
+     * @param bool $ajax Called form an ajax query
      *
      * @return void
      */

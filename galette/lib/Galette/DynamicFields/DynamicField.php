@@ -175,7 +175,7 @@ abstract class DynamicField
     /**
      * Load field
      *
-     * @param integer $id Id
+     * @param int $id Id
      *
      * @return void
      */
@@ -243,8 +243,8 @@ abstract class DynamicField
     /**
      * Retrieve fixed values table name
      *
-     * @param integer $id       Field ID
-     * @param bool    $prefixed Whether table name should be prefixed
+     * @param int  $id       Field ID
+     * @param bool $prefixed Whether table name should be prefixed
      *
      * @return string
      */
@@ -293,7 +293,7 @@ abstract class DynamicField
     /**
      * Get field type
      *
-     * @return integer
+     * @return int
      */
     abstract public function getType(): int;
 
@@ -397,7 +397,7 @@ abstract class DynamicField
     /**
      * Get field id
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -417,7 +417,7 @@ abstract class DynamicField
     /**
      * Get field's width in forms
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getWidthInForms(): ?int
     {
@@ -427,7 +427,7 @@ abstract class DynamicField
     /**
      * Get field width
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getWidth(): ?int
     {
@@ -437,7 +437,7 @@ abstract class DynamicField
     /**
      * Get field height
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getHeight(): ?int
     {
@@ -457,7 +457,7 @@ abstract class DynamicField
     /**
      * Get fields repetitions
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getRepeat(): ?int
     {
@@ -467,7 +467,7 @@ abstract class DynamicField
     /**
      * Get field min size
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getMinSize(): ?int
     {
@@ -477,7 +477,7 @@ abstract class DynamicField
     /**
      * Get field size
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getSize(): ?int
     {
@@ -487,7 +487,7 @@ abstract class DynamicField
     /**
      * Get field index
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getIndex(): ?int
     {
@@ -850,7 +850,7 @@ abstract class DynamicField
     /**
      * Get new index
      *
-     * @return integer
+     * @return int
      */
     protected function getNewIndex(): int
     {

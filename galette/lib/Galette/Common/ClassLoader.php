@@ -193,7 +193,7 @@ class ClassLoader
      *
      * @param string $className The name of the class to load.
      *
-     * @return boolean TRUE if the class has been successfully loaded, FALSE otherwise.
+     * @return bool TRUE if the class has been successfully loaded, FALSE otherwise.
      */
     public function loadClass(string $className): bool
     {
@@ -226,7 +226,7 @@ class ClassLoader
      * the given name.
      *
      * @param string $className The fully-qualified name of the class.
-     * @return boolean TRUE if this ClassLoader can load the class, FALSE otherwise.
+     * @return bool TRUE if this ClassLoader can load the class, FALSE otherwise.
      */
     public function canLoadClass(string $className): bool
     {
@@ -262,7 +262,7 @@ class ClassLoader
      * these responsibilities.
      *
      * @param string $className The fully-qualified name of the class.
-     * @return boolean TRUE if the class exists as per the definition given above, FALSE otherwise.
+     * @return bool TRUE if the class exists as per the definition given above, FALSE otherwise.
      */
     public static function classExists(string $className): bool
     {

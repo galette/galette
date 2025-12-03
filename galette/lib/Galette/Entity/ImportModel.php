@@ -100,7 +100,7 @@ class ImportModel
      *
      * @param Db $zdb Database instance
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(Db $zdb): bool
     {
@@ -128,7 +128,7 @@ class ImportModel
      *
      * @param Db $zdb Database instance
      *
-     * @return boolean
+     * @return bool
      */
     public function store(Db $zdb): bool
     {
@@ -185,7 +185,7 @@ class ImportModel
     /**
      * Get creation date
      *
-     * @param boolean $formatted Return date formatted, raw if false
+     * @param bool $formatted Return date formatted, raw if false
      *
      * @return string
      */

@@ -47,7 +47,7 @@ class FakeData
      *
      * @param Adherent $member Member instance
      *
-     * @return boolean
+     * @return bool
      */
     public function addPhoto(Adherent $member): bool
     {

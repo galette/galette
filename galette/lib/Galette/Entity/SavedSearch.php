@@ -35,10 +35,10 @@ use Analog\Analog;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property array<string, mixed> $parameters
- * @property integer $author_id
+ * @property int $author_id
  * @property string $creation_date
  * @property string $form
  */
@@ -83,7 +83,7 @@ class SavedSearch
     /**
      * Load a saved search from its identifier
      *
-     * @param integer $id Identifier
+     * @param int $id Identifier
      *
      * @return void
      */
@@ -147,7 +147,7 @@ class SavedSearch
      *
      * @param array<string, mixed> $values Values to set
      *
-     * @return boolean
+     * @return bool
      */
     public function check(array $values): bool
     {
@@ -182,7 +182,7 @@ class SavedSearch
     /**
      * Store saved search in database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -218,7 +218,7 @@ class SavedSearch
     /**
      * Remove current saved search
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(): bool
     {

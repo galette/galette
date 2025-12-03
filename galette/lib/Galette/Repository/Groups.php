@@ -53,7 +53,7 @@ class Groups
     /**
      * Get simple groups list (only id and names)
      *
-     * @param boolean $as_groups Retrieve Group[]
+     * @param bool $as_groups Retrieve Group[]
      *
      * @return array<int, Group|string>
      */
@@ -89,7 +89,7 @@ class Groups
     /**
      * Get groups list
      *
-     * @param boolean  $full Return full list or root only
+     * @param bool     $full Return full list or root only
      * @param int|null $id   Group ID to retrieve
      *
      * @return Group[]
@@ -160,8 +160,8 @@ class Groups
     /**
      * Loads managed groups for specific member
      *
-     * @param int     $id       Member id
-     * @param boolean $as_group Retrieve Group[] or int[]
+     * @param int  $id       Member id
+     * @param bool $as_group Retrieve Group[] or int[]
      *
      * @return array<int, Group|int>
      */
@@ -173,9 +173,9 @@ class Groups
     /**
      * Loads groups for specific member
      *
-     * @param int     $id       Member id
-     * @param boolean $managed  Retrieve managed groups (defaults to false)
-     * @param boolean $as_group Retrieve Group[] or int[]
+     * @param int  $id       Member id
+     * @param bool $managed  Retrieve managed groups (defaults to false)
+     * @param bool $as_group Retrieve Group[] or int[]
      *
      * @return array<int, Group|int>
      */
@@ -220,11 +220,11 @@ class Groups
      * @param array<string> $groups      Groups Groups list. Each entry must contain
      *                                   the group id, name each value separated
      *                                   by a pipe.
-     * @param boolean       $manager     Add member as manager, defaults to false
-     * @param boolean       $transaction Does a SQL transaction already exists? Defaults
+     * @param bool          $manager     Add member as manager, defaults to false
+     * @param bool          $transaction Does a SQL transaction already exists? Defaults
      *                                   to false.
      *
-     * @return boolean
+     * @return bool
      */
     public static function addMemberToGroups(Adherent $adh, array $groups, bool $manager = false, bool $transaction = false): bool
     {
@@ -385,7 +385,7 @@ class Groups
      * @param int|null $parent  Parent group (defaults to null)
      * @param int|null $current Current ID to be excluded (defaults to null)
      *
-     * @return boolean
+     * @return bool
      */
     public static function isUnique(Db $zdb, string $name, ?int $parent = null, ?int $current = null): bool
     {

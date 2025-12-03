@@ -96,7 +96,7 @@ class Texts
     /**
      * Get patterns for mails
      *
-     * @param boolean $legacy Whether to load legacy patterns
+     * @param bool $legacy Whether to load legacy patterns
      *
      * @return array<string, array<string, list<string>|string>>
      */
@@ -400,9 +400,9 @@ class Texts
     /**
      * Initialize texts at install time
      *
-     * @param boolean $check_first Check first if it seems initialized
+     * @param bool $check_first Check first if it seems initialized
      *
-     * @return boolean false if no need to initialize, true if data has been initialized, Exception if error
+     * @return bool false if no need to initialize, true if data has been initialized, Exception if error
      * @throws Throwable
      */
     public function installInit(bool $check_first = true): bool
@@ -456,7 +456,7 @@ class Texts
     /**
      * Checks for missing texts in the database
      *
-     * @return boolean
+     * @return bool
      */
     private function checkUpdate(): bool
     {

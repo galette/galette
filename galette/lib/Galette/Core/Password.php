@@ -40,7 +40,7 @@ class Password extends AbstractPassword
     public const TABLE = 'tmppasswds';
     public const PK = Adherent::PK;
 
-    /** @var integer Overrides default password size */
+    /** @var int Overrides default password size */
     public const DEFAULT_SIZE = 50;
     /** @var string Overrides default character set */
     protected string $chars = 'abcdefghjkmnpqrstuvwxyz0123456789&@{[]}%#+*:ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -48,8 +48,8 @@ class Password extends AbstractPassword
     /**
      * Default constructor
      *
-     * @param Db      $zdb   Database instance:
-     * @param boolean $clean Whether we should clean expired passwords in database
+     * @param Db   $zdb   Database instance:
+     * @param bool $clean Whether we should clean expired passwords in database
      */
     public function __construct(private readonly Db $zdb, bool $clean = true)
     {
@@ -63,7 +63,7 @@ class Password extends AbstractPassword
      *
      * @param int $id_adh Member identifier
      *
-     * @return boolean
+     * @return bool
      */
     private function removeOldEntries(int $id_adh): bool
     {
@@ -92,7 +92,7 @@ class Password extends AbstractPassword
      *
      * @param int $id_adh Member identifier
      *
-     * @return boolean
+     * @return bool
      */
     public function generateNewPassword(int $id_adh): bool
     {
@@ -134,7 +134,7 @@ class Password extends AbstractPassword
     /**
      * Remove expired passwords queries (older than 24 hours)
      *
-     * @return boolean
+     * @return bool
      */
     public function cleanExpired(): bool
     {
@@ -201,7 +201,7 @@ class Password extends AbstractPassword
      *
      * @param string $hash hash
      *
-     * @return boolean
+     * @return bool
      */
     public function removeHash(string $hash): bool
     {

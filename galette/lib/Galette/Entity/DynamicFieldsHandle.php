@@ -187,7 +187,7 @@ class DynamicFieldsHandle
     /**
      * Get values
      *
-     * @param integer $field Field ID
+     * @param int $field Field ID
      *
      * @return array<int, array<string, mixed>>
      */
@@ -208,9 +208,9 @@ class DynamicFieldsHandle
     /**
      * Set field value
      *
-     * @param ?integer   $item  Item ID
-     * @param integer    $field Field ID
-     * @param integer    $index Value index
+     * @param ?int       $item  Item ID
+     * @param int        $field Field ID
+     * @param int        $index Value index
      * @param string|int $value Value
      *
      * @return void
@@ -235,8 +235,8 @@ class DynamicFieldsHandle
     /**
      * Unset field value
      *
-     * @param integer $field Field ID
-     * @param integer $index Value index
+     * @param int $field Field ID
+     * @param int $index Value index
      *
      * @return void
      */
@@ -251,10 +251,10 @@ class DynamicFieldsHandle
     /**
      * Store values
      *
-     * @param ?integer $item_id     Current item id to use (will be used if current item_id is 0)
-     * @param boolean  $transaction True if a transaction already exists
+     * @param ?int $item_id     Current item id to use (will be used if current item_id is 0)
+     * @param bool $transaction True if a transaction already exists
      *
-     * @return boolean
+     * @return bool
      */
     public function storeValues(?int $item_id = null, bool $transaction = false): bool
     {
@@ -434,7 +434,7 @@ class DynamicFieldsHandle
     /**
      * Is there any change in dynamic fields?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasChanged(): bool
     {
@@ -444,10 +444,10 @@ class DynamicFieldsHandle
     /**
      * Remove values
      *
-     * @param ?integer $item_id     Current item id to use (will be used if current item_id is 0)
-     * @param boolean  $transaction True if a transaction already exists
+     * @param ?int $item_id     Current item id to use (will be used if current item_id is 0)
+     * @param bool $transaction True if a transaction already exists
      *
-     * @return boolean
+     * @return bool
      */
     public function removeValues(?int $item_id = null, bool $transaction = false): bool
     {

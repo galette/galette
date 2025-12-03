@@ -41,7 +41,7 @@ trait I18n
      *
      * @param string $text_orig Text to translate
      *
-     * @return boolean
+     * @return bool
      */
     protected function addTranslation(string $text_orig): bool
     {
@@ -67,7 +67,7 @@ trait I18n
      * @param string $text_locale The locale
      * @param string $text_trans  Translated text
      *
-     * @return boolean
+     * @return bool
      */
     protected function updateTranslation(string $text_orig, string $text_locale, string $text_trans): bool
     {
@@ -91,7 +91,7 @@ trait I18n
      *
      * @param string $text_orig Text to translate
      *
-     * @return boolean
+     * @return bool
      */
     protected function deleteTranslation(string $text_orig): bool
     {

@@ -84,7 +84,7 @@ trait Permissions
     /**
      * Get current permissions
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getPermission(): ?int
     {

@@ -105,9 +105,9 @@ class Gaptcha
     /**
      * Checks captcha validity
      *
-     * @param integer $gaptcha User entry
+     * @param int $gaptcha User entry
      *
-     * @return boolean
+     * @return bool
      */
     public function check(int $gaptcha): bool
     {

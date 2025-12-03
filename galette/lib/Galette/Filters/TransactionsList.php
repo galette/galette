@@ -35,11 +35,11 @@ use Galette\Core\Pagination;
  *
  * @property ?string $start_date_filter
  * @property ?string $end_date_filter
- * @property ?integer $filtre_cotis_adh
- * @property integer|false $filtre_cotis_children
+ * @property ?int $filtre_cotis_adh
+ * @property int|false $filtre_cotis_children
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
- * @property ?integer $max_amount
+ * @property ?int $max_amount
  */
 class TransactionsList extends Pagination
 {

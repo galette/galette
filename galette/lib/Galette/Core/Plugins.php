@@ -183,7 +183,7 @@ class Plugins
      * @param ?string               $route    Module route name
      * @param ?string               $date     Module release date
      * @param ?array<string,string> $acls     Module routes ACLs
-     * @param ?integer              $priority Module priority
+     * @param ?int                  $priority Module priority
      *
      * @return void
      */
@@ -407,7 +407,7 @@ class Plugins
      *
      * @param string $id Module ID
      *
-     * @return boolean
+     * @return bool
      */
     public function moduleExists(string $id): bool
     {
@@ -543,7 +543,7 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return boolean
+     * @return bool
      */
     public function needsDatabase(string $id): bool
     {
@@ -618,7 +618,7 @@ class Plugins
     /**
      * Set a module as disabled
      *
-     * @param integer $cause Cause (one of Plugins::DISABLED_* constants)
+     * @param int $cause Cause (one of Plugins::DISABLED_* constants)
      *
      * @return void
      */
@@ -647,8 +647,8 @@ class Plugins
     /**
      * Get module class name
      *
-     * @param string  $id   Module ID
-     * @param boolean $full Include namespace, defaults to false
+     * @param string $id   Module ID
+     * @param bool   $full Include namespace, defaults to false
      *
      * @return string
      */

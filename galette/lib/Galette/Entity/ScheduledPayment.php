@@ -83,7 +83,7 @@ class ScheduledPayment
     /**
      * Load a scheduled payment from its identifier
      *
-     * @param integer $id Identifier
+     * @param int $id Identifier
      *
      * @return bool
      */
@@ -138,7 +138,7 @@ class ScheduledPayment
      *
      * @param array<string,mixed> $data Data
      *
-     * @return boolean
+     * @return bool
      */
     public function check(array $data): bool
     {
@@ -203,7 +203,7 @@ class ScheduledPayment
     /**
      * Store scheduled payment in database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -246,7 +246,7 @@ class ScheduledPayment
     /**
      * Remove current
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(): bool
     {
@@ -463,7 +463,7 @@ class ScheduledPayment
     /**
      * Is payment due?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDue(): bool
     {

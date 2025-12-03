@@ -134,7 +134,7 @@ trait Dependencies
      *
      * @param string $name Dependency name
      *
-     * @return boolean
+     * @return bool
      */
     protected function isDepEnabled(string $name): bool
     {

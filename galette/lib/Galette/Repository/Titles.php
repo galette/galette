@@ -90,7 +90,7 @@ class Titles
     /**
      * Set default titles at install time
      *
-     * @return boolean
+     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool

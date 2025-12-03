@@ -181,7 +181,7 @@ class Db
     /**
      * Retrieve current database version
      *
-     * @param boolean $check_table Check if table exists, defaults to false
+     * @param bool $check_table Check if table exists, defaults to false
      *
      * @return string
      *
@@ -221,7 +221,7 @@ class Db
     /**
      * Check if database version suits our needs
      *
-     * @return boolean
+     * @return bool
      */
     public function checkDbVersion(): bool
     {
@@ -265,7 +265,7 @@ class Db
      * @param ?string $port which tcp port we want to connect to
      * @param ?string $db   database name
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception|Throwable
      */
@@ -560,7 +560,7 @@ class Db
      * Converts recursively database to UTF-8
      *
      * @param ?string $prefix       Specified table prefix
-     * @param boolean $content_only Proceed only content (no table conversion)
+     * @param bool    $content_only Proceed only content (no table conversion)
      *
      * @return void
      */
@@ -713,7 +713,7 @@ class Db
     /**
      * Is current database using Postgresql?
      *
-     * @return boolean
+     * @return bool
      */
     public function isPostgres(): bool
     {
@@ -914,9 +914,9 @@ class Db
      * @see https://bugs.galette.eu/issues/1158
      * @see https://bugs.galette.eu/issues/1374
      *
-     * @param string  $table    Table name
-     * @param string  $pkcol    Primary key column name
-     * @param integer $expected Expected sequence value
+     * @param string $table    Table name
+     * @param string $pkcol    Primary key column name
+     * @param int    $expected Expected sequence value
      *
      * @return void
      */
@@ -944,9 +944,9 @@ class Db
     /**
      * Get sequence name
      *
-     * @param string  $table    Table name
-     * @param string  $pkcol    Primary key column name
-     * @param boolean $prefixed Whether to prefix the sequence name
+     * @param string $table    Table name
+     * @param string $pkcol    Primary key column name
+     * @param bool   $prefixed Whether to prefix the sequence name
      *
      * @return string
      */
@@ -966,7 +966,7 @@ class Db
      * @param SqlInterface $sql       SQL object
      * @param Throwable    $exception Exception to check
      *
-     * @return boolean
+     * @return bool
      */
     public function isDuplicateException(SqlInterface $sql, Throwable $exception): bool
     {
@@ -983,7 +983,7 @@ class Db
      *
      * @param Throwable $exception Exception to check
      *
-     * @return boolean
+     * @return bool
      */
     public function isForeignKeyException(Throwable $exception): bool
     {
@@ -998,8 +998,8 @@ class Db
     /**
      * Drops a table
      *
-     * @param string  $table   Table name, without prefix
-     * @param boolean $maymiss Whether the table can be missing, defaults to false
+     * @param string $table   Table name, without prefix
+     * @param bool   $maymiss Whether the table can be missing, defaults to false
      *
      * @return void
      */
@@ -1036,7 +1036,7 @@ class Db
      *
      * @param object $entity Entity instance
      *
-     * @return integer
+     * @return int
      */
     public function getLastGeneratedValue(object $entity): int
     {

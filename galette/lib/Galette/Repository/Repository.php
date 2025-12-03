@@ -110,9 +110,9 @@ abstract class Repository
     /**
      * Add default values in database
      *
-     * @param boolean $check_first Check first if it seems initialized, defaults to true
+     * @param bool $check_first Check first if it seems initialized, defaults to true
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function installInit(bool $check_first = true): bool;
 
@@ -156,7 +156,7 @@ abstract class Repository
      * @param string         $field_name Field name to order by
      * @param ?array<string> $fields     SELECTE'ed fields
      *
-     * @return boolean
+     * @return bool
      */
     protected function canOrderBy(string $field_name, ?array $fields): bool
     {

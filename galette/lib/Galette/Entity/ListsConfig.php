@@ -246,7 +246,7 @@ class ListsConfig extends FieldsConfig
      *
      * @param array<int,array<string,mixed>> $fields categorized fields array
      *
-     * @return boolean
+     * @return bool
      */
     public function setListFields(array $fields): bool
     {
@@ -257,7 +257,7 @@ class ListsConfig extends FieldsConfig
     /**
      * Store list config in database
      *
-     * @return boolean
+     * @return bool
      */
     private function storeList(): bool
     {
@@ -344,7 +344,7 @@ class ListsConfig extends FieldsConfig
      *
      * @param string $field The requested field
      *
-     * @return integer
+     * @return int
      */
     public function getVisibility(string $field): int
     {

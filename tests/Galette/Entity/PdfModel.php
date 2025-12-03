@@ -217,8 +217,8 @@ class PdfModel extends GaletteTestCase
      * Tets getTypeClass
      * @dataProvider typesProvider
      *
-     * @param integer $type     Requested type
-     * @param string  $expected Expected class name
+     * @param int    $type     Requested type
+     * @param string $expected Expected class name
      *
      * @return void
      */

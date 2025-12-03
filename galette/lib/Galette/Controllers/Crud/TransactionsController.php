@@ -97,7 +97,7 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Transaction id
+     * @param ?int     $id       Transaction id
      * @param ?string  $action   Action
      *
      * @return Response
@@ -217,7 +217,7 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Transaction id
+     * @param int      $id       Transaction id
      * @param ?string  $type     Transaction type
      *
      * @return Response
@@ -267,7 +267,7 @@ class TransactionsController extends ContributionsController
      * @param Response    $response PSR Response
      * @param string      $action   Action ('edit' or 'add')
      * @param Transaction $trans    Transaction instance
-     * @param ?integer    $id       Contribution id
+     * @param ?int        $id       Contribution id
      *
      * @return Response
      */
@@ -364,8 +364,8 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Transaction id
-     * @param integer  $cid      Contribution id
+     * @param int      $id       Transaction id
+     * @param int      $cid      Contribution id
      *
      * @return Response
      */
@@ -409,8 +409,8 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Transaction id
-     * @param integer  $cid      Contribution id
+     * @param int      $id       Transaction id
+     * @param int      $cid      Contribution id
      *
      * @return Response
      */

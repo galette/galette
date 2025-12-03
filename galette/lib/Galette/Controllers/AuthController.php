@@ -220,7 +220,7 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Member to impersonate
+     * @param int      $id       Member to impersonate
      *
      * @return Response
      */
@@ -312,7 +312,7 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id_adh   Member id
+     * @param ?int     $id_adh   Member id
      *
      * @return Response
      */

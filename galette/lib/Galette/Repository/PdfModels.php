@@ -66,9 +66,9 @@ class PdfModels extends Repository
     /**
      * Add default models in database
      *
-     * @param boolean $check_first Check first if it seems initialized
+     * @param bool $check_first Check first if it seems initialized
      *
-     * @return boolean
+     * @return bool
      */
     public function installInit(bool $check_first = true): bool
     {
@@ -123,7 +123,7 @@ class PdfModels extends Repository
     /**
      * Checks for missing texts in the database
      *
-     * @return boolean
+     * @return bool
      */
     protected function checkUpdate(): bool
     {

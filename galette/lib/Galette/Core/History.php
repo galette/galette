@@ -140,7 +140,7 @@ class History
     /**
      * Delete all entries
      *
-     * @return boolean
+     * @return bool
      */
     public function clean(): bool
     {
@@ -407,7 +407,7 @@ class History
     /**
      * Get table's name
      *
-     * @param boolean $prefixed Whether table name should be prefixed
+     * @param bool $prefixed Whether table name should be prefixed
      *
      * @return string
      */

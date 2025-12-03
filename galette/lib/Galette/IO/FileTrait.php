@@ -218,7 +218,7 @@ trait FileTrait
      *
      * @param string $dest Destination directory
      *
-     * @return boolean
+     * @return bool
      */
     public function copyTo(string $dest): bool
     {

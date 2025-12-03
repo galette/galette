@@ -159,7 +159,7 @@ class Picture
     /**
      * Check if current file is present on the File System
      *
-     * @return boolean true if file is present on FS, false otherwise
+     * @return bool true if file is present on FS, false otherwise
      */
     private function checkFileOnFS(): bool
     {
@@ -192,7 +192,7 @@ class Picture
      * Check if current file is present in the database,
      *   and copy it to the File System
      *
-     * @return boolean true if file is present in the DB, false otherwise
+     * @return bool true if file is present in the DB, false otherwise
      */
     private function checkFileInDB(): bool
     {
@@ -330,9 +330,9 @@ class Picture
     /**
      * Deletes a picture, from both database and filesystem
      *
-     * @param boolean $transaction Whether to use a transaction here or not
+     * @param bool $transaction Whether to use a transaction here or not
      *
-     * @return boolean true if image was successfully deleted, false otherwise
+     * @return bool true if image was successfully deleted, false otherwise
      */
     public function delete(bool $transaction = true): bool
     {
@@ -688,7 +688,7 @@ class Picture
      *                                        If null, we'll use the source image. Defaults to null
      * @param ?array<string, mixed> $cropping Cropping properties
      *
-     * @return boolean
+     * @return bool
      */
     private function resizeImage(string $source, string $ext, ?string $dest = null, ?array $cropping = null): bool
     {

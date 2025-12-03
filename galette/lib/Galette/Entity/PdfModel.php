@@ -38,9 +38,9 @@ use Laminas\Db\Sql\Expression;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property ?integer $id
+ * @property ?int $id
  * @property string $name
- * @property integer $type
+ * @property int $type
  * @property ?string $header
  * @property-read string $hheader
  * @property ?string $footer
@@ -110,8 +110,8 @@ abstract class PdfModel
     /**
      * Load a Model from its identifier
      *
-     * @param int     $id   Identifier
-     * @param boolean $init Init data if required model is missing
+     * @param int  $id   Identifier
+     * @param bool $init Init data if required model is missing
      *
      * @return void
      */
@@ -188,7 +188,7 @@ abstract class PdfModel
     /**
      * Store model in database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -262,10 +262,10 @@ abstract class PdfModel
     /**
      * Check length
      *
-     * @param string  $value The value
-     * @param int     $chars Length
-     * @param string  $field Field name
-     * @param boolean $empty Can value be empty
+     * @param string $value The value
+     * @param int    $chars Length
+     * @param string $field Field name
+     * @param bool   $empty Can value be empty
      *
      * @return void
      */

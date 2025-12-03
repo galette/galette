@@ -277,12 +277,13 @@ class MailingHistory extends History
      * Load mailing from an existing one
      *
      * @param Db      $zdb     Database instance
-     * @param integer $id      Model identifier
+     * @param int     $id      Model identifier
      * @param Mailing $mailing Mailing object
-     * @param boolean $new     True if we create a 'new' mailing,
-     *                         false otherwise (from preview for example)
+     * @param bool    $new     True if we create a 'new' mailing,
+     *                         false otherwise (from preview for
+     *                         example)
      *
-     * @return boolean
+     * @return bool
      */
     public static function loadFrom(Db $zdb, int $id, Mailing $mailing, bool $new = true): bool
     {
@@ -308,9 +309,9 @@ class MailingHistory extends History
     /**
      * Store a mailing in the history
      *
-     * @param boolean $sent Defaults to false
+     * @param bool $sent Defaults to false
      *
-     * @return boolean
+     * @return bool
      */
     public function storeMailing(bool $sent = false): bool
     {
@@ -384,7 +385,7 @@ class MailingHistory extends History
     /**
      * Update in the database
      *
-     * @return boolean
+     * @return bool
      */
     public function update(): bool
     {
@@ -406,7 +407,7 @@ class MailingHistory extends History
     /**
      * Store in the database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -429,10 +430,10 @@ class MailingHistory extends History
     /**
      * Remove specified entries
      *
-     * @param integer|array<int> $ids  Mailing history entries identifiers
-     * @param History            $hist History instance
+     * @param int|array<int> $ids  Mailing history entries identifiers
+     * @param History        $hist History instance
      *
-     * @return boolean
+     * @return bool
      */
     public function removeEntries(int|array $ids, History $hist): bool
     {
@@ -474,7 +475,7 @@ class MailingHistory extends History
     /**
      * Get table's name
      *
-     * @param boolean $prefixed Whether table name should be prefixed
+     * @param bool $prefixed Whether table name should be prefixed
      *
      * @return string
      */

@@ -47,13 +47,13 @@ use Galette\Helpers\EntityHelper;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property int $id
  * @property ?string $date
  * @property ?DateTime $raw_date
- * @property ?integer $member
+ * @property ?int $member
  * @property ?ContributionsTypes $type
  * @property ?double $amount
- * @property ?integer $payment_type
+ * @property ?int $payment_type
  * @property ?double $orig_amount
  * @property ?string $info
  * @property ?string $begin_date
@@ -61,9 +61,9 @@ use Galette\Helpers\EntityHelper;
  * @property ?string $end_date
  * @property ?DateTime $raw_end_date
  * @property ?Transaction $transaction
- * @property ?integer $extension
- * @property integer $duration
- * @property ?integer $model
+ * @property ?int $extension
+ * @property int $duration
+ * @property ?int $model
  * @property array<string, array<string, string>> $fields
  */
 class Contribution implements AccessManagementInterface
@@ -659,7 +659,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Check that membership fees does not overlap
      *
-     * @return boolean|string True if all is ok, false if error,
+     * @return bool|string True if all is ok, false if error,
      * error message if overlap
      */
     public function checkOverlap(): bool|string
@@ -715,7 +715,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Store the contribution
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -816,7 +816,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Update member deadline
      *
-     * @return boolean
+     * @return bool
      */
     private function updateDeadline(): bool
     {
@@ -847,9 +847,9 @@ class Contribution implements AccessManagementInterface
     /**
      * Remove contribution from database
      *
-     * @param boolean $transaction Activate transaction mode (defaults to true)
+     * @param bool $transaction Activate transaction mode (defaults to true)
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(bool $transaction = true): bool
     {
@@ -938,8 +938,8 @@ class Contribution implements AccessManagementInterface
     /**
      * Retrieve member due date
      *
-     * @param Db       $zdb       Database instance
-     * @param ?integer $member_id Member identifier
+     * @param Db   $zdb       Database instance
+     * @param ?int $member_id Member identifier
      *
      * @return string|null
      */
@@ -986,7 +986,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param int $trans_id Transaction identifier
      *
-     * @return boolean
+     * @return bool
      */
     public function unsetTransactionPart(int $trans_id): bool
     {
@@ -1025,7 +1025,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param int $trans_id Transaction identifier
      *
-     * @return boolean
+     * @return bool
      */
     public function setTransactionPart(int $trans_id): bool
     {
@@ -1050,7 +1050,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Is current contribution a membership fee
      *
-     * @return boolean
+     * @return bool
      */
     public function isFee(): bool
     {
@@ -1062,7 +1062,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param int $id Transaction identifier
      *
-     * @return boolean
+     * @return bool
      */
     public function isTransactionPartOf(int $id): bool
     {
@@ -1076,7 +1076,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Is current contribution part of transaction
      *
-     * @return boolean
+     * @return bool
      */
     public function isTransactionPart(): bool
     {
@@ -1372,7 +1372,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Flag creation mail sending
      *
-     * @param boolean $send True (default) to send creation email
+     * @param bool $send True (default) to send creation email
      *
      * @return self
      */
@@ -1385,7 +1385,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Should we send administrative emails to member?
      *
-     * @return boolean
+     * @return bool
      */
     public function sendEMail(): bool
     {
@@ -1439,7 +1439,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canCreate(Login $login): bool
     {
@@ -1460,7 +1460,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -1505,7 +1505,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canEdit(Login $login): bool
     {
@@ -1520,7 +1520,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canDelete(Login $login): bool
     {

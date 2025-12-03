@@ -394,11 +394,11 @@ class ContributionsController extends CrudController
     /**
      * List page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page', 'order' or 'member'
-     * @param integer|string|null $value    Value of the option
-     * @param ?string             $type     One of 'transactions' or 'contributions'
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page', 'order' or 'member'
+     * @param int|string|null $value    Value of the option
+     * @param ?string         $type     One of 'transactions' or 'contributions'
      *
      * @return Response
      */
@@ -796,7 +796,7 @@ class ContributionsController extends CrudController
      *
      * @param Request     $request  PSR Request
      * @param Response    $response PSR Response
-     * @param integer     $id       Contribution id
+     * @param int         $id       Contribution id
      * @param string|null $type     Contribution type
      *
      * @return Response
@@ -826,7 +826,7 @@ class ContributionsController extends CrudController
      * @param string       $action   Action ('edit' or 'add')
      * @param string       $type     Contribution type
      * @param Contribution $contrib  Contribution instance
-     * @param ?integer     $id       Contribution id
+     * @param ?int         $id       Contribution id
      *
      * @return Response
      */
@@ -991,7 +991,7 @@ class ContributionsController extends CrudController
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

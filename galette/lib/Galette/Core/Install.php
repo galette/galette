@@ -184,7 +184,7 @@ class Install
     /**
      * Are we installing?
      *
-     * @return boolean
+     * @return bool
      */
     public function isInstall(): bool
     {
@@ -194,7 +194,7 @@ class Install
     /**
      * Are we upgrading?
      *
-     * @return boolean
+     * @return bool
      */
     public function isUpgrade(): bool
     {
@@ -255,7 +255,7 @@ class Install
     /**
      * Are we at check step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isCheckStep(): bool
     {
@@ -275,7 +275,7 @@ class Install
     /**
      * Are we at type step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isTypeStep(): bool
     {
@@ -295,7 +295,7 @@ class Install
     /**
      * Are we at database step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDbStep(): bool
     {
@@ -305,7 +305,7 @@ class Install
     /**
      * Is DB step passed?
      *
-     * @return boolean
+     * @return bool
      */
     public function postCheckDb(): bool
     {
@@ -450,7 +450,7 @@ class Install
     /**
      * Are we at database check step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDbCheckStep(): bool
     {
@@ -460,7 +460,7 @@ class Install
     /**
      * Test database connection
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Throwable
      */
@@ -489,7 +489,7 @@ class Install
     /**
      * Are we at version selection step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isVersionSelectionStep(): bool
     {
@@ -509,7 +509,7 @@ class Install
     /**
      * Are we at db installation step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDbinstallStep(): bool
     {
@@ -529,7 +529,7 @@ class Install
     /**
      * Are we at db upgrade step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDbUpgradeStep(): bool
     {
@@ -710,7 +710,7 @@ class Install
      * @param Db     $zdb       Database instance
      * @param string $sql_query SQL instructions
      *
-     * @return boolean
+     * @return bool
      */
     public function executeSql(Db $zdb, string $sql_query): bool
     {
@@ -827,7 +827,7 @@ class Install
     /**
      * Are we at super admin information step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isAdminStep(): bool
     {
@@ -882,7 +882,7 @@ class Install
     /**
      * Are we at telemetry step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isTelemetryStep(): bool
     {
@@ -902,7 +902,7 @@ class Install
     /**
      * Are we at Galette initialization step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isGaletteInitStep(): bool
     {
@@ -952,7 +952,7 @@ class Install
      * Load contents from existing config file
      *
      * @param array<string, string> $post_data Data posted
-     * @param boolean               $pass      Retrieve password
+     * @param bool                  $pass      Retrieve password
      *
      * @return array<string, ?string>
      */
@@ -1052,7 +1052,7 @@ class Install
     /**
      * Write configuration file to disk
      *
-     * @return boolean
+     * @return bool
      */
     public function writeConfFile(): bool
     {
@@ -1143,7 +1143,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * @param Db    $zdb   Database instance
      * @param Login $login Logged in instance
      *
-     * @return boolean
+     * @return bool
      */
     public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
@@ -1267,7 +1267,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
     /**
      * Are we at end step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isEndStep(): bool
     {
@@ -1313,7 +1313,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      *
      * @param int $step Step
      *
-     * @return boolean
+     * @return bool
      */
     public function isStepPassed(int $step): bool
     {

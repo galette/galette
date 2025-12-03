@@ -85,7 +85,7 @@ class Social
     /**
      * Load a social from its identifier
      *
-     * @param integer $id Identifier
+     * @param int $id Identifier
      *
      * @return void
      */
@@ -171,7 +171,7 @@ class Social
     /**
      * Store social in database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -216,7 +216,7 @@ class Social
      *
      * @param array<int>|null $ids IDs to remove, default to current id
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(?array $ids = null): bool
     {
@@ -330,7 +330,7 @@ class Social
     /**
      * Get system social types
      *
-     * @param boolean $translated Return translated types (default) or not
+     * @param bool $translated Return translated types (default) or not
      *
      * @return array<string,string>
      */
@@ -369,8 +369,8 @@ class Social
     /**
      * Get system social types
      *
-     * @param string  $type       Social type
-     * @param boolean $translated Return translated types (default) or not
+     * @param string $type       Social type
+     * @param bool   $translated Return translated types (default) or not
      *
      * @return string
      */

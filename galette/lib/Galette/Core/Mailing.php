@@ -38,10 +38,10 @@ use Psr\Http\Message\UploadedFileInterface;
  *
  * @property string $subject
  * @property string $message
- * @property boolean $html
- * @property integer $current_step
- * @property-read  integer $step
- * @property integer|string $id
+ * @property bool $html
+ * @property int $current_step
+ * @property-read  int $step
+ * @property int|string $id
  * @property-read string $alt_message
  * @property-read string $wrapped_message
  * @property-read PHPMailer $mail
@@ -52,7 +52,7 @@ use Psr\Http\Message\UploadedFileInterface;
  * @property File[] $attachments
  * @property-read string $sender_name
  * @property-read string $sender_address
- * @property integer $history_id
+ * @property int $history_id
  */
 class Mailing extends GaletteMail
 {
@@ -85,7 +85,7 @@ class Mailing extends GaletteMail
      *
      * @param Preferences          $preferences Preferences instance
      * @param array<int, Adherent> $members     An array of members
-     * @param ?integer             $id          Identifier, defaults to null
+     * @param ?int                 $id          Identifier, defaults to null
      */
     public function __construct(Preferences $preferences, array $members = [], ?int $id = null)
     {
@@ -168,10 +168,11 @@ class Mailing extends GaletteMail
      * Loads a mailing from history
      *
      * @param ArrayObject<string, mixed> $rs  Mailing entry
-     * @param boolean                    $new True if we create a 'new' mailing,
-     *                                        false otherwise (from preview for example)
+     * @param bool                       $new True if we create a 'new' mailing,
+     *                                        false otherwise (from preview for
+     *                                        example)
      *
-     * @return boolean
+     * @return bool
      */
     public function loadFromHistory(ArrayObject $rs, bool $new = true): bool
     {
@@ -432,10 +433,10 @@ class Mailing extends GaletteMail
     /**
      * Remove mailing attachments
      *
-     * @param boolean $temp Remove only temporary attachments,
-     *                      to avoid history breaking
+     * @param bool $temp Remove only temporary attachments,
+     *                   to avoid history breaking
      *
-     * @return boolean
+     * @return bool
      */
     public function removeAttachments(bool $temp = false): bool
     {
@@ -490,7 +491,7 @@ class Mailing extends GaletteMail
     /**
      * Does mailing already exists in history?
      *
-     * @return boolean
+     * @return bool
      */
     public function existsInHistory(): bool
     {

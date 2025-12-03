@@ -155,7 +155,7 @@ class CsvIn extends Csv
      * @param string              $filename            CSV filename
      * @param array<string,mixed> $members_fields      Members fields
      * @param array<string,mixed> $members_fields_cats Members fields categories
-     * @param boolean             $dryrun              Run in dry run mode (do not store in database)
+     * @param bool                $dryrun              Run in dry run mode (do not store in database)
      *
      * @return bool|int
      */
@@ -209,7 +209,7 @@ class CsvIn extends Csv
      *
      * @param string $filename File name
      *
-     * @return boolean
+     * @return bool
      */
     private function check(string $filename): bool
     {
@@ -446,7 +446,7 @@ class CsvIn extends Csv
      *
      * @param string $filename CSV filename
      *
-     * @return boolean
+     * @return bool
      */
     private function storeMembers(string $filename): bool
     {

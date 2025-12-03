@@ -113,7 +113,7 @@ class Login extends Authentication
      * @param string $user  user's login
      * @param string $passe user's password
      *
-     * @return boolean
+     * @return bool
      */
     public function logIn(string $user, string $passe): bool
     {

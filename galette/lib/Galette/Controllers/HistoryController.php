@@ -41,10 +41,10 @@ class HistoryController extends AbstractController
     /**
      * History page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */

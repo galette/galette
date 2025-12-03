@@ -127,8 +127,8 @@ class Members
      * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
      *                                   an array. If null, all fields will be
      *                                   returned
-     * @param boolean        $count      true if we want to count members
-     * @param boolean        $limit      true to LIMIT query
+     * @param bool           $count      true if we want to count members
+     * @param bool           $limit      true to LIMIT query
      *
      * @return Adherent[]|ResultSet
      */
@@ -156,8 +156,8 @@ class Members
      * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
      *                                   an array. If null, all fields will be
      *                                   returned
-     * @param boolean        $count      true if we want to count members
-     * @param boolean        $limit      true to LIMIT query
+     * @param bool           $count      true if we want to count members
+     * @param bool           $limit      true to LIMIT query
      *
      * @return Adherent[]|ResultSet
      */
@@ -185,11 +185,11 @@ class Members
      * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
      *                                   an array. If null, all fields will be
      *                                   returned
-     * @param boolean        $count      true if we want to count members
-     * @param boolean        $staff      true if we want only staff members
-     * @param boolean        $managed    true if we want only managed groups
-     * @param boolean        $limit      true if we want records pagination
-     * @param boolean        $export     true if we are exporting
+     * @param bool           $count      true if we want to count members
+     * @param bool           $staff      true if we want only staff members
+     * @param bool           $managed    true if we want only managed groups
+     * @param bool           $limit      true if we want records pagination
+     * @param bool           $export     true if we are exporting
      *
      * @return Adherent[]|ResultSet
      */
@@ -261,9 +261,9 @@ class Members
     /**
      * Remove specified members
      *
-     * @param integer|array<int> $ids Members identifiers to delete
+     * @param int|array<int> $ids Members identifiers to delete
      *
-     * @return boolean
+     * @return bool
      */
     public function removeMembers(int|array $ids): bool
     {
@@ -415,7 +415,7 @@ class Members
     /**
      * Get members list
      *
-     * @param boolean        $as_members return the results as an array of
+     * @param bool           $as_members return the results as an array of
      *                                   Member object.
      * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
      *                                   an array. If null, all fields will be
@@ -439,8 +439,8 @@ class Members
     /**
      * Get members list with public information available
      *
-     * @param boolean $with_photos get only members which have uploaded a
-     *                             photo (for gallery)
+     * @param bool $with_photos get only members which have uploaded a
+     *                          photo (for gallery)
      *
      * @return array<string, Adherent[]>
      */
@@ -493,8 +493,8 @@ class Members
     /**
      * Get members list with public information available
      *
-     * @param boolean $with_photos get only members which have uploaded a
-     *                             photo (for gallery)
+     * @param bool $with_photos get only members which have uploaded a
+     *                          photo (for gallery)
      *
      * @return array<string, Adherent[]|array<string, Adherent[]>>
      */
@@ -558,12 +558,12 @@ class Members
      *
      * @param int|array<int> $ids         an array of members id that has been selected
      * @param ?array<string> $orderby     SQL order clause (optional)
-     * @param boolean        $with_photos Should photos be loaded?
-     * @param boolean        $as_members  Return Adherent[] or simple ResultSet
+     * @param bool           $with_photos Should photos be loaded?
+     * @param bool           $as_members  Return Adherent[] or simple ResultSet
      * @param ?array<string> $fields      Fields to use
-     * @param boolean        $export      True if we are exporting
-     * @param boolean        $dues        True if load dues as Adherent dependency
-     * @param boolean        $parent      True if load parent as Adherent dependency
+     * @param bool           $export      True if we are exporting
+     * @param bool           $dues        True if load dues as Adherent dependency
+     * @param bool           $parent      True if load parent as Adherent dependency
      *
      * @return array <int,Adherent|ArrayObject<string, int|string>>|false
      */
@@ -1034,7 +1034,7 @@ class Members
      * @param string         $field_name Field name to order by
      * @param ?array<string> $fields     SELECTE'ed fields
      *
-     * @return boolean
+     * @return bool
      */
     private function canOrderBy(string $field_name, ?array $fields): bool
     {
@@ -1567,7 +1567,7 @@ class Members
      * If those are not required, or if a file has been imported
      * (from a CSV file for example), we fill here random values.
      *
-     * @return boolean
+     * @return bool
      */
     public function emptyLogins(): bool
     {
@@ -1817,9 +1817,9 @@ class Members
     /**
      * Get members list to instantiate dropdowns
      *
-     * @param Db       $zdb     Database instance
-     * @param Login    $login   Login instance
-     * @param ?integer $current Current member
+     * @param Db    $zdb     Database instance
+     * @param Login $login   Login instance
+     * @param ?int  $current Current member
      *
      * @return array<int, string>
      */

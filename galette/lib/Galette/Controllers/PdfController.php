@@ -74,7 +74,7 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id_adh   Member id
+     * @param ?int     $id_adh   Member id
      *
      * @return Response
      */
@@ -228,7 +228,7 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id_adh   Member id
+     * @param ?int     $id_adh   Member id
      *
      * @return Response
      */
@@ -365,7 +365,7 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Contribution id
+     * @param int      $id       Contribution id
      *
      * @return Response
      */
@@ -399,7 +399,7 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Group id
+     * @param ?int     $id       Group id
      *
      * @return Response
      */
@@ -433,7 +433,7 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Model id
+     * @param ?int     $id       Model id
      *
      * @return Response
      */

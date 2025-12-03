@@ -72,8 +72,8 @@ trait Replacements
     /**
      * Get dynamic patterns
      *
-     * @param string  $form_name Dynamic form name
-     * @param boolean $legacy    Whether to load legacy patterns
+     * @param string $form_name Dynamic form name
+     * @param bool   $legacy    Whether to load legacy patterns
      *
      * @return array<string,array<string,string>>
      */
@@ -226,7 +226,7 @@ trait Replacements
     /**
      * Get patterns for a member
      *
-     * @param boolean $legacy Whether to load legacy patterns
+     * @param bool $legacy Whether to load legacy patterns
      *
      * @return array<string,array<string,string>>
      */
@@ -371,7 +371,7 @@ trait Replacements
     /**
      * Get patterns for a contribution
      *
-     * @param boolean $legacy Whether to load legacy patterns
+     * @param bool $legacy Whether to load legacy patterns
      *
      * @return array<string,array<string,string>>
      */

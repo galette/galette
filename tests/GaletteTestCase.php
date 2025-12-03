@@ -206,7 +206,7 @@ abstract class GaletteTestCase extends TestCase
     /**
      * Loads member from a resultset
      *
-     * @param integer $id Id
+     * @param int $id Id
      *
      * @return void
      */
