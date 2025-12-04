@@ -29,6 +29,8 @@ use Throwable;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
 
+use function Safe\preg_match;
+
 /**
  * Generic email for Galette
  *

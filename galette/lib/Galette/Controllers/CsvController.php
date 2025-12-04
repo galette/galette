@@ -29,6 +29,7 @@ use Galette\Filters\ScheduledPaymentsList;
 use Galette\IO\ContributionsCsv;
 use Galette\IO\ScheduledPaymentsCsv;
 use Laminas\Db\ResultSet\ResultSet;
+use Safe\Exceptions\FilesystemException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\ImportModel;
@@ -40,6 +41,12 @@ use Galette\IO\MembersCsv;
 use Galette\Repository\DynamicFieldsSet;
 use Analog\Analog;
 use Slim\Psr7\Stream;
+
+use function Safe\file_get_contents;
+use function Safe\fclose;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\rewind;
 
 /**
  * Galette CSV controller
@@ -147,8 +154,8 @@ class CsvController extends AbstractController
                 if ($results->count() > 0) {
                     $filename = $table . '_full.csv';
                     $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
-                    $fp = fopen($filepath, 'w');
-                    if ($fp) {
+                    try {
+                        $fp = fopen($filepath, 'w');
                         $csv->export(
                             $results,
                             Csv::DEFAULT_SEPARATOR,
@@ -161,6 +168,8 @@ class CsvController extends AbstractController
                             'name' => $table,
                             'file' => $filename
                         ];
+                    } catch (FilesystemException) {
+                        //empty catch
                     }
                 } else {
                     $this->flash->addMessage(
@@ -456,7 +465,6 @@ class CsvController extends AbstractController
                     )
                 );
             } else {
-                $success = false;
                 $this->flash->addMessage(
                     'error_detected',
                     str_replace(

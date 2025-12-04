@@ -76,6 +76,6 @@ class LightSlimApp
      */
     public function getApp(): App
     {
-        return $this->app; //@phpstan-ignore-line
+        return $this->app;
     }
 }

@@ -42,6 +42,8 @@ use Galette\IO\Charts;
 use Galette\Repository\Members;
 use Galette\Repository\Reminders;
 
+use function Safe\dir;
+
 /**
  * Galette main controller
  *

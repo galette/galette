@@ -26,6 +26,10 @@ namespace Galette\Core;
 use Exception;
 use Analog\Analog;
 use Galette\Common\ClassLoader;
+use Safe\Exceptions\FilesystemException;
+
+use function Safe\file_put_contents;
+use function Safe\realpath;
 
 /**
  * Plugins class for galette
@@ -85,7 +89,7 @@ class Plugins
                 $root .= '/';
             }
 
-            if (($d = @dir($root)) === false) {
+            if (($d = @dir($root)) === false) { //@phpstan-ignore theCodingMachineSafe.function
                 continue;
             }
 
@@ -271,8 +275,10 @@ class Plugins
      */
     protected function createDisabledFile(string $id): void
     {
-        if (@file_put_contents($this->getDisabledPath($id), '') === false) {
-            throw new Exception("Cannot create disabled file for plugin " . $id);
+        try {
+            file_put_contents($this->getDisabledPath($id), '');
+        } catch (FilesystemException $e) {
+            throw new Exception("Cannot create disabled file for plugin " . $id, 0, $e);
         }
     }
 
@@ -288,7 +294,7 @@ class Plugins
     {
         $legacy_file = $this->disabled[$id]['root'] . '/_disabled';
         //try to remove the old file
-        if (file_exists($legacy_file) && @unlink($legacy_file) === false) {
+        if (file_exists($legacy_file) && @unlink($legacy_file) === false) { //@phpstan-ignore theCodingMachineSafe.function
             Analog::log(
                 sprintf(
                     'Plugin %1$s was disabled from its own directory, that is deprecated. Migration has been done, please remove the file %2$s manually.',
@@ -300,7 +306,7 @@ class Plugins
             throw new Exception("Cannot unlink legacy disabled file for plugin " . $id);
         }
 
-        if (file_exists($this->getDisabledPath($id)) && @unlink($this->getDisabledPath($id)) === false) {
+        if (file_exists($this->getDisabledPath($id)) && @unlink($this->getDisabledPath($id)) === false) { //@phpstan-ignore theCodingMachineSafe.function
             throw new Exception("Cannot unlink disabled file for plugin " . $id);
         }
     }
@@ -702,7 +708,7 @@ class Plugins
                 //disable module the new way
                 $this->createDisabledFile($this->id);
                 //try to remove the old file
-                if (@unlink($legacy_file) === false) {
+                if (@unlink($legacy_file) === false) { //@phpstan-ignore theCodingMachineSafe.function
                     Analog::log(
                         sprintf(
                             'Plugin %1$s was disabled from its own directory, that is deprecated. Migration has been done, please remove the file %2$s manually.',

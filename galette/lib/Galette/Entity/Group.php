@@ -24,7 +24,11 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Safe\DateTime;
+use Exception;
 use Galette\Repository\Groups;
+use OverflowException;
+use RuntimeException;
 use Throwable;
 use Galette\Core\Login;
 use Analog\Analog;
@@ -420,7 +424,7 @@ class Group
             $parent_group = $this->parent_group->getId();
         }
         if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->id ?? null)) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 _T("The group name you have requested already exists in the database.")
             );
         }
@@ -453,7 +457,7 @@ class Group
                     return true;
                 } else {
                     $hist->add(_T("Fail to add new group."));
-                    throw new \Exception(
+                    throw new Exception(
                         'An error occurred inserting new group!'
                     );
                 }
@@ -649,7 +653,7 @@ class Group
     public function getCreationDate(bool $formatted = true): string
     {
         if ($formatted === true) {
-            $date = new \DateTime($this->creation_date);
+            $date = new DateTime($this->creation_date);
             return $date->format(__("Y-m-d"));
         } else {
             return $this->creation_date;
@@ -720,7 +724,7 @@ class Group
 
         if (!$this->canSetParentGroup($group)) {
             //does not seem to work :/
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
                     _T('Group `%1$s` cannot be set as parent!'),
                     $group->getName()
@@ -753,14 +757,14 @@ class Group
             );
             $zdb->execute($insert);
             $this->members[] = $member;
-        } catch (\OverflowException) {
+        } catch (OverflowException) {
             //nothing to do, member is already in group
             Analog::log(
                 'Member `' . $member->sname . '` already in group `'
                 . $this->group_name . '` (' . $this->id . ').',
                 Analog::INFO
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot add member to group `' . $this->group_name
                 . '` (' . $this->id . ') | ' . $e->getMessage(),
@@ -827,7 +831,7 @@ class Group
                         . '` (' . $this->id . ').',
                         Analog::ERROR
                     );
-                    throw new \Exception(
+                    throw new Exception(
                         'Unable to attach `' . $m->sname . '` '
                         . 'to ' . $this->group_name . '(' . $this->id . ')'
                     );
@@ -844,7 +848,7 @@ class Group
 
             return true;
         } catch (Throwable $e) {
-            $te = new \RuntimeException('Unable to attach members to group', $e->getCode(), $e);
+            $te = new RuntimeException('Unable to attach members to group', $e->getCode(), $e);
             $zdb->connection->rollBack();
             $messages = [];
             do {
@@ -916,7 +920,7 @@ class Group
                         . '` (' . $this->id . ').',
                         Analog::ERROR
                     );
-                    throw new \Exception(
+                    throw new Exception(
                         'Unable to attach `' . $m->sname . '` '
                         . 'to ' . $this->group_name . '(' . $this->id . ')'
                     );

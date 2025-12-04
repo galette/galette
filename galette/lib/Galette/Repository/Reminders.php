@@ -23,11 +23,12 @@ declare(strict_types=1);
 
 namespace Galette\Repository;
 
-use DateTime;
+use DateInterval;
 use Galette\Core\Db;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
 use Laminas\Db\Adapter\Driver\StatementInterface;
+use Safe\DateTime;
 use Throwable;
 
 /**
@@ -72,7 +73,7 @@ class Reminders
      */
     private function loadLate(bool $nomail = false): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         $filters = new MembersList();
         $filters->filter_account = Members::ACTIVE_ACCOUNT;
         $filters->membership_filter = Members::MEMBERSHIP_LATE;
@@ -133,7 +134,7 @@ class Reminders
      */
     private function loadImpendings(bool $nomail = false): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         $filters = new MembersList();
         $filters->filter_account = Members::ACTIVE_ACCOUNT;
         $filters->membership_filter = Members::MEMBERSHIP_NEARLY;
@@ -198,19 +199,19 @@ class Reminders
     {
         global $preferences;
 
-        $limit_now = new \DateTime();
+        $limit_now = new DateTime();
         $limit_now->setTime(23, 59, 59);
         if ($preferences->pref_beg_membership != '') {
             //case beginning of membership
             [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
-            $limit_date = new \DateTime($limit_now->format('Y') . '-' . $m . '-' . $j);
+            $limit_date = new DateTime($limit_now->format('Y') . '-' . $m . '-' . $j);
             while ($limit_now <= $limit_date) {
-                $limit_date->sub(new \DateInterval('P1Y'));
+                $limit_date->sub(new DateInterval('P1Y'));
             }
         } elseif ($preferences->pref_membership_ext != '') {
             //case membership extension
             $limit_date = clone $limit_now;
-            $limit_date->sub(new \DateInterval('P' . $preferences->pref_membership_ext . 'M'));
+            $limit_date->sub(new DateInterval('P' . $preferences->pref_membership_ext . 'M'));
         } else {
             throw new \RuntimeException(
                 'Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!'

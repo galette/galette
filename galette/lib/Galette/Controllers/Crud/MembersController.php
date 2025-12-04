@@ -46,6 +46,8 @@ use Galette\Repository\PaymentTypes;
 use Galette\Repository\Titles;
 use Analog\Analog;
 
+use function Safe\preg_match;
+
 /**
  * Galette members controller
  *

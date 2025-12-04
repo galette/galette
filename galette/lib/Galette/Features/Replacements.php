@@ -42,6 +42,11 @@ use RuntimeException;
 use Slim\Routing\RouteParser;
 use DI\Attribute\Inject;
 
+use function Safe\file_get_contents;
+use function Safe\preg_match;
+use function Safe\preg_replace;
+use function Safe\preg_replace_callback;
+
 /**
  * Replacements feature
  *

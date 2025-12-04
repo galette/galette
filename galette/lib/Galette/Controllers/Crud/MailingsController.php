@@ -36,6 +36,8 @@ use Galette\Filters\MembersList;
 use Galette\Repository\Members;
 use Analog\Analog;
 
+use function Safe\file_get_contents;
+
 /**
  * Galette Mailing controller
  *

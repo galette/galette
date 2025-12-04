@@ -28,6 +28,8 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
 
+use function Safe\preg_replace;
+
 /**
  * Galette dynamic translations controller
  *

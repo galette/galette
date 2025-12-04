@@ -33,6 +33,11 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
 
+use function Safe\file_get_contents;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\rewind;
+
 /**
  * Galette documents controller
  *

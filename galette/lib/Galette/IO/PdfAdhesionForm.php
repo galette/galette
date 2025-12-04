@@ -30,6 +30,8 @@ use Galette\Entity\PdfModel;
 use Galette\Entity\PdfAdhesionFormModel;
 use Analog\Analog;
 
+use function Safe\realpath;
+
 /**
  * Adhesion Form PDF
  *

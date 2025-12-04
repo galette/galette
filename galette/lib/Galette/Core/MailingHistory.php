@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use ArrayObject;
+use Safe\DateTime;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
@@ -54,8 +55,8 @@ class MailingHistory extends History
     /** @var array<int, mixed> */
     private array $recipients;
     private int $sender;
-    private ?string $sender_name = null; //@phpstan-ignore-line
-    private ?string $sender_address = null; //@phpstan-ignore-line
+    private ?string $sender_name = null;
+    private ?string $sender_address = null;
     private bool $sent = false;
 
     /**
@@ -128,7 +129,7 @@ class MailingHistory extends History
                         }
                     }
                 }
-                $r['attachments'] = $attachments; //@phpstan-ignore-line
+                $r['attachments'] = $attachments; //@phpstan-ignore offsetAssign.valueType (ArrayObject<string, string> does not accept int<0, max>. seems wrong guess)
                 $ret[] = $r;
             }
             return $ret;
@@ -179,7 +180,7 @@ class MailingHistory extends History
     {
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->raw_start_date_filter);
+                $d = new DateTime($this->filters->raw_start_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     'mailing_date',
                     $d->format('Y-m-d')
@@ -187,7 +188,7 @@ class MailingHistory extends History
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->raw_end_date_filter);
+                $d = new DateTime($this->filters->raw_end_date_filter);
                 $select->where->lessThanOrEqualTo(
                     'mailing_date',
                     $d->format('Y-m-d')

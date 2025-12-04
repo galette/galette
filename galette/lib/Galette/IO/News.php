@@ -30,6 +30,11 @@ use Galette\Util\Text;
 use Throwable;
 use Analog\Analog;
 
+use function Safe\file_get_contents;
+use function Safe\ini_get;
+use function Safe\json_decode;
+use function Safe\simplexml_load_string;
+
 /**
  * News class from rss feed for galette
  *

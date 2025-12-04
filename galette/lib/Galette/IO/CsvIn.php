@@ -25,6 +25,7 @@ namespace Galette\IO;
 
 use Galette\Core\I18n;
 use Galette\Entity\Title;
+use Safe\Exceptions\FilesystemException;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
@@ -36,6 +37,9 @@ use Galette\Entity\FieldsConfig;
 use Galette\Entity\Status;
 use Galette\Repository\Titles;
 use Galette\Repository\Members;
+
+use function Safe\fclose;
+use function Safe\fopen;
 
 /**
  * CSV imports
@@ -215,10 +219,11 @@ class CsvIn extends Csv
     {
         $this->resetErrors();
         unset($this->emails);
-        $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
-        if (!$handle) {
+        try {
+            $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
+        } catch (FilesystemException $e) {
             Analog::log(
-                'File ' . $filename . ' cannot be open!',
+                'File ' . $filename . ' cannot be open! ' . $e->getMessage(),
                 Analog::ERROR
             );
             $this->addError(
@@ -258,7 +263,7 @@ class CsvIn extends Csv
 
         $row = 0;
         while (
-            ($data = fgetcsv(
+            ($data = fgetcsv( //@phpstan-ignore theCodingMachineSafe.function
                 $handle,
                 1000,
                 self::DEFAULT_SEPARATOR,
@@ -457,7 +462,7 @@ class CsvIn extends Csv
         try {
             $this->zdb->connection->beginTransaction();
             while (
-                ($data = fgetcsv(
+                ($data = fgetcsv( //@phpstan-ignore theCodingMachineSafe.function
                     $handle,
                     1000,
                     self::DEFAULT_SEPARATOR,

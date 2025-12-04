@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace Galette\DynamicFields;
 
 use Analog\Analog;
-use DateTime;
+use Safe\DateTime;
 use Galette\Core\Db;
 use Galette\Entity\DynamicFieldsHandle;
 use Throwable;

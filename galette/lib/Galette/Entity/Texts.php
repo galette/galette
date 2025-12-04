@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use DateInterval;
+use Safe\DateTime;
 use Exception;
 use Galette\Core\I18n;
 use Galette\Core\Login;
@@ -192,8 +194,8 @@ class Texts
      */
     public function setLinkValidity(): self
     {
-        $link_validity = new \DateTime();
-        $link_validity->add(new \DateInterval('PT24H'));
+        $link_validity = new DateTime();
+        $link_validity->add(new DateInterval('PT24H'));
         $this->setReplacements(['link_validity' => $link_validity->format(_T("Y-m-d H:i:s"))]);
         return $this;
     }
@@ -595,7 +597,7 @@ class Texts
         include GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
         $texts = [];
 
-        //@phpstan-ignore-next-line
+        //@phpstan-ignore variable.undefined
         foreach ($texts_fields as $text_field) {
             unset($text_field['tid']);
             $text_field['tlang'] = $lang;

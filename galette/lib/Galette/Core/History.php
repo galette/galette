@@ -23,12 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Safe\DateTime;
 use Throwable;
 use Analog\Analog;
 use Galette\Filters\HistoryList;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Select;
+
+use function Safe\preg_split;
 
 /**
  * History management
@@ -289,7 +292,7 @@ class History
     {
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->raw_start_date_filter);
+                $d = new DateTime($this->filters->raw_start_date_filter);
                 $d->setTime(0, 0, 0);
                 $select->where->greaterThanOrEqualTo(
                     'date_log',
@@ -298,7 +301,7 @@ class History
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->raw_end_date_filter);
+                $d = new DateTime($this->filters->raw_end_date_filter);
                 $d->setTime(23, 59, 59);
                 $select->where->lessThanOrEqualTo(
                     'date_log',

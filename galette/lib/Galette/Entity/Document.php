@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
-use DateTime;
+use Safe\DateTime;
 use Galette\Core\Authentication;
 use Galette\Core\Login;
 use Galette\Features\I18n;
@@ -339,7 +339,7 @@ class Document
     {
         $file = $this->getDestDir() . $this->getDocumentFilename();
         if (file_exists($file)) {
-            return unlink($file);
+            return unlink($file); //@phpstan-ignore theCodingMachineSafe.function
         }
 
         Analog::log('File ' . $file . ' does not exist', Analog::WARNING);

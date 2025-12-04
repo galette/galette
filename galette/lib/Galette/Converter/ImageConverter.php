@@ -25,6 +25,8 @@ namespace Galette\Converter;
 
 use League\HTMLToMarkdown\ElementInterface;
 
+use function Safe\preg_match;
+
 /**
  * IMG converter
  *

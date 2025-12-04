@@ -23,6 +23,9 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use function Safe\imagecreatefromwebp;
+use function Safe\imagepng;
+
 /**
  * This class stores a logo for printing that could be different
  * from the default one.

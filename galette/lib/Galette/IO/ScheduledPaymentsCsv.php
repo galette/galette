@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use ArrayObject;
-use DateTime;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
@@ -32,6 +31,11 @@ use Galette\Entity\ScheduledPayment;
 use Galette\Filters\ScheduledPaymentsList;
 use Galette\Repository\PaymentTypes;
 use Galette\Repository\ScheduledPayments;
+use Safe\DateTime;
+use Safe\Exceptions\FilesystemException;
+
+use function Safe\fclose;
+use function Safe\fopen;
 
 /**
  * Contributions CSV exports
@@ -119,8 +123,8 @@ class ScheduledPaymentsCsv extends CsvOut
             }
         }
 
-        $fp = fopen($this->path, 'w');
-        if ($fp) {
+        try {
+            $fp = fopen($this->path, 'w');
             $this->export(
                 $scheduled_list,
                 self::DEFAULT_SEPARATOR,
@@ -129,6 +133,8 @@ class ScheduledPaymentsCsv extends CsvOut
                 $fp
             );
             fclose($fp);
+        } catch (FilesystemException) {
+            //empty catch
         }
     }
 

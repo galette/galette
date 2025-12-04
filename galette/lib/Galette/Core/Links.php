@@ -23,11 +23,14 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use DateTime;
+use DateInterval;
+use Safe\DateTime;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
+
+use function Safe\base64_decode;
 
 /**
  * Temporary links for galette, to send direct links to invoices, receipts,
@@ -160,7 +163,7 @@ class Links
     private function getExpirationDate(): DateTime
     {
         $date = new DateTime();
-        $date->sub(new \DateInterval('P1W'));
+        $date->sub(new DateInterval('P1W'));
         return $date;
     }
 

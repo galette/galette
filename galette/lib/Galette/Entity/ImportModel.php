@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Safe\DateTime;
+use Exception;
 use Galette\Core\Db;
 use Galette\Core\Galette;
 use Throwable;
@@ -149,7 +151,7 @@ class ImportModel
                 if ($results->count() > 0) {
                     return true;
                 } else {
-                    throw new \Exception(
+                    throw new Exception(
                         'An error occurred inserting new import model!'
                     );
                 }
@@ -192,7 +194,7 @@ class ImportModel
     public function getCreationDate(bool $formatted = true): string
     {
         if ($formatted === true) {
-            $date = new \DateTime($this->creation_date);
+            $date = new DateTime($this->creation_date);
             return $date->format(__("Y-m-d"));
         } else {
             return $this->creation_date;

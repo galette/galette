@@ -31,6 +31,8 @@ use Slim\Flash\Messages;
 use Slim\Routing\RouteParser;
 use TCPDF;
 
+use function Safe\preg_replace;
+
 /*
  * TCPDF configuration file for Galette
  */

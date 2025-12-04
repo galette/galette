@@ -25,6 +25,12 @@ namespace Galette\IO;
 
 use Analog\Analog;
 use Psr\Http\Message\UploadedFileInterface;
+use Safe\Exceptions\FilesystemException;
+
+use function Safe\copy;
+use function Safe\finfo_open;
+use function Safe\mime_content_type;
+use function Safe\preg_match;
 
 /**
  * Files
@@ -222,14 +228,16 @@ trait FileTrait
      */
     public function copyTo(string $dest): bool
     {
-        $res = copy(
-            $this->dest_dir . $this->name,
-            $dest . $this->name
-        );
-        if ($res === true) {
+        try {
+            copy(
+                $this->dest_dir . $this->name,
+                $dest . $this->name
+            );
             $this->dest_dir = $dest;
+            return true;
+        } catch (FilesystemException) {
+            return false;
         }
-        return $res;
     }
 
     /**

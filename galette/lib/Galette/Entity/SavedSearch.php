@@ -24,11 +24,15 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Safe\DateTime;
 use Galette\Core\Galette;
+use RuntimeException;
 use Throwable;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Analog\Analog;
+
+use function Safe\json_encode;
 
 /**
  * Saved search
@@ -127,7 +131,7 @@ class SavedSearch
         $this->name = $rs->name ?? '';
         try {
             $this->parameters = Galette::jsonDecode($rs->parameters);
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             Analog::log(
                 'Unable to decode parameters for saved search #' . $this->id
                 . ' | ' . $e->getMessage(),
@@ -233,7 +237,7 @@ class SavedSearch
                 Analog::INFO
             );
             return true;
-        } catch (\RuntimeException $re) {
+        } catch (RuntimeException $re) {
             throw $re;
         } catch (Throwable $e) {
             Analog::log(
@@ -264,7 +268,7 @@ class SavedSearch
                 case 'creation_date':
                     if ($this->$name != '') {
                         try {
-                            $d = new \DateTime($this->$name);
+                            $d = new DateTime($this->$name);
                             return $d->format(__("Y-m-d"));
                         } catch (Throwable $e) {
                             //oops, we've got a bad date :/
@@ -297,7 +301,7 @@ class SavedSearch
             }
         }
 
-        throw new \RuntimeException(
+        throw new RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
                 static::class,

@@ -26,6 +26,13 @@ namespace Galette\Updater;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\Install;
+use Safe\Exceptions\DirException;
+
+use function Safe\filesize;
+use function Safe\fopen;
+use function Safe\fread;
+use function Safe\opendir;
+use function Safe\preg_match;
 
 /**
  * Galette abstract updater script
@@ -241,16 +248,17 @@ abstract class AbstractUpdater
      */
     private function getSqlScripts(string $version): array
     {
-        $dh = opendir(GALETTE_ROOT . '/install/scripts/sql');
         $scripts = [];
-
-        if ($dh !== false) {
+        try {
+            $dh = opendir(GALETTE_ROOT . '/install/scripts/sql');
             while (($file = readdir($dh)) !== false) {
                 if (preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver) && $ver[1] == $version) {
                     $scripts[$ver[2]] = GALETTE_ROOT . '/install/scripts/sql/' . $file;
                 }
             }
             closedir($dh);
+        } catch (DirException) {
+            //empty catch
         }
 
         return $scripts;

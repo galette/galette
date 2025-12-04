@@ -42,6 +42,12 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 
+use function Safe\mkdir;
+use function Safe\preg_replace;
+use function Safe\realpath;
+use function Safe\rmdir;
+use function Safe\unlink;
+
 /**
  * Make Twig cache
  *

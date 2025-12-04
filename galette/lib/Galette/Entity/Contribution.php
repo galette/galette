@@ -25,7 +25,7 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use DateInterval;
-use DateTime;
+use Safe\DateTime;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
 use Galette\Interfaces\AccessManagementInterface;
@@ -40,6 +40,8 @@ use Galette\IO\PdfContribution;
 use Galette\Repository\PaymentTypes;
 use Galette\Features\Dynamics;
 use Galette\Helpers\EntityHelper;
+
+use function Safe\mkdir;
 
 /**
  * Contribution class for galette
@@ -228,8 +230,8 @@ class Contribution implements AccessManagementInterface
     {
         global $preferences;
 
-        $now = new \DateTime();
-        $begin_date = new \DateTime($this->begin_date);
+        $now = new DateTime();
+        $begin_date = new DateTime($this->begin_date);
 
         if ($this->type->extension > ContributionsTypes::DONATION_TYPE && $preferences->pref_beg_membership == '') {
             $dext = new DateInterval('P' . $this->type->extension . 'M');
@@ -457,8 +459,8 @@ class Contribution implements AccessManagementInterface
         $this->begin_date = $this->date;
         $due_date = self::getDueDate($this->zdb, $this->member);
         if ($due_date != '') {
-            $now = new \DateTime();
-            $due_date = new \DateTime($due_date);
+            $now = new DateTime();
+            $due_date = new DateTime($due_date);
             if ($due_date < $now) {
                 // Member didn't renew on time
                 $this->begin_date = $now->format('Y-m-d');
@@ -480,10 +482,10 @@ class Contribution implements AccessManagementInterface
     {
         global $preferences;
 
-        $begin_date = new \DateTime();
+        $begin_date = new DateTime();
         $begin_date->sub(new DateInterval('P1Y'));
         [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
-        $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
+        $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
         while ($next_begin_date <= $begin_date) {
             $next_begin_date->add(new DateInterval('P1Y'));
         }
@@ -666,7 +668,7 @@ class Contribution implements AccessManagementInterface
     {
         try {
             $select = $this->zdb->select(self::TABLE, 'c');
-            //@phpstan-ignore-next-line
+            //@phpstan-ignore property.notFound ("Access to an undefined property Laminas\Db\Sql\Where::$where" which exists)
             $select->columns(
                 ['date_debut_cotis', 'date_fin_cotis']
             )->join(
@@ -691,8 +693,8 @@ class Contribution implements AccessManagementInterface
             if ($results->count() > 0) {
                 $result = $results->current();
 
-                $d_begin = new \DateTime($result->date_debut_cotis);
-                $d_end = new \DateTime($result->date_fin_cotis);
+                $d_begin = new DateTime($result->date_debut_cotis);
+                $d_end = new DateTime($result->date_fin_cotis);
 
                 if ($d_begin->format('m-d') == $d_end->format('m-d') && $result->date_fin_cotis == $this->begin_date) {
                     //see https://bugs.galette.eu/issues/1762

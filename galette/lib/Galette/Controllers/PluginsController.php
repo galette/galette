@@ -31,6 +31,9 @@ use Galette\Core\Install;
 use Galette\Core\PluginInstall;
 use Analog\Analog;
 
+use function Safe\ob_end_clean;
+use function Safe\ob_start;
+
 /**
  * Galette plugins controller
  *

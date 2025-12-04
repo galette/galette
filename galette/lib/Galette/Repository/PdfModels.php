@@ -215,7 +215,7 @@ class PdfModels extends Repository
     {
         if (!count($this->defaults)) {
             include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
-            //@phpstan-ignore-next-line
+            //@phpstan-ignore variable.undefined
             $this->defaults = $pdfmodels_fields;
         }
         return parent::loadDefaults();

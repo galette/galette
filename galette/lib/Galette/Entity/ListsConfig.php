@@ -29,6 +29,8 @@ use Analog\Analog;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
 
+use function Safe\preg_replace;
+
 /**
  * Lists config class for galette:
  * defines fields order and visibility

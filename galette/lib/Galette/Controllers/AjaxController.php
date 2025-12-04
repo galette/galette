@@ -34,6 +34,8 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Throwable;
 
+use function Safe\json_encode;
+
 /**
  * Galette ajax controller
  *

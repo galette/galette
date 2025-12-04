@@ -29,6 +29,8 @@ use Analog\Analog;
 use Laminas\Db\Sql\Select;
 use Slim\Views\Twig;
 
+use function Safe\preg_match;
+
 /**
  * Pagination and ordering facilities
  *

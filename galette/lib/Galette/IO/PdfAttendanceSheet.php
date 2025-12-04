@@ -23,10 +23,12 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
+use DateTime;
 use Galette\Core\Db;
 use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\PdfModel;
+use Safe\DateTimeImmutable;
 
 /**
  * Attendance sheet
@@ -42,7 +44,7 @@ class PdfAttendanceSheet extends Pdf
     public ?string $doc_title = null;
     public ?string $sheet_title = null;
     public ?string $sheet_sub_title = null;
-    public ?\DateTime $sheet_date = null;
+    public ?DateTime $sheet_date = null;
     private bool $wimages = false;
 
     /**
@@ -98,7 +100,7 @@ class PdfAttendanceSheet extends Pdf
         }
         if (isset($data['sheet_date']) && trim((string) $data['sheet_date']) != '') {
             $dformat = __("Y-m-d");
-            $date = \DateTime::createFromFormat(
+            $date = DateTime::createFromFormat(
                 $dformat,
                 $data['sheet_date']
             );
@@ -155,8 +157,8 @@ class PdfAttendanceSheet extends Pdf
                 \IntlDateFormatter::GREGORIAN,
                 $format
             );
-            $datetime = new \DateTimeImmutable($this->sheet_date->format('Y-m-d'));
-            $date = \DateTime::createFromImmutable($datetime);
+            $datetime = new DateTimeImmutable($this->sheet_date->format('Y-m-d'));
+            $date = DateTime::createFromImmutable($datetime);
             $date_fmt = mb_convert_case($formatter->format($date), MB_CASE_TITLE);
             $this->Cell(190, 7, $date_fmt, 0, 1, 'C');
         }

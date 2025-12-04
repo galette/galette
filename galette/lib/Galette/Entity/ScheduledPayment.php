@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
-use DateTime;
+use Safe\DateTime;
 use Galette\Helpers\EntityHelper;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\IsNull;
@@ -589,12 +589,12 @@ class ScheduledPayment
             new PredicateSet(
                 [
                     new Operator(
-                        /** @phpstan-ignore-next-line  */
+                        // @phpstan-ignore argument.type (laminas docs -_-)
                         new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'),
                         '<',
                         new \Laminas\Db\Sql\Predicate\Expression('c.montant_cotis')
                     ),
-                    /** @phpstan-ignore-next-line  */
+                    // @phpstan-ignore argument.type (laminas docs -_-)
                     new IsNull(new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'))
                 ],
                 PredicateSet::OP_OR

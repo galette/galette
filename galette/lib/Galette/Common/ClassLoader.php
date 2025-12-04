@@ -48,6 +48,9 @@ declare(strict_types=1);
 
 namespace Galette\Common;
 
+use function Safe\spl_autoload_register;
+use function Safe\spl_autoload_unregister;
+
 /**
  * A <code>ClassLoader</code> is an autoloader for class files that can be
  * installed on the SPL autoload stack. It is a class loader that either loads only classes
@@ -240,7 +243,7 @@ class ClassLoader
             return file_exists($this->includePath . DIRECTORY_SEPARATOR . $file);
         }
 
-        return false !== stream_resolve_include_path($file);
+        return false !== stream_resolve_include_path($file); //@phpstan-ignore-line theCodingMachineSafe.function
     }
 
     /**

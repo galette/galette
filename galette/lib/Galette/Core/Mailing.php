@@ -31,6 +31,12 @@ use Galette\IO\FileTrait;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
 
+use function Safe\glob;
+use function Safe\mkdir;
+use function Safe\rename;
+use function Safe\rmdir;
+use function Safe\unlink;
+
 /**
  * Mailing features
  *
@@ -289,7 +295,7 @@ class Mailing extends GaletteMail
      * @return bool
      * FIXME: same name as parent method, but different arguments
      */
-    public function setRecipients(array $members): bool //@phpstan-ignore-line
+    public function setRecipients(array $members): bool //@phpstan-ignore method.childParameterType (see FIXME)
     {
         $m = [];
         $this->mrecipients = [];
@@ -367,10 +373,8 @@ class Mailing extends GaletteMail
                 if (!file_exists(GALETTE_ATTACHMENTS_PATH . $id)) {
                     mkdir(GALETTE_ATTACHMENTS_PATH . $id);
                 }
-                $moved = rename($old_path, $new_path);
-                if ($moved) {
-                    $attachment->setDestDir(GALETTE_ATTACHMENTS_PATH);
-                }
+                rename($old_path, $new_path);
+                $attachment->setDestDir(GALETTE_ATTACHMENTS_PATH);
             }
             rmdir($this->tmp_path);
             $this->tmp_path = null;

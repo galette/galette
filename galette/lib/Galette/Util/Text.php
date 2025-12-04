@@ -26,6 +26,8 @@ namespace Galette\Util;
 use Galette\Converter\ImageConverter;
 use League\HTMLToMarkdown\HtmlConverter;
 
+use function Safe\preg_replace;
+
 /**
  * Text utilities
  *

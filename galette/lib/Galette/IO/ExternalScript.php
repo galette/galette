@@ -26,6 +26,16 @@ namespace Galette\IO;
 use Analog\Analog;
 use Galette\Core\Preferences;
 
+use function Safe\curl_exec;
+use function Safe\curl_init;
+use function Safe\curl_setopt;
+use function Safe\fclose;
+use function Safe\fwrite;
+use function Safe\json_encode;
+use function Safe\proc_close;
+use function Safe\proc_open;
+use function Safe\stream_get_contents;
+
 /**
  * External script call
  *

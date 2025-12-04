@@ -33,6 +33,8 @@ use Galette\Repository\PdfModels;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 
+use function Safe\preg_replace_callback;
+
 /**
  * PDF Model
  *

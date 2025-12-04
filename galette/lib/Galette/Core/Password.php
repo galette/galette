@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use DateInterval;
+use Safe\DateTime;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
@@ -138,8 +140,8 @@ class Password extends AbstractPassword
      */
     public function cleanExpired(): bool
     {
-        $date = new \DateTime();
-        $date->sub(new \DateInterval('PT24H'));
+        $date = new DateTime();
+        $date->sub(new DateInterval('PT24H'));
 
         try {
             $delete = $this->zdb->delete(self::TABLE);

@@ -40,6 +40,7 @@ return $config
         'alisqi/twigqi',
     ], [ErrorType::DEV_DEPENDENCY_IN_PROD])
 
+    ->ignoreErrorsOnExtension('ext-simplexml', [ErrorType::UNUSED_DEPENDENCY]) // Required; used from Safe lib
     ->ignoreErrorsOnPackages([
         'symfony/polyfill-php80', //Required by some Slim packages
         'laminas/laminas-stdlib', // Required by... Laminas...

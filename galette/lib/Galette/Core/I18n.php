@@ -25,6 +25,9 @@ namespace Galette\Core;
 
 use Analog\Analog;
 
+use function Safe\bindtextdomain;
+use function Safe\realpath;
+
 /**
  * i18n handling
  *

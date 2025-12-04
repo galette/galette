@@ -43,6 +43,10 @@ use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\SqlInterface;
 
+use function Safe\file_put_contents;
+use function Safe\preg_match;
+use function Safe\preg_replace;
+
 /**
  * Zend Db wrapper
  *
@@ -1040,7 +1044,7 @@ class Db
      */
     public function getLastGeneratedValue(object $entity): int
     {
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore arguments.count (laminas does not respect its own interfaces)
         return (int)$this->driver->getLastGeneratedValue(
             $this->isPostgres()
                 ? $this->getSequenceName($entity::TABLE, $entity::PK, true)

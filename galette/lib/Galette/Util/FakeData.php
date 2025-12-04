@@ -24,7 +24,11 @@ declare(strict_types=1);
 namespace Galette\Util;
 
 use Galette\Entity\Adherent;
+use Safe\Exceptions\FilesystemException;
 use Slim\Psr7\UploadedFile;
+
+use function Safe\copy;
+use function Safe\filesize;
 
 /**
  * Generate random data
@@ -54,7 +58,8 @@ class FakeData
         $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
         $url = !defined('GALETTE_TESTS') ? 'https://loremflickr.com/800/600/people' : GALETTE_ROOT . '../tests/fake_image.jpg';
 
-        if (copy($url, $file)) {
+        try {
+            copy($url, $file);
             $uploaded_file = new UploadedFile(
                 $file,
                 'fakephoto.jpg',
@@ -70,7 +75,7 @@ class FakeData
             } else {
                 return true;
             }
-        } else {
+        } catch (FilesystemException) {
             $this->addError(
                 _T("Photo has not been copied!")
             );

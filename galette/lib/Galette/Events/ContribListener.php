@@ -38,6 +38,8 @@ use League\Event\ListenerSubscriber;
 use Slim\Flash\Messages;
 use Slim\Routing\RouteParser;
 
+use function Safe\preg_replace;
+
 /**
  * Event listener for contributions
  *

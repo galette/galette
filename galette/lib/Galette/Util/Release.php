@@ -27,6 +27,8 @@ use Analog\Analog;
 use Galette\Features\Cacheable;
 use GuzzleHttp\Client;
 
+use function Safe\preg_match_all;
+
 /**
  * Check for new Galette release
  *

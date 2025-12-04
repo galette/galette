@@ -24,12 +24,15 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Safe\DateTime;
 use Galette\Features\Replacements;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\GaletteMail;
 use Galette\Core\Db;
 use Galette\Core\History;
+use UnderflowException;
+use UnexpectedValueException;
 
 /**
  * Reminders
@@ -142,7 +145,7 @@ class Reminder
      */
     private function store(Db $zdb): bool
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         $data = [
             'reminder_type'     => $this->type,
             'reminder_dest'     => $this->dest->id,
@@ -352,7 +355,7 @@ class Reminder
                 ) {
                     $this->type = $value;
                 } else {
-                    throw new \UnexpectedValueException(
+                    throw new UnexpectedValueException(
                         'Unknown type!'
                     );
                 }
@@ -364,11 +367,11 @@ class Reminder
                         $this->nomail = false;
                     }
                 } elseif (!$value instanceof Adherent) {
-                    throw new \UnexpectedValueException(
+                    throw new UnexpectedValueException(
                         'Please provide a member object.'
                     );
                 } else {
-                    throw new \UnderflowException(
+                    throw new UnderflowException(
                         'Please set reminder type first.'
                     );
                 }

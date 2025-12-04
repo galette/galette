@@ -28,6 +28,11 @@ use Slim\Psr7\Response;
 use Galette\Core\Picture;
 use Galette\Entity\Adherent;
 
+use function Safe\file_get_contents;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\rewind;
+
 /**
  * Galette images controller
  *

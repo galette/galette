@@ -30,6 +30,8 @@ use Galette\Entity\Adherent;
 use Galette\Entity\PdfModel;
 use Analog\Analog;
 
+use function Safe\realpath;
+
 /**
  * Contribution PDF: invoices and receipts
  *

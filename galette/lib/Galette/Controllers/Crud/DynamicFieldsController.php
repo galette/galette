@@ -33,6 +33,12 @@ use Slim\Psr7\Response;
 use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 
+use function Safe\file_get_contents;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\rename;
+use function Safe\rewind;
+
 /**
  * Galette dynamic fields controller
  *

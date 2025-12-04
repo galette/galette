@@ -33,6 +33,8 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
 use Galette\Util\Release;
 
+use function Safe\base64_decode;
+
 /**
  * Galette authentication controller
  *

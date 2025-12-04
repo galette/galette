@@ -34,6 +34,10 @@ use Galette\DynamicFields\Date;
 use Galette\DynamicFields\Boolean;
 use Galette\Entity\DynamicFieldsHandle;
 
+use function Safe\preg_grep;
+use function Safe\preg_replace;
+use function Safe\unlink;
+
 /**
  * Dynamics fields trait
  *
@@ -55,7 +59,7 @@ trait Dynamics
      */
     private function loadDynamicFields(): void
     {
-        /** @phpstan-ignore-next-line */
+        //@phpstan-ignore-next-line function.alreadyNarrowedType
         if (property_exists($this, 'login') && ($this->login ?? null) instanceof Login) {
             $login = $this->login;
         } else {
@@ -212,7 +216,7 @@ trait Dynamics
             $this->loadDynamicFields();
         }
         $return = $this->dynamics->storeValues($this->id, $transaction);
-        //@phpstan-ignore-next-line
+        //@phpstan-ignore function.alreadyNarrowedType
         if (method_exists($this, 'updateModificationDate') && $this->dynamics->hasChanged()) {
             $this->updateModificationDate();
         }

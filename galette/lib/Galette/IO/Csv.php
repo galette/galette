@@ -25,6 +25,10 @@ namespace Galette\IO;
 
 use Analog\Analog;
 
+use function Safe\filemtime;
+use function Safe\filesize;
+use function Safe\glob;
+
 /**
  * CSV files
  *
@@ -131,8 +135,8 @@ abstract class Csv
         $filename = $this->default_directory . $name;
 
         if (file_exists($filename)) {
-            $removed = unlink($filename);
-            return $removed;
+            //@phpstan-ignore theCodingMachineSafe.function
+            return unlink($filename);
         } else {
             Analog::log(
                 'CSV file ' . $filename

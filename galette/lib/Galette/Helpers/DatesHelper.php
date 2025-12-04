@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Helpers;
 
 use DateTime;
+use Exception;
 use Throwable;
 use Analog\Analog;
 
@@ -50,12 +51,12 @@ trait DatesHelper
             //try with non localized date
             $date = DateTime::createFromFormat("Y-m-d", $value);
             if ($date === false) {
-                throw new \Exception('Incorrect format');
+                throw new Exception('Incorrect format');
             }
         }
-        $derrors = \DateTime::getLastErrors();
+        $derrors = DateTime::getLastErrors();
         if (!empty($derrors['warning_count'])) {
-            throw new \Exception('Incorrect date ' . implode("\n", $derrors['warnings']));
+            throw new Exception('Incorrect date ' . implode("\n", $derrors['warnings']));
         }
 
         return $date->format('Y-m-d');
@@ -72,7 +73,7 @@ trait DatesHelper
     protected function setDate(string $field, string $value): self
     {
         try {
-            /** @phpstan-ignore-next-line */
+            //@phpstan-ignore function.alreadyNarrowedType
             $fieldPropertyName = method_exists($this, 'getFieldPropertyName') ? $this->getFieldPropertyName($field) : $field;
             $this->$fieldPropertyName = $this->buildDate($value);
         } catch (Throwable $e) {
@@ -83,7 +84,7 @@ trait DatesHelper
                 Analog::INFO
             );
 
-            /** @phpstan-ignore-next-line */
+            //@phpstan-ignore function.alreadyNarrowedType
             $fieldLabel = method_exists($this, 'getFieldLabel') ? $this->getFieldLabel($field) : $field;
 
             $this->errors[] = sprintf(
@@ -172,7 +173,7 @@ trait DatesHelper
 
                 $field = $start === true ? _T("start date filter") : _T("end date filter");
 
-                throw new \Exception(
+                throw new Exception(
                     sprintf(
                         //TRANS: %1$s is field name, %2$s is list of known date formats
                         _T('Unknown date format for %1$s.<br/>Know formats are: %2$s'),
@@ -191,7 +192,7 @@ trait DatesHelper
                 Analog::INFO
             );
 
-            /** @phpstan-ignore-next-line */
+            //@phpstan-ignore-next-line function.alreadyNarrowedType
             $fieldLabel = method_exists($this, 'getFieldLabel') ? $this->getFieldLabel($field) : $field;
 
             $this->errors[] = sprintf(
@@ -218,12 +219,12 @@ trait DatesHelper
      */
     public function getDate(string $field, bool $formatted = true, bool $translated = true): string|DateTime|null
     {
-        /** @phpstan-ignore-next-line */
+        //@phpstan-ignore-next-line function.alreadyNarrowedType
         $fieldPropertyName = method_exists($this, 'getFieldPropertyName') ? $this->getFieldPropertyName($field) : $field;
 
         if ($this->$fieldPropertyName !== null && $this->$fieldPropertyName != '') {
             try {
-                $date = new DateTime($this->$fieldPropertyName);
+                $date = new \Safe\DateTime($this->$fieldPropertyName);
                 if ($formatted === false) {
                     return $date;
                 }

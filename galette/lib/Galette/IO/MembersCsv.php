@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
-use DateTime;
+use Safe\DateTime;
 use DI\Attribute\Inject;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -34,6 +34,10 @@ use Galette\Repository\Titles;
 use Galette\Repository\Members;
 use Galette\Entity\FieldsConfig;
 use Galette\Filters\MembersList;
+use Safe\Exceptions\FilesystemException;
+
+use function Safe\fclose;
+use function Safe\fopen;
 
 /**
  * Members CSV exports
@@ -80,7 +84,7 @@ class MembersCsv extends CsvOut
         $export_fields = null;
         if (file_exists(GALETTE_CONFIG_PATH . 'local_export_fields.inc.php')) {
             include_once GALETTE_CONFIG_PATH . 'local_export_fields.inc.php';
-            //@phpstan-ignore-next-line
+            //@phpstan-ignore variable.undefined
             $export_fields = $fields;
         }
 
@@ -233,8 +237,8 @@ class MembersCsv extends CsvOut
             }
         }
 
-        $fp = fopen($this->path, 'w');
-        if ($fp) {
+        try {
+            $fp = fopen($this->path, 'w');
             $this->export(
                 $members_list,
                 self::DEFAULT_SEPARATOR,
@@ -243,6 +247,8 @@ class MembersCsv extends CsvOut
                 $fp
             );
             fclose($fp);
+        } catch (FilesystemException) {
+            //empty catch
         }
     }
 

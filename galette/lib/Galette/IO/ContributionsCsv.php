@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use ArrayObject;
-use DateTime;
+use Safe\DateTime;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
@@ -32,6 +32,10 @@ use Galette\Entity\ContributionsTypes;
 use Galette\Repository\Contributions;
 use Galette\Filters\ContributionsList;
 use Galette\Repository\PaymentTypes;
+use Safe\Exceptions\FilesystemException;
+
+use function Safe\fclose;
+use function Safe\fopen;
 
 /**
  * Contributions CSV exports
@@ -145,8 +149,8 @@ class ContributionsCsv extends CsvOut
             }
         }
 
-        $fp = fopen($this->path, 'w');
-        if ($fp) {
+        try {
+            $fp = fopen($this->path, 'w');
             $this->export(
                 $contributions_list,
                 self::DEFAULT_SEPARATOR,
@@ -155,6 +159,8 @@ class ContributionsCsv extends CsvOut
                 $fp
             );
             fclose($fp);
+        } catch (FilesystemException) {
+            //empty catch
         }
     }
 

@@ -45,6 +45,8 @@ use Slim\Routing\RouteParser;
 use DI\Attribute\Inject;
 use Slim\Views\Twig;
 
+use function Safe\json_encode;
+
 /**
  * Galette abstract controller
  *

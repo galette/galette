@@ -23,8 +23,10 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use DateTime;
+use Safe\DateTime;
 use Laminas\Db\Sql\Select;
+
+use function Safe\realpath;
 
 /**
  * This class stores and serve the logo.

@@ -25,10 +25,17 @@ namespace Galette\Features;
 
 use Analog\Analog;
 use DateInterval;
-use DateTime;
+use Safe\DateTime;
 use Galette\Core\Galette;
 use RuntimeException;
 use Throwable;
+
+use function Safe\fclose;
+use function Safe\file_get_contents;
+use function Safe\filemtime;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\mkdir;
 
 /**
  * Cacheable objects trait

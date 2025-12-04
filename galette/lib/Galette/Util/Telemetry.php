@@ -24,10 +24,25 @@ declare(strict_types=1);
 namespace Galette\Util;
 
 use Analog\Analog;
+use DateInterval;
 use Exception;
 use Galette\Core\Db;
 use Galette\Core\Preferences;
 use Galette\Core\Plugins;
+use Laminas\Db\Sql\Expression;
+use RuntimeException;
+use Safe\DateTime;
+
+use function Safe\curl_exec;
+use function Safe\curl_getinfo;
+use function Safe\curl_init;
+use function Safe\curl_setopt;
+use function Safe\file_get_contents;
+use function Safe\ini_get;
+use function Safe\json_encode;
+use function Safe\parse_url;
+use function Safe\preg_match;
+use function Safe\preg_replace;
 
 /**
  * Handle Telemetry data
@@ -165,7 +180,6 @@ class Telemetry
                 'max_execution_time'    => ini_get('max_execution_time'),
                 'memory_limit'          => ini_get('memory_limit'),
                 'post_max_size'         => ini_get('post_max_size'),
-                'safe_mode'             => ini_get('safe_mode'),
                 'session'               => ini_get('session.save_handler'),
                 'upload_max_filesize'   => ini_get('upload_max_filesize'),
                 'max_input_vars'        => ini_get('max_input_vars'),
@@ -210,7 +224,7 @@ class Telemetry
     {
         $select = $this->zdb->select($table);
         $select->columns([
-            'cnt' => new \Laminas\Db\Sql\Expression(
+            'cnt' => new Expression(
                 'COUNT(1)'
             )
         ]);
@@ -274,7 +288,7 @@ class Telemetry
                 foreach ($content->errors as $error) {
                     $errors .= "\n" . $error->property . ': ' . $error->message;
                 }
-                throw new \RuntimeException($errors);
+                throw new RuntimeException($errors);
             }
 
             $this->prefs->updateTelemetryDate();
@@ -287,7 +301,7 @@ class Telemetry
                 $message,
                 Analog::ERROR
             );
-            throw new \RuntimeException($message);
+            throw new RuntimeException($message);
         }
     }
 
@@ -376,9 +390,9 @@ class Telemetry
      */
     public function shouldRenew(): bool
     {
-        $now = new \DateTime();
-        $sent = new \DateTime($this->prefs->pref_telemetry_date);
-        $sent->add(new \DateInterval('P1Y'));
+        $now = new DateTime();
+        $sent = new DateTime($this->prefs->pref_telemetry_date);
+        $sent->add(new DateInterval('P1Y'));
         // ask to resend telemetry after one year
         return $now > $sent && !isset($_COOKIE['renew_telemetry']);
     }

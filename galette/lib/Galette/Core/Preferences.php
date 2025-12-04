@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Safe\DateTime;
 use Galette\Entity\PaymentType;
 use Galette\Entity\Social;
 use Galette\Features\Replacements;
@@ -37,6 +38,11 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
+
+use function Safe\mkdir;
+use function Safe\preg_match;
+use function Safe\preg_replace;
+use function Safe\unlink;
 
 /**
  * Preferences for galette
@@ -1337,7 +1343,7 @@ class Preferences
     {
         $rawdate = $this->prefs['pref_telemetry_date'];
         if ($rawdate) {
-            $date = new \DateTime($rawdate);
+            $date = new DateTime($rawdate);
             return $date->format(_T('Y-m-d H:i:s'));
         } else {
             return _T('Never');
@@ -1353,7 +1359,7 @@ class Preferences
     {
         $rawdate = $this->prefs['pref_registration_date'];
         if ($rawdate) {
-            $date = new \DateTime($rawdate);
+            $date = new DateTime($rawdate);
             return $date->format(_T('Y-m-d H:i:s'));
         }
 

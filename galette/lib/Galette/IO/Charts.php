@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\IO;
 
+use Safe\DateTime;
 use Galette\Core\Db;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\PredicateSet;
@@ -31,6 +32,8 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
 use Galette\Repository\Members;
+
+use function Safe\json_encode;
 
 /**
  * Charts class for galette
@@ -175,10 +178,10 @@ class Charts
         $chart_labels[] = _T("Never contribute");
         $chart_data[] = (int)$result->cnt;
 
-        $soon_date = new \DateTime();
+        $soon_date = new DateTime();
         $soon_date->modify('+30 day');
 
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $select = $zdb->select(Adherent::TABLE, 'a');
         $select->columns(
@@ -360,7 +363,7 @@ class Charts
         $chart_labels = [];
         $chart_data = [];
         foreach ($results as $r) {
-            $d = new \DateTime($r->date);
+            $d = new DateTime($r->date);
             $chart_labels[] = $d->format('Y-m');
             $chart_data[] = (float)$r->amount;
         }

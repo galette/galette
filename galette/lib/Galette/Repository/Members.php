@@ -47,6 +47,7 @@ use Galette\Core\Picture;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Core\Db;
+use Safe\DateTime;
 use ArrayObject;
 
 /**
@@ -1160,7 +1161,7 @@ class Members
             if ($this->filters->membership_filter) {
                 switch ($this->filters->membership_filter) {
                     case self::MEMBERSHIP_NEARLY:
-                        $now = new \DateTime();
+                        $now = new DateTime();
                         $due_date = clone $now;
                         $due_date->modify('+30 days');
                         $select->where
@@ -1351,7 +1352,7 @@ class Members
         foreach ($dates as $field => $property) {
             $bprop = "r{$property}_begin";
             if ($this->filters->$bprop) {
-                $d = new \DateTime($this->filters->$bprop);
+                $d = new DateTime($this->filters->$bprop);
                 $select->where->greaterThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
@@ -1359,7 +1360,7 @@ class Members
             }
             $eprop = "r{$property}_end";
             if ($this->filters->$eprop) {
-                $d = new \DateTime($this->filters->$eprop);
+                $d = new DateTime($this->filters->$eprop);
                 $select->where->lessThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
@@ -1694,7 +1695,7 @@ class Members
             ->where('a.activite_adh=true')
             ->where('a.bool_exempt_adh=false');
 
-        $now = new \DateTime();
+        $now = new DateTime();
         $due_date = clone $now;
         $due_date->modify('+30 days');
 

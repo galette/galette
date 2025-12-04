@@ -24,10 +24,16 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use Laminas\Db\ResultSet\ResultSet;
+use Safe\Exceptions\FilesystemException;
 use Symfony\Component\Yaml\Yaml;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
+
+use function Safe\fclose;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\simplexml_load_file;
 
 /**
  * CSV exports
@@ -275,10 +281,11 @@ class CsvOut extends Csv
 
         $filename = self::DEFAULT_DIRECTORY . $export['filename'];
 
-        $fp = fopen($filename, 'w');
-        if ($fp === false) {
+        try {
+            $fp = fopen($filename, 'w');
+        } catch (FilesystemException $e) {
             Analog::log(
-                'File ' . $filename . ' is not writeable.',
+                'File ' . $filename . ' seems not writeable. ' . $e->getMessage(),
                 Analog::ERROR
             );
             return self::FILE_NOT_WRITABLE;
@@ -344,10 +351,11 @@ class CsvOut extends Csv
 
         $filename = self::DEFAULT_DIRECTORY . $export['filename'];
 
-        $fp = fopen($filename, 'w');
-        if ($fp === false) {
+        try {
+            $fp = fopen($filename, 'w');
+        } catch (FilesystemException $e) {
             Analog::log(
-                'File ' . $filename . ' is not writeable.',
+                'File ' . $filename . ' seems not writeable. ' . $e->getMessage(),
                 Analog::ERROR
             );
             return self::FILE_NOT_WRITABLE;

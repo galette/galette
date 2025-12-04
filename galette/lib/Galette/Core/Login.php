@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use ArrayObject;
+use Safe\DateTime;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Galette\Repository\Groups;
@@ -241,8 +242,8 @@ class Login extends Authentication
             //let's check from end date, if present
             $this->uptodate = false;
         } else {
-            $ech = new \DateTime($row->date_echeance);
-            $now = new \DateTime();
+            $ech = new DateTime($row->date_echeance);
+            $now = new DateTime();
             $now->setTime(0, 0, 0);
             $this->uptodate = $ech >= $now;
         }

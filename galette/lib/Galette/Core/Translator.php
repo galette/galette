@@ -31,7 +31,7 @@ use Laminas\I18n\Translator\Translator as ZTranslator;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
-class Translator extends ZTranslator //@phpstan-ignore-line
+class Translator extends ZTranslator //@phpstan-ignore class.extendsFinalByPhpDoc
 {
     /**
      * Does a translation exist for string

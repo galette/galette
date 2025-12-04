@@ -23,9 +23,20 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use RuntimeException;
+use Safe\Exceptions\DirException;
+use Safe\Exceptions\FilesystemException;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
+
+use function Safe\define;
+use function Safe\fclose;
+use function Safe\file_get_contents;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\opendir;
+use function Safe\preg_match;
 
 /**
  * Galette installation
@@ -581,11 +592,11 @@ class Install
         string $db_type = 'mysql',
         ?string $version = null
     ): array {
-        $dh = opendir($path . '/scripts');
         $php_update_scripts = [];
         $sql_update_scripts = [];
         $update_scripts = [];
-        if ($dh !== false) {
+        try {
+            $dh = opendir($path . '/scripts');
             while (($file = readdir($dh)) !== false) {
                 if (preg_match("/upgrade-to-(.*).php/", $file, $ver)) {
                     if ($version === null) {
@@ -611,6 +622,8 @@ class Install
             $update_scripts = array_merge($sql_update_scripts, $php_update_scripts);
             closedir($dh);
             ksort($update_scripts);
+        } catch (DirException) {
+            //empty catch
         }
         return $update_scripts;
     }
@@ -633,17 +646,19 @@ class Install
         foreach ($update_scripts as $key => $val) {
             if (str_ends_with($val, '.sql')) {
                 //just a SQL script, run it
-                $script = fopen($scripts_path . $val, 'r');
-
-                if ($script === false) {
-                    throw new \RuntimeException(
-                        'Unable to read SQL script from ' . $scripts_path . $val
+                try {
+                    $script = fopen($scripts_path . $val, 'r');
+                } catch (FilesystemException $e) {
+                    throw new RuntimeException(
+                        'Unable to read SQL script from ' . $scripts_path . $val,
+                        0,
+                        $e
                     );
                 }
 
-                $sql_query = @fread(
+                $sql_query = @fread( //@phpstan-ignore theCodingMachineSafe.function
                     $script,
-                    @filesize($scripts_path . $val)
+                    @filesize($scripts_path . $val) //@phpstan-ignore theCodingMachineSafe.function
                 ) . "\n";
 
                 $sql_res = $this->executeSql($zdb, $sql_query);
@@ -680,7 +695,7 @@ class Install
                     );
                     $ret['res'] = true;
                     $this->report[] = $ret;
-                } catch (\RuntimeException $e) {
+                } catch (RuntimeException $e) {
                     Analog::log(
                         $e->getMessage(),
                         Analog::ERROR
@@ -968,8 +983,8 @@ class Install
         ];
 
         if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
-            $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
-            if ($conf !== false) {
+            try {
+                $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
                 if (!isset($post_data['install_dbtype'])) {
                     preg_match(
                         '/TYPE_DB["\'], ["\'](.*)["\']\);/',
@@ -1043,6 +1058,8 @@ class Install
                         $existing['pwd_db'] = $matches[1];
                     }
                 }
+            } catch (FilesystemException) {
+                //empty catch
             }
         }
 
@@ -1097,7 +1114,7 @@ class Install
         if (
             is_writable(GALETTE_CONFIG_PATH)
             && (!file_exists($conffile) || is_writable($conffile))
-            && $fd = @fopen($conffile, 'w')
+            && $fd = @\fopen($conffile, 'w') //@phpstan-ignore theCodingMachineSafe.function
         ) {
             $data = $this->getConfigFileContents();
             fwrite($fd, $data);
@@ -1156,9 +1173,9 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $fc = new \Galette\Entity\FieldsConfig(
                 $zdb,
                 \Galette\Entity\Adherent::TABLE,
-                //@phpstan-ignore-next-line
+                //@phpstan-ignore variable.undefined
                 $members_fields,
-                //@phpstan-ignore-next-line
+                //@phpstan-ignore variable.undefined
                 $members_fields_cats,
                 true
             );

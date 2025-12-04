@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Repository;
 
 use ArrayObject;
+use Exception;
 use Galette\Entity\Group;
 use Laminas\Db\Adapter\Driver\Pdo\Result;
 use Laminas\Db\ResultSet\ResultSet;
@@ -37,6 +38,7 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\History;
 use Galette\Filters\TransactionsList;
+use Safe\DateTime;
 
 /**
  * Transactions class for galette
@@ -223,7 +225,7 @@ class Transactions
 
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->rstart_date_filter);
+                $d = new DateTime($this->filters->rstart_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     'trans_date',
                     $d->format('Y-m-d')
@@ -231,7 +233,7 @@ class Transactions
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->rend_date_filter);
+                $d = new DateTime($this->filters->rend_date_filter);
                 $select->where->lessThanOrEqualTo(
                     'trans_date',
                     $d->format('Y-m-d')
@@ -371,7 +373,7 @@ class Transactions
                 $c = new Transaction($this->zdb, $this->login, $transaction);
                 $res = $c->remove($hist, false);
                 if ($res === false) {
-                    throw new \Exception();
+                    throw new Exception();
                 }
             }
             $this->zdb->connection->commit();

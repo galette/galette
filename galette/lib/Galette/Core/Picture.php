@@ -27,6 +27,8 @@ use ArrayObject;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Select;
 use Psr\Http\Message\UploadedFileInterface;
+use Safe\Exceptions\DirException;
+use Safe\Exceptions\ImageException;
 use Slim\Psr7\Response;
 use Throwable;
 use Analog\Analog;
@@ -34,6 +36,23 @@ use Galette\Entity\Adherent;
 use Galette\Repository\Members;
 use Galette\IO\FileTrait;
 use UnhandledMatchError;
+
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+use function Safe\fclose;
+use function Safe\fopen;
+use function Safe\fread;
+use function Safe\fwrite;
+use function Safe\getimagesize;
+use function Safe\imagealphablending;
+use function Safe\imagecreatetruecolor;
+use function Safe\imagesavealpha;
+use function Safe\imagecopyresampled;
+use function Safe\opendir;
+use function Safe\preg_match;
+use function Safe\readfile;
+use function Safe\realpath;
+use function Safe\rewind;
 
 /**
  * Picture handling
@@ -369,19 +388,19 @@ class Picture
             if (file_exists($file_wo_ext . '.jpg')) {
                 //return unlink($file_wo_ext . '.jpg');
                 $_file = $file_wo_ext . '.jpg';
-                $success = unlink($_file);
+                $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.png')) {
                 //return unlink($file_wo_ext . '.png');
                 $_file = $file_wo_ext . '.png';
-                $success = unlink($_file);
+                $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.gif')) {
                 //return unlink($file_wo_ext . '.gif');
                 $_file = $file_wo_ext . '.gif';
-                $success = unlink($_file);
+                $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.webp')) {
                 //return unlink($file_wo_ext . '.webp');
                 $_file = $file_wo_ext . '.webp';
-                $success = unlink($_file);
+                $success = unlink($_file); // @phpstan-ignore theCodingMachineSafe.function
             }
 
             if ($_file !== null && $success !== true) {
@@ -473,13 +492,13 @@ class Picture
      */
     public static function getMimeType(string $file): string
     {
-        $info = getimagesize($file);
-        if ($info !== false) {
+        try {
+            $info = getimagesize($file);
             return $info['mime'];
+        } catch (ImageException) {
+            //fallback if file is not an image
+            return static::trait_getMimeType($file);
         }
-
-        //fallback if file is not an image
-        return static::trait_getMimeType($file);
     }
 
     /**
@@ -608,73 +627,76 @@ class Picture
         $existing_disk = [];
 
         //retrieve files on disk
-        if ($handle = opendir($this->store_path)) {
-            while (false !== ($entry = readdir($handle))) {
-                $reg = "/^(\d+)\.("
-                    . implode('|', $this->allowed_extensions) . ")$/i";
-                if (preg_match($reg, $entry, $matches)) {
-                    $id = $matches[1];
-                    $extension = strtolower($matches[2]);
-                    if ($extension == 'jpeg') {
-                        //jpeg is an allowed extension,
-                        //but we change it to jpg to reduce further tests :)
-                        $extension = 'jpg';
-                    }
-                    $existing_disk[$id] = [
-                        'name'  => $entry,
-                        'id'    => $id,
-                        'ext'   => $extension
-                    ];
-                }
-            }
-            closedir($handle);
-
-            if (count($existing_disk) === 0) {
-                //no image on disk, nothing to do :)
-                return;
-            }
-
-            //retrieve files in database
-            $class = static::class;
-            $select = $zdb->select($this->tbl_prefix . $class::TABLE);
-            $select
-                ->columns([$class::PK])
-                ->where->in($class::PK, array_keys($existing_disk));
-
-            $results = $zdb->execute($select);
-
-            $existing_db = [];
-            foreach ($results as $result) {
-                $existing_db[] = (int)$result[self::PK];
-            }
-
-            $existing_diff = array_diff(array_keys($existing_disk), $existing_db);
-
-            //retrieve valid members ids
-            $members = new Members();
-            $valids = $members->getArrayList(
-                array_map(intval(...), $existing_diff),
-                null,
-                false,
-                false,
-                [self::PK]
-            );
-
-            foreach ($valids as $valid) {
-                /** @var ArrayObject<string,mixed> $valid */
-                $file = $existing_disk[$valid->id_adh];
-                $this->storeInDb(
-                    $zdb,
-                    (int)$file['id'],
-                    $this->store_path . $file['id'] . '.' . $file['ext'],
-                    $file['ext']
-                );
-            }
-        } else {
+        try {
+            $handle = opendir($this->store_path);
+        } catch (DirException $e) {
             Analog::log(
                 'Something went wrong opening images directory '
-                . $this->store_path,
+                . $this->store_path . ' | ' . $e->getMessage(),
                 Analog::ERROR
+            );
+            return;
+        }
+
+        while (false !== ($entry = readdir($handle))) {
+            $reg = "/^(\d+)\.("
+                . implode('|', $this->allowed_extensions) . ")$/i";
+            if (preg_match($reg, $entry, $matches)) {
+                $id = $matches[1];
+                $extension = strtolower($matches[2]);
+                if ($extension == 'jpeg') {
+                    //jpeg is an allowed extension,
+                    //but we change it to jpg to reduce further tests :)
+                    $extension = 'jpg';
+                }
+                $existing_disk[$id] = [
+                    'name'  => $entry,
+                    'id'    => $id,
+                    'ext'   => $extension
+                ];
+            }
+        }
+        closedir($handle);
+
+        if (count($existing_disk) === 0) {
+            //no image on disk, nothing to do :)
+            return;
+        }
+
+        //retrieve files in database
+        $class = static::class;
+        $select = $zdb->select($this->tbl_prefix . $class::TABLE);
+        $select
+            ->columns([$class::PK])
+            ->where->in($class::PK, array_keys($existing_disk));
+
+        $results = $zdb->execute($select);
+
+        $existing_db = [];
+        foreach ($results as $result) {
+            $existing_db[] = (int)$result[self::PK];
+        }
+
+        $existing_diff = array_diff(array_keys($existing_disk), $existing_db);
+
+        //retrieve valid members ids
+        $members = new Members();
+        $valids = $members->getArrayList(
+            array_map(intval(...), $existing_diff),
+            null,
+            false,
+            false,
+            [self::PK]
+        );
+
+        foreach ($valids as $valid) {
+            /** @var ArrayObject<string,mixed> $valid */
+            $file = $existing_disk[$valid->id_adh];
+            $this->storeInDb(
+                $zdb,
+                (int)$file['id'],
+                $this->store_path . $file['id'] . '.' . $file['ext'],
+                $file['ext']
             );
         }
     }
@@ -841,10 +863,10 @@ class Picture
         $thumb = imagecreatetruecolor($w, $h);
 
         $image = match ($ext) {
-            'jpg' => imagecreatefromjpeg($source),
-            'png' => imagecreatefrompng($source),
-            'gif' => imagecreatefromgif($source),
-            'webp' => imagecreatefromwebp($source),
+            'jpg' => imagecreatefromjpeg($source), // @phpstan-ignore theCodingMachineSafe.function
+            'png' => imagecreatefrompng($source), // @phpstan-ignore theCodingMachineSafe.function
+            'gif' => imagecreatefromgif($source), // @phpstan-ignore theCodingMachineSafe.function
+            'webp' => imagecreatefromwebp($source), // @phpstan-ignore theCodingMachineSafe.function
             default => throw new UnhandledMatchError($ext),
         };
 
@@ -866,10 +888,10 @@ class Picture
         }
 
         return match ($ext) {
-            'jpg' => imagejpeg($thumb, $dest),
-            'png' => imagepng($thumb, $dest),
-            'gif' => imagegif($thumb, $dest),
-            'webp' => imagewebp($thumb, $dest),
+            'jpg' => imagejpeg($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
+            'png' => imagepng($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
+            'gif' => imagegif($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
+            'webp' => imagewebp($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
             default => false
         };
     }

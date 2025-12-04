@@ -35,6 +35,7 @@ use Galette\Core\History;
 use Galette\Entity\Contribution;
 use Galette\Entity\Adherent;
 use Laminas\Db\Sql\Select;
+use Safe\DateTime;
 
 /**
  * Scheduled payments class for galette
@@ -320,7 +321,7 @@ class ScheduledPayments
 
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->rstart_date_filter);
+                $d = new DateTime($this->filters->rstart_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
@@ -328,7 +329,7 @@ class ScheduledPayments
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->rend_date_filter);
+                $d = new DateTime($this->filters->rend_date_filter);
                 $select->where->lessThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')

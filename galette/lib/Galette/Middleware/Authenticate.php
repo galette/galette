@@ -34,6 +34,8 @@ use Slim\Flash\Messages;
 use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
 
+use function Safe\preg_match;
+
 /**
  * Galette Slim middleware for authentication
  *

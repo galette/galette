@@ -25,7 +25,7 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use DateInterval;
-use DateTime;
+use Safe\DateTime;
 use Galette\Core\I18n;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
@@ -1339,10 +1339,10 @@ class Adherent implements AccessManagementInterface
             case 'ddn_adh':
             case 'date_echeance':
                 try {
-                    $d = DateTime::createFromFormat(__("Y-m-d"), $value);
+                    $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
                     if ($d === false) {
                         //try with non localized date
-                        $d = DateTime::createFromFormat("Y-m-d", $value);
+                        $d = \DateTime::createFromFormat("Y-m-d", $value);
                         if ($d === false) {
                             throw new \Exception('Incorrect format');
                         }
@@ -2114,7 +2114,7 @@ class Adherent implements AccessManagementInterface
             return '';
         }
 
-        $d = DateTime::createFromFormat('Y-m-d', $this->birthdate);
+        $d = \DateTime::createFromFormat('Y-m-d', $this->birthdate);
         if ($d === false) {
             Analog::log(
                 'Invalid birthdate: ' . $this->birthdate,

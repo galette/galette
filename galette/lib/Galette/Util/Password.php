@@ -26,6 +26,11 @@ namespace Galette\Util;
 use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+use function Safe\preg_match;
+use function Safe\preg_split;
+
 /**
  * Password checks
  *
@@ -284,7 +289,7 @@ class Password
             if (count($parts) > 1) {
                 $letters = '';
                 foreach ($parts as $part) {
-                    $letters .= mb_substr($part, 0, 1);
+                    $letters .= mb_substr((string) $part, 0, 1);
                 }
                 $infos[] = $letters . $adh->name;
                 $infos[] = $adh->name . $letters;
