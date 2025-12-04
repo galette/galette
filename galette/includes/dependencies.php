@@ -411,6 +411,7 @@ if (
     && !defined('GALETTE_INSTALLER')
 ) {
     global $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser;
+    //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
     $zdb = $container->get(\Galette\Core\Db::class);
     $preferences = $container->get(\Galette\Core\Preferences::class);
     $login = $container->get(\Galette\Core\Login::class);
@@ -418,7 +419,10 @@ if (
     $l10n = $container->get(\Galette\Core\L10n::class);
     $emitter = $container->get('event_manager');
     $routeparser = $container->get(RouteParser::class);
+    //phpcs:enable
 }
+//phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
 $i18n = $container->get(\Galette\Core\I18n::class);
 $translator = $container->get(\Galette\Core\Translator::class);
+//phpcs:enable
 require_once GALETTE_ROOT . 'includes/i18n.inc.php';

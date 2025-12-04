@@ -136,7 +136,7 @@ class Galette extends GaletteTestCase
     {
         global $preferences, $login, $plugins;
         $db = new \Galette\Core\Db();
-        $plugins = new \Galette\Core\Plugins();
+        $plugins = new \Galette\Core\Plugins();  //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- global
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
             ->setConstructorArgs([$db])
             ->onlyMethods(['arePublicPagesEnabled', 'showPublicPage'])

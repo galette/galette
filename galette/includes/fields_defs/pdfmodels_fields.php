@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 use Galette\Entity\PdfModel;
 
+//TODO: find a better way.
+//phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 $pdfmodels_fields = [
     [
         'model_id'  => PdfModel::MAIN_MODEL,

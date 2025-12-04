@@ -24,6 +24,8 @@ declare(strict_types=1);
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\FieldsCategories;
 
+//TODO: find a better way.
+//phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 $members_fields = [
     'id_adh' => [
         'label'    => _T("Member id:"),

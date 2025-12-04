@@ -194,7 +194,7 @@ class Mailing extends GaletteMail
 
         $_recipients = [];
         $mdeps = ['parent' => true];
-        foreach ($orig_recipients as $k => $v) {
+        foreach (array_keys($orig_recipients) as $k) {
             $m = new Adherent($zdb, $k, $mdeps);
             $_recipients[] = $m;
         }

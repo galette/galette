@@ -261,12 +261,6 @@ class Login extends GaletteTestCase
         $select->where(['a.fingerprint' => 'FAKER' . $this->seed]);
         $results = $this->zdb->execute($select);
 
-        global $zdb, $login, $hist, $i18n; // globals :(
-        $zdb = $this->zdb;
-        $login = $this->login;
-        $hist = $this->history;
-        $i18n = $this->i18n;
-
         if ($results->count() === 0) {
             $status = $this->container->get(\Galette\Entity\Status::class);
             if (count($status->getList()) === 0) {

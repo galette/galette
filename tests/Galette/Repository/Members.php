@@ -89,12 +89,6 @@ class Members extends GaletteTestCase
      */
     private function createMembers(): void
     {
-        global $zdb, $login, $hist, $i18n; // globals :(
-        $zdb = $this->zdb;
-        $login = $this->login;
-        $hist = $this->history;
-        $i18n = $this->i18n;
-
         $this->logSuperAdmin();
         try {
             $this->deleteMembers();
@@ -113,7 +107,6 @@ class Members extends GaletteTestCase
             $res = $contribtypes->installInit();
             $this->assertTrue($res);
         }
-
 
         $tests_members = json_decode(file_get_contents(GALETTE_TESTS_PATH . '/fixtures/tests_members.json'));
 

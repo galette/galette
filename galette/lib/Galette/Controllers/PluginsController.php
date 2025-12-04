@@ -226,8 +226,8 @@ class PluginsController extends AbstractController
                 break;
             case 'i2':
             case 'u2':
-                $install_plugin = true; //not used here, but from include
-                $zdb = $this->zdb;
+                $install_plugin = true; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but from include
+                $zdb = $this->zdb; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but from include
                 ob_start();
                 include_once GALETTE_ROOT . '/install/steps/db_checks.php';
                 $params['results'] = ob_get_contents();

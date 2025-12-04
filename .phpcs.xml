@@ -55,4 +55,5 @@
        </properties>
      </rule>
      <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
+     <rule ref="SlevomatCodingStandard.Variables.UnusedVariable"/>
 </ruleset>

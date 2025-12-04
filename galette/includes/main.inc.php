@@ -42,8 +42,6 @@ if (!defined('GLOB_BRACE')) {
     define('GLOB_BRACE', 0);
 }
 
-$time_start = microtime(true);
-
 //define galette's root directory
 if (!defined('GALETTE_ROOT')) {
     define('GALETTE_ROOT', __DIR__ . '/../');
@@ -111,8 +109,9 @@ $app->add($app->getContainer()->get('csrf'));
 
 /**
  * Authentication middleware
+ * FIXME: use DI when needed instead of global variable
  */
-$authenticate = $container->get(Authenticate::class);
+$authenticate = $container->get(Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 

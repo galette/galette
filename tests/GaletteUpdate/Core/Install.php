@@ -53,7 +53,7 @@ class Install extends TestCase
 
         $gapp =  new \Galette\Core\SlimApp();
         $app = $gapp->getApp();
-        $plugins = new \Galette\Core\Plugins();
+        $plugins = new \Galette\Core\Plugins(); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from dependencies.php
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
         $container = $app->getContainer();
         $_SERVER['HTTP_HOST'] = '';

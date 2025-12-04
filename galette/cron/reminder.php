@@ -52,6 +52,7 @@ require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/groups.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
+$cron = (PHP_SAPI === 'cli');
 if ($cron) {
     $container->get(Login::class)->logCron(
         basename($argv[0], '.php'),

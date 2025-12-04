@@ -756,8 +756,7 @@ class Picture
                 return false;
         }
 
-        [$cur_width, $cur_height, $cur_type, $curattr]
-            = getimagesize($source);
+        [$cur_width, $cur_height] = getimagesize($source);
 
         $ratio = $cur_width / $cur_height;
 

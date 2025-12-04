@@ -120,20 +120,22 @@ abstract class GaletteTestCase extends TestCase
         }
 
         global $zdb, $login, $hist, $i18n, $container, $galette_log_var, $routeparser;  // globals :(
+        //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
         $zdb = $this->zdb;
         $login = $this->login;
         $hist = $this->history;
         $i18n = $this->i18n;
         $container = $this->container;
         $routeparser = $this->routeparser;
+        //phpcs:enable
+        //FIXME: use DI when needed instead of global variable -- see also in includes/main.inc.php
+        $authenticate = $container->get(\Galette\Middleware\Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files
 
         $this->initPaymentTypes();
         $this->initStatus();
         $this->initContributionsTypes();
         $this->initModels();
         $this->initTitles();
-
-        $authenticate = $container->get(\Galette\Middleware\Authenticate::class);
 
         require GALETTE_ROOT . 'includes/routes/main.routes.php';
         require GALETTE_ROOT . 'includes/routes/authentication.routes.php';
