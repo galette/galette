@@ -3,7 +3,7 @@ Changes
 
 1.2.0.1 -> 1.2.1
 
-- Rework groups management use rinterface
+- Rework groups management user interface
 - Several fixes and improvements on logo (webp transperency, logo display in mails, ...)
 - Change default order on contributions and translations
 - Fix attaching existing contribution on transation
