@@ -5,8 +5,8 @@ Changes
 
 - Rework groups management user interface
 - Several fixes and improvements on logo (webp transperency, logo display in mails, ...)
-- Change default order on contributions and translations
-- Fix attaching existing contribution on transation
+- Change default order on contributions and transactions
+- Fix attaching existing contribution on transaction
 - Fixes on PDF member cards
 - Fix text emails signature
 - Fix debug mode using release archives
