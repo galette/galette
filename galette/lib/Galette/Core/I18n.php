@@ -25,6 +25,9 @@ namespace Galette\Core;
 
 use Analog\Analog;
 
+use function Safe\bindtextdomain;
+use function Safe\realpath;
+
 /**
  * i18n handling
  *
@@ -41,7 +44,7 @@ class I18n
     public const DEFAULT_LANG = 'en_US';
 
     private string $dir = 'lang/';
-    private string $path;
+    private readonly string $path;
 
     /** @var array<string,array<string,string>> */
     private array $langs = [];
@@ -72,7 +75,7 @@ class I18n
             $dlang = self::DEFAULT_LANG;
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
                 $preferred_locales = array_reduce(
-                    explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']),
+                    explode(',', (string) $_SERVER['HTTP_ACCEPT_LANGUAGE']),
                     function ($res, $el) {
                         [$l, $q] = array_merge(explode(';q=', $el), [1]);
                         $res[$l] = (float)$q;
@@ -83,7 +86,7 @@ class I18n
                 arsort($preferred_locales);
 
                 foreach (array_keys($preferred_locales) as $preferred_locale) {
-                    $short_locale = explode('_', $preferred_locale)[0];
+                    $short_locale = explode('_', (string) $preferred_locale)[0];
                     foreach (array_keys($this->langs) as $lang) {
                         $short_key = explode('_', $lang)[0];
                         if ($short_key == $short_locale) {
@@ -254,7 +257,7 @@ class I18n
      *
      * @param string $str string to analyze
      *
-     * @return  boolean
+     * @return  bool
      */
     public static function seemUtf8(string $str): bool
     {
@@ -301,7 +304,7 @@ class I18n
     /**
      * Is current language RTL?
      *
-     * @return boolean
+     * @return bool
      */
     public function isRTL(): bool
     {

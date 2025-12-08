@@ -37,6 +37,7 @@ use Galette\Entity\Transaction;
 use Galette\Entity\ContributionsTypes;
 use Galette\Filters\ContributionsList;
 use Laminas\Db\Sql\Select;
+use Safe\DateTime;
 
 /**
  * Contributions class for galette
@@ -48,11 +49,8 @@ class Contributions
     public const TABLE = Contribution::TABLE;
     public const PK = Contribution::PK;
 
-    private ContributionsList $filters;
     private int $count = 0;
 
-    private Db $zdb;
-    private Login $login;
     private float $sum = 0;
     /** @var array<int> */
     private array $current_selection;
@@ -64,12 +62,11 @@ class Contributions
      * @param Login              $login   Login
      * @param ?ContributionsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?ContributionsList $filters = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
-        $this->filters = $filters ?? new ContributionsList();
+    public function __construct(
+        private readonly Db $zdb,
+        private readonly Login $login,
+        private readonly ?ContributionsList $filters = new ContributionsList()
+    ) {
     }
 
     /**
@@ -322,7 +319,7 @@ class Contributions
 
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->rstart_date_filter);
+                $d = new DateTime($this->filters->rstart_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
@@ -330,7 +327,7 @@ class Contributions
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->rend_date_filter);
+                $d = new DateTime($this->filters->rend_date_filter);
                 $select->where->lessThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
@@ -487,11 +484,11 @@ class Contributions
     /**
      * Remove specified contributions
      *
-     * @param integer|array<int> $ids         Contributions identifiers to delete
-     * @param History            $hist        History
-     * @param boolean            $transaction True to begin a database transaction
+     * @param int|array<int> $ids         Contributions identifiers to delete
+     * @param History        $hist        History
+     * @param bool           $transaction True to begin a database transaction
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {

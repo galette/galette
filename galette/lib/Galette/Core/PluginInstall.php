@@ -23,8 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use Analog\Analog;
-
 /**
  * Galette plugin installation
  *
@@ -44,44 +42,12 @@ class PluginInstall extends Install
     /**
      * Test database connection
      *
-     * @return boolean
+     * @return bool
      */
     public function testDbConnexion(): bool
     {
         //installing plugin, DB connection is already ok
         return true;
-    }
-
-    /**
-     * Go back to previous step
-     *
-     * @return void
-     */
-    public function atPreviousStep(): void
-    {
-        if ($this->step > 0) {
-            if (
-                $this->step - 1 !== self::STEP_DB_INSTALL
-                && $this->step !== self::STEP_END
-            ) {
-                if ($this->step === self::STEP_DB_INSTALL) {
-                    $this->step = self::STEP_DB_CHECKS;
-                } else {
-                    if ($this->step === self::STEP_DB_UPGRADE) {
-                        $this->setInstalledVersion(null);
-                    }
-                    $this->step -= 1;
-                }
-            } else {
-                $msg = null;
-                if ($this->step === self::STEP_END) {
-                    $msg = 'Ok man, install is finished already!';
-                } else {
-                    $msg = 'It is forbidden to rerun database install!';
-                }
-                Analog::log($msg, Analog::WARNING);
-            }
-        }
     }
 
     /**
@@ -91,7 +57,7 @@ class PluginInstall extends Install
      * @param Db    $zdb   Database instance
      * @param Login $login Logged in instance
      *
-     * @return boolean
+     * @return bool
      */
     public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {

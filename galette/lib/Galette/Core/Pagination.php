@@ -29,17 +29,19 @@ use Analog\Analog;
 use Laminas\Db\Sql\Select;
 use Slim\Views\Twig;
 
+use function Safe\preg_match;
+
 /**
  * Pagination and ordering facilities
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $current_page
+ * @property int $current_page
  * @property string $orderby
  * @property SQLOrder $ordered
- * @property integer $show
- * @property integer $pages
- * @property integer $counter
+ * @property int $show
+ * @property int $pages
+ * @property int $counter
  */
 
 abstract class Pagination
@@ -50,8 +52,8 @@ abstract class Pagination
     private int $show;
     private int $pages = 1;
     private ?int $counter = null;
-    protected ?Twig $view;
-    protected ?RouteParser $routeparser;
+    protected ?Twig $view = null;
+    protected ?RouteParser $routeparser = null;
     /** @var array<string> */
     protected array $errors = [];
 
@@ -218,7 +220,7 @@ abstract class Pagination
      *
      * @param RouteParser $routeparser Application instance
      * @param Twig        $view        View instance
-     * @param boolean     $restricted  Do not permit displaying all
+     * @param bool        $restricted  Do not permit displaying all
      *
      * @return void
      */

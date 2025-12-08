@@ -47,7 +47,6 @@ class Status
 
     public const ID_NOT_EXITS = -1;
 
-    private Db $zdb;
 
     private int $id;
     private string $label;
@@ -80,9 +79,8 @@ class Status
      * @param Db                                      $zdb  Database
      * @param int|ArrayObject<string,int|string>|null $args Optional existing result set
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
+    public function __construct(private Db $zdb, int|ArrayObject|null $args = null)
     {
-        $this->zdb = $zdb;
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
@@ -95,7 +93,7 @@ class Status
      *
      * @param int $id Entry ID
      *
-     * @return boolean true if query succeed, false otherwise
+     * @return bool true if query succeed, false otherwise
      */
     public function load(int $id): bool
     {
@@ -144,7 +142,7 @@ class Status
     /**
      * Set defaults at install time
      *
-     * @return boolean
+     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -279,7 +277,7 @@ class Status
     /**
      * Get an entry
      *
-     * @param integer $id Entry ID
+     * @param int $id Entry ID
      *
      * @return ArrayObject<string, int|string>|false Row if succeed ; false: no such id
      */
@@ -310,9 +308,9 @@ class Status
     /**
      * Get a label
      *
-     * @param integer $id         Id
-     * @param boolean $translated Do we want translated or original label?
-     *                            Defaults to true.
+     * @param int  $id         Id
+     * @param bool $translated Do we want translated or original label?
+     *                         Defaults to true.
      *
      * @return string|int
      */
@@ -360,11 +358,12 @@ class Status
     /**
      * Add a new entry
      *
-     * @param string  $label The label
-     * @param integer $extra Extra values (priority for statuses,
-     *                       extension for contributions types, ...)
+     * @param string $label The label
+     * @param int    $extra Extra values (priority for statuses,
+     *                      extension for contributions types,
+     *                      ...)
      *
-     * @return bool|integer  -2 : label already exists
+     * @return bool|int  -2 : label already exists
      */
     public function add(string $label, int $extra): bool|int
     {
@@ -421,12 +420,13 @@ class Status
     /**
      * Update in database.
      *
-     * @param integer $id    Entry ID
-     * @param string  $label The label
-     * @param integer $extra Extra values (priority for statuses,
-     *                       extension for contributions types, ...)
+     * @param int    $id    Entry ID
+     * @param string $label The label
+     * @param int    $extra Extra values (priority for statuses,
+     *                      extension for contributions types,
+     *                      ...)
      *
-     * @return self::ID_NOT_EXITS|boolean
+     * @return self::ID_NOT_EXITS|bool
      */
     public function update(int $id, string $label, int $extra): int|bool
     {
@@ -476,9 +476,9 @@ class Status
     /**
      * Delete entry
      *
-     * @param integer $id Entry ID
+     * @param int $id Entry ID
      *
-     * @return self::ID_NOT_EXITS|boolean
+     * @return self::ID_NOT_EXITS|bool
      */
     public function delete(int $id): int|bool
     {
@@ -526,9 +526,9 @@ class Status
     /**
      * Check if this entry is used.
      *
-     * @param integer $id Entry ID
+     * @param int $id Entry ID
      *
-     * @return boolean
+     * @return bool
      */
     public function isUsed(int $id): bool
     {
@@ -571,12 +571,10 @@ class Status
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
-            switch ($name) {
-                case 'libelle':
-                    return _T($this->label);
-                default:
-                    return $this->$name;
-            }
+            return match ($name) {
+                'libelle' => _T($this->label),
+                default => $this->$name,
+            };
         } else {
             return false;
         }

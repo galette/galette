@@ -85,7 +85,7 @@
     {% elseif (mode != 'topbar') and login.isLogged() %}
         {% for item in children %}
             {% set icon = mode == "compact" ? null : item.icon %}
-            {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, icon, null, item.tips_position ?? null) }}
+            {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, icon, null, item.tips_position ?? null, mode, null) }}
         {% endfor %}
     {% else %}
         {{ _self.renderMenuDropdown(label, title ?? null, icon ?? null, tips_position ?? null, mode, children) }}
@@ -109,7 +109,7 @@
     {% endif %}
         <div class="{{ mode != 'sidebar' ? 'menu' : 'content' }}{{ mode == 'sidebar' and cur_route in my_routes ?? ' active' }}">
             {% for item in children %}
-                {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, null, null, null, mode) }}
+                {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, null, null, null, mode, null) }}
             {% endfor %}
         </div>
     </div>

@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Filters;
 
+use Galette\Enums\SQLOrder;
 use Galette\Helpers\DatesHelper;
 use Analog\Analog;
 use Galette\Core\Pagination;
@@ -34,17 +35,17 @@ use Galette\Core\Pagination;
  *
  * @property ?string $start_date_filter
  * @property ?string $end_date_filter
- * @property ?integer $filtre_cotis_adh
- * @property integer|false $filtre_cotis_children
- * @property integer $date_field
- * @property ?integer $payment_type_filter
- * @property ?integer $contrib_type_filter
- * @property boolean $filtre_transactions
- * @property integer|false $from_transaction
- * @property ?integer $max_amount
+ * @property ?int $filtre_cotis_adh
+ * @property int|false $filtre_cotis_children
+ * @property int $date_field
+ * @property ?int $payment_type_filter
+ * @property ?int $contrib_type_filter
+ * @property bool $filtre_transactions
+ * @property int|false $from_transaction
+ * @property ?int $max_amount
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
- * @property integer[] $selected
+ * @property int[] $selected
  */
 
 class ContributionsList extends Pagination
@@ -66,16 +67,16 @@ class ContributionsList extends Pagination
 
     //filters
     private ?int $date_field = null;
-    private ?string $start_date_filter = null; //@phpstan-ignore-line
-    private ?string $end_date_filter = null; //@phpstan-ignore-line
-    private ?int $payment_type_filter = null; //@phpstan-ignore-line
-    private ?int $contrib_type_filter = null; //@phpstan-ignore-line
+    private ?string $start_date_filter = null;
+    private ?string $end_date_filter = null;
+    private ?int $payment_type_filter = null;
+    private ?int $contrib_type_filter = null;
 
     private ?int $filtre_cotis_adh = null;
-    private int|false $filtre_cotis_children = false; //@phpstan-ignore-line
+    private int|false $filtre_cotis_children = false;
     private bool $filtre_transactions = false;
-    private int|false $from_transaction = false; //@phpstan-ignore-line
-    private ?int $max_amount = null; //@phpstan-ignore-line
+    private int|false $from_transaction = false;
+    private ?int $max_amount = null;
 
     /** @var array<int> */
     private array $selected = [];
@@ -120,9 +121,19 @@ class ContributionsList extends Pagination
     }
 
     /**
+     * Return the default direction for ordering
+     *
+     * @return SQLOrder
+     */
+    protected function getDefaultDirection(): SQLOrder
+    {
+        return SQLOrder::DESC;
+    }
+
+    /**
      * Reinit default parameters
      *
-     * @param boolean $ajax Called form an ajax query
+     * @param bool $ajax Called form an ajax query
      *
      * @return void
      */

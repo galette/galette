@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use ArrayObject;
+use Safe\DateTime;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Galette\Repository\Groups;
@@ -42,8 +43,6 @@ class Login extends Authentication
     public const TABLE = Adherent::TABLE;
     public const PK = 'login_adh';
 
-    private Db $zdb;
-    private I18n $i18n;
     private bool $impersonated = false;
 
     /**
@@ -52,10 +51,8 @@ class Login extends Authentication
      * @param Db   $zdb  Database instance
      * @param I18n $i18n I18n instance
      */
-    public function __construct(Db $zdb, I18n $i18n)
+    public function __construct(private readonly Db $zdb, private readonly I18n $i18n)
     {
-        $this->zdb = $zdb;
-        $this->i18n = $i18n;
     }
 
     /**
@@ -117,7 +114,7 @@ class Login extends Authentication
      * @param string $user  user's login
      * @param string $passe user's password
      *
-     * @return boolean
+     * @return bool
      */
     public function logIn(string $user, string $passe): bool
     {
@@ -159,7 +156,7 @@ class Login extends Authentication
                 }
 
                 //check if passwords match
-                $pw_checked = password_verify($passe, $row->mdp_adh);
+                $pw_checked = password_verify($passe, (string) $row->mdp_adh);
                 if (!$pw_checked) {
                     //if password did not match, we try old md5 method
                     $pw_checked = (md5($passe) === $row->mdp_adh);
@@ -245,8 +242,8 @@ class Login extends Authentication
             //let's check from end date, if present
             $this->uptodate = false;
         } else {
-            $ech = new \DateTime($row->date_echeance);
-            $now = new \DateTime();
+            $ech = new DateTime($row->date_echeance);
+            $now = new DateTime();
             $now->setTime(0, 0, 0);
             $this->uptodate = $ech >= $now;
         }

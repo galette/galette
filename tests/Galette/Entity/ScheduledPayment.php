@@ -612,7 +612,8 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertFalse($scheduledPayment->isDue());
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $scheduled_date = $now->modify('+1 month');
+        $scheduled_date = clone $now;
+        $scheduled_date = $scheduled_date->modify('+1 month');
         $data['scheduled_date'] = $scheduled_date->format('Y-m-d');
         $data['amount'] = 25.0;
         $data['paid'] = false;
@@ -626,7 +627,8 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertFalse($scheduledPayment->isDue());
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $scheduled_date = $now->modify('-1 month');
+        $scheduled_date = clone $now;
+        $scheduled_date = $scheduled_date->modify('-1 month');
         $data['scheduled_date'] = $scheduled_date->format('Y-m-d');
         $data['amount'] = 15.0;
         $data['paid'] = false;

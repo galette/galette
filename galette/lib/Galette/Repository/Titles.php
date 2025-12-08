@@ -57,16 +57,13 @@ class Titles
         ]
     ];
 
-    private Db $zdb;
-
     /**
      * Default constructor
      *
      * @param Db $zdb Database instance
      */
-    public function __construct(Db $zdb)
+    public function __construct(private readonly Db $zdb)
     {
-        $this->zdb = $zdb;
     }
 
     /**
@@ -93,7 +90,7 @@ class Titles
     /**
      * Set default titles at install time
      *
-     * @return boolean
+     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool

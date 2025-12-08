@@ -390,14 +390,14 @@
                     {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
                         <a
                                 href="{{ url_for("contributions", {"type": "contributions", "option": "member", "value": mid}) }}"
-                                title="{{ _T("Show only '%name' contributions")|replace({"%name": mname}) }}"
+                                title="{{ _T("Show only '%1$s' contributions")|format(mname) }}"
                         >
                             <i class="ui filter grey small icon" aria-hidden="true"></i>
                         </a>
                     {% endif %}
                     <a
                             href="{{ url_for("member", {"id": mid}) }}"
-                            title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
+                            title="{{ _T("Show '%1$s' card")|format(mname) }}"
                     >
                         {{ mname }}
                     </a>

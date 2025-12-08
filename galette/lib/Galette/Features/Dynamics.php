@@ -34,6 +34,10 @@ use Galette\DynamicFields\Date;
 use Galette\DynamicFields\Boolean;
 use Galette\Entity\DynamicFieldsHandle;
 
+use function Safe\preg_grep;
+use function Safe\preg_replace;
+use function Safe\unlink;
+
 /**
  * Dynamics fields trait
  *
@@ -55,7 +59,7 @@ trait Dynamics
      */
     private function loadDynamicFields(): void
     {
-        /** @phpstan-ignore-next-line */
+        //@phpstan-ignore-next-line function.alreadyNarrowedType
         if (property_exists($this, 'login') && ($this->login ?? null) instanceof Login) {
             $login = $this->login;
         } else {
@@ -133,11 +137,11 @@ trait Dynamics
                 $value = $dfield_values['value'];
                 $val_index = (int)$dfield_values['val_index'];
 
-                if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
-                    $this->errors[] = str_replace(
-                        '%field',
+                if ($fields[$field_id]->isRequired() && (trim((string) $value) === '' || $value == null)) {
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is a field name
+                        _T('Missing required field %1$s'),
                         $fields[$field_id]->getName(),
-                        _T('Missing required field %field')
                     );
                 } elseif ($fields[$field_id] instanceof File) {
                     //delete checkbox
@@ -152,7 +156,7 @@ trait Dynamics
                     }
                     $this->dynamics->setValue($this->id, $field_id, $val_index, '');
                 } else {
-                    if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
+                    if ($fields[$field_id] instanceof Date && !empty(trim((string) $value))) {
                         //check date format
                         try {
                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
@@ -212,7 +216,7 @@ trait Dynamics
             $this->loadDynamicFields();
         }
         $return = $this->dynamics->storeValues($this->id, $transaction);
-        //@phpstan-ignore-next-line
+        //@phpstan-ignore function.alreadyNarrowedType
         if (method_exists($this, 'updateModificationDate') && $this->dynamics->hasChanged()) {
             $this->updateModificationDate();
         }
@@ -233,7 +237,7 @@ trait Dynamics
         $store = false;
 
         foreach ($files as $key => $file) {
-            if (substr($key, 0, 11) != $this->name_pattern) {
+            if (substr((string) $key, 0, 11) != $this->name_pattern) {
                 continue;
             }
 

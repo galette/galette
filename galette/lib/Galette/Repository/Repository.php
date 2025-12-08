@@ -29,6 +29,7 @@ use Galette\Core\Pagination;
 use Galette\Core\Preferences;
 use Galette\Core\Login;
 use Laminas\Db\ResultSet\ResultSet;
+use RuntimeException;
 
 /**
  * Repositories
@@ -37,14 +38,9 @@ use Laminas\Db\ResultSet\ResultSet;
  */
 abstract class Repository
 {
-    protected Db $zdb;
-    protected Preferences $preferences;
-    protected string $entity;
-    protected Login $login;
     protected Pagination $filters;
     /** @var array<int|string,mixed> */
     protected array $defaults = [];
-    protected string $prefix;
 
     /**
      * Main constructor
@@ -57,18 +53,13 @@ abstract class Repository
      * @param string      $prefix      Prefix (for plugins)
      */
     public function __construct(
-        Db $zdb,
-        Preferences $preferences,
-        Login $login,
-        ?string $entity = null,
+        protected Db $zdb,
+        protected Preferences $preferences,
+        protected Login $login,
+        protected ?string $entity = null,
         ?string $ns = null,
-        string $prefix = ''
+        protected string $prefix = ''
     ) {
-        $this->zdb = $zdb;
-        $this->preferences = $preferences;
-        $this->login = $login;
-        $this->prefix = $prefix;
-
         if ($entity === null) {
             //no entity class name provided. Take Repository
             //class name and remove trailing 's'
@@ -78,7 +69,7 @@ abstract class Repository
             if ($ent != $repo) {
                 $entity = $ent;
             } else {
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     'Unable to find entity name from repository one. Please '
                     . 'provide entity name in repository constructor'
                 );
@@ -91,7 +82,7 @@ abstract class Repository
         if (class_exists($entity)) {
             $this->entity = $entity;
         } else {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'Entity class ' . $entity . ' cannot be found!'
             );
         }
@@ -119,9 +110,9 @@ abstract class Repository
     /**
      * Add default values in database
      *
-     * @param boolean $check_first Check first if it seems initialized, defaults to true
+     * @param bool $check_first Check first if it seems initialized, defaults to true
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function installInit(bool $check_first = true): bool;
 
@@ -165,7 +156,7 @@ abstract class Repository
      * @param string         $field_name Field name to order by
      * @param ?array<string> $fields     SELECTE'ed fields
      *
-     * @return boolean
+     * @return bool
      */
     protected function canOrderBy(string $field_name, ?array $fields): bool
     {

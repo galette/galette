@@ -89,16 +89,10 @@ class Members extends GaletteTestCase
      */
     private function createMembers(): void
     {
-        global $zdb, $login, $hist, $i18n; // globals :(
-        $zdb = $this->zdb;
-        $login = $this->login;
-        $hist = $this->history;
-        $i18n = $this->i18n;
-
         $this->logSuperAdmin();
         try {
             $this->deleteMembers();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             //empty catch
         }
 
@@ -113,7 +107,6 @@ class Members extends GaletteTestCase
             $res = $contribtypes->installInit();
             $this->assertTrue($res);
         }
-
 
         $tests_members = json_decode(file_get_contents(GALETTE_TESTS_PATH . '/fixtures/tests_members.json'));
 
@@ -644,8 +637,8 @@ class Members extends GaletteTestCase
         //search on infos - as admin
         global $login;
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $login->method('isAdmin')->willReturn(true);
 
@@ -1260,7 +1253,7 @@ class Members extends GaletteTestCase
         //add member as sender for a mailing
         $mailhist = new \Galette\Core\MailingHistory($this->zdb, $this->login, $this->preferences);
 
-        $values = array(
+        $values = [
             'mailing_sender'            => $member->id,
             'mailing_sender_name'       => 'test',
             'mailing_sender_address'    => 'test@test.com',
@@ -1269,7 +1262,7 @@ class Members extends GaletteTestCase
             'mailing_date'              => '2015-01-01 00:00:00',
             'mailing_recipients'        => \Galette\Core\Galette::jsonEncode([]),
             'mailing_sent'              => true
-        );
+        ];
         $insert = $this->zdb->insert(\Galette\Core\MailingHistory::TABLE);
         $insert->values($values);
         $this->zdb->execute($insert);

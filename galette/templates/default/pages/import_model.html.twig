@@ -31,7 +31,7 @@
             {% if defaults_loaded %}
                 {{ _T('Default fields') }}
             {% else %}
-                {{ _T('Model parameted on %date')|replace({'%date': model.getCreationDate()}) }}
+                {{ _T('Model parameted on %1$s')|format(model.getCreationDate()) }}
             {% endif %}
         </div>
         <thead>
@@ -43,7 +43,7 @@
     {% for field in fields %}
             <tr>
         {% if members_fields[field] is not defined %}
-                <td>{{ _T('Missing field \'%field\'')|replace({'%field': field}) }}</td>
+                <td>{{ _T('Missing field \'%1$s\'')|format(field) }}</td>
         {% else %}
                 <td>{{ members_fields[field]['label']|replace({':': ''}) }}</td>
         {% endif %}

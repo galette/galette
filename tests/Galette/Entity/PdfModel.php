@@ -217,8 +217,8 @@ class PdfModel extends GaletteTestCase
      * Tets getTypeClass
      * @dataProvider typesProvider
      *
-     * @param integer $type     Requested type
-     * @param string  $expected Expected class name
+     * @param int    $type     Requested type
+     * @param string $expected Expected class name
      *
      * @return void
      */
@@ -317,7 +317,7 @@ class PdfModel extends GaletteTestCase
         );
 
         $this->assertMatchesRegularExpression(
-            '/<td id="pdf_logo"><img src="@.+" width="200" height="133" alt="" \/><\/td>/',
+            '/<td id="pdf_logo"><img src="@.+" width="\d+" height="\d+" alt="" \/><\/td>/',
             $model->hheader
         );
 

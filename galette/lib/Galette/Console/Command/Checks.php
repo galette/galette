@@ -62,7 +62,7 @@ class Checks extends AbstractCommand
 
         $check_messages = [];
 
-        $phpok = !version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<'); //@phpstan-ignore-line
+        $phpok = !version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<'); //@phpstan-ignore booleanNot.alwaysTrue
         if (!$phpok) { //@phpstan-ignore-line
             $check_messages [] = sprintf(
                 '<error>❌ PHP version %s is too old: %s minimum required</error>',
@@ -104,7 +104,7 @@ class Checks extends AbstractCommand
         $io->listing($check_messages);
 
         if (
-            !$phpok //@phpstan-ignore-line
+            !$phpok //@phpstan-ignore booleanNot.alwaysFalse
             || !$cm->isValid()
         ) {
             $io->error('Something is wrong with your setup :(');

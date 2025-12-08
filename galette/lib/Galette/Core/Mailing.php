@@ -31,6 +31,12 @@ use Galette\IO\FileTrait;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
 
+use function Safe\glob;
+use function Safe\mkdir;
+use function Safe\rename;
+use function Safe\rmdir;
+use function Safe\unlink;
+
 /**
  * Mailing features
  *
@@ -38,10 +44,10 @@ use Psr\Http\Message\UploadedFileInterface;
  *
  * @property string $subject
  * @property string $message
- * @property boolean $html
- * @property integer $current_step
- * @property-read  integer $step
- * @property integer|string $id
+ * @property bool $html
+ * @property int $current_step
+ * @property-read  int $step
+ * @property int|string $id
  * @property-read string $alt_message
  * @property-read string $wrapped_message
  * @property-read PHPMailer $mail
@@ -52,7 +58,7 @@ use Psr\Http\Message\UploadedFileInterface;
  * @property File[] $attachments
  * @property-read string $sender_name
  * @property-read string $sender_address
- * @property integer $history_id
+ * @property int $history_id
  */
 class Mailing extends GaletteMail
 {
@@ -77,7 +83,7 @@ class Mailing extends GaletteMail
 
     private string $mime_type;
 
-    private ?string $tmp_path;
+    private ?string $tmp_path = null;
     private int $history_id;
 
     /**
@@ -85,7 +91,7 @@ class Mailing extends GaletteMail
      *
      * @param Preferences          $preferences Preferences instance
      * @param array<int, Adherent> $members     An array of members
-     * @param ?integer             $id          Identifier, defaults to null
+     * @param ?int                 $id          Identifier, defaults to null
      */
     public function __construct(Preferences $preferences, array $members = [], ?int $id = null)
     {
@@ -147,7 +153,6 @@ class Mailing extends GaletteMail
      */
     private function loadAttachments(): void
     {
-        $dir = '';
         if (
             isset($this->tmp_path)
             && trim($this->tmp_path) !== ''
@@ -169,10 +174,11 @@ class Mailing extends GaletteMail
      * Loads a mailing from history
      *
      * @param ArrayObject<string, mixed> $rs  Mailing entry
-     * @param boolean                    $new True if we create a 'new' mailing,
-     *                                        false otherwise (from preview for example)
+     * @param bool                       $new True if we create a 'new' mailing,
+     *                                        false otherwise (from preview for
+     *                                        example)
      *
-     * @return boolean
+     * @return bool
      */
     public function loadFromHistory(ArrayObject $rs, bool $new = true): bool
     {
@@ -184,7 +190,7 @@ class Mailing extends GaletteMail
             } else {
                 $orig_recipients = Galette::jsonDecode($rs->mailing_recipients);
             }
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             Analog::log(
                 'Unable to retrieve recipients for mailing ' . $rs->mailing_id,
                 Analog::ERROR
@@ -194,7 +200,7 @@ class Mailing extends GaletteMail
 
         $_recipients = [];
         $mdeps = ['parent' => true];
-        foreach ($orig_recipients as $k => $v) {
+        foreach (array_keys($orig_recipients) as $k) {
             $m = new Adherent($zdb, $k, $mdeps);
             $_recipients[] = $m;
         }
@@ -289,7 +295,7 @@ class Mailing extends GaletteMail
      * @return bool
      * FIXME: same name as parent method, but different arguments
      */
-    public function setRecipients(array $members): bool //@phpstan-ignore-line
+    public function setRecipients(array $members): bool //@phpstan-ignore method.childParameterType (see FIXME)
     {
         $m = [];
         $this->mrecipients = [];
@@ -367,10 +373,8 @@ class Mailing extends GaletteMail
                 if (!file_exists(GALETTE_ATTACHMENTS_PATH . $id)) {
                     mkdir(GALETTE_ATTACHMENTS_PATH . $id);
                 }
-                $moved = rename($old_path, $new_path);
-                if ($moved) {
-                    $attachment->setDestDir(GALETTE_ATTACHMENTS_PATH);
-                }
+                rename($old_path, $new_path);
+                $attachment->setDestDir(GALETTE_ATTACHMENTS_PATH);
             }
             rmdir($this->tmp_path);
             $this->tmp_path = null;
@@ -416,10 +420,9 @@ class Mailing extends GaletteMail
                 }
             } else {
                 Analog::log(
-                    str_replace(
-                        '%file',
-                        $name,
-                        'File %file does not exists and cannot be removed!'
+                    sprintf(
+                        'File %1$s does not exists and cannot be removed!',
+                        $name
                     ),
                     Analog::WARNING
                 );
@@ -434,10 +437,10 @@ class Mailing extends GaletteMail
     /**
      * Remove mailing attachments
      *
-     * @param boolean $temp Remove only temporary attachments,
-     *                      to avoid history breaking
+     * @param bool $temp Remove only temporary attachments,
+     *                   to avoid history breaking
      *
-     * @return boolean
+     * @return bool
      */
     public function removeAttachments(bool $temp = false): bool
     {
@@ -492,7 +495,7 @@ class Mailing extends GaletteMail
     /**
      * Does mailing already exists in history?
      *
-     * @return boolean
+     * @return bool
      */
     public function existsInHistory(): bool
     {
@@ -512,7 +515,7 @@ class Mailing extends GaletteMail
         if (!in_array($name, $forbidden)) {
             switch ($name) {
                 case 'alt_message':
-                    return $this->cleanedHtml();
+                    return $this->getTextMessage();
                 case 'step':
                     return $this->current_step;
                 case 'subject':
@@ -573,23 +576,10 @@ class Mailing extends GaletteMail
     {
         $forbidden = ['ordered'];
         if (!in_array($name, $forbidden)) {
-            switch ($name) {
-                case 'alt_message':
-                case 'step':
-                case 'subject':
-                case 'message':
-                case 'wrapped_message':
-                case 'html':
-                case 'mail':
-                case 'errors':
-                case 'recipients':
-                case 'tmp_path':
-                case 'attachments':
-                case 'sender_name':
-                case 'sender_address':
-                    return true;
-            }
-            return isset($this->$name);
+            return match ($name) {
+                'alt_message', 'step', 'subject', 'message', 'wrapped_message', 'html', 'mail', 'errors', 'recipients', 'tmp_path', 'attachments', 'sender_name', 'sender_address' => true,
+                default => isset($this->$name),
+            };
         }
 
         return false;

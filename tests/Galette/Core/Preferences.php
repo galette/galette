@@ -37,6 +37,18 @@ class Preferences extends GaletteTestCase
     protected int $seed = 20240917074915;
 
     /**
+     * Tear down tests
+     *
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        $delete = $this->zdb->delete(\Galette\Entity\Social::TABLE);
+        $this->zdb->execute($delete);
+        parent::tearDown();
+    }
+
+    /**
      * Test preferences initialization
      *
      * @return void
@@ -61,7 +73,7 @@ class Preferences extends GaletteTestCase
                     $this->assertSame('da_admin', $value);
                     break;
                 case 'pref_admin_pass':
-                    $pw_checked = password_verify('da_secret', $value);
+                    $pw_checked = password_verify('da_secret', (string) $value);
                     $this->assertTrue($pw_checked);
                     break;
                 case 'pref_lang':
@@ -154,17 +166,17 @@ class Preferences extends GaletteTestCase
     {
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
-            array(
+            [
                 \Galette\Core\Preferences::PK => 'pref_footer'
-            )
+            ]
         );
         $this->zdb->execute($delete);
 
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
-            array(
+            [
                 \Galette\Core\Preferences::PK => 'pref_new_contrib_script'
-            )
+            ]
         );
         $this->zdb->execute($delete);
 
@@ -212,21 +224,21 @@ class Preferences extends GaletteTestCase
         $this->preferences->pref_bool_publicpages = true;
 
         $superadmin_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isSuperAdmin', 'isAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isSuperAdmin', 'isAdmin'])
             ->getMock();
         $superadmin_login->method('isSuperAdmin')->willReturn(true);
         $superadmin_login->method('isAdmin')->willReturn(true);
 
         $admin_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isAdmin'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isAdmin'])
             ->getMock();
         $admin_login->method('isAdmin')->willReturn(true);
 
         $user_login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isUp2Date'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isUp2Date'])
             ->getMock();
         $user_login->method('isUp2Date')->willReturn(true);
 
@@ -383,11 +395,11 @@ class Preferences extends GaletteTestCase
      *
      * @dataProvider sizesProvider
      *
-     * @param integer $vm    Vertical margin
-     * @param integer $hm    Horizontal margin
-     * @param integer $vs    Vertical spacing
-     * @param integer $hs    Horizontal spacing
-     * @param integer $count Number of expected errors
+     * @param int $vm    Vertical margin
+     * @param int $hm    Horizontal margin
+     * @param int $vs    Vertical spacing
+     * @param int $hs    Horizontal spacing
+     * @param int $count Number of expected errors
      *
      * @return void
      */
@@ -599,6 +611,10 @@ class Preferences extends GaletteTestCase
             "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu",
             $this->preferences->getMailSignature($mail)
         );
+        $this->assertSame(
+            "\r\n-- \r\nGalette https://galette.eu",
+            $this->preferences->getMailSignature($mail, true)
+        );
 
         //with legacy values
         $this->preferences->pref_mail_sign = "{NAME}\r\n\r\n{WEBSITE}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}";
@@ -641,6 +657,17 @@ class Preferences extends GaletteTestCase
         $this->assertSame(
             "\r\n-- \r\nGalette\r\n\r\nhttps://galette.eu - https://framapiaf.org/@galette, Galette mastodon URL - the return",
             $this->preferences->getMailSignature($mail)
+        );
+
+        $this->preferences->pref_mail_sign = "{NAME}\r\n\r\n{ASSO_LOGO} <a href=\"{WEBSITE}\">our website</a>\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}";
+        $logo = new \Galette\Core\Logo();
+        $this->assertSame(
+            "\r\n-- \r\nGalette\r\n\r\n<img src=\"http:///logo\" width=\"" . $logo->getOptimalWidth() . "\" height=\"" . $logo->getOptimalHeight() . "\" alt=\"\" /> <a href=\"https://galette.eu\">our website</a>",
+            $this->preferences->getMailSignature($mail)
+        );
+        $this->assertSame(
+            "\r\n-- \r\nGalette (http:///logo) [our website](https://galette.eu)",
+            $this->preferences->getMailSignature($mail, true)
         );
     }
 

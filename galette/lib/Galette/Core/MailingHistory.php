@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use ArrayObject;
+use Safe\DateTime;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
@@ -47,7 +48,6 @@ class MailingHistory extends History
     public const FILTER_SENT = 1;
     public const FILTER_NOT_SENT = 2;
 
-    private ?Mailing $mailing = null;
     private int $id;
     private string $date;
     private string $subject;
@@ -55,8 +55,8 @@ class MailingHistory extends History
     /** @var array<int, mixed> */
     private array $recipients;
     private int $sender;
-    private ?string $sender_name; //@phpstan-ignore-line
-    private ?string $sender_address; //@phpstan-ignore-line
+    private ?string $sender_name = null;
+    private ?string $sender_address = null;
     private bool $sent = false;
 
     /**
@@ -68,14 +68,18 @@ class MailingHistory extends History
      * @param MailingsList|null $filters     Filtering
      * @param Mailing|null      $mailing     Mailing
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, ?MailingsList $filters = null, ?Mailing $mailing = null)
-    {
+    public function __construct(
+        Db $zdb,
+        Login $login,
+        Preferences $preferences,
+        ?MailingsList $filters = null,
+        private readonly ?Mailing $mailing = null
+    ) {
         if ($filters === null) {
             $filters = new MailingsList();
         }
 
         parent::__construct($zdb, $login, $preferences, $filters);
-        $this->mailing = $mailing;
     }
 
     /**
@@ -125,7 +129,7 @@ class MailingHistory extends History
                         }
                     }
                 }
-                $r['attachments'] = $attachments; //@phpstan-ignore-line
+                $r['attachments'] = $attachments; //@phpstan-ignore offsetAssign.valueType (ArrayObject<string, string> does not accept int<0, max>. seems wrong guess)
                 $ret[] = $r;
             }
             return $ret;
@@ -176,7 +180,7 @@ class MailingHistory extends History
     {
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->raw_start_date_filter);
+                $d = new DateTime($this->filters->raw_start_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     'mailing_date',
                     $d->format('Y-m-d')
@@ -184,7 +188,7 @@ class MailingHistory extends History
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->raw_end_date_filter);
+                $d = new DateTime($this->filters->raw_end_date_filter);
                 $select->where->lessThanOrEqualTo(
                     'mailing_date',
                     $d->format('Y-m-d')
@@ -218,7 +222,7 @@ class MailingHistory extends History
 
             if ($this->filters->subject_filter != '') {
                 $token = $this->zdb->platform->quoteValue(
-                    '%' . strtolower($this->filters->subject_filter) . '%'
+                    '%' . strtolower((string) $this->filters->subject_filter) . '%'
                 );
 
                 $select->where(
@@ -274,12 +278,13 @@ class MailingHistory extends History
      * Load mailing from an existing one
      *
      * @param Db      $zdb     Database instance
-     * @param integer $id      Model identifier
+     * @param int     $id      Model identifier
      * @param Mailing $mailing Mailing object
-     * @param boolean $new     True if we create a 'new' mailing,
-     *                         false otherwise (from preview for example)
+     * @param bool    $new     True if we create a 'new' mailing,
+     *                         false otherwise (from preview for
+     *                         example)
      *
-     * @return boolean
+     * @return bool
      */
     public static function loadFrom(Db $zdb, int $id, Mailing $mailing, bool $new = true): bool
     {
@@ -305,9 +310,9 @@ class MailingHistory extends History
     /**
      * Store a mailing in the history
      *
-     * @param boolean $sent Defaults to false
+     * @param bool $sent Defaults to false
      *
-     * @return boolean
+     * @return bool
      */
     public function storeMailing(bool $sent = false): bool
     {
@@ -346,40 +351,48 @@ class MailingHistory extends History
     }
 
     /**
+     * Prepare values fo insert/update
+     *
+     * @return array<string,mixed>
+     */
+    private function getPrepareValues(): array
+    {
+        $_recipients = [];
+        if ($this->recipients != null) {
+            foreach ($this->recipients as $_r) {
+                $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
+            }
+        }
+
+        $sender = ($this->sender === 0)
+            ? new Expression('NULL') : $this->sender;
+        $sender_name = $this->sender_name ?? new Expression('NULL');
+        $sender_address = $this->sender_address ?? new Expression('NULL');
+
+        return [
+            'mailing_sender'            => $sender,
+            'mailing_sender_name'       => $sender_name,
+            'mailing_sender_address'    => $sender_address,
+            'mailing_subject'           => $this->subject,
+            'mailing_body'              => $this->message,
+            'mailing_date'              => $this->date,
+            'mailing_recipients'        => Galette::jsonEncode($_recipients),
+            'mailing_sent'              => ($this->sent)
+                ? true
+                : ($this->zdb->isPostgres() ? 'false' : 0)
+        ];
+    }
+
+    /**
      * Update in the database
      *
-     * @return boolean
+     * @return bool
      */
     public function update(): bool
     {
         try {
-            $_recipients = [];
-            if ($this->recipients != null) {
-                foreach ($this->recipients as $_r) {
-                    $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
-                }
-            }
-
-            $sender = ($this->sender === 0)
-                ? new Expression('NULL') : $this->sender;
-            $sender_name = $this->sender_name ?? new Expression('NULL');
-            $sender_address = $this->sender_address ?? new Expression('NULL');
-
-            $values = [
-                'mailing_sender'            => $sender,
-                'mailing_sender_name'       => $sender_name,
-                'mailing_sender_address'    => $sender_address,
-                'mailing_subject'           => $this->subject,
-                'mailing_body'              => $this->message,
-                'mailing_date'              => $this->date,
-                'mailing_recipients'        => Galette::jsonEncode($_recipients),
-                'mailing_sent'              => ($this->sent)
-                    ? true
-                    : ($this->zdb->isPostgres() ? 'false' : 0)
-            ];
-
             $update = $this->zdb->update(self::TABLE);
-            $update->set($values);
+            $update->set($this->getPrepareValues());
             $update->where([self::PK => $this->mailing->history_id]);
             $this->zdb->execute($update);
             return true;
@@ -395,37 +408,13 @@ class MailingHistory extends History
     /**
      * Store in the database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
         try {
-            $_recipients = [];
-            if ($this->recipients != null) {
-                foreach ($this->recipients as $_r) {
-                    $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
-                }
-            }
-
-            $sender = $this->sender === 0 ? new Expression('NULL') : $this->sender;
-            $sender_name = $this->sender_name ?? new Expression('NULL');
-            $sender_address = $this->sender_address ?? new Expression('NULL');
-
-            $values = [
-                'mailing_sender'            => $sender,
-                'mailing_sender_name'       => $sender_name,
-                'mailing_sender_address'    => $sender_address,
-                'mailing_subject'           => $this->subject,
-                'mailing_body'              => $this->message,
-                'mailing_date'              => $this->date,
-                'mailing_recipients'        => Galette::jsonEncode($_recipients),
-                'mailing_sent'              => ($this->sent)
-                    ? true
-                    : ($this->zdb->isPostgres() ? 'false' : 0)
-            ];
-
             $insert = $this->zdb->insert(self::TABLE);
-            $insert->values($values);
+            $insert->values($this->getPrepareValues());
             $this->zdb->execute($insert);
 
             $this->id = $this->zdb->getLastGeneratedValue($this);
@@ -442,10 +431,10 @@ class MailingHistory extends History
     /**
      * Remove specified entries
      *
-     * @param integer|array<int> $ids  Mailing history entries identifiers
-     * @param History            $hist History instance
+     * @param int|array<int> $ids  Mailing history entries identifiers
+     * @param History        $hist History instance
      *
-     * @return boolean
+     * @return bool
      */
     public function removeEntries(int|array $ids, History $hist): bool
     {
@@ -487,7 +476,7 @@ class MailingHistory extends History
     /**
      * Get table's name
      *
-     * @param boolean $prefixed Whether table name should be prefixed
+     * @param bool $prefixed Whether table name should be prefixed
      *
      * @return string
      */
@@ -539,7 +528,7 @@ class MailingHistory extends History
             } else {
                 $recipients = Galette::jsonDecode($row['mailing_recipients']);
             }
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             Analog::log(
                 'Unable to retrieve recipients for mailing history ' . $row['mailing_id'],
                 Analog::ERROR

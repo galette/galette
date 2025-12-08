@@ -45,9 +45,6 @@ class SavedSearches
     public const TABLE = SavedSearch::TABLE;
     public const PK = SavedSearch::PK;
 
-    private SavedSearchesList $filters;
-    private Db $zdb;
-    private Login $login;
     private ?int $count = null;
 
     /**
@@ -57,12 +54,11 @@ class SavedSearches
      * @param Login              $login   Login
      * @param ?SavedSearchesList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?SavedSearchesList $filters = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
-        $this->filters = $filters ?? new SavedSearchesList();
+    public function __construct(
+        private readonly Db $zdb,
+        private readonly Login $login,
+        private readonly ?SavedSearchesList $filters = new SavedSearchesList()
+    ) {
     }
 
     /**
@@ -198,11 +194,11 @@ class SavedSearches
     /**
      * Remove specified searches
      *
-     * @param integer|array<int> $ids         Searches identifiers to delete
-     * @param History            $hist        History
-     * @param boolean            $transaction True to begin a database transaction
+     * @param int|array<int> $ids         Searches identifiers to delete
+     * @param History        $hist        History
+     * @param bool           $transaction True to begin a database transaction
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {

@@ -23,6 +23,12 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use function Safe\filemtime;
+use function Safe\glob;
+use function Safe\realpath;
+use function Safe\strtotime;
+use function Safe\unlink;
+
 /**
  * Logs
  *

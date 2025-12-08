@@ -50,7 +50,7 @@ class UpgradeTo08 extends AbstractUpdater
      */
     protected function update(): bool
     {
-        $dirs = array(
+        $dirs = [
             'logs',
             'templates_c',
             'cache',
@@ -60,10 +60,10 @@ class UpgradeTo08 extends AbstractUpdater
             'attachments',
             'tempimages',
             'files'
-        );
+        ];
 
         if (!file_exists(GALETTE_ROOT . 'data')) {
-            $created = @mkdir(GALETTE_ROOT . 'data');
+            $created = @mkdir(GALETTE_ROOT . 'data'); //@phpstan-ignore theCodingMachineSafe.function
             if (!$created) {
                 $this->addError(
                     str_replace(
@@ -79,7 +79,7 @@ class UpgradeTo08 extends AbstractUpdater
         foreach ($dirs as $dir) {
             $path = GALETTE_ROOT . 'data/' . $dir;
             if (!file_exists($path)) {
-                $created = @mkdir($path);
+                $created = @mkdir($path); //@phpstan-ignore theCodingMachineSafe.function
                 if (!$created) {
                     $this->addError(
                         str_replace(
@@ -106,11 +106,11 @@ class UpgradeTo08 extends AbstractUpdater
     private function moveDataDir(string $dirname): void
     {
         //all directories should not be moved
-        $nomove = array(
+        $nomove = [
             'templates_c',
             'cache',
             'tempimages'
-        );
+        ];
 
         if (!in_array($dirname, $nomove)) {
             $origdir = GALETTE_ROOT . $dirname . '/';
@@ -153,17 +153,16 @@ class UpgradeTo08 extends AbstractUpdater
 
             if ($go) {
                 $moved = true;
-                $d = dir($origdir);
+                $d = dir($origdir); //@phpstan-ignore theCodingMachineSafe.function
                 while (($entry = $d->read()) !== false) {
                     if ($entry != '.' && $entry != '..') {
-                        $moved = @rename($origdir . $entry, $destdir . $entry);
+                        $moved = @rename($origdir . $entry, $destdir . $entry); //@phpstan-ignore theCodingMachineSafe.function
                         if (!$moved) {
                             $moved = false;
                             $this->addError(
-                                str_replace(
-                                    '%file',
-                                    $entry,
-                                    _T("File %file has not been moved :-/")
+                                sprintf(
+                                    _T('File %1$s has not been moved :-/'),
+                                    $entry
                                 )
                             );
                         }

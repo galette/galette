@@ -26,6 +26,7 @@ use Analog\Analog;
 use Galette\Core\Preferences;
 use Galette\Updater\AbstractUpdater;
 use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Metadata\Object\ConstraintObject;
 use Laminas\Db\Metadata\Source\Factory;
 
 /**
@@ -36,6 +37,7 @@ use Laminas\Db\Metadata\Source\Factory;
 class UpgradeTo120 extends AbstractUpdater
 {
     protected ?string $db_version = '1.20';
+    /** @var array<ConstraintObject> */
     protected array $reworked_fkeys = [];
 
     /**
@@ -243,14 +245,14 @@ class UpgradeTo120 extends AbstractUpdater
         $preferences = new Preferences($this->zdb);
 
         $delete_prefs = [];
-        if ($preferences->pref_log) { //@phpstan-ignore-line
+        if ($preferences->pref_log) { //@phpstan-ignore property.notFound
             $delete_prefs[] = 'pref_log';
         }
-        if ($preferences->pref_show_id) { //@phpstan-ignore-line
+        if ($preferences->pref_show_id) { //@phpstan-ignore property.notFound
             $delete_prefs[] = 'pref_show_id';
         }
 
-        if ($preferences->pref_publicpages_visibility) { //@phpstan-ignore-line
+        if ($preferences->pref_publicpages_visibility) { //@phpstan-ignore property.notFound
             $pref_publicpages_visibility = $preferences->pref_publicpages_visibility;
             $update = $this->zdb->update(Preferences::TABLE);
             $update

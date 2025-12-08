@@ -30,6 +30,11 @@ use Galette\Util\Text;
 use Throwable;
 use Analog\Analog;
 
+use function Safe\file_get_contents;
+use function Safe\ini_get;
+use function Safe\json_decode;
+use function Safe\simplexml_load_string;
+
 /**
  * News class from rss feed for galette
  *
@@ -54,8 +59,8 @@ class News
     /**
      * Default constructor
      *
-     * @param string  $url     Feed URL
-     * @param boolean $nocache Do not try to cache
+     * @param string $url     Feed URL
+     * @param bool   $nocache Do not try to cache
      */
     public function __construct(string $url, bool $nocache = false)
     {
@@ -115,7 +120,7 @@ class News
     {
         return GALETTE_CACHE_DIR . str_replace(
             '%feed',
-            md5($this->feed_url),
+            md5((string) $this->feed_url),
             $this->cache_filename
         );
     }
@@ -242,7 +247,7 @@ class News
     /**
      * Check if allow_url_fopen is enabled
      *
-     * @return boolean
+     * @return bool
      */
     protected function allowURLFOpen(): bool
     {

@@ -27,8 +27,11 @@ use Galette\Core\I18n;
 use Galette\Core\Preferences;
 use Galette\Entity\PdfModel;
 use Analog\Analog;
+use Slim\Flash\Messages;
 use Slim\Routing\RouteParser;
 use TCPDF;
+
+use function Safe\preg_replace;
 
 /*
  * TCPDF configuration file for Galette
@@ -47,9 +50,7 @@ class Pdf extends TCPDF
     public const FONT = 'DejaVuSans';
     public const FONT_SIZE = 10;
 
-    protected Preferences $preferences;
     protected I18n $i18n;
-    private PdfModel $model;
     private bool $paginated = false;
     protected string $filename;
     private bool $has_footer = true;
@@ -58,14 +59,15 @@ class Pdf extends TCPDF
     /**
      * Main constructor, set creator and author
      *
-     * @param Preferences $prefs Preferences
-     * @param ?PdfModel   $model Related model
+     * @param Preferences $preferences Preferences
+     * @param ?PdfModel   $model       Related model
      */
-    public function __construct(Preferences $prefs, ?PdfModel $model = null)
-    {
+    public function __construct(
+        protected Preferences $preferences,
+        private ?PdfModel $model = null
+    ) {
         global $i18n;
 
-        $this->preferences = $prefs;
         $this->i18n = $i18n;
         parent::__construct('P', 'mm', 'A4', true, 'UTF-8');
         //set some values
@@ -181,7 +183,7 @@ class Pdf extends TCPDF
             Analog::ERROR
         );
 
-        $container->get('flash')->addMessage(
+        $container->get(Messages::class)->addMessage(
             'error_detected',
             $msg
         );
@@ -400,8 +402,8 @@ class Pdf extends TCPDF
      * Fix text size
      *
      * @param string  $text      Text content
-     * @param integer $maxsize   Maximal size
-     * @param integer $fontsize  Font size
+     * @param int     $maxsize   Maximal size
+     * @param int     $fontsize  Font size
      * @param string  $fontstyle Font style (defaults to '')
      * @param ?string $fontname  Font name (defaults to static::FONT)
      *
@@ -427,8 +429,8 @@ class Pdf extends TCPDF
     /**
      * Cut a string
      *
-     * @param string  $str    Original string
-     * @param integer $length Max length
+     * @param string $str    Original string
+     * @param int    $length Max length
      *
      * @return string
      */
@@ -447,8 +449,8 @@ class Pdf extends TCPDF
     /**
      * Stretch a header string
      *
-     * @param string  $str    Original string
-     * @param integer $length Max length
+     * @param string $str    Original string
+     * @param int    $length Max length
      *
      * @return string
      */

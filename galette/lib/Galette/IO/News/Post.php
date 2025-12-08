@@ -32,10 +32,6 @@ use InvalidArgumentException;
  */
 class Post
 {
-    private string $title;
-    private ?string $url;
-    private ?string $date;
-
     /**
      * Default constructor
      *
@@ -43,16 +39,17 @@ class Post
      * @param ?string $url   Post URL
      * @param ?string $date  Post date
      */
-    public function __construct(string $title, ?string $url = null, ?string $date = null)
-    {
+    public function __construct(
+        private string $title,
+        private readonly ?string $url = null,
+        private readonly ?string $date = null
+    ) {
         if (empty($title) && !empty($url)) {
             $title = $url;
         } elseif (empty($title) && empty($url)) {
             throw new InvalidArgumentException('Post title or URL must be provided.');
         }
         $this->title = $title;
-        $this->url = $url;
-        $this->date = $date;
     }
 
     /**

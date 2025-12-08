@@ -25,6 +25,7 @@ namespace Galette\IO;
 
 use Galette\Core\I18n;
 use Galette\Entity\Title;
+use Safe\Exceptions\FilesystemException;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
@@ -36,6 +37,9 @@ use Galette\Entity\FieldsConfig;
 use Galette\Entity\Status;
 use Galette\Repository\Titles;
 use Galette\Repository\Members;
+
+use function Safe\fclose;
+use function Safe\fopen;
 
 /**
  * CSV imports
@@ -155,7 +159,7 @@ class CsvIn extends Csv
      * @param string              $filename            CSV filename
      * @param array<string,mixed> $members_fields      Members fields
      * @param array<string,mixed> $members_fields_cats Members fields categories
-     * @param boolean             $dryrun              Run in dry run mode (do not store in database)
+     * @param bool                $dryrun              Run in dry run mode (do not store in database)
      *
      * @return bool|int
      */
@@ -173,10 +177,9 @@ class CsvIn extends Csv
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
         ) {
             $this->addError(
-                str_replace(
-                    '%filename',
-                    $filename,
-                    _T('File %filename cannot be open!')
+                sprintf(
+                    _T('File %1$s cannot be open!'),
+                    $filename
                 )
             );
 
@@ -210,23 +213,23 @@ class CsvIn extends Csv
      *
      * @param string $filename File name
      *
-     * @return boolean
+     * @return bool
      */
     private function check(string $filename): bool
     {
         $this->resetErrors();
         unset($this->emails);
-        $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
-        if (!$handle) {
+        try {
+            $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
+        } catch (FilesystemException $e) {
             Analog::log(
-                'File ' . $filename . ' cannot be open!',
+                'File ' . $filename . ' cannot be open! ' . $e->getMessage(),
                 Analog::ERROR
             );
             $this->addError(
-                str_replace(
-                    '%filename',
-                    $filename,
-                    _T('File %filename cannot be open!')
+                sprintf(
+                    _T('File %1$s cannot be open!'),
+                    $filename
                 )
             );
             return false;
@@ -260,7 +263,7 @@ class CsvIn extends Csv
 
         $row = 0;
         while (
-            ($data = fgetcsv(
+            ($data = fgetcsv( //@phpstan-ignore theCodingMachineSafe.function
                 $handle,
                 1000,
                 self::DEFAULT_SEPARATOR,
@@ -285,9 +288,8 @@ class CsvIn extends Csv
             if ($row > 0) {
                 //header line is the first one. Here comes data
                 $col = 0;
-                $errors = [];
                 foreach ($data as $column) {
-                    $column = trim($column);
+                    $column = trim((string) $column);
 
                     //check required fields
                     if (
@@ -295,10 +297,11 @@ class CsvIn extends Csv
                         && empty($column)
                     ) {
                         $this->addError(
-                            str_replace(
-                                ['%field', '%row'],
-                                [$this->fields[$col], (string)$row],
-                                _T("Field %field is required, but missing in row %row")
+                            sprintf(
+                                //TRANS: first parameter is a field name, second the row in error
+                                _T('Field %1$s is required, but missing in row %2$s'),
+                                $this->fields[$col],
+                                (string)$row
                             )
                         );
                         return false;
@@ -399,7 +402,7 @@ class CsvIn extends Csv
                         $this->fields['mdp_adh2'] = $column;
                     }
 
-                    if (str_starts_with($this->fields[$col], 'dynfield_')) {
+                    if (str_starts_with((string) $this->fields[$col], 'dynfield_')) {
                         //dynamic field, keep to check later
                         $dfields[$this->fields[$col] . '_1'] = $column;
                     } else {
@@ -418,15 +421,11 @@ class CsvIn extends Csv
                 }
 
                 //check dynamic fields
-                $errcnt = count($errors);
                 $member->dynamicsValidate($dfields);
                 $errors = $member->getErrors();
-                if (count($errors) > $errcnt) {
-                    //@phpstan-ignore-next-line
-                    $lcnt = ($errcnt > 0 ? $errcnt - 1 : 0);
-                    $cnt_err = count($errors);
-                    for ($i = $lcnt; $i < $cnt_err; ++$i) {
-                        $this->addError($errors[$i]);
+                if (count($errors)) {
+                    foreach ($errors as $error) {
+                        $this->addError($error);
                     }
                     return false;
                 }
@@ -442,9 +441,9 @@ class CsvIn extends Csv
                 _T("File is empty!")
             );
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**
@@ -452,7 +451,7 @@ class CsvIn extends Csv
      *
      * @param string $filename CSV filename
      *
-     * @return boolean
+     * @return bool
      */
     private function storeMembers(string $filename): bool
     {
@@ -463,7 +462,7 @@ class CsvIn extends Csv
         try {
             $this->zdb->connection->beginTransaction();
             while (
-                ($data = fgetcsv(
+                ($data = fgetcsv( //@phpstan-ignore theCodingMachineSafe.function
                     $handle,
                     1000,
                     self::DEFAULT_SEPARATOR,
@@ -475,7 +474,7 @@ class CsvIn extends Csv
                     $col = 0;
                     $values = [];
                     foreach ($data as $column) {
-                        if (substr($this->fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
+                        if (str_starts_with($this->fields[$col], 'dynfield_')) {
                             //dynamic field, keep to check later
                             $values[str_replace('dynfield_', 'info_field_', $this->fields[$col] . '_1')] = $column;
                             $col++;
@@ -497,11 +496,11 @@ class CsvIn extends Csv
                             $values[$this->fields[$col]] = 0; //defaults to 0 as in Adherent
                         }
 
-                        if ($this->fields[$col] == Status::PK && empty(trim($column))) {
+                        if ($this->fields[$col] == Status::PK && empty(trim((string) $column))) {
                             $values[Status::PK] = $this->preferences->pref_statut ?? Status::DEFAULT_STATUS;
                         }
 
-                        if ($this->fields[$col] == 'pref_lang' && empty(trim($column))) {
+                        if ($this->fields[$col] == 'pref_lang' && empty(trim((string) $column))) {
                             $values[$this->fields[$col]] = $this->preferences->pref_lang;
                         }
 
@@ -528,10 +527,11 @@ class CsvIn extends Csv
                             $store = $member->store();
                             if ($store !== true) {
                                 $this->addError(
-                                    str_replace(
-                                        ['%row', '%name'],
-                                        [(string)$row, $member->sname],
-                                        _T("An error occurred storing member at row %row (%name):")
+                                    sprintf(
+                                        //TRANS: first parameter is row, second member name
+                                        _T('An error occurred storing member at row %1$s (%2$s):'),
+                                        (string)$row,
+                                        $member->sname
                                     )
                                 );
                                 return false;
@@ -539,10 +539,11 @@ class CsvIn extends Csv
                         }
                     } else {
                         $this->addError(
-                            str_replace(
-                                ['%row', '%name'],
-                                [(string)$row, $member->sname],
-                                _T("An error occurred storing member at row %row (%name):")
+                            sprintf(
+                                //TRANS: first parameter is row, second member name
+                                _T('An error occurred storing member at row %1$s (%2$s):'),
+                                (string)$row,
+                                $member->sname
                             )
                         );
                         foreach ($valid as $e) {

@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace Galette\Features;
 
+use Galette\Core\L10n;
+
 /**
  * Files
  *
@@ -39,19 +41,19 @@ trait I18n
      *
      * @param string $text_orig Text to translate
      *
-     * @return boolean
+     * @return bool
      */
     protected function addTranslation(string $text_orig): bool
     {
-        /** @var \Galette\Core\L10n $l10n */
+        /** @var L10n $l10n */
         global $l10n;
 
         $result = $l10n->addDynamicTranslation($text_orig);
         if ($result === false) {
-            $this->warnings[] = str_replace(
-                '%field',
-                $text_orig,
-                _T('Unable to add dynamic translation for %field :(')
+            $this->warnings[] = sprintf(
+                //TRANS: paramter is a field name
+                _T('Unable to add dynamic translation for %1$s :('),
+                $text_orig
             );
         };
 
@@ -65,19 +67,19 @@ trait I18n
      * @param string $text_locale The locale
      * @param string $text_trans  Translated text
      *
-     * @return boolean
+     * @return bool
      */
     protected function updateTranslation(string $text_orig, string $text_locale, string $text_trans): bool
     {
-        /** @var \Galette\Core\L10n $l10n */
+        /** @var L10n $l10n */
         global $l10n;
 
         $result = $l10n->updateDynamicTranslation($text_orig, $text_locale, $text_trans);
         if ($result === false) {
-            $this->warnings[] = str_replace(
-                '%field',
-                $text_orig,
-                _T('Unable to update dynamic translation for %field :(')
+            $this->warnings[] = sprintf(
+                //TRANS: paramter is a field name
+                _T('Unable to update dynamic translation for %1$s :('),
+                $text_orig
             );
         };
 
@@ -89,19 +91,19 @@ trait I18n
      *
      * @param string $text_orig Text to translate
      *
-     * @return boolean
+     * @return bool
      */
     protected function deleteTranslation(string $text_orig): bool
     {
-        /** @var \Galette\Core\L10n $l10n */
+        /** @var L10n $l10n */
         global $l10n;
 
         $result = $l10n->deleteDynamicTranslation($text_orig);
         if ($result === false) {
-            $this->warnings[] = str_replace(
-                '%field',
-                $text_orig,
-                _T('Unable to remove old dynamic translation for %field :(')
+            $this->warnings[] = sprintf(
+                //TRANS: paramter is a field name
+                _T('Unable to remove old dynamic translation for %1$s :('),
+                $text_orig
             );
         }
 

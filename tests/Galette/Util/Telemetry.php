@@ -115,20 +115,15 @@ class Telemetry extends TestCase
 
         $telemetry = $this->getMockBuilder(\Galette\Util\Telemetry::class)
             ->setConstructorArgs([$this->zdb, $this->preferences, $this->plugins])
-            ->onlyMethods(array('getCount'))
+            ->onlyMethods(['getCount'])
             ->getMock();
         $telemetry->method('getCount')
             ->willReturnCallback(
-                function ($table) {
-                    switch ($table) {
-                        case \Galette\Entity\Adherent::TABLE:
-                            return 56;
-                        case \Galette\Entity\Contribution::TABLE:
-                            return 402;
-                        case \Galette\Entity\Transaction::TABLE:
-                            return 100;
-                    }
-                    return 0;
+                fn($table) => match ($table) {
+                    \Galette\Entity\Adherent::TABLE => 56,
+                    \Galette\Entity\Contribution::TABLE => 402,
+                    \Galette\Entity\Transaction::TABLE => 100,
+                    default => 0,
                 }
             );
         $result = $telemetry->grabGaletteInfos();
@@ -197,7 +192,6 @@ class Telemetry extends TestCase
                 'max_execution_time'    => ini_get('max_execution_time'),
                 'memory_limit'          => ini_get('memory_limit'),
                 'post_max_size'         => ini_get('post_max_size'),
-                'safe_mode'             => ini_get('safe_mode'),
                 'session'               => ini_get('session.save_handler'),
                 'upload_max_filesize'   => ini_get('upload_max_filesize'),
                 'max_input_vars'        => ini_get('max_input_vars')

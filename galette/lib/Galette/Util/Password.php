@@ -26,6 +26,11 @@ namespace Galette\Util;
 use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+use function Safe\preg_match;
+use function Safe\preg_split;
+
 /**
  * Password checks
  *
@@ -33,7 +38,6 @@ use Galette\Entity\Adherent;
  */
 class Password
 {
-    protected Preferences $preferences;
     /**
      * Errors
      *
@@ -58,11 +62,10 @@ class Password
     /**
      * Default constructor
      *
-     * @param Preferences $prefs Preferences instance
+     * @param Preferences $preferences Preferences instance
      */
-    public function __construct(Preferences $prefs)
+    public function __construct(protected Preferences $preferences)
     {
-        $this->preferences = $prefs;
     }
 
     /**
@@ -70,7 +73,7 @@ class Password
      *
      * @param string $password Password to test
      *
-     * @return boolean
+     * @return bool
      */
     public function isValid(string $password): bool
     {
@@ -109,7 +112,7 @@ class Password
      *
      * @param string $password Password to check
      *
-     * @return boolean
+     * @return bool
      */
     public function isBlacklisted(string $password): bool
     {
@@ -128,7 +131,7 @@ class Password
      *
      * @param string $password Password to check
      *
-     * @return integer
+     * @return int
      */
     public function calculateStrength(string $password): int
     {
@@ -166,7 +169,7 @@ class Password
     /**
      * Get current strength
      *
-     * @return integer
+     * @return int
      */
     public function getStrenght(): int
     {
@@ -286,7 +289,7 @@ class Password
             if (count($parts) > 1) {
                 $letters = '';
                 foreach ($parts as $part) {
-                    $letters .= mb_substr($part, 0, 1);
+                    $letters .= mb_substr((string) $part, 0, 1);
                 }
                 $infos[] = $letters . $adh->name;
                 $infos[] = $adh->name . $letters;

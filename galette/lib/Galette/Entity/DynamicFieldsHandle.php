@@ -51,13 +51,10 @@ class DynamicFieldsHandle
     /** @var array<int, array<int, mixed>> */
     private array $current_values = [];
     private string $form_name;
-    private ?int $item_id;
+    private ?int $item_id = null;
 
     /** @var array<string> */
     private array $errors = [];
-
-    private Db $zdb;
-    private Login $login;
 
     private StatementInterface $insert_stmt;
     private StatementInterface $update_stmt;
@@ -72,10 +69,11 @@ class DynamicFieldsHandle
      * @param Login   $login    Login instance
      * @param ?object $instance Object instance
      */
-    public function __construct(Db $zdb, Login $login, ?object $instance = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
+    public function __construct(
+        private readonly Db $zdb,
+        private readonly Login $login,
+        ?object $instance = null
+    ) {
         if ($instance !== null) {
             $this->load($instance);
         }
@@ -124,9 +122,7 @@ class DynamicFieldsHandle
                         }
                         $this->current_values[$f->{DynamicField::PK}][] = array_filter(
                             (array)$f,
-                            static function ($k) {
-                                return $k != DynamicField::PK;
-                            },
+                            static fn($k) => $k != DynamicField::PK,
                             ARRAY_FILTER_USE_KEY
                         );
                     } else {
@@ -191,7 +187,7 @@ class DynamicFieldsHandle
     /**
      * Get values
      *
-     * @param integer $field Field ID
+     * @param int $field Field ID
      *
      * @return array<int, array<string, mixed>>
      */
@@ -212,9 +208,9 @@ class DynamicFieldsHandle
     /**
      * Set field value
      *
-     * @param ?integer   $item  Item ID
-     * @param integer    $field Field ID
-     * @param integer    $index Value index
+     * @param ?int       $item  Item ID
+     * @param int        $field Field ID
+     * @param int        $index Value index
      * @param string|int $value Value
      *
      * @return void
@@ -239,8 +235,8 @@ class DynamicFieldsHandle
     /**
      * Unset field value
      *
-     * @param integer $field Field ID
-     * @param integer $index Value index
+     * @param int $field Field ID
+     * @param int $index Value index
      *
      * @return void
      */
@@ -255,10 +251,10 @@ class DynamicFieldsHandle
     /**
      * Store values
      *
-     * @param ?integer $item_id     Current item id to use (will be used if current item_id is 0)
-     * @param boolean  $transaction True if a transaction already exists
+     * @param ?int $item_id     Current item id to use (will be used if current item_id is 0)
+     * @param bool $transaction True if a transaction already exists
      *
-     * @return boolean
+     * @return bool
      */
     public function storeValues(?int $item_id = null, bool $transaction = false): bool
     {
@@ -438,7 +434,7 @@ class DynamicFieldsHandle
     /**
      * Is there any change in dynamic fields?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasChanged(): bool
     {
@@ -448,10 +444,10 @@ class DynamicFieldsHandle
     /**
      * Remove values
      *
-     * @param ?integer $item_id     Current item id to use (will be used if current item_id is 0)
-     * @param boolean  $transaction True if a transaction already exists
+     * @param ?int $item_id     Current item id to use (will be used if current item_id is 0)
+     * @param bool $transaction True if a transaction already exists
      *
-     * @return boolean
+     * @return bool
      */
     public function removeValues(?int $item_id = null, bool $transaction = false): bool
     {

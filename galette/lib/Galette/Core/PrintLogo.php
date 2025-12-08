@@ -23,6 +23,9 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use function Safe\imagecreatefromwebp;
+use function Safe\imagepng;
+
 /**
  * This class stores a logo for printing that could be different
  * from the default one.
@@ -51,7 +54,29 @@ class PrintLogo extends Logo
         $this->file_path = $pic->getPath();
         $this->format = $pic->getFormat();
         $this->mime = $pic->getMime();
-        //anyways, we have no custom print logo
+        //anyway, we have no custom print logo
         $this->custom = false;
+    }
+
+    /**
+     * Returns current file full path
+     *
+     * @return string full file path
+     */
+    public function getPath(): string
+    {
+        if ($this->getFormat() !== 'webp') {
+            return $this->file_path;
+        }
+
+        //TCPDF does not support background transparency for WEBP images, create a PNG version
+        $this->format = 'png';
+        $this->mime = 'image/png';
+        $converted_logo_path = sprintf('%s/%s.%s', GALETTE_CACHE_DIR, 'galette_printlogo_converted', 'png');
+        if (!file_exists($converted_logo_path)) {
+            $print_logo = imagecreatefromwebp($this->file_path);
+            imagepng($print_logo, $converted_logo_path);
+        }
+        return $converted_logo_path;
     }
 }

@@ -49,8 +49,8 @@
                             </div>
                         </div>
                         <ul>
-                            <li>{{ _T("you're installing %name for the first time")|replace({'%name': plugin.name}) }},</li>
-                            <li>{{ _T("you wish to erase an older version of of %name without keeping your data")|replace({'%name': plugin.name}) }}.</li>
+                            <li>{{ _T("you're installing %1$s for the first time")|format(plugin.name) }},</li>
+                            <li>{{ _T("you wish to erase an older version of of %1$s without keeping your data")|format(plugin.name) }}.</li>
                         </ul>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         <ul>
-                            <li>{{ _T("you already have installed %name, and you want to upgrade to the latest version")|replace({'%name': plugin.name}) }}.</li>
+                            <li>{{ _T("you already have installed %1$s, and you want to upgrade to the latest version")|format(plugin.name) }}.</li>
                         </ul>
                         <div class="ui icon yellow icon message">
                             <i class="exclamation triangle icon" aria-hidden="true"></i>
@@ -83,7 +83,7 @@
         {{ results|raw }}
     {% endif %}
     {% if step == 'u3' %}
-            <h3>{{ _T("You current %name version is...")|replace({'%name': plugin.name}) }}</h3>
+            <h3>{{ _T("You current %1$s version is...")|format(plugin.name) }}</h3>
             <ul class="leaders">
         {% set last = 0.00 %}
         {% set previous = null %}
@@ -126,9 +126,9 @@
     {% if step == 'i5' or step == 'u5' %}
             <p>
                 {% if step == 'i5' %}
-                    {{ _T("Plugin '%name' has been successfully installed!")|replace({'%name': plugin.name}) }}
+                    {{ _T("Plugin '%1$s' has been successfully installed!")|format(plugin.name) }}
                 {% else %}
-                    {{ _T("Plugin '%name' has been successfully updated!")|replace({'%name': plugin.name}) }}
+                    {{ _T("Plugin '%1$s' has been successfully updated!")|format(plugin.name) }}
                 {% endif %}
             </p>
     {% endif %}
@@ -153,7 +153,7 @@
         {% endif %}
     {% else %}
         {% if mode != 'ajax' %}
-                <a href="{{ url_for('plugins') }}" class="ui labeled icon button" id="btnback"><i class="backward icon" aria-hidden="true"></i> {{ _T("Back to plugins managment page") }}</a>
+                <a href="{{ url_for('plugins') }}" class="ui labeled icon button" id="btnback"><i class="backward icon" aria-hidden="true"></i> {{ _T("Back to plugins management page") }}</a>
         {% endif %}
     {% endif %}
         {% if mode != 'ajax' %}

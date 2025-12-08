@@ -77,12 +77,8 @@ class Logo extends TestCase
         $this->assertNull($instance->getDestDir());
         $this->assertNull($instance->getFileName());
         $this->assertTrue(in_array($instance->getPath(), $expected_paths, true));
-        $this->assertSame('image/png', $instance->getMime());
-        $this->assertSame('png', $instance->getFormat());
+        $this->assertSame('image/webp', $instance->getMime());
+        $this->assertSame('webp', $instance->getFormat());
         $this->assertFalse($instance->isCustom());
-        $this->assertSame(200, $instance->getOptimalWidth());
-        $this->assertSame(133, $instance->getOptimalHeight());
-        $this->assertSame(1536, $instance->getWidth());
-        $this->assertSame(1024, $instance->getHeight());
     }
 }

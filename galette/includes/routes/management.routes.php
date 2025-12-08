@@ -82,14 +82,12 @@ $app->map(
 //galette logs
 $app->get(
     '/logs[/{option:page|order}/{value}]',
-    function ($request, $response, $args) use ($routeparser) {
-        return $response
-            ->withStatus(302)
-            ->withHeader(
-                'Location',
-                $routeparser->urlFor('history', $args)
-            );
-    }
+    fn($request, $response, $args) => $response
+        ->withStatus(302)
+        ->withHeader(
+            'Location',
+            $routeparser->urlFor('history', $args)
+        )
 );
 $app->get(
     '/history[/{option:page|order}/{value}]',
@@ -103,14 +101,12 @@ $app->post(
 
 $app->get(
     '/logs/flush',
-    function ($request, $response) use ($routeparser) {
-        return $response
-            ->withStatus(302)
-            ->withHeader(
-                'Location',
-                $routeparser->urlFor('flushHistory')
-            );
-    }
+    fn($request, $response) => $response
+        ->withStatus(302)
+        ->withHeader(
+            'Location',
+            $routeparser->urlFor('flushHistory')
+        )
 );
 $app->get(
     '/history/flush',

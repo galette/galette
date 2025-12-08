@@ -46,6 +46,8 @@ use Galette\Repository\PaymentTypes;
 use Galette\Repository\Titles;
 use Analog\Analog;
 
+use function Safe\preg_match;
+
 /**
  * Galette members controller
  *
@@ -58,7 +60,7 @@ class MembersController extends CrudController
     private bool $add_child = false;
 
     #[Inject]
-    private Status $status;
+    protected Status $status;
 
     // CRUD - Create
 
@@ -230,7 +232,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id_adh   Member ID to duplicate
+     * @param int      $id_adh   Member ID to duplicate
      *
      * @return Response
      */
@@ -255,7 +257,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Member ID
+     * @param int      $id       Member ID
      *
      * @return Response
      */
@@ -267,32 +269,16 @@ class MembersController extends CrudController
             ->load($id);
 
         if (!$member->canShow($this->login)) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('me')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('me')
-                );
         }
 
         if ($member->id == null) {
             //member does not exist!
-            $this->flash->addMessage(
-                'error_detected',
-                str_replace('%id', (string)$id, _T("No member #%id."))
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('slash')
-                );
+            return $this->redirectNoMember($response, $id);
         }
 
         // flagging fields visibility
@@ -323,7 +309,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Member ID
+     * @param int      $id       Member ID
      *
      * @return Response
      */
@@ -335,31 +321,16 @@ class MembersController extends CrudController
             ->load($id);
 
         if (!$member->canShow($this->login)) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('me')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('me')
-                );
         }
 
         if ($member->id == null) {
             //member does not exist!
-            $this->flash->addMessage(
-                'error_detected',
-                str_replace('%id', (string)$id, _T("No member #%id."))
-            );
-
-            return $response
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('slash')
-                );
+            return $this->redirectNoMember($response, $id);
         }
 
         $response = $response
@@ -390,10 +361,10 @@ class MembersController extends CrudController
     /**
      * Public members list
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */
@@ -407,7 +378,7 @@ class MembersController extends CrudController
             $request,
             $response,
             [
-                'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
+                'filter_name' => $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
                 'with_photos' => false,
                 'page_title' => _T("Members"),
                 'template' => 'pages/public/members_list.html.twig',
@@ -421,10 +392,10 @@ class MembersController extends CrudController
     /**
      * Public members gallery
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */
@@ -438,7 +409,7 @@ class MembersController extends CrudController
             $request,
             $response,
             [
-                'filter_name' => $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
+                'filter_name' => $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
                 'with_photos' => true,
                 'page_title' => _T("Gallery"),
                 'template' => 'pages/public/members_gallery.html.twig',
@@ -452,10 +423,10 @@ class MembersController extends CrudController
     /**
      * Public members list
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */
@@ -465,7 +436,7 @@ class MembersController extends CrudController
         ?string $option = null,
         string|int|null $value = null,
     ): Response {
-        $filter_name = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafflist']);
+        $filter_name = $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafflist']);
         $filters = new MembersList();
         $this->session->$filter_name = $filters;
 
@@ -488,10 +459,10 @@ class MembersController extends CrudController
     /**
      * Public staff gallery
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */
@@ -501,7 +472,7 @@ class MembersController extends CrudController
         ?string $option = null,
         string|int|null $value = null,
     ): Response {
-        $filter_name = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafftrombi']);
+        $filter_name = $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'stafftrombi']);
         $filters = new MembersList();
         $this->session->$filter_name = $filters;
 
@@ -528,7 +499,7 @@ class MembersController extends CrudController
      * @param Response             $response PSR Response
      * @param array<string, mixed> $args     Route arguments
      * @param string|null          $option   One of 'page' or 'order'
-     * @param string|integer|null  $value    Value of the option
+     * @param string|int|null      $value    Value of the option
      *
      * @return Response
      */
@@ -622,7 +593,7 @@ class MembersController extends CrudController
     {
         $post = $request->getParsedBody();
 
-        $varname = $this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'public', 'suffix' => $type]);
+        $varname = $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => $type]);
         $filters = $this->session->$varname ?? new MembersList();
 
         //reintialize filters
@@ -643,17 +614,17 @@ class MembersController extends CrudController
     /**
      * Members list
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
         } else {
             $filters = new MembersList();
         }
@@ -671,7 +642,6 @@ class MembersController extends CrudController
 
         $members = new Members($filters);
 
-        $members_list = [];
         if ($this->login->isAdmin() || $this->login->isStaff()) {
             $members_list = $members->getMembersList(true);
         } else {
@@ -685,7 +655,7 @@ class MembersController extends CrudController
         $filters->setViewPagination($this->routeparser, $this->view, false);
         $filters->setViewCommonsFilters($this->view);
 
-        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
+        $this->session->{$this->getFilterName(static::getDefaultFilterName())} = $filters;
 
         // display page
         $this->view->render(
@@ -717,14 +687,14 @@ class MembersController extends CrudController
     public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())} ?? new MembersList();
+        $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())} ?? new MembersList();
 
         //reinitialize filters
         if (isset($post['clear_filter'])) {
             $filters = new MembersList();
         } elseif (isset($post['clear_adv_filter'])) {
-            $this->session->{$this->getFilterName($this->getDefaultFilterName())} = null;
-            unset($this->session->{$this->getFilterName($this->getDefaultFilterName())});
+            $this->session->{$this->getFilterName(static::getDefaultFilterName())} = null;
+            unset($this->session->{$this->getFilterName(static::getDefaultFilterName())});
 
             return $response
                 ->withStatus(301)
@@ -777,10 +747,10 @@ class MembersController extends CrudController
                             $i = 0;
                             foreach ($post['free_field'] as $f) {
                                 if (
-                                    trim($f) !== ''
-                                    && trim($post['free_text'][$i]) !== ''
+                                    trim((string) $f) !== ''
+                                    && trim((string) $post['free_text'][$i]) !== ''
                                 ) {
-                                    $fs_search = htmlspecialchars($post['free_text'][$i], ENT_QUOTES);
+                                    $fs_search = htmlspecialchars((string) $post['free_text'][$i], ENT_QUOTES);
                                     $log_op
                                         = (int)$post['free_logical_operator'][$i];
                                     $qry_op
@@ -804,7 +774,7 @@ class MembersController extends CrudController
                         $i = 0;
                         $filters->groups_search_log_op = (int)$post['groups_logical_operator'];
                         foreach ($post['groups_search'] as $g) {
-                            if (trim($g) !== '') {
+                            if (trim((string) $g) !== '') {
                                 $gs = [
                                     'idx'       => $i,
                                     'group'     => $g
@@ -838,7 +808,7 @@ class MembersController extends CrudController
                 );
         }
 
-        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
+        $this->session->{$this->getFilterName(static::getDefaultFilterName())} = $filters;
 
         return $response
             ->withStatus(301)
@@ -855,8 +825,8 @@ class MembersController extends CrudController
      */
     public function advancedSearch(Request $request, Response $response): Response
     {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
             if (!$filters instanceof AdvancedMembersList) {
                 $filters = new AdvancedMembersList($filters);
             }
@@ -927,10 +897,10 @@ class MembersController extends CrudController
     /**
      * Members list for ajax
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param string|integer|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param string|int|null $value    Value of the option
      *
      * @return Response
      */
@@ -938,7 +908,7 @@ class MembersController extends CrudController
     {
         $post = $request->getParsedBody();
 
-        $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'ajax'])} ?? new MembersList();
+        $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'ajax'])} ?? new MembersList();
 
         if ($option == 'page') {
             $filters->current_page = (int)$value;
@@ -971,7 +941,7 @@ class MembersController extends CrudController
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
 
-        $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['prefix' => 'ajax'])} = $filters;
+        $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'ajax'])} = $filters;
 
         $selected_members = null;
         $unreachables_members = null;
@@ -1070,8 +1040,8 @@ class MembersController extends CrudController
         $post = $request->getParsedBody();
 
         if (isset($post['entries_sel'])) {
-            if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-                $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+            if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+                $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
             } else {
                 $filters = new MembersList();
             }
@@ -1090,7 +1060,7 @@ class MembersController extends CrudController
 
             foreach ($knowns as $known => $redirect_url) {
                 if (isset($post[$known])) {
-                    $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => $known])} = $filters;
+                    $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => $known])} = $filters;
                     $redirect_url = $this->routeparser->urlFor($redirect_url);
                     if ($known === 'sendmail') {
                         $redirect_url .= '?mailing_new=new';
@@ -1103,14 +1073,11 @@ class MembersController extends CrudController
 
             throw new \RuntimeException('Does not know what to batch :(');
         } else {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member was selected, please check at least one name.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("No member was selected, please check at least one name.")],
+                redirect_url: $this->routeparser->urlFor('members')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('members'));
         }
     }
 
@@ -1122,7 +1089,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Member id/array of members id
+     * @param ?int     $id       Member id/array of members id
      * @param string   $action   null or 'add'
      *
      * @return Response
@@ -1148,15 +1115,7 @@ class MembersController extends CrudController
             //load requested member
             if (!$member->load($id)) {
                 //not possible to load member, exit
-                $this->flash->addMessage(
-                    'error_detected',
-                    str_replace('%id', (string)$id, _T("No member #%id."))
-                );
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor(
-                        'members'
-                    ));
+                return $this->redirectNoMember($response, $id);
             }
             $can = $member->canEdit($this->login);
         } else {
@@ -1164,17 +1123,11 @@ class MembersController extends CrudController
         }
 
         if (!$can) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('me')
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('me')
-                );
         }
 
         //if adding a child, force parent here
@@ -1284,7 +1237,7 @@ class MembersController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Member id
+     * @param int      $id       Member id
      *
      * @return Response
      */
@@ -1303,7 +1256,7 @@ class MembersController extends CrudController
      */
     public function massChange(Request $request, Response $response): Response
     {
-        $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'masschange'])} ?? new MembersList();
+        $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'masschange'])} ?? new MembersList();
 
         $data = [
             'id'            => $filters->selected,
@@ -1430,7 +1383,7 @@ class MembersController extends CrudController
             }
         }
 
-        $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'masschange'])};
+        $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'masschange'])};
         $data = [
             'id'            => $filters->selected,
             'redirect_uri'  => $this->routeparser->urlFor('members')
@@ -1869,7 +1822,7 @@ class MembersController extends CrudController
         }
 
         if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
+            foreach ($error_detected as &$error) {
                 if (str_contains($error, '%member_url_')) {
                     preg_match('/%member_url_(\d+)/', $error, $matches);
                     $url = $this->routeparser->urlFor('member', ['id' => $matches[1]]);
@@ -1879,19 +1832,6 @@ class MembersController extends CrudController
                         $error
                     );
                 }
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-
-        if (count($success_detected) > 0) {
-            foreach ($success_detected as $success) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    $success
-                );
             }
         }
 
@@ -1943,9 +1883,12 @@ class MembersController extends CrudController
             }
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_url);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
 
@@ -1998,8 +1941,8 @@ class MembersController extends CrudController
             );
         } else {
             //batch members removal
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
-            $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])} = $filters;
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])};
+            $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])} = $filters;
             return sprintf(
                 _T('You are about to remove %1$s members.'),
                 (string)count($filters->selected)
@@ -2017,8 +1960,8 @@ class MembersController extends CrudController
      */
     protected function doDelete(array $args, array $post): bool
     {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])};
         } else {
             $filters = new MembersList();
         }
@@ -2084,8 +2027,8 @@ class MembersController extends CrudController
     {
         $navigate = [];
 
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = clone $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = clone $this->session->{$this->getFilterName(static::getDefaultFilterName())};
         } else {
             $filters = new MembersList();
         }
@@ -2099,7 +2042,6 @@ class MembersController extends CrudController
         ) {
             $m = new Members($filters);
 
-            $ids = [];
             $fields = [Adherent::PK, 'nom_adh', 'prenom_adh'];
             if ($this->login->isAdmin() || $this->login->isStaff()) {
                 $ids = $m->getMembersList(false, $fields);
@@ -2137,5 +2079,22 @@ class MembersController extends CrudController
     public static function getDefaultFilterName(): string
     {
         return 'members';
+    }
+
+    /**
+     * Redirection when member does not exist
+     *
+     * @param Response $response PSR Response
+     * @param int      $id       Requested member id
+     *
+     * @return Response
+     */
+    private function redirectNoMember(Response $response, int $id): Response
+    {
+        return $this->redirectWithErrors(
+            response: $response,
+            errors: [str_replace('%id', (string)$id, _T("No member #%id."))],
+            redirect_url: $this->routeparser->urlFor('slash')
+        );
     }
 }

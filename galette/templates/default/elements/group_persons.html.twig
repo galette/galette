@@ -36,7 +36,7 @@
                         <tbody>
 {% for person in persons %}
                             <tr>
-                                <td class="username_row">
+                                <td class="username_row" data-col-label="{{ _T("Name") }}">
                                 <input type="hidden" name="{{ person_mode }}[]" value="{{ person.id }}"/>
                                 {% if person.isCompany() %}
                                     <span>
@@ -76,7 +76,7 @@
                                 {% endif %}
                                 <a href="{{ url_for("member", {"id": person.id}) }}">{{ person.sfullname }}</a>
                                 </td>
-                                <td class="">{{ person.nickname|escape }}</td>
+                                <td data-col-label="{{ _T("Nickname") }}">{{ person.nickname|escape }}</td>
     {% if login.isSuperAdmin() %}
                                 <td class="actions_row">
                                     <a

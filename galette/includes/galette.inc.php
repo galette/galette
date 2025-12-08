@@ -37,9 +37,6 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
     die(1);
 }
 
-$time_start = microtime(true);
-$cron = (PHP_SAPI === 'cli');
-
 // define relative base path templating can use
 if (!defined('GALETTE_BASE_PATH')) {
     define('GALETTE_BASE_PATH', './');
@@ -198,7 +195,7 @@ if (!$installer && !defined('GALETTE_TESTS')) {
             );
         }
     } else {
-        $needs_update = true;
+        $needs_update = true; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used in cron and main.inc.php
     }
 }
 

@@ -34,7 +34,7 @@ class Install extends TestCase
 {
     private \Galette\Core\Db $zdb;
     /** @var array<string> */
-    private array $flash_data;
+    protected array $flash_data;
     private \Slim\Flash\Messages $flash;
     private \DI\Container $container;
     private string $latest_prefix = 'latest_galette_';
@@ -53,17 +53,16 @@ class Install extends TestCase
 
         $gapp =  new \Galette\Core\SlimApp();
         $app = $gapp->getApp();
-        $plugins = new \Galette\Core\Plugins();
+        $plugins = new \Galette\Core\Plugins(); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from dependencies.php
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
         $container = $app->getContainer();
         $_SERVER['HTTP_HOST'] = '';
 
-        $container->set('flash', $this->flash);
-        $container->set(Slim\Flash\Messages::class, $this->flash);
+        $container->set(\Slim\Flash\Messages::class, $this->flash);
 
         $this->container = $container;
 
-        $this->zdb = $container->get('zdb');
+        $this->zdb = $container->get(\Galette\Core\Db::class);
     }
 
     /**
@@ -150,10 +149,9 @@ class Install extends TestCase
         //make sure all tables are present
         $this->assertEquals(
             array_map(
-                function ($table) use ($latest_prefix) {
+                fn($table) =>
                     //table prefix differs
-                    return str_replace($latest_prefix, PREFIX_DB, $table);
-                },
+                    str_replace($latest_prefix, PREFIX_DB, $table),
                 $latest_tables
             ),
             $tables
@@ -344,7 +342,7 @@ class Install extends TestCase
     }
 
     /**
-     * Check forgeign keys rules
+     * Check foreign keys rules
      *
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $latest_constraint Constraint from installed database
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $constraint        Constraint from updated database

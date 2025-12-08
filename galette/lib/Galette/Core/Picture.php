@@ -27,12 +27,32 @@ use ArrayObject;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Select;
 use Psr\Http\Message\UploadedFileInterface;
+use Safe\Exceptions\DirException;
+use Safe\Exceptions\ImageException;
 use Slim\Psr7\Response;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Repository\Members;
 use Galette\IO\FileTrait;
+use UnhandledMatchError;
+
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+use function Safe\fclose;
+use function Safe\fopen;
+use function Safe\fread;
+use function Safe\fwrite;
+use function Safe\getimagesize;
+use function Safe\imagealphablending;
+use function Safe\imagecreatetruecolor;
+use function Safe\imagesavealpha;
+use function Safe\imagecopyresampled;
+use function Safe\opendir;
+use function Safe\preg_match;
+use function Safe\readfile;
+use function Safe\realpath;
+use function Safe\rewind;
 
 /**
  * Picture handling
@@ -74,7 +94,7 @@ class Picture
     protected int $max_height = 200;
     private StatementInterface $insert_stmt;
     /** @var ?array<string, mixed> */
-    private ?array $cropping;
+    private ?array $cropping = null;
 
     /**
      * Default constructor.
@@ -158,7 +178,7 @@ class Picture
     /**
      * Check if current file is present on the File System
      *
-     * @return boolean true if file is present on FS, false otherwise
+     * @return bool true if file is present on FS, false otherwise
      */
     private function checkFileOnFS(): bool
     {
@@ -191,7 +211,7 @@ class Picture
      * Check if current file is present in the database,
      *   and copy it to the File System
      *
-     * @return boolean true if file is present in the DB, false otherwise
+     * @return bool true if file is present in the DB, false otherwise
      */
     private function checkFileInDB(): bool
     {
@@ -228,7 +248,7 @@ class Picture
                 $this->file_path = realpath($file_wo_ext . '.' . $this->format);
                 return true;
             }
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             return false;
         }
         return false;
@@ -329,9 +349,9 @@ class Picture
     /**
      * Deletes a picture, from both database and filesystem
      *
-     * @param boolean $transaction Whether to use a transaction here or not
+     * @param bool $transaction Whether to use a transaction here or not
      *
-     * @return boolean true if image was successfully deleted, false otherwise
+     * @return bool true if image was successfully deleted, false otherwise
      */
     public function delete(bool $transaction = true): bool
     {
@@ -368,19 +388,19 @@ class Picture
             if (file_exists($file_wo_ext . '.jpg')) {
                 //return unlink($file_wo_ext . '.jpg');
                 $_file = $file_wo_ext . '.jpg';
-                $success = unlink($_file);
+                $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.png')) {
                 //return unlink($file_wo_ext . '.png');
                 $_file = $file_wo_ext . '.png';
-                $success = unlink($_file);
+                $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.gif')) {
                 //return unlink($file_wo_ext . '.gif');
                 $_file = $file_wo_ext . '.gif';
-                $success = unlink($_file);
+                $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.webp')) {
                 //return unlink($file_wo_ext . '.webp');
                 $_file = $file_wo_ext . '.webp';
-                $success = unlink($_file);
+                $success = unlink($_file); // @phpstan-ignore theCodingMachineSafe.function
             }
 
             if ($_file !== null && $success !== true) {
@@ -472,13 +492,13 @@ class Picture
      */
     public static function getMimeType(string $file): string
     {
-        $info = getimagesize($file);
-        if ($info !== false) {
+        try {
+            $info = getimagesize($file);
             return $info['mime'];
+        } catch (ImageException) {
+            //fallback if file is not an image
+            return static::trait_getMimeType($file);
         }
-
-        //fallback if file is not an image
-        return static::trait_getMimeType($file);
     }
 
     /**
@@ -607,73 +627,76 @@ class Picture
         $existing_disk = [];
 
         //retrieve files on disk
-        if ($handle = opendir($this->store_path)) {
-            while (false !== ($entry = readdir($handle))) {
-                $reg = "/^(\d+)\.("
-                    . implode('|', $this->allowed_extensions) . ")$/i";
-                if (preg_match($reg, $entry, $matches)) {
-                    $id = $matches[1];
-                    $extension = strtolower($matches[2]);
-                    if ($extension == 'jpeg') {
-                        //jpeg is an allowed extension,
-                        //but we change it to jpg to reduce further tests :)
-                        $extension = 'jpg';
-                    }
-                    $existing_disk[$id] = [
-                        'name'  => $entry,
-                        'id'    => $id,
-                        'ext'   => $extension
-                    ];
-                }
-            }
-            closedir($handle);
-
-            if (count($existing_disk) === 0) {
-                //no image on disk, nothing to do :)
-                return;
-            }
-
-            //retrieve files in database
-            $class = static::class;
-            $select = $zdb->select($this->tbl_prefix . $class::TABLE);
-            $select
-                ->columns([$class::PK])
-                ->where->in($class::PK, array_keys($existing_disk));
-
-            $results = $zdb->execute($select);
-
-            $existing_db = [];
-            foreach ($results as $result) {
-                $existing_db[] = (int)$result[self::PK];
-            }
-
-            $existing_diff = array_diff(array_keys($existing_disk), $existing_db);
-
-            //retrieve valid members ids
-            $members = new Members();
-            $valids = $members->getArrayList(
-                array_map('intval', $existing_diff),
-                null,
-                false,
-                false,
-                [self::PK]
-            );
-
-            foreach ($valids as $valid) {
-                /** @var ArrayObject<string,mixed> $valid */
-                $file = $existing_disk[$valid->id_adh];
-                $this->storeInDb(
-                    $zdb,
-                    (int)$file['id'],
-                    $this->store_path . $file['id'] . '.' . $file['ext'],
-                    $file['ext']
-                );
-            }
-        } else {
+        try {
+            $handle = opendir($this->store_path);
+        } catch (DirException $e) {
             Analog::log(
                 'Something went wrong opening images directory '
-                . $this->store_path,
+                . $this->store_path . ' | ' . $e->getMessage(),
                 Analog::ERROR
+            );
+            return;
+        }
+
+        while (false !== ($entry = readdir($handle))) {
+            $reg = "/^(\d+)\.("
+                . implode('|', $this->allowed_extensions) . ")$/i";
+            if (preg_match($reg, $entry, $matches)) {
+                $id = $matches[1];
+                $extension = strtolower($matches[2]);
+                if ($extension == 'jpeg') {
+                    //jpeg is an allowed extension,
+                    //but we change it to jpg to reduce further tests :)
+                    $extension = 'jpg';
+                }
+                $existing_disk[$id] = [
+                    'name'  => $entry,
+                    'id'    => $id,
+                    'ext'   => $extension
+                ];
+            }
+        }
+        closedir($handle);
+
+        if (count($existing_disk) === 0) {
+            //no image on disk, nothing to do :)
+            return;
+        }
+
+        //retrieve files in database
+        $class = static::class;
+        $select = $zdb->select($this->tbl_prefix . $class::TABLE);
+        $select
+            ->columns([$class::PK])
+            ->where->in($class::PK, array_keys($existing_disk));
+
+        $results = $zdb->execute($select);
+
+        $existing_db = [];
+        foreach ($results as $result) {
+            $existing_db[] = (int)$result[self::PK];
+        }
+
+        $existing_diff = array_diff(array_keys($existing_disk), $existing_db);
+
+        //retrieve valid members ids
+        $members = new Members();
+        $valids = $members->getArrayList(
+            array_map(intval(...), $existing_diff),
+            null,
+            false,
+            false,
+            [self::PK]
+        );
+
+        foreach ($valids as $valid) {
+            /** @var ArrayObject<string,mixed> $valid */
+            $file = $existing_disk[$valid->id_adh];
+            $this->storeInDb(
+                $zdb,
+                (int)$file['id'],
+                $this->store_path . $file['id'] . '.' . $file['ext'],
+                $file['ext']
             );
         }
     }
@@ -687,7 +710,7 @@ class Picture
      *                                        If null, we'll use the source image. Defaults to null
      * @param ?array<string, mixed> $cropping Cropping properties
      *
-     * @return boolean
+     * @return bool
      */
     private function resizeImage(string $source, string $ext, ?string $dest = null, ?array $cropping = null): bool
     {
@@ -755,8 +778,7 @@ class Picture
                 return false;
         }
 
-        [$cur_width, $cur_height, $cur_type, $curattr]
-            = getimagesize($source);
+        [$cur_width, $cur_height] = getimagesize($source);
 
         $ratio = $cur_width / $cur_height;
 
@@ -820,8 +842,6 @@ class Picture
             }
             // Cropped image.
             $thumb_cropped = imagecreatetruecolor((int)$crop_width, (int)$crop_height);
-            // Cropped ratio.
-            $ratio = $crop_width / $crop_height;
         } elseif ($cur_width > $cur_height) {
             // Otherwise, calculate image size according to the source's ratio.
             $h = round($w / $ratio);
@@ -842,72 +862,38 @@ class Picture
         // Resized image.
         $thumb = imagecreatetruecolor($w, $h);
 
-        $image = false;
-        switch ($ext) {
-            case 'jpg':
-                $image = imagecreatefromjpeg($source);
-                if ($thumb_cropped !== false) {
-                    // Crop: first, crop.
-                    imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
-                    // Then, resize.
-                    imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                } else {
-                    // Resize
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-                }
-                imagejpeg($thumb, $dest);
-                break;
-            case 'png':
-                $image = imagecreatefrompng($source);
-                // Turn off alpha blending and set alpha flag. That prevent alpha
-                // transparency to be saved as an arbitrary color (black in my tests)
-                imagealphablending($image, false);
-                imagesavealpha($image, true);
-                imagealphablending($thumb, false);
-                imagesavealpha($thumb, true);
-                if ($thumb_cropped !== false) {
-                    // Crop
-                    imagealphablending($thumb_cropped, false);
-                    imagesavealpha($thumb_cropped, true);
-                    // First, crop.
-                    imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
-                    // Then, resize.
-                    imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                } else {
-                    // Resize
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-                }
-                imagepng($thumb, $dest);
-                break;
-            case 'gif':
-                $image = imagecreatefromgif($source);
-                if ($thumb_cropped !== false) {
-                    // Crop: first, crop.
-                    imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
-                    // Then, resize.
-                    imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                } else {
-                    // Resize
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-                }
-                imagegif($thumb, $dest);
-                break;
-            case 'webp':
-                $image = imagecreatefromwebp($source);
-                if ($thumb_cropped !== false) {
-                    // Crop: first, crop.
-                    imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
-                    // Then, resize.
-                    imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
-                } else {
-                    // Resize
-                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
-                }
-                imagewebp($thumb, $dest);
-                break;
+        $image = match ($ext) {
+            'jpg' => imagecreatefromjpeg($source), // @phpstan-ignore theCodingMachineSafe.function
+            'png' => imagecreatefrompng($source), // @phpstan-ignore theCodingMachineSafe.function
+            'gif' => imagecreatefromgif($source), // @phpstan-ignore theCodingMachineSafe.function
+            'webp' => imagecreatefromwebp($source), // @phpstan-ignore theCodingMachineSafe.function
+            default => throw new UnhandledMatchError($ext),
+        };
+
+        // Turn off alpha blending and set alpha flag. That prevent alpha
+        // transparency to be saved as an arbitrary color (black in my tests)
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
+        imagealphablending($thumb, false);
+        imagesavealpha($thumb, true);
+        if ($thumb_cropped !== false) { // Crop
+            imagealphablending($thumb_cropped, false);
+            imagesavealpha($thumb_cropped, true);
+            // First, crop.
+            imagecopyresampled($thumb_cropped, $image, 0, 0, $crop_x, $crop_y, $cur_width, $cur_height, $cur_width, $cur_height);
+            // Then, resize.
+            imagecopyresampled($thumb, $thumb_cropped, 0, 0, 0, 0, $w, $h, $crop_width, $crop_height);
+        } else { // Resize
+            imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
         }
 
-        return true;
+        return match ($ext) {
+            'jpg' => imagejpeg($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
+            'png' => imagepng($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
+            'gif' => imagegif($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
+            'webp' => imagewebp($thumb, $dest), // @phpstan-ignore theCodingMachineSafe.function
+            default => false
+        };
     }
 
     /**

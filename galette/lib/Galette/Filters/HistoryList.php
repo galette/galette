@@ -51,10 +51,10 @@ class HistoryList extends Pagination
     public const ORDERBY_ACTION = 3;
 
     //filters
-    private ?string $start_date_filter = null; //@phpstan-ignore-line
-    private ?string $end_date_filter = null; //@phpstan-ignore-line
-    private ?string $user_filter = null; //@phpstan-ignore-line
-    private ?string $action_filter = null; //@phpstan-ignore-line
+    private ?string $start_date_filter = null;
+    private ?string $end_date_filter = null;
+    private ?string $user_filter = null;
+    private ?string $action_filter = null;
 
     /** @var array<string>  */
     protected array $list_fields = [
@@ -120,17 +120,12 @@ class HistoryList extends Pagination
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
         } elseif (in_array($name, $this->list_fields)) {
-            switch ($name) {
-                case 'raw_start_date_filter':
-                    return $this->getDate('start_date_filter', true, false);
-                case 'raw_end_date_filter':
-                    return $this->getDate('end_date_filter', true, false);
-                case 'start_date_filter':
-                case 'end_date_filter':
-                    return $this->getDate($name);
-                default:
-                    return $this->$name;
-            }
+            return match ($name) {
+                'raw_start_date_filter' => $this->getDate('start_date_filter', true, false),
+                'raw_end_date_filter' => $this->getDate('end_date_filter', true, false),
+                'start_date_filter', 'end_date_filter' => $this->getDate($name),
+                default => $this->$name,
+            };
         }
 
         throw new \RuntimeException(

@@ -42,6 +42,8 @@ use Galette\IO\Charts;
 use Galette\Repository\Members;
 use Galette\Repository\Reminders;
 
+use function Safe\dir;
+
 /**
  * Galette main controller
  *
@@ -51,7 +53,7 @@ use Galette\Repository\Reminders;
 class GaletteController extends AbstractController
 {
     #[Inject]
-    private Status $status;
+    protected Status $status;
 
     /**
      * Main route
@@ -240,6 +242,7 @@ class GaletteController extends AbstractController
     {
         $post = $request->getParsedBody();
         $error_detected = [];
+        $success_detected = [];
 
         // Validation
         if (isset($post['valid']) && $post['valid'] == '1') {
@@ -247,10 +250,7 @@ class GaletteController extends AbstractController
                 if (!$this->preferences->store()) {
                     $error_detected[] = _T("An SQL error has occurred while storing preferences. Please try again, and contact the administrator if the problem persists.");
                 } else {
-                    $this->flash->addMessage(
-                        'success_detected',
-                        _T("Preferences has been saved.")
-                    );
+                    $success_detected[] = _T("Preferences has been saved.");
                 }
 
                 if (!Galette::isDemo()) {
@@ -288,22 +288,18 @@ class GaletteController extends AbstractController
 
             if (count($error_detected) > 0) {
                 $this->session->entered_preferences = $post;
-                //report errors
-                foreach ($error_detected as $error) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $error
-                    );
-                }
             }
         }
         $tab = isset($post['tab']) && $post['tab'] != 'general' ? '?tab=' . $post['tab'] : '';
 
         // Reset dark mode CSS file if required
         $this->preferences->resetDarkCss($this->flash);
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('preferences') . $tab);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('preferences') . $tab,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
     /**
@@ -339,19 +335,17 @@ class GaletteController extends AbstractController
                 if ($sent) {
                     $this->flash->addMessage(
                         'success_detected',
-                        str_replace(
-                            '%email',
-                            $dest,
-                            _T("An email has been sent to %email")
+                        sprintf(
+                            _T('An email has been sent to %1$s'),
+                            $dest
                         )
                     );
                 } else {
                     $this->flash->addMessage(
                         'error_detected',
-                        str_replace(
-                            '%email',
-                            $dest,
-                            _T("No email sent to %email")
+                        sprintf(
+                            _T('No email sent to %1$s'),
+                            $dest
                         )
                     );
                 }
@@ -466,7 +460,7 @@ class GaletteController extends AbstractController
 
             $res[$current_cat][] = [
                 'field_id'      =>  $field,
-                'label'         =>  htmlspecialchars($post[$field . '_label'], ENT_QUOTES),
+                'label'         =>  htmlspecialchars((string) $post[$field . '_label'], ENT_QUOTES),
                 'category'      =>  $post[$field . '_category'],
                 'visible'       =>  $post[$field . '_visible'],
                 'required'      =>  $required,

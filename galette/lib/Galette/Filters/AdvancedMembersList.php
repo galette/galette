@@ -46,21 +46,21 @@ use Galette\Repository\PaymentTypes;
  * @property ?string $birth_date_begin
  * @property ?string $birth_date_end
  * @property int $show_public_infos
- * @property integer[]|integer $status
+ * @property int[]|int $status
  * @property ?string $contrib_creation_date_begin
  * @property ?string $contrib_creation_date_end
  * @property ?string $contrib_begin_date_begin
  * @property ?string $contrib_begin_date_end
  * @property ?string $contrib_end_date_begin
  * @property ?string $contrib_end_date_end
- * @property integer[] $contributions_types
- * @property integer[] $payments_types
+ * @property int[] $contributions_types
+ * @property int[] $payments_types
  * @property ?float $contrib_min_amount
  * @property ?float $contrib_max_amount
  * @property array<int, mixed> $contrib_dynamic
  * @property array<mixed, mixed> $free_search
  * @property array<mixed, mixed> $groups_search
- * @property integer $groups_search_log_op
+ * @property int $groups_search_log_op
  *
  * @property-read ?string $rcreation_date_begin
  * @property-read ?string $rcreation_date_end
@@ -95,23 +95,23 @@ class AdvancedMembersList extends MembersList
     public const OP_BEFORE = 6;
     public const OP_AFTER = 7;
 
-    private ?string $creation_date_begin = null; //@phpstan-ignore-line
-    private ?string $creation_date_end = null; //@phpstan-ignore-line
-    private ?string $modif_date_begin = null; //@phpstan-ignore-line
-    private ?string $modif_date_end = null; //@phpstan-ignore-line
-    private ?string $due_date_begin = null; //@phpstan-ignore-line
-    private ?string $due_date_end = null; //@phpstan-ignore-line
-    private ?string $birth_date_begin = null; //@phpstan-ignore-line
-    private ?string $birth_date_end = null; //@phpstan-ignore-line
+    private ?string $creation_date_begin = null;
+    private ?string $creation_date_end = null;
+    private ?string $modif_date_begin = null;
+    private ?string $modif_date_end = null;
+    private ?string $due_date_begin = null;
+    private ?string $due_date_end = null;
+    private ?string $birth_date_begin = null;
+    private ?string $birth_date_end = null;
     private int $show_public_infos = Members::FILTER_DC_PUBINFOS;
     /** @var array<int> */
     private array $status = [];
-    private ?string $contrib_creation_date_begin = null; //@phpstan-ignore-line
-    private ?string $contrib_creation_date_end = null; //@phpstan-ignore-line
-    private ?string $contrib_begin_date_begin = null; //@phpstan-ignore-line
-    private ?string $contrib_begin_date_end = null; //@phpstan-ignore-line
-    private ?string $contrib_end_date_begin = null; //@phpstan-ignore-line
-    private ?string $contrib_end_date_end = null; //@phpstan-ignore-line
+    private ?string $contrib_creation_date_begin = null;
+    private ?string $contrib_creation_date_end = null;
+    private ?string $contrib_begin_date_begin = null;
+    private ?string $contrib_begin_date_end = null;
+    private ?string $contrib_end_date_begin = null;
+    private ?string $contrib_end_date_end = null;
     /** @var array<int> */
     private array $contributions_types = [];
     /** @var array<int> */
@@ -222,7 +222,7 @@ class AdvancedMembersList extends MembersList
     /**
      * Do we want to filter within contributions?
      *
-     * @return boolean
+     * @return bool
      */
     public function withinContributions(): bool
     {
@@ -537,7 +537,7 @@ class AdvancedMembersList extends MembersList
                         unset($this->free_search['empty']);
                     }
 
-                    if ($this->isValidFreeSearch($value)) {
+                    if (static::isValidFreeSearch($value)) {
                         //should this happen?
                         $values = [$value];
                     } else {
@@ -545,16 +545,16 @@ class AdvancedMembersList extends MembersList
                     }
 
                     foreach ($values as $value) {
-                        if ($this->isValidFreeSearch($value)) {
+                        if (static::isValidFreeSearch($value)) {
                             $id = $value['idx'];
 
                             //handle value according to type
                             switch ($value['type']) {
                                 case DynamicField::DATE:
-                                    if ($value['search'] !== null && trim($value['search']) !== '') {
+                                    if ($value['search'] !== null && trim((string) $value['search']) !== '') {
                                         try {
                                             $value['search'] = $this->buildDate($value['search']);
-                                        } catch (Throwable $e) {
+                                        } catch (Throwable) {
                                             Analog::log(
                                                 'Incorrect date format for ' . $value['field']
                                                 . '! was: ' . $value['search'],
@@ -627,7 +627,7 @@ class AdvancedMembersList extends MembersList
                         str_starts_with($name, 'cds_')
                         || str_starts_with($name, 'cdsc_')
                     ) {
-                        if (is_array($value) || trim($value) !== '') {
+                        if (is_array($value) || trim((string) $value) !== '') {
                             $id = str_starts_with($name, 'cdsc_') ? substr($name, 5, strlen($name)) : substr($name, 4, strlen($name));
                             $dyn_field = DynamicField::loadFieldType($zdb, (int)$id);
                             if ($dyn_field instanceof \Galette\DynamicFields\Date) {
@@ -652,7 +652,7 @@ class AdvancedMembersList extends MembersList
      *
      * @param array<string,mixed> $data Array to validate
      *
-     * @return boolean
+     * @return bool
      */
     public static function isValidFreeSearch(array $data): bool
     {

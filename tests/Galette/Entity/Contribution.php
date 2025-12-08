@@ -692,7 +692,7 @@ class Contribution extends GaletteTestCase
             \Analog::ERROR,
             'Non-logged-in users cannot load transaction id `46`'
         );
-        $this->assertInstanceOf('\Galette\Entity\Transaction', $contrib->transaction);
+        $this->assertInstanceOf(\Galette\Entity\Transaction::class, $contrib->transaction);
         $this->assertNull($contrib->transaction->id);
 
         $contrib->member = 'not a member';
@@ -709,21 +709,45 @@ class Contribution extends GaletteTestCase
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CASH;
         $this->assertSame('Cash', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::CASH, $contrib->getPaymentTypeId());
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CHECK;
         $this->assertSame('Check', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::CHECK, $contrib->getPaymentTypeId());
 
         $contrib->payment_type = \Galette\Entity\PaymentType::OTHER;
         $this->assertSame('Other', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::OTHER, $contrib->getPaymentTypeId());
 
         $contrib->payment_type = \Galette\Entity\PaymentType::CREDITCARD;
         $this->assertSame('Credit card', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::CREDITCARD, $contrib->getPaymentTypeId());
 
         $contrib->payment_type = \Galette\Entity\PaymentType::TRANSFER;
         $this->assertSame('Transfer', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::TRANSFER, $contrib->getPaymentTypeId());
 
         $contrib->payment_type = \Galette\Entity\PaymentType::PAYPAL;
         $this->assertSame('Paypal', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::PAYPAL, $contrib->getPaymentTypeId());
+
+        $contrib->payment_type = \Galette\Entity\PaymentType::STRIPE;
+        $this->assertSame('Stripe', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::STRIPE, $contrib->getPaymentTypeId());
+
+        $contrib->payment_type = \Galette\Entity\PaymentType::HELLOASSO;
+        $this->assertSame('HelloAsso', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::HELLOASSO, $contrib->getPaymentTypeId());
+
+        $this->logSuperAdmin();
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1]
+        );
+        $contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertSame('Payment schedule', $contrib->getPaymentType());
+        $this->assertSame(\Galette\Entity\PaymentType::SCHEDULED, $contrib->getPaymentTypeId());
     }
 
     /**
@@ -885,7 +909,7 @@ class Contribution extends GaletteTestCase
         $due_date->add(new \DateInterval('P1Y'));
         $due_date->sub(new \DateInterval('P1D'));
 
-        //instanciate contribution as annual fee
+        //instantiate contribution as annual fee
         $this->contrib = new \Galette\Entity\Contribution(
             $this->zdb,
             $this->login,
@@ -1194,8 +1218,8 @@ class Contribution extends GaletteTestCase
     {
         global $login;
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin'])
             ->getMock();
         $this->login->method('isLogged')->willReturn(true);
         $this->login->method('isStaff')->willReturn(true);
@@ -1339,7 +1363,7 @@ class Contribution extends GaletteTestCase
         $this->assertTrue($child->load($cid));
 
         $this->assertSame($child_data['nom_adh'], $child->name);
-        $this->assertInstanceOf('\Galette\Entity\Adherent', $child->parent);
+        $this->assertInstanceOf(\Galette\Entity\Adherent::class, $child->parent);
         $this->assertSame($member->id, $child->parent->id);
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
@@ -1447,7 +1471,7 @@ class Contribution extends GaletteTestCase
 
         $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
         $update->set(
-            array('date_echeance' => $due_date->format('Y-m-d'))
+            ['date_echeance' => $due_date->format('Y-m-d')]
         )->where(
             [\Galette\Entity\Adherent::PK => $this->adh->id]
         );
@@ -1523,5 +1547,53 @@ class Contribution extends GaletteTestCase
         $this->assertNotTrue($check);
         $this->expectLogEntry(\Analog::ERROR, '- The end date must be after the start date!');
         $this->assertSame(['- The end date must be after the start date!'], $check);
+    }
+
+    /**
+     * Test login checks
+     *
+     * @return void
+     */
+    public function testCheckLogin(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->login->logout();
+
+        $now = new \DateTime(); // 2020-11-07
+        $begin_date = clone $now;
+
+        $due_date = clone $now; //due date is before begin date
+        $due_date->sub(new \DateInterval('P1Y')); // 2019-11-07
+
+        $contrib_data = $this->getContribData();
+        $contrib_data['date_debut_cotis'] = $begin_date->format('Y-m-d');
+        $contrib_data['duree_mois_cotis'] = 6;
+        $contrib_data['date_fin_cotis'] = $due_date->format('Y-m-d');
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] //annual fee
+        );
+
+        //user not logged-in, check fails.
+        $check = $contrib->check($contrib_data, [], []);
+        $this->assertNotTrue($check);
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            'Please select a member from a group you manage.'
+        );
+        $this->assertSame(
+            $check,
+            [
+                '- Please select a member from a group you manage.',
+            ]
+        );
+
+        //force no check login, check passes
+        $check = $contrib->setNoCheckLogin()->check($contrib_data, [], []);
+        $this->assertTrue($check);
+        $this->expectNoLogEntry();
     }
 }

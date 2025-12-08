@@ -25,7 +25,7 @@
     <form action="{{ url_for('doEditDynamicField', {'form_name': form_name, 'id': df.getId()}) }}" method="post" class="ui form">
     {% if mode != 'ajax' %}
         <div class="ui top attached accordion-styled header">
-            {{ _T("Edit field %field")|replace({'%field': df.getName()}) }}
+            {{ _T("Edit field %1$s")|format(df.getName()) }}
         </div>
         <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">

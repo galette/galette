@@ -107,9 +107,9 @@ class Password extends TestCase
     /**
      * Test password validation
      *
-     * @param integer $level  Password level
-     * @param string  $pass   Password
-     * @param array   $errors Errors
+     * @param int    $level  Password level
+     * @param string $pass   Password
+     * @param array  $errors Errors
      *
      * @return void
      */
@@ -171,8 +171,8 @@ class Password extends TestCase
     /**
      * Test password blacklist
      *
-     * @param string  $pass     Password to test
-     * @param boolean $expected Excpected return
+     * @param string $pass     Password to test
+     * @param bool   $expected Excpected return
      *
      * @return void
      */

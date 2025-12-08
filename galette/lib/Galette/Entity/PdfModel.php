@@ -33,14 +33,16 @@ use Galette\Repository\PdfModels;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 
+use function Safe\preg_replace_callback;
+
 /**
  * PDF Model
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property ?integer $id
+ * @property ?int $id
  * @property string $name
- * @property integer $type
+ * @property int $type
  * @property ?string $header
  * @property-read string $hheader
  * @property ?string $footer
@@ -70,12 +72,11 @@ abstract class PdfModel
 
     private ?int $id = null;
     private string $name;
-    private int $type;
-    private ?string $header;
-    private ?string $footer;
-    private ?string $title;
-    private ?string $subtitle;
-    private ?string $body;
+    private ?string $header = null;
+    private ?string $footer = null;
+    private ?string $title = null;
+    private ?string $subtitle = null;
+    private ?string $body = null;
     private ?string $styles = '';
     private ?PdfModel $parent = null;
 
@@ -87,7 +88,7 @@ abstract class PdfModel
      * @param int                                     $type        Model type
      * @param ArrayObject<string,int|string>|int|null $args        Arguments
      */
-    public function __construct(Db $zdb, Preferences $preferences, int $type, ArrayObject|int|null $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, private int $type, ArrayObject|int|null $args = null)
     {
         global $container, $login;
         $this->routeparser = $container->get(RouteParser::class);
@@ -95,14 +96,13 @@ abstract class PdfModel
         $this
             ->setDb($zdb)
             ->setLogin($login);
-        $this->type = $type;
 
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
             $this->loadFromRS($args);
         } else {
-            $this->load($type);
+            $this->load($this->type);
         }
 
         $this->setPatterns($this->getMainPatterns());
@@ -112,8 +112,8 @@ abstract class PdfModel
     /**
      * Load a Model from its identifier
      *
-     * @param int     $id   Identifier
-     * @param boolean $init Init data if required model is missing
+     * @param int  $id   Identifier
+     * @param bool $init Init data if required model is missing
      *
      * @return void
      */
@@ -164,9 +164,7 @@ abstract class PdfModel
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
 
-        $callback = function ($matches) {
-            return _T($matches[1]);
-        };
+        $callback = (fn($matches) => _T($matches[1]));
         $this->name = preg_replace_callback(
             '/_T\("([^\"]+)"\)/',
             $callback,
@@ -192,7 +190,7 @@ abstract class PdfModel
     /**
      * Store model in database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -253,21 +251,12 @@ abstract class PdfModel
      */
     public static function getTypeClass(int $type): string
     {
-        $class = null;
-        switch ($type) {
-            case self::INVOICE_MODEL:
-                $class = 'PdfInvoice';
-                break;
-            case self::RECEIPT_MODEL:
-                $class = 'PdfReceipt';
-                break;
-            case self::ADHESION_FORM_MODEL:
-                $class = 'PdfAdhesionFormModel';
-                break;
-            default:
-                $class = 'PdfMain';
-                break;
-        }
+        $class = match ($type) {
+            self::INVOICE_MODEL => 'PdfInvoice',
+            self::RECEIPT_MODEL => 'PdfReceipt',
+            self::ADHESION_FORM_MODEL => 'PdfAdhesionFormModel',
+            default => 'PdfMain',
+        };
         $class = 'Galette\\Entity\\' . $class;
         return $class;
     }
@@ -275,10 +264,10 @@ abstract class PdfModel
     /**
      * Check length
      *
-     * @param string  $value The value
-     * @param int     $chars Length
-     * @param string  $field Field name
-     * @param boolean $empty Can value be empty
+     * @param string $value The value
+     * @param int    $chars Length
+     * @param string $field Field name
+     * @param bool   $empty Can value be empty
      *
      * @return void
      */
@@ -287,19 +276,20 @@ abstract class PdfModel
         if (trim($value) !== '') {
             if (mb_strlen($value) > $chars) {
                 throw new \LengthException(
-                    str_replace(
-                        ['%field', '%chars'],
-                        [$field, (string)$chars],
-                        _T("%field should be less than %chars characters long.")
+                    sprintf(
+                        //TRANS: first parameter is a field name, second its maximum length
+                        _T('%1$s should be less than %2$s characters long.'),
+                        $field,
+                        (string)$chars,
                     )
                 );
             }
         } elseif ($empty === false) {
             throw new \UnexpectedValueException(
-                str_replace(
-                    '%field',
+                sprintf(
+                    //TRANS: parameter is a field name
+                    _T('%1$s should not be empty!'),
                     $field,
-                    _T("%field should not be empty!")
                 )
             );
         }
@@ -382,28 +372,10 @@ abstract class PdfModel
      */
     public function __isset(string $name): bool
     {
-        switch ($name) {
-            case 'id':
-            case 'name':
-            case 'header':
-            case 'footer':
-            case 'body':
-            case 'title':
-            case 'subtitle':
-            case 'type':
-            case 'styles':
-            case 'patterns':
-            case 'replaces':
-            case 'hstyles':
-            case 'hheader':
-            case 'hfooter':
-            case 'htitle':
-            case 'hsubtitle':
-            case 'hbody':
-                return true;
-        }
-
-        return false;
+        return match ($name) {
+            'id', 'name', 'header', 'footer', 'body', 'title', 'subtitle', 'type', 'styles', 'patterns', 'replaces', 'hstyles', 'hheader', 'hfooter', 'htitle', 'hsubtitle', 'hbody' => true,
+            default => false,
+        };
     }
 
     /**
@@ -448,7 +420,7 @@ abstract class PdfModel
             case 'header':
             case 'footer':
             case 'body':
-                if ($value === null || trim($value) === '') {
+                if ($value === null || trim((string) $value) === '') {
                     if ($name !== 'body' && static::class === PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("header and footer should not be empty!")

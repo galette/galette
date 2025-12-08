@@ -211,16 +211,11 @@ class L10n extends TestCase
         $results = $this->l10n->getDynamicTranslations(md5('A text for flow test'));
         $this->assertCount(count($langs), $results);
         foreach ($results as $result) {
-            switch ($result['key']) {
-                case 'en_US':
-                    $this->assertSame('A text for flow test translated', $result['text']);
-                    break;
-                case 'fr_FR.utf8':
-                    $this->assertSame('Un texte pour le test flow', $result['text']);
-                    break;
-                default:
-                    $this->assertSame('', $result['text']);
-            }
+            match ($result['key']) {
+                'en_US' => $this->assertSame('A text for flow test translated', $result['text']),
+                'fr_FR.utf8' => $this->assertSame('Un texte pour le test flow', $result['text']),
+                default => $this->assertSame('', $result['text']),
+            };
         }
 
         //remove translation
@@ -252,16 +247,11 @@ class L10n extends TestCase
         $this->assertSame(2, $results->count());
 
         foreach ($results as $result) {
-            switch ($result['text_locale']) {
-                case 'en_US':
-                    $this->assertSame('A text created on update translated', $result['text_trans']);
-                    break;
-                case 'fr_FR.utf8':
-                    $this->assertSame('Un texte créé à la mise à jour', $result['text_trans']);
-                    break;
-                default:
-                    $this->assertSame('', $result['text_trans']);
-            }
+            match ($result['text_locale']) {
+                'en_US' => $this->assertSame('A text created on update translated', $result['text_trans']),
+                'fr_FR.utf8' => $this->assertSame('Un texte créé à la mise à jour', $result['text_trans']),
+                default => $this->assertSame('', $result['text_trans']),
+            };
         }
     }
 
@@ -273,7 +263,7 @@ class L10n extends TestCase
     public function testAddWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
@@ -298,7 +288,7 @@ class L10n extends TestCase
     public function testUpdateWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
@@ -329,7 +319,7 @@ class L10n extends TestCase
     public function testDeleteWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
@@ -354,7 +344,7 @@ class L10n extends TestCase
     public function testGetWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')
@@ -380,7 +370,7 @@ class L10n extends TestCase
     public function testGetsWException(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(array('execute'))
+            ->onlyMethods(['execute'])
             ->getMock();
 
         $zdb->method('execute')

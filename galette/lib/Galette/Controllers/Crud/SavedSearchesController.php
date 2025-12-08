@@ -131,17 +131,17 @@ class SavedSearchesController extends CrudController
     /**
      * List page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
         } else {
             $filters = new SavedSearchesList();
         }
@@ -163,7 +163,7 @@ class SavedSearchesController extends CrudController
         //assign pagination variables to the template and add pagination links
         $filters->setViewPagination($this->routeparser, $this->view, false);
 
-        $this->session->{$this->getFilterName($this->getDefaultFilterName())} = $filters;
+        $this->session->{$this->getFilterName(static::getDefaultFilterName())} = $filters;
 
         // display page
         $this->view->render(
@@ -202,7 +202,7 @@ class SavedSearchesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Record id
+     * @param int      $id       Record id
      *
      * @return Response
      */
@@ -217,7 +217,7 @@ class SavedSearchesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Record id
+     * @param int      $id       Record id
      *
      * @return Response
      */
@@ -270,7 +270,7 @@ class SavedSearchesController extends CrudController
             return _T('Remove saved search');
         } else {
             //batch saved search removal
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName(), ['suffix' => 'delete'])};
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['suffix' => 'delete'])};
             return sprintf(
                 _T('You are about to remove %1$s searches.'),
                 (string)count($filters->selected),
@@ -284,12 +284,12 @@ class SavedSearchesController extends CrudController
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
-        if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
-            $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
+        if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
+            $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
         } else {
             $filters = new SavedSearchesList();
         }
@@ -307,7 +307,7 @@ class SavedSearchesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Saved search id
+     * @param int      $id       Saved search id
      *
      * @return Response
      */

@@ -27,13 +27,15 @@ if (!defined('GALETTE_ROOT')) {
 
 $i18n->updateEnv();
 global $language;
-$language = $i18n->getLongID();
+//FIXME: should be handled differently
+$language = $i18n->getLongID(); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used as global
 
 
 /**********************************************
 * some constant strings found in the database *
 **********************************************/
 /** TODO: these string should be not be handled here */
+//phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used to translate extra strings
 $foo = _T("Realization:");
 $foo = _T("Graphics:");
 $foo = _T("Publisher:");
@@ -95,3 +97,4 @@ $foo = _T('on');
 $foo = _T('from');
 $foo = _T('to');
 $foo = _T('Association');
+//phpcs:enable

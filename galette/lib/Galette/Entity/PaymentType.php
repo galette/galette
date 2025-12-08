@@ -35,11 +35,11 @@ use Galette\Features\Translatable;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  */
 
-class PaymentType
+class PaymentType implements \Stringable
 {
     use Translatable;
     use I18n;
@@ -47,7 +47,6 @@ class PaymentType
     public const TABLE = 'paymenttypes';
     public const PK = 'type_id';
 
-    private Db $zdb;
     private int $id;
 
     public const SCHEDULED = 7;
@@ -57,6 +56,8 @@ class PaymentType
     public const CHECK = 3;
     public const TRANSFER = 4;
     public const PAYPAL = 5;
+    public const STRIPE = 8;
+    public const HELLOASSO = 9;
 
     /**
      * Main constructor
@@ -64,9 +65,10 @@ class PaymentType
      * @param Db                                      $zdb  Database instance
      * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
-    public function __construct(Db $zdb, ArrayObject|int|null $args = null)
-    {
-        $this->zdb = $zdb;
+    public function __construct(
+        private Db $zdb,
+        ArrayObject|int|null $args = null
+    ) {
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
@@ -77,7 +79,7 @@ class PaymentType
     /**
      * Load a payment type from its identifier
      *
-     * @param integer $id Identifier
+     * @param int $id Identifier
      *
      * @return bool
      */
@@ -120,7 +122,7 @@ class PaymentType
     /**
      * Store payment type in database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -164,7 +166,7 @@ class PaymentType
     /**
      * Remove current title
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(): bool
     {
@@ -202,19 +204,16 @@ class PaymentType
      */
     public function __get(string $name): mixed
     {
-        switch ($name) {
-            case 'id':
-            case 'name':
-                return $this->$name;
-        }
-
-        throw new \RuntimeException(
-            sprintf(
-                'Unable to get property "%s::%s"!',
-                static::class,
-                $name
-            )
-        );
+        return match ($name) {
+            'id', 'name' => $this->$name,
+            default => throw new \RuntimeException(
+                sprintf(
+                    'Unable to get property "%s::%s"!',
+                    static::class,
+                    $name
+                )
+            ),
+        };
     }
 
     /**
@@ -227,13 +226,10 @@ class PaymentType
      */
     public function __isset(string $name): bool
     {
-        switch ($name) {
-            case 'id':
-            case 'name':
-                return true;
-        }
-
-        return false;
+        return match ($name) {
+            'id', 'name' => true,
+            default => false,
+        };
     }
 
     /**
@@ -248,7 +244,7 @@ class PaymentType
     {
         switch ($name) {
             case 'name':
-                if (trim($value) === '') {
+                if (trim((string) $value) === '') {
                     Analog::log(
                         'Name cannot be empty',
                         Analog::WARNING
@@ -270,7 +266,7 @@ class PaymentType
     /**
      * Get system payment types
      *
-     * @param boolean $translated Return translated types (default) or not
+     * @param bool $translated Return translated types (default) or not
      *
      * @return array<int,string>
      */
@@ -284,6 +280,8 @@ class PaymentType
                 self::CHECK         => _T("Check"),
                 self::TRANSFER      => _T("Transfer"),
                 self::PAYPAL        => _T("Paypal"),
+                self::STRIPE        => _T("Stripe"),
+                self::HELLOASSO     => _T("HelloAsso"),
                 self::SCHEDULED     => _T("Payment schedule")
             ];
         } else {
@@ -294,6 +292,8 @@ class PaymentType
                 self::CHECK         => "Check",
                 self::TRANSFER      => "Transfer",
                 self::PAYPAL        => "Paypal",
+                self::STRIPE        => "Stripe",
+                self::HELLOASSO     => "HelloAsso",
                 self::SCHEDULED     => "Payment schedule"
             ];
         }
@@ -303,7 +303,7 @@ class PaymentType
     /**
      * Is current payment a system one
      *
-     * @return boolean
+     * @return bool
      *
      */
     public function isSystemType(): bool

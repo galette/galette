@@ -30,6 +30,8 @@ use Galette\Entity\PdfModel;
 use Galette\Entity\PdfAdhesionFormModel;
 use Analog\Analog;
 
+use function Safe\realpath;
+
 /**
  * Adhesion Form PDF
  *
@@ -39,9 +41,6 @@ use Analog\Analog;
 
 class PdfAdhesionForm extends Pdf
 {
-    protected Db $zdb;
-    protected Adherent $adh;
-    protected Preferences $prefs;
     protected string $filename;
     private string $path;
 
@@ -52,12 +51,11 @@ class PdfAdhesionForm extends Pdf
      * @param Db          $zdb   Database instance
      * @param Preferences $prefs Preferences instance
      */
-    public function __construct(Adherent $adh, Db $zdb, Preferences $prefs)
-    {
-        $this->zdb = $zdb;
-        $this->adh = $adh;
-        $this->prefs = $prefs;
-
+    public function __construct(
+        protected Adherent $adh,
+        protected Db $zdb,
+        protected Preferences $prefs
+    ) {
         $model = $this->getModel();
         parent::__construct($prefs, $model);
 
@@ -88,7 +86,7 @@ class PdfAdhesionForm extends Pdf
      *
      * @param string $path Path
      *
-     * @return boolean
+     * @return bool
      */
     public function store(string $path): bool
     {

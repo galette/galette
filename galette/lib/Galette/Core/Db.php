@@ -43,6 +43,10 @@ use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\SqlInterface;
 
+use function Safe\file_put_contents;
+use function Safe\preg_match;
+use function Safe\preg_replace;
+
 /**
  * Zend Db wrapper
  *
@@ -80,8 +84,6 @@ class Db
      */
     public function __construct(?array $dsn = null)
     {
-        $_type = null;
-
         if (is_array($dsn)) {
             $_type_db = $dsn['TYPE_DB'];
             $_host_db = $dsn['HOST_DB'];
@@ -183,7 +185,7 @@ class Db
     /**
      * Retrieve current database version
      *
-     * @param boolean $check_table Check if table exists, defaults to false
+     * @param bool $check_table Check if table exists, defaults to false
      *
      * @return string
      *
@@ -223,7 +225,7 @@ class Db
     /**
      * Check if database version suits our needs
      *
-     * @return boolean
+     * @return bool
      */
     public function checkDbVersion(): bool
     {
@@ -237,7 +239,7 @@ class Db
 
         try {
             return $this->getDbVersion() === GALETTE_DB_VERSION;
-        } catch (LogicException $e) {
+        } catch (LogicException) {
             return false;
         }
     }
@@ -267,7 +269,7 @@ class Db
      * @param ?string $port which tcp port we want to connect to
      * @param ?string $db   database name
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception|Throwable
      */
@@ -535,7 +537,7 @@ class Db
         try {
             $metadata->getTable(PREFIX_DB . $name);
             return true;
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             Analog::log(
                 'Table "' . $name . '" does not exist',
                 Analog::INFO
@@ -562,7 +564,7 @@ class Db
      * Converts recursively database to UTF-8
      *
      * @param ?string $prefix       Specified table prefix
-     * @param boolean $content_only Proceed only content (no table conversion)
+     * @param bool    $content_only Proceed only content (no table conversion)
      *
      * @return void
      */
@@ -715,7 +717,7 @@ class Db
     /**
      * Is current database using Postgresql?
      *
-     * @return boolean
+     * @return bool
      */
     public function isPostgres(): bool
     {
@@ -832,24 +834,16 @@ class Db
      */
     public function __get(string $name): mixed
     {
-        switch ($name) {
-            case 'db':
-                return $this->db;
-            case 'sql':
-                return $this->sql;
-            case 'driver':
-                return $this->db->getDriver();
-            case 'connection':
-                return $this->db->getDriver()->getConnection();
-            case 'platform':
-                return $this->db->getPlatform();
-            case 'query_string':
-                return $this->last_query;
-            case 'type_db':
-                return $this->type_db;
-            default:
-                throw new RuntimeException('Unknown property ' . $name);
-        }
+        return match ($name) {
+            'db' => $this->db,
+            'sql' => $this->sql,
+            'driver' => $this->db->getDriver(),
+            'connection' => $this->db->getDriver()->getConnection(),
+            'platform' => $this->db->getPlatform(),
+            'query_string' => $this->last_query,
+            'type_db' => $this->type_db,
+            default => throw new RuntimeException('Unknown property ' . $name),
+        };
     }
 
     /**
@@ -862,17 +856,10 @@ class Db
      */
     public function __isset(string $name): bool
     {
-        switch ($name) {
-            case 'db':
-            case 'sql':
-            case 'driver':
-            case 'connection':
-            case 'platform':
-            case 'query_string':
-            case 'type_db':
-                return true;
-        }
-        return property_exists($this, $name);
+        return match ($name) {
+            'db', 'sql', 'driver', 'connection', 'platform', 'query_string', 'type_db' => true,
+            default => property_exists($this, $name),
+        };
     }
 
     /**
@@ -931,9 +918,9 @@ class Db
      * @see https://bugs.galette.eu/issues/1158
      * @see https://bugs.galette.eu/issues/1374
      *
-     * @param string  $table    Table name
-     * @param string  $pkcol    Primary key column name
-     * @param integer $expected Expected sequence value
+     * @param string $table    Table name
+     * @param string $pkcol    Primary key column name
+     * @param int    $expected Expected sequence value
      *
      * @return void
      */
@@ -961,9 +948,9 @@ class Db
     /**
      * Get sequence name
      *
-     * @param string  $table    Table name
-     * @param string  $pkcol    Primary key column name
-     * @param boolean $prefixed Whether to prefix the sequence name
+     * @param string $table    Table name
+     * @param string $pkcol    Primary key column name
+     * @param bool   $prefixed Whether to prefix the sequence name
      *
      * @return string
      */
@@ -983,7 +970,7 @@ class Db
      * @param SqlInterface $sql       SQL object
      * @param Throwable    $exception Exception to check
      *
-     * @return boolean
+     * @return bool
      */
     public function isDuplicateException(SqlInterface $sql, Throwable $exception): bool
     {
@@ -1000,7 +987,7 @@ class Db
      *
      * @param Throwable $exception Exception to check
      *
-     * @return boolean
+     * @return bool
      */
     public function isForeignKeyException(Throwable $exception): bool
     {
@@ -1015,8 +1002,8 @@ class Db
     /**
      * Drops a table
      *
-     * @param string  $table   Table name, without prefix
-     * @param boolean $maymiss Whether the table can be missing, defaults to false
+     * @param string $table   Table name, without prefix
+     * @param bool   $maymiss Whether the table can be missing, defaults to false
      *
      * @return void
      */
@@ -1053,11 +1040,11 @@ class Db
      *
      * @param object $entity Entity instance
      *
-     * @return integer
+     * @return int
      */
     public function getLastGeneratedValue(object $entity): int
     {
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore arguments.count (laminas does not respect its own interfaces)
         return (int)$this->driver->getLastGeneratedValue(
             $this->isPostgres()
                 ? $this->getSequenceName($entity::TABLE, $entity::PK, true)
@@ -1094,10 +1081,10 @@ class Db
         if ($this->isPostgres()) {
             $min_version = GALETTE_PGSQL_MIN;
         } else {
-            $min_version = str_contains($version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+            $min_version = str_contains((string) $version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
         }
 
-        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string) $version);
         return version_compare($version, $min_version, '>=');
     }
 
@@ -1114,11 +1101,11 @@ class Db
             $engine = 'PostgreSQL';
             $min_version = GALETTE_PGSQL_MIN;
         } else {
-            $engine = str_contains($version, '-MariaDB') ? 'MariaDB' : 'MySQL';
-            $min_version = str_contains($version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+            $engine = str_contains((string) $version, '-MariaDB') ? 'MariaDB' : 'MySQL';
+            $min_version = str_contains((string) $version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
         }
 
-        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', $version);
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string) $version);
 
         return sprintf(
             _T('Minimum version for %1$s engine is %2$s, %1$s %3$s found!'),

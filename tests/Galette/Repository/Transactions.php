@@ -175,8 +175,8 @@ class Transactions extends GaletteTestCase
 
         //member with a transaction
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -196,8 +196,8 @@ class Transactions extends GaletteTestCase
 
         //member does not have any transaction
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);

@@ -38,10 +38,9 @@ class Gaptcha
     private int $max = 12;
     private int $min = 0;
 
-    private I18n $i18n;
-    private int $current_left;
-    private int $current_right;
-    private int $current_op;
+    private readonly int $current_left;
+    private readonly int $current_right;
+    private readonly int $current_op;
     private int $gaptcha;
 
     /**
@@ -49,9 +48,8 @@ class Gaptcha
      *
      * @param I18n $i18n I18n instance
      */
-    public function __construct(I18n $i18n)
+    public function __construct(private readonly I18n $i18n)
     {
-        $this->i18n = $i18n;
         $this->current_left = random_int($this->min, $this->max);
         $this->current_right = random_int($this->min, $this->max);
         $this->current_op = random_int(1, 2);
@@ -107,9 +105,9 @@ class Gaptcha
     /**
      * Checks captcha validity
      *
-     * @param integer $gaptcha User entry
+     * @param int $gaptcha User entry
      *
-     * @return boolean
+     * @return bool
      */
     public function check(int $gaptcha): bool
     {

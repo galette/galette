@@ -42,6 +42,10 @@ class Gaptcha extends TestCase
     {
         $gaptcha = new \Galette\Core\Gaptcha(new \Galette\Core\I18n());
         $rgaptcha = new ReflectionClass($gaptcha);
+        //do not call constructor so readonly properties are not set
+        $gaptcha = $rgaptcha->newInstanceWithoutConstructor();
+        $i18n = $rgaptcha->getProperty('i18n');
+        $i18n->setValue($gaptcha, new \Galette\Core\I18n());
 
         $op = $rgaptcha->getProperty('current_op');
         $op->setValue($gaptcha, \Galette\Core\Gaptcha::OP_ADD);
@@ -64,6 +68,10 @@ class Gaptcha extends TestCase
         //localized
         $gaptcha = new \Galette\Core\Gaptcha(new \Galette\Core\I18n('fr_FR'));
         $rgaptcha = new ReflectionClass($gaptcha);
+        //do not call constructor so readonly properties are not set
+        $gaptcha = $rgaptcha->newInstanceWithoutConstructor();
+        $i18n = $rgaptcha->getProperty('i18n');
+        $i18n->setValue($gaptcha, new \Galette\Core\I18n('fr_FR'));
 
         $op = $rgaptcha->getProperty('current_op');
         $op->setValue($gaptcha, \Galette\Core\Gaptcha::OP_ADD);
@@ -86,6 +94,10 @@ class Gaptcha extends TestCase
         //sub
         $gaptcha = new \Galette\Core\Gaptcha(new \Galette\Core\I18n());
         $rgaptcha = new ReflectionClass($gaptcha);
+        //do not call constructor so readonly properties are not set
+        $gaptcha = $rgaptcha->newInstanceWithoutConstructor();
+        $i18n = $rgaptcha->getProperty('i18n');
+        $i18n->setValue($gaptcha, new \Galette\Core\I18n());
 
         $op = $rgaptcha->getProperty('current_op');
         $op->setValue($gaptcha, \Galette\Core\Gaptcha::OP_SUB);

@@ -38,6 +38,8 @@ use League\Event\ListenerSubscriber;
 use Slim\Flash\Messages;
 use Slim\Routing\RouteParser;
 
+use function Safe\preg_replace;
+
 /**
  * Event listener for contributions
  *
@@ -45,13 +47,6 @@ use Slim\Routing\RouteParser;
  */
 class ContribListener implements ListenerSubscriber
 {
-    private Preferences $preferences;
-    private RouteParser $routeparser;
-    private History $history;
-    private Messages $flash;
-    private Login $login;
-    private Db $zdb;
-
     /**
      * Constructor
      *
@@ -63,19 +58,13 @@ class ContribListener implements ListenerSubscriber
      * @param Db          $zdb         Db instance
      */
     public function __construct(
-        Preferences $preferences,
-        RouteParser $routeparser,
-        History $history,
-        Messages $flash,
-        Login $login,
-        Db $zdb
+        private readonly Preferences $preferences,
+        private readonly RouteParser $routeparser,
+        private readonly History $history,
+        private readonly Messages $flash,
+        private readonly Login $login,
+        private readonly Db $zdb
     ) {
-        $this->preferences = $preferences;
-        $this->routeparser = $routeparser;
-        $this->history = $history;
-        $this->flash = $flash;
-        $this->login = $login;
-        $this->zdb = $zdb;
     }
 
     /**
@@ -121,7 +110,7 @@ class ContribListener implements ListenerSubscriber
      * Send account email to member
      *
      * @param Contribution $contrib Contribution
-     * @param boolean      $new     New contribution or editing existing one
+     * @param bool         $new     New contribution or editing existing one
      *
      * @return void
      */
@@ -200,17 +189,19 @@ class ContribListener implements ListenerSubscriber
 
         if ($sent) {
             $this->history->add(
-                preg_replace(
-                    ['/%name/', '/%email/'],
-                    [$member->sname, $member->getEmail()],
-                    _T("Email sent to user %name (%email)")
+                sprintf(
+                    //TRANS: first parameter is the use name, second his email address
+                    _T('Email sent to user %1$s (%2$s)'),
+                    $member->sname,
+                    $member->getEmail()
                 )
             );
         } else {
             $txt = preg_replace(
-                ['/%name/', '/%email/'],
-                [$member->sname, $member->getEmail()],
-                _T("A problem happened while sending contribution receipt to user %name (%email)")
+                //TRANS: first parameter is the use name, second his email address
+                _T('A problem happened while sending contribution receipt to user %1$s (%2$s)'),
+                $member->sname,
+                $member->getEmail()
             );
             $this->history->add($txt);
             $this->flash->addMessage(
@@ -224,7 +215,7 @@ class ContribListener implements ListenerSubscriber
      * Send new contribution email to admin
      *
      * @param Contribution $contrib Contribution
-     * @param boolean      $new     New contribution or editing existing one
+     * @param bool         $new     New contribution or editing existing one
      *
      * @return void
      */
@@ -272,17 +263,19 @@ class ContribListener implements ListenerSubscriber
 
         if ($sent) {
             $this->history->add(
-                preg_replace(
-                    ['/%name/', '/%email/'],
-                    [$member->sname, $member->getEmail()],
-                    _T("Email sent to admin for user %name (%email)")
+                sprintf(
+                    //TRANS: first parameter is member name, second his email address
+                    _T('Email sent to admin for user %1$s (%2$s)'),
+                    $member->sname,
+                    $member->getEmail()
                 )
             );
         } else {
-            $txt = preg_replace(
-                ['/%name/', '/%email/'],
-                [$member->sname, $member->getEmail()],
-                _T("A problem happened while sending to admin notification for user %name (%email) contribution")
+            $txt = sprintf(
+                //TRANS: first parameter is member name, second his email address
+                _T('A problem happened while sending to admin notification for user %1$s (%2$s) contribution'),
+                $member->sname,
+                $member->getEmail()
             );
             $this->history->add($txt);
             $this->flash->addMessage(

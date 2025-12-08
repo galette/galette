@@ -30,6 +30,8 @@ use Galette\Entity\Adherent;
 use Galette\Entity\PdfModel;
 use Analog\Analog;
 
+use function Safe\realpath;
+
 /**
  * Contribution PDF: invoices and receipts
  *
@@ -38,8 +40,7 @@ use Analog\Analog;
 
 class PdfContribution extends Pdf
 {
-    private Contribution $contrib;
-    private PdfModel $model;
+    private readonly PdfModel $model;
     private string $path;
 
     /**
@@ -49,10 +50,11 @@ class PdfContribution extends Pdf
      * @param Db           $zdb     Database instance
      * @param Preferences  $prefs   Preferences instance
      */
-    public function __construct(Contribution $contrib, Db $zdb, Preferences $prefs)
-    {
-        $this->contrib = $contrib;
-
+    public function __construct(
+        private readonly Contribution $contrib,
+        Db $zdb,
+        Preferences $prefs
+    ) {
         $class = PdfModel::getTypeClass($this->contrib->model);
         $this->model = new $class($zdb, $prefs);
 
@@ -92,7 +94,7 @@ class PdfContribution extends Pdf
      *
      * @param string $path Path
      *
-     * @return boolean
+     * @return bool
      */
     public function store(string $path): bool
     {

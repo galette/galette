@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
-use DateTime;
+use Safe\DateTime;
 use Galette\Core\Authentication;
 use Galette\Core\Login;
 use Galette\Features\I18n;
@@ -58,7 +58,6 @@ class Document
     public const MINUTES = 'minutes';
     public const VOTES = 'votes';
 
-    private Db $zdb;
     private int $id;
     private string $type;
     private string $filename;
@@ -75,9 +74,8 @@ class Document
      * @param Db                                      $zdb  Database instance
      * @param int|ArrayObject<string,int|string>|null $args Arguments
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
+    public function __construct(private Db $zdb, int|ArrayObject|null $args = null)
     {
-        $this->zdb = $zdb;
         $this->can_public = true;
 
         $this->init($this->store_path);
@@ -92,7 +90,7 @@ class Document
     /**
      * Load a document from its identifier
      *
-     * @param integer $id Identifier
+     * @param int $id Identifier
      *
      * @return void
      */
@@ -145,8 +143,7 @@ class Document
                 // skip entries according to access control
                 if (
                     $r->visible == FieldsConfig::NOBODY
-                    //@phpstan-ignore-next-line
-                    && ($this->public_list === true || ($this->public_list === false && !$login->isAdmin()))
+                    && (($this->public_list === false && !$login->isAdmin()) || $this->public_list === true)
                     || ($r->visible == FieldsConfig::ADMIN
                         && $access_level < Authentication::ACCESS_ADMIN)
                     || ($r->visible == FieldsConfig::STAFF
@@ -205,29 +202,20 @@ class Document
      *
      * @param Login $login Login
      *
-     * @return boolean
+     * @return bool
      */
     public function canShow(Login $login): bool
     {
         $access_level = $login->getAccessLevel();
-
-        switch ($this->getPermission()) {
-            case FieldsConfig::ALL:
-                return true;
-            case FieldsConfig::NOBODY:
-                return false;
-            case FieldsConfig::ADMIN:
-                return $access_level >= Authentication::ACCESS_ADMIN;
-            case FieldsConfig::STAFF:
-                return $access_level >= Authentication::ACCESS_STAFF;
-            case FieldsConfig::MANAGER:
-                return $access_level >= Authentication::ACCESS_MANAGER;
-            case FieldsConfig::USER_WRITE:
-            case FieldsConfig::USER_READ:
-                return $access_level >= Authentication::ACCESS_USER;
-        }
-
-        return false;
+        return match ($this->getPermission()) {
+            FieldsConfig::ALL => true,
+            FieldsConfig::NOBODY => false,
+            FieldsConfig::ADMIN => $access_level >= Authentication::ACCESS_ADMIN,
+            FieldsConfig::STAFF => $access_level >= Authentication::ACCESS_STAFF,
+            FieldsConfig::MANAGER => $access_level >= Authentication::ACCESS_MANAGER,
+            FieldsConfig::USER_WRITE, FieldsConfig::USER_READ => $access_level >= Authentication::ACCESS_USER,
+            default => false,
+        };
     }
 
     /**
@@ -253,7 +241,7 @@ class Document
      * @param array<string,mixed>          $post  POST data
      * @param array<UploadedFileInterface> $files Uploaded files
      *
-     * @return boolean
+     * @return bool
      */
     public function store(array $post, array $files): bool
     {
@@ -309,7 +297,7 @@ class Document
      *
      * @param array<int>|null $ids IDs to remove, default to current id
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(?array $ids = null): bool
     {
@@ -351,7 +339,7 @@ class Document
     {
         $file = $this->getDestDir() . $this->getDocumentFilename();
         if (file_exists($file)) {
-            return unlink($file);
+            return unlink($file); //@phpstan-ignore theCodingMachineSafe.function
         }
 
         Analog::log('File ' . $file . ' does not exist', Analog::WARNING);
@@ -436,7 +424,7 @@ class Document
     /**
      * Get creation date
      *
-     * @param boolean $formatted Return formatted date (default) or not
+     * @param bool $formatted Return formatted date (default) or not
      *
      * @return string|DateTime
      */
@@ -451,7 +439,7 @@ class Document
     /**
      * Get system social types
      *
-     * @param boolean $translated Return translated types (default) or not
+     * @param bool $translated Return translated types (default) or not
      *
      * @return array<string,string>
      */
@@ -480,8 +468,8 @@ class Document
     /**
      * Get system documents types
      *
-     * @param string  $type       Document type
-     * @param boolean $translated Return translated types (default) or not
+     * @param string $type       Document type
+     * @param bool   $translated Return translated types (default) or not
      *
      * @return string
      */

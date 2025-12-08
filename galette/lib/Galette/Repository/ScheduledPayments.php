@@ -35,6 +35,7 @@ use Galette\Core\History;
 use Galette\Entity\Contribution;
 use Galette\Entity\Adherent;
 use Laminas\Db\Sql\Select;
+use Safe\DateTime;
 
 /**
  * Scheduled payments class for galette
@@ -46,12 +47,9 @@ class ScheduledPayments
     public const TABLE = ScheduledPayment::TABLE;
     public const PK = ScheduledPayment::PK;
 
-    private ScheduledPaymentsList $filters;
     private int $count = 0;
-
-    private Db $zdb;
-    private Login $login;
     private float $sum = 0;
+
     /** @var array<int> */
     private array $current_selection;
 
@@ -62,12 +60,11 @@ class ScheduledPayments
      * @param Login                  $login   Login
      * @param ?ScheduledPaymentsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?ScheduledPaymentsList $filters = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
-        $this->filters = $filters ?? new ScheduledPaymentsList();
+    public function __construct(
+        private readonly Db $zdb,
+        private readonly Login $login,
+        private readonly ?ScheduledPaymentsList $filters = new ScheduledPaymentsList()
+    ) {
     }
 
     /**
@@ -80,7 +77,6 @@ class ScheduledPayments
     public function getListFromContribution(int $contrib_id): array
     {
         $this->filters->from_contribution = $contrib_id;
-        /** @phpstan-ignore-next-line */
         return $this->getList(true);
     }
 
@@ -92,7 +88,7 @@ class ScheduledPayments
      * @param ?array<string> $fields    field(s) name(s) to get. Should be a string or
      *                                  an array. If null, all fields will be returned
      *
-     * @return array<int, Contribution>|false
+     * @return array<int, ScheduledPayment>|false
      */
     public function getArrayList(array $ids, bool $as_object = false, ?array $fields = null): array|false
     {
@@ -118,7 +114,7 @@ class ScheduledPayments
      * @param ?array<string> $fields    field(s) name(s) to get. Should be a string or
      *                                  an array. If null, all fields will be returned
      *
-     * @return array<int, Contribution>|ResultSet
+     * @return array<int, ScheduledPayment>|ResultSet
      */
     public function getList(bool $as_object = true, ?array $fields = null): array|ResultSet
     {
@@ -312,15 +308,10 @@ class ScheduledPayments
      */
     private function buildWhereClause(Select $select): void
     {
-        switch ($this->filters->date_field) {
-            case ScheduledPaymentsList::DATE_RECORD:
-                $field = 'creation_date';
-                break;
-            case ScheduledPaymentsList::DATE_SCHEDULED:
-            default:
-                $field = 'scheduled_date';
-                break;
-        }
+        $field = match ($this->filters->date_field) {
+            ScheduledPaymentsList::DATE_RECORD => 'creation_date',
+            default => 'scheduled_date',
+        };
 
         if (isset($this->current_selection)) {
             $select->where->in('s.' . self::PK, $this->current_selection);
@@ -330,7 +321,7 @@ class ScheduledPayments
 
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->rstart_date_filter);
+                $d = new DateTime($this->filters->rstart_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
@@ -338,7 +329,7 @@ class ScheduledPayments
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->rend_date_filter);
+                $d = new DateTime($this->filters->rend_date_filter);
                 $select->where->lessThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
@@ -454,11 +445,11 @@ class ScheduledPayments
     /**
      * Remove specified scheduled payments
      *
-     * @param integer|array<int> $ids         Scheduled payments identifiers to delete
-     * @param History            $hist        History
-     * @param boolean            $transaction True to begin a database transaction
+     * @param int|array<int> $ids         Scheduled payments identifiers to delete
+     * @param History        $hist        History
+     * @param bool           $transaction True to begin a database transaction
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {

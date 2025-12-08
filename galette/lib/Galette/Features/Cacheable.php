@@ -24,8 +24,18 @@ declare(strict_types=1);
 namespace Galette\Features;
 
 use Analog\Analog;
+use DateInterval;
+use Safe\DateTime;
 use Galette\Core\Galette;
+use RuntimeException;
 use Throwable;
+
+use function Safe\fclose;
+use function Safe\file_get_contents;
+use function Safe\filemtime;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\mkdir;
 
 /**
  * Cacheable objects trait
@@ -42,7 +52,7 @@ trait Cacheable
     /**
      * Handle cache
      *
-     * @param boolean $nocache Do not try to cache
+     * @param bool $nocache Do not try to cache
      *
      * @return void
      */
@@ -60,7 +70,7 @@ trait Cacheable
     /**
      * Check if cache is valid
      *
-     * @return boolean
+     * @return bool
      */
     private function checkCache(): bool
     {
@@ -68,7 +78,7 @@ trait Cacheable
         if (file_exists($cfile)) {
             try {
                 $dformat = 'Y-m-d H:i:s';
-                $mdate = \DateTime::createFromFormat(
+                $mdate = DateTime::createFromFormat(
                     $dformat,
                     date(
                         $dformat,
@@ -76,12 +86,12 @@ trait Cacheable
                     )
                 );
                 $expire = $mdate->add(
-                    new \DateInterval('PT' . $this->cache_timeout . 'H')
+                    new DateInterval('PT' . $this->cache_timeout . 'H')
                 );
-                $now = new \DateTime();
+                $now = new DateTime();
                 $has_expired = $now > $expire;
                 return !$has_expired;
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 Analog::log(
                     'Unable check cache expiry. Are you sure you have '
                     . 'properly configured PHP timezone settings on your server?',
@@ -121,7 +131,7 @@ trait Cacheable
         }
         $this->prepareForCache();
         $cfile = $this->getCacheFilename();
-        $cdir = dirname($cfile);
+        $cdir = dirname((string) $cfile);
         if (!file_exists($cdir)) {
             mkdir($cdir, 0o755, true);
         }
@@ -140,7 +150,7 @@ trait Cacheable
      */
     protected function getDataTocache(): string
     {
-        throw new \RuntimeException('Method not implemented');
+        throw new RuntimeException('Method not implemented');
     }
 
     /**

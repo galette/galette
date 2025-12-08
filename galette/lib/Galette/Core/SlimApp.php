@@ -38,7 +38,7 @@ use Slim\App;
 class SlimApp
 {
     /** @var App<TContainerInterface> */
-    private App $app;
+    private readonly App $app;
 
     /**
      * Create a new Slim application
@@ -57,8 +57,7 @@ class SlimApp
                 ]
             ],
             'mode'              => GALETTE_MODE,
-            'galette.mode'      => GALETTE_MODE,
-            'session'           => \DI\autowire('\RKA\Session')
+            'galette.mode'      => GALETTE_MODE
         ]);
         $container = $builder->build();
 
@@ -72,6 +71,6 @@ class SlimApp
      */
     public function getApp(): App
     {
-        return $this->app; //@phpstan-ignore-line
+        return $this->app;
     }
 }

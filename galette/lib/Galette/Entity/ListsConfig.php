@@ -29,6 +29,8 @@ use Analog\Analog;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
 
+use function Safe\preg_replace;
+
 /**
  * Lists config class for galette:
  * defines fields order and visibility
@@ -246,7 +248,7 @@ class ListsConfig extends FieldsConfig
      *
      * @param array<int,array<string,mixed>> $fields categorized fields array
      *
-     * @return boolean
+     * @return bool
      */
     public function setListFields(array $fields): bool
     {
@@ -257,7 +259,7 @@ class ListsConfig extends FieldsConfig
     /**
      * Store list config in database
      *
-     * @return boolean
+     * @return bool
      */
     private function storeList(): bool
     {
@@ -285,7 +287,6 @@ class ListsConfig extends FieldsConfig
             );
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
-            $params = null;
 
             foreach ($this->listed_fields as $pos => $field) {
                 $params = [
@@ -345,7 +346,7 @@ class ListsConfig extends FieldsConfig
      *
      * @param string $field The requested field
      *
-     * @return integer
+     * @return int
      */
     public function getVisibility(string $field): int
     {

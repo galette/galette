@@ -99,7 +99,8 @@ foreach ($directories as $directory) {
     mkdir(GALETTE_DATA_PATH . $directory);
 }
 
-$logfile = 'galette_tests';
+//TODO: maybe is there a better way to do
+$logfile = 'galette_tests'; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used in galette.inc.php
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 
 //disabled news and disabled plugins
@@ -130,9 +131,11 @@ if (!defined('_CURRENT_THEME_PATH')) {
 require_once GALETTE_BASE_PATH . 'includes/main.inc.php';
 //Globals... :(
 global $preferences, $emitter, $zdb;
-$zdb = $container->get('zdb');
-$preferences = $container->get('preferences');
+//phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
+$zdb = $container->get(\Galette\Core\Db::class);
+$preferences = $container->get(\Galette\Core\Preferences::class);
 $emitter = $container->get('event_manager');
+//phpcs:enable
 $i18n->changeLanguage('en_US');
 
 if (
@@ -141,7 +144,7 @@ if (
 ) {
     //do not initialize Tiles on update nor fail tests
     $titles = new \Galette\Repository\Titles($zdb);
-    $res = $titles->installInit();
+    $titles->installInit();
 
     $fc = $container->get(\Galette\Entity\FieldsConfig::class);
     $categorized_fields = $fc->getCategorizedFields();

@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
-use DateTime;
+use Safe\DateTime;
 use Galette\Helpers\EntityHelper;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\IsNull;
@@ -46,7 +46,6 @@ class ScheduledPayment
 
     public const TABLE = 'payments_schedules';
     public const PK = 'id_schedule';
-    private Db $zdb;
     private int $id;
     private Contribution $contribution;
     private PaymentType $payment_type;
@@ -64,9 +63,10 @@ class ScheduledPayment
      * @param Db                                      $zdb  Database instance
      * @param ArrayObject<string,int|string>|int|null $args Arguments
      */
-    public function __construct(Db $zdb, ArrayObject|int|null $args = null)
-    {
-        $this->zdb = $zdb;
+    public function __construct(
+        private Db $zdb,
+        ArrayObject|int|null $args = null
+    ) {
         $now = new DateTime();
         $this->creation_date = $now->format('Y-m-d');
         $this->scheduled_date = $now->format('Y-m-d');
@@ -83,7 +83,7 @@ class ScheduledPayment
     /**
      * Load a scheduled payment from its identifier
      *
-     * @param integer $id Identifier
+     * @param int $id Identifier
      *
      * @return bool
      */
@@ -138,7 +138,7 @@ class ScheduledPayment
      *
      * @param array<string,mixed> $data Data
      *
-     * @return boolean
+     * @return bool
      */
     public function check(array $data): bool
     {
@@ -203,7 +203,7 @@ class ScheduledPayment
     /**
      * Store scheduled payment in database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -235,7 +235,7 @@ class ScheduledPayment
             return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing shceduled payment: ' . $e->getMessage()
+                'An error occurred storing scheduled payment: ' . $e->getMessage()
                 . "\n" . print_r($data, true),
                 Analog::ERROR
             );
@@ -246,7 +246,7 @@ class ScheduledPayment
     /**
      * Remove current
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(): bool
     {
@@ -463,7 +463,7 @@ class ScheduledPayment
     /**
      * Is payment due?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDue(): bool
     {
@@ -589,12 +589,12 @@ class ScheduledPayment
             new PredicateSet(
                 [
                     new Operator(
-                        /** @phpstan-ignore-next-line  */
+                        // @phpstan-ignore argument.type (laminas docs -_-)
                         new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'),
                         '<',
                         new \Laminas\Db\Sql\Predicate\Expression('c.montant_cotis')
                     ),
-                    /** @phpstan-ignore-next-line  */
+                    // @phpstan-ignore argument.type (laminas docs -_-)
                     new IsNull(new \Laminas\Db\Sql\Predicate\Expression('SUM(s.amount)'))
                 ],
                 PredicateSet::OP_OR

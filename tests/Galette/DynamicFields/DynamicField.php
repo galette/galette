@@ -173,8 +173,8 @@ class DynamicField extends TestCase
     /**
      * Test getPermissionName
      *
-     * @param integer $perm Permission
-     * @param string  $name Name
+     * @param int    $perm Permission
+     * @param string $name Name
      *
      * @dataProvider permsProvider
      *

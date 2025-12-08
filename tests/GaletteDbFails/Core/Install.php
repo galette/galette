@@ -34,7 +34,7 @@ class Install extends TestCase
 {
     private \Galette\Core\Db $zdb;
     /** @var array<string> */
-    private array $flash_data;
+    protected array $flash_data;
     private \Slim\Flash\Messages $flash;
     private \DI\Container $container;
 
@@ -53,17 +53,16 @@ class Install extends TestCase
 
         $gapp =  new \Galette\Core\SlimApp();
         $app = $gapp->getApp();
-        $plugins = new \Galette\Core\Plugins();
+        $plugins = new \Galette\Core\Plugins(); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- global
         require GALETTE_BASE_PATH . '/includes/dependencies.php';
         $container = $app->getContainer();
         $_SERVER['HTTP_HOST'] = '';
 
-        $container->set('flash', $this->flash);
-        $container->set(Slim\Flash\Messages::class, $this->flash);
+        $container->set(\Slim\Flash\Messages::class, $this->flash);
 
         $this->container = $container;
 
-        $this->zdb = $container->get('zdb');
+        $this->zdb = $container->get(\Galette\Core\Db::class);
     }
 
     /**

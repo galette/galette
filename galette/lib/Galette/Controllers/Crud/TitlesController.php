@@ -72,10 +72,10 @@ class TitlesController extends CrudController
     /**
      * Titles list page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
@@ -117,7 +117,7 @@ class TitlesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Title id
+     * @param int      $id       Title id
      *
      * @return Response
      */
@@ -144,7 +144,7 @@ class TitlesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Title id
+     * @param int      $id       Title id
      *
      * @return Response
      */
@@ -158,7 +158,7 @@ class TitlesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Title id
+     * @param ?int     $id       Title id
      *
      * @return Response
      */
@@ -167,12 +167,14 @@ class TitlesController extends CrudController
         $post = $request->getParsedBody();
 
         if (isset($post['cancel'])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
+            return $this->redirect(
+                response: $response,
+                redirect_url: $this->cancelUri($this->getArgs($request))
+            );
         }
 
         $error_detected = [];
+        $success_detected = [];
         $msg = null;
 
         $title = new Title($id);
@@ -190,12 +192,12 @@ class TitlesController extends CrudController
             if ($id === null) {
                 $error_detected[] = sprintf(
                     _T('Title \'%1$s\' has not been added!'),
-                    $title->short ?? '',
+                    $title->short,
                 );
             } else {
                 $error_detected[] = sprintf(
                     _T('Title \'%1$s\' has not been modified!'),
-                    $title->short ?? '',
+                    $title->short,
                 );
 
                 $redirect_uri = $this->routeparser->urlFor('editTitle', ['id' => (string)$id]);
@@ -212,23 +214,16 @@ class TitlesController extends CrudController
             );
         }
 
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                $msg
-            );
+        if (count($error_detected) === 0) {
+            $success_detected[] = $msg;
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_uri);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_uri,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
     // /CRUD - Update
@@ -283,7 +278,7 @@ class TitlesController extends CrudController
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

@@ -100,18 +100,14 @@ abstract class DynamicField
     /** @var array<string> */
     protected array $errors = [];
 
-    protected Db $zdb;
-
     /**
      * Default constructor
      *
      * @param Db    $zdb  Database instance
      * @param mixed $args Arguments
      */
-    public function __construct(Db $zdb, mixed $args = null)
+    public function __construct(protected Db $zdb, mixed $args = null)
     {
-        $this->zdb = $zdb;
-
         if (is_int($args)) {
             $this->load($args);
         } elseif (is_object($args)) {
@@ -179,7 +175,7 @@ abstract class DynamicField
     /**
      * Load field
      *
-     * @param integer $id Id
+     * @param int $id Id
      *
      * @return void
      */
@@ -247,8 +243,8 @@ abstract class DynamicField
     /**
      * Retrieve fixed values table name
      *
-     * @param integer $id       Field ID
-     * @param bool    $prefixed Whether table name should be prefixed
+     * @param int  $id       Field ID
+     * @param bool $prefixed Whether table name should be prefixed
      *
      * @return string
      */
@@ -297,7 +293,7 @@ abstract class DynamicField
     /**
      * Get field type
      *
-     * @return integer
+     * @return int
      */
     abstract public function getType(): int;
 
@@ -308,7 +304,7 @@ abstract class DynamicField
      */
     public function getTypeName(): string
     {
-        $types = $this->getFieldsTypesNames();
+        $types = static::getFieldsTypesNames();
         if (isset($types[$this->getType()])) {
             return $types[$this->getType()];
         } else {
@@ -401,7 +397,7 @@ abstract class DynamicField
     /**
      * Get field id
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -421,7 +417,7 @@ abstract class DynamicField
     /**
      * Get field's width in forms
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getWidthInForms(): ?int
     {
@@ -431,7 +427,7 @@ abstract class DynamicField
     /**
      * Get field width
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getWidth(): ?int
     {
@@ -441,7 +437,7 @@ abstract class DynamicField
     /**
      * Get field height
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getHeight(): ?int
     {
@@ -461,7 +457,7 @@ abstract class DynamicField
     /**
      * Get fields repetitions
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getRepeat(): ?int
     {
@@ -471,7 +467,7 @@ abstract class DynamicField
     /**
      * Get field min size
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getMinSize(): ?int
     {
@@ -481,7 +477,7 @@ abstract class DynamicField
     /**
      * Get field size
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getSize(): ?int
     {
@@ -491,7 +487,7 @@ abstract class DynamicField
     /**
      * Get field index
      *
-     * @return integer|null
+     * @return int|null
      */
     public function getIndex(): ?int
     {
@@ -679,7 +675,7 @@ abstract class DynamicField
             }
         }
 
-        if (isset($values['field_information']) && trim($values['field_information']) != '') {
+        if (isset($values['field_information']) && trim((string) $values['field_information']) != '') {
             global $preferences;
             $this->information = $preferences->cleanHtmlValue($values['field_information']);
         }
@@ -688,7 +684,7 @@ abstract class DynamicField
 
         if ($this->hasFixedValues() && isset($values['fixed_values'])) {
             $fixed_values = [];
-            foreach (explode("\n", $values['fixed_values']) as $val) {
+            foreach (explode("\n", (string) $values['fixed_values']) as $val) {
                 $val = trim($val);
                 $len = mb_strlen($val);
                 if ($len > 0) {
@@ -738,7 +734,7 @@ abstract class DynamicField
 
         try {
             $values = [
-                'field_name'              => strip_tags($this->name),
+                'field_name'              => strip_tags((string) $this->name),
                 'field_perm'              => $this->permission,
                 'field_required'          => $this->required,
                 'field_width_in_forms'    => $this->width_in_forms,
@@ -854,7 +850,7 @@ abstract class DynamicField
     /**
      * Get new index
      *
-     * @return integer
+     * @return int
      */
     protected function getNewIndex(): int
     {

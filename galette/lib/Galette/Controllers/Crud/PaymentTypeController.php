@@ -72,10 +72,10 @@ class PaymentTypeController extends CrudController
     /**
      * List page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
@@ -122,7 +122,7 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Type id
+     * @param int      $id       Type id
      *
      * @return Response
      */
@@ -150,7 +150,7 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Type id
+     * @param int      $id       Type id
      *
      * @return Response
      */
@@ -164,7 +164,7 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Type id
+     * @param ?int     $id       Type id
      *
      * @return Response
      */
@@ -179,6 +179,7 @@ class PaymentTypeController extends CrudController
         }
 
         $error_detected = [];
+        $success_detected = [];
         $msg = null;
 
         $ptype = new PaymentType($this->zdb, $id);
@@ -218,34 +219,19 @@ class PaymentTypeController extends CrudController
         }
 
         $warning_detected = $ptype->getWarnings();
-        if (count($warning_detected)) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage(
-                    'warning_detected',
-                    $warning
-                );
-            }
+
+        if (count($error_detected) === 0) {
+            $success_detected[] = $msg;
         }
 
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                $msg
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_uri);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_uri,
+            successes: $success_detected,
+            warnings: $warning_detected,
+            errors: $error_detected
+        );
     }
-
 
     // /CRUD - Update
     // CRUD - Delete
@@ -299,7 +285,7 @@ class PaymentTypeController extends CrudController
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

@@ -32,6 +32,8 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
 
+use function Safe\preg_match;
+
 /**
  * Fields config class for galette :
  * defines fields visibility for lists and forms
@@ -42,14 +44,6 @@ use Galette\Core\Authentication;
 class FieldsConfig
 {
     use Permissions;
-
-    public const NOBODY = 0;
-    public const USER_WRITE = 1;
-    public const ADMIN = 2;
-    public const STAFF = 3;
-    public const MANAGER = 4;
-    public const USER_READ = 5;
-    public const ALL = 10;
 
     public const TYPE_STR = 0;
     public const TYPE_HIDDEN = 1;
@@ -63,8 +57,6 @@ class FieldsConfig
     public const TYPE_URL = 9;
     public const TYPE_RADIO = 10;
     public const TYPE_SELECT = 11;
-
-    protected Db $zdb;
     /** @var array<string, array<string, mixed>> */
     protected array $core_db_fields = [];
     /** @var array<string, bool> */
@@ -73,11 +65,6 @@ class FieldsConfig
     protected array $all_visibles = [];
     /** @var array<int, array<int, array<string, mixed>>> */
     protected array $categorized_fields = [];
-    protected string $table;
-    /** @var array<string, mixed>|null  */
-    protected ?array $defaults = null;
-    /** @var array<string, mixed>|null */
-    protected ?array $cats_defaults = null;
 
     /** @var array<string> */
     private array $staff_fields = [
@@ -139,14 +126,15 @@ class FieldsConfig
      * @param string               $table         the table for which to get fields configuration
      * @param array<string, mixed> $defaults      default values
      * @param array<string, mixed> $cats_defaults default categories values
-     * @param boolean              $install       Are we calling from installer?
+     * @param bool                 $install       Are we calling from installer?
      */
-    public function __construct(Db $zdb, string $table, array $defaults, array $cats_defaults, bool $install = false)
-    {
-        $this->zdb = $zdb;
-        $this->table = $table;
-        $this->defaults = $defaults;
-        $this->cats_defaults = $cats_defaults;
+    public function __construct(
+        protected Db $zdb,
+        protected string $table,
+        protected array $defaults,
+        protected array $cats_defaults,
+        bool $install = false
+    ) {
         //prevent check at install time...
         if (!$install) {
             $this->load();
@@ -157,7 +145,7 @@ class FieldsConfig
     /**
      * Load current fields configuration from database.
      *
-     * @return boolean
+     * @return bool
      */
     public function load(): bool
     {
@@ -271,7 +259,7 @@ class FieldsConfig
      *
      * @param string $field Field name
      *
-     * @return boolean
+     * @return bool
      */
     public function isRequired(string $field): bool
     {
@@ -384,7 +372,7 @@ class FieldsConfig
      * Set default fields configuration at install time. All previous
      * existing values will be dropped first, including fields categories.
      *
-     * @return boolean
+     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -447,9 +435,9 @@ class FieldsConfig
     /**
      * Retrieve form elements
      *
-     * @param Login   $login Login instance
-     * @param boolean $new   True when adding a new member
-     * @param boolean $selfs True if we're called from self subscription page
+     * @param Login $login Login instance
+     * @param bool  $new   True when adding a new member
+     * @param bool  $selfs True if we're called from self subscription page
      *
      * @return array<string, array<int,object>>
      */
@@ -535,9 +523,9 @@ class FieldsConfig
                             continue;
                         }
 
-                        if (preg_match('/date/', $o->field_id)) {
+                        if (preg_match('/date/', (string) $o->field_id)) {
                             $o->type = self::TYPE_DATE;
-                        } elseif (preg_match('/bool/', $o->field_id)) {
+                        } elseif (preg_match('/bool/', (string) $o->field_id)) {
                             $o->type = self::TYPE_BOOL;
                         } elseif (
                             $o->field_id == 'titre_adh'
@@ -727,7 +715,7 @@ class FieldsConfig
      *
      * @param string $field The requested field
      *
-     * @return integer
+     * @return int
      */
     public function getVisibility(string $field): int
     {
@@ -749,7 +737,7 @@ class FieldsConfig
      *
      * @param array<int, array<int, array<string, mixed>>> $fields categorized fields array
      *
-     * @return boolean
+     * @return bool
      */
     public function setFields(array $fields): bool
     {
@@ -760,7 +748,7 @@ class FieldsConfig
     /**
      * Store config in database
      *
-     * @return boolean
+     * @return bool
      */
     private function store(): bool
     {
@@ -842,7 +830,7 @@ class FieldsConfig
      * Only needed for 0.7.4 upgrade
      * (should have been 0.7.3 - but I missed that.)
      *
-     * @return boolean
+     * @return bool
      */
     public function migrateRequired(): bool
     {
@@ -851,7 +839,7 @@ class FieldsConfig
             $select->from(PREFIX_DB . 'required');
 
             $old_required = $this->zdb->execute($select);
-        } catch (\Exception $pe) {
+        } catch (\Exception) {
             Analog::log(
                 'Unable to retrieve required fields_config. Maybe '
                 . 'the table does not exists?',
@@ -972,7 +960,7 @@ class FieldsConfig
      *
      * @param string $name Field name
      *
-     * @return boolean
+     * @return bool
      */
     public function isSelfExcluded(string $name): bool
     {
@@ -1003,12 +991,12 @@ class FieldsConfig
 
         foreach (array_keys($fields) as $k) {
             if (
-                $visibles[$k] == FieldsConfig::NOBODY
-                || ($visibles[$k] == FieldsConfig::ADMIN
+                $visibles[$k] == self::NOBODY
+                || ($visibles[$k] == self::ADMIN
                     && $access_level < Authentication::ACCESS_ADMIN)
-                || ($visibles[$k] == FieldsConfig::STAFF
+                || ($visibles[$k] == self::STAFF
                     && $access_level < Authentication::ACCESS_STAFF)
-                || ($visibles[$k] == FieldsConfig::MANAGER
+                || ($visibles[$k] == self::MANAGER
                     && $access_level < Authentication::ACCESS_MANAGER)
             ) {
                 unset($fields[$k]);
@@ -1018,7 +1006,7 @@ class FieldsConfig
 
     /**
      * Get fields for massive changes
-     * @see FieldsConfig::getFormElements
+     * @see self::getFormElements
      *
      * @param array<string,mixed> $fields Member fields
      * @param Login               $login  Login instance

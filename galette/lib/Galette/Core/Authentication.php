@@ -33,7 +33,7 @@ use Galette\Entity\Group;
  * @property  ?string $login
  * @property  ?string $name
  * @property  ?string $surname
- * @property  ?integer $id
+ * @property  ?int $id
  * @property  string $lang
  * @property  array<int, Group|int> $managed_groups
  */
@@ -49,7 +49,7 @@ abstract class Authentication
 
     protected string $login;
     protected string $name;
-    protected ?string $surname;
+    protected ?string $surname = null;
     protected bool $admin = false;
     protected int $id;
     protected string $lang;
@@ -68,7 +68,7 @@ abstract class Authentication
      * @param string $user  user's login
      * @param string $passe user's password
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function logIn(string $user, string $passe): bool;
 
@@ -77,7 +77,7 @@ abstract class Authentication
      *
      * @param string $user the username
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function loginExists(string $user): bool;
 
@@ -87,7 +87,7 @@ abstract class Authentication
      * @param string      $login       name
      * @param Preferences $preferences Preferences instance
      *
-     * @return boolean
+     * @return bool
      */
     public function logAdmin(string $login, Preferences $preferences): bool
     {
@@ -202,7 +202,7 @@ abstract class Authentication
      *
      * @param array<int>|int $id_group Group(s) identifier(s)
      *
-     * @return boolean
+     * @return bool
      */
     public function isGroupManager(array|int|null $id_group = null): bool
     {
@@ -271,7 +271,7 @@ abstract class Authentication
     /**
      * Display logged in member name
      *
-     * @param boolean $only_name If we want only the name without any additional text
+     * @param bool $only_name If we want only the name without any additional text
      *
      * @return string
      */
@@ -338,7 +338,7 @@ abstract class Authentication
     /**
      * get user access level
      *
-     * @return integer
+     * @return int
      */
     public function getAccessLevel(): int
     {

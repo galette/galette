@@ -26,6 +26,10 @@ namespace Galette\Core;
 use Exception;
 use Analog\Analog;
 use Galette\Common\ClassLoader;
+use Safe\Exceptions\FilesystemException;
+
+use function Safe\file_put_contents;
+use function Safe\realpath;
 
 /**
  * Plugins class for galette
@@ -48,8 +52,8 @@ class Plugins
     /** @var array<string> */
     protected array $csrf_exclusions = [];
 
-    protected ?string $id;
-    protected ?string $mroot;
+    protected ?string $id = null;
+    protected ?string $mroot = null;
 
     protected Preferences $preferences;
     protected bool $autoload = false;
@@ -85,7 +89,7 @@ class Plugins
                 $root .= '/';
             }
 
-            if (($d = @dir($root)) === false) {
+            if (($d = @dir($root)) === false) { //@phpstan-ignore theCodingMachineSafe.function
                 continue;
             }
 
@@ -119,11 +123,11 @@ class Plugins
                             //set autoloader to PluginName.
                             if (isset($this->modules[$entry]) && file_exists($full_entry . '/lib')) {
                                 $varname = $entry . 'Loader';
-                                $$varname = new ClassLoader(
+                                ${$varname} = new ClassLoader(
                                     $this->getNamespace($entry),
                                     $full_entry . '/lib'
                                 );
-                                $$varname->register();
+                                ${$varname}->register();
                             }
                         }
                     }
@@ -183,7 +187,7 @@ class Plugins
      * @param ?string               $route    Module route name
      * @param ?string               $date     Module release date
      * @param ?array<string,string> $acls     Module routes ACLs
-     * @param ?integer              $priority Module priority
+     * @param ?int                  $priority Module priority
      *
      * @return void
      */
@@ -271,8 +275,10 @@ class Plugins
      */
     protected function createDisabledFile(string $id): void
     {
-        if (@file_put_contents($this->getDisabledPath($id), '') === false) {
-            throw new Exception("Cannot create disabled file for plugin " . $id);
+        try {
+            file_put_contents($this->getDisabledPath($id), '');
+        } catch (FilesystemException $e) {
+            throw new Exception("Cannot create disabled file for plugin " . $id, 0, $e);
         }
     }
 
@@ -288,7 +294,7 @@ class Plugins
     {
         $legacy_file = $this->disabled[$id]['root'] . '/_disabled';
         //try to remove the old file
-        if (file_exists($legacy_file) && @unlink($legacy_file) === false) {
+        if (file_exists($legacy_file) && @unlink($legacy_file) === false) { //@phpstan-ignore theCodingMachineSafe.function
             Analog::log(
                 sprintf(
                     'Plugin %1$s was disabled from its own directory, that is deprecated. Migration has been done, please remove the file %2$s manually.',
@@ -300,7 +306,7 @@ class Plugins
             throw new Exception("Cannot unlink legacy disabled file for plugin " . $id);
         }
 
-        if (file_exists($this->getDisabledPath($id)) && @unlink($this->getDisabledPath($id)) === false) {
+        if (file_exists($this->getDisabledPath($id)) && @unlink($this->getDisabledPath($id)) === false) { //@phpstan-ignore theCodingMachineSafe.function
             throw new Exception("Cannot unlink disabled file for plugin " . $id);
         }
     }
@@ -407,7 +413,7 @@ class Plugins
      *
      * @param string $id Module ID
      *
-     * @return boolean
+     * @return bool
      */
     public function moduleExists(string $id): bool
     {
@@ -468,7 +474,7 @@ class Plugins
     private function sortModules(array $a, array $b): int
     {
         if ($a['priority'] == $b['priority']) {
-            return strcasecmp($a['name'], $b['name']);
+            return strcasecmp((string) $a['name'], (string) $b['name']);
         }
 
         return ($a['priority'] < $b['priority']) ? -1 : 1;
@@ -543,7 +549,7 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return boolean
+     * @return bool
      */
     public function needsDatabase(string $id): bool
     {
@@ -618,7 +624,7 @@ class Plugins
     /**
      * Set a module as disabled
      *
-     * @param integer $cause Cause (one of Plugins::DISABLED_* constants)
+     * @param int $cause Cause (one of Plugins::DISABLED_* constants)
      *
      * @return void
      */
@@ -647,14 +653,14 @@ class Plugins
     /**
      * Get module class name
      *
-     * @param string  $id   Module ID
-     * @param boolean $full Include namespace, defaults to false
+     * @param string $id   Module ID
+     * @param bool   $full Include namespace, defaults to false
      *
      * @return string
      */
     public function getClassName(string $id, bool $full = false): string
     {
-        $class = sprintf('PluginGalette%1$s', ucfirst($this->modules[$id]['route']));
+        $class = sprintf('PluginGalette%1$s', ucfirst((string) $this->modules[$id]['route']));
         if ($full === true) {
             return sprintf('%s\%s', $this->getNamespace($id), $class);
         }
@@ -702,7 +708,7 @@ class Plugins
                 //disable module the new way
                 $this->createDisabledFile($this->id);
                 //try to remove the old file
-                if (@unlink($legacy_file) === false) {
+                if (@unlink($legacy_file) === false) { //@phpstan-ignore theCodingMachineSafe.function
                     Analog::log(
                         sprintf(
                             'Plugin %1$s was disabled from its own directory, that is deprecated. Migration has been done, please remove the file %2$s manually.',
@@ -712,7 +718,7 @@ class Plugins
                         Analog::WARNING
                     );
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 //emtpy catch
             }
 

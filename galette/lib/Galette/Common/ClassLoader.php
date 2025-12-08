@@ -48,6 +48,9 @@ declare(strict_types=1);
 
 namespace Galette\Common;
 
+use function Safe\spl_autoload_register;
+use function Safe\spl_autoload_unregister;
+
 /**
  * A <code>ClassLoader</code> is an autoloader for class files that can be
  * installed on the SPL autoload stack. It is a class loader that either loads only classes
@@ -72,11 +75,6 @@ class ClassLoader
     protected string $fileExtension = '.php';
 
     /**
-     * @var ?string Current namespace
-     */
-    protected ?string $namespace;
-
-    /**
      * @var ?string Current include path
      */
     protected ?string $includePath;
@@ -94,16 +92,14 @@ class ClassLoader
      * If neither a namespace nor an include path is given, the ClassLoader will
      * be responsible for loading all classes, thereby relying on the PHP include_path.
      *
-     * @param ?string $ns          The namespace of the classes to load.
+     * @param ?string $namespace   The namespace of the classes to load.
      * @param ?string $includePath The base include path to use.
      */
-    public function __construct(?string $ns = null, ?string $includePath = null)
+    public function __construct(protected ?string $namespace = null, ?string $includePath = null)
     {
         if (!file_exists($includePath)) {
             throw new \RuntimeException('Include path "' . $includePath . '" doesn\'t exists');
         }
-
-        $this->namespace = $ns;
         $this->includePath = $includePath;
     }
 
@@ -192,7 +188,7 @@ class ClassLoader
      */
     public function unregister(): void
     {
-        spl_autoload_unregister([$this, 'loadClass']);
+        spl_autoload_unregister($this->loadClass(...));
     }
 
     /**
@@ -200,7 +196,7 @@ class ClassLoader
      *
      * @param string $className The name of the class to load.
      *
-     * @return boolean TRUE if the class has been successfully loaded, FALSE otherwise.
+     * @return bool TRUE if the class has been successfully loaded, FALSE otherwise.
      */
     public function loadClass(string $className): bool
     {
@@ -233,7 +229,7 @@ class ClassLoader
      * the given name.
      *
      * @param string $className The fully-qualified name of the class.
-     * @return boolean TRUE if this ClassLoader can load the class, FALSE otherwise.
+     * @return bool TRUE if this ClassLoader can load the class, FALSE otherwise.
      */
     public function canLoadClass(string $className): bool
     {
@@ -247,7 +243,7 @@ class ClassLoader
             return file_exists($this->includePath . DIRECTORY_SEPARATOR . $file);
         }
 
-        return false !== stream_resolve_include_path($file);
+        return false !== stream_resolve_include_path($file); //@phpstan-ignore-line theCodingMachineSafe.function
     }
 
     /**
@@ -269,7 +265,7 @@ class ClassLoader
      * these responsibilities.
      *
      * @param string $className The fully-qualified name of the class.
-     * @return boolean TRUE if the class exists as per the definition given above, FALSE otherwise.
+     * @return bool TRUE if the class exists as per the definition given above, FALSE otherwise.
      */
     public static function classExists(string $className): bool
     {

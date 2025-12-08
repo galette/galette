@@ -23,11 +23,14 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use DateTime;
+use DateInterval;
+use Safe\DateTime;
 use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
+
+use function Safe\base64_decode;
 
 /**
  * Temporary links for galette, to send direct links to invoices, receipts,
@@ -45,17 +48,14 @@ class Links
     public const TARGET_INVOICE    = 2;
     public const TARGET_RECEIPT    = 3;
 
-    private Db $zdb;
-
     /**
      * Default constructor
      *
-     * @param Db      $zdb   Database instance:
-     * @param boolean $clean Whether we should clean expired links in database
+     * @param Db   $zdb   Database instance:
+     * @param bool $clean Whether we should clean expired links in database
      */
-    public function __construct(Db $zdb, bool $clean = true)
+    public function __construct(private readonly Db $zdb, bool $clean = true)
     {
-        $this->zdb = $zdb;
         if ($clean === true) {
             $this->cleanExpired();
         }
@@ -67,7 +67,7 @@ class Links
      * @param int $target Target (one of self::TARGET_* constants)
      * @param int $id     Target identifier
      *
-     * @return boolean
+     * @return bool
      */
     private function removeOldEntry(int $target, int $id): bool
     {
@@ -127,7 +127,7 @@ class Links
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $code = $result->email_adh;
-            $hash = password_hash($code, PASSWORD_BCRYPT);
+            $hash = password_hash((string) $code, PASSWORD_BCRYPT);
 
             $values = [
                 'target'        => $target,
@@ -163,14 +163,14 @@ class Links
     private function getExpirationDate(): DateTime
     {
         $date = new DateTime();
-        $date->sub(new \DateInterval('P1W'));
+        $date->sub(new DateInterval('P1W'));
         return $date;
     }
 
     /**
      * Remove expired links queries (older than 1 week)
      *
-     * @return boolean
+     * @return bool
      */
     protected function cleanExpired(): bool
     {
@@ -222,7 +222,7 @@ class Links
 
             if ($results->count() > 0) {
                 $result = $results->current();
-                if (password_verify($code, $result->hash)) {
+                if (password_verify($code, (string) $result->hash)) {
                     return [(int)$result->target, (int)$result->id];
                 }
             }

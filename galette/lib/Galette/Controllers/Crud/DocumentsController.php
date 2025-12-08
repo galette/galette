@@ -33,6 +33,11 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
 
+use function Safe\file_get_contents;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\rewind;
+
 /**
  * Galette documents controller
  *
@@ -91,78 +96,8 @@ class DocumentsController extends CrudController
      */
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
-        $post = $request->getParsedBody();
-
-        $error_detected = [];
-        $warning_detected = [];
-
-        if (isset($post['cancel'])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
-        }
-
         $document = new Document($this->zdb);
-
-        try {
-            $document->store($post, $request->getUploadedFiles());
-            $error_detected = $document->getErrors();
-            $warning_detected = $document->getWarnings();
-        } catch (Throwable $e) {
-            $msg = 'An error occurred adding new document.';
-            Analog::log(
-                $msg . ' | '
-                . $e->getMessage(),
-                Analog::ERROR
-            );
-            if (Galette::isDebugEnabled()) {
-                throw $e;
-            }
-            $error_detected[] = _T('An error occurred adding document :(');
-        }
-
-        //flash messages
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                _T('Document has been successfully stored!')
-            );
-        }
-
-        if (count($warning_detected) > 0) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage(
-                    'warning_detected',
-                    $warning
-                );
-            }
-        }
-
-        //handle redirections
-        if (count($error_detected) > 0) {
-            //something went wrong :'(
-            $this->session->document = $document;
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('addDocument')
-                );
-        } else {
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('documentsList')
-                );
-        }
+        return $this->store($request, $response, $document);
     }
 
     // /CRUD - Create
@@ -171,10 +106,10 @@ class DocumentsController extends CrudController
     /**
      * List page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
@@ -212,10 +147,10 @@ class DocumentsController extends CrudController
     /**
      * List page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
@@ -262,7 +197,7 @@ class DocumentsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Document ID
+     * @param int      $id       Document ID
      *
      * @return Response
      */
@@ -274,19 +209,11 @@ class DocumentsController extends CrudController
         $document = new Document($this->zdb, $id);
 
         if (!$document->canShow($this->login)) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
+            return $this->redirectWithErrors(
+                response: $response,
+                redirect_url: $this->routeparser->urlFor('slash'),
+                errors: [_T("You do not have permission for requested URL.")]
             );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor(
-                        'slash'
-                    )
-                );
         }
 
         if (file_exists($document->getDestDir() . $document->getDocumentFilename())) {
@@ -337,7 +264,7 @@ class DocumentsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Document id
+     * @param int      $id       Document id
      *
      * @return Response
      */
@@ -374,24 +301,38 @@ class DocumentsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Document id
+     * @param int      $id       Document id
      *
      * @return Response
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
+        $document = new Document($this->zdb, $id);
+        return $this->store($request, $response, $document);
+    }
+
+    /**
+     * Store a document
+     *
+     * @param Request  $request  PSR request
+     * @param Response $response PSR response
+     * @param Document $document Document to work on
+     *
+     * @return Response
+     */
+    private function store(Request $request, Response $response, Document $document): Response
+    {
         $post = $request->getParsedBody();
 
         $error_detected = [];
         $warning_detected = [];
+        $success_detected = [];
 
         if (isset($post['cancel'])) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
-
-        $document = new Document($this->zdb, $id);
 
         try {
             $document->store($post, $request->getUploadedFiles());
@@ -410,48 +351,22 @@ class DocumentsController extends CrudController
             $error_detected[] = _T('An error occurred adding document :(');
         }
 
-        //flash messages
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                _T('Document has been successfully stored!')
-            );
-        }
-
-        if (count($warning_detected) > 0) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage(
-                    'warning_detected',
-                    $warning
-                );
-            }
-        }
-
         //handle redirections
         if (count($error_detected) > 0) {
             //something went wrong :'(
             $this->session->document = $document;
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('addDocument')
-                );
+            $redirect_url = $this->routeparser->urlFor('addDocument');
         } else {
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('documentsList')
-                );
+            $success_detected[] = _T('Document has been successfully stored!');
+            $redirect_url = $this->routeparser->urlFor('documentsList');
         }
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            successes: $success_detected,
+            warnings: $warning_detected,
+            errors: $error_detected
+        );
     }
 
     // /CRUD - Update
@@ -502,7 +417,7 @@ class DocumentsController extends CrudController
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

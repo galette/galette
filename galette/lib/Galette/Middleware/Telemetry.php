@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Middleware;
 
+use DateInterval;
 use Galette\Core\Db;
 use Galette\Core\Plugins;
 use Galette\Core\Preferences;
@@ -31,7 +32,12 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Analog\Analog;
-use DI\Container;
+use Safe\DateTime;
+
+use function Safe\filemtime;
+use function Safe\fclose;
+use function Safe\fopen;
+use function Safe\fwrite;
 
 /**
  * Galette Slim telemetry middleware
@@ -40,20 +46,16 @@ use DI\Container;
  */
 class Telemetry
 {
-    private Db $zdb;
-    private Preferences $preferences;
-    private Plugins $plugins;
-
     /**
-     * Constructor
-     *
-     * @param Container $container Container instance
+     * @param Db          $zdb         DB instance
+     * @param Preferences $preferences Preferences instance
+     * @param Plugins     $plugins     Plugins instance
      */
-    public function __construct(Container $container)
-    {
-        $this->zdb = $container->get('zdb');
-        $this->preferences = $container->get('preferences');
-        $this->plugins = $container->get('plugins');
+    public function __construct(
+        private readonly Db $zdb,
+        private readonly Preferences $preferences,
+        private readonly Plugins $plugins,
+    ) {
     }
 
     /**
@@ -77,20 +79,20 @@ class Telemetry
         if ($telemetry->isSent()) {
             try {
                 $dformat = 'Y-m-d H:i:s';
-                $mdate = \DateTime::createFromFormat(
+                $mdate = DateTime::createFromFormat(
                     $dformat,
                     $telemetry->getSentDate()
                 );
                 $expire = $mdate->add(
-                    new \DateInterval('P7D')
+                    new DateInterval('P7D')
                 );
-                $now = new \DateTime();
+                $now = new DateTime();
                 $has_expired = $now > $expire;
 
                 if ($has_expired) {
                     $cfile = GALETTE_CACHE_DIR . 'telemetry.cache';
                     if (file_exists($cfile)) {
-                        $mdate = \DateTime::createFromFormat(
+                        $mdate = DateTime::createFromFormat(
                             $dformat,
                             date(
                                 $dformat,
@@ -98,9 +100,9 @@ class Telemetry
                             )
                         );
                         $expire = $mdate->add(
-                            new \DateInterval('P7D')
+                            new DateInterval('P7D')
                         );
-                        $now = new \DateTime();
+                        $now = new DateTime();
                         $has_expired = $now > $expire;
                     }
 
@@ -124,7 +126,7 @@ class Telemetry
                         }
                     }
                 }
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 //empty catch
             }
         }

@@ -21,6 +21,8 @@
 
 declare(strict_types=1);
 
+//TODO: find a better way.
+//phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 $texts_fields = [
     [
         'tref'      => 'sub',

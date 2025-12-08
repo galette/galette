@@ -21,6 +21,8 @@
 
 declare(strict_types=1);
 
+//TODO: find a better way.
+//phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 $core_acls = [
     // Main core rules.
     'impersonate'                       => 'superadmin',

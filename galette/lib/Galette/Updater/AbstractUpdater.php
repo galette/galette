@@ -26,6 +26,13 @@ namespace Galette\Updater;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\Install;
+use Safe\Exceptions\DirException;
+
+use function Safe\filesize;
+use function Safe\fopen;
+use function Safe\fread;
+use function Safe\opendir;
+use function Safe\preg_match;
 
 /**
  * Galette abstract updater script
@@ -80,7 +87,7 @@ abstract class AbstractUpdater
     /**
      * Does upgrade have a SQL script to run
      *
-     * @return boolean
+     * @return bool
      */
     private function hasSql(): bool
     {
@@ -144,7 +151,7 @@ abstract class AbstractUpdater
     /**
      * Update instructions
      *
-     * @return boolean
+     * @return bool
      */
     abstract protected function update(): bool;
 
@@ -152,7 +159,7 @@ abstract class AbstractUpdater
      * Pre stuff, if any.
      * Will be executed first.
      *
-     * @return boolean
+     * @return bool
      */
     protected function preUpdate(): bool
     {
@@ -165,7 +172,7 @@ abstract class AbstractUpdater
      * @param Db      $zdb       Database instance
      * @param Install $installer Installer instance
      *
-     * @return boolean
+     * @return bool
      */
     private function sql(Db $zdb, Install $installer): bool
     {
@@ -187,7 +194,7 @@ abstract class AbstractUpdater
      * Post stuff, if any.
      * Will be executed at the end.
      *
-     * @return boolean
+     * @return bool
      */
     protected function postUpdate(): bool
     {
@@ -199,7 +206,7 @@ abstract class AbstractUpdater
      *
      * @param string $version Version for scripts
      *
-     * @return boolean
+     * @return bool
      */
     protected function setSqlScripts(string $version): bool
     {
@@ -241,16 +248,17 @@ abstract class AbstractUpdater
      */
     private function getSqlScripts(string $version): array
     {
-        $dh = opendir(GALETTE_ROOT . '/install/scripts/sql');
         $scripts = [];
-
-        if ($dh !== false) {
+        try {
+            $dh = opendir(GALETTE_ROOT . '/install/scripts/sql');
             while (($file = readdir($dh)) !== false) {
                 if (preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver) && $ver[1] == $version) {
                     $scripts[$ver[2]] = GALETTE_ROOT . '/install/scripts/sql/' . $file;
                 }
             }
             closedir($dh);
+        } catch (DirException) {
+            //empty catch
         }
 
         return $scripts;
@@ -292,7 +300,7 @@ abstract class AbstractUpdater
     /**
      * Has current update errors?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasErrors(): bool
     {

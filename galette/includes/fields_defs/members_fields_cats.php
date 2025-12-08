@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 use Galette\Entity\Adherent;
 
+//TODO: find a better way.
+//phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 $members_fields_cats = [
     [
         'id'         => 1,

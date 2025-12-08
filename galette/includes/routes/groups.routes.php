@@ -25,14 +25,24 @@ use Galette\Controllers\Crud;
 use Galette\Controllers\PdfController;
 
 $app->get(
-    '/groups[/{id:\d+}]',
+    '/groups',
     [Crud\GroupsController::class, 'list']
 )->setName('groups')->add($authenticate);
+
+$app->post(
+    '/groups/reorder',
+    [Crud\GroupsController::class, 'reorderList']
+)->setName('reorderGroups')->add($authenticate);
 
 $app->get(
     '/group/add/{name}',
     [Crud\GroupsController::class, 'doAdd']
 )->setName('add_group')->add($authenticate);
+
+$app->get(
+    '/group/edit/{id:\d+}',
+    [Crud\GroupsController::class, 'edit']
+)->setName('editGroup')->add($authenticate);
 
 $app->post(
     '/group/edit/{id:\d+}',

@@ -24,21 +24,25 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Safe\DateTime;
 use Galette\Core\Galette;
+use RuntimeException;
 use Throwable;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Analog\Analog;
+
+use function Safe\json_encode;
 
 /**
  * Saved search
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property array<string, mixed> $parameters
- * @property integer $author_id
+ * @property int $author_id
  * @property string $creation_date
  * @property string $form
  */
@@ -48,7 +52,6 @@ class SavedSearch
     public const TABLE = 'searches';
     public const PK = 'search_id';
 
-    private Db $zdb;
     private int $id;
     private string $name;
     /** @var array<string, mixed> */
@@ -57,7 +60,6 @@ class SavedSearch
     private ?string $creation_date;
     private string $form;
 
-    private Login $login;
     /** @var array<string> */
     private array $errors = [];
 
@@ -68,10 +70,11 @@ class SavedSearch
      * @param Login                                   $login Login instance
      * @param ArrayObject<string,int|string>|int|null $args  Arguments
      */
-    public function __construct(Db $zdb, Login $login, ArrayObject|int|null $args = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
+    public function __construct(
+        private readonly Db $zdb,
+        private readonly Login $login,
+        ArrayObject|int|null $args = null
+    ) {
         $this->creation_date = date('Y-m-d H:i:s');
 
         if (is_int($args)) {
@@ -84,7 +87,7 @@ class SavedSearch
     /**
      * Load a saved search from its identifier
      *
-     * @param integer $id Identifier
+     * @param int $id Identifier
      *
      * @return void
      */
@@ -128,7 +131,7 @@ class SavedSearch
         $this->name = $rs->name ?? '';
         try {
             $this->parameters = Galette::jsonDecode($rs->parameters);
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             Analog::log(
                 'Unable to decode parameters for saved search #' . $this->id
                 . ' | ' . $e->getMessage(),
@@ -148,7 +151,7 @@ class SavedSearch
      *
      * @param array<string, mixed> $values Values to set
      *
-     * @return boolean
+     * @return bool
      */
     public function check(array $values): bool
     {
@@ -183,7 +186,7 @@ class SavedSearch
     /**
      * Store saved search in database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -219,7 +222,7 @@ class SavedSearch
     /**
      * Remove current saved search
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(): bool
     {
@@ -234,7 +237,7 @@ class SavedSearch
                 Analog::INFO
             );
             return true;
-        } catch (\RuntimeException $re) {
+        } catch (RuntimeException $re) {
             throw $re;
         } catch (Throwable $e) {
             Analog::log(
@@ -265,7 +268,7 @@ class SavedSearch
                 case 'creation_date':
                     if ($this->$name != '') {
                         try {
-                            $d = new \DateTime($this->$name);
+                            $d = new DateTime($this->$name);
                             return $d->format(__("Y-m-d"));
                         } catch (Throwable $e) {
                             //oops, we've got a bad date :/
@@ -298,7 +301,7 @@ class SavedSearch
             }
         }
 
-        throw new \RuntimeException(
+        throw new RuntimeException(
             sprintf(
                 'Unable to get property "%s::%s"!',
                 static::class,
@@ -324,13 +327,10 @@ class SavedSearch
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
-            switch ($name) {
-                case 'creation_date':
-                case 'sparameters':
-                    return true;
-                default:
-                    return property_exists($this, $name);
-            }
+            return match ($name) {
+                'creation_date', 'sparameters' => true,
+                default => property_exists($this, $name),
+            };
         }
         return false;
     }
@@ -362,7 +362,7 @@ class SavedSearch
                 $this->parameters = $value;
                 break;
             case 'name':
-                if (trim($value) === '') {
+                if (trim((string) $value) === '') {
                     $this->errors[] = _T("Name cannot be empty!");
                 }
                 $this->name = $value;

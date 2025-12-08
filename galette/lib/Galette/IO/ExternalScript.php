@@ -26,6 +26,16 @@ namespace Galette\IO;
 use Analog\Analog;
 use Galette\Core\Preferences;
 
+use function Safe\curl_exec;
+use function Safe\curl_init;
+use function Safe\curl_setopt;
+use function Safe\fclose;
+use function Safe\fwrite;
+use function Safe\json_encode;
+use function Safe\proc_close;
+use function Safe\proc_open;
+use function Safe\stream_get_contents;
+
 /**
  * External script call
  *
@@ -58,17 +68,9 @@ class ExternalScript
 
         switch ($protocol) {
             case 'galette':
-                //FIXME: should probably be changed to use pref_galette_url and Slim routing
-                $this->protocol = 'http';
-                if (isset($_SERVER['HTTPS'])) {
-                    $this->protocol = 'https';
-                }
                 $this->method = 'galette';
-                $selfs = explode('/', $_SERVER['PHP_SELF']);
-                array_pop($selfs);
-                $self = implode('/', $selfs);
-                $uri = $protocol . '://' . $_SERVER['SERVER_NAME'] . $self
-                    . '/' . GALETTE_BASE_PATH . str_replace($protocol . '://', '', $uri);
+                $uri = $pref->getURL() . str_replace($protocol . '://', '/', $uri);
+                $this->protocol = explode('://', $uri)[0];
                 break;
             case 'file':
                 $this->protocol = $protocol;
@@ -124,7 +126,7 @@ class ExternalScript
      *
      * @param array<string,mixed> $params Array of params to send
      *
-     * @return boolean
+     * @return bool
      */
     public function send(array $params): bool
     {

@@ -45,6 +45,8 @@ use Slim\Routing\RouteParser;
 use DI\Attribute\Inject;
 use Slim\Views\Twig;
 
+use function Safe\json_encode;
+
 /**
  * Galette abstract controller
  *
@@ -53,7 +55,6 @@ use Slim\Views\Twig;
 
 abstract class AbstractController
 {
-    private ContainerInterface $container;
     #[Inject]
     protected Db $zdb;
     #[Inject]
@@ -76,7 +77,7 @@ abstract class AbstractController
     protected I18n $i18n;
     #[Inject]
     protected L10n $l10n;
-    #[Inject("session")]
+    #[Inject]
     protected Session $session;
     #[Inject]
     protected Messages $flash;
@@ -105,9 +106,8 @@ abstract class AbstractController
      *
      * @param ContainerInterface $container Container instance
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(private readonly ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     /**
@@ -125,7 +125,7 @@ abstract class AbstractController
         $flashes = $this->flash->getMessages();
         foreach ($flashes as $type => $messages) {
             foreach ($messages as $message) {
-                $this->container->get('flash')->addMessage($type, $message);
+                $this->container->get(Messages::class)->addMessage($type, $message);
             }
         }
 
@@ -236,12 +236,53 @@ abstract class AbstractController
      *
      * @param Response $response     PSR Response
      * @param string[] $errors       Errors to report
-     * @param string   $redirect_uri URI to redirect to
+     * @param string   $redirect_url URL to redirect to
      *
      * @return Response
      */
-    protected function redirectWithErrors(Response $response, array $errors, string $redirect_uri): Response
+    protected function redirectWithErrors(Response $response, array $errors, string $redirect_url): Response
     {
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            errors: $errors
+        );
+    }
+
+    /**
+     * Redirect with errors
+     *
+     * @param Response $response     PSR Response
+     * @param string   $redirect_url URL to redirect to
+     * @param string[] $successes    Successes to report
+     * @param string[] $warnings     Warnings to report
+     * @param string[] $errors       Errors to report
+     *
+     * @return Response
+     */
+    protected function redirect(
+        Response $response,
+        string $redirect_url,
+        array $successes = [],
+        array $warnings = [],
+        array $errors = []
+    ): Response {
+        //report successes
+        foreach ($successes as $success) {
+            $this->flash->addMessage(
+                'success_detected',
+                $success
+            );
+        }
+
+        //report warnings
+        foreach ($warnings as $warning) {
+            $this->flash->addMessage(
+                'warning_detected',
+                $warning
+            );
+        }
+
         //report errors
         foreach ($errors as $error) {
             $this->flash->addMessage(
@@ -253,6 +294,6 @@ abstract class AbstractController
         //redirect to calling action
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $redirect_uri);
+            ->withHeader('Location', $redirect_url);
     }
 }

@@ -146,23 +146,11 @@ class AdminToolsController extends AbstractController
             }
         }
 
-        //flash messages
-        foreach ($error_detected as $error) {
-            $this->flash->addMessage(
-                'error_detected',
-                $error
-            );
-        }
-
-        foreach ($success_detected as $success) {
-            $this->flash->addMessage(
-                'success_detected',
-                $success
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('adminTools'));
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('adminTools'),
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 }

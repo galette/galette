@@ -43,12 +43,12 @@ use Galette\Helpers\EntityHelper;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property int $id
  * @property string $date
  * @property float $amount
  * @property ?string $description
- * @property ?integer $member
- * @property ?integer $payment_type
+ * @property ?int $member
+ * @property ?int $payment_type
  */
 class Transaction implements AccessManagementInterface
 {
@@ -65,9 +65,6 @@ class Transaction implements AccessManagementInterface
     private ?int $member = null;
     private ?int $payment_type = null;
 
-    private Db $zdb;
-    private Login $login;
-
     /** @var array<string> */
     protected array $errors;
     /** @var string[] */
@@ -82,10 +79,11 @@ class Transaction implements AccessManagementInterface
      *                                                        a specific transaction, or null to just
      *                                                        instantiate object
      */
-    public function __construct(Db $zdb, Login $login, ArrayObject|int|null $args = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
+    public function __construct(
+        private Db $zdb,
+        private Login $login,
+        ArrayObject|int|null $args = null
+    ) {
         $this->setFields();
 
         if ($args === null || is_int($args)) {
@@ -206,9 +204,9 @@ class Transaction implements AccessManagementInterface
      * Remove transaction (and all associated contributions) from database
      *
      * @param History $hist        History
-     * @param boolean $transaction Activate transaction mode (defaults to true)
+     * @param bool    $transaction Activate transaction mode (defaults to true)
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(History $hist, bool $transaction = true): bool
     {
@@ -350,8 +348,8 @@ class Transaction implements AccessManagementInterface
                         break;
                     case 'trans_desc':
                         /** TODO: retrieve field length from database and check that */
-                        $this->description = strip_tags($value);
-                        if (mb_strlen($value) > 150) {
+                        $this->description = strip_tags((string) $value);
+                        if (mb_strlen((string) $value) > 150) {
                             $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
                         }
                         break;
@@ -380,10 +378,10 @@ class Transaction implements AccessManagementInterface
             if ($val === 1) {
                 $prop = $this->fields[$key]['propname'];
                 if (!isset($disabled[$key]) && !isset($this->$prop)) {
-                    $this->errors[] = str_replace(
-                        '%field',
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is an hTML link to the field with its name
+                        _T('- Mandatory field %1$s empty.'),
                         '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
-                        _T("- Mandatory field %field empty.")
                     );
                 }
             }
@@ -419,7 +417,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param History $hist History
      *
-     * @return boolean
+     * @return bool
      */
     public function store(History $hist): bool
     {
@@ -672,7 +670,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canCreate(Login $login): bool
     {
@@ -693,7 +691,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -737,7 +735,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canEdit(Login $login): bool
     {
@@ -750,7 +748,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canAttachAndDetach(Login $login): bool
     {
@@ -767,7 +765,7 @@ class Transaction implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canDelete(Login $login): bool
     {

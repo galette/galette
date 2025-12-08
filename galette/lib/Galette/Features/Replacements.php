@@ -27,6 +27,7 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Logo;
 use Galette\Core\Preferences;
+use Galette\Core\PrintLogo;
 use Galette\DynamicFields\Choice;
 use Galette\DynamicFields\Separator;
 use Galette\Entity\Adherent;
@@ -37,8 +38,14 @@ use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 use NumberFormatter;
 use PHPMailer\PHPMailer\PHPMailer;
+use RuntimeException;
 use Slim\Routing\RouteParser;
 use DI\Attribute\Inject;
+
+use function Safe\file_get_contents;
+use function Safe\preg_match;
+use function Safe\preg_replace;
+use function Safe\preg_replace_callback;
 
 /**
  * Replacements feature
@@ -56,13 +63,13 @@ trait Replacements
     private array $dynamic_patterns = [];
     private ?PHPMailer $mail = null;
 
-    #[Inject("zdb")]
+    #[Inject]
     protected Db $zdb;
 
-    #[Inject("login")]
+    #[Inject]
     protected Login $login;
 
-    #[Inject("preferences")]
+    #[Inject]
     protected Preferences $preferences;
 
     protected RouteParser $routeparser;
@@ -70,8 +77,8 @@ trait Replacements
     /**
      * Get dynamic patterns
      *
-     * @param string  $form_name Dynamic form name
-     * @param boolean $legacy    Whether to load legacy patterns
+     * @param string $form_name Dynamic form name
+     * @param bool   $legacy    Whether to load legacy patterns
      *
      * @return array<string,array<string,string>>
      */
@@ -83,7 +90,7 @@ trait Replacements
         $dynamic_patterns = [];
         foreach ($dynamic_fields as $dynamic_field) {
             //no pattern for separators
-            if ($dynamic_field instanceof  Separator) {
+            if ($dynamic_field instanceof Separator) {
                 continue;
             }
             $key = strtoupper('DYNFIELD_' . $dynamic_field->getId() . '_' . $form_name);
@@ -224,7 +231,7 @@ trait Replacements
     /**
      * Get patterns for a member
      *
-     * @param boolean $legacy Whether to load legacy patterns
+     * @param bool $legacy Whether to load legacy patterns
      *
      * @return array<string,array<string,string>>
      */
@@ -369,7 +376,7 @@ trait Replacements
     /**
      * Get patterns for a contribution
      *
-     * @param boolean $legacy Whether to load legacy patterns
+     * @param bool $legacy Whether to load legacy patterns
      *
      * @return array<string,array<string,string>>
      */
@@ -492,7 +499,7 @@ trait Replacements
             $logo->getOptimalHeight()
         );
 
-        $print_logo = new Logo();
+        $print_logo = new PrintLogo();
         if ($this->mail !== null) {
             $print_logo_content = $this->preferences->getURL() . $this->routeparser->urlFor('printLogo');
         } else {
@@ -710,7 +717,7 @@ trait Replacements
 
         $dynamic_patterns = $this->getDynamicPatterns($form_name);
         foreach ($dynamic_patterns as $dynamic_pattern) {
-            $pattern = trim($dynamic_pattern['pattern'], '/');
+            $pattern = trim((string) $dynamic_pattern['pattern'], '/');
             $key   = strtolower(rtrim(ltrim($pattern, '{'), '}'));
             $value = '';
 
@@ -894,9 +901,7 @@ trait Replacements
     protected function proceedReplacements(string $source): string
     {
         //handle translations
-        $callback = static function ($matches) {
-            return _T($matches[1]);
-        };
+        $callback = (static fn($matches) => _T($matches[1]));
         $replaced = preg_replace_callback(
             '/_T\("([^\"]+)"\)/',
             $callback,
@@ -908,31 +913,29 @@ trait Replacements
         ksort($this->replaces, SORT_NATURAL);
 
         if (array_keys($this->patterns) !== array_keys($this->replaces)) {
-            throw new \RuntimeException('Patterns and replacements does not match!');
+            throw new RuntimeException('Patterns and replacements does not match!');
         }
 
         //handle replacements
         $replaced = preg_replace(
             $this->patterns,
             $this->replaces,
-            $replaced
+            (string) $replaced
         );
 
         //handle translations with replacements
-        $repl_callback = static function ($matches) {
-            return str_replace(
-                $matches[1],
-                $matches[2],
-                $matches[3]
-            );
-        };
+        $repl_callback = (static fn($matches) => str_replace(
+            $matches[1],
+            $matches[2],
+            $matches[3]
+        ));
         $replaced = preg_replace_callback(
             '/str_replace\(\'([^,]+)\', ?\'([^,]+)\', ?\'(.*)\'\)/',
             $repl_callback,
-            $replaced
+            (string) $replaced
         );
 
-        return trim($replaced);
+        return trim((string) $replaced);
     }
 
     /**

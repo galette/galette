@@ -146,7 +146,7 @@
                                                 <span class="visually-hidden">{{ _T("Create a new donation that will be attached to the current transaction") }}</span>
                                             </a>
                 {% endif %}
-                {% if preferences.pref_bool_groupsmanagers_see_contributions %}
+                {% if login.isStaff() or login.isAdmin() or preferences.pref_bool_groupsmanagers_see_contributions %}
                                             <a
                                                 href="#"
                                                 class="ui icon blue compact button tooltip"

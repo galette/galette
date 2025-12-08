@@ -24,12 +24,15 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Analog\Analog;
+use Safe\DateTime;
 use Galette\Entity\Adherent;
 use Galette\Entity\Document;
 use Galette\IO\News;
 use Galette\Util\Release;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
+
+use function Safe\exec;
 
 /**
  * Galette application instance
@@ -48,7 +51,7 @@ class Galette
     /**
      * Retrieve Galette version from git, if present.
      *
-     * @param boolean $time Include time and timezone. Defaults to false.
+     * @param bool $time Include time and timezone. Defaults to false.
      *
      * @return string
      */
@@ -65,7 +68,7 @@ class Galette
         if (is_dir(GALETTE_ROOT . '../.git')) {
             $commitHash = trim(exec('git log --pretty="%h" -n1 HEAD'));
 
-            $commitDate = new \DateTime(trim(exec('git log -n1 --pretty=%ci HEAD')));
+            $commitDate = new DateTime(trim(exec('git log -n1 --pretty=%ci HEAD')));
 
             $galette_version = sprintf(
                 '%s-%s (%s)',
@@ -341,7 +344,8 @@ class Galette
                             'label' => _T("Groups"),
                             'title' => _T("View and manage groups"),
                             'route' => [
-                                'name' => 'groups'
+                                'name' => 'groups',
+                                'aliases' => ['editGroup']
                             ]
                         ]
                     ]
@@ -1253,7 +1257,7 @@ class Galette
      */
     public static function jsonDecode(string $string): array
     {
-        $decoded = json_decode($string, true);
+        $decoded = \json_decode($string, true); // @phpstan-ignore theCodingMachineSafe.function
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new RuntimeException('JSON decode error: ' . json_last_error_msg());
         }
@@ -1271,7 +1275,7 @@ class Galette
      */
     public static function jsonEncode(array|object $data): string
     {
-        $encoded = json_encode($data);
+        $encoded = \json_encode($data); // @phpstan-ignore theCodingMachineSafe.function
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new RuntimeException('JSON encode error: ' . json_last_error_msg());
         }

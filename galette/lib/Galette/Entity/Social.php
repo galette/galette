@@ -59,11 +59,10 @@ class Social
     public const BLOG = 'blog';
     public const DISCORD = 'discord';
 
-    private Db $zdb;
     private int $id;
     private string $type;
     private string $url;
-    private ?int $id_adh;
+    private ?int $id_adh = null;
     private ?Adherent $member = null;
 
     /**
@@ -72,9 +71,10 @@ class Social
      * @param Db                                      $zdb  Database instance
      * @param int|ArrayObject<string,int|string>|null $args Arguments
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
-    {
-        $this->zdb = $zdb;
+    public function __construct(
+        private Db $zdb,
+        int|ArrayObject|null $args = null
+    ) {
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
@@ -85,7 +85,7 @@ class Social
     /**
      * Load a social from its identifier
      *
-     * @param integer $id Identifier
+     * @param int $id Identifier
      *
      * @return void
      */
@@ -171,7 +171,7 @@ class Social
     /**
      * Store social in database
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -216,7 +216,7 @@ class Social
      *
      * @param array<int>|null $ids IDs to remove, default to current id
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(?array $ids = null): bool
     {
@@ -330,7 +330,7 @@ class Social
     /**
      * Get system social types
      *
-     * @param boolean $translated Return translated types (default) or not
+     * @param bool $translated Return translated types (default) or not
      *
      * @return array<string,string>
      */
@@ -369,8 +369,8 @@ class Social
     /**
      * Get system social types
      *
-     * @param string  $type       Social type
-     * @param boolean $translated Return translated types (default) or not
+     * @param string $type       Social type
+     * @param bool   $translated Return translated types (default) or not
      *
      * @return string
      */

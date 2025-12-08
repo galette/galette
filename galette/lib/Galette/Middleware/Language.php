@@ -27,7 +27,6 @@ use Galette\Core\I18n;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use DI\Container;
 use RKA\Session;
 use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
@@ -39,20 +38,18 @@ use Slim\Routing\RouteParser;
  */
 class Language
 {
-    private I18n $i18n;
-    private Session $session;
-    private RouteParser $routeparser;
-
     /**
      * Constructor
      *
-     * @param Container $container Container instance
+     * @param I18n        $i18n        I18n instance
+     * @param Session     $session     Session
+     * @param RouteParser $routeparser Route parser instance
      */
-    public function __construct(Container $container)
-    {
-        $this->i18n = $container->get('i18n');
-        $this->session = $container->get('session');
-        $this->routeparser = $container->get(RouteParser::class);
+    public function __construct(
+        private readonly I18n $i18n,
+        private readonly Session $session,
+        private readonly RouteParser $routeparser
+    ) {
     }
 
     /**

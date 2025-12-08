@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Repository;
 
 use ArrayObject;
+use Exception;
 use Galette\Entity\Group;
 use Laminas\Db\Adapter\Driver\Pdo\Result;
 use Laminas\Db\ResultSet\ResultSet;
@@ -37,6 +38,7 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\History;
 use Galette\Filters\TransactionsList;
+use Safe\DateTime;
 
 /**
  * Transactions class for galette
@@ -49,9 +51,6 @@ class Transactions
     public const PK = Transaction::PK;
 
     private int $count = 0;
-    private Db $zdb;
-    private Login $login;
-    private TransactionsList $filters;
 
     /**
      * Default constructor
@@ -60,12 +59,11 @@ class Transactions
      * @param Login             $login   Login
      * @param ?TransactionsList $filters Filtering
      */
-    public function __construct(Db $zdb, Login $login, ?TransactionsList $filters = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
-        $this->filters = $filters ?? new TransactionsList();
+    public function __construct(
+        private readonly Db $zdb,
+        private readonly Login $login,
+        private readonly ?TransactionsList $filters = new TransactionsList()
+    ) {
     }
 
     /**
@@ -227,7 +225,7 @@ class Transactions
 
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->rstart_date_filter);
+                $d = new DateTime($this->filters->rstart_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     'trans_date',
                     $d->format('Y-m-d')
@@ -235,7 +233,7 @@ class Transactions
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->rend_date_filter);
+                $d = new DateTime($this->filters->rend_date_filter);
                 $select->where->lessThanOrEqualTo(
                     'trans_date',
                     $d->format('Y-m-d')
@@ -348,10 +346,10 @@ class Transactions
     /**
      * Remove specified transactions
      *
-     * @param array<int>|integer $ids  Transactions identifiers to delete
-     * @param History            $hist History
+     * @param array<int>|int $ids  Transactions identifiers to delete
+     * @param History        $hist History
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(array|int $ids, History $hist): bool
     {
@@ -375,7 +373,7 @@ class Transactions
                 $c = new Transaction($this->zdb, $this->login, $transaction);
                 $res = $c->remove($hist, false);
                 if ($res === false) {
-                    throw new \Exception();
+                    throw new Exception();
                 }
             }
             $this->zdb->connection->commit();

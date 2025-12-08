@@ -24,20 +24,23 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Safe\DateTime;
 use Galette\Features\Replacements;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\GaletteMail;
 use Galette\Core\Db;
 use Galette\Core\History;
+use UnderflowException;
+use UnexpectedValueException;
 
 /**
  * Reminders
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property-read integer $member_id
- * @property integer $type
+ * @property-read int $member_id
+ * @property int $type
  * @property Adherent $dest
  * @property string $date
  */
@@ -138,11 +141,11 @@ class Reminder
      *
      * @param Db $zdb Database instance
      *
-     * @return boolean
+     * @return bool
      */
     private function store(Db $zdb): bool
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         $data = [
             'reminder_type'     => $this->type,
             'reminder_dest'     => $this->dest->id,
@@ -177,7 +180,7 @@ class Reminder
     /**
      * Was reminder sent successfully?
      *
-     * @return boolean
+     * @return bool
      */
     public function isSuccess(): bool
     {
@@ -187,7 +190,7 @@ class Reminder
     /**
      * Did member had an email when reminder was sent?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasMail(): bool
     {
@@ -201,7 +204,7 @@ class Reminder
      * @param History $hist  History
      * @param Db      $zdb   Database instance
      *
-     * @return boolean
+     * @return bool
      */
     public function send(Texts $texts, History $hist, Db $zdb): bool
     {
@@ -236,18 +239,12 @@ class Reminder
             $mail->setMessage($texts->getBody());
             $sent = $mail->send();
 
-            $details = str_replace(
-                [
-                    '%name',
-                    '%mail',
-                    '%days'
-                ],
-                [
-                    $this->dest->sname,
-                    $this->dest->getEmail(),
-                    (string)$days_remaining
-                ],
-                _T("%name <%mail> (%days days)")
+            $details = sprintf(
+                //TRANS first param is name, second email, third days interval
+                _T('%1$s <%2$s> (%3$s days)'),
+                $this->dest->sname,
+                $this->dest->getEmail(),
+                (string)$days_remaining
             );
 
             if ($sent == GaletteMail::MAIL_SENT) {
@@ -276,18 +273,12 @@ class Reminder
                 $type_name,
                 _T("Unable to send %membership reminder (no email address).")
             );
-            $details = str_replace(
-                [
-                    '%name',
-                    '%id',
-                    '%days'
-                ],
-                [
-                    $this->dest->sname,
-                    (string)$this->dest->id,
-                    (string)$days_remaining
-                ],
-                _T("%name (#%id - %days days)")
+            $details = sprintf(
+                //TRANS: first parameter is name, second the id, this days interval
+                _T('%1$s (#%2$s - %3$s days)'),
+                $this->dest->sname,
+                (string)$this->dest->id,
+                (string)$days_remaining
             );
             $hist->add($str, $details);
             $this->msg = $this->dest->sname;
@@ -316,23 +307,18 @@ class Reminder
      */
     public function __get(string $name): mixed
     {
-        switch ($name) {
-            case 'member_id':
-                return $this->dest->id;
-            case 'type':
-            case 'date':
-                return $this->$name;
-            case 'comment':
-                return $this->comment;
-        }
-
-        throw new \RuntimeException(
-            sprintf(
-                'Unable to get property "%s::%s"!',
-                static::class,
-                $name
-            )
-        );
+        return match ($name) {
+            'member_id' => $this->dest->id,
+            'type', 'date' => $this->$name,
+            'comment' => $this->comment,
+            default => throw new \RuntimeException(
+                sprintf(
+                    'Unable to get property "%s::%s"!',
+                    static::class,
+                    $name
+                )
+            ),
+        };
     }
 
     /**
@@ -345,14 +331,10 @@ class Reminder
      */
     public function __isset(string $name): bool
     {
-        switch ($name) {
-            case 'member_id':
-            case 'type':
-            case 'date':
-            case 'comment':
-                return true;
-        }
-        return false;
+        return match ($name) {
+            'member_id', 'type', 'date', 'comment' => true,
+            default => false,
+        };
     }
 
     /**
@@ -373,7 +355,7 @@ class Reminder
                 ) {
                     $this->type = $value;
                 } else {
-                    throw new \UnexpectedValueException(
+                    throw new UnexpectedValueException(
                         'Unknown type!'
                     );
                 }
@@ -385,11 +367,11 @@ class Reminder
                         $this->nomail = false;
                     }
                 } elseif (!$value instanceof Adherent) {
-                    throw new \UnexpectedValueException(
+                    throw new UnexpectedValueException(
                         'Please provide a member object.'
                     );
                 } else {
-                    throw new \UnderflowException(
+                    throw new UnderflowException(
                         'Please set reminder type first.'
                     );
                 }

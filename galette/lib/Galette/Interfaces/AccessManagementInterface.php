@@ -37,7 +37,7 @@ interface AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canShow(Login $login): bool;
 
@@ -46,7 +46,7 @@ interface AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canCreate(Login $login): bool;
 
@@ -55,7 +55,7 @@ interface AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canEdit(Login $login): bool;
 
@@ -64,7 +64,7 @@ interface AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canDelete(Login $login): bool;
 }

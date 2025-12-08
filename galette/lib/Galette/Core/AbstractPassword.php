@@ -67,14 +67,14 @@ abstract class AbstractPassword
      *
      * @param int $id_adh Member identifier
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function generateNewPassword(int $id_adh): bool;
 
     /**
      * Remove expired passwords queries (older than 24 hours)
      *
-     * @return boolean
+     * @return bool
      */
     abstract protected function cleanExpired(): bool;
 

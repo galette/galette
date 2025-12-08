@@ -87,13 +87,13 @@ class CsvIn extends GaletteTestCase
     /**
      * Import text CSV file
      *
-     * @param array    $fields         Fields name to use at import
-     * @param string   $file_name      File name
-     * @param array    $flash_messages Expected flash messages from doImport route
-     * @param array    $members_list   List of faked members data
-     * @param ?integer $count_before   Count before insertions. Defaults to 0 if null.
-     * @param ?integer $count_after    Count after insertions. Default to $count_before + count $members_list
-     * @param array    $values         Textual values for dynamic choices fields
+     * @param array  $fields         Fields name to use at import
+     * @param string $file_name      File name
+     * @param array  $flash_messages Expected flash messages from doImport route
+     * @param array  $members_list   List of faked members data
+     * @param ?int   $count_before   Count before insertions. Defaults to 0 if null.
+     * @param ?int   $count_after    Count after insertions. Default to $count_before + count $members_list
+     * @param array  $values         Textual values for dynamic choices fields
      *
      * @return void
      */
@@ -206,7 +206,7 @@ class CsvIn extends GaletteTestCase
                     } else {
                         //manage dynamic fields
                         $matches = [];
-                        if (preg_match('/^dynfield_(\d+)/', $field, $matches)) {
+                        if (preg_match('/^dynfield_(\d+)/', (string) $field, $matches)) {
                             $adh = new Adherent($this->zdb, (int)$member->id_adh, ['dynamics' => true]);
                             $expected = [
                                 [
@@ -574,7 +574,7 @@ class CsvIn extends GaletteTestCase
         $this->checkDynamicTranslation($field_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
-        $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
+        $select->columns(['num' => new \Laminas\Db\Sql\Expression('COUNT(1)')]);
         $result = $this->zdb->execute($select)->current();
         $this->assertSame(1, (int)$result->num);
 
@@ -685,7 +685,7 @@ class CsvIn extends GaletteTestCase
         $this->checkDynamicTranslation($cfield_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
-        $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
+        $select->columns(['num' => new \Laminas\Db\Sql\Expression('COUNT(1)')]);
         $result = $this->zdb->execute($select)->current();
         $this->assertSame(2, (int)$result->num);
 
@@ -699,7 +699,7 @@ class CsvIn extends GaletteTestCase
         $members_list = $this->getMemberData1();
         foreach ($members_list as &$data) {
             //two lines without required dynamic field.
-            $data['dynfield_' . $cdf->getId()] = rand(0, 2);
+            $data['dynfield_' . $cdf->getId()] = random_int(0, 2);
         }
         unset($data);
 
@@ -752,7 +752,7 @@ class CsvIn extends GaletteTestCase
         $this->checkDynamicTranslation($cfield_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
-        $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
+        $select->columns(['num' => new \Laminas\Db\Sql\Expression('COUNT(1)')]);
         $result = $this->zdb->execute($select)->current();
         $this->assertSame(3, (int)$result->num);
 
@@ -969,8 +969,8 @@ class CsvIn extends GaletteTestCase
      */
     private function getMemberData1(): array
     {
-        return array(
-            'FAKER_0' => array (
+        return [
+            'FAKER_0' =>  [
                 'nom_adh' => 'Boucher',
                 'prenom_adh' => 'Roland',
                 'ville_adh' => 'Dumas',
@@ -996,8 +996,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2020-03-09',
                 'pref_lang' => 'br',
                 'fingerprint' => 'FAKER_0',
-            ),
-            'FAKER_1' =>  array (
+            ],
+            'FAKER_1' =>   [
                 'nom_adh' => 'Lefebvre',
                 'prenom_adh' => 'François',
                 'ville_adh' => 'Laine',
@@ -1023,8 +1023,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2019-11-29',
                 'pref_lang' => 'oc',
                 'fingerprint' => 'FAKER_1',
-            ),
-            'FAKER_2' =>  array (
+            ],
+            'FAKER_2' =>   [
                 'nom_adh' => 'Lemaire',
                 'prenom_adh' => 'Georges',
                 'ville_adh' => 'Teixeira-sur-Mer',
@@ -1050,8 +1050,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2019-02-03',
                 'pref_lang' => 'uk',
                 'fingerprint' => 'FAKER_2',
-            ),
-            'FAKER_3' =>  array (
+            ],
+            'FAKER_3' =>   [
                 'nom_adh' => 'Paul',
                 'prenom_adh' => 'Thibaut',
                 'ville_adh' => 'Mallet-sur-Prevost',
@@ -1079,8 +1079,8 @@ class CsvIn extends GaletteTestCase
                 'fingerprint' => 'FAKER_3',
                 'societe_adh' => 'Jacques',
                 'is_company' => true,
-            ),
-            'FAKER_4' =>  array (
+            ],
+            'FAKER_4' =>   [
                 'nom_adh' => 'Pascal',
                 'prenom_adh' => 'Isaac',
                 'ville_adh' => 'Jourdanboeuf',
@@ -1106,8 +1106,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2018-08-16',
                 'pref_lang' => 'en_US',
                 'fingerprint' => 'FAKER_4',
-            ),
-            'FAKER_5' =>  array (
+            ],
+            'FAKER_5' =>   [
                 'nom_adh' => 'Morvan',
                 'prenom_adh' => 'Joseph',
                 'ville_adh' => 'Noel',
@@ -1133,8 +1133,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2018-09-28',
                 'pref_lang' => 'ca',
                 'fingerprint' => 'FAKER_5',
-            ),
-            'FAKER_6' =>  array (
+            ],
+            'FAKER_6' =>   [
                 'nom_adh' => 'Lebreton',
                 'prenom_adh' => 'Emmanuelle',
                 'ville_adh' => 'Lefevre',
@@ -1160,8 +1160,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2018-01-13',
                 'pref_lang' => 'es',
                 'fingerprint' => 'FAKER_6',
-            ),
-            'FAKER_7' =>  array (
+            ],
+            'FAKER_7' =>   [
                 'nom_adh' => 'Maurice',
                 'prenom_adh' => 'Capucine',
                 'ville_adh' => 'Renaultdan',
@@ -1189,8 +1189,8 @@ class CsvIn extends GaletteTestCase
                 'fingerprint' => 'FAKER_7',
                 'societe_adh' => 'Mace',
                 'is_company' => true,
-            ),
-            'FAKER_8' =>  array (
+            ],
+            'FAKER_8' =>   [
                 'nom_adh' => 'Hubert',
                 'prenom_adh' => 'Lucy',
                 'ville_adh' => 'Lagarde',
@@ -1216,8 +1216,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2019-06-26',
                 'pref_lang' => 'de_DE',
                 'fingerprint' => 'FAKER_8',
-            ),
-            'FAKER_9' =>  array (
+            ],
+            'FAKER_9' =>   [
                 'nom_adh' => 'Goncalves',
                 'prenom_adh' => 'Corinne',
                 'ville_adh' => 'LesageVille',
@@ -1243,8 +1243,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2020-08-09',
                 'pref_lang' => 'br',
                 'fingerprint' => 'FAKER_9',
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -1255,8 +1255,8 @@ class CsvIn extends GaletteTestCase
      */
     private function getMemberData2(): array
     {
-        return array (
-            'FAKER_0' => array (
+        return  [
+            'FAKER_0' =>  [
                 'nom_adh' => 'Goncalves',
                 'prenom_adh' => 'Margot',
                 'ville_adh' => 'Alves',
@@ -1282,8 +1282,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2020-07-31',
                 'pref_lang' => 'ca',
                 'fingerprint' => 'FAKER_0',
-            ),
-            'FAKER_1' => array (
+            ],
+            'FAKER_1' =>  [
                 'nom_adh' => 'Da Silva',
                 'prenom_adh' => 'Augustin',
                 'ville_adh' => 'Perrin-sur-Masson',
@@ -1309,8 +1309,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2020-06-02',
                 'pref_lang' => 'fr_FR',
                 'fingerprint' => 'FAKER_1',
-            ),
-            'FAKER_2' => array (
+            ],
+            'FAKER_2' =>  [
                 'nom_adh' => 'Doe',
                 'prenom_adh' => 'Laetitia',
                 'ville_adh' => 'SimonBourg',
@@ -1336,8 +1336,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2020-10-28',
                 'pref_lang' => 'ar',
                 'fingerprint' => 'FAKER_2',
-            ),
-            'FAKER_3' => array (
+            ],
+            'FAKER_3' =>  [
                 'nom_adh' => 'Cordier',
                 'prenom_adh' => 'Olivier',
                 'ville_adh' => 'Lacroixboeuf',
@@ -1363,8 +1363,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2020-08-14',
                 'pref_lang' => 'ar',
                 'fingerprint' => 'FAKER_3',
-            ),
-            'FAKER_4' => array (
+            ],
+            'FAKER_4' =>  [
                 'nom_adh' => 'Robert',
                 'prenom_adh' => 'Grégoire',
                 'ville_adh' => 'Delannoy-sur-Mer',
@@ -1392,8 +1392,8 @@ class CsvIn extends GaletteTestCase
                 'fingerprint' => 'FAKER_4',
                 'societe_adh' => 'Chretien Martineau S.A.',
                 'is_company' => true,
-            ),
-            'FAKER_5' =>  array (
+            ],
+            'FAKER_5' =>   [
                 'nom_adh' => 'Doe',
                 'prenom_adh' => 'Charles',
                 'ville_adh' => 'Charpentier-sur-Lebrun',
@@ -1419,8 +1419,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2018-02-17',
                 'pref_lang' => 'fr_FR',
                 'fingerprint' => 'FAKER_5',
-            ),
-            'FAKER_6' => array (
+            ],
+            'FAKER_6' =>  [
                 'nom_adh' => 'Thierry',
                 'prenom_adh' => 'Louis',
                 'ville_adh' => 'Henry',
@@ -1446,8 +1446,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2020-03-16',
                 'pref_lang' => 'en_US',
                 'fingerprint' => 'FAKER_6',
-            ),
-            'FAKER_7' =>  array (
+            ],
+            'FAKER_7' =>   [
                 'nom_adh' => 'Delattre',
                 'prenom_adh' => 'Susanne',
                 'ville_adh' => 'Roche-les-Bains',
@@ -1473,8 +1473,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2020-02-03',
                 'pref_lang' => 'oc',
                 'fingerprint' => 'FAKER_7',
-            ),
-            'FAKER_8' =>  array (
+            ],
+            'FAKER_8' =>   [
                 'nom_adh' => 'Peltier',
                 'prenom_adh' => 'Inès',
                 'ville_adh' => 'Thierry-sur-Carre',
@@ -1500,8 +1500,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2020-03-28',
                 'pref_lang' => 'ar',
                 'fingerprint' => 'FAKER_8',
-            ),
-            'FAKER_9' => array (
+            ],
+            'FAKER_9' =>  [
                 'nom_adh' => 'Marchand',
                 'prenom_adh' => 'Audrey',
                 'ville_adh' => 'Lenoirdan',
@@ -1527,8 +1527,8 @@ class CsvIn extends GaletteTestCase
                 'date_crea_adh' => '2019-05-16',
                 'pref_lang' => 'fr_FR',
                 'fingerprint' => 'FAKER_9',
-            )
-        );
+            ]
+        ];
     }
 
     /**

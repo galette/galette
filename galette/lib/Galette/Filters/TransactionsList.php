@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Filters;
 
+use Galette\Enums\SQLOrder;
 use Galette\Helpers\DatesHelper;
 use Analog\Analog;
 use Galette\Core\Pagination;
@@ -34,11 +35,11 @@ use Galette\Core\Pagination;
  *
  * @property ?string $start_date_filter
  * @property ?string $end_date_filter
- * @property ?integer $filtre_cotis_adh
- * @property integer|false $filtre_cotis_children
+ * @property ?int $filtre_cotis_adh
+ * @property int|false $filtre_cotis_children
  * @property string $rstart_date_filter
  * @property string $rend_date_filter
- * @property ?integer $max_amount
+ * @property ?int $max_amount
  */
 class TransactionsList extends Pagination
 {
@@ -51,11 +52,11 @@ class TransactionsList extends Pagination
     public const ORDERBY_ID = 8;
 
     //filters
-    private ?string $start_date_filter = null; //@phpstan-ignore-line
-    private ?string $end_date_filter = null; //@phpstan-ignore-line
+    private ?string $start_date_filter = null;
+    private ?string $end_date_filter = null;
     private ?int $filtre_cotis_adh = null;
-    private int|false $filtre_cotis_children = false; //@phpstan-ignore-line
-    private ?int $max_amount = null; //@phpstan-ignore-line
+    private int|false $filtre_cotis_children = false;
+    private ?int $max_amount = null;
 
     /** @var array<string> */
     protected array $list_fields = [
@@ -87,6 +88,16 @@ class TransactionsList extends Pagination
     protected function getDefaultOrder(): int|string
     {
         return self::ORDERBY_DATE;
+    }
+
+    /**
+     * Return the default direction for ordering
+     *
+     * @return SQLOrder
+     */
+    protected function getDefaultDirection(): SQLOrder
+    {
+        return SQLOrder::DESC;
     }
 
     /**

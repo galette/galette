@@ -31,6 +31,9 @@ use Galette\Core\Install;
 use Galette\Core\PluginInstall;
 use Analog\Analog;
 
+use function Safe\ob_end_clean;
+use function Safe\ob_start;
+
 /**
  * Galette plugins controller
  *
@@ -80,44 +83,33 @@ class PluginsController extends AbstractController
      */
     public function togglePlugin(Request $request, Response $response, string $action, string $module_id): Response
     {
+        $error_detected = [];
+        $success_detected = [];
+
         if (!Galette::isDemo()) {
             $plugins = $this->plugins;
             $reload_plugins = false;
             if ($action == 'activate') {
                 try {
                     $plugins->activateModule($module_id);
-                    $this->flash->addMessage(
-                        'success_detected',
-                        str_replace(
-                            '%name',
-                            $module_id,
-                            _T("Plugin %name has been enabled")
-                        )
+                    $success_detected[] = sprintf(
+                        _T('Plugin %1$s has been enabled'),
+                        $module_id
                     );
                     $reload_plugins = true;
                 } catch (Throwable $e) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $e->getMessage()
-                    );
+                    $error_detected[] = $e->getMessage();
                 }
             } elseif ($action == 'deactivate') {
                 try {
                     $plugins->deactivateModule($module_id);
-                    $this->flash->addMessage(
-                        'success_detected',
-                        str_replace(
-                            '%name',
-                            $module_id,
-                            _T("Plugin %name has been disabled")
-                        )
+                    $success_detected[] = sprintf(
+                        _T('Plugin %1$s has been disabled'),
+                        $module_id
                     );
                     $reload_plugins = true;
                 } catch (Throwable $e) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $e->getMessage()
-                    );
+                    $error_detected[] = $e->getMessage();
                 }
             }
 
@@ -127,9 +119,12 @@ class PluginsController extends AbstractController
             }
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('plugins'));
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('plugins'),
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
     /**
@@ -165,8 +160,7 @@ class PluginsController extends AbstractController
 
         $plugin = $this->plugins->getModules($plugid);
 
-        $install = null;
-        $mdplugin = md5($plugin['root']);
+        $mdplugin = md5((string) $plugin['root']);
         if (
             isset($this->session->$mdplugin)
             && !isset($_GET['raz'])
@@ -235,8 +229,8 @@ class PluginsController extends AbstractController
                 break;
             case 'i2':
             case 'u2':
-                $install_plugin = true; //not used here, but from include
-                $zdb = $this->zdb;
+                $install_plugin = true; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but from include
+                $zdb = $this->zdb; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but from include
                 ob_start();
                 include_once GALETTE_ROOT . '/install/steps/db_checks.php';
                 $params['results'] = ob_get_contents();

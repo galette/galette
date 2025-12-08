@@ -64,10 +64,10 @@ abstract class CrudController extends AbstractController
     /**
      * List page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
@@ -91,7 +91,7 @@ abstract class CrudController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Record id
+     * @param int      $id       Record id
      *
      * @return Response
      */
@@ -102,7 +102,7 @@ abstract class CrudController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Record id
+     * @param int      $id       Record id
      *
      * @return Response
      */
@@ -165,7 +165,7 @@ abstract class CrudController extends AbstractController
      * @param array<string,mixed>  $args Request arguments
      * @param ?array<string,mixed> $post POST values
      *
-     * @return null|integer|integer[]
+     * @return null|int|int[]
      */
     protected function getIdsToRemove(array &$args, ?array $post): int|array|null
     {
@@ -194,7 +194,7 @@ abstract class CrudController extends AbstractController
 
         //type
         if (is_array($ids)) {
-            $ids = array_map('intval', $ids);
+            $ids = array_map(intval(...), $ids);
         } elseif (is_string($ids)) {
             $ids = (int)$ids;
         }
@@ -311,7 +311,7 @@ abstract class CrudController extends AbstractController
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     abstract protected function doDelete(array $args, array $post): bool;
     // /CRUD - Delete

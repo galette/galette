@@ -71,10 +71,10 @@ class ContributionsTypesController extends CrudController
     /**
      * List page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
@@ -132,7 +132,7 @@ class ContributionsTypesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Contribution type id
+     * @param int      $id       Contribution type id
      *
      * @return Response
      */
@@ -160,7 +160,7 @@ class ContributionsTypesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Contribution type id
+     * @param int      $id       Contribution type id
      *
      * @return Response
      */
@@ -174,7 +174,7 @@ class ContributionsTypesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Contribution type id
+     * @param ?int     $id       Contribution type id
      * @param string   $action   Action
      *
      * @return Response
@@ -194,10 +194,12 @@ class ContributionsTypesController extends CrudController
         }
 
         $error_detected = [];
+        $success_detected = [];
+
         $msg = null;
         $ctype = new ContributionsTypes($this->zdb);
 
-        $label = trim($post['libelle_type_cotis']);
+        $label = trim((string) $post['libelle_type_cotis']);
         $field = (int)trim($post['cotis_extension'] ?? 0);
         $amount = null;
         if (isset($post['amount']) && $post['amount'] !== '') {
@@ -223,31 +225,20 @@ class ContributionsTypesController extends CrudController
                 ? _T("Contribution type has been successfully added!") : _T("Contribution type #%id has been successfully updated!");
         }
 
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    str_replace(
-                        ['%id'],
-                        [(string)$id],
-                        $error
-                    )
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                str_replace(
-                    ['%id'],
-                    [(string)$id],
-                    $msg
-                )
+        if (count($error_detected) == 0) {
+            $success_detected[] = str_replace(
+                ['%id'],
+                [(string)$id],
+                $msg
             );
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_uri);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_uri,
+            successes: $success_detected,
+            errors: $error_detected,
+        );
     }
 
 
@@ -308,28 +299,22 @@ class ContributionsTypesController extends CrudController
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
         $ctype = new ContributionsTypes($this->zdb);
-
-        $label = $ctype->getLabel((int)$args['id']);
-        $ret = false;
-        if ($label !== $ctype::ID_NOT_EXITS) {
-            $ret = $ctype->delete((int)$args['id']);
-
-            if (!$ret) {
-                foreach ($ctype->getErrors() as $error) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $error
-                    );
-                }
+        if ($ctype->delete((int)$args['id']) !== true) {
+            foreach ($ctype->getErrors() as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
             }
+            return false;
         }
 
-        return $ret;
+        return true;
     }
 
     // CRUD - Delete

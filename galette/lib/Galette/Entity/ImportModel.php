@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Safe\DateTime;
+use Exception;
 use Galette\Core\Db;
 use Galette\Core\Galette;
 use Throwable;
@@ -40,10 +42,10 @@ class ImportModel
     public const TABLE = 'import_model';
     public const PK = 'model_id';
 
-    private ?int $id;
+    private ?int $id = null;
     /** @var array<string>|null */
-    private ?array $fields;
-    private ?string $creation_date;
+    private ?array $fields = null;
+    private ?string $creation_date = null;
 
     /**
      * Loads model
@@ -100,7 +102,7 @@ class ImportModel
      *
      * @param Db $zdb Database instance
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(Db $zdb): bool
     {
@@ -128,7 +130,7 @@ class ImportModel
      *
      * @param Db $zdb Database instance
      *
-     * @return boolean
+     * @return bool
      */
     public function store(Db $zdb): bool
     {
@@ -149,7 +151,7 @@ class ImportModel
                 if ($results->count() > 0) {
                     return true;
                 } else {
-                    throw new \Exception(
+                    throw new Exception(
                         'An error occurred inserting new import model!'
                     );
                 }
@@ -185,14 +187,14 @@ class ImportModel
     /**
      * Get creation date
      *
-     * @param boolean $formatted Return date formatted, raw if false
+     * @param bool $formatted Return date formatted, raw if false
      *
      * @return string
      */
     public function getCreationDate(bool $formatted = true): string
     {
         if ($formatted === true) {
-            $date = new \DateTime($this->creation_date);
+            $date = new DateTime($this->creation_date);
             return $date->format(__("Y-m-d"));
         } else {
             return $this->creation_date;

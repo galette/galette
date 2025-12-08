@@ -42,6 +42,12 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 
+use function Safe\mkdir;
+use function Safe\preg_replace;
+use function Safe\realpath;
+use function Safe\rmdir;
+use function Safe\unlink;
+
 /**
  * Make Twig cache
  *
@@ -192,6 +198,12 @@ class MakeTwigCache extends AbstractCommand
             );
         }
 
+        if (!count($files)) {
+            throw new InvalidOptionException(
+                sprintf('Unable to find templates in directory "%s"', $directory)
+            );
+        }
+
         return $files;
     }
 
@@ -276,7 +288,7 @@ class MakeTwigCache extends AbstractCommand
     private function getTwigCacheHandler(string $directory): CacheInterface
     {
         return new class ($directory) extends FilesystemCache {
-            private string $directory;
+            private readonly string $directory;
 
             /**
              * Default constructor

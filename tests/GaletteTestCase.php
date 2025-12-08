@@ -97,7 +97,6 @@ abstract class GaletteTestCase extends TestCase
         $container = $app->getContainer();
         $_SERVER['HTTP_HOST'] = '';
 
-        $container->set('flash', $this->flash);
         $container->set(\Slim\Flash\Messages::class, $this->flash);
 
         $app->addRoutingMiddleware();
@@ -105,14 +104,14 @@ abstract class GaletteTestCase extends TestCase
 
         $this->container = $container;
 
-        $this->zdb = $container->get('zdb');
-        $this->i18n = $container->get('i18n');
-        $this->login = $container->get('login');
-        $this->preferences = $container->get('preferences');
-        $this->history = $container->get('history');
+        $this->zdb = $container->get(\Galette\Core\Db::class);
+        $this->i18n = $container->get(\Galette\Core\I18n::class);
+        $this->login = $container->get(\Galette\Core\Login::class);
+        $this->preferences = $container->get(\Galette\Core\Preferences::class);
+        $this->history = $container->get(\Galette\Core\History::class);
         $this->members_fields = $container->get('members_fields');
         $this->members_fields_cats = $container->get('members_fields_cats');
-        $this->session = $container->get('session');
+        $this->session = $container->get(\RKA\Session::class);
         $this->routeparser = $container->get(\Slim\Routing\RouteParser::class);
         $this->view = $container->get(\Slim\Views\Twig::class);
 
@@ -121,20 +120,22 @@ abstract class GaletteTestCase extends TestCase
         }
 
         global $zdb, $login, $hist, $i18n, $container, $galette_log_var, $routeparser;  // globals :(
+        //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
         $zdb = $this->zdb;
         $login = $this->login;
         $hist = $this->history;
         $i18n = $this->i18n;
         $container = $this->container;
         $routeparser = $this->routeparser;
+        //phpcs:enable
+        //FIXME: use DI when needed instead of global variable -- see also in includes/main.inc.php
+        $authenticate = $container->get(\Galette\Middleware\Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files
 
         $this->initPaymentTypes();
         $this->initStatus();
         $this->initContributionsTypes();
         $this->initModels();
         $this->initTitles();
-
-        $authenticate = new \Galette\Middleware\Authenticate($container);
 
         require GALETTE_ROOT . 'includes/routes/main.routes.php';
         require GALETTE_ROOT . 'includes/routes/authentication.routes.php';
@@ -207,7 +208,7 @@ abstract class GaletteTestCase extends TestCase
     /**
      * Loads member from a resultset
      *
-     * @param integer $id Id
+     * @param int $id Id
      *
      * @return void
      */
@@ -395,7 +396,7 @@ abstract class GaletteTestCase extends TestCase
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
-                    $pw_checked = password_verify($value, $adh->password);
+                    $pw_checked = password_verify((string) $value, (string) $adh->password);
                     $this->assertTrue($pw_checked);
                     break;
                 case 'ddn_adh':
@@ -478,7 +479,7 @@ abstract class GaletteTestCase extends TestCase
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
-                    $pw_checked = password_verify($value, $adh->password);
+                    $pw_checked = password_verify((string) $value, (string) $adh->password);
                     $this->assertTrue($pw_checked);
                     break;
                 case 'ddn_adh':
@@ -531,10 +532,10 @@ abstract class GaletteTestCase extends TestCase
         $mdata = $this->dataAdherentOne();
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
         $select->where(
-            array(
+            [
                 'a.fingerprint' => 'FAKER' . $this->seed,
                 'a.login_adh' => $mdata['login_adh']
-            )
+            ]
         );
 
         $results = $this->zdb->execute($select);
@@ -555,10 +556,10 @@ abstract class GaletteTestCase extends TestCase
         $mdata = $this->dataAdherentTwo();
         $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
         $select->where(
-            array(
+            [
                 'a.fingerprint' => 'FAKER' . $this->seed,
                 'a.login_adh' => $mdata['login_adh']
-            )
+            ]
         );
 
         $results = $this->zdb->execute($select);
@@ -805,7 +806,7 @@ abstract class GaletteTestCase extends TestCase
     {
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
         if (count($types->getList()) === 0) {
-            //payment types are not yet instanciated.
+            //payment types are not yet instantiated.
             $res = $types->installInit();
             $this->assertTrue($res);
         }
@@ -1039,8 +1040,8 @@ abstract class GaletteTestCase extends TestCase
     protected function getDocumentInstance(): \Galette\Entity\Document
     {
         $document = $this->getMockBuilder(\Galette\Entity\Document::class)
-            ->setConstructorArgs(array($this->zdb))
-            ->onlyMethods(array('handleFiles'))
+            ->setConstructorArgs([$this->zdb])
+            ->onlyMethods(['handleFiles'])
             ->getMock();
 
         $document->method('handleFiles')

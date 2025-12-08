@@ -90,9 +90,9 @@ class Status extends GaletteTestCase
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
-            array(
+            [
                 'text_orig'     => 'Test status'
-            )
+            ]
         );
         $results = $this->zdb->execute($select);
         $result = (array)$results->current();
@@ -121,9 +121,9 @@ class Status extends GaletteTestCase
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
-            array(
+            [
                 'text_orig'     => 'Tested status'
-            )
+            ]
         );
         $results = $this->zdb->execute($select);
         $result = (array)$results->current();
@@ -144,9 +144,9 @@ class Status extends GaletteTestCase
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
-            array(
+            [
                 'text_orig'     => 'Tested status'
-            )
+            ]
         );
         $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());

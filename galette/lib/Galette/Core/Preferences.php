@@ -23,10 +23,12 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Safe\DateTime;
 use Galette\Entity\PaymentType;
 use Galette\Entity\Social;
 use Galette\Features\Replacements;
 use Galette\Features\Socials;
+use Galette\IO\PdfMembersCardsAdaptative;
 use Galette\Util\Text;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Http\Message\UploadedFileInterface;
@@ -36,6 +38,11 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\Members;
+
+use function Safe\mkdir;
+use function Safe\preg_match;
+use function Safe\preg_replace;
+use function Safe\unlink;
 
 /**
  * Preferences for galette
@@ -52,46 +59,46 @@ use Galette\Repository\Members;
  * @property string $pref_ville Association
  * @property string $pref_region Region
  * @property string $pref_pays Country
- * @property integer $pref_postal_address Postal address to use, one of self::POSTAL_ADDRESS*
- * @property integer $pref_postal_staff_member Staff member ID from which retrieve postal address
+ * @property int $pref_postal_address Postal address to use, one of self::POSTAL_ADDRESS*
+ * @property int $pref_postal_staff_member Staff member ID from which retrieve postal address
  * @property string $pref_org_phone_number Phone number
- * @property integer $pref_org_phone Phone number to use, one of self::PHONE_NUMBER*
- * @property integer $pref_org_phone_staff_member Staff member ID from which retrieve phone number
+ * @property int $pref_org_phone Phone number to use, one of self::PHONE_NUMBER*
+ * @property int $pref_org_phone_staff_member Staff member ID from which retrieve phone number
  * @property string $pref_org_email Email address
- * @property boolean $pref_disable_members_socials Disable social networks for members
+ * @property bool $pref_disable_members_socials Disable social networks for members
  * @property string $pref_lang Default instance language
- * @property integer $pref_numrows Default number of rows in lists
- * @property integer $pref_statut Default status for new members
+ * @property int $pref_numrows Default number of rows in lists
+ * @property int $pref_statut Default status for new members
  * @property string $pref_email_nom
  * @property string $pref_email
  * @property string $pref_email_newadh
- * @property boolean $pref_bool_mailadh
- * @property boolean $pref_bool_mailowner
- * @property boolean $pref_editor_enabled
- * @property integer $pref_mail_method Mail method, see GaletteMail::METHOD_*
+ * @property bool $pref_bool_mailadh
+ * @property bool $pref_bool_mailowner
+ * @property bool $pref_editor_enabled
+ * @property int $pref_mail_method Mail method, see GaletteMail::METHOD_*
  * @property string $pref_mail_smtp
  * @property string $pref_mail_smtp_host
- * @property boolean $pref_mail_smtp_auth
- * @property boolean $pref_mail_smtp_secure
- * @property integer $pref_mail_smtp_port
+ * @property bool $pref_mail_smtp_auth
+ * @property bool $pref_mail_smtp_secure
+ * @property int $pref_mail_smtp_port
  * @property string $pref_mail_smtp_user
  * @property string $pref_mail_smtp_password
- * @property integer $pref_membership_ext
+ * @property int $pref_membership_ext
  * @property string $pref_beg_membership
- * @property integer $pref_membership_offermonths
+ * @property int $pref_membership_offermonths
  * @property string $pref_email_reply_to
  * @property string $pref_website
- * @property integer $pref_etiq_marges_v
- * @property integer $pref_etiq_marges_h
- * @property integer $pref_etiq_hspace
- * @property integer $pref_etiq_vspace
- * @property integer $pref_etiq_hsize
- * @property integer $pref_etiq_vsize
- * @property integer $pref_etiq_cols
- * @property integer $pref_etiq_rows
- * @property integer $pref_etiq_corps
- * @property boolean $pref_etiq_border
- * @property boolean $pref_force_picture_ratio
+ * @property int $pref_etiq_marges_v
+ * @property int $pref_etiq_marges_h
+ * @property int $pref_etiq_hspace
+ * @property int $pref_etiq_vspace
+ * @property int $pref_etiq_hsize
+ * @property int $pref_etiq_vsize
+ * @property int $pref_etiq_cols
+ * @property int $pref_etiq_rows
+ * @property int $pref_etiq_corps
+ * @property bool $pref_etiq_border
+ * @property bool $pref_force_picture_ratio
  * @property string $pref_member_picture_ratio
  * @property string $pref_card_abrev
  * @property string $pref_card_strip
@@ -100,65 +107,65 @@ use Galette\Repository\Members;
  * @property string $pref_card_bcol
  * @property string $pref_card_hcol
  * @property string $pref_bool_display_title
- * @property integer $pref_card_address
+ * @property int $pref_card_address
  * @property string $pref_card_year
- * @property integer $pref_card_marges_v
- * @property integer $pref_card_marges_h
- * @property integer $pref_card_vspace
- * @property integer $pref_card_hspace
+ * @property int $pref_card_marges_v
+ * @property int $pref_card_marges_h
+ * @property int $pref_card_vspace
+ * @property int $pref_card_hspace
  * @property string $pref_card_self
- * @property integer $pref_card_hsize
- * @property integer $pref_card_vsize
- * @property integer $pref_card_cols
- * @property integer $pref_card_rows
+ * @property int $pref_card_hsize
+ * @property int $pref_card_vsize
+ * @property int $pref_card_cols
+ * @property int $pref_card_rows
  * @property string $pref_theme Preferred theme
- * @property boolean $pref_hide_bg_image
- * @property boolean $pref_enable_custom_colors
+ * @property bool $pref_hide_bg_image
+ * @property bool $pref_enable_custom_colors
  * @property string $pref_cc_primary
  * @property string $pref_cc_primary_text
  * @property string $pref_cc_secondary
  * @property string $pref_cc_secondary_text
- * @property boolean $pref_bool_publicpages
- * @property integer $pref_publicpages_visibility_generic
- * @property integer $pref_publicpages_visibility_documents
- * @property integer $pref_publicpages_visibility_memberslist
- * @property integer $pref_publicpages_visibility_membersgallery
- * @property integer $pref_publicpages_visibility_stafflist
- * @property integer $pref_publicpages_visibility_staffgallery
- * @property boolean $pref_bool_groupsmanagers_are_staff
- * @property boolean $pref_bool_selfsubscribe
- * @property boolean $pref_bool_empty_form_link
+ * @property bool $pref_bool_publicpages
+ * @property int $pref_publicpages_visibility_generic
+ * @property int $pref_publicpages_visibility_documents
+ * @property int $pref_publicpages_visibility_memberslist
+ * @property int $pref_publicpages_visibility_membersgallery
+ * @property int $pref_publicpages_visibility_stafflist
+ * @property int $pref_publicpages_visibility_staffgallery
+ * @property bool $pref_bool_groupsmanagers_are_staff
+ * @property bool $pref_bool_selfsubscribe
+ * @property bool $pref_bool_empty_form_link
  * @property string $pref_member_form_grid
  * @property string $pref_mail_sign
  * @property string $pref_new_contrib_script
- * @property boolean $pref_bool_wrap_mails
+ * @property bool $pref_bool_wrap_mails
  * @property string $pref_rss_url
  * @property string $pref_adhesion_form
- * @property boolean $pref_mail_allow_unsecure
+ * @property bool $pref_mail_allow_unsecure
  * @property string $pref_instance_uuid
  * @property string $pref_registration_uuid
  * @property string $pref_telemetry_date
  * @property string $pref_registration_date
  * @property string $pref_footer
- * @property integer $pref_filter_account
+ * @property int $pref_filter_account
  * @property string $pref_galette_url
- * @property integer $pref_redirect_on_create
- * @property integer $pref_password_length
- * @property boolean $pref_password_blacklist
- * @property integer $pref_password_strength
- * @property integer $pref_default_paymenttype
- * @property boolean $pref_bool_create_member
- * @property boolean $pref_bool_groupsmanagers_create_member
- * @property boolean $pref_bool_groupsmanagers_edit_member
- * @property boolean $pref_bool_groupsmanagers_edit_groups
- * @property boolean $pref_bool_groupsmanagers_mailings
- * @property boolean $pref_bool_groupsmanagers_exports
- * @property boolean $pref_bool_groupsmanagers_create_contributions
- * @property boolean $pref_bool_groupsmanagers_create_transactions
- * @property boolean $pref_bool_groupsmanagers_see_contributions
- * @property boolean $pref_bool_groupsmanagers_see_transactions
+ * @property int $pref_redirect_on_create
+ * @property int $pref_password_length
+ * @property bool $pref_password_blacklist
+ * @property int $pref_password_strength
+ * @property int $pref_default_paymenttype
+ * @property bool $pref_bool_create_member
+ * @property bool $pref_bool_groupsmanagers_create_member
+ * @property bool $pref_bool_groupsmanagers_edit_member
+ * @property bool $pref_bool_groupsmanagers_edit_groups
+ * @property bool $pref_bool_groupsmanagers_mailings
+ * @property bool $pref_bool_groupsmanagers_exports
+ * @property bool $pref_bool_groupsmanagers_create_contributions
+ * @property bool $pref_bool_groupsmanagers_create_transactions
+ * @property bool $pref_bool_groupsmanagers_see_contributions
+ * @property bool $pref_bool_groupsmanagers_see_transactions
  * @property-read string[] $vpref_email_newadh list of mail senders
- * @property boolean $pref_noindex
+ * @property bool $pref_noindex
  */
 class Preferences
 {
@@ -288,8 +295,6 @@ class Preferences
         'pref_bool_display_title'    =>    false,
         'pref_card_hsize'    =>    PdfMembersCards::WIDTH,
         'pref_card_vsize'    =>    PdfMembersCards::HEIGHT,
-        'pref_card_rows'    =>    PdfMembersCards::ROWS,
-        'pref_card_cols'    =>    PdfMembersCards::COLS,
         'pref_card_address'    =>    1,
         'pref_card_year'    =>    '',
         'pref_card_marges_v'    =>    15,
@@ -371,8 +376,8 @@ class Preferences
     /**
      * Default constructor
      *
-     * @param Db      $zdb  Db instance
-     * @param boolean $load Automatically load preferences on load
+     * @param Db   $zdb  Db instance
+     * @param bool $load Automatically load preferences on load
      *
      * @return void
      */
@@ -389,7 +394,7 @@ class Preferences
      * Check if all fields referenced in the default array do exist,
      * create them if not
      *
-     * @return boolean
+     * @return bool
      */
     private function checkUpdate(): bool
     {
@@ -451,7 +456,7 @@ class Preferences
     /**
      * Load current preferences from database.
      *
-     * @return boolean
+     * @return bool
      */
     public function load(): bool
     {
@@ -464,7 +469,7 @@ class Preferences
             }
             $this->socials = Social::getListForMember(null);
             return true;
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             Analog::log(
                 'Preferences cannot be loaded. Galette should not work without '
                 . 'preferences. Exiting.',
@@ -481,7 +486,7 @@ class Preferences
      * @param string $adm_login admin login entered at install time
      * @param string $adm_pass  admin password entered at install time
      *
-     * @return boolean
+     * @return bool
      * @throws Throwable
      */
     public function installInit(string $lang, string $adm_login, string $adm_pass): bool
@@ -546,7 +551,7 @@ class Preferences
      * @param array<string, mixed> $values Values
      * @param Login                $login  Logged in user
      *
-     * @return boolean
+     * @return bool
      */
     public function check(array $values, Login $login): bool
     {
@@ -604,7 +609,7 @@ class Preferences
             ) {
                 if (
                     !isset($insert_values['pref_mail_smtp_user'])
-                    || trim($insert_values['pref_mail_smtp_user']) == ''
+                    || trim((string) $insert_values['pref_mail_smtp_user']) == ''
                 ) {
                     $this->errors[] = _T("- You must provide a login for SMTP authentication.");
                 }
@@ -641,16 +646,16 @@ class Preferences
         // missing required fields?
         foreach (array_keys($this->required) as $val) {
             if (!isset($values[$val]) || is_string($values[$val]) && trim($values[$val]) == '') {
-                $this->errors[] = str_replace(
-                    '%field',
-                    $val,
-                    _T("- Mandatory field %field empty.")
+                $this->errors[] = sprintf(
+                    //TRANS: parameter is a field name
+                    _T('- Mandatory field %1$s empty.'),
+                    $val
                 );
             }
         }
 
         // Check passwords. Hash will be done into the Preferences class
-        if (!Galette::isDemo() && isset($values['pref_admin_pass_check']) && strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
+        if (!Galette::isDemo() && isset($values['pref_admin_pass_check']) && strcmp($insert_values['pref_admin_pass'], (string) $values['pref_admin_pass_check']) != 0) {
             $this->errors[] = _T("Passwords mismatch");
         }
 
@@ -724,8 +729,8 @@ class Preferences
                 //may be a comma-separated list of valid emails:
                 //"mail@domain.com,other@mail.com" only for pref_email_newadh.
                 $addresses = [];
-                if (trim($value) != '') {
-                    $addresses = $fieldname == 'pref_email_newadh' ? explode(',', $value) : [$value];
+                if (trim((string) $value) != '') {
+                    $addresses = $fieldname == 'pref_email_newadh' ? explode(',', (string) $value) : [$value];
                 }
                 foreach ($addresses as $address) {
                     if (!GaletteMail::isValidEmail($address)) {
@@ -741,7 +746,7 @@ class Preferences
                         'Trying to set superadmin login while in DEMO.',
                         Analog::WARNING
                     );
-                } elseif (strlen($value) < 4) {
+                } elseif (strlen((string) $value) < 4) {
                     $this->errors[] = _T("- The username must be composed of at least 4 characters!");
                 } elseif ($login->loginExists($value)) {
                     //check if login is already taken
@@ -781,7 +786,7 @@ class Preferences
             case 'pref_card_bcol':
             case 'pref_card_hcol':
                 $matches = [];
-                if (!preg_match("/^(#)?([0-9A-F]{6})$/i", $value, $matches)) {
+                if (!preg_match("/^(#)?([0-9A-F]{6})$/i", (string) $value, $matches)) {
                     // Set strip background colors to black or white (for tcol)
                     $value = ($fieldname == 'pref_card_tcol' ? '#FFFFFF' : '#000000');
                 } else {
@@ -811,7 +816,7 @@ class Preferences
                 }
                 break;
             case 'pref_beg_membership':
-                $beg_membership = explode("/", $value);
+                $beg_membership = explode("/", (string) $value);
                 if (count($beg_membership) != 2) {
                     $this->errors[] = _T("- Invalid format of beginning of membership.");
                 } else {
@@ -827,7 +832,7 @@ class Preferences
                 }
                 break;
             case 'pref_card_year':
-                if ($value !== 'DEADLINE' && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', $value)) {
+                if ($value !== 'DEADLINE' && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', (string) $value)) {
                     $this->errors[] = _T("- Invalid year for cards.");
                 }
                 break;
@@ -847,9 +852,9 @@ class Preferences
     /**
      * Will store all preferences in the database
      *
-     * @param boolean $updating True if we're updating instance
+     * @param bool $updating True if we're updating instance
      *
-     * @return boolean
+     * @return bool
      */
     public function store(bool $updating = false): bool
     {
@@ -880,14 +885,6 @@ class Preferences
                         //Reset to default, should not be empty
                         $v = self::$defaults['pref_adhesion_form'];
                     }
-                    $value = $v;
-                }
-                if ($k === 'pref_card_cols') {
-                    $v = PdfMembersCards::getCols();
-                    $value = $v;
-                }
-                if ($k === 'pref_card_rows') {
-                    $v = PdfMembersCards::getRows();
                     $value = $v;
                 }
 
@@ -944,7 +941,6 @@ class Preferences
             '/%country/',
         ];
 
-        $replacements = null;
 
         if ($this->prefs['pref_postal_address'] == self::POSTAL_ADDRESS_FROM_PREFS) {
             $_address = $this->prefs['pref_adresse'];
@@ -963,10 +959,11 @@ class Preferences
         } else {
             //get selected staff member address
             $adh = new Adherent($this->zdb, (int)$this->prefs['pref_postal_staff_member']);
-            $_complement = preg_replace(
-                ['/%name/', '/%status/'],
-                [$this->prefs['pref_nom'], $adh->sstatus],
-                _T("%name association's %status")
+            $_complement = sprintf(
+                //TRANS: first parameter is name, second is status
+                _T('%1$s association\'s %2$s'),
+                $this->prefs['pref_nom'],
+                $adh->sstatus,
             ) . "\n";
             $_address = $adh->address;
             $_country = $adh->country != '' ? '- ' . $adh->country : '';
@@ -981,12 +978,6 @@ class Preferences
             ];
         }
 
-        /*FIXME: i18n fails :/ */
-        /*$r = preg_replace(
-            $regs,
-            $replacements,
-            _T("%name\n%complement\n%address\n%zip %town %country")
-        );*/
         return preg_replace(
             $regs,
             $replacements,
@@ -1001,22 +992,21 @@ class Preferences
      */
     public function getPhoneNumber(): string
     {
-        $_phone = '';
         if ($this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_PREFS) {
             $_phone = $this->prefs['pref_org_phone_number'];
         } else {
             //get selected staff phone number
             $adh = new Adherent($this->zdb, (int)$this->prefs['pref_org_phone_staff_member']);
-            $_phone = $this->prefs['pref_org_phone'] == self::PHONE_NUMBER_FROM_STAFF ? $adh->phone : $adh->gsm;
+            $_phone = $this->prefs['pref_org_phone'] == self::PHONE_NUMBER_MOBILE_FROM_STAFF ? $adh->gsm : $adh->phone;
         }
 
-        return $_phone;
+        return $_phone ?? '';
     }
 
     /**
      * Are public pages visible?
      *
-     * @return boolean
+     * @return bool
      */
     public function arePublicPagesEnabled(): bool
     {
@@ -1028,7 +1018,7 @@ class Preferences
      *
      * @param Authentication $login Authentication instance
      *
-     * @return boolean
+     * @return bool
      *
      * @deprecated 1.2.0
      */
@@ -1048,7 +1038,7 @@ class Preferences
      * @param Authentication $login Authentication instance
      * @param string         $right Right to check
      *
-     * @return boolean
+     * @return bool
      */
     public function showPublicPage(Authentication $login, string $right): bool
     {
@@ -1164,6 +1154,22 @@ class Preferences
                 'pref_enable_custom_colors'
             ]
         ];
+
+        //Following conditions are due to PdfMembersCards/PdfMembersCardsAdaptative switching. Code will be simplified once PdfMembersCardsAdaptative will be the only one
+        if ($name === 'pref_card_cols') {
+            return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getCols() : PdfMembersCards::getCols();
+        }
+        if ($name === 'pref_card_rows') {
+            return GALETTE_ADAPTATIVE_CARDS ? PdfMembersCardsAdaptative::getRows() : PdfMembersCards::getRows();
+        }
+
+        if ($name === 'pref_card_vsize' && empty($this->prefs['pref_card_vsize'])) {
+            return PdfMembersCards::HEIGHT;
+        }
+
+        if ($name === 'pref_card_hsize' && empty($this->prefs['pref_card_hsize'])) {
+            return PdfMembersCards::WIDTH;
+        }
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             if (
@@ -1284,7 +1290,7 @@ class Preferences
 
         //some values need to be changed (e.g., passwords)
         if ($name == 'pref_admin_pass') {
-            $value = password_hash($value, PASSWORD_BCRYPT);
+            $value = password_hash((string) $value, PASSWORD_BCRYPT);
         }
 
         //okay, let's update value
@@ -1298,7 +1304,6 @@ class Preferences
      */
     public function getURL(): string
     {
-        $url = null;
         if (isset($this->prefs['pref_galette_url']) && !empty($this->prefs['pref_galette_url'])) {
             $url = $this->prefs['pref_galette_url'];
         } else {
@@ -1323,6 +1328,9 @@ class Preferences
         }
 
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
+        if ($scheme === 'http' && isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            $scheme = 'https';
+        }
         return $scheme . '://' . $_SERVER['HTTP_HOST'];
     }
 
@@ -1335,7 +1343,7 @@ class Preferences
     {
         $rawdate = $this->prefs['pref_telemetry_date'];
         if ($rawdate) {
-            $date = new \DateTime($rawdate);
+            $date = new DateTime($rawdate);
             return $date->format(_T('Y-m-d H:i:s'));
         } else {
             return _T('Never');
@@ -1351,7 +1359,7 @@ class Preferences
     {
         $rawdate = $this->prefs['pref_registration_date'];
         if ($rawdate) {
-            $date = new \DateTime($rawdate);
+            $date = new DateTime($rawdate);
             return $date->format(_T('Y-m-d H:i:s'));
         }
 
@@ -1431,11 +1439,12 @@ class Preferences
     /**
      * Get email signature
      *
-     * @param PHPMailer $mail PHPMailer instance
+     * @param PHPMailer $mail    PHPMailer instance
+     * @param bool      $as_text Whether to return signature as text or HTML (default)
      *
      * @return string
      */
-    public function getMailSignature(PHPMailer $mail): string
+    public function getMailSignature(PHPMailer $mail, bool $as_text = false): string
     {
         global $routeparser;
 
@@ -1455,6 +1464,9 @@ class Preferences
             ->setSocialReplacements();
 
         $signature = $this->proceedReplacements($signature);
+        if ($as_text) {
+            $signature = Text::convertHtmlToText($signature);
+        }
 
         return "\r\n-- \r\n" . $signature;
     }
@@ -1462,7 +1474,7 @@ class Preferences
     /**
      * Get patterns for mail signature
      *
-     * @param boolean $legacy Whether to load legacy patterns
+     * @param bool $legacy Whether to load legacy patterns
      *
      * @return array<string, array<string, string>>
      */

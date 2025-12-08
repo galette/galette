@@ -23,12 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Safe\DateTime;
 use Throwable;
 use Analog\Analog;
 use Galette\Filters\HistoryList;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Select;
+
+use function Safe\preg_split;
 
 /**
  * History management
@@ -44,10 +47,6 @@ class History
     public const PK = 'id_log';
 
     protected int $count;
-    protected Db $zdb;
-    protected Login $login;
-    protected Preferences $preferences;
-    protected HistoryList $filters;
 
     /** @var array<int, string> */
     protected array $users;
@@ -64,13 +63,12 @@ class History
      * @param Preferences  $preferences Preferences
      * @param ?HistoryList $filters     Filtering
      */
-    public function __construct(Db $zdb, Login $login, Preferences $preferences, ?HistoryList $filters = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-        $this->preferences = $preferences;
-
-        $this->filters = $filters ?? new HistoryList();
+    public function __construct(
+        protected readonly Db $zdb,
+        protected readonly Login $login,
+        protected readonly Preferences $preferences,
+        protected ?HistoryList $filters = new HistoryList()
+    ) {
     }
 
     /**
@@ -89,7 +87,7 @@ class History
             defined('GALETTE_X_FORWARDED_FOR_INDEX')
             && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
         ) {
-            $split_xff = preg_split('/,\s*/', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $split_xff = preg_split('/,\s*/', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);
             $ip = $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
@@ -145,7 +143,7 @@ class History
     /**
      * Delete all entries
      *
-     * @return boolean
+     * @return bool
      */
     public function clean(): bool
     {
@@ -294,7 +292,7 @@ class History
     {
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->raw_start_date_filter);
+                $d = new DateTime($this->filters->raw_start_date_filter);
                 $d->setTime(0, 0, 0);
                 $select->where->greaterThanOrEqualTo(
                     'date_log',
@@ -303,7 +301,7 @@ class History
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->raw_end_date_filter);
+                $d = new DateTime($this->filters->raw_end_date_filter);
                 $d->setTime(23, 59, 59);
                 $select->where->lessThanOrEqualTo(
                     'date_log',
@@ -412,7 +410,7 @@ class History
     /**
      * Get table's name
      *
-     * @param boolean $prefixed Whether table name should be prefixed
+     * @param bool $prefixed Whether table name should be prefixed
      *
      * @return string
      */

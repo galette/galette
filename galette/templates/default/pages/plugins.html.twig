@@ -49,7 +49,7 @@
                         class="toggleActivation use"
                     >
                         <i class="ui toggle on red icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Click here to deactivate plugin '%name'")|replace({"%name": plugin.name}) }}</span>
+                        <span class="ui special popup">{{ _T("Click here to deactivate plugin '%1$s'")|format(plugin.name) }}</span>
                     </a>
     {% if plugins.needsDatabase(name) %}
                     <a
@@ -58,7 +58,7 @@
                         class="initdb action"
                     >
                         <i class="ui database blue icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Initialize '%name' database")|replace({"%name": plugin.name}) }}</span>
+                        <span class="ui special popup">{{ _T("Initialize '%1$s' database")|format(plugin.name) }}</span>
                     </a>
     {% else %}
                     <i class="ui icon">&nbsp;</i>
@@ -100,7 +100,7 @@
                         class="toggleActivation delete"
                     >
                         <i class="ui toggle off grey icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Activate plugin '%name'")|replace({"%name": name}) }}</span>
+                        <span class="ui special popup">{{ _T("Activate plugin '%1$s'")|format(name) }}</span>
                     </a>
                     <i class="ui icon">&nbsp;</i>
                 </td>
@@ -159,9 +159,9 @@
             _btnuser_mapping();
 
             var _initdb_dialog = function(res, plugin) {
-                var _title = '{{ _T("Plugin database initialization: %name")|e('js') }}';
+                var _title = '{{ _T("Plugin database initialization: %1$s")|e('js') }}';
                 {% include "elements/js/modal.js.twig" with {
-                    modal_title: "_title.replace('%name', plugin)",
+                    modal_title: "_title.replace('%1$s', plugin)",
                     modal_content: "res",
                     modal_class: "initdb-modal large",
                     modal_content_class: "scrolling",

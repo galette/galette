@@ -23,9 +23,20 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use RuntimeException;
+use Safe\Exceptions\DirException;
+use Safe\Exceptions\FilesystemException;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
+
+use function Safe\define;
+use function Safe\fclose;
+use function Safe\file_get_contents;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\opendir;
+use function Safe\preg_match;
 
 /**
  * Galette installation
@@ -68,10 +79,9 @@ class Install
     private string $db_port;
     private string $db_name;
     private string $db_user;
-    private ?string $db_pass;
+    private ?string $db_pass = null;
     private ?string $db_prefix = null;
 
-    private bool $db_connected;
     /** @var array<string, string> */
     private array $report;
 
@@ -87,7 +97,6 @@ class Install
     {
         $this->step = self::STEP_CHECK;
         $this->mode = null;
-        $this->db_connected = false;
         $this->db_prefix = null;
     }
 
@@ -124,7 +133,7 @@ class Install
                 $step_documentation = 'installation/update.html#previous-version-selection';
                 break;
             case self::STEP_DB_UPGRADE:
-                $step_title = _T("Datapase upgrade");
+                $step_title = _T("Database upgrade");
                 $step_documentation = 'installation/update.html#updating-database';
                 break;
             case self::STEP_DB_INSTALL:
@@ -186,7 +195,7 @@ class Install
     /**
      * Are we installing?
      *
-     * @return boolean
+     * @return bool
      */
     public function isInstall(): bool
     {
@@ -196,7 +205,7 @@ class Install
     /**
      * Are we upgrading?
      *
-     * @return boolean
+     * @return bool
      */
     public function isUpgrade(): bool
     {
@@ -245,7 +254,6 @@ class Install
                 $this->step -= 1;
             }
         } else {
-            $msg = null;
             if ($this->step === self::STEP_END) {
                 $msg = 'Ok man, install is finished already!';
             } else {
@@ -258,7 +266,7 @@ class Install
     /**
      * Are we at check step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isCheckStep(): bool
     {
@@ -278,7 +286,7 @@ class Install
     /**
      * Are we at type step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isTypeStep(): bool
     {
@@ -298,7 +306,7 @@ class Install
     /**
      * Are we at database step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDbStep(): bool
     {
@@ -308,7 +316,7 @@ class Install
     /**
      * Is DB step passed?
      *
-     * @return boolean
+     * @return bool
      */
     public function postCheckDb(): bool
     {
@@ -453,7 +461,7 @@ class Install
     /**
      * Are we at database check step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDbCheckStep(): bool
     {
@@ -463,7 +471,7 @@ class Install
     /**
      * Test database connection
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Throwable
      */
@@ -480,16 +488,6 @@ class Install
     }
 
     /**
-     * Is database connexion ok?
-     *
-     * @return boolean
-     */
-    public function isDbConnected(): bool
-    {
-        return $this->db_connected;
-    }
-
-    /**
      * Set step to version selection
      *
      * @return void
@@ -502,7 +500,7 @@ class Install
     /**
      * Are we at version selection step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isVersionSelectionStep(): bool
     {
@@ -522,7 +520,7 @@ class Install
     /**
      * Are we at db installation step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDbinstallStep(): bool
     {
@@ -542,7 +540,7 @@ class Install
     /**
      * Are we at db upgrade step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isDbUpgradeStep(): bool
     {
@@ -594,11 +592,11 @@ class Install
         string $db_type = 'mysql',
         ?string $version = null
     ): array {
-        $dh = opendir($path . '/scripts');
         $php_update_scripts = [];
         $sql_update_scripts = [];
         $update_scripts = [];
-        if ($dh !== false) {
+        try {
+            $dh = opendir($path . '/scripts');
             while (($file = readdir($dh)) !== false) {
                 if (preg_match("/upgrade-to-(.*).php/", $file, $ver)) {
                     if ($version === null) {
@@ -624,6 +622,8 @@ class Install
             $update_scripts = array_merge($sql_update_scripts, $php_update_scripts);
             closedir($dh);
             ksort($update_scripts);
+        } catch (DirException) {
+            //empty catch
         }
         return $update_scripts;
     }
@@ -646,17 +646,19 @@ class Install
         foreach ($update_scripts as $key => $val) {
             if (str_ends_with($val, '.sql')) {
                 //just a SQL script, run it
-                $script = fopen($scripts_path . $val, 'r');
-
-                if ($script === false) {
-                    throw new \RuntimeException(
-                        'Unable to read SQL script from ' . $scripts_path . $val
+                try {
+                    $script = fopen($scripts_path . $val, 'r');
+                } catch (FilesystemException $e) {
+                    throw new RuntimeException(
+                        'Unable to read SQL script from ' . $scripts_path . $val,
+                        0,
+                        $e
                     );
                 }
 
-                $sql_query = @fread(
+                $sql_query = @fread( //@phpstan-ignore theCodingMachineSafe.function
                     $script,
-                    @filesize($scripts_path . $val)
+                    @filesize($scripts_path . $val) //@phpstan-ignore theCodingMachineSafe.function
                 ) . "\n";
 
                 $sql_res = $this->executeSql($zdb, $sql_query);
@@ -693,7 +695,7 @@ class Install
                     );
                     $ret['res'] = true;
                     $this->report[] = $ret;
-                } catch (\RuntimeException $e) {
+                } catch (RuntimeException $e) {
                     Analog::log(
                         $e->getMessage(),
                         Analog::ERROR
@@ -723,7 +725,7 @@ class Install
      * @param Db     $zdb       Database instance
      * @param string $sql_query SQL instructions
      *
-     * @return boolean
+     * @return bool
      */
     public function executeSql(Db $zdb, string $sql_query): bool
     {
@@ -743,7 +745,7 @@ class Install
 
         $sql_size = count($sql_query);
         for ($i = 0; $i < $sql_size; $i++) {
-            $query = trim($sql_query[$i]);
+            $query = trim((string) $sql_query[$i]);
             if ($query != '' && $query[0] != '-') {
                 //some output infos
                 $ret = [
@@ -840,7 +842,7 @@ class Install
     /**
      * Are we at super admin information step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isAdminStep(): bool
     {
@@ -895,7 +897,7 @@ class Install
     /**
      * Are we at telemetry step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isTelemetryStep(): bool
     {
@@ -915,7 +917,7 @@ class Install
     /**
      * Are we at Galette initialization step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isGaletteInitStep(): bool
     {
@@ -965,7 +967,7 @@ class Install
      * Load contents from existing config file
      *
      * @param array<string, string> $post_data Data posted
-     * @param boolean               $pass      Retrieve password
+     * @param bool                  $pass      Retrieve password
      *
      * @return array<string, ?string>
      */
@@ -981,8 +983,8 @@ class Install
         ];
 
         if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
-            $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
-            if ($conf !== false) {
+            try {
+                $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
                 if (!isset($post_data['install_dbtype'])) {
                     preg_match(
                         '/TYPE_DB["\'], ["\'](.*)["\']\);/',
@@ -1056,6 +1058,8 @@ class Install
                         $existing['pwd_db'] = $matches[1];
                     }
                 }
+            } catch (FilesystemException) {
+                //empty catch
             }
         }
 
@@ -1065,7 +1069,7 @@ class Install
     /**
      * Write configuration file to disk
      *
-     * @return boolean
+     * @return bool
      */
     public function writeConfFile(): bool
     {
@@ -1110,7 +1114,7 @@ class Install
         if (
             is_writable(GALETTE_CONFIG_PATH)
             && (!file_exists($conffile) || is_writable($conffile))
-            && $fd = @fopen($conffile, 'w')
+            && $fd = @\fopen($conffile, 'w') //@phpstan-ignore theCodingMachineSafe.function
         ) {
             $data = $this->getConfigFileContents();
             fwrite($fd, $data);
@@ -1156,7 +1160,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * @param Db    $zdb   Database instance
      * @param Login $login Logged in instance
      *
-     * @return boolean
+     * @return bool
      */
     public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
@@ -1169,9 +1173,9 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $fc = new \Galette\Entity\FieldsConfig(
                 $zdb,
                 \Galette\Entity\Adherent::TABLE,
-                //@phpstan-ignore-next-line
+                //@phpstan-ignore variable.undefined
                 $members_fields,
-                //@phpstan-ignore-next-line
+                //@phpstan-ignore variable.undefined
                 $members_fields_cats,
                 true
             );
@@ -1280,7 +1284,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
     /**
      * Are we at end step?
      *
-     * @return boolean
+     * @return bool
      */
     public function isEndStep(): bool
     {
@@ -1316,7 +1320,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             } else {
                 return $db_ver;
             }
-        } catch (\LogicException $e) {
+        } catch (\LogicException) {
             return false;
         }
     }
@@ -1326,7 +1330,7 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      *
      * @param int $step Step
      *
-     * @return boolean
+     * @return bool
      */
     public function isStepPassed(int $step): bool
     {

@@ -24,7 +24,11 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use Safe\DateTime;
+use Exception;
 use Galette\Repository\Groups;
+use OverflowException;
+use RuntimeException;
 use Throwable;
 use Galette\Core\Login;
 use Analog\Analog;
@@ -65,7 +69,7 @@ class Group
      *
      * @param null|int|ArrayObject<string,int|string> $args Either a ResultSet row or its id for to load
      *                                                      a specific group, or null to just
-     *                                                      instanciate object
+     *                                                      instantiate object
      */
     public function __construct(ArrayObject|int|null $args = null)
     {
@@ -248,14 +252,6 @@ class Group
         try {
             $select = $zdb->select(self::TABLE, 'a');
 
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                $select->join(
-                    ['b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE],
-                    'a.' . self::PK . '=b.' . self::PK,
-                    []
-                )->where(['b.' . Adherent::PK => $this->login->id]);
-            }
-
             $select->where(['parent_group' => $this->id])
                 ->order('group_name ASC');
 
@@ -281,9 +277,9 @@ class Group
     /**
      * Remove specified group
      *
-     * @param boolean $cascade Also remove members and managers
+     * @param bool $cascade Also remove members and managers
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(bool $cascade = false): bool
     {
@@ -343,10 +339,9 @@ class Group
             }
             if ($zdb->isForeignKeyException($e)) {
                 Analog::log(
-                    str_replace(
-                        '%group',
+                    sprintf(
+                        'Group "%1$s" still have members!',
                         $this->group_name,
-                        'Group "%group" still have members!'
                     ),
                     Analog::WARNING
                 );
@@ -366,7 +361,7 @@ class Group
     /**
      * Is group empty? (after first deletion try)
      *
-     * @return boolean
+     * @return bool
      */
     public function isEmpty(): bool
     {
@@ -376,7 +371,7 @@ class Group
     /**
      * Detach a group from its parent
      *
-     * @return boolean
+     * @return bool
      */
     public function detach(): bool
     {
@@ -418,7 +413,7 @@ class Group
     /**
      * Store the group
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
@@ -429,7 +424,7 @@ class Group
             $parent_group = $this->parent_group->getId();
         }
         if (!Groups::isUnique($zdb, $this->getName(), $parent_group, $this->id ?? null)) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 _T("The group name you have requested already exists in the database.")
             );
         }
@@ -462,7 +457,7 @@ class Group
                     return true;
                 } else {
                     $hist->add(_T("Fail to add new group."));
-                    throw new \Exception(
+                    throw new Exception(
                         'An error occurred inserting new group!'
                     );
                 }
@@ -502,7 +497,7 @@ class Group
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function isManager(Login $login): bool
     {
@@ -527,7 +522,7 @@ class Group
     /**
      * Get group id
      *
-     * @return integer
+     * @return int
      */
     public function getId(): ?int
     {
@@ -537,7 +532,7 @@ class Group
     /**
      * Get Level of the group
      *
-     * @return integer
+     * @return int
      */
     public function getLevel(): int
     {
@@ -651,14 +646,14 @@ class Group
     /**
      * Get group creation date
      *
-     * @param boolean $formatted Return date formatted, raw if false
+     * @param bool $formatted Return date formatted, raw if false
      *
      * @return string
      */
     public function getCreationDate(bool $formatted = true): string
     {
         if ($formatted === true) {
-            $date = new \DateTime($this->creation_date);
+            $date = new DateTime($this->creation_date);
             return $date->format(__("Y-m-d"));
         } else {
             return $this->creation_date;
@@ -668,7 +663,7 @@ class Group
     /**
      * Get member count
      *
-     * @param boolean $force Force members load, defaults to false
+     * @param bool $force Force members load, defaults to false
      *
      * @return int
      */
@@ -703,7 +698,7 @@ class Group
      *
      * @param Group $group Parent group
      *
-     * @return boolean
+     * @return bool
      */
     public function canSetParentGroup(Group $group): bool
     {
@@ -729,7 +724,7 @@ class Group
 
         if (!$this->canSetParentGroup($group)) {
             //does not seem to work :/
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
                     _T('Group `%1$s` cannot be set as parent!'),
                     $group->getName()
@@ -762,14 +757,14 @@ class Group
             );
             $zdb->execute($insert);
             $this->members[] = $member;
-        } catch (\OverflowException $e) {
+        } catch (OverflowException) {
             //nothing to do, member is already in group
             Analog::log(
                 'Member `' . $member->sname . '` already in group `'
                 . $this->group_name . '` (' . $this->id . ').',
                 Analog::INFO
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot add member to group `' . $this->group_name
                 . '` (' . $this->id . ') | ' . $e->getMessage(),
@@ -836,7 +831,7 @@ class Group
                         . '` (' . $this->id . ').',
                         Analog::ERROR
                     );
-                    throw new \Exception(
+                    throw new Exception(
                         'Unable to attach `' . $m->sname . '` '
                         . 'to ' . $this->group_name . '(' . $this->id . ')'
                     );
@@ -853,7 +848,7 @@ class Group
 
             return true;
         } catch (Throwable $e) {
-            $te = new \RuntimeException('Unable to attach members to group', $e->getCode(), $e);
+            $te = new RuntimeException('Unable to attach members to group', $e->getCode(), $e);
             $zdb->connection->rollBack();
             $messages = [];
             do {
@@ -925,7 +920,7 @@ class Group
                         . '` (' . $this->id . ').',
                         Analog::ERROR
                     );
-                    throw new \Exception(
+                    throw new Exception(
                         'Unable to attach `' . $m->sname . '` '
                         . 'to ' . $this->group_name . '(' . $this->id . ')'
                     );
@@ -975,7 +970,7 @@ class Group
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canEdit(Login $login): bool
     {

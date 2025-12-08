@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 use Galette\Entity\PdfModel;
 
+//TODO: find a better way.
+//phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 $pdfmodels_fields = [
     [
         'model_id'  => PdfModel::MAIN_MODEL,
@@ -42,7 +44,7 @@ $pdfmodels_fields = [
         'model_body'    => null,
         'model_styles'  => 'div#pdf_title {
     font-size: 1.4em;
-    font-wieght:bold;
+    font-weight:bold;
     text-align: center;
 }
 
@@ -82,7 +84,7 @@ td[dir=rtl]#pdf_assoname {
 hr {
     cap:\'\';
     join:\'\';
-    dash:\'\';
+    dash:1;
     phase:\'\';
 }',
         'model_parent'  => null

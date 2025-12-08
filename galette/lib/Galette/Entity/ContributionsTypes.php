@@ -35,7 +35,7 @@ use Throwable;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property int $id
  * @property string $label
  * @property string $libelle
  * @property ?float $amount
@@ -52,11 +52,9 @@ class ContributionsTypes
     public const TABLE = 'types_cotisation';
     public const PK = 'id_type_cotis';
 
-    private Db $zdb;
-
     private int $id;
     private string $label;
-    private ?float $amount; //@phpstan-ignore-line
+    private ?float $amount = null;
     private int $extension;
 
     public const ID_NOT_EXITS = -1;
@@ -81,9 +79,10 @@ class ContributionsTypes
      * @param Db                                      $zdb  Database
      * @param int|ArrayObject<string,int|string>|null $args Optional existing result set
      */
-    public function __construct(Db $zdb, int|ArrayObject|null $args = null)
-    {
-        $this->zdb = $zdb;
+    public function __construct(
+        private Db $zdb,
+        int|ArrayObject|null $args = null
+    ) {
         $this->extension = self::DEFAULT_TYPE;
         if (is_int($args)) {
             $this->load($args);
@@ -97,7 +96,7 @@ class ContributionsTypes
      *
      * @param int $id Entry ID
      *
-     * @return boolean true if query succeed, false otherwise
+     * @return bool true if query succeed, false otherwise
      */
     public function load(int $id): bool
     {
@@ -149,7 +148,7 @@ class ContributionsTypes
     /**
      * Does current type give membership extension?
      *
-     * @return boolean
+     * @return bool
      */
     public function isExtension(): bool
     {
@@ -169,7 +168,7 @@ class ContributionsTypes
     /**
      * Set defaults at install time
      *
-     * @return boolean
+     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -226,7 +225,7 @@ class ContributionsTypes
      * Get list in an array built as:
      * $array[id] = "translated label"
      *
-     * @param boolean|null $extent Filter on (non) contributions types
+     * @param bool|null $extent Filter on (non) contributions types
      *
      * @return array<int, array<string, mixed>>
      */
@@ -310,7 +309,7 @@ class ContributionsTypes
     /**
      * Get an entry
      *
-     * @param integer $id Entry ID
+     * @param int $id Entry ID
      *
      * @return ArrayObject<string, int|string>|false Row if succeed ; false: no such id
      */
@@ -341,9 +340,9 @@ class ContributionsTypes
     /**
      * Get a label
      *
-     * @param integer $id         Id
-     * @param boolean $translated Do we want translated or original label?
-     *                            Defaults to true.
+     * @param int  $id         Id
+     * @param bool $translated Do we want translated or original label?
+     *                         Defaults to true.
      *
      * @return string|int
      */
@@ -395,7 +394,7 @@ class ContributionsTypes
      * @param ?float $amount    The amount
      * @param int    $extension Membership extension in months, 0 for a donation or -1 for preferences default
      *
-     * @return bool|integer  -2 : label already exists
+     * @return bool|int  -2 : label already exists
      */
     public function add(string $label, ?float $amount, int $extension): bool|int
     {
@@ -453,12 +452,12 @@ class ContributionsTypes
     /**
      * Update in database.
      *
-     * @param integer $id        Entry ID
-     * @param string  $label     The label
-     * @param ?float  $amount    The amount
-     * @param int     $extension Membership extension in months, 0 for a donation or -1 for preferences default
+     * @param int    $id        Entry ID
+     * @param string $label     The label
+     * @param ?float $amount    The amount
+     * @param int    $extension Membership extension in months, 0 for a donation or -1 for preferences default
      *
-     * @return self::ID_NOT_EXITS|boolean
+     * @return self::ID_NOT_EXITS|bool
      */
     public function update(int $id, string $label, ?float $amount, int $extension): int|bool
     {
@@ -509,9 +508,9 @@ class ContributionsTypes
     /**
      * Delete entry
      *
-     * @param integer $id Entry ID
+     * @param int $id Entry ID
      *
-     * @return self::ID_NOT_EXITS|boolean
+     * @return self::ID_NOT_EXITS|bool
      */
     public function delete(int $id): int|bool
     {
@@ -555,9 +554,9 @@ class ContributionsTypes
     /**
      * Check if this entry is used.
      *
-     * @param integer $id Entry ID
+     * @param int $id Entry ID
      *
-     * @return boolean
+     * @return bool
      */
     public function isUsed(int $id): bool
     {
@@ -600,12 +599,10 @@ class ContributionsTypes
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
-            switch ($name) {
-                case 'libelle':
-                    return _T($this->label);
-                default:
-                    return $this->$name;
-            }
+            return match ($name) {
+                'libelle' => _T($this->label),
+                default => $this->$name,
+            };
         } else {
             return false;
         }

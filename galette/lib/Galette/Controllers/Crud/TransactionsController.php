@@ -97,7 +97,7 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Transaction id
+     * @param ?int     $id       Transaction id
      * @param ?string  $action   Action
      *
      * @return Response
@@ -124,21 +124,20 @@ class TransactionsController extends ContributionsController
             $trans->load($id);
             if ($trans->id == '') {
                 //not possible to load transaction, exit
-                //not possible to load contribution, exit
-                $this->flash->addMessage(
-                    'error_detected',
-                    str_replace(
-                        '%id',
-                        (string)$id,
-                        _T("Unable to load transaction #%id!")
-                    )
-                );
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->routeparser->urlFor(
+                return $this->redirectWithErrors(
+                    response: $response,
+                    errors: [
+                        str_replace(
+                            '%id',
+                            (string)$id,
+                            _T("Unable to load transaction #%id!")
+                        )
+                    ],
+                    redirect_url: $this->routeparser->urlFor(
                         'contributions',
                         ['type' => 'transactions']
-                    ));
+                    )
+                );
             }
             if (!$trans->canEdit($this->login) && !$trans->canAttachAndDetach($this->login)) {
                 Analog::log(
@@ -218,7 +217,7 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Transaction id
+     * @param int      $id       Transaction id
      * @param ?string  $type     Transaction type
      *
      * @return Response
@@ -230,20 +229,20 @@ class TransactionsController extends ContributionsController
         // initialize transactions structure with database values
         if (!$trans->load($id)) {
             //not possible to load transaction, exit
-            $this->flash->addMessage(
-                'error_detected',
-                str_replace(
-                    '%id',
-                    (string)$id,
-                    _T("Unable to load transaction #%id!")
-                )
-            );
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor(
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [
+                    str_replace(
+                        '%id',
+                        (string)$id,
+                        _T("Unable to load transaction #%id!")
+                    )
+                ],
+                redirect_url: $this->routeparser->urlFor(
                     'contributions',
                     ['type' => 'transactions']
-                ));
+                )
+            );
         }
         if (!$trans->canEdit($this->login)) {
             Analog::log(
@@ -268,7 +267,7 @@ class TransactionsController extends ContributionsController
      * @param Response    $response PSR Response
      * @param string      $action   Action ('edit' or 'add')
      * @param Transaction $trans    Transaction instance
-     * @param ?integer    $id       Contribution id
+     * @param ?int        $id       Contribution id
      *
      * @return Response
      */
@@ -365,8 +364,8 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Transaction id
-     * @param integer  $cid      Contribution id
+     * @param int      $id       Transaction id
+     * @param int      $cid      Contribution id
      *
      * @return Response
      */
@@ -410,8 +409,8 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Transaction id
-     * @param integer  $cid      Contribution id
+     * @param int      $id       Transaction id
+     * @param int      $cid      Contribution id
      *
      * @return Response
      */

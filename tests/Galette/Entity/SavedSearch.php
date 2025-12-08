@@ -48,8 +48,8 @@ class SavedSearch extends TestCase
         $this->i18n = new \Galette\Core\I18n();
 
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, new \Galette\Core\I18n()))
-            ->onlyMethods(array('isLogged', 'isSuperAdmin', '__get'))
+            ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
+            ->onlyMethods(['isLogged', 'isSuperAdmin', '__get'])
             ->getMock();
         $this->login->method('isLogged')->willReturn(true);
         $this->login->method('isSuperAdmin')->willReturn(true);

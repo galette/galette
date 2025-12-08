@@ -47,6 +47,7 @@ use Galette\Core\Picture;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Core\Db;
+use Safe\DateTime;
 use ArrayObject;
 
 /**
@@ -104,7 +105,6 @@ class Members
 
     public const NON_STAFF_MEMBERS = 30;
 
-    private MembersList|AdvancedMembersList $filters;
     private int $count = 0;
     /** @var array<string> */
     private array $errors = [];
@@ -116,9 +116,8 @@ class Members
      *
      * @param MembersList|AdvancedMembersList|null $filters Filtering
      */
-    public function __construct(MembersList|AdvancedMembersList|null $filters = null)
+    public function __construct(private readonly MembersList|AdvancedMembersList|null $filters = new MembersList())
     {
-        $this->filters = $filters ?? new MembersList();
     }
 
     /**
@@ -129,8 +128,8 @@ class Members
      * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
      *                                   an array. If null, all fields will be
      *                                   returned
-     * @param boolean        $count      true if we want to count members
-     * @param boolean        $limit      true to LIMIT query
+     * @param bool           $count      true if we want to count members
+     * @param bool           $limit      true to LIMIT query
      *
      * @return Adherent[]|ResultSet
      */
@@ -158,8 +157,8 @@ class Members
      * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
      *                                   an array. If null, all fields will be
      *                                   returned
-     * @param boolean        $count      true if we want to count members
-     * @param boolean        $limit      true to LIMIT query
+     * @param bool           $count      true if we want to count members
+     * @param bool           $limit      true to LIMIT query
      *
      * @return Adherent[]|ResultSet
      */
@@ -187,11 +186,11 @@ class Members
      * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
      *                                   an array. If null, all fields will be
      *                                   returned
-     * @param boolean        $count      true if we want to count members
-     * @param boolean        $staff      true if we want only staff members
-     * @param boolean        $managed    true if we want only managed groups
-     * @param boolean        $limit      true if we want records pagination
-     * @param boolean        $export     true if we are exporting
+     * @param bool           $count      true if we want to count members
+     * @param bool           $staff      true if we want only staff members
+     * @param bool           $managed    true if we want only managed groups
+     * @param bool           $limit      true if we want records pagination
+     * @param bool           $export     true if we are exporting
      *
      * @return Adherent[]|ResultSet
      */
@@ -263,9 +262,9 @@ class Members
     /**
      * Remove specified members
      *
-     * @param integer|array<int> $ids Members identifiers to delete
+     * @param int|array<int> $ids Members identifiers to delete
      *
-     * @return boolean
+     * @return bool
      */
     public function removeMembers(int|array $ids): bool
     {
@@ -417,7 +416,7 @@ class Members
     /**
      * Get members list
      *
-     * @param boolean        $as_members return the results as an array of
+     * @param bool           $as_members return the results as an array of
      *                                   Member object.
      * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
      *                                   an array. If null, all fields will be
@@ -441,8 +440,8 @@ class Members
     /**
      * Get members list with public information available
      *
-     * @param boolean $with_photos get only members which have uploaded a
-     *                             photo (for gallery)
+     * @param bool $with_photos get only members which have uploaded a
+     *                          photo (for gallery)
      *
      * @return array<string, Adherent[]>
      */
@@ -495,8 +494,8 @@ class Members
     /**
      * Get members list with public information available
      *
-     * @param boolean $with_photos get only members which have uploaded a
-     *                             photo (for gallery)
+     * @param bool $with_photos get only members which have uploaded a
+     *                          photo (for gallery)
      *
      * @return array<string, Adherent[]|array<string, Adherent[]>>
      */
@@ -560,12 +559,12 @@ class Members
      *
      * @param int|array<int> $ids         an array of members id that has been selected
      * @param ?array<string> $orderby     SQL order clause (optional)
-     * @param boolean        $with_photos Should photos be loaded?
-     * @param boolean        $as_members  Return Adherent[] or simple ResultSet
+     * @param bool           $with_photos Should photos be loaded?
+     * @param bool           $as_members  Return Adherent[] or simple ResultSet
      * @param ?array<string> $fields      Fields to use
-     * @param boolean        $export      True if we are exporting
-     * @param boolean        $dues        True if load dues as Adherent dependency
-     * @param boolean        $parent      True if load parent as Adherent dependency
+     * @param bool           $export      True if we are exporting
+     * @param bool           $dues        True if load dues as Adherent dependency
+     * @param bool           $parent      True if load parent as Adherent dependency
      *
      * @return array <int,Adherent|ArrayObject<string, int|string>>|false
      */
@@ -738,7 +737,7 @@ class Members
             if ($this->filters instanceof AdvancedMembersList && ((bool)count($this->filters->free_search) && !isset($this->filters->free_search['empty']))) {
                 $free_searches = $this->filters->free_search;
                 foreach ($free_searches as $fs) {
-                    if (str_starts_with($fs['field'], 'dyn_')) {
+                    if (str_starts_with((string) $fs['field'], 'dyn_')) {
                         // simple dynamic fields
                         $hasDf = true;
                         $dfs[] = str_replace('dyn_', '', $fs['field']);
@@ -1036,7 +1035,7 @@ class Members
      * @param string         $field_name Field name to order by
      * @param ?array<string> $fields     SELECTE'ed fields
      *
-     * @return boolean
+     * @return bool
      */
     private function canOrderBy(string $field_name, ?array $fields): bool
     {
@@ -1162,7 +1161,7 @@ class Members
             if ($this->filters->membership_filter) {
                 switch ($this->filters->membership_filter) {
                     case self::MEMBERSHIP_NEARLY:
-                        $now = new \DateTime();
+                        $now = new DateTime();
                         $due_date = clone $now;
                         $due_date->modify('+30 days');
                         $select->where
@@ -1353,7 +1352,7 @@ class Members
         foreach ($dates as $field => $property) {
             $bprop = "r{$property}_begin";
             if ($this->filters->$bprop) {
-                $d = new \DateTime($this->filters->$bprop);
+                $d = new DateTime($this->filters->$bprop);
                 $select->where->greaterThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
@@ -1361,7 +1360,7 @@ class Members
             }
             $eprop = "r{$property}_end";
             if ($this->filters->$eprop) {
-                $d = new \DateTime($this->filters->$eprop);
+                $d = new DateTime($this->filters->$eprop);
                 $select->where->lessThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
@@ -1465,7 +1464,6 @@ class Members
         ) {
             foreach ($this->filters->free_search as $fs) {
                 $fs['search'] = mb_strtolower((string)$fs['search']);
-                $qop = null;
                 switch ($fs['qry_op']) {
                     case AdvancedMembersList::OP_EQUALS:
                         $qop = '=';
@@ -1508,7 +1506,7 @@ class Members
                 $qry = '';
                 $prefix = 'a.';
                 $dyn_field = false;
-                if (str_starts_with($fs['field'], 'dyn_')) {
+                if (str_starts_with((string) $fs['field'], 'dyn_')) {
                     // simple dynamic field spotted!
                     $index = str_replace('dyn_', '', $fs['field']);
                     $dyn_field = DynamicField::loadFieldType($zdb, (int)$index);
@@ -1517,7 +1515,7 @@ class Members
                 }
 
                 //handle socials networks
-                if (str_starts_with($fs['field'], 'socials_')) {
+                if (str_starts_with((string) $fs['field'], 'socials_')) {
                     //social networks
                     $type = str_replace('socials_', '', $fs['field']);
                     $prefix = 'so.';
@@ -1537,7 +1535,7 @@ class Members
                     } else {
                         $qry .= $prefix . $fs['field'] . ' IS NULL';
                     }
-                } elseif (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
+                } elseif (!strncmp((string) $fs['field'], 'bool_', strlen('bool_'))) {
                     $qry .= $prefix . $fs['field'] . $qop . ' '
                         . $fs['search'];
                 } elseif (
@@ -1570,7 +1568,7 @@ class Members
      * If those are not required, or if a file has been imported
      * (from a CSV file for example), we fill here random values.
      *
-     * @return boolean
+     * @return bool
      */
     public function emptyLogins(): bool
     {
@@ -1697,7 +1695,7 @@ class Members
             ->where('a.activite_adh=true')
             ->where('a.bool_exempt_adh=false');
 
-        $now = new \DateTime();
+        $now = new DateTime();
         $due_date = clone $now;
         $due_date->modify('+30 days');
 
@@ -1818,11 +1816,11 @@ class Members
     }
 
     /**
-     * Get members list to instanciate dropdowns
+     * Get members list to instantiate dropdowns
      *
-     * @param Db       $zdb     Database instance
-     * @param Login    $login   Login instance
-     * @param ?integer $current Current member
+     * @param Db    $zdb     Database instance
+     * @param Login $login   Login instance
+     * @param ?int  $current Current member
      *
      * @return array<int, string>
      */

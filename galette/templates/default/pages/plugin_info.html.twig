@@ -24,7 +24,7 @@
     <h2>
         {{ name }} <code>{{ version }} - {{ date }}</code>
         <br/><span class="author">
-            {{ _T("By %name")|replace({"%name": author}) }}
+            {{ _T("By %1$s")|format(author) }}
         </span>
     </h2>
     {% if module is defined %}

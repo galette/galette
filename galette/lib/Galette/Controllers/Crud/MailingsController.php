@@ -36,6 +36,8 @@ use Galette\Filters\MembersList;
 use Galette\Repository\Members;
 use Analog\Analog;
 
+use function Safe\file_get_contents;
+
 /**
  * Galette Mailing controller
  *
@@ -83,13 +85,11 @@ class MailingsController extends CrudController
             $this->history->add(
                 _T("Trying to load mailing while email is disabled in preferences.")
             );
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Trying to load mailing while email is disabled in preferences.")
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("Trying to load mailing while email is disabled in preferences.")],
+                redirect_url: $this->routeparser->urlFor('slash')
             );
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('slash'));
         } else {
             if (isset($this->session->{$this->getFilterName($this->getDefaultFilterName())})) {
                 $filters = $this->session->{$this->getFilterName($this->getDefaultFilterName())};
@@ -125,16 +125,12 @@ class MailingsController extends CrudController
                         Analog::WARNING
                     );
 
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T('No member selected for mailing!')
-                    );
-
                     $redirect_url = $this->session->redirect_mailing ?? $this->routeparser->urlFor('members');
-
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $redirect_url);
+                    return $this->redirectWithErrors(
+                        response: $response,
+                        redirect_url: $redirect_url,
+                        errors: [_T('No member selected for mailing!')]
+                    );
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
@@ -248,14 +244,11 @@ class MailingsController extends CrudController
                         Analog::WARNING
                     );
 
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T('No member selected for mailing!')
+                    return $this->redirectWithErrors(
+                        response: $response,
+                        redirect_url: $redirect_url,
+                        errors: [_T('No member selected for mailing!')]
                     );
-
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $redirect_url);
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
@@ -268,13 +261,13 @@ class MailingsController extends CrudController
                 || isset($post['mailing_confirm'])
                 || isset($post['mailing_save'])
             ) {
-                if (trim($post['mailing_objet']) == '') {
+                if (trim((string) $post['mailing_objet']) == '') {
                     $error_detected[] = _T("Please type an object for the message.");
                 } else {
                     $mailing->subject = $post['mailing_objet'];
                 }
 
-                if (trim($post['mailing_corps']) == '') {
+                if (trim((string) $post['mailing_corps']) == '') {
                     $error_detected[] = _T("Please enter a message.");
                 } else {
                     $mailing->message = $post['mailing_corps'];
@@ -378,21 +371,12 @@ class MailingsController extends CrudController
             }
         }
 
-        //flash messages if any
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage('error_detected', $error);
-            }
-        }
-        if (count($success_detected) > 0) {
-            foreach ($success_detected as $success) {
-                $this->flash->addMessage('success_detected', $success);
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $goto);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $goto,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 
     // /CRUD - Create
@@ -401,10 +385,10 @@ class MailingsController extends CrudController
     /**
      * Mailings history page
      *
-     * @param Request             $request  PSR Request
-     * @param Response            $response PSR Response
-     * @param string|null         $option   One of 'page' or 'order'
-     * @param integer|string|null $value    Value of the option
+     * @param Request         $request  PSR Request
+     * @param Response        $response PSR Response
+     * @param string|null     $option   One of 'page' or 'order'
+     * @param int|string|null $value    Value of the option
      *
      * @return Response
      */
@@ -522,7 +506,7 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Record id
+     * @param int      $id       Record id
      *
      * @return Response
      */
@@ -537,7 +521,7 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Record id
+     * @param int      $id       Record id
      *
      * @return Response
      */
@@ -598,7 +582,7 @@ class MailingsController extends CrudController
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
      *
-     * @return boolean
+     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {
@@ -613,7 +597,7 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id       Mailing id
+     * @param ?int     $id       Mailing id
      *
      * @return Response
      */
@@ -686,8 +670,8 @@ class MailingsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Mailing id
-     * @param integer  $pos      Attachment position in list
+     * @param int      $id       Mailing id
+     * @param int      $pos      Attachment position in list
      *
      * @return Response
      */

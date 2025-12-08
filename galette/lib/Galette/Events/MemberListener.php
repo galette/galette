@@ -44,13 +44,6 @@ use Slim\Routing\RouteParser;
  */
 class MemberListener implements ListenerSubscriber
 {
-    private Preferences $preferences;
-    private RouteParser $routeparser;
-    private History $history;
-    private Messages $flash;
-    private Login $login;
-    private Db $zdb;
-
     /**
      * Constructor
      *
@@ -62,19 +55,13 @@ class MemberListener implements ListenerSubscriber
      * @param Db          $zdb         Db instance
      */
     public function __construct(
-        Preferences $preferences,
-        RouteParser $routeparser,
-        History $history,
-        Messages $flash,
-        Login $login,
-        Db $zdb
+        private readonly Preferences $preferences,
+        private readonly RouteParser $routeparser,
+        private readonly History $history,
+        private readonly Messages $flash,
+        private readonly Login $login,
+        private readonly Db $zdb
     ) {
-        $this->preferences = $preferences;
-        $this->routeparser = $routeparser;
-        $this->history = $history;
-        $this->flash = $flash;
-        $this->login = $login;
-        $this->zdb = $zdb;
     }
 
     /**
@@ -147,7 +134,7 @@ class MemberListener implements ListenerSubscriber
      * Send account email to member
      *
      * @param Adherent $member Member
-     * @param boolean  $new    New member or editing existing one
+     * @param bool     $new    New member or editing existing one
      *
      * @return void
      */
@@ -241,7 +228,7 @@ class MemberListener implements ListenerSubscriber
      * Send account email to admin
      *
      * @param Adherent $member Member
-     * @param boolean  $new    New member or editing existing one
+     * @param bool     $new    New member or editing existing one
      *
      * @return void
      */
@@ -262,7 +249,6 @@ class MemberListener implements ListenerSubscriber
         );
         $texts->setMember($member)->setNoContribution();
 
-        $txt_id = null;
         if ($new) {
             $txt_id = ($member->self_adh ? 'newselfadh' : 'newadh');
         } else {

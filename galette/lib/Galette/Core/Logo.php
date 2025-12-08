@@ -23,8 +23,10 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use DateTime;
+use Safe\DateTime;
 use Laminas\Db\Sql\Select;
+
+use function Safe\realpath;
 
 /**
  * This class stores and serve the logo.
@@ -81,8 +83,8 @@ class Logo extends Picture
                 $special
             )
         );
-        $this->format = 'png';
-        $this->mime = 'image/png';
+        $this->format = 'webp';
+        $this->mime = 'image/webp';
         $this->custom = false;
     }
 
@@ -111,7 +113,7 @@ class Logo extends Picture
     /**
      * Returns custom state
      *
-     * @return boolean
+     * @return bool
      */
     public function isCustom(): bool
     {

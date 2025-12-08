@@ -25,7 +25,7 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use DateInterval;
-use DateTime;
+use Safe\DateTime;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
 use Galette\Interfaces\AccessManagementInterface;
@@ -41,19 +41,21 @@ use Galette\Repository\PaymentTypes;
 use Galette\Features\Dynamics;
 use Galette\Helpers\EntityHelper;
 
+use function Safe\mkdir;
+
 /**
  * Contribution class for galette
  * Manage membership fees and donations.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property integer $id
+ * @property int $id
  * @property ?string $date
  * @property ?DateTime $raw_date
- * @property ?integer $member
+ * @property ?int $member
  * @property ?ContributionsTypes $type
  * @property ?double $amount
- * @property ?integer $payment_type
+ * @property ?int $payment_type
  * @property ?double $orig_amount
  * @property ?string $info
  * @property ?string $begin_date
@@ -61,9 +63,9 @@ use Galette\Helpers\EntityHelper;
  * @property ?string $end_date
  * @property ?DateTime $raw_end_date
  * @property ?Transaction $transaction
- * @property ?integer $extension
- * @property integer $duration
- * @property ?integer $model
+ * @property ?int $extension
+ * @property int $duration
+ * @property ?int $model
  * @property array<string, array<string, string>> $fields
  */
 class Contribution implements AccessManagementInterface
@@ -105,12 +107,11 @@ class Contribution implements AccessManagementInterface
     /** @var array<int, PaymentType> */
     private array $ptypes_list;
 
-    private Db $zdb;
-    private Login $login;
     /** @var array<string> */
     protected array $errors = [];
 
     private bool $sendmail = false;
+    private bool $checklogin = true;
 
     /** @var string[] */
     protected array $forbidden_fields = ['is_cotis'];
@@ -133,11 +134,11 @@ class Contribution implements AccessManagementInterface
      *                                                                           a specific contribution, or a type id
      *                                                                           to just instantiate object
      */
-    public function __construct(Db $zdb, Login $login, int|array|ArrayObject|null $args = null)
-    {
-        $this->zdb = $zdb;
-        $this->login = $login;
-
+    public function __construct(
+        private Db $zdb,
+        private Login $login,
+        int|array|ArrayObject|null $args = null
+    ) {
         global $preferences;
         $this->payment_type = $preferences->pref_default_paymenttype;
 
@@ -152,60 +153,7 @@ class Contribution implements AccessManagementInterface
         if (is_int($args)) {
             $this->load($args);
         } elseif (is_array($args)) {
-            $this->date = date("Y-m-d");
-            if (isset($args['adh']) && $args['adh'] != '') {
-                $this->member = (int)$args['adh'];
-            }
-            if (isset($args['amount'])) {
-                $this->amount = $args['amount'];
-            }
-            if (isset($args['trans'])) {
-                $this->transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
-                if (!isset($this->member)) {
-                    $this->member = $this->transaction->member;
-                }
-                $this->amount = $this->transaction->getMissingAmount();
-                $this->payment_type = $this->transaction->payment_type;
-            }
-            $this->setContributionType((int)$args['type']);
-            if (!$this->isFee()) {
-                //for donations, begin date is current date
-                $this->begin_date = $this->date;
-            } elseif ($preferences->pref_membership_ext != '') {
-                //calculate begin date for membership fee with membership extension
-                $this->begin_date = $this->date;
-                if ($this->is_cotis) {
-                    $due_date = self::getDueDate($this->zdb, $this->member);
-                    if ($due_date != '') {
-                        $now = new \DateTime();
-                        $due_date = new \DateTime($due_date);
-                        if ($due_date < $now) {
-                            // Member didn't renew on time
-                            $this->begin_date = $now->format('Y-m-d');
-                        } else {
-                            // Caution : the next_begin_date is the day after the due_date.
-                            $next_begin_date = clone $due_date;
-                            $next_begin_date->add(new DateInterval('P1D'));
-                            $this->begin_date = $next_begin_date->format('Y-m-d');
-                        }
-                    }
-                    $this->retrieveEndDate();
-                }
-            } else {
-                //calculate begin date for membership fee with beginning of membership date
-                $begin_date = new \DateTime();
-                $begin_date->sub(new DateInterval('P1Y'));
-                [$j, $m] = explode('/', $preferences->pref_beg_membership);
-                $next_begin_date = new \DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
-                while ($next_begin_date <= $begin_date) {
-                    $next_begin_date->add(new DateInterval('P1Y'));
-                }
-                $this->begin_date = $next_begin_date->format('Y-m-d');
-                $this->retrieveEndDate();
-            }
-            if (isset($args['payment_type'])) {
-                $this->setPaymentType((int)$args['payment_type']);
-            }
+            $this->loadFromArray($args);
         } elseif (is_object($args)) {
             $this->loadFromRS($args);
         }
@@ -282,15 +230,15 @@ class Contribution implements AccessManagementInterface
     {
         global $preferences;
 
-        $now = new \DateTime();
-        $begin_date = new \DateTime($this->begin_date);
+        $now = new DateTime();
+        $begin_date = new DateTime($this->begin_date);
 
         if ($this->type->extension > ContributionsTypes::DONATION_TYPE && $preferences->pref_beg_membership == '') {
             $dext = new DateInterval('P' . $this->type->extension . 'M');
             $end_date = $begin_date->add($dext);
         } elseif ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            [$j, $m] = explode('/', $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
             $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
             while ($next_begin_date <= $begin_date) {
                 $next_begin_date->add(new DateInterval('P1Y'));
@@ -457,6 +405,94 @@ class Contribution implements AccessManagementInterface
     }
 
     /**
+     * Populate object from an array
+     *
+     * @param array<string,mixed> $args Instanciation arguments
+     *
+     * @return void
+     */
+    private function loadFromArray(array $args): void
+    {
+        global $preferences;
+
+        $this->date = date("Y-m-d");
+        if (isset($args['adh']) && $args['adh'] != '') {
+            $this->member = (int)$args['adh'];
+        }
+        if (isset($args['amount'])) {
+            $this->amount = $args['amount'];
+        }
+        if (isset($args['trans'])) {
+            $this->transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
+            if (!isset($this->member)) {
+                $this->member = $this->transaction->member;
+            }
+            $this->amount = $this->transaction->getMissingAmount();
+            $this->payment_type = $this->transaction->payment_type;
+        }
+        $this->setContributionType((int)$args['type']);
+        if (!$this->isFee()) {
+            //for donations, begin date is current date
+            $this->begin_date = $this->date;
+        } else {
+            if ($preferences->pref_membership_ext != '') {
+                //calculate begin date for membership fee with membership extension
+                $this->loadWithMembershipExt();
+            } else {
+                //calculate begin date for membership fee with beginning of membership date
+                $this->loadWithEndofMembershipDate();
+            }
+            $this->retrieveEndDate();
+        }
+        if (isset($args['payment_type'])) {
+            $this->setPaymentType((int)$args['payment_type']);
+        }
+    }
+
+    /**
+     * Contribution created with a membership extension
+     *
+     * @return void
+     */
+    private function loadWithMembershipExt(): void
+    {
+        $this->begin_date = $this->date;
+        $due_date = self::getDueDate($this->zdb, $this->member);
+        if ($due_date != '') {
+            $now = new DateTime();
+            $due_date = new DateTime($due_date);
+            if ($due_date < $now) {
+                // Member didn't renew on time
+                $this->begin_date = $now->format('Y-m-d');
+            } else {
+                // Caution : the next_begin_date is the day after the due_date.
+                $next_begin_date = clone $due_date;
+                $next_begin_date->add(new DateInterval('P1D'));
+                $this->begin_date = $next_begin_date->format('Y-m-d');
+            }
+        }
+    }
+
+    /**
+     * Contribution created with an en date of membership
+     *
+     * @return void
+     */
+    private function loadWithEndofMembershipDate(): void
+    {
+        global $preferences;
+
+        $begin_date = new DateTime();
+        $begin_date->sub(new DateInterval('P1Y'));
+        [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
+        $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
+        while ($next_begin_date <= $begin_date) {
+            $next_begin_date->add(new DateInterval('P1Y'));
+        }
+        $this->begin_date = $next_begin_date->format('Y-m-d');
+    }
+
+    /**
      * Check posted values validity
      *
      * @param array<string,mixed> $values   All values to check, basically the $_POST array
@@ -504,7 +540,8 @@ class Contribution implements AccessManagementInterface
                         if ($value != '') {
                             $member = new Adherent($this->zdb, (int)$value, false);
                             if (
-                                !$this->login->isStaff()
+                                $this->checklogin
+                                && !$this->login->isStaff()
                                 && !$this->login->isAdmin()
                                 && !$this->login->isGroupManager(array_keys($member->getGroups()))
                             ) {
@@ -578,10 +615,10 @@ class Contribution implements AccessManagementInterface
             $prop = $this->fields[$key]['propname'];
 
             if (!isset($disabled[$key]) && (!isset($this->$prop) || $this->$prop == '')) {
-                $this->errors[] = str_replace(
-                    '%field',
+                $this->errors[] = sprintf(
+                    //TRANS: parameter is an hTML link to the field with its name
+                    _T('- Mandatory field %1$s empty.'),
                     '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
-                    _T("- Mandatory field %field empty.")
                 );
             }
         }
@@ -624,14 +661,14 @@ class Contribution implements AccessManagementInterface
     /**
      * Check that membership fees does not overlap
      *
-     * @return boolean|string True if all is ok, false if error,
+     * @return bool|string True if all is ok, false if error,
      * error message if overlap
      */
     public function checkOverlap(): bool|string
     {
         try {
             $select = $this->zdb->select(self::TABLE, 'c');
-            //@phpstan-ignore-next-line
+            //@phpstan-ignore property.notFound ("Access to an undefined property Laminas\Db\Sql\Where::$where" which exists)
             $select->columns(
                 ['date_debut_cotis', 'date_fin_cotis']
             )->join(
@@ -656,8 +693,8 @@ class Contribution implements AccessManagementInterface
             if ($results->count() > 0) {
                 $result = $results->current();
 
-                $d_begin = new \DateTime($result->date_debut_cotis);
-                $d_end = new \DateTime($result->date_fin_cotis);
+                $d_begin = new DateTime($result->date_debut_cotis);
+                $d_end = new DateTime($result->date_fin_cotis);
 
                 if ($d_begin->format('m-d') == $d_end->format('m-d') && $result->date_fin_cotis == $this->begin_date) {
                     //see https://bugs.galette.eu/issues/1762
@@ -680,13 +717,11 @@ class Contribution implements AccessManagementInterface
     /**
      * Store the contribution
      *
-     * @return boolean
+     * @return bool
      */
     public function store(): bool
     {
         global $hist, $emitter;
-
-        $event = null;
 
         if (count($this->errors) > 0) {
             throw new \RuntimeException(
@@ -704,15 +739,10 @@ class Contribution implements AccessManagementInterface
                 if (!isset($this->$prop)) {
                     continue;
                 }
-                switch ($field) {
-                    case ContributionsTypes::PK:
-                    case Transaction::PK:
-                        $values[$field] = $this->$prop->id;
-                        break;
-                    default:
-                        $values[$field] = $this->$prop;
-                        break;
-                }
+                $values[$field] = match ($field) {
+                    ContributionsTypes::PK, Transaction::PK => $this->$prop->id,
+                    default => $this->$prop,
+                };
             }
 
             //no end date for donation
@@ -772,7 +802,7 @@ class Contribution implements AccessManagementInterface
             $this->orig_amount = $this->amount;
 
             //send event at the end of process, once all has been stored
-            if ($event !== null && $this->areEventsEnabled()) {
+            if ($this->areEventsEnabled()) {
                 $emitter->dispatch(new GaletteEvent($event, $this));
             }
 
@@ -788,7 +818,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Update member deadline
      *
-     * @return boolean
+     * @return bool
      */
     private function updateDeadline(): bool
     {
@@ -819,9 +849,9 @@ class Contribution implements AccessManagementInterface
     /**
      * Remove contribution from database
      *
-     * @param boolean $transaction Activate transaction mode (defaults to true)
+     * @param bool $transaction Activate transaction mode (defaults to true)
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(bool $transaction = true): bool
     {
@@ -910,8 +940,8 @@ class Contribution implements AccessManagementInterface
     /**
      * Retrieve member due date
      *
-     * @param Db       $zdb       Database instance
-     * @param ?integer $member_id Member identifier
+     * @param Db   $zdb       Database instance
+     * @param ?int $member_id Member identifier
      *
      * @return string|null
      */
@@ -958,7 +988,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param int $trans_id Transaction identifier
      *
-     * @return boolean
+     * @return bool
      */
     public function unsetTransactionPart(int $trans_id): bool
     {
@@ -997,7 +1027,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param int $trans_id Transaction identifier
      *
-     * @return boolean
+     * @return bool
      */
     public function setTransactionPart(int $trans_id): bool
     {
@@ -1022,7 +1052,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Is current contribution a membership fee
      *
-     * @return boolean
+     * @return bool
      */
     public function isFee(): bool
     {
@@ -1034,7 +1064,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param int $id Transaction identifier
      *
-     * @return boolean
+     * @return bool
      */
     public function isTransactionPartOf(int $id): bool
     {
@@ -1048,7 +1078,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Is current contribution part of transaction
      *
-     * @return boolean
+     * @return bool
      */
     public function isTransactionPart(): bool
     {
@@ -1074,6 +1104,7 @@ class Contribution implements AccessManagementInterface
         global $preferences;
 
         $payment = [
+            'id'    => $this->getPaymentTypeId(),
             'type'  => $this->getPaymentType()
         ];
 
@@ -1126,6 +1157,8 @@ class Contribution implements AccessManagementInterface
             $contrib['member'] = $member;
         }
 
+        $contrib['auth_token'] = defined('SCRIPT_AUTH_TOKEN') ? SCRIPT_AUTH_TOKEN : '';
+
         if ($extra !== null) {
             $contrib = array_merge($contrib, $extra);
         }
@@ -1175,6 +1208,21 @@ class Contribution implements AccessManagementInterface
     }
 
     /**
+     * Get payment type id
+     *
+     * @return int
+     */
+    public function getPaymentTypeId(): int
+    {
+        if ($this->payment_type === null) {
+            return 0;
+        }
+
+        $ptype = new PaymentType($this->zdb, $this->payment_type);
+        return $ptype->id;
+    }
+
+    /**
      * Get payment type label
      *
      * @return string
@@ -1204,12 +1252,10 @@ class Contribution implements AccessManagementInterface
                 Analog::WARNING
             );
 
-            switch ($name) {
-                case 'is_cotis':
-                    return $this->isFee();
-                default:
-                    throw new \RuntimeException("Call to __get for '$name' is forbidden!");
-            }
+            return match ($name) {
+                'is_cotis' => $this->isFee(),
+                default => throw new \RuntimeException("Call to __get for '$name' is forbidden!"),
+            };
         } elseif (
             property_exists($this, $name)
             || in_array($name, $this->virtual_fields)
@@ -1328,7 +1374,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Flag creation mail sending
      *
-     * @param boolean $send True (default) to send creation email
+     * @param bool $send True (default) to send creation email
      *
      * @return self
      */
@@ -1341,7 +1387,7 @@ class Contribution implements AccessManagementInterface
     /**
      * Should we send administrative emails to member?
      *
-     * @return boolean
+     * @return bool
      */
     public function sendEMail(): bool
     {
@@ -1395,7 +1441,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canCreate(Login $login): bool
     {
@@ -1416,7 +1462,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -1461,7 +1507,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canEdit(Login $login): bool
     {
@@ -1476,7 +1522,7 @@ class Contribution implements AccessManagementInterface
      *
      * @param Login $login Login instance
      *
-     * @return boolean
+     * @return bool
      */
     public function canDelete(Login $login): bool
     {
@@ -1567,5 +1613,16 @@ class Contribution implements AccessManagementInterface
             );
             $this->errors[] = _T("- Unknown payment type");
         }
+    }
+
+    /**
+     * Disable login on checks
+     *
+     * @return self
+     */
+    public function setNoCheckLogin(): self
+    {
+        $this->checklogin = false;
+        return $this;
     }
 }

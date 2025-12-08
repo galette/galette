@@ -29,6 +29,7 @@ use Galette\Filters\ScheduledPaymentsList;
 use Galette\IO\ContributionsCsv;
 use Galette\IO\ScheduledPaymentsCsv;
 use Laminas\Db\ResultSet\ResultSet;
+use Safe\Exceptions\FilesystemException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Entity\ImportModel;
@@ -41,6 +42,12 @@ use Galette\Repository\DynamicFieldsSet;
 use Analog\Analog;
 use Slim\Psr7\Stream;
 
+use function Safe\file_get_contents;
+use function Safe\fclose;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\rewind;
+
 /**
  * Galette CSV controller
  *
@@ -50,11 +57,11 @@ use Slim\Psr7\Stream;
 class CsvController extends AbstractController
 {
     #[Inject]
-    private CsvIn $csvin;
+    protected CsvIn $csvin;
     #[Inject]
-    private MembersCsv $members_csv;
+    protected MembersCsv $members_csv;
     #[Inject]
-    private ScheduledPaymentsCsv $scheduled_payments_csv;
+    protected ScheduledPaymentsCsv $scheduled_payments_csv;
 
     /**
      * Send response
@@ -147,8 +154,8 @@ class CsvController extends AbstractController
                 if ($results->count() > 0) {
                     $filename = $table . '_full.csv';
                     $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
-                    $fp = fopen($filepath, 'w');
-                    if ($fp) {
+                    try {
+                        $fp = fopen($filepath, 'w');
                         $csv->export(
                             $results,
                             Csv::DEFAULT_SEPARATOR,
@@ -161,6 +168,8 @@ class CsvController extends AbstractController
                             'name' => $table,
                             'file' => $filename
                         ];
+                    } catch (FilesystemException) {
+                        //empty catch
                     }
                 } else {
                     $this->flash->addMessage(
@@ -305,10 +314,9 @@ class CsvController extends AbstractController
             }
             $this->flash->addMessage(
                 'success_detected',
-                str_replace(
-                    '%filename%',
-                    $post['import_file'],
-                    _T("File '%filename%' has been successfully imported :)")
+                sprintf(
+                    _T('File \'%1$s\' has been successfully imported :)'),
+                    $post['import_file']
                 )
             );
         }
@@ -457,7 +465,6 @@ class CsvController extends AbstractController
                     )
                 );
             } else {
-                $success = false;
                 $this->flash->addMessage(
                     'error_detected',
                     str_replace(

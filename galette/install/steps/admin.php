@@ -25,7 +25,7 @@ use Galette\Core\Db as GaletteDb;
     <h2><?php echo _T("Please chose the parameters of the admin account on Galette"); ?></h2>
     <div class="field required inline">
         <label for="install_adminlogin"><?php echo _T("Username:"); ?></label>
-        <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if (isset($_POST['install_adminlogin'])) { echo htmlspecialchars($_POST['install_adminlogin']); } ?>" required autofocus/>
+        <input type="text" name="install_adminlogin" id="install_adminlogin" value="<?php if (isset($_POST['install_adminlogin'])) { echo htmlspecialchars((string) $_POST['install_adminlogin']); } ?>" required autofocus/>
     </div>
     <div class="field required inline">
         <label for="install_adminpass"><?php echo _T("Password:"); ?></label>

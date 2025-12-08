@@ -25,6 +25,8 @@ namespace Galette\Core;
 
 use Galette\Util\Telemetry;
 
+use function Safe\php_sapi_name;
+
 /**
  * Grab system information
  *

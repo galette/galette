@@ -107,9 +107,9 @@ class PaymentType extends TestCase
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
-            array(
+            [
                 'text_orig'     => 'Test payment type'
-            )
+            ]
         );
         $results = $this->zdb->execute($select);
         $result = (array)$results->current();
@@ -128,9 +128,9 @@ class PaymentType extends TestCase
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
-            array(
+            [
                 'text_orig'     => 'Changed test payment type'
-            )
+            ]
         );
         $results = $this->zdb->execute($select);
         $this->assertSame(count($this->i18n->getArrayList()), count($results));
@@ -140,9 +140,9 @@ class PaymentType extends TestCase
 
         $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
         $select->where(
-            array(
+            [
                 'text_orig'     => 'Test payment type'
-            )
+            ]
         );
         $results = $this->zdb->execute($select);
         $this->assertSame(0, $results->count());

@@ -18,127 +18,413 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 #}
-{% extends "page.html.twig" %}
+{% extends 'elements/list.html.twig' %}
 
 {% set can_export = login.isGroupManager() and preferences.pref_bool_groupsmanagers_exports or login.isAdmin() or login.isStaff() %}
+{% set can_edit = login.isGroupManager() and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %}
 
-{% macro group_item(login, group, parents, selected) %}
-    <div class="{% if group.getGroups()|length > 0 %}title{% if group.getName() in parents %} active{% endif %}{% else %}nochild{% endif %}">
-        {% if group.getGroups()|length > 0 %}
-        <i class="dropdown icon" aria-hidden="true"></i>
-        {% endif %}
-        {% if login.isGroupManager(group.getId()) and group.getName() != selected %}
-        <a class="icon" href="{% if login.isGroupManager(group.getId()) %}{{ url_for("groups", {"id": group.getId()}) }}{% else %}#{% endif %}">
-            <i class="edit icon" aria-hidden="true"></i>
-            <span class="visually-hidden">Edit</span>
-        </a>
-        {% else %}
-        <i class="black folder open outline icon"></i>
-        {% endif %}
-        <span class="{% if group.getName() == selected %}active{% endif %}">
+{% if can_edit %}
+    {% set form = {
+        'route': {
+            'name': "reorderGroups"
+        }
+    } %}
+{% endif %}
+
+{% set columns = [
+    {
+        'label': _T("Name")
+    }
+] %}
+
+{% macro group_item(login, can_export, can_edit, group, level, parent_id) %}
+    <tr data-label="{{ group.getName() }}" data-group="{{ group.getId() }}" data-orig-parent="{{ parent_id }}" data-parent="{{ parent_id }}" data-managed="{% if login.isGroupManager(group.getId()) %}1{% else %}0{% endif %}">
+        <td class="left{% if login.isGroupManager(group.getId()) and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %} drag-handle{% endif %}" data-col-label="{{ _T("Field name") }}">
+            {% for i in 0..level %}{% if not loop.first %}<i class="icon group-indent" aria-hidden="true"></i>{% endif %}{% endfor %}
+            {% if login.isGroupManager(group.getId()) and preferences.pref_bool_groupsmanagers_edit_groups or login.isAdmin() or login.isStaff() %}
+                <i class="arrows alternate icon" aria-hidden="true"></i>
+            {% elseif login.isGroupManager() and not preferences.pref_bool_groupsmanagers_edit_groups %}
+                {% if level >= '1' %}
+                    <i class="chevron left icon" aria-hidden="true" style="transform:rotate(-45deg);"></i>
+                {% endif %}
+            {% else %}
+                <i class="arrows alternate disabled icon" aria-hidden="true"></i>
+            {% endif %}
             {{ group.getName() }}
-        </span>
-    </div>
+        </td>
+        <td class="center actions_row collapsing">
+            {% if login.isGroupManager(group.getId()) and can_export %}
+                <a href="{{ url_for("pdf_groups", {"id": group.getId()}) }}">
+                    <i class="file pdf green icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Export as PDF") }}</span>
+                </a>
+            {% endif %}
+            {% if login.isGroupManager(group.getId()) %}
+                <a href="{{ url_for("editGroup", {"id": group.getId()}) }}">
+                    <i class="ui {% if can_edit %}edit{% else %}eye outline{% endif %} icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{% if can_edit %}{{ _T("Edit") }}{% else %}{{ _T("Display") }}{% endif %}</span>
+                </a>
+            {% endif %}
+            {% if login.isAdmin() or login.isStaff() %}
+                <a href="{{ url_for("removeGroup", {"id": group.getId()}) }}" class="delete">
+                    <i class="ui trash red icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Delete") }}</span>
+                </a>
+            {% endif %}
+        </td>
+    </tr>
     {% if group.getGroups()|length > 0 %}
-    <div class="content{% if group.getName() in parents %} active{% endif %}">
-        <div class="accordion">
+        {% set sublevel = level + 1 %}
         {% for child_group in group.getGroups() %}
-            {{ _self.group_item(login, child_group, parents, selected) }}
+            {% set level = child_group.getParents()|length %}
+            {{ _self.group_item(login, can_export, can_edit, child_group, level, group.getId()) }}
         {% endfor %}
-        </div>
-    </div>
     {% endif %}
 {% endmacro %}
 
 {% block content %}
-    {% set parents = group.getParents() %}
-    {% set selected = group.getName() %}
-    <div class="ui stackable grid">
-        <div class="three wide column">
-    {% if group.getId() %}
-            <div class="ui top attached accordion-styled header">{{ _T("Select a group") }} :</div>
-            <div class="ui attached accordion-styled scrolling segment loader_selector">
-                <div class="ui tree accordion">
-                {% for group in groups_root %}
-                    {{ _self.group_item(login, group, parents, selected) }}
-                {% endfor %}
-                </div>
-            </div>
-    {% endif %}
+    <noscript>
+        <div class="ui basic fitted center aligned segment">
+            <div class="ui compact message">{{ _T("This feature requires javascript.") }}</div>
+        </div>
+    </noscript>
+
+    {{ parent() }}
+{% endblock %}
+
+{% block infoline %}
+    {% set infoline = {
+        'label': login.isAdmin() or login.isStaff() ? _Tn("%1$s entry", "%1$s entries", nb)|format(nb) : _Tn("%1$s managed group", "%1$s managed groups", nb)|format(nb)
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block infoline_actions %}
     {% if can_export or login.isAdmin() or login.isStaff() %}
-            <div class="ui basic fitted segment">
-                <div class="ui wrapping spaced buttons">
-        {% if group.getId() and can_export %}
-                    <a href="{{ url_for("pdf_groups") }}" class="ui labeled icon fluid button tooltip" title="{{ _T("Export all groups and their members as PDF") }}">
-                        <i class="file pdf red labeled icon" aria-hidden="true"></i>
-                        {{ _T("All groups PDF") }}
-                    </a>
+        {% if can_export %}
+            <a href="{{ url_for("pdf_groups") }}" class="ui tiny labeled icon button tooltip" title="{{ _T("Export all groups and their members as PDF") }}">
+                <i class="file pdf red labeled icon" aria-hidden="true"></i>
+                {{ _T("All groups PDF") }}
+            </a>
         {% endif %}
         {% if login.isAdmin() or login.isStaff() %}
-                    <a href="{{ url_for("add_group", {"name": "NAME"}) }}" class="ui labeled icon fluid button tooltip" id="newgroup">
-                        <i class="plus circle green icon" aria-hidden="true"></i>
-                        {{ _T("New group") }}
-                    </a>
+            <a href="{{ url_for("add_group", {"name": "NAME"}) }}" class="ui tiny labeled icon button tooltip" id="newgroup">
+                <i class="plus circle green icon" aria-hidden="true"></i>
+                {{ _T("New group") }}
+            </a>
         {% endif %}
-                </div>
-            </div>
     {% endif %}
-        </div>
-        <div class="thirteen wide column">
-    {% if group.getId() %}
-            {% include "elements/group.html.twig" with {"group": group, "parent_groups": parent_groups} %}
-    {% else %}
-            <div class="ui small message">
-                {{ _T("no group") }}
-            </div>
+{% endblock %}
+
+{% block header %}
+    {{ parent() }}
+{% endblock %}
+
+{% block extra_header %}
+    {% if can_edit %}
+        <tr>
+            <th class="blue " colspan="3" style="padding-top:2px;padding-bottom:4px;" scope="colgroup">
+                <span class="ui small text"><i class="info icon"></i> {{ _T("Move an item at the top of the list to reset its parent") }}</span>
+            </th>
+        </tr>
     {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% for group in groups_root %}
+        {% set level = group.getParents()|length %}
+        {{ _self.group_item(login, can_export, can_edit, group, level, 0) }}
+    {% endfor %}
+{% endblock %}
+
+{% block extra_form %}
+    {% if can_edit %}
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+            </button>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
-<script type="text/javascript">
-    $(function() {
-        var _mode;
+    <script type="module">
+        {% if can_edit %}
+            // Selecting necessary DOM elements
+            const listForm = document.getElementById('listform');
+            const listedGroups = document.getElementById('listed_groups');
+            const tableFooter = document.getElementsByTagName('tfoot')[0];
+            const submitButton = listForm.querySelector('button[type="submit"]');
 
-        {# New group #}
-        $('#newgroup').click(function(){
-            var _href = $(this).attr('href');
-            var _input = '<div class="ui labeled input"><div class="ui label">{{ _T("Name:") }}</div><input type="text" name="new_group_name" id="new_group_name" required/></div>';
-            $('body').modal({
-                title: '{{ _T("Add a new group") }}',
-                class: 'tiny',
-                content: _input,
-                onApprove: function() {
-                    var _name = $('#new_group_name').val();
-                    if ( _name != '' ) {
-                        //check uniqueness
-                        $.ajax({
-                            url: '{{ url_for("ajax_groupname_unique") }}',
-                            type: "POST",
-                            data: {
-                                ajax: true,
-                                gname: _name
-                            },
-                            {% include "elements/js/loader.js.twig" with {
-                                selector: ".segment:not(.tab).loader_selector",
-                                loader: "button"
-                            } %},
-                            success: function(res){
-                                if ( res.success == false ) {
-                                    if (res.message) {
+            // Arrays and variables to keep track of row children and indentations
+            let children = [];
+            let origItemIndents = null;
+            let newItemIndents = null;
+            let diffIndents = null;
+
+            /**
+             * Counts the number of indent elements in the first cell of a row.
+             * @param {HTMLElement} row - The row element to count indents in.
+             * @returns {number} The number of indent elements.
+             */
+            function countIndents(row) {
+                return row.cells[0] ? row.cells[0].children.length : 0;
+            }
+
+            /**
+             * Updates the indent elements in the first cell of a row.
+             * @param {HTMLElement} elt - The row element to update indents for.
+             * @param {number} nb - The new number of indent elements.
+             */
+            function updateIndents(elt, nb) {
+                // Remove existing indents
+                const eltIndents = elt.cells[0].getElementsByClassName('group-indent');
+                Array.from(eltIndents).forEach(child => {
+                    elt.cells[0].removeChild(child);
+                });
+                // Add new indents
+                for (let i = 1; i < nb; i++) {
+                    const indent = document.createElement('i');
+                    indent.setAttribute('class', 'icon group-indent');
+                    indent.setAttribute('aria-hidden', 'true');
+                    elt.cells[0].insertAdjacentElement('afterbegin', indent);
+                }
+            }
+
+            /**
+             * Selects child rows of a given row and hides them.
+             * @param {HTMLElement} row - The row element to select children from.
+             */
+            function selectChildren(row) {
+                children = [];
+                origItemIndents = null;
+                newItemIndents = null;
+                diffIndents = null;
+                const indentsCount = countIndents(row);
+                let nextRow = row.nextElementSibling;
+                // Select children until a row with fewer indents is encountered
+                while (nextRow) {
+                    const nextRowIndentsCount = countIndents(nextRow);
+                    if (nextRowIndentsCount > indentsCount) {
+                        children.push(nextRow);
+                        nextRow.classList.add('visually-hidden');
+                    } else {
+                        // Exit the loop if the indents are not greater
+                        break;
+                    }
+                    nextRow = nextRow.nextElementSibling;
+                }
+                // Remove the selected children from the list
+                children.forEach((child) => {
+                    listedGroups.removeChild(child);
+                });
+            }
+
+            /**
+             * Creates a hidden input element.
+             * @param {string} name - The name attribute of the input element.
+             * @param {string} value - The value attribute of the input element.
+             * @returns {HTMLElement} The created input element.
+             */
+            function createHiddenInput(name, value) {
+                const input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', name);
+                input.setAttribute('value', value);
+                return input;
+            }
+
+            /**
+             * Creates a warning message in the table footer.
+             * @returns {HTMLElement} The table footer element with the warning message.
+             */
+            function createTableFooterWarning() {
+                const tfootRow = document.createElement('tr');
+                const tfootCell = document.createElement('th');
+                const warningIcon = document.createElement('i');
+                const warningMessage = document.createTextNode(
+                    ' ' + '{{ _T("Some of the changes you made (highlighted in red above) are not allowed. Saving your changes in the list will only be possible if all of them are allowed.")|e("js") }}'
+                );
+                warningIcon.setAttribute('class', 'exclamation triangle icon');
+                tfootCell.setAttribute('class', 'yellow');
+                tfootCell.setAttribute('colspan', '3');
+                tfootCell.setAttribute('scope', 'colgroup');
+                tableFooter.appendChild(tfootRow);
+                tfootRow.appendChild(tfootCell);
+                tfootCell.appendChild(warningIcon);
+                tfootCell.appendChild(warningMessage);
+                return tableFooter;
+            }
+
+            /**
+             * Creates a warning message when changes must be saved.
+             * @returns {HTMLElement} The warning message element.
+             */
+            function createSaveWarning() {
+                const messageContainer = document.createElement('div');
+                const contentContainer = document.createElement('div');
+                const warningIcon = document.createElement('i');
+                const warningMessage = document.createTextNode(
+                    '{{ _T("Items in this list have been modified. Don't forget to save your changes.")|e('js') }}'
+                );
+                warningIcon.setAttribute('class', 'exclamation triangle icon');
+                contentContainer.setAttribute('class', 'content');
+                messageContainer.setAttribute('class', 'ui icon yellow message with-transition');
+                messageContainer.setAttribute('id', 'save_warning');
+                listForm.insertAdjacentElement('beforebegin', messageContainer);
+                messageContainer.appendChild(warningIcon);
+                messageContainer.appendChild(contentContainer);
+                contentContainer.appendChild(warningMessage);
+                return messageContainer;
+            }
+
+            /**
+             * Initializes the sortable functionality for the listed groups.
+             */
+            function initSortable() {
+                new Sortable(listedGroups, {
+                    group: 'lists',
+                    handle: '.drag-handle',
+                    animation: 150,
+                    ghostClass: 'yellow',
+                    onChoose: function (evt) {
+                        // Select children when an item is chosen
+                        selectChildren(evt.item);
+                        // Store original indents
+                        origItemIndents = countIndents(evt.item);
+                    },
+                    onUnchoose: function(evt) {
+                        // Reinsert the children after the item is unchosen
+                        const item = evt.item;
+                        children.reverse();
+                        children.forEach((child) => {
+                            child.classList.remove('visually-hidden');
+                            updateIndents(child, countIndents(child) + diffIndents);
+                            item.insertAdjacentElement('afterend', child);
+                        });
+                    },
+                    onChange: function (evt) {
+                        // Update the indents while moving the item in the list
+                        const index = evt.newIndex;
+                        const item = listedGroups.children[index];
+                        const newParent = listedGroups.children[index - 1];
+                        if (newParent === undefined) {
+                            newItemIndents = 1;
+                        } else {
+                            newItemIndents = countIndents(newParent) + 1;
+                        }
+                        diffIndents = newItemIndents - origItemIndents;
+                        updateIndents(item, newItemIndents);
+                    },
+                    onEnd: function (evt) {
+                        const item = evt.item;
+                        const newParent = item.previousElementSibling != null ? item.previousElementSibling.dataset.group : 0;
+                        const newParentIsManaged = item.previousElementSibling != null ? item.previousElementSibling.dataset.managed : 1;
+                        const existingInput = item.getElementsByTagName('input')[0];
+                        // Remove existing input if found
+                        if (existingInput) {
+                            existingInput.remove();
+                        }
+                        item.dataset.parent = newParent;
+                        const groupId = item.dataset.group;
+                        const parentId = item.dataset.parent;
+                        const origParentId = item.dataset.origParent;
+                        // Add the hidden input to the item and set the appropriate class
+                        if (newParentIsManaged == 1 || parentId == origParentId) {
+                            // Change in the list is allowed
+                            const hiddenInput = createHiddenInput('reordered[]', groupId + '|' + parentId);
+                            item.classList.add('yellow');
+                            item.insertAdjacentElement('beforeend', hiddenInput);
+                        } else {
+                            // Change in the list is not allowed
+                            const hiddenInput = createHiddenInput('unallowed[]', groupId + '|' + parentId);
+                            item.classList.add('red');
+                            item.insertAdjacentElement('beforeend', hiddenInput);
+                        }
+                        // Check for unallowed changes and update the footer warning
+                        const unallowedChanges = document.getElementsByName('unallowed[]');
+                        const existingWarning = tableFooter.getElementsByTagName('tr')[0];
+                        if (unallowedChanges.length > 0) {
+                            if (existingWarning == null) {
+                                // Create warning if it doesn't exist and changes in the list are not allowed
+                                const warningInFooter = createTableFooterWarning();
+                                listedGroups.insertAdjacentElement('afterend', warningInFooter);
+                            }
+                            // Disable the submit button
+                            submitButton.setAttribute('disabled', 'true');
+                        } else {
+                            if (existingWarning != null) {
+                                // Remove existing warning if all changes in the list are allowed
+                                existingWarning.remove();
+                            }
+                            // Enable the submit button
+                            submitButton.removeAttribute('disabled');
+                        }
+                        // Inform the user about unsaved changes
+                        const existingSaveWarning = document.getElementById('save_warning');
+                        if (existingSaveWarning == null) {
+                            createSaveWarning();
+                            $('.message.with-transition').transition('flash');
+                        }
+                    }
+                });
+            }
+        {% endif %}
+
+        $(function() {
+            {% if login.isAdmin() or login.isStaff() %}
+                {# New group #}
+                $('#newgroup').click(function(){
+                    var _href = $(this).attr('href');
+                    var _input = '<div class="ui labeled input"><div class="ui label">{{ _T("Name:") }}</div><input type="text" name="new_group_name" id="new_group_name" required/></div>';
+                    $('body').modal({
+                        title: '{{ _T("Add a new group") }}',
+                        class: 'tiny',
+                        content: _input,
+                        onApprove: function() {
+                            var _name = $('#new_group_name').val();
+                            if ( _name != '' ) {
+                                //check uniqueness
+                                $.ajax({
+                                    url: '{{ url_for("ajax_groupname_unique") }}',
+                                    type: "POST",
+                                    data: {
+                                        ajax: true,
+                                        gname: _name
+                                    },
+                                    {% include "elements/js/loader.js.twig" with {
+                                        selector: ".segment:not(.tab).loader_selector",
+                                        loader: "button"
+                                    } %},
+                                    success: function(res){
+                                        if ( res.success == false ) {
+                                            if (res.message) {
+                                                {% include "elements/js/modal.js.twig" with {
+                                                    modal_title_twig: _T("An error occurred :(")|e("js"),
+                                                    modal_content: "res.message",
+                                                    modal_class: "tiny",
+                                                    modal_content_class: "scrolling",
+                                                    modal_deny_only: true,
+                                                    modal_cancel_text: _T("Close")|e("js"),
+                                                    modal_classname: "redalert",
+                                                } %}
+                                            } else {
+                                                {% include "elements/js/modal.js.twig" with {
+                                                    modal_title_twig: _T("The group name you have requested already exists in the database.")|e("js"),
+                                                    modal_without_content: true,
+                                                    modal_class: "mini",
+                                                    modal_deny_only: true,
+                                                    modal_cancel_text: _T("Close")|e("js"),
+                                                    modal_classname: "redalert",
+                                                } %}
+                                            }
+                                        } else {
+                                            $(location).attr('href', _href.replace('NAME', _name));
+                                        }
+                                    },
+                                    error: function() {
                                         {% include "elements/js/modal.js.twig" with {
-                                            modal_title_twig: _T("An error occurred :(")|e("js"),
-                                            modal_content: "res.message",
-                                            modal_class: "tiny",
-                                            modal_content_class: "scrolling",
-                                            modal_deny_only: true,
-                                            modal_cancel_text: _T("Close")|e("js"),
-                                            modal_classname: "redalert",
-                                        } %}
-                                    } else {
-                                        {% include "elements/js/modal.js.twig" with {
-                                            modal_title_twig: _T("The group name you have requested already exists in the database.")|e("js"),
+                                            modal_title_twig: _T("An error occurred checking name uniqueness :(")|e("js"),
                                             modal_without_content: true,
                                             modal_class: "mini",
                                             modal_deny_only: true,
@@ -146,236 +432,40 @@
                                             modal_classname: "redalert",
                                         } %}
                                     }
-                                } else {
-                                    $(location).attr('href', _href.replace('NAME', _name));
-                                }
-                            },
-                            error: function() {
+                                });
+                            } else {
                                 {% include "elements/js/modal.js.twig" with {
-                                    modal_title_twig: _T("An error occurred checking name uniqueness :(")|e("js"),
+                                    modal_title_twig: _T("Please provide a group name")|e("js"),
                                     modal_without_content: true,
                                     modal_class: "mini",
                                     modal_deny_only: true,
                                     modal_cancel_text: _T("Close")|e("js"),
                                     modal_classname: "redalert",
                                 } %}
+                                return false;
                             }
-                        });
-                    } else {
-                        {% include "elements/js/modal.js.twig" with {
-                            modal_title_twig: _T("Please provide a group name")|e("js"),
-                            modal_without_content: true,
-                            modal_class: "mini",
-                            modal_deny_only: true,
-                            modal_cancel_text: _T("Close")|e("js"),
-                            modal_classname: "redalert",
-                        } %}
-                        return false;
-                    }
-                },
-                actions: [{
-                    text    : '{{ _T("Create")|e('js') }}',
-                    icon    : 'plus',
-                    class   : 'icon labeled green approve'
-                },{
-                    text    : '{{ _T("Close")|e('js') }}',
-                    icon    : 'times',
-                    class   : 'icon labeled deny'
-                },]
-            }).modal('show');
-            return false;
+                        },
+                        actions: [{
+                            text    : '{{ _T("Create")|e('js') }}',
+                            icon    : 'plus',
+                            class   : 'icon labeled green approve'
+                        },{
+                            text    : '{{ _T("Close")|e('js') }}',
+                            icon    : 'times',
+                            class   : 'icon labeled deny'
+                        },]
+                    }).modal('show');
+                    return false;
+                });
+
+                {% include "elements/js/removal.js.twig" with {
+                    single_action: "true"
+                } %}
+            {% endif %}
+
+            {% if can_edit %}
+                initSortable();
+            {% endif %}
         });
-
-        {# Members popup #}
-        var _btnuser_mapping = function(){
-            $('#btnusers_small, #btnmanagers_small').click(function(){
-                _mode = ($(this).attr('id') == 'btnusers_small') ? 'members' : 'managers';
-                var _persons = $('input[name="' + _mode + '[]"]').map(function() {
-                    return $(this).val();
-                }).get();
-                $.ajax({
-                    url: '{{ url_for('ajaxMembers') }}',
-                    type: "POST",
-                    data: {
-                        multiple: true,
-                        from: 'groups',
-                        gid: $('#id_group').val(),
-                        mode: _mode,
-                        members: _persons
-                    },
-                    {% include "elements/js/loader.js.twig" with {
-                        loader: "action",
-                        selector: ".tab.segment.active .loader_selector"
-                    } %},
-                    success: function(res){
-                        _members_dialog(res, _mode);
-                    },
-                    error: function() {
-                        {% include "elements/js/modal.js.twig" with {
-                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
-                            modal_without_content: true,
-                            modal_class: "mini",
-                            modal_deny_only: true,
-                            modal_cancel_text: _T("Close")|e("js"),
-                            modal_classname: "redalert",
-                        } %}
-                    }
-                });
-                return false;
-            });
-        }
-        _btnuser_mapping();
-
-        var _members_dialog = function(res, mode){
-            var _title = '{{ _T("Group members selection")|e('js') }}';
-            if ( mode == 'managers' ) {
-                _title = '{{ _T("Group managers selection")|e('js') }}';
-            }
-            {% include "elements/js/modal.js.twig" with {
-                modal_title: "_title",
-                modal_content: "res",
-                modal_class: "members-selection fullscreen",
-                modal_content_class: "scrolling",
-                modal_deny_only: true,
-                modal_cancel_text: _T("Close")|e("js"),
-                modal_other_options: {
-                    autofocus: false
-                }
-            } %}
-            _members_ajax_mapper(res, $('#group_id').val(), mode);
-
-        }
-
-        var _members_ajax_mapper = function(res, gid, mode){
-            $('#btnvalid').click(function(){
-                //store entities in the original page so they can be saved
-                var _container;
-                if ( mode == 'managers' ) {
-                    _container = $('#group_managers');
-                } else {
-                    _container = $('#group_members');
-                }
-                var _persons = new Array();
-                $('li[id^="member_"]').each(function(){
-                    _persons[_persons.length] = this.id.substring(7, this.id.length);
-                });
-                if ( _persons.length == 0 ) {
-                    var _persons = '';
-                }
-                $.ajax({
-                    url: '{{ url_for('ajaxGroupMembers') }}',
-                    type: "POST",
-                    data: {
-                        persons: _persons,
-                        person_mode: mode
-                    },
-                    {% include "elements/js/loader.js.twig" with {
-                        selector: "#btnvalid",
-                        loader: "button"
-                    } %},
-                    success: function(res){
-                        var _modified = '<div class="ui icon yellow small message with-transition"><i class="exclamation triangle icon" aria-hidden="true"></i><div class="content">{{ _T("Items in this list have been modified. Don't forget to save your changes.")|e('js') }}</div></div>';
-                        _container.find('.message').remove();
-                        if ( res != 0 ) {
-                            _container.find('.loader_selector').remove();
-                            _container.children('.segment').append(res);
-                            _container.children('#group_' + mode + ' .segment').append(_modified);
-                        } else {
-                            var _emptyselection = '<tbody><tr><td colspan="2"><input type="hidden" name="' + mode + '[]" value="">{{ _T("No member attached")|e('js') }}</td></tr></tbody>';
-                            _container.find('table.listing tbody').remove();
-                            _container.find('table.listing').append(_emptyselection);
-                            _container.children('#group_' + mode + ' .segment').append(_modified);
-                        }
-                        $('.members-selection').modal('hide');
-                        $('.message.with-transition').transition('flash');
-                    },
-                    error: function() {
-                        {% include "elements/js/modal.js.twig" with {
-                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
-                            modal_without_content: true,
-                            modal_class: "mini",
-                            modal_deny_only: true,
-                            modal_cancel_text: _T("Close")|e("js"),
-                            modal_classname: "redalert",
-                        } %}
-                    }
-                });
-            });
-
-            //Remap links
-            var _none = $('#none_selected').clone();
-            $('li[id^="member_"]').click(function(){
-                $(this).remove();
-                if ( $('#selected_members ul li').length == 0 ) {
-                    $('#selected_members ul').append(_none);
-                }
-            });
-
-            $('#listing tbody tr').click(function(event){
-                event.preventDefault();
-                var _mlink = $(this).find('.username_row a');
-                var _mid = _mlink[0].href.match(/.*\/(\d+)$/)[1];
-                var _mname = _mlink.text();
-                $('#none_selected').remove()
-                if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '" class="item"><i class="ui user minus icon" aria-hidden="true"></i><span class="ui content">' + _mname + '</span></li>';
-                    $('#selected_members ul').append(_li);
-                    $('#member_' + _mid).click(function(){
-                        $(this).remove();
-                        if ( $('#selected_members ul li').length == 0 ) {
-                            $('#selected_members ul').append(_none);
-                        }
-                    });
-                }
-                return false;
-            }).css('cursor', 'pointer').attr('title', '{{ _T("Click on a row to select a member")|e('js') }}');
-
-            $('.members-selection .pagination a').click(function(){
-                var gid = $('#the_id').val();
-                var _members = new Array();
-                $('li[id^="member_"]').each(function(){
-                    _members[_members.length] = this.id.substring(7, this.id.length);
-                });
-
-                $.ajax({
-                    url: this.href,
-                    type: "POST",
-                    data: {
-                        from: 'groups',
-                        gid: gid,
-                        members: _members,
-                        mode: _mode,
-                        multiple: true
-                    },
-                    {% include "elements/js/loader.js.twig" with {
-                        loader: "#listing"
-                    } %},
-                    success: function(res){
-                        $('#listing').remove();
-                        var _listing = $($.parseHTML(res)).find('#listing');
-                        $('.members-selection .eleven.wide.column').prepend(_listing);
-                        _members_ajax_mapper(res, gid, _mode);
-                    },
-                    error: function() {
-                        {% include "elements/js/modal.js.twig" with {
-                            modal_title_twig: _T("An error occurred displaying members interface :(")|e("js"),
-                            modal_without_content: true,
-                            modal_class: "mini",
-                            modal_deny_only: true,
-                            modal_cancel_text: _T("Close")|e("js"),
-                            modal_classname: "redalert",
-                        } %}
-                    }
-                });
-                return false;
-            });
-        }
-
-        {% include "elements/js/removal.js.twig" with {
-            loader: "button",
-            loader_selector: "#delete",
-            single_action: "true"
-        } %}
-    });
-</script>
+    </script>
 {% endblock %}

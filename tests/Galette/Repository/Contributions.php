@@ -73,7 +73,7 @@ class Contributions extends GaletteTestCase
         $this->logSuperAdmin();
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
 
-        $list = $contributions->getList(true, null, true);
+        $list = $contributions->getList(true, null);
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
         $this->assertSame(0, $contributions->getCount());
@@ -196,8 +196,8 @@ class Contributions extends GaletteTestCase
 
         //member with a contribution
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -218,8 +218,8 @@ class Contributions extends GaletteTestCase
 
         //member does not have any contribution
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
-            ->setConstructorArgs(array($this->zdb, $this->i18n))
-            ->onlyMethods(array('isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'))
+            ->setConstructorArgs([$this->zdb, $this->i18n])
+            ->onlyMethods(['isLogged', 'isStaff', 'isAdmin', 'isSuperAdmin'])
             ->getMock();
 
         $login->method('isLogged')->willReturn(true);
@@ -302,7 +302,7 @@ class Contributions extends GaletteTestCase
         $this->logSuperAdmin();
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
 
-        $list = $contributions->getList(true, null, true);
+        $list = $contributions->getList(true, null);
         $this->assertIsArray($list);
         $this->assertCount(0, $list);
         $this->assertSame(0, $contributions->getCount());

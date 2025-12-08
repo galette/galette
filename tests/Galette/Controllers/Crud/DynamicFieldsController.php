@@ -723,7 +723,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => $member_one->id])]], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(
             \Analog::WARNING,
             sprintf(
@@ -750,7 +750,7 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => $member_two->id])]], $test_response->getHeaders());
-        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
         $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 

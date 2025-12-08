@@ -38,19 +38,14 @@ use Galette\Entity\FieldsConfig;
 
 class DynamicFieldsSet
 {
-    private Db $zdb;
-    private Login $login;
-
     /**
      * Main constructor
      *
      * @param Db    $zdb   Database instance
      * @param Login $login Login instance
      */
-    public function __construct(Db $zdb, Login $login)
+    public function __construct(private readonly Db $zdb, private readonly Login $login)
     {
-        $this->zdb = $zdb;
-        $this->login = $login;
     }
 
     /**

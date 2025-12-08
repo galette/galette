@@ -76,7 +76,7 @@ class PluginsList extends AbstractCommand
         ]);
 
         /** @var Plugins $plugins */
-        $plugins = $container->get('plugins');
+        $plugins = $container->get(Plugins::class);
         $io = new SymfonyStyle($input, $output);
 
         $definitions = [];

@@ -21,6 +21,8 @@
 
 declare(strict_types=1);
 
+use Galette\Core\Login;
+use Galette\Core\Plugins;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
@@ -29,7 +31,7 @@ $app->group(
     function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate): void {
         /** @var $container \DI\Container */
         $container = $app->getContainer();
-        $modules = $container->get('plugins')->getModules();
+        $modules = $container->get(Plugins::class)->getModules();
 
         //Global route to access plugin resources (CSS, JS, images, ...)
         $app->get(
@@ -49,7 +51,7 @@ $app->group(
                     'woff2' => 'application/font-woff2'
                 ];
                 if (!str_contains($path, '../') && isset($auth_ext[$ext])) {
-                    $file = $container->get('plugins')->getFile(
+                    $file = $container->get(Plugins::class)->getFile(
                         $plugin,
                         $path
                     );
@@ -91,7 +93,7 @@ $app->group(
                                 'date'          => $module['date'],
                                 'author'        => $module['author']
                             ];
-                            if ($container->get('login')->isAdmin()) {
+                            if ($container->get(Login::class)->isAdmin()) {
                                 $params['module'] = $module;
                             }
                             // display page

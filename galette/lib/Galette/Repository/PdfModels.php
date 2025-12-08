@@ -66,9 +66,9 @@ class PdfModels extends Repository
     /**
      * Add default models in database
      *
-     * @param boolean $check_first Check first if it seems initialized
+     * @param bool $check_first Check first if it seems initialized
      *
-     * @return boolean
+     * @return bool
      */
     public function installInit(bool $check_first = true): bool
     {
@@ -123,7 +123,7 @@ class PdfModels extends Repository
     /**
      * Checks for missing texts in the database
      *
-     * @return boolean
+     * @return bool
      */
     protected function checkUpdate(): bool
     {
@@ -152,6 +152,13 @@ class PdfModels extends Repository
             if (count($missing) > 0) {
                 $this->zdb->connection->beginTransaction();
                 $this->insert($ent::TABLE, $missing);
+
+                $this->zdb->handleSequence(
+                    $ent::TABLE,
+                    $ent::PK,
+                    count($this->defaults)
+                );
+
                 Analog::log(
                     'Missing texts were successfully stored into database.',
                     Analog::INFO
@@ -208,7 +215,7 @@ class PdfModels extends Repository
     {
         if (!count($this->defaults)) {
             include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
-            //@phpstan-ignore-next-line
+            //@phpstan-ignore variable.undefined
             $this->defaults = $pdfmodels_fields;
         }
         return parent::loadDefaults();

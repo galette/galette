@@ -42,7 +42,7 @@ class TransactionsList extends GaletteTestCase
     protected function testDefaults(\Galette\Filters\TransactionsList $filters): void
     {
         $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_DATE, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
         $this->assertFalse($filters->filtre_cotis_children);
         $this->assertNull($filters->start_date_filter);
         $this->assertNull($filters->end_date_filter);
@@ -63,38 +63,38 @@ class TransactionsList extends GaletteTestCase
         //change order field
         $filters->orderby = \Galette\Filters\TransactionsList::ORDERBY_AMOUNT;
         $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
 
         //same order field again: direction inverted
         $filters->orderby = \Galette\Filters\TransactionsList::ORDERBY_AMOUNT;
         $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
+        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
 
         //not existing order, same kept
         $filters->setDirection('abcde');
         $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
+        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
         $this->expectLogEntry(
             \Analog::WARNING,
             sprintf(
                 '[Galette\Filters\TransactionsList|Pagination] "abcde" is not a valid backing value for enum %1$s',
-                version_compare(PHP_VERSION, '8.2.0', '<') ? '"Galette\Enums\SQLOrder"' : 'Galette\Enums\SQLOrder'
+                version_compare(PHP_VERSION, '8.2.0', '<') ? '"Galette\Enums\SQLOrder"' : \Galette\Enums\SQLOrder::class
             )
         );
 
         //change direction only
-        $filters->setDirection(\Galette\Enums\SQLOrder::ASC);
+        $filters->setDirection(\Galette\Enums\SQLOrder::DESC);
         $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->getDirection());
 
         //change direction only - deprecated way
-        $filters->ordered = \Galette\Enums\SQLOrder::ASC;
+        $filters->ordered = \Galette\Enums\SQLOrder::DESC;
         $this->expectLogEntry(
             \Analog::WARNING,
             '[Galette\Filters\TransactionsList|Pagination] ordered is deprecated, use setDirection() instead'
         );
         $this->assertSame(\Galette\Filters\TransactionsList::ORDERBY_AMOUNT, $filters->orderby);
-        $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->ordered);
+        $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->ordered);
         $this->expectLogEntry(
             \Analog::WARNING,
             '[Galette\Filters\TransactionsList|Pagination] ordered is deprecated, use getDirection() instead'
@@ -126,7 +126,7 @@ class TransactionsList extends GaletteTestCase
         $filter_date = new \DateTime('2000-01-01'); //day of the bug :D
 
         foreach ($langs as $lang) {
-            $this->assertInstanceOf('\Galette\Core\I18n', $lang);
+            $this->assertInstanceOf(\Galette\Core\I18n::class, $lang);
             $i18n->changeLanguage($lang->getID());
             $this->assertSame($i18n->getID(), $lang->getID());
             try {

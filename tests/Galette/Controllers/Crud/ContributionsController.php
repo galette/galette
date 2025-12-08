@@ -962,6 +962,10 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->expectNoLogEntry();
         $this->expectFlashData(['success_detected' => ['Contribution has been successfully stored']]);
 
+        $result = $this->zdb->execute($count_select);
+        $this->assertCount(1, $result); //one contribution added by group manager
+        $this->assertCount(1, $this->zdb->execute($remove_contributions));
+
         //Test group manager cannot create contribution for a member he do not own
         $contrib_data['id_adh'] = $member_new->id; //set contribution for new member
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
@@ -998,8 +1002,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->login->logout();
 
         $result = $this->zdb->execute($count_select);
-        $this->assertCount(1, $result); //one contribution added by admin member
-        $this->assertCount(1, $this->zdb->execute($remove_contributions));
+        $this->assertCount(0, $result); //no contribution added
     }
 
     /**

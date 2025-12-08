@@ -23,16 +23,18 @@ declare(strict_types=1);
 
 namespace Galette\Middleware;
 
+use DI\Attribute\Inject;
 use Galette\Core\Login;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Analog\Analog;
-use DI\Container;
 use RKA\Session;
 use Slim\Flash\Messages;
 use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
+
+use function Safe\preg_match;
 
 /**
  * Galette Slim middleware for authentication
@@ -41,31 +43,26 @@ use Slim\Routing\RouteParser;
  */
 class Authenticate
 {
-    protected Messages $flash;
-
     /**
      * @var array<string, string>
      */
+    #[Inject('acls')]
     protected array $acls;
-
-    private Login $login;
-
-    private Session $session;
-
-    private RouteParser $routeparser;
 
     /**
      * Constructor
      *
-     * @param Container $container Container instance
+     * @param Login       $login       Login instance
+     * @param Session     $session     Session instance
+     * @param RouteParser $routeparser Route parser instance
+     * @param Messages    $flash       Flash messages instance
      */
-    public function __construct(Container $container)
-    {
-        $this->login = $container->get('login');
-        $this->session = $container->get('session');
-        $this->flash = $container->get('flash');
-        $this->acls = $container->get('acls');
-        $this->routeparser = $container->get(RouteParser::class);
+    public function __construct(
+        private readonly Login $login,
+        private readonly Session $session,
+        private readonly RouteParser $routeparser,
+        protected Messages $flash
+    ) {
     }
 
     /**
@@ -190,10 +187,9 @@ class Authenticate
         }
 
         throw new \RuntimeException(
-            str_replace(
-                '%name',
+            sprintf(
+                _T('Route \'%1$s\' is not registered in ACLs!'),
                 $name,
-                _T("Route '%name' is not registered in ACLs!")
             )
         );
     }

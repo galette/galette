@@ -33,6 +33,8 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
 use Galette\Util\Release;
 
+use function Safe\base64_decode;
+
 /**
  * Galette authentication controller
  *
@@ -90,7 +92,7 @@ class AuthController extends AbstractController
         $password = $request->getParsedBody()['password'];
         $checkpass = new \Galette\Util\Password($this->preferences);
 
-        if (trim($nick) == '' || trim($password) == '') {
+        if (trim((string) $nick) == '' || trim((string) $password) == '') {
             $this->flash->addMessage(
                 'loginfault',
                 _T("You must provide both login and password.")
@@ -102,12 +104,12 @@ class AuthController extends AbstractController
 
         if ($nick === $this->preferences->pref_admin_login) {
             $pw_superadmin = password_verify(
-                $password,
+                (string) $password,
                 $this->preferences->pref_admin_pass
             );
             if (!$pw_superadmin) {
                 $pw_superadmin = (
-                    md5($password) === $this->preferences->pref_admin_pass
+                    md5((string) $password) === $this->preferences->pref_admin_pass
                 );
             }
             if ($pw_superadmin) {
@@ -124,12 +126,16 @@ class AuthController extends AbstractController
                 || $this->login->isStaff()
             ) {
                 $deprecated_constants = [
-                    'NON_UTF_DBCONNECT',
-                    'GALETTE_CARD_WIDTH',
-                    'GALETTE_CARD_HEIGHT',
-                    'GALETTE_CARD_COLS',
-                    'GALETTE_CARD_ROWS'
+                    'NON_UTF_DBCONNECT'
                 ];
+                if (GALETTE_ADAPTATIVE_CARDS) {
+                    $deprecated_constants += [
+                        'GALETTE_CARD_WIDTH',
+                        'GALETTE_CARD_HEIGHT',
+                        'GALETTE_CARD_COLS',
+                        'GALETTE_CARD_ROWS'
+                    ];
+                }
 
                 foreach ($deprecated_constants as $deprecated_constant) {
                     if (defined($deprecated_constant)) {
@@ -216,7 +222,7 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Member to impersonate
+     * @param int      $id       Member to impersonate
      *
      * @return Response
      */
@@ -308,7 +314,7 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param ?integer $id_adh   Member id
+     * @param ?int     $id_adh   Member id
      *
      * @return Response
      */
@@ -337,14 +343,12 @@ class AuthController extends AbstractController
                 ->withHeader('Location', $redirect_url);
         }
 
-        $adh = null;
-        $login_adh = null;
         if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
             $adh = new Adherent($this->zdb, $id_adh);
             $login_adh = $adh->login;
         } else {
             $post = $request->getParsedBody();
-            $login_adh = htmlspecialchars($post['login'], ENT_QUOTES);
+            $login_adh = htmlspecialchars((string) $post['login'], ENT_QUOTES);
             $adh = new Adherent($this->zdb, $login_adh);
         }
 
@@ -517,7 +521,7 @@ class AuthController extends AbstractController
         $post = $request->getParsedBody();
         $password = new Password($this->zdb);
 
-        if (!$id_adh = $password->isHashValid(base64_decode($post['hash']))) {
+        if (!$id_adh = $password->isHashValid(base64_decode((string) $post['hash']))) {
             return $response
                 ->withStatus(301)
                 ->withHeader(
@@ -530,7 +534,7 @@ class AuthController extends AbstractController
         if ($post['mdp_adh'] == '') {
             $error = _T("No password");
         } elseif (isset($post['mdp_adh2'])) {
-            if (strcmp($post['mdp_adh'], $post['mdp_adh2'])) {
+            if (strcmp((string) $post['mdp_adh'], $post['mdp_adh2'])) {
                 $error = _T("- The passwords don't match!");
             } else {
                 $checkpass = new \Galette\Util\Password($this->preferences);
@@ -557,7 +561,7 @@ class AuthController extends AbstractController
                         );
                         //once password has been changed, we can remove the
                         //temporary password entry
-                        $password->removeHash(base64_decode($post['hash']));
+                        $password->removeHash(base64_decode((string) $post['hash']));
                         $this->flash->addMessage(
                             'success_detected',
                             _T("Your password has been changed!")

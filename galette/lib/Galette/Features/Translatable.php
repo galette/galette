@@ -37,7 +37,7 @@ trait Translatable
     /**
      * Get field name
      *
-     * @param boolean $translated Get translated or raw name
+     * @param bool $translated Get translated or raw name
      *
      * @return string
      */

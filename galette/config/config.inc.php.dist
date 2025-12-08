@@ -40,3 +40,5 @@ define("PWD_DB", "demo");
 define("NAME_DB", "galette");
 /* tables name prefix (default is galette_) */
 define("PREFIX_DB", "galette_");
+/* authentication token to use in your post contribution script */
+define("SCRIPT_AUTH_TOKEN", "change_this_value_with_a_very_strong_password");

@@ -71,7 +71,7 @@ if (isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz'])) {
     $install = new GaletteInstall();
 }
 
-$error_detected = array();
+$error_detected = [];
 
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', true);
@@ -160,7 +160,7 @@ if (isset($_POST['stepback_btn'])) {
     if ($_POST['install_adminlogin'] == '') {
         $error_detected[] = _T("No user name");
     }
-    if (strpos($_POST['install_adminlogin'], '@')) {
+    if (strpos((string) $_POST['install_adminlogin'], '@')) {
         $error_detected[] = _T("The username cannot contain the @ character");
     }
     if ($_POST['install_adminpass'] == '') {
@@ -170,7 +170,7 @@ if (isset($_POST['stepback_btn'])) {
         !isset($_POST['install_passwdverified'])
         && strcmp(
             $_POST['install_adminpass'],
-            $_POST['install_adminpass_verif']
+            (string) $_POST['install_adminpass_verif']
         )
     ) {
         $error_detected[] = _T("Passwords mismatch");

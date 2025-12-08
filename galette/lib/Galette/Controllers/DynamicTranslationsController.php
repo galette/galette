@@ -28,6 +28,8 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
 
+use function Safe\preg_replace;
+
 /**
  * Galette dynamic translations controller
  *
@@ -78,8 +80,8 @@ class DynamicTranslationsController extends AbstractController
                 $text_orig_sum = array_key_first($orig);
             }
 
-            if (isset($orig[$text_orig_sum]) || isset($orig[md5($text_orig_sum)])) {
-                $sum = isset($orig[$text_orig_sum]) ? $text_orig_sum : md5($text_orig_sum);
+            if (isset($orig[$text_orig_sum]) || isset($orig[md5((string) $text_orig_sum)])) {
+                $sum = isset($orig[$text_orig_sum]) ? $text_orig_sum : md5((string) $text_orig_sum);
                 $text_exists = true;
                 $text_trans = $this->l10n->getDynamicTranslations($sum);
                 $text_orig = $orig[$sum];
@@ -133,6 +135,7 @@ class DynamicTranslationsController extends AbstractController
             );
         }
         $error_detected = [];
+        $success_detected = [];
 
         if (isset($post['trans']) && isset($post['text_orig'])) {
             if (isset($post['new']) && $post['new'] == 'true') {
@@ -157,8 +160,8 @@ class DynamicTranslationsController extends AbstractController
 
             // Validate form
             foreach ($post as $key => $value) {
-                if (str_starts_with($key, 'text_trans_')) {
-                    $trans_lang = substr($key, 11);
+                if (str_starts_with((string) $key, 'text_trans_')) {
+                    $trans_lang = substr((string) $key, 11);
                     $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
                     $res = $this->l10n->updateDynamicTranslation(
                         $post['text_orig'],
@@ -181,23 +184,16 @@ class DynamicTranslationsController extends AbstractController
                 }
             }
 
-            if (count($error_detected)) {
-                foreach ($error_detected as $err) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $err
-                    );
-                }
-            } else {
-                $this->flash->addMessage(
-                    'success_detected',
-                    _T("Labels has been sucessfully translated!")
-                );
+            if (count($error_detected) === 0) {
+                $success_detected[] = _T("Labels has been successfully translated!");
             }
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $redirect_url);
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            successes: $success_detected,
+            errors: $error_detected
+        );
     }
 }

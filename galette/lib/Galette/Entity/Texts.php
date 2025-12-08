@@ -24,8 +24,11 @@ declare(strict_types=1);
 namespace Galette\Entity;
 
 use ArrayObject;
+use DateInterval;
+use Safe\DateTime;
 use Exception;
 use Galette\Core\I18n;
+use Galette\Core\Login;
 use Galette\Features\Replacements;
 use Slim\Routing\RouteParser;
 use Throwable;
@@ -44,6 +47,7 @@ class Texts
 {
     use Replacements {
         getLegend as protected trait_getLegend;
+        setReplacements as protected trait_setReplacements;
     }
 
     /** @var ArrayObject<string, int|string> */
@@ -54,7 +58,7 @@ class Texts
 
     /** @var array<int, mixed> */
     private array $defaults;
-    private ?string $current; //@phpstan-ignore-line
+    private ?string $current = null;
 
     /**
      * Main constructor
@@ -70,7 +74,7 @@ class Texts
             $routeparser = $container->get(RouteParser::class);
         }
         if ($login === null) {
-            $login = $container->get('login');
+            $login = $container->get(Login::class);
         }
         $this->routeparser = $routeparser;
         $this
@@ -94,7 +98,7 @@ class Texts
     /**
      * Get patterns for mails
      *
-     * @param boolean $legacy Whether to load legacy patterns
+     * @param bool $legacy Whether to load legacy patterns
      *
      * @return array<string, array<string, list<string>|string>>
      */
@@ -190,8 +194,8 @@ class Texts
      */
     public function setLinkValidity(): self
     {
-        $link_validity = new \DateTime();
-        $link_validity->add(new \DateInterval('PT24H'));
+        $link_validity = new DateTime();
+        $link_validity->add(new DateInterval('PT24H'));
         $this->setReplacements(['link_validity' => $link_validity->format(_T("Y-m-d H:i:s"))]);
         return $this;
     }
@@ -398,9 +402,9 @@ class Texts
     /**
      * Initialize texts at install time
      *
-     * @param boolean $check_first Check first if it seems initialized
+     * @param bool $check_first Check first if it seems initialized
      *
-     * @return boolean false if no need to initialize, true if data has been initialized, Exception if error
+     * @return bool false if no need to initialize, true if data has been initialized, Exception if error
      * @throws Throwable
      */
     public function installInit(bool $check_first = true): bool
@@ -454,7 +458,7 @@ class Texts
     /**
      * Checks for missing texts in the database
      *
-     * @return boolean
+     * @return bool
      */
     private function checkUpdate(): bool
     {
@@ -488,6 +492,12 @@ class Texts
 
             if (count($missing) > 0) {
                 $this->insert($missing);
+
+                $this->zdb->handleSequence(
+                    self::TABLE,
+                    self::PK,
+                    count($this->defaults)
+                );
 
                 Analog::log(
                     'Missing texts were successfully stored into database.',
@@ -587,7 +597,7 @@ class Texts
         include GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
         $texts = [];
 
-        //@phpstan-ignore-next-line
+        //@phpstan-ignore variable.undefined
         foreach ($texts_fields as $text_field) {
             unset($text_field['tid']);
             $text_field['tlang'] = $lang;
@@ -608,6 +618,9 @@ class Texts
     {
         $legend = $this->trait_getLegend();
 
+        //Mails are send as text, logo won't show anything
+        unset($legend['main']['patterns']['asso_logo'], $legend['main']['patterns']['asso_print_logo']);
+
         $contribs = ['contrib', 'newcont', 'donation', 'newdonation'];
         if ($this->current !== null && in_array($this->current, $contribs)) {
             $patterns = $this->getContributionPatterns(false);
@@ -624,6 +637,24 @@ class Texts
         ];
 
         return $legend;
+    }
+
+    /**
+     * Set replacements
+     *
+     * @param array<string,?mixed> $replaces Replacements to add
+     *
+     * @return void
+     */
+    public function setReplacements(array $replaces): void
+    {
+        //some replacements may produce HTML code; while system texts are text only
+        foreach ($replaces as &$replace) {
+            if (is_string($replace)) {
+                $replace = \Galette\Util\Text::convertHtmlToText($replace);
+            }
+        }
+        $this->trait_setReplacements($replaces);
     }
 
     /**

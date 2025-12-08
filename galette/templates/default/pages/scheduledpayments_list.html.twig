@@ -221,7 +221,7 @@
 
 {% block infoline %}
     {% set infoline = {
-        'label': _Tn("%1$s shceduled payment", "%1$s scheduled payments", nb)|format(nb),
+        'label': _Tn("%1$s scheduled payment", "%1$s scheduled payments", nb)|format(nb),
         'route': {
             'name': 'filterScheduledPayments'
         }
@@ -297,7 +297,7 @@
                     {% endif %}
                      <a
                         href="{{ url_for("member", {"id": mid}) }}"
-                        title="{{ _T("Show '%name' card")|replace({"%name": mname}) }}"
+                        title="{{ _T("Show '%1$s' card")|format(mname) }}"
                     >
                         {{ memberName({id: scheduled.getContribution().member}) }}
                     </a>

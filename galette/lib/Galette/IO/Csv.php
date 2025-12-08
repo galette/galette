@@ -25,6 +25,10 @@ namespace Galette\IO;
 
 use Analog\Analog;
 
+use function Safe\filemtime;
+use function Safe\filesize;
+use function Safe\glob;
+
 /**
  * CSV files
  *
@@ -68,16 +72,14 @@ abstract class Csv
 
     /** @var array<string> */
     private array $errors = [];
-    private string $default_directory;
 
     /**
      * Default constructor
      *
-     * @param string $default_dir Default directory
+     * @param string $default_directory Default directory
      */
-    public function __construct(string $default_dir)
+    public function __construct(private readonly string $default_directory)
     {
-        $this->default_directory = $default_dir;
     }
 
     /**
@@ -100,7 +102,6 @@ abstract class Csv
             $mdate = date(__("Y-m-d H:i:s"), filemtime($file));
 
             $raw_size = filesize($file);
-            $size = 0;
             if ($raw_size >= 1024 * 1024 * 1024) { // Go
                 $size = round(($raw_size / 1024) / 1024 / 1024, 2) . ' Go';
             } elseif ($raw_size >= 1024 * 1024) { // Mo
@@ -125,7 +126,7 @@ abstract class Csv
      *
      * @param string $name File name
      *
-     * @return boolean
+     * @return bool
      */
     public function remove(string $name): bool
     {
@@ -134,8 +135,8 @@ abstract class Csv
         $filename = $this->default_directory . $name;
 
         if (file_exists($filename)) {
-            $removed = unlink($filename);
-            return $removed;
+            //@phpstan-ignore theCodingMachineSafe.function
+            return unlink($filename);
         } else {
             Analog::log(
                 'CSV file ' . $filename

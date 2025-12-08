@@ -18,7 +18,11 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Galette\Core\Db;
+use Galette\Core\History;
+use Galette\Core\Login;
 use Galette\Entity\Texts;
+use Galette\Middleware\Authenticate;
 use Galette\Repository\Members;
 use Galette\Repository\Reminders;
 use Galette\Filters\MembersList;
@@ -40,7 +44,7 @@ if (isset($needs_update) && $needs_update === true) {
 /**
  * Authentication middleware
  */
-$authenticate = new \Galette\Middleware\Authenticate($container);
+$authenticate = $container->get(Authenticate::class);
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
@@ -48,15 +52,16 @@ require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/groups.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
+$cron = (PHP_SAPI === 'cli');
 if ($cron) {
-    $container->get('login')->logCron(
+    $container->get(Login::class)->logCron(
         basename($argv[0], '.php'),
-        $container->get('preferences')
+        $container->get(\Galette\Core\Preferences::class)
     );
     define('GALETTE_CRON', true);
 }
 
-if (!$container->get('login')->isCron()) {
+if (!$container->get(Login::class)->isCron()) {
     die(1);
 }
 
@@ -66,17 +71,17 @@ if ($cron && !defined('GALETTE_URI')) {
 }
 
 $texts = new Texts(
-    $container->get('preferences')
+    $container->get(\Galette\Core\Preferences::class)
 );
 $reminders = new Reminders();
 $success_detected = [];
 $error_detected = [];
 
-$list_reminders = $reminders->getList($container->get('zdb'), false);
+$list_reminders = $reminders->getList($container->get(Db::class), false);
 if (count($list_reminders) > 0) {
     foreach ($list_reminders as $reminder) {
         //send reminders by email
-        $sent = $reminder->send($texts, $container->get('history'), $container->get('zdb'));
+        $sent = $reminder->send($texts, $container->get(History::class), $container->get(Db::class));
 
         if ($sent === true) {
             $success_detected[] = $reminder->getMessage();

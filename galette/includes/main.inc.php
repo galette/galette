@@ -21,6 +21,10 @@
 
 declare(strict_types=1);
 
+use Galette\Core\I18n;
+use Galette\Core\LightSlimApp;
+use Galette\Core\Login;
+use Galette\Core\SlimApp;
 use Galette\Middleware\Authenticate;
 use Galette\Middleware\Language;
 use Galette\Middleware\Telemetry;
@@ -37,8 +41,6 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 if (!defined('GLOB_BRACE')) {
     define('GLOB_BRACE', 0);
 }
-
-$time_start = microtime(true);
 
 //define galette's root directory
 if (!defined('GALETTE_ROOT')) {
@@ -57,18 +59,18 @@ require_once GALETTE_ROOT . 'includes/galette.inc.php';
 //Galette needs database update!
 if ($needs_update) {
     define('GALETTE_THEME', 'themes/default/');
-    $gapp = new \Galette\Core\LightSlimApp();
+    $gapp = new LightSlimApp();
 } else {
-    $gapp = new \Galette\Core\SlimApp();
+    $gapp = new SlimApp();
 }
 $app = $gapp->getApp();
 $app->setBasePath((function () {
     $uri = (string)parse_url('http://a' . ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
-    if (stripos($uri, $_SERVER['SCRIPT_NAME']) === 0) {
-        return dirname($_SERVER['SCRIPT_NAME']);
+    if (stripos($uri, (string) $_SERVER['SCRIPT_NAME']) === 0) {
+        return dirname((string) $_SERVER['SCRIPT_NAME']);
     }
 
-    $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+    $scriptDir = str_replace('\\', '/', dirname((string) $_SERVER['SCRIPT_NAME']));
     if ($scriptDir !== '/' && stripos($uri, $scriptDir) === 0) {
         return $scriptDir;
     }
@@ -85,7 +87,7 @@ if (!defined('GALETTE_TIMEOUT')) {
 }
 
 $session_name = '';
-//since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
+//since PREFIX_DB and NAME_DB are required to properly instantiate sessions,
 // we have to check here if they're assigned
 if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
     $session_name = 'install_' . str_replace('.', '_', GALETTE_VERSION);
@@ -107,15 +109,16 @@ $app->add($app->getContainer()->get('csrf'));
 
 /**
  * Authentication middleware
+ * FIXME: use DI when needed instead of global variable
  */
-$authenticate = new Authenticate($container);
+$authenticate = $container->get(Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 
 if ($needs_update) {
     $app->add(
         new UpdateAndMaintenance(
-            $container->get('i18n'),
+            $container->get(I18n::class),
             $container->get(RouteParser::class),
             UpdateAndMaintenance::NEED_UPDATE
         )
@@ -126,10 +129,10 @@ if ($needs_update) {
 }
 
 //Maintenance middleware
-if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
+if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get(Login::class)->isSuperAdmin()) {
     $app->add(
         new UpdateAndMaintenance(
-            $container->get('i18n'),
+            $container->get(I18n::class),
             $container->get(RouteParser::class),
             UpdateAndMaintenance::MAINTENANCE
         )
