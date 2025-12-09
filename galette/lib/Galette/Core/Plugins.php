@@ -242,6 +242,7 @@ class Plugins
                     'Plugin ' . $name . ' needs a database but no version is provided.',
                     Analog::ERROR
                 );
+                unset($this->modules[$this->id]);
                 $this->setDisabled(self::DISABLED_DBVERSION);
             }
         }
