@@ -28,8 +28,10 @@ use Exception;
 use Analog\Analog;
 use Galette\Common\ClassLoader;
 use League\Event\EventDispatcher;
+use Safe\Exceptions\DirException;
 use Safe\Exceptions\FilesystemException;
 
+use function Safe\dir;
 use function Safe\file_put_contents;
 use function Safe\realpath;
 
@@ -77,7 +79,6 @@ class Plugins
     {
         $this->path = explode(PATH_SEPARATOR, $path);
         $this->autoload = true;
-        $this->parseModules();
     }
 
     /**
@@ -86,15 +87,13 @@ class Plugins
     protected function parseModules(): void
     {
         foreach ($this->path as $root) {
-            if (!is_dir($root) || !is_readable($root)) {
-                continue;
-            }
-
             if (!str_ends_with($root, '/')) {
                 $root .= '/';
             }
 
-            if (($d = @dir($root)) === false) { //@phpstan-ignore theCodingMachineSafe.function
+            try {
+                $d = dir($root);
+            } catch (DirException $e) {
                 continue;
             }
 
@@ -157,8 +156,7 @@ class Plugins
     public function loadModules(Preferences $preferences, string $path, ?string $lang = null): void
     {
         $this->preferences = $preferences;
-        $this->path = explode(PATH_SEPARATOR, $path);
-
+        $this->autoload($path);
         $this->parseModules();
 
         // Sort plugins

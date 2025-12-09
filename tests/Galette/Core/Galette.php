@@ -537,12 +537,10 @@ class Galette extends GaletteTestCase
 
         $this->assertCount(1, $entries);
 
-        $this->plugins->autoload(GALETTE_PLUGINS_PATH);
         $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $this->plugins->activateModule('plugin-news');
 
         $this->plugins = new \Galette\Core\Plugins();
-        $this->plugins->autoload(GALETTE_PLUGINS_PATH);
         $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
 
         $this->assertArrayNotHasKey('plugin-news', $this->plugins->getDisabledModules());

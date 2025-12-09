@@ -55,7 +55,6 @@ class Plugins extends GaletteTestCase
     private function getPlugins(): \Galette\Core\Plugins
     {
         $plugins = new \Galette\Core\Plugins();
-        $plugins->autoload(GALETTE_PLUGINS_PATH);
         $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         return $plugins;
     }
@@ -120,6 +119,10 @@ class Plugins extends GaletteTestCase
             [
                 'module' => 'plugin-noclass',
                 'cause' =>  \Galette\Core\Plugins::DISABLED_MISS
+            ], 
+            [
+                'module' => 'plugin-db-noversion',
+                'cause' => \Galette\Core\Plugins::DISABLED_MISS
             ]
         ];
     }
@@ -133,6 +136,7 @@ class Plugins extends GaletteTestCase
         $disabled_modules = $this->plugins->getDisabledModules();
         $this->assertTrue(isset($disabled_modules[$module]));
         $this->assertSame($cause, $disabled_modules[$module]['cause']);
+        $this->assertTrue(isset($disabled_modules['plugin-db-noversion']));
     }
 
     /**
