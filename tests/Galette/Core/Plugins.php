@@ -76,7 +76,7 @@ class Plugins extends GaletteTestCase
     public function testLoadModules(): void
     {
         $this->getPlugins();
-        $this->assertCount(4, $this->plugins->getModules());
+        $this->assertCount(3, $this->plugins->getModules());
 
         $loaded_plugin = $this->plugins->getModules('plugin-test2');
         $loaded_plugin['date'] = $this->plugin2['date'];
@@ -164,19 +164,19 @@ class Plugins extends GaletteTestCase
     {
         $plugins = $this->getPlugins();
         $modules = $plugins->getModules();
-        $this->assertCount(4, $modules);
+        $this->assertCount(3, $modules);
         $this->assertTrue(isset($modules['plugin-test2']));
         $plugins->deactivateModule('plugin-test2');
 
         $plugins = $this->getPlugins();
         $modules = $plugins->getModules();
-        $this->assertCount(3, $modules);
+        $this->assertCount(2, $modules);
         $this->assertFalse(isset($modules['plugin-test2']));
         $plugins->activateModule('plugin-test2');
 
         $plugins = $this->getPlugins();
         $modules = $plugins->getModules();
-        $this->assertCount(4, $modules);
+        $this->assertCount(3, $modules);
         $this->assertTrue(isset($modules['plugin-test2']));
     }
 
@@ -206,7 +206,6 @@ class Plugins extends GaletteTestCase
     public function testNeedDatabse(): void
     {
         $this->assertTrue($this->plugins->needsDatabase('plugin-db'));
-        $this->assertTrue($this->plugins->needsDatabase('plugin-db-noversion'));
         $this->assertFalse($this->plugins->needsDatabase('plugin-test2'));
 
         $plugins = $this->getPlugins();
