@@ -15,13 +15,14 @@
 # "Н. А." <asadbek170820@gmail.com>, 2025.
 # 4ipset <228gus228uu@gmail.com>, 2025.
 # killallpie <killallpie@inbox.ru>, 2025.
+# Egor Vershkov <evn88fx64@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
 "PO-Revision-Date: 2025-12-12 02:00+0000\n"
-"Last-Translator: killallpie <killallpie@inbox.ru>\n"
+"Last-Translator: Egor Vershkov <evn88fx64@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -965,7 +966,7 @@ msgid "Mails texts"
 msgstr "Тексты писем"
 
 msgid "Update preferences"
-msgstr ""
+msgstr "Обновить настройки"
 
 msgid "Update models"
 msgstr "Обновить модели"
@@ -998,7 +999,7 @@ msgstr ""
 
 #, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
-msgstr ""
+msgstr "У меня %1$s Галет, я отдаю %2$s Галет. Сколько у меня Галет?"
 
 msgid "First page"
 msgstr "Первая страница"
@@ -1013,7 +1014,7 @@ msgstr "Текущая страница (%1$s)"
 
 #, php-format
 msgid "Page %1$s"
-msgstr ""
+msgstr "Страница %1$s"
 
 #, php-format
 msgid "Next page (%1$s)"
