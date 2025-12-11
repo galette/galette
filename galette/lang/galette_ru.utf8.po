@@ -14,13 +14,14 @@
 # Alexis Said He <alexshelmec@outlook.com>, 2025.
 # "Н. А." <asadbek170820@gmail.com>, 2025.
 # 4ipset <228gus228uu@gmail.com>, 2025.
+# killallpie <killallpie@inbox.ru>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2025-12-04 10:00+0000\n"
-"Last-Translator: 4ipset <228gus228uu@gmail.com>\n"
+"PO-Revision-Date: 2025-12-12 02:00+0000\n"
+"Last-Translator: killallpie <killallpie@inbox.ru>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -819,13 +820,11 @@ msgstr "Плагин %1$s был отключён"
 msgid "Labels translation"
 msgstr "Перевод меток"
 
-#, fuzzy
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr "Произошла ошибка при сохранении метки `%label` для языка `%lang`"
 
-#, fuzzy
 msgid "Labels has been successfully translated!"
-msgstr "Метки успешно переведены!"
+msgstr "Метки были успешно переведены!"
 
 msgid "Exports"
 msgstr "Экспорт"
@@ -969,29 +968,29 @@ msgid "Update preferences"
 msgstr ""
 
 msgid "Update models"
-msgstr ""
+msgstr "Обновить модели"
 
 #, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr ""
+msgstr "Сколько будет %1$s плюс %2$s?"
 
 #, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr ""
+msgstr "Что получится если прибавить %1$s к %2$s?"
 
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
 "have?"
-msgstr ""
+msgstr "У меня %1$s Галет, мой друг дал мне ещё %2$s. Сколько у меня Галет?"
 
 #, php-format
 msgid "How much is %1$s minus %2$s?"
-msgstr ""
+msgstr "Сколько будет %1$s минус %2$s?"
 
-#, php-format
+#, fuzzy, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr ""
+msgstr "Что получится если отнять %2$s от %1$s?"
 
 #, php-format
 msgid "How much is %2$s retired to %1$s?"
@@ -1002,15 +1001,15 @@ msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr ""
 
 msgid "First page"
-msgstr ""
+msgstr "Первая страница"
 
 #, php-format
 msgid "Previous page (%1$s)"
-msgstr ""
+msgstr "Предыдущая страница (%1$s)"
 
 #, php-format
 msgid "Current page (%1$s)"
-msgstr ""
+msgstr "Текущая страница (%1$s)"
 
 #, php-format
 msgid "Page %1$s"
@@ -1018,27 +1017,28 @@ msgstr ""
 
 #, php-format
 msgid "Next page (%1$s)"
-msgstr ""
+msgstr "Следующая страница (%1$s)"
 
 #, php-format
 msgid "Last page (%1$s)"
-msgstr ""
+msgstr "Последняя страница (%1$s)"
 
 msgid "All"
 msgstr "Все"
 
 #, php-format
 msgid "Logged in as:<br/>%login"
-msgstr ""
+msgstr "Вы зашли как:<br/>%login"
 
 msgid "Delete mailing entries"
 msgstr ""
 
 msgid "My Account"
-msgstr ""
+msgstr "Мой аккаунт"
 
+#, fuzzy
 msgid "My contributions"
-msgstr ""
+msgstr "Мой вклад"
 
 msgid "View and filter all my contributions"
 msgstr ""
