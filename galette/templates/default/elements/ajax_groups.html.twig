@@ -39,7 +39,7 @@
                 <tr>
                     <td class="right collapsing">{{ group.getId() }}</td>
                     <td class="username_row">
-                        <a href="{{ url_for('groups', {'id': group.getId()}) }}">{{ group.getName() }}</a>
+                        <a href="{{ url_for('editGroup', {'id': group.getId()}) }}">{{ group.getName() }}</a>
                     </td>
                     <td class="username_row">
     {% for manager in managers %}
