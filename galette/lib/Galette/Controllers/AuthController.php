@@ -88,8 +88,9 @@ class AuthController extends AbstractController
      */
     public function doLogin(Request $request, Response $response): Response
     {
-        $nick = $request->getParsedBody()['login'];
-        $password = $request->getParsedBody()['password'];
+        $post =  $request->getParsedBody();
+        $nick = $post['login'] ?? '';
+        $password = $post['password'] ?? '';
         $checkpass = new \Galette\Util\Password($this->preferences);
 
         if (trim((string) $nick) == '' || trim((string) $password) == '') {
