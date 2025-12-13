@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace GaletteTests\Controllers;
 
 use Galette\GaletteRoutingTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
 * Galette controller tests
@@ -759,13 +760,29 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
-     * Test favicon route
+     * Data provider for empty routes
+     *
+     * @return array
+     */
+    private function emptyRoutesProvider(): array
+    {
+        return [
+            ['favicon.ico'],
+            ['robots.txt']
+        ];
+    }
+
+    /**
+     * Test empty route (default favicon.ico, robots.txt, ...)
+     *
+     * @param string $url URL to test
      *
      * @return void
      */
-    public function testFavicon(): void
+    #[DataProvider('emptyRoutesProvider')]
+    public function testEmptyRoute(string $url): void
     {
-        $request = $this->createRequest('defaultFavicon');
+        $request = $this->createRequest('defaultEmpty', ['url' => $url]);
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);

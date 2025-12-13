@@ -31,9 +31,9 @@ $app->get(
 )->setName('slash');
 
 $app->get(
-    '/favicon.ico',
-    [GaletteController::class, 'favicon']
-)->setName('defaultFavicon');
+    '/{url:favicon.ico|robots.txt}',
+    [GaletteController::class, 'empty']
+)->setName('defaultEmpty');
 
 //logo route
 $app->get(
