@@ -393,4 +393,13 @@ CREATE TABLE galette_database (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 INSERT INTO galette_database(version) VALUES(1.220);
 
+-- table for plugins
+DROP TABLE IF EXISTS galette_plugins;
+CREATE TABLE galette_plugins (
+    plugin_id varchar(100) NOT NULL,
+    enabled tinyint(1) NOT NULL DEFAULT 0,
+    state smallint NOT NULL DEFAULT 0,
+    PRIMARY KEY (plugin_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4
+
 SET FOREIGN_KEY_CHECKS=1;
