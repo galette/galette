@@ -756,14 +756,14 @@ class GaletteController extends AbstractController
     }
 
     /**
-     * Favicon route
+     * Empty route (for default requests on favicon.ico, robots.txt, ...)
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
      * @return Response
      */
-    public function favicon(Request $request, Response $response): Response
+    public function empty(Request $request, Response $response): Response
     {
         return $response;
     }
