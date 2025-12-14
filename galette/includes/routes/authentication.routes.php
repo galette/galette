@@ -24,6 +24,12 @@ declare(strict_types=1);
 use Galette\Controllers\AuthController;
 use Galette\Entity\Adherent;
 
+/**
+ * @var \Slim\App<\DI\Container> $app
+ * @var \Slim\Routing\RouteParser $routeparser
+ * @var \Galette\Middleware\Authenticate $authenticate
+ */
+
 //login page
 $app->get(
     '/login[/{r:.+}]',

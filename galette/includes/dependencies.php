@@ -21,6 +21,7 @@
 
 declare(strict_types=1);
 
+use Analog\Analog;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
@@ -30,6 +31,11 @@ use Slim\Views\Twig;
 use Twig\Extra\String\StringExtension;
 use Twig\Extra\Intl\IntlExtension;
 
+use function Safe\preg_match;
+
+/**
+ * @var \Slim\App<DI\Container> $app
+ */
 $container = $app->getContainer();
 
 $routeParser = $app->getRouteCollector()->getRouteParser();
@@ -100,16 +106,11 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $function = new \Twig\TwigFunction('get_class', get_class(...));
     $view->getEnvironment()->addFunction($function);
 
-    $function = new \Twig\TwigFunction('memberName', function (...$params) use ($c) {
-        extract($params[0]);
-        return Galette\Entity\Adherent::getSName($c->get(\Galette\Core\Db::class), $id);
-    });
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('statusLabel', function (...$params) {
-        extract($params);
-        global $statuses_list;
-        return $statuses_list[$id];
+    $function = new \Twig\TwigFunction('memberName', function ($id) use ($c) {
+        return Galette\Entity\Adherent::getSName(
+            zdb: $c->get(\Galette\Core\Db::class),
+            id: (int)$id
+        );
     });
     $view->getEnvironment()->addFunction($function);
 
@@ -173,6 +174,7 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 // Flash messages
 $container->set(\Slim\Flash\Messages::class, DI\autowire());
 
+/** @var \Galette\Core\Plugins $plugins */
 $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) use ($plugins) {
     $i18n = $c->get(\Galette\Core\I18n::class);
     $plugins->loadModules($c->get(\Galette\Core\Preferences::class), GALETTE_PLUGINS_PATH, $i18n->getLongID());
@@ -211,6 +213,7 @@ $container->set(\Galette\Core\History::class, \DI\autowire());
 
 $container->set('acls', function (ContainerInterface $c) {
     include GALETTE_ROOT . 'includes/core_acls.php';
+    /** @var array<string, string> $core_acls */
     $acls = $core_acls;
 
     foreach ($c->get(\Galette\Core\Plugins::class)->getModules() as $plugin) {
@@ -223,6 +226,7 @@ $container->set('acls', function (ContainerInterface $c) {
     //load user defined ACLs
     if (file_exists(GALETTE_CONFIG_PATH . 'local_acls.inc.php')) {
         //use array_merge here, we want $local_acls to override core ones.
+        /** @var array<string, string> $local_acls */
         $acls = array_merge($acls, $local_acls);
     }
 
@@ -231,11 +235,13 @@ $container->set('acls', function (ContainerInterface $c) {
 
 $container->set('texts_fields', function () {
     include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
+    /** @var array<array<string,string>> $texts_fields */
     return $texts_fields;
 });
 
 $container->set('members_fields', function () {
     include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+    /** @var array<array<string,string|bool|int>> $members_fields */
     return $members_fields;
 });
 
@@ -251,6 +257,7 @@ $container->set('members_form_fields', function (ContainerInterface $c) {
 
 $container->set('members_fields_cats', function () {
     include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
+    /** @var array<array<string,string|int>> $members_fields_cats */
     return $members_fields_cats;
 });
 

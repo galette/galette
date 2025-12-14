@@ -21,16 +21,20 @@
 
 declare(strict_types=1);
 
+use function Safe\define;
+use function Safe\ini_set;
+
 //define galette's root directory
 if (!defined('GALETTE_ROOT')) {
-    define('GALETTE_ROOT', __DIR__ . '/../');
+    //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
+    \define('GALETTE_ROOT', __DIR__ . '/../');
 }
 
 require_once GALETTE_ROOT . '/includes/sys_config/versions.inc.php';
 require_once GALETTE_ROOT . '/includes/sys_config/paths.inc.php';
 
 // check required PHP version...
-if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {  //@phpstan-ignore if.alwaysFalse
     echo 'Galette is NOT compliant with your current PHP version. '
         . 'Galette requires PHP ' . GALETTE_PHP_MIN
         . ' minimum and current version is ' . phpversion();
@@ -39,7 +43,8 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
 
 // define relative base path templating can use
 if (!defined('GALETTE_BASE_PATH')) {
-    define('GALETTE_BASE_PATH', './');
+    //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
+    \define('GALETTE_BASE_PATH', './');
 }
 
 //we'll only include relevant parts if we work from installer
@@ -61,7 +66,7 @@ if (
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
 }
 
-if (isset($installer) && $installer !== true) {
+if ($installer !== true) {
     //If we're not working from installer
     include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
@@ -117,10 +122,11 @@ Logger stuff
 ------------------------------------------------------------------------------*/
 
 error_reporting(E_ALL);
-set_error_handler(function ($severity, $message, $file, $line): void {
+set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
     if (error_reporting() & $severity) {
         throw new \ErrorException($message, 0, $severity, $file, $line);
     }
+    return true;
 });
 
 //change default format so the 3rd param is a string for level name
@@ -144,10 +150,10 @@ if (defined('GALETTE_TESTS')) {
 } else {
     $galette_log_var = null;
 
-    if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
+    if (!$installer || defined('GALETTE_LOGGER_CHECKED')) {
         //logs everything in galette log file
         if (!isset($logfile)) {
-            //if no filename has been setted (ie. from install), set default one
+            //if no filename has been set (i.e. from install), set default one
             $logfile = 'galette';
         }
         $log_path = GALETTE_LOGS_PATH . $logfile . '.log';

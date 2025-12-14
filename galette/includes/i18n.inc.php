@@ -25,6 +25,7 @@ if (!defined('GALETTE_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
+/** @var \Galette\Core\I18n $i18n */
 $i18n->updateEnv();
 global $language;
 //FIXME: should be handled differently

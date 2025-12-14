@@ -50,6 +50,8 @@
 
 declare(strict_types=1);
 
+use function Safe\define;
+
 /**
  * Alternative configuration file for TCPDF.
  * @author Nicola Asuni

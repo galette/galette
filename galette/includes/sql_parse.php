@@ -21,6 +21,8 @@
 
 declare(strict_types=1);
 
+use function Safe\preg_match_all;
+
 /***************************************************************************
 *                             sql_parse.php
 *                              -------------------
@@ -96,7 +98,7 @@ function remove_remarks(string $sql): string
  * @param string $sql       sql
  * @param string $delimiter delimiter
  *
- * @return array
+ * @return array<string>
  */
 function split_sql_file(string $sql, string $delimiter): array
 {

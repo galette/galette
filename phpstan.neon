@@ -7,6 +7,7 @@ parameters:
         - stubs/constants.php
     paths:
         - galette/lib/
+        - galette/includes//
     scanFiles:
         - galette/includes/sys_config/paths.inc.php
         - galette/includes/sys_config/versions.inc.php
@@ -43,6 +44,7 @@ parameters:
         - GALETTE_THEME
         - GALETTE_TIMEOUT
         - GALETTE_NIGHTLY
+        - _CURRENT_THEME_PATH
     universalObjectCratesClasses:
         - RKA\Session
     ignoreErrors:

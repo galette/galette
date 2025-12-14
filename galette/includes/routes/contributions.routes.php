@@ -27,6 +27,12 @@ use Galette\Controllers\CsvController;
 use Galette\Controllers\PdfController;
 use Galette\Entity\Contribution;
 
+/**
+ * @var \Slim\App<\DI\Container> $app
+ * @var \Slim\Routing\RouteParser $routeparser
+ * @var \Galette\Middleware\Authenticate $authenticate
+ */
+
 $app->get(
     '/{type:transactions|contributions}/mine',
     [Crud\ContributionsController::class, 'myList']

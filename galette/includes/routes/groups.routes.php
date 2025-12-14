@@ -24,6 +24,12 @@ declare(strict_types=1);
 use Galette\Controllers\Crud;
 use Galette\Controllers\PdfController;
 
+/**
+ * @var \Slim\App<\DI\Container> $app
+ * @var \Slim\Routing\RouteParser $routeparser
+ * @var \Galette\Middleware\Authenticate $authenticate
+ */
+
 $app->get(
     '/groups',
     [Crud\GroupsController::class, 'list']

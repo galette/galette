@@ -38,18 +38,21 @@ use Slim\Routing\RouteParser;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
+use function Safe\define;
+use function Safe\parse_url;
+
 if (!defined('GLOB_BRACE')) {
-    define('GLOB_BRACE', 0);
+    \define('GLOB_BRACE', 0); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
 }
 
 //define galette's root directory
 if (!defined('GALETTE_ROOT')) {
-    define('GALETTE_ROOT', __DIR__ . '/../');
+    \define('GALETTE_ROOT', __DIR__ . '/../'); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
 }
 
 // define relative base path templating can use
 if (!defined('GALETTE_BASE_PATH')) {
-    define('GALETTE_BASE_PATH', '../');
+    \define('GALETTE_BASE_PATH', '../'); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
 }
 
 $needs_update = false;
@@ -57,7 +60,7 @@ $needs_update = false;
 require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
 //Galette needs database update!
-if ($needs_update) {
+if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
     define('GALETTE_THEME', 'themes/default/');
     $gapp = new LightSlimApp();
 } else {
@@ -89,6 +92,7 @@ if (!defined('GALETTE_TIMEOUT')) {
 $session_name = '';
 //since PREFIX_DB and NAME_DB are required to properly instantiate sessions,
 // we have to check here if they're assigned
+/** @var bool $installer */
 if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
     $session_name = 'install_' . str_replace('.', '_', GALETTE_VERSION);
 } else {
@@ -107,6 +111,7 @@ $app->add($session);
 require GALETTE_ROOT . '/includes/dependencies.php';
 $app->add($app->getContainer()->get('csrf'));
 
+/** @var \DI\Container $container */
 /**
  * Authentication middleware
  * FIXME: use DI when needed instead of global variable
@@ -115,7 +120,7 @@ $authenticate = $container->get(Authenticate::class); //phpcs:ignore SlevomatCod
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 
-if ($needs_update) {
+if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
     $app->add(
         new UpdateAndMaintenance(
             $container->get(I18n::class),
@@ -185,9 +190,10 @@ $app->addRoutingMiddleware();
 /**
  * Add Error Handling Middleware
  *
- * @param bool $displayErrorDetails -> Should be set to false in production
- * @param bool $logErrors -> Parameter is passed to the default ErrorHandler
- * @param bool $logErrorDetails -> Display error details in error log
+ * @var bool $displayErrorDetails -> Should be set to false in production
+ * @var bool $logErrors -> Parameter is passed to the default ErrorHandler
+ * @var bool $logErrorDetails -> Display error details in error log
+ * @var \Analog\Logger $logger -> Logger instance
  * which can be replaced by a callable of your choice.
  *
  * Note: This middleware should be added last. It will not handle any exceptions/errors
@@ -200,6 +206,7 @@ $errorMiddleware = $app->addErrorMiddleware(
     $logger
 );
 
+/** @var \Slim\Handlers\ErrorHandler $errorHandler */
 $errorHandler = $errorMiddleware->getDefaultErrorHandler();
 $errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class);
 

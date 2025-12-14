@@ -35,7 +35,7 @@ const NOT_TRANSLATED = ' (not translated)';
  */
 function isValidWebUrl(string $url): bool
 {
-    return (preg_match(
+    return (preg_match( // @phpstan-ignore theCodingMachineSafe.function
         '#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i',
         $url
     ) === 1);
@@ -52,6 +52,12 @@ function isValidWebUrl(string $url): bool
  */
 function _T(string $string, string $domain = 'galette', bool $nt = true): string
 {
+    /**
+     * @var string $language
+     * @var bool $installer
+     * @var \Galette\Core\Translator $translator
+     * @var \Galette\Core\L10n $l10n
+     */
     global $language, $installer, $translator, $l10n;
 
     if (
@@ -66,7 +72,7 @@ function _T(string $string, string $domain = 'galette', bool $nt = true): string
     }
 
     $trans = false;
-    if (!isset($installer) || $installer !== true) {
+    if ($installer !== true) {
         $trans = $l10n->getDynamicTranslation(
             $string,
             $language
@@ -96,6 +102,12 @@ function _T(string $string, string $domain = 'galette', bool $nt = true): string
  */
 function _Tn(string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
+    /**
+     * @var string $language
+     * @var bool $installer
+     * @var \Galette\Core\Translator $translator
+     * @var \Galette\Core\L10n $l10n
+     */
     global $language, $installer, $translator, $l10n;
 
     if (empty($singular) || empty($plural)) {
@@ -118,14 +130,15 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
         );
     }
 
-    if (!isset($installer) || $installer !== true) {
+    $trans = '';
+    if ($installer !== true) {
         $trans = $l10n->getDynamicTranslation(
             ($count > 1 ? $plural : $singular),
             $language
         );
     }
 
-    if (!$trans) {
+    if (empty($trans)) {
         $trans = ($count > 1 ? $plural : $singular);
 
         if (Galette::isDebugEnabled() && $nt === true) {
@@ -147,6 +160,12 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
  */
 function _Tx(string $context, string $string, string $domain = 'galette', bool $nt = true): string
 {
+    /**
+     * @var string $language
+     * @var bool $installer
+     * @var \Galette\Core\Translator $translator
+     * @var \Galette\Core\L10n $l10n
+     */
     global $language, $installer, $l10n, $translator;
 
     $cstring = contextualizedString($string, $context);
@@ -156,7 +175,7 @@ function _Tx(string $context, string $string, string $domain = 'galette', bool $
     }
 
     $trans = false;
-    if (!isset($installer) || $installer !== true) {
+    if ($installer !== true) {
         $trans = $l10n->getDynamicTranslation(
             $cstring,
             $language
@@ -187,7 +206,12 @@ function _Tx(string $context, string $string, string $domain = 'galette', bool $
  */
 function _Tnx(string $context, string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
-    global $language, $installer, $translator, $l10n;
+    /**
+     * @var string $language
+     * @var bool $installer
+     * @var \Galette\Core\L10n $l10n
+     */
+    global $language, $installer, $l10n;
 
     $csingular = contextualizedString($singular, $context);
     $cplural = contextualizedString($plural, $context);
@@ -209,7 +233,7 @@ function _Tnx(string $context, string $singular, string $plural, int $count, str
     }
 
     $trans = false;
-    if (!isset($installer) || $installer !== true) {
+    if ($installer !== true) {
         $trans = $l10n->getDynamicTranslation(
             ($count > 1 ? $cplural : $csingular),
             $language

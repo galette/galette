@@ -24,6 +24,12 @@ declare(strict_types=1);
 use Galette\Controllers\AjaxController;
 use Slim\Routing\RouteCollectorProxy;
 
+/**
+ * @var \Slim\App<\DI\Container> $app
+ * @var \Slim\Routing\RouteParser $routeparser
+ * @var \Galette\Middleware\Authenticate $authenticate
+ */
+
 $app->group('/ajax', function (RouteCollectorProxy $app) use ($authenticate): void {
     $app->get(
         '/messages',

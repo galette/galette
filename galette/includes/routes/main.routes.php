@@ -24,6 +24,15 @@ declare(strict_types=1);
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\ImagesController;
 
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+
+/**
+ * @var \Slim\App<\DI\Container> $app
+ * @var \Slim\Routing\RouteParser $routeparser
+ * @var \Galette\Middleware\Authenticate $authenticate
+ */
+
 //main route
 $app->get(
     '/',

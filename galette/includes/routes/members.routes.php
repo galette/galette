@@ -27,6 +27,12 @@ use Galette\Controllers\GaletteController;
 use Galette\Controllers\PdfController;
 use Galette\Entity\Adherent;
 
+/**
+ * @var \Slim\App<\DI\Container> $app
+ * @var \Slim\Routing\RouteParser $routeparser
+ * @var \Galette\Middleware\Authenticate $authenticate
+ */
+
 //self subscription
 $app->get(
     '/subscribe',

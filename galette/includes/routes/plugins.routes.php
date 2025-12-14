@@ -26,10 +26,16 @@ use Galette\Core\Plugins;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
+use function Safe\file_get_contents;
+
+/**
+ * @var \Slim\App<\DI\Container> $app
+ * @var \Galette\Middleware\Authenticate $authenticate
+ */
 $app->group(
     '/plugins',
     function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate): void {
-        /** @var $container \DI\Container */
+        /** @var \DI\Container $container */
         $container = $app->getContainer();
         $modules = $container->get(Plugins::class)->getModules();
 
@@ -80,7 +86,7 @@ $app->group(
 
             $app->group(
                 '/' . $module['route'],
-                //$module_id may be used in included _routes.php from plugin.
+                //@phpstan-ignore closure.unusedUse ($module_id may be used in included _routes.php from plugin.)
                 function (\Slim\Routing\RouteCollectorProxy $app) use ($module, $module_id, $authenticate, $container): void {
                     //Plugin home: give information
                     $app->get(

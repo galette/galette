@@ -46,6 +46,7 @@
     define('GALETTE_TELEMETRY_URI', 'https://telemetry.galette.eu/');
     define('GALETTE_TPL_THEME_DIR', dirname(__FILE__, 2) . '/galette/templates/default/');
     define('GALETTE_DOWNLOADS_URI', 'https://galette.eu/download/');
+    define('_CURRENT_THEME_PATH', GALETTE_THEMES_PATH. '/default/');
 
     // Optional constants
     if ($random_val([false, true]) === true) {

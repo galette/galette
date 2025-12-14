@@ -32,6 +32,12 @@ use Galette\Controllers\AdminToolsController;
 use Galette\Controllers\TextController;
 use Galette\DynamicFields\DynamicField;
 
+/**
+ * @var \Slim\App<\DI\Container> $app
+ * @var \Slim\Routing\RouteParser $routeparser
+ * @var \Galette\Middleware\Authenticate $authenticate
+ */
+
 //galette's dashboard
 $app->get(
     '/dashboard',

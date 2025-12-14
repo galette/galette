@@ -24,6 +24,11 @@ declare(strict_types=1);
 use Galette\Controllers\Crud;
 use Slim\Routing\RouteCollectorProxy;
 
+/**
+ * @var \Slim\App<\DI\Container> $app
+ * @var \Slim\Routing\RouteParser $routeparser
+ */
+
 $app->group('/public', function (RouteCollectorProxy $app) use ($routeparser): void {
     //public members list
     $app->get(
