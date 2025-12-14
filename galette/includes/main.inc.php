@@ -109,7 +109,7 @@ $app->add($session);
 
 // Set up dependencies
 require GALETTE_ROOT . '/includes/dependencies.php';
-$app->add($app->getContainer()->get('csrf'));
+$app->add($app->getContainer()->get(\Slim\Csrf\Guard::class));
 
 /** @var \DI\Container $container */
 /**

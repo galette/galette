@@ -47,7 +47,7 @@ $container->set(RouteParser::class, $routeParser);
 
 $container->set(
     \Slim\Routing\RouteCollector::class,
-    fn() => $app->getRouteCollector()
+    $app->getRouteCollector(...)
 );
 
 // Register View helper
@@ -72,7 +72,9 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     );
 
     //Twig extensions
-    $view->addExtension(new \Galette\Twig\CsrfExtension($c->get('csrf')));
+    $view->addExtension($c->get(\Galette\Twig\CsrfExtension::class));
+    $view->addExtension($c->get(\Galette\Twig\GettextExtension::class));
+    $view->addExtension($c->get(\Galette\Twig\StaticExtension::class));
     $view->addExtension(new StringExtension());
     $view->addExtension(new IntlExtension());
     if (\Galette\Core\Galette::isDebugEnabled()) {
@@ -83,51 +85,6 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
         }
     }
     //End Twig extensions
-
-    //Twig functions
-    $function = new \Twig\TwigFunction('__', fn($string, $domain = 'galette') => __($string, $domain));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('_T', fn($string, $domain = 'galette') => _T($string, $domain));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('_Tn', fn($singular, $plural, $count, $domain = 'galette') => _Tn($singular, $plural, (int)$count, $domain));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('_Tx', fn($context, $string, $domain = 'galette') => _Tx($context, $string, $domain));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('_Tnx', fn($context, $singular, $plural, $count, $domain = 'galette') => _Tnx($context, $singular, $plural, (int)$count, $domain));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('file_exists', file_exists(...));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('get_class', get_class(...));
-    $view->getEnvironment()->addFunction($function);
-
-    $function = new \Twig\TwigFunction('memberName', function ($id) use ($c) {
-        return Galette\Entity\Adherent::getSName(
-            zdb: $c->get(\Galette\Core\Db::class),
-            id: (int)$id
-        );
-    });
-    $view->getEnvironment()->addFunction($function);
-
-    $view->getEnvironment()->addFunction(
-        new \Twig\TwigFunction('callstatic', function ($class, $method, ...$args) {
-            if (!class_exists($class)) {
-                throw new \Exception("Cannot call static method $method on Class $class: Invalid Class");
-            }
-
-            if (!method_exists($class, $method)) {
-                throw new \Exception("Cannot call static method $method on Class $class: Invalid method");
-            }
-
-            return forward_static_call_array([$class, $method], $args);
-        })
-    );
-    //End Twig functions
 
     //Twig globals
     $view->getEnvironment()->addGlobal('flash', $c->get(\Slim\Flash\Messages::class));
@@ -334,7 +291,7 @@ $container->set(
 );
 
 $container->set(
-    'csrf',
+    \Slim\Csrf\Guard::class,
     function (ContainerInterface $c) use ($app) {
         $responseFactory = $app->getResponseFactory();
         $storage = null;
@@ -389,6 +346,7 @@ $deprecateds = [
     'fields_config' => \Galette\Entity\FieldsConfig::class,
     'lists_config' => \Galette\Entity\ListsConfig::class,
     'translator' => \Galette\Core\Translator::class,
+    'csrf' => \Slim\Csrf\Guard::class
 ];
 
 foreach ($deprecateds as $deprecated => $class) {
