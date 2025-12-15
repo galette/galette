@@ -1214,21 +1214,12 @@ class Adherent implements AccessManagementInterface
         foreach (array_keys($required) as $key) {
             $prop = $this->fields[$key]['propname'];
 
-            if (!isset($disabled[$key])) {
-                $mandatory_missing = false;
-                if (!isset($this->$prop) || $this->$prop == '') {
-                    $mandatory_missing = true;
-                } elseif ($key === 'titre_adh' && $this->$prop == '-1') {
-                    $mandatory_missing = true;
-                }
-
-                if ($mandatory_missing === true) {
-                    $this->errors[] = sprintf(
-                        //TRANS: parameter is an hTML link to the field with its name
-                        _T('- Mandatory field %1$s empty.'),
-                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
-                    );
-                }
+            if (!isset($disabled[$key]) && (!isset($this->$prop) || $this->$prop == '' || $key === 'titre_adh' && $this->$prop == '-1')) {
+                $this->errors[] = sprintf(
+                    //TRANS: parameter is an HTML link to the field with its name
+                    _T('- Mandatory field %1$s empty.'),
+                    '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
+                );
             }
         }
 

@@ -147,7 +147,7 @@ class Login extends Authentication
                 $row = $results->current();
 
                 //check if member is active
-                if ($row->activite_adh != true) {
+                if (!$row->activite_adh) {
                     Analog::log(
                         'Member `' . $user . ' is inactive!`' . $log_suffix,
                         Analog::WARNING

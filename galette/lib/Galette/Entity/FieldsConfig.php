@@ -201,7 +201,7 @@ class FieldsConfig
     protected function buildField(ArrayObject $rset): array
     {
         $rset = $this->prepareField($rset);
-        $f = [
+        return [
             'field_id'       => $rset->field_id,
             'label'          => $this->defaults[$rset->field_id]['label'],
             'category'       => (int)$rset->id_field_category,
@@ -212,7 +212,6 @@ class FieldsConfig
             'disabled'       => false,
             'width_in_forms' => (int)$rset->width_in_forms,
         ];
-        return $f;
     }
 
     /**

@@ -226,7 +226,7 @@ class AdvancedMembersList extends MembersList
      */
     public function withinContributions(): bool
     {
-        if (
+        return
             $this->contrib_creation_date_begin != null
             || $this->contrib_creation_date_end != null
             || $this->contrib_begin_date_begin != null
@@ -238,11 +238,7 @@ class AdvancedMembersList extends MembersList
             || count($this->contrib_dynamic) > 0
             || count($this->contributions_types) > 0
             || count($this->payments_types) > 0
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+        ;
     }
 
     /**

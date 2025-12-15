@@ -352,7 +352,7 @@ class ContributionsTypes
         if ($res === false) {
             //get() already logged
             return self::ID_NOT_EXITS;
-        };
+        }
         return ($translated) ? _T($res->libelle_type_cotis) : $res->libelle_type_cotis;
     }
 
@@ -567,11 +567,7 @@ class ContributionsTypes
             $results = $this->zdb->execute($select);
             $result = $results->current();
 
-            if ($result !== null) {
-                return true;
-            } else {
-                return false;
-            }
+            return $result !== null;
         } catch (Throwable $e) {
             Analog::log(
                 'Unable to check if contribution type #' . $id

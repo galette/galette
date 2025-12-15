@@ -62,10 +62,7 @@ class PdfAttendanceSheet extends Pdf
             if ($this->sheet_title !== null) {
                 $head_title .= ' - ' . $this->sheet_title;
             }
-            /* Removed to prevent long lines */
-            /*if ($this->sheet_sub_title !== null) {
-                $head_title .= ' - ' . $this->sheet_sub_title;
-            }*/
+            // No "sheet_sub_title" to prevent long lines
             if ($this->sheet_date !== null) {
                 $head_title .= ' - ' . $this->sheet_date->format(__("Y-m-d"));
             }

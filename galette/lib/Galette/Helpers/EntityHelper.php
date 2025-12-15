@@ -44,12 +44,6 @@ trait EntityHelper
      */
     protected array $fields;
 
-    /** @var string[] */
-    //protected array $forbidden_fields = [];
-
-    /** @var string[] */
-    //protected array $virtual_fields = [];
-
     /**
      * Set fields, must populate $this->fields
      *

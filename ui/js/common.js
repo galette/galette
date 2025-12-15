@@ -169,7 +169,7 @@ var _keyboardNavigation = function() {
 var _bindDropdownsAutosubmit = function() {
     $('.ui.dropdown.autosubmit').dropdown({
         action: function(text, value, element) {
-            var element = element.parentElement !== undefined ? element : element[0];
+            var element = element.parentElement === undefined ? element[0] : element;
             var dropdown = element.closest('.ui.dropdown');
             var form = element.closest('form');
             $(dropdown).dropdown('set value', value);
@@ -180,7 +180,7 @@ var _bindDropdownsAutosubmit = function() {
 }
 
 var _bind_check = function(boxelt) {
-    if (typeof(boxelt) == 'undefined') {
+    if (boxelt === undefined) {
         boxelt = 'entries_sel'
     }
     var _is_checked = true;
@@ -201,10 +201,10 @@ var _bind_check = function(boxelt) {
                 _haschecked = true;
             }
         });
-        if (!_haschecked) {
-            _is_checked = true;
-        } else {
+        if (_haschecked) {
             _is_checked = false;
+        } else {
+            _is_checked = true;
         }
         return false;
     });

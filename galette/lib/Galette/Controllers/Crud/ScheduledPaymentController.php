@@ -202,13 +202,12 @@ class ScheduledPaymentController extends CrudController
     /**
      * List page for logged-in member
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string|null $type     One of 'transactions' or 'contributions'
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
      *
      * @return Response
      */
-    public function myList(Request $request, Response $response, ?string $type = null): Response
+    public function myList(Request $request, Response $response): Response
     {
         $this->show_mine = true;
         return $this->list(

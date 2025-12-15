@@ -31,8 +31,6 @@ use Slim\Flash\Messages;
 use Slim\Routing\RouteParser;
 use TCPDF;
 
-use function Safe\preg_replace;
-
 /*
  * TCPDF configuration file for Galette
  */
@@ -76,10 +74,9 @@ class Pdf extends TCPDF
         $this->SetFont('helvetica');
         //and then, set real font
         $this->SetFont(self::FONT, '', self::FONT_SIZE);
-        $name = preg_replace(
-            '/%s/',
-            $this->preferences->pref_nom,
-            _T("Association %s")
+        $name = sprintf(
+            _T("Association %s"),
+            $this->preferences->pref_nom
         );
         $this->SetAuthor(
             $name . ' (using Galette ' . GALETTE_VERSION . ')'

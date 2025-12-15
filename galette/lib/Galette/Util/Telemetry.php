@@ -74,7 +74,7 @@ class Telemetry
      */
     public function getTelemetryInfos(): array
     {
-        $data = [
+        return [
             'galette'  => $this->grabGaletteInfos(),
             'system'   => [
                 'db'           => $this->grabDbInfos(),
@@ -83,7 +83,6 @@ class Telemetry
                 'os'           => $this->grabOsInfos()
             ]
         ];
-        return $data;
     }
 
     /**
@@ -123,8 +122,7 @@ class Telemetry
      */
     public function grabDbInfos(): array
     {
-        $dbinfos = $this->zdb->getInfos();
-        return $dbinfos;
+        return $this->zdb->getInfos();
     }
 
     /**
@@ -173,7 +171,7 @@ class Telemetry
      */
     public function grabPhpInfos(): array
     {
-        $php = [
+        return [
             'version'   => str_replace(PHP_EXTRA_VERSION, '', PHP_VERSION),
             'modules'   => get_loaded_extensions(),
             'setup'     => [
@@ -185,8 +183,6 @@ class Telemetry
                 'max_input_vars'        => ini_get('max_input_vars'),
             ]
         ];
-
-        return $php;
     }
 
     /**
@@ -204,13 +200,11 @@ class Telemetry
             $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/fedora-release'));
         }
 
-        $os = [
+        return [
             'family'       => php_uname('s'),
             'distribution' => ($distro ?: ''),
             'version'      => php_uname('r')
         ];
-
-        return $os;
     }
 
     /**

@@ -368,7 +368,7 @@ class GaletteMail
     public static function isUrl(string $url): bool
     {
         $valid = preg_match(
-            '|^http(s)?://\[?[a-z0-9-]+(.[a-z0-9-]+)*\]?(:[0-9]+)?(/.*)?$|i',
+            '|^http(s)?://\[?[a-z0-9-]+(.[a-z0-9-]+)*\]?(:\d+)?(/.*)?$|i',
             $url
         );
         if (!$valid) {

@@ -113,7 +113,7 @@ class UpdateAndMaintenance
 
         $theme_path = $path . GALETTE_THEME;
 
-        $body = "<!DOCTYPE html>
+        return "<!DOCTYPE html>
 <html class=\"public_page\" lang=\"" . $this->i18n->getAbbrev() . "\">
     <head>
         <title>" . $contents['title'] . "</title>
@@ -134,7 +134,6 @@ class UpdateAndMaintenance
         </div>
     </body>
 </html>";
-        return $body;
     }
 
     /**

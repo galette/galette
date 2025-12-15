@@ -35,7 +35,6 @@ use Galette\DynamicFields\Boolean;
 use Galette\Entity\DynamicFieldsHandle;
 
 use function Safe\preg_grep;
-use function Safe\preg_replace;
 use function Safe\unlink;
 
 /**
@@ -265,10 +264,9 @@ trait Dynamics
                     "file too large: " . $file->getSize() . " Ko, vs $max_size Ko allowed",
                     Analog::ERROR
                 );
-                $this->errors[] = preg_replace(
-                    '|%d|',
-                    (string)$max_size,
-                    _T("File is too big. Maximum allowed size is %dKo")
+                $this->errors[] = sprintf(
+                    _T("File is too big. Maximum allowed size is %dKo"),
+                    $max_size
                 );
                 continue;
             }

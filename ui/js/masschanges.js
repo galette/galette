@@ -26,7 +26,7 @@
  */
 
 var _massCheckboxes = function(selector) {
-    if (typeof(selector) == 'undefined') {
+    if (selector === undefined) {
         selector = '';
     } else {
         selector = selector + ' ';

@@ -98,11 +98,9 @@ class Texts
     /**
      * Get patterns for mails
      *
-     * @param bool $legacy Whether to load legacy patterns
-     *
      * @return array<string, array<string, list<string>|string>>
      */
-    protected function getMailPatterns(bool $legacy = true): array
+    protected function getMailPatterns(): array
     {
         $m_patterns = [
             'breakline'     => [
@@ -630,7 +628,7 @@ class Texts
             ];
         }
 
-        $patterns = $this->getMailPatterns(false);
+        $patterns = $this->getMailPatterns();
         $legend['mail'] = [
             'title'     => _T('Mail specific'),
             'patterns'  => $patterns

@@ -1003,8 +1003,7 @@ class ContributionsController extends CrudController
 
         $class = '\\Galette\Repository\\' . ucwords($raw_type);
         $contribs = new $class($this->zdb, $this->login);
-        $rm = $contribs->remove($args['ids'] ?? (int)$args['id'], $this->history);
-        return $rm;
+        return $contribs->remove($args['ids'] ?? (int)$args['id'], $this->history);
     }
 
     // /CRUD - Delete

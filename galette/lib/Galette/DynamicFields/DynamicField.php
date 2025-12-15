@@ -705,11 +705,7 @@ abstract class DynamicField
             $this->index = $this->getNewIndex();
         }
 
-        if (count($this->errors) === 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return count($this->errors) === 0;
     }
 
     /**
@@ -840,11 +836,7 @@ abstract class DynamicField
             }
         }
 
-        if (count($this->errors) === 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return count($this->errors) === 0;
     }
 
     /**

@@ -66,7 +66,6 @@ class PluginInstallDb extends AbstractPlugins
         ;
 
         foreach ($selected as $module_id => $module) {
-            //$install->setInstalledVersion($post['previous_version'] ?? null);
             $install->executeScripts($zdb, $module['root']);
             $io->success(sprintf('Database for plugin "%s" installed', $module_id));
         }

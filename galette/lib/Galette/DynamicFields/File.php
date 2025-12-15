@@ -73,7 +73,7 @@ class File extends DynamicField
             $form_name = 'member'; //fix expected filename
         }
 
-        $filename = str_replace(
+        return str_replace(
             [
                 '%form',
                 '%oid',
@@ -88,7 +88,5 @@ class File extends DynamicField
             ],
             '%form_%oid_field_%fid_value_%pos'
         );
-
-        return $filename;
     }
 }

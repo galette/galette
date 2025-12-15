@@ -120,7 +120,7 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
 
             // Compute card position on page
             $col = $nb_card % $this->nbcol;
-            $row = (int)(($nb_card / $this->nbcol)) % $this->nbrow;
+            $row = (int)($nb_card / $this->nbcol) % $this->nbrow;
 
             // Set origin
             $x0 = $this->xorigin + $col * (round($this->wi) + round($this->hspacing));

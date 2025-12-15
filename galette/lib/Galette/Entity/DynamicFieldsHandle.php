@@ -527,7 +527,6 @@ class DynamicFieldsHandle
             $select->where->in('d.' . DynamicField::PK, $accessible_fields);
         }
 
-        $results = $this->zdb->execute($select);
-        return $results;
+        return $this->zdb->execute($select);
     }
 }

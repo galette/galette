@@ -386,19 +386,15 @@ class Picture
             $success = false;
             $_file = null;
             if (file_exists($file_wo_ext . '.jpg')) {
-                //return unlink($file_wo_ext . '.jpg');
                 $_file = $file_wo_ext . '.jpg';
                 $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.png')) {
-                //return unlink($file_wo_ext . '.png');
                 $_file = $file_wo_ext . '.png';
                 $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.gif')) {
-                //return unlink($file_wo_ext . '.gif');
                 $_file = $file_wo_ext . '.gif';
                 $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
             } elseif (file_exists($file_wo_ext . '.webp')) {
-                //return unlink($file_wo_ext . '.webp');
                 $_file = $file_wo_ext . '.webp';
                 $success = unlink($_file); // @phpstan-ignore theCodingMachineSafe.function
             }

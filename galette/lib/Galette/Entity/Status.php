@@ -539,11 +539,7 @@ class Status
             $results = $this->zdb->execute($select);
             $result = $results->current();
 
-            if ($result !== null) {
-                return true;
-            } else {
-                return false;
-            }
+            return $result !== null;
         } catch (Throwable $e) {
             Analog::log(
                 'Unable to check if status #' . $id

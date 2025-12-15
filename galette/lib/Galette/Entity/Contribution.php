@@ -323,7 +323,6 @@ class Contribution implements AccessManagementInterface
                         ->unnest()
                         ->and
                         ->equalTo('c.' . self::PK, $id);
-                    //$select->group('c.' . Contribution::PK);
                 } else {
                     $select->where
                         ->nest()

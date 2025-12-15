@@ -478,7 +478,7 @@ trait Replacements
     public function setMain(): self
     {
         $address = $this->preferences->getPostalAddress();
-        $address_multi = preg_replace("/\n/", "<br>", $address);
+        $address_multi = str_replace("/\n/", "<br>", $address);
 
         $website = '';
         if ($this->preferences->pref_website !== '') {
@@ -633,7 +633,7 @@ trait Replacements
         global $login;
 
         $address = $member->getAddress();
-        $address_multi = preg_replace("/\n/", "<br>", $address);
+        $address_multi = str_replace("/\n/", "<br>", $address);
 
         if ($member->isMan()) {
             $gender = _T("Man");

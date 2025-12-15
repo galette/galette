@@ -99,11 +99,9 @@ class Release
     /**
      * Get the latest release
      *
-     *  @param bool $nocache Do not try to cache
-     *
      * @return ?string
      */
-    public function findLatestRelease(bool $nocache = false): ?string
+    public function findLatestRelease(): ?string
     {
         if (isset($this->latest)) {
             return $this->getLatestRelease();

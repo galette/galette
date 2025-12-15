@@ -201,13 +201,10 @@ class ContributionsList extends Pagination
      */
     public function __isset(string $name): bool
     {
-        if (in_array($name, $this->pagination_fields)) {
-            return true;
-        } elseif (in_array($name, $this->list_fields) || in_array($name, $this->virtuals_list_fields)) {
-            return true;
-        }
-
-        return false;
+        return in_array($name, $this->pagination_fields)
+            || in_array($name, $this->list_fields)
+            || in_array($name, $this->virtuals_list_fields)
+        ;
     }
 
     /**

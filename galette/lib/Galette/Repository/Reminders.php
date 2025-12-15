@@ -109,9 +109,7 @@ class Reminders
                 //a reminder of this type already exists in period
                 $reminder = $reminders->current();
                 $last_reminder = new DateTime($reminder['reminder_date']);
-                if ($now >= $second && $second > $last_reminder) {
-                    $toremind = true;
-                } elseif ($now > $first && $first > $last_reminder) {
+                if ($now >= $second && $second > $last_reminder || $now > $first && $first > $last_reminder) {
                     $toremind = true;
                 }
             } elseif ($now >= $first) {
@@ -171,11 +169,8 @@ class Reminders
                 $toremind = false;
                 $reminder = $reminders->current();
                 $last_reminder = new DateTime($reminder['reminder_date']);
-                if ($now >= $second && $second > $last_reminder) {
-                    //current date is after second reminder
-                    $toremind = true;
-                } elseif ($now >= $first && $first > $last_reminder) {
-                    //current date is after first reminder
+                if ($now >= $second && $second > $last_reminder || $now >= $first && $first > $last_reminder) {
+                    //current date is after first or second reminder
                     $toremind = true;
                 }
             } elseif ($now >= $first) {
