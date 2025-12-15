@@ -17,13 +17,14 @@
 # killallpie <killallpie@inbox.ru>, 2025.
 # Egor Vershkov <evn88fx64@gmail.com>, 2025.
 # kuka <uber.mober@gmail.com>, 2025.
+# korn3r <korn3r@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2025-12-15 13:00+0000\n"
-"Last-Translator: kuka <uber.mober@gmail.com>\n"
+"PO-Revision-Date: 2025-12-16 15:00+0000\n"
+"Last-Translator: korn3r <korn3r@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -32,7 +33,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.15-dev\n"
+"X-Generator: Weblate 5.15.1-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Невозможно загрузить транзакцию #%id!"
@@ -889,9 +890,9 @@ msgstr "Импорт модель не была сохранена :("
 msgid "Emails content"
 msgstr "Содержимое писем"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Email: '%1$s' has not been modified!"
-msgstr "Емейл: '%1$s' не был изменен!"
+msgstr "Почта: '%1$s' не была изменена!"
 
 #, php-format
 msgid "Email: '%1$s' has been successfully modified."
