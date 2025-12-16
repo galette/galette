@@ -368,4 +368,13 @@ DROP TABLE IF EXISTS galette_database CASCADE;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
+
+-- table for plugins
+DROP TABLE IF EXISTS galette_plugins;
+CREATE TABLE galette_plugins (
+    plugin_id character varying(100) NOT NULL,
+    version decimal DEFAULT NULL,
+    PRIMARY KEY (plugin_id)
+);
+
 INSERT INTO galette_database (version) VALUES(1.220);
