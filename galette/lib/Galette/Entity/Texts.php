@@ -81,12 +81,14 @@ class Texts
             ->setDb($zdb)
             ->setLogin($login);
 
-        $this->setPatterns(
-            $this->getMainPatterns()
-            + $this->getMailPatterns()
-            + $this->getMemberPatterns()
-            + $this->getContributionPatterns()
-        );
+        $this
+            ->setLegacy()
+            ->setPatterns(
+                $this->getMainPatterns()
+                + $this->getMailPatterns()
+                + $this->getMemberPatterns()
+                + $this->getContributionPatterns()
+            );
 
         if (!defined('GALETTE_INSTALLER') || GALETTE_INSTALLER !== true) {
             $this
@@ -621,7 +623,7 @@ class Texts
 
         $contribs = ['contrib', 'newcont', 'donation', 'newdonation'];
         if ($this->current !== null && in_array($this->current, $contribs)) {
-            $patterns = $this->getContributionPatterns(false);
+            $patterns = $this->getContributionPatterns();
             $legend['contribution'] = [
                 'title' => _T('Contribution information'),
                 'patterns' => $patterns

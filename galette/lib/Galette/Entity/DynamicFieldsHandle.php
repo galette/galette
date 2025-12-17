@@ -91,7 +91,7 @@ class DynamicFieldsHandle
         $this->form_name = $object->getFormName();
 
         try {
-            $this->item_id = $object->id;
+            $this->item_id = $object->getID();
             $fields = new DynamicFieldsSet($this->zdb, $this->login);
             $this->dynamic_fields = $fields->getList($this->form_name);
 

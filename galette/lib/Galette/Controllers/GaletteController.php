@@ -281,6 +281,11 @@ class GaletteController extends AbstractController
                         $this->logo = new Logo();
                         $this->print_logo = new PrintLogo();
                     }
+
+                    $res = $this->preferences->handleFiles($files);
+                    if ($res !== true) {
+                        $error_detected = array_merge($error_detected, $res);
+                    }
                 }
             } else {
                 $error_detected = $this->preferences->getErrors();

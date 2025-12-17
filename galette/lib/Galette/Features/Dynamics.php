@@ -144,16 +144,16 @@ trait Dynamics
                     );
                 } elseif ($fields[$field_id] instanceof File) {
                     //delete checkbox
-                    $filename = $fields[$field_id]->getFileName($this->id, $val_index);
+                    $filename = $fields[$field_id]->getFileName($this->getID(), $val_index);
                     if (file_exists(GALETTE_FILES_PATH . $filename)) {
                         unlink(GALETTE_FILES_PATH . $filename);
                     } elseif (!$this instanceof Adherent) {
-                        $test_filename = $fields[$field_id]->getFileName($this->id, $val_index, 'member');
+                        $test_filename = $fields[$field_id]->getFileName($this->getID(), $val_index, 'member');
                         if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
                             unlink(GALETTE_FILES_PATH . $test_filename);
                         }
                     }
-                    $this->dynamics->setValue($this->id, $field_id, $val_index, '');
+                    $this->dynamics->setValue($this->getID(), $field_id, $val_index, '');
                 } else {
                     if ($fields[$field_id] instanceof Date && !empty(trim((string) $value))) {
                         //check date format
@@ -190,7 +190,7 @@ trait Dynamics
                     }
                     //actual field value
                     if ($value !== null && trim($value) !== '') {
-                        $this->dynamics->setValue($this->id ?? null, $field_id, $val_index, $value);
+                        $this->dynamics->setValue($this->getID() ?? null, $field_id, $val_index, $value);
                     } else {
                         $this->dynamics->unsetValue($field_id, $val_index);
                     }
@@ -214,7 +214,7 @@ trait Dynamics
         if (!isset($this->dynamics)) {
             $this->loadDynamicFields();
         }
-        $return = $this->dynamics->storeValues($this->id, $transaction);
+        $return = $this->dynamics->storeValues($this->getID(), $transaction);
         //@phpstan-ignore function.alreadyNarrowedType
         if (method_exists($this, 'updateModificationDate') && $this->dynamics->hasChanged()) {
             $this->updateModificationDate();
@@ -278,14 +278,14 @@ trait Dynamics
             $new_filename = sprintf(
                 '%s_%d_field_%d_value_%d',
                 $form_name,
-                $this->id,
+                $this->getID(),
                 $field_id,
                 $val_index
             );
             Analog::log("new file: $new_filename", Analog::DEBUG);
 
             $file->moveTo(GALETTE_FILES_PATH . $new_filename);
-            $this->dynamics->setValue($this->id, (int)$field_id, (int)$val_index, $file->getClientFilename());
+            $this->dynamics->setValue($this->getID(), (int)$field_id, (int)$val_index, $file->getClientFilename());
             $store = true;
         }
 
@@ -306,7 +306,7 @@ trait Dynamics
         if (!isset($this->dynamics)) {
             $this->loadDynamicFields();
         }
-        return $this->dynamics->removeValues($this->id, $transaction);
+        return $this->dynamics->removeValues($this->getID(), $transaction);
     }
 
     /**
@@ -345,5 +345,15 @@ trait Dynamics
     public function getFormName(): string
     {
         return array_search(static::class, DynamicFieldsSet::getClasses());
+    }
+
+    /**
+     * Get ID
+     *
+     * @return ?int
+     */
+    public function getID(): ?int
+    {
+        return $this->id ?? null;
     }
 }

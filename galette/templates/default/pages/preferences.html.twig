@@ -30,6 +30,7 @@
             <a href="{{ url_for('preferences') }}?tab=mail" class="item{{ tab == 'mail' ? ' active' }}" data-tab="mail">{{ _T("E-Mail") }}</a>
             <a href="{{ url_for('preferences') }}?tab=labels" class="item{{ tab == 'labels' ? ' active' }}" data-tab="labels">{{ _T("Labels") }}</a>
             <a href="{{ url_for('preferences') }}?tab=cards" class="item{{ tab == 'cards' ? ' active' }}" data-tab="cards">{{ _T("Cards") }}</a>
+            <a href="{{ url_for('preferences') }}?tab=dyn_fields" class="item{{ tab == 'dyn_fields' ? ' active' }}" data-tab="dyn_fields">{{ _T("Dynamic fields") }}</a>
 {% if login.isAdmin() %}
             <a href="{{ url_for('preferences') }}?tab=security" class="item{{ tab == 'security' ? ' active' }}" data-tab="security">{{ _T("Security parameters") }}</a>
 {% endif %}
@@ -1031,6 +1032,10 @@
 {% endif %}
                 </div>{# /column #}
             </div>{# /column grid #}
+        </div>{# /tab segment #}
+
+        <div class="ui{{ tab == 'dyn_fields' ? ' active' }} tab segment" data-tab="dyn_fields">
+            {% include "components/dynamic_fields.html.twig" with {'object': preferences} %}
         </div>{# /tab segment #}
 
 {% if login.isAdmin() %}

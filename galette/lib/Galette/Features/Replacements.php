@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Features;
 
 use Galette\Core\Db;
+use Galette\Core\I18n;
 use Galette\Core\Login;
 use Galette\Core\Logo;
 use Galette\Core\Preferences;
@@ -72,17 +73,22 @@ trait Replacements
     #[Inject]
     protected Preferences $preferences;
 
+    //Cannot be injected here: Uncaught Exception: Serialization of 'Psr\Http\Server\RequestHandlerInterface@anonymous' is not allowed in [no active file]:0
     protected RouteParser $routeparser;
+
+    #[Inject]
+    protected I18n $i18n;
+
+    private bool $legacy = false;
 
     /**
      * Get dynamic patterns
      *
      * @param string $form_name Dynamic form name
-     * @param bool   $legacy    Whether to load legacy patterns
      *
      * @return array<string,array<string,string>>
      */
-    public function getDynamicPatterns(string $form_name, bool $legacy = true): array
+    public function getDynamicPatterns(string $form_name): array
     {
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $dynamic_fields = $fields->getList($form_name);
@@ -98,7 +104,7 @@ trait Replacements
                 'LABEL',
                 ''
             ];
-            if (!($this instanceof Texts) && ($legacy === true || $dynamic_field instanceof Choice)) {
+            if (!($this instanceof Texts) && ($this->legacy === true || $dynamic_field instanceof Choice)) {
                 $capabilities[] = 'INPUT';
             }
             foreach ($capabilities as $capability) {
@@ -175,6 +181,8 @@ trait Replacements
      */
     protected function getMainPatterns(): array
     {
+        $dynamic_patterns = $this->getDynamicPatterns('prefs');
+
         return [
             'asso_name'             => [
                 'title' => _T('Your organisation name'),
@@ -225,19 +233,17 @@ trait Replacements
                 'title'     => trim(trim(_T("Footer text:"), ':')),
                 'pattern'   => '/{ASSO_FOOTER}/'
             ]
-        ];
+        ] + $dynamic_patterns;
     }
 
     /**
      * Get patterns for a member
      *
-     * @param bool $legacy Whether to load legacy patterns
-     *
      * @return array<string,array<string,string>>
      */
-    protected function getMemberPatterns(bool $legacy = true): array
+    protected function getMemberPatterns(): array
     {
-        $dynamic_patterns = $this->getDynamicPatterns('adh', $legacy);
+        $dynamic_patterns = $this->getDynamicPatterns('adh');
         $m_patterns = [
             'adh_title'         => [
                 'title'     => _('Title'),
@@ -345,7 +351,7 @@ trait Replacements
             ]
         ];
 
-        if ($legacy === true) {
+        if ($this->legacy === true) {
             $m_patterns += [
                 '_adh_company' => [
                     'title'     => _T("Company name"),
@@ -376,13 +382,11 @@ trait Replacements
     /**
      * Get patterns for a contribution
      *
-     * @param bool $legacy Whether to load legacy patterns
-     *
      * @return array<string,array<string,string>>
      */
-    protected function getContributionPatterns(bool $legacy = true): array
+    protected function getContributionPatterns(): array
     {
-        $dynamic_patterns = $this->getDynamicPatterns('contrib', $legacy);
+        $dynamic_patterns = $this->getDynamicPatterns('contrib');
 
         $c_patterns = [
             'contrib_label'     => [
@@ -431,7 +435,7 @@ trait Replacements
             ]
         ];
 
-        if ($legacy === true) {
+        if ($this->legacy === true) {
             foreach ($c_patterns as $key => $pattern) {
                 $nkey = '_' . $key;
                 $pattern['pattern'] = str_replace(
@@ -530,6 +534,15 @@ trait Replacements
             ]
         );
 
+        /** the list of all dynamic fields */
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
+        $dynamic_fields = $fields->getList('prefs');
+        $this->setDynamicFields(
+            form_name: 'prefs',
+            dynamic_fields: $dynamic_fields,
+            object: $this->preferences
+        );
+
         return $this;
     }
 
@@ -570,7 +583,11 @@ trait Replacements
         /** the list of all dynamic fields */
         $fields = new DynamicFieldsSet($this->zdb, $login);
         $dynamic_fields = $fields->getList('contrib');
-        $this->setDynamicFields('contrib', $dynamic_fields, null);
+        $this->setDynamicFields(
+            form_name: 'contrib',
+            dynamic_fields: $dynamic_fields,
+            object: null
+        );
 
         return $this;
     }
@@ -616,7 +633,11 @@ trait Replacements
         /** the list of all dynamic fields */
         $fields = new DynamicFieldsSet($this->zdb, $login);
         $dynamic_fields = $fields->getList('contrib');
-        $this->setDynamicFields('contrib', $dynamic_fields, $contrib);
+        $this->setDynamicFields(
+            form_name: 'contrib',
+            dynamic_fields: $dynamic_fields,
+            object: $contrib
+        );
 
         return $this;
     }
@@ -697,7 +718,11 @@ trait Replacements
         /** the list of all dynamic fields */
         $fields = new DynamicFieldsSet($this->zdb, $login);
         $dynamic_fields = $fields->getList('adh');
-        $this->setDynamicFields('adh', $dynamic_fields, $member);
+        $this->setDynamicFields(
+            form_name: 'adh',
+            dynamic_fields: $dynamic_fields,
+            object: $member
+        );
 
         return $this;
     }
@@ -711,7 +736,7 @@ trait Replacements
      *
      * @return self
      */
-    public function setDynamicFields(string $form_name, array $dynamic_fields, ?object $object): self
+    private function setDynamicFields(string $form_name, array $dynamic_fields, ?object $object): self
     {
         $uform_name = strtoupper($form_name);
 
@@ -738,14 +763,12 @@ trait Replacements
                     foreach ($all_values as $field_value) {
                         $field_values[$field_value['field_val']] = $field_value['text_val'] ?? $field_value['field_val'];
                     }
-                } else {
-                    $field_values = [];
                 }
 
                 switch ($field_type) {
                     case DynamicField::CHOICE:
                         $choice_values = $dynamic_fields[$field_id]->getValues();
-                        if ($capacity == 'INPUT') {
+                        if ($capacity === 'INPUT') {
                             foreach ($choice_values as $choice_idx => $choice_value) {
                                 $value .= '<input type="radio" class="box" name="' . $field_name . '" value="' . $field_id . '"';
                                 if (isset($field_values[$choice_idx])) {
@@ -754,9 +777,7 @@ trait Replacements
                                 $value .= ' disabled="disabled">' . $choice_value . '&nbsp;';
                             }
                         } else {
-                            foreach ($field_values as $field_value) {
-                                $value .= $field_value;
-                            }
+                            $value .= implode('', $field_values);
                         }
                         break;
                     case DynamicField::BOOLEAN:
@@ -823,7 +844,7 @@ trait Replacements
 
         $legend['member'] = [
             'title'     => _T('Member information'),
-            'patterns'  => $this->getMemberPatterns(false)
+            'patterns'  => $this->getMemberPatterns()
         ];
 
         return $legend;
@@ -892,6 +913,19 @@ trait Replacements
     }
 
     /**
+     * Set I18n dependency
+     *
+     * @param I18n $i18n I18n instance
+     *
+     * @return self
+     */
+    public function setI18n(I18n $i18n): self
+    {
+        $this->i18n = $i18n;
+        return $this;
+    }
+
+    /**
      * Proceed replacement on given entry
      *
      * @param string $source Source string
@@ -946,5 +980,16 @@ trait Replacements
     public function getPatterns(): array
     {
         return $this->patterns;
+    }
+
+    /**
+     * Set legacy mode
+     *
+     * @return self
+     */
+    protected function setLegacy(): self
+    {
+        $this->legacy = true;
+        return $this;
     }
 }

@@ -82,7 +82,8 @@ class PdfModel extends GaletteTestCase
             'text_orig' => [
                 'Dynamic choice field',
                 'Dynamic date field',
-                'Dynamic text field'
+                'Dynamic text field',
+                'Settings line field'
             ]
         ]);
         $this->zdb->execute($delete);
@@ -228,22 +229,14 @@ class PdfModel extends GaletteTestCase
     }
 
     /**
-     * Test model replacements
+     * Create dynamic field
      *
-     * @return void
+     * @param array $field_data Field data
+     *
+     * @return DynamicField
      */
-    public function testReplacements(): void
+    private function createDynamicField(array $field_data): DynamicField
     {
-        //create dynamic fields
-        $field_data = [
-            'form_name'        => 'adh',
-            'field_name'        => 'Dynamic text field',
-            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
-            'field_type'        => DynamicField::TEXT,
-            'field_required'    => 1,
-            'field_repeat'      => 1
-        ];
-
         $adf = DynamicField::getFieldType($this->zdb, $field_data['field_type']);
 
         $stored = $adf->store($field_data);
@@ -259,6 +252,27 @@ class PdfModel extends GaletteTestCase
         $this->assertEmpty($error_detected, implode(' ', $adf->getErrors()));
         $this->assertEmpty($warning_detected, implode(' ', $adf->getWarnings()));
 
+        return $adf;
+    }
+
+    /**
+     * Test model replacements
+     *
+     * @return void
+     */
+    public function testReplacements(): void
+    {
+        //create dynamic fields
+        $field_data = [
+            'form_name'        => 'adh',
+            'field_name'        => 'Dynamic text field',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => DynamicField::TEXT,
+            'field_required'    => 1,
+            'field_repeat'      => 1
+        ];
+        $adf = $this->createDynamicField($field_data);
+
         $field_data = [
             'form_name'         => 'contrib',
             'field_form'        => 'contrib',
@@ -268,21 +282,35 @@ class PdfModel extends GaletteTestCase
             'field_required'    => 1,
             'field_repeat'      => 1
         ];
+        $cdf = $this->createDynamicField($field_data);
 
-        $cdf = DynamicField::getFieldType($this->zdb, $field_data['field_type']);
+        $field_data = [
+            'form_name'        => 'prefs',
+            'field_name'        => 'Settings line field',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_READ,
+            'field_type'        => DynamicField::LINE,
+            'field_required'    => 0,
+            'field_repeat'      => 1
+        ];
+        $pdf = $this->createDynamicField($field_data);
 
-        $stored = $cdf->store($field_data);
-        $error_detected = $cdf->getErrors();
-        $warning_detected = $cdf->getWarnings();
+        $preferences = [];
+        foreach ($this->preferences->getDefaults() as $key => $value) {
+            $preferences[$key] = $value;
+        }
+
+        //create a value for the dynamic field
+        $post = [
+            'info_field_' . $pdf->getId() . '_1' => 'A dynamic value in settings \o/',
+        ];
+
+        $post = array_merge($preferences, $post);
+
         $this->assertTrue(
-            $stored,
-            implode(
-                ' ',
-                $cdf->getErrors() + $cdf->getWarnings()
-            )
+            $this->preferences->check($post, $this->login),
+            print_r($this->preferences->getErrors(), true)
         );
-        $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
-        $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
+        $this->assertTrue($this->preferences->store());
 
         //prepare model
         $pk = \Galette\Entity\PdfModel::PK;
@@ -296,7 +324,8 @@ class PdfModel extends GaletteTestCase
             'model_body' => 'name: {NAME_ADH} login: {LOGIN_ADH} birthdate: {ADH_BIRTH_DATE} dynlabel: {LABEL_DYNFIELD_' .
             $adf->getId() . '_ADH} dynvalue: {INPUT_DYNFIELD_' . $adf->getId() . '_ADH} ' .
             '- enddate: {CONTRIB_END_DATE} amount: {CONTRIB_AMOUNT} ({CONTRIB_AMOUNT_LETTERS}) dynlabel: ' .
-            '{LABEL_DYNFIELD_' . $cdf->getId() . '_CONTRIB} dynvalue: {INPUT_DYNFIELD_' . $cdf->getId() . '_CONTRIB}',
+            '{LABEL_DYNFIELD_' . $cdf->getId() . '_CONTRIB} dynvalue: {INPUT_DYNFIELD_' . $cdf->getId() . '_CONTRIB}' .
+            ' pref dynlabel: {LABEL_DYNFIELD_' . $pdf->getId() . '_PREFS} pref dynvalue: {DYNFIELD_' . $pdf->getId() . '_PREFS}',
             'model_styles' => null,
             'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
         ], \ArrayObject::ARRAY_AS_PROPS);
@@ -324,9 +353,8 @@ class PdfModel extends GaletteTestCase
         $this->assertSame(
             '<div id="pdf_footer">
     Association Galette - Galette
-Palais des Papes
-Au milieu
-84000 Avignon - France<br/>
+-
+  <br/>
     
 </div>',
             $model->hfooter
@@ -336,7 +364,7 @@ Au milieu
             'name: DURAND René login: arthur.hamon' .  $this->seed . ' birthdate: ' . $data['ddn_adh'] . ' dynlabel: Dynamic text field dynvalue: ' .
             'My value (: ' .
             '- enddate: ' . $this->contrib->end_date . ' amount: 92 (ninety-two) dynlabel: Dynamic date field ' .
-            'dynvalue: 2020-12-03',
+            'dynvalue: 2020-12-03 pref dynlabel: Settings line field pref dynvalue: A dynamic value in settings \o/',
             $model->hbody
         );
 
@@ -346,10 +374,10 @@ Au milieu
         $this->assertArrayHasKey('member', $legend);
         $this->assertArrayHasKey('contribution', $legend);
 
-        $this->assertCount(12, $legend['main']['patterns']);
-        $this->assertCount(28, $legend['member']['patterns']);
+        $this->assertCount(15, $legend['main']['patterns']);
+        $this->assertCount(34, $legend['member']['patterns']);
         $this->assertTrue(isset($legend['member']['patterns']['label_dynfield_' . $adf->getId() . '_adh']));
-        $this->assertCount(14, $legend['contribution']['patterns']);
+        $this->assertCount(27, $legend['contribution']['patterns']);
         $this->assertTrue(isset($legend['contribution']['patterns']['label_dynfield_' . $cdf->getId() . '_contrib']));
     }
 

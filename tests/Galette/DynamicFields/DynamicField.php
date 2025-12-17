@@ -237,6 +237,10 @@ class DynamicField extends TestCase
             [
                 'form' => 'trans',
                 'expected' => "Transactions"
+            ],
+            [
+                'form' => 'prefs',
+                'expected' => "Settings"
             ]
         ];
     }

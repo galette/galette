@@ -59,6 +59,7 @@ class DynamicFieldsSet
             'adh' => \Galette\Entity\Adherent::class,
             'contrib' => \Galette\Entity\Contribution::class,
             'trans' => \Galette\Entity\Transaction::class,
+            'prefs' => \Galette\Core\Preferences::class
         ];
     }
 

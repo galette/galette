@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Galette\Features\Dynamics;
 use Safe\DateTime;
 use Galette\Entity\PaymentType;
 use Galette\Entity\Social;
@@ -171,6 +172,7 @@ class Preferences
 {
     use Replacements;
     use Socials;
+    use Dynamics;
 
     protected Preferences $preferences; //redefined from Replacements feature - avoid circular dependency
     /** @var array<string, bool|int|string> */
@@ -687,6 +689,8 @@ class Preferences
             }
         }
 
+        $this->dynamicsCheck($values, [], []);
+
         // update preferences
         foreach ($insert_values as $champ => $valeur) {
             $checked = $login->isSuperAdmin();
@@ -904,6 +908,11 @@ class Preferences
             //prevent socials removal; see https://bugs.galette.eu/issues/1912
             if ($updating === false) {
                 $this->storeSocials(null);
+            }
+
+            if ($updating === false) {
+                //dynamic fields
+                $this->dynamicsStore(true);
             }
 
             return true;
@@ -1757,5 +1766,40 @@ class Preferences
         } else {
             return true;
         }
+    }
+
+    /**
+     * Handle files (dynamics files)
+     *
+     * @param array<UploadedFileInterface> $files Files sent
+     *
+     * @return array<string>|true
+     */
+    public function handleFiles(array $files): bool|array
+    {
+        $this->errors = [];
+
+        $this->dynamicsFiles($files);
+
+        if (count($this->errors) > 0) {
+            Analog::log(
+                'Some errors has been threw attempting to edit/store preferences files' . "\n"
+                . print_r($this->errors, true),
+                Analog::ERROR
+            );
+            return $this->errors;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Get ID
+     *
+     * @return ?int
+     */
+    public function getID(): ?int
+    {
+        return 0;
     }
 }

@@ -47,9 +47,12 @@ abstract class PdfContribution extends PdfModel
     {
         parent::__construct($zdb, $preferences, $type, $args);
 
-        $this->setPatterns(
-            $this->getMemberPatterns() + $this->getContributionPatterns()
-        );
+        $this
+            ->setLegacy()
+            ->setPatterns(
+                $this->getMemberPatterns() + $this->getContributionPatterns()
+            )
+        ;
     }
 
     /**
@@ -61,7 +64,7 @@ abstract class PdfContribution extends PdfModel
     {
         $legend = parent::getLegend();
 
-        $patterns = $this->getContributionPatterns(false);
+        $patterns = $this->getContributionPatterns();
 
         $legend['contribution'] = [
             'title'     => _T('Contribution information'),

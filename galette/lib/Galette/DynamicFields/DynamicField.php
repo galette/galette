@@ -524,7 +524,8 @@ abstract class DynamicField
         return [
             'adh'       => _T("Members"),
             'contrib'   => _T("Contributions"),
-            'trans'     => _T("Transactions")
+            'trans'     => _T("Transactions"),
+            'prefs'     => _T("Settings")
         ];
     }
 
