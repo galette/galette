@@ -1,7 +1,9 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../galette"
 cd $DIR
-composer install --optimize-autoloader --ignore-platform-reqs
+composer install --prefer-dist --no-progress --optimize-autoloader --ignore-platform-reqs
 cd ..
-npm install
-npm run first-build
+npm ci --prefer-offline --no-audit
+if [[ ! -d $DIR/webroot/themes ]]; then
+    npm run first-build
+fi

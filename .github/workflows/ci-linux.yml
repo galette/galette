@@ -76,6 +76,12 @@ jobs:
     name: PHP ${{ matrix.php-version }} ${{ matrix.db-image }} ${{ (matrix.always == false && (github.event_name == 'pull_request' || github.repository != 'galette/galette' || !(github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags')))) && ' (skipped)' || matrix.coverage == 'pcov' && ' (with coverage)' || ''}}
 
     steps:
+      - name: Checkout
+        if: env.skip != 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
       - name: PHP
         if: env.skip != 'true'
         uses: shivammathur/setup-php@v2
@@ -95,22 +101,43 @@ jobs:
           echo "npm $(npm --version)"
           docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else if [[ -n \$(command -v mysql) ]]; then mysql --version; else mariadb --version; fi fi"
 
-      - name: Checkout
+      - name: "Get Composer cache directory"
         if: env.skip != 'true'
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
+        id: composer-cache
+        run: echo "dir=$(composer config -f galette/composer.json cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: "Restore dependencies cache"
+      - name: "Cache Composer dependencies"
+        if: env.skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: "${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}"
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php-version }}-
+            ${{ runner.os }}-composer-
+
+      - name: "Cache npm dependencies"
+        if: env.skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: "${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}"
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Semantic hash
+        id: semantic-hash
+        if: env.skip != 'true'
+        run: echo "semantichash=$(tar cf - --sort=name ./ui --mtime='UTC 2025-01-01' | sha1sum | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+      - name: Restore dependencies
+        id: cache-galettedeps
         if: env.skip != 'true'
         uses: actions/cache@v4
         with:
           path: |
-            ~/.composer/cache/
-            ~/.npm/_cacache/
-          key: "${{ runner.os }}-galette-${{ matrix.php-version }}-${{ hashFiles('galette/composer.lock', 'package-lock.json') }}"
-          restore-keys: |
-            ${{ runner.os }}-galette-${{ matrix.php-version }}-
+            galette/webroot/themes/
+          key: "${{ runner.os }}-galette-${{ steps.semantic-hash.outputs.semantichash }}"
 
       - name: Install dependencies
         if: env.skip != 'true'
@@ -214,6 +241,12 @@ jobs:
           --health-retries=10
 
     steps:
+      - name: Checkout
+        if: env.skip != 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
       - name: PHP
         if: env.skip != 'true'
         uses: shivammathur/setup-php@v2
@@ -232,22 +265,43 @@ jobs:
           echo "npm $(npm --version)"
           docker exec ${{ job.services.db.id }} bash -c "if [[ -n \$(command -v psql) ]]; then psql --version; else if [[ -n \$(command -v mysql) ]]; then mysql --version; else mariadb --version; fi fi"
 
-      - name: Checkout
+      - name: "Get Composer cache directory"
         if: env.skip != 'true'
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
+        id: composer-cache
+        run: echo "dir=$(composer config -f galette/composer.json cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: "Restore dependencies cache"
+      - name: "Cache Composer dependencies"
+        if: env.skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: "${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}"
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.php-versions }}-
+            ${{ runner.os }}-composer-
+
+      - name: "Cache npm dependencies"
+        if: env.skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: "${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}"
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Semantic hash
+        id: semantic-hash
+        if: env.skip != 'true'
+        run: echo "semantichash=$(tar cf - --sort=name ./ui --mtime='UTC 2025-01-01' | sha1sum | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+      - name: Restore dependencies
+        id: cache-galettedeps
         if: env.skip != 'true'
         uses: actions/cache@v4
         with:
           path: |
-            ~/.composer/cache/
-            ~/.npm/_cacache/
-          key: "${{ runner.os }}-galette-${{ matrix.php-version }}-${{ hashFiles('galette/composer.lock', 'package-lock.json') }}"
-          restore-keys: |
-            ${{ runner.os }}-galette-${{ matrix.php-version }}-
+            galette/webroot/themes/
+          key: "${{ runner.os }}-galette-${{ steps.semantic-hash.outputs.semantichash }}"
 
       - name: Install dependencies
         if: env.skip != 'true'
@@ -267,6 +321,11 @@ jobs:
         php-versions: [ '8.2', '8.5' ]
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -281,25 +340,23 @@ jobs:
           php --version
           composer --version
 
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
+      - name: "Get Composer cache directory"
+        id: composer-cache
+        run: echo "dir=$(composer config -f galette/composer.json cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: "Restore dependencies cache"
+      - name: "Cache Composer dependencies"
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.composer/cache/
-            ~/.npm/_cacache/
-          key: "${{ runner.os }}-galette-${{ matrix.php-version }}-${{ hashFiles('galette/composer.lock', 'package-lock.json') }}"
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: "${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}"
           restore-keys: |
-            ${{ runner.os }}-galette-${{ matrix.php-version }}-
+            ${{ runner.os }}-composer-${{ matrix.php-versions }}-
+            ${{ runner.os }}-composer-
 
       - name: Install dependencies
         run: |
           cd galette
-          composer install --optimize-autoloader --ignore-platform-reqs
+          composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader --ignore-platform-reqs
 
       - name: CS
         run: |
