@@ -762,9 +762,9 @@ class GaletteController extends GaletteRoutingTestCase
     /**
      * Data provider for empty routes
      *
-     * @return array
+     * @return iterable<string>
      */
-    private function emptyRoutesProvider(): array
+    public static function emptyRoutesProvider(): iterable
     {
         return [
             ['favicon.ico'],
