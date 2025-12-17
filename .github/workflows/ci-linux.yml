@@ -133,7 +133,7 @@ jobs:
         if: env.skip != 'true' && (startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb'))
 
       - name: Update database tests
-        run: TESTENV=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/GaletteUpdate/
+        run: TESTENV=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/GaletteUpdate/
         if: env.skip != 'true' && matrix.coverage != 'pcov'
 
       - name: Init for PostgreSQL
@@ -151,11 +151,11 @@ jobs:
         if: env.skip != 'true' && (startsWith(matrix.db-image, 'mysql') || startsWith(matrix.db-image, 'mariadb'))
 
       - name: Unit tests
-        run: galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/Galette/
+        run: galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/Galette/
         if: env.skip != 'true' && matrix.coverage != 'pcov'
 
       - name: Unit tests (with coverage)
-        run: galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --process-isolation --coverage-filter galette/lib --coverage-clover tests/clover.xml tests/Galette/
+        run: galette/vendor/bin/phpunit --test-suffix=.php --coverage-filter galette/lib --coverage-clover tests/clover.xml tests/Galette/
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
       - name: Upload code coverage (scrutinizer)
@@ -255,7 +255,7 @@ jobs:
 
       - name: Fail database tests
         if: env.skip != 'true'
-        run: TESTENV=FAIL DB=${{ matrix.db-image }} galette/vendor/bin/phpunit --test-suffix=.php --bootstrap tests/TestsBootstrap.php --no-coverage --process-isolation tests/GaletteDbFails/
+        run: TESTENV=FAIL DB=${{ matrix.db-image }} galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/GaletteDbFails/
 
   lint:
     runs-on: ubuntu-latest
