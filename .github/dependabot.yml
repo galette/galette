@@ -1,0 +1,53 @@
+version: 2
+updates:
+  # Keep GitHub Actions up-to-date
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups: #all in one PR
+      github-actions-all:
+        patterns:
+          - "*"
+
+  # Keep Composer dependencies up-to-date
+  - package-ecosystem: "composer"
+    directory: "/galette/"
+    schedule:
+      interval: "weekly"
+    groups:
+      # Group development dependencies
+      dev-dependencies:
+        dependency-type: "development"
+      # Group minor and patches
+      composer-minor-patch:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      # Group major
+      composer-major:
+        dependency-type: "production"
+        update-types:
+          - "major"
+
+  # Keep NPM dependencies up-to-date
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      # Group development dependencies
+      npm-dev-dependencies:
+        dependency-type: "development"
+      # Group minor and patches
+      npm-production-minor-patch:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      # Group major
+      npm-major:
+        dependency-type: "production"
+        update-types:
+          - "major"
