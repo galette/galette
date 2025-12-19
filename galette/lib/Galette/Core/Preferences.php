@@ -1700,7 +1700,7 @@ class Preferences
 
         $css_fields = array_filter(
             array_keys($this->prefs),
-            fn($field) => str_starts_with($field, 'pref_cc_')
+            fn($field) => str_starts_with((string) $field, 'pref_cc_')
         );
         foreach ($css_fields as $css_field) {
             if ($values[$css_field] != $this->$css_field) {
