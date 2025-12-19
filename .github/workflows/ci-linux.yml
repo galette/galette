@@ -78,7 +78,7 @@ jobs:
     steps:
       - name: Checkout
         if: env.skip != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -108,7 +108,7 @@ jobs:
 
       - name: "Cache Composer dependencies"
         if: env.skip != 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: "${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}"
@@ -118,7 +118,7 @@ jobs:
 
       - name: "Cache npm dependencies"
         if: env.skip != 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: "${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}"
@@ -133,7 +133,7 @@ jobs:
       - name: Restore dependencies
         id: cache-galettedeps
         if: env.skip != 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             galette/webroot/themes/
@@ -192,7 +192,7 @@ jobs:
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
       - name: Upload code coverage (codecov)
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         env:
           CODECOV_TOKEN: 2d9dd954-bed8-4628-a267-28cd0108771b
         with:
@@ -243,7 +243,7 @@ jobs:
     steps:
       - name: Checkout
         if: env.skip != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -272,7 +272,7 @@ jobs:
 
       - name: "Cache Composer dependencies"
         if: env.skip != 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: "${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}"
@@ -282,7 +282,7 @@ jobs:
 
       - name: "Cache npm dependencies"
         if: env.skip != 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: "${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}"
@@ -297,7 +297,7 @@ jobs:
       - name: Restore dependencies
         id: cache-galettedeps
         if: env.skip != 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             galette/webroot/themes/
@@ -322,7 +322,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -345,7 +345,7 @@ jobs:
         run: echo "dir=$(composer config -f galette/composer.json cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: "Cache Composer dependencies"
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: "${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}"
