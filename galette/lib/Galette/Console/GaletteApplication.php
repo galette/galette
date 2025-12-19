@@ -26,7 +26,7 @@ namespace Galette\Console;
 use Symfony\Component\Console\Application;
 
 /**
- * Galetet console application
+ * Galette console application
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -49,15 +49,19 @@ class GaletteApplication extends Application
      */
     public function init(): void
     {
-        $this->add(new Command\Checks($this->basepath));
-        $this->add(new Command\Install($this->basepath));
+        $this->addCommands([
+            new Command\Checks($this->basepath),
+            new Command\Install($this->basepath)
+        ]);
         if (!defined('GALETTE_INSTALLER')) {
             //cannot be added until Galette has been properly installed
-            $this->add(new Command\Plugins\PluginsList($this->basepath));
-            $this->add(new Command\Plugins\PluginEnable($this->basepath));
-            $this->add(new Command\Plugins\PluginDisable($this->basepath));
-            $this->add(new Command\Plugins\PluginInstallDb($this->basepath));
+            $this->addCommands([
+                new Command\Plugins\PluginsList($this->basepath),
+                new Command\Plugins\PluginEnable($this->basepath),
+                new Command\Plugins\PluginDisable($this->basepath),
+                new Command\Plugins\PluginInstallDb($this->basepath)
+            ]);
         }
-        $this->add(new Command\MakeTwigCache($this->basepath));
+        $this->addCommand(new Command\MakeTwigCache($this->basepath));
     }
 }
