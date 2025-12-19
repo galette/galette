@@ -38,10 +38,10 @@
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
-    "chart.js": "^4.4.8",
+    "chart.js": "^4.5.1",
     "chartjs-plugin-autocolors": "^0.3.1",
     "chartjs-plugin-datalabels": "^2.2.0",
-    "darkreader": "^4.9.105",
+    "darkreader": "^4.9.118",
     "fomantic-ui": "^2.9.4",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
