@@ -42,7 +42,6 @@
         "ext-mbstring": "*",
         "ext-session": "*",
         "slim/slim": "^4",
-        "monolog/monolog": "^3.9",
         "laminas/laminas-db": "^2.11",
         "laminas/laminas-stdlib": "^3.3",
         "analog/analog": "^1.0",

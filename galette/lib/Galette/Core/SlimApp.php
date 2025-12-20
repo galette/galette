@@ -49,12 +49,7 @@ class SlimApp
         $builder->useAttributes(true);
         $builder->addDefinitions([
             'galette'                           => [
-                'mode'  => GALETTE_MODE,
-                'logger'                            => [
-                    'name'  => 'galette',
-                    'level' => \Monolog\Logger::DEBUG,
-                    'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
-                ]
+                'mode'  => GALETTE_MODE
             ],
             'mode'              => GALETTE_MODE,
             'galette.mode'      => GALETTE_MODE

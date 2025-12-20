@@ -133,8 +133,14 @@ $container->set(\Slim\Flash\Messages::class, DI\autowire());
 
 /** @var \Galette\Core\Plugins $plugins */
 $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) use ($plugins) {
-    $i18n = $c->get(\Galette\Core\I18n::class);
-    $plugins->loadModules($c->get(\Galette\Core\Preferences::class), GALETTE_PLUGINS_PATH, $i18n->getLongID());
+    $plugins
+        ->setTranslator($c->get(\Galette\Core\Translator::class))
+        ->setEventDispatcher($c->get(\League\Event\EventDispatcher::class))
+        ->loadModules(
+            $c->get(\Galette\Core\Preferences::class),
+            GALETTE_PLUGINS_PATH,
+            $c->get(\Galette\Core\I18n::class)->getLongID()
+        );
     return $plugins;
 });
 
@@ -222,15 +228,6 @@ $container->set('members_fields_cats', function () {
 // Service factories
 // -----------------------------------------------------------------------------
 
-// monolog
-$container->set('logger', function (ContainerInterface $c) {
-    $settings = $c->get('settings');
-    $logger = new \Monolog\Logger($settings['logger']['name']);
-    $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
-    $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['logger']['path'], $settings['logger']['level']));
-    return $logger;
-});
-
 $container->set(\Galette\Entity\FieldsConfig::class, fn(ContainerInterface $c) => new Galette\Entity\FieldsConfig(
     $c->get(\Galette\Core\Db::class),
     Galette\Entity\Adherent::TABLE,
@@ -273,7 +270,7 @@ $container->set(\Galette\Core\Translator::class, function (ContainerInterface $c
 
 // Add Event manager to dependency.
 $container->set(
-    'event_manager',
+    \League\Event\EventDispatcher::class,
     DI\create(\League\Event\EventDispatcher::class)
         ->method(
             'subscribeListenersFrom',
@@ -346,7 +343,8 @@ $deprecateds = [
     'fields_config' => \Galette\Entity\FieldsConfig::class,
     'lists_config' => \Galette\Entity\ListsConfig::class,
     'translator' => \Galette\Core\Translator::class,
-    'csrf' => \Slim\Csrf\Guard::class
+    'csrf' => \Slim\Csrf\Guard::class,
+    'event_manager' => \League\Event\EventDispatcher::class,
 ];
 
 foreach ($deprecateds as $deprecated => $class) {
@@ -382,7 +380,7 @@ if (
     $login = $container->get(\Galette\Core\Login::class);
     $hist = $container->get(\Galette\Core\History::class);
     $l10n = $container->get(\Galette\Core\L10n::class);
-    $emitter = $container->get('event_manager');
+    $emitter = $container->get(\League\Event\EventDispatcher::class);
     $routeparser = $container->get(RouteParser::class);
     //phpcs:enable
 }

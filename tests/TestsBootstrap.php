@@ -134,7 +134,7 @@ global $preferences, $emitter, $zdb;
 //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
 $zdb = $container->get(\Galette\Core\Db::class);
 $preferences = $container->get(\Galette\Core\Preferences::class);
-$emitter = $container->get('event_manager');
+$emitter = $container->get(\League\Event\EventDispatcher::class);
 //phpcs:enable
 $i18n->changeLanguage('en_US');
 

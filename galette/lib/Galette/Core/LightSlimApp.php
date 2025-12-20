@@ -54,12 +54,7 @@ class LightSlimApp
             'settings.displayErrorDetails'      => Galette::isDebugEnabled(),
             'settings.addContentLengthHeader'   => false,
             'galette'                           => [
-                'mode'      => $this->mode,
-                'logger'    => [
-                    'name'  => 'galette',
-                    'level' => \Monolog\Logger::DEBUG,
-                    'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
-                ]
+                'mode'      => $this->mode
             ],
             'mode'          => $this->mode,
             'galette.mode'  => $this->mode

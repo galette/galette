@@ -23,9 +23,11 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use DI\Attribute\Inject;
 use Exception;
 use Analog\Analog;
 use Galette\Common\ClassLoader;
+use League\Event\EventDispatcher;
 use Safe\Exceptions\FilesystemException;
 
 use function Safe\file_put_contents;
@@ -57,6 +59,12 @@ class Plugins
 
     protected Preferences $preferences;
     protected bool $autoload = false;
+
+    #[Inject]
+    protected Translator $translator;
+
+    #[Inject]
+    protected EventDispatcher $event_dispatcher;
 
     /**
      * Register autoloader for all plugins
@@ -344,8 +352,6 @@ class Plugins
      */
     public function loadModuleL10N(string $id, string $language): void
     {
-        global $translator;
-
         if (empty($language) || !isset($this->modules[$id])) {
             return;
         }
@@ -355,7 +361,7 @@ class Plugins
         ];
         foreach ($domains as $domain) {
             //load translation file for domain
-            $translator->addTranslationFilePattern(
+            $this->translator->addTranslationFilePattern(
                 'gettext',
                 $this->modules[$id]['root'] . '/lang/',
                 '/%s/LC_MESSAGES/' . $domain . '.mo',
@@ -363,7 +369,7 @@ class Plugins
             );
 
             //check if a local lang file exists and load it
-            $translator->addTranslationFilePattern(
+            $this->translator->addTranslationFilePattern(
                 'phparray',
                 $this->modules[$id]['root'] . '/lang/',
                 $domain . '_%s_local_lang.php',
@@ -381,14 +387,12 @@ class Plugins
      */
     public function loadEventProviders(string $id): void
     {
-        global $emitter;
-
         $providerClassName = '\\' . $this->getNamespace($id) . '\\' . 'PluginEventProvider';
         if (
             class_exists($providerClassName)
             && method_exists($providerClassName, 'provideListeners')
         ) {
-            $emitter->subscribeListenersFrom(new $providerClassName());
+            $this->event_dispatcher->subscribeListenersFrom(new $providerClassName());
         }
     }
 
@@ -742,5 +746,31 @@ class Plugins
             GALETTE_PLUGINS_DATA_PATH,
             $id
         );
+    }
+
+    /**
+     * Set translator
+     *
+     * @param Translator $translator Translator instance
+     *
+     * @return self
+     */
+    public function setTranslator(Translator $translator): self
+    {
+        $this->translator = $translator;
+        return $this;
+    }
+
+    /**
+     * Set event dispatcher
+     *
+     * @param EventDispatcher $dispatcher Event dispatcher instance
+     *
+     * @return self
+     */
+    public function setEventDispatcher(EventDispatcher $dispatcher): self
+    {
+        $this->event_dispatcher = $dispatcher;
+        return $this;
     }
 }
