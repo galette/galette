@@ -267,8 +267,6 @@ abstract class CrudController extends AbstractController
                     'error_detected',
                     _T('An error occurred trying to delete :(')
                 );
-
-                $success = false;
             }
         }
 

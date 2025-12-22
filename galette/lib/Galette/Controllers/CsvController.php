@@ -323,7 +323,7 @@ class CsvController extends AbstractController
      */
     public function uploadImportFile(Request $request, Response $response): Response
     {
-        $request_files =  $request->getUploadedFiles();
+        $request_files = $request->getUploadedFiles();
         $key = 'new_file';
         if (!$this->csvin->upload(request_files: $request_files, key: $key)) {
             foreach ($this->csvin->uploadErrors() as $error) {
@@ -360,8 +360,7 @@ class CsvController extends AbstractController
     public function getFile(Request $request, Response $response, string $file, string $type): Response
     {
         $filename = $file;
-        $filepath = $type === 'export'
-            ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
+        $filepath = $type === 'export' ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
         $filepath .= $filename;
         return $this->sendResponse($response, $filepath, $filename);
     }

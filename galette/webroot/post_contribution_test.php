@@ -66,9 +66,9 @@ if (empty($args)) {
 }
 
 if (defined('STDIN')) {
-    $json_args = json_decode((string) $args);
+    $json_args = json_decode((string)$args);
 } else {
-    $json_args = isset($args['params']) ? json_decode((string) $args['params']) : json_decode('{"auth_token": ""}');
+    $json_args = isset($args['params']) ? json_decode((string)$args['params']) : json_decode('{"auth_token": ""}');
 }
 if ($script_auth_token !== $json_args->auth_token) {
     //we're called without authentication token => exit.

@@ -107,8 +107,8 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
     /**
      * Assert request has been successfully processed
      *
-     * @param Response $test_response Response to test
-     * @param array    $headers       Expected headers
+     * @param Response                $test_response Response to test
+     * @param array<string, string[]> $headers       Expected headers
      */
     protected function expectOK(Response $test_response, array $headers =  []): void
     {
@@ -121,7 +121,7 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
     /**
      * Assert Flash data correspond to what is expected, and reset it
      *
-     * @param array $expected Expected flash data
+     * @param array<string, string[]> $expected Expected flash data
      */
     protected function expectFlashData(array $expected): void
     {

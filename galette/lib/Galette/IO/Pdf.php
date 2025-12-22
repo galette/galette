@@ -62,7 +62,7 @@ class Pdf extends TCPDF
      */
     public function __construct(
         protected Preferences $preferences,
-        private ?PdfModel $model = null
+        private readonly ?PdfModel $model = null
     ) {
         global $i18n;
 
@@ -87,7 +87,6 @@ class Pdf extends TCPDF
         }
 
         if ($model !== null) {
-            $this->model = $model;
             $this->SetTitle($this->model->htitle);
         }
 

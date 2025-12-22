@@ -76,8 +76,8 @@ if (count($versions) == 0) {
     $is_current = false;
     $i = 0;
     foreach ($versions as $version) {
-        $previous = $versions[$i-1] ?? null;
-        $next = $versions[$i+1] ?? null;
+        $previous = $versions[$i - 1] ?? null;
+        $next = $versions[$i + 1] ?? null;
         ?>
             <li>
         <?php

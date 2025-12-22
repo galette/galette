@@ -571,7 +571,7 @@ class Contribution implements AccessManagementInterface
                         }
                         break;
                     case 'duree_mois_cotis':
-                        if ($preferences->pref_membership_ext != ''  && $value != '') {
+                        if ($preferences->pref_membership_ext != '' && $value != '') {
                             if (!is_numeric($value) || $value <= 0) {
                                 $this->errors[] = _T("- The duration must be a positive integer!");
                             } else {

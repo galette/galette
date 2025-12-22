@@ -41,13 +41,13 @@ class ImageConverter extends \League\HTMLToMarkdown\Converter\ImageConverter
      */
     public function convert(ElementInterface $element): string
     {
-        $src   = $element->getAttribute('src');
+        $src = $element->getAttribute('src');
         //keep @src only if it's an URL, else discard it
         if (!preg_match('|^https?://|', strtolower($src))) {
             $src = '';
         }
 
-        $alt   = $element->getAttribute('alt');
+        $alt = $element->getAttribute('alt');
         $title = $element->getAttribute('title');
 
         $img = ($alt != '' ? "![$alt]" : '');

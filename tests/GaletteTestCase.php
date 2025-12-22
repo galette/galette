@@ -229,7 +229,7 @@ abstract class GaletteTestCase extends TestCase
             ++$years;
         }
         $bdate->sub(new \DateInterval('P' . $years . 'Y'));
-        $data = [
+        return [
             'nom_adh' => 'Durand',
             'prenom_adh' => 'René',
             'ville_adh' => 'Martel',
@@ -257,7 +257,6 @@ abstract class GaletteTestCase extends TestCase
             'fingerprint' => 'FAKER' . $this->seed,
             'region_adh' => 'Caribbean'
         ];
-        return $data;
     }
 
     /**
@@ -274,7 +273,7 @@ abstract class GaletteTestCase extends TestCase
         }
         $bdate->sub(new \DateInterval('P' . $years . 'Y'));
 
-        $data = [
+        return [
             'nom_adh' => 'Hoarau',
             'prenom_adh' => 'Lucas',
             'ville_adh' => 'Reynaudnec',
@@ -303,13 +302,12 @@ abstract class GaletteTestCase extends TestCase
             'societe_adh' => 'Philippe',
             'is_company' => true,
         ];
-        return $data;
     }
 
     /**
      * Create member from data
      *
-     * @param array $data Data to use to create member
+     * @param array<string, mixed> $data Data to use to create member
      */
     public function createMember(array $data): \Galette\Entity\Adherent
     {
@@ -363,22 +361,22 @@ abstract class GaletteTestCase extends TestCase
             switch ($key) {
                 case 'bool_admin_adh':
                     $this->assertSame($value, $adh->$property);
-                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "admin" directly is discouraged.');
+                    $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "admin" directly is discouraged.');
                     $this->assertSame($value, $adh->isAdmin());
                     break;
                 case 'bool_exempt_adh':
                     $this->assertSame($value, $adh->$property);
-                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "due_free" directly is discouraged.');
+                    $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "due_free" directly is discouraged.');
                     $this->assertSame($value, $adh->isDueFree());
                     break;
                 case 'bool_display_info':
                     $this->assertSame($value, $adh->$property);
-                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "appears_in_list" directly is discouraged.');
+                    $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "appears_in_list" directly is discouraged.');
                     $this->assertSame($value, $adh->appearsInMembersList());
                     break;
                 case 'activite_adh':
                     $this->assertSame($value, $adh->$property);
-                    $this->expectLogEntry(\Analog::WARNING, 'Calling property "active" directly is discouraged.');
+                    $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "active" directly is discouraged.');
                     $this->assertSame($value, $adh->isActive());
                     break;
                 case 'mdp_adh':
@@ -401,7 +399,7 @@ abstract class GaletteTestCase extends TestCase
         }
 
         $this->assertFalse($adh->hasChildren());
-        $this->expectLogEntry(\Analog::WARNING, 'Children has not been loaded!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Children has not been loaded!');
         $this->assertFalse($adh->hasParent());
         $this->assertFalse($adh->hasPicture());
 
@@ -427,7 +425,7 @@ abstract class GaletteTestCase extends TestCase
     }
 
     /**
-     * Check members expecteds
+     * Check members expected values
      *
      * @param ?\Galette\Entity\Adherent $adh           Member instance, if any
      * @param array<string, mixed>      $new_expecteds Changes on expected values

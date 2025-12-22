@@ -221,8 +221,7 @@ abstract class AbstractController
 
         $filter_name .= '_filter';
 
-        $filter_name = Text::slugify($filter_name);
-        return $filter_name;
+        return Text::slugify($filter_name);
     }
 
     /**

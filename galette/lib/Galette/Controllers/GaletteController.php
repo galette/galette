@@ -658,26 +658,13 @@ class GaletteController extends AbstractController
             }
         }
 
-        //flash messages if any
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage('error_detected', $error);
-            }
-        }
-        if (count($warning_detected) > 0) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage('warning_detected', $warning);
-            }
-        }
-        if (count($success_detected) > 0) {
-            foreach ($success_detected as $success) {
-                $this->flash->addMessage('success_detected', $success);
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('reminders'));
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('reminders'),
+            successes: $success_detected,
+            warnings: $warning_detected,
+            errors: $error_detected
+        );
     }
 
     /**

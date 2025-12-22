@@ -109,14 +109,14 @@ class Plugins
                         ) {
                             //plugin is not compatible with that version of galette.
                             Analog::log(
-                                'Plugin ' . $entry . ' is missing a _define.php and/or _routes.php '
-                                . 'files that are required.',
+                                sprintf('Plugin %s is missing a _define.php and/or _routes.php '
+                                . 'files that are required.', $entry),
                                 Analog::WARNING
                             );
                             $this->setDisabled(self::DISABLED_MISS);
                         } elseif ($this->isExplicitlyDisabled()) {
                             Analog::log(
-                                'Plugin ' . $entry . ' is explicitly disabled',
+                                sprintf('Plugin %s is explicitly disabled', $entry),
                                 Analog::INFO
                             );
                             $this->setDisabled(self::DISABLED_EXPLICIT);

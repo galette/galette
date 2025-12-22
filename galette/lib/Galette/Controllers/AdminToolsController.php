@@ -26,7 +26,6 @@ namespace Galette\Controllers;
 use Galette\DynamicFields\Date;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use Galette\Core\CheckModules;
 use Galette\Entity\Texts;
 use Galette\Repository\Members;
 use Galette\Repository\PdfModels;
@@ -51,15 +50,6 @@ class AdminToolsController extends AbstractController
             'page_title'        => _T('Administration tools'),
             'documentation'     => 'usermanual/avancee.html#administration-tools'
         ];
-
-        $cm = new CheckModules();
-        $modules_ok = $cm->isValid();
-        if (!$modules_ok) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Some PHP modules are missing. Please install them or contact your support.<br/>More information on required modules may be found in the documentation.")
-            );
-        }
 
         // display page
         $this->view->render(

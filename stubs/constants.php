@@ -46,7 +46,7 @@
     define('GALETTE_TELEMETRY_URI', 'https://telemetry.galette.eu/');
     define('GALETTE_TPL_THEME_DIR', dirname(__FILE__, 2) . '/galette/templates/default/');
     define('GALETTE_DOWNLOADS_URI', 'https://galette.eu/download/');
-    define('_CURRENT_THEME_PATH', GALETTE_THEMES_PATH. '/default/');
+    define('_CURRENT_THEME_PATH', GALETTE_THEMES_PATH . '/default/');
 
     // Optional constants
     if ($random_val([false, true]) === true) {
@@ -57,7 +57,7 @@
 
     // Other constants
     define('GALETTE_MODE', $random_val([\Galette\Core\Galette::MODE_PROD, \Galette\Core\Galette::MODE_DEV, \Galette\Core\Galette::MODE_MAINT, \Galette\Core\Galette::MODE_DEMO]));
-    define ('GALETTE_DEBUG', $random_val([false, true]));
+    define('GALETTE_DEBUG', $random_val([false, true]));
     define('GALETTE_ADAPTATIVE_CARDS', $random_val([false, true]));
     define('GALETTE_LOG_LVL', $random_val([\Analog\Analog::URGENT, \Analog\Analog::ALERT, \Analog\Analog::CRITICAL, \Analog\Analog::ERROR, \Analog\Analog::WARNING, \Analog\Analog::NOTICE, \Analog\Analog::INFO, \Analog\Analog::DEBUG]));
     define('GALETTE_THEME', $random_val(['themes/default/', 'themes/alternative/']));

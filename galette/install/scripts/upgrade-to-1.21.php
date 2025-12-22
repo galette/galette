@@ -58,7 +58,7 @@ class UpgradeTo121 extends AbstractUpdater
             $results = $this->zdb->execute($select);
             if ($results->count() === 1) {
                 $result = $results->current();
-                if (strtolower((string) $result->type_name) != $name) {
+                if (strtolower((string)$result->type_name) != $name) {
                     //existing type is not same as new one. Move it.
                     $toupdate[$type] = $result->type_name;
                 }
