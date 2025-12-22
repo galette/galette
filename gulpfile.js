@@ -118,23 +118,23 @@ var paths = {
 };
 
 function galette() {
-  favicon = gulp.src(paths.src.favicon)
+  favicon = gulp.src(paths.src.favicon, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  logo =  gulp.src(paths.src.logo)
+  logo = gulp.src(paths.src.logo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  halloween_logo =  gulp.src(paths.src.halloween_logo)
+  halloween_logo = gulp.src(paths.src.halloween_logo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  xmas_logo =  gulp.src(paths.src.xmas_logo)
+  xmas_logo = gulp.src(paths.src.xmas_logo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  photo =  gulp.src(paths.src.photo)
+  photo = gulp.src(paths.src.photo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
