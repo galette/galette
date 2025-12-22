@@ -126,7 +126,7 @@ class CsvIn extends GaletteTestCase
         $request = $rfactory->createRequest('GET', 'http://localhost/models/csv');
         $response = new \Slim\Psr7\Response();
 
-        $response = $controller->getImportModel($request, $response);
+        $response = $controller->getImportModel($request, $response, $this->container->get(\Galette\Entity\ImportModel::class));
         $csvin = $this->container->get(\Galette\IO\CsvIn::class);
 
         $this->assertSame(200, $response->getStatusCode());

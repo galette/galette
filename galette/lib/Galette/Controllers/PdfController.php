@@ -355,9 +355,8 @@ class PdfController extends AbstractController
      * @param Response $response PSR Response
      * @param int      $id       Contribution id
      */
-    public function contribution(Request $request, Response $response, int $id): Response
+    public function contribution(Request $request, Response $response, int $id, Contribution $contribution): Response
     {
-        $contribution = new Contribution($this->zdb, $this->login);
         if (!$contribution->load($id)) {
             //not possible to load contribution, exit
             return $this->redirectWithErrors(
@@ -387,10 +386,8 @@ class PdfController extends AbstractController
      * @param Response $response PSR Response
      * @param ?int     $id       Group id
      */
-    public function group(Request $request, Response $response, ?int $id = null): Response
+    public function group(Request $request, Response $response, Groups $groups, PdfGroups $pdf, ?int $id = null): Response
     {
-        $groups = new Groups($this->zdb, $this->login);
-
         $groups_list = $id !== null ? $groups->getList(true, $id) : $groups->getList();
 
         if (count($groups_list) < 1) {
@@ -406,9 +403,7 @@ class PdfController extends AbstractController
             );
         }
 
-        $pdf = new PdfGroups($this->preferences);
-        $pdf->draw($groups_list, $this->login);
-
+        $pdf->draw($groups_list);
         return $this->sendResponse($response, $pdf);
     }
 
@@ -419,7 +414,7 @@ class PdfController extends AbstractController
      * @param Response $response PSR Response
      * @param ?int     $id       Model id
      */
-    public function models(Request $request, Response $response, ?int $id = null): Response
+    public function models(Request $request, Response $response, PdfModels $ms, ?int $id = null): Response
     {
         $mid = 1;
         if (isset($_POST[PdfModel::PK])) {
@@ -428,8 +423,6 @@ class PdfController extends AbstractController
             $mid = $id;
         }
 
-
-        $ms = new PdfModels($this->zdb, $this->preferences, $this->login);
         $models = $ms->getList();
 
         $model = null;
@@ -540,12 +533,16 @@ class PdfController extends AbstractController
      * @param Response $response PSR Response
      * @param string   $hash     Hash
      */
-    public function directlinkDocument(Request $request, Response $response, string $hash): Response
-    {
+    public function directlinkDocument(
+        Request $request,
+        Response $response,
+        string $hash,
+        Links $links,
+        Members $m
+    ): Response {
         $post = $request->getParsedBody();
         $email = $post['email'];
 
-        $links = new Links($this->zdb);
         $valid = $links->isHashValid($hash, $email);
 
         if ($valid === false) {
@@ -574,7 +571,6 @@ class PdfController extends AbstractController
         $login->setId((int)$row['id_adh']);
 
         if ($target === Links::TARGET_MEMBERCARD) {
-            $m = new Members();
             $members = $m->getArrayList(
                 [$id],
                 ['nom_adh', 'prenom_adh'],

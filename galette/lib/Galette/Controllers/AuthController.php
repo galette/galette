@@ -82,12 +82,15 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function doLogin(Request $request, Response $response): Response
-    {
+    public function doLogin(
+        Request $request,
+        Response $response,
+        \Galette\Util\Password $checkpass,
+        Release $release
+    ): Response {
         $post =  $request->getParsedBody();
         $nick = $post['login'] ?? '';
         $password = $post['password'] ?? '';
-        $checkpass = new \Galette\Util\Password($this->preferences);
 
         if (trim((string) $nick) == '' || trim((string) $password) == '') {
             $this->flash->addMessage(
@@ -148,7 +151,6 @@ class AuthController extends AbstractController
 
                 //check for new release
                 try {
-                    $release = new Release();
                     if ($release->checkNewRelease()) {
                         Analog::log(
                             sprintf(
@@ -465,9 +467,8 @@ class AuthController extends AbstractController
      * @param Response $response PSR Response
      * @param string   $hash     Hash
      */
-    public function recoverPassword(Request $request, Response $response, string $hash): Response
+    public function recoverPassword(Request $request, Response $response, string $hash, Password $password): Response
     {
-        $password = new Password($this->zdb);
         if (!$password->isHashValid(base64_decode($hash))) {
             $this->flash->addMessage(
                 'warning_detected',
@@ -499,10 +500,13 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function doRecoverPassword(Request $request, Response $response): Response
-    {
+    public function doRecoverPassword(
+        Request $request,
+        Response $response,
+        Password $password,
+        \Galette\Util\Password $checkpass
+    ): Response {
         $post = $request->getParsedBody();
-        $password = new Password($this->zdb);
 
         if (!$id_adh = $password->isHashValid(base64_decode((string) $post['hash']))) {
             return $response
@@ -520,8 +524,6 @@ class AuthController extends AbstractController
             if (strcmp((string) $post['mdp_adh'], $post['mdp_adh2'])) {
                 $error = _T("- The passwords don't match!");
             } else {
-                $checkpass = new \Galette\Util\Password($this->preferences);
-
                 if (!$checkpass->isValid($post['mdp_adh'])) {
                     //password is not valid with current rules
                     $error = _T("Your password is too weak!")

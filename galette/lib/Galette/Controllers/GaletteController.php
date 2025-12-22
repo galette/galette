@@ -27,6 +27,7 @@ use DI\Attribute\Inject;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Social;
 use Galette\Repository\PaymentTypes;
+use Galette\Util\Telemetry;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\Logo;
@@ -72,9 +73,8 @@ class GaletteController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function systemInformation(Request $request, Response $response): Response
+    public function systemInformation(Request $request, Response $response, SysInfos $sysinfos): Response
     {
-        $sysinfos = new SysInfos();
         $raw_infos = $sysinfos->getRawData(
             $this->zdb,
             $this->preferences,
@@ -100,7 +100,7 @@ class GaletteController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function dashboard(Request $request, Response $response): Response
+    public function dashboard(Request $request, Response $response, Telemetry $telemetry): Response
     {
         $news = Galette::getNews();
         $params = [
@@ -113,11 +113,6 @@ class GaletteController extends AbstractController
 
         $hide_telemetry = true;
         if ($this->login->isAdmin()) {
-            $telemetry = new \Galette\Util\Telemetry(
-                $this->zdb,
-                $this->preferences,
-                $this->plugins
-            );
             $params['reguuid'] = $telemetry->getRegistrationUuid();
             $params['telemetry_sent'] = $telemetry->isSent();
             $params['registered'] = $telemetry->isRegistered();
@@ -142,7 +137,7 @@ class GaletteController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function preferences(Request $request, Response $response): Response
+    public function preferences(Request $request, Response $response, PaymentTypes $ptypes, Members $m): Response
     {
         // flagging required fields
         $required = $this->preferences->getRequiredFields($this->login);
@@ -177,14 +172,7 @@ class GaletteController extends AbstractController
         $d->close();
 
         //List payment types for default to be selected
-        $ptypes = new PaymentTypes(
-            $this->zdb,
-            $this->preferences,
-            $this->login
-        );
         $ptlist = $ptypes->getList(false);
-
-        $m = new Members();
 
         //Active tab on page
         $tab = $request->getQueryParams()['tab'] ?? 'general';
@@ -545,16 +533,13 @@ class GaletteController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function reminders(Request $request, Response $response): Response
+    public function reminders(Request $request, Response $response, Texts $texts, Members $members): Response
     {
-        $texts = new Texts($this->preferences, $this->routeparser);
-
         $previews = [
             'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
             'late'      => $texts->getTexts('lateduedate', $this->preferences->pref_lang)
         ];
 
-        $members = new Members();
         $reminders = $members->getRemindersCount();
 
         // display page
@@ -691,9 +676,10 @@ class GaletteController extends AbstractController
 
         $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())} = $filters;
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->routeparser->urlFor('members'));
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('members')
+        );
     }
 
     /**

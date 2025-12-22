@@ -91,9 +91,8 @@ class ImagesController extends AbstractController
      * @param Response $response PSR Response
      * @param int      $id       Member id
      */
-    public function photo(Request $request, Response $response, int $id): Response
+    public function photo(Request $request, Response $response, int $id, Adherent $adh, Picture $picture): Response
     {
-        $adh = new Adherent($this->zdb);
         $adh->disableDep('dues');
         if (!$this->login->isGroupManager()) {
             //if logged-in user is a group manager, we have to check
@@ -102,7 +101,6 @@ class ImagesController extends AbstractController
         }
         $adh->load($id);
 
-        $picture = new Picture();
         if (
             $adh->canEdit($this->login)
             || ($this->preferences->showPublicPage($this->login, 'pref_publicpages_visibility_membersgallery')

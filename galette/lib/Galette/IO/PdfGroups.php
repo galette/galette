@@ -45,7 +45,7 @@ class PdfGroups extends Pdf
      *
      * @param Preferences $prefs Preferences
      */
-    public function __construct(Preferences $prefs)
+    public function __construct(Preferences $prefs, private readonly Login $login)
     {
         $this->filename = __('groups_list') . '.pdf';
         parent::__construct($prefs);
@@ -104,16 +104,15 @@ class PdfGroups extends Pdf
      * Draw file
      *
      * @param array<Group> $groups Groups list
-     * @param Login        $login  Login instance
      */
-    public function draw(array $groups, Login $login): void
+    public function draw(array $groups): void
     {
         $this->PageHeader($this->doc_title);
 
         $first = true;
         foreach ($groups as $group) {
             $id = $group->getId();
-            if (!$login->isGroupManager($id)) {
+            if (!$this->login->isGroupManager($id)) {
                 Analog::log(
                     'Trying to export group ' . $id . ' as PDF without appropriate permissions',
                     Analog::INFO

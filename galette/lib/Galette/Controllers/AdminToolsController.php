@@ -66,8 +66,13 @@ class AdminToolsController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function process(Request $request, Response $response): Response
-    {
+    public function process(
+        Request $request,
+        Response $response,
+        Texts $texts,
+        PdfModels $models,
+        Members $members,
+    ): Response {
         $post = $request->getParsedBody();
 
         $error_detected = [];
@@ -75,7 +80,6 @@ class AdminToolsController extends AbstractController
 
         if (isset($post['inittexts'])) {
             //proceed emails texts reinitialization
-            $texts = new Texts($this->preferences);
             $res = $texts->installInit(false);
             if ($res === true) {
                 $success_detected[] = _T("Texts has been successfully reinitialized.");
@@ -86,8 +90,7 @@ class AdminToolsController extends AbstractController
 
         if (isset($post['initfields'])) {
             //proceed fields configuration reinitialization
-            $fc = $this->fields_config;
-            $res = $fc->installInit();
+            $res = $this->fields_config->installInit();
             if ($res === true) {
                 $success_detected[] = _T("Fields configuration has been successfully reinitialized.");
             } else {
@@ -97,7 +100,6 @@ class AdminToolsController extends AbstractController
 
         if (isset($post['initpdfmodels'])) {
             //proceed emails texts reinitialization
-            $models = new PdfModels($this->zdb, $this->preferences, $this->login);
             $res = $models->installInit(false);
             if ($res === true) {
                 $success_detected[] = _T("PDF models has been successfully reinitialized.");
@@ -109,7 +111,6 @@ class AdminToolsController extends AbstractController
         if (isset($post['emptylogins'])) {
             //proceed empty logins and passwords
             //those cannot be null
-            $members = new Members();
             $res = $members->emptylogins();
             if ($res === true) {
                 $success_detected[] = str_replace(

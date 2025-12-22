@@ -43,19 +43,19 @@ class TextController extends AbstractController
      * @param ?string  $lang     Language
      * @param ?string  $ref      Ref code
      */
-    public function list(Request $request, Response $response, ?string $lang = null, ?string $ref = null): Response
-    {
+    public function list(
+        Request $request,
+        Response $response,
+        Texts $texts,
+        ?string $lang = null,
+        ?string $ref = null
+    ): Response {
         if ($lang === null) {
             $lang = $this->preferences->pref_lang;
         }
         if ($ref === null) {
             $ref = Texts::DEFAULT_REF;
         }
-
-        $texts = new Texts(
-            $this->preferences,
-            $this->routeparser
-        );
 
         $texts->setCurrent($ref);
         $mtxt = $texts->getTexts($ref, $lang);
@@ -108,10 +108,9 @@ class TextController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function edit(Request $request, Response $response): Response
+    public function edit(Request $request, Response $response, Texts $texts): Response
     {
         $post = $request->getParsedBody();
-        $texts = new Texts($this->preferences, $this->routeparser);
         $error_detected = [];
         $success_detected = [];
 

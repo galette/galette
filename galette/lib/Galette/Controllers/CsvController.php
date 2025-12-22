@@ -104,10 +104,8 @@ class CsvController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function export(Request $request, Response $response): Response
+    public function export(Request $request, Response $response, CsvOut $csv): Response
     {
-        $csv = new CsvOut();
-
         $tables_list = $this->zdb->getTables();
         $parameted = $csv->getParametedExports();
         $existing = $csv->getExisting();
@@ -134,10 +132,9 @@ class CsvController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function doExport(Request $request, Response $response): Response
+    public function doExport(Request $request, Response $response, CsvOut $csv): Response
     {
         $post = $request->getParsedBody();
-        $csv = new CsvOut();
         $written = [];
 
         if (isset($post['export_tables']) && $post['export_tables'] != '') {
@@ -477,9 +474,8 @@ class CsvController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function importModel(Request $request, Response $response): Response
+    public function importModel(Request $request, Response $response, ImportModel $model, DynamicFieldsSet $fieldset): Response
     {
-        $model = new ImportModel();
         $model->load();
 
         if (isset($request->getQueryParams()['remove'])) {
@@ -502,7 +498,6 @@ class CsvController extends AbstractController
         $import_fields = $this->members_form_fields;
         //get dynamic fields
         $dynamic_import_fields = [];
-        $fieldset = new DynamicFieldsSet($this->zdb, $this->login);
         $dfields = $fieldset->getList('adh');
         foreach ($dfields as $field) {
             if ($field->hasData() && !$field instanceof \Galette\DynamicFields\File) {
@@ -542,9 +537,8 @@ class CsvController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function getImportModel(Request $request, Response $response): Response
+    public function getImportModel(Request $request, Response $response, ImportModel $model): Response
     {
-        $model = new ImportModel();
         $model->load();
 
         $fields = $model->getFields();
@@ -585,9 +579,8 @@ class CsvController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      */
-    public function storeModel(Request $request, Response $response): Response
+    public function storeModel(Request $request, Response $response, ImportModel $model): Response
     {
-        $model = new ImportModel();
         $model->load();
 
         $model->setFields($request->getParsedBody()['fields']);
