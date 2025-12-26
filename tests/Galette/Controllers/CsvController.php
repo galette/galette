@@ -588,7 +588,7 @@ class CsvController extends GaletteRoutingTestCase
         );
         $now = new \DateTime();
         $this->assertStringContainsString(
-            '"' . $member_one->id . '";"Non-member";"Durand";"René";"";"ubertrand";"";"1942-12-26";"Unspecified";"66, boulevard De Oliveira";"39 069";"Martel";"Caribbean";"Antarctique";"0439153432";"";"meunier.josephine20250912171952@ledoux.com";"";"";"Chef de fabrication";"arthur.hamon20250912171952";"2020-06-10";"' . $now->format('Y-m-d') . '";"Yes";"No";"No";"Yes";"";"en_US";"Gonzalez-sur-Meunier";"";"FAKER20250912171952";"";""',
+            '"' . $member_one->id . '";"Non-member";"' . $member_one->name . '";"' . $member_one->surname . '";"";"' . $member_one->nickname . '";"";"' . $member_one->birthdate . '";"Unspecified";"' . $member_one->address . '";"' . $member_one->zipcode . '";"' . $member_one->town . '";"' . $member_one->region . '";"' . $member_one->country . '";"0439153432";"";"' . $member_one->email . '";"";"";"Chef de fabrication";"' . $member_one->login . '";"2020-06-10";"' . $now->format('Y-m-d') . '";"Yes";"No";"No";"Yes";"";"' . $member_one->language . '";"' . $member_one->birth_place . '";"";"' . $member_one->fingerprint . '";"";""',
             $body
         );
     }
