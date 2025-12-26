@@ -36,6 +36,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # "del" since 7.0 is pure ESM and would require changes in gulp files.
+    # see: https://github.com/sindresorhus/del/releases/tag/v7.0.0
+    ignore:
+      - dependency-name: "del"
     groups:
       # Group development dependencies
       npm-dev-dependencies:
