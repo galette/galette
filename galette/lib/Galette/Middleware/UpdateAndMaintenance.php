@@ -62,9 +62,9 @@ class UpdateAndMaintenance
         callable|int $callback = self::MAINTENANCE
     ) {
         if ($callback === self::MAINTENANCE) {
-            $this->callback = [$this, 'maintenancePage'];
+            $this->callback = $this->maintenancePage(...);
         } elseif ($callback === self::NEED_UPDATE) {
-            $this->callback = [$this, 'needsUpdatePage'];
+            $this->callback = $this->needsUpdatePage(...);
         } elseif (!is_callable($callback)) {
             throw new \InvalidArgumentException('argument callback must be callable');
         } else {

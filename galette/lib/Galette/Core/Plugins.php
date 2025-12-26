@@ -164,7 +164,7 @@ class Plugins
         $this->parseModules();
 
         // Sort plugins
-        uasort($this->modules, [$this, 'sortModules']);
+        uasort($this->modules, $this->sortModules(...));
 
         // Load translation, _prepend and ns_file
         foreach (array_keys($this->modules) as $id) {
