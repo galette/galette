@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace Galette;
+namespace Galette\Tests;
 
 use Slim\Psr7\Response;
 
@@ -85,7 +85,6 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
             $this->flash_data['slimFlash']
         );
         $this->flash_data = [];
-
     }
 
     /**
@@ -110,7 +109,7 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
      * @param Response                $test_response Response to test
      * @param array<string, string[]> $headers       Expected headers
      */
-    protected function expectOK(Response $test_response, array $headers =  []): void
+    protected function expectOK(Response $test_response, array $headers = []): void
     {
         $this->assertSame($headers, $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());

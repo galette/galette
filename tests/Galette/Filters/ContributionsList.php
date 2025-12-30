@@ -21,9 +21,9 @@
 
 declare(strict_types=1);
 
-namespace GaletteTests\Filters;
+namespace Galette\Tests\Filters;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Contribution filters tests class

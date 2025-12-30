@@ -21,10 +21,10 @@
 
 declare(strict_types=1);
 
-namespace GaletteTests\Entity;
+namespace Galette\Tests\Entity;
 
 use Galette\DynamicFields\DynamicField;
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * PDF model tests

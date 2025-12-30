@@ -9,7 +9,7 @@
     <file>galette/includes/</file>
     <!--file>galette/install/</file-->
     <file>tests/TestsBootstrap.php</file>
-    <file>tests/GaletteTestCase.php</file>
+    <file>tests/lib/</file>
     <file>tests/Galette/</file>
     <file>tests/GaletteDbFails/</file>
     <file>tests/GaletteUpdate/</file>

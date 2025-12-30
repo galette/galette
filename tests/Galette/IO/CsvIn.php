@@ -21,12 +21,12 @@
 
 declare(strict_types=1);
 
-namespace GaletteTests\IO;
+namespace Galette\Tests\IO;
 
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Adherent;
 use Galette\DynamicFields\DynamicField;
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * CsvIn tests class

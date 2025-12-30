@@ -21,9 +21,9 @@
 
 declare(strict_types=1);
 
-namespace GaletteTests\Controllers\Crud;
+namespace Galette\Tests\Controllers\Crud;
 
-use Galette\GaletteRoutingTestCase;
+use Galette\Tests\GaletteRoutingTestCase;
 
 /**
  * DynamicFields controller tests

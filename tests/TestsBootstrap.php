@@ -157,5 +157,3 @@ if (
     }
     $fc->setFields($categorized_fields);
 }
-require_once __DIR__ . '/GaletteTestCase.php';
-require_once __DIR__ . '/GaletteRoutingTestCase.php';

@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace GaletteTests\DynamicFields;
+namespace Galette\Tests\DynamicFields;
 
 use PHPUnit\Framework\TestCase;
 

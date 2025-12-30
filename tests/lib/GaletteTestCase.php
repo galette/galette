@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace Galette;
+namespace Galette\Tests;
 
 use PHPUnit\Framework\TestCase;
 

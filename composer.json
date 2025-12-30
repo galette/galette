@@ -23,12 +23,18 @@
     ],
     "autoload": {
         "files": [
-            "includes/functions.inc.php"
+            "galette/includes/functions.inc.php"
         ],
         "psr-4": {
-            "Galette\\": "lib/Galette"
+            "Galette\\": "galette/lib/Galette"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Galette\\Tests\\": "tests/lib/"
+        }
+    },
+
     "require": {
         "php": ">=8.2",
         "ext-curl": "*",

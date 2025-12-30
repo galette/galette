@@ -21,9 +21,9 @@
 
 declare(strict_types=1);
 
-namespace GaletteTests\Core;
+namespace Galette\Tests\Core;
 
-use Galette\GaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
