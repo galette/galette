@@ -125,8 +125,6 @@ class CsvIn extends Csv
 
     /**
      * Load fields list from database or from default values
-     *
-     * @return void
      */
     private function loadFields(): void
     {
@@ -160,8 +158,6 @@ class CsvIn extends Csv
      * @param array<string,mixed> $members_fields      Members fields
      * @param array<string,mixed> $members_fields_cats Members fields categories
      * @param bool                $dryrun              Run in dry run mode (do not store in database)
-     *
-     * @return bool|int
      */
     public function import(
         Db $zdb,
@@ -212,8 +208,6 @@ class CsvIn extends Csv
      * Check if input file meet requirements
      *
      * @param string $filename File name
-     *
-     * @return bool
      */
     private function check(string $filename): bool
     {
@@ -450,8 +444,6 @@ class CsvIn extends Csv
      * Store members in database
      *
      * @param string $filename CSV filename
-     *
-     * @return bool
      */
     private function storeMembers(string $filename): bool
     {

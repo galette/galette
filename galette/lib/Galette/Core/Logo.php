@@ -54,8 +54,6 @@ class Logo extends Picture
      * Gets the default picture to show, anyway
      *
      * @see Picture::getDefaultPicture()
-     *
-     * @return void
      */
     protected function getDefaultPicture(): void
     {
@@ -112,8 +110,6 @@ class Logo extends Picture
 
     /**
      * Returns custom state
-     *
-     * @return bool
      */
     public function isCustom(): bool
     {

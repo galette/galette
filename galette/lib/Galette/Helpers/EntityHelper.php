@@ -46,8 +46,6 @@ trait EntityHelper
 
     /**
      * Set fields, must populate $this->fields
-     *
-     * @return self
      */
     abstract protected function setFields(): self;
 
@@ -66,8 +64,6 @@ trait EntityHelper
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -87,8 +83,6 @@ trait EntityHelper
      *
      * @param string $field Field name
      * @param string $entry Array entry to use (defaults to "label")
-     *
-     * @return string
      */
     public function getFieldLabel(string $field, string $entry = 'label'): string
     {
@@ -103,8 +97,6 @@ trait EntityHelper
      * Get property name for given field
      *
      * @param string $field Field
-     *
-     * @return string
      */
     protected function getFieldPropertyName(string $field): string
     {

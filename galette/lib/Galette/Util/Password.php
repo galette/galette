@@ -72,8 +72,6 @@ class Password
      * Does password suits requirements?
      *
      * @param string $password Password to test
-     *
-     * @return bool
      */
     public function isValid(string $password): bool
     {
@@ -111,8 +109,6 @@ class Password
      * Is password blacklisted?
      *
      * @param string $password Password to check
-     *
-     * @return bool
      */
     public function isBlacklisted(string $password): bool
     {
@@ -130,8 +126,6 @@ class Password
      * Calculate password strength
      *
      * @param string $password Password to check
-     *
-     * @return int
      */
     public function calculateStrength(string $password): int
     {
@@ -168,8 +162,6 @@ class Password
 
     /**
      * Get current strength
-     *
-     * @return int
      */
     public function getStrenght(): int
     {
@@ -245,8 +237,6 @@ class Password
      * Set member and calculate personal information to blacklist
      *
      * @param Adherent $adh Adherent instance
-     *
-     * @return self
      */
     public function setAdherent(Adherent $adh): self
     {

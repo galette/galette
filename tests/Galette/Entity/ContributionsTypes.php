@@ -39,8 +39,6 @@ class ContributionsTypes extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -52,8 +50,6 @@ class ContributionsTypes extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -65,8 +61,6 @@ class ContributionsTypes extends TestCase
 
     /**
      * Delete contributions types
-     *
-     * @return void
      */
     private function deleteTypes(): void
     {
@@ -85,8 +79,6 @@ class ContributionsTypes extends TestCase
 
     /**
      * Test contributions types
-     *
-     * @return void
      */
     public function testContributionsTypes(): void
     {
@@ -205,8 +197,6 @@ class ContributionsTypes extends TestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {

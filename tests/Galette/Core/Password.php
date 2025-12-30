@@ -36,8 +36,6 @@ class Password extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -47,8 +45,6 @@ class Password extends GaletteTestCase
 
     /**
      * Test unique password generator
-     *
-     * @return void
      */
     public function testRandom(): void
     {
@@ -71,8 +67,6 @@ class Password extends GaletteTestCase
 
     /**
      * Create member and get its id
-     *
-     * @return int
      */
     private function localCreateMember(): int
     {
@@ -112,8 +106,6 @@ class Password extends GaletteTestCase
 
     /**
      * Delete member
-     *
-     * @return void
      */
     private function deleteMember(): void
     {
@@ -124,8 +116,6 @@ class Password extends GaletteTestCase
 
     /**
      * Test new Password generation
-     *
-     * @return void
      */
     public function testGenerateNewPassword(): void
     {
@@ -156,8 +146,6 @@ class Password extends GaletteTestCase
 
     /**
      * Test cleanExpired
-     *
-     * @return void
      */
     public function testCleanExpired(): void
     {
@@ -190,8 +178,6 @@ class Password extends GaletteTestCase
 
     /**
      * Generate new password that throws an exception
-     *
-     * @return void
      */
     public function testGenerateNewPasswordWException(): void
     {
@@ -214,8 +200,6 @@ class Password extends GaletteTestCase
 
     /**
      * Test cleanExpired that throws an exception
-     *
-     * @return void
      */
     public function testCleanExpiredWException(): void
     {
@@ -237,8 +221,6 @@ class Password extends GaletteTestCase
 
     /**
      * Test hash validity that throws an exception
-     *
-     * @return void
      */
     public function testIsHashValidWException(): void
     {
@@ -261,8 +243,6 @@ class Password extends GaletteTestCase
 
     /**
      * Test hash removal that throws an exception
-     *
-     * @return void
      */
     public function testRemoveHashWException(): void
     {

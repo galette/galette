@@ -36,8 +36,6 @@ class MailingHistory extends GaletteTestCase
 
     /**
      * Cleanup after each test method
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -50,8 +48,6 @@ class MailingHistory extends GaletteTestCase
 
     /**
      * Test history workflow
-     *
-     * @return void
      */
     public function testHistoryFlow(): void
     {

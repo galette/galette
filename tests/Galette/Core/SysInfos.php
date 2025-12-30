@@ -34,8 +34,6 @@ class SysInfos extends GaletteTestCase
 {
     /**
      * Test getRawData
-     *
-     * @return void
      */
     public function testGetRawData(): void
     {

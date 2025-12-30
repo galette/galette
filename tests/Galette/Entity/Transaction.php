@@ -37,8 +37,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Cleanup after each test method
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -84,8 +82,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -104,8 +100,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Create test transaction in database
-     *
-     * @return \Galette\Entity\Transaction
      */
     private function createTransaction(): \Galette\Entity\Transaction
     {
@@ -133,8 +127,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test empty transaction
-     *
-     * @return void
      */
     public function testEmpty(): void
     {
@@ -163,8 +155,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test getter and setter special cases
-     *
-     * @return void
      */
     public function testGetterSetter(): void
     {
@@ -206,8 +196,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test transaction creation
-     *
-     * @return void
      */
     public function testCreation(): void
     {
@@ -220,8 +208,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test transaction update
-     *
-     * @return void
      */
     public function testUpdate(): void
     {
@@ -248,8 +234,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test fields labels
-     *
-     * @return void
      */
     public function testGetFieldLabel(): void
     {
@@ -276,8 +260,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test transaction loading
-     *
-     * @return void
      */
     public function testLoad(): void
     {
@@ -310,8 +292,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test transaction removal
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -337,8 +317,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test can* methods
-     *
-     * @return void
      */
     public function testCan(): void
     {
@@ -503,8 +481,6 @@ class Transaction extends GaletteTestCase
 
     /**
      * Test a transaction
-     *
-     * @return void
      */
     public function testTransaction(): void
     {

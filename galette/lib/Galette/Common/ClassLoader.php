@@ -37,7 +37,6 @@
  * <http://www.doctrine-project.org>.
  *
  * @category Libraries
- * @package  ClassLoader
  * @author Doctrine project <contact@doctrine-project.org>
  * @author Johan Cwiklinski <johan@x-tnd.be>
  * @license  LGPL https://www.gnu.org/licenses/lgpl-3.0.fr.html
@@ -61,7 +60,6 @@ use function Safe\spl_autoload_unregister;
  * relies on the PHP <code>include_path</code>.
  *
  * @category Libraries
- * @package  ClassLoader
  * @author Roman Borschel <roman@code-factory.org>
  * @license  LGPL https://www.gnu.org/licenses/lgpl-3.0.fr.html
  * @link     http://www.doctrine-project.org - https://galette.eu
@@ -107,8 +105,6 @@ class ClassLoader
      * Sets the namespace separator used by classes in the namespace of this ClassLoader.
      *
      * @param string $sep The separator to use.
-     *
-     * @return void
      */
     public function setNamespaceSeparator(string $sep): void
     {
@@ -117,8 +113,6 @@ class ClassLoader
 
     /**
      * Gets the namespace separator used by classes in the namespace of this ClassLoader.
-     *
-     * @return string
      */
     public function getNamespaceSeparator(): string
     {
@@ -129,8 +123,6 @@ class ClassLoader
      * Sets the base include path for all class files in the namespace of this ClassLoader.
      *
      * @param string $includePath Include path
-     *
-     * @return void
      */
     public function setIncludePath(string $includePath): void
     {
@@ -139,8 +131,6 @@ class ClassLoader
 
     /**
      * Gets the base include path for all class files in the namespace of this ClassLoader.
-     *
-     * @return string
      */
     public function getIncludePath(): string
     {
@@ -151,8 +141,6 @@ class ClassLoader
      * Sets the file extension of class files in the namespace of this ClassLoader.
      *
      * @param string $fileExtension File extension
-     *
-     * @return void
      */
     public function setFileExtension(string $fileExtension): void
     {
@@ -161,8 +149,6 @@ class ClassLoader
 
     /**
      * Gets the file extension of class files in the namespace of this ClassLoader.
-     *
-     * @return string
      */
     public function getFileExtension(): string
     {
@@ -171,8 +157,6 @@ class ClassLoader
 
     /**
      * Registers this ClassLoader on the SPL autoload stack.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -183,8 +167,6 @@ class ClassLoader
 
     /**
      * Removes this ClassLoader from the SPL autoload stack.
-     *
-     * @return void
      */
     public function unregister(): void
     {

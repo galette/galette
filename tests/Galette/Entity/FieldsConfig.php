@@ -39,8 +39,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -62,8 +60,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -73,8 +69,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test non required fields
-     *
-     * @return void
      */
     public function testNonRequired(): void
     {
@@ -99,8 +93,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test FieldsConfig initialization
-     *
-     * @return void
      */
     public function testInstallInit(): void
     {
@@ -146,10 +138,10 @@ class FieldsConfig extends TestCase
 
         $visibles = $fields_config->getVisibilities();
         $this->assertCount(
-            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]) +
-            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE]) +
-            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]) +
-            count($lists_config->getAclMapping()),
+            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY])
+            + count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE])
+            + count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT])
+            + count($lists_config->getAclMapping()),
             $visibles
         );
 
@@ -161,8 +153,6 @@ class FieldsConfig extends TestCase
      * Count categorized_fields
      *
      * @param array $categorized Categorized fields
-     *
-     * @return void
      */
     private function countCategorizedFields(array $categorized): void
     {
@@ -174,8 +164,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test setNotRequired
-     *
-     * @return void
      */
     public function testSetNotRequired(): void
     {
@@ -200,8 +188,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test getVisibility
-     *
-     * @return void
      */
     public function testGetVisibility(): void
     {
@@ -219,8 +205,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test setFields and storage
-     *
-     * @return void
      */
     public function testSetFields(): void
     {
@@ -260,8 +244,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test isSelfExcluded
-     *
-     * @return void
      */
     public function testIsSelfExcluded(): void
     {
@@ -272,8 +254,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test checkUpdate
-     *
-     * @return void
      */
     public function testCheckUpdate(): void
     {
@@ -323,8 +303,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test check update when all is empty
-     *
-     * @return void
      */
     public function testCheckUpdateWhenEmpty(): void
     {
@@ -351,8 +329,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test get display elements
-     *
-     * @return void
      */
     public function testGetDisplayElements(): void
     {
@@ -407,8 +383,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test get form elements
-     *
-     * @return void
      */
     public function testGetFormElements(): void
     {
@@ -512,8 +486,6 @@ class FieldsConfig extends TestCase
 
     /**
      * Test permissions list
-     *
-     * @return void
      */
     public function testGetPermissionsList(): void
     {

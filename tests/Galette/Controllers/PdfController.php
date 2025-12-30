@@ -24,8 +24,6 @@ declare(strict_types=1);
 namespace GaletteTests\Controllers;
 
 use Galette\GaletteRoutingTestCase;
-use Slim\Psr7\Headers;
-use Slim\Psr7\Request;
 
 /**
  * PDF controller tests
@@ -38,8 +36,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -55,8 +51,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -72,8 +66,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after class
-     *
-     * @return void
      */
     public static function tearDownAfterClass(): void
     {
@@ -83,8 +75,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test store models
-     *
-     * @return void
      */
     public function testStoreModels(): void
     {
@@ -125,8 +115,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test display models
-     *
-     * @return void
      */
     public function testDisplayModels(): void
     {
@@ -151,8 +139,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test membersCards
-     *
-     * @return void
      */
     public function testMembersCards(): void
     {
@@ -237,8 +223,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test filtered membersCards
-     *
-     * @return void
      */
     public function testFilteredMembersCards(): void
     {
@@ -270,8 +254,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test membersLabels
-     *
-     * @return void
      */
     public function testMembersLabels(): void
     {
@@ -320,8 +302,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test filtered membersLabels
-     *
-     * @return void
      */
     public function testFilteredMembersLabels(): void
     {
@@ -356,8 +336,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test adhesionForm
-     *
-     * @return void
      */
     public function testadhesionForm(): void
     {
@@ -412,8 +390,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test attendanceSheet
-     *
-     * @return void
      */
     public function testAttendanceSheet(): void
     {
@@ -456,8 +432,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test attendanceSheetConfig
-     *
-     * @return void
      */
     public function testAttendanceSheetConfig(): void
     {
@@ -480,8 +454,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test contribution
-     *
-     * @return void
      */
     public function testContribution(): void
     {
@@ -537,8 +509,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test group
-     *
-     * @return void
      */
     public function testGroup(): void
     {
@@ -575,8 +545,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test direct member card link
-     *
-     * @return void
      */
     public function testDirectlinkDocumentMemberCard(): void
     {
@@ -614,8 +582,6 @@ class PdfController extends GaletteRoutingTestCase
 
     /**
      * Test direct contribution link
-     *
-     * @return void
      */
     public function testDirectlinkDocumentContribution(): void
     {

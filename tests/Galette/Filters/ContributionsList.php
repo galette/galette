@@ -36,8 +36,6 @@ class ContributionsList extends GaletteTestCase
      * Test filter defaults values
      *
      * @param \Galette\Filters\ContributionsList $filters Filters instance
-     *
-     * @return void
      */
     protected function testDefaults(\Galette\Filters\ContributionsList $filters): void
     {
@@ -57,8 +55,6 @@ class ContributionsList extends GaletteTestCase
 
     /**
      * Test creation
-     *
-     * @return void
      */
     public function testCreate(): void
     {
@@ -138,8 +134,6 @@ class ContributionsList extends GaletteTestCase
 
     /**
      * Test localized date in filter
-     *
-     * @return void
      */
     public function testLocalizedDates(): void
     {

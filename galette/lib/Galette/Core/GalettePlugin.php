@@ -181,8 +181,6 @@ abstract class GalettePlugin
 
     /**
      * Get news for this plugin
-     *
-     * @return ?Entry
      */
     public function getNews(): ?Entry
     {
@@ -192,8 +190,6 @@ abstract class GalettePlugin
 
     /**
      * Is the plugin fully installed (including database, extra configuration, etc)?
-     *
-     * @return bool
      */
     public function isInstalled(): bool
     {

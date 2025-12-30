@@ -118,8 +118,6 @@ class Group
      * Load group from its name
      *
      * @param string $group_name Group name
-     *
-     * @return bool
      */
     public function loadFromName(string $group_name): bool
     {
@@ -150,8 +148,6 @@ class Group
      * Populate object from a resultset row
      *
      * @param ArrayObject<string, int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
@@ -171,8 +167,6 @@ class Group
      * Loads members for the current group
      *
      * @param int $type Either self::MEMBER_TYPE or self::MANAGER_TYPE
-     *
-     * @return void
      */
     private function loadPersons(int $type): void
     {
@@ -237,8 +231,6 @@ class Group
 
     /**
      * Load sub-groups
-     *
-     * @return void
      */
     private function loadSubGroups(): void
     {
@@ -278,8 +270,6 @@ class Group
      * Remove specified group
      *
      * @param bool $cascade Also remove members and managers
-     *
-     * @return bool
      */
     public function remove(bool $cascade = false): bool
     {
@@ -360,8 +350,6 @@ class Group
 
     /**
      * Is group empty? (after first deletion try)
-     *
-     * @return bool
      */
     public function isEmpty(): bool
     {
@@ -370,8 +358,6 @@ class Group
 
     /**
      * Detach a group from its parent
-     *
-     * @return bool
      */
     public function detach(): bool
     {
@@ -412,8 +398,6 @@ class Group
 
     /**
      * Store the group
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -496,8 +480,6 @@ class Group
      * Is current logged-in user manager of the group?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function isManager(Login $login): bool
     {
@@ -521,8 +503,6 @@ class Group
 
     /**
      * Get group id
-     *
-     * @return int
      */
     public function getId(): ?int
     {
@@ -531,8 +511,6 @@ class Group
 
     /**
      * Get Level of the group
-     *
-     * @return int
      */
     public function getLevel(): int
     {
@@ -544,8 +522,6 @@ class Group
 
     /**
      * Get the full name of the group "foo / bar"
-     *
-     * @return ?string
      */
     public function getFullName(): ?string
     {
@@ -573,8 +549,6 @@ class Group
 
     /**
      * Get the indented short name of the group "  >> bar"
-     *
-     * @return ?string
      */
     public function getIndentName(): ?string
     {
@@ -586,8 +560,6 @@ class Group
 
     /**
      * Get group name
-     *
-     * @return ?string
      */
     public function getName(): ?string
     {
@@ -635,8 +607,6 @@ class Group
 
     /**
      * Get parent group
-     *
-     * @return Group|null
      */
     public function getParentGroup(): ?Group
     {
@@ -647,8 +617,6 @@ class Group
      * Get group creation date
      *
      * @param bool $formatted Return date formatted, raw if false
-     *
-     * @return string
      */
     public function getCreationDate(bool $formatted = true): string
     {
@@ -664,8 +632,6 @@ class Group
      * Get member count
      *
      * @param bool $force Force members load, defaults to false
-     *
-     * @return int
      */
     public function getMemberCount(bool $force = false): int
     {
@@ -684,8 +650,6 @@ class Group
      * Set name
      *
      * @param string $name Group name
-     *
-     * @return self
      */
     public function setName(string $name): self
     {
@@ -697,8 +661,6 @@ class Group
      * check if can Set parent group
      *
      * @param Group $group Parent group
-     *
-     * @return bool
      */
     public function canSetParentGroup(Group $group): bool
     {
@@ -715,8 +677,6 @@ class Group
      * Set parent group
      *
      * @param int $id Parent group identifier
-     *
-     * @return self
      */
     public function setParentGroup(int $id): self
     {
@@ -740,8 +700,6 @@ class Group
      * Add member to group
      *
      * @param Adherent $member Member to add
-     *
-     * @return void
      */
     public function addMember(Adherent $member): void
     {
@@ -779,7 +737,6 @@ class Group
      *
      * @param Adherent[] $members Members list
      *
-     * @return bool
      * @throws Throwable
      */
     public function setMembers(array $members = []): bool
@@ -868,7 +825,6 @@ class Group
      *
      * @param Adherent[] $members Managers list
      *
-     * @return bool
      * @throws Throwable
      */
     public function setManagers(array $members = []): bool
@@ -956,8 +912,6 @@ class Group
      * Set login instance
      *
      * @param Login $login Login instance
-     *
-     * @return self
      */
     public function setLogin(Login $login): self
     {
@@ -969,8 +923,6 @@ class Group
      * Can current logged-in user edit group
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canEdit(Login $login): bool
     {

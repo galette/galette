@@ -36,8 +36,6 @@ class ScheduledPayments extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -47,8 +45,6 @@ class ScheduledPayments extends GaletteTestCase
 
     /**
      * Delete scheduled payments
-     *
-     * @return void
      */
     private function deleteScheduledPayments(): void
     {
@@ -67,8 +63,6 @@ class ScheduledPayments extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -172,8 +166,6 @@ class ScheduledPayments extends GaletteTestCase
 
     /**
      * Test getArrayList
-     *
-     * @return void
      */
     public function testGetArrayList(): void
     {
@@ -242,8 +234,6 @@ class ScheduledPayments extends GaletteTestCase
 
     /**
      * Test remove
-     *
-     * @return void
      */
     public function testRemove(): void
     {

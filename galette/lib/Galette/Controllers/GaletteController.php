@@ -60,8 +60,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function slash(Request $request, Response $response): Response
     {
@@ -73,8 +71,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function systemInformation(Request $request, Response $response): Response
     {
@@ -103,8 +99,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function dashboard(Request $request, Response $response): Response
     {
@@ -147,8 +141,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function preferences(Request $request, Response $response): Response
     {
@@ -235,8 +227,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function storePreferences(Request $request, Response $response): Response
     {
@@ -312,8 +302,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function testEmail(Request $request, Response $response): Response
     {
@@ -381,8 +369,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function charts(Request $request, Response $response): Response
     {
@@ -414,8 +400,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function configureCoreFields(Request $request, Response $response): Response
     {
@@ -445,8 +429,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function storeCoreFieldsConfig(Request $request, Response $response): Response
     {
@@ -499,8 +481,6 @@ class GaletteController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $table    Tbale name
-     *
-     * @return Response
      */
     public function configureListFields(Request $request, Response $response, string $table): Response
     {
@@ -530,8 +510,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function storeListFields(Request $request, Response $response): Response
     {
@@ -566,8 +544,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function reminders(Request $request, Response $response): Response
     {
@@ -603,8 +579,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function doReminders(Request $request, Response $response): Response
     {
@@ -713,8 +687,6 @@ class GaletteController extends AbstractController
      * @param Response $response   PSR Response
      * @param string   $membership Either 'late' or 'nearly'
      * @param string   $mail       Either 'withmail' or 'withoutmail'
-     *
-     * @return Response
      */
     public function filterReminders(Request $request, Response $response, string $membership, string $mail): Response
     {
@@ -743,8 +715,6 @@ class GaletteController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $hash     Hash
-     *
-     * @return Response
      */
     public function documentLink(Request $request, Response $response, string $hash): Response
     {
@@ -765,8 +735,6 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function empty(Request $request, Response $response): Response
     {

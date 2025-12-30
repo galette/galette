@@ -24,8 +24,6 @@ declare(strict_types=1);
 namespace GaletteTests\Controllers;
 
 use Galette\GaletteRoutingTestCase;
-use Slim\Psr7\Headers;
-use Slim\Psr7\Request;
 
 /**
  * CSV controller tests
@@ -38,8 +36,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -55,8 +51,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -76,8 +70,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after class
-     *
-     * @return void
      */
     public static function tearDownAfterClass(): void
     {
@@ -87,8 +79,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test export page
-     *
-     * @return void
      */
     public function testExportPage(): void
     {
@@ -116,8 +106,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test do export (doExport, get file, remove file)
-     *
-     * @return void
      */
     public function testDoExport(): void
     {
@@ -243,8 +231,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test file removal routes
-     *
-     * @return void
      */
     public function testFileRemoval(): void
     {
@@ -337,8 +323,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test import page
-     *
-     * @return void
      */
     public function testImportPage(): void
     {
@@ -366,8 +350,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test getFile route
-     *
-     * @return void
      */
     public function testGetFile(): void
     {
@@ -439,8 +421,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test import model page
-     *
-     * @return void
      */
     public function testImportModelPage(): void
     {
@@ -468,8 +448,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test import model routes (store, get)
-     *
-     * @return void
      */
     public function testImportModel(): void
     {
@@ -542,8 +520,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test members CSV export
-     *
-     * @return void
      */
     public function testMembersExport(): void
     {
@@ -595,8 +571,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test contributions CSV export
-     *
-     * @return void
      */
     public function testContributionExport(): void
     {
@@ -646,8 +620,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test scheduled payment CSV export
-     *
-     * @return void
      */
     public function testScheduledPaymentExport(): void
     {
@@ -719,8 +691,6 @@ class CsvController extends GaletteRoutingTestCase
 
     /**
      * Test upload and import CSV file
-     *
-     * @return void
      */
     public function testImportFile(): void
     {

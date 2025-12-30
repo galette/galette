@@ -37,8 +37,6 @@ class Text extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -48,8 +46,6 @@ class Text extends TestCase
 
     /**
      * Test constructor
-     *
-     * @return void
      */
     public function testConstructor(): void
     {
@@ -59,8 +55,6 @@ class Text extends TestCase
 
     /**
      * Test get type name
-     *
-     * @return void
      */
     public function testGetTypeName(): void
     {
@@ -69,8 +63,6 @@ class Text extends TestCase
 
     /**
      * Test if basic properties are ok
-     *
-     * @return void
      */
     public function testBaseProperties(): void
     {
@@ -124,8 +116,6 @@ class Text extends TestCase
 
     /**
      * Test displayed value
-     *
-     * @return void
      */
     public function testDisplayValue(): void
     {

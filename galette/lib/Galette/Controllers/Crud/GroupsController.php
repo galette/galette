@@ -48,8 +48,6 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -63,8 +61,6 @@ class GroupsController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $name     Group name
-     *
-     * @return Response
      */
     public function doAdd(Request $request, Response $response, ?string $name = null): Response
     {
@@ -88,8 +84,6 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function checkUniqueness(Request $request, Response $response): Response
     {
@@ -126,8 +120,6 @@ class GroupsController extends CrudController
      * @param Response        $response PSR Response
      * @param string|null     $option   One of 'page' or 'order'
      * @param int|string|null $value    Value of the option
-     *
-     * @return Response
      */
     public function list(
         Request $request,
@@ -169,8 +161,6 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function reorderList(Request $request, Response $response): Response
     {
@@ -215,8 +205,6 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function getGroup(Request $request, Response $response): Response
     {
@@ -247,8 +235,6 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function simpleList(Request $request, Response $response): Response
     {
@@ -274,8 +260,6 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function ajaxMembers(Request $request, Response $response): Response
     {
@@ -312,8 +296,6 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -330,8 +312,6 @@ class GroupsController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Record id
-     *
-     * @return Response
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -377,8 +357,6 @@ class GroupsController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Group id
-     *
-     * @return Response
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -449,8 +427,6 @@ class GroupsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function reorder(Request $request, Response $response): Response
     {
@@ -495,8 +471,6 @@ class GroupsController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -507,8 +481,6 @@ class GroupsController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -522,8 +494,6 @@ class GroupsController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -539,8 +509,6 @@ class GroupsController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

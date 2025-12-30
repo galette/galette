@@ -42,23 +42,23 @@ use function Safe\unlink;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property string $subject
- * @property string $message
- * @property bool $html
- * @property int $current_step
- * @property-read  int $step
- * @property int|string $id
- * @property-read string $alt_message
- * @property-read string $wrapped_message
- * @property-read PHPMailer $mail
- * @property-read string[] $errors
- * @property-read Adherent[] $recipients
- * @property-read Adherent[] $unreachables
+ * @property      string            $subject
+ * @property      string            $message
+ * @property      bool              $html
+ * @property      int               $current_step
+ * @property-read int               $step
+ * @property      int|string        $id
+ * @property-read string            $alt_message
+ * @property-read string            $wrapped_message
+ * @property-read PHPMailer         $mail
+ * @property-read string[]          $errors
+ * @property-read Adherent[]        $recipients
+ * @property-read Adherent[]        $unreachables
  * @property-read string|false|null $tmp_path
- * @property File[] $attachments
- * @property-read string $sender_name
- * @property-read string $sender_address
- * @property int $history_id
+ * @property      File[]            $attachments
+ * @property-read string            $sender_name
+ * @property-read string            $sender_address
+ * @property      int               $history_id
  */
 class Mailing extends GaletteMail
 {
@@ -111,8 +111,6 @@ class Mailing extends GaletteMail
 
     /**
      * Generate new mailing id and temporary path
-     *
-     * @return string
      */
     private function generateNewId(): string
     {
@@ -135,8 +133,6 @@ class Mailing extends GaletteMail
      * Generate temporary path
      *
      * @param ?string $id Random id, defaults to null
-     *
-     * @return void
      */
     private function generateTmpPath(?string $id = null): void
     {
@@ -148,8 +144,6 @@ class Mailing extends GaletteMail
 
     /**
      * Load mailing attachments
-     *
-     * @return void
      */
     private function loadAttachments(): void
     {
@@ -177,8 +171,6 @@ class Mailing extends GaletteMail
      * @param bool                       $new True if we create a 'new' mailing,
      *                                        false otherwise (from preview for
      *                                        example)
-     *
-     * @return bool
      */
     public function loadFromHistory(ArrayObject $rs, bool $new = true): bool
     {
@@ -233,8 +225,6 @@ class Mailing extends GaletteMail
      * Copy attachments from another mailing
      *
      * @param int $id Original mailing id
-     *
-     * @return void
      */
     private function copyAttachments(int $id): void
     {
@@ -273,8 +263,6 @@ class Mailing extends GaletteMail
 
     /**
      * Apply final header to email and send it :-)
-     *
-     * @return int
      */
     public function send(): int
     {
@@ -356,8 +344,6 @@ class Mailing extends GaletteMail
      * Move attachments with final id once mailing has been stored
      *
      * @param int $id Mailing history id
-     *
-     * @return void
      */
     public function moveAttachments(int $id): void
     {
@@ -385,8 +371,6 @@ class Mailing extends GaletteMail
      * Remove specified attachment
      *
      * @param string $name Filename
-     *
-     * @return void
      */
     public function removeAttachment(string $name): void
     {
@@ -439,8 +423,6 @@ class Mailing extends GaletteMail
      *
      * @param bool $temp Remove only temporary attachments,
      *                   to avoid history breaking
-     *
-     * @return bool
      */
     public function removeAttachments(bool $temp = false): bool
     {
@@ -494,8 +476,6 @@ class Mailing extends GaletteMail
 
     /**
      * Does mailing already exists in history?
-     *
-     * @return bool
      */
     public function existsInHistory(): bool
     {
@@ -569,8 +549,6 @@ class Mailing extends GaletteMail
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -590,8 +568,6 @@ class Mailing extends GaletteMail
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

@@ -36,8 +36,6 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -53,8 +51,6 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -71,8 +67,6 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after class
-     *
-     * @return void
      */
     public static function tearDownAfterClass(): void
     {
@@ -82,8 +76,6 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
     /**
      * Test scheduled payments list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -239,8 +231,6 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
     /**
      * Test scheduled payment filters
-     *
-     * @return void
      */
     public function testListFilter(): void
     {
@@ -313,8 +303,6 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
 
     /**
      * Test scheduled payment add page
-     *
-     * @return void
      */
     public function testAddPage(): void
     {

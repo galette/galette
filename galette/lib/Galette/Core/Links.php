@@ -66,8 +66,6 @@ class Links
      *
      * @param int $target Target (one of self::TARGET_* constants)
      * @param int $id     Target identifier
-     *
-     * @return bool
      */
     private function removeOldEntry(int $target, int $id): bool
     {
@@ -99,8 +97,6 @@ class Links
      *
      * @param int $target Target (one of self::TARGET_* constants)
      * @param int $id     Target identifier
-     *
-     * @return string
      */
     public function generateNewLink(int $target, int $id): string
     {
@@ -157,8 +153,6 @@ class Links
 
     /**
      * Get expiration date
-     *
-     * @return DateTime
      */
     private function getExpirationDate(): DateTime
     {
@@ -169,8 +163,6 @@ class Links
 
     /**
      * Remove expired links queries (older than 1 week)
-     *
-     * @return bool
      */
     protected function cleanExpired(): bool
     {

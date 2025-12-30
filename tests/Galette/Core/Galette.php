@@ -36,8 +36,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test gitVersion
-     *
-     * @return void
      */
     public function testGitVersion(): void
     {
@@ -54,8 +52,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test storing into session of various objects to detect serialization issues
-     *
-     * @return void
      */
     public function testSerialization(): void
     {
@@ -129,8 +125,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test getMenus
-     *
-     * @return void
      */
     public function testGetMenus(): void
     {
@@ -220,8 +214,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test getPublicMenus
-     *
-     * @return void
      */
     public function testGetPublicMenus(): void
     {
@@ -268,8 +260,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test getDashboards
-     *
-     * @return void
      */
     public function testGetDashboards(): void
     {
@@ -345,8 +335,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test getListActions
-     *
-     * @return void
      */
     public function testGetListActions(): void
     {
@@ -413,8 +401,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test getDetailledActions
-     *
-     * @return void
      */
     public function testGetDetailledActions(): void
     {
@@ -427,8 +413,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test getBatchActions
-     *
-     * @return void
      */
     public function testGetBatchActions(): void
     {
@@ -495,8 +479,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test Galette::getNews() method
-     *
-     * @return void
      */
     public function testGetNews(): void
     {
@@ -607,8 +589,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test isNightly
-     *
-     * @return void
      */
     public function testIsNightly(): void
     {
@@ -617,8 +597,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test jsonDecode
-     *
-     * @return void
      */
     public function testJsonDecode(): void
     {
@@ -639,8 +617,6 @@ class Galette extends GaletteTestCase
 
     /**
      * Test jsonEncode
-     *
-     * @return void
      */
     public function testJsonEncode(): void
     {

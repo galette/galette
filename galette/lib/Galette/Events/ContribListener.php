@@ -71,8 +71,6 @@ class ContribListener implements ListenerSubscriber
      * Set up contribution listeners
      *
      * @param ListenerRegistry $acceptor Listener
-     *
-     * @return void
      */
     public function subscribeListeners(ListenerRegistry $acceptor): void
     {
@@ -88,8 +86,6 @@ class ContribListener implements ListenerSubscriber
      * Contribution added listener
      *
      * @param Contribution $contrib Added contribution
-     *
-     * @return void
      */
     public function contributionAdded(Contribution $contrib): void
     {
@@ -111,8 +107,6 @@ class ContribListener implements ListenerSubscriber
      *
      * @param Contribution $contrib Contribution
      * @param bool         $new     New contribution or editing existing one
-     *
-     * @return void
      */
     private function sendContribEmail(Contribution $contrib, bool $new): void
     {
@@ -216,8 +210,6 @@ class ContribListener implements ListenerSubscriber
      *
      * @param Contribution $contrib Contribution
      * @param bool         $new     New contribution or editing existing one
-     *
-     * @return void
      */
     private function sendAdminEmail(Contribution $contrib, bool $new): void
     {
@@ -289,8 +281,6 @@ class ContribListener implements ListenerSubscriber
      * Call post contribution script from Preferences
      *
      * @param Contribution $contrib Added contribution
-     *
-     * @return void
      */
     private function callPostContributionScript(Contribution $contrib): void
     {

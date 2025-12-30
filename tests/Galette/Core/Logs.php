@@ -34,8 +34,6 @@ class Logs extends GaletteTestCase
 {
     /**
      * Test cleanup
-     *
-     * @return void
      */
     public function testCleanup(): void
     {

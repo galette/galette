@@ -36,8 +36,6 @@ class DynamicField extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -46,8 +44,6 @@ class DynamicField extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -70,8 +66,6 @@ class DynamicField extends TestCase
 
     /**
      * Test loadFieldType
-     *
-     * @return void
      */
     public function testLoadFieldType(): void
     {
@@ -134,8 +128,6 @@ class DynamicField extends TestCase
 
     /**
      * Permissions names provider
-     *
-     * @return array
      */
     public static function permsProvider(): array
     {
@@ -152,8 +144,6 @@ class DynamicField extends TestCase
 
     /**
      * Test getPermissionsList
-     *
-     * @return void
      */
     public function testGetPermissionsList(): void
     {
@@ -177,8 +167,6 @@ class DynamicField extends TestCase
      * @param string $name Name
      *
      * @dataProvider permsProvider
-     *
-     * @return void
      */
     public function testGetPermissionName(int $perm, string $name): void
     {
@@ -206,8 +194,6 @@ class DynamicField extends TestCase
 
     /**
      * Test getFormsNames
-     *
-     * @return void
      */
     public function testGetFormsNames(): void
     {
@@ -252,8 +238,6 @@ class DynamicField extends TestCase
      * @param string $expected Expected name
      *
      * @dataProvider formNamesProvider
-     *
-     * @return void
      */
     public function testGetFormTitle(string $form, string $expected): void
     {
@@ -262,8 +246,6 @@ class DynamicField extends TestCase
 
     /**
      * Test getFixedValuesTableName
-     *
-     * @return void
      */
     public function testGetFixedValuesTableName(): void
     {
@@ -274,8 +256,6 @@ class DynamicField extends TestCase
 
     /**
      * Test getValues
-     *
-     * @return void
      */
     public function testGetValues(): void
     {
@@ -312,8 +292,6 @@ class DynamicField extends TestCase
 
     /**
      * Test check
-     *
-     * @return void
      */
     public function testCheck(): void
     {
@@ -473,8 +451,6 @@ class DynamicField extends TestCase
 
     /**
      * Test move
-     *
-     * @return void
      */
     public function testMove(): void
     {
@@ -564,8 +540,6 @@ class DynamicField extends TestCase
 
     /**
      * Test remove
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -609,8 +583,6 @@ class DynamicField extends TestCase
 
     /**
      * Test information
-     *
-     * @return void
      */
     public function testInformation(): void
     {

@@ -35,14 +35,14 @@ use Slim\Views\Twig;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property ?string $filter_str
- * @property ?int $field_filter
- * @property ?int $membership_filter
- * @property ?int $filter_account
- * @property ?int $email_filter
- * @property ?int $group_filter
- * @property int[] $selected
- * @property int[] $unreachable
- * @property string $query
+ * @property ?int    $field_filter
+ * @property ?int    $membership_filter
+ * @property ?int    $filter_account
+ * @property ?int    $email_filter
+ * @property ?int    $group_filter
+ * @property int[]   $selected
+ * @property int[]   $unreachable
+ * @property string  $query
  */
 
 class MembersList extends Pagination
@@ -85,8 +85,6 @@ class MembersList extends Pagination
 
     /**
      * Returns the field we want to default set order to
-     *
-     * @return int|string
      */
     protected function getDefaultOrder(): int|string
     {
@@ -95,8 +93,6 @@ class MembersList extends Pagination
 
     /**
      * Reinit default parameters
-     *
-     * @return void
      */
     public function reinit(): void
     {
@@ -141,8 +137,6 @@ class MembersList extends Pagination
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -154,8 +148,6 @@ class MembersList extends Pagination
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -255,8 +247,6 @@ class MembersList extends Pagination
      * Set commons filters for templates
      *
      * @param Twig $view Template reference
-     *
-     * @return void
      */
     public function setViewCommonsFilters(Twig $view): void
     {

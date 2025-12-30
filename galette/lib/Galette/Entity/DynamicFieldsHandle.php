@@ -83,8 +83,6 @@ class DynamicFieldsHandle
      * Load dynamic fields values for specified object
      *
      * @param object $object Object instance
-     *
-     * @return bool
      */
     public function load(object $object): bool
     {
@@ -212,8 +210,6 @@ class DynamicFieldsHandle
      * @param int        $field Field ID
      * @param int        $index Value index
      * @param string|int $value Value
-     *
-     * @return void
      */
     public function setValue(?int $item, int $field, int $index, string|int $value): void
     {
@@ -237,8 +233,6 @@ class DynamicFieldsHandle
      *
      * @param int $field Field ID
      * @param int $index Value index
-     *
-     * @return void
      */
     public function unsetValue(int $field, int $index): void
     {
@@ -253,8 +247,6 @@ class DynamicFieldsHandle
      *
      * @param ?int $item_id     Current item id to use (will be used if current item_id is 0)
      * @param bool $transaction True if a transaction already exists
-     *
-     * @return bool
      */
     public function storeValues(?int $item_id = null, bool $transaction = false): bool
     {
@@ -318,8 +310,6 @@ class DynamicFieldsHandle
 
     /**
      * Get (and prepare if not done yet) insert statement
-     *
-     * @return StatementInterface
      */
     private function getInsertStatement(): StatementInterface
     {
@@ -339,8 +329,6 @@ class DynamicFieldsHandle
 
     /**
      * Get (and prepare if not done yet) update statement
-     *
-     * @return StatementInterface
      */
     private function getUpdateStatement(): StatementInterface
     {
@@ -362,8 +350,6 @@ class DynamicFieldsHandle
 
     /**
      * Handle values that have been removed
-     *
-     * @return void
      */
     private function handleRemovals(): void
     {
@@ -433,8 +419,6 @@ class DynamicFieldsHandle
 
     /**
      * Is there any change in dynamic fields?
-     *
-     * @return bool
      */
     public function hasChanged(): bool
     {
@@ -446,8 +430,6 @@ class DynamicFieldsHandle
      *
      * @param ?int $item_id     Current item id to use (will be used if current item_id is 0)
      * @param bool $transaction True if a transaction already exists
-     *
-     * @return bool
      */
     public function removeValues(?int $item_id = null, bool $transaction = false): bool
     {
@@ -487,8 +469,6 @@ class DynamicFieldsHandle
 
     /**
      * Get current fields resultset
-     *
-     * @return ResultSet
      */
     protected function getCurrentFields(): ResultSet
     {

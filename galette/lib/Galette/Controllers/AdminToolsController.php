@@ -44,8 +44,6 @@ class AdminToolsController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function adminTools(Request $request, Response $response): Response
     {
@@ -77,8 +75,6 @@ class AdminToolsController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function process(Request $request, Response $response): Response
     {

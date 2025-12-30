@@ -36,8 +36,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -53,8 +51,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -70,8 +66,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after class
-     *
-     * @return void
      */
     public static function tearDownAfterClass(): void
     {
@@ -81,8 +75,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -274,8 +266,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public members list
-     *
-     * @return void
      */
     public function testPublicMembersList(): void
     {
@@ -339,8 +329,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public members gallery
-     *
-     * @return void
      */
     public function testPublicMembersGallery(): void
     {
@@ -398,8 +386,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public staff list
-     *
-     * @return void
      */
     public function testPublicStaffList(): void
     {
@@ -464,8 +450,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public staff gallery
-     *
-     * @return void
      */
     public function testPublicStaffGallery(): void
     {
@@ -524,8 +508,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members filters
-     *
-     * @return void
      */
     public function testListFilter(): void
     {
@@ -674,8 +656,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public members list filters
-     *
-     * @return void
      */
     public function testPublicMembersListFilter(): void
     {
@@ -703,8 +683,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test public members gallery filters
-     *
-     * @return void
      */
     public function testPublicMembersGalleryFilter(): void
     {
@@ -732,8 +710,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members add page
-     *
-     * @return void
      */
     public function testAddPage(): void
     {
@@ -882,8 +858,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members self subscription page
-     *
-     * @return void
      */
     public function testSelfSubscriptionPage(): void
     {
@@ -929,8 +903,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members add child page
-     *
-     * @return void
      */
     public function testAddChildPage(): void
     {
@@ -1050,8 +1022,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members edit page
-     *
-     * @return void
      */
     public function testEditPage(): void
     {
@@ -1216,8 +1186,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members show page
-     *
-     * @return void
      */
     public function testShowPage(): void
     {
@@ -1349,8 +1317,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test "my" page
-     *
-     * @return void
      */
     public function testShowMePage(): void
     {
@@ -1413,8 +1379,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test add members
-     *
-     * @return void
      */
     public function testAddMember(): void
     {
@@ -1639,8 +1603,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members adding their own children
-     *
-     * @return void
      */
     public function testMemberAddChild(): void
     {
@@ -1790,8 +1752,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members self subscription
-     *
-     * @return void
      */
     public function testMemberSelfSubscription(): void
     {
@@ -1850,8 +1810,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test member duplication route
-     *
-     * @return void
      */
     public function testMemberDuplicate(): void
     {
@@ -1884,8 +1842,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test edit members
-     *
-     * @return void
      */
     public function testEditMember(): void
     {
@@ -2231,8 +2187,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test member photo
-     *
-     * @return void
      */
     public function testMemberPhoto(): void
     {
@@ -2291,8 +2245,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test mass change page
-     *
-     * @return void
      */
     public function testMassChangePage(): void
     {
@@ -2389,8 +2341,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test mass change validation page
-     *
-     * @return void
      */
     public function testValidateMassChange(): void
     {
@@ -2549,8 +2499,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test mass change action
-     *
-     * @return void
      */
     public function testDoMassChanges(): void
     {
@@ -2752,8 +2700,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test remove member page
-     *
-     * @return void
      */
     public function testRemovePage(): void
     {
@@ -2862,8 +2808,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test delete member
-     *
-     * @return void
      */
     public function testDeleteMember(): void
     {
@@ -3015,8 +2959,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test members advanced search page
-     *
-     * @return void
      */
     public function testAvancedSearchPage(): void
     {
@@ -3068,8 +3010,6 @@ class MembersController extends GaletteRoutingTestCase
 
     /**
      * Test disabled fields are well handled
-     *
-     * @return void
      */
     public function testDisabledFields(): void
     {

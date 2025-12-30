@@ -50,8 +50,6 @@ class FakeData
      * Add photo to a member
      *
      * @param Adherent $member Member instance
-     *
-     * @return bool
      */
     public function addPhoto(Adherent $member): bool
     {
@@ -87,8 +85,6 @@ class FakeData
      * Add success message
      *
      * @param string $msg Message
-     *
-     * @return void
      */
     protected function addSuccess(string $msg): void
     {
@@ -99,8 +95,6 @@ class FakeData
      * Add error message
      *
      * @param string $msg Message
-     *
-     * @return void
      */
     protected function addError(string $msg): void
     {
@@ -111,8 +105,6 @@ class FakeData
      * Add warning message
      *
      * @param string $msg Message
-     *
-     * @return void
      */
     protected function addWarning(string $msg): void
     {

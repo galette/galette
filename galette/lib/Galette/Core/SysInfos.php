@@ -40,8 +40,6 @@ class SysInfos
      * @param Db          $zdb     Database instance
      * @param Preferences $prefs   Preferences instance
      * @param Plugins     $plugins Plugins
-     *
-     * @return string
      */
     public function getRawData(Db $zdb, Preferences $prefs, Plugins $plugins): string
     {
@@ -112,8 +110,6 @@ class SysInfos
      * Get plugins information
      *
      * @param Plugins $plugins Plugins
-     *
-     * @return string
      */
     private function getPluginsInfo(Plugins $plugins): string
     {

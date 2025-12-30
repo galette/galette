@@ -36,8 +36,6 @@ class Reminders extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -55,8 +53,6 @@ class Reminders extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -70,8 +66,6 @@ class Reminders extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -434,8 +428,6 @@ class Reminders extends GaletteTestCase
 
     /**
      * Test getList with reminders from previous period already present
-     *
-     * @return void
      */
     public function testGetListNextYear(): void
     {

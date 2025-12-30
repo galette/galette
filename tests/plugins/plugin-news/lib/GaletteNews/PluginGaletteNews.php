@@ -23,15 +23,10 @@ declare(strict_types=1);
 
 namespace GaletteNews;
 
-use DI\Attribute\Inject;
-use Galette\Core\Db;
-use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Core\GalettePlugin;
 use Galette\IO\News\Entry;
 use Galette\IO\News\Post;
-use GaletteEvents\Filters\EventsList;
-use GaletteEvents\Repository\Events;
 
 /**
  * Galette News plugin
@@ -117,8 +112,6 @@ class PluginGaletteNews extends GalettePlugin
 
     /**
      * Get plugin news
-     *
-     * @return ?Entry
      */
     public function getNews(): ?Entry
     {
@@ -142,8 +135,6 @@ class PluginGaletteNews extends GalettePlugin
 
     /**
      * Is the plugin fully installed (including database, extra configuration, etc)?
-     *
-     * @return bool
      */
     public function isInstalled(): bool
     {

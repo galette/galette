@@ -36,8 +36,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -53,8 +51,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -67,8 +63,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after class
-     *
-     * @return void
      */
     public static function tearDownAfterClass(): void
     {
@@ -78,8 +72,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Test contributions list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -398,8 +390,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Test contributions filters
-     *
-     * @return void
      */
     public function testListFilter(): void
     {
@@ -478,8 +468,6 @@ class ContributionsController extends GaletteRoutingTestCase
      * Test contributions add page
      *
      * @param string $type Contribution type
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('contributionTypeProvider')]
     public function testAddPage(string $type): void
@@ -666,8 +654,6 @@ class ContributionsController extends GaletteRoutingTestCase
      * Test contributions edit page
      *
      * @param string $type Contribution type
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('contributionTypeProvider')]
     public function testEditPage(string $type): void
@@ -799,8 +785,6 @@ class ContributionsController extends GaletteRoutingTestCase
      * Test add contributions
      *
      * @param string $type Contribution type
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('contributionTypeProvider')]
     public function testAddContribution(string $type): void
@@ -1009,8 +993,6 @@ class ContributionsController extends GaletteRoutingTestCase
      * Test edit contributions
      *
      * @param string $type Contribution type
-     *
-     * @return void
      */
     #[\PHPUnit\Framework\Attributes\DataProvider('contributionTypeProvider')]
     public function testEditContribution(string $type): void
@@ -1146,8 +1128,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Test remove contribution page
-     *
-     * @return void
      */
     public function testRemovePage(): void
     {
@@ -1255,8 +1235,6 @@ class ContributionsController extends GaletteRoutingTestCase
 
     /**
      * Test delete contribution
-     *
-     * @return void
      */
     public function testDeleteContribution(): void
     {

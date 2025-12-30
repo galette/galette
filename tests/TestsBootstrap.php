@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Test bootstrap
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>

@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace GaletteTests\Core;
 
 use Galette\GaletteTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Mailing tests class
@@ -35,8 +34,6 @@ class Mailing extends GaletteTestCase
 {
     /**
      * Test setRecipients
-     *
-     * @return void
      */
     public function testSetRecipients(): void
     {
@@ -65,8 +62,6 @@ class Mailing extends GaletteTestCase
 
     /**
      * Test cleanHTML
-     *
-     * @return void
      */
     public function testCleanHTML(): void
     {
@@ -79,8 +74,6 @@ class Mailing extends GaletteTestCase
 
     /**
      * Test getPhpMailer
-     *
-     * @return void
      */
     public function testGetPhpMailer(): void
     {
@@ -90,8 +83,6 @@ class Mailing extends GaletteTestCase
 
     /**
      * Test __isset
-     *
-     * @return void
      */
     public function testIsset(): void
     {
@@ -106,8 +97,6 @@ class Mailing extends GaletteTestCase
 
     /**
      * Test getters and setters
-     *
-     * @return void
      */
     public function testGetterSetters(): void
     {

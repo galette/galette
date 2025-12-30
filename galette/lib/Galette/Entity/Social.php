@@ -38,7 +38,7 @@ use Analog\Analog;
  *
  * @property string $url
  * @property string $type
- * @property int $id
+ * @property int    $id
  */
 
 class Social
@@ -86,8 +86,6 @@ class Social
      * Load a social from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return void
      */
     private function load(int $id): void
     {
@@ -157,8 +155,6 @@ class Social
      * Load social from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -170,8 +166,6 @@ class Social
 
     /**
      * Store social in database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -215,8 +209,6 @@ class Social
      * Remove current social
      *
      * @param array<int>|null $ids IDs to remove, default to current id
-     *
-     * @return bool
      */
     public function remove(?array $ids = null): bool
     {
@@ -246,8 +238,6 @@ class Social
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -259,8 +249,6 @@ class Social
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -269,8 +257,6 @@ class Social
 
     /**
      * Display URL the best way
-     *
-     * @return string
      */
     public function displayUrl(): string
     {
@@ -289,8 +275,6 @@ class Social
      * Set type
      *
      * @param string $type Type
-     *
-     * @return self
      */
     public function setType(string $type): self
     {
@@ -302,8 +286,6 @@ class Social
      * Set linked member
      *
      * @param int|null $id Member id
-     *
-     * @return self
      */
     public function setLinkedMember(?int $id = null): self
     {
@@ -318,8 +300,6 @@ class Social
      * Set URL
      *
      * @param string $url Value to set
-     *
-     * @return self
      */
     public function setUrl(string $url): self
     {
@@ -371,8 +351,6 @@ class Social
      *
      * @param string $type       Social type
      * @param bool   $translated Return translated types (default) or not
-     *
-     * @return string
      */
     public function getSystemType(string $type, bool $translated = true): string
     {

@@ -125,8 +125,6 @@ class ExternalScript
      * Send data
      *
      * @param array<string,mixed> $params Array of params to send
-     *
-     * @return bool
      */
     public function send(array $params): bool
     {
@@ -231,8 +229,6 @@ class ExternalScript
 
     /**
      * Get full output (only relevant is method is file)
-     *
-     * @return string
      */
     public function getOutput(): string
     {

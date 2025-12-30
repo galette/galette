@@ -152,8 +152,6 @@ class Texts
 
     /**
      * Set emails replacements
-     *
-     * @return self
      */
     public function setMail(): self
     {
@@ -172,8 +170,6 @@ class Texts
      * Set change password URL
      *
      * @param Password $password Password instance
-     *
-     * @return self
      */
     public function setChangePasswordURI(Password $password): self
     {
@@ -189,8 +185,6 @@ class Texts
 
     /**
      * Set validity link
-     *
-     * @return self
      */
     public function setLinkValidity(): self
     {
@@ -204,8 +198,6 @@ class Texts
      * Set member card PDF link
      *
      * @param string $link Link
-     *
-     * @return self
      */
     public function setMemberCardLink(string $link): self
     {
@@ -217,8 +209,6 @@ class Texts
      * Set contribution PDF link
      *
      * @param string $link Link
-     *
-     * @return self
      */
     public function setContribLink(string $link): self
     {
@@ -337,8 +327,6 @@ class Texts
      * @param string $lang    Texte language to locate
      * @param string $subject Subject to set
      * @param string $body    Body text to set
-     *
-     * @return bool
      */
     public function setTexts(string $ref, string $lang, string $subject, string $body): bool
     {
@@ -457,8 +445,6 @@ class Texts
 
     /**
      * Checks for missing texts in the database
-     *
-     * @return bool
      */
     private function checkUpdate(): bool
     {
@@ -517,8 +503,6 @@ class Texts
 
     /**
      * Get the subject, with all replacements done
-     *
-     * @return string
      */
     public function getSubject(): string
     {
@@ -527,8 +511,6 @@ class Texts
 
     /**
      * Get the body, with all replacements done
-     *
-     * @return string
      */
     public function getBody(): string
     {
@@ -539,8 +521,6 @@ class Texts
      * Insert values in database
      *
      * @param array<int, mixed> $values Values to insert
-     *
-     * @return void
      */
     private function insert(array $values): void
     {
@@ -643,8 +623,6 @@ class Texts
      * Set replacements
      *
      * @param array<string,?mixed> $replaces Replacements to add
-     *
-     * @return void
      */
     public function setReplacements(array $replaces): void
     {
@@ -661,8 +639,6 @@ class Texts
      * Set current text reference
      *
      * @param string $ref Reference
-     *
-     * @return self
      */
     public function setCurrent(string $ref): self
     {

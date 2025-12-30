@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace GaletteTests\Entity;
 
-use PHPUnit\Framework\TestCase;
 use Galette\GaletteTestCase;
 use Laminas\Db\Adapter\Adapter;
 
@@ -36,8 +35,6 @@ class Texts extends GaletteTestCase
 {
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {

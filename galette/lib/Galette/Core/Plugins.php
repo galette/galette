@@ -71,8 +71,6 @@ class Plugins
      *
      * @param string $path could be a separated list of paths
      *                     (path separator depends on your OS).
-     *
-     * @return void
      */
     public function autoload(string $path): void
     {
@@ -83,8 +81,6 @@ class Plugins
 
     /**
      * Parse modules in current path
-     *
-     * @return void
      */
     protected function parseModules(): void
     {
@@ -153,8 +149,6 @@ class Plugins
      *                                 (path separator depends on your OS).
      * @param ?string     $lang        Indicates if we need to load a lang file on plugin
      *                                 loading.
-     *
-     * @return void
      */
     public function loadModules(Preferences $preferences, string $path, ?string $lang = null): void
     {
@@ -196,8 +190,6 @@ class Plugins
      * @param ?string               $date     Module release date
      * @param ?array<string,string> $acls     Module routes ACLs
      * @param ?int                  $priority Module priority
-     *
-     * @return void
      */
     public function register(
         string $name,
@@ -244,8 +236,6 @@ class Plugins
 
     /**
      * Reset modules list
-     *
-     * @return void
      */
     public function resetModulesList(): void
     {
@@ -257,7 +247,6 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return void
      * @throws Exception
      */
     public function deactivateModule(string $id): void
@@ -278,7 +267,6 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return void
      * @throws Exception
      */
     protected function createDisabledFile(string $id): void
@@ -295,7 +283,6 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return void
      * @throws Exception
      */
     protected function removeDisabledFile(string $id): void
@@ -324,7 +311,6 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return void
      * @throws Exception
      */
     public function activateModule(string $id): void
@@ -347,8 +333,6 @@ class Plugins
      *
      * @param string $id       Module ID
      * @param string $language Language code
-     *
-     * @return void
      */
     public function loadModuleL10N(string $id, string $language): void
     {
@@ -382,8 +366,6 @@ class Plugins
      * Loads event provider
      *
      * @param string $id Module ID
-     *
-     * @return void
      */
     public function loadEventProviders(string $id): void
     {
@@ -416,8 +398,6 @@ class Plugins
      * Returns true if the module with ID <var>$id</var> exists.
      *
      * @param string $id Module ID
-     *
-     * @return bool
      */
     public function moduleExists(string $id): bool
     {
@@ -438,8 +418,6 @@ class Plugins
      * Returns root path for module with ID <var>$id</var>.
      *
      * @param string $id Module ID
-     *
-     * @return ?string
      */
     public function moduleRoot(string $id): ?string
     {
@@ -552,8 +530,6 @@ class Plugins
      * Does module need a database?
      *
      * @param string $id Module's ID
-     *
-     * @return bool
      */
     public function needsDatabase(string $id): bool
     {
@@ -569,8 +545,6 @@ class Plugins
      * Override preferences from plugin
      *
      * @param string $id Module ID
-     *
-     * @return void
      */
     public function overridePrefs(string $id): void
     {
@@ -608,8 +582,6 @@ class Plugins
      *
      * @param string $id   Module id
      * @param string $path File path
-     *
-     * @return string
      */
     public function getFile(string $id, string $path): string
     {
@@ -629,8 +601,6 @@ class Plugins
      * Set a module as disabled
      *
      * @param int $cause Cause (one of Plugins::DISABLED_* constants)
-     *
-     * @return void
      */
     private function setDisabled(int $cause): void
     {
@@ -646,8 +616,6 @@ class Plugins
      * Get module namespace
      *
      * @param string $id Module ID
-     *
-     * @return string
      */
     public function getNamespace(string $id): string
     {
@@ -659,8 +627,6 @@ class Plugins
      *
      * @param string $id   Module ID
      * @param bool   $full Include namespace, defaults to false
-     *
-     * @return string
      */
     public function getClassName(string $id, bool $full = false): string
     {
@@ -675,8 +641,6 @@ class Plugins
      * Set CRSF excluded routes for one plugin
      *
      * @param array<string> $exclusions Array of regular expressions patterns to be excluded
-     *
-     * @return self
      */
     public function setCsrfExclusions(array $exclusions): self
     {
@@ -696,8 +660,6 @@ class Plugins
 
     /**
      * Is the current module explicitly disabled?
-     *
-     * @return bool
      */
     public function isExplicitlyDisabled(): bool
     {
@@ -736,8 +698,6 @@ class Plugins
      * Get path for disabled file
      *
      * @param string $id Module ID
-     *
-     * @return string
      */
     public function getDisabledPath(string $id): string
     {
@@ -752,8 +712,6 @@ class Plugins
      * Set translator
      *
      * @param Translator $translator Translator instance
-     *
-     * @return self
      */
     public function setTranslator(Translator $translator): self
     {
@@ -765,8 +723,6 @@ class Plugins
      * Set event dispatcher
      *
      * @param EventDispatcher $dispatcher Event dispatcher instance
-     *
-     * @return self
      */
     public function setEventDispatcher(EventDispatcher $dispatcher): self
     {

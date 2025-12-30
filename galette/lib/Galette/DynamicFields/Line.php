@@ -51,8 +51,6 @@ class Line extends DynamicField
 
     /**
      * Get field type
-     *
-     * @return int
      */
     public function getType(): int
     {

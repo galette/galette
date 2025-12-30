@@ -40,8 +40,6 @@ class PaymentType extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -59,8 +57,6 @@ class PaymentType extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -72,8 +68,6 @@ class PaymentType extends TestCase
 
     /**
      * Delete payment type
-     *
-     * @return void
      */
     private function deletePaymentType(): void
     {
@@ -92,8 +86,6 @@ class PaymentType extends TestCase
 
     /**
      * Test payment type
-     *
-     * @return void
      */
     public function testPaymentType(): void
     {

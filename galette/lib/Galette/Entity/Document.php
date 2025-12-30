@@ -91,8 +91,6 @@ class Document
      * Load a document from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return void
      */
     private function load(int $id): void
     {
@@ -201,8 +199,6 @@ class Document
      * Check if a document can be shown
      *
      * @param Login $login Login
-     *
-     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -222,8 +218,6 @@ class Document
      * Load document from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -240,8 +234,6 @@ class Document
      *
      * @param array<string,mixed>          $post  POST data
      * @param array<UploadedFileInterface> $files Uploaded files
-     *
-     * @return bool
      */
     public function store(array $post, array $files): bool
     {
@@ -296,8 +288,6 @@ class Document
      * Remove document
      *
      * @param array<int>|null $ids IDs to remove, default to current id
-     *
-     * @return bool
      */
     public function remove(?array $ids = null): bool
     {
@@ -332,8 +322,6 @@ class Document
 
     /**
      * Remove document file
-     *
-     * @return bool
      */
     protected function removeFile(): bool
     {
@@ -348,8 +336,6 @@ class Document
 
     /**
      * Get file URL
-     *
-     * @return string
      */
     public function getURL(): string
     {
@@ -358,8 +344,6 @@ class Document
 
     /**
      * Get document ID
-     *
-     * @return ?int
      */
     public function getId(): ?int
     {
@@ -368,8 +352,6 @@ class Document
 
     /**
      * Get document file name
-     *
-     * @return string
      */
     public function getDocumentFilename(): string
     {
@@ -379,8 +361,6 @@ class Document
     /**
      * Set comment
      * @param ?string $comment Comment to set
-     *
-     * @return self
      */
     public function setComment(?string $comment): self
     {
@@ -390,8 +370,6 @@ class Document
 
     /**
      * Get comment
-     *
-     * @return ?string
      */
     public function getComment(): ?string
     {
@@ -402,8 +380,6 @@ class Document
      * Set type
      *
      * @param string $type Type
-     *
-     * @return self
      */
     public function setType(string $type): self
     {
@@ -413,8 +389,6 @@ class Document
 
     /**
      * Get type
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -425,8 +399,6 @@ class Document
      * Get creation date
      *
      * @param bool $formatted Return formatted date (default) or not
-     *
-     * @return string|DateTime
      */
     public function getCreationDate(bool $formatted = true): string|DateTime
     {
@@ -470,8 +442,6 @@ class Document
      *
      * @param string $type       Document type
      * @param bool   $translated Return translated types (default) or not
-     *
-     * @return string
      */
     public function getSystemType(string $type, bool $translated = true): string
     {

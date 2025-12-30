@@ -38,8 +38,6 @@ class I18n extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -52,8 +50,6 @@ class I18n extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -64,8 +60,6 @@ class I18n extends TestCase
 
     /**
      * Test lang autodetect
-     *
-     * @return void
      */
     public function testAutoLang(): void
     {
@@ -94,8 +88,6 @@ class I18n extends TestCase
 
     /**
      * Test languages list
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -110,8 +102,6 @@ class I18n extends TestCase
 
     /**
      * Test languages list as array
-     *
-     * @return void
      */
     public function testGetArrayList(): void
     {
@@ -122,8 +112,6 @@ class I18n extends TestCase
 
     /**
      * Test getting language name from its ID
-     *
-     * @return void
      */
     public function testGetNameFromid(): void
     {
@@ -136,8 +124,6 @@ class I18n extends TestCase
 
     /**
      * Test retrieving language information
-     *
-     * @return void
      */
     public function testGetLangInfos(): void
     {
@@ -165,8 +151,6 @@ class I18n extends TestCase
 
     /**
      * Change to an unknown language
-     *
-     * @return void
      */
     public function testChangeUnknownLanguage(): void
     {
@@ -178,8 +162,6 @@ class I18n extends TestCase
 
     /**
      * Check (non) UTF strings
-     *
-     * @return void
      */
     public function testSeemUtf8(): void
     {
@@ -192,8 +174,6 @@ class I18n extends TestCase
 
     /**
      * Test getting online documentation base URL
-     *
-     * @return void
      */
     public function testGetDocumentationBaseUrl(): void
     {

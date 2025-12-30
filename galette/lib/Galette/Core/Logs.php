@@ -38,8 +38,6 @@ class Logs
 {
     /**
      * Clean old logs (older than one month per default)
-     *
-     * @return void
      */
     public static function cleanup(): void
     {

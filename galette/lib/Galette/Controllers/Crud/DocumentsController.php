@@ -54,8 +54,6 @@ class DocumentsController extends CrudController
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
      * @param ?string  $form_name Form name
-     *
-     * @return Response
      */
     public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
@@ -91,8 +89,6 @@ class DocumentsController extends CrudController
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
      * @param ?string  $form_name Form name
-     *
-     * @return Response
      */
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
@@ -110,8 +106,6 @@ class DocumentsController extends CrudController
      * @param Response        $response PSR Response
      * @param string|null     $option   One of 'page' or 'order'
      * @param int|string|null $value    Value of the option
-     *
-     * @return Response
      */
     public function list(
         Request $request,
@@ -151,8 +145,6 @@ class DocumentsController extends CrudController
      * @param Response        $response PSR Response
      * @param string|null     $option   One of 'page' or 'order'
      * @param int|string|null $value    Value of the option
-     *
-     * @return Response
      */
     public function publicList(
         Request $request,
@@ -183,8 +175,6 @@ class DocumentsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -198,8 +188,6 @@ class DocumentsController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Document ID
-     *
-     * @return Response
      */
     public function getDocument(
         Request $request,
@@ -265,8 +253,6 @@ class DocumentsController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Document id
-     *
-     * @return Response
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -302,8 +288,6 @@ class DocumentsController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Document id
-     *
-     * @return Response
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -317,8 +301,6 @@ class DocumentsController extends CrudController
      * @param Request  $request  PSR request
      * @param Response $response PSR response
      * @param Document $document Document to work on
-     *
-     * @return Response
      */
     private function store(Request $request, Response $response, Document $document): Response
     {
@@ -376,8 +358,6 @@ class DocumentsController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -388,8 +368,6 @@ class DocumentsController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -403,8 +381,6 @@ class DocumentsController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -416,8 +392,6 @@ class DocumentsController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

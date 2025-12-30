@@ -49,8 +49,6 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param ?string  $r        Redirect after login
-     *
-     * @return Response
      */
     public function login(Request $request, Response $response, ?string $r = null): Response
     {
@@ -83,8 +81,6 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function doLogin(Request $request, Response $response): Response
     {
@@ -205,8 +201,6 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function logout(Request $request, Response $response): Response
     {
@@ -224,8 +218,6 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Member to impersonate
-     *
-     * @return Response
      */
     public function impersonate(Request $request, Response $response, int $id): Response
     {
@@ -267,8 +259,6 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function unimpersonate(Request $request, Response $response): Response
     {
@@ -291,8 +281,6 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function lostPassword(Request $request, Response $response): Response
     {
@@ -316,8 +304,6 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param ?int     $id_adh   Member id
-     *
-     * @return Response
      */
     public function retrievePassword(Request $request, Response $response, ?int $id_adh = null): Response
     {
@@ -478,8 +464,6 @@ class AuthController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $hash     Hash
-     *
-     * @return Response
      */
     public function recoverPassword(Request $request, Response $response, string $hash): Response
     {
@@ -514,8 +498,6 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function doRecoverPassword(Request $request, Response $response): Response
     {

@@ -48,8 +48,6 @@ trait Dependencies
      * Set dependencies
      *
      * @param array<string, bool> $deps Dependencies to set
-     *
-     * @return self
      */
     public function setDeps(array $deps): self
     {
@@ -62,8 +60,6 @@ trait Dependencies
 
     /**
      * Reset dependencies to load
-     *
-     * @return self
      */
     public function disableAllDeps(): self
     {
@@ -76,8 +72,6 @@ trait Dependencies
 
     /**
      * Enable all dependencies to load
-     *
-     * @return self
      */
     public function enableAllDeps(): self
     {
@@ -91,8 +85,6 @@ trait Dependencies
      * Enable a load dependency
      *
      * @param string $name Dependency name
-     *
-     * @return self
      */
     public function enableDep(string $name): self
     {
@@ -112,8 +104,6 @@ trait Dependencies
      * Enable a load dependency
      *
      * @param string $name Dependency name
-     *
-     * @return self
      */
     public function disableDep(string $name): self
     {
@@ -133,8 +123,6 @@ trait Dependencies
      * Is load dependency enabled?
      *
      * @param string $name Dependency name
-     *
-     * @return bool
      */
     protected function isDepEnabled(string $name): bool
     {

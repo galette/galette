@@ -84,8 +84,6 @@ class ListsConfig extends FieldsConfig
     /**
      * Create field array configuration
      * Several lists of fields are kept (visible, required, etc), build them.
-     *
-     * @return void
      */
     protected function buildLists(): void
     {
@@ -109,8 +107,6 @@ class ListsConfig extends FieldsConfig
      * Adds a field to lists
      *
      * @param array<string,mixed> $field Field values
-     *
-     * @return void
      */
     protected function addToLists(array $field): void
     {
@@ -182,8 +178,6 @@ class ListsConfig extends FieldsConfig
      * Handle list labels
      *
      * @param object $field Field data
-     *
-     * @return void
      */
     private function handleLabel(object $field): void
     {
@@ -247,8 +241,6 @@ class ListsConfig extends FieldsConfig
      * Set fields
      *
      * @param array<int,array<string,mixed>> $fields categorized fields array
-     *
-     * @return bool
      */
     public function setListFields(array $fields): bool
     {
@@ -258,8 +250,6 @@ class ListsConfig extends FieldsConfig
 
     /**
      * Store list config in database
-     *
-     * @return bool
      */
     private function storeList(): bool
     {
@@ -345,8 +335,6 @@ class ListsConfig extends FieldsConfig
      * Get visibility for specified field
      *
      * @param string $field The requested field
-     *
-     * @return int
      */
     public function getVisibility(string $field): int
     {

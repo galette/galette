@@ -50,8 +50,6 @@ class Text extends DynamicField
 
     /**
      * Get field type
-     *
-     * @return int
      */
     public function getType(): int
     {
@@ -62,8 +60,6 @@ class Text extends DynamicField
      * Get value to display for a field
      *
      * @param mixed $value Raw value to get displayed
-     *
-     * @return string
      */
     public function getDisplayValue(mixed $value): string
     {

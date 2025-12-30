@@ -38,8 +38,6 @@ class Login extends GaletteTestCase
 
     /**
      * Cleanup after tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -53,8 +51,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test defaults
-     *
-     * @return void
      */
     public function testDefaults(): void
     {
@@ -71,8 +67,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test not logged-in users Impersonating
-     *
-     * @return void
      */
     public function testNotLoggedCantImpersonate(): void
     {
@@ -88,8 +82,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test staff users Impersonating
-     *
-     * @return void
      */
     public function testStaffCantImpersonate(): void
     {
@@ -109,8 +101,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test admin users Impersonating
-     *
-     * @return void
      */
     public function testAdminCantImpersonate(): void
     {
@@ -130,8 +120,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test Impersonating that throws an exception
-     *
-     * @return void
      */
     public function testImpersonateExistsWException(): void
     {
@@ -160,8 +148,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test superadmin users Impersonating
-     *
-     * @return void
      */
     public function testSuperadminCanImpersonate(): void
     {
@@ -179,8 +165,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test return requesting a non-existing property
-     *
-     * @return void
      */
     public function testInexistingGetter(): void
     {
@@ -191,8 +175,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test login exists
-     *
-     * @return void
      */
     public function testLoginExists(): void
     {
@@ -202,8 +184,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test login exists that throws an exception
-     *
-     * @return void
      */
     public function testLoginExistsWException(): void
     {
@@ -227,8 +207,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test login as super admin
-     *
-     * @return void
      */
     public function testLogAdmin(): void
     {
@@ -250,8 +228,6 @@ class Login extends GaletteTestCase
 
     /**
      * Creates or load test user
-     *
-     * @return void
      */
     private function createUser(): void
     {
@@ -320,8 +296,6 @@ class Login extends GaletteTestCase
 
     /**
      * Look for a login that does exist
-     *
-     * @return void
      */
     public function testLoginExistsDb(): void
     {
@@ -331,8 +305,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test user login
-     *
-     * @return void
      */
     public function testLogin(): void
     {
@@ -344,8 +316,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test logged user name
-     *
-     * @return void
      */
     public function testLoggedInAs(): void
     {
@@ -354,7 +324,7 @@ class Login extends GaletteTestCase
         $this->createUser();
         $this->assertTrue($this->login->login($this->login_adh, $this->mdp_adh));
 
-        /** Should get message in the right locale but doesn't... */
+        /* Should get message in the right locale but doesn't... */
         $this->i18n->changeLanguage('en_US');
         $tstring = $translator->translate(
             "Logged in as:<br/>%login",
@@ -374,8 +344,6 @@ class Login extends GaletteTestCase
 
     /**
      * Test login from cron
-     *
-     * @return void
      */
     public function testLogCron(): void
     {

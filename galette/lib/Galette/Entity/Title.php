@@ -33,11 +33,11 @@ use Analog\Analog;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
- * @property string $short
- * @property ?string $long
- * @property-read string $tshort
- * @property-read string $tlong
+ * @property      int     $id
+ * @property      string  $short
+ * @property      ?string $long
+ * @property-read string  $tshort
+ * @property-read string  $tlong
  */
 
 class Title
@@ -71,8 +71,6 @@ class Title
      * Load a title from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return void
      */
     private function load(int $id): void
     {
@@ -101,8 +99,6 @@ class Title
      * Load title from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -121,8 +117,6 @@ class Title
      * Store title in database
      *
      * @param Db $zdb Database instance
-     *
-     * @return bool
      */
     public function store(Db $zdb): bool
     {
@@ -161,8 +155,6 @@ class Title
      * Remove current title
      *
      * @param Db $zdb Database instance
-     *
-     * @return bool
      */
     public function remove(Db $zdb): bool
     {
@@ -196,8 +188,6 @@ class Title
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -247,8 +237,6 @@ class Title
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -263,8 +251,6 @@ class Title
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

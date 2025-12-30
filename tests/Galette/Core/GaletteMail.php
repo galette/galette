@@ -65,8 +65,6 @@ class GaletteMail extends GaletteTestCase
      *
      * @param string $url      URL to test
      * @param bool   $expected Expected result
-     *
-     * @return void
      */
     #[DataProvider('urlProvider')]
     public function testIsURL(string $url, bool $expected): void
@@ -110,8 +108,6 @@ class GaletteMail extends GaletteTestCase
      *
      * @param string $email    Email to test
      * @param bool   $expected Expected result
-     *
-     * @return void
      */
     #[DataProvider('emailProvider')]
     public function testIsValidEmail(string $email, bool $expected): void
@@ -121,8 +117,6 @@ class GaletteMail extends GaletteTestCase
 
     /**
      * Test setRecipients
-     *
-     * @return void
      */
     public function testSetRecipients(): void
     {
@@ -139,8 +133,6 @@ class GaletteMail extends GaletteTestCase
 
     /**
      * Test sender information getters
-     *
-     * @return void
      */
     public function testGetSender(): void
     {
@@ -151,8 +143,6 @@ class GaletteMail extends GaletteTestCase
 
     /**
      * Test subject setter and getter
-     *
-     * @return void
      */
     public function testSubject(): void
     {
@@ -164,8 +154,6 @@ class GaletteMail extends GaletteTestCase
 
     /**
      * Test mail body
-     *
-     * @return void
      */
     public function testMessage(): void
     {
@@ -188,8 +176,6 @@ class GaletteMail extends GaletteTestCase
 
     /**
      * Test isHtml
-     *
-     * @return void
      */
     public function testIsHtml(): void
     {
@@ -203,8 +189,6 @@ class GaletteMail extends GaletteTestCase
 
     /**
      * Test various getters and setters
-     *
-     * @return void
      */
     public function testGettersSetters(): void
     {

@@ -49,8 +49,6 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
 
     /**
      * Initialize PDF
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -97,8 +95,6 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
      * Draw members cards
      *
      * @param array<Adherent> $members Members
-     *
-     * @return void
      */
     public function drawCards(array $members): void
     {
@@ -391,8 +387,6 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
 
     /**
      * Get card width
-     *
-     * @return int
      */
     public static function getWidth(): int
     {
@@ -403,8 +397,6 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
 
     /**
      * Get card height
-     *
-     * @return int
      */
     public static function getHeight(): int
     {
@@ -415,8 +407,6 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
 
     /**
      * Get number of columns
-     *
-     * @return int
      */
     public static function getCols(): int
     {
@@ -438,8 +428,6 @@ class PdfMembersCardsAdaptative extends PdfMembersCards
 
     /**
      * Get number of rows
-     *
-     * @return int
      */
     public static function getRows(): int
     {

@@ -36,8 +36,6 @@ class HasEvent extends GaletteTestCase
 
     /**
      * Test HasEvent capacities
-     *
-     * @return void
      */
     public function testCapacities(): void
     {

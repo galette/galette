@@ -61,8 +61,6 @@ class MakeTwigCache extends AbstractCommand
 {
     /**
      * Configure command
-     *
-     * @return void
      */
     protected function configure(): void
     {
@@ -73,11 +71,6 @@ class MakeTwigCache extends AbstractCommand
 
     /**
      * Command execution
-     *
-     * @param InputInterface  $input  Input interface
-     * @param OutputInterface $output Output interface
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -144,8 +137,6 @@ class MakeTwigCache extends AbstractCommand
      * Remove a directory and its content recursively.
      *
      * @param string $path Path to remove
-     *
-     * @return bool
      */
     private function rmdirRecursive(string $path): bool
     {
@@ -211,8 +202,6 @@ class MakeTwigCache extends AbstractCommand
      * Return a mocked Twig environment, with custom functions, filters and tests.
      *
      * @param LoaderInterface $loader Twig loader
-     *
-     * @return Environment
      */
     private function getMockedTwigEnvironment(LoaderInterface $loader): Environment
     {
@@ -221,8 +210,6 @@ class MakeTwigCache extends AbstractCommand
              * Custom functions
              *
              * @param string $name Function name
-             *
-             * @return TwigFunction
              */
             public function getFunction(string $name): TwigFunction
             {
@@ -247,8 +234,6 @@ class MakeTwigCache extends AbstractCommand
              * Custom filters
              *
              * @param string $name Filter name
-             *
-             * @return TwigFilter
              */
             public function getFilter(string $name): TwigFilter
             {
@@ -260,8 +245,6 @@ class MakeTwigCache extends AbstractCommand
              * Custom tests
              *
              * @param string $name Test name
-             *
-             * @return ?TwigTest
              */
             public function getTest(string $name): ?TwigTest
             {
@@ -282,8 +265,6 @@ class MakeTwigCache extends AbstractCommand
      * This handler is useful to be able to preserve filenames of compiled files.
      *
      * @param string $directory Directory to store cache
-     *
-     * @return CacheInterface
      */
     private function getTwigCacheHandler(string $directory): CacheInterface
     {
@@ -307,8 +288,6 @@ class MakeTwigCache extends AbstractCommand
              *
              * @param string $name      The template name
              * @param string $className The template class name
-             *
-             * @return string
              */
             public function generateKey(string $name, string $className): string
             {

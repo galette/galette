@@ -39,12 +39,12 @@ use function Safe\json_encode;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
- * @property string $name
+ * @property int                  $id
+ * @property string               $name
  * @property array<string, mixed> $parameters
- * @property int $author_id
- * @property string $creation_date
- * @property string $form
+ * @property int                  $author_id
+ * @property string               $creation_date
+ * @property string               $form
  */
 
 class SavedSearch
@@ -88,8 +88,6 @@ class SavedSearch
      * Load a saved search from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return void
      */
     private function load(int $id): void
     {
@@ -121,8 +119,6 @@ class SavedSearch
      * Load a saved search from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -150,8 +146,6 @@ class SavedSearch
      * Check and set values
      *
      * @param array<string, mixed> $values Values to set
-     *
-     * @return bool
      */
     public function check(array $values): bool
     {
@@ -185,8 +179,6 @@ class SavedSearch
 
     /**
      * Store saved search in database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -221,8 +213,6 @@ class SavedSearch
 
     /**
      * Remove current saved search
-     *
-     * @return bool
      */
     public function remove(): bool
     {
@@ -252,8 +242,6 @@ class SavedSearch
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -315,8 +303,6 @@ class SavedSearch
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -340,8 +326,6 @@ class SavedSearch
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

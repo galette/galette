@@ -52,8 +52,6 @@ class Galette
      * Retrieve Galette version from git, if present.
      *
      * @param bool $time Include time and timezone. Defaults to false.
-     *
-     * @return string
      */
     public static function gitVersion(bool $time = false): string
     {
@@ -1188,8 +1186,6 @@ class Galette
 
     /**
      * Is demonstration mode enabled
-     *
-     * @return bool
      */
     public static function isDemo(): bool
     {
@@ -1198,8 +1194,6 @@ class Galette
 
     /**
      * Is debug mode enabled
-     *
-     * @return bool
      */
     public static function isDebugEnabled(): bool
     {
@@ -1217,8 +1211,6 @@ class Galette
 
     /**
      * Is SQL debug mode enabled
-     *
-     * @return bool
      */
     public static function isSqlDebugEnabled(): bool
     {
@@ -1227,8 +1219,6 @@ class Galette
 
     /**
      * Is a nightly build
-     *
-     * @return bool
      */
     public static function isNightly(): bool
     {
@@ -1239,8 +1229,6 @@ class Galette
      * Check if a string is serialized
      *
      * @param string $string String to check
-     *
-     * @return bool
      */
     public static function isSerialized(string $string): bool
     {
@@ -1270,7 +1258,6 @@ class Galette
      *
      * @param array<string|int, mixed>|object $data Data to encode
      *
-     * @return string
      * @throws RuntimeException
      */
     public static function jsonEncode(array|object $data): string

@@ -40,8 +40,6 @@ class Install extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -67,8 +65,6 @@ class Install extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -79,8 +75,6 @@ class Install extends TestCase
 
     /**
      * Test if current database version is supported
-     *
-     * @return void
      */
     public function testDbSupport(): void
     {
@@ -89,8 +83,6 @@ class Install extends TestCase
 
     /**
      * Test if current database version is supported
-     *
-     * @return void
      */
     public function testGetUnsupportedMessage(): void
     {

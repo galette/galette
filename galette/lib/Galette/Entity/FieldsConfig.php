@@ -144,8 +144,6 @@ class FieldsConfig
 
     /**
      * Load current fields configuration from database.
-     *
-     * @return bool
      */
     public function load(): bool
     {
@@ -217,8 +215,6 @@ class FieldsConfig
     /**
      * Create field array configuration,
      * Several lists of fields are kept (visible, requireds, etc), build them.
-     *
-     * @return void
      */
     protected function buildLists(): void
     {
@@ -235,8 +231,6 @@ class FieldsConfig
      * Adds a field to lists
      *
      * @param array<string,mixed> $field Field values
-     *
-     * @return void
      */
     protected function addToLists(array $field): void
     {
@@ -257,8 +251,6 @@ class FieldsConfig
      * Is a field set as required?
      *
      * @param string $field Field name
-     *
-     * @return bool
      */
     public function isRequired(string $field): bool
     {
@@ -270,8 +262,6 @@ class FieldsConfig
      * (password for existing members for example)
      *
      * @param string $field Field name
-     *
-     * @return void
      */
     public function setNotRequired(string $field): void
     {
@@ -293,8 +283,6 @@ class FieldsConfig
      * Checks if all fields are present in the database.
      *
      * For now, this function only checks if count matches.
-     *
-     * @return void
      */
     private function checkUpdate(): void
     {
@@ -371,7 +359,6 @@ class FieldsConfig
      * Set default fields configuration at install time. All previous
      * existing values will be dropped first, including fields categories.
      *
-     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -713,8 +700,6 @@ class FieldsConfig
      * Get visibility for specified field
      *
      * @param string $field The requested field
-     *
-     * @return int
      */
     public function getVisibility(string $field): int
     {
@@ -735,8 +720,6 @@ class FieldsConfig
      * Set fields
      *
      * @param array<int, array<int, array<string, mixed>>> $fields categorized fields array
-     *
-     * @return bool
      */
     public function setFields(array $fields): bool
     {
@@ -746,8 +729,6 @@ class FieldsConfig
 
     /**
      * Store config in database
-     *
-     * @return bool
      */
     private function store(): bool
     {
@@ -828,8 +809,6 @@ class FieldsConfig
      * Migrate old required fields configuration
      * Only needed for 0.7.4 upgrade
      * (should have been 0.7.3 - but I missed that.)
-     *
-     * @return bool
      */
     public function migrateRequired(): bool
     {
@@ -907,8 +886,6 @@ class FieldsConfig
      * Insert values in database
      *
      * @param array<int,mixed> $values Values to insert
-     *
-     * @return void
      */
     private function insert(array $values): void
     {
@@ -958,8 +935,6 @@ class FieldsConfig
      * Does field should be displayed in self subscription page
      *
      * @param string $name Field name
-     *
-     * @return bool
      */
     public function isSelfExcluded(string $name): bool
     {
@@ -977,8 +952,6 @@ class FieldsConfig
      *
      * @param Login               $login  Login instance
      * @param array<string,mixed> $fields Fields list
-     *
-     * @return void
      */
     public function filterVisible(Login $login, array &$fields): void
     {

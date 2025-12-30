@@ -48,8 +48,6 @@ class TransactionsController extends ContributionsController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param ?string  $type     Contribution type
-     *
-     * @return Response
      */
     public function add(Request $request, Response $response, ?string $type = null): Response
     {
@@ -62,8 +60,6 @@ class TransactionsController extends ContributionsController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param ?string  $type     Contribution type
-     *
-     * @return Response
      */
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
@@ -99,8 +95,6 @@ class TransactionsController extends ContributionsController
      * @param Response $response PSR Response
      * @param ?int     $id       Transaction id
      * @param ?string  $action   Action
-     *
-     * @return Response
      */
     public function edit(Request $request, Response $response, ?int $id = null, ?string $action = 'edit'): Response
     {
@@ -219,8 +213,6 @@ class TransactionsController extends ContributionsController
      * @param Response $response PSR Response
      * @param int      $id       Transaction id
      * @param ?string  $type     Transaction type
-     *
-     * @return Response
      */
     public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
@@ -268,8 +260,6 @@ class TransactionsController extends ContributionsController
      * @param string      $action   Action ('edit' or 'add')
      * @param Transaction $trans    Transaction instance
      * @param ?int        $id       Contribution id
-     *
-     * @return Response
      */
     public function storeTransaction(Request $request, Response $response, string $action, Transaction $trans, ?int $id = null): Response
     {
@@ -366,8 +356,6 @@ class TransactionsController extends ContributionsController
      * @param Response $response PSR Response
      * @param int      $id       Transaction id
      * @param int      $cid      Contribution id
-     *
-     * @return Response
      */
     public function attach(Request $request, Response $response, int $id, int $cid): Response
     {
@@ -411,8 +399,6 @@ class TransactionsController extends ContributionsController
      * @param Response $response PSR Response
      * @param int      $id       Transaction id
      * @param int      $cid      Contribution id
-     *
-     * @return Response
      */
     public function detach(Request $request, Response $response, int $id, int $cid): Response
     {

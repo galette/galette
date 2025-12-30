@@ -120,8 +120,6 @@ abstract class DynamicField
      *
      * @param Db  $zdb Database instance
      * @param int $id  Field id
-     *
-     * @return DynamicField|false
      */
     public static function loadFieldType(Db $zdb, int $id): DynamicField|false
     {
@@ -155,8 +153,6 @@ abstract class DynamicField
      * @param Db       $zdb Database instance
      * @param int      $t   Field type
      * @param int|null $id  Optional dynamic field id (to load data)
-     *
-     * @return DynamicField
      */
     public static function getFieldType(Db $zdb, int $t, ?int $id = null): DynamicField
     {
@@ -176,8 +172,6 @@ abstract class DynamicField
      * Load field
      *
      * @param int $id Id
-     *
-     * @return void
      */
     public function load(int $id): void
     {
@@ -206,8 +200,6 @@ abstract class DynamicField
      *
      * @param ArrayObject<string, int|string> $rs     ResultSet
      * @param bool                            $values Whether to load values. Defaults to true
-     *
-     * @return void
      */
     public function loadFromRS(ArrayObject $rs, bool $values = true): void
     {
@@ -245,8 +237,6 @@ abstract class DynamicField
      *
      * @param int  $id       Field ID
      * @param bool $prefixed Whether table name should be prefixed
-     *
-     * @return string
      */
     public static function getFixedValuesTableName(int $id, bool $prefixed = false): string
     {
@@ -259,8 +249,6 @@ abstract class DynamicField
 
     /**
      * Returns an array of fixed valued for a field of type 'choice'.
-     *
-     * @return void
      */
     private function loadFixedValues(): void
     {
@@ -292,15 +280,11 @@ abstract class DynamicField
 
     /**
      * Get field type
-     *
-     * @return int
      */
     abstract public function getType(): int;
 
     /**
      * Get field type name
-     *
-     * @return String
      */
     public function getTypeName(): string
     {
@@ -316,8 +300,6 @@ abstract class DynamicField
 
     /**
      * Does the field handle data?
-     *
-     * @return bool
      */
     public function hasData(): bool
     {
@@ -326,8 +308,6 @@ abstract class DynamicField
 
     /**
      * Does the field has width?
-     *
-     * @return bool
      */
     public function hasWidth(): bool
     {
@@ -336,8 +316,6 @@ abstract class DynamicField
 
     /**
      * Does the field has height?
-     *
-     * @return bool
      */
     public function hasHeight(): bool
     {
@@ -346,8 +324,6 @@ abstract class DynamicField
 
     /**
      * Does the field has min size?
-     *
-     * @return bool
      */
     public function hasMinSize(): bool
     {
@@ -356,8 +332,6 @@ abstract class DynamicField
 
     /**
      * Does the field has a size?
-     *
-     * @return bool
      */
     public function hasSize(): bool
     {
@@ -366,8 +340,6 @@ abstract class DynamicField
 
     /**
      * Is the field multivalued?
-     *
-     * @return bool
      */
     public function isMultiValued(): bool
     {
@@ -376,8 +348,6 @@ abstract class DynamicField
 
     /**
      * Does the field has fixed values?
-     *
-     * @return bool
      */
     public function hasFixedValues(): bool
     {
@@ -386,8 +356,6 @@ abstract class DynamicField
 
     /**
      * Does the field require permissions?
-     *
-     * @return bool
      */
     public function hasPermissions(): bool
     {
@@ -396,8 +364,6 @@ abstract class DynamicField
 
     /**
      * Get field id
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -406,8 +372,6 @@ abstract class DynamicField
 
     /**
      * Is field required?
-     *
-     * @return bool
      */
     public function isRequired(): bool
     {
@@ -416,8 +380,6 @@ abstract class DynamicField
 
     /**
      * Get field's width in forms
-     *
-     * @return int|null
      */
     public function getWidthInForms(): ?int
     {
@@ -426,8 +388,6 @@ abstract class DynamicField
 
     /**
      * Get field width
-     *
-     * @return int|null
      */
     public function getWidth(): ?int
     {
@@ -436,8 +396,6 @@ abstract class DynamicField
 
     /**
      * Get field height
-     *
-     * @return int|null
      */
     public function getHeight(): ?int
     {
@@ -446,8 +404,6 @@ abstract class DynamicField
 
     /**
      * Is current field repeatable?
-     *
-     * @return bool
      */
     public function isRepeatable(): bool
     {
@@ -456,8 +412,6 @@ abstract class DynamicField
 
     /**
      * Get fields repetitions
-     *
-     * @return int|null
      */
     public function getRepeat(): ?int
     {
@@ -466,8 +420,6 @@ abstract class DynamicField
 
     /**
      * Get field min size
-     *
-     * @return int|null
      */
     public function getMinSize(): ?int
     {
@@ -476,8 +428,6 @@ abstract class DynamicField
 
     /**
      * Get field size
-     *
-     * @return int|null
      */
     public function getSize(): ?int
     {
@@ -486,8 +436,6 @@ abstract class DynamicField
 
     /**
      * Get field index
-     *
-     * @return int|null
      */
     public function getIndex(): ?int
     {
@@ -496,8 +444,6 @@ abstract class DynamicField
 
     /**
      * Get field information
-     *
-     * @return string
      */
     public function getInformation(): string
     {
@@ -506,8 +452,6 @@ abstract class DynamicField
 
     /**
      * Does the field information have to be displayed above input?
-     *
-     * @return bool
      */
     public function hasInformationAbove(): bool
     {
@@ -533,8 +477,6 @@ abstract class DynamicField
      * Retrieve form name
      *
      * @param string $form_name Form name
-     *
-     * @return string
      */
     public static function getFormTitle(string $form_name): string
     {
@@ -544,8 +486,6 @@ abstract class DynamicField
 
     /**
      * Get form
-     *
-     * @return string
      */
     public function getForm(): string
     {
@@ -576,8 +516,6 @@ abstract class DynamicField
      *
      * @param array<string,mixed> $values All values to check, basically the $_POST array
      *                                    after sending the form
-     *
-     * @return bool
      */
     public function check(array $values): bool
     {
@@ -714,8 +652,6 @@ abstract class DynamicField
      *
      * @param array<string,mixed> $values All values to check, basically the $_POST array
      *                                    after sending the form
-     *
-     * @return bool
      */
     public function store(array $values): bool
     {
@@ -842,8 +778,6 @@ abstract class DynamicField
 
     /**
      * Get new index
-     *
-     * @return int
      */
     protected function getNewIndex(): int
     {
@@ -862,8 +796,6 @@ abstract class DynamicField
 
     /**
      * Is field duplicated?
-     *
-     * @return bool
      */
     public function isDuplicate(): bool
     {
@@ -911,8 +843,6 @@ abstract class DynamicField
      * Move a dynamic field
      *
      * @param string $action What to do (one of self::MOVE_*)
-     *
-     * @return bool
      */
     public function move(string $action): bool
     {
@@ -963,8 +893,6 @@ abstract class DynamicField
 
     /**
      * Delete a dynamic field
-     *
-     * @return bool
      */
     public function remove(): bool
     {
@@ -1075,8 +1003,6 @@ abstract class DynamicField
      * Get value to display for a field
      *
      * @param mixed $value Raw value to get displayed
-     *
-     * @return string
      */
     public function getDisplayValue(mixed $value): string
     {

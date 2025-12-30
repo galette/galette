@@ -58,8 +58,6 @@ abstract class AbstractPlugins extends AbstractCommand
 
     /**
      * Configure command
-     *
-     * @return void
      */
     protected function configure(): void
     {
@@ -71,11 +69,6 @@ abstract class AbstractPlugins extends AbstractCommand
 
     /**
      * Interacts to request missing arguments or options
-     *
-     * @param InputInterface  $input  Input interface
-     * @param OutputInterface $output Output interface
-     *
-     * @return void
      */
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
@@ -185,8 +178,6 @@ abstract class AbstractPlugins extends AbstractCommand
     /**
      * Get relevant choices (getRelevantPlugins formatted) for the command
      *
-     * @param SymfonyStyle $io Output interface
-     *
      * @return array<string, string>
      */
     protected function getRelevantChoices(SymfonyStyle $io): array
@@ -203,8 +194,6 @@ abstract class AbstractPlugins extends AbstractCommand
 
     /**
      * Get relevant plugins for current command
-     *
-     * @param SymfonyStyle $io Output interface
      *
      * @return array<string, array<string, string>>
      */

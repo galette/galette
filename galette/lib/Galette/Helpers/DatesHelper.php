@@ -40,8 +40,6 @@ trait DatesHelper
      * Builds a Date
      *
      * @param string $value Date to build
-     *
-     * @return string
      */
     protected function buildDate(string $value): string
     {
@@ -67,8 +65,6 @@ trait DatesHelper
      *
      * @param string $field Field to store date
      * @param string $value Date to store
-     *
-     * @return self
      */
     protected function setDate(string $field, string $value): self
     {
@@ -104,8 +100,6 @@ trait DatesHelper
      * @param string $field Field to store date
      * @param string $value Date to store
      * @param bool   $start Is a start date (or is a end date))
-     *
-     * @return self
      */
     protected function setFilterDate(string $field, string $value, bool $start): self
     {
@@ -214,8 +208,6 @@ trait DatesHelper
      * @param string $field      Field name to retrieve
      * @param bool   $formatted  Get formatted date, or DateTime object
      * @param bool   $translated Get translated or db value
-     *
-     * @return string|DateTime|null
      */
     public function getDate(string $field, bool $formatted = true, bool $translated = true): string|DateTime|null
     {

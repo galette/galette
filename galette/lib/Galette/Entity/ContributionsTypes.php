@@ -35,11 +35,11 @@ use Throwable;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
+ * @property int    $id
  * @property string $label
  * @property string $libelle
  * @property ?float $amount
- * @property int $extension
+ * @property int    $extension
  */
 
 class ContributionsTypes
@@ -132,8 +132,6 @@ class ContributionsTypes
      * Populate object from a resultset row
      *
      * @param ArrayObject<string, int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
@@ -147,8 +145,6 @@ class ContributionsTypes
 
     /**
      * Does current type give membership extension?
-     *
-     * @return bool
      */
     public function isExtension(): bool
     {
@@ -157,8 +153,6 @@ class ContributionsTypes
 
     /**
      * Get the amount
-     *
-     * @return float
      */
     public function getAmount(): float
     {
@@ -168,7 +162,6 @@ class ContributionsTypes
     /**
      * Set defaults at install time
      *
-     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -343,8 +336,6 @@ class ContributionsTypes
      * @param int  $id         Id
      * @param bool $translated Do we want translated or original label?
      *                         Defaults to true.
-     *
-     * @return string|int
      */
     public function getLabel(int $id, bool $translated = true): string|int
     {
@@ -555,8 +546,6 @@ class ContributionsTypes
      * Check if this entry is used.
      *
      * @param int $id Entry ID
-     *
-     * @return bool
      */
     public function isUsed(int $id): bool
     {
@@ -609,8 +598,6 @@ class ContributionsTypes
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {

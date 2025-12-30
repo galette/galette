@@ -39,8 +39,6 @@ class Groups extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -49,8 +47,6 @@ class Groups extends GaletteTestCase
 
     /**
      * Delete groups
-     *
-     * @return void
      */
     private function deleteGroups(): void
     {
@@ -140,8 +136,6 @@ class Groups extends GaletteTestCase
      * @param array  $children    Children
      *
      * @dataProvider groupsProvider
-     *
-     * @return void
      */
     public function testCreateGroups(string $parent_name, array $children): void
     {
@@ -171,8 +165,6 @@ class Groups extends GaletteTestCase
 
     /**
      * Test getSimpleList
-     *
-     * @return void
      */
     public function testGetSimpleList(): void
     {
@@ -197,8 +189,6 @@ class Groups extends GaletteTestCase
 
     /**
      * Test getSimpleList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -239,8 +229,6 @@ class Groups extends GaletteTestCase
 
     /**
      * Test group name uniqueness
-     *
-     * @return void
      */
     public function testUniqueness(): void
     {
@@ -280,8 +268,6 @@ class Groups extends GaletteTestCase
 
     /**
      * Test members/groups
-     *
-     * @return void
      */
     public function testMembersGroups(): void
     {

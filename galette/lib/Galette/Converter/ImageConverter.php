@@ -38,8 +38,6 @@ class ImageConverter extends \League\HTMLToMarkdown\Converter\ImageConverter
      * Converts IMG element to markdown.
      *
      * @param ElementInterface $element Element to convert
-     *
-     * @return string
      */
     public function convert(ElementInterface $element): string
     {

@@ -39,8 +39,6 @@ class Password extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDow(): void
     {
@@ -55,8 +53,6 @@ class Password extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -66,8 +62,6 @@ class Password extends TestCase
 
     /**
      * Passwords data provider
-     *
-     * @return array
      */
     public static function passProvider(): array
     {
@@ -110,8 +104,6 @@ class Password extends TestCase
      * @param int    $level  Password level
      * @param string $pass   Password
      * @param array  $errors Errors
-     *
-     * @return void
      */
     #[DataProvider('passProvider')]
     public function testValidatePassword(int $level, string $pass, array $errors): void
@@ -153,8 +145,6 @@ class Password extends TestCase
 
     /**
      * Blacklist password provider
-     *
-     * @return array
      */
     public static function blacklistProvider(): array
     {
@@ -173,8 +163,6 @@ class Password extends TestCase
      *
      * @param string $pass     Password to test
      * @param bool   $expected Excpected return
-     *
-     * @return void
      */
     #[DataProvider('blacklistProvider')]
     public function testBlacklist(string $pass, bool $expected): void
@@ -190,8 +178,6 @@ class Password extends TestCase
 
     /**
      * Test with personal information
-     *
-     * @return void
      */
     public function testPersonalInformation(): void
     {

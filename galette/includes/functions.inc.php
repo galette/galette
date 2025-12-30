@@ -30,8 +30,6 @@ const NOT_TRANSLATED = ' (not translated)';
  * Check URL validity
  *
  * @param string $url The URL to check
- *
- * @return bool
  */
 function isValidWebUrl(string $url): bool
 {
@@ -47,8 +45,6 @@ function isValidWebUrl(string $url): bool
  * @param string $string The string to translate
  * @param string $domain Translation domain. Default to galette
  * @param bool   $nt     Indicate not translated strings; defaults to true
- *
- * @return string
  */
 function _T(string $string, string $domain = 'galette', bool $nt = true): string
 {
@@ -97,8 +93,6 @@ function _T(string $string, string $domain = 'galette', bool $nt = true): string
  * @param int    $count    Number for count
  * @param string $domain   Translation domain. Default to galette
  * @param bool   $nt       Indicate not translated strings; defaults to true
- *
- * @return string
  */
 function _Tn(string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
@@ -155,8 +149,6 @@ function _Tn(string $singular, string $plural, int $count, string $domain = 'gal
  * @param string $string  The string to translate
  * @param string $domain  Translation domain (defaults to galette)
  * @param bool   $nt      Indicate not translated strings; defaults to true
- *
- * @return string
  */
 function _Tx(string $context, string $string, string $domain = 'galette', bool $nt = true): string
 {
@@ -201,8 +193,6 @@ function _Tx(string $context, string $string, string $domain = 'galette', bool $
  * @param int    $count    Number for count
  * @param string $domain   Translation domain. Default to galette
  * @param bool   $nt       Indicate not translated strings; defaults to true
- *
- * @return string
  */
 function _Tnx(string $context, string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
@@ -256,8 +246,6 @@ function _Tnx(string $context, string $singular, string $plural, int $count, str
  *
  * @param string $string  The string to translate
  * @param string $context The context
- *
- * @return string
  */
 function contextualizedString(string $string, string $context): string
 {
@@ -269,8 +257,6 @@ function contextualizedString(string $string, string $context): string
  *
  * @param string $string The string to translate
  * @param string $domain Translation domain. Default to false (will take default domain)
- *
- * @return string
  */
 function __(string $string, string $domain = 'galette'): string
 {

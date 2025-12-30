@@ -36,8 +36,6 @@ class Contributions extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -65,8 +63,6 @@ class Contributions extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -242,8 +238,6 @@ class Contributions extends GaletteTestCase
 
     /**
      * Test getArrayList
-     *
-     * @return void
      */
     public function testGetArrayList(): void
     {
@@ -271,8 +265,6 @@ class Contributions extends GaletteTestCase
 
     /**
      * Test remove
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -294,7 +286,6 @@ class Contributions extends GaletteTestCase
     /**
      * Test order by
      *
-     * @return void
      * @throws \Throwable
      */
     public function testOrderBy(): void

@@ -55,8 +55,6 @@ class Html implements ErrorRendererInterface
      *
      * @param Throwable $exception           The exception
      * @param bool      $displayErrorDetails Should we display the error details
-     *
-     * @return string
      */
     public function __invoke(Throwable $exception, bool $displayErrorDetails): string
     {

@@ -129,8 +129,6 @@ class Status
      * Populate object from a resultset row
      *
      * @param ArrayObject<string, int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
@@ -142,7 +140,6 @@ class Status
     /**
      * Set defaults at install time
      *
-     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool
@@ -311,8 +308,6 @@ class Status
      * @param int  $id         Id
      * @param bool $translated Do we want translated or original label?
      *                         Defaults to true.
-     *
-     * @return string|int
      */
     public function getLabel(int $id, bool $translated = true): string|int
     {
@@ -527,8 +522,6 @@ class Status
      * Check if this entry is used.
      *
      * @param int $id Entry ID
-     *
-     * @return bool
      */
     public function isUsed(int $id): bool
     {
@@ -581,8 +574,6 @@ class Status
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {

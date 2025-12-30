@@ -116,8 +116,6 @@ abstract class AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     protected function galetteRedirect(Request $request, Response $response): Response
     {
@@ -190,8 +188,6 @@ abstract class AbstractController
      * @param Response            $response Response instance
      * @param array<string,mixed> $data     Data to send
      * @param int                 $status   HTTP status code
-     *
-     * @return Response
      */
     protected function withJson(Response $response, array $data, int $status = 200): Response
     {
@@ -206,8 +202,6 @@ abstract class AbstractController
      *
      * @param string                   $filter_name Filter name
      * @param array<string,mixed>|null $args        Arguments
-     *
-     * @return string
      */
     public function getFilterName(string $filter_name, ?array $args = null): string
     {
@@ -237,8 +231,6 @@ abstract class AbstractController
      * @param Response $response     PSR Response
      * @param string[] $errors       Errors to report
      * @param string   $redirect_url URL to redirect to
-     *
-     * @return Response
      */
     protected function redirectWithErrors(Response $response, array $errors, string $redirect_url): Response
     {
@@ -257,8 +249,6 @@ abstract class AbstractController
      * @param string[] $successes    Successes to report
      * @param string[] $warnings     Warnings to report
      * @param string[] $errors       Errors to report
-     *
-     * @return Response
      */
     protected function redirect(
         Response $response,

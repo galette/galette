@@ -43,12 +43,12 @@ use Galette\Helpers\EntityHelper;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
- * @property string $date
- * @property float $amount
+ * @property int     $id
+ * @property string  $date
+ * @property float   $amount
  * @property ?string $description
- * @property ?int $member
- * @property ?int $payment_type
+ * @property ?int    $member
+ * @property ?int    $payment_type
  */
 class Transaction implements AccessManagementInterface
 {
@@ -102,8 +102,6 @@ class Transaction implements AccessManagementInterface
 
     /**
      * Set fields, must populate $this->fields
-     *
-     * @return self
      */
     protected function setFields(): self
     {
@@ -205,8 +203,6 @@ class Transaction implements AccessManagementInterface
      *
      * @param History $hist        History
      * @param bool    $transaction Activate transaction mode (defaults to true)
-     *
-     * @return bool
      */
     public function remove(History $hist, bool $transaction = true): bool
     {
@@ -265,8 +261,6 @@ class Transaction implements AccessManagementInterface
      * Populate object from a resultset row
      *
      * @param ArrayObject<string,int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
@@ -416,8 +410,6 @@ class Transaction implements AccessManagementInterface
      * Store the transaction
      *
      * @param History $hist History
-     *
-     * @return bool
      */
     public function store(History $hist): bool
     {
@@ -493,8 +485,6 @@ class Transaction implements AccessManagementInterface
 
     /**
      * Retrieve amount that has already been dispatched into contributions
-     *
-     * @return double
      */
     public function getDispatchedAmount(): float
     {
@@ -526,8 +516,6 @@ class Transaction implements AccessManagementInterface
 
     /**
      * Retrieve amount that has not yet been dispatched into contributions
-     *
-     * @return double
      */
     public function getMissingAmount(): float
     {
@@ -559,8 +547,6 @@ class Transaction implements AccessManagementInterface
 
     /**
      * Get payment type label
-     *
-     * @return string
      */
     public function getPaymentType(): string
     {
@@ -669,8 +655,6 @@ class Transaction implements AccessManagementInterface
      * Can current logged-in user create a transaction?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canCreate(Login $login): bool
     {
@@ -690,8 +674,6 @@ class Transaction implements AccessManagementInterface
      * Can current logged-in user display transactions?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -734,8 +716,6 @@ class Transaction implements AccessManagementInterface
      * Can current logged-in user edit a transaction?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canEdit(Login $login): bool
     {
@@ -747,8 +727,6 @@ class Transaction implements AccessManagementInterface
      * Specific right for groups managers to attach/detach contributions from a transaction -_-
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canAttachAndDetach(Login $login): bool
     {
@@ -764,8 +742,6 @@ class Transaction implements AccessManagementInterface
      * Can current logged-in user delete a transaction?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canDelete(Login $login): bool
     {

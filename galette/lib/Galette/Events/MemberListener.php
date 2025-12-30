@@ -68,8 +68,6 @@ class MemberListener implements ListenerSubscriber
      * Set up member listeners
      *
      * @param ListenerRegistry $acceptor Listener
-     *
-     * @return void
      */
     public function subscribeListeners(ListenerRegistry $acceptor): void
     {
@@ -92,8 +90,6 @@ class MemberListener implements ListenerSubscriber
      * Member added listener
      *
      * @param Adherent $member Added member
-     *
-     * @return void
      */
     public function memberAdded(Adherent $member): void
     {
@@ -113,8 +109,6 @@ class MemberListener implements ListenerSubscriber
      * Member edited listener
      *
      * @param Adherent $member Added member
-     *
-     * @return void
      */
     public function memberEdited(Adherent $member): void
     {
@@ -135,8 +129,6 @@ class MemberListener implements ListenerSubscriber
      *
      * @param Adherent $member Member
      * @param bool     $new    New member or editing existing one
-     *
-     * @return void
      */
     private function sendMemberEmail(Adherent $member, bool $new): void
     {
@@ -229,8 +221,6 @@ class MemberListener implements ListenerSubscriber
      *
      * @param Adherent $member Member
      * @param bool     $new    New member or editing existing one
-     *
-     * @return void
      */
     private function sendAdminEmail(Adherent $member, bool $new): void
     {

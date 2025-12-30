@@ -193,8 +193,6 @@ class ScheduledPayments
      * Count scheduled payments from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -227,8 +225,6 @@ class ScheduledPayments
      * Calculate sum of all selected scheduled payments
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function calculateSum(Select $select): void
     {
@@ -303,8 +299,6 @@ class ScheduledPayments
      * Builds where clause, for filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildWhereClause(Select $select): void
     {
@@ -377,8 +371,6 @@ class ScheduledPayments
      * Builds where clause for filtering on member
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildMemberWhereClause(Select $select): void
     {
@@ -424,8 +416,6 @@ class ScheduledPayments
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -434,8 +424,6 @@ class ScheduledPayments
 
     /**
      * Get sum
-     *
-     * @return float
      */
     public function getSum(): float
     {
@@ -448,8 +436,6 @@ class ScheduledPayments
      * @param int|array<int> $ids         Scheduled payments identifiers to delete
      * @param History        $hist        History
      * @param bool           $transaction True to begin a database transaction
-     *
-     * @return bool
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {

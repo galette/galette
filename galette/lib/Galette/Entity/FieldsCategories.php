@@ -87,8 +87,6 @@ class FieldsCategories
      *
      * @param Db                $zdb        Database
      * @param array<int,string> $categories Categories
-     *
-     * @return bool
      */
     public static function setCategories(Db $zdb, array $categories): bool
     {
@@ -125,7 +123,6 @@ class FieldsCategories
     /**
      * Set default fields categories at install time
      *
-     * @return bool
      * @throws Throwable
      */
     public function installInit(): bool

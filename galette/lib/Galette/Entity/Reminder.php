@@ -39,10 +39,10 @@ use UnexpectedValueException;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property-read int $member_id
- * @property int $type
- * @property Adherent $dest
- * @property string $date
+ * @property-read int      $member_id
+ * @property      int      $type
+ * @property      Adherent $dest
+ * @property      string   $date
  */
 
 class Reminder
@@ -84,8 +84,6 @@ class Reminder
      * Load a reminder from its id
      *
      * @param int $id Identifier
-     *
-     * @return void
      */
     private function load(int $id): void
     {
@@ -111,8 +109,6 @@ class Reminder
      * Load reminder from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -140,8 +136,6 @@ class Reminder
      * Store reminder in database and history
      *
      * @param Db $zdb Database instance
-     *
-     * @return bool
      */
     private function store(Db $zdb): bool
     {
@@ -179,8 +173,6 @@ class Reminder
 
     /**
      * Was reminder sent successfully?
-     *
-     * @return bool
      */
     public function isSuccess(): bool
     {
@@ -189,8 +181,6 @@ class Reminder
 
     /**
      * Did member had an email when reminder was sent?
-     *
-     * @return bool
      */
     public function hasMail(): bool
     {
@@ -203,8 +193,6 @@ class Reminder
      * @param Texts   $texts Text object
      * @param History $hist  History
      * @param Db      $zdb   Database instance
-     *
-     * @return bool
      */
     public function send(Texts $texts, History $hist, Db $zdb): bool
     {
@@ -290,8 +278,6 @@ class Reminder
 
     /**
      * Retrieve message
-     *
-     * @return string
      */
     public function getMessage(): string
     {
@@ -302,8 +288,6 @@ class Reminder
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -326,8 +310,6 @@ class Reminder
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -342,8 +324,6 @@ class Reminder
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

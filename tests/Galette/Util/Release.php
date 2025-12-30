@@ -56,7 +56,6 @@ class Release extends TestCase
      * @param bool   $expected Expected result
      *
      * @dataProvider releasesProvider
-     * @return void
      */
     public function testNewRelease(string $current, string $latest, bool $expected): void
     {
@@ -230,7 +229,6 @@ div.foot { font: 90% monospace; color: #787878; padding-top: 4px;}
      * @param string $page     Page content
      *
      * @dataProvider releasesPageProvider
-     * @return void
      */
     public function testFindLatestRelease(string $current, string $latest, bool $expected, string $page): void
     {

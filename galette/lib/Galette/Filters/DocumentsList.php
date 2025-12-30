@@ -41,8 +41,6 @@ class DocumentsList extends Pagination
 
     /**
      * Returns the field we want to default set order to
-     *
-     * @return int|string
      */
     protected function getDefaultOrder(): int|string
     {
@@ -51,8 +49,6 @@ class DocumentsList extends Pagination
 
     /**
      * Return the default direction for ordering
-     *
-     * @return SQLOrder
      */
     protected function getDefaultDirection(): SQLOrder
     {

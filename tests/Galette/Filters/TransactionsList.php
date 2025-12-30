@@ -36,8 +36,6 @@ class TransactionsList extends GaletteTestCase
      * Test filter defaults values
      *
      * @param \Galette\Filters\TransactionsList $filters Filters instance
-     *
-     * @return void
      */
     protected function testDefaults(\Galette\Filters\TransactionsList $filters): void
     {
@@ -51,8 +49,6 @@ class TransactionsList extends GaletteTestCase
 
     /**
      * Test creation
-     *
-     * @return void
      */
     public function testCreate(): void
     {
@@ -111,8 +107,6 @@ class TransactionsList extends GaletteTestCase
 
     /**
      * Test localized date in filter
-     *
-     * @return void
      */
     public function testLocalizedDates(): void
     {

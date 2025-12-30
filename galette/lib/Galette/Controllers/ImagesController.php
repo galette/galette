@@ -46,8 +46,6 @@ class ImagesController extends AbstractController
      *
      * @param Response $response PSR Response
      * @param Picture  $picture  Picture to output
-     *
-     * @return Response
      */
     protected function sendResponse(Response $response, Picture $picture): Response
     {
@@ -69,8 +67,6 @@ class ImagesController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function logo(Request $request, Response $response): Response
     {
@@ -82,8 +78,6 @@ class ImagesController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function printLogo(Request $request, Response $response): Response
     {
@@ -96,8 +90,6 @@ class ImagesController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Member id
-     *
-     * @return Response
      */
     public function photo(Request $request, Response $response, int $id): Response
     {

@@ -36,8 +36,6 @@ class Social extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -56,8 +54,6 @@ class Social extends GaletteTestCase
 
     /**
      * Delete socials
-     *
-     * @return void
      */
     private function deleteSocials(): void
     {
@@ -67,8 +63,6 @@ class Social extends GaletteTestCase
 
     /**
      * Test social object
-     *
-     * @return void
      */
     public function testObject(): void
     {
@@ -95,8 +89,6 @@ class Social extends GaletteTestCase
 
     /**
      * Test socials "system" types
-     *
-     * @return void
      */
     public function testGetSystemTypes(): void
     {
@@ -111,8 +103,6 @@ class Social extends GaletteTestCase
 
     /**
      * Test getListForMember
-     *
-     * @return void
      */
     public function testGetListForMember(): void
     {

@@ -81,8 +81,6 @@ class PdfContribution extends Pdf
 
     /**
      * Download PDF from browser
-     *
-     * @return string
      */
     public function download(): string
     {
@@ -93,8 +91,6 @@ class PdfContribution extends Pdf
      * Store PDF
      *
      * @param string $path Path
-     *
-     * @return bool
      */
     public function store(string $path): bool
     {
@@ -114,8 +110,6 @@ class PdfContribution extends Pdf
 
     /**
      * Get store path
-     *
-     * @return string
      */
     public function getPath(): string
     {
@@ -124,8 +118,6 @@ class PdfContribution extends Pdf
 
     /**
      * Get filename
-     *
-     * @return string
      */
     public function getFilename(): string
     {

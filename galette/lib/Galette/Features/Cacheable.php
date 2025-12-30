@@ -53,8 +53,6 @@ trait Cacheable
      * Handle cache
      *
      * @param bool $nocache Do not try to cache
-     *
-     * @return void
      */
     protected function handleCache(bool $nocache = false): void
     {
@@ -69,8 +67,6 @@ trait Cacheable
 
     /**
      * Check if cache is valid
-     *
-     * @return bool
      */
     private function checkCache(): bool
     {
@@ -106,22 +102,16 @@ trait Cacheable
 
     /**
      * Complete path to cache file
-     *
-     * @return string
      */
     abstract protected function getCacheFilename(): string;
 
     /**
      * Ensure data to cache are present
-     *
-     * @return void
      */
     abstract protected function prepareForCache(): void;
 
     /**
      * Creates/update the cache
-     *
-     * @return void
      */
     protected function makeCache(): void
     {
@@ -145,8 +135,6 @@ trait Cacheable
 
     /**
      * Get data to cache
-     *
-     * @return string
      */
     protected function getDataTocache(): string
     {
@@ -155,8 +143,6 @@ trait Cacheable
 
     /**
      * Loads entries from cache
-     *
-     * @return void
      */
     protected function loadCache(): void
     {
@@ -172,8 +158,6 @@ trait Cacheable
      * Called once cache has been loaded.
      *
      * @param mixed $content Content from cache
-     *
-     * @return bool
      */
     abstract protected function cacheLoaded(mixed $content): bool;
 }

@@ -36,8 +36,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -47,8 +45,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Delete scheduled payments
-     *
-     * @return void
      */
     private function deleteScheduledPayments(): void
     {
@@ -67,8 +63,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test add
-     *
-     * @return void
      */
     public function testAdd(): void
     {
@@ -114,8 +108,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test update
-     *
-     * @return void
      */
     public function testUpdate(): void
     {
@@ -173,8 +165,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test update
-     *
-     * @return void
      */
     public function testCheck(): void
     {
@@ -295,8 +285,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test delete
-     *
-     * @return void
      */
     public function testDelete(): void
     {
@@ -334,8 +322,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test restrictions on contributions with a scheduled payment
-     *
-     * @return void
      */
     public function testContributionRestriction(): void
     {
@@ -382,8 +368,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test getNotFullyAllocated
-     *
-     * @return void
      */
     public function testGetNotFullyAllocated(): void
     {
@@ -466,8 +450,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test getAllocation
-     *
-     * @return void
      */
     public function testGetAllocation(): void
     {
@@ -511,8 +493,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test isFullyAllocated
-     *
-     * @return void
      */
     public function testIsFullyAllocated(): void
     {
@@ -578,8 +558,6 @@ class ScheduledPayment extends GaletteTestCase
 
     /**
      * Test isDue
-     *
-     * @return void
      */
     public function testIsDue(): void
     {

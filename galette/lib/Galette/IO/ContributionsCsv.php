@@ -69,8 +69,6 @@ class ContributionsCsv extends CsvOut
      * Export members CSV
      *
      * @param ContributionsList $filters Current filters
-     *
-     * @return void
      */
     public function exportContributions(ContributionsList $filters): void
     {
@@ -166,8 +164,6 @@ class ContributionsCsv extends CsvOut
 
     /**
      * Get file path on disk
-     *
-     * @return string
      */
     public function getPath(): string
     {
@@ -176,8 +172,6 @@ class ContributionsCsv extends CsvOut
 
     /**
      * Get file name
-     *
-     * @return string
      */
     public function getFileName(): string
     {

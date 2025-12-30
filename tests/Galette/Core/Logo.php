@@ -36,8 +36,6 @@ class Logo extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -48,8 +46,6 @@ class Logo extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -60,8 +56,6 @@ class Logo extends TestCase
 
     /**
      * Test defaults after initialization
-     *
-     * @return void
      */
     public function testDefaults(): void
     {

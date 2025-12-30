@@ -47,8 +47,6 @@ class ListsConfig extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -70,8 +68,6 @@ class ListsConfig extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -85,8 +81,6 @@ class ListsConfig extends TestCase
 
     /**
      * Resets lists configuration to defaults
-     *
-     * @return void
      */
     private function resetListsConfig(): void
     {
@@ -100,8 +94,6 @@ class ListsConfig extends TestCase
 
     /**
      * Test getVisibility
-     *
-     * @return void
      */
     public function testGetVisibility(): void
     {
@@ -124,8 +116,6 @@ class ListsConfig extends TestCase
 
     /**
      * Test setFields and storage
-     *
-     * @return void
      */
     public function testSetFields(): void
     {
@@ -209,8 +199,6 @@ class ListsConfig extends TestCase
 
     /**
      * Test get display elements
-     *
-     * @return void
      */
     public function testGetDisplayElements(): void
     {

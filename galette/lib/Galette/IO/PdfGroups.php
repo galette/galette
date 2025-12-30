@@ -55,8 +55,6 @@ class PdfGroups extends Pdf
 
     /**
      * Draws PDF page Header
-     *
-     * @return void
      */
     public function Header(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -78,8 +76,6 @@ class PdfGroups extends Pdf
 
     /**
      * Initialize PDF
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -109,8 +105,6 @@ class PdfGroups extends Pdf
      *
      * @param array<Group> $groups Groups list
      * @param Login        $login  Login instance
-     *
-     * @return void
      */
     public function draw(array $groups, Login $login): void
     {

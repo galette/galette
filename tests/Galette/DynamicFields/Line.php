@@ -36,8 +36,6 @@ class Line extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -47,8 +45,6 @@ class Line extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -62,8 +58,6 @@ class Line extends GaletteTestCase
 
     /**
      * Test constructor
-     *
-     * @return void
      */
     public function testConstructor(): void
     {
@@ -73,8 +67,6 @@ class Line extends GaletteTestCase
 
     /**
      * Test get type name
-     *
-     * @return void
      */
     public function testGetTypeName(): void
     {
@@ -83,8 +75,6 @@ class Line extends GaletteTestCase
 
     /**
      * Test if basic properties are ok
-     *
-     * @return void
      */
     public function testBaseProperties(): void
     {
@@ -138,8 +128,6 @@ class Line extends GaletteTestCase
 
     /**
      * Test from database
-     *
-     * @return void
      */
     public function testInDb(): void
     {
@@ -179,8 +167,6 @@ class Line extends GaletteTestCase
 
     /**
      * Test displayed value
-     *
-     * @return void
      */
     public function testDisplayValue(): void
     {

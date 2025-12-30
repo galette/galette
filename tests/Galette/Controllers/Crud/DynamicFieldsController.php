@@ -24,8 +24,6 @@ declare(strict_types=1);
 namespace GaletteTests\Controllers\Crud;
 
 use Galette\GaletteRoutingTestCase;
-use Slim\Psr7\Headers;
-use Slim\Psr7\Request;
 
 /**
  * DynamicFields controller tests
@@ -38,8 +36,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -70,8 +66,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after class
-     *
-     * @return void
      */
     public static function tearDownAfterClass(): void
     {
@@ -81,8 +75,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test add page from controller
-     *
-     * @return void
      */
     public function testAddPageDynamicField(): void
     {
@@ -106,8 +98,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test edit page from controller
-     *
-     * @return void
      */
     public function testEditPageDynamicField(): void
     {
@@ -147,8 +137,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test adding dynamic field from controller
-     *
-     * @return void
      */
     public function testAddDynamicField(): void
     {
@@ -199,8 +187,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test cencelled adding dynamic field from controller
-     *
-     * @return void
      */
     public function testAddCancelynamicField(): void
     {
@@ -236,8 +222,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test adding dynamic field from controller with an error
-     *
-     * @return void
      */
     public function testAddErrorDynamicField(): void
     {
@@ -280,8 +264,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test updating dynamic field from controller
-     *
-     * @return void
      */
     public function testUpdateDynamicField(): void
     {
@@ -331,8 +313,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test canceled updating dynamic field from controller
-     *
-     * @return void
      */
     public function testUpdateCancelDynamicField(): void
     {
@@ -374,8 +354,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test error updating dynamic field from controller
-     *
-     * @return void
      */
     public function testUpdateErrorDynamicField(): void
     {
@@ -421,8 +399,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test remove page dynamic field from controller
-     *
-     * @return void
      */
     public function testRemovePageDynamicField(): void
     {
@@ -463,8 +439,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test dynamic field removal from controller
-     *
-     * @return void
      */
     public function testRemoveDynamicField(): void
     {
@@ -551,8 +525,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test dynamic field removal from controller
-     *
-     * @return void
      */
     public function testMoveDynamicField(): void
     {
@@ -620,8 +592,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test dynamic fields list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -655,8 +625,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
 
     /**
      * Test getting dynamic file
-     *
-     * @return void
      */
     public function testGetDynamicFile(): void
     {

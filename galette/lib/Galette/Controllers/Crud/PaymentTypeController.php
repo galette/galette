@@ -44,8 +44,6 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -58,8 +56,6 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function doAdd(Request $request, Response $response): Response
     {
@@ -76,8 +72,6 @@ class PaymentTypeController extends CrudController
      * @param Response        $response PSR Response
      * @param string|null     $option   One of 'page' or 'order'
      * @param int|string|null $value    Value of the option
-     *
-     * @return Response
      */
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
@@ -105,8 +99,6 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -123,8 +115,6 @@ class PaymentTypeController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Type id
-     *
-     * @return Response
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -151,8 +141,6 @@ class PaymentTypeController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Type id
-     *
-     * @return Response
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -165,8 +153,6 @@ class PaymentTypeController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param ?int     $id       Type id
-     *
-     * @return Response
      */
     public function store(Request $request, Response $response, ?int $id = null): Response
     {
@@ -240,8 +226,6 @@ class PaymentTypeController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -252,8 +236,6 @@ class PaymentTypeController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -267,8 +249,6 @@ class PaymentTypeController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -284,8 +264,6 @@ class PaymentTypeController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

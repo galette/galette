@@ -60,8 +60,6 @@ class QrCode
 
     /**
      * Build the QR code
-     *
-     * @return void
      */
     private function build(): void
     {
@@ -89,8 +87,6 @@ class QrCode
 
     /**
      * Get label
-     *
-     * @return string
      */
     public function getLabel(): string
     {
@@ -99,8 +95,6 @@ class QrCode
 
     /**
      * Get URL
-     *
-     * @return ?string
      */
     public function getURL(): ?string
     {
@@ -109,8 +103,6 @@ class QrCode
 
     /**
      * Get image data
-     *
-     * @return string
      */
     public function getImage(): string
     {

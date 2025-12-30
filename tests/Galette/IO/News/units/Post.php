@@ -34,8 +34,6 @@ class Post extends TestCase
 {
     /**
      * Test post
-     *
-     * @return void
      */
     public function testPost(): void
     {

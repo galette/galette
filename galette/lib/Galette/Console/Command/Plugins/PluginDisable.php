@@ -43,11 +43,6 @@ class PluginDisable extends AbstractPlugins
 {
     /**
      * Command execution
-     *
-     * @param InputInterface  $input  Input interface
-     * @param OutputInterface $output Output interface
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -67,8 +62,6 @@ class PluginDisable extends AbstractPlugins
 
     /**
      * Get relevant plugins (enabled ones) for current command
-     *
-     * @param SymfonyStyle $io Output interface
      *
      * @return array<string, array<string, string>>
      */

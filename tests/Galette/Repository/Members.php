@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace GaletteTests\Repository;
 
 use Galette\GaletteTestCase;
-use Slim\Psr7\UploadedFile;
 
 /**
  * Members repository tests
@@ -40,8 +39,6 @@ class Members extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -52,8 +49,6 @@ class Members extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -84,8 +79,6 @@ class Members extends GaletteTestCase
 
     /**
      * Create members and store their id
-     *
-     * @return void
      */
     private function createMembers(): void
     {
@@ -180,8 +173,6 @@ class Members extends GaletteTestCase
 
     /**
      * Delete member
-     *
-     * @return void
      */
     private function deleteMembers(): void
     {
@@ -210,8 +201,6 @@ class Members extends GaletteTestCase
 
     /**
      * Delete groups
-     *
-     * @return void
      */
     private function deleteGroups(): void
     {
@@ -229,8 +218,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -653,8 +640,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test getList with contribution dynamic fields
-     *
-     * @return void
      */
     public function testGetListContributionDynamics(): void
     {
@@ -830,8 +815,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test getPublicList
-     *
-     * @return void
      */
     public function testGetPublicList(): void
     {
@@ -871,8 +854,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test search on groups
-     *
-     * @return void
      */
     public function testGroupsSearch(): void
     {
@@ -1013,8 +994,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test reminders count
-     *
-     * @return void
      */
     public function testGetRemindersCount(): void
     {
@@ -1196,8 +1175,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test dropdown members
-     *
-     * @return void
      */
     public function testGetDropdownMembers(): void
     {
@@ -1211,8 +1188,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test getArrayList
-     *
-     * @return void
      */
     public function testGetArrayList(): void
     {
@@ -1232,8 +1207,6 @@ class Members extends GaletteTestCase
 
     /**
      * Test getMembersList
-     *
-     * @return void
      */
     public function testRemoveMembers(): void
     {

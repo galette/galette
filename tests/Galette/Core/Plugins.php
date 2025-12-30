@@ -53,8 +53,6 @@ class Plugins extends TestCase
 
     /**
      * Get instantiated plugins instance
-     *
-     * @return \Galette\Core\Plugins
      */
     private function getPlugins(): \Galette\Core\Plugins
     {
@@ -66,8 +64,6 @@ class Plugins extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -76,14 +72,12 @@ class Plugins extends TestCase
 
         $this->plugins = $this->getPlugins();
 
-        $this->plugin2['root'] = GALETTE_PLUGINS_PATH .
-            $this->plugin2['root'];
+        $this->plugin2['root'] = GALETTE_PLUGINS_PATH
+            . $this->plugin2['root'];
     }
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -94,8 +88,6 @@ class Plugins extends TestCase
 
     /**
      * Tests plugins load
-     *
-     * @return void
      */
     public function testLoadModules(): void
     {
@@ -110,8 +102,6 @@ class Plugins extends TestCase
 
     /**
      * Test module existence
-     *
-     * @return void
      */
     public function testModuleExists(): void
     {
@@ -121,8 +111,6 @@ class Plugins extends TestCase
 
     /**
      * Test disabled plugin
-     *
-     * @return void
      */
     public function testDisabledModules(): void
     {
@@ -134,8 +122,6 @@ class Plugins extends TestCase
 
     /**
      * Test module root
-     *
-     * @return void
      */
     public function testModuleRoot(): void
     {
@@ -144,8 +130,6 @@ class Plugins extends TestCase
 
     /**
      * Test reset modules list
-     *
-     * @return void
      */
     public function testResetModulesList(): void
     {
@@ -156,8 +140,6 @@ class Plugins extends TestCase
 
     /**
      * Test plugin (des)activation
-     *
-     * @return void
      */
     public function testModuleActivation(): void
     {
@@ -181,8 +163,6 @@ class Plugins extends TestCase
 
     /**
      * Test non-existant module activation
-     *
-     * @return void
      */
     public function testNonExistantModuleActivation(): void
     {
@@ -193,8 +173,6 @@ class Plugins extends TestCase
 
     /**
      * Test non-existant module de-activation
-     *
-     * @return void
      */
     public function testNonExistantModuleDeactivation(): void
     {
@@ -205,8 +183,6 @@ class Plugins extends TestCase
 
     /**
      * Test if plugin needs database
-     *
-     * @return void
      */
     public function testNeedDatabse(): void
     {

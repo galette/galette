@@ -23,9 +23,7 @@ declare(strict_types=1);
 
 namespace GaletteTests\Entity;
 
-use PHPUnit\Framework\TestCase;
 use Galette\GaletteTestCase;
-use Laminas\Db\Adapter\Adapter;
 
 /**
  * Group tests
@@ -38,8 +36,6 @@ class Group extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -49,8 +45,6 @@ class Group extends GaletteTestCase
 
     /**
      * Delete groups
-     *
-     * @return void
      */
     private function deleteGroups(): void
     {
@@ -70,8 +64,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test empty group
-     *
-     * @return void
      */
     public function testGroup(): void
     {
@@ -91,8 +83,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test single group
-     *
-     * @return void
      */
     public function testSingleGroup(): void
     {
@@ -132,8 +122,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test group name uniqueness when adding
-     *
-     * @return void
      */
     public function testAddUnicity(): void
     {
@@ -158,8 +146,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test group name uniqueness when editing
-     *
-     * @return void
      */
     public function testEditUnicity(): void
     {
@@ -194,8 +180,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test sub groups
-     *
-     * @return void
      */
     public function testSubGroup(): void
     {
@@ -263,8 +247,6 @@ class Group extends GaletteTestCase
 
     /**
      * Test removal
-     *
-     * @return void
      */
     public function testRemove(): void
     {

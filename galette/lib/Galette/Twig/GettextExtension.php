@@ -56,8 +56,6 @@ class GettextExtension extends AbstractExtension
      *
      * @param string $string The string to translate
      * @param string $domain Translation domain. Default to galette
-     *
-     * @return string
      */
     public function __(
         string $string,
@@ -71,9 +69,6 @@ class GettextExtension extends AbstractExtension
      *
      * @param string $string The string to translate
      * @param string $domain Translation domain. Default to galette
-     *
-     * @return string
-     *
      */
     public function _T(// @phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
         string $string,
@@ -89,8 +84,6 @@ class GettextExtension extends AbstractExtension
      * @param string $plural   Plural string
      * @param int    $count    Count to determine singular/plural
      * @param string $domain   Translation domain. Default to galette
-     *
-     * @return string
      */
     public function _Tn(// @phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
         string $singular,
@@ -107,8 +100,6 @@ class GettextExtension extends AbstractExtension
      * @param string $context The context
      * @param string $string  The string to translate
      * @param string $domain  Translation domain. Default to galette
-     *
-     * @return string
      */
     public function _Tx(// @phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
         string $context,
@@ -126,8 +117,6 @@ class GettextExtension extends AbstractExtension
      * @param string $plural   Plural string
      * @param int    $count    Count to determine singular/plural
      * @param string $domain   Translation domain. Default to galette
-     *
-     * @return string
      */
     public function _Tnx(// @phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
         string $context,
