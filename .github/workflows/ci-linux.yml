@@ -105,7 +105,7 @@ jobs:
       - name: "Get Composer cache directory"
         if: env.skip != 'true'
         id: composer-cache
-        run: echo "dir=$(composer config -f galette/composer.json cache-files-dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$(composer config -f composer.json cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: "Cache Composer dependencies"
         if: env.skip != 'true'
@@ -187,9 +187,12 @@ jobs:
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
       - name: Upload code coverage (scrutinizer)
+        # Using the main composer file will fail because of limited php versions (thanks Laminas). Since ocular PHAR file is buggy, setting it in a specific directry sounds a good solution
         run: |
+          mkdir scrutinizer
+          cd scrutinizer
           composer require scrutinizer/ocular -W --ignore-platform-reqs
-          php vendor/bin/ocular code-coverage:upload --format=php-clover tests/clover.xml
+          php vendor/bin/ocular code-coverage:upload --format=php-clover ../tests/clover.xml
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
       - name: Upload code coverage (codecov)
@@ -269,7 +272,7 @@ jobs:
       - name: "Get Composer cache directory"
         if: env.skip != 'true'
         id: composer-cache
-        run: echo "dir=$(composer config -f galette/composer.json cache-files-dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$(composer config -f composer.json cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: "Cache Composer dependencies"
         if: env.skip != 'true'
@@ -343,7 +346,7 @@ jobs:
 
       - name: "Get Composer cache directory"
         id: composer-cache
-        run: echo "dir=$(composer config -f galette/composer.json cache-files-dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$(composer config -f composer.json cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v5
@@ -356,7 +359,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd galette
           composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader --ignore-platform-reqs
 
       - name: CS
@@ -377,7 +379,7 @@ jobs:
 
       - name: Check dependencies
         run: |
-          galette/vendor/bin/composer-dependency-analyser --composer-json galette/composer.json
+          galette/vendor/bin/composer-dependency-analyser --composer-json composer.json
 
       - name: PHPStan checks
         run: |

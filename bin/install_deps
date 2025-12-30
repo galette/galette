@@ -1,8 +1,6 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../galette"
-cd $DIR
 composer install --prefer-dist --no-progress --optimize-autoloader --ignore-platform-reqs
-cd ..
 npm ci --prefer-offline --no-audit
 if [[ ! -d $DIR/webroot/themes ]]; then
     npm run first-build

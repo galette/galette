@@ -88,6 +88,7 @@
         "galette/coding-standard": "^1.0"
     },
     "config": {
+        "vendor-dir": "galette/vendor/",
         "optimize-autoloader": true,
         "platform-check": false,
         "allow-plugins": {
@@ -96,7 +97,7 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "patch -d vendor/tecnickcom/tcpdf/ -p3 < ../patches/tcpdf-php81.patch"
+            "patch -d galette/vendor/tecnickcom/tcpdf/ -p3 < patches/tcpdf-php81.patch"
         ]
     }
 }

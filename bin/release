@@ -440,8 +440,8 @@ def add_libs(rel_name, galette_archive):
         'composer.lock',
         '.composer-require-checker.config.json',
         'semantic.json',
-        os.path.join('galette', 'composer.json'),
-        os.path.join('galette', 'composer.lock'),
+        'composer.json',
+        'composer.lock',
         os.path.join('galette', 'post_contribution_test.php')
     ]
     for td in todrop:
