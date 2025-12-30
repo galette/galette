@@ -34,8 +34,6 @@ class Entry extends TestCase
 {
     /**
      * Test entry
-     *
-     * @return void
      */
     public function testEntry(): void
     {

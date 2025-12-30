@@ -44,8 +44,6 @@ class GaletteApplication extends Application
 
     /**
      * Initialize application
-     *
-     * @return void
      */
     public function init(): void
     {

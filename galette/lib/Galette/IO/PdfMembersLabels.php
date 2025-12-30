@@ -54,8 +54,6 @@ class PdfMembersLabels extends Pdf
 
     /**
      * Initialize PDF
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -104,8 +102,6 @@ class PdfMembersLabels extends Pdf
      * Draw members cards
      *
      * @param array<Adherent> $members Members
-     *
-     * @return void
      */
     public function drawLabels(array $members): void
     {

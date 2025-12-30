@@ -39,8 +39,6 @@ class Translator extends ZTranslator //@phpstan-ignore class.extendsFinalByPhpDo
      * @param string  $message    String to check for
      * @param string  $textDomain Translation domain, defaults to "default"
      * @param ?string $locale     Locale, defaults to null
-     *
-     * @return bool
      */
     public function translationExists(string $message, string $textDomain = 'default', ?string $locale = null): bool
     {

@@ -51,8 +51,6 @@ class Picture extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -62,8 +60,6 @@ class Picture extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -74,8 +70,6 @@ class Picture extends TestCase
 
     /**
      * Test defaults after initialization
-     *
-     * @return void
      */
     public function testDefaults(): void
     {
@@ -102,8 +96,6 @@ class Picture extends TestCase
 
     /**
      * Test setters
-     *
-     * @return void
      */
     public function testSetters(): void
     {
@@ -120,8 +112,6 @@ class Picture extends TestCase
     /**
      * Test mimetype guess
      * FileInfo installed.
-     *
-     * @return void
      */
     public function testFileInfoMimeType(): void
     {
@@ -146,8 +136,6 @@ class Picture extends TestCase
 
     /**
      * Test storage
-     *
-     * @return void
      */
     public function testStore(): void
     {
@@ -188,8 +176,6 @@ class Picture extends TestCase
 
     /**
      * Test error messages
-     *
-     * @return void
      */
     public function testErrorMessages(): void
     {

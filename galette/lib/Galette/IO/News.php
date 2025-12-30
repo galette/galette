@@ -76,8 +76,6 @@ class News
 
     /**
      * Get data to cache
-     *
-     * @return string
      */
     protected function getDataTocache(): string
     {
@@ -90,8 +88,6 @@ class News
      * Called once cache has been loaded.
      *
      * @param mixed $contents Content from cache
-     *
-     * @return bool
      */
     protected function cacheLoaded(mixed $contents): bool
     {
@@ -113,8 +109,6 @@ class News
 
     /**
      * Complete path to cache file
-     *
-     * @return string
      */
     protected function getCacheFilename(): string
     {
@@ -127,8 +121,6 @@ class News
 
     /**
      * Parse feed
-     *
-     * @return void
      */
     private function parseFeed(): void
     {
@@ -209,8 +201,6 @@ class News
      * Get feed url, handle Galette website to check available langs
      *
      * @param string $url Requested URL
-     *
-     * @return string
      */
     public function getFeedURL(string $url): string
     {
@@ -246,8 +236,6 @@ class News
 
     /**
      * Check if allow_url_fopen is enabled
-     *
-     * @return bool
      */
     protected function allowURLFOpen(): bool
     {
@@ -256,8 +244,6 @@ class News
 
     /**
      * Ensure data to cache are present
-     *
-     * @return void
      */
     protected function prepareForCache(): void
     {

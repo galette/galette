@@ -37,8 +37,6 @@ class News extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -50,8 +48,6 @@ class News extends TestCase
 
     /**
      * Test news loading
-     *
-     * @return void
      */
     public function testLoadNews(): void
     {
@@ -65,8 +61,6 @@ class News extends TestCase
 
     /**
      * Test news loading
-     *
-     * @return void
      */
     public function testLoadRSSNews(): void
     {
@@ -89,8 +83,6 @@ class News extends TestCase
 
     /**
      * Test news caching
-     *
-     * @return void
      */
     public function testCacheNews(): void
     {
@@ -142,8 +134,6 @@ class News extends TestCase
 
     /**
      * Test news loading with allow_url_fopen off
-     *
-     * @return void
      */
     public function testLoadNewsWExeption(): void
     {

@@ -137,8 +137,6 @@ class SavedSearches
      * Count searches from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -183,8 +181,6 @@ class SavedSearches
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -197,8 +193,6 @@ class SavedSearches
      * @param int|array<int> $ids         Searches identifiers to delete
      * @param History        $hist        History
      * @param bool           $transaction True to begin a database transaction
-     *
-     * @return bool
      */
     public function remove(int|array $ids, History $hist, bool $transaction = true): bool
     {

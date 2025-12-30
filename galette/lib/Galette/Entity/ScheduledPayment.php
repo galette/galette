@@ -84,8 +84,6 @@ class ScheduledPayment
      * Load a scheduled payment from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return bool
      */
     public function load(int $id): bool
     {
@@ -115,8 +113,6 @@ class ScheduledPayment
      * Load scheduled payment from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -137,8 +133,6 @@ class ScheduledPayment
      * Check data
      *
      * @param array<string,mixed> $data Data
-     *
-     * @return bool
      */
     public function check(array $data): bool
     {
@@ -202,8 +196,6 @@ class ScheduledPayment
 
     /**
      * Store scheduled payment in database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -245,8 +237,6 @@ class ScheduledPayment
 
     /**
      * Remove current
-     *
-     * @return bool
      */
     public function remove(): bool
     {
@@ -272,8 +262,6 @@ class ScheduledPayment
 
     /**
      * Get identifier
-     *
-     * @return ?int
      */
     public function getId(): ?int
     {
@@ -282,8 +270,6 @@ class ScheduledPayment
 
     /**
      * Get contribution
-     *
-     * @return Contribution
      */
     public function getContribution(): Contribution
     {
@@ -294,8 +280,6 @@ class ScheduledPayment
      * Set contribution
      *
      * @param int|Contribution $contribution Contribution instance or id
-     *
-     * @return self
      */
     public function setContribution(int|Contribution $contribution): self
     {
@@ -323,8 +307,6 @@ class ScheduledPayment
 
     /**
      * Get payment type
-     *
-     * @return PaymentType
      */
     public function getPaymentType(): PaymentType
     {
@@ -337,8 +319,6 @@ class ScheduledPayment
      * Set payment type
      *
      * @param int|PaymentType $payment_type Payment type instance or id
-     *
-     * @return self
      */
     public function setPaymentType(int|PaymentType $payment_type): self
     {
@@ -368,8 +348,6 @@ class ScheduledPayment
      * Get creation date
      *
      * @param bool $formatted Get formatted date, or DateTime object
-     *
-     * @return string|DateTime|null
      */
     public function getCreationDate(bool $formatted = true): string|DateTime|null
     {
@@ -380,8 +358,6 @@ class ScheduledPayment
      * Set creation date
      *
      * @param string $creation_date Creation date
-     *
-     * @return self
      */
     public function setCreationDate(string $creation_date): self
     {
@@ -393,8 +369,6 @@ class ScheduledPayment
      * Get scheduled date
      *
      * @param bool $formatted Get formatted date, or DateTime object
-     *
-     * @return string|DateTime|null
      */
     public function getScheduledDate(bool $formatted = true): string|DateTime|null
     {
@@ -405,8 +379,6 @@ class ScheduledPayment
      * Set scheduled date
      *
      * @param string $scheduled_date Scheduled date
-     *
-     * @return self
      */
     public function setScheduledDate(string $scheduled_date): self
     {
@@ -416,8 +388,6 @@ class ScheduledPayment
 
     /**
      * Get amount
-     *
-     * @return float
      */
     public function getAmount(): ?float
     {
@@ -428,8 +398,6 @@ class ScheduledPayment
      * Set amount
      *
      * @param float $amount Amount
-     *
-     * @return self
      */
     public function setAmount(float $amount): self
     {
@@ -439,8 +407,6 @@ class ScheduledPayment
 
     /**
      * Is payment done?
-     *
-     * @return bool
      */
     public function isPaid(): bool
     {
@@ -451,8 +417,6 @@ class ScheduledPayment
      * Set paid
      *
      * @param bool $is_paid Paid status
-     *
-     * @return self
      */
     public function setPaid(bool $is_paid = true): self
     {
@@ -462,8 +426,6 @@ class ScheduledPayment
 
     /**
      * Is payment due?
-     *
-     * @return bool
      */
     public function isDue(): bool
     {
@@ -474,8 +436,6 @@ class ScheduledPayment
 
     /**
      * Get comment
-     *
-     * @return ?string
      */
     public function getComment(): ?string
     {
@@ -486,8 +446,6 @@ class ScheduledPayment
      * Set comment
      *
      * @param ?string $comment Comment
-     *
-     * @return self
      */
     public function setComment(?string $comment): self
     {
@@ -500,7 +458,6 @@ class ScheduledPayment
      *
      * @param int $id_cotis Contribution identifier
      *
-     * @return bool
      * @throws Throwable
      */
     public function isContributionHandled(int $id_cotis): bool
@@ -517,7 +474,6 @@ class ScheduledPayment
      *
      * @param int $id_cotis Contribution identifier
      *
-     * @return float
      * @throws Throwable
      */
     public function getAllocation(int $id_cotis): float
@@ -534,7 +490,6 @@ class ScheduledPayment
     /**
      * Get allocated amount for current contribution
      *
-     * @return float
      * @throws Throwable
      */
     public function getAllocated(): float
@@ -544,8 +499,6 @@ class ScheduledPayment
 
     /**
      * Get missing amount
-     *
-     * @return float
      */
     public function getMissingAmount(): float
     {
@@ -556,8 +509,6 @@ class ScheduledPayment
      * Is scheduled payment fully allocated?
      *
      * @param Contribution $contrib Contribution
-     *
-     * @return bool
      */
     public function isFullyAllocated(Contribution $contrib): bool
     {
@@ -618,8 +569,6 @@ class ScheduledPayment
 
     /**
      * Set fields, must populate $this->fields
-     *
-     * @return self
      */
     protected function setFields(): self
     {

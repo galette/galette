@@ -69,8 +69,6 @@ class CsvController extends AbstractController
      * @param Response $response PSR Response
      * @param string   $filepath File path on disk
      * @param string   $filename File name for output
-     *
-     * @return Response
      */
     protected function sendResponse(Response $response, string $filepath, string $filename): Response
     {
@@ -105,8 +103,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function export(Request $request, Response $response): Response
     {
@@ -137,8 +133,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function doExport(Request $request, Response $response): Response
     {
@@ -240,8 +234,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function import(Request $request, Response $response): Response
     {
@@ -267,8 +259,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function doImports(Request $request, Response $response): Response
     {
@@ -330,8 +320,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function uploadImportFile(Request $request, Response $response): Response
     {
@@ -368,8 +356,6 @@ class CsvController extends AbstractController
      * @param Response $response PSR Response
      * @param string   $file     File name
      * @param string   $type     File type
-     *
-     * @return Response
      */
     public function getFile(Request $request, Response $response, string $file, string $type): Response
     {
@@ -387,8 +373,6 @@ class CsvController extends AbstractController
      * @param Response $response PSR Response
      * @param string   $file     File name
      * @param string   $type     File type
-     *
-     * @return Response
      */
     public function confirmRemoveFile(
         Request $request,
@@ -434,8 +418,6 @@ class CsvController extends AbstractController
      * @param Response $response PSR Response
      * @param string   $file     File name
      * @param string   $type     File type
-     *
-     * @return Response
      */
     public function removeFile(Request $request, Response $response, string $file, string $type): Response
     {
@@ -495,8 +477,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function importModel(Request $request, Response $response): Response
     {
@@ -562,8 +542,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function getImportModel(Request $request, Response $response): Response
     {
@@ -607,8 +585,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function storeModel(Request $request, Response $response): Response
     {
@@ -639,8 +615,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function membersExport(Request $request, Response $response): Response
     {
@@ -663,8 +637,6 @@ class CsvController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $type     One of 'contributions' or 'transactions'
-     *
-     * @return Response
      */
     public function contributionsExport(Request $request, Response $response, string $type): Response
     {
@@ -693,8 +665,6 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function scheduledPaymentsExport(Request $request, Response $response): Response
     {

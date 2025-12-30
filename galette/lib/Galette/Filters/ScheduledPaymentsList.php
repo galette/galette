@@ -31,16 +31,16 @@ use Galette\Core\Pagination;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property ?string $start_date_filter
- * @property ?string $end_date_filter
- * @property int $date_field
- * @property ?int $payment_type_filter
+ * @property ?string   $start_date_filter
+ * @property ?string   $end_date_filter
+ * @property int       $date_field
+ * @property ?int      $payment_type_filter
  * @property int|false $from_contribution
- * @property string $rstart_date_filter
- * @property string $rend_date_filter
- * @property int[] $selected
- * @property ?int $member_filter
- * @property int $paid
+ * @property string    $rstart_date_filter
+ * @property string    $rend_date_filter
+ * @property int[]     $selected
+ * @property ?int      $member_filter
+ * @property int       $paid
  */
 
 class ScheduledPaymentsList extends Pagination
@@ -105,8 +105,6 @@ class ScheduledPaymentsList extends Pagination
 
     /**
      * Returns the field we want to default set order to
-     *
-     * @return int|string
      */
     protected function getDefaultOrder(): int|string
     {
@@ -117,8 +115,6 @@ class ScheduledPaymentsList extends Pagination
      * Reinit default parameters
      *
      * @param bool $ajax Called form an ajax query
-     *
-     * @return void
      */
     public function reinit(bool $ajax = false): void
     {
@@ -176,8 +172,6 @@ class ScheduledPaymentsList extends Pagination
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -189,8 +183,6 @@ class ScheduledPaymentsList extends Pagination
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

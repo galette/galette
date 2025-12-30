@@ -36,8 +36,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -56,8 +54,6 @@ class DocumentsController extends GaletteRoutingTestCase
      * Returns a fresh document instance (PDF status of the association)
      *
      * @param int $visibility Visibility of the document
-     *
-     * @return \Galette\Entity\Document
      */
     private function createStatusDocument(int $visibility = \Galette\Entity\FieldsConfig::ALL): \Galette\Entity\Document
     {
@@ -85,8 +81,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test documents list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -192,8 +186,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test documents list
-     *
-     * @return void
      */
     public function testPublicList(): void
     {
@@ -227,8 +219,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test documents add page
-     *
-     * @return void
      */
     public function testAddPage(): void
     {
@@ -250,8 +240,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test documents edit page
-     *
-     * @return void
      */
     public function testEditPage(): void
     {
@@ -298,8 +286,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test add document
-     *
-     * @return void
      */
     public function testAddDocument(): void
     {
@@ -345,8 +331,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test edit document
-     *
-     * @return void
      */
     public function testEditDocument(): void
     {
@@ -378,8 +362,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test remove document page
-     *
-     * @return void
      */
     public function testRemovePage(): void
     {
@@ -414,8 +396,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test delete document
-     *
-     * @return void
      */
     public function testDeleteDocument(): void
     {
@@ -451,8 +431,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test get document file
-     *
-     * @return void
      */
     public function testGetDocument(): void
     {
@@ -488,8 +466,6 @@ class DocumentsController extends GaletteRoutingTestCase
 
     /**
      * Test get document file
-     *
-     * @return void
      */
     public function testGetMissingDocument(): void
     {

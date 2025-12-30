@@ -72,8 +72,6 @@ trait Permissions
 
     /**
      * Get permission name
-     *
-     * @return string
      */
     public function getPermissionName(): string
     {
@@ -83,8 +81,6 @@ trait Permissions
 
     /**
      * Get current permissions
-     *
-     * @return int|null
      */
     public function getPermission(): ?int
     {

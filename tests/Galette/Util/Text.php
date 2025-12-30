@@ -59,8 +59,6 @@ class Text extends TestCase
      *
      * @param string $string   String to slugify
      * @param string $expected Expected result
-     *
-     * @return void
      */
     #[DataProvider('slugifyProvider')]
     public function testSlugify(string $string, string $expected): void
@@ -70,8 +68,6 @@ class Text extends TestCase
 
     /**
      * Test failing slugify
-     *
-     * @return void
      */
     public function testFailSlugify(): void
     {
@@ -81,8 +77,6 @@ class Text extends TestCase
 
     /**
      * Test getRandomString method
-     *
-     * @return void
      */
     public function testGetRandomString(): void
     {
@@ -92,8 +86,6 @@ class Text extends TestCase
 
     /**
      * Test truncateOnWords method
-     *
-     * @return void
      */
     public function testTruncateOnWords(): void
     {
@@ -188,8 +180,6 @@ class Text extends TestCase
      *
      * @param string $input    Input text
      * @param string $expected Expected result
-     *
-     * @return void
      */
     #[DataProvider('textConversionProvider')]
     public function testTextConversion(string $input, string $expected): void

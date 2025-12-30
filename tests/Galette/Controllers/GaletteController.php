@@ -37,8 +37,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -56,8 +54,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -72,8 +68,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test main route (redirections)
-     *
-     * @return void
      */
     public function testSlash(): void
     {
@@ -93,8 +87,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test system information route
-     *
-     * @return void
      */
     public function testSystemInformation(): void
     {
@@ -124,8 +116,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test dashboard route
-     *
-     * @return void
      */
     public function testDashboard(): void
     {
@@ -147,8 +137,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test preferences route
-     *
-     * @return void
      */
     public function testPreferences(): void
     {
@@ -178,8 +166,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test store preferences
-     *
-     * @return void
      */
     public function testStorePreferences(): void
     {
@@ -213,8 +199,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test store logo
-     *
-     * @return void
      */
     public function testStoreLogo(): void
     {
@@ -258,8 +242,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test store print logo
-     *
-     * @return void
      */
     public function testStorePrintLogo(): void
     {
@@ -304,8 +286,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test email test route
-     *
-     * @return void
      */
     public function testTestEmail(): void
     {
@@ -357,8 +337,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test charts route
-     *
-     * @return void
      */
     public function testCharts(): void
     {
@@ -379,8 +357,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test core fields configuration route
-     *
-     * @return void
      */
     public function testCoreFieldsConfiguration(): void
     {
@@ -401,8 +377,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test core fields configuration storage route
-     *
-     * @return void
      */
     public function testStoreCoreFieldsConfiguration(): void
     {
@@ -471,8 +445,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test core list configuration route
-     *
-     * @return void
      */
     public function testConfigureListFields(): void
     {
@@ -493,8 +465,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test core list configuration storage route
-     *
-     * @return void
      */
     public function testStoreConfigureListFields(): void
     {
@@ -571,8 +541,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test reminders route
-     *
-     * @return void
      */
     public function testReminders(): void
     {
@@ -609,8 +577,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test do reminders route
-     *
-     * @return void
      */
     public function testDoReminders(): void
     {
@@ -717,8 +683,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test filter reminders route
-     *
-     * @return void
      */
     public function testFilterReminders(): void
     {
@@ -738,8 +702,6 @@ class GaletteController extends GaletteRoutingTestCase
 
     /**
      * Test direct link route
-     *
-     * @return void
      */
     public function testDocumentLink(): void
     {
@@ -776,8 +738,6 @@ class GaletteController extends GaletteRoutingTestCase
      * Test empty route (default favicon.ico, robots.txt, ...)
      *
      * @param string $url URL to test
-     *
-     * @return void
      */
     #[DataProvider('emptyRoutesProvider')]
     public function testEmptyRoute(string $url): void

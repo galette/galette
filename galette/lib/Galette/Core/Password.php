@@ -64,8 +64,6 @@ class Password extends AbstractPassword
      * Remove all old password entries
      *
      * @param int $id_adh Member identifier
-     *
-     * @return bool
      */
     private function removeOldEntries(int $id_adh): bool
     {
@@ -93,8 +91,6 @@ class Password extends AbstractPassword
      * Generates a new password for specified member
      *
      * @param int $id_adh Member identifier
-     *
-     * @return bool
      */
     public function generateNewPassword(int $id_adh): bool
     {
@@ -135,8 +131,6 @@ class Password extends AbstractPassword
 
     /**
      * Remove expired passwords queries (older than 24 hours)
-     *
-     * @return bool
      */
     public function cleanExpired(): bool
     {
@@ -202,8 +196,6 @@ class Password extends AbstractPassword
      * Remove a hash that has been used (ie. once password has been updated)
      *
      * @param string $hash hash
-     *
-     * @return bool
      */
     public function removeHash(string $hash): bool
     {

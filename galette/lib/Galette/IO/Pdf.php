@@ -99,8 +99,6 @@ class Pdf extends TCPDF
 
     /**
      * Initialize PDF
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -110,8 +108,6 @@ class Pdf extends TCPDF
 
     /**
      * No header
-     *
-     * @return void
      */
     protected function setNoHeader(): void
     {
@@ -121,8 +117,6 @@ class Pdf extends TCPDF
 
     /**
      * No footer
-     *
-     * @return void
      */
     protected function setNoFooter(): void
     {
@@ -133,8 +127,6 @@ class Pdf extends TCPDF
 
     /**
      * Calculate footer height
-     *
-     * @return void
      */
     private function calculateFooterHeight(): void
     {
@@ -147,8 +139,6 @@ class Pdf extends TCPDF
 
     /**
      * Set show pagination
-     *
-     * @return void
      */
     public function showPagination(): void
     {
@@ -166,10 +156,6 @@ class Pdf extends TCPDF
      * 2017-02-14 :: Johan Cwiklinski : use slim's flash message; do not rely on session for redirect
      *
      * @param string $msg The error message
-     *
-     * @return void
-     * @access public
-     * @since 1.0
      */
     public function Error(mixed $msg): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -194,7 +180,7 @@ class Pdf extends TCPDF
      * Converts color from HTML format #RRVVBB
      * to RGB 3 colors array.
      *
-     *  @param string $hex6 7 chars string #RRVVBB
+     * @param string $hex6 7 chars string #RRVVBB
      *
      * @return array<string,float|int>
      */
@@ -209,8 +195,6 @@ class Pdf extends TCPDF
 
     /**
      * Draws PDF page Header
-     *
-     * @return void
      */
     public function Header(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -221,8 +205,6 @@ class Pdf extends TCPDF
      * Draws PDF page footer
      *
      * @param ?TCPDF $pdf PDF instance
-     *
-     * @return void
      */
     public function Footer(?TCPDF $pdf = null): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -263,8 +245,6 @@ class Pdf extends TCPDF
      * Draws PDF page header
      *
      * @param ?string $title Additional title to display just after logo
-     *
-     * @return void
      */
     public function PageHeader(?string $title = null): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -279,8 +259,6 @@ class Pdf extends TCPDF
      * Draws models PDF page header
      *
      * @param ?string $title Additional title to display just after logo
-     *
-     * @return void
      */
     protected function modelPageHeader(?string $title = null): void
     {
@@ -326,8 +304,6 @@ class Pdf extends TCPDF
      * Draws standard PDF page header
      *
      * @param ?string $title Additional title to display just after logo
-     *
-     * @return void
      */
     protected function standardPageHeader(?string $title = null): void
     {
@@ -382,8 +358,6 @@ class Pdf extends TCPDF
 
     /**
      * Draws body from model
-     *
-     * @return void
      */
     public function PageBody(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -403,8 +377,6 @@ class Pdf extends TCPDF
      * @param int     $fontsize  Font size
      * @param string  $fontstyle Font style (defaults to '')
      * @param ?string $fontname  Font name (defaults to static::FONT)
-     *
-     * @return void
      */
     protected function fixSize(
         string $text,
@@ -428,8 +400,6 @@ class Pdf extends TCPDF
      *
      * @param string $str    Original string
      * @param int    $length Max length
-     *
-     * @return string
      */
     protected function cut(string $str, int $length): string
     {
@@ -448,8 +418,6 @@ class Pdf extends TCPDF
      *
      * @param string $str    Original string
      * @param int    $length Max length
-     *
-     * @return string
      */
     protected function stretchHead(string $str, int $length): string
     {
@@ -465,8 +433,6 @@ class Pdf extends TCPDF
 
     /**
      * Get filename
-     *
-     * @return string
      */
     public function getFilename(): string
     {
@@ -475,8 +441,6 @@ class Pdf extends TCPDF
 
     /**
      * Download PDF from browser
-     *
-     * @return string
      */
     public function download(): string
     {

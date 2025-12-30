@@ -46,8 +46,6 @@ class Entry
 
     /**
      * Get entry title
-     *
-     * @return string
      */
     public function getTitle(): string
     {

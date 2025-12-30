@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace GaletteTests\Entity;
 
 use PHPUnit\Framework\TestCase;
-use Laminas\Db\Adapter\Adapter;
 
 /**
  * Status tests
@@ -38,8 +37,6 @@ class Title extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -48,8 +45,6 @@ class Title extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -61,8 +56,6 @@ class Title extends TestCase
 
     /**
      * Delete status
-     *
-     * @return void
      */
     private function deleteTitle(): void
     {
@@ -81,8 +74,6 @@ class Title extends TestCase
 
     /**
      * Test title
-     *
-     * @return void
      */
     public function testTitle(): void
     {

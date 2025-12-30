@@ -36,8 +36,6 @@ interface AccessManagementInterface
      * Can current logged-in user display object?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canShow(Login $login): bool;
 
@@ -45,8 +43,6 @@ interface AccessManagementInterface
      * Can current logged-in user create object?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canCreate(Login $login): bool;
 
@@ -54,8 +50,6 @@ interface AccessManagementInterface
      * Can current logged-in user edit object?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canEdit(Login $login): bool;
 
@@ -63,8 +57,6 @@ interface AccessManagementInterface
      * Can current logged-in user delete object?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canDelete(Login $login): bool;
 }

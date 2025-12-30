@@ -45,8 +45,6 @@ class PluginsList extends AbstractCommand
 {
     /**
      * Configure command
-     *
-     * @return void
      */
     protected function configure(): void
     {
@@ -59,11 +57,6 @@ class PluginsList extends AbstractCommand
 
     /**
      * Command execution
-     *
-     * @param InputInterface  $input  Input interface
-     * @param OutputInterface $output Output interface
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -102,8 +95,6 @@ class PluginsList extends AbstractCommand
      * @param InputInterface $input       Console input
      * @param SymfonyStyle   $io          Console style
      * @param string[]       $definitions Definitions (for simple output)
-     *
-     * @return void
      */
     private function listEnabledPlugins(
         Plugins $plugins,
@@ -137,8 +128,6 @@ class PluginsList extends AbstractCommand
      * @param InputInterface $input       Console input
      * @param SymfonyStyle   $io          Console style
      * @param string[]       $definitions Definitions (for simple output)
-     *
-     * @return void
      */
     private function listDisabledPlugins(
         Plugins $plugins,

@@ -148,8 +148,6 @@ class Transactions
      * Count transactions from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -216,8 +214,6 @@ class Transactions
      * Builds where clause, for filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildWhereClause(Select $select): void
     {
@@ -335,8 +331,6 @@ class Transactions
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -348,8 +342,6 @@ class Transactions
      *
      * @param array<int>|int $ids  Transactions identifiers to delete
      * @param History        $hist History
-     *
-     * @return bool
      */
     public function remove(array|int $ids, History $hist): bool
     {

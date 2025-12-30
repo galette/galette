@@ -263,8 +263,6 @@ class Members
      * Remove specified members
      *
      * @param int|array<int> $ids Members identifiers to delete
-     *
-     * @return bool
      */
     public function removeMembers(int|array $ids): bool
     {
@@ -910,8 +908,6 @@ class Members
      * Count members from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -965,8 +961,6 @@ class Members
      * @param Select         $select Original select
      * @param ?array<string> $fields Fields list to ensure ORDER clause
      *                               references selected fields. Optional.
-     *
-     * @return Select
      */
     private function buildOrderClause(Select $select, ?array $fields = null): Select
     {
@@ -1034,8 +1028,6 @@ class Members
      *
      * @param string         $field_name Field name to order by
      * @param ?array<string> $fields     SELECTE'ed fields
-     *
-     * @return bool
      */
     private function canOrderBy(string $field_name, ?array $fields): bool
     {
@@ -1057,8 +1049,6 @@ class Members
      * Builds where clause, for filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildWhereClause(Select $select): void
     {
@@ -1250,8 +1240,6 @@ class Members
      * Builds where clause, for advanced filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildAdvancedWhereClause(Select $select): void
     {
@@ -1567,8 +1555,6 @@ class Members
      *
      * If those are not required, or if a file has been imported
      * (from a CSV file for example), we fill here random values.
-     *
-     * @return bool
      */
     public function emptyLogins(): bool
     {
@@ -1764,8 +1750,6 @@ class Members
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -1807,8 +1791,6 @@ class Members
 
     /**
      * Get current filters
-     *
-     * @return MembersList|AdvancedMembersList
      */
     public function getFilters(): MembersList|AdvancedMembersList
     {

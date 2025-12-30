@@ -38,8 +38,6 @@ class Titles extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -52,8 +50,6 @@ class Titles extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -63,8 +59,6 @@ class Titles extends GaletteTestCase
 
     /**
      * Delete payment type
-     *
-     * @return void
      */
     private function deleteTitles(): void
     {
@@ -83,8 +77,6 @@ class Titles extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {

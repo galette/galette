@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace GaletteTests\Filters;
 
-use Galette\Enums\SQLOrder;
 use Galette\GaletteTestCase;
 
 /**
@@ -37,8 +36,6 @@ class HistoryList extends GaletteTestCase
      * Test filter defaults values
      *
      * @param \Galette\Filters\HistoryList $filters Filters instance
-     *
-     * @return void
      */
     protected function testDefaults(\Galette\Filters\HistoryList $filters): void
     {
@@ -52,8 +49,6 @@ class HistoryList extends GaletteTestCase
 
     /**
      * Test creation
-     *
-     * @return void
      */
     public function testCreate(): void
     {
@@ -112,8 +107,6 @@ class HistoryList extends GaletteTestCase
 
     /**
      * Test localized date in filter
-     *
-     * @return void
      */
     public function testLocalizedDates(): void
     {

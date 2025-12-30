@@ -36,12 +36,12 @@ use function Safe\preg_match;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $current_page
- * @property string $orderby
+ * @property int      $current_page
+ * @property string   $orderby
  * @property SQLOrder $ordered
- * @property int $show
- * @property int $pages
- * @property int $counter
+ * @property int      $show
+ * @property int      $pages
+ * @property int      $counter
  */
 
 abstract class Pagination
@@ -77,15 +77,11 @@ abstract class Pagination
 
     /**
      * Returns the field we want to default set order to
-     *
-     * @return int|string
      */
     abstract protected function getDefaultOrder(): int|string;
 
     /**
      * Return the default direction for ordering
-     *
-     * @return SQLOrder
      */
     protected function getDefaultDirection(): SQLOrder
     {
@@ -94,8 +90,6 @@ abstract class Pagination
 
     /**
      * Reinit default parameters
-     *
-     * @return void
      */
     public function reinit(): void
     {
@@ -109,8 +103,6 @@ abstract class Pagination
 
     /**
      * Invert sort order
-     *
-     * @return void
      */
     public function invertorder(): void
     {
@@ -125,8 +117,6 @@ abstract class Pagination
 
     /**
      * Get current sort direction
-     *
-     * @return string
      */
     public function getDirection(): string
     {
@@ -137,8 +127,6 @@ abstract class Pagination
      * Set sort direction
      *
      * @param SQLOrder|string|null $direction Order direction
-     *
-     * @return self
      */
     public function setDirection(SQLOrder|string|null $direction): self
     {
@@ -165,8 +153,6 @@ abstract class Pagination
      * Add limits so we retrieve only relavant rows
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     public function setLimits(Select $select): void
     {
@@ -182,8 +168,6 @@ abstract class Pagination
      * Set counter
      *
      * @param int $c Count
-     *
-     * @return void
      */
     public function setCounter(int $c): void
     {
@@ -193,8 +177,6 @@ abstract class Pagination
 
     /**
      * Update or set pages count
-     *
-     * @return void
      */
     protected function countPages(): void
     {
@@ -221,8 +203,6 @@ abstract class Pagination
      * @param RouteParser $routeparser Application instance
      * @param Twig        $view        View instance
      * @param bool        $restricted  Do not permit displaying all
-     *
-     * @return void
      */
     public function setViewPagination(RouteParser $routeparser, Twig $view, bool $restricted = true): void
     {
@@ -317,8 +297,6 @@ abstract class Pagination
      * @param string $url     URL the link to point on
      * @param string $title   Link's title
      * @param bool   $current Is current page
-     *
-     * @return string
      */
     private function getLink(string $content, string $url, string $title, bool $current = false): string
     {
@@ -332,8 +310,6 @@ abstract class Pagination
      * Build href
      *
      * @param int $page Page
-     *
-     * @return string
      */
     protected function getHref(int $page): string
     {
@@ -389,8 +365,6 @@ abstract class Pagination
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -405,8 +379,6 @@ abstract class Pagination
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

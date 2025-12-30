@@ -52,13 +52,13 @@ use function Safe\preg_replace;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property Adapter $db
- * @property Sql $sql
- * @property DriverInterface $driver
+ * @property Adapter            $db
+ * @property Sql                $sql
+ * @property DriverInterface    $driver
  * @property AbstractConnection $connection
- * @property PlatformInterface $platform
- * @property string $query_string
- * @property string $type_db
+ * @property PlatformInterface  $platform
+ * @property string             $query_string
+ * @property string             $type_db
  */
 class Db
 {
@@ -141,8 +141,6 @@ class Db
 
     /**
      * Do database connection
-     *
-     * @return void
      */
     private function doConnection(): void
     {
@@ -172,8 +170,6 @@ class Db
      * Connect again to the database on wakeup
      *
      * @param array<string, mixed> $data Date to unserialize
-     *
-     * @return void
      */
     public function __unserialize(array $data): void
     {
@@ -187,9 +183,7 @@ class Db
      *
      * @param bool $check_table Check if table exists, defaults to false
      *
-     * @return string
-     *
-     * @throw LogicException
+     * @throws LogicException
      */
     public function getDbVersion(bool $check_table = false): string
     {
@@ -224,8 +218,6 @@ class Db
 
     /**
      * Check if database version suits our needs
-     *
-     * @return bool
      */
     public function checkDbVersion(): bool
     {
@@ -248,8 +240,6 @@ class Db
      * Perform a select query on the whole table
      *
      * @param string $table Table name
-     *
-     * @return ResultSet
      */
     public function selectAll(string $table): ResultSet
     {
@@ -268,8 +258,6 @@ class Db
      * @param ?string $host which host we want to connect to
      * @param ?string $port which tcp port we want to connect to
      * @param ?string $db   database name
-     *
-     * @return bool
      *
      * @throws Exception|Throwable
      */
@@ -316,8 +304,6 @@ class Db
 
     /**
      * Drop test table if it exists, so we can make all checks.
-     *
-     * @return void
      */
     public function dropTestTable(): void
     {
@@ -528,8 +514,6 @@ class Db
      * Does a given table exists?
      *
      * @param string $name Table name
-     *
-     * @return bool
      */
     public function tableExists(string $name): bool
     {
@@ -565,8 +549,6 @@ class Db
      *
      * @param ?string $prefix       Specified table prefix
      * @param bool    $content_only Proceed only content (no table conversion)
-     *
-     * @return void
      */
     public function convertToUTF(?string $prefix = null, bool $content_only = false): void
     {
@@ -624,8 +606,6 @@ class Db
      *
      * @param string $prefix Specified table prefix
      * @param string $table  the table we want to convert datas from
-     *
-     * @return void
      */
     private function convertContentToUTF(string $prefix, string $table): void
     {
@@ -716,8 +696,6 @@ class Db
 
     /**
      * Is current database using Postgresql?
-     *
-     * @return bool
      */
     public function isPostgres(): bool
     {
@@ -729,8 +707,6 @@ class Db
      *
      * @param string  $table Table name, without prefix
      * @param ?string $alias Tables alias, optional
-     *
-     * @return Select
      */
     public function select(string $table, ?string $alias = null): Select
     {
@@ -752,8 +728,6 @@ class Db
      * Instanciate an insert query
      *
      * @param string $table Table name, without prefix
-     *
-     * @return Insert
      */
     public function insert(string $table): Insert
     {
@@ -766,8 +740,6 @@ class Db
      * Instanciate an update query
      *
      * @param string $table Table name, without prefix
-     *
-     * @return Update
      */
     public function update(string $table): Update
     {
@@ -780,8 +752,6 @@ class Db
      * Instanciate a delete query
      *
      * @param string $table Table name, without prefix
-     *
-     * @return Delete
      */
     public function delete(string $table): Delete
     {
@@ -795,7 +765,6 @@ class Db
      *
      * @param SqlInterface $sql SQL object
      *
-     * @return ResultSet|Result
      * @throws Throwable
      */
     public function execute(SqlInterface $sql): ResultSet|Result
@@ -829,7 +798,6 @@ class Db
      *
      * @param string $name name of the variable we want to retrieve
      *
-     * @return mixed
      * @throws RuntimeException
      */
     public function __get(string $name): mixed
@@ -851,8 +819,6 @@ class Db
      * Required for twig to access properties via __get
      *
      * @param string $name name of the variable we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -921,8 +887,6 @@ class Db
      * @param string $table    Table name
      * @param string $pkcol    Primary key column name
      * @param int    $expected Expected sequence value
-     *
-     * @return void
      */
     public function handleSequence(string $table, string $pkcol, int $expected): void
     {
@@ -951,8 +915,6 @@ class Db
      * @param string $table    Table name
      * @param string $pkcol    Primary key column name
      * @param bool   $prefixed Whether to prefix the sequence name
-     *
-     * @return string
      */
     public function getSequenceName(string $table, string $pkcol, bool $prefixed = false): string
     {
@@ -969,8 +931,6 @@ class Db
      *
      * @param SqlInterface $sql       SQL object
      * @param Throwable    $exception Exception to check
-     *
-     * @return bool
      */
     public function isDuplicateException(SqlInterface $sql, Throwable $exception): bool
     {
@@ -986,8 +946,6 @@ class Db
      * Check if current exception is related to a remaining foreign key
      *
      * @param Throwable $exception Exception to check
-     *
-     * @return bool
      */
     public function isForeignKeyException(Throwable $exception): bool
     {
@@ -1004,8 +962,6 @@ class Db
      *
      * @param string $table   Table name, without prefix
      * @param bool   $maymiss Whether the table can be missing, defaults to false
-     *
-     * @return void
      */
     public function drop(string $table, bool $maymiss = false): void
     {
@@ -1024,8 +980,6 @@ class Db
      * Log queries in specific file
      *
      * @param string $query Query to add in logs
-     *
-     * @return void
      */
     protected function log(string $query): void
     {
@@ -1039,8 +993,6 @@ class Db
      * Get last generated value
      *
      * @param object $entity Entity instance
-     *
-     * @return int
      */
     public function getLastGeneratedValue(object $entity): int
     {
@@ -1071,8 +1023,6 @@ class Db
 
     /**
      * Is current database engine supported?
-     *
-     * @return bool
      */
     public function isEngineSUpported(): bool
     {
@@ -1090,8 +1040,6 @@ class Db
 
     /**
      * Get not supported database version message
-     *
-     * @return string
      */
     public function getUnsupportedMessage(): string
     {

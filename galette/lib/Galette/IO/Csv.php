@@ -125,8 +125,6 @@ abstract class Csv
      * Remove existing CSV file
      *
      * @param string $name File name
-     *
-     * @return bool
      */
     public function remove(string $name): bool
     {
@@ -171,8 +169,6 @@ abstract class Csv
      * Add an error
      *
      * @param string $msg Error message
-     *
-     * @return void
      */
     public function addError(string $msg): void
     {
@@ -196,8 +192,6 @@ abstract class Csv
 
     /**
      * Reset errors
-     *
-     * @return void
      */
     protected function resetErrors(): void
     {

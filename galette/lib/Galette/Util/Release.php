@@ -59,8 +59,6 @@ class Release
 
     /**
      * Set ups Guzzle client
-     *
-     * @return Client
      */
     public function setupClient(): Client
     {
@@ -81,8 +79,6 @@ class Release
 
     /**
      * Get the latest release
-     *
-     * @return ?string
      */
     public function getLatestRelease(): ?string
     {
@@ -98,8 +94,6 @@ class Release
 
     /**
      * Get the latest release
-     *
-     * @return ?string
      */
     public function findLatestRelease(): ?string
     {
@@ -143,8 +137,6 @@ class Release
 
     /**
      * Check if a new release is available
-     *
-     * @return bool
      */
     public function checkNewRelease(): bool
     {
@@ -164,8 +156,6 @@ class Release
 
     /**
      * Get the current release
-     *
-     * @return string
      */
     public function getCurrentRelease(): string
     {
@@ -174,8 +164,6 @@ class Release
 
     /**
      * Get the URL to download releases
-     *
-     * @return string
      */
     public function getReleasesURL(): string
     {
@@ -184,8 +172,6 @@ class Release
 
     /**
      * Get data to cache
-     *
-     * @return string
      */
     protected function getDataTocache(): string
     {
@@ -196,8 +182,6 @@ class Release
      * Called once cache has been loaded.
      *
      * @param mixed $content Content from cache
-     *
-     * @return bool
      */
     protected function cacheLoaded(mixed $content): bool
     {
@@ -211,8 +195,6 @@ class Release
 
     /**
      * Complete path to cache file
-     *
-     * @return string
      */
     protected function getCacheFilename(): string
     {
@@ -221,8 +203,6 @@ class Release
 
     /**
      * Ensure data to cache are present
-     *
-     * @return void
      */
     protected function prepareForCache(): void
     {

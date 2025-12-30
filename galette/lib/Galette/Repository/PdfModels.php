@@ -67,8 +67,6 @@ class PdfModels extends Repository
      * Add default models in database
      *
      * @param bool $check_first Check first if it seems initialized
-     *
-     * @return bool
      */
     public function installInit(bool $check_first = true): bool
     {
@@ -122,8 +120,6 @@ class PdfModels extends Repository
 
     /**
      * Checks for missing texts in the database
-     *
-     * @return bool
      */
     protected function checkUpdate(): bool
     {
@@ -180,8 +176,6 @@ class PdfModels extends Repository
      *
      * @param string              $table  Table name
      * @param array<string,mixed> $values Values to insert
-     *
-     * @return void
      */
     private function insert(string $table, array $values): void
     {

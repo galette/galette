@@ -146,8 +146,6 @@ class Picture
      * "Magic" function called on unserialize
      *
      * @param array<string, mixed> $data Data to unserialize
-     *
-     * @return void
      */
     public function __unserialize(array $data): void
     {
@@ -277,8 +275,6 @@ class Picture
 
     /**
      * Gets the default picture to show, anyway
-     *
-     * @return void
      */
     protected function getDefaultPicture(): void
     {
@@ -290,8 +286,6 @@ class Picture
 
     /**
      * Set picture sizes
-     *
-     * @return void
      */
     private function setSizes(): void
     {
@@ -316,8 +310,6 @@ class Picture
 
     /**
      * Get image file contents in stdOut
-     *
-     * @return void
      */
     public function getContents(): void
     {
@@ -437,8 +429,6 @@ class Picture
      * @param string                  $key           Key to look for in uploaded files
      * @param callable|null           $callback      Callback to use for storing the file. If null, will use $this->storeFile()
      * @param ?array<string,mixed>    $cropping      Cropping properties
-     *
-     * @return bool
      */
     public function upload(array $request_files, string $key, ?callable $callback = null, ?array $cropping = null): bool
     {
@@ -471,8 +461,6 @@ class Picture
 
     /**
      * Build destination path
-     *
-     * @return string
      */
     protected function buildDestPath(): string
     {
@@ -483,8 +471,6 @@ class Picture
      * Get file mime type
      *
      * @param string $file File
-     *
-     * @return string
      */
     public static function getMimeType(string $file): string
     {
@@ -615,8 +601,6 @@ class Picture
      * Check for missing images in database
      *
      * @param Db $zdb Database instance
-     *
-     * @return void
      */
     public function missingInDb(Db $zdb): void
     {
@@ -705,8 +689,6 @@ class Picture
      * @param ?string               $dest     The destination image.
      *                                        If null, we'll use the source image. Defaults to null
      * @param ?array<string, mixed> $cropping Cropping properties
-     *
-     * @return bool
      */
     private function resizeImage(string $source, string $ext, ?string $dest = null, ?array $cropping = null): bool
     {
@@ -934,8 +916,6 @@ class Picture
 
     /**
      * Returns current file format
-     *
-     * @return string
      */
     public function getFormat(): string
     {
@@ -964,8 +944,6 @@ class Picture
 
     /**
      * Returns current mime type
-     *
-     * @return string
      */
     public function getMime(): string
     {

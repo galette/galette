@@ -67,8 +67,6 @@ class ScheduledPaymentsCsv extends CsvOut
      * Export members CSV
      *
      * @param ScheduledPaymentsList $filters Current filters
-     *
-     * @return void
      */
     public function exportScheduledPayments(ScheduledPaymentsList $filters): void
     {
@@ -140,8 +138,6 @@ class ScheduledPaymentsCsv extends CsvOut
 
     /**
      * Get file path on disk
-     *
-     * @return string
      */
     public function getPath(): string
     {
@@ -150,8 +146,6 @@ class ScheduledPaymentsCsv extends CsvOut
 
     /**
      * Get file name
-     *
-     * @return string
      */
     public function getFileName(): string
     {

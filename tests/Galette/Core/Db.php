@@ -37,8 +37,6 @@ class Db extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -47,8 +45,6 @@ class Db extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -72,8 +68,6 @@ class Db extends TestCase
 
     /**
      * Test constructor
-     *
-     * @return void
      */
     public function testConstructor(): void
     {
@@ -112,8 +106,6 @@ class Db extends TestCase
 
     /**
      * Test database connectivity
-     *
-     * @return void
      */
     public function testConnectivity(): void
     {
@@ -130,8 +122,6 @@ class Db extends TestCase
 
     /**
      * Test database grants
-     *
-     * @return void
      */
     public function testGrant(): void
     {
@@ -158,8 +148,6 @@ class Db extends TestCase
 
     /**
      * Test database grants that throws an exception
-     *
-     * @return void
      */
     public function testGrantWException(): void
     {
@@ -283,8 +271,6 @@ class Db extends TestCase
 
     /**
      * Is database Postgresql powered?
-     *
-     * @return void
      */
     public function testIsPostgres(): void
     {
@@ -298,8 +284,6 @@ class Db extends TestCase
 
     /**
      * Test getters
-     *
-     * @return void
      */
     public function testGetters(): void
     {
@@ -329,8 +313,6 @@ class Db extends TestCase
 
     /**
      * Test getters with exception
-     *
-     * @return void
      */
     public function testGetterWException(): void
     {
@@ -340,8 +322,6 @@ class Db extends TestCase
 
     /**
      * Test select
-     *
-     * @return void
      */
     public function testSelect(): void
     {
@@ -352,12 +332,12 @@ class Db extends TestCase
 
         $query = $this->db->query_string;
 
-        $expected = 'SELECT "p".* FROM "galette_preferences" AS "p" ' .
-            'WHERE "p"."nom_pref" = \'pref_nom\'';
+        $expected = 'SELECT "p".* FROM "galette_preferences" AS "p" '
+            . 'WHERE "p"."nom_pref" = \'pref_nom\'';
 
         if (TYPE_DB === 'mysql') {
-            $expected = 'SELECT `p`.* FROM `galette_preferences` AS `p` ' .
-                'WHERE `p`.`nom_pref` = \'pref_nom\'';
+            $expected = 'SELECT `p`.* FROM `galette_preferences` AS `p` '
+                . 'WHERE `p`.`nom_pref` = \'pref_nom\'';
         }
 
         $this->assertSame($expected, $query);
@@ -365,8 +345,6 @@ class Db extends TestCase
 
     /**
      * Test selectAll
-     *
-     * @return void
      */
     public function testSelectAll(): void
     {
@@ -376,8 +354,6 @@ class Db extends TestCase
 
     /**
      * Test insert
-     *
-     * @return void
      */
     public function testInsert(): void
     {
@@ -404,8 +380,6 @@ class Db extends TestCase
 
     /**
      * Test update
-     *
-     * @return void
      */
     public function testUpdate(): void
     {
@@ -446,8 +420,6 @@ class Db extends TestCase
 
     /**
      * Test delete
-     *
-     * @return void
      */
     public function testDelete(): void
     {
@@ -478,8 +450,6 @@ class Db extends TestCase
 
     /**
      * Test database version
-     *
-     * @return void
      */
     public function testDbVersion(): void
     {
@@ -492,8 +462,6 @@ class Db extends TestCase
 
     /**
      * Test database version that throws an exception
-     *
-     * @return void
      */
     public function testDbVersionWException(): void
     {
@@ -519,8 +487,6 @@ class Db extends TestCase
 
     /**
      * Test get columns method
-     *
-     * @return void
      */
     public function testGetColumns(): void
     {
@@ -547,8 +513,6 @@ class Db extends TestCase
      * Test tables count
      *
      * this test will fail if some plugins tables are present
-     *
-     * @return void
      */
     public function testTables(): void
     {
@@ -601,8 +565,6 @@ class Db extends TestCase
 
     /**
      * Test table exists method
-     *
-     * @return void
      */
     public function testTableExists(): void
     {
@@ -612,8 +574,6 @@ class Db extends TestCase
 
     /**
      * Test UTF conversion, for MySQL only
-     *
-     * @return void
      */
     public function testConvertToUtf(): void
     {
@@ -623,24 +583,20 @@ class Db extends TestCase
 
     /**
      * Test get platform
-     *
-     * @return void
      */
     public function testGetPlatform(): void
     {
         $quoted = $this->db->platform->quoteValue('somethin\' to "quote"');
 
-        $expected = ($this->db->isPostgres()) ?
-            "'somethin'' to \"quote\"'" :
-            "'somethin\\' to \\\"quote\\\"'";
+        $expected = ($this->db->isPostgres())
+            ? "'somethin'' to \"quote\"'"
+            : "'somethin\\' to \\\"quote\\\"'";
 
         $this->assertSame($expected, $quoted);
     }
 
     /**
      * Test execute Method
-     *
-     * @return void
      */
     public function testExecute(): void
     {
@@ -653,8 +609,6 @@ class Db extends TestCase
 
     /**
      * Test execute Method
-     *
-     * @return void
      */
     public function testExecuteWException(): void
     {
@@ -677,8 +631,6 @@ class Db extends TestCase
 
     /**
      * Test serialization
-     *
-     * @return void
      */
     public function testSerialization(): void
     {
@@ -692,8 +644,6 @@ class Db extends TestCase
 
     /**
      * Test getSequenceName
-     *
-     * @return void
      */
     public function testSequenceName(): void
     {
@@ -704,8 +654,6 @@ class Db extends TestCase
 
     /**
      * Test isset
-     *
-     * @return void
      */
     public function testIsset(): void
     {
@@ -717,13 +665,11 @@ class Db extends TestCase
 
     /**
      * Test supported engine
-     *
-     * @return void
      */
     public function testSupportedEngine(): void
     {
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->onlyMethods(['getInfos', 'isPostgres'])
             ->getMock();
 
         $zdb->method('isPostgres')->willReturn(false);
@@ -736,7 +682,7 @@ class Db extends TestCase
         $this->assertTrue($zdb->isEngineSUpported());
 
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->onlyMethods(['getInfos', 'isPostgres'])
             ->getMock();
 
         $zdb->method('isPostgres')->willReturn(false);
@@ -753,7 +699,7 @@ class Db extends TestCase
         );
 
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->onlyMethods(['getInfos', 'isPostgres'])
             ->getMock();
 
         $zdb->method('isPostgres')->willReturn(true);
@@ -766,7 +712,7 @@ class Db extends TestCase
         $this->assertTrue($zdb->isEngineSUpported());
 
         $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
-            ->onlyMethods(['getInfos' , 'isPostgres'])
+            ->onlyMethods(['getInfos', 'isPostgres'])
             ->getMock();
 
         $zdb->method('isPostgres')->willReturn(true);

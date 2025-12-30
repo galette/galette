@@ -40,22 +40,22 @@ use function Safe\preg_replace_callback;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property ?int $id
- * @property string $name
- * @property int $type
- * @property ?string $header
- * @property-read string $hheader
- * @property ?string $footer
- * @property-read string $hfooter
- * @property ?string $title
- * @property-read string $htitle
- * @property ?string $subtitle
- * @property-read string $hsubtitle
- * @property ?string $body
- * @property-read string $hbody
- * @property ?string $styles
- * @property string $hstyles
- * @property ?PdfMain $parent
+ * @property      ?int     $id
+ * @property      string   $name
+ * @property      int      $type
+ * @property      ?string  $header
+ * @property-read string   $hheader
+ * @property      ?string  $footer
+ * @property-read string   $hfooter
+ * @property      ?string  $title
+ * @property-read string   $htitle
+ * @property      ?string  $subtitle
+ * @property-read string   $hsubtitle
+ * @property      ?string  $body
+ * @property-read string   $hbody
+ * @property      ?string  $styles
+ * @property      string   $hstyles
+ * @property      ?PdfMain $parent
  */
 
 abstract class PdfModel
@@ -114,8 +114,6 @@ abstract class PdfModel
      *
      * @param int  $id   Identifier
      * @param bool $init Init data if required model is missing
-     *
-     * @return void
      */
     protected function load(int $id, bool $init = true): void
     {
@@ -156,8 +154,6 @@ abstract class PdfModel
      * Load model from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     protected function loadFromRS(ArrayObject $rs): void
     {
@@ -189,8 +185,6 @@ abstract class PdfModel
 
     /**
      * Store model in database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -246,8 +240,6 @@ abstract class PdfModel
      * Get object class for specified type
      *
      * @param int $type Type
-     *
-     * @return string
      */
     public static function getTypeClass(int $type): string
     {
@@ -268,8 +260,6 @@ abstract class PdfModel
      * @param int    $chars Length
      * @param string $field Field name
      * @param bool   $empty Can value be empty
-     *
-     * @return void
      */
     protected function checkChars(string $value, int $chars, string $field, bool $empty = false): void
     {
@@ -299,8 +289,6 @@ abstract class PdfModel
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -367,8 +355,6 @@ abstract class PdfModel
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -383,8 +369,6 @@ abstract class PdfModel
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

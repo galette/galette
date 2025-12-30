@@ -33,13 +33,13 @@ use Galette\Core\Pagination;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property ?string $start_date_filter
- * @property ?string $end_date_filter
- * @property ?int $filtre_cotis_adh
+ * @property ?string   $start_date_filter
+ * @property ?string   $end_date_filter
+ * @property ?int      $filtre_cotis_adh
  * @property int|false $filtre_cotis_children
- * @property string $rstart_date_filter
- * @property string $rend_date_filter
- * @property ?int $max_amount
+ * @property string    $rstart_date_filter
+ * @property string    $rend_date_filter
+ * @property ?int      $max_amount
  */
 class TransactionsList extends Pagination
 {
@@ -82,8 +82,6 @@ class TransactionsList extends Pagination
 
     /**
      * Returns the field we want to default set order to
-     *
-     * @return int|string
      */
     protected function getDefaultOrder(): int|string
     {
@@ -92,8 +90,6 @@ class TransactionsList extends Pagination
 
     /**
      * Return the default direction for ordering
-     *
-     * @return SQLOrder
      */
     protected function getDefaultDirection(): SQLOrder
     {
@@ -102,8 +98,6 @@ class TransactionsList extends Pagination
 
     /**
      * Reinit default parameters
-     *
-     * @return void
      */
     public function reinit(): void
     {
@@ -154,8 +148,6 @@ class TransactionsList extends Pagination
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -167,8 +159,6 @@ class TransactionsList extends Pagination
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

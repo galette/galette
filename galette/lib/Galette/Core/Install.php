@@ -104,8 +104,6 @@ class Install
      * Return current step details
      *
      * @param string $detail Requested detail
-     *
-     * @return string
      */
     public function getStepDetail(string $detail): string
     {
@@ -184,8 +182,6 @@ class Install
 
     /**
      * Get current mode
-     *
-     * @return ?string
      */
     public function getMode(): ?string
     {
@@ -194,8 +190,6 @@ class Install
 
     /**
      * Are we installing?
-     *
-     * @return bool
      */
     public function isInstall(): bool
     {
@@ -204,8 +198,6 @@ class Install
 
     /**
      * Are we upgrading?
-     *
-     * @return bool
      */
     public function isUpgrade(): bool
     {
@@ -216,8 +208,6 @@ class Install
      * Set installation mode
      *
      * @param string $mode Requested mode
-     *
-     * @return self
      */
     public function setMode(string $mode): self
     {
@@ -232,8 +222,6 @@ class Install
 
     /**
      * Go back to previous step
-     *
-     * @return void
      */
     public function atPreviousStep(): void
     {
@@ -265,8 +253,6 @@ class Install
 
     /**
      * Are we at check step?
-     *
-     * @return bool
      */
     public function isCheckStep(): bool
     {
@@ -275,8 +261,6 @@ class Install
 
     /**
      * Set step to type of installation
-     *
-     * @return void
      */
     public function atTypeStep(): void
     {
@@ -285,8 +269,6 @@ class Install
 
     /**
      * Are we at type step?
-     *
-     * @return bool
      */
     public function isTypeStep(): bool
     {
@@ -295,8 +277,6 @@ class Install
 
     /**
      * Set step to database information
-     *
-     * @return void
      */
     public function atDbStep(): void
     {
@@ -305,8 +285,6 @@ class Install
 
     /**
      * Are we at database step?
-     *
-     * @return bool
      */
     public function isDbStep(): bool
     {
@@ -315,8 +293,6 @@ class Install
 
     /**
      * Is DB step passed?
-     *
-     * @return bool
      */
     public function postCheckDb(): bool
     {
@@ -328,8 +304,6 @@ class Install
      *
      * @param string             $type Database type
      * @param array<int, string> $errs Errors array
-     *
-     * @return self
      */
     public function setDbType(string $type, array &$errs): self
     {
@@ -346,8 +320,6 @@ class Install
 
     /**
      * Get database type
-     *
-     * @return ?string
      */
     public function getDbType(): ?string
     {
@@ -362,8 +334,6 @@ class Install
      * @param string  $name Database name
      * @param string  $user Database username
      * @param ?string $pass Database user's password
-     *
-     * @return self
      */
     public function setDsn(string $host, string $port, string $name, string $user, ?string $pass): self
     {
@@ -379,8 +349,6 @@ class Install
      * Set tables prefix
      *
      * @param string $prefix Prefix
-     *
-     * @return self
      */
     public function setTablesPrefix(string $prefix): self
     {
@@ -390,8 +358,6 @@ class Install
 
     /**
      * Retrieve database host
-     *
-     * @return ?string
      */
     public function getDbHost(): ?string
     {
@@ -400,8 +366,6 @@ class Install
 
     /**
      * Retrieve database port
-     *
-     * @return ?string
      */
     public function getDbPort(): ?string
     {
@@ -410,8 +374,6 @@ class Install
 
     /**
      * Retrieve database name
-     *
-     * @return ?string
      */
     public function getDbName(): ?string
     {
@@ -420,8 +382,6 @@ class Install
 
     /**
      * Retrieve database user
-     *
-     * @return ?string
      */
     public function getDbUser(): ?string
     {
@@ -430,8 +390,6 @@ class Install
 
     /**
      * Retrieve database password
-     *
-     * @return string
      */
     public function getDbPass(): string
     {
@@ -440,8 +398,6 @@ class Install
 
     /**
      * Retrieve tables prefix
-     *
-     * @return ?string
      */
     public function getTablesPrefix(): ?string
     {
@@ -450,8 +406,6 @@ class Install
 
     /**
      * Set step to database checks
-     *
-     * @return void
      */
     public function atDbCheckStep(): void
     {
@@ -460,8 +414,6 @@ class Install
 
     /**
      * Are we at database check step?
-     *
-     * @return bool
      */
     public function isDbCheckStep(): bool
     {
@@ -470,8 +422,6 @@ class Install
 
     /**
      * Test database connection
-     *
-     * @return bool
      *
      * @throws Throwable
      */
@@ -489,8 +439,6 @@ class Install
 
     /**
      * Set step to version selection
-     *
-     * @return void
      */
     public function atVersionSelection(): void
     {
@@ -499,8 +447,6 @@ class Install
 
     /**
      * Are we at version selection step?
-     *
-     * @return bool
      */
     public function isVersionSelectionStep(): bool
     {
@@ -509,8 +455,6 @@ class Install
 
     /**
      * Set step to database installation
-     *
-     * @return void
      */
     public function atDbInstallStep(): void
     {
@@ -519,8 +463,6 @@ class Install
 
     /**
      * Are we at db installation step?
-     *
-     * @return bool
      */
     public function isDbinstallStep(): bool
     {
@@ -529,8 +471,6 @@ class Install
 
     /**
      * Set step to database upgrade
-     *
-     * @return void
      */
     public function atDbUpgradeStep(): void
     {
@@ -539,8 +479,6 @@ class Install
 
     /**
      * Are we at db upgrade step?
-     *
-     * @return bool
      */
     public function isDbUpgradeStep(): bool
     {
@@ -633,8 +571,6 @@ class Install
      *
      * @param Db      $zdb   Database instance
      * @param ?string $spath Path to scripts
-     *
-     * @return bool
      */
     public function executeScripts(Db $zdb, ?string $spath = null): bool
     {
@@ -724,8 +660,6 @@ class Install
      *
      * @param Db     $zdb       Database instance
      * @param string $sql_query SQL instructions
-     *
-     * @return bool
      */
     public function executeSql(Db $zdb, string $sql_query): bool
     {
@@ -821,8 +755,6 @@ class Install
 
     /**
      * Reinitialize report array
-     *
-     * @return void
      */
     public function reinitReport(): void
     {
@@ -831,8 +763,6 @@ class Install
 
     /**
      * Set step to super admin information
-     *
-     * @return void
      */
     public function atAdminStep(): void
     {
@@ -841,8 +771,6 @@ class Install
 
     /**
      * Are we at super admin information step?
-     *
-     * @return bool
      */
     public function isAdminStep(): bool
     {
@@ -854,8 +782,6 @@ class Install
      *
      * @param string $login Login
      * @param string $pass  Password
-     *
-     * @return self
      */
     public function setAdminInfos(string $login, string $pass): self
     {
@@ -866,8 +792,6 @@ class Install
 
     /**
      * Retrieve super admin login
-     *
-     * @return string
      */
     public function getAdminLogin(): string
     {
@@ -876,8 +800,6 @@ class Install
 
     /**
      * Retrieve super admin password
-     *
-     * @return string
      */
     public function getAdminPass(): string
     {
@@ -886,8 +808,6 @@ class Install
 
     /**
      * Set step to telemetry
-     *
-     * @return void
      */
     public function atTelemetryStep(): void
     {
@@ -896,8 +816,6 @@ class Install
 
     /**
      * Are we at telemetry step?
-     *
-     * @return bool
      */
     public function isTelemetryStep(): bool
     {
@@ -906,8 +824,6 @@ class Install
 
     /**
      * Set step to Galette initialization
-     *
-     * @return void
      */
     public function atGaletteInitStep(): void
     {
@@ -916,8 +832,6 @@ class Install
 
     /**
      * Are we at Galette initialization step?
-     *
-     * @return bool
      */
     public function isGaletteInitStep(): bool
     {
@@ -929,8 +843,6 @@ class Install
      *
      * @param array<string, string> $post_data      Data posted
      * @param array<int, string>    $error_detected Errors array
-     *
-     * @return void
      */
     public function loadExistingConfig(array $post_data, array &$error_detected): void
     {
@@ -1068,8 +980,6 @@ class Install
 
     /**
      * Write configuration file to disk
-     *
-     * @return bool
      */
     public function writeConfFile(): bool
     {
@@ -1137,8 +1047,6 @@ class Install
 
     /**
      * Get configuration file contents
-     *
-     * @return string
      */
     public function getConfigFileContents(): string
     {
@@ -1159,8 +1067,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * @param I18n  $i18n  I18n
      * @param Db    $zdb   Database instance
      * @param Login $login Logged in instance
-     *
-     * @return bool
      */
     public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
@@ -1243,8 +1149,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      *
      * @param string         $msg Report message title
      * @param bool|Throwable $res Initialization result
-     *
-     * @return void
      */
     private function proceedReport(string $msg, bool|Throwable $res): void
     {
@@ -1273,8 +1177,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
 
     /**
      * Set step to database installation
-     *
-     * @return void
      */
     public function atEndStep(): void
     {
@@ -1283,8 +1185,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
 
     /**
      * Are we at end step?
-     *
-     * @return bool
      */
     public function isEndStep(): bool
     {
@@ -1295,8 +1195,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * Set installed version if we're upgrading
      *
      * @param ?string $version Installed version
-     *
-     * @return self
      */
     public function setInstalledVersion(?string $version): self
     {
@@ -1308,8 +1206,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * Current Galette installed version, according to database
      *
      * @param Db $zdb Database instance
-     *
-     * @return string|false
      */
     public function getCurrentVersion(Db $zdb): string|false
     {
@@ -1329,8 +1225,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * Check if step is passed
      *
      * @param int $step Step
-     *
-     * @return bool
      */
     public function isStepPassed(int $step): bool
     {
@@ -1339,8 +1233,6 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
 
     /**
      *  Initialize database constants to connect
-     *
-     * @return void
      */
     public function initDbConstants(): void
     {

@@ -37,8 +37,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Cleanup after each test method
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -57,8 +55,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -76,8 +72,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * pref_beg_membership provider
-     *
-     * @return array
      */
     public static function begProvider(): array
     {
@@ -89,8 +83,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test empty contribution
-     *
-     * @return void
      */
     public function testMembershipExtensionJustEmpty(): void
     {
@@ -137,8 +129,6 @@ class Contribution extends GaletteTestCase
      * Test empty contribution with begin of membership set in preferences
      *
      * @param string $interval Interval to subtract from now to set begin of membership
-     *
-     * @return void
      */
     #[DataProvider("begProvider")]
     public function testBeginMembershipJustEmpty(string $interval): void
@@ -203,8 +193,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test empty donation
-     *
-     * @return void
      */
     public function testEmptyDonation(): void
     {
@@ -258,8 +246,6 @@ class Contribution extends GaletteTestCase
      * Test empty donation with begin of membership set in preferences
      *
      * @param string $interval Interval to subtract from now to set begin of membership
-     *
-     * @return void
      */
     #[DataProvider("begProvider")]
     public function testBeginMembershipEmptyDonation(string $interval): void
@@ -330,8 +316,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test empty fee
-     *
-     * @return void
      */
     public function testEmptyFee(): void
     {
@@ -393,8 +377,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test empty fee with a "monthly" contribution type
-     *
-     * @return void
      */
     public function testEmptyMonthlyFee(): void
     {
@@ -462,8 +444,6 @@ class Contribution extends GaletteTestCase
      * Test empty fee with begin of membership set in preferences
      *
      * @param string $interval Interval to subtract from now to set begin of membership
-     *
-     * @return void
      */
     #[DataProvider("begProvider")]
     public function testBeginMembershipEmptyFee(string $interval): void
@@ -548,8 +528,6 @@ class Contribution extends GaletteTestCase
      * Test empty fee with begin of membership set in preferences and a "monthly" contribution type
      *
      * @param string $interval Interval to subtract from now to set begin of membership
-     *
-     * @return void
      */
     #[DataProvider("begProvider")]
     public function testBeginMembershipEmptyMonthlyFee(string $interval): void
@@ -637,8 +615,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test getter and setter special cases
-     *
-     * @return void
      */
     public function testGetterSetter(): void
     {
@@ -752,8 +728,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test contribution creation
-     *
-     * @return void
      */
     public function testCreation(): void
     {
@@ -766,8 +740,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test contributions can have an amount equals to zero
-     *
-     * @return void
      */
     public function testZeroAmountContribution(): void
     {
@@ -814,8 +786,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test donation update
-     *
-     * @return void
      */
     public function testDonationUpdate(): void
     {
@@ -892,8 +862,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test contribution update
-     *
-     * @return void
      */
     public function testContributionUpdate(): void
     {
@@ -978,8 +946,6 @@ class Contribution extends GaletteTestCase
     /**
      * Test end date retrieving
      * This is based on some Preferences parameters
-     *
-     * @return void
      */
     public function testRetrieveEndDate(): void
     {
@@ -1060,8 +1026,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test monthly contribution
-     *
-     * @return void
      */
     public function testMonthlyContribution(): void
     {
@@ -1083,8 +1047,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test checkOverlap method
-     *
-     * @return void
      */
     public function testCheckOverlap(): void
     {
@@ -1182,8 +1144,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test fields labels
-     *
-     * @return void
      */
     public function testGetFieldLabel(): void
     {
@@ -1211,8 +1171,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test contribution loading
-     *
-     * @return void
      */
     public function testLoad(): void
     {
@@ -1246,8 +1204,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test contribution removal
-     *
-     * @return void
      */
     public function testRemove(): void
     {
@@ -1266,8 +1222,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test can* methods
-     *
-     * @return void
      */
     public function testCan(): void
     {
@@ -1398,8 +1352,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test next year contribution
-     *
-     * @return void
      */
     public function testNextYear(): void
     {
@@ -1435,8 +1387,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test next year contribution from a 0.9.x
-     *
-     * @return void
      */
     public function testNextYearFrom096(): void
     {
@@ -1496,8 +1446,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test contribution end date is set after start date - when relevant
-     *
-     * @return void
      */
     public function testEndDateBeforeStartDate(): void
     {
@@ -1551,8 +1499,6 @@ class Contribution extends GaletteTestCase
 
     /**
      * Test login checks
-     *
-     * @return void
      */
     public function testCheckLogin(): void
     {

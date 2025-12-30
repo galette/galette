@@ -38,15 +38,11 @@ trait HasEvent
 
     /**
      * Get prefix for events
-     *
-     * @return string
      */
     abstract protected function getEventsPrefix(): string;
 
     /**
      * Activate events
-     *
-     * @return self
      */
     public function activateEvents(): self
     {
@@ -56,8 +52,6 @@ trait HasEvent
 
     /**
      * Disable events
-     *
-     * @return self
      */
     public function disableEvents(): self
     {
@@ -67,8 +61,6 @@ trait HasEvent
 
     /**
      * Are events enabled
-     *
-     * @return bool
      */
     public function areEventsEnabled(): bool
     {
@@ -77,8 +69,6 @@ trait HasEvent
 
     /**
      * Activate add event
-     *
-     * @return self
      */
     public function withAddEvent(): self
     {
@@ -88,8 +78,6 @@ trait HasEvent
 
     /**
      * Disable add event
-     *
-     * @return self
      */
     public function withoutAddEvent(): self
     {
@@ -99,8 +87,6 @@ trait HasEvent
 
     /**
      * Get add event name
-     *
-     * @return ?string
      */
     public function getAddEventName(): ?string
     {
@@ -115,8 +101,6 @@ trait HasEvent
 
     /**
      * Has add event
-     *
-     * @return bool
      */
     public function hasAddEvent(): bool
     {
@@ -125,8 +109,6 @@ trait HasEvent
 
     /**
      * Activate edit event
-     *
-     * @return self
      */
     public function withEditEvent(): self
     {
@@ -136,8 +118,6 @@ trait HasEvent
 
     /**
      * Disable edit event
-     *
-     * @return self
      */
     public function withoutEditEvent(): self
     {
@@ -147,8 +127,6 @@ trait HasEvent
 
     /**
      * Get edit event name
-     *
-     * @return ?string
      */
     public function getEditEventName(): ?string
     {
@@ -163,8 +141,6 @@ trait HasEvent
 
     /**
      * Has edit event
-     *
-     * @return bool
      */
     public function hasEditEvent(): bool
     {
@@ -173,8 +149,6 @@ trait HasEvent
 
     /**
      * Activate add event
-     *
-     * @return self
      */
     public function withDeleteEvent(): self
     {
@@ -184,8 +158,6 @@ trait HasEvent
 
     /**
      * Disable delete event
-     *
-     * @return self
      */
     public function withoutDeleteEvent(): self
     {
@@ -195,8 +167,6 @@ trait HasEvent
 
     /**
      * Get edit event name
-     *
-     * @return ?string
      */
     public function getDeleteEventName(): ?string
     {
@@ -211,8 +181,6 @@ trait HasEvent
 
     /**
      * Has delete event
-     *
-     * @return bool
      */
     public function hasDeleteEvent(): bool
     {

@@ -53,8 +53,6 @@ trait Dynamics
 
     /**
      * Load dynamic fields for member
-     *
-     * @return void
      */
     private function loadDynamicFields(): void
     {
@@ -69,8 +67,6 @@ trait Dynamics
 
     /**
      * Get dynamic fields
-     *
-     * @return DynamicFieldsHandle
      */
     public function getDynamicFields(): DynamicFieldsHandle
     {
@@ -86,8 +82,6 @@ trait Dynamics
      * @param array<string, mixed>   $post     Posted values
      * @param array<string,int|bool> $required Array of required fields
      * @param array<string>          $disabled Array of disabled fields
-     *
-     * @return bool
      */
     protected function dynamicsCheck(array $post, array $required, array $disabled): bool
     {
@@ -206,8 +200,6 @@ trait Dynamics
      * Stores dynamic fields
      *
      * @param bool $transaction True if a transaction already exists
-     *
-     * @return bool
      */
     protected function dynamicsStore(bool $transaction = false): bool
     {
@@ -226,8 +218,6 @@ trait Dynamics
      * Store dynamic Files
      *
      * @param array<UploadedFileInterface> $files Posted files
-     *
-     * @return void
      */
     protected function dynamicsFiles(array $files): void
     {
@@ -298,8 +288,6 @@ trait Dynamics
      * Remove dynamic fields values
      *
      * @param bool $transaction True if a transaction already exists
-     *
-     * @return bool
      */
     protected function dynamicsRemove(bool $transaction = false): bool
     {
@@ -325,8 +313,6 @@ trait Dynamics
      *
      * @param array<string> $values Dynamic fields values
      * @param string        $prefix Prefix to replace, default to 'dynfield_'
-     *
-     * @return bool
      */
     public function dynamicsValidate(array $values, string $prefix = 'dynfield_'): bool
     {
@@ -339,8 +325,6 @@ trait Dynamics
 
     /**
      * Get form name
-     *
-     * @return string
      */
     public function getFormName(): string
     {
@@ -349,8 +333,6 @@ trait Dynamics
 
     /**
      * Get ID
-     *
-     * @return ?int
      */
     public function getID(): ?int
     {

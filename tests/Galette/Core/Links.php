@@ -38,8 +38,6 @@ class Links extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -58,8 +56,6 @@ class Links extends GaletteTestCase
 
     /**
      * Cleanup after testeach test method
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -79,8 +75,6 @@ class Links extends GaletteTestCase
 
     /**
      * Test new Link generation
-     *
-     * @return void
      */
     public function testGenerateNewLink(): void
     {
@@ -129,8 +123,6 @@ class Links extends GaletteTestCase
 
     /**
      * Test expired is invalid
-     *
-     * @return void
      */
     public function testExpiredValidate(): void
     {
@@ -170,8 +162,6 @@ class Links extends GaletteTestCase
 
     /**
      * Test cleanExpired
-     *
-     * @return void
      */
     public function testCleanExpired(): void
     {
@@ -215,8 +205,6 @@ class Links extends GaletteTestCase
 
     /**
      * Test duplicate target
-     *
-     * @return void
      */
     public function testDuplicateLinkTarget(): void
     {
@@ -253,9 +241,9 @@ class Links extends GaletteTestCase
             $exception_trhown = true;
             $this->expectLogEntry(
                 \Analog::ERROR,
-                $this->zdb->isPostgres() ?
-                    'duplicate key value violates unique constraint "galette_tmplinks_pkey"' :
-                    "Duplicate entry '1-1' for key"
+                $this->zdb->isPostgres()
+                    ? 'duplicate key value violates unique constraint "galette_tmplinks_pkey"'
+                    : "Duplicate entry '1-1' for key"
             );
             $this->assertSame(
                 'Duplicate entry',
@@ -267,8 +255,6 @@ class Links extends GaletteTestCase
 
     /**
      * Create test contribution in database
-     *
-     * @return void
      */
     protected function createContribution(): void
     {
@@ -303,8 +289,6 @@ class Links extends GaletteTestCase
      *
      * @param ?\Galette\Entity\Contribution $contrib       Contribution instance, if any
      * @param array<string,mixed>           $new_expecteds Changes on expected values
-     *
-     * @return void
      */
     protected function checkContribExpected(?\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
     {

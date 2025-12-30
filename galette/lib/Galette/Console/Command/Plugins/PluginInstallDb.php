@@ -42,11 +42,6 @@ class PluginInstallDb extends AbstractPlugins
 {
     /**
      * Command execution
-     *
-     * @param InputInterface  $input  Input interface
-     * @param OutputInterface $output Output interface
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -75,8 +70,6 @@ class PluginInstallDb extends AbstractPlugins
 
     /**
      * Get relevant plugins (actives, with database) for current command
-     *
-     * @param SymfonyStyle $io Output interface
      *
      * @return array<string, array<string, string>>
      */

@@ -66,15 +66,11 @@ abstract class AbstractPassword
      * Generates a new password for specified member
      *
      * @param int $id_adh Member identifier
-     *
-     * @return bool
      */
     abstract public function generateNewPassword(int $id_adh): bool;
 
     /**
      * Remove expired passwords queries (older than 24 hours)
-     *
-     * @return bool
      */
     abstract protected function cleanExpired(): bool;
 
@@ -102,8 +98,6 @@ abstract class AbstractPassword
      * Set password
      *
      * @param string $password Password
-     *
-     * @return self
      */
     protected function setPassword(string $password): self
     {
@@ -115,8 +109,6 @@ abstract class AbstractPassword
      * Set hash
      *
      * @param string $hash Hash
-     *
-     * @return self
      */
     protected function setHash(string $hash): self
     {

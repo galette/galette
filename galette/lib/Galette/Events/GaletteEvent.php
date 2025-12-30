@@ -46,8 +46,6 @@ class GaletteEvent implements HasEventName
 
     /**
      * Get event name
-     *
-     * @return string
      */
     public function eventName(): string
     {
@@ -56,8 +54,6 @@ class GaletteEvent implements HasEventName
 
     /**
      * Get event object
-     *
-     * @return object
      */
     public function getObject(): object
     {

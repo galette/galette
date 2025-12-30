@@ -37,8 +37,6 @@ class Transactions extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -66,8 +64,6 @@ class Transactions extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -86,8 +82,6 @@ class Transactions extends GaletteTestCase
 
     /**
      * Create test transactions in database
-     *
-     * @return void
      */
     private function createTransaction(): void
     {
@@ -112,8 +106,6 @@ class Transactions extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -220,8 +212,6 @@ class Transactions extends GaletteTestCase
 
     /**
      * Test remove
-     *
-     * @return void
      */
     public function testRemove(): void
     {

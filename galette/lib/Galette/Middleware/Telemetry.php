@@ -61,10 +61,8 @@ class Telemetry
     /**
      * Middleware invokable class
      *
-     * @param  Request        $request PSR7 request
-     * @param  RequestHandler $handler Request response
-     *
-     * @return Response
+     * @param Request        $request PSR7 request
+     * @param RequestHandler $handler Request response
      */
     public function __invoke(Request $request, RequestHandler $handler): Response
     {

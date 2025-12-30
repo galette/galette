@@ -40,8 +40,6 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
      * @param string                $method       HTTP method to use
      * @param string                $content_type Content type to use
      * @param array<string, string> $query_params Query parameters to add to URL
-     *
-     * @return \Slim\Psr7\Request
      */
     protected function createRequest(
         string $route_name,
@@ -73,8 +71,6 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
      * Assert request has been refused from authentication middleware
      *
      * @param Response $test_response Response to test
-     *
-     * @return void
      */
     protected function expectAuthMiddlewareRefused(Response $test_response): void
     {
@@ -96,8 +92,6 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
      * Assert request requires a logged in user
      *
      * @param Response $test_response Response to test
-     *
-     * @return void
      */
     protected function expectLogin(Response $test_response): void
     {
@@ -115,8 +109,6 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
      *
      * @param Response $test_response Response to test
      * @param array    $headers       Expected headers
-     *
-     * @return void
      */
     protected function expectOK(Response $test_response, array $headers =  []): void
     {
@@ -130,8 +122,6 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
      * Assert Flash data correspond to what is expected, and reset it
      *
      * @param array $expected Expected flash data
-     *
-     * @return void
      */
     protected function expectFlashData(array $expected): void
     {

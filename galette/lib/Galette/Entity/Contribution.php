@@ -49,23 +49,23 @@ use function Safe\mkdir;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
- * @property ?string $date
- * @property ?DateTime $raw_date
- * @property ?int $member
- * @property ?ContributionsTypes $type
- * @property ?double $amount
- * @property ?int $payment_type
- * @property ?double $orig_amount
- * @property ?string $info
- * @property ?string $begin_date
- * @property ?DateTime $raw_begin_date
- * @property ?string $end_date
- * @property ?DateTime $raw_end_date
- * @property ?Transaction $transaction
- * @property ?int $extension
- * @property int $duration
- * @property ?int $model
+ * @property int                                  $id
+ * @property ?string                              $date
+ * @property ?DateTime                            $raw_date
+ * @property ?int                                 $member
+ * @property ?ContributionsTypes                  $type
+ * @property ?float                               $amount
+ * @property ?int                                 $payment_type
+ * @property ?float                               $orig_amount
+ * @property ?string                              $info
+ * @property ?string                              $begin_date
+ * @property ?DateTime                            $raw_begin_date
+ * @property ?string                              $end_date
+ * @property ?DateTime                            $raw_end_date
+ * @property ?Transaction                         $transaction
+ * @property ?int                                 $extension
+ * @property int                                  $duration
+ * @property ?int                                 $model
  * @property array<string, array<string, string>> $fields
  */
 class Contribution implements AccessManagementInterface
@@ -163,8 +163,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Set fields, must populate $this->fields
-     *
-     * @return self
      */
     protected function setFields(): self
     {
@@ -223,8 +221,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Sets end contribution date
-     *
-     * @return void
      */
     private function retrieveEndDate(): void
     {
@@ -364,8 +360,6 @@ class Contribution implements AccessManagementInterface
      * Populate object from a resultset row
      *
      * @param ArrayObject<string, int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
@@ -407,8 +401,6 @@ class Contribution implements AccessManagementInterface
      * Populate object from an array
      *
      * @param array<string,mixed> $args Instanciation arguments
-     *
-     * @return void
      */
     private function loadFromArray(array $args): void
     {
@@ -450,8 +442,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Contribution created with a membership extension
-     *
-     * @return void
      */
     private function loadWithMembershipExt(): void
     {
@@ -474,8 +464,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Contribution created with an en date of membership
-     *
-     * @return void
      */
     private function loadWithEndofMembershipDate(): void
     {
@@ -715,8 +703,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Store the contribution
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -816,8 +802,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Update member deadline
-     *
-     * @return bool
      */
     private function updateDeadline(): bool
     {
@@ -849,8 +833,6 @@ class Contribution implements AccessManagementInterface
      * Remove contribution from database
      *
      * @param bool $transaction Activate transaction mode (defaults to true)
-     *
-     * @return bool
      */
     public function remove(bool $transaction = true): bool
     {
@@ -897,8 +879,6 @@ class Contribution implements AccessManagementInterface
      *
      * @param string $field Field name
      * @param string $entry Array entry to use (defaults to "label")
-     *
-     * @return string
      */
     public function getFieldLabel(string $field, string $entry = 'label'): string
     {
@@ -941,8 +921,6 @@ class Contribution implements AccessManagementInterface
      *
      * @param Db   $zdb       Database instance
      * @param ?int $member_id Member identifier
-     *
-     * @return string|null
      */
     public static function getDueDate(Db $zdb, ?int $member_id): ?string
     {
@@ -986,8 +964,6 @@ class Contribution implements AccessManagementInterface
      * Detach a contribution from a transaction
      *
      * @param int $trans_id Transaction identifier
-     *
-     * @return bool
      */
     public function unsetTransactionPart(int $trans_id): bool
     {
@@ -1025,8 +1001,6 @@ class Contribution implements AccessManagementInterface
      * Set a contribution as a transaction part
      *
      * @param int $trans_id Transaction identifier
-     *
-     * @return bool
      */
     public function setTransactionPart(int $trans_id): bool
     {
@@ -1050,8 +1024,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Is current contribution a membership fee
-     *
-     * @return bool
      */
     public function isFee(): bool
     {
@@ -1062,8 +1034,6 @@ class Contribution implements AccessManagementInterface
      * Is current contribution part of specified transaction
      *
      * @param int $id Transaction identifier
-     *
-     * @return bool
      */
     public function isTransactionPartOf(int $id): bool
     {
@@ -1076,8 +1046,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Is current contribution part of transaction
-     *
-     * @return bool
      */
     public function isTransactionPart(): bool
     {
@@ -1180,8 +1148,6 @@ class Contribution implements AccessManagementInterface
     }
     /**
      * Get raw contribution type
-     *
-     * @return string
      */
     public function getRawType(): string
     {
@@ -1194,8 +1160,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Get contribution type label
-     *
-     * @return string
      */
     public function getTypeLabel(): string
     {
@@ -1208,8 +1172,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Get payment type id
-     *
-     * @return int
      */
     public function getPaymentTypeId(): int
     {
@@ -1223,8 +1185,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Get payment type label
-     *
-     * @return string
      */
     public function getPaymentType(): string
     {
@@ -1314,8 +1274,6 @@ class Contribution implements AccessManagementInterface
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -1374,8 +1332,6 @@ class Contribution implements AccessManagementInterface
      * Flag creation mail sending
      *
      * @param bool $send True (default) to send creation email
-     *
-     * @return self
      */
     public function setSendmail(bool $send = true): self
     {
@@ -1385,8 +1341,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Should we send administrative emails to member?
-     *
-     * @return bool
      */
     public function sendEMail(): bool
     {
@@ -1439,8 +1393,6 @@ class Contribution implements AccessManagementInterface
      * Can current logged-in user create a contribution?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canCreate(Login $login): bool
     {
@@ -1460,8 +1412,6 @@ class Contribution implements AccessManagementInterface
      * Can current logged-in user display contribution?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canShow(Login $login): bool
     {
@@ -1505,8 +1455,6 @@ class Contribution implements AccessManagementInterface
      * Can current logged-in user edit a contribution?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canEdit(Login $login): bool
     {
@@ -1520,8 +1468,6 @@ class Contribution implements AccessManagementInterface
      * Can current logged-in user delete a contribution?
      *
      * @param Login $login Login instance
-     *
-     * @return bool
      */
     public function canDelete(Login $login): bool
     {
@@ -1532,8 +1478,6 @@ class Contribution implements AccessManagementInterface
      * Set contribution type and determine if it is a contribution or a donation
      *
      * @param int $type Type
-     *
-     * @return self
      */
     public function setContributionType(int $type): self
     {
@@ -1547,8 +1491,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Get prefix for events
-     *
-     * @return string
      */
     protected function getEventsPrefix(): string
     {
@@ -1558,7 +1500,6 @@ class Contribution implements AccessManagementInterface
     /**
      * Does contribution have attached scheduled payment?
      *
-     * @return bool
      * @throws Throwable
      */
     public function hasSchedule(): bool
@@ -1570,7 +1511,6 @@ class Contribution implements AccessManagementInterface
     /**
      * Is schedule fully allocated
      *
-     * @return bool
      * @throws Throwable
      */
     public function isScheduleFullyAllocated(): bool
@@ -1584,7 +1524,6 @@ class Contribution implements AccessManagementInterface
      *
      * @param int $value Payment type to set
      *
-     * @return void
      * @throws Throwable
      */
     public function setPaymentType(int $value): void
@@ -1616,8 +1555,6 @@ class Contribution implements AccessManagementInterface
 
     /**
      * Disable login on checks
-     *
-     * @return self
      */
     public function setNoCheckLogin(): self
     {

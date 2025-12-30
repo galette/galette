@@ -38,8 +38,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -55,8 +53,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -69,8 +65,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Cleanup after class
-     *
-     * @return void
      */
     public static function tearDownAfterClass(): void
     {
@@ -82,8 +76,6 @@ class TransactionsController extends GaletteRoutingTestCase
      * Create test transactions in database
      *
      * @param array $data Data to set
-     *
-     * @return \Galette\Entity\Transaction
      */
     private function createTransaction(array $data = []): \Galette\Entity\Transaction
     {
@@ -113,8 +105,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test transactions list
-     *
-     * @return void
      */
     public function testList(): void
     {
@@ -407,8 +397,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test transactions filters
-     *
-     * @return void
      */
     public function testListFilter(): void
     {
@@ -474,8 +462,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test contributions add page
-     *
-     * @return void
      */
     public function testAddPage(): void
     {
@@ -650,8 +636,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test transactions edit page
-     *
-     * @return void
      */
     public function testEditPage(): void
     {
@@ -813,8 +797,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test add transactions
-     *
-     * @return void
      */
     public function testAddTransaction(): void
     {
@@ -1022,8 +1004,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test edit transactions
-     *
-     * @return void
      */
     public function testEditTransaction(): void
     {
@@ -1164,8 +1144,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test remove transaction page
-     *
-     * @return void
      */
     public function testRemovePage(): void
     {
@@ -1258,8 +1236,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test delete transaction
-     *
-     * @return void
      */
     public function testDeleteTransaction(): void
     {
@@ -1402,8 +1378,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test attach contribution
-     *
-     * @return void
      */
     public function testAttachContribution(): void
     {
@@ -1504,8 +1478,6 @@ class TransactionsController extends GaletteRoutingTestCase
 
     /**
      * Test deattach contribution
-     *
-     * @return void
      */
     public function testDetachContribution(): void
     {

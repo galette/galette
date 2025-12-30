@@ -30,12 +30,12 @@ use Galette\Entity\Group;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property  ?string $login
- * @property  ?string $name
- * @property  ?string $surname
- * @property  ?int $id
- * @property  string $lang
- * @property  array<int, Group|int> $managed_groups
+ * @property ?string               $login
+ * @property ?string               $name
+ * @property ?string               $surname
+ * @property ?int                  $id
+ * @property string                $lang
+ * @property array<int, Group|int> $managed_groups
  */
 
 abstract class Authentication
@@ -67,8 +67,6 @@ abstract class Authentication
      *
      * @param string $user  user's login
      * @param string $passe user's password
-     *
-     * @return bool
      */
     abstract public function logIn(string $user, string $passe): bool;
 
@@ -76,8 +74,6 @@ abstract class Authentication
      * Does this login already exist?
      *
      * @param string $user the username
-     *
-     * @return bool
      */
     abstract public function loginExists(string $user): bool;
 
@@ -86,8 +82,6 @@ abstract class Authentication
      *
      * @param string      $login       name
      * @param Preferences $preferences Preferences instance
-     *
-     * @return bool
      */
     public function logAdmin(string $login, Preferences $preferences): bool
     {
@@ -110,15 +104,11 @@ abstract class Authentication
      *
      * @param string      $name        Service name
      * @param Preferences $preferences Preferences instance
-     *
-     * @return bool
      */
     abstract public function logCron(string $name, Preferences $preferences): bool;
 
     /**
      * Log out user and unset variables
-     *
-     * @return bool
      */
     public function logOut(): bool
     {
@@ -137,8 +127,6 @@ abstract class Authentication
 
     /**
      * Is user logged in?
-     *
-     * @return bool
      */
     public function isLogged(): bool
     {
@@ -147,8 +135,6 @@ abstract class Authentication
 
     /**
      * Is user admin?
-     *
-     * @return bool
      */
     public function isAdmin(): bool
     {
@@ -157,8 +143,6 @@ abstract class Authentication
 
     /**
      * Is user super admin?
-     *
-     * @return bool
      */
     public function isSuperAdmin(): bool
     {
@@ -167,8 +151,6 @@ abstract class Authentication
 
     /**
      * Is user active?
-     *
-     * @return bool
      */
     public function isActive(): bool
     {
@@ -177,8 +159,6 @@ abstract class Authentication
 
     /**
      * Is user member of staff?
-     *
-     * @return bool
      */
     public function isStaff(): bool
     {
@@ -187,8 +167,6 @@ abstract class Authentication
 
     /**
      * is user a crontab?
-     *
-     * @return bool
      */
     public function isCron(): bool
     {
@@ -201,8 +179,6 @@ abstract class Authentication
      * least one group.
      *
      * @param array<int>|int $id_group Group(s) identifier(s)
-     *
-     * @return bool
      */
     public function isGroupManager(array|int|null $id_group = null): bool
     {
@@ -238,8 +214,6 @@ abstract class Authentication
 
     /**
      * Get compact menu mode
-     *
-     * @return bool
      */
     public function getCompactMenu(): bool
     {
@@ -248,8 +222,6 @@ abstract class Authentication
 
     /**
      * Is dark mode enabled?
-     *
-     * @return bool
      */
     public function isDarkModeEnabled(): bool
     {
@@ -260,8 +232,6 @@ abstract class Authentication
      * Is user currently up to date?
      * An up-to-date member is active and either due free, or with up-to-date
      * subscription
-     *
-     * @return bool
      */
     public function isUp2Date(): bool
     {
@@ -272,8 +242,6 @@ abstract class Authentication
      * Display logged in member name
      *
      * @param bool $only_name If we want only the name without any additional text
-     *
-     * @return string
      */
     public function loggedInAs(bool $only_name = false): string
     {
@@ -293,8 +261,6 @@ abstract class Authentication
      * Global getter method
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -325,8 +291,6 @@ abstract class Authentication
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -337,8 +301,6 @@ abstract class Authentication
 
     /**
      * get user access level
-     *
-     * @return int
      */
     public function getAccessLevel(): int
     {

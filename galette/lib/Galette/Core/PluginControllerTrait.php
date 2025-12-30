@@ -43,8 +43,6 @@ trait PluginControllerTrait
 
     /**
      * Get plugin module ID
-     *
-     * @return string
      */
     protected function getModuleId(): string
     {
@@ -53,8 +51,6 @@ trait PluginControllerTrait
 
     /**
      * Get plugin module route namespace
-     *
-     * @return string
      */
     protected function getModuleRoute(): string
     {
@@ -65,8 +61,6 @@ trait PluginControllerTrait
      * Get plugin template name for Twig
      *
      * @param string $name Template name
-     *
-     * @return string
      */
     protected function getTemplate(string $name): string
     {
@@ -78,8 +72,6 @@ trait PluginControllerTrait
      *
      * @param string                   $filter_name Filter name
      * @param array<string,mixed>|null $args        Arguments
-     *
-     * @return string
      */
     public function getFilterName(string $filter_name, ?array $args = null): string
     {

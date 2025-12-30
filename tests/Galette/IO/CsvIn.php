@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace GaletteTests\IO;
 
 use Galette\Entity\FieldsConfig;
-use PHPUnit\Framework\TestCase;
 use Galette\Entity\Adherent;
 use Galette\DynamicFields\DynamicField;
 use Galette\GaletteTestCase;
@@ -40,8 +39,6 @@ class CsvIn extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -51,8 +48,6 @@ class CsvIn extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -94,8 +89,6 @@ class CsvIn extends GaletteTestCase
      * @param ?int   $count_before   Count before insertions. Defaults to 0 if null.
      * @param ?int   $count_after    Count after insertions. Default to $count_before + count $members_list
      * @param array  $values         Textual values for dynamic choices fields
-     *
-     * @return void
      */
     private function doImportFileTest(
         array $fields,
@@ -240,8 +233,6 @@ class CsvIn extends GaletteTestCase
 
     /**
      * Test CSV import loading
-     *
-     * @return void
      */
     public function testImport(): void
     {
@@ -494,8 +485,6 @@ class CsvIn extends GaletteTestCase
      * Get CSV import model
      *
      * @param array $fields Fields list
-     *
-     * @return \Galette\Entity\ImportModel
      */
     protected function getModel(array $fields): \Galette\Entity\ImportModel
     {
@@ -513,8 +502,6 @@ class CsvIn extends GaletteTestCase
      *
      * @param string $text_orig Original text
      * @param string $lang      Lang text has been added in
-     *
-     * @return void
      */
     protected function checkDynamicTranslation(string $text_orig, string $lang = 'fr_FR.utf8'): void
     {
@@ -541,8 +528,6 @@ class CsvIn extends GaletteTestCase
 
     /**
      * Test import with dynamic fields
-     *
-     * @return void
      */
     public function testImportDynamics(): void
     {
@@ -630,8 +615,8 @@ class CsvIn extends GaletteTestCase
         $i = 0;
         foreach ($members_list as &$data) {
             //two lines without required dynamic field.
-            $data['dynfield_' . $df->getId()] = (($i == 2 || $i == 5) ? '' :
-                'Dynamic field value for ' . $data['fingerprint']);
+            $data['dynfield_' . $df->getId()] = (($i == 2 || $i == 5) ? ''
+                : 'Dynamic field value for ' . $data['fingerprint']);
             ++$i;
         }
         unset($data);
@@ -804,8 +789,6 @@ class CsvIn extends GaletteTestCase
 
     /**
      * Test non existing file
-     *
-     * @return void
      */
     public function testNoFile(): void
     {
@@ -834,8 +817,6 @@ class CsvIn extends GaletteTestCase
 
     /**
      * Test empty file
-     *
-     * @return void
      */
     public function testEmptyFile(): void
     {
@@ -858,8 +839,6 @@ class CsvIn extends GaletteTestCase
 
     /**
      * Test missing columns
-     *
-     * @return void
      */
     public function testMissingColumn(): void
     {
@@ -964,8 +943,6 @@ class CsvIn extends GaletteTestCase
 
     /**
      * Get first set of member data
-     *
-     * @return array
      */
     private function getMemberData1(): array
     {
@@ -1250,8 +1227,6 @@ class CsvIn extends GaletteTestCase
     /**
      * Get second set of member data
      * two lines without name.
-     *
-     * @return array
      */
     private function getMemberData2(): array
     {
@@ -1533,8 +1508,6 @@ class CsvIn extends GaletteTestCase
 
     /**
      * Get second set of member data but two lines without name.
-     *
-     * @return array
      */
     private function getMemberData2NoName(): array
     {

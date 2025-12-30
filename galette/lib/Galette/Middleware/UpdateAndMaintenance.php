@@ -77,8 +77,6 @@ class UpdateAndMaintenance
      *
      * @param Request        $request PSR7 request
      * @param RequestHandler $handler PSR7 request handler
-     *
-     * @return Response
      */
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
@@ -95,8 +93,6 @@ class UpdateAndMaintenance
      *
      * @param Request              $request  PSR7 request
      * @param array<string, mixed> $contents HTML page contents
-     *
-     * @return string
      */
     private function renderPage(Request $request, array $contents): string
     {
@@ -140,8 +136,6 @@ class UpdateAndMaintenance
      * Displays maintenance page
      *
      * @param Request $request PSR7 request
-     *
-     * @return string
      */
     private function maintenancePage(Request $request): string
     {
@@ -156,8 +150,6 @@ class UpdateAndMaintenance
      * Displays needs update page
      *
      * @param Request $request PSR7 request
-     *
-     * @return string
      */
     private function needsUpdatePage(Request $request): string
     {

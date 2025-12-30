@@ -38,8 +38,6 @@ trait Translatable
      * Get field name
      *
      * @param bool $translated Get translated or raw name
-     *
-     * @return string
      */
     public function getName(bool $translated = true): string
     {

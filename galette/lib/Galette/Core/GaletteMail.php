@@ -87,8 +87,6 @@ class GaletteMail
 
     /**
      * Initialize PHPMailer
-     *
-     * @return void
      */
     private function initMailer(): void
     {
@@ -186,8 +184,6 @@ class GaletteMail
      * regular recipient will be the sender.
      *
      * @param array<string, string> $recipients Array (mail=>name) of all recipients
-     *
-     * @return bool
      */
     public function setRecipients(array $recipients): bool
     {
@@ -343,8 +339,6 @@ class GaletteMail
      * Check if an email address is valid
      *
      * @param string $address the email address to check
-     *
-     * @return bool
      */
     public static function isValidEmail(string $address): bool
     {
@@ -362,8 +356,6 @@ class GaletteMail
      * Check if a string is a URL
      *
      * @param string $url the URL to check
-     *
-     * @return bool
      */
     public static function isUrl(string $url): bool
     {
@@ -409,8 +401,6 @@ class GaletteMail
      * Is the email HTML formatted?
      *
      * @param ?bool $set The value to set
-     *
-     * @return bool
      */
     public function isHTML(?bool $set = null): bool
     {
@@ -422,8 +412,6 @@ class GaletteMail
 
     /**
      * Get sender name
-     *
-     * @return string
      */
     public function getSenderName(): string
     {
@@ -432,8 +420,6 @@ class GaletteMail
 
     /**
      * Get sender address
-     *
-     * @return string
      */
     public function getSenderAddress(): string
     {
@@ -495,8 +481,6 @@ class GaletteMail
      * Sets the subject
      *
      * @param string $subject The subject
-     *
-     * @return self
      */
     public function setSubject(string $subject): self
     {
@@ -508,8 +492,6 @@ class GaletteMail
      * Sets the message
      *
      * @param string $message The message
-     *
-     * @return self
      */
     public function setMessage(string $message): self
     {
@@ -522,8 +504,6 @@ class GaletteMail
      *
      * @param string $name    Sender name
      * @param string $address Sender address
-     *
-     * @return self
      */
     public function setSender(string $name, string $address): self
     {
@@ -536,8 +516,6 @@ class GaletteMail
      * Set timeout on SMTP connexion
      *
      * @param int $timeout SMTP timeout
-     *
-     * @return self
      */
     public function setTimeout(int $timeout): self
     {

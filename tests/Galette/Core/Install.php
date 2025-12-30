@@ -36,8 +36,6 @@ class Install extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -47,8 +45,6 @@ class Install extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -60,8 +56,6 @@ class Install extends TestCase
 
     /**
      * Test constructor
-     *
-     * @return void
      */
     public function testConstructor(): void
     {
@@ -88,8 +82,6 @@ class Install extends TestCase
 
     /**
      * Tests update scripts list
-     *
-     * @return void
      */
     public function testGetUpgradeScripts(): void
     {
@@ -164,8 +156,6 @@ class Install extends TestCase
 
     /**
      * Test type step
-     *
-     * @return void
      */
     public function testTypeStep(): void
     {
@@ -183,8 +173,6 @@ class Install extends TestCase
 
     /**
      * Test DB installation step
-     *
-     * @return void
      */
     public function testInstallDbStep(): void
     {
@@ -210,8 +198,6 @@ class Install extends TestCase
 
     /**
      * Test DB upgrade step
-     *
-     * @return void
      */
     public function testUpgradeDbStep(): void
     {
@@ -238,8 +224,6 @@ class Install extends TestCase
 
     /**
      * Test unknown mode
-     *
-     * @return void
      */
     public function testUnknownMode(): void
     {
@@ -250,8 +234,6 @@ class Install extends TestCase
 
     /**
      * Test Db types
-     *
-     * @return void
      */
     public function testSetDbType(): void
     {
@@ -281,8 +263,6 @@ class Install extends TestCase
 
     /**
      * Test Db chack step (same for install and upgrade)
-     *
-     * @return void
      */
     public function testDbCheckStep(): void
     {
@@ -340,8 +320,6 @@ class Install extends TestCase
 
     /**
      * Test db install step
-     *
-     * @return void
      */
     public function testDbInstallStep(): void
     {
@@ -379,8 +357,6 @@ class Install extends TestCase
 
     /**
      * Test admin step
-     *
-     * @return void
      */
     public function testAdminStep(): void
     {
@@ -406,8 +382,6 @@ class Install extends TestCase
 
     /**
      * Test galette initialization
-     *
-     * @return void
      */
     public function testInitStep(): void
     {

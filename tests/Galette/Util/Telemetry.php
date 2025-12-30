@@ -38,8 +38,6 @@ class Telemetry extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -54,8 +52,6 @@ class Telemetry extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -67,8 +63,6 @@ class Telemetry extends TestCase
 
     /**
      * Test Galette infos
-     *
-     * @return void
      */
     public function testGrabGaletteInfos(): void
     {
@@ -136,8 +130,6 @@ class Telemetry extends TestCase
 
     /**
      * Test DB infos
-     *
-     * @return void
      */
     public function testGrabDbInfos(): void
     {
@@ -160,8 +152,6 @@ class Telemetry extends TestCase
 
     /**
      * Test web server infos
-     *
-     * @return void
      */
     public function testGrabWebserverInfos(): void
     {
@@ -180,8 +170,6 @@ class Telemetry extends TestCase
 
     /**
      * Test PHP infos
-     *
-     * @return void
      */
     public function testGrabPhpInfos(): void
     {
@@ -209,8 +197,6 @@ class Telemetry extends TestCase
 
     /**
      * Test OS infos
-     *
-     * @return void
      */
     public function testGrabOsInfos(): void
     {
@@ -239,8 +225,6 @@ class Telemetry extends TestCase
 
     /**
      * Test whole Telemetry infos
-     *
-     * @return void
      */
     public function testGetTelemetryInfos(): void
     {

@@ -34,8 +34,6 @@ class History extends GaletteTestCase
 {
     /**
      * Test class constants
-     *
-     * @return void
      */
     public function testConstants(): void
     {
@@ -45,8 +43,6 @@ class History extends GaletteTestCase
 
     /**
      * Test history workflow
-     *
-     * @return void
      */
     public function testHistoryFlow(): void
     {

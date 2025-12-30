@@ -106,8 +106,6 @@ class I18n
      * Load language parameters
      *
      * @param string $id Identifier for requested language
-     *
-     * @return void
      */
     public function changeLanguage(string $id): void
     {
@@ -119,8 +117,6 @@ class I18n
     /**
      * Update environment according to locale.
      * Mainly used at app initialization or at login
-     *
-     * @return void
      */
     public function updateEnv(): void
     {
@@ -145,8 +141,6 @@ class I18n
      * Load a language
      *
      * @param string $id identifier for the language to load
-     *
-     * @return void
      */
     private function load(string $id): void
     {
@@ -256,8 +250,6 @@ class I18n
      * Does string seem to be encoded as UTF-8?
      *
      * @param string $str string to analyze
-     *
-     * @return  bool
      */
     public static function seemUtf8(string $str): bool
     {
@@ -303,8 +295,6 @@ class I18n
 
     /**
      * Is current language RTL?
-     *
-     * @return bool
      */
     public function isRTL(): bool
     {

@@ -65,8 +65,6 @@ class StaticExtension extends AbstractExtension
      * Get member's formatted name
      *
      * @param int|array{id: int} $id Member ID or array with 'id' key
-     *
-     * @return string
      */
     public function memberName(int|array $id): string
     {
@@ -82,8 +80,6 @@ class StaticExtension extends AbstractExtension
      * @param string $class   Class name
      * @param string $method  Method name
      * @param mixed  ...$args Arguments to pass to method
-     *
-     * @return mixed
      */
     public function callStatic(string $class, string $method, mixed ...$args): mixed
     {

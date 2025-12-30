@@ -34,8 +34,6 @@ class CheckModules extends TestCase
 {
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -48,8 +46,6 @@ class CheckModules extends TestCase
 
     /**
      * Test modules, all should be ok
-     *
-     * @return void
      */
     public function testAllOK(): void
     {
@@ -64,8 +60,6 @@ class CheckModules extends TestCase
 
     /**
      * Test all extensions missing
-     *
-     * @return void
      */
     public function testAllKO(): void
     {
@@ -87,8 +81,6 @@ class CheckModules extends TestCase
 
     /**
      * Test HTMl output
-     *
-     * @return void
      */
     public function testToHtml(): void
     {

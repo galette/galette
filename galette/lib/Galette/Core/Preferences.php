@@ -50,123 +50,123 @@ use function Safe\unlink;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property string $pref_admin_login Super admin login
- * @property string $pref_admin_pass Super admin password
- * @property string $pref_nom Association name
- * @property string $pref_slogan Association slogan
- * @property string $pref_adresse Address
- * @property string $pref_adresse2 Address continuation
- * @property string $pref_cp Association zipcode
- * @property string $pref_ville Association
- * @property string $pref_region Region
- * @property string $pref_pays Country
- * @property int $pref_postal_address Postal address to use, one of self::POSTAL_ADDRESS*
- * @property int $pref_postal_staff_member Staff member ID from which retrieve postal address
- * @property string $pref_org_phone_number Phone number
- * @property int $pref_org_phone Phone number to use, one of self::PHONE_NUMBER*
- * @property int $pref_org_phone_staff_member Staff member ID from which retrieve phone number
- * @property string $pref_org_email Email address
- * @property bool $pref_disable_members_socials Disable social networks for members
- * @property string $pref_lang Default instance language
- * @property int $pref_numrows Default number of rows in lists
- * @property int $pref_statut Default status for new members
- * @property string $pref_email_nom
- * @property string $pref_email
- * @property string $pref_email_newadh
- * @property bool $pref_bool_mailadh
- * @property bool $pref_bool_mailowner
- * @property bool $pref_editor_enabled
- * @property int $pref_mail_method Mail method, see GaletteMail::METHOD_*
- * @property string $pref_mail_smtp
- * @property string $pref_mail_smtp_host
- * @property bool $pref_mail_smtp_auth
- * @property bool $pref_mail_smtp_secure
- * @property int $pref_mail_smtp_port
- * @property string $pref_mail_smtp_user
- * @property string $pref_mail_smtp_password
- * @property int $pref_membership_ext
- * @property string $pref_beg_membership
- * @property int $pref_membership_offermonths
- * @property string $pref_email_reply_to
- * @property string $pref_website
- * @property int $pref_etiq_marges_v
- * @property int $pref_etiq_marges_h
- * @property int $pref_etiq_hspace
- * @property int $pref_etiq_vspace
- * @property int $pref_etiq_hsize
- * @property int $pref_etiq_vsize
- * @property int $pref_etiq_cols
- * @property int $pref_etiq_rows
- * @property int $pref_etiq_corps
- * @property bool $pref_etiq_border
- * @property bool $pref_force_picture_ratio
- * @property string $pref_member_picture_ratio
- * @property string $pref_card_abrev
- * @property string $pref_card_strip
- * @property string $pref_card_tcol
- * @property string $pref_card_scol
- * @property string $pref_card_bcol
- * @property string $pref_card_hcol
- * @property string $pref_bool_display_title
- * @property int $pref_card_address
- * @property string $pref_card_year
- * @property int $pref_card_marges_v
- * @property int $pref_card_marges_h
- * @property int $pref_card_vspace
- * @property int $pref_card_hspace
- * @property string $pref_card_self
- * @property int $pref_card_hsize
- * @property int $pref_card_vsize
- * @property int $pref_card_cols
- * @property int $pref_card_rows
- * @property string $pref_theme Preferred theme
- * @property bool $pref_hide_bg_image
- * @property bool $pref_enable_custom_colors
- * @property string $pref_cc_primary
- * @property string $pref_cc_primary_text
- * @property string $pref_cc_secondary
- * @property string $pref_cc_secondary_text
- * @property bool $pref_bool_publicpages
- * @property int $pref_publicpages_visibility_generic
- * @property int $pref_publicpages_visibility_documents
- * @property int $pref_publicpages_visibility_memberslist
- * @property int $pref_publicpages_visibility_membersgallery
- * @property int $pref_publicpages_visibility_stafflist
- * @property int $pref_publicpages_visibility_staffgallery
- * @property bool $pref_bool_groupsmanagers_are_staff
- * @property bool $pref_bool_selfsubscribe
- * @property bool $pref_bool_empty_form_link
- * @property string $pref_member_form_grid
- * @property string $pref_mail_sign
- * @property string $pref_new_contrib_script
- * @property bool $pref_bool_wrap_mails
- * @property string $pref_rss_url
- * @property string $pref_adhesion_form
- * @property bool $pref_mail_allow_unsecure
- * @property string $pref_instance_uuid
- * @property string $pref_registration_uuid
- * @property string $pref_telemetry_date
- * @property string $pref_registration_date
- * @property string $pref_footer
- * @property int $pref_filter_account
- * @property string $pref_galette_url
- * @property int $pref_redirect_on_create
- * @property int $pref_password_length
- * @property bool $pref_password_blacklist
- * @property int $pref_password_strength
- * @property int $pref_default_paymenttype
- * @property bool $pref_bool_create_member
- * @property bool $pref_bool_groupsmanagers_create_member
- * @property bool $pref_bool_groupsmanagers_edit_member
- * @property bool $pref_bool_groupsmanagers_edit_groups
- * @property bool $pref_bool_groupsmanagers_mailings
- * @property bool $pref_bool_groupsmanagers_exports
- * @property bool $pref_bool_groupsmanagers_create_contributions
- * @property bool $pref_bool_groupsmanagers_create_transactions
- * @property bool $pref_bool_groupsmanagers_see_contributions
- * @property bool $pref_bool_groupsmanagers_see_transactions
- * @property-read string[] $vpref_email_newadh list of mail senders
- * @property bool $pref_noindex
+ * @property      string   $pref_admin_login                              Super admin login
+ * @property      string   $pref_admin_pass                               Super admin password
+ * @property      string   $pref_nom                                      Association name
+ * @property      string   $pref_slogan                                   Association slogan
+ * @property      string   $pref_adresse                                  Address
+ * @property      string   $pref_adresse2                                 Address continuation
+ * @property      string   $pref_cp                                       Association zipcode
+ * @property      string   $pref_ville                                    Association
+ * @property      string   $pref_region                                   Region
+ * @property      string   $pref_pays                                     Country
+ * @property      int      $pref_postal_address                           Postal address to use, one of self::POSTAL_ADDRESS*
+ * @property      int      $pref_postal_staff_member                      Staff member ID from which retrieve postal address
+ * @property      string   $pref_org_phone_number                         Phone number
+ * @property      int      $pref_org_phone                                Phone number to use, one of self::PHONE_NUMBER*
+ * @property      int      $pref_org_phone_staff_member                   Staff member ID from which retrieve phone number
+ * @property      string   $pref_org_email                                Email address
+ * @property      bool     $pref_disable_members_socials                  Disable social networks for members
+ * @property      string   $pref_lang                                     Default instance language
+ * @property      int      $pref_numrows                                  Default number of rows in lists
+ * @property      int      $pref_statut                                   Default status for new members
+ * @property      string   $pref_email_nom
+ * @property      string   $pref_email
+ * @property      string   $pref_email_newadh
+ * @property      bool     $pref_bool_mailadh
+ * @property      bool     $pref_bool_mailowner
+ * @property      bool     $pref_editor_enabled
+ * @property      int      $pref_mail_method                              Mail method, see GaletteMail::METHOD_*
+ * @property      string   $pref_mail_smtp
+ * @property      string   $pref_mail_smtp_host
+ * @property      bool     $pref_mail_smtp_auth
+ * @property      bool     $pref_mail_smtp_secure
+ * @property      int      $pref_mail_smtp_port
+ * @property      string   $pref_mail_smtp_user
+ * @property      string   $pref_mail_smtp_password
+ * @property      int      $pref_membership_ext
+ * @property      string   $pref_beg_membership
+ * @property      int      $pref_membership_offermonths
+ * @property      string   $pref_email_reply_to
+ * @property      string   $pref_website
+ * @property      int      $pref_etiq_marges_v
+ * @property      int      $pref_etiq_marges_h
+ * @property      int      $pref_etiq_hspace
+ * @property      int      $pref_etiq_vspace
+ * @property      int      $pref_etiq_hsize
+ * @property      int      $pref_etiq_vsize
+ * @property      int      $pref_etiq_cols
+ * @property      int      $pref_etiq_rows
+ * @property      int      $pref_etiq_corps
+ * @property      bool     $pref_etiq_border
+ * @property      bool     $pref_force_picture_ratio
+ * @property      string   $pref_member_picture_ratio
+ * @property      string   $pref_card_abrev
+ * @property      string   $pref_card_strip
+ * @property      string   $pref_card_tcol
+ * @property      string   $pref_card_scol
+ * @property      string   $pref_card_bcol
+ * @property      string   $pref_card_hcol
+ * @property      string   $pref_bool_display_title
+ * @property      int      $pref_card_address
+ * @property      string   $pref_card_year
+ * @property      int      $pref_card_marges_v
+ * @property      int      $pref_card_marges_h
+ * @property      int      $pref_card_vspace
+ * @property      int      $pref_card_hspace
+ * @property      string   $pref_card_self
+ * @property      int      $pref_card_hsize
+ * @property      int      $pref_card_vsize
+ * @property      int      $pref_card_cols
+ * @property      int      $pref_card_rows
+ * @property      string   $pref_theme                                    Preferred theme
+ * @property      bool     $pref_hide_bg_image
+ * @property      bool     $pref_enable_custom_colors
+ * @property      string   $pref_cc_primary
+ * @property      string   $pref_cc_primary_text
+ * @property      string   $pref_cc_secondary
+ * @property      string   $pref_cc_secondary_text
+ * @property      bool     $pref_bool_publicpages
+ * @property      int      $pref_publicpages_visibility_generic
+ * @property      int      $pref_publicpages_visibility_documents
+ * @property      int      $pref_publicpages_visibility_memberslist
+ * @property      int      $pref_publicpages_visibility_membersgallery
+ * @property      int      $pref_publicpages_visibility_stafflist
+ * @property      int      $pref_publicpages_visibility_staffgallery
+ * @property      bool     $pref_bool_groupsmanagers_are_staff
+ * @property      bool     $pref_bool_selfsubscribe
+ * @property      bool     $pref_bool_empty_form_link
+ * @property      string   $pref_member_form_grid
+ * @property      string   $pref_mail_sign
+ * @property      string   $pref_new_contrib_script
+ * @property      bool     $pref_bool_wrap_mails
+ * @property      string   $pref_rss_url
+ * @property      string   $pref_adhesion_form
+ * @property      bool     $pref_mail_allow_unsecure
+ * @property      string   $pref_instance_uuid
+ * @property      string   $pref_registration_uuid
+ * @property      string   $pref_telemetry_date
+ * @property      string   $pref_registration_date
+ * @property      string   $pref_footer
+ * @property      int      $pref_filter_account
+ * @property      string   $pref_galette_url
+ * @property      int      $pref_redirect_on_create
+ * @property      int      $pref_password_length
+ * @property      bool     $pref_password_blacklist
+ * @property      int      $pref_password_strength
+ * @property      int      $pref_default_paymenttype
+ * @property      bool     $pref_bool_create_member
+ * @property      bool     $pref_bool_groupsmanagers_create_member
+ * @property      bool     $pref_bool_groupsmanagers_edit_member
+ * @property      bool     $pref_bool_groupsmanagers_edit_groups
+ * @property      bool     $pref_bool_groupsmanagers_mailings
+ * @property      bool     $pref_bool_groupsmanagers_exports
+ * @property      bool     $pref_bool_groupsmanagers_create_contributions
+ * @property      bool     $pref_bool_groupsmanagers_create_transactions
+ * @property      bool     $pref_bool_groupsmanagers_see_contributions
+ * @property      bool     $pref_bool_groupsmanagers_see_transactions
+ * @property-read string[] $vpref_email_newadh                            list of mail senders
+ * @property      bool     $pref_noindex
  */
 class Preferences
 {
@@ -395,8 +395,6 @@ class Preferences
     /**
      * Check if all fields referenced in the default array do exist,
      * create them if not
-     *
-     * @return bool
      */
     private function checkUpdate(): bool
     {
@@ -457,8 +455,6 @@ class Preferences
 
     /**
      * Load current preferences from database.
-     *
-     * @return bool
      */
     public function load(): bool
     {
@@ -488,7 +484,6 @@ class Preferences
      * @param string $adm_login admin login entered at install time
      * @param string $adm_pass  admin password entered at install time
      *
-     * @return bool
      * @throws Throwable
      */
     public function installInit(string $lang, string $adm_login, string $adm_pass): bool
@@ -552,8 +547,6 @@ class Preferences
      *
      * @param array<string, mixed> $values Values
      * @param Login                $login  Logged in user
-     *
-     * @return bool
      */
     public function check(array $values, Login $login): bool
     {
@@ -717,8 +710,6 @@ class Preferences
      *
      * @param string $fieldname Field name
      * @param mixed  $value     Value to be set
-     *
-     * @return mixed
      */
     public function validateValue(string $fieldname, mixed $value): mixed
     {
@@ -857,8 +848,6 @@ class Preferences
      * Will store all preferences in the database
      *
      * @param bool $updating True if we're updating instance
-     *
-     * @return bool
      */
     public function store(bool $updating = false): bool
     {
@@ -1014,8 +1003,6 @@ class Preferences
 
     /**
      * Are public pages visible?
-     *
-     * @return bool
      */
     public function arePublicPagesEnabled(): bool
     {
@@ -1026,8 +1013,6 @@ class Preferences
      * Are public pages visible?
      *
      * @param Authentication $login Authentication instance
-     *
-     * @return bool
      *
      * @deprecated 1.2.0
      */
@@ -1046,8 +1031,6 @@ class Preferences
      *
      * @param Authentication $login Authentication instance
      * @param string         $right Right to check
-     *
-     * @return bool
      */
     public function showPublicPage(Authentication $login, string $right): bool
     {
@@ -1231,8 +1214,6 @@ class Preferences
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -1269,8 +1250,6 @@ class Preferences
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -1308,8 +1287,6 @@ class Preferences
 
     /**
      * Get instance URL from configuration (if set) or guessed if not
-     *
-     * @return string
      */
     public function getURL(): string
     {
@@ -1323,8 +1300,6 @@ class Preferences
 
     /**
      * Get default URL (when not set by user in preferences)
-     *
-     * @return string
      */
     public function getDefaultURL(): string
     {
@@ -1345,8 +1320,6 @@ class Preferences
 
     /**
      * Get last telemetry date
-     *
-     * @return string
      */
     public function getTelemetryDate(): string
     {
@@ -1361,8 +1334,6 @@ class Preferences
 
     /**
      * Get last telemetry registration date
-     *
-     * @return string|null
      */
     public function getRegistrationDate(): ?string
     {
@@ -1450,8 +1421,6 @@ class Preferences
      *
      * @param PHPMailer $mail    PHPMailer instance
      * @param bool      $as_text Whether to return signature as text or HTML (default)
-     *
-     * @return string
      */
     public function getMailSignature(PHPMailer $mail, bool $as_text = false): string
     {
@@ -1570,8 +1539,6 @@ class Preferences
      * Purify HTML value
      *
      * @param string $value Value to clean
-     *
-     * @return string
      */
     public function cleanHtmlValue(string $value): string
     {
@@ -1590,8 +1557,6 @@ class Preferences
      *
      * @param string $field Field name
      * @param mixed  $value Field value
-     *
-     * @return bool
      */
     protected function updateOneField(
         string $field,
@@ -1625,8 +1590,6 @@ class Preferences
 
     /**
      * Update telemetry date only
-     *
-     * @return bool
      */
     public function updateTelemetryDate(): bool
     {
@@ -1638,8 +1601,6 @@ class Preferences
 
     /**
      * Update registration date only
-     *
-     * @return bool
      */
     public function updateRegistrationDate(): bool
     {
@@ -1653,8 +1614,6 @@ class Preferences
      * Generate and store UUID of specified type
      *
      * @param string $type UUID type to generate
-     *
-     * @return string
      */
     public function generateUUID(string $type): string
     {
@@ -1687,8 +1646,6 @@ class Preferences
      * Check if CSS is impacted when storing preferences
      *
      * @param array<string, mixed> $values Values to check
-     *
-     * @return void
      */
     protected function checkCssImpacted(array $values): void
     {
@@ -1714,8 +1671,6 @@ class Preferences
      * Reset dark mode CSS file
      *
      * @param \Slim\Flash\Messages $flash Flash messages instance
-     *
-     * @return void
      */
     public function resetDarkCss(\Slim\Flash\Messages $flash): void
     {
@@ -1795,8 +1750,6 @@ class Preferences
 
     /**
      * Get ID
-     *
-     * @return ?int
      */
     public function getID(): ?int
     {

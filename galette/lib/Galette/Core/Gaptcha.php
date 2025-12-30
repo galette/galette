@@ -65,8 +65,6 @@ class Gaptcha
 
     /**
      * Get question phrase
-     *
-     * @return string
      */
     public function getQuestion(): string
     {
@@ -89,8 +87,6 @@ class Gaptcha
 
     /**
      * Generate captcha question to display
-     *
-     * @return string
      */
     public function generateQuestion(): string
     {
@@ -106,8 +102,6 @@ class Gaptcha
      * Checks captcha validity
      *
      * @param int $gaptcha User entry
-     *
-     * @return bool
      */
     public function check(int $gaptcha): bool
     {

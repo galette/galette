@@ -211,8 +211,6 @@ class Telemetry
      * Count
      *
      * @param string $table Table to query
-     *
-     * @return int
      */
     public function getCount(string $table): int
     {
@@ -231,8 +229,6 @@ class Telemetry
      * Calculate average parts
      *
      * @param string $table Table to query
-     *
-     * @return string
      */
     private function getAverage(string $table): string
     {
@@ -254,8 +250,6 @@ class Telemetry
 
     /**
      * Send telemetry information
-     *
-     * @return void
      */
     public function send(): void
     {
@@ -303,8 +297,6 @@ class Telemetry
      * Get UUID
      *
      * @param string $type UUID type (either instance or registration)
-     *
-     * @return string
      */
     private function getUuid(string $type): string
     {
@@ -318,8 +310,6 @@ class Telemetry
 
     /**
      * Get instance UUID
-     *
-     * @return string
      */
     private function getInstanceUuid(): string
     {
@@ -328,8 +318,6 @@ class Telemetry
 
     /**
      * Get registration UUID
-     *
-     * @return string
      */
     final public function getRegistrationUuid(): string
     {
@@ -338,8 +326,6 @@ class Telemetry
 
     /**
      * Get date telemetry has been sent
-     *
-     * @return string
      */
     public function getSentDate(): string
     {
@@ -348,8 +334,6 @@ class Telemetry
 
     /**
      * Get date of registration
-     *
-     * @return string
      */
     public function getRegistrationDate(): string
     {
@@ -358,8 +342,6 @@ class Telemetry
 
     /**
      * Does telemetry infos has been sent already?
-     *
-     * @return bool
      */
     public function isSent(): bool
     {
@@ -368,8 +350,6 @@ class Telemetry
 
     /**
      * Is instance registered?
-     *
-     * @return bool
      */
     public function isRegistered(): bool
     {
@@ -379,7 +359,6 @@ class Telemetry
     /**
      * Should telemetry information sent again?
      *
-     * @return bool
      * @throws Exception
      */
     public function shouldRenew(): bool

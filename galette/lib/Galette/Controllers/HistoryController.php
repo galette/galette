@@ -45,8 +45,6 @@ class HistoryController extends AbstractController
      * @param Response        $response PSR Response
      * @param string|null     $option   One of 'page' or 'order'
      * @param string|int|null $value    Value of the option
-     *
-     * @return Response
      */
     public function list(
         Request $request,
@@ -101,8 +99,6 @@ class HistoryController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function historyFilter(Request $request, Response $response): Response
     {
@@ -151,8 +147,6 @@ class HistoryController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function flushHistory(Request $request, Response $response): Response
     {
@@ -213,8 +207,6 @@ class HistoryController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function confirmHistoryFlush(Request $request, Response $response): Response
     {
@@ -239,8 +231,6 @@ class HistoryController extends AbstractController
 
     /**
      * Get default filter name
-     *
-     * @return string
      */
     public static function getDefaultFilterName(): string
     {

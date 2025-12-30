@@ -49,8 +49,6 @@ class AjaxController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function messages(Request $request, Response $response): Response
     {
@@ -110,8 +108,6 @@ class AjaxController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $term     Search term
-     *
-     * @return Response
      */
     public function suggestTowns(Request $request, Response $response, string $term): Response
     {
@@ -159,8 +155,6 @@ class AjaxController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $term     Search term
-     *
-     * @return Response
      */
     public function suggestCountries(Request $request, Response $response, string $term): Response
     {
@@ -199,8 +193,6 @@ class AjaxController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $term     Search term
-     *
-     * @return Response
      */
     public function suggestRegions(Request $request, Response $response, string $term): Response
     {
@@ -238,8 +230,6 @@ class AjaxController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function telemetryInfos(Request $request, Response $response): Response
     {
@@ -258,8 +248,6 @@ class AjaxController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function telemetrySend(Request $request, Response $response): Response
     {
@@ -289,8 +277,6 @@ class AjaxController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function telemetryRegistered(Request $request, Response $response): Response
     {
@@ -303,8 +289,6 @@ class AjaxController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function contributionDates(Request $request, Response $response): Response
     {
@@ -335,8 +319,6 @@ class AjaxController extends AbstractController
      * @param Response    $response PSR Response
      * @param int|null    $page     Page number
      * @param string|null $search   Search string
-     *
-     * @return Response
      */
     public function contributionMembers(Request $request, Response $response, ?int $page = null, ?string $search = null): Response
     {
@@ -384,8 +366,6 @@ class AjaxController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function passwordStrength(Request $request, Response $response): Response
     {

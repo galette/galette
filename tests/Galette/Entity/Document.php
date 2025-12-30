@@ -36,8 +36,6 @@ class Document extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -52,8 +50,6 @@ class Document extends GaletteTestCase
 
     /**
      * Delete documents
-     *
-     * @return void
      */
     private function deleteDocuments(): void
     {
@@ -63,8 +59,6 @@ class Document extends GaletteTestCase
 
     /**
      * Test document object
-     *
-     * @return void
      */
     public function testObject(): void
     {
@@ -87,8 +81,6 @@ class Document extends GaletteTestCase
 
     /**
      * Test document "system" types
-     *
-     * @return void
      */
     public function testGetSystemTypes(): void
     {
@@ -98,8 +90,6 @@ class Document extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {
@@ -294,8 +284,6 @@ class Document extends GaletteTestCase
 
     /**
      * Test getTypes
-     *
-     * @return void
      */
     public function testGetTypes(): void
     {

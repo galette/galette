@@ -42,8 +42,6 @@ class TextController extends AbstractController
      * @param Response $response PSR Response
      * @param ?string  $lang     Language
      * @param ?string  $ref      Ref code
-     *
-     * @return Response
      */
     public function list(Request $request, Response $response, ?string $lang = null, ?string $ref = null): Response
     {
@@ -86,8 +84,6 @@ class TextController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function change(Request $request, Response $response): Response
     {
@@ -111,8 +107,6 @@ class TextController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function edit(Request $request, Response $response): Response
     {

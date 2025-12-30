@@ -34,7 +34,7 @@ use Galette\Repository\Members;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
+ * @property int    $id
  * @property string $label
  * @property string $libelle
  * @property string $priority
@@ -49,8 +49,6 @@ class StatusController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -63,8 +61,6 @@ class StatusController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function doAdd(Request $request, Response $response): Response
     {
@@ -81,8 +77,6 @@ class StatusController extends CrudController
      * @param Response        $response PSR Response
      * @param string|null     $option   One of 'page' or 'order'
      * @param int|string|null $value    Value of the option
-     *
-     * @return Response
      */
     public function list(
         Request $request,
@@ -121,8 +115,6 @@ class StatusController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -139,8 +131,6 @@ class StatusController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Status id
-     *
-     * @return Response
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -169,8 +159,6 @@ class StatusController extends CrudController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Status id
-     *
-     * @return Response
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -184,8 +172,6 @@ class StatusController extends CrudController
      * @param Response $response PSR Response
      * @param ?int     $id       Status id
      * @param string   $action   Action
-     *
-     * @return Response
      */
     public function store(
         Request $request,
@@ -253,8 +239,6 @@ class StatusController extends CrudController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function redirectUri(array $args): string
     {
@@ -265,8 +249,6 @@ class StatusController extends CrudController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function formUri(array $args): string
     {
@@ -282,8 +264,6 @@ class StatusController extends CrudController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function confirmRemoveTitle(array $args): string
     {
@@ -302,8 +282,6 @@ class StatusController extends CrudController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     protected function doDelete(array $args, array $post): bool
     {

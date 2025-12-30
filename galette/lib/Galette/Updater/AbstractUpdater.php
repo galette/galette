@@ -86,8 +86,6 @@ abstract class AbstractUpdater
 
     /**
      * Does upgrade have a SQL script to run
-     *
-     * @return bool
      */
     private function hasSql(): bool
     {
@@ -107,8 +105,6 @@ abstract class AbstractUpdater
      *
      * @param Db      $zdb       Database instance
      * @param Install $installer Installer instance
-     *
-     * @return void
      */
     final public function run(Db $zdb, Install $installer): void
     {
@@ -150,16 +146,12 @@ abstract class AbstractUpdater
 
     /**
      * Update instructions
-     *
-     * @return bool
      */
     abstract protected function update(): bool;
 
     /**
      * Pre stuff, if any.
      * Will be executed first.
-     *
-     * @return bool
      */
     protected function preUpdate(): bool
     {
@@ -171,8 +163,6 @@ abstract class AbstractUpdater
      *
      * @param Db      $zdb       Database instance
      * @param Install $installer Installer instance
-     *
-     * @return bool
      */
     private function sql(Db $zdb, Install $installer): bool
     {
@@ -193,8 +183,6 @@ abstract class AbstractUpdater
     /**
      * Post stuff, if any.
      * Will be executed at the end.
-     *
-     * @return bool
      */
     protected function postUpdate(): bool
     {
@@ -205,8 +193,6 @@ abstract class AbstractUpdater
      * Set SQL files instructions for all supported databases
      *
      * @param string $version Version for scripts
-     *
-     * @return bool
      */
     protected function setSqlScripts(string $version): bool
     {
@@ -269,8 +255,6 @@ abstract class AbstractUpdater
      *
      * @param string $msg  Report message
      * @param int    $type Entry type
-     *
-     * @return void
      */
     public function addReportEntry(string $msg, int $type): void
     {
@@ -289,8 +273,6 @@ abstract class AbstractUpdater
      * Add an error in array
      *
      * @param string $msg Error message
-     *
-     * @return void
      */
     public function addError(string $msg): void
     {
@@ -299,8 +281,6 @@ abstract class AbstractUpdater
 
     /**
      * Has current update errors?
-     *
-     * @return bool
      */
     public function hasErrors(): bool
     {
@@ -324,8 +304,6 @@ abstract class AbstractUpdater
 
     /**
      * Update database version
-     *
-     * @return void
      */
     private function updateDbVersion(): void
     {

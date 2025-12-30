@@ -41,8 +41,6 @@ trait Socials
      * Check socials
      *
      * @param array<string,mixed> $post User input
-     *
-     * @return void
      */
     protected function checkSocials(array $post): void
     {
@@ -58,8 +56,6 @@ trait Socials
      * Store social networks/contacts
      *
      * @param int|null $id ID
-     *
-     * @return bool
      */
     protected function storeSocials(?int $id = null): bool
     {

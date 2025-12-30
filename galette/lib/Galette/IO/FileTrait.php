@@ -194,8 +194,6 @@ trait FileTrait
      * @param ?array<string,string> $mimes       Array of permitted mime types
      * @param ?int                  $maxlength   Maximum length for each file
      * @param ?int                  $mincropsize Minimum image side size required for cropping
-     *
-     * @return void
      */
     protected function init(
         ?string $dest = null,
@@ -223,8 +221,6 @@ trait FileTrait
      * Copy existing file to new Location
      *
      * @param string $dest Destination directory
-     *
-     * @return bool
      */
     public function copyTo(string $dest): bool
     {
@@ -246,8 +242,6 @@ trait FileTrait
      * @param UploadedFileInterface[]|array<string, UploadedFileInterface []> $request_files Array of uploaded files (typically from PSR7 request)
      * @param string                                                          $key           Key to look for in uploaded files
      * @param callable|null                                                   $callback      Callback to use for storing the file. If null, will use $this->storeFile()
-     *
-     * @return bool
      */
     public function upload(array $request_files, string $key, ?callable $callback = null): bool
     {
@@ -281,8 +275,6 @@ trait FileTrait
      *
      * @param UploadedFileInterface[] $uploaded_files Array of uploaded files
      * @param callable                $callback       Callback to use for storing the file
-     *
-     * @return void
      */
     private function handleUpload(array $uploaded_files, callable $callback): void
     {
@@ -410,8 +402,6 @@ trait FileTrait
 
     /**
      * Build destination path
-     *
-     * @return string
      */
     protected function buildDestPath(): string
     {
@@ -453,8 +443,6 @@ trait FileTrait
 
     /**
      * Get destination dir
-     *
-     * @return ?string
      */
     public function getDestDir(): ?string
     {
@@ -465,8 +453,6 @@ trait FileTrait
      * Set destination directory
      *
      * @param string $dir Directory
-     *
-     * @return void
      */
     public function setDestDir(string $dir): void
     {
@@ -475,8 +461,6 @@ trait FileTrait
 
     /**
      * Get file name
-     *
-     * @return ?string
      */
     public function getFileName(): ?string
     {
@@ -487,8 +471,6 @@ trait FileTrait
      * Set file name
      *
      * @param string $name file name
-     *
-     * @return void
      */
     public function setFileName(string $name): void
     {
@@ -529,8 +511,6 @@ trait FileTrait
      * Get file mime type
      *
      * @param string $file File
-     *
-     * @return string
      */
     public static function getMimeType(string $file): string
     {

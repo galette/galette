@@ -37,8 +37,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Cleanup after tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -81,8 +79,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Cleanup after class
-     *
-     * @return void
      */
     public static function tearDownAfterClass(): void
     {
@@ -93,8 +89,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -120,8 +114,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test empty member
-     *
-     * @return void
      */
     public function testEmpty(): void
     {
@@ -168,8 +160,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test member load dependencies
-     *
-     * @return void
      */
     public function testDependencies(): void
     {
@@ -276,8 +266,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Tests getter
-     *
-     * @return void
      */
     public function testGetterWException(): void
     {
@@ -289,8 +277,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Set dependencies from constructor
-     *
-     * @return void
      */
     public function testDepsAtConstuct(): void
     {
@@ -314,8 +300,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test simple member creation
-     *
-     * @return void
      */
     public function testSimpleMember(): void
     {
@@ -329,8 +313,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test send email property
-     *
-     * @return void
      */
     public function testSendEmail(): void
     {
@@ -342,8 +324,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test isset
-     *
-     * @return void
      */
     public function testIsset(): void
     {
@@ -368,8 +348,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test load form login and email
-     *
-     * @return void
      */
     public function testLoadForLogin(): void
     {
@@ -389,8 +367,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test password updating
-     *
-     * @return void
      */
     public function testUpdatePassword(): void
     {
@@ -410,8 +386,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Tests check errors
-     *
-     * @return void
      */
     public function testCheckErrors(): void
     {
@@ -578,8 +552,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test picture
-     *
-     * @return void
      */
     public function testPhoto(): void
     {
@@ -598,8 +570,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test canEdit
-     *
-     * @return void
      */
     public function testCanEdit(): void
     {
@@ -670,8 +640,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test canDelete
-     *
-     * @return void
      */
     public function testCanDelete(): void
     {
@@ -742,8 +710,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test member duplication
-     *
-     * @return void
      */
     public function testDuplicate(): void
     {
@@ -767,8 +733,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test parents
-     *
-     * @return void
      */
     public function testParents(): void
     {
@@ -852,8 +816,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test XSS/SQL injection
-     *
-     * @return void
      */
     public function testInjection(): void
     {
@@ -873,8 +835,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test can* methods
-     *
-     * @return void
      */
     public function testCan(): void
     {
@@ -936,12 +896,12 @@ class Adherent extends GaletteTestCase
         $this->logSuperAdmin();
 
         $child_data = [
-                'nom_adh'       => 'Doe',
-                'prenom_adh'    => 'Johny',
-                'parent_id'     => $member->id,
-                'attach'        => true,
-                'login_adh'     => 'child.johny.doe',
-                'fingerprint' => 'FAKER' . $this->seed
+            'nom_adh'       => 'Doe',
+            'prenom_adh'    => 'Johny',
+            'parent_id'     => $member->id,
+            'attach'        => true,
+            'login_adh'     => 'child.johny.doe',
+            'fingerprint' => 'FAKER' . $this->seed
         ];
         $child = $this->createMember($child_data);
         $cid = $child->id;
@@ -1079,8 +1039,6 @@ class Adherent extends GaletteTestCase
      * @param int|false                   $id       ID
      * @param string|false                $nick     Nick
      * @param string                      $expected Expected result
-     *
-     * @return void
      */
     public function testsGetNameWithCase(
         string $name,
@@ -1106,8 +1064,6 @@ class Adherent extends GaletteTestCase
      * Change member active status
      *
      * @param bool $active Activation status
-     *
-     * @return void
      */
     private function changeMemberActivation(bool $active): void
     {
@@ -1122,8 +1078,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test getDueStatus
-     *
-     * @return void
      */
     public function testGetDueStatus(): void
     {
@@ -1224,8 +1178,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test isSponsor
-     *
-     * @return void
      */
     public function testIsSponsor(): void
     {
@@ -1287,8 +1239,6 @@ class Adherent extends GaletteTestCase
     /**
      * Test dynamic boolean field uncheck
      * @see https://bugs.galette.eu/issues/1472
-     *
-     * @return void
      */
     public function testDynamicBooleanUncheck(): void
     {
@@ -1461,8 +1411,6 @@ class Adherent extends GaletteTestCase
     /**
      * Test dynamic dates
      * @see https://bugs.galette.eu/issues/1881
-     *
-     * @return void
      */
     public function testDynamicDates(): void
     {
@@ -1645,8 +1593,8 @@ class Adherent extends GaletteTestCase
         );
 
         $data = $this->dataAdherentOne() + [
-                'info_field_' . $ddate->getId() . '_1'   => date('d/m/Y')
-            ];
+            'info_field_' . $ddate->getId() . '_1'   => date('d/m/Y')
+        ];
 
         $check = $adh->check($data, [], []);
         $this->assertIsArray($check);
@@ -1667,8 +1615,8 @@ class Adherent extends GaletteTestCase
         );
 
         $data = $this->dataAdherentOne() + [
-                'info_field_' . $ddate->getId() . '_1'   => date('d/m/Y')
-            ];
+            'info_field_' . $ddate->getId() . '_1'   => date('d/m/Y')
+        ];
 
         $check = $adh->check($data, [], []);
         if (is_array($check)) {
@@ -1775,8 +1723,8 @@ class Adherent extends GaletteTestCase
         );
 
         $data = $this->dataAdherentOne() + [
-                'info_field_' . $ddate->getId() . '_1'   => '2025-13-13'
-            ];
+            'info_field_' . $ddate->getId() . '_1'   => '2025-13-13'
+        ];
 
         $check = $adh->check($data, [], []);
         $this->assertIsArray($check);
@@ -1786,8 +1734,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test group membership
-     *
-     * @return void
      */
     public function testTitle(): void
     {
@@ -1809,8 +1755,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test group membership
-     *
-     * @return void
      */
     public function testGroupMembership(): void
     {
@@ -1867,8 +1811,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test vCard export
-     *
-     * @return void
      */
     public function testgetVCard(): void
     {
@@ -1885,8 +1827,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test QR codes generation
-     *
-     * @return void
      */
     public function testGetQrCodes(): void
     {
@@ -1919,8 +1859,6 @@ class Adherent extends GaletteTestCase
 
     /**
      * Test there is no empty login possible
-     *
-     * @return void
      */
     public function testNoEmptyLogin(): void
     {

@@ -82,8 +82,6 @@ class PdfMembersCards extends Pdf
 
     /**
      * Initialize PDF
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -172,8 +170,6 @@ class PdfMembersCards extends Pdf
      * Draw members cards
      *
      * @param array<Adherent> $members Members
-     *
-     * @return void
      */
     public function drawCards(array $members): void
     {
@@ -340,8 +336,6 @@ class PdfMembersCards extends Pdf
 
     /**
      * Get card width
-     *
-     * @return int
      */
     public static function getWidth(): int
     {
@@ -353,8 +347,6 @@ class PdfMembersCards extends Pdf
 
     /**
      * Get card height
-     *
-     * @return int
      */
     public static function getHeight(): int
     {
@@ -366,8 +358,6 @@ class PdfMembersCards extends Pdf
 
     /**
      * Get number of columns
-     *
-     * @return int
      */
     public static function getCols(): int
     {
@@ -376,8 +366,6 @@ class PdfMembersCards extends Pdf
 
     /**
      * Get number of rows
-     *
-     * @return int
      */
     public static function getRows(): int
     {

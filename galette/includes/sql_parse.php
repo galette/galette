@@ -62,8 +62,6 @@ use function Safe\preg_match_all;
  * remove_remarks will strip the sql comment lines out of an uploaded sql file
  *
  * @param string $sql sql
- *
- * @return string
  */
 function remove_remarks(string $sql): string
 {

@@ -35,8 +35,6 @@ class Gaptcha extends TestCase
 {
     /**
      * Test getRawData
-     *
-     * @return void
      */
     public function testCheck(): void
     {

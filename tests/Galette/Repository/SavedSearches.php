@@ -36,8 +36,6 @@ class SavedSearches extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -51,7 +49,6 @@ class SavedSearches extends GaletteTestCase
     /**
      * Test getList
      *
-     * @return void
      * @throws \Throwable
      */
     public function testGetList(): void

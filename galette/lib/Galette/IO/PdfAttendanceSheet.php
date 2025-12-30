@@ -49,8 +49,6 @@ class PdfAttendanceSheet extends Pdf
 
     /**
      * Page header
-     *
-     * @return void
      */
     public function Header(): void // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
@@ -111,8 +109,6 @@ class PdfAttendanceSheet extends Pdf
 
     /**
      * Initialize PDF
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -137,8 +133,6 @@ class PdfAttendanceSheet extends Pdf
      * Draw members cards
      *
      * @param array<Adherent> $members Members
-     *
-     * @return void
      */
     public function drawSheet(array $members): void
     {
@@ -208,8 +202,6 @@ class PdfAttendanceSheet extends Pdf
 
     /**
      * Add images to file
-     *
-     * @return self
      */
     public function withImages(): self
     {

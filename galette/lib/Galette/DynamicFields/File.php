@@ -49,8 +49,6 @@ class File extends DynamicField
 
     /**
      * Get field type
-     *
-     * @return int
      */
     public function getType(): int
     {
@@ -63,8 +61,6 @@ class File extends DynamicField
      * @param int         $id     Object (member, contribution, ...) ID
      * @param int         $pos    Position in the list of values  (0-based)
      * @param string|null $prefix Forced file prefix; if null (defaults) form_name wil be used verbatim
-     *
-     * @return string
      */
     public function getFileName(int $id, int $pos, ?string $prefix = null): string
     {

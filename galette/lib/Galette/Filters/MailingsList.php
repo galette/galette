@@ -31,11 +31,11 @@ use Galette\Core\MailingHistory;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property ?string $start_date_filter
- * @property string $raw_start_date_filter
+ * @property string  $raw_start_date_filter
  * @property ?string $end_date_filter
- * @property string $raw_end_date_filter
- * @property int $sender_filter
- * @property int $sent_filter
+ * @property string  $raw_end_date_filter
+ * @property int     $sender_filter
+ * @property int     $sent_filter
  * @property ?string $subject_filter
  */
 
@@ -72,8 +72,6 @@ class MailingsList extends HistoryList
 
     /**
      * Returns the field we want to default set order to
-     *
-     * @return int|string
      */
     protected function getDefaultOrder(): int|string
     {
@@ -82,8 +80,6 @@ class MailingsList extends HistoryList
 
     /**
      * Reinit default parameters
-     *
-     * @return void
      */
     public function reinit(): void
     {
@@ -98,8 +94,6 @@ class MailingsList extends HistoryList
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {

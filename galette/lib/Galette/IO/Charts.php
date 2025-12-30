@@ -70,8 +70,6 @@ class Charts
 
     /**
      * Loads charts data
-     *
-     * @return void
      */
     private function load(): void
     {
@@ -93,8 +91,6 @@ class Charts
 
     /**
      * Loads data to produce a Pie chart based on members status
-     *
-     * @return void
      */
     private function getChartMembersStatusPie(): void
     {
@@ -138,8 +134,6 @@ class Charts
 
     /**
      * Loads data to produce a Pie chart based on members state of dues
-     *
-     * @return void
      */
     private function getChartMembersStateDuePie(): void
     {
@@ -238,8 +232,6 @@ class Charts
 
     /**
      * Loads data to produce a pie chart based on company/not company members
-     *
-     * @return void
      */
     private function getChartCompaniesOrNot(): void
     {
@@ -297,8 +289,6 @@ class Charts
 
     /**
      * Loads data to produce a Pie chart based on contributions types
-     *
-     * @return void
      */
     private function getChartContribsTypesPie(): void
     {
@@ -333,8 +323,6 @@ class Charts
 
     /**
      * Loads data to produce a Pie chart based on contributions types
-     *
-     * @return void
      */
     private function getChartContribsAllTime(): void
     {

@@ -70,8 +70,6 @@ class PdfAdhesionForm extends Pdf
 
     /**
      * Get model
-     *
-     * @return ?PdfModel
      */
     protected function getModel(): ?PdfModel
     {
@@ -85,8 +83,6 @@ class PdfAdhesionForm extends Pdf
      * Store PDF
      *
      * @param string $path Path
-     *
-     * @return bool
      */
     public function store(string $path): bool
     {
@@ -106,8 +102,6 @@ class PdfAdhesionForm extends Pdf
 
     /**
      * Get store path
-     *
-     * @return string
      */
     public function getPath(): string
     {

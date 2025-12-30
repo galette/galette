@@ -77,8 +77,6 @@ class XHProf
      * Start profiling
      *
      * @param string $msg Message (default '')
-     *
-     * @return void
      */
     public function start(string $msg = ''): void
     {
@@ -101,8 +99,6 @@ class XHProf
 
     /**
      * Stops profiling
-     *
-     * @return void
      */
     public function stop(): void
     {

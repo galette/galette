@@ -162,8 +162,6 @@ class CsvOut extends Csv
      *   If not, it will be returned
      *
      * @param bool $last true if we write the latest line
-     *
-     * @return void
      */
     private function write(bool $last = false): void
     {
@@ -185,8 +183,6 @@ class CsvOut extends Csv
      * Retrieve parameted export name
      *
      * @param string $id Parameted export identifier
-     *
-     * @return ?string
      */
     public function getParamedtedExportName(string $id): ?string
     {

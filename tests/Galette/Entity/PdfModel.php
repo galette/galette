@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace GaletteTests\Entity;
 
-use Galette\Entity\Adherent;
 use Galette\DynamicFields\DynamicField;
 use Galette\GaletteTestCase;
 
@@ -38,8 +37,6 @@ class PdfModel extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -60,8 +57,6 @@ class PdfModel extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -91,8 +86,6 @@ class PdfModel extends GaletteTestCase
 
     /**
      * Test expected patterns
-     *
-     * @return void
      */
     public function testExpectedPatterns(): void
     {
@@ -189,8 +182,6 @@ class PdfModel extends GaletteTestCase
 
     /**
      * Types provider
-     *
-     * @return array
      */
     public static function typesProvider(): array
     {
@@ -220,8 +211,6 @@ class PdfModel extends GaletteTestCase
      *
      * @param int    $type     Requested type
      * @param string $expected Expected class name
-     *
-     * @return void
      */
     public function testGetypeClass(int $type, string $expected): void
     {
@@ -232,8 +221,6 @@ class PdfModel extends GaletteTestCase
      * Create dynamic field
      *
      * @param array $field_data Field data
-     *
-     * @return DynamicField
      */
     private function createDynamicField(array $field_data): DynamicField
     {
@@ -257,8 +244,6 @@ class PdfModel extends GaletteTestCase
 
     /**
      * Test model replacements
-     *
-     * @return void
      */
     public function testReplacements(): void
     {
@@ -321,11 +306,11 @@ class PdfModel extends GaletteTestCase
             'model_subtitle' => 'The subtitle',
             'model_header' => null,
             'model_footer' => null,
-            'model_body' => 'name: {NAME_ADH} login: {LOGIN_ADH} birthdate: {ADH_BIRTH_DATE} dynlabel: {LABEL_DYNFIELD_' .
-            $adf->getId() . '_ADH} dynvalue: {INPUT_DYNFIELD_' . $adf->getId() . '_ADH} ' .
-            '- enddate: {CONTRIB_END_DATE} amount: {CONTRIB_AMOUNT} ({CONTRIB_AMOUNT_LETTERS}) dynlabel: ' .
-            '{LABEL_DYNFIELD_' . $cdf->getId() . '_CONTRIB} dynvalue: {INPUT_DYNFIELD_' . $cdf->getId() . '_CONTRIB}' .
-            ' pref dynlabel: {LABEL_DYNFIELD_' . $pdf->getId() . '_PREFS} pref dynvalue: {DYNFIELD_' . $pdf->getId() . '_PREFS}',
+            'model_body' => 'name: {NAME_ADH} login: {LOGIN_ADH} birthdate: {ADH_BIRTH_DATE} dynlabel: {LABEL_DYNFIELD_'
+            . $adf->getId() . '_ADH} dynvalue: {INPUT_DYNFIELD_' . $adf->getId() . '_ADH} '
+            . '- enddate: {CONTRIB_END_DATE} amount: {CONTRIB_AMOUNT} ({CONTRIB_AMOUNT_LETTERS}) dynlabel: '
+            . '{LABEL_DYNFIELD_' . $cdf->getId() . '_CONTRIB} dynvalue: {INPUT_DYNFIELD_' . $cdf->getId() . '_CONTRIB}'
+            . ' pref dynlabel: {LABEL_DYNFIELD_' . $pdf->getId() . '_PREFS} pref dynvalue: {DYNFIELD_' . $pdf->getId() . '_PREFS}',
             'model_styles' => null,
             'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
         ], \ArrayObject::ARRAY_AS_PROPS);
@@ -361,10 +346,10 @@ class PdfModel extends GaletteTestCase
         );
 
         $this->assertSame(
-            'name: DURAND René login: arthur.hamon' .  $this->seed . ' birthdate: ' . $data['ddn_adh'] . ' dynlabel: Dynamic text field dynvalue: ' .
-            'My value (: ' .
-            '- enddate: ' . $this->contrib->end_date . ' amount: 92 (ninety-two) dynlabel: Dynamic date field ' .
-            'dynvalue: 2020-12-03 pref dynlabel: Settings line field pref dynvalue: A dynamic value in settings \o/',
+            'name: DURAND René login: arthur.hamon' . $this->seed . ' birthdate: ' . $data['ddn_adh'] . ' dynlabel: Dynamic text field dynvalue: '
+            . 'My value (: '
+            . '- enddate: ' . $this->contrib->end_date . ' amount: 92 (ninety-two) dynlabel: Dynamic date field '
+            . 'dynvalue: 2020-12-03 pref dynlabel: Settings line field pref dynvalue: A dynamic value in settings \o/',
             $model->hbody
         );
 
@@ -385,8 +370,6 @@ class PdfModel extends GaletteTestCase
      * Create test contribution in database
      *
      * @param DynamicField $cdf Contribution dynamic field
-     *
-     * @return void
      */
     protected function createPdfContribution(DynamicField $cdf): void
     {
@@ -417,8 +400,6 @@ class PdfModel extends GaletteTestCase
 
     /**
      * Test model storage in db
-     *
-     * @return void
      */
     public function testStorage(): void
     {

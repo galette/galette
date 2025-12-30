@@ -72,8 +72,6 @@ class CheckModules
      * - missing: required modules that are missing
      *
      * @param bool $translated Use translations (default to true)
-     *
-     * @return void
      */
     public function doCheck(bool $translated = true): void
     {
@@ -112,8 +110,6 @@ class CheckModules
      * HTML formatted results for checks
      *
      * @param bool $translated Use translations (default to true)
-     *
-     * @return string
      */
     public function toHtml(bool $translated = true): string
     {
@@ -150,8 +146,6 @@ class CheckModules
 
     /**
      * Check if it is ok to use Galette with current modules
-     *
-     * @return bool
      */
     public function isValid(): bool
     {
@@ -162,8 +156,6 @@ class CheckModules
      * Check if a specific module is OK for that instance
      *
      * @param string $module Module name to check
-     *
-     * @return bool
      */
     public function isGood(string $module): bool
     {
@@ -204,8 +196,6 @@ class CheckModules
      * Check if a module is loaded
      *
      * @param string $ext Module name
-     *
-     * @return bool
      */
     protected function isExtensionLoaded(string $ext): bool
     {

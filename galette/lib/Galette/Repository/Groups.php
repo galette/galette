@@ -223,8 +223,6 @@ class Groups
      * @param bool          $manager     Add member as manager, defaults to false
      * @param bool          $transaction Does a SQL transaction already exists? Defaults
      *                                   to false.
-     *
-     * @return bool
      */
     public static function addMemberToGroups(Adherent $adh, array $groups, bool $manager = false, bool $transaction = false): bool
     {
@@ -340,8 +338,6 @@ class Groups
      * Remove members from all their groups
      *
      * @param array<int> $ids Members ids
-     *
-     * @return void
      */
     public static function removeMembersFromGroups(array $ids): void
     {
@@ -369,8 +365,6 @@ class Groups
      * Remove member from all his groups
      *
      * @param int $id Member's id
-     *
-     * @return void
      */
     public static function removeMemberFromGroups(int $id): void
     {
@@ -384,8 +378,6 @@ class Groups
      * @param string   $name    Requested name
      * @param int|null $parent  Parent group (defaults to null)
      * @param int|null $current Current ID to be excluded (defaults to null)
-     *
-     * @return bool
      */
     public static function isUnique(Db $zdb, string $name, ?int $parent = null, ?int $current = null): bool
     {

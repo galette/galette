@@ -40,8 +40,6 @@ class Install extends TestCase
     private string $latest_prefix = 'latest_galette_';
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -67,8 +65,6 @@ class Install extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -79,8 +75,6 @@ class Install extends TestCase
 
     /**
      * Test if current database version is supported
-     *
-     * @return void
      */
     public function testDbSupport(): void
     {
@@ -89,8 +83,6 @@ class Install extends TestCase
 
     /**
      * Test updates
-     *
-     * @return void
      */
     public function testUpdates(): void
     {
@@ -125,8 +117,6 @@ class Install extends TestCase
 
     /**
      * Test updated database schema against fresh installed one
-     *
-     * @return void
      */
     public function testUpdatedDatabase(): void
     {
@@ -149,9 +139,9 @@ class Install extends TestCase
         //make sure all tables are present
         $this->assertEquals(
             array_map(
-                fn($table) =>
+                fn($table)
                     //table prefix differs
-                    str_replace($latest_prefix, PREFIX_DB, $table),
+                    => str_replace($latest_prefix, PREFIX_DB, $table),
                 $latest_tables
             ),
             $tables
@@ -181,11 +171,11 @@ class Install extends TestCase
 
                 //Q&D fixes... :'(
                 if (
-                    !$db->isPostgres() &&
-                    $table_name === 'galette_cotisations' &&
-                    (
-                        $latest_column->getName() === 'id_type_cotis' ||
-                        $latest_column->getName() === 'type_paiement_cotis'
+                    !$db->isPostgres()
+                    && $table_name === 'galette_cotisations'
+                    && (
+                        $latest_column->getName() === 'id_type_cotis'
+                        || $latest_column->getName() === 'type_paiement_cotis'
                     )
                 ) {
                     //dunno why default is not correct, 1.15-mysql upgrade does contain the correct statement.
@@ -314,8 +304,6 @@ class Install extends TestCase
      * Build constraint key since we can not rely on mysql ones
      *
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $constraint Constraint from which key must be built
-     *
-     * @return string
      */
     private function buildConstraintKey(\Laminas\Db\Metadata\Object\ConstraintObject $constraint): string
     {
@@ -347,8 +335,6 @@ class Install extends TestCase
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $latest_constraint Constraint from installed database
      * @param \Laminas\Db\Metadata\Object\ConstraintObject $constraint        Constraint from updated database
      * @param string                                       $rule_type         Rule type (either 'update' or 'delete')
-     *
-     * @return void
      */
     private function checkFkeysRules(
         \Laminas\Db\Metadata\Object\ConstraintObject $latest_constraint,

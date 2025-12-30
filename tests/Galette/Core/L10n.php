@@ -38,8 +38,6 @@ class L10n extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -55,8 +53,6 @@ class L10n extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -81,8 +77,6 @@ class L10n extends TestCase
 
     /**
      * Test add dynamic translation
-     *
-     * @return void
      */
     public function testAddDynamicTranslation(): void
     {
@@ -159,8 +153,6 @@ class L10n extends TestCase
 
     /**
      * Test dynamic translation flow (add/update/get/delete)
-     *
-     * @return void
      */
     public function testDynamicTranslationFlow(): void
     {
@@ -227,7 +219,7 @@ class L10n extends TestCase
         $results = $this->l10n->getDynamicTranslations(md5('A text for flow test'));
         $this->assertCount(count($langs), $results);
         foreach ($results as $result) {
-                $this->assertSame('', $result['text'], $result['key']);
+            $this->assertSame('', $result['text'], $result['key']);
         }
 
         //update method will create text if it does not exist
@@ -257,8 +249,6 @@ class L10n extends TestCase
 
     /**
      * Test add dynamic translation with exception
-     *
-     * @return void
      */
     public function testAddWException(): void
     {
@@ -282,8 +272,6 @@ class L10n extends TestCase
 
     /**
      * Test update dynamic translation with exception
-     *
-     * @return void
      */
     public function testUpdateWException(): void
     {
@@ -313,8 +301,6 @@ class L10n extends TestCase
 
     /**
      * Test delete dynamic translation with exception
-     *
-     * @return void
      */
     public function testDeleteWException(): void
     {
@@ -338,8 +324,6 @@ class L10n extends TestCase
 
     /**
      * Test get dynamic translation with exception
-     *
-     * @return void
      */
     public function testGetWException(): void
     {
@@ -364,8 +348,6 @@ class L10n extends TestCase
 
     /**
      * Test get dynamic translations with exception
-     *
-     * @return void
      */
     public function testGetsWException(): void
     {

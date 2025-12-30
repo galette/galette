@@ -59,8 +59,8 @@ abstract class GaletteTestCase extends TestCase
     protected bool $load_plugins = false;
 
     /**
-     * @see see \Analog\Handler\Level::$log_levels
      * @var string[]
+     * @see see \Analog\Handler\Level::$log_levels
      */
     private array $log_levels_names = [
         \Analog\Analog::DEBUG    => 'DEBUG',
@@ -75,8 +75,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -150,8 +148,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -209,8 +205,6 @@ abstract class GaletteTestCase extends TestCase
      * Loads member from a resultset
      *
      * @param int $id Id
-     *
-     * @return void
      */
     protected function loadAdherent(int $id): void
     {
@@ -224,8 +218,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Get Faker data for one member
-     *
-     * @return array
      */
     protected function dataAdherentOne(): array
     {
@@ -243,8 +235,8 @@ abstract class GaletteTestCase extends TestCase
             'ville_adh' => 'Martel',
             'cp_adh' => '39 069',
             'adresse_adh' => '66, boulevard De Oliveira',
-            'email_adh' => 'meunier.josephine' .  $this->seed . '@ledoux.com',
-            'login_adh' => 'arthur.hamon' .  $this->seed,
+            'email_adh' => 'meunier.josephine' . $this->seed . '@ledoux.com',
+            'login_adh' => 'arthur.hamon' . $this->seed,
             'mdp_adh' => 'J^B-()f',
             'mdp_adh2' => 'J^B-()f',
             'bool_admin_adh' => false,
@@ -270,8 +262,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Get Faker data for second member
-     *
-     * @return array
      */
     protected function dataAdherentTwo(): array
     {
@@ -290,8 +280,8 @@ abstract class GaletteTestCase extends TestCase
             'ville_adh' => 'Reynaudnec',
             'cp_adh' => '63077',
             'adresse_adh' => '2, boulevard Legros',
-            'email_adh' => 'phoarau' .  $this->seed . '@tele2.fr',
-            'login_adh' => 'nathalie51' .  $this->seed,
+            'email_adh' => 'phoarau' . $this->seed . '@tele2.fr',
+            'login_adh' => 'nathalie51' . $this->seed,
             'mdp_adh' => 'T.u!IbKOi|06',
             'mdp_adh2' => 'T.u!IbKOi|06',
             'bool_admin_adh' => false,
@@ -320,8 +310,6 @@ abstract class GaletteTestCase extends TestCase
      * Create member from data
      *
      * @param array $data Data to use to create member
-     *
-     * @return \Galette\Entity\Adherent
      */
     public function createMember(array $data): \Galette\Entity\Adherent
     {
@@ -358,8 +346,6 @@ abstract class GaletteTestCase extends TestCase
      *
      * @param ?\Galette\Entity\Adherent $adh           Member instance, if any
      * @param array<string, mixed>      $new_expecteds Changes on expected values
-     *
-     * @return void
      */
     protected function checkMemberOneExpected(?\Galette\Entity\Adherent $adh = null, array $new_expecteds = []): void
     {
@@ -445,8 +431,6 @@ abstract class GaletteTestCase extends TestCase
      *
      * @param ?\Galette\Entity\Adherent $adh           Member instance, if any
      * @param array<string, mixed>      $new_expecteds Changes on expected values
-     *
-     * @return void
      */
     protected function checkMemberTwoExpected(?\Galette\Entity\Adherent $adh = null, array $new_expecteds = []): void
     {
@@ -524,8 +508,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Look in database if test member already exists
-     *
-     * @return false|\Laminas\Db\ResultSet\ResultSet
      */
     protected function adhOneExists(): false|\Laminas\Db\ResultSet\ResultSet
     {
@@ -548,8 +530,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Look in database if test member already exists
-     *
-     * @return false|\Laminas\Db\ResultSet\ResultSet
      */
     protected function adhTwoExists(): false|\Laminas\Db\ResultSet\ResultSet
     {
@@ -572,8 +552,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Get member one
-     *
-     * @return \Galette\Entity\Adherent
      */
     protected function getMemberOne(): \Galette\Entity\Adherent
     {
@@ -588,8 +566,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Get member two
-     *
-     * @return \Galette\Entity\Adherent
      */
     protected function getMemberTwo(): \Galette\Entity\Adherent
     {
@@ -607,8 +583,6 @@ abstract class GaletteTestCase extends TestCase
      *
      * @param array<string,mixed>           $data    Data to use to create contribution
      * @param ?\Galette\Entity\Contribution $contrib Contribution instance, if any
-     *
-     * @return \Galette\Entity\Contribution
      */
     public function createContrib(array $data, ?\Galette\Entity\Contribution $contrib = null): \Galette\Entity\Contribution
     {
@@ -663,8 +637,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Create test contribution in database
-     *
-     * @return void
      */
     protected function createContribution(): void
     {
@@ -677,8 +649,6 @@ abstract class GaletteTestCase extends TestCase
      *
      * @param ?\Galette\Entity\Contribution $contrib       Contribution instance, if any
      * @param array<string,mixed>           $new_expecteds Changes on expected values
-     *
-     * @return void
      */
     protected function checkContribExpected(?\Galette\Entity\Contribution $contrib = null, array $new_expecteds = []): void
     {
@@ -769,8 +739,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Initialize default status in database
-     *
-     * @return void
      */
     protected function initStatus(): void
     {
@@ -784,8 +752,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Initialize default contributions types in database
-     *
-     * @return void
      */
     protected function initContributionsTypes(): void
     {
@@ -799,8 +765,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Initialize default payment types in database
-     *
-     * @return void
      */
     protected function initPaymentTypes(): void
     {
@@ -814,8 +778,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Initialize default titles in database
-     *
-     * @return void
      */
     protected function initTitles(): void
     {
@@ -828,8 +790,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Initialize default PDF models in database
-     *
-     * @return void
      */
     protected function initModels(): void
     {
@@ -840,8 +800,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Clean history
-     *
-     * @return void
      */
     protected function cleanHistory(): void
     {
@@ -853,8 +811,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Log-in as super administrator
-     *
-     * @return void
      */
     protected function logSuperAdmin(): void
     {
@@ -868,8 +824,6 @@ abstract class GaletteTestCase extends TestCase
      *
      * @param int    $level   Log lovel
      * @param string $message Log message
-     *
-     * @return void
      */
     protected function expectLogEntry(int $level, string $message): void
     {
@@ -894,8 +848,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Check there is no log entry.
-     *
-     * @return void
      */
     protected function expectNoLogEntry(): void
     {
@@ -905,8 +857,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Clean created contributions
-     *
-     * @return void
      */
     protected function cleanContributions(): void
     {
@@ -921,8 +871,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Clean created members and groups
-     *
-     * @return void
      */
     protected function cleanMembers(): void
     {
@@ -948,8 +896,6 @@ abstract class GaletteTestCase extends TestCase
      * Set given member as staff
      *
      * @param \Galette\Entity\Adherent $member Member to edit
-     *
-     * @return \Galette\Entity\Adherent
      */
     protected function getStaffMember(\Galette\Entity\Adherent $member): \Galette\Entity\Adherent
     {
@@ -973,8 +919,6 @@ abstract class GaletteTestCase extends TestCase
      *
      * @param \Galette\Entity\Adherent $staff_member Staff member to edit
      * @param \Galette\Entity\Adherent $member       Member to get status from
-     *
-     * @return void
      */
     protected function resetStaffStatus(\Galette\Entity\Adherent $staff_member, \Galette\Entity\Adherent $member): void
     {
@@ -993,8 +937,6 @@ abstract class GaletteTestCase extends TestCase
      * Set given member as admin
      *
      * @param \Galette\Entity\Adherent $member Member to edit
-     *
-     * @return \Galette\Entity\Adherent
      */
     protected function getAdminMember(\Galette\Entity\Adherent $member): \Galette\Entity\Adherent
     {
@@ -1017,8 +959,6 @@ abstract class GaletteTestCase extends TestCase
      * Reset given admin member flag
      *
      * @param \Galette\Entity\Adherent $admin_member Admin member to edit
-     *
-     * @return void
      */
     protected function resetAdminStatus(\Galette\Entity\Adherent $admin_member): void
     {
@@ -1034,8 +974,6 @@ abstract class GaletteTestCase extends TestCase
 
     /**
      * Get mocked document instance
-     *
-     * @return \Galette\Entity\Document
      */
     protected function getDocumentInstance(): \Galette\Entity\Document
     {

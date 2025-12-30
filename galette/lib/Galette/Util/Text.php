@@ -40,8 +40,6 @@ class Text
      *
      * @param string $string String to slugify
      * @param string $prefix Prefix to use
-     *
-     * @return string
      */
     public static function slugify(string $string, string $prefix = ''): string
     {
@@ -61,11 +59,8 @@ class Text
     /**
      * Get a random string
      *
-     * @param int $length of the random string
-     *
-     * @return string
-     *
      * @see https://stackoverflow.com/questions/4356289/php-random-string-generator/31107425#31107425
+     * @param int $length of the random string
      */
     public static function getRandomString(int $length): string
     {
@@ -85,8 +80,6 @@ class Text
      * @param int    $max_words Maximum number of words to keep
      * @param string $suffix    Suffix to append if truncated
      * @param bool   $keep_html Keep HTML tags or not
-     *
-     * @return string
      */
     public static function truncateOnWords(
         string $text,
@@ -109,8 +102,6 @@ class Text
      * Convert HTML to text
      *
      * @param string $html HTML to convert
-     *
-     * @return string
      */
     public static function convertHtmlToText(string $html): string
     {

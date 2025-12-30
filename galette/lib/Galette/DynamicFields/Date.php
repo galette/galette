@@ -51,8 +51,6 @@ class Date extends DynamicField
 
     /**
      * Get field type
-     *
-     * @return int
      */
     public function getType(): int
     {
@@ -64,8 +62,6 @@ class Date extends DynamicField
      * This method *tries* to fix that.
      *
      * @param Db $zdb Database instance
-     *
-     * @return bool
      */
     public static function resetLocalizedFormats(Db $zdb): bool
     {
@@ -174,8 +170,6 @@ class Date extends DynamicField
      * Get value to display for a field
      *
      * @param mixed $value Raw value to get displayed
-     *
-     * @return string
      */
     public function getDisplayValue(mixed $value): string
     {

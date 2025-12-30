@@ -43,8 +43,6 @@ abstract class CrudController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     abstract public function add(Request $request, Response $response): Response;
 
@@ -53,8 +51,6 @@ abstract class CrudController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     abstract public function doAdd(Request $request, Response $response): Response;
 
@@ -68,8 +64,6 @@ abstract class CrudController extends AbstractController
      * @param Response        $response PSR Response
      * @param string|null     $option   One of 'page' or 'order'
      * @param int|string|null $value    Value of the option
-     *
-     * @return Response
      */
     abstract public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response;
 
@@ -78,8 +72,6 @@ abstract class CrudController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     abstract public function filter(Request $request, Response $response): Response;
 
@@ -92,8 +84,6 @@ abstract class CrudController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Record id
-     *
-     * @return Response
      */
     abstract public function edit(Request $request, Response $response, int $id): Response;
 
@@ -103,8 +93,6 @@ abstract class CrudController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param int      $id       Record id
-     *
-     * @return Response
      */
     abstract public function doEdit(Request $request, Response $response, int $id): Response;
 
@@ -116,8 +104,6 @@ abstract class CrudController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function confirmDelete(Request $request, Response $response): Response
     {
@@ -213,8 +199,6 @@ abstract class CrudController extends AbstractController
      * Get redirection URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     abstract public function redirectUri(array $args): string;
 
@@ -222,8 +206,6 @@ abstract class CrudController extends AbstractController
      * Get cancel URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     public function cancelUri(array $args): string
     {
@@ -234,8 +216,6 @@ abstract class CrudController extends AbstractController
      * Get form URI
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     abstract public function formUri(array $args): string;
 
@@ -243,8 +223,6 @@ abstract class CrudController extends AbstractController
      * Get confirmation removal page title
      *
      * @param array<string,mixed> $args Route arguments
-     *
-     * @return string
      */
     abstract public function confirmRemoveTitle(array $args): string;
 
@@ -253,8 +231,6 @@ abstract class CrudController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function delete(Request $request, Response $response): Response
     {
@@ -310,8 +286,6 @@ abstract class CrudController extends AbstractController
      *
      * @param array<string,mixed> $args Route arguments
      * @param array<string,mixed> $post POST values
-     *
-     * @return bool
      */
     abstract protected function doDelete(array $args, array $post): bool;
     // /CRUD - Delete

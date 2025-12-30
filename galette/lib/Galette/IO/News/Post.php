@@ -54,8 +54,6 @@ class Post
 
     /**
      * Get post title
-     *
-     * @return string
      */
     public function getTitle(): string
     {
@@ -64,8 +62,6 @@ class Post
 
     /**
      * Get post URL
-     *
-     * @return ?string
      */
     public function getUrl(): ?string
     {
@@ -74,8 +70,6 @@ class Post
 
     /**
      * Get post date
-     *
-     * @return ?string
      */
     public function getDate(): ?string
     {

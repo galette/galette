@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -18,7 +19,7 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
+/*
  * Test translation features.
  *
  * example (see galette/lan/Makefile for up to date command):

@@ -173,8 +173,6 @@ class MailingHistory extends History
      * Builds where clause, for filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildWhereClause(Select $select): void
     {
@@ -243,8 +241,6 @@ class MailingHistory extends History
      * Count history entries from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -283,8 +279,6 @@ class MailingHistory extends History
      * @param bool    $new     True if we create a 'new' mailing,
      *                         false otherwise (from preview for
      *                         example)
-     *
-     * @return bool
      */
     public static function loadFrom(Db $zdb, int $id, Mailing $mailing, bool $new = true): bool
     {
@@ -311,8 +305,6 @@ class MailingHistory extends History
      * Store a mailing in the history
      *
      * @param bool $sent Defaults to false
-     *
-     * @return bool
      */
     public function storeMailing(bool $sent = false): bool
     {
@@ -385,8 +377,6 @@ class MailingHistory extends History
 
     /**
      * Update in the database
-     *
-     * @return bool
      */
     public function update(): bool
     {
@@ -407,8 +397,6 @@ class MailingHistory extends History
 
     /**
      * Store in the database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -433,8 +421,6 @@ class MailingHistory extends History
      *
      * @param int|array<int> $ids  Mailing history entries identifiers
      * @param History        $hist History instance
-     *
-     * @return bool
      */
     public function removeEntries(int|array $ids, History $hist): bool
     {
@@ -477,8 +463,6 @@ class MailingHistory extends History
      * Get table's name
      *
      * @param bool $prefixed Whether table name should be prefixed
-     *
-     * @return string
      */
     protected function getTableName(bool $prefixed = false): string
     {
@@ -491,8 +475,6 @@ class MailingHistory extends History
 
     /**
      * Get table's PK
-     *
-     * @return string
      */
     protected function getPk(): string
     {
@@ -501,8 +483,6 @@ class MailingHistory extends History
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -513,7 +493,6 @@ class MailingHistory extends History
      * Handle mailing recipients
      *
      * @param ArrayObject<string, string> $row ResultSet row
-     * @return void
      */
     private function handleRecipients(ArrayObject &$row): void
     {

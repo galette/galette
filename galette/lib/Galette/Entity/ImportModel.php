@@ -83,8 +83,6 @@ class ImportModel
      * Populate object from a resultset row
      *
      * @param ArrayObject<string, int|string> $r the resultset row
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $r): void
     {
@@ -101,8 +99,6 @@ class ImportModel
      * Remove model
      *
      * @param Db $zdb Database instance
-     *
-     * @return bool
      */
     public function remove(Db $zdb): bool
     {
@@ -129,8 +125,6 @@ class ImportModel
      * Store the model
      *
      * @param Db $zdb Database instance
-     *
-     * @return bool
      */
     public function store(Db $zdb): bool
     {
@@ -188,8 +182,6 @@ class ImportModel
      * Get creation date
      *
      * @param bool $formatted Return date formatted, raw if false
-     *
-     * @return string
      */
     public function getCreationDate(bool $formatted = true): string
     {
@@ -205,8 +197,6 @@ class ImportModel
      * Set fields
      *
      * @param array<string> $fields Fields list
-     *
-     * @return self
      */
     public function setFields(array $fields): self
     {

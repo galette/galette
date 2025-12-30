@@ -44,8 +44,6 @@ class DynamicTranslationsController extends AbstractController
      * @param Request  $request   PSR Request
      * @param Response $response  PSR Response
      * @param ?string  $text_orig Original text
-     *
-     * @return Response
      */
     public function dynamicTranslations(Request $request, Response $response, ?string $text_orig = null): Response
     {
@@ -62,8 +60,6 @@ class DynamicTranslationsController extends AbstractController
      * @param Request  $request       PSR Request
      * @param Response $response      PSR Response
      * @param string   $text_orig_sum Original text MD5 sum
-     *
-     * @return Response
      */
     public function dynamicTranslation(Request $request, Response $response, string $text_orig_sum): Response
     {
@@ -118,8 +114,6 @@ class DynamicTranslationsController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function doDynamicTranslations(Request $request, Response $response): Response
     {

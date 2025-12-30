@@ -87,8 +87,6 @@ class PaymentTypes extends Repository
      * Add default payment types in database
      *
      * @param bool $check_first Check first if it seems initialized
-     *
-     * @return bool
      */
     public function installInit(bool $check_first = true): bool
     {
@@ -137,8 +135,6 @@ class PaymentTypes extends Repository
 
     /**
      * Checks for missing payment types in the database
-     *
-     * @return bool
      */
     protected function checkUpdate(): bool
     {
@@ -195,8 +191,6 @@ class PaymentTypes extends Repository
      *
      * @param string              $table  Table name
      * @param array<string,mixed> $values Values to insert
-     *
-     * @return void
      */
     private function insert(string $table, array $values): void
     {

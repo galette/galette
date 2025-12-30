@@ -68,8 +68,6 @@ class Reminders
      * Load late members
      *
      * @param bool $nomail Get reminders for members who do not have email address
-     *
-     * @return void
      */
     private function loadLate(bool $nomail = false): void
     {
@@ -127,8 +125,6 @@ class Reminders
      * Load late members
      *
      * @param bool $nomail Get reminders for members who do not have email address
-     *
-     * @return void
      */
     private function loadImpendings(bool $nomail = false): void
     {
@@ -187,7 +183,6 @@ class Reminders
     /**
      * Get limit date calculated from preferences
      *
-     * @return DateTime
      * @throws Throwable
      */
     private function getLimitDate(): DateTime

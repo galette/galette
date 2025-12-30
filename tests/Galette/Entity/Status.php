@@ -37,8 +37,6 @@ class Status extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -48,8 +46,6 @@ class Status extends GaletteTestCase
 
     /**
      * Delete status
-     *
-     * @return void
      */
     private function deleteStatus(): void
     {
@@ -68,8 +64,6 @@ class Status extends GaletteTestCase
 
     /**
      * Test status
-     *
-     * @return void
      */
     public function testStatus(): void
     {
@@ -158,8 +152,6 @@ class Status extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {

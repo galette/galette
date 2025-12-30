@@ -36,8 +36,6 @@ class PaymentTypes extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -50,8 +48,6 @@ class PaymentTypes extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -61,8 +57,6 @@ class PaymentTypes extends GaletteTestCase
 
     /**
      * Delete payment type
-     *
-     * @return void
      */
     private function deletePaymentType(): void
     {
@@ -81,8 +75,6 @@ class PaymentTypes extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {

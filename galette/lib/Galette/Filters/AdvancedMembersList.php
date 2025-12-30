@@ -37,45 +37,45 @@ use Galette\Repository\PaymentTypes;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property ?string $creation_date_begin
- * @property ?string $creation_date_end
- * @property ?string $modif_date_begin
- * @property ?string $modif_date_end
- * @property ?string $due_date_begin
- * @property ?string $due_date_end
- * @property ?string $birth_date_begin
- * @property ?string $birth_date_end
- * @property int $show_public_infos
- * @property int[]|int $status
- * @property ?string $contrib_creation_date_begin
- * @property ?string $contrib_creation_date_end
- * @property ?string $contrib_begin_date_begin
- * @property ?string $contrib_begin_date_end
- * @property ?string $contrib_end_date_begin
- * @property ?string $contrib_end_date_end
- * @property int[] $contributions_types
- * @property int[] $payments_types
- * @property ?float $contrib_min_amount
- * @property ?float $contrib_max_amount
- * @property array<int, mixed> $contrib_dynamic
+ * @property ?string             $creation_date_begin
+ * @property ?string             $creation_date_end
+ * @property ?string             $modif_date_begin
+ * @property ?string             $modif_date_end
+ * @property ?string             $due_date_begin
+ * @property ?string             $due_date_end
+ * @property ?string             $birth_date_begin
+ * @property ?string             $birth_date_end
+ * @property int                 $show_public_infos
+ * @property int[]|int           $status
+ * @property ?string             $contrib_creation_date_begin
+ * @property ?string             $contrib_creation_date_end
+ * @property ?string             $contrib_begin_date_begin
+ * @property ?string             $contrib_begin_date_end
+ * @property ?string             $contrib_end_date_begin
+ * @property ?string             $contrib_end_date_end
+ * @property int[]               $contributions_types
+ * @property int[]               $payments_types
+ * @property ?float              $contrib_min_amount
+ * @property ?float              $contrib_max_amount
+ * @property array<int, mixed>   $contrib_dynamic
  * @property array<mixed, mixed> $free_search
  * @property array<mixed, mixed> $groups_search
- * @property int $groups_search_log_op
+ * @property int                 $groups_search_log_op
  *
- * @property-read ?string $rcreation_date_begin
- * @property-read ?string $rcreation_date_end
- * @property-read ?string $rmodif_date_begin
- * @property-read ?string $rmodif_date_end
- * @property-read ?string $rdue_date_begin
- * @property-read ?string $rdue_date_end
- * @property-read ?string $rbirth_date_begin
- * @property-read ?string $rbirth_date_end
- * @property-read ?string $rcontrib_creation_date_begin
- * @property-read ?string $rcontrib_creation_date_end
- * @property-read ?string $rcontrib_begin_date_begin
- * @property-read ?string $rcontrib_begin_date_end
- * @property-read ?string $rcontrib_end_date_begin
- * @property-read ?string $rcontrib_end_date_end
+ * @property-read ?string  $rcreation_date_begin
+ * @property-read ?string  $rcreation_date_end
+ * @property-read ?string  $rmodif_date_begin
+ * @property-read ?string  $rmodif_date_end
+ * @property-read ?string  $rdue_date_begin
+ * @property-read ?string  $rdue_date_end
+ * @property-read ?string  $rbirth_date_begin
+ * @property-read ?string  $rbirth_date_end
+ * @property-read ?string  $rcontrib_creation_date_begin
+ * @property-read ?string  $rcontrib_creation_date_end
+ * @property-read ?string  $rcontrib_begin_date_begin
+ * @property-read ?string  $rcontrib_begin_date_end
+ * @property-read ?string  $rcontrib_end_date_begin
+ * @property-read ?string  $rcontrib_end_date_end
  * @property-read string[] $search_fields
  */
 
@@ -221,8 +221,6 @@ class AdvancedMembersList extends MembersList
 
     /**
      * Do we want to filter within contributions?
-     *
-     * @return bool
      */
     public function withinContributions(): bool
     {
@@ -243,8 +241,6 @@ class AdvancedMembersList extends MembersList
 
     /**
      * Reinit default parameters
-     *
-     * @return void
      */
     public function reinit(): void
     {
@@ -367,8 +363,6 @@ class AdvancedMembersList extends MembersList
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -384,8 +378,6 @@ class AdvancedMembersList extends MembersList
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -647,8 +639,6 @@ class AdvancedMembersList extends MembersList
      * Validate free search internal array
      *
      * @param array<string,mixed> $data Array to validate
-     *
-     * @return bool
      */
     public static function isValidFreeSearch(array $data): bool
     {

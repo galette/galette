@@ -35,7 +35,7 @@ use Galette\Features\Translatable;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int $id
+ * @property int    $id
  * @property string $name
  */
 
@@ -80,8 +80,6 @@ class PaymentType implements \Stringable
      * Load a payment type from its identifier
      *
      * @param int $id Identifier
-     *
-     * @return bool
      */
     public function load(int $id): bool
     {
@@ -109,8 +107,6 @@ class PaymentType implements \Stringable
      * Load payment type from a db ResultSet
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
-     *
-     * @return void
      */
     private function loadFromRS(ArrayObject $rs): void
     {
@@ -121,8 +117,6 @@ class PaymentType implements \Stringable
 
     /**
      * Store payment type in database
-     *
-     * @return bool
      */
     public function store(): bool
     {
@@ -165,8 +159,6 @@ class PaymentType implements \Stringable
 
     /**
      * Remove current title
-     *
-     * @return bool
      */
     public function remove(): bool
     {
@@ -199,8 +191,6 @@ class PaymentType implements \Stringable
      * Getter
      *
      * @param string $name Property name
-     *
-     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -221,8 +211,6 @@ class PaymentType implements \Stringable
      * Required for twig to access properties via __get
      *
      * @param string $name Property name
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -237,8 +225,6 @@ class PaymentType implements \Stringable
      *
      * @param string $name  Property name
      * @param mixed  $value Property value
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -302,9 +288,6 @@ class PaymentType implements \Stringable
 
     /**
      * Is current payment a system one
-     *
-     * @return bool
-     *
      */
     public function isSystemType(): bool
     {
@@ -313,8 +296,6 @@ class PaymentType implements \Stringable
 
     /**
      * Simple text representation
-     *
-     * @return string
      */
     public function __toString(): string
     {

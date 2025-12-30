@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace GaletteTests\Entity;
 
 use PHPUnit\Framework\TestCase;
-use Laminas\Db\Adapter\Adapter;
 
 /**
  * Saved search tests
@@ -39,8 +38,6 @@ class SavedSearch extends TestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -58,8 +55,6 @@ class SavedSearch extends TestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -71,8 +66,6 @@ class SavedSearch extends TestCase
 
     /**
      * Delete status
-     *
-     * @return void
      */
     private function deleteCreated(): void
     {
@@ -84,8 +77,6 @@ class SavedSearch extends TestCase
 
     /**
      * Test saved search
-     *
-     * @return void
      */
     public function testSave(): void
     {

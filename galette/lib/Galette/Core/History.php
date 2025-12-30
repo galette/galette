@@ -78,8 +78,6 @@ class History
      * X-Forwarded-For, if present and the configuration specifies it.
      * (blindly trusting X-Forwarded-For would make the IP address logging
      * very easy to deveive.
-     *
-     * @return string
      */
     public static function findUserIPAddress(): string
     {
@@ -142,8 +140,6 @@ class History
 
     /**
      * Delete all entries
-     *
-     * @return bool
      */
     public function clean(): bool
     {
@@ -203,8 +199,6 @@ class History
      * Builds users and actions lists
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildLists(Select $select): void
     {
@@ -285,8 +279,6 @@ class History
      * Builds where clause, for filtering on simple list mode
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function buildWhereClause(Select $select): void
     {
@@ -338,8 +330,6 @@ class History
      * Count history entries from the query
      *
      * @param Select $select Original select
-     *
-     * @return void
      */
     private function proceedCount(Select $select): void
     {
@@ -386,8 +376,6 @@ class History
      * Required for twig to access properties via __get
      *
      * @param string $name name of the property we want to retrieve
-     *
-     * @return bool
      */
     public function __isset(string $name): bool
     {
@@ -399,8 +387,6 @@ class History
      *
      * @param string $name  name of the property we want to assign a value to
      * @param mixed  $value a relevant value for the property
-     *
-     * @return void
      */
     public function __set(string $name, mixed $value): void
     {
@@ -411,8 +397,6 @@ class History
      * Get table's name
      *
      * @param bool $prefixed Whether table name should be prefixed
-     *
-     * @return string
      */
     protected function getTableName(bool $prefixed = false): string
     {
@@ -425,8 +409,6 @@ class History
 
     /**
      * Get table's PK
-     *
-     * @return string
      */
     protected function getPk(): string
     {
@@ -437,8 +419,6 @@ class History
      * Set filters
      *
      * @param HistoryList $filters Filters
-     *
-     * @return self
      */
     public function setFilters(HistoryList $filters): self
     {
@@ -448,8 +428,6 @@ class History
 
     /**
      * Get count for current query
-     *
-     * @return int
      */
     public function getCount(): int
     {

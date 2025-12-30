@@ -141,8 +141,6 @@ trait Replacements
      * Set patterns
      *
      * @param array<string,array<string,string>> $patterns Patterns to add
-     *
-     * @return self
      */
     protected function setPatterns(array $patterns): self
     {
@@ -163,8 +161,6 @@ trait Replacements
      * Set replacements
      *
      * @param array<string,?mixed> $replaces Replacements to add
-     *
-     * @return void
      */
     public function setReplacements(array $replaces): void
     {
@@ -465,8 +461,6 @@ trait Replacements
      * Set mail instance
      *
      * @param PHPMailer $mail PHPMailer instance
-     *
-     * @return self
      */
     public function setMail(PHPMailer $mail): self
     {
@@ -476,8 +470,6 @@ trait Replacements
 
     /**
      * Set main replacements
-     *
-     * @return self
      */
     public function setMain(): self
     {
@@ -548,8 +540,6 @@ trait Replacements
 
     /**
      * Set contribution and proceed related replacements
-     *
-     * @return self
      */
     public function setNoContribution(): self
     {
@@ -596,8 +586,6 @@ trait Replacements
      * Set contribution and proceed related replacements
      *
      * @param Contribution $contrib Contribution
-     *
-     * @return self
      */
     public function setContribution(Contribution $contrib): self
     {
@@ -646,8 +634,6 @@ trait Replacements
      * Set member and proceed related replacements
      *
      * @param Adherent $member Member
-     *
-     * @return self
      */
     public function setMember(Adherent $member): self
     {
@@ -733,8 +719,6 @@ trait Replacements
      * @param string                  $form_name      Form name
      * @param array<string|int,mixed> $dynamic_fields Dynamic fields
      * @param ?object                 $object         Related object (Adherent, Contribution, ...)
-     *
-     * @return self
      */
     private function setDynamicFields(string $form_name, array $dynamic_fields, ?object $object): self
     {
@@ -864,8 +848,6 @@ trait Replacements
      * Set Db dependency
      *
      * @param Db $db Db instance
-     *
-     * @return self
      */
     public function setDb(Db $db): self
     {
@@ -877,8 +859,6 @@ trait Replacements
      * Set Login dependency
      *
      * @param Login $login Login instance
-     *
-     * @return self
      */
     public function setLogin(Login $login): self
     {
@@ -890,8 +870,6 @@ trait Replacements
      * Set Preferences dependency
      *
      * @param Preferences $preferences Preferences instance
-     *
-     * @return self
      */
     public function setPreferences(Preferences $preferences): self
     {
@@ -903,8 +881,6 @@ trait Replacements
      * Set RouteParser dependency
      *
      * @param RouteParser $routeparser RouteParser instance
-     *
-     * @return self
      */
     public function setRouteparser(RouteParser $routeparser): self
     {
@@ -916,8 +892,6 @@ trait Replacements
      * Set I18n dependency
      *
      * @param I18n $i18n I18n instance
-     *
-     * @return self
      */
     public function setI18n(I18n $i18n): self
     {
@@ -929,8 +903,6 @@ trait Replacements
      * Proceed replacement on given entry
      *
      * @param string $source Source string
-     *
-     * @return string
      */
     protected function proceedReplacements(string $source): string
     {
@@ -984,8 +956,6 @@ trait Replacements
 
     /**
      * Set legacy mode
-     *
-     * @return self
      */
     protected function setLegacy(): self
     {

@@ -25,7 +25,6 @@ namespace GaletteTests\Core;
 
 use Galette\GaletteTestCase;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Preferences tests class
@@ -38,8 +37,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -50,8 +47,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test preferences initialization
-     *
-     * @return void
      */
     public function testInstallInit(): void
     {
@@ -142,8 +137,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test fields names
-     *
-     * @return void
      */
     public function testFieldsNames(): void
     {
@@ -159,8 +152,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test preferences updating when some are missing
-     *
-     * @return void
      */
     public function testUpdate(): void
     {
@@ -197,8 +188,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test public pages visibility
-     *
-     * @return void
      */
     public function testPublicPagesVisibility(): void
     {
@@ -344,8 +333,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Data provider for cards sizes tests
-     *
-     * @return array
      */
     public static function sizesProvider(): array
     {
@@ -400,8 +387,6 @@ class Preferences extends GaletteTestCase
      * @param int $vs    Vertical spacing
      * @param int $hs    Horizontal spacing
      * @param int $count Number of expected errors
-     *
-     * @return void
      */
     public function testCheckCardsSizes(int $vm, int $hm, int $vs, int $hs, int $count): void
     {
@@ -414,8 +399,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Data provider for colors
-     *
-     * @return array
      */
     public static function colorsProvider(): array
     {
@@ -449,8 +432,6 @@ class Preferences extends GaletteTestCase
      * @param string $prop     Property to be set
      * @param string $color    Color to set
      * @param string $expected Expected color
-     *
-     * @return void
      */
     public function testColors(string $prop, string $color, string $expected): void
     {
@@ -461,8 +442,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test social networks
-     *
-     * @return void
      */
     public function testSocials(): void
     {
@@ -598,8 +577,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test email signature
-     *
-     * @return void
      */
     public function testGetMailSignature(): void
     {
@@ -673,8 +650,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test getLegend
-     *
-     * @return void
      */
     public function testGetLegend(): void
     {
@@ -684,8 +659,8 @@ class Preferences extends GaletteTestCase
         $this->assertCount(10, $legend['socials']['patterns']);
         $this->assertSame(
             [
-            'title' => __('Mastodon'),
-            'pattern' => '/{ASSO_SOCIAL_MASTODON}/'
+                'title' => __('Mastodon'),
+                'pattern' => '/{ASSO_SOCIAL_MASTODON}/'
             ],
             $legend['socials']['patterns']['asso_social_mastodon']
         );
@@ -714,8 +689,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test website URL
-     *
-     * @return void
      */
     public function testWebsiteURL(): void
     {
@@ -740,8 +713,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test updateTelemetryDate
-     *
-     * @return void
      */
     public function testUpdateTelemetryDate(): void
     {
@@ -755,8 +726,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test updateRegistrationDate
-     *
-     * @return void
      */
     public function testUpdateRegistrationDate(): void
     {
@@ -770,8 +739,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test generateUUID
-     *
-     * @return void
      */
     public function testGenerateUUID(): void
     {
@@ -785,8 +752,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test for required end of membership parameter(s) presence and values
-     *
-     * @return void
      */
     public function testRequiredEndOfMembership(): void
     {
@@ -840,8 +805,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test email related parameters
-     *
-     * @return void
      */
     public function testEmailParameters(): void
     {
@@ -1012,8 +975,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test for required fields
-     *
-     * @return void
      */
     public function testRequireds(): void
     {
@@ -1060,8 +1021,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test admin password check
-     *
-     * @return void
      */
     public function testAdminPassCheck(): void
     {
@@ -1083,8 +1042,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test postal address
-     *
-     * @return void
      */
     public function testPostalAddress(): void
     {
@@ -1121,8 +1078,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test phone number
-     *
-     * @return void
      */
     public function testOrgPhone(): void
     {
@@ -1163,8 +1118,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test for admin login
-     *
-     * @return void
      */
     public function testAdminLogin(): void
     {
@@ -1200,8 +1153,6 @@ class Preferences extends GaletteTestCase
 
     /**
      * Test __isset
-     *
-     * @return void
      */
     public function testIsset(): void
     {

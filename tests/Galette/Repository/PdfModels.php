@@ -36,8 +36,6 @@ class PdfModels extends GaletteTestCase
 
     /**
      * Set up tests
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -50,8 +48,6 @@ class PdfModels extends GaletteTestCase
 
     /**
      * Tear down tests
-     *
-     * @return void
      */
     public function tearDown(): void
     {
@@ -61,8 +57,6 @@ class PdfModels extends GaletteTestCase
 
     /**
      * Delete pdf models
-     *
-     * @return void
      */
     private function deletePdfModels(): void
     {
@@ -81,8 +75,6 @@ class PdfModels extends GaletteTestCase
 
     /**
      * Test getList
-     *
-     * @return void
      */
     public function testGetList(): void
     {

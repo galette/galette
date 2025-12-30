@@ -60,8 +60,6 @@ class Login extends Authentication
      *
      * @param string      $login       name
      * @param Preferences $preferences Preferences instance
-     *
-     * @return bool
      */
     public function logAdmin(string $login, Preferences $preferences): bool
     {
@@ -75,8 +73,6 @@ class Login extends Authentication
      *
      * @param string      $name        Service name
      * @param Preferences $preferences Preferences instance
-     *
-     * @return bool
      */
     public function logCron(string $name, Preferences $preferences): bool
     {
@@ -98,8 +94,6 @@ class Login extends Authentication
 
     /**
      * Log out user and unset variables
-     *
-     * @return bool
      */
     public function logOut(): bool
     {
@@ -113,8 +107,6 @@ class Login extends Authentication
      *
      * @param string $user  user's login
      * @param string $passe user's password
-     *
-     * @return bool
      */
     public function logIn(string $user, string $passe): bool
     {
@@ -185,8 +177,6 @@ class Login extends Authentication
 
     /**
      * Get select query without where clause
-     *
-     * @return Select
      */
     private function select(): Select
     {
@@ -216,8 +206,6 @@ class Login extends Authentication
      * Populate object after successful login
      *
      * @param ArrayObject<string, int|string> $row User information
-     *
-     * @return void
      */
     private function logUser(ArrayObject $row): void
     {
@@ -265,8 +253,6 @@ class Login extends Authentication
      * Impersonate user
      *
      * @param int $id Member ID
-     *
-     * @return bool
      */
     public function impersonate(int $id): bool
     {
@@ -309,8 +295,6 @@ class Login extends Authentication
      * Does this login already exist?
      *
      * @param string $user the username
-     *
-     * @return bool
      */
     public function loginExists(string $user): bool
     {
@@ -332,8 +316,6 @@ class Login extends Authentication
 
     /**
      * Is impersonated
-     *
-     * @return bool
      */
     public function isImpersonated(): bool
     {

@@ -47,8 +47,6 @@ class PluginsController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     *
-     * @return Response
      */
     public function showPlugins(Request $request, Response $response): Response
     {
@@ -78,8 +76,6 @@ class PluginsController extends AbstractController
      * @param Response $response  PSR Response
      * @param string   $action    Action
      * @param string   $module_id Module id
-     *
-     * @return Response
      */
     public function togglePlugin(Request $request, Response $response, string $action, string $module_id): Response
     {
@@ -133,8 +129,6 @@ class PluginsController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      * @param string   $id       Plugin id
-     *
-     * @return Response
      */
     public function initPluginDb(Request $request, Response $response, string $id): Response
     {
