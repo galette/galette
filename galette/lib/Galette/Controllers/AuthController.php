@@ -509,71 +509,54 @@ class AuthController extends AbstractController
         $post = $request->getParsedBody();
 
         if (!$id_adh = $password->isHashValid(base64_decode((string) $post['hash']))) {
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
-                );
+            return $this->redirect(
+                response: $response,
+                redirect_url: $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
+            );
         }
 
-        $error = null;
+        $errors = [];
         if ($post['mdp_adh'] == '') {
-            $error = _T("No password");
+            $errors[] = _T("No password");
         } elseif (isset($post['mdp_adh2'])) {
             if (strcmp((string) $post['mdp_adh'], $post['mdp_adh2'])) {
-                $error = _T("- The passwords don't match!");
+                $errors[] = _T("- The passwords don't match!");
+            } elseif (!$checkpass->isValid($post['mdp_adh'])) {
+                //password is not valid with current rules
+                $errors[] = _T("Your password is too weak!")
+                    . '<br/> -' . implode('<br/>', $checkpass->getErrors());
             } else {
-                if (!$checkpass->isValid($post['mdp_adh'])) {
-                    //password is not valid with current rules
-                    $error = _T("Your password is too weak!")
-                        . '<br/> -' . implode('<br/>', $checkpass->getErrors());
+                $res = Adherent::updatePassword(
+                    $this->zdb,
+                    $id_adh,
+                    $post['mdp_adh']
+                );
+                if ($res !== true) {
+                    $errors[] = _T("An error occurred while updating your password.");
                 } else {
-                    $res = Adherent::updatePassword(
-                        $this->zdb,
-                        $id_adh,
-                        $post['mdp_adh']
+                    $this->history->add(
+                        str_replace(
+                            '%s',
+                            (string)$id_adh,
+                            _T("Password changed for member '%s'.")
+                        )
                     );
-                    if ($res !== true) {
-                        $error = _T("An error occurred while updating your password.");
-                    } else {
-                        $this->history->add(
-                            str_replace(
-                                '%s',
-                                (string)$id_adh,
-                                _T("Password changed for member '%s'.")
-                            )
-                        );
-                        //once password has been changed, we can remove the
-                        //temporary password entry
-                        $password->removeHash(base64_decode((string) $post['hash']));
-                        $this->flash->addMessage(
-                            'success_detected',
-                            _T("Your password has been changed!")
-                        );
-                        return $response
-                            ->withStatus(301)
-                            ->withHeader(
-                                'Location',
-                                $this->routeparser->urlFor('slash')
-                            );
-                    }
+                    //once password has been changed, we can remove the
+                    //temporary password entry
+                    $password->removeHash(base64_decode((string) $post['hash']));
+                    return $this->redirect(
+                        response: $response,
+                        redirect_url: $this->routeparser->urlFor('slash'),
+                        successes: [_T("Your password has been changed!")]
+                    );
                 }
             }
         }
 
-        if ($error !== null) {
-            $this->flash->addMessage(
-                'error_detected',
-                $error
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader(
-                'Location',
-                $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
-            );
+        return $this->redirect(
+            response: $response,
+            redirect_url: $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']]),
+            errors: $errors
+        );
     }
 }
