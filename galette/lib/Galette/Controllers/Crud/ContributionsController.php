@@ -54,10 +54,8 @@ class ContributionsController extends CrudController
      * Only a few things change in add and edit pages,
      * both methods will use this common one.
      *
-     * @param Request      $request  PSR Request
-     * @param Response     $response PSR Response
-     * @param string       $type     Contribution type
-     * @param Contribution $contrib  Contribution instance
+     * @param string       $type    Contribution type
+     * @param Contribution $contrib Contribution instance
      */
     public function addEditPage(
         Request $request,
@@ -147,9 +145,7 @@ class ContributionsController extends CrudController
     /**
      * Add page
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string|null $type     Contribution type
+     * @param string|null $type Contribution type
      */
     public function add(Request $request, Response $response, ?string $type = null): Response
     {
@@ -211,9 +207,7 @@ class ContributionsController extends CrudController
     /**
      * Add action
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string|null $type     Contribution type
+     * @param string|null $type Contribution type
      */
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
@@ -242,9 +236,6 @@ class ContributionsController extends CrudController
 
     /**
      * Choose contribution type to mass add contribution
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function massAddChooseType(Request $request, Response $response): Response
     {
@@ -274,9 +265,6 @@ class ContributionsController extends CrudController
 
     /**
      * Massive change page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function massAddContributions(Request $request, Response $response): Response
     {
@@ -324,9 +312,6 @@ class ContributionsController extends CrudController
 
     /**
      * Do massive contribution add
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doMassAddContributions(Request $request, Response $response): Response
     {
@@ -382,11 +367,9 @@ class ContributionsController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page', 'order' or 'member'
-     * @param int|string|null $value    Value of the option
-     * @param ?string         $type     One of 'transactions' or 'contributions'
+     * @param string|null     $option One of 'page', 'order' or 'member'
+     * @param int|string|null $value  Value of the option
+     * @param ?string         $type   One of 'transactions' or 'contributions'
      */
     public function list(
         Request $request,
@@ -570,9 +553,7 @@ class ContributionsController extends CrudController
     /**
      * List page for logged-in member
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string|null $type     One of 'transactions' or 'contributions'
+     * @param string|null $type One of 'transactions' or 'contributions'
      */
     public function myList(Request $request, Response $response, ?string $type = null): Response
     {
@@ -592,9 +573,7 @@ class ContributionsController extends CrudController
     /**
      * Filtering
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string|null $type     One of 'transactions' or 'contributions'
+     * @param string|null $type One of 'transactions' or 'contributions'
      */
     public function filter(Request $request, Response $response, ?string $type = null): Response
     {
@@ -683,9 +662,7 @@ class ContributionsController extends CrudController
     /**
      * Batch actions handler
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     One of 'transactions' or 'contributions'
+     * @param string $type One of 'transactions' or 'contributions'
      */
     public function handleBatch(Request $request, Response $response, string $type): Response
     {
@@ -727,10 +704,8 @@ class ContributionsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param ?int        $id       Contribution id
-     * @param string|null $type     Contribution type
+     * @param ?int        $id   Contribution id
+     * @param string|null $type Contribution type
      */
     public function edit(Request $request, Response $response, ?int $id, ?string $type = null): Response
     {
@@ -772,10 +747,8 @@ class ContributionsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param int         $id       Contribution id
-     * @param string|null $type     Contribution type
+     * @param int         $id   Contribution id
+     * @param string|null $type Contribution type
      */
     public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
@@ -797,12 +770,10 @@ class ContributionsController extends CrudController
     /**
      * Store contribution (new or existing)
      *
-     * @param Request      $request  PSR Request
-     * @param Response     $response PSR Response
-     * @param string       $action   Action ('edit' or 'add')
-     * @param string       $type     Contribution type
-     * @param Contribution $contrib  Contribution instance
-     * @param ?int         $id       Contribution id
+     * @param string       $action  Action ('edit' or 'add')
+     * @param string       $type    Contribution type
+     * @param Contribution $contrib Contribution instance
+     * @param ?int         $id      Contribution id
      */
     public function store(Request $request, Response $response, string $action, string $type, Contribution $contrib, ?int $id = null): Response
     {

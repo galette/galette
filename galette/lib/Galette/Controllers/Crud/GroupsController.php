@@ -45,9 +45,6 @@ class GroupsController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -58,9 +55,7 @@ class GroupsController extends CrudController
     /**
      * Add action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $name     Group name
+     * @param string $name Group name
      */
     public function doAdd(Request $request, Response $response, ?string $name = null): Response
     {
@@ -81,9 +76,6 @@ class GroupsController extends CrudController
 
     /**
      * Check uniqueness
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function checkUniqueness(Request $request, Response $response): Response
     {
@@ -116,10 +108,8 @@ class GroupsController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
     public function list(
         Request $request,
@@ -158,9 +148,6 @@ class GroupsController extends CrudController
 
     /**
      * List reorder
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function reorderList(Request $request, Response $response): Response
     {
@@ -202,9 +189,6 @@ class GroupsController extends CrudController
 
     /**
      * Group page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function getGroup(Request $request, Response $response): Response
     {
@@ -232,9 +216,6 @@ class GroupsController extends CrudController
 
     /**
      * Groups list page for ajax calls
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function simpleList(Request $request, Response $response): Response
     {
@@ -257,9 +238,6 @@ class GroupsController extends CrudController
 
     /**
      * Groups list page for ajax calls
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function ajaxMembers(Request $request, Response $response): Response
     {
@@ -293,9 +271,6 @@ class GroupsController extends CrudController
 
     /**
      * Filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -309,9 +284,7 @@ class GroupsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
+     * @param int $id Record id
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -354,9 +327,7 @@ class GroupsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Group id
+     * @param int $id Group id
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -423,10 +394,7 @@ class GroupsController extends CrudController
     }
 
     /**
-     * Reoder action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
+     * Reorder action
      */
     public function reorder(Request $request, Response $response): Response
     {
@@ -529,8 +497,6 @@ class GroupsController extends CrudController
 
     /**
      * Removal confirmation parameters, can be override
-     *
-     * @param Request $request PSR Request
      *
      * @return array<string,mixed>
      */

@@ -41,9 +41,6 @@ class TitlesController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -53,9 +50,6 @@ class TitlesController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doAdd(Request $request, Response $response): Response
     {
@@ -68,10 +62,8 @@ class TitlesController extends CrudController
     /**
      * Titles list page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
@@ -91,9 +83,6 @@ class TitlesController extends CrudController
 
     /**
      * Titles filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -107,9 +96,7 @@ class TitlesController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Title id
+     * @param int $id Title id
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -132,9 +119,7 @@ class TitlesController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Title id
+     * @param int $id Title id
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -144,9 +129,7 @@ class TitlesController extends CrudController
     /**
      * Store
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Title id
+     * @param ?int $id Title id
      */
     public function store(Request $request, Response $response, ?int $id = null): Response
     {

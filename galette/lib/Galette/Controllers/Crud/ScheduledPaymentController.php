@@ -48,9 +48,7 @@ class ScheduledPaymentController extends CrudController
     /**
      * Add page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id_cotis Contribution id
+     * @param int $id_cotis Contribution id
      */
     public function add(Request $request, Response $response, int $id_cotis = 0): Response
     {
@@ -66,14 +64,14 @@ class ScheduledPaymentController extends CrudController
         if ($scheduled->getMissingAmount() == 0) {
             $this->redirectWithErrors(
                 response: $response,
+                errors: [_T("Contribution is fully scheduled!")],
                 redirect_url: $this->routeparser->urlFor(
                     'editContribution',
                     [
                         'type' => ($scheduled->getContribution()->isFee() ? Contribution::TYPE_FEE : Contribution::TYPE_DONATION),
                         'id' => (string)$id_cotis
                     ]
-                ),
-                errors: [_T("Contribution is fully scheduled!")]
+                )
             );
         }
 
@@ -93,9 +91,6 @@ class ScheduledPaymentController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doAdd(Request $request, Response $response): Response
     {
@@ -108,10 +103,8 @@ class ScheduledPaymentController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
@@ -195,9 +188,6 @@ class ScheduledPaymentController extends CrudController
 
     /**
      * List page for logged-in member
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function myList(Request $request, Response $response): Response
     {
@@ -214,9 +204,6 @@ class ScheduledPaymentController extends CrudController
 
     /**
      * Scheduled payments filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function myFilter(Request $request, Response $response): Response
     {
@@ -233,9 +220,6 @@ class ScheduledPaymentController extends CrudController
 
     /**
      * Scheduled payments filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -309,9 +293,6 @@ class ScheduledPaymentController extends CrudController
 
     /**
      * Batch actions handler
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function handleBatch(Request $request, Response $response): Response
     {
@@ -352,9 +333,7 @@ class ScheduledPaymentController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Scheduled payment id
+     * @param int $id Scheduled payment id
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -382,9 +361,7 @@ class ScheduledPaymentController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Type id
+     * @param int $id Type id
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -394,9 +371,7 @@ class ScheduledPaymentController extends CrudController
     /**
      * Store
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Type id
+     * @param ?int $id Type id
      */
     public function store(Request $request, Response $response, ?int $id = null): Response
     {

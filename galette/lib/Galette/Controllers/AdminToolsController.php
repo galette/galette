@@ -40,11 +40,8 @@ class AdminToolsController extends AbstractController
 {
     /**
      * Administration tools page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function adminTools(Request $request, Response $response): Response
+    public function adminTools(Response $response): Response
     {
         $params = [
             'page_title'        => _T('Administration tools'),
@@ -62,9 +59,6 @@ class AdminToolsController extends AbstractController
 
     /**
      * Process Administration tools
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function process(
         Request $request,

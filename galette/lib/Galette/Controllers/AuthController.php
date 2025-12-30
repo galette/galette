@@ -46,9 +46,7 @@ class AuthController extends AbstractController
     /**
      * Log in
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?string  $r        Redirect after login
+     * @param ?string $r Redirect after login
      */
     public function login(Request $request, Response $response, ?string $r = null): Response
     {
@@ -78,9 +76,6 @@ class AuthController extends AbstractController
 
     /**
      * Do login
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doLogin(
         Request $request,
@@ -200,11 +195,8 @@ class AuthController extends AbstractController
 
     /**
      * Log out
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function logout(Request $request, Response $response): Response
+    public function logout(Response $response): Response
     {
         $this->login->logOut();
         $this->history->add(_T("Log off"));
@@ -217,11 +209,9 @@ class AuthController extends AbstractController
     /**
      * Impersonate
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Member to impersonate
+     * @param int $id Member to impersonate
      */
-    public function impersonate(Request $request, Response $response, int $id): Response
+    public function impersonate(Response $response, int $id): Response
     {
         $success = $this->login->impersonate($id);
 
@@ -258,11 +248,8 @@ class AuthController extends AbstractController
 
     /**
      * End impersonate
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function unimpersonate(Request $request, Response $response): Response
+    public function unimpersonate(Response $response): Response
     {
         $login = new Login($this->zdb, $this->i18n);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
@@ -280,11 +267,8 @@ class AuthController extends AbstractController
 
     /**
      * Lost password page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function lostPassword(Request $request, Response $response): Response
+    public function lostPassword(Response $response): Response
     {
         if ($this->preferences->pref_mail_method === GaletteMail::METHOD_DISABLED) {
             throw new \RuntimeException('Mailing disabled.');
@@ -302,10 +286,6 @@ class AuthController extends AbstractController
 
     /**
      * Retrieve password procedure
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id_adh   Member id
      */
     public function retrievePassword(Request $request, Response $response, ?int $id_adh = null): Response
     {
@@ -462,12 +442,8 @@ class AuthController extends AbstractController
 
     /**
      * Password recovery page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $hash     Hash
      */
-    public function recoverPassword(Request $request, Response $response, string $hash, Password $password): Response
+    public function recoverPassword(Response $response, string $hash, Password $password): Response
     {
         if (!$password->isHashValid(base64_decode($hash))) {
             $this->flash->addMessage(
@@ -496,9 +472,6 @@ class AuthController extends AbstractController
 
     /**
      * Password recovery
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doRecoverPassword(
         Request $request,

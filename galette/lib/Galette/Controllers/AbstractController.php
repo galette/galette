@@ -103,8 +103,6 @@ abstract class AbstractController
 
     /**
      * Constructor
-     *
-     * @param ContainerInterface $container Container instance
      */
     public function __construct(private readonly ContainerInterface $container)
     {
@@ -113,9 +111,6 @@ abstract class AbstractController
     /**
      * Galette redirection workflow
      * Each user have a default homepage depending on it status (logged in or not, its credentials, etc.
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     protected function galetteRedirect(Request $request, Response $response): Response
     {
@@ -170,8 +165,6 @@ abstract class AbstractController
     /**
      * Get route arguments
      * php-di bridge pass each variable, not an array of all arguments
-     *
-     * @param Request $request PSR Request
      *
      * @return array<string,mixed>
      */

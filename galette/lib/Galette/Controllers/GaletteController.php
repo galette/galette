@@ -58,9 +58,6 @@ class GaletteController extends AbstractController
 
     /**
      * Main route
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function slash(Request $request, Response $response): Response
     {
@@ -69,11 +66,8 @@ class GaletteController extends AbstractController
 
     /**
      * System information
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function systemInformation(Request $request, Response $response, SysInfos $sysinfos): Response
+    public function systemInformation(Response $response, SysInfos $sysinfos): Response
     {
         $raw_infos = $sysinfos->getRawData(
             $this->zdb,
@@ -96,9 +90,6 @@ class GaletteController extends AbstractController
 
     /**
      * Dashboard page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function dashboard(Request $request, Response $response, Telemetry $telemetry): Response
     {
@@ -133,9 +124,6 @@ class GaletteController extends AbstractController
 
     /**
      * Preferences page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function preferences(Request $request, Response $response, PaymentTypes $ptypes, Members $m): Response
     {
@@ -212,9 +200,6 @@ class GaletteController extends AbstractController
 
     /**
      * Store preferences
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function storePreferences(Request $request, Response $response): Response
     {
@@ -287,9 +272,6 @@ class GaletteController extends AbstractController
 
     /**
      * Test mail parameters
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function testEmail(Request $request, Response $response): Response
     {
@@ -354,11 +336,8 @@ class GaletteController extends AbstractController
 
     /**
      * Charts page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function charts(Request $request, Response $response): Response
+    public function charts(Response $response): Response
     {
         $charts = new Charts(
             [
@@ -385,11 +364,8 @@ class GaletteController extends AbstractController
 
     /**
      * Core fields configuration page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function configureCoreFields(Request $request, Response $response): Response
+    public function configureCoreFields(Response $response): Response
     {
         $fc = $this->fields_config;
 
@@ -414,9 +390,6 @@ class GaletteController extends AbstractController
 
     /**
      * Process core fields configuration
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function storeCoreFieldsConfig(Request $request, Response $response): Response
     {
@@ -466,11 +439,9 @@ class GaletteController extends AbstractController
     /**
      * Core lists configuration page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $table    Tbale name
+     * @param string $table Table name
      */
-    public function configureListFields(Request $request, Response $response, string $table): Response
+    public function configureListFields(Response $response, string $table): Response
     {
         $lc = $this->lists_config;
 
@@ -495,9 +466,6 @@ class GaletteController extends AbstractController
 
     /**
      * Process list fields configuration
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function storeListFields(Request $request, Response $response): Response
     {
@@ -529,11 +497,8 @@ class GaletteController extends AbstractController
 
     /**
      * Reminders page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function reminders(Request $request, Response $response, Texts $texts, Members $members): Response
+    public function reminders(Response $response, Texts $texts, Members $members): Response
     {
         $previews = [
             'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
@@ -561,9 +526,6 @@ class GaletteController extends AbstractController
 
     /**
      * Send reminders
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doReminders(Request $request, Response $response): Response
     {
@@ -655,12 +617,10 @@ class GaletteController extends AbstractController
     /**
      * Main route
      *
-     * @param Request  $request    PSR Request
-     * @param Response $response   PSR Response
-     * @param string   $membership Either 'late' or 'nearly'
-     * @param string   $mail       Either 'withmail' or 'withoutmail'
+     * @param string $membership Either 'late' or 'nearly'
+     * @param string $mail       Either 'withmail' or 'withoutmail'
      */
-    public function filterReminders(Request $request, Response $response, string $membership, string $mail): Response
+    public function filterReminders(Response $response, string $membership, string $mail): Response
     {
         //always reset filters
         $filters = new MembersList();
@@ -684,12 +644,8 @@ class GaletteController extends AbstractController
 
     /**
      * Direct document page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $hash     Hash
      */
-    public function documentLink(Request $request, Response $response, string $hash): Response
+    public function documentLink(Response $response, string $hash): Response
     {
         // display page
         $this->view->render(
@@ -705,11 +661,8 @@ class GaletteController extends AbstractController
 
     /**
      * Empty route (for default requests on favicon.ico, robots.txt, ...)
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function empty(Request $request, Response $response): Response
+    public function empty(Response $response): Response
     {
         return $response;
     }

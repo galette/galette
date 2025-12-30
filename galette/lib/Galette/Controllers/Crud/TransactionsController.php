@@ -45,9 +45,7 @@ class TransactionsController extends ContributionsController
     /**
      * Add page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?string  $type     Contribution type
+     * @param ?string $type Contribution type
      */
     public function add(Request $request, Response $response, ?string $type = null): Response
     {
@@ -57,9 +55,7 @@ class TransactionsController extends ContributionsController
     /**
      * Add action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?string  $type     Contribution type
+     * @param ?string $type Contribution type
      */
     public function doAdd(Request $request, Response $response, ?string $type = null): Response
     {
@@ -91,10 +87,8 @@ class TransactionsController extends ContributionsController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Transaction id
-     * @param ?string  $action   Action
+     * @param ?int    $id     Transaction id
+     * @param ?string $action Action
      */
     public function edit(Request $request, Response $response, ?int $id = null, ?string $action = 'edit'): Response
     {
@@ -209,10 +203,8 @@ class TransactionsController extends ContributionsController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Transaction id
-     * @param ?string  $type     Transaction type
+     * @param int     $id   Transaction id
+     * @param ?string $type Transaction type
      */
     public function doEdit(Request $request, Response $response, int $id, ?string $type = null): Response
     {
@@ -255,11 +247,9 @@ class TransactionsController extends ContributionsController
     /**
      * Store contribution (new or existing)
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param string      $action   Action ('edit' or 'add')
-     * @param Transaction $trans    Transaction instance
-     * @param ?int        $id       Contribution id
+     * @param string      $action Action ('edit' or 'add')
+     * @param Transaction $trans  Transaction instance
+     * @param ?int        $id     Contribution id
      */
     public function storeTransaction(Request $request, Response $response, string $action, Transaction $trans, ?int $id = null): Response
     {
@@ -352,12 +342,10 @@ class TransactionsController extends ContributionsController
     /**
      * Attach action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Transaction id
-     * @param int      $cid      Contribution id
+     * @param int $id  Transaction id
+     * @param int $cid Contribution id
      */
-    public function attach(Request $request, Response $response, int $id, int $cid): Response
+    public function attach(Response $response, int $id, int $cid): Response
     {
         $transaction = new Transaction($this->zdb, $this->login, $id);
         $done = false;
@@ -395,12 +383,10 @@ class TransactionsController extends ContributionsController
     /**
      * Attach action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Transaction id
-     * @param int      $cid      Contribution id
+     * @param int $id  Transaction id
+     * @param int $cid Contribution id
      */
-    public function detach(Request $request, Response $response, int $id, int $cid): Response
+    public function detach(Response $response, int $id, int $cid): Response
     {
         $transaction = new Transaction($this->zdb, $this->login, $id);
         $done = false;

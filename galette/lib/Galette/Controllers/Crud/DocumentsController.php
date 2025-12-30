@@ -51,9 +51,7 @@ class DocumentsController extends CrudController
     /**
      * Add page
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param ?string  $form_name Form name
+     * @param ?string $form_name Form name
      */
     public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
@@ -86,9 +84,7 @@ class DocumentsController extends CrudController
     /**
      * Add action
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param ?string  $form_name Form name
+     * @param ?string $form_name Form name
      */
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
@@ -102,10 +98,8 @@ class DocumentsController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
     public function list(
         Request $request,
@@ -139,19 +133,10 @@ class DocumentsController extends CrudController
     }
 
     /**
-     * List page
-     *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
+     * Public list page
      */
-    public function publicList(
-        Request $request,
-        Response $response,
-        ?string $option = null,
-        int|string|null $value = null,
-    ): Response {
+    public function publicList(Response $response): Response
+    {
         $document = new Document($this->zdb);
         $documents = $document->getTypedList();
 
@@ -172,9 +157,6 @@ class DocumentsController extends CrudController
 
     /**
      * Filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -185,12 +167,9 @@ class DocumentsController extends CrudController
     /**
      * Get a document
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Document ID
+     * @param int $id Document ID
      */
     public function getDocument(
-        Request $request,
         Response $response,
         int $id
     ): Response {
@@ -199,8 +178,8 @@ class DocumentsController extends CrudController
         if (!$document->canShow($this->login)) {
             return $this->redirectWithErrors(
                 response: $response,
-                redirect_url: $this->routeparser->urlFor('slash'),
-                errors: [_T("You do not have permission for requested URL.")]
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
             );
         }
 
@@ -250,9 +229,7 @@ class DocumentsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Document id
+     * @param int $id Document id
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -285,9 +262,7 @@ class DocumentsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Document id
+     * @param int $id Document id
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -297,10 +272,6 @@ class DocumentsController extends CrudController
 
     /**
      * Store a document
-     *
-     * @param Request  $request  PSR request
-     * @param Response $response PSR response
-     * @param Document $document Document to work on
      */
     private function store(Request $request, Response $response, Document $document): Response
     {

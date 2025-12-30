@@ -44,11 +44,8 @@ class PluginsController extends AbstractController
 {
     /**
      * Plugins page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function showPlugins(Request $request, Response $response): Response
+    public function showPlugins(Response $response): Response
     {
         $plugins = $this->plugins;
 
@@ -70,14 +67,9 @@ class PluginsController extends AbstractController
     }
 
     /**
-     * Plugins activation/desactivaion
-     *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param string   $action    Action
-     * @param string   $module_id Module id
+     * Plugins activation/deactivation
      */
-    public function togglePlugin(Request $request, Response $response, string $action, string $module_id): Response
+    public function togglePlugin(Response $response, string $action, string $module_id): Response
     {
         $error_detected = [];
         $success_detected = [];
@@ -126,9 +118,7 @@ class PluginsController extends AbstractController
     /**
      * Plugins database activation
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $id       Plugin id
+     * @param string $id Plugin id
      */
     public function initPluginDb(Request $request, Response $response, string $id): Response
     {

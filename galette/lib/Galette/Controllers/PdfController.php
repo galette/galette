@@ -54,9 +54,6 @@ class PdfController extends AbstractController
 {
     /**
      * Send response
-     *
-     * @param Response $response PSR Response
-     * @param Pdf      $pdf      PDF to output
      */
     protected function sendResponse(Response $response, Pdf $pdf): Response
     {
@@ -70,11 +67,9 @@ class PdfController extends AbstractController
     /**
      * Members PDF card
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id_adh   Member id
+     * @param ?int $id_adh Member id
      */
-    public function membersCards(Request $request, Response $response, ?int $id_adh = null): Response
+    public function membersCards(Response $response, ?int $id_adh = null): Response
     {
         if ($this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())}) {
             $filters = $this->session->{$this->getFilterName(Crud\MembersController::getDefaultFilterName())};
@@ -160,9 +155,6 @@ class PdfController extends AbstractController
 
     /**
      * Members PDF label
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function membersLabels(Request $request, Response $response): Response
     {
@@ -220,11 +212,9 @@ class PdfController extends AbstractController
     /**
      * PDF adhesion form
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id_adh   Member id
+     * @param ?int $id_adh Member id
      */
-    public function adhesionForm(Request $request, Response $response, ?int $id_adh = null): Response
+    public function adhesionForm(Response $response, ?int $id_adh = null): Response
     {
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
 
@@ -244,9 +234,6 @@ class PdfController extends AbstractController
 
     /**
      * PDF attendance sheet configuration page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function attendanceSheetConfig(Request $request, Response $response): Response
     {
@@ -291,9 +278,6 @@ class PdfController extends AbstractController
 
     /**
      * PDF attendance sheet
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function attendanceSheet(Request $request, Response $response): Response
     {
@@ -350,12 +334,9 @@ class PdfController extends AbstractController
 
     /**
      * Contribution PDF
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Contribution id
+     * @param int $id Contribution id
      */
-    public function contribution(Request $request, Response $response, int $id, Contribution $contribution): Response
+    public function contribution(Response $response, int $id, Contribution $contribution): Response
     {
         if (!$contribution->load($id)) {
             //not possible to load contribution, exit
@@ -382,11 +363,9 @@ class PdfController extends AbstractController
     /**
      * Groups PDF
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Group id
+     * @param ?int $id Group id
      */
-    public function group(Request $request, Response $response, Groups $groups, PdfGroups $pdf, ?int $id = null): Response
+    public function group(Response $response, Groups $groups, PdfGroups $pdf, ?int $id = null): Response
     {
         $groups_list = $id !== null ? $groups->getList(true, $id) : $groups->getList();
 
@@ -410,9 +389,7 @@ class PdfController extends AbstractController
     /**
      * PDF models list
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Model id
+     * @param ?int $id Model id
      */
     public function models(Request $request, Response $response, PdfModels $ms, ?int $id = null): Response
     {
@@ -464,9 +441,6 @@ class PdfController extends AbstractController
 
     /**
      * Store PDF models
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function storeModels(Request $request, Response $response): Response
     {
@@ -528,10 +502,6 @@ class PdfController extends AbstractController
 
     /**
      * Get direct document
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $hash     Hash
      */
     public function directlinkDocument(
         Request $request,

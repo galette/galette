@@ -122,11 +122,9 @@ class CsvIn extends GaletteTestCase
         $controller = new \Galette\Controllers\CsvController($this->container);
         $this->container->injectOn($controller);
 
-        $rfactory = new \Slim\Psr7\Factory\RequestFactory();
-        $request = $rfactory->createRequest('GET', 'http://localhost/models/csv');
         $response = new \Slim\Psr7\Response();
 
-        $response = $controller->getImportModel($request, $response, $this->container->get(\Galette\Entity\ImportModel::class));
+        $response = $controller->getImportModel($response, $this->container->get(\Galette\Entity\ImportModel::class));
         $csvin = $this->container->get(\Galette\IO\CsvIn::class);
 
         $this->assertSame(200, $response->getStatusCode());
@@ -169,7 +167,8 @@ class CsvIn extends GaletteTestCase
             'import_file'   => $file_name
         ];
 
-        $request = clone $request;
+        $rfactory = new \Slim\Psr7\Factory\RequestFactory();
+        $request = $rfactory->createRequest('GET', 'http://localhost/models/csv');
         $request = $request->withParsedBody($post);
 
         $response = $controller->doImports($request, $response);

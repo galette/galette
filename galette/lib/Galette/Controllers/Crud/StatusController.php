@@ -46,9 +46,6 @@ class StatusController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -58,9 +55,6 @@ class StatusController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doAdd(Request $request, Response $response): Response
     {
@@ -73,10 +67,8 @@ class StatusController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
     public function list(
         Request $request,
@@ -112,9 +104,6 @@ class StatusController extends CrudController
 
     /**
      * Mailings filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -128,9 +117,7 @@ class StatusController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Status id
+     * @param int $id Status id
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -156,9 +143,7 @@ class StatusController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Status id
+     * @param int $id Status id
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -168,10 +153,8 @@ class StatusController extends CrudController
     /**
      * Store
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Status id
-     * @param string   $action   Action
+     * @param ?int   $id     Status id
+     * @param string $action Action
      */
     public function store(
         Request $request,

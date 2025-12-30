@@ -52,9 +52,7 @@ class DynamicFieldsController extends CrudController
     /**
      * Add page
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param ?string  $form_name Form name
+     * @param ?string $form_name Form name
      */
     public function add(Request $request, Response $response, ?string $form_name = null): Response
     {
@@ -84,9 +82,7 @@ class DynamicFieldsController extends CrudController
     /**
      * Add action
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param ?string  $form_name Form name
+     * @param ?string $form_name Form name
      */
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
     {
@@ -164,8 +160,6 @@ class DynamicFieldsController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request   PSR Request
-     * @param Response        $response  PSR Response
      * @param string|null     $option    One of 'page' or 'order'
      * @param int|string|null $value     Value of the option
      * @param string          $form_name Form name
@@ -219,9 +213,6 @@ class DynamicFieldsController extends CrudController
 
     /**
      * Filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -232,16 +223,13 @@ class DynamicFieldsController extends CrudController
     /**
      * Get a dynamic file
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param string   $form_name Form name
-     * @param int      $id        Object ID
-     * @param int      $fid       Dynamic fields ID
-     * @param int      $pos       Dynamic field position
-     * @param string   $name      File name
+     * @param string $form_name Form name
+     * @param int    $id        Object ID
+     * @param int    $fid       Dynamic fields ID
+     * @param int    $pos       Dynamic field position
+     * @param string $name      File name
      */
     public function getDynamicFile(
-        Request $request,
         Response $response,
         string $form_name,
         int $id,
@@ -347,10 +335,8 @@ class DynamicFieldsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param int      $id        Dynamic field id
-     * @param ?string  $form_name Form name
+     * @param int     $id        Dynamic field id
+     * @param ?string $form_name Form name
      */
     public function edit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
@@ -391,10 +377,8 @@ class DynamicFieldsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param int      $id        Dynamic field id
-     * @param ?string  $form_name Form name
+     * @param int     $id        Dynamic field id
+     * @param ?string $form_name Form name
      */
     public function doEdit(Request $request, Response $response, int $id, ?string $form_name = null): Response
     {
@@ -536,14 +520,11 @@ class DynamicFieldsController extends CrudController
     /**
      * Move field
      *
-     * @param Request  $request   PSR Request
-     * @param Response $response  PSR Response
-     * @param int      $id        Field id
-     * @param string   $form_name Form name
-     * @param string   $direction One of DynamicField::MOVE_*
+     * @param int    $id        Field id
+     * @param string $form_name Form name
+     * @param string $direction One of DynamicField::MOVE_*
      */
     public function move(
-        Request $request,
         Response $response,
         int $id,
         string $form_name,

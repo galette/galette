@@ -46,11 +46,8 @@ class AjaxController extends AbstractController
 {
     /**
      * Messages as JSON array
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function messages(Request $request, Response $response): Response
+    public function messages(Response $response): Response
     {
         $messages = [];
 
@@ -105,11 +102,9 @@ class AjaxController extends AbstractController
     /**
      * Ajax town suggestion
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $term     Search term
+     * @param string $term Search term
      */
-    public function suggestTowns(Request $request, Response $response, string $term): Response
+    public function suggestTowns(Response $response, string $term): Response
     {
         $ret = [];
 
@@ -152,11 +147,9 @@ class AjaxController extends AbstractController
     /**
      * Ajax countries suggestion
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $term     Search term
+     * @param string $term Search term
      */
-    public function suggestCountries(Request $request, Response $response, string $term): Response
+    public function suggestCountries(Response $response, string $term): Response
     {
         $ret = [];
 
@@ -190,11 +183,9 @@ class AjaxController extends AbstractController
     /**
      * Ajax regions suggestion
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $term     Search term
+     * @param string $term Search term
      */
-    public function suggestRegions(Request $request, Response $response, string $term): Response
+    public function suggestRegions(Response $response, string $term): Response
     {
         $ret = [];
 
@@ -227,11 +218,8 @@ class AjaxController extends AbstractController
 
     /**
      * Telemetry info preview
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function telemetryInfos(Request $request, Response $response): Response
+    public function telemetryInfos(Response $response): Response
     {
         $telemetry = new Telemetry(
             $this->zdb,
@@ -245,11 +233,8 @@ class AjaxController extends AbstractController
 
     /**
      * Send telemetry info
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function telemetrySend(Request $request, Response $response): Response
+    public function telemetrySend(Response $response): Response
     {
         $telemetry = new Telemetry(
             $this->zdb,
@@ -274,11 +259,8 @@ class AjaxController extends AbstractController
 
     /**
      * Successful telemetry registration
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function telemetryRegistered(Request $request, Response $response): Response
+    public function telemetryRegistered(Response $response): Response
     {
         $this->preferences->updateRegistrationDate();
         return $this->withJson($response, ['message' => _T('Thank you for registering!')]);
@@ -286,9 +268,6 @@ class AjaxController extends AbstractController
 
     /**
      * Contributions dates
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function contributionDates(Request $request, Response $response): Response
     {
@@ -315,10 +294,8 @@ class AjaxController extends AbstractController
     /**
      * Contributions dates
      *
-     * @param Request     $request  PSR Request
-     * @param Response    $response PSR Response
-     * @param int|null    $page     Page number
-     * @param string|null $search   Search string
+     * @param int|null    $page   Page number
+     * @param string|null $search Search string
      */
     public function contributionMembers(Request $request, Response $response, ?int $page = null, ?string $search = null): Response
     {
@@ -363,9 +340,6 @@ class AjaxController extends AbstractController
 
     /**
      * Password strength
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function passwordStrength(Request $request, Response $response): Response
     {

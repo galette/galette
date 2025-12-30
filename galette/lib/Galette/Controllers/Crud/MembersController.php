@@ -66,9 +66,6 @@ class MembersController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -77,9 +74,6 @@ class MembersController extends CrudController
 
     /**
      * Add child page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function addChild(Request $request, Response $response): Response
     {
@@ -94,11 +88,8 @@ class MembersController extends CrudController
 
     /**
      * Self subscription page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function selfSubscribe(Request $request, Response $response): Response
+    public function selfSubscribe(Response $response): Response
     {
         if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
             return $response
@@ -170,9 +161,6 @@ class MembersController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doAdd(Request $request, Response $response): Response
     {
@@ -181,9 +169,6 @@ class MembersController extends CrudController
 
     /**
      * Add child action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doAddChild(Request $request, Response $response): Response
     {
@@ -198,9 +183,6 @@ class MembersController extends CrudController
 
     /**
      * Self subscription add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doSelfSubscribe(Request $request, Response $response): Response
     {
@@ -218,11 +200,9 @@ class MembersController extends CrudController
     /**
      * Duplicate action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id_adh   Member ID to duplicate
+     * @param int $id_adh Member ID to duplicate
      */
-    public function duplicate(Request $request, Response $response, int $id_adh): Response
+    public function duplicate(Response $response, int $id_adh): Response
     {
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true, 'parent' => true]);
         $adh->setDuplicate();
@@ -241,11 +221,9 @@ class MembersController extends CrudController
     /**
      * Display member card
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Member ID
+     * @param int $id Member ID
      */
-    public function show(Request $request, Response $response, int $id): Response
+    public function show(Response $response, int $id): Response
     {
         $member = new Adherent($this->zdb);
         $member
@@ -291,11 +269,9 @@ class MembersController extends CrudController
     /**
      * Get member VCard
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Member ID
+     * @param int $id Member ID
      */
-    public function vcard(Request $request, Response $response, int $id): Response
+    public function vcard(Response $response, int $id): Response
     {
         $member = new Adherent($this->zdb);
         $member
@@ -324,36 +300,29 @@ class MembersController extends CrudController
 
     /**
      * Own card show
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function showMe(Request $request, Response $response): Response
+    public function showMe(Response $response): Response
     {
         if ($this->login->isSuperAdmin()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->routeparser->urlFor('slash'));
         }
-        return $this->show($request, $response, $this->login->id);
+        return $this->show($response, $this->login->id);
     }
 
     /**
      * Public members list
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param string|int|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param string|int|null $value  Value of the option
      */
     public function publicMembersList(
-        Request $request,
         Response $response,
         ?string $option = null,
         string|int|null $value = null,
     ): Response {
         return $this->publicList(
-            $request,
             $response,
             [
                 'filter_name' => $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'list']),
@@ -370,19 +339,15 @@ class MembersController extends CrudController
     /**
      * Public members gallery
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param string|int|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param string|int|null $value  Value of the option
      */
     public function publicMembersGallery(
-        Request $request,
         Response $response,
         ?string $option = null,
         string|int|null $value = null,
     ): Response {
         return $this->publicList(
-            $request,
             $response,
             [
                 'filter_name' => $this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'public', 'suffix' => 'trombi']),
@@ -399,13 +364,10 @@ class MembersController extends CrudController
     /**
      * Public members list
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param string|int|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param string|int|null $value  Value of the option
      */
     public function publicStaffList(
-        Request $request,
         Response $response,
         ?string $option = null,
         string|int|null $value = null,
@@ -415,7 +377,6 @@ class MembersController extends CrudController
         $this->session->$filter_name = $filters;
 
         return $this->publicList(
-            $request,
             $response,
             [
                 'filter_name' => $filter_name,
@@ -433,13 +394,10 @@ class MembersController extends CrudController
     /**
      * Public staff gallery
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param string|int|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param string|int|null $value  Value of the option
      */
     public function publicStaffGallery(
-        Request $request,
         Response $response,
         ?string $option = null,
         string|int|null $value = null,
@@ -449,7 +407,6 @@ class MembersController extends CrudController
         $this->session->$filter_name = $filters;
 
         return $this->publicList(
-            $request,
             $response,
             [
                 'filter_name' => $filter_name,
@@ -467,14 +424,11 @@ class MembersController extends CrudController
     /**
      * Public pages (gallery, list)
      *
-     * @param Request              $request  PSR Request
-     * @param Response             $response PSR Response
-     * @param array<string, mixed> $args     Route arguments
-     * @param string|null          $option   One of 'page' or 'order'
-     * @param string|int|null      $value    Value of the option
+     * @param array<string, mixed> $args   Route arguments
+     * @param string|null          $option One of 'page' or 'order'
+     * @param string|int|null      $value  Value of the option
      */
     private function publicList(
-        Request $request,
         Response $response,
         array $args,
         ?string $option = null,
@@ -524,10 +478,7 @@ class MembersController extends CrudController
     }
 
     /**
-     * Public members list
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
+     * Filter public members list
      */
     public function filterPublicMembersList(Request $request, Response $response): Response
     {
@@ -535,10 +486,7 @@ class MembersController extends CrudController
     }
 
     /**
-     * Public members list
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
+     * Filter public members gallery
      */
     public function filterPublicMembersGallery(Request $request, Response $response): Response
     {
@@ -548,10 +496,8 @@ class MembersController extends CrudController
     /**
      * Public pages filtering (gallery, list)
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     Type
-     * @param string   $route    Filter route
+     * @param string $type  Type
+     * @param string $route Filter route
      */
     private function filterPublicList(Request $request, Response $response, string $type, string $route): Response
     {
@@ -578,10 +524,8 @@ class MembersController extends CrudController
     /**
      * Members list
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
@@ -640,9 +584,6 @@ class MembersController extends CrudController
 
     /**
      * Members filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -777,11 +718,8 @@ class MembersController extends CrudController
 
     /**
      * Advanced search page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function advancedSearch(Request $request, Response $response): Response
+    public function advancedSearch(Response $response): Response
     {
         if (isset($this->session->{$this->getFilterName(static::getDefaultFilterName())})) {
             $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName())};
@@ -855,10 +793,8 @@ class MembersController extends CrudController
     /**
      * Members list for ajax
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param string|int|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param string|int|null $value  Value of the option
      */
     public function ajaxList(Request $request, Response $response, ?string $option = null, string|int|null $value = null): Response
     {
@@ -985,9 +921,6 @@ class MembersController extends CrudController
 
     /**
      * Batch actions handler
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function handleBatch(Request $request, Response $response): Response
     {
@@ -1041,10 +974,8 @@ class MembersController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Member id/array of members id
-     * @param string   $action   null or 'add'
+     * @param ?int   $id     Member id/array of members id
+     * @param string $action null or 'add'
      */
     public function edit(
         Request $request,
@@ -1187,9 +1118,7 @@ class MembersController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Member id
+     * @param int $id Member id
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -1198,9 +1127,6 @@ class MembersController extends CrudController
 
     /**
      * Massive change page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function massChange(Request $request, Response $response): Response
     {
@@ -1251,9 +1177,6 @@ class MembersController extends CrudController
 
     /**
      * Massive changes validation page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function validateMassChange(Request $request, Response $response): Response
     {
@@ -1364,9 +1287,6 @@ class MembersController extends CrudController
 
     /**
      * Do massive changes
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doMassChange(Request $request, Response $response): Response
     {
@@ -1550,9 +1470,6 @@ class MembersController extends CrudController
 
     /**
      * Store
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function store(Request $request, Response $response): Response
     {

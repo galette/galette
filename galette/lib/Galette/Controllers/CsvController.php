@@ -66,9 +66,8 @@ class CsvController extends AbstractController
     /**
      * Send response
      *
-     * @param Response $response PSR Response
-     * @param string   $filepath File path on disk
-     * @param string   $filename File name for output
+     * @param string $filepath File path on disk
+     * @param string $filename File name for output
      */
     protected function sendResponse(Response $response, string $filepath, string $filename): Response
     {
@@ -100,11 +99,8 @@ class CsvController extends AbstractController
 
     /**
      * Exports page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function export(Request $request, Response $response, CsvOut $csv): Response
+    public function export(Response $response, CsvOut $csv): Response
     {
         $tables_list = $this->zdb->getTables();
         $parameted = $csv->getParametedExports();
@@ -128,9 +124,6 @@ class CsvController extends AbstractController
 
     /**
      * Proceed exports
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doExport(Request $request, Response $response, CsvOut $csv): Response
     {
@@ -228,11 +221,8 @@ class CsvController extends AbstractController
 
     /**
      * Imports page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function import(Request $request, Response $response): Response
+    public function import(Response $response): Response
     {
         $existing = $this->csvin->getExisting();
 
@@ -253,9 +243,6 @@ class CsvController extends AbstractController
 
     /**
      * Proceed imports
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doImports(Request $request, Response $response): Response
     {
@@ -314,9 +301,6 @@ class CsvController extends AbstractController
 
     /**
      * Get CSV file (imports or exports)
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function uploadImportFile(Request $request, Response $response): Response
     {
@@ -349,12 +333,10 @@ class CsvController extends AbstractController
     /**
      * Get CSV file (imports or exports)
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $file     File name
-     * @param string   $type     File type
+     * @param string $file File name
+     * @param string $type File type
      */
-    public function getFile(Request $request, Response $response, string $file, string $type): Response
+    public function getFile(Response $response, string $file, string $type): Response
     {
         $filename = $file;
         $filepath = $type === 'export' ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
@@ -365,10 +347,8 @@ class CsvController extends AbstractController
     /**
      * Remove CSV file confirmation (imports or exports)
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $file     File name
-     * @param string   $type     File type
+     * @param string $file File name
+     * @param string $type File type
      */
     public function confirmRemoveFile(
         Request $request,
@@ -410,10 +390,8 @@ class CsvController extends AbstractController
     /**
      * Remove CSV file (imports or exports)
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $file     File name
-     * @param string   $type     File type
+     * @param string $file File name
+     * @param string $type File type
      */
     public function removeFile(Request $request, Response $response, string $file, string $type): Response
     {
@@ -470,9 +448,6 @@ class CsvController extends AbstractController
 
     /**
      * Import model page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function importModel(Request $request, Response $response, ImportModel $model, DynamicFieldsSet $fieldset): Response
     {
@@ -533,11 +508,8 @@ class CsvController extends AbstractController
 
     /**
      * Get CSV import model file
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function getImportModel(Request $request, Response $response, ImportModel $model): Response
+    public function getImportModel(Response $response, ImportModel $model): Response
     {
         $model->load();
 
@@ -575,9 +547,6 @@ class CsvController extends AbstractController
 
     /**
      * Store CSV model
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function storeModel(Request $request, Response $response, ImportModel $model): Response
     {
@@ -604,9 +573,6 @@ class CsvController extends AbstractController
 
     /**
      * Members CSV exports
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function membersExport(Request $request, Response $response): Response
     {
@@ -626,9 +592,7 @@ class CsvController extends AbstractController
     /**
      * Contributions CSV exports
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param string   $type     One of 'contributions' or 'transactions'
+     * @param string $type One of 'contributions' or 'transactions'
      */
     public function contributionsExport(Request $request, Response $response, string $type): Response
     {
@@ -654,9 +618,6 @@ class CsvController extends AbstractController
 
     /**
      * Scheduled payments CSV exports
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function scheduledPaymentsExport(Request $request, Response $response): Response
     {

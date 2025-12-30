@@ -40,17 +40,11 @@ abstract class CrudController extends AbstractController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     abstract public function add(Request $request, Response $response): Response;
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     abstract public function doAdd(Request $request, Response $response): Response;
 
@@ -60,18 +54,13 @@ abstract class CrudController extends AbstractController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
     abstract public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response;
 
     /**
      * List filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     abstract public function filter(Request $request, Response $response): Response;
 
@@ -81,18 +70,14 @@ abstract class CrudController extends AbstractController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
+     * @param int $id Record id
      */
     abstract public function edit(Request $request, Response $response, int $id): Response;
 
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
+     * @param int $id Record id
      */
     abstract public function doEdit(Request $request, Response $response, int $id): Response;
 
@@ -101,9 +86,6 @@ abstract class CrudController extends AbstractController
 
     /**
      * Removal confirmation
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function confirmDelete(Request $request, Response $response): Response
     {
@@ -118,8 +100,6 @@ abstract class CrudController extends AbstractController
 
     /**
      * Removal confirmation parameters, can be override
-     *
-     * @param Request $request PSR Request
      *
      * @return array<string,mixed>
      */
@@ -228,9 +208,6 @@ abstract class CrudController extends AbstractController
 
     /**
      * Removal
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function delete(Request $request, Response $response): Response
     {

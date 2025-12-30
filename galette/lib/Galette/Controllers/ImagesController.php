@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
-use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\Picture;
 use Galette\Entity\Adherent;
@@ -43,9 +42,6 @@ class ImagesController extends AbstractController
 {
     /**
      * Send response
-     *
-     * @param Response $response PSR Response
-     * @param Picture  $picture  Picture to output
      */
     protected function sendResponse(Response $response, Picture $picture): Response
     {
@@ -64,22 +60,16 @@ class ImagesController extends AbstractController
 
     /**
      * Logo route
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function logo(Request $request, Response $response): Response
+    public function logo(Response $response): Response
     {
         return $this->sendResponse($response, $this->logo);
     }
 
     /**
      * Print logo route
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
-    public function printLogo(Request $request, Response $response): Response
+    public function printLogo(Response $response): Response
     {
         return $this->sendResponse($response, $this->print_logo);
     }
@@ -87,11 +77,9 @@ class ImagesController extends AbstractController
     /**
      * Photos
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Member id
+     * @param int $id Member id
      */
-    public function photo(Request $request, Response $response, int $id, Adherent $adh, Picture $picture): Response
+    public function photo(Response $response, int $id, Adherent $adh, Picture $picture): Response
     {
         $adh->disableDep('dues');
         if (!$this->login->isGroupManager()) {

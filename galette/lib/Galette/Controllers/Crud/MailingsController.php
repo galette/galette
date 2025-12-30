@@ -50,9 +50,6 @@ class MailingsController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -126,8 +123,8 @@ class MailingsController extends CrudController
                     $redirect_url = $this->session->redirect_mailing ?? $this->routeparser->urlFor('members');
                     return $this->redirectWithErrors(
                         response: $response,
-                        redirect_url: $redirect_url,
-                        errors: [_T('No member selected for mailing!')]
+                        errors: [_T('No member selected for mailing!')],
+                        redirect_url: $redirect_url
                     );
                 }
                 $m = new Members();
@@ -182,9 +179,6 @@ class MailingsController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doAdd(Request $request, Response $response): Response
     {
@@ -242,8 +236,8 @@ class MailingsController extends CrudController
 
                     return $this->redirectWithErrors(
                         response: $response,
-                        redirect_url: $redirect_url,
-                        errors: [_T('No member selected for mailing!')]
+                        errors: [_T('No member selected for mailing!')],
+                        redirect_url: $redirect_url
                     );
                 }
                 $m = new Members();
@@ -381,10 +375,8 @@ class MailingsController extends CrudController
     /**
      * Mailings history page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
@@ -442,9 +434,6 @@ class MailingsController extends CrudController
 
     /**
      * Mailings filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -496,9 +485,7 @@ class MailingsController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
+     * @param int $id Record id
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -509,9 +496,7 @@ class MailingsController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
+     * @param int $id Record id
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -575,9 +560,7 @@ class MailingsController extends CrudController
     /**
      * Preview action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param ?int     $id       Mailing id
+     * @param ?int $id Mailing id
      */
     public function preview(Request $request, Response $response, ?int $id = null): Response
     {
@@ -646,10 +629,8 @@ class MailingsController extends CrudController
     /**
      * Preview attachment action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Mailing id
-     * @param int      $pos      Attachment position in list
+     * @param int $id  Mailing id
+     * @param int $pos Attachment position in list
      */
     public function previewAttachment(Request $request, Response $response, int $id, int $pos): Response
     {
@@ -668,9 +649,6 @@ class MailingsController extends CrudController
 
     /**
      * Set recipients action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function setRecipients(Request $request, Response $response): Response
     {

@@ -46,9 +46,6 @@ class SavedSearchesController extends CrudController
 
     /**
      * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function add(Request $request, Response $response): Response
     {
@@ -58,9 +55,6 @@ class SavedSearchesController extends CrudController
 
     /**
      * Add action
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function doAdd(Request $request, Response $response): Response
     {
@@ -127,10 +121,8 @@ class SavedSearchesController extends CrudController
     /**
      * List page
      *
-     * @param Request         $request  PSR Request
-     * @param Response        $response PSR Response
-     * @param string|null     $option   One of 'page' or 'order'
-     * @param int|string|null $value    Value of the option
+     * @param string|null     $option One of 'page' or 'order'
+     * @param int|string|null $value  Value of the option
      */
     public function list(Request $request, Response $response, ?string $option = null, int|string|null $value = null): Response
     {
@@ -176,9 +168,6 @@ class SavedSearchesController extends CrudController
 
     /**
      * Filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
      */
     public function filter(Request $request, Response $response): Response
     {
@@ -192,9 +181,7 @@ class SavedSearchesController extends CrudController
     /**
      * Edit page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
+     * @param int $id Record id
      */
     public function edit(Request $request, Response $response, int $id): Response
     {
@@ -205,9 +192,7 @@ class SavedSearchesController extends CrudController
     /**
      * Edit action
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Record id
+     * @param int $id Record id
      */
     public function doEdit(Request $request, Response $response, int $id): Response
     {
@@ -285,11 +270,9 @@ class SavedSearchesController extends CrudController
     /**
      * Load saved search
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param int      $id       Saved search id
+     * @param int $id Saved search id
      */
-    public function load(Request $request, Response $response, int $id): Response
+    public function load(Response $response, int $id): Response
     {
         try {
             $sco = new SavedSearch($this->zdb, $this->login, $id);
