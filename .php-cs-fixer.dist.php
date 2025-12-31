@@ -17,7 +17,7 @@ return (new PhpCsFixer\Config())
         '@PER-CS' => true,
         '@PHP8x2Migration' => true,
         'trailing_comma_in_multiline' => false,
-        'cast_spaces' => false,
+        'cast_spaces' => ['space' => 'none'],
         'single_line_empty_body' => false,
         'no_unused_imports' => true,
         // rules for phpdoc

@@ -220,7 +220,7 @@ class MailingHistory extends History
 
             if ($this->filters->subject_filter != '') {
                 $token = $this->zdb->platform->quoteValue(
-                    '%' . strtolower((string) $this->filters->subject_filter) . '%'
+                    '%' . strtolower((string)$this->filters->subject_filter) . '%'
                 );
 
                 $select->where(

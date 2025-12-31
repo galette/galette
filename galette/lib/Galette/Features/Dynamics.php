@@ -130,7 +130,7 @@ trait Dynamics
                 $value = $dfield_values['value'];
                 $val_index = (int)$dfield_values['val_index'];
 
-                if ($fields[$field_id]->isRequired() && (trim((string) $value) === '' || $value == null)) {
+                if ($fields[$field_id]->isRequired() && (trim((string)$value) === '' || $value == null)) {
                     $this->errors[] = sprintf(
                         //TRANS: parameter is a field name
                         _T('Missing required field %1$s'),
@@ -149,7 +149,7 @@ trait Dynamics
                     }
                     $this->dynamics->setValue($this->getID(), $field_id, $val_index, '');
                 } else {
-                    if ($fields[$field_id] instanceof Date && !empty(trim((string) $value))) {
+                    if ($fields[$field_id] instanceof Date && !empty(trim((string)$value))) {
                         //check date format
                         try {
                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
@@ -226,7 +226,7 @@ trait Dynamics
         $store = false;
 
         foreach ($files as $key => $file) {
-            if (substr((string) $key, 0, 11) != $this->name_pattern) {
+            if (substr((string)$key, 0, 11) != $this->name_pattern) {
                 continue;
             }
 

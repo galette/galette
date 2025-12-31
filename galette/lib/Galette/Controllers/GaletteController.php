@@ -408,7 +408,7 @@ class GaletteController extends AbstractController
 
             $res[$current_cat][] = [
                 'field_id'      =>  $field,
-                'label'         =>  htmlspecialchars((string) $post[$field . '_label'], ENT_QUOTES),
+                'label'         =>  htmlspecialchars((string)$post[$field . '_label'], ENT_QUOTES),
                 'category'      =>  $post[$field . '_category'],
                 'visible'       =>  $post[$field . '_visible'],
                 'required'      =>  $required,

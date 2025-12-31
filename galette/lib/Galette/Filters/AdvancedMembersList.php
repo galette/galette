@@ -539,7 +539,7 @@ class AdvancedMembersList extends MembersList
                             //handle value according to type
                             switch ($value['type']) {
                                 case DynamicField::DATE:
-                                    if ($value['search'] !== null && trim((string) $value['search']) !== '') {
+                                    if ($value['search'] !== null && trim((string)$value['search']) !== '') {
                                         try {
                                             $value['search'] = $this->buildDate($value['search']);
                                         } catch (Throwable) {
@@ -615,7 +615,7 @@ class AdvancedMembersList extends MembersList
                         str_starts_with($name, 'cds_')
                         || str_starts_with($name, 'cdsc_')
                     ) {
-                        if (is_array($value) || trim((string) $value) !== '') {
+                        if (is_array($value) || trim((string)$value) !== '') {
                             $id = str_starts_with($name, 'cdsc_') ? substr($name, 5, strlen($name)) : substr($name, 4, strlen($name));
                             $dyn_field = DynamicField::loadFieldType($zdb, (int)$id);
                             if ($dyn_field instanceof \Galette\DynamicFields\Date) {

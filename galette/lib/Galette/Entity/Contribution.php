@@ -234,7 +234,7 @@ class Contribution implements AccessManagementInterface
             $end_date = $begin_date->add($dext);
         } elseif ($preferences->pref_beg_membership != '') {
             //case beginning of membership
-            [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
             $next_begin_date = new DateTime($begin_date->format('Y') . '-' . $m . '-' . $j);
             while ($next_begin_date <= $begin_date) {
                 $next_begin_date->add(new DateInterval('P1Y'));

@@ -648,10 +648,10 @@ class MembersController extends CrudController
                             $i = 0;
                             foreach ($post['free_field'] as $f) {
                                 if (
-                                    trim((string) $f) !== ''
-                                    && trim((string) $post['free_text'][$i]) !== ''
+                                    trim((string)$f) !== ''
+                                    && trim((string)$post['free_text'][$i]) !== ''
                                 ) {
-                                    $fs_search = htmlspecialchars((string) $post['free_text'][$i], ENT_QUOTES);
+                                    $fs_search = htmlspecialchars((string)$post['free_text'][$i], ENT_QUOTES);
                                     $log_op
                                         = (int)$post['free_logical_operator'][$i];
                                     $qry_op
@@ -675,7 +675,7 @@ class MembersController extends CrudController
                         $i = 0;
                         $filters->groups_search_log_op = (int)$post['groups_logical_operator'];
                         foreach ($post['groups_search'] as $g) {
-                            if (trim((string) $g) !== '') {
+                            if (trim((string)$g) !== '') {
                                 $gs = [
                                     'idx'       => $i,
                                     'group'     => $g

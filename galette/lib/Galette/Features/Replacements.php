@@ -726,7 +726,7 @@ trait Replacements
 
         $dynamic_patterns = $this->getDynamicPatterns($form_name);
         foreach ($dynamic_patterns as $dynamic_pattern) {
-            $pattern = trim((string) $dynamic_pattern['pattern'], '/');
+            $pattern = trim((string)$dynamic_pattern['pattern'], '/');
             $key   = strtolower(rtrim(ltrim($pattern, '{'), '}'));
             $value = '';
 
@@ -926,7 +926,7 @@ trait Replacements
         $replaced = preg_replace(
             $this->patterns,
             $this->replaces,
-            (string) $replaced
+            (string)$replaced
         );
 
         //handle translations with replacements
@@ -938,10 +938,10 @@ trait Replacements
         $replaced = preg_replace_callback(
             '/str_replace\(\'([^,]+)\', ?\'([^,]+)\', ?\'(.*)\'\)/',
             $repl_callback,
-            (string) $replaced
+            (string)$replaced
         );
 
-        return trim((string) $replaced);
+        return trim((string)$replaced);
     }
 
     /**

@@ -279,7 +279,7 @@ class Password
             if (count($parts) > 1) {
                 $letters = '';
                 foreach ($parts as $part) {
-                    $letters .= mb_substr((string) $part, 0, 1);
+                    $letters .= mb_substr((string)$part, 0, 1);
                 }
                 $infos[] = $letters . $adh->name;
                 $infos[] = $adh->name . $letters;

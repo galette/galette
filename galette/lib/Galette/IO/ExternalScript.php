@@ -146,7 +146,7 @@ class ExternalScript
                 curl_setopt($ch, CURLOPT_URL, $uri);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $this->output = curl_exec($ch);
-                $result = (bool) $this->output;
+                $result = (bool)$this->output;
                 break;
             case 'galette':
             case 'post':
@@ -166,7 +166,7 @@ class ExternalScript
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
                 }
                 $this->output = curl_exec($ch);
-                $result = (bool) $this->output;
+                $result = (bool)$this->output;
                 break;
             case 'file':
                 $this->output = '';

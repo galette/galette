@@ -87,7 +87,7 @@ class AuthController extends AbstractController
         $nick = $post['login'] ?? '';
         $password = $post['password'] ?? '';
 
-        if (trim((string) $nick) == '' || trim((string) $password) == '') {
+        if (trim((string)$nick) == '' || trim((string)$password) == '') {
             $this->flash->addMessage(
                 'loginfault',
                 _T("You must provide both login and password.")
@@ -99,12 +99,12 @@ class AuthController extends AbstractController
 
         if ($nick === $this->preferences->pref_admin_login) {
             $pw_superadmin = password_verify(
-                (string) $password,
+                (string)$password,
                 $this->preferences->pref_admin_pass
             );
             if (!$pw_superadmin) {
                 $pw_superadmin = (
-                    md5((string) $password) === $this->preferences->pref_admin_pass
+                    md5((string)$password) === $this->preferences->pref_admin_pass
                 );
             }
             if ($pw_superadmin) {
@@ -317,7 +317,7 @@ class AuthController extends AbstractController
             $login_adh = $adh->login;
         } else {
             $post = $request->getParsedBody();
-            $login_adh = htmlspecialchars((string) $post['login'], ENT_QUOTES);
+            $login_adh = htmlspecialchars((string)$post['login'], ENT_QUOTES);
             $adh = new Adherent($this->zdb, $login_adh);
         }
 
@@ -481,7 +481,7 @@ class AuthController extends AbstractController
     ): Response {
         $post = $request->getParsedBody();
 
-        if (!$id_adh = $password->isHashValid(base64_decode((string) $post['hash']))) {
+        if (!$id_adh = $password->isHashValid(base64_decode((string)$post['hash']))) {
             return $this->redirect(
                 response: $response,
                 redirect_url: $this->routeparser->urlFor('password-recovery', ['hash' => $post['hash']])
@@ -492,7 +492,7 @@ class AuthController extends AbstractController
         if ($post['mdp_adh'] == '') {
             $errors[] = _T("No password");
         } elseif (isset($post['mdp_adh2'])) {
-            if (strcmp((string) $post['mdp_adh'], $post['mdp_adh2'])) {
+            if (strcmp((string)$post['mdp_adh'], $post['mdp_adh2'])) {
                 $errors[] = _T("- The passwords don't match!");
             } elseif (!$checkpass->isValid($post['mdp_adh'])) {
                 //password is not valid with current rules
@@ -516,7 +516,7 @@ class AuthController extends AbstractController
                     );
                     //once password has been changed, we can remove the
                     //temporary password entry
-                    $password->removeHash(base64_decode((string) $post['hash']));
+                    $password->removeHash(base64_decode((string)$post['hash']));
                     return $this->redirect(
                         response: $response,
                         redirect_url: $this->routeparser->urlFor('slash'),

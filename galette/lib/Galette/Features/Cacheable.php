@@ -121,7 +121,7 @@ trait Cacheable
         }
         $this->prepareForCache();
         $cfile = $this->getCacheFilename();
-        $cdir = dirname((string) $cfile);
+        $cdir = dirname((string)$cfile);
         if (!file_exists($cdir)) {
             mkdir($cdir, 0o755, true);
         }

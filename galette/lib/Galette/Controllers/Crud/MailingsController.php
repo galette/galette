@@ -251,13 +251,13 @@ class MailingsController extends CrudController
                 || isset($post['mailing_confirm'])
                 || isset($post['mailing_save'])
             ) {
-                if (trim((string) $post['mailing_objet']) == '') {
+                if (trim((string)$post['mailing_objet']) == '') {
                     $error_detected[] = _T("Please type an object for the message.");
                 } else {
                     $mailing->subject = $post['mailing_objet'];
                 }
 
-                if (trim((string) $post['mailing_corps']) == '') {
+                if (trim((string)$post['mailing_corps']) == '') {
                     $error_detected[] = _T("Please enter a message.");
                 } else {
                     $mailing->message = $post['mailing_corps'];

@@ -377,7 +377,7 @@ class Adherent extends GaletteTestCase
         $newpass = 'aezrty';
         \Galette\Entity\Adherent::updatePassword($this->zdb, $this->adh->id, $newpass);
         $adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
-        $pw_checked = password_verify($newpass, (string) $adh->password);
+        $pw_checked = password_verify($newpass, (string)$adh->password);
         $this->assertTrue($pw_checked);
 
         //reset original password

@@ -824,7 +824,7 @@ class Adherent implements AccessManagementInterface
 
         //calculate begin date of period
         if ($preferences->pref_beg_membership != '') { //classical membership date + 1 year
-            [$j, $m] = explode('/', (string) $preferences->pref_beg_membership);
+            [$j, $m] = explode('/', (string)$preferences->pref_beg_membership);
             $sdate = new DateTime($date_now->format('Y') . '-' . $m . '-' . $j);
         } elseif ($preferences->pref_membership_ext != '') { //classical membership date + N months
             $dext = new DateInterval('P' . $preferences->pref_membership_ext . 'M');
@@ -1363,13 +1363,13 @@ class Adherent implements AccessManagementInterface
             case 'login_adh':
                 $this->$prop = $value;
                 /** FIXME: add a preference for login length */
-                if (strlen((string) $value) < 2) {
+                if (strlen((string)$value) < 2) {
                     $this->errors[] = str_replace(
                         '%i',
                         '2',
                         _T("- The username must be composed of at least %i characters!")
                     );
-                } elseif (str_contains((string) $value, '@')) {
+                } elseif (str_contains((string)$value, '@')) {
                     //check if login does not contain the @ character
                     $this->errors[] = _T("- The username cannot contain the @ character");
                 } else {
@@ -1411,7 +1411,7 @@ class Adherent implements AccessManagementInterface
                     $this->errors[] = _T("- The passwords don't match!");
                 } elseif (
                     $this->self_adh === true
-                    && !crypt((string) $value, (string) $values['mdp_crypt']) == $values['mdp_crypt']
+                    && !crypt((string)$value, (string)$values['mdp_crypt']) == $values['mdp_crypt']
                 ) {
                     $this->errors[] = _T("Password misrepeated: ");
                 } else {
@@ -1419,7 +1419,7 @@ class Adherent implements AccessManagementInterface
                     //check if value is already a hash
                     if ($pinfos['algo'] == 0) {
                         $this->$prop = password_hash(
-                            (string) $value,
+                            (string)$value,
                             PASSWORD_BCRYPT
                         );
 

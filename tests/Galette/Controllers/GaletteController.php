@@ -102,7 +102,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Dashboard', $body);
         $this->assertMatchesRegularExpression(
             '/Browser:\.+ Galette test suite/',
@@ -131,7 +131,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Dashboard', $body);
     }
 
@@ -151,7 +151,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Settings', $body);
         $this->assertStringContainsString('<input type="text" name="pref_nom" id="pref_nom" value="Galette"', $body);
 
@@ -159,7 +159,7 @@ class GaletteController extends GaletteRoutingTestCase
         $this->session->entered_preferences = ['pref_nom' => 'Name from test suite'];
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Settings', $body);
         $this->assertStringContainsString('<input type="text" name="pref_nom" id="pref_nom" value="Name from test suite"', $body);
     }
@@ -351,7 +351,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Charts', $body);
     }
 
@@ -371,7 +371,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Core fields', $body);
     }
 
@@ -459,7 +459,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Core lists', $body);
     }
 
@@ -555,7 +555,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Reminders', $body);
         $this->assertStringContainsString(
             '<a href="/members/reminder-filter/nearly/withmail">0 members with an email address</a>',
@@ -709,7 +709,7 @@ class GaletteController extends GaletteRoutingTestCase
 
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
-        $body = (string) $test_response->getBody();
+        $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Download document', $body);
         $this->assertStringContainsString(
             sprintf('<form action="%s"', $this->routeparser->urlFor('get-directlink', ['hash' => 'testhash'])),

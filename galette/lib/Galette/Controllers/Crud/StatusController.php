@@ -176,7 +176,7 @@ class StatusController extends CrudController
         $msg = null;
         $status = new Status($this->zdb);
 
-        $label = trim((string) $post['libelle_statut']);
+        $label = trim((string)$post['libelle_statut']);
         $field = (int)trim($post['priorite_statut'] ?? 0);
 
         if ($label != '') {

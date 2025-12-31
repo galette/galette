@@ -328,7 +328,7 @@ trait FileTrait
             $reg .= "(.*)";
         }
         $reg .= "$/i";
-        if (preg_match($reg, (string) $this->name, $matches)) {
+        if (preg_match($reg, (string)$this->name, $matches)) {
             Analog::log(
                 '[' . $class . '] Filename and extension are OK, proceed.',
                 Analog::DEBUG
@@ -342,7 +342,7 @@ trait FileTrait
             }
         } else {
             $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
-            $m = preg_match($erreg, (string) $this->name, $errmatches);
+            $m = preg_match($erreg, (string)$this->name, $errmatches);
 
             $err_msg = '[' . $class . '] ';
             if ($m == 1) {

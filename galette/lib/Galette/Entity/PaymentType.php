@@ -230,7 +230,7 @@ class PaymentType implements \Stringable
     {
         switch ($name) {
             case 'name':
-                if (trim((string) $value) === '') {
+                if (trim((string)$value) === '') {
                     Analog::log(
                         'Name cannot be empty',
                         Analog::WARNING

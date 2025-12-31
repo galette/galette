@@ -85,7 +85,7 @@ class History
             defined('GALETTE_X_FORWARDED_FOR_INDEX')
             && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
         ) {
-            $split_xff = preg_split('/,\s*/', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $split_xff = preg_split('/,\s*/', (string)$_SERVER['HTTP_X_FORWARDED_FOR']);
             $ip = $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];

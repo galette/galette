@@ -171,7 +171,7 @@ class DynamicFieldsController extends CrudController
         int|string|null $value = null,
         string $form_name = 'adh'
     ): Response {
-        if (isset($_POST['form_name']) && trim((string) $_POST['form_name']) != '') {
+        if (isset($_POST['form_name']) && trim((string)$_POST['form_name']) != '') {
             $form_name = $_POST['form_name'];
         }
         $fields = new DynamicFieldsSet($this->zdb, $this->login);

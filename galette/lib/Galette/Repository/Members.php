@@ -735,7 +735,7 @@ class Members
             if ($this->filters instanceof AdvancedMembersList && ((bool)count($this->filters->free_search) && !isset($this->filters->free_search['empty']))) {
                 $free_searches = $this->filters->free_search;
                 foreach ($free_searches as $fs) {
-                    if (str_starts_with((string) $fs['field'], 'dyn_')) {
+                    if (str_starts_with((string)$fs['field'], 'dyn_')) {
                         // simple dynamic fields
                         $hasDf = true;
                         $dfs[] = str_replace('dyn_', '', $fs['field']);
@@ -1494,7 +1494,7 @@ class Members
                 $qry = '';
                 $prefix = 'a.';
                 $dyn_field = false;
-                if (str_starts_with((string) $fs['field'], 'dyn_')) {
+                if (str_starts_with((string)$fs['field'], 'dyn_')) {
                     // simple dynamic field spotted!
                     $index = str_replace('dyn_', '', $fs['field']);
                     $dyn_field = DynamicField::loadFieldType($zdb, (int)$index);
@@ -1503,7 +1503,7 @@ class Members
                 }
 
                 //handle socials networks
-                if (str_starts_with((string) $fs['field'], 'socials_')) {
+                if (str_starts_with((string)$fs['field'], 'socials_')) {
                     //social networks
                     $type = str_replace('socials_', '', $fs['field']);
                     $prefix = 'so.';
@@ -1523,7 +1523,7 @@ class Members
                     } else {
                         $qry .= $prefix . $fs['field'] . ' IS NULL';
                     }
-                } elseif (!strncmp((string) $fs['field'], 'bool_', strlen('bool_'))) {
+                } elseif (!strncmp((string)$fs['field'], 'bool_', strlen('bool_'))) {
                     $qry .= $prefix . $fs['field'] . $qop . ' '
                         . $fs['search'];
                 } elseif (

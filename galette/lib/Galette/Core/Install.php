@@ -679,7 +679,7 @@ class Install
 
         $sql_size = count($sql_query);
         for ($i = 0; $i < $sql_size; $i++) {
-            $query = trim((string) $sql_query[$i]);
+            $query = trim((string)$sql_query[$i]);
             if ($query != '' && $query[0] != '-') {
                 //some output infos
                 $ret = [

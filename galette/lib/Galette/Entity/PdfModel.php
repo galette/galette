@@ -404,7 +404,7 @@ abstract class PdfModel
             case 'header':
             case 'footer':
             case 'body':
-                if ($value === null || trim((string) $value) === '') {
+                if ($value === null || trim((string)$value) === '') {
                     if ($name !== 'body' && static::class === PdfMain::class) {
                         throw new \UnexpectedValueException(
                             _T("header and footer should not be empty!")

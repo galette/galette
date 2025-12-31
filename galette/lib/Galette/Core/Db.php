@@ -1031,10 +1031,10 @@ class Db
         if ($this->isPostgres()) {
             $min_version = GALETTE_PGSQL_MIN;
         } else {
-            $min_version = str_contains((string) $version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+            $min_version = str_contains((string)$version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
         }
 
-        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string) $version);
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string)$version);
         return version_compare($version, $min_version, '>=');
     }
 
@@ -1049,11 +1049,11 @@ class Db
             $engine = 'PostgreSQL';
             $min_version = GALETTE_PGSQL_MIN;
         } else {
-            $engine = str_contains((string) $version, '-MariaDB') ? 'MariaDB' : 'MySQL';
-            $min_version = str_contains((string) $version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
+            $engine = str_contains((string)$version, '-MariaDB') ? 'MariaDB' : 'MySQL';
+            $min_version = str_contains((string)$version, '-MariaDB') ? GALETTE_MARIADB_MIN : GALETTE_MYSQL_MIN;
         }
 
-        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string) $version);
+        $version = preg_replace('/^((\d+\.?)+).*$/', '$1', (string)$version);
 
         return sprintf(
             _T('Minimum version for %1$s engine is %2$s, %1$s %3$s found!'),

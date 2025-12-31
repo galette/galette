@@ -614,7 +614,7 @@ abstract class DynamicField
             }
         }
 
-        if (isset($values['field_information']) && trim((string) $values['field_information']) != '') {
+        if (isset($values['field_information']) && trim((string)$values['field_information']) != '') {
             global $preferences;
             $this->information = $preferences->cleanHtmlValue($values['field_information']);
         }
@@ -623,7 +623,7 @@ abstract class DynamicField
 
         if ($this->hasFixedValues() && isset($values['fixed_values'])) {
             $fixed_values = [];
-            foreach (explode("\n", (string) $values['fixed_values']) as $val) {
+            foreach (explode("\n", (string)$values['fixed_values']) as $val) {
                 $val = trim($val);
                 $len = mb_strlen($val);
                 if ($len > 0) {
@@ -667,7 +667,7 @@ abstract class DynamicField
 
         try {
             $values = [
-                'field_name'              => strip_tags((string) $this->name),
+                'field_name'              => strip_tags((string)$this->name),
                 'field_perm'              => $this->permission,
                 'field_required'          => $this->required,
                 'field_width_in_forms'    => $this->width_in_forms,

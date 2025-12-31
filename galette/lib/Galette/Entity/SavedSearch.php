@@ -346,7 +346,7 @@ class SavedSearch
                 $this->parameters = $value;
                 break;
             case 'name':
-                if (trim((string) $value) === '') {
+                if (trim((string)$value) === '') {
                     $this->errors[] = _T("Name cannot be empty!");
                 }
                 $this->name = $value;

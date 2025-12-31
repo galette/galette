@@ -591,7 +591,7 @@ class ContributionsController extends CrudController
         if ($this->session->$filter_name !== null) {
             $filters = $this->session->$filter_name;
         } else {
-            $filter_class = '\\Galette\\Filters\\' . ucwords((string) $type) . 'List';
+            $filter_class = '\\Galette\\Filters\\' . ucwords((string)$type) . 'List';
             $filters = new $filter_class();
         }
 

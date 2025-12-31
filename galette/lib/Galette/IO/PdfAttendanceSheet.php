@@ -85,15 +85,15 @@ class PdfAttendanceSheet extends Pdf
         $this->doc_title = $data['doc_title'];
         $this->SetTitle($data['doc_title']);
 
-        if (isset($data['title']) && trim((string) $data['title']) != '') {
+        if (isset($data['title']) && trim((string)$data['title']) != '') {
             $this->sheet_title = $data['title'];
             $model->title = $this->sheet_title;
         }
-        if (isset($data['subtitle']) && trim((string) $data['subtitle']) != '') {
+        if (isset($data['subtitle']) && trim((string)$data['subtitle']) != '') {
             $this->sheet_sub_title = $data['subtitle'];
             $model->subtitle = $this->sheet_sub_title;
         }
-        if (isset($data['sheet_date']) && trim((string) $data['sheet_date']) != '') {
+        if (isset($data['sheet_date']) && trim((string)$data['sheet_date']) != '') {
             $dformat = __("Y-m-d");
             $date = DateTime::createFromFormat(
                 $dformat,

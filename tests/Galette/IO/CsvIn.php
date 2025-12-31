@@ -198,7 +198,7 @@ class CsvIn extends GaletteTestCase
                     } else {
                         //manage dynamic fields
                         $matches = [];
-                        if (preg_match('/^dynfield_(\d+)/', (string) $field, $matches)) {
+                        if (preg_match('/^dynfield_(\d+)/', (string)$field, $matches)) {
                             $adh = new Adherent($this->zdb, (int)$member->id_adh, ['dynamics' => true]);
                             $expected = [
                                 [

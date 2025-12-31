@@ -456,7 +456,7 @@ class Plugins
     private function sortModules(array $a, array $b): int
     {
         if ($a['priority'] == $b['priority']) {
-            return strcasecmp((string) $a['name'], (string) $b['name']);
+            return strcasecmp((string)$a['name'], (string)$b['name']);
         }
 
         return ($a['priority'] < $b['priority']) ? -1 : 1;
@@ -630,7 +630,7 @@ class Plugins
      */
     public function getClassName(string $id, bool $full = false): string
     {
-        $class = sprintf('PluginGalette%1$s', ucfirst((string) $this->modules[$id]['route']));
+        $class = sprintf('PluginGalette%1$s', ucfirst((string)$this->modules[$id]['route']));
         if ($full === true) {
             return sprintf('%s\%s', $this->getNamespace($id), $class);
         }

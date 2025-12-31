@@ -509,9 +509,9 @@ class FieldsConfig
                             continue;
                         }
 
-                        if (preg_match('/date/', (string) $o->field_id)) {
+                        if (preg_match('/date/', (string)$o->field_id)) {
                             $o->type = self::TYPE_DATE;
-                        } elseif (preg_match('/bool/', (string) $o->field_id)) {
+                        } elseif (preg_match('/bool/', (string)$o->field_id)) {
                             $o->type = self::TYPE_BOOL;
                         } elseif (
                             $o->field_id == 'titre_adh'

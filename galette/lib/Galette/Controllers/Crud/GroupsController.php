@@ -155,7 +155,7 @@ class GroupsController extends CrudController
         $list = '<ul>';
         if (isset($post['reordered']) && !empty($post['reordered'])) {
             foreach ($post['reordered'] as $value) {
-                $item = explode('|', (string) $value);
+                $item = explode('|', (string)$value);
                 $id = $item[0];
                 $parentId = $item[1];
                 $group = new Group((int)$id);

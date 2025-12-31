@@ -122,7 +122,7 @@ class Title
     {
         $data = [
             'short_label'   => strip_tags($this->short),
-            'long_label'    => strip_tags((string) $this->long)
+            'long_label'    => strip_tags((string)$this->long)
         ];
         try {
             if (isset($this->id) && $this->id > 0) {
@@ -257,7 +257,7 @@ class Title
         switch ($name) {
             case 'short':
             case 'long':
-                if (trim((string) $value) === '') {
+                if (trim((string)$value) === '') {
                     Analog::log(
                         'Trying to set empty value for title' . $name,
                         Analog::WARNING

@@ -68,7 +68,7 @@ class Preferences extends GaletteTestCase
                     $this->assertSame('da_admin', $value);
                     break;
                 case 'pref_admin_pass':
-                    $pw_checked = password_verify('da_secret', (string) $value);
+                    $pw_checked = password_verify('da_secret', (string)$value);
                     $this->assertTrue($pw_checked);
                     break;
                 case 'pref_lang':

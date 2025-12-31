@@ -75,7 +75,7 @@ class I18n
             $dlang = self::DEFAULT_LANG;
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
                 $preferred_locales = array_reduce(
-                    explode(',', (string) $_SERVER['HTTP_ACCEPT_LANGUAGE']),
+                    explode(',', (string)$_SERVER['HTTP_ACCEPT_LANGUAGE']),
                     function ($res, $el) {
                         [$l, $q] = array_merge(explode(';q=', $el), [1]);
                         $res[$l] = (float)$q;
@@ -86,7 +86,7 @@ class I18n
                 arsort($preferred_locales);
 
                 foreach (array_keys($preferred_locales) as $preferred_locale) {
-                    $short_locale = explode('_', (string) $preferred_locale)[0];
+                    $short_locale = explode('_', (string)$preferred_locale)[0];
                     foreach (array_keys($this->langs) as $lang) {
                         $short_key = explode('_', $lang)[0];
                         if ($short_key == $short_locale) {

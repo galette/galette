@@ -144,7 +144,7 @@ class PluginsController extends AbstractController
 
         $plugin = $this->plugins->getModules($plugid);
 
-        $mdplugin = md5((string) $plugin['root']);
+        $mdplugin = md5((string)$plugin['root']);
         if (
             isset($this->session->$mdplugin)
             && !isset($_GET['raz'])
