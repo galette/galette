@@ -23,14 +23,14 @@ declare(strict_types=1);
 
 // define relative base path templating can use
 if (!defined('GALETTE_BASE_PATH')) {
-    define('GALETTE_BASE_PATH', '../');
+    define('GALETTE_BASE_PATH', '../'); //@phpstan-ignore theCodingMachineSafe.function
 }
 
-define('GALETTE_ROOT', __DIR__ . '/../');
+define('GALETTE_ROOT', __DIR__ . '/../'); //@phpstan-ignore theCodingMachineSafe.function
 
 // check PHP version
 require_once GALETTE_ROOT . 'includes/sys_config/versions.inc.php';
-if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) { //@phpstan-ignore if.alwaysFalse
     header('location: ' . GALETTE_BASE_PATH . 'compat_test.php');
     die(1);
 }

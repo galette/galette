@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -18,9 +19,17 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 
+/**
+ * @var GaletteInstall $install
+ * @var \Galette\Core\I18n $i18n
+ */
+
+$error_detected = [];
 //define default database port
 $default_dbport = GaletteDb::MYSQL_DEFAULT_PORT;
 if (!isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql') {
@@ -47,8 +56,8 @@ if ($install->isUpgrade()) {
         <div class="inline required field">
             <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
             <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen">
-                <option value="mysql"<?php if ($install->getDbType() === GaletteDb::MYSQL) {echo ' selected="selected"'; } ?>>Mysql</option>
-                <option value="pgsql"<?php if ($install->getDbType() === GaletteDb::PGSQL) {echo ' selected="selected"'; } ?>>Postgresql</option>
+                <option value="mysql"<?php echo $install->getDbType() === GaletteDb::MYSQL ? ' selected="selected"' : ''; ?>>Mysql</option>
+                <option value="pgsql"<?php echo $install->getDbType() === GaletteDb::PGSQL ? ' selected="selected"' : ''; ?>>Postgresql</option>
             </select>
         </div>
         <div id="install_dbconfig">
@@ -77,9 +86,9 @@ if ($install->isUpgrade()) {
                 <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo $install->getTablesPrefix() ?? 'galette_'; ?>" required/>
 <?php
 if ($install->isUpgrade()) {
-    echo '<div class="ui compact floating orange message"><p>' .
-        _T("(Indicate the CURRENT prefix of your Galette tables)") .
-        '</p></div>';
+    echo '<div class="ui compact floating orange message"><p>'
+        . _T("(Indicate the CURRENT prefix of your Galette tables)")
+        . '</p></div>';
 }
 ?>
             </div>

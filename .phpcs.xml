@@ -4,10 +4,10 @@
 
     <file>galette/lib/</file>
     <file>galette/webroot/index.php</file>
-    <!--file>galette/webroot/installer.php</file-->
+    <file>galette/webroot/installer.php</file>
     <file>galette/webroot/compat_test.php</file>
     <file>galette/includes/</file>
-    <!--file>galette/install/</file-->
+    <file>galette/install/</file>
     <file>tests/TestsBootstrap.php</file>
     <file>tests/lib/</file>
     <file>tests/Galette/</file>

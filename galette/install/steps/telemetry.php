@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -18,8 +19,16 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 use Galette\Core\Plugins;
 use Galette\Core\Preferences;
+
+/**
+ * @var \Galette\Core\Install $install
+ * @var \Galette\Core\Db $zdb
+ * @var \Galette\Core\I18n $i18n
+ */
 
 $preferences = new Preferences($zdb);
 $plugins = new Plugins();
@@ -39,14 +48,14 @@ $telemetry = new \Galette\Util\Telemetry(
             </div>
 <?php
 if (!$telemetry->isRegistered()) {
-?>
+    ?>
             <div class="right aligned column">
                 <a class="ui blue button" href="<?php echo GALETTE_TELEMETRY_URI; ?>reference?showmodal&uuid=<?php echo $telemetry->getRegistrationUuid(); ?>" title="<?php echo _T("Register your organization as a Galette user"); ?>" target="_blank">
                     <i class="id card icon" aria-hidden="true"></i>
                     <?php echo _T("Register"); ?>
                 </a>
             </div>
-<?php
+    <?php
 }
 ?>
         </div>

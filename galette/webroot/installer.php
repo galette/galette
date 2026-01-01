@@ -19,6 +19,8 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 use Analog\Analog;
@@ -30,31 +32,31 @@ use Galette\Util\Telemetry;
 
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
-$installer = true;
-define('GALETTE_ROOT', __DIR__ . '/../');
-define('GALETTE_INSTALLER', true);
+$installer = true; // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
+define('GALETTE_ROOT', __DIR__ . '/../'); //@phpstan-ignore theCodingMachineSafe.function
+define('GALETTE_INSTALLER', true); //@phpstan-ignore theCodingMachineSafe.function
 
 // check PHP modules
 require_once GALETTE_ROOT . '/vendor/autoload.php';
 require_once GALETTE_ROOT . 'includes/sys_config/versions.inc.php';
 
-if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') || !extension_loaded('intl')) {
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') || !extension_loaded('intl')) { //@phpstan-ignore booleanOr.leftAlwaysFalse
     header('location: compat_test.php');
     die(1);
 }
 
 //specific logfile for installer
 $logfile = 'galette_install';
-define('GALETTE_BASE_PATH', '../');
+define('GALETTE_BASE_PATH', '../'); //@phpstan-ignore theCodingMachineSafe.function
 
 require_once __DIR__ . '/../includes/galette.inc.php';
 
-session_start();
+session_start(); //@phpstan-ignore theCodingMachineSafe.function
 $session_name = 'galette_install_' . str_replace('.', '_', GALETTE_VERSION);
 $session = &$_SESSION['galette'][$session_name];
 
 $gapp = new \Galette\Core\SlimApp();
-$app = $gapp->getApp();
+$app = $gapp->getApp(); // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 require_once __DIR__ . '/../includes/dependencies.php';
 
 if (isset($_POST['abort_btn'])) {
@@ -74,7 +76,7 @@ if (isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz'])) {
 $error_detected = [];
 
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
-    define('GALETTE_LOGGER_CHECKED', true);
+    define('GALETTE_LOGGER_CHECKED', true); //@phpstan-ignore theCodingMachineSafe.function
 
     $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
     $galette_run_log = LevelName::init(Handler\File::init($log_path));
@@ -88,13 +90,11 @@ if (
     //if we have passed database configuration, define required constants
     $install->initDbConstants();
 
-    if ($install->postCheckDb()) {
-        try {
-            $zdb = new GaletteDb();
-        } catch (Throwable $e) {
-            if (!$install->isDbCheckStep()) {
-                throw $e;
-            }
+    try {
+        $zdb = new GaletteDb();
+    } catch (Throwable $e) {
+        if (!$install->isDbCheckStep()) {
+            throw $e;
         }
     }
 }
@@ -122,7 +122,7 @@ if (isset($_POST['stepback_btn'])) {
         $error_detected[] = _T("No password");
     }
     if (empty($_POST['install_dbname'])) {
-            $error_detected[] = _T("No database name");
+        $error_detected[] = _T("No database name");
     }
 
     if (count($error_detected) == 0) {
@@ -160,7 +160,7 @@ if (isset($_POST['stepback_btn'])) {
     if ($_POST['install_adminlogin'] == '') {
         $error_detected[] = _T("No user name");
     }
-    if (strpos((string) $_POST['install_adminlogin'], '@')) {
+    if (strpos((string)$_POST['install_adminlogin'], '@')) {
         $error_detected[] = _T("The username cannot contain the @ character");
     }
     if ($_POST['install_adminpass'] == '') {
@@ -170,7 +170,7 @@ if (isset($_POST['stepback_btn'])) {
         !isset($_POST['install_passwdverified'])
         && strcmp(
             $_POST['install_adminpass'],
-            (string) $_POST['install_adminpass_verif']
+            (string)$_POST['install_adminpass_verif']
         )
     ) {
         $error_detected[] = _T("Passwords mismatch");
@@ -184,10 +184,10 @@ if (isset($_POST['stepback_btn'])) {
     }
 } elseif (isset($_POST['install_telemetry_ok'])) {
     if (isset($_POST['send_telemetry'])) {
-        $preferences = new Preferences($zdb);
+        $preferences = new Preferences($zdb); // @phpstan-ignore variable.undefined ($zdb is defined since postCheckDb step, and we're at telemetry.)
         $plugins = new Plugins();
         $telemetry = new Telemetry(
-            $zdb,
+            $zdb, // @phpstan-ignore variable.undefined ($zdb is defined since postCheckDb step, and we're at telemetry.)
             $preferences,
             $plugins
         );
@@ -202,15 +202,17 @@ if (isset($_POST['stepback_btn'])) {
     $install->atEndStep();
 }
 
+/** @var \Galette\Core\I18n $i18n */
+
 header('Content-Type: text/html; charset=UTF-8');
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $i18n->getAbbrev(); ?>"<?php if ($i18n->isRtl()) { ?> dir="rtl"<?php } ?>>
+<html lang="<?php echo $i18n->getAbbrev(); ?>"<?php echo $i18n->isRtl() ? ' dir="rtl"' : ''; ?>>
     <head>
         <title><?php echo _T("Galette Installation") . ' - ' . $install->getStepDetail('title'); ?></title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width" />
-        <link rel="stylesheet" type="text/css" href="./themes/default/ui/semantic<?php if ($i18n->isRtl()) { ?>.rtl<?php } ?>.min.css" />
+        <link rel="stylesheet" type="text/css" href="./themes/default/ui/semantic<?php echo $i18n->isRtl() ? '.rtl' : ''; ?>.min.css" />
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
         <script type="text/javascript" src="./assets/js/jquery.min.js"></script>
     </head>
@@ -274,26 +276,26 @@ if (count($error_detected) > 0) {
                     <div class="ui mobile reversed stackable two column grid">
                         <div class="four wide column">
                             <div class="ui stackable mini vertical steps fluid">
-                                <div class="step<?php if ($install->isCheckStep()) { echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_CHECK)) { echo ' disabled'; } ?>">
-                                    <i class="tasks icon<?php if ($install->isStepPassed(GaletteInstall::STEP_CHECK)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isCheckStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_CHECK) ? ' disabled' : ''); ?>">
+                                    <i class="tasks icon<?php echo $install->isStepPassed(GaletteInstall::STEP_CHECK) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("Checks"); ?></div>
                                     </div>
                                 </div>
-                                <div class="step<?php if ($install->isTypeStep()) { echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_TYPE)) { echo ' disabled'; } ?>">
-                                    <i class="question icon<?php if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isTypeStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_TYPE) ? ' disabled' : ''); ?>">
+                                    <i class="question icon<?php echo $install->isStepPassed(GaletteInstall::STEP_TYPE) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("Installation mode"); ?></div>
                                     </div>
                                 </div>
-                                <div class="step<?php if ($install->isDbStep()) { echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_DB)) { echo ' disabled'; } ?>">
-                                    <i class="database icon<?php if ($install->isStepPassed(GaletteInstall::STEP_DB)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isDbStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_DB) ? ' disabled' : ''); ?>">
+                                    <i class="database icon<?php echo $install->isStepPassed(GaletteInstall::STEP_DB) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("Database"); ?></div>
                                     </div>
                                 </div>
-                                <div class="step<?php if ($install->isDbCheckStep()) { echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_DB_CHECKS)) { echo ' disabled'; } ?>">
-                                    <i class="key icon<?php if ($install->isStepPassed(GaletteInstall::STEP_DB_CHECKS)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isDbCheckStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_DB_CHECKS) ? ' disabled' : ''); ?>">
+                                    <i class="key icon<?php echo $install->isStepPassed(GaletteInstall::STEP_DB_CHECKS) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("Database access and permissions"); ?></div>
                                     </div>
@@ -301,14 +303,14 @@ if (count($error_detected) > 0) {
 <?php
 if ($install->isUpgrade()) {
     ?>
-                                <div class="step<?php if ($install->isVersionSelectionStep()) {echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_VERSION)) {echo ' disabled'; } ?>">
-                                    <i class="tag icon<?php if ($install->isStepPassed(GaletteInstall::STEP_VERSION)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isVersionSelectionStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_VERSION) ? ' disabled' : ''); ?>">
+                                    <i class="tag icon<?php echo $install->isStepPassed(GaletteInstall::STEP_VERSION) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("Version selection"); ?></div>
                                     </div>
                                 </div>
-                                <div class="step<?php if ($install->isDbUpgradeStep()) { echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_DB_UPGRADE)) { echo ' disabled'; } ?>">
-                                    <i class="sync alt icon<?php if ($install->isStepPassed(GaletteInstall::STEP_DB_UPGRADE)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isDbUpgradeStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_DB_UPGRADE) ? ' disabled' : ''); ?>">
+                                    <i class="sync alt icon<?php echo $install->isStepPassed(GaletteInstall::STEP_DB_UPGRADE) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("Database upgrade"); ?></div>
                                     </div>
@@ -316,8 +318,8 @@ if ($install->isUpgrade()) {
     <?php
 } else {
     ?>
-                                <div class="step<?php if ($install->isDbinstallStep()) { echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_DB_INSTALL)) { echo ' disabled'; } ?>">
-                                    <i class="spinner icon<?php if ($install->isStepPassed(GaletteInstall::STEP_DB_INSTALL)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isDbinstallStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_DB_INSTALL) ? ' disabled' : ''); ?>">
+                                    <i class="spinner icon<?php echo $install->isStepPassed(GaletteInstall::STEP_DB_INSTALL) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("Database installation"); ?></div>
                                     </div>
@@ -327,8 +329,8 @@ if ($install->isUpgrade()) {
 
 if (!$install->isUpgrade()) {
     ?>
-                                <div class="step<?php if ($install->isAdminStep()) { echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_ADMIN)) { echo ' disabled'; } ?>">
-                                    <i class="user icon<?php if ($install->isStepPassed(GaletteInstall::STEP_ADMIN)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isAdminStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_ADMIN) ? ' disabled' : ''); ?>">
+                                    <i class="user icon<?php echo $install->isStepPassed(GaletteInstall::STEP_ADMIN) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("Admin parameters"); ?></div>
                                     </div>
@@ -336,20 +338,20 @@ if (!$install->isUpgrade()) {
     <?php
 }
 ?>
-                                <div class="step<?php if ($install->isTelemetryStep()) { echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_TELEMETRY)) { echo ' disabled'; } ?>">
-                                    <i class="chart bar icon<?php if ($install->isStepPassed(GaletteInstall::STEP_TELEMETRY)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isTelemetryStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_TELEMETRY) ? ' disabled' : ''); ?>">
+                                    <i class="chart bar icon<?php echo $install->isStepPassed(GaletteInstall::STEP_TELEMETRY) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("Telemetry"); ?></div>
                                     </div>
                                 </div>
-                                <div class="step<?php if ($install->isGaletteInitStep()) { echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_GALETTE_INIT)) { echo ' disabled'; } ?>">
-                                    <i class="cogs icon<?php if ($install->isStepPassed(GaletteInstall::STEP_GALETTE_INIT)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isGaletteInitStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_GALETTE_INIT) ? ' disabled' : '') ?>">
+                                    <i class="cogs icon<?php echo $install->isStepPassed(GaletteInstall::STEP_GALETTE_INIT) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("Galette initialization"); ?></div>
                                     </div>
                                 </div>
-                                <div class="step<?php if ($install->isEndStep()) { echo ' active'; } elseif (!$install->isStepPassed(GaletteInstall::STEP_END)) { echo ' disabled'; } ?>">
-                                    <i class="flag checkered icon<?php if ($install->isStepPassed(GaletteInstall::STEP_END)) { echo ' green'; } ?>"></i>
+                                <div class="step<?php echo $install->isEndStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_END) ? ' disabled' : ''); ?>">
+                                    <i class="flag checkered icon<?php echo $install->isStepPassed(GaletteInstall::STEP_END) ? ' green' : ''; ?>"></i>
                                     <div class="content">
                                         <div class="title"><?php echo _T("End!"); ?></div>
                                     </div>

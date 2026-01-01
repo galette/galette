@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -18,8 +19,14 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Galette\Core\Install as GaletteInstall;
+declare(strict_types=1);
+
 use Galette\Core\Db as GaletteDb;
+
+/**
+ * @var \Galette\Core\Install $install
+ * @var \Galette\Core\I18n $i18n
+ */
 
 try {
     $db_connected = $install->testDbConnexion();
@@ -29,10 +36,7 @@ try {
 $conndb_ok = true;
 $permsdb_ok = true;
 $supported_db = true;
-
-if (!isset($show_form)) {
-    $show_form = true;
-}
+$result = [];
 
 if ($db_connected === true) {
     if (!isset($zdb)) {
@@ -51,7 +55,6 @@ if ($db_connected === true) {
 
         $results = $zdb->grantCheck($install->getMode());
 
-        $result = [];
         $error = false;
 
         //test returned values
@@ -164,20 +167,19 @@ if ($db_connected === true) {
 
 <?php
 if (!isset($install_plugin)) {
-?>
+    ?>
     <h2><?php echo _T("Check of the database"); ?></h2>
-<?php
-    echo '<p>' . _T("Database exists and connection parameters are OK.") . '</p>';
+    <?php
+        echo '<p>' . _T("Database exists and connection parameters are OK.") . '</p>';
 }
 
 if ($supported_db === false) {
-    echo '<p class="ui red message">' . _T("Incompatible database version.") .
-        '<br/>' . $zdb->getUnsupportedMessage() . '</p>';
+    echo '<p class="ui red message">' . _T("Incompatible database version.")
+        . '<br/>' . $zdb->getUnsupportedMessage() . '</p>'; // @phpstan-ignore variable.undefined
 } elseif ($db_connected === true && $permsdb_ok === true) {
     if (!isset($install_plugin)) {
-        echo '<p class="ui green message">' . _T("Connection to database successfull") .
-            '<br/>' . _T("Permissions to database are OK.") . '</p>';
-
+        echo '<p class="ui green message">' . _T("Connection to database successfull")
+            . '<br/>' . _T("Permissions to database are OK.") . '</p>';
     } else {
         echo '<p class="ui green message">' . _T("Permissions to database are OK.") . '</p>';
     }
@@ -196,9 +198,9 @@ if (!$conndb_ok) {
     <?php
 } elseif ($supported_db === true) {
     if (!isset($install_plugin)) {
-    ?>
+        ?>
         <h2><?php echo _T("Permissions on the base"); ?></h2>
-    <?php
+        <?php
     }
     if (!$permsdb_ok) {
         echo '<div class="ui red message">';
@@ -215,14 +217,13 @@ if (!$conndb_ok) {
         <ul class="leaders">
         <?php
         foreach ($result as $r) {
-        ?>
+            ?>
             <li>
                 <span><?php echo $r['message'] ?></span>
                 <span><?php echo $install->getValidationImage($r['res']); ?></span>
             </li>
-        <?php
-        }
-        ?>
+            <?php
+        } ?>
         </ul>
         <?php
 }
@@ -232,25 +233,25 @@ if (!$conndb_ok) {
 
 <?php
 if (!isset($install_plugin)) {
-?>
+    ?>
     <form action="installer.php" method="POST" class="ui form">
         <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
             <div class="right aligned column">
-                <button type="submit"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?> class="ui right labeled primary icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
-<?php
-if ($conndb_ok && $permsdb_ok) {
-?>
+                <button type="submit"<?php echo (!$conndb_ok || !$permsdb_ok) ? ' disabled="disabled"' : ''; ?> class="ui right labeled primary icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+    <?php
+    if ($conndb_ok && $permsdb_ok) {
+        ?>
 
                 <input type="hidden" name="install_dbperms_ok" value="1"/>
-<?php
-}
-?>
+        <?php
+    }
+    ?>
             </div>
             <div class="left aligned column">
                 <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double <?php echo $i18n->isRtl() ? 'right' : 'left'; ?> icon" aria-hidden="true"></i> <?php echo _T("Back"); ?></button>
             </div>
         </div>
     </form>
-<?php
+    <?php
 }
 ?>

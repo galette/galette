@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -52,8 +53,6 @@ class UpgradeTo120 extends AbstractUpdater
     /**
      * Pre stuff, if any.
      * Will be executed first.
-     *
-     * @return boolean
      */
     protected function preUpdate(): bool
     {
@@ -82,8 +81,6 @@ class UpgradeTo120 extends AbstractUpdater
 
     /**
      * Update instructions
-     *
-     * @return boolean
      */
     protected function update(): bool
     {
@@ -110,8 +107,6 @@ class UpgradeTo120 extends AbstractUpdater
 
     /**
      * Handle PostgreSQL possible missing foreign keys
-     *
-     * @return void
      */
     private function deletePsqlFkeys(): void
     {
@@ -131,8 +126,6 @@ class UpgradeTo120 extends AbstractUpdater
 
     /**
      * Handle PostgreSQL possible missing foreign keys
-     *
-     * @return void
      */
     private function createMissingPsqlFkeys(): void
     {
@@ -184,7 +177,7 @@ class UpgradeTo120 extends AbstractUpdater
             );
             try {
                 $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
-            } catch (\PDOException $e) {
+            } catch (\PDOException $e) { // @phpstan-ignore catch.neverThrown (false positive when ran with PHP 8.2)
                 if ($e->getCode() == 42710) { // duplicate object: constraint already exists; ignore.
                     Analog::log(
                         $e->getMessage(),
@@ -200,8 +193,6 @@ class UpgradeTo120 extends AbstractUpdater
     /**
      * Post stuff, if any.
      * Will be executed at the end.
-     *
-     * @return boolean
      */
     protected function postUpdate(): bool
     {

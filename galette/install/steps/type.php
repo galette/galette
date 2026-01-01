@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -18,7 +19,15 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 use Galette\Core\Install as GaletteInstall;
+
+/**
+ * @var GaletteInstall $install
+ * @var \Galette\Core\I18n $i18n
+ */
+
 ?>
 <form action="installer.php" method="POST" class="ui form">
     <div class="ui two stackable cards">
@@ -26,7 +35,7 @@ use Galette\Core\Install as GaletteInstall;
                 <div class="content">
                     <div class="ui medium header">
                         <div class="ui radio checkbox">
-                            <input type="radio" name="install_type" value="<?php echo GaletteInstall::INSTALL; ?>"<?php if ($install->isInstall() || !$install->isUpgrade()) { echo ' checked="checked"'; } ?> id="install"/>
+                            <input type="radio" name="install_type" value="<?php echo GaletteInstall::INSTALL; ?>"<?php echo ($install->isInstall() || !$install->isUpgrade()) ? ' checked="checked"' : ''; ?> id="install"/>
                             <label for="install"><?php echo _T("New installation"); ?></label>
                         </div>
                     </div>
@@ -40,7 +49,7 @@ use Galette\Core\Install as GaletteInstall;
                 <div class="content">
                     <div class="ui medium header">
                         <div class="ui radio checkbox">
-                            <input type="radio" name="install_type" value="<?php echo GaletteInstall::UPDATE; ?>"<?php if ($install->isUpgrade()) { echo ' checked="checked"'; } ?> id="update"/>
+                            <input type="radio" name="install_type" value="<?php echo GaletteInstall::UPDATE; ?>"<?php echo $install->isUpgrade() ? ' checked="checked"' : ''; ?> id="update"/>
                             <label for="update"><?php echo _T("Update"); ?></label>
                         </div>
                     </div>

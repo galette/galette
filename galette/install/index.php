@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -18,8 +19,10 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 // check required PHP version...
-if (version_compare(PHP_VERSION, '5.3', '>')) {
+if (version_compare(PHP_VERSION, '5.3', '>')) { // @phpstan-ignore if.alwaysTrue
     header('location: ../webroot/installer.php');
     die();
 }

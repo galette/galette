@@ -3,8 +3,9 @@
 $finder = (new PhpCsFixer\Finder())
     ->in([
         __DIR__ . '/galette/lib',
+        __DIR__ . '/galette/webroot',
         __DIR__ . '/galette/includes',
-        //__DIR__ . '/galette/install',
+        __DIR__ . '/galette/install',
         __DIR__ . '/tests',
     ])
 ;

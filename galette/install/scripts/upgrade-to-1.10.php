@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -22,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Updates;
 
-use Analog\Analog;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\ContributionsTypes;
 use Galette\Updater\AbstractUpdater;
@@ -48,8 +48,6 @@ class UpgradeTo110 extends AbstractUpdater
 
     /**
      * Update instructions
-     *
-     * @return boolean
      */
     protected function update(): bool
     {
@@ -90,8 +88,6 @@ class UpgradeTo110 extends AbstractUpdater
     /**
      * Post stuff, if any.
      * Will be executed at the end.
-     *
-     * @return boolean
      */
     protected function postUpdate(): bool
     {

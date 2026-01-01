@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -18,7 +19,9 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Galette\Core\Install as GaletteInstall;
+declare(strict_types=1);
+
+/** @var \Galette\Core\Install $install */
 
 $session[md5(GALETTE_ROOT)] = null;
 unset($session[md5(GALETTE_ROOT)]);

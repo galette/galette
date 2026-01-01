@@ -7,7 +7,9 @@ parameters:
         - stubs/constants.php
     paths:
         - galette/lib/
-        - galette/includes//
+        - galette/includes/
+        - galette/install/
+        - galette/webroot/
     scanFiles:
         - galette/includes/sys_config/paths.inc.php
         - galette/includes/sys_config/versions.inc.php
@@ -44,6 +46,7 @@ parameters:
         - GALETTE_THEME
         - GALETTE_TIMEOUT
         - GALETTE_NIGHTLY
+        - GALETTE_DISPLAY_VERSION
         - _CURRENT_THEME_PATH
     universalObjectCratesClasses:
         - RKA\Session

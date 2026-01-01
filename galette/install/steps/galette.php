@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -18,21 +19,26 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 use Galette\Core\Login;
 
-$results = [];
-$oks = [];
-$errs = [];
+/**
+ * @var GaletteInstall $install
+ * @var GaletteDb $zdb
+ * @var \Galette\Core\I18n $i18n
+ */
+
 $install->reinitReport();
 
 $config_file_ok = $install->writeConfFile();
 $objects_ok = $install->initObjects($i18n, $zdb, new Login($zdb, $i18n));
 
 if ($config_file_ok === true && $objects_ok === true) {
-    echo '<p class="ui green message">' . _T("Configuration file created!") .
-        '<br/>' . _T("Data initialized.") . '</p>';
+    echo '<p class="ui green message">' . _T("Configuration file created!")
+        . '<br/>' . _T("Data initialized.") . '</p>';
 } else {
     echo '<p class="ui red message">' . _T("An error occurred :(") . '</p>';
 }
@@ -57,17 +63,17 @@ foreach ($install->getInitializationReport() as $r) {
             <div class="right aligned column">
 <?php
 if (!$config_file_ok || !$objects_ok) {
-?>
+    ?>
                 <button type="submit" class="ui right labeled icon button"><i class="redo alternate double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Retry"); ?></button>
-<?php
+    <?php
 }
 ?>
-                <button type="submit" class="ui right labeled primary icon button"<?php if (!$config_file_ok || !$objects_ok) { echo ' disabled="disabled"'; } ?>><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+                <button type="submit" class="ui right labeled primary icon button"<?php echo (!$config_file_ok || !$objects_ok) ? ' disabled="disabled"' : ''; ?>><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
 <?php
 if ($config_file_ok && $objects_ok) {
-?>
+    ?>
                 <input type="hidden" name="install_prefs_ok" value="1"/>
-<?php
+    <?php
 }
 ?>
             </div>

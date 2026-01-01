@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -18,8 +19,13 @@
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Galette\Core\Install as GaletteInstall;
-use Galette\Core\Db as GaletteDb;
+declare(strict_types=1);
+
+/**
+ * @var \Galette\Core\Install $install
+ * @var \Galette\Core\Db $zdb
+ * @var \Galette\Core\I18n $i18n
+ */
 
 //ok, let's run the scripts!
 $db_installed = $install->executeScripts($zdb);
@@ -58,17 +64,17 @@ foreach ($install->getDbInstallReport() as $r) {
             <div class="right aligned column">
 <?php
 if (!$db_installed) {
-?>
+    ?>
                 <button type="submit" class="ui right labeled icon button"><i class="redo alternate double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Retry"); ?></button>
-<?php
+    <?php
 }
 ?>
-                <button type="submit" class="ui right labeled primary icon button"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
+                <button type="submit" class="ui right labeled primary icon button"<?php echo !$db_installed ? ' disabled="disabled"' : ''; ?>><i class="angle double <?php echo $i18n->isRtl() ? 'left' : 'right'; ?> icon" aria-hidden="true"></i> <?php echo _T("Next step"); ?></button>
 <?php
 if ($db_installed) {
-?>
+    ?>
                 <input type="hidden" name="install_dbwrite_ok" value="1"/>
-<?php
+    <?php
 }
 ?>
             </div>

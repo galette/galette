@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -22,7 +23,6 @@ declare(strict_types=1);
 
 namespace Galette\Updates;
 
-use Analog\Analog;
 use Galette\Updater\AbstractUpdater;
 
 /**
@@ -45,8 +45,6 @@ class UpgradeTo08 extends AbstractUpdater
 
     /**
      * Update instructions
-     *
-     * @return boolean
      */
     protected function update(): bool
     {
@@ -100,8 +98,6 @@ class UpgradeTo08 extends AbstractUpdater
      * Move data directory
      *
      * @param string $dirname Directory name to move
-     *
-     * @return void
      */
     private function moveDataDir(string $dirname): void
     {

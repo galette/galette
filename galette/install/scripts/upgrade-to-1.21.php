@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -22,12 +23,9 @@ declare(strict_types=1);
 
 namespace Galette\Updates;
 
-use Analog\Analog;
-use Galette\Core\Preferences;
 use Galette\Entity\PaymentType;
 use Galette\Updater\AbstractUpdater;
 use Laminas\Db\Adapter\Adapter;
-use Laminas\Db\Metadata\Source\Factory;
 use Laminas\Db\Sql\Expression;
 
 /**
@@ -41,8 +39,6 @@ class UpgradeTo121 extends AbstractUpdater
 
     /**
      * Update instructions
-     *
-     * @return boolean
      */
     protected function update(): bool
     {

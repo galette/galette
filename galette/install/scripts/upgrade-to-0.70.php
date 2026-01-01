@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2003-2025 The Galette Team
  *
@@ -44,8 +45,6 @@ class UpgradeTo070 extends AbstractUpdater
 
     /**
      * Update instructions
-     *
-     * @return boolean
      */
     protected function update(): bool
     {
@@ -53,4 +52,3 @@ class UpgradeTo070 extends AbstractUpdater
         return true;
     }
 }
-
