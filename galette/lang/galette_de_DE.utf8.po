@@ -38,14 +38,14 @@
 # Zeik0s <zeik0s@zeik0s.at>, 2025.
 # Norah-14 <norah.nygard14@gmail.com>, 2025.
 # André Westphal <xells1984@users.noreply.hosted.weblate.org>, 2026.
+# Wrapty <wrapty@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
 "PO-Revision-Date: 2026-01-02 21:01+0000\n"
-"Last-Translator: André Westphal <xells1984@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Wrapty <wrapty@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -294,10 +294,8 @@ msgstr "Mitlgiederverzeichnis"
 msgid "Staff"
 msgstr "Personal"
 
-#, fuzzy
-#| msgid "Staff member"
 msgid "Staff gallery"
-msgstr "Mitarbeiter"
+msgstr "Mitarbeitergalerie"
 
 msgid "List of members"
 msgstr "Liste der Mitglieder"
@@ -2367,7 +2365,7 @@ msgid "Stripe"
 msgstr "Stripe"
 
 msgid "HelloAsso"
-msgstr ""
+msgstr "Hallo zusammen"
 
 msgid "Payment schedule"
 msgstr "Zahlungsplan"
@@ -4354,10 +4352,8 @@ msgstr "Der Betrag wurde nicht vollständig versandt"
 msgid "View scheduled payments"
 msgstr "Geplante Zahlungen anzeigen"
 
-#, fuzzy
-#| msgid "List of transactions"
 msgid "Is part of a transaction"
-msgstr "Liste der Transaktionen"
+msgstr "Ist Teil einer Transaktion"
 
 msgid "Has scheduled payments"
 msgstr "Hat geplante Zahlungen"
@@ -4397,13 +4393,11 @@ msgstr "Ändern"
 msgid "Deletion"
 msgstr "Löschen"
 
-#, fuzzy
-#| msgid "User status/interactions"
 msgid "Statuses and interactions"
-msgstr "Benutzerstatus/Interaktionen"
+msgstr "Status und Interaktionen"
 
 msgid "Filter on corresponding member"
-msgstr ""
+msgstr "Filter auf entsprechendem Element"
 
 msgid ""
 "Make sure you've done a backup of the database before using any of the "
