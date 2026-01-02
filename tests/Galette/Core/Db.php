@@ -536,6 +536,7 @@ class Db extends BaseGaletteTestCase
             'galette_mailing_history',
             'galette_payments_schedules',
             'galette_pdfmodels',
+            'galette_plugins',
             'galette_preferences',
             'galette_searches',
             'galette_tmplinks',
