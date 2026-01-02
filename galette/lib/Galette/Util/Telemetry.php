@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright © 2003-2025 The Galette Team
+ * Copyright © 2003-2026 The Galette Team
  *
  * This file is part of Galette (https://galette.eu).
  *
@@ -49,7 +49,7 @@ use function Safe\preg_replace;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 GLPI and Contributors
- * @copyright 2017-2025 The Galette Team
+ * @copyright 2017-2026 The Galette Team
  */
 class Telemetry
 {
