@@ -96,13 +96,21 @@ class Plugins
      */
     protected function loadDbModules(): void
     {
-        $select = $this->zdb->select(self::TABLE, 'p');
-        $results = $this->zdb->execute($select);
-        foreach ($results as $result) {
-            $this->db_modules[] = [
-                'plugin_id' => $result['plugin_id'],
-                'version'   => $result['version'] !== null ? (float)$result['version'] : null
-            ];
+        try {
+            $select = $this->zdb->select(self::TABLE, 'p');
+            $results = $this->zdb->execute($select);
+            foreach ($results as $result) {
+                $this->db_modules[] = [
+                    'plugin_id' => $result['plugin_id'],
+                    'version' => $result['version'] !== null ? (float)$result['version'] : null
+                ];
+            }
+        } catch (\PDOException $e) {
+            //table probably does not exist yet (old database version for example, before an upgrade)
+            Analog::log(
+                'Cannot load plugins from database: ' . $e->getMessage(),
+                Analog::WARNING
+            );
         }
     }
 
