@@ -49,6 +49,8 @@ class Plugins
     public const DISABLED_MISS     = 1;
     public const DISABLED_EXPLICIT = 2;
     public const DISABLED_DBVERSION = 3;
+    public const DISABLED_NOT_INSTALLED = 4;
+    public const DISABLED_NOT_UP2DATE = 5;
 
     /** @var array<string> */
     protected array $path;
@@ -281,6 +283,35 @@ class Plugins
             );
             unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_DBVERSION);
+            return;
+        }
+
+        if ($this->needsDatabase($this->id) && !isset($this->db_modules[$this->id])) {
+            //plugin database has not been installed
+            Analog::log(
+                sprintf(
+                    'Plugin %s database has not been installed.',
+                    $name
+                ),
+                Analog::ERROR
+            );
+            unset($this->modules[$this->id]);
+            $this->setDisabled(self::DISABLED_NOT_INSTALLED);
+            return;
+        }
+
+        if ($this->needsDatabase($this->id) && isset($this->db_modules[$this->id]) && $dbver != $this->db_modules[$this->id]) {
+            //plugin database needs an update
+            Analog::log(
+                sprintf(
+                    'Plugin %s database needs to be updated.',
+                    $name
+                ),
+                Analog::ERROR
+            );
+            unset($this->modules[$this->id]);
+            $this->setDisabled(self::DISABLED_NOT_INSTALLED);
+            return;
         }
         }
     }
