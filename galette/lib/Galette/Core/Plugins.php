@@ -58,7 +58,7 @@ class Plugins
     protected array $modules = [];
     /** @var array<string, array<string, mixed>> */
     protected array $disabled = [];
-    /** @var array{plugin_id: string, version: ?float} */
+    /** @var array{plugin_id?: string, version?: ?float} */
     protected array $db_modules = [];
     /** @var array<string> */
     protected array $csrf_exclusions = [];
