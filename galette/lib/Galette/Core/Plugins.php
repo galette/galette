@@ -209,42 +209,55 @@ class Plugins
         if ($compver === null) {
             //plugin compatibility missing!
             Analog::log(
-                'Plugin "' . $name . '" does not contain mandatory version '
-                . 'compatibility information. Please contact the author.',
+                sprintf(
+                    'Plugin "%s" does not contains mandatory version compatibility information. Please contact the author.',
+                    $name
+                ),
                 Analog::ERROR
             );
             $this->setDisabled(self::DISABLED_COMPAT);
-        } elseif (version_compare($compver, GALETTE_COMPAT_VERSION, '<')) {
+            return;
+        }
+
+        if (version_compare($compver, GALETTE_COMPAT_VERSION, '<')) {
             //plugin is not compatible with that version of galette.
             Analog::log(
-                'Plugin "' . $name . '" is known to be compatible with Galette '
-                . $compver . ' only, but you current installation requires a '
-                . 'plugin compatible with at least ' . GALETTE_COMPAT_VERSION,
+                sprintf(
+                    'Plugin "%s" is known to be compatible with Galette %s only, but you current installation require a plugin compatible with at least %s',
+                    $name,
+                    $compver,
+                    GALETTE_COMPAT_VERSION
+                ),
                 Analog::WARNING
             );
             $this->setDisabled(self::DISABLED_COMPAT);
-        } elseif ($this->id) {
-            $this->modules[$this->id] = [
-                'root'          => $this->mroot,
-                'name'          => $name,
-                'desc'          => $desc,
-                'author'        => $author,
-                'version'       => $version,
-                'acls'          => $acls,
-                'date'          => $date,
-                'priority'      => $priority ?? 1000,
-                'route'         => $route
-            ];
+            return;
+        }
 
-            if (!$dbver && $this->needsDatabase($this->id)) {
-                //plugin needs a database but no version is provided
-                Analog::log(
-                    'Plugin ' . $name . ' needs a database but no version is provided.',
-                    Analog::ERROR
-                );
-                unset($this->modules[$this->id]);
-                $this->setDisabled(self::DISABLED_DBVERSION);
-            }
+        $this->modules[$this->id] = [
+            'root'          => $this->mroot,
+            'name'          => $name,
+            'desc'          => $desc,
+            'author'        => $author,
+            'version'       => $version,
+            'acls'          => $acls,
+            'date'          => $date,
+            'priority'      => $priority ?? 1000,
+            'route'         => $route
+        ];
+
+        if (!$dbver && $this->needsDatabase($this->id)) {
+            //plugin needs a database but no version is provided
+            Analog::log(
+                sprintf(
+                    'Plugin %s needs a database but no version is provided.',
+                    $name
+                ),
+                Analog::ERROR
+            );
+            unset($this->modules[$this->id]);
+            $this->setDisabled(self::DISABLED_DBVERSION);
+        }
         }
     }
 
@@ -269,7 +282,6 @@ class Plugins
             );
             unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_MISS);
-        }
     }
 
     /**

@@ -91,15 +91,17 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('login', $c->get(\Galette\Core\Login::class));
     $view->getEnvironment()->addGlobal('logo', $c->get(\Galette\Core\Logo::class));
 
-    $view->getEnvironment()->addGlobal('plugin_headers', $c->get(\Galette\Core\Plugins::class)->getTplHeaders());
-    $view->getEnvironment()->addGlobal('plugin_scripts', $c->get(\Galette\Core\Plugins::class)->getTplScripts());
+    /** @var \Galette\Core\Plugins $plugins */
+    $plugins = $c->get(\Galette\Core\Plugins::class);
+    $view->getEnvironment()->addGlobal('plugin_headers', $plugins->getTplHeaders());
+    $view->getEnvironment()->addGlobal('plugin_scripts', $plugins->getTplScripts());
 
     // galette_lang should be removed and languages used instead
     $view->getEnvironment()->addGlobal('galette_lang', $c->get(\Galette\Core\I18n::class)->getAbbrev());
     $view->getEnvironment()->addGlobal('galette_lang_name', $c->get(\Galette\Core\I18n::class)->getName());
     $view->getEnvironment()->addGlobal('languages', $c->get(\Galette\Core\I18n::class)->getList());
     $view->getEnvironment()->addGlobal('i18n', $c->get(\Galette\Core\I18n::class));
-    $view->getEnvironment()->addGlobal('plugins', $c->get(\Galette\Core\Plugins::class));
+    $view->getEnvironment()->addGlobal('plugins', $plugins);
     $view->getEnvironment()->addGlobal('preferences', $c->get(\Galette\Core\Preferences::class));
     $view->getEnvironment()->addGlobal('existing_mailing', $c->get(\RKA\Session::class)->mailing !== null);
     $view->getEnvironment()->addGlobal('html_editor', false);
