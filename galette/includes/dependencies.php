@@ -144,6 +144,7 @@ $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) us
         $plugins
             ->setTranslator($c->get(\Galette\Core\Translator::class))
             ->setEventDispatcher($c->get(\League\Event\EventDispatcher::class))
+        ->setDb($c->get(\Galette\Core\Db::class))
             ->loadModules(
                 $c->get(\Galette\Core\Preferences::class),
                 GALETTE_PLUGINS_PATH,

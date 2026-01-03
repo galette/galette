@@ -43,6 +43,8 @@ use function Safe\realpath;
 
 class Plugins
 {
+    public const TABLE = 'plugins';
+    public const PK = 'plugin_id';
     public const DISABLED_COMPAT   = 0;
     public const DISABLED_MISS     = 1;
     public const DISABLED_EXPLICIT = 2;
@@ -54,12 +56,15 @@ class Plugins
     protected array $modules = [];
     /** @var array<string, array<string, mixed>> */
     protected array $disabled = [];
+    /** @var array{plugin_id: string, version: ?float} */
+    protected array $db_modules = [];
     /** @var array<string> */
     protected array $csrf_exclusions = [];
 
     protected ?string $id = null;
     protected ?string $mroot = null;
 
+    #[Inject]
     protected Preferences $preferences;
     protected bool $autoload = false;
 
@@ -68,6 +73,9 @@ class Plugins
 
     #[Inject]
     protected EventDispatcher $event_dispatcher;
+
+    #[Inject]
+    protected Db $zdb;
 
     /**
      * Register autoloader for all plugins
@@ -79,6 +87,21 @@ class Plugins
     {
         $this->path = explode(PATH_SEPARATOR, $path);
         $this->autoload = true;
+    }
+
+    /**
+     * Load modules from database
+     */
+    protected function loadDbModules(): void
+    {
+        $select = $this->zdb->select(self::TABLE, 'p');
+        $results = $this->zdb->execute($select);
+        foreach ($results as $result) {
+            $this->db_modules[] = [
+                'plugin_id' => $result['plugin_id'],
+                'version'   => $result['version'] !== null ? (float)$result['version'] : null
+            ];
+        }
     }
 
     /**
@@ -157,6 +180,7 @@ class Plugins
     {
         $this->preferences = $preferences;
         $this->autoload($path);
+        $this->loadDbModules();
         $this->parseModules();
 
         // Sort plugins
@@ -777,6 +801,17 @@ class Plugins
     public function setEventDispatcher(EventDispatcher $dispatcher): self
     {
         $this->event_dispatcher = $dispatcher;
+        return $this;
+    }
+
+    /**
+     * Set database instance
+     *
+     * @param Db $db Database instance
+     */
+    public function setDb(Db $db): self
+    {
+        $this->zdb = $db;
         return $this;
     }
 }
