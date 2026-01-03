@@ -55,7 +55,9 @@ class Plugins extends GaletteTestCase
     private function getPlugins(): \Galette\Core\Plugins
     {
         $plugins = new \Galette\Core\Plugins();
-        $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $plugins
+            ->setDb($this->zdb)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         return $plugins;
     }
 
