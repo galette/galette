@@ -119,7 +119,6 @@ $app->setBasePath((function () {
 
 $app->add($session);
 
-$app->add($app->getContainer()->get(\Slim\Csrf\Guard::class));
 
 /** @var \DI\Container $container */
 /**
@@ -153,6 +152,8 @@ if (Galette::isUnderMaintenance() && !$container->get(Login::class)->isSuperAdmi
         )
     );
 }
+
+$app->add($app->getContainer()->get(\Slim\Csrf\Guard::class));
 
 /**
  * Change language middleware
