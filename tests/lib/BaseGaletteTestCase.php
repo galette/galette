@@ -277,7 +277,8 @@ abstract class BaseGaletteTestCase extends TestCase
             'WARNING - Plugin "Galette Old Plugin" is known to be compatible with Galette 0.7.0 only',
             'ERROR - Plugin "Galette Unversionned Plugin" does not contain mandatory version compatibility information',
             'ERROR - Plugin "Galette Noclass Plugin" class "GaletteNoclassPlugin\PluginGalettePluginnoclass" is missing '
-            'ERROR - Plugin Galette Db No Version'
+            'ERROR - Plugin Galette Db No Version',
+            'WARNING - Plugin "Galette Db Plugin"',
         ];
 
         foreach ($logs as $i => $log) {

@@ -142,14 +142,14 @@ class Plugins
                         ) {
                             //plugin is not compatible with that version of galette.
                             Analog::log(
-                                sprintf('Plugin %s is missing a _define.php and/or _routes.php '
+                                sprintf('Plugin "%s" is missing a _define.php and/or _routes.php '
                                     . 'files that are required.', $entry),
                                 Analog::WARNING
                             );
                             $this->setDisabled(self::DISABLED_MISS);
                         } elseif ($this->isExplicitlyDisabled()) {
                             Analog::log(
-                                sprintf('Plugin %s is explicitly disabled', $entry),
+                                sprintf('Plugin "%s" is explicitly disabled', $entry),
                                 Analog::INFO
                             );
                             $this->setDisabled(self::DISABLED_EXPLICIT);
@@ -284,7 +284,7 @@ class Plugins
             //plugin needs a database but no version is provided
             Analog::log(
                 sprintf(
-                    'Plugin %s needs a database but no version is provided.',
+                    'Plugin "%s" needs a database but no version is provided.',
                     $name
                 ),
                 Analog::ERROR
@@ -298,10 +298,10 @@ class Plugins
             //plugin database has not been installed
             Analog::log(
                 sprintf(
-                    'Plugin %s database has not been installed.',
+                    'Plugin "%s" database has not been installed.',
                     $name
                 ),
-                Analog::ERROR
+                Analog::WARNING
             );
             unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_NOT_INSTALLED);
@@ -312,14 +312,13 @@ class Plugins
             //plugin database needs an update
             Analog::log(
                 sprintf(
-                    'Plugin %s database needs to be updated.',
+                    'Plugin "%s" database needs to be updated.',
                     $name
                 ),
-                Analog::ERROR
+                Analog::WARNING
             );
             unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_NOT_INSTALLED);
-            return;
         }
         }
     }
