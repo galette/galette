@@ -231,6 +231,9 @@ class PluginsController extends AbstractController
                 $install->setInstalledVersion($post['previous_version'] ?? null);
                 $install->executeScripts($this->zdb, $plugin['root']);
                 break;
+            case 'i5':
+            case 'u5':
+                $this->plugins->setPluginInitialized($plugid);
         }
 
         $this->session->$mdplugin = $install;

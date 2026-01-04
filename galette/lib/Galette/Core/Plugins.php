@@ -84,6 +84,20 @@ class Plugins
     protected array $nodb_modules = [];
     /** @var array<string, array{
      *     root: string,
+     *     name: string,
+     *     desc: string,
+     *     author: string,
+     *     version: string,
+     *     acls: ?array<string,string>,
+     *     date: ?string,
+     *     priority: int,
+     *     route: ?string,
+     *     dbversion: float
+     * }>
+     */
+    protected array $toupdate_modules = [];
+    /** @var array<string, array{
+     *     root: string,
      *     cause: int
      * }>
      */
@@ -349,7 +363,7 @@ class Plugins
                 ),
                 Analog::WARNING
             );
-            $this->nodb_modules[$this->id] = $this->modules[$this->id];
+            $this->toupdate_modules[$this->id] = $this->modules[$this->id];
             unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_NOT_UP2DATE);
         }
@@ -526,18 +540,21 @@ class Plugins
     /**
      * Returns requested module
      *
-     * @param string $id         Module ID
-     * @param bool   $with_nodb Include modules that are not installed or not up to date
+     * @param string $id  Module ID
+     * @param bool   $all Include modules that are not installed or not up to date
      *
      * @return array<string, mixed>
      */
-    public function getModule(string $id, bool $with_nodb = false): array
+    public function getModule(string $id, bool $all = false): array
     {
         if (isset($this->modules[$id])) {
             return $this->modules[$id];
         }
-        if ($with_nodb && isset($this->nodb_modules[$id])) {
+        if ($all && isset($this->nodb_modules[$id])) {
             return $this->nodb_modules[$id];
+        }
+        if ($all && isset($this->toupdate_modules[$id])) {
+            return $this->toupdate_modules[$id];
         }
 
         throw new \RuntimeException(
@@ -549,12 +566,11 @@ class Plugins
      * Returns all modules associative array or only one module if <var>$id</var>
      * is present.
      *
-     * @param ?string $id        Optional module ID
-     * @param bool    $with_nodb Include modules that are not installed or not up to date
+     * @param ?string $id Optional module ID
      *
      * @return array<string, mixed>
      */
-    public function getModules(?string $id = null, bool $with_nodb = false): array
+    public function getModules(?string $id = null): array
     {
         if ($id && isset($this->modules[$id])) {
             return $this->modules[$id];
@@ -569,7 +585,7 @@ class Plugins
      */
     public function moduleExists(string $id): bool
     {
-        return isset($this->modules[$id]) || isset($this->nodb_modules[$id]);
+        return isset($this->modules[$id]) || isset($this->nodb_modules[$id]) || isset($this->toupdate_modules[$id]);
     }
 
     /**
@@ -906,6 +922,50 @@ class Plugins
     public function setDb(Db $db): self
     {
         $this->zdb = $db;
+        return $this;
+    }
+
+    /**
+     * Mark a plugin as initialized
+     *
+     * @param string $id Plugin ID
+     */
+    public function setPluginInitialized(string $id): self
+    {
+        $module = $this->getModule($id, true);
+        if (isset($module['dbversion'])) {
+            switch ($this->disabled[$id]['cause']) {
+                case self::DISABLED_NOT_INSTALLED:
+                    //add plugin in db
+                    $insert = $this->zdb->insert(self::TABLE);
+                    $insert->values(
+                        [
+                            'plugin_id' => $id,
+                            'version'   => $module['dbversion']
+                        ]
+                    );
+                    $this->zdb->execute($insert);
+                    break;
+                case self::DISABLED_NOT_UP2DATE:
+                    //update plugin in db
+                    //set database version
+                    $update = $this->zdb->update(self::TABLE);
+                    $update->set(
+                        ['version' => $module['dbversion']]
+                    );
+                    $update->where(['plugin_id' => $id]);
+                    $this->zdb->execute($update);
+                    break;
+                default:
+                    throw new \RuntimeException(
+                        sprintf(
+                            'Cannot initialize plugin "' . $id . '", wrong disabled cause %s.',
+                            $id,
+                            $this->disabled[$id]['cause']
+                        )
+                    );
+            }
+        }
         return $this;
     }
 }
