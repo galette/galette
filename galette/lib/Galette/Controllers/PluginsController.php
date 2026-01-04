@@ -142,7 +142,7 @@ class PluginsController extends AbstractController
             return $response->withStatus(404);
         }
 
-        $plugin = $this->plugins->getModules($plugid);
+        $plugin = $this->plugins->getModule($plugid, true);
 
         $mdplugin = md5((string)$plugin['root']);
         if (

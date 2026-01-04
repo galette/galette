@@ -54,12 +54,42 @@ class Plugins
 
     /** @var array<string> */
     protected array $path;
-    /** @var array<string, array<string, mixed>> */
+    /** @var array<string, array{
+     *     root: string,
+     *     name: string,
+     *     desc: string,
+     *     author: string,
+     *     version: string,
+     *     acls: ?array<string,string>,
+     *     date: ?string,
+     *     priority: int,
+     *     route: ?string,
+     *     dbversion: ?float
+     * }>
+     */
     protected array $modules = [];
-    /** @var array<string, array<string, mixed>> */
+    /** @var array<string, array{
+     *     root: string,
+     *     name: string,
+     *     desc: string,
+     *     author: string,
+     *     version: string,
+     *     acls: ?array<string,string>,
+     *     date: ?string,
+     *     priority: int,
+     *     route: ?string,
+     *     dbversion: float
+     * }>
+     */
+    protected array $nodb_modules = [];
+    /** @var array<string, array{
+     *     root: string,
+     *     cause: int
+     * }>
+     */
     protected array $disabled = [];
     /** @var array{plugin_id?: string, version?: ?float} */
-    protected array $db_modules = [];
+    protected array $db_existing = [];
     /** @var array<string> */
     protected array $csrf_exclusions = [];
 
@@ -100,7 +130,7 @@ class Plugins
             $select = $this->zdb->select(self::TABLE, 'p');
             $results = $this->zdb->execute($select);
             foreach ($results as $result) {
-                $this->db_modules[] = [
+                $this->db_existing[] = [
                     'plugin_id' => $result['plugin_id'],
                     'version' => $result['version'] !== null ? (float)$result['version'] : null
                 ];
@@ -277,7 +307,8 @@ class Plugins
             'acls'          => $acls,
             'date'          => $date,
             'priority'      => $priority ?? 1000,
-            'route'         => $route
+            'route'         => $route,
+            'dbversion'     => $dbver
         ];
 
         if (!$dbver && $this->needsDatabase($this->id)) {
@@ -294,7 +325,7 @@ class Plugins
             return;
         }
 
-        if ($this->needsDatabase($this->id) && !isset($this->db_modules[$this->id])) {
+        if ($this->needsDatabase($this->id) && !isset($this->db_existing[$this->id])) {
             //plugin database has not been installed
             Analog::log(
                 sprintf(
@@ -303,12 +334,13 @@ class Plugins
                 ),
                 Analog::WARNING
             );
+            $this->nodb_modules[$this->id] = $this->modules[$this->id];
             unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_NOT_INSTALLED);
             return;
         }
 
-        if ($this->needsDatabase($this->id) && isset($this->db_modules[$this->id]) && $dbver != $this->db_modules[$this->id]) {
+        if ($this->needsDatabase($this->id) && isset($this->db_existing[$this->id]) && $dbver != $this->db_existing[$this->id]) {
             //plugin database needs an update
             Analog::log(
                 sprintf(
@@ -317,8 +349,9 @@ class Plugins
                 ),
                 Analog::WARNING
             );
+            $this->nodb_modules[$this->id] = $this->modules[$this->id];
             unset($this->modules[$this->id]);
-            $this->setDisabled(self::DISABLED_NOT_INSTALLED);
+            $this->setDisabled(self::DISABLED_NOT_UP2DATE);
         }
         }
     }
@@ -491,14 +524,37 @@ class Plugins
     }
 
     /**
-     * Returns all modules associative array or only one module if <var>$id</var>
-     * is present.
+     * Returns requested module
      *
-     * @param ?string $id Optional module ID
+     * @param string $id         Module ID
+     * @param bool   $with_nodb Include modules that are not installed or not up to date
      *
      * @return array<string, mixed>
      */
-    public function getModules(?string $id = null): array
+    public function getModule(string $id, bool $with_nodb = false): array
+    {
+        if (isset($this->modules[$id])) {
+            return $this->modules[$id];
+        }
+        if ($with_nodb && isset($this->nodb_modules[$id])) {
+            return $this->nodb_modules[$id];
+        }
+
+        throw new \RuntimeException(
+            sprintf('Module "%s" does not exist!', $id)
+        );
+    }
+
+    /**
+     * Returns all modules associative array or only one module if <var>$id</var>
+     * is present.
+     *
+     * @param ?string $id        Optional module ID
+     * @param bool    $with_nodb Include modules that are not installed or not up to date
+     *
+     * @return array<string, mixed>
+     */
+    public function getModules(?string $id = null, bool $with_nodb = false): array
     {
         if ($id && isset($this->modules[$id])) {
             return $this->modules[$id];
@@ -513,7 +569,7 @@ class Plugins
      */
     public function moduleExists(string $id): bool
     {
-        return isset($this->modules[$id]);
+        return isset($this->modules[$id]) || isset($this->nodb_modules[$id]);
     }
 
     /**
