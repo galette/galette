@@ -269,8 +269,8 @@ class Plugins
      * @param ?string               $route    Module route name
      * @param ?string               $date     Module release date
      * @param ?array<string,string> $acls     Module routes ACLs
-     * @param ?float                $dbver    Module database version
      * @param ?int                  $priority Module priority
+     * @param ?float $dbver Module database version
      */
     public function register(
         string $name,
@@ -281,8 +281,8 @@ class Plugins
         ?string $route = null,
         ?string $date = null,
         ?array $acls = null,
-        ?float $dbver = null,
-        ?int $priority = 1000
+        ?int $priority = 1000,
+        ?float $dbver = null
     ): void {
         if ($compver === null) {
             //plugin compatibility missing!
