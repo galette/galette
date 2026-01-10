@@ -599,6 +599,16 @@ class Plugins
     }
 
     /**
+     * Returns one disabled module
+     *
+     * @return array<string, mixed>
+     */
+    public function getDisabledModule(string $id): array
+    {
+        return $this->disabled[$id];
+    }
+
+    /**
      * Returns root path for module with ID <var>$id</var>.
      *
      * @param string $id Module ID
@@ -922,50 +932,6 @@ class Plugins
     public function setDb(Db $db): self
     {
         $this->zdb = $db;
-        return $this;
-    }
-
-    /**
-     * Mark a plugin as initialized
-     *
-     * @param string $id Plugin ID
-     */
-    public function setPluginInitialized(string $id): self
-    {
-        $module = $this->getModule($id, true);
-        if (isset($module['dbversion'])) {
-            switch ($this->disabled[$id]['cause']) {
-                case self::DISABLED_NOT_INSTALLED:
-                    //add plugin in db
-                    $insert = $this->zdb->insert(self::TABLE);
-                    $insert->values(
-                        [
-                            'plugin_id' => $id,
-                            'version'   => $module['dbversion']
-                        ]
-                    );
-                    $this->zdb->execute($insert);
-                    break;
-                case self::DISABLED_NOT_UP2DATE:
-                    //update plugin in db
-                    //set database version
-                    $update = $this->zdb->update(self::TABLE);
-                    $update->set(
-                        ['version' => $module['dbversion']]
-                    );
-                    $update->where(['plugin_id' => $id]);
-                    $this->zdb->execute($update);
-                    break;
-                default:
-                    throw new \RuntimeException(
-                        sprintf(
-                            'Cannot initialize plugin "' . $id . '", wrong disabled cause %s.',
-                            $id,
-                            $this->disabled[$id]['cause']
-                        )
-                    );
-            }
-        }
         return $this;
     }
 }

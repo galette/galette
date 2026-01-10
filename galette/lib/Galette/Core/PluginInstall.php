@@ -59,4 +59,52 @@ class PluginInstall extends Install
     {
         return false;
     }
+
+    /**
+     * Mark a plugin as installed
+     *
+     * @param Db      $zdb     Database instance
+     * @param Plugins $plugins Plugins manager
+     * @param string  $id      Plugin ID
+     *
+     * @return self
+     */
+    public function setPluginInstalled(Db $zdb, Plugins $plugins, string $id): self
+    {
+        $module = $plugins->getModule($id, true);
+        if (isset($module['dbversion'])) {
+            switch ($plugins->getDisabledModule($id)['cause']) {
+                case $plugins::DISABLED_NOT_INSTALLED:
+                    //add plugin in db
+                    $insert = $zdb->insert($plugins::TABLE);
+                    $insert->values(
+                        [
+                            'plugin_id' => $id,
+                            'version'   => $module['dbversion']
+                        ]
+                    );
+                    $zdb->execute($insert);
+                    break;
+                case $plugins::DISABLED_NOT_UP2DATE:
+                    //update plugin in db
+                    //set database version
+                    $update = $zdb->update($plugins::TABLE);
+                    $update->set(
+                        ['version' => $module['dbversion']]
+                    );
+                    $update->where(['plugin_id' => $id]);
+                    $zdb->execute($update);
+                    break;
+                default:
+                    throw new \RuntimeException(
+                        sprintf(
+                            'Cannot install plugin "' . $id . '", wrong disabled cause %s.',
+                            $id,
+                            $plugins->getDisabledModule($id)['cause']
+                        )
+                    );
+            }
+        }
+        return $this;
+    }
 }

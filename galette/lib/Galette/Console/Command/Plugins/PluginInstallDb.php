@@ -63,6 +63,7 @@ class PluginInstallDb extends AbstractPlugins
         foreach ($selected as $module_id => $module) {
             $install->executeScripts($zdb, $module['root']);
             $io->success(sprintf('Database for plugin "%s" installed', $module_id));
+            $install->setPluginInstalled($zdb, $this->plugins, $module_id);
         }
 
         return Command::SUCCESS;

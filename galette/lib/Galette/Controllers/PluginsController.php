@@ -233,10 +233,12 @@ class PluginsController extends AbstractController
                 break;
             case 'i5':
             case 'u5':
-                $this->plugins->setPluginInitialized($plugid);
+                $install->setPluginInstalled($this->zdb, $this->plugins, $plugid);
         }
 
-        $this->session->$mdplugin = $install;
+        if ($step !== 'i5' && $step !== 'u5') {
+            $this->session->$mdplugin = $install;
+        }
 
         $params += [
             'page_title'    => $install->getStepDetail('title'),
