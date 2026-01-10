@@ -66,8 +66,6 @@ class PluginInstall extends Install
      * @param Db      $zdb     Database instance
      * @param Plugins $plugins Plugins manager
      * @param string  $id      Plugin ID
-     *
-     * @return self
      */
     public function setPluginInstalled(Db $zdb, Plugins $plugins, string $id): self
     {
