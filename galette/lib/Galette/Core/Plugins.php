@@ -270,7 +270,7 @@ class Plugins
      * @param ?string               $date     Module release date
      * @param ?array<string,string> $acls     Module routes ACLs
      * @param ?int                  $priority Module priority
-     * @param ?float $dbver Module database version
+     * @param ?float                $dbver    Module database version
      */
     public function register(
         string $name,
