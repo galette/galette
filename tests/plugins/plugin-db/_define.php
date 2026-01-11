@@ -34,5 +34,5 @@ $this->register(
         'plugdb_root'   => 'member',
         'plugdb_admin'  => 'staff'
     ],
-    0.1,                      //DB version
+    dbver: 0.1,                      //DB version
 );
