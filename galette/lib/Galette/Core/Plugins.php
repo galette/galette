@@ -284,6 +284,7 @@ class Plugins
         ?int $priority = 1000,
         ?float $dbver = null
     ): void {
+        //check compatibility
         if ($compver === null) {
             //plugin compatibility missing!
             Analog::log(
@@ -312,6 +313,7 @@ class Plugins
             return;
         }
 
+        //register module
         $this->modules[$this->id] = [
             'root'          => $this->mroot,
             'name'          => $name,
@@ -324,13 +326,20 @@ class Plugins
             'route'         => $route,
             'dbversion'     => $dbver
         ];
+        $this->postRegistrationChecks();
+    }
 
-        if (!$dbver && $this->needsDatabase($this->id)) {
+    /**
+     * Perform post plugin registration checks
+     */
+    private function postRegistrationChecks(): void
+    {
+        if (!$this->modules[$this->id]['dbversion'] && $this->needsDatabase($this->id)) {
             //plugin needs a database but no version is provided
             Analog::log(
                 sprintf(
                     'Plugin "%s" needs a database but no version is provided.',
-                    $name
+                    $this->modules[$this->id]['name']
                 ),
                 Analog::ERROR
             );
@@ -339,12 +348,14 @@ class Plugins
             return;
         }
 
-        if ($this->needsDatabase($this->id) && !isset($this->db_existing[$this->id])) {
+        $plugin_class = $this->getClassName($this->id, true);
+        $plugin = new $plugin_class();
+        if (!$plugin->isInstalled() || $this->needsDatabase($this->id) && !isset($this->db_existing[$this->id])) {
             //plugin database has not been installed
             Analog::log(
                 sprintf(
                     'Plugin "%s" database has not been installed.',
-                    $name
+                    $this->modules[$this->id]['name']
                 ),
                 Analog::WARNING
             );
@@ -354,12 +365,16 @@ class Plugins
             return;
         }
 
-        if ($this->needsDatabase($this->id) && isset($this->db_existing[$this->id]) && $dbver != $this->db_existing[$this->id]) {
+        if (
+            $this->needsDatabase($this->id)
+            && isset($this->db_existing[$this->id])
+            && $this->modules[$this->id]['dbversion'] != $this->db_existing[$this->id]
+        ) {
             //plugin database needs an update
             Analog::log(
                 sprintf(
                     'Plugin "%s" database needs to be updated.',
-                    $name
+                    $this->modules[$this->id]['name']
                 ),
                 Analog::WARNING
             );
