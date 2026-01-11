@@ -348,9 +348,13 @@ class Plugins
             return;
         }
 
+        $is_installed = false;
         $plugin_class = $this->getClassName($this->id, true);
-        $plugin = new $plugin_class();
-        if (!$plugin->isInstalled() || $this->needsDatabase($this->id) && !isset($this->db_existing[$this->id])) {
+        if (class_exists($plugin_class)) {
+            $plugin = new $plugin_class();
+            $is_installed = $plugin->isInstalled();
+        }
+        if (!$is_installed || $this->needsDatabase($this->id) && !isset($this->db_existing[$this->id])) {
             //plugin database has not been installed
             Analog::log(
                 sprintf(
