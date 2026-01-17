@@ -98,8 +98,6 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
     }
 
     /**
-            'WARNING - Plugin "Galette Test1 Plugin" database has not been installed.',
-            'WARNING - Plugin "Galette Test2 Plugin" database has not been installed.'
      * Loads member from a resultset
      *
      * @param int $id Id
