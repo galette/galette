@@ -348,9 +348,10 @@ class Plugins
             return;
         }
 
-        $is_installed = false;
+        $is_installed = true; //by default, there is no way to know if a plugi is installed.
         $plugin_class = $this->getClassName($this->id, true);
         if (class_exists($plugin_class)) {
+            /** @var GalettePlugin $plugin */
             $plugin = new $plugin_class();
             $is_installed = $plugin->isInstalled();
         }
