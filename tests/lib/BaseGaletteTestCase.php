@@ -89,6 +89,7 @@ abstract class BaseGaletteTestCase extends TestCase
 
         $plugins = new \Galette\Core\Plugins();
         $this->plugins = $plugins;
+        $this->plugins->setDb($this->zdb);
         if ($this->load_plugins) {
             $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         }

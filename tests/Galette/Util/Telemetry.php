@@ -64,7 +64,9 @@ class Telemetry extends GaletteTestCase
         $expected['uuid'] = $result['uuid'];
         $this->assertSame($expected, $result);
 
-        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->plugins
+            ->setDb($this->zdb)
+             ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,
             $this->preferences,
