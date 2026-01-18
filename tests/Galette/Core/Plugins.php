@@ -67,10 +67,21 @@ class Plugins extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
+        $insert = $this->zdb->insert(\Galette\Core\Plugins::TABLE);
+        $insert->values([
+            'plugin_id'     => 'plugin-db',
+            'version'       => 0.1
+        ]);
+        $this->zdb->execute($insert);
+        $select = $this->zdb->select(\Galette\Core\Plugins::TABLE);
+        $result = $this->zdb->execute($select)->current();
         $this->plugins = $this->getPlugins();
         $this->plugin2['root'] = GALETTE_PLUGINS_PATH
             . $this->plugin2['root'];
     }
+        $delete = $this->zdb->delete(\Galette\Core\Plugins::TABLE);
+        $this->zdb->execute($delete);
+
 
     /**
      * Tests plugins load
@@ -205,7 +216,7 @@ class Plugins extends GaletteTestCase
     /**
      * Test if plugin needs database
      */
-    public function testNeedDatabse(): void
+    public function testNeedDatabase(): void
     {
         $this->assertTrue($this->plugins->needsDatabase('plugin-db'));
         $this->assertFalse($this->plugins->needsDatabase('plugin-test2'));
