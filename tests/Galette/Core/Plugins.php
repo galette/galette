@@ -46,7 +46,8 @@ class Plugins extends GaletteTestCase
         ],
         'date'          => '2013-12-15',
         'priority'      => 1000,
-        'route'         => 'plugin2'
+        'route'         => 'plugin2',
+        'dbversion'     => null
     ];
 
     /**
