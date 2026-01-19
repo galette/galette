@@ -74,8 +74,6 @@ class Plugins extends GaletteTestCase
             'version'       => 0.1
         ]);
         $this->zdb->execute($insert);
-        $select = $this->zdb->select(\Galette\Core\Plugins::TABLE);
-        $result = $this->zdb->execute($select)->current();
         $this->plugins = $this->getPlugins();
         $this->plugin2['root'] = GALETTE_PLUGINS_PATH
             . $this->plugin2['root'];
