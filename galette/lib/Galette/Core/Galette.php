@@ -511,9 +511,13 @@ class Galette
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\MenuProviderInterface
+                || method_exists($plugin, 'getMenusContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $menus = array_merge_recursive(
                     $menus,
                     $plugin->getMenus()
@@ -636,9 +640,13 @@ class Galette
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins public menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\MenuProviderInterface
+                || method_exists($plugin, 'getPublicMenusItemsList')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $items = array_merge(
                     $items,
                     $plugin->getPublicMenuItems()
@@ -710,9 +718,13 @@ class Galette
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class) && method_exists($plugin_class, 'getMyDashboards')) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\DashboardProviderInterface
+                || method_exists($plugin, 'getMyDashboardsContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $dashboards = array_merge_recursive(
                     $dashboards,
                     $plugin->getMyDashboards()
@@ -852,9 +864,13 @@ class Galette
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\DashboardProviderInterface
+                || method_exists($plugin, 'getDashboardsContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $dashboards = array_merge_recursive(
                     $dashboards,
                     $plugin->getDashboards()
@@ -974,9 +990,13 @@ class Galette
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\MemberActionProviderInterface
+                || method_exists($plugin, 'getListActionsContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getListActions($member)
@@ -1008,9 +1028,13 @@ class Galette
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\MemberActionProviderInterface
+                || method_exists($plugin, 'getDetailedActionsContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getDetailedActions($member)
@@ -1065,9 +1089,9 @@ class Galette
 
         if (
             ($login->isAdmin()
-            || $login->isStaff()
-            || $login->isGroupManager()
-            && $preferences->pref_bool_groupsmanagers_mailings)
+                || $login->isStaff()
+                || $login->isGroupManager()
+                && $preferences->pref_bool_groupsmanagers_mailings)
             && $preferences->pref_mail_method != \Galette\Core\GaletteMail::METHOD_DISABLED
         ) {
             $actions[] = [
@@ -1113,9 +1137,13 @@ class Galette
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\MemberActionProviderInterface
+                || method_exists($plugin, 'getBatchActionsContents')) //handle deprecated case
+                && $plugin->isInstalled()
+            ) {
                 $actions = array_merge_recursive(
                     $actions,
                     $plugin->getBatchActions()
@@ -1167,10 +1195,21 @@ class Galette
         foreach (array_keys($plugins->getModules()) as $module_id) {
             //get plugins menus entries
             $plugin_class = $plugins->getClassName($module_id, true);
-            if (class_exists($plugin_class)) {
-                /** @var GalettePlugin $plugin */
-                $plugin = $container->get($plugin_class);
-                if ($plugin->isInstalled() && $entry = $plugin->getNews()) {
+            /** @var GalettePlugin $plugin */
+            $plugin = $container->get($plugin_class);
+            if (
+                ($plugin instanceof Plugins\NewsProviderInterface
+                || method_exists($plugin, 'getNews')) //handle deprecated 1.2.2 case
+                && $plugin->isInstalled()
+            ) {
+                //display deprecation message - since 1.2.2
+                if (!($plugin instanceof Plugins\NewsProviderInterface)) {
+                    Analog::log(
+                        $plugin::class . '::getNews() is deprecated, please implement NewsProviderInterface',
+                        Analog::WARNING
+                    );
+                }
+                if ($entry = $plugin->getNews()) {
                     $position = $entry->getPosition();
                     while (isset($news[$position])) {
                         ++$position;

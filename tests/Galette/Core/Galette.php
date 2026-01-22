@@ -37,6 +37,7 @@ use function Safe\realpath;
 class Galette extends GaletteTestCase
 {
     protected int $seed = 20230324120838;
+    protected bool $load_plugins = true;
 
     /**
      * Test gitVersion

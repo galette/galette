@@ -274,8 +274,9 @@ abstract class BaseGaletteTestCase extends TestCase
         $logs = explode("localhost - ", $galette_log_var ?? '');
 
         $excluded_logs = [
-            'WARNING - Plugin plugin-oldversion',
-            'ERROR - Plugin Galette Unversionned'
+            'WARNING - Plugin "Galette Old Plugin" is known to be compatible with Galette 0.7.0 only',
+            'ERROR - Plugin "Galette Unversionned Plugin" does not contain mandatory version compatibility information',
+            'ERROR - Plugin "Galette Noclass Plugin" class "GaletteNoclassPlugin\PluginGalettePluginnoclass" is missing '
         ];
 
         foreach ($logs as $i => $log) {

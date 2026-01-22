@@ -110,7 +110,7 @@ class Plugins
                             //plugin is not compatible with that version of galette.
                             Analog::log(
                                 sprintf('Plugin %s is missing a _define.php and/or _routes.php '
-                                . 'files that are required.', $entry),
+                                    . 'files that are required.', $entry),
                                 Analog::WARNING
                             );
                             $this->setDisabled(self::DISABLED_MISS);
@@ -122,17 +122,20 @@ class Plugins
                             $this->setDisabled(self::DISABLED_EXPLICIT);
                         } else {
                             include $full_entry . '/_define.php';
+                            if ($this->moduleExists($entry)) {
+                                if (file_exists($full_entry . '/lib')) {
+                                    //set autoloader to PluginName.
+                                    $varname = $entry . 'Loader';
+                                    ${$varname} = new ClassLoader(
+                                        $this->getNamespace($entry),
+                                        $full_entry . '/lib'
+                                    );
+                                    ${$varname}->register();
+                                }
+                                $this->check();
+                            }
                             $this->id = null;
                             $this->mroot = null;
-                            //set autoloader to PluginName.
-                            if (isset($this->modules[$entry]) && file_exists($full_entry . '/lib')) {
-                                $varname = $entry . 'Loader';
-                                ${$varname} = new ClassLoader(
-                                    $this->getNamespace($entry),
-                                    $full_entry . '/lib'
-                                );
-                                ${$varname}->register();
-                            }
                         }
                     }
                 }
@@ -205,7 +208,7 @@ class Plugins
         if ($compver === null) {
             //plugin compatibility missing!
             Analog::log(
-                'Plugin ' . $name . ' does not contains mandatory version '
+                'Plugin "' . $name . '" does not contain mandatory version '
                 . 'compatibility information. Please contact the author.',
                 Analog::ERROR
             );
@@ -213,8 +216,8 @@ class Plugins
         } elseif (version_compare($compver, GALETTE_COMPAT_VERSION, '<')) {
             //plugin is not compatible with that version of galette.
             Analog::log(
-                'Plugin ' . $name . ' is known to be compatible with Galette '
-                . $compver . ' only, but you current installation require a '
+                'Plugin "' . $name . '" is known to be compatible with Galette '
+                . $compver . ' only, but you current installation requires a '
                 . 'plugin compatible with at least ' . GALETTE_COMPAT_VERSION,
                 Analog::WARNING
             );
@@ -231,6 +234,30 @@ class Plugins
                 'priority'      => $priority ?? 1000,
                 'route'         => $route
             ];
+        }
+    }
+
+    /**
+     * Post plugin initialization checks
+     */
+    private function check(): void
+    {
+        $plugin_class = $this->getClassName($this->id, true);
+        if (
+            !class_exists($plugin_class)
+            || !is_subclass_of($plugin_class, GalettePlugin::class)
+        ) {
+            //plugin is missing its mandatory class or does not extend GalettePlugin
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" class "%s" is missing or it does not extend GalettePlugin.',
+                    $this->modules[$this->id]['name'],
+                    $plugin_class
+                ),
+                Analog::ERROR
+            );
+            unset($this->modules[$this->id]);
+            $this->setDisabled(self::DISABLED_MISS);
         }
     }
 

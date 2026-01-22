@@ -718,7 +718,7 @@ class Db
             );
         } else {
             return $this->sql->select(
-                //@phpstan-ignore-next-line
+                //@phpstan-ignore argument.type (laminas docs are wrong)
                 [
                     $alias => PREFIX_DB . $table
                 ]

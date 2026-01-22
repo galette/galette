@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Plugins tests class
@@ -94,14 +95,44 @@ class Plugins extends GaletteTestCase
     }
 
     /**
+     * Data provider for disabled modules test
+     *
+     * @return array<int, array{module: string, cause: int}>
+     */
+    public static function disabledModulesProvider(): array
+    {
+        return [
+            [
+                'module' => 'plugin-disabled',
+                'cause' => \Galette\Core\Plugins::DISABLED_EXPLICIT],
+            [
+                'module' => 'plugin-unversionned',
+                'cause' =>  \Galette\Core\Plugins::DISABLED_COMPAT
+            ],
+            [
+                'module' => 'plugin-oldversion',
+                'cause' =>  \Galette\Core\Plugins::DISABLED_COMPAT
+            ],
+            [
+                'module' => 'plugin-news',
+                'cause' =>  \Galette\Core\Plugins::DISABLED_EXPLICIT
+            ],
+            [
+                'module' => 'plugin-noclass',
+                'cause' =>  \Galette\Core\Plugins::DISABLED_MISS
+            ]
+        ];
+    }
+
+    /**
      * Test disabled plugin
      */
-    public function testDisabledModules(): void
+    #[DataProvider('disabledModulesProvider')]
+    public function testDisabledModules(string $module, int $cause): void
     {
         $disabled_modules = $this->plugins->getDisabledModules();
-        $this->assertTrue(isset($disabled_modules['plugin-disabled']));
-        $this->assertTrue(isset($disabled_modules['plugin-unversionned']));
-        $this->assertTrue(isset($disabled_modules['plugin-oldversion']));
+        $this->assertTrue(isset($disabled_modules[$module]));
+        $this->assertSame($cause, $disabled_modules[$module]['cause']);
     }
 
     /**
