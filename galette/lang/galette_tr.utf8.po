@@ -13,13 +13,14 @@
 # Onur Akkas <jon_onur_akkas@hotmail.com>, 2022.
 # Erdem Yanardağ <erdemynrd@gmail.com>, 2025.
 # BlokEvren <kukesen17@gmail.com>, 2025.
+# 19atlas <o.ustuncelik@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2025-11-29 06:07+0000\n"
-"Last-Translator: BlokEvren <kukesen17@gmail.com>\n"
+"PO-Revision-Date: 2026-01-23 18:50+0000\n"
+"Last-Translator: 19atlas <o.ustuncelik@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -27,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15-dev\n"
+"X-Generator: Weblate 5.16-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "#%id no'lu ödeme yüklenemedi!"
@@ -115,8 +116,6 @@ msgstr "Planlanmış ödeme değiştirilmedi!"
 msgid "Scheduled payment has been successfully added."
 msgstr "Planlanmış ödeme başarıyla eklendi"
 
-#, fuzzy
-#| msgid "Payment type '%1$s' has been successfully modified."
 msgid "Scheduled payment has been successfully modified."
 msgstr "Planlanmış ödeme başarıyla değiştirildi."
 
@@ -207,15 +206,11 @@ msgstr "Katkı türü #%id güncellenemedi"
 msgid "Contribution type has been successfully added!"
 msgstr "Katkı türü başarıyla eklendi!"
 
-#, fuzzy
-#| msgid "%type #%id has been successfully updated!"
 msgid "Contribution type #%id has been successfully updated!"
-msgstr "%type #%id başarıyla güncellendi!"
+msgstr "#%id başarıyla güncellendi!"
 
-#, fuzzy
-#| msgid "Remove %type '%label'"
 msgid "Remove contribution type '%label'"
-msgstr "%type türündeki '%label' başlığını çıkar"
+msgstr "type türündeki '%label' başlığını çıkar"
 
 msgid "Add field"
 msgstr "Alan ekle"
@@ -227,7 +222,7 @@ msgid "Dynamic field has been successfully stored!"
 msgstr "Dinamik alan başarıyla kaydedildi!"
 
 msgid "Dynamic fields"
-msgstr ""
+msgstr "Dinamik alanlar"
 
 msgid "You do not have permission for requested URL."
 msgstr "Ulaşılmaya çalışılan URL için yetkiniz bulunmamaktadır."
@@ -264,7 +259,7 @@ msgid "Member Profile"
 msgstr "Üye Profili"
 
 msgid "Members"
-msgstr ""
+msgstr "Üyeler"
 
 msgid "Gallery"
 msgstr "Galeri"
@@ -276,7 +271,7 @@ msgid "Staff gallery"
 msgstr "Personel galerisi"
 
 msgid "List of members"
-msgstr ""
+msgstr "Üye listesi"
 
 msgid "Advanced search"
 msgstr "Gelişmiş arama"
@@ -291,15 +286,11 @@ msgstr "Toplu güncelleme %1$s üye"
 msgid "Mass changes has not been confirmed!"
 msgstr "Toplu güncelleme teyit edilmedi!"
 
-#, fuzzy
-#| msgid "All accounts"
 msgid "Add to group"
-msgstr "Tüm hesaplar"
+msgstr "Gruba ekle"
 
-#, fuzzy
-#| msgid "Remove group %1$s"
 msgid "Remove from group"
-msgstr "%1$s gurubunu kaldır"
+msgstr "gurubunu kaldır"
 
 #, php-format
 msgid "Review mass change %1$s members"
@@ -314,18 +305,17 @@ msgstr "Üye kaydedilirken bir hata oluştu."
 msgid "An error occurred adding member to its groups."
 msgstr "Üyeyi gruplarına eklerken bir hata oluştu."
 
-#, fuzzy, php-format
-#| msgid "%1$s members has been changed successfully!"
+#, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s üye başarıyla güncellendi!"
-msgstr[1] "%1$s üye başarıyla güncellendi!"
+msgstr[1] "%1$s üyeler başarıyla güncellendi!"
 
 msgid "Something went wrong during mass edition!"
 msgstr "Toplu güncelleme yapılırken bir şeyler yanlış gitti!"
 
 msgid "Login required"
-msgstr ""
+msgstr "Giriş zorunlu"
 
 msgid "Invalid captcha"
 msgstr "Geçersiz captcha"
@@ -360,13 +350,13 @@ msgid "No member #%id."
 msgstr "Üye numarası #%id bulunamadı."
 
 msgid "Titles"
-msgstr ""
+msgstr "Başlıklar"
 
 msgid "Edit title"
 msgstr "Başlığı değiştir"
 
 msgid "Missing required title's short or long form!"
-msgstr ""
+msgstr "Başlığın kısa veya uzun hali eksik!"
 
 #, php-format
 msgid "Title '%1$s' has not been added!"
@@ -395,17 +385,13 @@ msgid "Edit status"
 msgstr "Durumu Güncelle"
 
 msgid "Missing required status name!"
-msgstr ""
+msgstr "Gerekli durum adı eksik!"
 
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Status has not been added :("
-msgstr "%type türü eklenemedi :("
+msgstr "Status türü eklenemedi :("
 
-#, fuzzy
-#| msgid "%type #%id has not been updated"
 msgid "Status #%id has not been updated"
-msgstr "%type #%id güncellenemedi"
+msgstr "Status #%id güncellenemedi"
 
 #, fuzzy
 #| msgid "%type has been successfully added!"
