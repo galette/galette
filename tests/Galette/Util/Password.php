@@ -53,7 +53,7 @@ class Password extends GaletteTestCase
             [Preferences::PWD_WEAK, 'FÜKFJSLKFFSDFDSF', ['a', '1', '@']],
             [Preferences::PWD_WEAK, 'fjsfjdljfsjsjjlsj', ['A', '1', '@']],
 
-            [Preferences::PWD_MEDIUM, 'wee6eak',['A', '@']],
+            [Preferences::PWD_MEDIUM, 'wee6eak', ['A', '@']],
             [Preferences::PWD_MEDIUM, 'foobar!', ['A', '1']],
             [Preferences::PWD_MEDIUM, 'Foobar', ['1', '@']],
             [Preferences::PWD_MEDIUM, '123456!', ['nl']],
@@ -124,7 +124,7 @@ class Password extends GaletteTestCase
     {
         return [
             ['galette', true],
-            ['toto',  false],
+            ['toto', false],
             ['mypassisgreat', false],
             ['starwars', true],
             ['123456', true],

@@ -21,11 +21,7 @@
 
 declare(strict_types=1);
 
-/*
- * Test bootstrap
- *
- * @author Johan Cwiklinski <johan@x-tnd.be>
- */
+global $zdb, $preferences, $login, $container, $galette_log_var, $i18n, $app, $plugins;
 
 
 if (!isset($basepath)) {
@@ -41,8 +37,11 @@ if (!isset($basepath)) {
 $db = 'mysql';
 $dbenv = (string)getenv('DB');
 if (
-    $dbenv === 'pgsql'
-    || str_starts_with($dbenv, 'postgres')
+    $dbenv !== false
+    && (
+        $dbenv === 'pgsql'
+        || str_starts_with($dbenv, 'postgres')
+    )
 ) {
     $db = 'pgsql';
 }
@@ -145,15 +144,4 @@ if (
     //do not initialize Tiles on update nor fail tests
     $titles = new \Galette\Repository\Titles($zdb);
     $titles->installInit();
-
-    $fc = $container->get(\Galette\Entity\FieldsConfig::class);
-    $categorized_fields = $fc->getCategorizedFields();
-    foreach ($categorized_fields as &$fieldset) {
-        foreach ($fieldset as &$field) {
-            if ($field['field_id'] == 'fingerprint') {
-                $field['visible'] = \Galette\Entity\FieldsConfig::ALL; //make sure fingerprint field is visible
-            }
-        }
-    }
-    $fc->setFields($categorized_fields);
 }

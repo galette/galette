@@ -36,6 +36,7 @@ use function Safe\preg_match;
 /**
  * @var \Slim\App<DI\Container> $app
  */
+global $plugins;
 $container = $app->getContainer();
 
 $routeParser = $app->getRouteCollector()->getRouteParser();

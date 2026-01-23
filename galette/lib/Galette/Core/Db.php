@@ -69,6 +69,9 @@ class Db
     private array $options;
     private string $last_query;
     private bool $no_commit = false;
+    /** @var int Transaction level (static because state is shared across all Db instances using the shared connection) */
+    private static int $transaction_level = 0;
+    private static ?Adapter $shared_adapter = null;
 
     public const MYSQL = 'mysql';
     public const PGSQL = 'pgsql';
@@ -145,12 +148,22 @@ class Db
      */
     private function doConnection(): void
     {
+        if (defined('GALETTE_TESTS') && GALETTE_TESTS === true && self::$shared_adapter !== null) {
+            $this->db = self::$shared_adapter;
+            $this->sql = new Sql($this->db);
+            return;
+        }
+
         $this->db = new Adapter($this->options);
         $this->db->getDriver()->getConnection()->connect();
         $this->sql = new Sql($this->db);
 
         if (!$this->isPostgres()) {
             $this->db->query("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+        }
+
+        if (defined('GALETTE_TESTS') && GALETTE_TESTS === true) {
+            self::$shared_adapter = $this->db;
         }
     }
 
@@ -766,7 +779,10 @@ class Db
      */
     public function beginTransaction(): void
     {
-        $this->db->getDriver()->getConnection()->beginTransaction();
+        if (self::$transaction_level === 0) {
+            $this->db->getDriver()->getConnection()->beginTransaction();
+        }
+        self::$transaction_level++;
     }
 
     /**
@@ -778,7 +794,16 @@ class Db
             //never commit from tests
             return;
         }
-        $this->db->getDriver()->getConnection()->commit();
+        if (self::$transaction_level > 1) {
+            self::$transaction_level--;
+        }
+
+        if (self::$transaction_level === 1 && !defined('GALETTE_TESTS')) {
+            // Only commit the root transaction if we are NOT in test mode.
+            // In test mode, we want the master transaction to always be rolled back.
+            self::$transaction_level = 0;
+            $this->db->getDriver()->getConnection()->commit();
+        }
     }
 
     /**
@@ -786,15 +811,15 @@ class Db
      */
     public function rollback(): void
     {
-        $this->db->getDriver()->getConnection()->rollback();
-    }
-
-    /**
-     * Is a transaction actually running?
-     */
-    public function inTransaction(): bool
-    {
-        return $this->db->getDriver()->getConnection()->inTransaction(); //@phpstan-ignore method.notFound (inTransaction is part of the abstract class, not the interface -- thanks Laminas!)
+        if (self::$transaction_level > 0) {
+            self::$transaction_level = 0;
+            try {
+                $this->db->getDriver()->getConnection()->rollback();
+            } catch (\Throwable) {
+                //TODO: maybe we should log the error?
+                // Ignore rollback errors during tests
+            }
+        }
     }
 
     /**
@@ -847,7 +872,7 @@ class Db
             'platform' => $this->db->getPlatform(),
             'query_string' => $this->last_query,
             'type_db' => $this->type_db,
-            default => throw new RuntimeException('Unknown property ' . $name),
+            default => throw new \RuntimeException('Unknown property ' . $name),
         };
     }
 

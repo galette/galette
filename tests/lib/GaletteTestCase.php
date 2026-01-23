@@ -61,6 +61,9 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $this->session = $this->container->get(\RKA\Session::class);
         $this->routeparser = $this->container->get(\Slim\Routing\RouteParser::class);
         $this->view = $this->container->get(\Slim\Views\Twig::class);
+        $this->zdb->beginTransaction();
+        $this->i18n->changeLanguage('en_US');
+
         if ($this->load_plugins) {
             $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         }
@@ -705,13 +708,13 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
      */
     protected function cleanContributions(): void
     {
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Transaction::TABLE);
-        $delete->where(['trans_desc' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
+        if ($this->zdb instanceof \PHPUnit\Framework\MockObject\MockObject) {
+            return;
+        }
+        $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 0', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Contribution::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Transaction::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 1', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
     }
 
     /**
@@ -719,22 +722,41 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
      */
     protected function cleanMembers(): void
     {
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
-        $this->zdb->execute($delete);
+        if ($this->zdb instanceof \PHPUnit\Framework\MockObject\MockObject) {
+            return;
+        }
+        $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 0', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Group::GROUPSUSERS_TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Group::GROUPSMANAGERS_TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Group::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Adherent::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 1', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+    }
 
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
+    /**
+     * Clean created scheduled payments
+     */
+    protected function cleanScheduledPayments(): void
+    {
+        if ($this->zdb instanceof \PHPUnit\Framework\MockObject\MockObject) {
+            return;
+        }
+        $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 0', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\ScheduledPayment::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 1', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+    }
 
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $delete->where('parent_id IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
+    /**
+     * Clean created documents
+     */
+    protected function cleanDocuments(): void
+    {
+        if ($this->zdb instanceof \PHPUnit\Framework\MockObject\MockObject) {
+            return;
+        }
+        $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 0', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Document::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 1', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
     }
 
     /**
