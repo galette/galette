@@ -471,7 +471,7 @@ class Texts
                 }
 
                 if ($exists === false) {
-                    //text does not exists in database, insert it.
+                    //text does not exist in database, insert it.
                     $missing[] = $default;
                 }
             }

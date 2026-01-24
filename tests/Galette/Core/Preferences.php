@@ -158,7 +158,7 @@ class Preferences extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
             [
-                \Galette\Core\Preferences::PK => 'pref_footer'
+                'nom_pref' => 'pref_footer'
             ]
         );
         $this->zdb->execute($delete);
@@ -166,7 +166,7 @@ class Preferences extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
             [
-                \Galette\Core\Preferences::PK => 'pref_new_contrib_script'
+                'nom_pref' => 'pref_new_contrib_script'
             ]
         );
         $this->zdb->execute($delete);

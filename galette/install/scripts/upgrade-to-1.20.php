@@ -171,10 +171,6 @@ class UpgradeTo120 extends AbstractUpdater
                 PREFIX_DB . $params['fktable'],
                 $params['fkcolumn']
             );
-            Analog::log(
-                'Adding missing foreign key ' . $query,
-                Analog::WARNING
-            );
             try {
                 $this->zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
             } catch (\PDOException $e) { // @phpstan-ignore catch.neverThrown (false positive when ran with PHP 8.2)

@@ -181,7 +181,7 @@ class Preferences
     private array $errors = [];
 
     public const TABLE = 'preferences';
-    public const PK = 'nom_pref';
+    public const PK = 'id_pref';
 
     /** Postal address will be the one given in the preferences */
     public const POSTAL_ADDRESS_FROM_PREFS = 0;
@@ -398,7 +398,6 @@ class Preferences
      */
     private function checkUpdate(): bool
     {
-        $proceed = false;
         $params = [];
         foreach (self::$defaults as $k => $v) {
             if (!isset($this->prefs[$k])) {
@@ -407,18 +406,23 @@ class Preferences
                 }
                 $this->prefs[$k] = $v;
                 Analog::log(
-                    'The field `' . $k . '` does not exists, Galette will attempt to create it.',
+                    'The field `' . $k . '` does not exist, Galette will attempt to create it.',
                     Analog::INFO
                 );
-                $proceed = true;
                 $params[] = [
                     'nom_pref'  => $k,
                     'val_pref'  => $v
                 ];
             }
         }
-        if ($proceed !== false) {
+        if (count($params)) {
             try {
+                $this->zdb->handleSequence(
+                    self::TABLE,
+                    self::PK,
+                    7 //there were 7 entries in preferences before autoincrement was added...
+                );
+
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values(
                     [
@@ -438,7 +442,10 @@ class Preferences
                 }
             } catch (Throwable $e) {
                 Analog::log(
-                    'Unable to add missing preferences.' . $e->getMessage(),
+                    sprintf(
+                        'Unable to add missing preferences. %s',
+                        $e->getMessage()
+                    ),
                     Analog::WARNING
                 );
                 return false;
@@ -517,6 +524,12 @@ class Preferences
                     ]
                 );
             }
+
+            $this->zdb->handleSequence(
+                self::TABLE,
+                self::PK,
+                count(self::$defaults)
+            );
 
             Analog::log(
                 'Default preferences were successfully stored into database.',

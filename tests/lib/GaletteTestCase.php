@@ -23,16 +23,13 @@ declare(strict_types=1);
 
 namespace Galette\Tests;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * Galette tests case main class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-abstract class GaletteTestCase extends TestCase
+abstract class GaletteTestCase extends BaseGaletteTestCase
 {
-    protected \Galette\Core\Db $zdb;
     protected array $members_fields;
     protected array $members_fields_cats;
     protected \Galette\Core\I18n $i18n;
@@ -43,81 +40,32 @@ abstract class GaletteTestCase extends TestCase
 
     protected \Galette\Entity\Adherent $adh;
     protected \Galette\Entity\Contribution $contrib;
-    protected \Galette\Core\Plugins $plugins;
     protected array $adh_ids = [];
     protected array $contrib_ids = [];
-    /** @var array<string,array<string,array<int,string>> */
-    protected array $flash_data;
-    protected \Slim\Flash\Messages $flash;
     protected \Slim\Routing\RouteParser $routeparser;
     protected \Slim\Views\Twig $view;
-    protected \DI\Container $container;
-    protected \Slim\App $app;
     protected int $seed;
-    protected array $expected_mysql_warnings = [];
-    protected bool $check_logs = true;
-    protected bool $load_plugins = false;
-
-    /**
-     * @var string[]
-     * @see see \Analog\Handler\Level::$log_levels
-     */
-    private array $log_levels_names = [
-        \Analog\Analog::DEBUG    => 'DEBUG',
-        \Analog\Analog::INFO     => 'INFO',
-        \Analog\Analog::NOTICE   => 'NOTICE',
-        \Analog\Analog::WARNING  => 'WARNING',
-        \Analog\Analog::ERROR    => 'ERROR',
-        \Analog\Analog::CRITICAL => 'CRITICAL',
-        \Analog\Analog::ALERT    => 'ALERT',
-        \Analog\Analog::URGENT   => 'URGENT'
-    ];
 
     /**
      * Set up tests
      */
     public function setUp(): void
     {
-        $flash_data = [];
-        $this->flash_data = &$flash_data;
-        $this->flash = new \Slim\Flash\Messages($flash_data);
-
-        $gapp =  new \Galette\Core\SlimApp();
-        $app = $gapp->getApp();
-        $this->app = $app;
-        $plugins = new \Galette\Core\Plugins();
-        $this->plugins = $plugins;
-        if ($this->load_plugins) {
-            $this->plugins->autoload(GALETTE_PLUGINS_PATH);
-        }
-        require GALETTE_BASE_PATH . '/includes/dependencies.php';
-        /** @var \DI\Container $container */
-        $container = $app->getContainer();
-        $_SERVER['HTTP_HOST'] = '';
-
-        $container->set(\Slim\Flash\Messages::class, $this->flash);
-
-        $app->addRoutingMiddleware();
-        $app->add(\Slim\Views\TwigMiddleware::createFromContainer($app, \Slim\Views\Twig::class));
-
-        $this->container = $container;
-
-        $this->zdb = $container->get(\Galette\Core\Db::class);
-        $this->i18n = $container->get(\Galette\Core\I18n::class);
-        $this->login = $container->get(\Galette\Core\Login::class);
-        $this->preferences = $container->get(\Galette\Core\Preferences::class);
-        $this->history = $container->get(\Galette\Core\History::class);
-        $this->members_fields = $container->get('members_fields');
-        $this->members_fields_cats = $container->get('members_fields_cats');
-        $this->session = $container->get(\RKA\Session::class);
-        $this->routeparser = $container->get(\Slim\Routing\RouteParser::class);
-        $this->view = $container->get(\Slim\Views\Twig::class);
-
+        parent::setUp();
+        $this->i18n = $this->container->get(\Galette\Core\I18n::class);
+        $this->login = $this->container->get(\Galette\Core\Login::class);
+        $this->preferences = $this->container->get(\Galette\Core\Preferences::class);
+        $this->history = $this->container->get(\Galette\Core\History::class);
+        $this->members_fields = $this->container->get('members_fields');
+        $this->members_fields_cats = $this->container->get('members_fields_cats');
+        $this->session = $this->container->get(\RKA\Session::class);
+        $this->routeparser = $this->container->get(\Slim\Routing\RouteParser::class);
+        $this->view = $this->container->get(\Slim\Views\Twig::class);
         if ($this->load_plugins) {
             $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         }
 
-        global $zdb, $login, $hist, $i18n, $container, $galette_log_var, $routeparser;  // globals :(
+        global $zdb, $login, $hist, $i18n, $container, $galette_log_var, $routeparser, $app;  // globals :(
         //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
         $zdb = $this->zdb;
         $login = $this->login;
@@ -125,9 +73,10 @@ abstract class GaletteTestCase extends TestCase
         $i18n = $this->i18n;
         $container = $this->container;
         $routeparser = $this->routeparser;
+        $app = $this->app;
         //phpcs:enable
         //FIXME: use DI when needed instead of global variable -- see also in includes/main.inc.php
-        $authenticate = $container->get(\Galette\Middleware\Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files
+        $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files
 
         $this->initPaymentTypes();
         $this->initStatus();
@@ -151,54 +100,8 @@ abstract class GaletteTestCase extends TestCase
      */
     public function tearDown(): void
     {
-        if ($this->check_logs) {
-            $logs = $this->getCleanedLogs();
-            $this->assertCount(0, $logs, implode("\n", $logs));
-        }
-
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame($this->expected_mysql_warnings, $this->zdb->getWarnings());
-        }
+        parent::tearDown();
         $this->cleanHistory();
-    }
-
-    /**
-     * Get logs as an array, cleaned of unwanted entries
-     *
-     * @param ?int $keep_level Level to keep explicitly (to check INFO or DEBUG logs messages)
-     *
-     * @return string[]
-     */
-    private function getCleanedLogs(?int $keep_level = null): array
-    {
-        global $galette_log_var;
-        $logs = explode("localhost - ", $galette_log_var ?? '');
-
-        $excluded_logs = [
-            'WARNING - Plugin plugin-oldversion',
-            'ERROR - Plugin Galette Unversionned'
-        ];
-
-        foreach ($logs as $i => $log) {
-            foreach ($excluded_logs as $excluded_log) {
-                if (str_contains($log, $excluded_log)) {
-                    unset($logs[$i]);
-                }
-            }
-
-            if (
-                empty($log)
-                || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::DEBUG] . ' - ')
-                && $keep_level !== \Analog\Analog::DEBUG
-                || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::INFO] . ' - ')
-                && $keep_level !== \Analog\Analog::INFO
-                || str_contains($log, '- ' . $this->log_levels_names[\Analog\Analog::NOTICE] . ' - ')
-                && $keep_level !== \Analog\Analog::NOTICE
-            ) {
-                unset($logs[$i]);
-            }
-        }
-        return $logs;
     }
 
     /**
@@ -815,42 +718,6 @@ abstract class GaletteTestCase extends TestCase
         $this->login->logAdmin('superadmin', $this->preferences);
         $this->assertTrue($this->login->isLogged());
         $this->assertTrue($this->login->isSuperAdmin());
-    }
-
-    /**
-     * Check for expected log entry. If found, it will be removed from logs.
-     *
-     * @param int    $level   Log lovel
-     * @param string $message Log message
-     */
-    protected function expectLogEntry(int $level, string $message): void
-    {
-        global $galette_log_var;
-        $this->assertNotEmpty($galette_log_var);
-
-        $logs = $this->getCleanedLogs(keep_level: $level);
-        $found = false;
-        foreach ($logs as $i => $log) {
-            if (str_contains($log, $this->log_levels_names[$level] . ' - ') && str_contains($log, $message)) {
-                $found = true;
-                unset($logs[$i]);
-            }
-        }
-
-        $galette_log_var = implode("\n", $logs);
-        $this->assertTrue(
-            $found,
-            "Log message '{$message}' not found in log storage for level '{$this->log_levels_names[$level]}'."
-        );
-    }
-
-    /**
-     * Check there is no log entry.
-     */
-    protected function expectNoLogEntry(): void
-    {
-        $logs = $this->getCleanedLogs();
-        $this->assertCount(0, $logs, print_r($logs, true));
     }
 
     /**

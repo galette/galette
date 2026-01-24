@@ -23,54 +23,24 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 
 /**
  * DB fail tests
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Install extends TestCase
+class Install extends BaseGaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    /** @var array<string> */
-    protected array $flash_data;
-    private \Slim\Flash\Messages $flash;
-    private \DI\Container $container;
-
     /**
      * Set up tests
      */
     public function setUp(): void
     {
+        global $galette_log_var;
         setlocale(LC_ALL, 'en_US');
-
-        $flash_data = [];
-        $this->flash_data = &$flash_data;
-        $this->flash = new \Slim\Flash\Messages($flash_data);
-
-        $gapp =  new \Galette\Core\SlimApp();
-        $app = $gapp->getApp();
-        $plugins = new \Galette\Core\Plugins(); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- global
-        require GALETTE_BASE_PATH . '/includes/dependencies.php';
-        $container = $app->getContainer();
-        $_SERVER['HTTP_HOST'] = '';
-
-        $container->set(\Slim\Flash\Messages::class, $this->flash);
-
-        $this->container = $container;
-
-        $this->zdb = $container->get(\Galette\Core\Db::class);
-    }
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::setUp();
+        $galette_log_var = null; //reset error messages after dependencies have been loaded - errors are specific to tests and can be ignored
     }
 
     /**
