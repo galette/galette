@@ -23,32 +23,23 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Preferences tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class FieldsConfig extends TestCase
+class FieldsConfig extends GaletteTestCase
 {
     private ?\Galette\Entity\FieldsConfig $fields_config = null;
-    private \Galette\Core\Db $zdb;
-    private array $members_fields;
-    private array $members_fields_cats;
 
     /**
      * Set up tests
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
-        $this->members_fields_cats = $members_fields_cats;
-
+        parent::setUp();
         $this->fields_config = new \Galette\Entity\FieldsConfig(
             $this->zdb,
             \Galette\Entity\Adherent::TABLE,
@@ -299,6 +290,7 @@ class FieldsConfig extends TestCase
 
         $categorized = $fields_config->getCategorizedFields();
         $this->assertSame($categorized_init, $categorized);
+        $this->expectLogEntry(\Analog::WARNING, 'Fields configuration count for `adherents` columns does not match records.');
     }
 
     /**
@@ -325,6 +317,7 @@ class FieldsConfig extends TestCase
 
         $categorized = $fields_config->getCategorizedFields();
         $this->countCategorizedFields($categorized);
+        $this->expectLogEntry(\Analog::WARNING, 'Fields configuration count for `adherents` columns does not match records. Is : 0 and should be');
     }
 
     /**

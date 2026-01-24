@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 use Laminas\Db\Adapter\Adapter;
 
 /**
@@ -31,31 +31,17 @@ use Laminas\Db\Adapter\Adapter;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class ContributionsTypes extends TestCase
+class ContributionsTypes extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private array $remove = [];
-    private \Galette\Core\I18n $i18n;
 
-    /**
-     * Set up tests
-     */
-    public function setUp(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
-    }
 
     /**
      * Tear down tests
      */
     public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::tearDown();
         $this->deleteTypes();
     }
 
@@ -95,6 +81,7 @@ class ContributionsTypes extends TestCase
                 \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
+        $this->expectLogEntry(\Analog::WARNING, 'A contribution type with label `annual fee` already exists');
 
         $this->assertTrue(
             $ctype->add(

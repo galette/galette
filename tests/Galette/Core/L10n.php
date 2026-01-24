@@ -23,17 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * L10n tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class L10n extends TestCase
+class L10n extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\I18n $i18n;
     private \Galette\Core\L10n $l10n;
 
     /**
@@ -41,10 +39,7 @@ class L10n extends TestCase
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
+        parent::setUp();
         $this->l10n = new \Galette\Core\L10n(
             $this->zdb,
             $this->i18n
@@ -56,9 +51,7 @@ class L10n extends TestCase
      */
     public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::tearDown();
         //cleanup dynamic translations
         $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
         $delete
@@ -268,6 +261,7 @@ class L10n extends TestCase
             $this->i18n
         );
         $this->assertFalse($l10n->addDynamicTranslation('A text that will not be added'));
+        $this->expectLogEntry(\Analog::ERROR, 'An error occurred adding dynamic translation for `A text that will not be added` | Error executing query!');
     }
 
     /**
@@ -297,6 +291,7 @@ class L10n extends TestCase
                 'A text that will not be updated'
             )
         );
+        $this->expectLogEntry(\Analog::ERROR, 'An error occurred updating dynamic translation for `A text that will not be updated` | Error executing query!');
     }
 
     /**
@@ -320,6 +315,7 @@ class L10n extends TestCase
             $this->i18n
         );
         $this->assertFalse($l10n->deleteDynamicTranslation('A text that will not be deleted'));
+        $this->expectLogEntry(\Analog::ERROR, 'An error occurred deleting dynamic translation for `A text that will not be deleted` | Error executing query!');
     }
 
     /**
@@ -342,8 +338,16 @@ class L10n extends TestCase
             $zdb,
             $this->i18n
         );
-        $this->expectExceptionMessage('Error executing query!');
-        $l10n->getDynamicTranslation('A text that will not be get', 'en_US');
+
+        $exception_thrown = false;
+        try {
+            $l10n->getDynamicTranslation('A text that will not be get', 'en_US');
+        } catch (\LogicException $e) {
+            $exception_thrown = true;
+            $this->assertSame('Error executing query!', $e->getMessage());
+        }
+        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $this->expectLogEntry(\Analog::WARNING, 'An error occurred retrieving l10n entry. text_orig=A text that will not be get, text_locale=en_US | Error executing query!');
     }
 
     /**
@@ -366,7 +370,15 @@ class L10n extends TestCase
             $zdb,
             $this->i18n
         );
-        $this->expectExceptionMessage('Error executing query!');
-        $l10n->getDynamicTranslations(md5('A text that will not be get'));
+
+        $exception_thrown = false;
+        try {
+            $l10n->getDynamicTranslations(md5('A text that will not be get'));
+        } catch (\LogicException $e) {
+            $exception_thrown = true;
+            $this->assertSame('Error executing query!', $e->getMessage());
+        }
+        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $this->expectLogEntry(\Analog::WARNING, 'An error occurred retrieving l10n entries. text_orig_sum=' . md5('A text that will not be get') . ' | Error executing query!');
     }
 }

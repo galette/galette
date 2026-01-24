@@ -23,42 +23,25 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Util;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Telemetry tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Telemetry extends TestCase
+class Telemetry extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\Preferences $preferences;
-    private \Galette\Core\Plugins $plugins;
-
     /**
      * Tear down tests
      */
     public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::tearDown();
 
         $this->preferences->pref_instance_uuid = '';
         $this->preferences->pref_registration_uuid = '';
         $this->preferences->store();
-    }
-
-    /**
-     * Set up tests
-     */
-    public function setUp(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $this->preferences = new \Galette\Core\Preferences($this->zdb);
-
-        $this->plugins = new \Galette\Core\Plugins();
     }
 
     /**

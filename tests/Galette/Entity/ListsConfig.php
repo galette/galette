@@ -23,19 +23,16 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * ListsConfig tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class ListsConfig extends TestCase
+class ListsConfig extends GaletteTestCase
 {
     private ?\Galette\Entity\ListsConfig $lists_config = null;
-    private \Galette\Core\Db $zdb;
-    private array $members_fields;
-    private array $members_fields_cats;
     private array $default_lists = [
         'id_adh',
         'list_adh_name',
@@ -50,13 +47,7 @@ class ListsConfig extends TestCase
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
-        $this->members_fields_cats = $members_fields_cats;
-
+        parent::setUp();
         $this->lists_config = new \Galette\Entity\ListsConfig(
             $this->zdb,
             \Galette\Entity\Adherent::TABLE,
@@ -72,9 +63,6 @@ class ListsConfig extends TestCase
     public function tearDown(): void
     {
         parent::tearDown();
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
         $this->resetListsConfig();
         $this->lists_config->installInit();
     }

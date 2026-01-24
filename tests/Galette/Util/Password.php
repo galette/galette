@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Util;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 use Galette\Core\Preferences;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -32,32 +32,18 @@ use PHPUnit\Framework\Attributes\DataProvider;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Password extends TestCase
+class Password extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\Preferences $preferences;
-
     /**
      * Tear down tests
      */
-    public function tearDow(): void
+    public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::tearDown();
         $this->preferences->pref_password_strength = Preferences::PWD_NONE;
         $this->preferences->pref_password_length = 6;
         $this->preferences->pref_password_blacklist = false;
         $this->preferences->store();
-    }
-
-    /**
-     * Set up tests
-     */
-    public function setUp(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $this->preferences = new \Galette\Core\Preferences($this->zdb);
     }
 
     /**

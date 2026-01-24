@@ -23,34 +23,23 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Status tests
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Title extends TestCase
+class Title extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private array $remove = [];
-
-    /**
-     * Set up tests
-     */
-    public function setUp(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-    }
 
     /**
      * Tear down tests
      */
     public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::tearDown();
         $this->deleteTitle();
     }
 

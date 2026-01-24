@@ -23,33 +23,23 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Payment type tests
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class PaymentType extends TestCase
+class PaymentType extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\Preferences $preferences;
-    private \Galette\Core\Login $login;
     private array $remove = [];
-    private \Galette\Core\I18n $i18n;
 
     /**
      * Set up tests
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->preferences = new \Galette\Core\Preferences($this->zdb);
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
-
+        parent::setUp();
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
         $res = $types->installInit(false);
         $this->assertTrue($res);
@@ -60,9 +50,7 @@ class PaymentType extends TestCase
      */
     public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::tearDown();
         $this->deletePaymentType();
     }
 

@@ -23,14 +23,14 @@ declare(strict_types=1);
 
 namespace Galette\Tests\IO;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 
 /**
  * News post tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Post extends TestCase
+class Post extends BaseGaletteTestCase
 {
     /**
      * Test post

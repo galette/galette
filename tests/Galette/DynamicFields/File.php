@@ -23,16 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\Tests\DynamicFields;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Dynamic file test
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class File extends TestCase
+class File extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private \Galette\DynamicFields\File $file;
 
     /**
@@ -40,7 +39,7 @@ class File extends TestCase
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
+        parent::setUp();
         $this->file = new \Galette\DynamicFields\File($this->zdb);
     }
 

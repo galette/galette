@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Util;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -31,7 +31,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Text extends TestCase
+class Text extends GaletteTestCase
 {
     /**
      * Texts to "slugify" provider

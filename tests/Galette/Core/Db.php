@@ -55,7 +55,7 @@ class Db extends TestCase
                 $this->assertEquals($know_warning['Code'], $dbwarning['Code']);
                 $this->assertStringContainsString(
                     strtolower((string)$know_warning['Message']),
-                    strtolower($dbwarning['Message'])
+                    strtolower((string)$dbwarning['Message'])
                 );
             }
         }

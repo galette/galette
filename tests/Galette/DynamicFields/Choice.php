@@ -23,16 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\Tests\DynamicFields;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Dynamic choice test
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Choice extends TestCase
+class Choice extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private \Galette\DynamicFields\Choice $choice;
 
     /**
@@ -40,7 +39,7 @@ class Choice extends TestCase
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
+        parent::setUp();
         $this->choice = new \Galette\DynamicFields\Choice($this->zdb);
     }
 

@@ -23,27 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 
 /**
  * CheckModules tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class CheckModules extends TestCase
+class CheckModules extends BaseGaletteTestCase
 {
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $zdb = new \Galette\Core\Db();
-            $this->assertSame([], $zdb->getWarnings());
-        }
-        parent::tearDown();
-    }
-
     /**
      * Test modules, all should be ok
      */

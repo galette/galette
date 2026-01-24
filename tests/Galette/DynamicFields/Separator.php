@@ -23,16 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\Tests\DynamicFields;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Dynamic separator test
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Separator extends TestCase
+class Separator extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private \Galette\DynamicFields\Separator $separator;
 
     /**
@@ -40,7 +39,7 @@ class Separator extends TestCase
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
+        parent::setUp();
         $this->separator = new \Galette\DynamicFields\Separator($this->zdb);
     }
 

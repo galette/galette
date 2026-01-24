@@ -23,16 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\Tests\DynamicFields;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Dynamic texts test
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Text extends TestCase
+class Text extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
     private \Galette\DynamicFields\Text $text;
 
     /**
@@ -40,7 +39,7 @@ class Text extends TestCase
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
+        parent::setUp();
         $this->text = new \Galette\DynamicFields\Text($this->zdb);
     }
 

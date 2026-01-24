@@ -23,27 +23,21 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Saved search tests
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class SavedSearch extends TestCase
+class SavedSearch extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private \Galette\Core\I18n $i18n;
-    private \Galette\Core\Login $login;
-
     /**
      * Set up tests
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n();
-
+        parent::setUp();
         $this->login = $this->getMockBuilder(\Galette\Core\Login::class)
             ->setConstructorArgs([$this->zdb, new \Galette\Core\I18n()])
             ->onlyMethods(['isLogged', 'isSuperAdmin', '__get'])
@@ -58,9 +52,7 @@ class SavedSearch extends TestCase
      */
     public function tearDown(): void
     {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
+        parent::tearDown();
         $this->deleteCreated();
     }
 

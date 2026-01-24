@@ -23,37 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 
 /**
  * Print logo tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class PrintLogo extends TestCase
+class PrintLogo extends BaseGaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-
-    /**
-     * Set up tests
-     */
-    public function setUp(): void
-    {
-        global $zdb;
-        $this->zdb = new \Galette\Core\Db();
-        $zdb = $this->zdb;
-    }
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
-    }
-
     /**
      * Test defaults after initialization
      */

@@ -23,17 +23,15 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * I18n tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class I18n extends TestCase
+class I18n extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-    private ?\Galette\Core\I18n $i18n = null;
     private \Galette\Core\Galette $galette;
 
     /**
@@ -41,21 +39,8 @@ class I18n extends TestCase
      */
     public function setUp(): void
     {
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
+        parent::setUp();
         $this->galette = new \Galette\Core\Galette();
-    }
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $this->assertSame([], $this->zdb->getWarnings());
-        }
     }
 
     /**
@@ -158,6 +143,7 @@ class I18n extends TestCase
         $id = $this->i18n->getID();
 
         $this->assertSame(\Galette\Core\I18n::DEFAULT_LANG, $id);
+        $this->expectLogEntry(\Analog::WARNING, "Lang un_KN does not exist, switching to default.");
     }
 
     /**

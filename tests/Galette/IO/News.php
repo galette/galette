@@ -23,26 +23,23 @@ declare(strict_types=1);
 
 namespace Galette\Tests\IO;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 
 /**
  * News tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class News extends TestCase
+class News extends BaseGaletteTestCase
 {
     private string $local_url;
-    private \Galette\Core\I18n $i18n;
 
     /**
      * Set up tests
      */
     public function setUp(): void
     {
-        $this->i18n = new \Galette\Core\I18n();
-        global $i18n;
-        $i18n = $this->i18n;
+        parent::setUp();
         $this->local_url = 'file:///' . realpath(GALETTE_ROOT . '../tests/feed.xml');
     }
 
@@ -144,5 +141,6 @@ class News extends TestCase
         $news->method('allowURLFOpen')->willReturn(false);
 
         $this->assertCount(0, $news->getPosts());
+        $this->expectLogEntry(\Analog::ERROR, 'allow_url_fopen is set to false; cannot load news.');
     }
 }

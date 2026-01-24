@@ -23,30 +23,21 @@ declare(strict_types=1);
 
 namespace Galette\Tests\DynamicFields;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Dynamic fields test
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class DynamicField extends TestCase
+class DynamicField extends GaletteTestCase
 {
-    private \Galette\Core\Db $zdb;
-
-    /**
-     * Set up tests
-     */
-    public function setUp(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-    }
-
     /**
      * Tear down tests
      */
     public function tearDown(): void
     {
+        parent::tearDown();
         $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
         $this->zdb->execute($delete);
         //cleanup dynamic translations
@@ -577,8 +568,27 @@ class DynamicField extends TestCase
 
         $this->assertFalse(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df_id));
 
-        $this->expectException('\PDOException');
-        $this->zdb->execute($select);
+        $exception_thrown = false;
+        try {
+            $this->zdb->execute($select);
+        } catch (\PDOException $e) {
+            $exception_thrown = true;
+            $this->assertStringContainsString(
+                $this->zdb->isPostgres() ? 'Undefined table' : 'Base table or view not found',
+                $e->getMessage()
+            );
+        }
+        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            $this->zdb->isPostgres() ? 'Undefined table' : 'Base table or view not found'
+        );
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => '1146',
+            'Message' => 'Table \'' . NAME_DB . '.galette_field_contents_' . $df_id . '\' doesn\'t exist'
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
     }
 
     /**

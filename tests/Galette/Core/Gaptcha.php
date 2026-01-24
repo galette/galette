@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 use ReflectionClass;
 
 /**
@@ -31,7 +31,7 @@ use ReflectionClass;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Gaptcha extends TestCase
+class Gaptcha extends BaseGaletteTestCase
 {
     /**
      * Test getRawData

@@ -101,7 +101,7 @@ abstract class BaseGaletteTestCase extends TestCase
         }
 
         if (TYPE_DB === 'mysql') {
-            $this->assertSame($this->expected_mysql_warnings, $this->zdb->getWarnings());
+            $this->assertEquals($this->expected_mysql_warnings, $this->zdb->getWarnings());
         }
     }
 

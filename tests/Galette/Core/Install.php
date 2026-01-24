@@ -23,14 +23,14 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 
 /**
  * Install tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Install extends TestCase
+class Install extends BaseGaletteTestCase
 {
     private \Galette\Core\Install $install;
 
@@ -39,19 +39,9 @@ class Install extends TestCase
      */
     public function setUp(): void
     {
+        parent::setUp();
         setlocale(LC_ALL, 'en_US');
         $this->install = new \Galette\Core\Install();
-    }
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            $zdb = new \Galette\Core\Db();
-            $this->assertSame([], $zdb->getWarnings());
-        }
     }
 
     /**
@@ -373,11 +363,13 @@ class Install extends TestCase
 
         $post_check = $this->install->postCheckDb();
         $this->assertTrue($post_check);
+        $this->expectNoLogEntry();
 
         $this->install->atPreviousStep();
         //db install cannot be run twice, step is still Admin
         $step = $this->install->isAdminStep();
         $this->assertTrue($step);
+        $this->expectLogEntry(\Analog::WARNING, 'It is forbidden to rerun database install!');
     }
 
     /**

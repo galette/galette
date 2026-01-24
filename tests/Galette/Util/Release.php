@@ -23,14 +23,14 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Util;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 
 /**
  * Release tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Release extends TestCase
+class Release extends GaletteTestCase
 {
     /**
      * Releases provider
