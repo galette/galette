@@ -706,7 +706,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
     /**
      * Clean created contributions
      */
-    protected function cleanContributions(): void
+    /*protected function cleanContributions(): void
     {
         if ($this->zdb instanceof \PHPUnit\Framework\MockObject\MockObject) {
             return;
@@ -715,12 +715,12 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Contribution::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Transaction::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 1', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-    }
+    }*/
 
     /**
      * Clean created members and groups
      */
-    protected function cleanMembers(): void
+    /*protected function cleanMembers(): void
     {
         if ($this->zdb instanceof \PHPUnit\Framework\MockObject\MockObject) {
             return;
@@ -731,12 +731,12 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Group::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Adherent::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 1', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-    }
+    }*/
 
     /**
      * Clean created scheduled payments
      */
-    protected function cleanScheduledPayments(): void
+    /*protected function cleanScheduledPayments(): void
     {
         if ($this->zdb instanceof \PHPUnit\Framework\MockObject\MockObject) {
             return;
@@ -744,12 +744,12 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 0', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\ScheduledPayment::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 1', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-    }
+    }*/
 
     /**
      * Clean created documents
      */
-    protected function cleanDocuments(): void
+    /*protected function cleanDocuments(): void
     {
         if ($this->zdb instanceof \PHPUnit\Framework\MockObject\MockObject) {
             return;
@@ -757,7 +757,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 0', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query('DELETE FROM ' . PREFIX_DB . \Galette\Entity\Document::TABLE, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
         $this->zdb->db->query('SET FOREIGN_KEY_CHECKS = 1', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-    }
+    }*/
 
     /**
      * Set given member as staff
