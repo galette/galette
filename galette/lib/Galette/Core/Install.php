@@ -675,23 +675,28 @@ class Install
 
         $sql_query = split_sql_file($sql_query, ';');
 
-        $zdb->connection->beginTransaction();
+        $zdb->beginTransaction();
 
         $sql_size = count($sql_query);
         for ($i = 0; $i < $sql_size; $i++) {
             $query = trim((string)$sql_query[$i]);
             if ($query != '' && $query[0] != '-') {
-                //some output infos
+                //some output information
                 $ret = [
                     'message'   => $query,
                     'res'       => false
                 ];
 
                 try {
-                    $zdb->db->query(
-                        $query,
-                        Adapter::QUERY_MODE_EXECUTE
-                    );
+                    if ($zdb->willMysqlImplicitCommit($query)) {
+                        //commit will be done, whether I like it or not...
+                        $zdb->commit();
+                        $zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
+                        //restart a new transaction :/
+                        $zdb->beginTransaction();
+                    } else {
+                        $zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
+                    }
                     $ret['res'] = true;
                 } catch (Throwable $e) {
                     $log_lvl = Analog::WARNING;
@@ -719,23 +724,11 @@ class Install
             }
         }
 
-        if ($fatal_error) {
-            try {
-                $zdb->connection->rollBack();
-            } catch (\PDOException $e) {
-                //to avoid php8/mysql autocommit issue
-                if ($zdb->isPostgres() || !str_contains($e->getMessage(), 'no active transaction')) {
-                    throw $e;
-                }
-            }
-        } else {
-            try {
-                $zdb->connection->commit();
-            } catch (\PDOException $e) {
-                //to avoid php8/mysql autocommit issue
-                if ($zdb->isPostgres() || !str_contains($e->getMessage(), 'no active transaction')) {
-                    throw $e;
-                }
+        if ($zdb->inTransaction()) {
+            if ($fatal_error) {
+                $zdb->rollback();
+            } else {
+                $zdb->commit();
             }
         }
 

@@ -452,7 +452,7 @@ class CsvIn extends Csv
         $row = 0;
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             while (
                 ($data = fgetcsv( //@phpstan-ignore theCodingMachineSafe.function
                     $handle,
@@ -546,10 +546,10 @@ class CsvIn extends Csv
                 }
                 $row++;
             }
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             $this->addError($e->getMessage());
         }
 

@@ -260,7 +260,7 @@ class ListsConfig extends FieldsConfig
                 throw new \RuntimeException('No fields for list, aborting.');
             }
 
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
@@ -307,10 +307,10 @@ class ListsConfig extends FieldsConfig
                 Analog::INFO
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return $this->load();
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 '[' . $class . '] An error occurred while storing list '
                 . 'configuration for table `' . $this->table . '`.'

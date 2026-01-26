@@ -740,7 +740,7 @@ abstract class DynamicField
             if (count($this->errors) == 0 && is_array($this->values)) {
                 $contents_table = self::getFixedValuesTableName($this->id);
                 try {
-                    $this->zdb->connection->beginTransaction();
+                    $this->zdb->beginTransaction();
 
                     $insert = $this->zdb->insert($contents_table);
                     $insert->values(
@@ -760,9 +760,9 @@ abstract class DynamicField
                             ]
                         );
                     }
-                    $this->zdb->connection->commit();
+                    $this->zdb->commit();
                 } catch (Throwable $e) {
-                    $this->zdb->connection->rollBack();
+                    $this->zdb->rollback();
                     Analog::log(
                         'Unable to store field ' . $this->id . ' values ('
                         . $e->getMessage() . ')',
@@ -851,7 +851,7 @@ abstract class DynamicField
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             $old_rank = $this->index;
 
@@ -877,11 +877,11 @@ abstract class DynamicField
                 ]
             );
             $this->zdb->execute($update);
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
 
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to change field ' . $this->id . ' rank | '
                 . $e->getMessage(),
@@ -902,7 +902,7 @@ abstract class DynamicField
                 $this->zdb->drop($contents_table);
             }
 
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $old_rank = $this->index;
 
             $update = $this->zdb->update(self::TABLE);
@@ -945,13 +945,13 @@ abstract class DynamicField
 
             $this->deleteTranslation($this->name);
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
 
             return true;
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
+            if ($this->zdb->inTransaction()) {
                 //because of DROP autocommit on mysql...
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred deleting field | ' . $e->getMessage(),

@@ -272,7 +272,7 @@ class Members
         $list = (is_array($ids) ? $ids : [$ids]);
 
         try {
-            $zdb->connection->beginTransaction();
+            $zdb->beginTransaction();
 
             //Retrieve some information
             $select = $zdb->select(self::TABLE);
@@ -373,7 +373,7 @@ class Members
             $zdb->execute($del_qry);
 
             //commit all changes
-            $zdb->connection->commit();
+            $zdb->commit();
 
             foreach ($processed as $p) {
                 $emitter->dispatch(new GaletteEvent('member.remove', $p));
@@ -387,8 +387,8 @@ class Members
 
             return true;
         } catch (Throwable $e) {
-            if ($zdb->connection->inTransaction()) {
-                $zdb->connection->rollBack();
+            if ($zdb->inTransaction()) {
+                $zdb->rollback();
             }
             if ($zdb->isForeignKeyException($e)) {
                 Analog::log(
@@ -1561,7 +1561,7 @@ class Members
         global $zdb;
 
         try {
-            $zdb->connection->beginTransaction();
+            $zdb->beginTransaction();
             $select = $zdb->select(Adherent::TABLE);
             $select->columns(
                 ['id_adh', 'login_adh', 'mdp_adh']
@@ -1637,11 +1637,11 @@ class Members
                     }
                 }
             }
-            $zdb->connection->commit();
+            $zdb->commit();
             $this->count = $processed;
             return true;
         } catch (Throwable $e) {
-            $zdb->connection->rollBack();
+            $zdb->rollback();
             Analog::log(
                 'An error occurred trying to retrieve members with '
                 . 'empty logins/passwords (' . $e->getMessage(),

@@ -129,7 +129,7 @@ class Date extends DynamicField
             return true;
         }
 
-        $zdb->connection->beginTransaction();
+        $zdb->beginTransaction();
         $update = $zdb->update(DynamicFieldsHandle::TABLE);
         $update->set(
             [
@@ -152,7 +152,7 @@ class Date extends DynamicField
                 ]
             );
         }
-        $zdb->connection->commit();
+        $zdb->commit();
         Analog::log(
             sprintf(
                 "Dynamic dates updated, %1\$s row(s) affected on %2\$s found.\n%3\$s",

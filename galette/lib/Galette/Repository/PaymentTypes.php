@@ -110,7 +110,7 @@ class PaymentTypes extends Repository
                 }
             }
 
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             //first, we drop all values
             $delete = $this->zdb->delete($ent::TABLE);
@@ -123,11 +123,11 @@ class PaymentTypes extends Repository
             );
             $this->insert($ent::TABLE, $this->defaults);
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
-                $this->zdb->connection->rollBack();
+            if ($this->zdb->inTransaction()) {
+                $this->zdb->rollback();
             }
             throw $e;
         }
@@ -161,7 +161,7 @@ class PaymentTypes extends Repository
             }
 
             if (count($missing) > 0) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
                 $this->insert($ent::TABLE, $missing);
                 Analog::log(
                     'Missing payment types were successfully stored into database.',
@@ -174,12 +174,12 @@ class PaymentTypes extends Repository
                     count($this->defaults)
                 );
 
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
                 return true;
             }
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
-                $this->zdb->connection->rollBack();
+            if ($this->zdb->inTransaction()) {
+                $this->zdb->rollback();
             }
             throw $e;
         }

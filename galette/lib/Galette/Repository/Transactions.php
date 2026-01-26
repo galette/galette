@@ -354,7 +354,7 @@ class Transactions
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             $select = $this->zdb->select(self::TABLE);
             $select->where->in(self::PK, $list);
@@ -368,13 +368,13 @@ class Transactions
                     throw new Exception();
                 }
             }
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             $hist->add(
                 "Transactions deleted (" . print_r($list, true) . ')'
             );
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'An error occurred trying to remove transactions | '
                 . $e->getMessage(),

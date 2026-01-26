@@ -210,7 +210,7 @@ class Transaction implements AccessManagementInterface
 
         try {
             if ($transaction) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
             }
 
             //remove associated contributions if needed
@@ -239,14 +239,14 @@ class Transaction implements AccessManagementInterface
             }
 
             if ($transaction) {
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
             }
 
             $emitter->dispatch(new GaletteEvent('transaction.remove', $this));
             return true;
         } catch (Throwable $e) {
             if ($transaction) {
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred trying to remove transaction #'
@@ -416,7 +416,7 @@ class Transaction implements AccessManagementInterface
         global $emitter;
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [];
             $fields = $this->getDbFields($this->zdb);
             foreach ($fields as $field) {
@@ -466,14 +466,14 @@ class Transaction implements AccessManagementInterface
             //dynamic fields
             $this->dynamicsStore(true);
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
 
             //send event at the end of process, once all has been stored
             $emitter->dispatch(new GaletteEvent($event, $this));
 
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n"
                 . $e->getTraceAsString(),

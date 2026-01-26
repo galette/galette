@@ -375,7 +375,7 @@ class Status
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [
                 'libelle_statut'  => $label,
                 'priorite_statut' => $extra
@@ -399,10 +399,10 @@ class Status
             } else {
                 throw new \Exception('New status not added.');
             }
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to add new status `' . $label . '` | '
                 . $e->getMessage(),
@@ -434,7 +434,7 @@ class Status
 
         try {
             $oldlabel = $ret->libelle_statut;
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [
                 'libelle_statut' => $label,
                 'priorite_statut' => $extra
@@ -455,10 +455,10 @@ class Status
                 'Status #' . $id . ' updated successfully.',
                 Analog::INFO
             );
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to update status #' . $id . ' | '
                 . $e->getMessage(),
@@ -493,7 +493,7 @@ class Status
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $id]);
 
@@ -505,10 +505,10 @@ class Status
                 Analog::INFO
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to delete status  #' . $id
                 . ' | ' . $e->getMessage(),

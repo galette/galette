@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -728,5 +729,93 @@ class Db extends TestCase
             sprintf('Minimum version for PostgreSQL engine is %s, PostgreSQL 12 found!', GALETTE_PGSQL_MIN),
             $zdb->getUnsupportedMessage()
         );
+    }
+
+    /**
+     * @return array<int,array{query: string, expected: bool}>
+     */
+    public static function implicitCommitProvider(): array
+    {
+        return [
+            [
+                'query' => 'ALTER TABLE galette_adherents ADD COLUMN test_column VARCHAR(255);',
+                'expected' => true
+            ],
+            [
+                'query' => 'CREATE INDEX idx_test ON galette_adherents (test_column);',
+                'expected' => true
+            ],
+            [
+                'query' => 'DROP TABLE galette_test;',
+                'expected' => true
+            ],
+            [
+                'query' => 'INSERT INTO galette_adherents (id_adherent, nom_adherent) VALUES (9999, \'Test\');',
+                'expected' => false
+            ],
+            [
+                'query' => 'UPDATE galette_adherents SET nom_adherent = \'Test2\' WHERE id_adherent = 9999;',
+                'expected' => false
+            ],
+            [
+                'query' => 'DELETE FROM galette_adherents WHERE id_adherent = 9999;',
+                'expected' => false
+            ],
+            [
+                'query' => 'SELECT * FROM galette_adherents;',
+                'expected' => false
+            ],
+            [
+                'query' => 'TRUNCATE TABLE galette_adherents;',
+                'expected' => true
+            ],
+            [
+                'query' => 'CREATE TABLE galette_test (id INT);',
+                'expected' => true
+            ],
+            [
+                'query' => 'DROP INDEX idx_test ON galette_adherents;',
+                'expected' => true
+            ],
+            [
+                'query' => 'ANALYZE TABLE galette_adherents;',
+                'expected' => true
+            ],
+            [
+                'query' => 'OPTIMIZE TABLE galette_adherents;',
+                'expected' => true
+            ],
+            [
+                'query' => 'RENAME TABLE galette_adherents TO galette_adherents_old;',
+                'expected' => true
+            ],
+            [
+                'query' => 'SET autocommit = 1;',
+                'expected' => false // does cause implicit commit, but not handled: too complex and should really not happen.
+            ],
+            [
+                'query' => 'SET sql_mode = \'STRICT_ALL_TABLES\';',
+                'expected' => false
+            ],
+        ];
+    }
+
+    /**
+     * Test willMysqlImplicitCommit method
+     */
+    #[DataProvider('implicitCommitProvider')]
+    public function testWillMysqlImplicitCommit(string $query, bool $expected): void
+    {
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(['isPostgres'])
+            ->getMock();
+        $zdb->method('isPostgres')->willReturn(true);
+        $this->assertFalse($zdb->willMysqlImplicitCommit($query));
+
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+            ->onlyMethods(['isPostgres'])
+            ->getMock();
+        $zdb->method('isPostgres')->willReturn(false);
+        $this->assertSame($expected, $zdb->willMysqlImplicitCommit($query));
     }
 }

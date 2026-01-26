@@ -865,7 +865,7 @@ class Preferences
     public function store(bool $updating = false): bool
     {
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $update = $this->zdb->update(self::TABLE);
             $update->set(
                 [
@@ -901,7 +901,7 @@ class Preferences
                     ]
                 );
             }
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             Analog::log(
                 'Preferences were successfully stored into database.',
                 Analog::INFO
@@ -919,8 +919,8 @@ class Preferences
 
             return true;
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
-                $this->zdb->connection->rollBack();
+            if ($this->zdb->inTransaction()) {
+                $this->zdb->rollback();
             }
 
             $messages = [];

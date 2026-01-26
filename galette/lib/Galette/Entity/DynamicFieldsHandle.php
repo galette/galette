@@ -255,7 +255,7 @@ class DynamicFieldsHandle
                 $this->item_id = $item_id;
             }
             if (!$transaction) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
             }
 
             $this->handleRemovals();
@@ -287,12 +287,12 @@ class DynamicFieldsHandle
             }
 
             if (!$transaction) {
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
             }
             return true;
         } catch (Throwable $e) {
             if (!$transaction) {
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred storing dynamic field. Form name: ' . $this->form_name
@@ -438,7 +438,7 @@ class DynamicFieldsHandle
                 $this->item_id = $item_id;
             }
             if (!$transaction) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
             }
 
             $delete = $this->zdb->delete(self::TABLE);
@@ -451,12 +451,12 @@ class DynamicFieldsHandle
             $this->zdb->execute($delete);
 
             if (!$transaction) {
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
             }
             return true;
         } catch (Throwable $e) {
             if (!$transaction) {
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred removing dynamic field. Form name: ' . $this->form_name

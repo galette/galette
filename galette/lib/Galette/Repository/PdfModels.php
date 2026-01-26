@@ -90,7 +90,7 @@ class PdfModels extends Repository
                 }
             }
 
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             //first, we drop all values
             $update = $this->zdb->update($ent::TABLE);
@@ -108,11 +108,11 @@ class PdfModels extends Repository
 
             $this->insert($ent::TABLE, $this->defaults);
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
-                $this->zdb->connection->rollBack();
+            if ($this->zdb->inTransaction()) {
+                $this->zdb->rollback();
             }
             throw $e;
         }
@@ -146,7 +146,7 @@ class PdfModels extends Repository
             }
 
             if (count($missing) > 0) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
                 $this->insert($ent::TABLE, $missing);
 
                 $this->zdb->handleSequence(
@@ -159,12 +159,12 @@ class PdfModels extends Repository
                     'Missing texts were successfully stored into database.',
                     Analog::INFO
                 );
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
                 return true;
             }
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
-                $this->zdb->connection->rollBack();
+            if ($this->zdb->inTransaction()) {
+                $this->zdb->rollback();
             }
             throw $e;
         }

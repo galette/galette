@@ -443,7 +443,7 @@ class ScheduledPayments
 
         try {
             if ($transaction) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
             }
             $select = $this->zdb->select(self::TABLE);
             $select->where->in(self::PK, $list);
@@ -456,7 +456,7 @@ class ScheduledPayments
                 }
             }
             if ($transaction) {
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
             }
             $hist->add(
                 str_replace(
@@ -468,7 +468,7 @@ class ScheduledPayments
             return true;
         } catch (Throwable $e) {
             if ($transaction) {
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred trying to remove scheduled payments | '

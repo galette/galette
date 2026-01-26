@@ -91,7 +91,7 @@ class FieldsCategories
     public static function setCategories(Db $zdb, array $categories): bool
     {
         try {
-            $zdb->connection->beginTransaction();
+            $zdb->beginTransaction();
 
             $update = $zdb->update(self::TABLE);
             $update->set(
@@ -112,10 +112,10 @@ class FieldsCategories
                 ];
                 $stmt->execute($params);
             }
-            $zdb->connection->commit();
+            $zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $zdb->connection->rollBack();
+            $zdb->rollback();
             throw $e;
         }
     }

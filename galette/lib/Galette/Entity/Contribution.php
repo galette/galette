@@ -716,7 +716,7 @@ class Contribution implements AccessManagementInterface
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [];
             $fields = self::getDbFields($this->zdb);
             foreach ($fields as $field) {
@@ -783,7 +783,7 @@ class Contribution implements AccessManagementInterface
             //dynamic fields
             $this->dynamicsStore(true);
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             $this->orig_amount = $this->amount;
 
             //send event at the end of process, once all has been stored
@@ -793,8 +793,8 @@ class Contribution implements AccessManagementInterface
 
             return true;
         } catch (Throwable $e) {
-            if ($this->zdb->connection->inTransaction()) {
-                $this->zdb->connection->rollBack();
+            if ($this->zdb->inTransaction()) {
+                $this->zdb->rollback();
             }
             throw $e;
         }
@@ -840,7 +840,7 @@ class Contribution implements AccessManagementInterface
 
         try {
             if ($transaction) {
-                $this->zdb->connection->beginTransaction();
+                $this->zdb->beginTransaction();
             }
 
             $delete = $this->zdb->delete(self::TABLE);
@@ -857,13 +857,13 @@ class Contribution implements AccessManagementInterface
                 return false;
             }
             if ($transaction) {
-                $this->zdb->connection->commit();
+                $this->zdb->commit();
             }
             $emitter->dispatch(new GaletteEvent('contribution.remove', $this));
             return true;
         } catch (Throwable $e) {
             if ($transaction) {
-                $this->zdb->connection->rollBack();
+                $this->zdb->rollback();
             }
             Analog::log(
                 'An error occurred trying to remove contribution #'

@@ -51,7 +51,7 @@ class UpgradeTo110 extends AbstractUpdater
      */
     protected function update(): bool
     {
-        $this->zdb->connection->beginTransaction();
+        $this->zdb->beginTransaction();
 
         $results = $this->zdb->selectAll(DynamicField::TABLE);
         $results = $results->toArray();
@@ -81,7 +81,7 @@ class UpgradeTo110 extends AbstractUpdater
             );
         }
 
-        $this->zdb->connection->commit();
+        $this->zdb->commit();
         return true;
     }
 

@@ -735,7 +735,7 @@ class FieldsConfig
         $class = static::class;
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
@@ -791,10 +791,10 @@ class FieldsConfig
                 Analog::INFO
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return $this->load();
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 '[' . $class . '] An error occurred while storing fields '
                 . 'configuration for table `' . $this->table . '`.'
@@ -827,7 +827,7 @@ class FieldsConfig
             return true;
         }
 
-        $this->zdb->connection->beginTransaction();
+        $this->zdb->beginTransaction();
         try {
             $update = $this->zdb->update(self::TABLE);
             $update->set(
@@ -869,10 +869,10 @@ class FieldsConfig
                 Adapter::QUERY_MODE_EXECUTE
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'An error occurred migrating old required fields. | '
                 . $e->getMessage(),

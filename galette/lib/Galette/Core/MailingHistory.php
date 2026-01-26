@@ -432,7 +432,7 @@ class MailingHistory extends History
                 $mailing->removeAttachments();
             }
 
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
 
             //delete members
             $delete = $this->zdb->delete(self::TABLE);
@@ -440,7 +440,7 @@ class MailingHistory extends History
             $this->zdb->execute($delete);
 
             //commit all changes
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
 
             //add an history entry
             $hist->add(
@@ -449,7 +449,7 @@ class MailingHistory extends History
 
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to delete selected mailing history entries |'
                 . $e->getMessage(),

@@ -402,7 +402,7 @@ class ContributionsTypes
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
@@ -427,10 +427,10 @@ class ContributionsTypes
             } else {
                 throw new \Exception('New contribution type not added.');
             }
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to add new contribution type `' . $label . '` | '
                 . $e->getMessage(),
@@ -461,7 +461,7 @@ class ContributionsTypes
 
         try {
             $oldlabel = $ret->libelle_type_cotis;
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $values = [
                 'libelle_type_cotis' => $label,
                 'amount' => $amount ?? new Expression('NULL'),
@@ -483,10 +483,10 @@ class ContributionsTypes
                 'Contribution type #' . $id . ' updated successfully.',
                 Analog::INFO
             );
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to update contribution type #' . $id . ' | '
                 . $e->getMessage(),
@@ -517,7 +517,7 @@ class ContributionsTypes
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $id]);
 
@@ -529,10 +529,10 @@ class ContributionsTypes
                 Analog::INFO
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to delete contribution type #' . $id
                 . ' | ' . $e->getMessage(),

@@ -761,6 +761,38 @@ class Db
     }
 
     /**
+     * Start a transaction
+     */
+    public function beginTransaction(): void
+    {
+        $this->db->getDriver()->getConnection()->beginTransaction();
+    }
+
+    /**
+     * Commit current transaction
+     */
+    public function commit(): void
+    {
+        $this->db->getDriver()->getConnection()->commit();
+    }
+
+    /**
+     * Rollback current transaction
+     */
+    public function rollback(): void
+    {
+        $this->db->getDriver()->getConnection()->rollback();
+    }
+
+    /**
+     * Is a transaction actually running?
+     */
+    public function inTransaction(): bool
+    {
+        return $this->db->getDriver()->getConnection()->inTransaction(); //@phpstan-ignore method.notFound (inTransaction is part of the abstract class, not the interface -- thanks Laminas!)
+    }
+
+    /**
      * Execute query string
      *
      * @param SqlInterface $sql SQL object
@@ -1061,5 +1093,36 @@ class Db
             $min_version,
             $version
         );
+    }
+
+    /**
+     * Check if a query will cause an implicit commit in MySQL
+     */
+    public function willMysqlImplicitCommit(string $query): bool
+    {
+        if ($this->isPostgres()) {
+            return false;
+        }
+
+        //note: "SET autocommit=1" also causes an implicit commit,
+        //but we won't check for that here - that would be a terrible idea to use it anyway
+        $implicit_commit_statements = [
+            'ALTER',
+            'CREATE',
+            'DROP',
+            'RENAME',
+            'TRUNCATE',
+            'ANALYZE',
+            'OPTIMIZE',
+            'REPAIR'
+        ];
+
+        foreach ($implicit_commit_statements as $implicit_commit_statement) {
+            if (preg_match('/^\s*' . preg_quote($implicit_commit_statement, '/') . '\b/i', trim($query)) === 1) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

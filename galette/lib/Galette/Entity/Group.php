@@ -277,8 +277,8 @@ class Group
         $transaction = false;
 
         try {
-            if (!$zdb->connection->inTransaction()) {
-                $zdb->connection->beginTransaction();
+            if (!$zdb->inTransaction()) {
+                $zdb->beginTransaction();
                 $transaction = true;
             }
 
@@ -319,13 +319,13 @@ class Group
 
             //commit all changes
             if ($transaction) {
-                $zdb->connection->commit();
+                $zdb->commit();
             }
 
             return true;
         } catch (Throwable $e) {
             if ($transaction) {
-                $zdb->connection->rollBack();
+                $zdb->rollback();
             }
             if ($zdb->isForeignKeyException($e)) {
                 Analog::log(
@@ -744,7 +744,7 @@ class Group
         global $zdb;
 
         try {
-            $zdb->connection->beginTransaction();
+            $zdb->beginTransaction();
 
             //first, remove current groups members
             $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
@@ -796,7 +796,7 @@ class Group
             }
 
             //commit all changes
-            $zdb->connection->commit();
+            $zdb->commit();
 
             Analog::log(
                 'Group members updated successfully.',
@@ -806,7 +806,7 @@ class Group
             return true;
         } catch (Throwable $e) {
             $te = new RuntimeException('Unable to attach members to group', $e->getCode(), $e);
-            $zdb->connection->rollBack();
+            $zdb->rollback();
             $messages = [];
             do {
                 $messages[] = $e->getMessage();
@@ -832,7 +832,7 @@ class Group
         global $zdb;
 
         try {
-            $zdb->connection->beginTransaction();
+            $zdb->beginTransaction();
 
             //first, remove current groups managers
             $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
@@ -884,7 +884,7 @@ class Group
             }
 
             //commit all changes
-            $zdb->connection->commit();
+            $zdb->commit();
 
             Analog::log(
                 'Groups managers updated successfully.',
@@ -894,7 +894,7 @@ class Group
             return true;
         } catch (Throwable $e) {
             $te = clone $e;
-            $zdb->connection->rollBack();
+            $zdb->rollback();
             $messages = [];
             do {
                 $messages[] = $e->getMessage();

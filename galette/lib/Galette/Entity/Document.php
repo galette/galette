@@ -296,7 +296,7 @@ class Document
         }
 
         try {
-            $this->zdb->connection->beginTransaction();
+            $this->zdb->beginTransaction();
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where([self::PK => $ids]);
             $this->zdb->execute($delete);
@@ -308,10 +308,10 @@ class Document
                 Analog::INFO
             );
 
-            $this->zdb->connection->commit();
+            $this->zdb->commit();
             return true;
         } catch (Throwable $e) {
-            $this->zdb->connection->rollBack();
+            $this->zdb->rollback();
             Analog::log(
                 'Unable to delete document #' . implode(', #', $ids) . ' | ' . $e->getMessage(),
                 Analog::ERROR

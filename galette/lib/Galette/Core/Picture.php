@@ -352,7 +352,7 @@ class Picture
 
         try {
             if ($transaction === true) {
-                $zdb->connection->beginTransaction();
+                $zdb->beginTransaction();
             }
 
             $delete = $zdb->delete($this->tbl_prefix . $class::TABLE);
@@ -394,7 +394,7 @@ class Picture
             if ($_file !== null && $success !== true) {
                 //unable to remove file that exists!
                 if ($transaction === true) {
-                    $zdb->connection->rollBack();
+                    $zdb->rollback();
                 }
                 Analog::log(
                     'The file ' . $_file
@@ -404,14 +404,14 @@ class Picture
                 return false;
             } else {
                 if ($transaction === true) {
-                    $zdb->connection->commit();
+                    $zdb->commit();
                 }
                 $this->has_picture = false;
                 return true;
             }
         } catch (Throwable $e) {
             if ($transaction === true) {
-                $zdb->connection->rollBack();
+                $zdb->rollback();
             }
             Analog::log(
                 'An error occurred attempting to delete picture ' . $this->db_id
@@ -551,7 +551,7 @@ class Picture
         $class = static::class;
 
         try {
-            $zdb->connection->beginTransaction();
+            $zdb->beginTransaction();
 
             if (isset($this->insert_stmt)) {
                 $stmt = $this->insert_stmt;
@@ -582,10 +582,10 @@ class Picture
                     'format'    => $ext
                 ]
             );
-            $zdb->connection->commit();
+            $zdb->commit();
             $this->has_picture = true;
         } catch (Throwable $e) {
-            $zdb->connection->rollBack();
+            $zdb->rollback();
             Analog::log(
                 'An error occurred storing picture in database: '
                 . $e->getMessage(),

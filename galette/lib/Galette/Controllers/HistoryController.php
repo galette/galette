@@ -167,7 +167,6 @@ class HistoryController extends AbstractController
                 );
                 $success = true;
             } catch (Throwable $e) {
-                $this->zdb->connection->rollBack();
                 Analog::log(
                     'An error occurred flushing logs | ' . $e->getMessage(),
                     Analog::ERROR

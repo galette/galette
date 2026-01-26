@@ -235,7 +235,7 @@ class Groups
 
         try {
             if ($transaction === false) {
-                $zdb->connection->beginTransaction();
+                $zdb->beginTransaction();
             }
 
             $table = $manager === true ? Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
@@ -310,13 +310,13 @@ class Groups
             }
             if ($transaction === false) {
                 //commit all changes
-                $zdb->connection->commit();
+                $zdb->commit();
             }
             return true;
         } catch (Throwable $e) {
             $te = $e;
             if ($transaction === false) {
-                $zdb->connection->rollBack();
+                $zdb->rollback();
             }
             $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id
                 . ') to specified groups ' . print_r($groups, true);
