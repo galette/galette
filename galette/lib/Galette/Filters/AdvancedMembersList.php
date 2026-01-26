@@ -211,7 +211,14 @@ class AdvancedMembersList extends MembersList
         parent::__construct();
         if ($simple instanceof MembersList) {
             foreach ($this->pagination_fields as $pf) {
-                $this->$pf = $simple->$pf;
+                switch ($pf) {
+                    case 'ordered':
+                        $this->setDirection($simple->getDirection());
+                        break;
+                    default:
+                        $this->$pf = $simple->$pf;
+                        break;
+                }
             }
             foreach ($this->memberslist_fields as $mlf) {
                 $this->$mlf = $simple->$mlf;
