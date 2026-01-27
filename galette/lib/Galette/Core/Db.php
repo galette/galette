@@ -779,10 +779,17 @@ class Db
      */
     public function beginTransaction(): void
     {
-        if (self::$transaction_level === 0) {
-            $this->db->getDriver()->getConnection()->beginTransaction();
+        $connection = $this->db->getDriver()->getConnection();
+        if (self::$transaction_level === 0 || !$connection->inTransaction()) {
+            $connection->beginTransaction();
+            self::$transaction_level = 1;
+        } else {
+            $this->db->query(
+                'SAVEPOINT galette_level_' . self::$transaction_level,
+                Adapter::QUERY_MODE_EXECUTE
+            );
+            self::$transaction_level++;
         }
-        self::$transaction_level++;
     }
 
     /**
@@ -794,15 +801,31 @@ class Db
             //never commit from tests
             return;
         }
+        $connection = $this->db->getDriver()->getConnection();
         if (self::$transaction_level > 1) {
+            if ($connection->inTransaction()) {
+                try {
+                    $this->db->query(
+                        'RELEASE SAVEPOINT galette_level_' . (self::$transaction_level - 1),
+                        Adapter::QUERY_MODE_EXECUTE
+                    );
+                } catch (Throwable $e) {
+                    // Ignore, savepoint may have been lost due to implicit commit
+                    \Analog::log(
+                        'Cannot release savepoint galette_level_' . (self::$transaction_level - 1) . ' | ' . $e->getMessage(),
+                        \Analog::WARNING
+                    );
+                }
+            }
             self::$transaction_level--;
-        }
-
-        if (self::$transaction_level === 1 && !defined('GALETTE_TESTS')) {
-            // Only commit the root transaction if we are NOT in test mode.
-            // In test mode, we want the master transaction to always be rolled back.
-            self::$transaction_level = 0;
-            $this->db->getDriver()->getConnection()->commit();
+        } elseif (self::$transaction_level === 1) {
+            // Root level: only commit if not in test mode
+            if (!defined('GALETTE_TESTS')) {
+                if ($connection->inTransaction()) {
+                    $connection->commit();
+                }
+                self::$transaction_level = 0;
+            }
         }
     }
 
@@ -811,15 +834,45 @@ class Db
      */
     public function rollback(): void
     {
-        if (self::$transaction_level > 0) {
-            self::$transaction_level = 0;
-            try {
-                $this->db->getDriver()->getConnection()->rollback();
-            } catch (\Throwable) {
-                //TODO: maybe we should log the error?
-                // Ignore rollback errors during tests
+        $connection = $this->db->getDriver()->getConnection();
+        if (self::$transaction_level > 1) {
+            if ($connection->inTransaction()) {
+                try {
+                    $this->db->query(
+                        'ROLLBACK TO SAVEPOINT galette_level_' . (self::$transaction_level - 1),
+                        Adapter::QUERY_MODE_EXECUTE
+                    );
+                } catch (Throwable $e) {
+                    // Ignore, savepoint may have been lost due to implicit commit
+                    \Analog::log(
+                        'Cannot release savepoint galette_level_' . (self::$transaction_level - 1) . ' | ' . $e->getMessage(),
+                        \Analog::WARNING
+                    );
+                }
             }
+            self::$transaction_level--;
+        } elseif (self::$transaction_level === 1) {
+            if ($connection->inTransaction()) {
+                $connection->rollback();
+            }
+            self::$transaction_level = 0;
         }
+    }
+
+    /**
+     * Is a transaction actually running?
+     */
+    public function inTransaction(): bool
+    {
+        return $this->db->getDriver()->getConnection()->inTransaction();
+    }
+
+    /**
+     * Get current transaction level
+     */
+    public function getTransactionLevel(): int
+    {
+        return self::$transaction_level;
     }
 
     /**

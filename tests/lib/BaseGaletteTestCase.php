@@ -65,6 +65,8 @@ abstract class BaseGaletteTestCase extends TestCase
      */
     public function setUp(): void
     {
+        global $galette_log_var;
+        $galette_log_var = '';
         $flash_data = [];
         $this->flash_data = &$flash_data;
         $this->flash = new \Slim\Flash\Messages($flash_data);
