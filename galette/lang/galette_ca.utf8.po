@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2026-01-28 11:39+0000\n"
+"PO-Revision-Date: 2026-01-28 15:00+0000\n"
 "Last-Translator: Laura Quintana Marín <2001lauraquintana@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -90,10 +90,8 @@ msgstr "El tipus de pagament «%1$s» s'ha modificat amb èxit."
 msgid "Remove payment type %1$s"
 msgstr "Elimina el tipus de pagament %1$s"
 
-#, fuzzy
-#| msgid "Contribution has been successfully stored"
 msgid "Contribution is fully scheduled!"
-msgstr "La contribució s'ha desat correctament"
+msgstr "La contribució s'ha desat correctament!"
 
 #, fuzzy
 msgid "Add scheduled payment"
@@ -155,11 +153,10 @@ msgstr "Pàgina següent (%1$s)"
 msgid "Parent removed"
 msgstr "cap membre"
 
-#, fuzzy, php-format
-#| msgid "Payment type '%1$s' has been successfully modified."
+#, php-format
 msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
-msgstr "El tipus de pagament «%1$s» s'ha modificat amb èxit."
+msgstr "S'ha modificat amb èxit el grup superior dels grups següents: %1$s"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -230,10 +227,8 @@ msgstr "No s'ha afegit el tipus %type :("
 msgid "Contribution type #%id has not been updated"
 msgstr "%type #%id no s'ha actualitzat"
 
-#, fuzzy
-#| msgid "Contribution has been successfully stored"
 msgid "Contribution type has been successfully added!"
-msgstr "La contribució s'ha desat correctament"
+msgstr "El tipus de contribució s'ha desat correctament!"
 
 #, fuzzy
 #| msgid "%type #%id has been successfully updated!"
@@ -431,10 +426,8 @@ msgstr "Edita l'estat"
 msgid "Missing required status name!"
 msgstr "Falta el nom de camp requerit!"
 
-#, fuzzy
-#| msgid "%type has not been added :("
 msgid "Status has not been added :("
-msgstr "No s'ha afegit el tipus %type :("
+msgstr "L'estat no s'ha afegit :("
 
 #, fuzzy
 #| msgid "%type #%id has not been updated"
@@ -480,9 +473,8 @@ msgstr "Llista de contribucions"
 msgid "List of transactions"
 msgstr "Llista de transaccions"
 
-#, fuzzy
 msgid "- Unknown contribution type!"
-msgstr "Nou tipus de contribució"
+msgstr "- Nou tipus de contribució!"
 
 msgid "No contribution was selected, please check at least one."
 msgstr ""
@@ -948,9 +940,8 @@ msgstr "El nom del connector ha estat activat"
 msgid "Plugin %1$s has been disabled"
 msgstr "El nom del connector ha estat desactivat"
 
-#, fuzzy
 msgid "Labels translation"
-msgstr "Visualitza la transacció"
+msgstr "Traducció d'etiquetes"
 
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
@@ -1072,9 +1063,8 @@ msgstr "Creació de taules"
 msgid "Admin parameters"
 msgstr "Paràmetres d'administració"
 
-#, fuzzy
 msgid "Telemetry"
-msgstr "Telemesura"
+msgstr "Telemetria"
 
 msgid "Galette initialization"
 msgstr "Inicialització de Galette"
@@ -1296,7 +1286,6 @@ msgstr "Afegeix una donació"
 msgid "Add new donation in database"
 msgstr "Afegeix una donació nova a la base de dades"
 
-#, fuzzy
 msgid "Add a transaction"
 msgstr "Afegeix una transacció"
 
@@ -1415,9 +1404,8 @@ msgstr ""
 msgid "Public pages"
 msgstr "Pàgines públiques"
 
-#, fuzzy
 msgid "Transactions"
-msgstr "Operacions"
+msgstr "Transaccions"
 
 #, fuzzy
 msgid "%membername: edit information"
@@ -1988,7 +1976,6 @@ msgstr "targetes"
 msgid "Member's Cards"
 msgstr "Targetes de membre"
 
-#, fuzzy
 msgid "Cards"
 msgstr "Targetes"
 
@@ -2083,7 +2070,6 @@ msgstr "Factura"
 msgid "Member"
 msgstr "Membre"
 
-#, fuzzy
 msgid "Inaccessible"
 msgstr "Inaccessible"
 
@@ -2233,19 +2219,15 @@ msgstr "Professió"
 msgid "Company name"
 msgstr "Nom de l'empresa"
 
-#, fuzzy
 msgid "Address"
-msgstr "Adreça"
+msgstr "Direcció"
 
-#, fuzzy
 msgid "Zipcode"
-msgstr "Zipcode"
+msgstr "Codi postal"
 
-#, fuzzy
 msgid "Town"
 msgstr "Ciutat"
 
-#, fuzzy
 msgid "Country"
 msgstr "País"
 
@@ -2273,9 +2255,8 @@ msgstr "La pertinença ha caducat des de"
 msgid "Contribution label"
 msgstr "Etiqueta de contribució"
 
-#, fuzzy
 msgid "Amount"
-msgstr "Import"
+msgstr "Quantitat"
 
 #, fuzzy
 msgid "Amount (in letters)"
@@ -2296,7 +2277,6 @@ msgstr "Comentari"
 msgid "Begin date"
 msgstr "Data d'inici"
 
-#, fuzzy
 msgid "End date"
 msgstr "Data de finalització"
 
@@ -2480,7 +2460,6 @@ msgstr "Targeta de soci actualitzada"
 msgid "Active"
 msgstr "Actiu"
 
-#, fuzzy
 msgid "Inactive"
 msgstr "Inactiu"
 
@@ -2500,9 +2479,8 @@ msgstr "Data"
 msgid "Amount:"
 msgstr "Import"
 
-#, fuzzy
 msgid "Description:"
-msgstr "Descripció"
+msgstr "Descripció:"
 
 #, fuzzy
 msgid "Originator:"
@@ -2558,13 +2536,11 @@ msgstr "No es pot suprimir aquesta etiqueta encara s'utilitza"
 msgid "Contributor:"
 msgstr "Col·laborador"
 
-#, fuzzy
 msgid "Contribution type:"
-msgstr "Tipus de contribució"
+msgstr "Tipus de contribució:"
 
-#, fuzzy
 msgid "Comments:"
-msgstr "Comentaris"
+msgstr "Comentaris:"
 
 #, fuzzy
 msgid "Date"
@@ -2679,14 +2655,11 @@ msgstr "Paràmetres del correu"
 msgid "Contribution is required"
 msgstr "ID de contribució"
 
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load contribution"
-msgstr "No s'ha pogut carregar la contribució #%id!"
+msgstr "No s'ha pogut carregar la contribució"
 
-#, fuzzy
 msgid "Amount must be a positive number"
-msgstr "- La durada ha de ser un enter positiu!"
+msgstr "L'import ha de ser un nombre positiu"
 
 msgid "Amount cannot be greater than non allocated amount"
 msgstr ""
@@ -2742,7 +2715,6 @@ msgstr "Facebook"
 msgid "LinkedIn"
 msgstr "EnllaçedIn"
 
-#, fuzzy
 msgid "Viadeo"
 msgstr "Viadeo"
 
@@ -2799,9 +2771,8 @@ msgstr "No podeu suprimir els tipus de pagament del sistema!"
 msgid "Other"
 msgstr "Altres"
 
-#, fuzzy
 msgid "Cash"
-msgstr "Cash"
+msgstr "Efectiu"
 
 #, fuzzy
 msgid "Credit card"
@@ -3118,7 +3089,6 @@ msgstr "Gràfics"
 msgid "Publisher:"
 msgstr "Editorial"
 
-#, fuzzy
 msgid "President"
 msgstr "President"
 
@@ -3364,9 +3334,8 @@ msgstr "Membre de"
 msgid "Status:"
 msgstr "Estat"
 
-#, fuzzy
 msgid "Name:"
-msgstr "Nom"
+msgstr "Nom:"
 
 #, fuzzy
 msgid "First name:"
@@ -3930,9 +3899,8 @@ msgstr "Comprovació de la base de dades"
 msgid "Database exists and connection parameters are OK."
 msgstr "La base de dades existeix i els paràmetres de connexió són correctes."
 
-#, fuzzy
 msgid "Incompatible database version."
-msgstr "Incompatible amb la versió actual"
+msgstr "Versió de la base de dades incompatible."
 
 #, fuzzy
 msgid "Connection to database successfull"
@@ -4383,9 +4351,8 @@ msgstr "Permisos"
 msgid "Type"
 msgstr ""
 
-#, fuzzy
 msgid "Required"
-msgstr "Requerit"
+msgstr "Obligatori"
 
 #, fuzzy
 msgid "Width in forms"
@@ -5159,7 +5126,6 @@ msgstr "Camí"
 msgid "Main route:"
 msgstr "Ruta principal"
 
-#, fuzzy
 msgid "ACLs"
 msgstr "ACLs"
 
@@ -5627,7 +5593,6 @@ msgid ""
 msgstr ""
 "Ja existeix un mailing. Voleu crear-ne un de nou o reprendre l'existent?"
 
-#, fuzzy
 msgid "New"
 msgstr "Nou"
 
@@ -5641,9 +5606,8 @@ msgstr ""
 "Hi ha hagut un error en mostrar la interfície de detalls del full "
 "d'assistència ("
 
-#, fuzzy
 msgid "Required field!"
-msgstr "Requerit"
+msgstr "Camp obligatori!"
 
 #, fuzzy
 msgid "Some warnings has been thrown:"
@@ -5769,9 +5733,8 @@ msgstr "Executa el procés d'importació però *no* desa res a la base de dades"
 msgid "Dry run"
 msgstr "Executa en sec"
 
-#, fuzzy
 msgid "Import"
-msgstr "Importa"
+msgstr "Importació"
 
 #, fuzzy
 msgid "No import file actually exists."
@@ -5842,9 +5805,8 @@ msgstr "Suprimeix el tipus de pagament '%s'"
 msgid "Priority"
 msgstr "Prioritat"
 
-#, fuzzy
 msgid "New status"
-msgstr "Nou estat"
+msgstr "Estat nou"
 
 #, fuzzy
 msgid "Choose wich reminder(s) you want to send:"
@@ -5907,9 +5869,8 @@ msgstr "Informació relacionada de transacció"
 msgid "Not dispatched amount"
 msgstr "Quantitat no enviada"
 
-#, fuzzy
 msgid "Scheduled payments"
-msgstr "Selecciona els adjunts"
+msgstr "Pagaments programats"
 
 msgid "Create a new scheduled payment"
 msgstr ""
@@ -6038,7 +5999,6 @@ msgstr "S'ha produït un error en mostrar la vista prèvia ("
 msgid "An error occurred displaying members interface :("
 msgstr "Hi ha hagut un error en mostrar la interfície de membres ("
 
-#, fuzzy
 msgid "Members selection"
 msgstr "Selecció de membres"
 
@@ -6082,7 +6042,6 @@ msgstr "Paràmetres"
 msgid "Rights"
 msgstr "Drets"
 
-#, fuzzy
 msgid "E-Mail"
 msgstr "Correu electrònic"
 
@@ -6285,9 +6244,8 @@ msgstr ""
 msgid "Default membership extension:"
 msgstr "Extensió de pertinença per defecte"
 
-#, fuzzy
 msgid "(Months)"
-msgstr "(Months)"
+msgstr "(Mesos)"
 
 #, fuzzy
 msgid "or"
@@ -6827,9 +6785,8 @@ msgstr "Força de la contrasenya"
 msgid "None (default)"
 msgstr "Cap (per defecte)"
 
-#, fuzzy
 msgid "Weak"
-msgstr "Weak"
+msgstr "Feble"
 
 #, fuzzy
 msgid "Medium"
@@ -7153,7 +7110,6 @@ msgstr "Visualitza les contribucions"
 msgid "Create a new member with %1$s information."
 msgstr "Crea un membre nou amb informació %1$s."
 
-#, fuzzy
 msgid "Duplicate"
 msgstr "Duplicat"
 
@@ -7321,9 +7277,8 @@ msgstr "Seleccioneu un grup"
 msgid "With email:"
 msgstr "Amb correu electrònic:"
 
-#, fuzzy
 msgid "beetween"
-msgstr "beetween"
+msgstr "entre"
 
 #, fuzzy
 msgid "Modification date"
@@ -7601,10 +7556,8 @@ msgstr ""
 msgid "Select a group to add selected members to"
 msgstr "Heu de seleccionar un membre del personal"
 
-#, fuzzy
-#| msgid "You are about to remove %count members."
 msgid "Select a group to remove selected members from"
-msgstr "Esteu a punt d'eliminar %count membres."
+msgstr "Seleccioneu un grup per eliminar-ne els membres seleccionats"
 
 msgid "Load previous members..."
 msgstr "Carrega els membres anteriors..."
