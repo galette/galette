@@ -155,7 +155,7 @@ class Db
         }
 
         $this->db = new Adapter($this->options);
-        $this->db->getDriver()->getConnection()->connect();
+        $this->getConnection()->connect();
         $this->sql = new Sql($this->db);
 
         if (!$this->isPostgres()) {
@@ -775,11 +775,20 @@ class Db
     }
 
     /**
+     * Get the underlying connection
+     */
+    public function getConnection(): AbstractConnection
+    {
+        //@phpstan-ignore return.type (inTransaction is part of the abstract class, not the interface)
+        return $this->db->getDriver()->getConnection();
+    }
+
+    /**
      * Start a transaction
      */
     public function beginTransaction(): void
     {
-        $connection = $this->db->getDriver()->getConnection();
+        $connection = $this->getConnection();
         if (self::$transaction_level === 0 || !$connection->inTransaction()) {
             $connection->beginTransaction();
             self::$transaction_level = 1;
@@ -801,7 +810,7 @@ class Db
             //never commit from tests
             return;
         }
-        $connection = $this->db->getDriver()->getConnection();
+        $connection = $this->getConnection();
         if (self::$transaction_level > 1) {
             if ($connection->inTransaction()) {
                 try {
@@ -834,7 +843,7 @@ class Db
      */
     public function rollback(): void
     {
-        $connection = $this->db->getDriver()->getConnection();
+        $connection = $this->getConnection();
         if (self::$transaction_level > 1) {
             if ($connection->inTransaction()) {
                 try {
@@ -864,7 +873,7 @@ class Db
      */
     public function inTransaction(): bool
     {
-        return $this->db->getDriver()->getConnection()->inTransaction();
+        return $this->getConnection()->inTransaction();
     }
 
     /**
@@ -921,7 +930,7 @@ class Db
             'db' => $this->db,
             'sql' => $this->sql,
             'driver' => $this->db->getDriver(),
-            'connection' => $this->db->getDriver()->getConnection(),
+            'connection' => $this->getConnection(),
             'platform' => $this->db->getPlatform(),
             'query_string' => $this->last_query,
             'type_db' => $this->type_db,
