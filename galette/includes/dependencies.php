@@ -36,7 +36,6 @@ use function Safe\preg_match;
 /**
  * @var \Slim\App<DI\Container> $app
  */
-global $plugins;
 $container = $app->getContainer();
 
 $routeParser = $app->getRouteCollector()->getRouteParser();
@@ -367,7 +366,7 @@ foreach ($deprecateds as $deprecated => $class) {
 //END TODO
 
 //For bad existing globals can be used...
-global $translator, $i18n;
+global $translator, $i18n, $plugins;
 if (
     !$container->has('galette.mode')
     || $container->get('galette.mode') !== 'INSTALL' //legacy case
