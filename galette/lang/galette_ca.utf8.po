@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2026-01-28 15:00+0000\n"
+"PO-Revision-Date: 2026-01-28 15:41+0000\n"
 "Last-Translator: Laura Quintana Marín <2001lauraquintana@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
@@ -932,13 +932,13 @@ msgstr "Neteja els registres"
 msgid "Plugins"
 msgstr "Connectors"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Plugin %1$s has been enabled"
-msgstr "El nom del connector ha estat activat"
+msgstr "El connector %1$s s'ha habilitat"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Plugin %1$s has been disabled"
-msgstr "El nom del connector ha estat desactivat"
+msgstr "El connector %1$s ha estat desactivat"
 
 msgid "Labels translation"
 msgstr "Traducció d'etiquetes"
@@ -1504,9 +1504,9 @@ msgstr ""
 
 #. TRANS: parameter is a field name
 #. TRANS: parameter is an hTML link to the field with its name
-#, fuzzy, php-format
+#, php-format
 msgid "- Mandatory field %1$s empty."
-msgstr "- El camp obligatori està buit."
+msgstr "- El camp obligatori %1$s està buit."
 
 #, fuzzy
 msgid "Passwords mismatch"
@@ -1520,9 +1520,9 @@ msgstr "Heu de seleccionar un membre del personal"
 msgid "You have to select a staff member to retrieve its phone number"
 msgstr "Heu de seleccionar un membre del personal"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Invalid E-Mail address: %s"
-msgstr "Adreça de correu electrònic invàlida"
+msgstr "Adreça de correu electrònic invàlida: %s"
 
 #, fuzzy
 msgid "- The username must be composed of at least 4 characters!"
@@ -1566,10 +1566,9 @@ msgid "- Invalid website URL."
 msgstr ""
 
 #. TRANS: first parameter is name, second is status
-#, fuzzy, php-format
-#| msgid "Association %s"
+#, php-format
 msgid "%1$s association's %2$s"
-msgstr "Associacion %s"
+msgstr "%1$s de l'associació %2$s"
 
 msgid "Please define constant \"GALETTE_URI\" with the path to your instance."
 msgstr ""
@@ -1911,9 +1910,9 @@ msgstr "Etiquetes dels membres"
 msgid "Labels"
 msgstr "Etiquetes"
 
-#, fuzzy, php-format
+#, php-format
 msgid "File %1$s cannot be open!"
-msgstr "El nom del fitxer del 5% no pot ser obert!"
+msgstr "El fitxer %1$s no es pot obrir!"
 
 #, php-format
 msgid ""
@@ -1928,9 +1927,9 @@ msgstr ""
 msgid "Field %1$s is required, but missing in row %2$s"
 msgstr "El camp %1$s és obligatori però falta al fila %2$s"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Status %status does not exists!"
-msgstr "Estatualstatus no existeix!"
+msgstr "L'estat %status no existeix!"
 
 #, fuzzy
 msgid "Title %title does not exists!"
@@ -4566,9 +4565,8 @@ msgstr "Objecte"
 msgid "Nov"
 msgstr "No"
 
-#, fuzzy
 msgid "Dec"
-msgstr "Separar?"
+msgstr "Des"
 
 msgid "Today"
 msgstr ""
@@ -6422,9 +6420,8 @@ msgstr "Envia els recordatoris als membres finals?"
 msgid "Can group managers edit members?"
 msgstr "Els gestors de grup poden editar els seus membres?"
 
-#, fuzzy
 msgid "Can group managers send mailings?"
-msgstr "Selecció dels gestors de grups"
+msgstr "Els gestors de grup poden enviar correus massius?"
 
 #, fuzzy
 msgid "Can group managers do exports?"
@@ -6438,17 +6435,15 @@ msgstr ""
 "Els gestors de grups tindran permís per exportar membres com a cvs, cartes "
 "pdf, assistència i grups pdf"
 
-#, fuzzy
 msgid "Can group managers see contributions?"
-msgstr "Selecció dels gestors de grups"
+msgstr "Els gestors de grup poden veure les contribucions?"
 
 #, fuzzy
 msgid "Can group managers create contributions?"
 msgstr "Envia els recordatoris als membres finals?"
 
-#, fuzzy
 msgid "Can group managers see transactions?"
-msgstr "Selecció dels gestors de grups"
+msgstr "Els gestors de grup poden veure les transaccions?"
 
 #, fuzzy
 msgid "Can group managers create transactions?"
@@ -6514,9 +6509,8 @@ msgstr ""
 "Assegureu-vos d'ajustar-vos si ho deshabiliteu. Tingueu en compte que "
 "l'edició actual del mailing no es veurà afectada per un canvi."
 
-#, fuzzy
 msgid "Send email to members?"
-msgstr "Envia els recordatoris als membres finals"
+msgstr "Enviar un correu electrònic als membres?"
 
 msgid ""
 "Sends an email each time a member card or a contribution has been added or "
