@@ -10,13 +10,14 @@
 # Arnau Isern <arnauisern84@gmail.com>, 2022.
 # Sineline <sineline@gmail.com>, 2022.
 # Queralt Garrigos <garrigosqueralt@gmail.com>, 2022.
+# Laura Quintana Marín <2001lauraquintana@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2025-10-21 08:39+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2026-01-28 11:39+0000\n"
+"Last-Translator: Laura Quintana Marín <2001lauraquintana@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
 "ca/>\n"
 "Language: ca\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.16-dev\n"
 
 #, fuzzy
 #| msgid "Unable to load contribution #%id!"
@@ -134,11 +135,10 @@ msgstr "El nou membre s'ha afegit exitosament."
 msgid "Scheduled payment has been successfully modified."
 msgstr "El tipus de pagament «%s» s'ha modificat amb èxit."
 
-#, fuzzy
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
-msgstr[0] "Elimina l'adjunt"
-msgstr[1] "Elimina l'adjunt"
+msgstr[0] "Elimina el pagament programat"
+msgstr[1] "Elimina els pagaments programats"
 
 msgid "Group name is missing!"
 msgstr "Falta el nom del grup!"
@@ -254,7 +254,6 @@ msgstr "S'ha produït un error en afegir un camp dinàmic:("
 msgid "Dynamic field has been successfully stored!"
 msgstr "El camp dinàmic ha estat emmagatzemat amb èxit!"
 
-#, fuzzy
 msgid "Dynamic fields"
 msgstr "Camps dinàmics"
 
@@ -346,12 +345,11 @@ msgstr "S'ha produït un error en emmagatzemar el membre."
 msgid "An error occurred adding member to its groups."
 msgstr "Hi ha hagut un error en afegir un membre als seus grups."
 
-#, fuzzy, php-format
-#| msgid "%count members has been changed successfully!"
+#, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] "%1$s membres han estat canviats satisfactoriament!"
-msgstr[1] "%1$s membres han estat canviats satisfactoriament!"
+msgstr[0] "El membre %1$s s'ha canviat amb èxit!"
+msgstr[1] "Els membres de %1$s s'han canviat amb èxit!"
 
 msgid "Something went wrong during mass edition!"
 msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
@@ -1046,9 +1044,8 @@ msgstr "El correu electrònic '%1$s' s'ha modificat amb èxit."
 msgid "None"
 msgstr "Cap"
 
-#, fuzzy
 msgid "Checks"
-msgstr "Comprovacions"
+msgstr "Xecs"
 
 #, fuzzy
 msgid "Installation mode"
@@ -1611,7 +1608,6 @@ msgstr ""
 msgid "Main information"
 msgstr "Informació principal"
 
-#, fuzzy
 msgid "Social networks"
 msgstr "Xarxes socials"
 
@@ -1842,7 +1838,6 @@ msgstr "Generat per Galette"
 msgid "Managers:"
 msgstr "Gestors"
 
-#, fuzzy
 msgid "Name"
 msgstr "Nom"
 
@@ -4848,12 +4843,11 @@ msgstr "Trieu una entrada..."
 msgid "For the selection:"
 msgstr "Per a la selecció"
 
-#, fuzzy, php-format
-#| msgid "months"
+#, php-format
 msgid "%1$s month"
 msgid_plural "%1$s months"
-msgstr[0] "mesos"
-msgstr[1] "mesos"
+msgstr[0] "%1$s mes"
+msgstr[1] "%1$s mesos"
 
 #, fuzzy
 msgid "Membership extension"
@@ -5081,7 +5075,6 @@ msgstr "Contribucions adjuntes"
 msgid "Begin"
 msgstr "Inici"
 
-#, fuzzy
 msgid "End"
 msgstr "Final"
 
@@ -5679,11 +5672,11 @@ msgstr "Traduir etiquetes"
 msgid "This feature requires javascript."
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s managed group"
 msgid_plural "%1$s managed groups"
-msgstr[0] "Grup no gestionat"
-msgstr[1] "Grup no gestionat"
+msgstr[0] "%1$s grup gestionat"
+msgstr[1] "%1$s grups gestionats"
 
 #, fuzzy
 msgid "Export all groups and their members as PDF"
@@ -5737,7 +5730,6 @@ msgstr ""
 msgid "Filename"
 msgstr "nomfitxer"
 
-#, fuzzy
 msgid "Creation date"
 msgstr "Data de creació"
 
@@ -6081,7 +6073,6 @@ msgstr "Formulari curt"
 msgid "Long form:"
 msgstr "Forma llarga"
 
-#, fuzzy
 msgid "General"
 msgstr "General"
 
