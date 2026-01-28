@@ -47,28 +47,6 @@ class L10n extends GaletteTestCase
     }
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $delete
-            ->where(
-                [
-                    'text_orig' => [
-                        'A text for test',
-                        'Un texte de test',
-                        'A text for flow test',
-                        'A text created on update'
-                    ]
-                ]
-            );
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test add dynamic translation
      */
     public function testAddDynamicTranslation(): void

@@ -23,48 +23,25 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
+use Galette\Tests\BaseGaletteTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Database tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Db extends TestCase
+class Db extends BaseGaletteTestCase
 {
     private \Galette\Core\Db $db;
-    private array $have_warnings = [];
 
     /**
      * Set up tests
      */
     public function setUp(): void
     {
+        parent::setUp();
         $this->db = new \Galette\Core\Db();
-    }
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        if (TYPE_DB === 'mysql') {
-            foreach ($this->db->getWarnings() as $i => $dbwarning) {
-                $know_warning = $this->have_warnings[$i];
-                $this->assertSame($know_warning['Level'], $dbwarning['Level']);
-                $this->assertEquals($know_warning['Code'], $dbwarning['Code']);
-                $this->assertStringContainsString(
-                    strtolower((string)$know_warning['Message']),
-                    strtolower((string)$dbwarning['Message'])
-                );
-            }
-        }
-
-        $this->db = new \Galette\Core\Db();
-        $delete = $this->db->delete(\Galette\Entity\Title::TABLE);
-        $delete->where([\Galette\Entity\Title::PK => '150']);
-        $this->db->execute($delete);
     }
 
     /**
@@ -100,9 +77,18 @@ class Db extends TestCase
                 break;
         }
 
-        $this->expectException(\Exception::class);
-        $dsn['TYPE_DB'] = 'DOES_NOT_EXISTS';
-        new \Galette\Core\Db($dsn);
+        $exception_thrown = false;
+        try {
+            $dsn['TYPE_DB'] = 'DOES_NOT_EXISTS';
+            new \Galette\Core\Db($dsn);
+        } catch (\Exception) {
+            $exception_thrown = true;
+        }
+        $this->assertTrue($exception_thrown);
+        $this->expectLogEntry(
+            \Analog\Analog::ALERT,
+            '[Db] Error (0|Type DOES_NOT_EXISTS not known'
+        );
     }
 
     /**
@@ -171,6 +157,10 @@ class Db extends TestCase
         $this->assertTrue($result['create']);
         $this->assertTrue($result['alter']);
         $this->assertInstanceOf(\LogicException::class, $result['insert']);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Cannot INSERT records | Error executing query!'
+        );
         $this->assertFalse($result['update']);
         $this->assertFalse($result['select']);
         $this->assertFalse($result['delete']);
@@ -204,6 +194,10 @@ class Db extends TestCase
         $this->assertTrue($result['insert']);
         $this->assertTrue($result['update']);
         $this->assertInstanceOf(\LogicException::class, $result['select']);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Cannot SELECT records | Error executing query!'
+        );
         $this->assertTrue($result['delete']);
         $this->assertTrue($result['drop']);
 
@@ -234,6 +228,10 @@ class Db extends TestCase
         $this->assertTrue($result['alter']);
         $this->assertTrue($result['insert']);
         $this->assertInstanceOf(\LogicException::class, $result['update']);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Cannot UPDATE records | Error executing query!'
+        );
         $this->assertTrue($result['select']);
         $this->assertTrue($result['delete']);
         $this->assertTrue($result['drop']);
@@ -267,6 +265,10 @@ class Db extends TestCase
         $this->assertTrue($result['update']);
         $this->assertTrue($result['select']);
         $this->assertInstanceOf(\LogicException::class, $result['delete']);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Cannot DELETE records | Error executing query!'
+        );
         $this->assertTrue($result['drop']);
     }
 
@@ -336,7 +338,7 @@ class Db extends TestCase
         $expected = 'SELECT "p".* FROM "galette_preferences" AS "p" '
             . 'WHERE "p"."nom_pref" = \'pref_nom\'';
 
-        if (TYPE_DB === 'mysql') {
+        if (!$this->db->isPostgres()) {
             $expected = 'SELECT `p`.* FROM `galette_preferences` AS `p` '
                 . 'WHERE `p`.`nom_pref` = \'pref_nom\'';
         }
@@ -373,7 +375,7 @@ class Db extends TestCase
         $results = $this->db->execute($select);
         $this->assertSame(1, $results->count());
 
-        if (TYPE_DB === 'pgsql') {
+        if ($this->db->isPostgres()) {
             $data['id_title'] = (int)$data['id_title'];
         }
         $this->assertEquals((array)$results->current(), $data);
@@ -471,7 +473,7 @@ class Db extends TestCase
             ->getMock();
         $this->db->method('execute')
             ->willReturnCallback(
-                function ($table, $where): void {
+                function ($sql): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
@@ -484,6 +486,10 @@ class Db extends TestCase
         }
         $this->assertTrue($exception_thrown);
         $this->assertFalse($this->db->checkDbVersion());
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Cannot check database version: Error executing query!'
+        );
     }
 
     /**
@@ -613,21 +619,21 @@ class Db extends TestCase
      */
     public function testExecuteWException(): void
     {
-        $this->have_warnings = [
-            new \ArrayObject(
-                [
-                    'Level' => 'Error',
-                    'Code' => 1054,
-                    'Message' => "Unknown column 'p.notknown' in 'where"
-                ]
-            )
-        ];
         $select = $this->db->select('preferences', 'p');
         $select->where(['p.nom_pref' => 'azerty']);
         $select->where(['p.notknown' => 'azerty']);
 
-        $this->expectException('\PDOException');
-        $this->db->execute($select);
+        $exception_thrown = false;
+        try {
+            $this->db->execute($select);
+        } catch (\PDOException) {
+            $exception_thrown = true;
+        }
+        $this->assertTrue($exception_thrown);
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            $this->db->isPostgres() ? 'Undefined column' : 'Unknown column'
+        );
     }
 
     /**

@@ -34,8 +34,6 @@ class Titles extends GaletteTestCase
 {
     protected int $seed = 20240417170519;
 
-    private array $remove = [];
-
     /**
      * Set up tests
      */
@@ -46,33 +44,6 @@ class Titles extends GaletteTestCase
         $titles = new \Galette\Repository\Titles($this->zdb);
         $res = $titles->installInit();
         $this->assertTrue($res);
-    }
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->deleteTitles();
-    }
-
-    /**
-     * Delete payment type
-     */
-    private function deleteTitles(): void
-    {
-        if (is_array($this->remove) && count($this->remove) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\Title::TABLE);
-            $delete->where->in(\Galette\Entity\Title::PK, $this->remove);
-            $this->zdb->execute($delete);
-        }
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
     }
 
     /**
@@ -98,9 +69,6 @@ class Titles extends GaletteTestCase
         $title->short = 'Te.';
         $title->long = 'Test';
         $this->assertTrue($title->store($this->zdb));
-
-        $id = $title->id;
-        $this->remove[] = $id;
 
         $list = $titles->getList();
         $this->assertCount(3, $list);

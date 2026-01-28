@@ -50,30 +50,6 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Core\Picture::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-        parent::tearDown();
-    }
-
-    /**
-     * Cleanup after class
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test members list
      */
     public function testList(): void
@@ -1762,7 +1738,10 @@ class MembersController extends GaletteRoutingTestCase
         $result = $this->zdb->execute($count_select);
         $this->assertCount(0, $result);
 
-        //preference is required to access this page - disabled per default
+        //preference is required to access this page
+        $this->preferences->pref_bool_selfsubscribe = false;
+        $this->assertTrue($this->preferences->store());
+
         $request = $this->createRequest($route_name, [], 'POST');
         $request = $request->withParsedBody($member_data);
         $test_response = $this->app->handle($request);

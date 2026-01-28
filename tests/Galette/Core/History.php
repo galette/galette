@@ -100,7 +100,6 @@ class History extends GaletteTestCase
 
         $list = $this->history->getHistory();
         $this->assertCount(1, $list);
-
-        $this->cleanHistory();
+        $this->assertSame('Logs flushed', $list[0]->action_log);
     }
 }

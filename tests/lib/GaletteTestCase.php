@@ -96,15 +96,6 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
     }
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->cleanHistory();
-    }
-
-    /**
      * Loads member from a resultset
      *
      * @param int $id Id
@@ -697,17 +688,6 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
         $res = $models->installInit(false);
         $this->assertTrue($res);
-    }
-
-    /**
-     * Clean history
-     */
-    protected function cleanHistory(): void
-    {
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
     }
 
     /**

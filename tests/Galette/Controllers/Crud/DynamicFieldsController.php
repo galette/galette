@@ -35,45 +35,6 @@ class DynamicFieldsController extends GaletteRoutingTestCase
     protected int $seed = 20240529064653;
 
     /**
-     * Cleanup after tests
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
-        $this->zdb->execute($delete);
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $this->zdb->execute($delete);
-
-        $tables = $this->zdb->getTables();
-        foreach ($tables as $table) {
-            if (str_starts_with($table, 'galette_field_contents_')) {
-                $this->zdb->db->query(
-                    'DROP TABLE ' . $table,
-                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                );
-            }
-        }
-
-        $this->cleanMembers();
-
-        parent::tearDown();
-    }
-
-    /**
-     * Cleanup after class
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test add page from controller
      */
     public function testAddPageDynamicField(): void

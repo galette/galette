@@ -52,27 +52,6 @@ class TransactionsController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-        parent::tearDown();
-    }
-
-    /**
-     * Cleanup after class
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Create test transactions in database
      *
      * @param array $data Data to set

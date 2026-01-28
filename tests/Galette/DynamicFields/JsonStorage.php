@@ -37,16 +37,6 @@ use function Safe\json_decode;
 class JsonStorage extends GaletteTestCase
 {
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $delete = $this->zdb->delete(DynamicField::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test JSON storage for choice fields
      */
     public function testChoiceJsonStorage(): void

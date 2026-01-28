@@ -35,18 +35,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class Password extends GaletteTestCase
 {
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->preferences->pref_password_strength = Preferences::PWD_NONE;
-        $this->preferences->pref_password_length = 6;
-        $this->preferences->pref_password_blacklist = false;
-        $this->preferences->store();
-    }
-
-    /**
      * Passwords data provider
      */
     public static function passProvider(): array

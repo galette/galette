@@ -35,22 +35,6 @@ class DocumentsController extends GaletteRoutingTestCase
     protected int $seed = 20250916084243;
 
     /**
-     * Cleanup after tests
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Entity\Document::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-
-        parent::tearDown();
-    }
-
-    /**
      * Returns a fresh document instance (PDF status of the association)
      *
      * @param int $visibility Visibility of the document

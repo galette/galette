@@ -42,6 +42,8 @@ abstract class BaseGaletteTestCase extends TestCase
     /** @var string[] */
     protected array $expected_mysql_warnings = [];
     protected bool $check_logs = true;
+    protected bool $db_transactions = true;
+
     /**
      * @var string[]
      * @see \Analog\Handler\Level::$log_levels
@@ -88,6 +90,9 @@ abstract class BaseGaletteTestCase extends TestCase
 
         $this->container = $container;
         $this->zdb = $container->get(\Galette\Core\Db::class);
+        if ($this->db_transactions) {
+            $this->zdb->setNoCommit()->beginTransaction();
+        }
     }
 
     /**
@@ -95,13 +100,48 @@ abstract class BaseGaletteTestCase extends TestCase
      */
     public function tearDown(): void
     {
+        if ($this->db_transactions && $this->zdb->inTransaction()) {
+            $this->zdb->rollback();
+        }
+
         if ($this->check_logs) {
             $logs = $this->getCleanedLogs();
             $this->assertCount(0, $logs, implode("\n", $logs));
         }
 
-        if (TYPE_DB === 'mysql') {
-            $this->assertEquals($this->expected_mysql_warnings, $this->zdb->getWarnings());
+        if (!$this->zdb->isPostgres()) {
+            $this->handleMysqlWarnings();
+        }
+    }
+
+    /**
+     * Handle MySQL warnings checking against expected ones
+     */
+    private function handleMysqlWarnings(): void
+    {
+        $current_warnings = $this->zdb->getWarnings();
+        $expected = $this->expected_mysql_warnings;
+
+        // Missing expected warnings are not errors, as MySQL 8 does not
+        // always report warnings that occur on MariaDB.
+        // However, any unexpected warning must fail.
+        foreach ($current_warnings as $warning) {
+            $found_index = null;
+            foreach ($expected as $index => $expected_warning) {
+                if ($expected_warning == $warning) {
+                    $found_index = $index;
+                    break;
+                }
+            }
+
+            if ($found_index !== null) {
+                unset($expected[$found_index]);
+            } else {
+                $this->fail(
+                    'Unexpected MySQL warning: ' . print_r($warning, true) . PHP_EOL
+                    . 'Expected warnings: ' . print_r($this->expected_mysql_warnings, true)
+                );
+            }
         }
     }
 

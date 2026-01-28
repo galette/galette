@@ -52,19 +52,6 @@ class Reminders extends GaletteTestCase
     }
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->cleanContributions();
-        $this->cleanMembers();
-
-        $delete = $this->zdb->delete(\Galette\Entity\Reminder::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test getList
      */
     public function testGetList(): void

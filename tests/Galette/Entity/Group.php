@@ -32,36 +32,6 @@ use Galette\Tests\GaletteTestCase;
  */
 class Group extends GaletteTestCase
 {
-    protected array $excluded_after_methods = ['testUnicity'];
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        $this->deleteGroups();
-        parent::tearDown();
-    }
-
-    /**
-     * Delete groups
-     */
-    private function deleteGroups(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $delete->where('parent_group IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
-
     /**
      * Test empty group
      */
@@ -268,6 +238,7 @@ class Group extends GaletteTestCase
         $this->logSuperAdmin();
         $group->setLogin($this->login);
         $this->assertFalse($group->remove()); //still have children, not removed
+
         $this->expectLogEntry(
             \Analog::WARNING,
             'Group "A parent group" still have members!'
@@ -276,7 +247,36 @@ class Group extends GaletteTestCase
             \Analog::ERROR,
             'Query error: DELETE FROM ' . ($this->zdb->isPostgres() ? '"galette_groups"' : '`galette_groups`')
         );
-        $this->assertTrue($group->load($parent_id));
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => '1451',
+            'Message' => "Cannot delete or update a parent row: a foreign key constraint fails (`galette_tests`.`galette_groups`, CONSTRAINT `galette_groups_ibfk_1` FOREIGN KEY (`parent_group`) REFERENCES `galette_groups` (`id_group`) ON UPDATE CASCADE)"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
+    }
+
+    /**
+     * Test cascade removal
+     */
+    public function testCascadeRemove(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A parent group');
+        $this->assertTrue($group->store());
+        $parent_id = $group->getId();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('A child group');
+        $group->setParentGroup($parent_id);
+        $this->assertTrue($group->store());
+        $this->assertSame($parent_id, $group->getParentGroup()->getId());
+
+        $group = new \Galette\Entity\Group($parent_id);
+        $this->logSuperAdmin();
+        $group->setLogin($this->login);
         $this->assertTrue($group->remove(true)); //cascade removal, all will be removed
         $this->assertFalse($group->load($parent_id));
     }

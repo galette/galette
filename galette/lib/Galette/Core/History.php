@@ -145,7 +145,7 @@ class History
     {
         try {
             $this->zdb->db->query(
-                'TRUNCATE TABLE ' . $this->getTableName(true),
+                'DELETE FROM ' . $this->getTableName(true),
                 Adapter::QUERY_MODE_EXECUTE
             );
             $this->add('Logs flushed');

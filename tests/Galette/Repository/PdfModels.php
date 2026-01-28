@@ -32,8 +32,6 @@ use Galette\Tests\GaletteTestCase;
  */
 class PdfModels extends GaletteTestCase
 {
-    private array $remove = [];
-
     /**
      * Set up tests
      */
@@ -44,33 +42,6 @@ class PdfModels extends GaletteTestCase
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
         $res = $models->installInit(false);
         $this->assertTrue($res);
-    }
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->deletePdfModels();
-    }
-
-    /**
-     * Delete pdf models
-     */
-    private function deletePdfModels(): void
-    {
-        if (is_array($this->remove) && count($this->remove) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\PdfModel::TABLE);
-            $delete->where->in(\Galette\Repository\PdfModel::PK, $this->remove);
-            $this->zdb->execute($delete);
-        }
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
     }
 
     /**

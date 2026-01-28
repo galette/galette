@@ -104,7 +104,7 @@ class ImportModel
     {
         try {
             $zdb->db->query(
-                'TRUNCATE TABLE ' . PREFIX_DB . self::TABLE,
+                'DELETE FROM ' . PREFIX_DB . self::TABLE,
                 Adapter::QUERY_MODE_EXECUTE
             );
 

@@ -50,15 +50,6 @@ class FieldsConfig extends GaletteTestCase
     }
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->fields_config->installInit();
-    }
-
-    /**
      * Test non required fields
      */
     public function testNonRequired(): void
@@ -299,7 +290,7 @@ class FieldsConfig extends GaletteTestCase
     public function testCheckUpdateWhenEmpty(): void
     {
         $this->zdb->db->query(
-            'TRUNCATE ' . PREFIX_DB . \Galette\Entity\FieldsConfig::TABLE,
+            'DELETE FROM ' . PREFIX_DB . \Galette\Entity\FieldsConfig::TABLE,
             \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
         $this->zdb->db->query(

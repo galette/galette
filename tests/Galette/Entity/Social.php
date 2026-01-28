@@ -35,33 +35,6 @@ class Social extends GaletteTestCase
     protected int $seed = 25568744158;
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->deleteSocials();
-
-        //drop dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
-     * Delete socials
-     */
-    private function deleteSocials(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\Social::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test social object
      */
     public function testObject(): void

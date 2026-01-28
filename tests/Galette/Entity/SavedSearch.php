@@ -48,26 +48,6 @@ class SavedSearch extends GaletteTestCase
     }
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->deleteCreated();
-    }
-
-    /**
-     * Delete status
-     */
-    private function deleteCreated(): void
-    {
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\SavedSearch::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
-
-    /**
      * Test saved search
      */
     public function testSave(): void

@@ -33,35 +33,6 @@ use Laminas\Db\Adapter\Adapter;
  */
 class Status extends GaletteTestCase
 {
-    private array $remove = [];
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->deleteStatus();
-    }
-
-    /**
-     * Delete status
-     */
-    private function deleteStatus(): void
-    {
-        if (is_array($this->remove) && count($this->remove) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\Status::TABLE);
-            $delete->where->in(\Galette\Entity\Status::PK, $this->remove);
-            $this->zdb->execute($delete);
-        }
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
-
     /**
      * Test status
      */
@@ -96,7 +67,6 @@ class Status extends GaletteTestCase
             $result['text_orig']
         );
 
-        $this->remove[] = $status->id;
         $id = $status->id;
 
         $this->assertSame(

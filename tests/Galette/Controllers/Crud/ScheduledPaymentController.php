@@ -50,31 +50,6 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Entity\ScheduledPayment::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-
-        parent::tearDown();
-    }
-
-    /**
-     * Cleanup after class
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test scheduled payments list
      */
     public function testList(): void

@@ -33,18 +33,6 @@ use Galette\Tests\GaletteTestCase;
 class Telemetry extends GaletteTestCase
 {
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->preferences->pref_instance_uuid = '';
-        $this->preferences->pref_registration_uuid = '';
-        $this->preferences->store();
-    }
-
-    /**
      * Test Galette infos
      */
     public function testGrabGaletteInfos(): void

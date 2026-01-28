@@ -35,33 +35,6 @@ class ScheduledPayment extends GaletteTestCase
     protected int $seed = 20240321210526;
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->deleteScheduledPayments();
-    }
-
-    /**
-     * Delete scheduled payments
-     */
-    private function deleteScheduledPayments(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\ScheduledPayment::TABLE);
-        $delete->where(['comment' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test add
      */
     public function testAdd(): void

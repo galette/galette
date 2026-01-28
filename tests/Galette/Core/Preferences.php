@@ -36,16 +36,6 @@ class Preferences extends GaletteTestCase
     protected int $seed = 20240917074915;
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\Social::TABLE);
-        $this->zdb->execute($delete);
-        parent::tearDown();
-    }
-
-    /**
      * Test preferences initialization
      */
     public function testInstallInit(): void

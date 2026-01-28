@@ -50,27 +50,6 @@ class ContributionsController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-        parent::tearDown();
-    }
-
-    /**
-     * Cleanup after class
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test contributions list
      */
     public function testList(): void

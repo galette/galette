@@ -37,19 +37,6 @@ class Login extends GaletteTestCase
     private string $mdp_adh = 'sd8)AvtE|*';
 
     /**
-     * Cleanup after tests
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        parent::tearDown();
-    }
-
-    /**
      * Test defaults
      */
     public function testDefaults(): void

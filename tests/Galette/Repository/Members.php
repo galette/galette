@@ -46,42 +46,11 @@ class Members extends GaletteTestCase
     }
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->deleteGroups();
-        $this->deleteMembers();
-
-        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
-        $this->zdb->execute($delete);
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $delete->where([
-            'text_orig' => [
-                'Dynamic choice field',
-                'Dynamic date field',
-                'Dynamic text field'
-            ]
-        ]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Create members and store their id
      */
     private function createMembers(): void
     {
         $this->logSuperAdmin();
-        try {
-            $this->deleteMembers();
-        } catch (\Exception) {
-            //empty catch
-        }
 
         $status = $this->container->get(\Galette\Entity\Status::class);
         if (count($status->getList()) === 0) {
@@ -163,51 +132,6 @@ class Members extends GaletteTestCase
 
         $this->login->logOut();
         $this->mids = $mids;
-    }
-
-    /**
-     * Delete member
-     */
-    private function deleteMembers(): void
-    {
-        if (is_array($this->mids) && count($this->mids) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-            $delete->where->in(\Galette\Entity\Adherent::PK, $this->mids);
-            $this->zdb->execute($delete);
-        }
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-
-        //FIXME: Photos should be removed, but this fail for now :(
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\Picture::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
-
-    /**
-     * Delete groups
-     */
-    private function deleteGroups(): void
-    {
-        //clean groups
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $delete->where->isNotNull('parent_group');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
     }
 
     /**
@@ -1200,7 +1124,57 @@ class Members extends GaletteTestCase
     }
 
     /**
-     * Test getMembersList
+     * Test members removal with dependencies
+     */
+    public function testRemoveMembersWDeps(): void
+    {
+        $this->logSuperAdmin();
+
+        //Filter on inactive accounts
+        $filters = new \Galette\Filters\MembersList();
+        $filters->filter_account = \Galette\Repository\Members::INACTIVE_ACCOUNT;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->assertSame(1, $list->count());
+
+        $member_data = $list->current();
+        $member = new \Galette\Entity\Adherent($this->zdb, (int)$member_data[\Galette\Entity\Adherent::PK]);
+
+        //add member as sender for a mailing
+        $values = [
+            'mailing_sender'            => $member->id,
+            'mailing_sender_name'       => 'test',
+            'mailing_sender_address'    => 'test@test.com',
+            'mailing_subject'           => $this->seed,
+            'mailing_body'              => 'a mailing',
+            'mailing_date'              => '2015-01-01 00:00:00',
+            'mailing_recipients'        => \Galette\Core\Galette::jsonEncode([]),
+            'mailing_sent'              => true
+        ];
+        $insert = $this->zdb->insert(\Galette\Core\MailingHistory::TABLE);
+        $insert->values($values);
+        $this->zdb->execute($insert);
+
+        $this->assertFalse($members->removeMembers($member->id));
+        $this->assertSame(['Cannot remove a member who still have dependencies (mailings, ...)'], $members->getErrors());
+        $this->expectLogEntry(
+            \Analog::ERROR,
+            'Query error: DELETE FROM ' . ($this->zdb->isPostgres() ? '"galette_adherents"' : '`galette_adherents`')
+        );
+        $this->expectLogEntry(\Analog::ERROR, 'Member still have existing dependencies in the database');
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => '1451',
+            'Message' => "Cannot delete or update a parent row: a foreign key constraint fails (`galette_tests`.`galette_mailing_history`, CONSTRAINT `galette_mailing_history_ibfk_1` FOREIGN KEY (`mailing_sender`) REFERENCES `galette_adherents` (`id_adh`) ON UPDATE CASCADE)"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
+
+        //a rollback has been processed, member and mailing no longer exists.
+    }
+
+    /**
+     * Test members removal
      */
     public function testRemoveMembers(): void
     {
@@ -1234,14 +1208,6 @@ class Members extends GaletteTestCase
         $insert->values($values);
         $this->zdb->execute($insert);
         $mailing_id = $this->zdb->getLastGeneratedValue($mailhist);
-
-        $this->assertFalse($members->removeMembers($member->id));
-        $this->assertSame(['Cannot remove a member who still have dependencies (mailings, ...)'], $members->getErrors());
-        $this->expectLogEntry(
-            \Analog::ERROR,
-            'Query error: DELETE FROM ' . ($this->zdb->isPostgres() ? '"galette_adherents"' : '`galette_adherents`')
-        );
-        $this->expectLogEntry(\Analog::ERROR, 'Member still have existing dependencies in the database');
 
         //remove mailing so member can be removed
         $this->assertTrue($mailhist->removeEntries($mailing_id, $this->history));

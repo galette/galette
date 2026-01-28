@@ -68,6 +68,7 @@ class Db
     /** @var array<string, array<int, bool>|string> */
     private array $options;
     private string $last_query;
+    private bool $no_commit = false;
 
     public const MYSQL = 'mysql';
     public const PGSQL = 'pgsql';
@@ -587,7 +588,7 @@ class Db
                 }
 
                 //Data conversion
-                if ($table != $prefix . 'pictures') {
+                if ($table != $prefix . 'pictures' && $table != $prefix . 'database') {
                     $this->convertContentToUTF($prefix, $table);
                 }
             }
@@ -773,6 +774,10 @@ class Db
      */
     public function commit(): void
     {
+        if ($this->no_commit) {
+            //never commit from tests
+            return;
+        }
         $this->db->getDriver()->getConnection()->commit();
     }
 
@@ -984,7 +989,7 @@ class Db
         return $exception instanceof \PDOException
             && (
                 (!$this->isPostgres() && in_array($exception->errorInfo[1], [1217, 1451]))
-                || ($this->isPostgres() && $exception->getCode() == 23503)
+                || ($this->isPostgres() && in_array($exception->getCode(), [23503, 23001]))
             )
         ;
     }
@@ -1124,5 +1129,14 @@ class Db
         }
 
         return false;
+    }
+
+    /**
+     * Set no commit mode (for tests)
+     */
+    public function setNoCommit(bool $no_commit = true): self
+    {
+        $this->no_commit = $no_commit;
+        return $this;
     }
 }

@@ -181,18 +181,18 @@ class Password extends GaletteTestCase
      */
     public function testGenerateNewPasswordWException(): void
     {
-        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->zdb->method('execute')
+        $zdb->method('execute')
             ->willReturnCallback(
                 function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
 
-        $pass = new \Galette\Core\Password($this->zdb, false);
+        $pass = new \Galette\Core\Password($zdb, false);
         $res = $pass->generateNewPassword(12);
         $this->expectLogEntry(\Analog::ERROR, 'Error executing query!');
         $this->assertFalse($res);
@@ -203,18 +203,18 @@ class Password extends GaletteTestCase
      */
     public function testCleanExpiredWException(): void
     {
-        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->zdb->method('execute')
+        $zdb->method('execute')
             ->willReturnCallback(
                 function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
 
-        $pass = new \Galette\Core\Password($this->zdb, false);
+        $pass = new \Galette\Core\Password($zdb, false);
         $this->assertFalse($pass->cleanExpired());
         $this->expectLogEntry(\Analog::WARNING, 'Error executing query!');
     }
@@ -224,18 +224,18 @@ class Password extends GaletteTestCase
      */
     public function testIsHashValidWException(): void
     {
-        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->zdb->method('execute')
+        $zdb->method('execute')
             ->willReturnCallback(
                 function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
 
-        $pass = new \Galette\Core\Password($this->zdb, false);
+        $pass = new \Galette\Core\Password($zdb, false);
         $res = $pass->isHashValid('thehash');
         $this->expectLogEntry(\Analog::WARNING, 'Error executing query!');
         $this->assertFalse($res);
@@ -246,18 +246,18 @@ class Password extends GaletteTestCase
      */
     public function testRemoveHashWException(): void
     {
-        $this->zdb = $this->getMockBuilder(\Galette\Core\Db::class)
+        $zdb = $this->getMockBuilder(\Galette\Core\Db::class)
             ->onlyMethods(['execute'])
             ->getMock();
 
-        $this->zdb->method('execute')
+        $zdb->method('execute')
             ->willReturnCallback(
                 function (): void {
                     throw new \LogicException('Error executing query!', 123);
                 }
             );
 
-        $pass = new \Galette\Core\Password($this->zdb, false);
+        $pass = new \Galette\Core\Password($zdb, false);
         $res = $pass->removeHash('thehash');
         $this->expectLogEntry(\Analog::WARNING, 'Error executing query!');
         $this->assertFalse($res);

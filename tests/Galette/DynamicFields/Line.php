@@ -44,19 +44,6 @@ class Line extends GaletteTestCase
     }
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test constructor
      */
     public function testConstructor(): void

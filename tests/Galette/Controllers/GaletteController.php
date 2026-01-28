@@ -53,20 +53,6 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Core\Picture::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-
-        parent::tearDown();
-    }
-
-    /**
      * Test main route (redirections)
      */
     public function testSlash(): void

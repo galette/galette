@@ -36,58 +36,6 @@ class Adherent extends GaletteTestCase
     private array $default_deps;
 
     /**
-     * Cleanup after tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->zdb = new \Galette\Core\Db();
-
-        $this->cleanContributions();
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $delete->where('parent_id IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
-        $this->zdb->execute($delete);
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $delete->where([
-            'text_orig' => [
-                'Dynamic boolean field',
-                'Dynamic date field'
-            ]
-        ]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
-     * Cleanup after class
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->setUp();
-        $self->tearDown();
-    }
-
-    /**
      * Set up tests
      */
     public function setUp(): void

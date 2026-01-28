@@ -50,30 +50,6 @@ class PdfController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Core\Links::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-        $this->cleanHistory();
-    }
-
-    /**
-     * Cleanup after class
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test store models
      */
     public function testStoreModels(): void

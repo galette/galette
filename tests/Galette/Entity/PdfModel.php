@@ -56,35 +56,6 @@ class PdfModel extends GaletteTestCase
     }
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(DynamicField::TABLE);
-        $this->zdb->execute($delete);
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $delete->where([
-            'text_orig' => [
-                'Dynamic choice field',
-                'Dynamic date field',
-                'Dynamic text field',
-                'Settings line field'
-            ]
-        ]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test expected patterns
      */
     public function testExpectedPatterns(): void

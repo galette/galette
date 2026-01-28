@@ -36,51 +36,6 @@ class Transaction extends GaletteTestCase
     private \Galette\Entity\Transaction $transaction;
 
     /**
-     * Cleanup after each test method
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->zdb = new \Galette\Core\Db();
-
-        //first, remove contributions
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        //then, remove transactions
-        $delete = $this->zdb->delete(\Galette\Entity\Transaction::TABLE);
-        $delete->where(['trans_desc' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        //Remove groups
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSMANAGERS_TABLE);
-        $this->zdb->execute($delete);
-        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
-        $this->zdb->execute($delete);
-
-        //remove members with parents
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $delete->where('parent_id IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        //remove all others members
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = false;
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = false;
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
-        $this->assertTrue($this->preferences->store());
-    }
-
-    /**
      * Set up tests
      */
     public function setUp(): void

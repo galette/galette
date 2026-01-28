@@ -33,36 +33,6 @@ use Laminas\Db\Adapter\Adapter;
  */
 class ContributionsTypes extends GaletteTestCase
 {
-    private array $remove = [];
-
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->deleteTypes();
-    }
-
-    /**
-     * Delete contributions types
-     */
-    private function deleteTypes(): void
-    {
-        if (is_array($this->remove) && count($this->remove) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\ContributionsTypes::TABLE);
-            $delete->where->in(\Galette\Entity\ContributionsTypes::PK, $this->remove);
-            $this->zdb->execute($delete);
-        }
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
-
     /**
      * Test contributions types
      */
@@ -91,7 +61,6 @@ class ContributionsTypes extends GaletteTestCase
             )
         );
 
-        $this->remove[] = $ctype->id;
         $id = $ctype->id;
 
         $ctype_id = $ctype->getIdByLabel('Test contribution type');

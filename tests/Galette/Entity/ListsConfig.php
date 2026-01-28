@@ -58,29 +58,6 @@ class ListsConfig extends GaletteTestCase
     }
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->resetListsConfig();
-        $this->lists_config->installInit();
-    }
-
-    /**
-     * Resets lists configuration to defaults
-     */
-    private function resetListsConfig(): void
-    {
-        $new_list = [];
-        foreach ($this->default_lists as $key) {
-            $new_list[] = $this->lists_config->getField($key);
-        }
-
-        $this->assertTrue($this->lists_config->setListFields($new_list));
-    }
-
-    /**
      * Test getVisibility
      */
     public function testGetVisibility(): void

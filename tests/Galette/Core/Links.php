@@ -34,7 +34,6 @@ class Links extends GaletteTestCase
 {
     protected int $seed = 95842355;
     private \Galette\Core\Links $links;
-    protected array $excluded_after_methods = ['testDuplicateLinkTarget'];
 
     /**
      * Set up tests
@@ -52,25 +51,6 @@ class Links extends GaletteTestCase
             $this->members_fields,
             $this->history
         );
-    }
-
-    /**
-     * Cleanup after testeach test method
-     */
-    public function tearDown(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Core\Links::TABLE);
-        $this->zdb->execute($delete);
-
-        parent::tearDown();
     }
 
     /**
@@ -251,6 +231,12 @@ class Links extends GaletteTestCase
             );
         }
         $this->assertTrue($exception_trhown, 'No exception has been thrown');
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => '1062',
+            'Message' => "Duplicate entry '1-1' for key 'PRIMARY'"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
     }
 
     /**

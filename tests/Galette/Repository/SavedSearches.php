@@ -35,18 +35,6 @@ class SavedSearches extends GaletteTestCase
     protected int $seed = 20240417150507;
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\SavedSearch::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-        parent::tearDown();
-    }
-
-    /**
      * Test getList
      *
      * @throws \Throwable

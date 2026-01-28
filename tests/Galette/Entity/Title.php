@@ -32,35 +32,6 @@ use Galette\Tests\GaletteTestCase;
  */
 class Title extends GaletteTestCase
 {
-    private array $remove = [];
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->deleteTitle();
-    }
-
-    /**
-     * Delete status
-     */
-    private function deleteTitle(): void
-    {
-        if (is_array($this->remove) && count($this->remove) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\Title::TABLE);
-            $delete->where->in(\Galette\Entity\Title::PK, $this->remove);
-            $this->zdb->execute($delete);
-        }
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
-
     /**
      * Test title
      */
@@ -76,7 +47,6 @@ class Title extends GaletteTestCase
         $this->assertTrue($title->store($this->zdb));
 
         $id = $title->id;
-        $this->remove[] = $id;
         $title = new \Galette\Entity\Title($id); //reload
 
         //$title->long = 'Test title 🤘'; //FIXME: works locally, fails on gh actions...

@@ -515,7 +515,6 @@ class CsvIn extends GaletteTestCase
      */
     public function testImportDynamics(): void
     {
-
         $field_data = [
             'form_name'         => 'adh',
             'field_name'        => 'Dynamic text field',

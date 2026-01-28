@@ -35,18 +35,6 @@ class MailingHistory extends GaletteTestCase
     protected int $seed = 20240131082138;
 
     /**
-     * Cleanup after each test method
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->zdb = new \Galette\Core\Db();
-        $delete = $this->zdb->delete(\Galette\Core\MailingHistory::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test history workflow
      */
     public function testHistoryFlow(): void

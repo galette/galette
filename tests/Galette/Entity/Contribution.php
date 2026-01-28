@@ -36,24 +36,6 @@ class Contribution extends GaletteTestCase
     protected int $seed = 95842354;
 
     /**
-     * Cleanup after each test method
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->zdb = new \Galette\Core\Db();
-
-        $this->cleanContributions();
-
-        $delete = $this->zdb->delete(\Galette\Entity\ContributionsTypes::TABLE);
-        $delete->where(['libelle_type_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $this->cleanMembers();
-    }
-
-    /**
      * Set up tests
      */
     public function setUp(): void

@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Repository;
 
+use Analog\Analog;
 use Galette\Tests\GaletteTestCase;
 
 /**
@@ -36,58 +37,6 @@ class Groups extends GaletteTestCase
     private array $children = [];
     private array $subchildren = [];
     protected int $seed = 855224771456;
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        $this->deleteGroups();
-    }
-
-    /**
-     * Delete groups
-     */
-    private function deleteGroups(): void
-    {
-        $zdb = new \Galette\Core\Db();
-
-        //Clean managers
-        $zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\Group::GROUPSMANAGERS_TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-
-        $zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Entity\Group::GROUPSUSERS_TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-
-        $groups = self::groupsProvider();
-        foreach ($groups as $group) {
-            foreach ($group['children'] as $child) {
-                $delete = $zdb->delete(\Galette\Entity\Group::TABLE);
-                $delete->where->in('group_name', $child);
-                $zdb->execute($delete);
-            }
-            $delete = $zdb->delete(\Galette\Entity\Group::TABLE);
-            $delete->where->in('group_name', array_keys($group['children']));
-            $zdb->execute($delete);
-        }
-
-        $delete = $zdb->delete(\Galette\Entity\Group::TABLE);
-        $zdb->execute($delete);
-
-        $delete = $zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $zdb->execute($delete);
-
-        //Clean logs
-        $zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
-    }
 
     /**
      * Groups provider
@@ -284,8 +233,8 @@ class Groups extends GaletteTestCase
 
         $member = $this->getMemberOne();
         $member->loadGroups();
-        $this->assertSame([], $member->managed_groups);
-        $this->assertSame([], $member->groups);
+        $this->assertSame([], $member->getManagedGroups());
+        $this->assertSame([], $member->getGroups());
 
         //add member to France and Allemagne groups, as simple member
         $this->assertTrue(
@@ -299,8 +248,8 @@ class Groups extends GaletteTestCase
         );
 
         $member->loadGroups();
-        $this->assertSame([], $member->managed_groups);
-        $this->assertCount(2, $member->groups);
+        $this->assertSame([], $member->getManagedGroups());
+        $this->assertCount(2, $member->getGroups());
 
         //Add as manager of France
         $this->assertTrue(
@@ -314,8 +263,8 @@ class Groups extends GaletteTestCase
         );
 
         $member->loadGroups();
-        $this->assertCount(1, $member->managed_groups);
-        $this->assertCount(2, $member->groups);
+        $this->assertCount(1, $member->getManagedGroups());
+        $this->assertCount(2, $member->getGroups());
 
         $member2 = $this->getMemberTwo();
         //Add as manager of France
@@ -330,8 +279,8 @@ class Groups extends GaletteTestCase
         );
 
         $member2->loadGroups();
-        $this->assertCount(1, $member2->managed_groups);
-        $this->assertCount(0, $member2->groups);
+        $this->assertCount(1, $member2->getManagedGroups());
+        $this->assertCount(0, $member2->getGroups());
 
         $this->logSuperAdmin();
         $this->login->impersonate($member2->id);
@@ -344,7 +293,12 @@ class Groups extends GaletteTestCase
 
         \Galette\Repository\Groups::removeMemberFromGroups($member->id);
         $member->loadGroups();
+        $this->assertSame([], $member->getManagedGroups());
+        $this->assertSame([], $member->getGroups());
+        //make sure old discouraged way still works
         $this->assertSame([], $member->managed_groups);
+        $this->expectLogEntry(Analog::WARNING, 'Calling property "managed_groups" directly is discouraged.');
         $this->assertSame([], $member->groups);
+        $this->expectLogEntry(Analog::WARNING, 'Calling property "groups" directly is discouraged.');
     }
 }

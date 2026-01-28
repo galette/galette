@@ -50,34 +50,6 @@ class CsvController extends GaletteRoutingTestCase
     }
 
     /**
-     * Cleanup after tests
-     */
-    public function tearDown(): void
-    {
-        $this->zdb = new \Galette\Core\Db();
-
-        $delete = $this->zdb->delete(\Galette\Entity\ScheduledPayment::TABLE);
-        $this->zdb->execute($delete);
-
-        $this->cleanContributions();
-        $this->cleanMembers();
-        $this->cleanHistory();
-
-        //remove model
-        $delete = $this->zdb->delete(\Galette\Entity\ImportModel::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
-     * Cleanup after class
-     */
-    public static function tearDownAfterClass(): void
-    {
-        $self = new self(__METHOD__);
-        $self->tearDown();
-    }
-
-    /**
      * Test export page
      */
     public function testExportPage(): void

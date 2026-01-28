@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\DynamicFields;
 
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\GaletteTestCase;
 use Galette\DynamicFields\ChoiceSpecifications;
 
 /**
@@ -31,7 +31,7 @@ use Galette\DynamicFields\ChoiceSpecifications;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class Specifications extends TestCase
+class Specifications extends GaletteTestCase
 {
     /**
      * Test FieldSpecifications generic behavior

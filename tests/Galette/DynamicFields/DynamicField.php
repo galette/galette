@@ -33,29 +33,6 @@ use Galette\Tests\GaletteTestCase;
 class DynamicField extends GaletteTestCase
 {
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
-        $this->zdb->execute($delete);
-        //cleanup dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $this->zdb->execute($delete);
-
-        $tables = $this->zdb->getTables();
-        foreach ($tables as $table) {
-            if (str_starts_with($table, 'galette_field_contents_')) {
-                $this->zdb->db->query(
-                    'DROP TABLE ' . $table,
-                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                );
-            }
-        }
-    }
-
-    /**
      * Test loadFieldType
      */
     public function testLoadFieldType(): void

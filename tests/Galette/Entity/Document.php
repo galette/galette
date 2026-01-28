@@ -35,29 +35,6 @@ class Document extends GaletteTestCase
     protected int $seed = 20240312213127;
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->deleteDocuments();
-
-        //drop dynamic translations
-        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
-     * Delete documents
-     */
-    private function deleteDocuments(): void
-    {
-        $delete = $this->zdb->delete(\Galette\Entity\Document::TABLE);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Test document object
      */
     public function testObject(): void

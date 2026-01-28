@@ -36,33 +36,6 @@ class Transactions extends GaletteTestCase
     private \Galette\Entity\Transaction $transaction;
 
     /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->zdb = new \Galette\Core\Db();
-        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(['info_cotis' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        //then, remove transactions
-        $delete = $this->zdb->delete(\Galette\Entity\Transaction::TABLE);
-        $delete->where(['trans_desc' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $delete->where('parent_id IS NOT NULL');
-        $this->zdb->execute($delete);
-
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
      * Set up tests
      */
     public function setUp(): void

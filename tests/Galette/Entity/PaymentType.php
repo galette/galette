@@ -32,8 +32,6 @@ use Galette\Tests\GaletteTestCase;
  */
 class PaymentType extends GaletteTestCase
 {
-    private array $remove = [];
-
     /**
      * Set up tests
      */
@@ -43,33 +41,6 @@ class PaymentType extends GaletteTestCase
         $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
         $res = $types->installInit(false);
         $this->assertTrue($res);
-    }
-
-    /**
-     * Tear down tests
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->deletePaymentType();
-    }
-
-    /**
-     * Delete payment type
-     */
-    private function deletePaymentType(): void
-    {
-        if (is_array($this->remove) && count($this->remove) > 0) {
-            $delete = $this->zdb->delete(\Galette\Entity\PaymentType::TABLE);
-            $delete->where->in(\Galette\Entity\PaymentType::PK, $this->remove);
-            $this->zdb->execute($delete);
-        }
-
-        //Clean logs
-        $this->zdb->db->query(
-            'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,
-            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-        );
     }
 
     /**
@@ -97,7 +68,6 @@ class PaymentType extends GaletteTestCase
         $this->assertSame('Test payment type', $result['text_orig']);
 
         $id = $type->id;
-        $this->remove[] = $id;
 
         $type = new \Galette\Entity\PaymentType($this->zdb, $id);
         $type->name = 'Changed test payment type';
