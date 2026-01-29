@@ -23,45 +23,44 @@ declare(strict_types=1);
 
 namespace Galette\DynamicFields;
 
-use Galette\Core\Db;
-
 /**
- * Choice dynamic field
+ * Choice dynamic field specifications
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-
-class Choice extends DynamicField
+class ChoiceSpecifications extends FieldSpecifications
 {
     /**
-     * Default constructor
+     * Set choices
      *
-     * @param Db   $zdb Database instance
-     * @param ?int $id  Optional field id to load data
+     * @param string[] $values Choices values. Just a string array, legacy code.
      */
-    public function __construct(Db $zdb, ?int $id = null)
+    public function setChoices(array $values): self
     {
-        $this->specifications = new ChoiceSpecifications();
-        $this->has_data = true;
-        $this->fixed_values = true;
-        parent::__construct($zdb, $id);
+        $choices = [];
+        $id = 0;
+        foreach ($values as $value) {
+            $choices[] = [
+                'id'    => $id,
+                'value' => $value
+            ];
+            ++$id;
+        }
+        $this->__set('choices', $choices);
+        return $this;
     }
 
     /**
-     * Get field type
-     */
-    public function getType(): int
-    {
-        return self::CHOICE;
-    }
-
-    /**
-     * Get value to display for a field
+     * Get choices
      *
-     * @param mixed $value Raw value to get displayed
+     * @return string[] Just a string array, legacy code.
      */
-    public function getDisplayValue(mixed $value): string
+    public function getChoices(): array
     {
-        return $this->values[$value ?? ''] ?? '';
+        $choices = [];
+        foreach ($this->__get('choices') ?? [] as $entry) {
+            $choices[(int)$entry['id']] = $entry['value'];
+        }
+        return $choices;
     }
 }

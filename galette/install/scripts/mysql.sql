@@ -144,6 +144,7 @@ CREATE TABLE galette_field_types (
     field_information longtext default NULL,
     field_width_in_forms smallint NOT NULL default 1,
     field_information_above tinyint(1) NOT NULL default 0,
+    field_specifications json default NULL,
     PRIMARY KEY (field_id),
     INDEX (field_form)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
@@ -389,6 +390,6 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
-INSERT INTO galette_database(version) VALUES(1.210);
+INSERT INTO galette_database(version) VALUES(1.220);
 
 SET FOREIGN_KEY_CHECKS=1;

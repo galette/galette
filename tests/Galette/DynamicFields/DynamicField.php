@@ -236,16 +236,6 @@ class DynamicField extends GaletteTestCase
     }
 
     /**
-     * Test getFixedValuesTableName
-     */
-    public function testGetFixedValuesTableName(): void
-    {
-        $this->assertSame('field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10));
-        $this->assertSame('field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10, false));
-        $this->assertSame('galette_field_contents_10', \Galette\DynamicFields\DynamicField::getFixedValuesTableName(10, true));
-    }
-
-    /**
      * Test getValues
      */
     public function testGetValues(): void
@@ -559,36 +549,10 @@ class DynamicField extends GaletteTestCase
         $this->assertTrue($stored);
         $df_id = $df->getId();
 
-        //check if table has been created
-        $select = $this->zdb->select($df::getFixedValuesTableName($df->getId()));
-        $results = $this->zdb->execute($select);
-        $this->assertSame(3, $results->count());
 
         $this->assertTrue($df->remove());
 
         $this->assertFalse(\Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df_id));
-
-        $exception_thrown = false;
-        try {
-            $this->zdb->execute($select);
-        } catch (\PDOException $e) {
-            $exception_thrown = true;
-            $this->assertStringContainsString(
-                $this->zdb->isPostgres() ? 'Undefined table' : 'Base table or view not found',
-                $e->getMessage()
-            );
-        }
-        $this->assertTrue($exception_thrown, 'No exception has been thrown');
-        $this->expectLogEntry(
-            \Analog::ERROR,
-            $this->zdb->isPostgres() ? 'Undefined table' : 'Base table or view not found'
-        );
-        $warning = new \ArrayObject([
-            'Level' => 'Error',
-            'Code'  => '1146',
-            'Message' => 'Table \'' . NAME_DB . '.galette_field_contents_' . $df_id . '\' doesn\'t exist'
-        ]);
-        $this->expected_mysql_warnings[] = $warning;
     }
 
     /**

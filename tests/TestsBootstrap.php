@@ -39,7 +39,7 @@ if (!isset($basepath)) {
 }
 
 $db = 'mysql';
-$dbenv = getenv('DB');
+$dbenv = (string)getenv('DB');
 if (
     $dbenv === 'pgsql'
     || str_starts_with($dbenv, 'postgres')

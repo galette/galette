@@ -35,17 +35,6 @@ use Galette\Tests\GaletteTestCase;
  */
 class CsvIn extends GaletteTestCase
 {
-    private ?string $contents_table = null;
-
-    /**
-     * Set up tests
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->contents_table = null;
-    }
-
     /**
      * Tear down tests
      */
@@ -69,10 +58,6 @@ class CsvIn extends GaletteTestCase
             ]
         ]);
         $this->zdb->execute($delete);
-
-        if ($this->contents_table !== null) {
-            $this->zdb->drop($this->contents_table);
-        }
 
         //remove model
         $delete = $this->zdb->delete(\Galette\Entity\ImportModel::TABLE);
@@ -705,8 +690,6 @@ class CsvIn extends GaletteTestCase
         $this->zdb->execute($delete);
         $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
         $this->zdb->execute($delete);
-        //cleanup dynamic choices table
-        $this->contents_table = $cdf->getFixedValuesTableName($cdf->getId());
 
         //new dynamic field, of type date.
         $cfield_data = [

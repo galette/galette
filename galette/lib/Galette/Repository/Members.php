@@ -790,33 +790,7 @@ class Members
                 }
             }
 
-            // choice dynamic fields
-            if ($hasCdfc === true) {
-                foreach ($cdfcs as $cdf) {
-                    $rcdf_field = sprintf(
-                        '%s.%s',
-                        $zdb->platform->quoteIdentifier('cdfc' . $cdf),
-                        $zdb->platform->quoteIdentifier('id')
-                    );
-                    if ($zdb->isPostgres()) {
-                        $rcdf_field .= '::text';
-                    }
-
-                    $select->join(
-                        ['cdfc' . $cdf => DynamicField::getFixedValuesTableName($cdf, true)],
-                        new Expression(
-                            sprintf(
-                                '%s = %s.%s',
-                                $rcdf_field,
-                                $zdb->platform->quoteIdentifier('dfc'),
-                                $zdb->platform->quoteIdentifier('field_val')
-                            )
-                        ),
-                        [],
-                        $select::JOIN_LEFT
-                    );
-                }
-            }
+            // choice dynamic fields joins removed as choice data is now in JSON
 
             if ($mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED) {
                 $this->buildWhereClause($select);
@@ -1420,7 +1394,7 @@ class Members
                     $select->where
                         ->equalTo('dfc.field_form', 'contrib')
                         ->equalTo('dfc.field_id', $k)
-                        ->in('cdfc' . $k . '.id', $cd);
+                        ->in('dfc.field_val', $cd);
                 } else {
                     //dynamic field spotted!
                     $prefix = 'dfc.';

@@ -35,7 +35,6 @@ class Members extends GaletteTestCase
     protected int $seed = 335689;
     private array $mids = [];
 
-    private ?string $contents_table = null;
 
     /**
      * Set up tests
@@ -43,7 +42,6 @@ class Members extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->contents_table = null;
         $this->createMembers();
     }
 
@@ -71,10 +69,6 @@ class Members extends GaletteTestCase
             ]
         ]);
         $this->zdb->execute($delete);
-
-        if ($this->contents_table !== null) {
-            $this->zdb->drop($this->contents_table);
-        }
     }
 
     /**
@@ -700,8 +694,8 @@ class Members extends GaletteTestCase
         );
         $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
         $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
-        //cleanup dynamic choices table
-        $this->contents_table = $cdf->getFixedValuesTableName($cdf->getId());
+        $count = count($cdf->getSpecifications()->getChoices());
+        $this->assertSame(3, $count);
 
         //new dynamic field, of type date.
         $field_data = [

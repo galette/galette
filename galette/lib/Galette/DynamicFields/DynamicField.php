@@ -34,6 +34,8 @@ use Galette\Features\I18n;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 
+use function Safe\json_encode;
+
 /**
  * Abstract dynamic field
  *
@@ -99,6 +101,8 @@ abstract class DynamicField
 
     /** @var array<string> */
     protected array $errors = [];
+
+    protected FieldSpecifications $specifications;
 
     /**
      * Default constructor
@@ -227,54 +231,21 @@ abstract class DynamicField
         $this->form = $rs->field_form;
         $this->information = $rs->field_information;
         $this->information_above = $rs->field_information_above == 1;
-        if ($values && $this->hasFixedValues()) {
-            $this->loadFixedValues();
+        if (isset($this->specifications)) {
+            $this->specifications->fromJson($rs->field_specifications ?? null);
+            if ($values && $this->hasFixedValues()) {
+                $this->loadFixedValues();
+            }
         }
     }
 
     /**
-     * Retrieve fixed values table name
-     *
-     * @param int  $id       Field ID
-     * @param bool $prefixed Whether table name should be prefixed
-     */
-    public static function getFixedValuesTableName(int $id, bool $prefixed = false): string
-    {
-        $name = 'field_contents_' . $id;
-        if ($prefixed === true) {
-            $name = PREFIX_DB . $name;
-        }
-        return $name;
-    }
-
-    /**
-     * Returns an array of fixed valued for a field of type 'choice'.
+     * Load an array of fixed valued for a field of type 'choice'.
      */
     private function loadFixedValues(): void
     {
-        try {
-            $val_select = $this->zdb->select(
-                self::getFixedValuesTableName($this->id)
-            );
-
-            $val_select->columns(
-                [
-                    'val'
-                ]
-            )->order('id');
-
-            $results = $this->zdb->execute($val_select);
-            $this->values = [];
-            if ($results->count() > 0) {
-                foreach ($results as $val) {
-                    $this->values[] = $val->val;
-                }
-            }
-        } catch (Throwable $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+        if ($this->specifications instanceof ChoiceSpecifications) {
+            $this->values = $this->specifications->getChoices();
         }
     }
 
@@ -432,6 +403,14 @@ abstract class DynamicField
     public function getSize(): ?int
     {
         return $this->size;
+    }
+
+    /**
+     * Get field specifications
+     */
+    public function getSpecifications(): FieldSpecifications
+    {
+        return $this->specifications;
     }
 
     /**
@@ -638,6 +617,9 @@ abstract class DynamicField
             }
 
             $this->values = $fixed_values;
+            if ($this->specifications instanceof ChoiceSpecifications) {
+                $this->specifications->setChoices($fixed_values);
+            }
         }
 
         if (!isset($this->id)) {
@@ -666,6 +648,7 @@ abstract class DynamicField
         }
 
         try {
+            $specifications = (isset($this->specifications)) ? json_encode($this->specifications) : new Expression('NULL');
             $values = [
                 'field_name'              => strip_tags((string)$this->name),
                 'field_perm'              => $this->permission,
@@ -680,6 +663,7 @@ abstract class DynamicField
                 'field_index'             => $this->index,
                 'field_information'       => $this->information ?? new Expression('NULL'),
                 'field_information_above' => $this->information_above,
+                'field_specifications'    => $specifications
             ];
 
             if ($this->required === false) {
@@ -714,63 +698,6 @@ abstract class DynamicField
                 Analog::ERROR
             );
             $this->errors[] = _T("An error occurred storing the field.");
-        }
-
-        if (count($this->errors) === 0 && $this->hasFixedValues()) {
-            $contents_table = self::getFixedValuesTableName($this->id, true);
-
-            try {
-                $this->zdb->drop(str_replace(PREFIX_DB, '', $contents_table), true);
-                $field_size = ((int)$this->size > 0) ? $this->size : 1;
-                $this->zdb->db->query(
-                    'CREATE TABLE ' . $contents_table
-                    . ' (id INTEGER NOT NULL,val varchar(' . $field_size
-                    . ') NOT NULL)',
-                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                );
-            } catch (Throwable $e) {
-                Analog::log(
-                    'Unable to manage fields values table '
-                    . $contents_table . ' | ' . $e->getMessage(),
-                    Analog::ERROR
-                );
-                $this->errors[] = _T("An error occurred creating field values table");
-            }
-
-            if (count($this->errors) == 0 && is_array($this->values)) {
-                $contents_table = self::getFixedValuesTableName($this->id);
-                try {
-                    $this->zdb->beginTransaction();
-
-                    $insert = $this->zdb->insert($contents_table);
-                    $insert->values(
-                        [
-                            'id'    => ':id',
-                            'val'   => ':val'
-                        ]
-                    );
-                    $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-
-                    $cnt_values = count($this->values);
-                    for ($i = 0; $i < $cnt_values; $i++) {
-                        $stmt->execute(
-                            [
-                                'id'    => $i,
-                                'val'   => $this->values[$i]
-                            ]
-                        );
-                    }
-                    $this->zdb->commit();
-                } catch (Throwable $e) {
-                    $this->zdb->rollback();
-                    Analog::log(
-                        'Unable to store field ' . $this->id . ' values ('
-                        . $e->getMessage() . ')',
-                        Analog::ERROR
-                    );
-                    $this->warnings[] = _T('An error occurred storing dynamic field values :(');
-                }
-            }
         }
 
         return count($this->errors) === 0;
@@ -897,11 +824,6 @@ abstract class DynamicField
     public function remove(): bool
     {
         try {
-            if ($this->hasFixedValues()) {
-                $contents_table = self::getFixedValuesTableName($this->id);
-                $this->zdb->drop($contents_table);
-            }
-
             $this->zdb->beginTransaction();
             $old_rank = $this->index;
 

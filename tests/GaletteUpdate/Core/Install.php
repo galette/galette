@@ -296,6 +296,14 @@ class Install extends BaseGaletteTestCase
                 implode('|', $constraint->getReferencedColumns())
             );
         }
+        if ($constraint->isCheck()) {
+            return sprintf(
+                '%s-%s-%s',
+                $constraint->getType(),
+                str_replace($this->latest_prefix, PREFIX_DB, $constraint->getTableName()),
+                $constraint->getCheckClause()
+            );
+        }
 
         throw new \RuntimeException('Unsupported constraint type ' . $constraint->getType());
     }

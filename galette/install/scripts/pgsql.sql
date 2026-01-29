@@ -141,6 +141,7 @@ CREATE TABLE galette_field_types (
   field_information text DEFAULT NULL,
   field_width_in_forms smallint DEFAULT 1 NOT NULL,
   field_information_above boolean DEFAULT FALSE,
+  field_specifications json DEFAULT NULL,
   PRIMARY KEY (field_id)
 );
 -- add index, field_form is used elsewhere
@@ -366,4 +367,4 @@ DROP TABLE IF EXISTS galette_database CASCADE;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(1.210);
+INSERT INTO galette_database (version) VALUES(1.220);

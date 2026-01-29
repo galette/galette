@@ -35,4 +35,4 @@ define('GALETTE_PGSQL_MIN', '13'); //@phpstan-ignore theCodingMachineSafe.functi
 define('GALETTE_NIGHTLY', false); //@phpstan-ignore theCodingMachineSafe.function
 define('GALETTE_VERSION', 'v1.2.1'); //@phpstan-ignore theCodingMachineSafe.function
 define('GALETTE_COMPAT_VERSION', '1.2.0'); //@phpstan-ignore theCodingMachineSafe.function
-define('GALETTE_DB_VERSION', '1.210'); //@phpstan-ignore theCodingMachineSafe.function
+define('GALETTE_DB_VERSION', '1.220'); //@phpstan-ignore theCodingMachineSafe.function
