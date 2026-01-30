@@ -40,6 +40,8 @@ updates:
     # see: https://github.com/sindresorhus/del/releases/tag/v7.0.0
     ignore:
       - dependency-name: "del"
+      - dependency-name: "jquery"
+        versions: [ "4.x" ]
     groups:
       # Group development dependencies
       npm-dev-dependencies:
