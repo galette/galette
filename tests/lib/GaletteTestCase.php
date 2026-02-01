@@ -61,23 +61,6 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $this->session = $this->container->get(\RKA\Session::class);
         $this->routeparser = $this->container->get(\Slim\Routing\RouteParser::class);
         $this->view = $this->container->get(\Slim\Views\Twig::class);
-
-        // Explicit cleanup of dirty state from previous tests (handles implicit commits in MySQL)
-        if (TYPE_DB === 'mysql') {
-            $this->zdb->db->query('SET FOREIGN_KEY_CHECKS=0', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        }
-        $this->zdb->execute($this->zdb->delete(\Galette\Entity\Contribution::TABLE));
-        $this->zdb->execute($this->zdb->delete(\Galette\Entity\Adherent::TABLE));
-        $this->zdb->execute($this->zdb->delete(\Galette\Entity\Transaction::TABLE));
-        $this->zdb->execute($this->zdb->delete(\Galette\Entity\Group::TABLE));
-        $this->zdb->db->query("UPDATE galette_preferences SET val_pref = '0' WHERE nom_pref = 'pref_bool_selfsubscribe'", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        if (TYPE_DB === 'mysql') {
-            $this->zdb->db->query('SET FOREIGN_KEY_CHECKS=1', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        }
-
-        $this->zdb->beginTransaction();
-        $this->i18n->changeLanguage('en_US');
-
         if ($this->load_plugins) {
             $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         }
