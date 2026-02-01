@@ -869,7 +869,7 @@ class Db
             'platform' => $this->db->getPlatform(),
             'query_string' => $this->last_query,
             'type_db' => $this->type_db,
-            default => throw new \RuntimeException('Unknown property ' . $name),
+            default => throw new RuntimeException('Unknown property ' . $name),
         };
     }
 
