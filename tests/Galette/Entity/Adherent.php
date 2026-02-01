@@ -1053,7 +1053,7 @@ class Adherent extends GaletteTestCase
         $begin_date->add(new \DateInterval('P1D'));
         $begin_date->sub(new \DateInterval('P1Y'));
 
-        //$this->cleanContributions();
+        $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $this->adh->id,
             'id_type_cotis'         => 3,
@@ -1091,7 +1091,7 @@ class Adherent extends GaletteTestCase
         $begin_date->add(new \DateInterval('P1D'));
         $begin_date->sub(new \DateInterval('P1Y'));
 
-        //$this->cleanContributions();
+        $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $this->adh->id,
             'id_type_cotis'         => 3,
@@ -1147,7 +1147,7 @@ class Adherent extends GaletteTestCase
         $begin_date->sub(new \DateInterval('P1Y'));
 
         $this->logSuperAdmin();
-        //$this->cleanContributions();
+        $this->cleanContributions();
         $this->createContrib([
             'id_adh'                => $this->adh->id,
             'id_type_cotis'         => 3,
