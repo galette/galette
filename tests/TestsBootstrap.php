@@ -142,10 +142,6 @@ if (
     $testenv !== 'UPDATE'
     && $testenv !== 'FAIL'
 ) {
-    //do not initialize Tiles on update nor fail tests
-    $titles = new \Galette\Repository\Titles($zdb);
-    $titles->installInit();
-
     $fc = $container->get(\Galette\Entity\FieldsConfig::class);
     $categorized_fields = $fc->getCategorizedFields();
     foreach ($categorized_fields as &$fieldset) {

@@ -1081,8 +1081,8 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
 
             $texts = new \Galette\Entity\Texts($preferences);
             $titles = new \Galette\Repository\Titles($zdb);
-
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, $login);
+            $payment_types = new \Galette\Repository\PaymentTypes($zdb, $preferences, $login);
 
             $this->error = false;
 
@@ -1117,6 +1117,10 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             //Install PDF models
             $res = $models->installInit(false);
             $this->proceedReport(_T("PDF models"), $res);
+
+            //Install payment types
+            $res = $payment_types->installInit();
+            $this->proceedReport(_T("Payment types"), $res);
 
             return !$this->error;
         } elseif ($this->isUpgrade()) {

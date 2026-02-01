@@ -39,7 +39,7 @@ abstract class BaseGaletteTestCase extends TestCase
     /** @var array<string,array<string,array<int,string>>> */
     protected array $flash_data;
     protected \DI\Container $container;
-    /** @var string[] */
+    /** @var array<array<string, string>> */
     protected array $expected_mysql_warnings = [];
     protected bool $check_logs = true;
     protected bool $db_transactions = true;
