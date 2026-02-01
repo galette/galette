@@ -23,7 +23,10 @@ declare(strict_types=1);
 
 namespace Galette\Tests;
 
+use ArrayObject;
 use PHPUnit\Framework\TestCase;
+
+use function Safe\preg_match;
 
 /**
  * Galette tests case main class
@@ -39,7 +42,7 @@ abstract class BaseGaletteTestCase extends TestCase
     /** @var array<string,array<string,array<int,string>>> */
     protected array $flash_data;
     protected \DI\Container $container;
-    /** @var array<array<string, string>> */
+    /** @var array<ArrayObject<string, string|int>> */
     protected array $expected_mysql_warnings = [];
     protected bool $check_logs = true;
     protected bool $db_transactions = true;
@@ -128,7 +131,7 @@ abstract class BaseGaletteTestCase extends TestCase
         foreach ($current_warnings as $warning) {
             $found_index = null;
             foreach ($expected as $index => $expected_warning) {
-                if ($expected_warning == $warning) {
+                if ($this->warningsMatch($expected_warning, $warning)) {
                     $found_index = $index;
                     break;
                 }
@@ -143,6 +146,30 @@ abstract class BaseGaletteTestCase extends TestCase
                 );
             }
         }
+    }
+
+    /**
+     * Check if two warnings match, considering possible regex in expected message
+     *
+     * @param ArrayObject<string, string|int> $expected Expected warning
+     * @param ArrayObject<string, string|int> $actual   Actual warning
+     */
+    private function warningsMatch(ArrayObject $expected, ArrayObject $actual): bool
+    {
+        if ($expected['Level'] !== $actual['Level'] || (int)$expected['Code'] !== (int)$actual['Code']) {
+            return false;
+        }
+
+        $expected_message = (string)$expected['Message'];
+
+        // Check if the expected message is a regex pattern
+        if (str_starts_with($expected_message, 'regex:')) {
+            $pattern = substr($expected_message, 6); // Remove 'regex:' prefix
+            return preg_match($pattern, (string)$actual['Message']) === 1;
+        }
+
+        // Standard exact match
+        return $expected_message === $actual['Message'];
     }
 
     /**

@@ -78,12 +78,6 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         //FIXME: use DI when needed instead of global variable -- see also in includes/main.inc.php
         $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files
 
-        $this->initPaymentTypes();
-        $this->initStatus();
-        $this->initContributionsTypes();
-        $this->initModels();
-        $this->initTitles();
-
         require GALETTE_ROOT . 'includes/routes/main.routes.php';
         require GALETTE_ROOT . 'includes/routes/authentication.routes.php';
         require GALETTE_ROOT . 'includes/routes/management.routes.php';
@@ -627,67 +621,6 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
                     break;
             }
         }
-    }
-
-    /**
-     * Initialize default status in database
-     */
-    protected function initStatus(): void
-    {
-        $status = $this->container->get(\Galette\Entity\Status::class);
-        if (count($status->getList()) === 0) {
-            //status are not yet instantiated.
-            $res = $status->installInit();
-            $this->assertTrue($res);
-        }
-    }
-
-    /**
-     * Initialize default contributions types in database
-     */
-    protected function initContributionsTypes(): void
-    {
-        $ct = new \Galette\Entity\ContributionsTypes($this->zdb);
-        if (count($ct->getCompleteList()) === 0) {
-            //contributions types are not yet instantiated.
-            $res = $ct->installInit();
-            $this->assertTrue($res);
-        }
-    }
-
-    /**
-     * Initialize default payment types in database
-     */
-    protected function initPaymentTypes(): void
-    {
-        $types = new \Galette\Repository\PaymentTypes($this->zdb, $this->preferences, $this->login);
-        if (count($types->getList()) === 0) {
-            //payment types are not yet instantiated.
-            $res = $types->installInit();
-            $this->assertTrue($res);
-        }
-    }
-
-    /**
-     * Initialize default titles in database
-     */
-    protected function initTitles(): void
-    {
-        $titles = new \Galette\Repository\Titles($this->zdb);
-        if (count($titles->getList()) === 0) {
-            $res = $titles->installInit();
-            $this->assertTrue($res);
-        }
-    }
-
-    /**
-     * Initialize default PDF models in database
-     */
-    protected function initModels(): void
-    {
-        $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
-        $res = $models->installInit(false);
-        $this->assertTrue($res);
     }
 
     /**

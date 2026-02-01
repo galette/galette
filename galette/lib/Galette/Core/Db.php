@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use ArrayObject;
 use Exception;
 use Laminas\Db\Adapter\Driver\Pdo\Result;
 use Laminas\Db\Metadata\Object\ColumnObject;
@@ -1044,7 +1045,7 @@ class Db
     /**
      * Get MySQL warnings
      *
-     * @return array<array<string, string>>
+     * @return array<ArrayObject<string, string|int>>
      */
     public function getWarnings(): array
     {
