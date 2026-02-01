@@ -21,7 +21,11 @@
 
 declare(strict_types=1);
 
-global $zdb, $preferences, $login, $container, $galette_log_var, $i18n, $app, $plugins;
+/*
+ * Test bootstrap
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
 
 
 if (!isset($basepath)) {
@@ -37,11 +41,8 @@ if (!isset($basepath)) {
 $db = 'mysql';
 $dbenv = (string)getenv('DB');
 if (
-    $dbenv !== false
-    && (
-        $dbenv === 'pgsql'
-        || str_starts_with($dbenv, 'postgres')
-    )
+    $dbenv === 'pgsql'
+    || str_starts_with($dbenv, 'postgres')
 ) {
     $db = 'pgsql';
 }
