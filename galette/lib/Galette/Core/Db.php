@@ -788,17 +788,7 @@ class Db
      */
     public function beginTransaction(): void
     {
-        $connection = $this->getConnection();
-        if (self::$transaction_level === 0 || !$connection->inTransaction()) {
-            $connection->beginTransaction();
-            self::$transaction_level = 1;
-        } else {
-            $this->db->query(
-                'SAVEPOINT galette_level_' . self::$transaction_level,
-                Adapter::QUERY_MODE_EXECUTE
-            );
-            self::$transaction_level++;
-        }
+        $this->getConnection()->beginTransaction();
     }
 
     /**
@@ -810,32 +800,7 @@ class Db
             //never commit from tests
             return;
         }
-        $connection = $this->getConnection();
-        if (self::$transaction_level > 1) {
-            if ($connection->inTransaction()) {
-                try {
-                    $this->db->query(
-                        'RELEASE SAVEPOINT galette_level_' . (self::$transaction_level - 1),
-                        Adapter::QUERY_MODE_EXECUTE
-                    );
-                } catch (Throwable $e) {
-                    // Ignore, savepoint may have been lost due to implicit commit
-                    \Analog::log(
-                        'Cannot release savepoint galette_level_' . (self::$transaction_level - 1) . ' | ' . $e->getMessage(),
-                        \Analog::WARNING
-                    );
-                }
-            }
-            self::$transaction_level--;
-        } elseif (self::$transaction_level === 1) {
-            // Root level: only commit if not in test mode
-            if (!defined('GALETTE_TESTS')) {
-                if ($connection->inTransaction()) {
-                    $connection->commit();
-                }
-                self::$transaction_level = 0;
-            }
-        }
+        $this->getConnection()->commit();
     }
 
     /**
@@ -843,29 +808,7 @@ class Db
      */
     public function rollback(): void
     {
-        $connection = $this->getConnection();
-        if (self::$transaction_level > 1) {
-            if ($connection->inTransaction()) {
-                try {
-                    $this->db->query(
-                        'ROLLBACK TO SAVEPOINT galette_level_' . (self::$transaction_level - 1),
-                        Adapter::QUERY_MODE_EXECUTE
-                    );
-                } catch (Throwable $e) {
-                    // Ignore, savepoint may have been lost due to implicit commit
-                    \Analog::log(
-                        'Cannot release savepoint galette_level_' . (self::$transaction_level - 1) . ' | ' . $e->getMessage(),
-                        \Analog::WARNING
-                    );
-                }
-            }
-            self::$transaction_level--;
-        } elseif (self::$transaction_level === 1) {
-            if ($connection->inTransaction()) {
-                $connection->rollback();
-            }
-            self::$transaction_level = 0;
-        }
+        $this->getConnection()->rollback();
     }
 
     /**
@@ -874,14 +817,6 @@ class Db
     public function inTransaction(): bool
     {
         return $this->getConnection()->inTransaction();
-    }
-
-    /**
-     * Get current transaction level
-     */
-    public function getTransactionLevel(): int
-    {
-        return self::$transaction_level;
     }
 
     /**
