@@ -18,13 +18,14 @@
 # Egor Vershkov <evn88fx64@gmail.com>, 2025.
 # kuka <uber.mober@gmail.com>, 2025.
 # korn3r <korn3r@gmail.com>, 2025.
+# Artem <artemkozhin80@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2025-12-16 15:00+0000\n"
-"Last-Translator: korn3r <korn3r@gmail.com>\n"
+"PO-Revision-Date: 2026-02-02 23:48+0000\n"
+"Last-Translator: Artem <artemkozhin80@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -33,7 +34,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.15.1-dev\n"
+"X-Generator: Weblate 5.16-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Невозможно загрузить транзакцию #%id!"
@@ -991,13 +992,13 @@ msgstr "У меня %1$s Галет, мой друг дал мне ещё %2$s. 
 msgid "How much is %1$s minus %2$s?"
 msgstr "Сколько будет %1$s минус %2$s?"
 
-#, fuzzy, php-format
+#, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr "Что получится если отнять %2$s от %1$s?"
+msgstr "Сколько составляет %1$s, на которые мы выходим на пенсию %2$s?"
 
 #, php-format
 msgid "How much is %2$s retired to %1$s?"
-msgstr ""
+msgstr "Сколько %2$s будет в %1$s?"
 
 #, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
@@ -1034,32 +1035,31 @@ msgid "Logged in as:<br/>%login"
 msgstr "Вы зашли как:<br/>%login"
 
 msgid "Delete mailing entries"
-msgstr ""
+msgstr "Удалять записи почтовой рассылки"
 
 msgid "My Account"
 msgstr "Мой аккаунт"
 
-#, fuzzy
 msgid "My contributions"
 msgstr "Мой вклад"
 
 msgid "View and filter all my contributions"
-msgstr ""
+msgstr "Просмотр и фильтрация всех моих вкладов"
 
 msgid "My scheduled payments"
-msgstr ""
+msgstr "Мои запланированные платежи"
 
 msgid "View and filter all my scheduled payments"
-msgstr ""
+msgstr "Просмотр и фильтрация всех моих запланированных платежей"
 
 msgid "My transactions"
-msgstr ""
+msgstr "Мои сделки"
 
 msgid "View and filter all my transactions"
-msgstr ""
+msgstr "Просмотр и фильтрация всех моих транзакций"
 
 msgid "My information"
-msgstr ""
+msgstr "Моя информация"
 
 msgid "View my member card"
 msgstr ""
