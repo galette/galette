@@ -24,6 +24,7 @@ declare(strict_types=1);
 use Galette\Core\I18n;
 use Galette\Core\LightSlimApp;
 use Galette\Core\Login;
+use Galette\Core\Plugins;
 use Galette\Core\SlimApp;
 use Galette\Middleware\Authenticate;
 use Galette\Middleware\Language;
@@ -54,32 +55,12 @@ if (!defined('GALETTE_ROOT')) {
 if (!defined('GALETTE_BASE_PATH')) {
     \define('GALETTE_BASE_PATH', '../'); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
 }
-
+/** @var bool $needs_update */
 $needs_update = false;
 /** @ignore */
 require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
-//Galette needs database update!
-if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
-    define('GALETTE_THEME', 'themes/default/');
-    $gapp = new LightSlimApp();
-} else {
-    $gapp = new SlimApp();
-}
-$app = $gapp->getApp();
-$app->setBasePath((function () {
-    $uri = (string)parse_url('http://a' . ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
-    if (stripos($uri, (string)$_SERVER['SCRIPT_NAME']) === 0) {
-        return dirname((string)$_SERVER['SCRIPT_NAME']);
-    }
-
-    $scriptDir = str_replace('\\', '/', dirname((string)$_SERVER['SCRIPT_NAME']));
-    if ($scriptDir !== '/' && stripos($uri, $scriptDir) === 0) {
-        return $scriptDir;
-    }
-
-    return '';
-})());
+/** @var Plugins $plugins */
 
 //CONFIGURE AND START SESSION
 
@@ -105,10 +86,37 @@ $session = new SessionMiddleware([
 ]);
 
 $session->start();
+//Galette needs database update!
+if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
+    define('GALETTE_THEME', 'themes/default/');
+    $gapp = new LightSlimApp(plugins: $plugins);
+} else {
+    $gapp = new SlimApp(plugins: $plugins);
+}
+/** @var \DI\Container $container */
+$container = $gapp->getApp()->getContainer();
+$app = $gapp->getApp();
+
+// Globals... :( - see also galette/includes/dependencies.php
+global $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser, $i18n, $translator;
+
+$app->setBasePath((function () {
+    $uri = (string)parse_url('http://a' . ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
+    if (stripos($uri, (string)$_SERVER['SCRIPT_NAME']) === 0) {
+        return dirname((string)$_SERVER['SCRIPT_NAME']);
+    }
+
+    $scriptDir = str_replace('\\', '/', dirname((string)$_SERVER['SCRIPT_NAME']));
+    if ($scriptDir !== '/' && stripos($uri, $scriptDir) === 0) {
+        return $scriptDir;
+    }
+
+    return '';
+})());
+
+
 $app->add($session);
 
-// Set up dependencies
-require GALETTE_ROOT . '/includes/dependencies.php';
 $app->add($app->getContainer()->get(\Slim\Csrf\Guard::class));
 
 /** @var \DI\Container $container */
@@ -216,7 +224,9 @@ $errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class
  */
 $app->add(TwigMiddleware::createFromContainer($app, Twig::class));
 
-$app->run();
+if (!defined('GALETTE_TESTS')) {
+    $app->run();
+}
 
 if (isset($profiler)) {
     $profiler->stop();

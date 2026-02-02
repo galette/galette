@@ -50,14 +50,14 @@ $logfile = 'galette_install';
 define('GALETTE_BASE_PATH', '../'); //@phpstan-ignore theCodingMachineSafe.function
 
 require_once __DIR__ . '/../includes/galette.inc.php';
+/** @var Plugins $plugins */
 
 session_start(); //@phpstan-ignore theCodingMachineSafe.function
 $session_name = 'galette_install_' . str_replace('.', '_', GALETTE_VERSION);
 $session = &$_SESSION['galette'][$session_name];
 
-$gapp = new \Galette\Core\SlimApp();
+$gapp = new \Galette\Core\SlimApp($plugins);
 $app = $gapp->getApp(); // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
-require_once __DIR__ . '/../includes/dependencies.php';
 
 if (isset($_POST['abort_btn'])) {
     if (isset($session[md5(GALETTE_ROOT)])) {

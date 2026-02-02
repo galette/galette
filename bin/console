@@ -58,10 +58,9 @@ session_start();
 $session_name = 'galette_cli_' . str_replace('.', '_', GALETTE_VERSION);
 $session = &$_SESSION['galette'][$session_name];
 
-$gapp = new \Galette\Core\SlimApp();
+$gapp = new \Galette\Core\SlimApp($plugins);
 $app = $gapp->getApp();
-
-require_once $basepath . 'includes/dependencies.php';
+$container = $app->getContainer();
 
 $console = new \Galette\Console\GaletteApplication($basepath);
 $console->init();

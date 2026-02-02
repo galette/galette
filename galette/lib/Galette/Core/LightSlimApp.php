@@ -43,10 +43,13 @@ class LightSlimApp
     /**
      * Create a new Slim application
      *
-     * @param string $mode Galette mode
+     * @param Plugins $plugins Plugins instance
+     * @param string  $mode    Galette mode
      */
-    public function __construct(private readonly string $mode = 'NEED_UPDATE')
-    {
+    public function __construct(
+        private readonly Plugins $plugins,
+        private readonly string $mode = 'NEED_UPDATE'
+    ) {
         $builder = new ContainerBuilder();
         $builder->useAttributes(true);
         $builder->addDefinitions([
@@ -62,6 +65,17 @@ class LightSlimApp
         $container = $builder->build();
 
         $this->app = Bridge::create($container);
+        $this->loadDependencies();
+    }
+
+    /**
+     * Load application dependencies
+     */
+    public function loadDependencies(): void
+    {
+        $app = $this->app; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from include
+        $plugins = $this->plugins; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from include
+        require GALETTE_ROOT . '/includes/dependencies.php';
     }
 
     /**

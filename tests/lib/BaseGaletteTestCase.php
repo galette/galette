@@ -72,16 +72,16 @@ abstract class BaseGaletteTestCase extends TestCase
         $this->flash_data = &$flash_data;
         $this->flash = new \Slim\Flash\Messages($flash_data);
 
-        $gapp =  new \Galette\Core\SlimApp();
-        $app = $gapp->getApp(); //needed as global
-        $this->app = $app;
-
         $plugins = new \Galette\Core\Plugins();
         $this->plugins = $plugins;
         if ($this->load_plugins) {
             $this->plugins->autoload(GALETTE_PLUGINS_PATH);
         }
-        require GALETTE_BASE_PATH . '/includes/dependencies.php';
+
+        $gapp =  new \Galette\Core\SlimApp($this->plugins);
+        $app = $gapp->getApp(); //needed as global
+        $this->app = $app;
+
         /** @var \DI\Container $container */
         $container = $this->app->getContainer();
         $_SERVER['HTTP_HOST'] = '';

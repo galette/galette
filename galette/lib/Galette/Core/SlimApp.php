@@ -42,8 +42,10 @@ class SlimApp
 
     /**
      * Create a new Slim application
+     *
+     * @param Plugins $plugins Plugins instance
      */
-    public function __construct()
+    public function __construct(private readonly Plugins $plugins)
     {
         $builder = new ContainerBuilder();
         $builder->useAttributes(true);
@@ -57,6 +59,17 @@ class SlimApp
         $container = $builder->build();
 
         $this->app = Bridge::create($container);
+        $this->loadDependencies();
+    }
+
+    /**
+     * Load application dependencies
+     */
+    public function loadDependencies(): void
+    {
+        $app = $this->app; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from include
+        $plugins = $this->plugins; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from include
+        require GALETTE_ROOT . '/includes/dependencies.php';
     }
 
     /**

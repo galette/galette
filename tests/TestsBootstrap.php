@@ -114,17 +114,10 @@ $session = new \RKA\SessionMiddleware([
 ]);
 $session->start();
 
-$gapp =  new \Galette\Core\SlimApp();
-$app = $gapp->getApp();
-$app->add($session);
-
-$zdb = new \Galette\Core\Db();
-$preferences = new \Galette\Core\Preferences($zdb);
-
 if (!defined('_CURRENT_THEME_PATH')) {
     define(
         '_CURRENT_THEME_PATH',
-        GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
+        GALETTE_THEMES_PATH . 'default/'
     );
 }
 

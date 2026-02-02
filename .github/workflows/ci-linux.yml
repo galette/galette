@@ -187,7 +187,7 @@ jobs:
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
       - name: Upload code coverage (scrutinizer)
-        # Using the main composer file will fail because of limited php versions (thanks Laminas). Since ocular PHAR file is buggy, setting it in a specific directry sounds a good solution
+        # Using the main composer file will fail because of limited php versions (thanks Laminas). Since ocular PHAR file is buggy, setting it in a specific directory sounds a good solution
         run: |
           mkdir scrutinizer
           cd scrutinizer

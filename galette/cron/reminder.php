@@ -20,21 +20,27 @@
 
 use Galette\Core\Db;
 use Galette\Core\History;
+use Galette\Core\LightSlimApp;
 use Galette\Core\Login;
+use Galette\Core\Plugins;
 use Galette\Entity\Texts;
 use Galette\Middleware\Authenticate;
-use Galette\Repository\Members;
 use Galette\Repository\Reminders;
-use Galette\Filters\MembersList;
+
+use function Safe\define;
+use function Safe\session_start;
 
 /** @ignore */
 require_once __DIR__ . '/../includes/galette.inc.php';
 
-$gapp = new \Galette\Core\LightSlimApp('CRON');
-$app = $gapp->getApp();
+/** @var Plugins $plugins */
 
 session_start();
-require_once __DIR__ . '/../includes/dependencies.php';
+$gapp = new LightSlimApp(
+    plugins: $plugins,
+    mode: 'CRON'
+);
+$app = $gapp->getApp();
 
 if (isset($needs_update) && $needs_update === true) {
     echo _T("Your Galette database is not present, or not up to date.");
@@ -44,6 +50,7 @@ if (isset($needs_update) && $needs_update === true) {
 /**
  * Authentication middleware
  */
+$container = $app->getContainer();
 $authenticate = $container->get(Authenticate::class);
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
@@ -123,7 +130,7 @@ if (count($error_detected) > 0) {
         echo "\n";
         echo str_replace(
             '%i',
-            count($success_detected),
+            (string)count($success_detected),
             _T("%i emails have been sent successfully.")
         );
     }
