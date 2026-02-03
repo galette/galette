@@ -65,7 +65,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
             $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         }
 
-        global $zdb, $login, $hist, $i18n, $container, $galette_log_var, $routeparser, $app;  // globals :(
+        global $zdb, $login, $hist, $i18n, $container, $galette_log_var, $routeparser, $app, $preferences, $translator;  // globals :(
         //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
         $zdb = $this->zdb;
         $login = $this->login;
@@ -74,6 +74,8 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $container = $this->container;
         $routeparser = $this->routeparser;
         $app = $this->app;
+        $preferences = $this->preferences;
+        $translator = $this->container->get(\Galette\Core\Translator::class);
         //phpcs:enable
         //FIXME: use DI when needed instead of global variable -- see also in includes/main.inc.php
         $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but in route files

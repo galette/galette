@@ -27,6 +27,9 @@ use ArrayObject;
 use PHPUnit\Framework\TestCase;
 
 use function Safe\preg_match;
+use function Safe\session_regenerate_id;
+use function Safe\session_start;
+use function Safe\session_write_close;
 
 /**
  * Galette tests case main class
@@ -62,12 +65,23 @@ abstract class BaseGaletteTestCase extends TestCase
         \Analog\Analog::URGENT   => 'URGENT'
     ];
     protected bool $load_plugins = false;
+    protected string $app_mode = GALETTE_MODE;
 
     /**
      * Set up tests
      */
     public function setUp(): void
     {
+        global $zdb;
+        if (isset($zdb) && $zdb instanceof \Galette\Core\Db) {
+            $zdb->db->getDriver()->getConnection()->disconnect();
+        }
+
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        session_regenerate_id(true);
+        $_SESSION = [];
         $flash_data = [];
         $this->flash_data = &$flash_data;
         $this->flash = new \Slim\Flash\Messages($flash_data);
@@ -78,9 +92,14 @@ abstract class BaseGaletteTestCase extends TestCase
             $this->plugins->autoload(GALETTE_PLUGINS_PATH);
         }
 
-        $gapp =  new \Galette\Core\SlimApp($this->plugins);
+        $gapp =  new \Galette\Core\SlimApp($this->plugins, $this->app_mode);
         $app = $gapp->getApp(); //needed as global
         $this->app = $app;
+
+        global $plugins;
+        $plugins = $this->plugins;
+        global $app;
+        $app = $this->app;
 
         /** @var \DI\Container $container */
         $container = $this->app->getContainer();
@@ -89,13 +108,59 @@ abstract class BaseGaletteTestCase extends TestCase
         $container->set(\Slim\Flash\Messages::class, $this->flash);
 
         $this->app->addRoutingMiddleware();
-        $this->app->add(\Slim\Views\TwigMiddleware::createFromContainer($this->app, \Slim\Views\Twig::class));
+        if ($this->app_mode === GALETTE_MODE) {
+            $this->app->add(\Slim\Views\TwigMiddleware::createFromContainer($this->app, \Slim\Views\Twig::class));
+        }
 
         $this->container = $container;
+        global $container;
+        $container = $this->container;
+
+        // Cleanup cache
+        if (is_dir(GALETTE_CACHE_DIR)) {
+            $files = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator(
+                    GALETTE_CACHE_DIR,
+                    \RecursiveDirectoryIterator::SKIP_DOTS
+                ),
+                \RecursiveIteratorIterator::CHILD_FIRST
+            );
+
+            foreach ($files as $fileinfo) {
+                $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+                $todo($fileinfo->getPathname());
+            }
+        }
+
+        // Isolate logger
+        global $galette_log_var;
+        $this->expectNoLogEntry();
+        $galette_log_var = null;
+        $galette_run_log = \Analog\Handler\LevelName::init(
+            \Analog\Handler\Variable::init($galette_log_var)
+        );
+        \Analog\Analog::handler($galette_run_log);
+
         $this->zdb = $container->get(\Galette\Core\Db::class);
+        $container->get(\Galette\Core\I18n::class)->changeLanguage('en_US');
         if ($this->db_transactions) {
             $this->zdb->setNoCommit()->beginTransaction();
         }
+
+        // Synchronize globals
+        //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
+        global $zdb, $preferences, $login, $i18n, $emitter;
+        $zdb = $this->zdb;
+        if ($container->has(\Galette\Core\Preferences::class)) {
+            $preferences = $container->get(\Galette\Core\Preferences::class);
+        }
+        if ($container->has(\Galette\Core\Login::class)) {
+            $login = $container->get(\Galette\Core\Login::class);
+        }
+        $i18n        = $container->get(\Galette\Core\I18n::class);
+        $emitter     = $container->get(\League\Event\EventDispatcher::class);
+        //phpcs:enable
+        gc_collect_cycles();
     }
 
     /**
@@ -107,14 +172,37 @@ abstract class BaseGaletteTestCase extends TestCase
             $this->zdb->rollback();
         }
 
+        if (!$this->zdb->isPostgres()) {
+            $this->handleMysqlWarnings();
+        }
+
+        if (isset($this->zdb)) {
+            $this->zdb->db->getDriver()->getConnection()->disconnect();
+        }
+
         if ($this->check_logs) {
             $logs = $this->getCleanedLogs();
             $this->assertCount(0, $logs, implode("\n", $logs));
         }
 
-        if (!$this->zdb->isPostgres()) {
-            $this->handleMysqlWarnings();
+        $_SESSION = [];
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_write_close();
         }
+
+        global $plugins, $app, $container, $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser, $i18n, $translator;
+        $plugins = $app = $container = $zdb = $preferences = $login = $hist = $l10n = $emitter = $routeparser = $i18n = $translator = null;
+        unset(
+            $this->zdb,
+            $this->app,
+            $this->container,
+            $this->plugins,
+            $this->flash,
+            $this->flash_data,
+            $this->routeparser
+        );
+
+        gc_collect_cycles();
     }
 
     /**

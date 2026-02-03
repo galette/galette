@@ -32,6 +32,7 @@ use Galette\Tests\BaseGaletteTestCase;
  */
 class Install extends BaseGaletteTestCase
 {
+    protected string $app_mode = 'INSTALL';
     private \Galette\Core\Install $install;
 
     /**

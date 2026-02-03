@@ -85,7 +85,9 @@ $session = new SessionMiddleware([
     'lifetime'  => GALETTE_TIMEOUT
 ]);
 
-$session->start();
+if (session_status() === PHP_SESSION_NONE) {
+    $session->start();
+}
 //Galette needs database update!
 if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
     define('GALETTE_THEME', 'themes/default/');

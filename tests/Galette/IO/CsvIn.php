@@ -40,8 +40,6 @@ class CsvIn extends GaletteTestCase
      */
     public function tearDown(): void
     {
-        parent::tearDown();
-
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $this->zdb->execute($delete);
         $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
@@ -62,6 +60,7 @@ class CsvIn extends GaletteTestCase
         //remove model
         $delete = $this->zdb->delete(\Galette\Entity\ImportModel::TABLE);
         $this->zdb->execute($delete);
+        parent::tearDown();
     }
 
     /**

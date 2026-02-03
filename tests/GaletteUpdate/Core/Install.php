@@ -33,6 +33,7 @@ use Galette\Tests\BaseGaletteTestCase;
 class Install extends BaseGaletteTestCase
 {
     protected bool $db_transactions = false;
+    protected string $app_mode = 'NEED_UPDATE';
     private string $latest_prefix = 'latest_galette_';
     /**
      * Set up tests

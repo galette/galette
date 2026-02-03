@@ -112,7 +112,9 @@ $session = new \RKA\SessionMiddleware([
     'name'      => $session_name,
     'lifetime'  => 0
 ]);
-$session->start();
+if (session_status() === PHP_SESSION_NONE) {
+    $session->start();
+}
 
 if (!defined('_CURRENT_THEME_PATH')) {
     define(
