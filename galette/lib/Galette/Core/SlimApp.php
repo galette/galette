@@ -42,24 +42,34 @@ class SlimApp
 
     /**
      * Create a new Slim application
-     *
-     * @param Plugins $plugins Plugins instance
      */
-    public function __construct(private readonly Plugins $plugins)
-    {
+    public function __construct(
+        protected Plugins $plugins,
+        protected string $mode = GALETTE_MODE
+    ) {
         $builder = new ContainerBuilder();
         $builder->useAttributes(true);
-        $builder->addDefinitions([
-            'galette'                           => [
-                'mode'  => GALETTE_MODE
-            ],
-            'mode'              => GALETTE_MODE,
-            'galette.mode'      => GALETTE_MODE
-        ]);
+        $builder->addDefinitions($this->getContainerDefinitions());
         $container = $builder->build();
 
         $this->app = Bridge::create($container);
         $this->loadDependencies();
+    }
+
+    /**
+     * Get container definitions
+     *
+     * @return array{"galette": array{"mode": string}, "mode": string, "galette.mode": string}
+     */
+    protected function getContainerDefinitions(): array
+    {
+        return [
+            'galette' => [
+                'mode' => $this->mode
+            ],
+            'mode' => $this->mode,
+            'galette.mode' => $this->mode
+        ];
     }
 
     /**

@@ -23,10 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use DI\Bridge\Slim\Bridge;
-use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
-use Slim\App;
 
 /**
  * Light Slim application
@@ -34,57 +31,33 @@ use Slim\App;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @template TContainerInterface of (ContainerInterface|null)
+ * @extends SlimApp<TContainerInterface>
  */
-class LightSlimApp
+class LightSlimApp extends SlimApp
 {
-    /** @var App<TContainerInterface> */
-    private readonly App $app;
-
     /**
      * Create a new Slim application
-     *
-     * @param Plugins $plugins Plugins instance
-     * @param string  $mode    Galette mode
      */
     public function __construct(
-        private readonly Plugins $plugins,
-        private readonly string $mode = 'NEED_UPDATE'
+        Plugins $plugins,
+        string $mode = 'NEED_UPDATE'
     ) {
-        $builder = new ContainerBuilder();
-        $builder->useAttributes(true);
-        $builder->addDefinitions([
-            'templates.path'                    => GALETTE_ROOT . GALETTE_THEME,
-            'settings.displayErrorDetails'      => Galette::isDebugEnabled(),
-            'settings.addContentLengthHeader'   => false,
-            'galette'                           => [
-                'mode'      => $this->mode
-            ],
-            'mode'          => $this->mode,
-            'galette.mode'  => $this->mode
-        ]);
-        $container = $builder->build();
-
-        $this->app = Bridge::create($container);
-        $this->loadDependencies();
+        parent::__construct($plugins, $mode);
     }
 
     /**
-     * Load application dependencies
-     */
-    public function loadDependencies(): void
-    {
-        $app = $this->app; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from include
-        $plugins = $this->plugins; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from include
-        require GALETTE_ROOT . '/includes/dependencies.php';
-    }
-
-    /**
-     * Get Slim application
+     * Get container definitions
      *
-     * @return App<TContainerInterface>
+     * @return array{"galette": array{"mode": string}, "mode": string, "galette.mode": string, "templates.path": string, "settings.displayErrorDetails": bool, "settings.addContentLengthHeader": bool}
      */
-    public function getApp(): App
+    protected function getContainerDefinitions(): array
     {
-        return $this->app;
+        return
+            parent::getContainerDefinitions()
+            + [
+                'templates.path'                    => GALETTE_ROOT . GALETTE_THEME,
+                'settings.displayErrorDetails'      => Galette::isDebugEnabled(),
+                'settings.addContentLengthHeader'   => false
+            ];
     }
 }
