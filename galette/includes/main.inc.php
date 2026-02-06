@@ -142,7 +142,7 @@ if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galet
 }
 
 //Maintenance middleware
-if (Galette::MODE_MAINT === GALETTE_MODE && !$container->get(Login::class)->isSuperAdmin()) {
+if (Galette::isUnderMaintenance() && !$container->get(Login::class)->isSuperAdmin()) {
     $app->add(
         new UpdateAndMaintenance(
             $container->get(I18n::class),

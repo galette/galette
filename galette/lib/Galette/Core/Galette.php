@@ -1193,6 +1193,14 @@ class Galette
     }
 
     /**
+     * Is maintenance mode enabled
+     */
+    public static function isUnderMaintenance(): bool
+    {
+        return GALETTE_MODE === static::MODE_MAINT;
+    }
+
+    /**
      * Is debug mode enabled
      */
     public static function isDebugEnabled(): bool
