@@ -133,14 +133,21 @@ $container->set(\Slim\Flash\Messages::class, DI\autowire());
 
 /** @var \Galette\Core\Plugins $plugins */
 $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) use ($plugins) {
-    $plugins
-        ->setTranslator($c->get(\Galette\Core\Translator::class))
-        ->setEventDispatcher($c->get(\League\Event\EventDispatcher::class))
-        ->loadModules(
-            $c->get(\Galette\Core\Preferences::class),
-            GALETTE_PLUGINS_PATH,
-            $c->get(\Galette\Core\I18n::class)->getLongID()
-        );
+    if (
+        !$c->has('galette.mode') ||
+        ($c->get('galette.mode') !== 'NEED_UPDATE' &&
+        $c->get('galette.mode') !== 'INSTALL' &&
+        !defined('GALETTE_INSTALLER'))
+    ) {
+        $plugins
+            ->setTranslator($c->get(\Galette\Core\Translator::class))
+            ->setEventDispatcher($c->get(\League\Event\EventDispatcher::class))
+            ->loadModules(
+                $c->get(\Galette\Core\Preferences::class),
+                GALETTE_PLUGINS_PATH,
+                $c->get(\Galette\Core\I18n::class)->getLongID()
+            );
+    }
     return $plugins;
 });
 
