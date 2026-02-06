@@ -134,10 +134,10 @@ $container->set(\Slim\Flash\Messages::class, DI\autowire());
 /** @var \Galette\Core\Plugins $plugins */
 $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) use ($plugins) {
     if (
-        !$c->has('galette.mode') ||
-        ($c->get('galette.mode') !== 'NEED_UPDATE' &&
-        $c->get('galette.mode') !== 'INSTALL' &&
-        !defined('GALETTE_INSTALLER'))
+        !$c->has('galette.mode')
+        || ($c->get('galette.mode') !== 'NEED_UPDATE'
+        && $c->get('galette.mode') !== 'INSTALL'
+        && !defined('GALETTE_INSTALLER'))
     ) {
         $plugins
             ->setTranslator($c->get(\Galette\Core\Translator::class))
