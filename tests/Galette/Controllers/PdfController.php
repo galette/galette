@@ -33,6 +33,7 @@ use Galette\Tests\GaletteRoutingTestCase;
 class PdfController extends GaletteRoutingTestCase
 {
     protected int $seed = 58144569971203;
+    private string $is_pdf_regexp = '/^%PDF-\d\.\d/';
 
     /**
      * Set up tests
@@ -187,7 +188,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->login->logout();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         $expected_headers = [
@@ -217,7 +218,7 @@ class PdfController extends GaletteRoutingTestCase
         $controller = new \Galette\Controllers\PdfController($this->container);
         $this->session->{$controller->getFilterName('members')} = $filters;
 
-        $this->expectOutputRegex('/^%PDF-\d.\d.');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         unset($this->session->{$controller->getFilterName('members')});
@@ -265,7 +266,7 @@ class PdfController extends GaletteRoutingTestCase
         $filters->selected = [$this->adh->id];
         $this->session->{$controller->getFilterName('members')} = $filters;
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         $expected_headers = [
@@ -300,7 +301,7 @@ class PdfController extends GaletteRoutingTestCase
         $filters->selected = [$this->adh->id];
         $this->session->{$controller->getFilterName('members')} = $filters;
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         $expected_headers = [
@@ -354,7 +355,7 @@ class PdfController extends GaletteRoutingTestCase
         //test logged-in as member one
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
-        $this->expectOutputRegex('/^%PDF-\d\.\d/');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
         $expected_headers = [
             'Content-type' => ['application/pdf'],
@@ -396,7 +397,7 @@ class PdfController extends GaletteRoutingTestCase
             ]
         );
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d/');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         $expected_headers = [
@@ -473,7 +474,7 @@ class PdfController extends GaletteRoutingTestCase
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d\/');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         $expected_headers = [
@@ -498,7 +499,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->expectLogin($test_response);
 
         $this->logSuperAdmin();
-        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 
         //no groups, no pdf
@@ -546,7 +547,7 @@ class PdfController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $request = $request->withParsedBody(['email' => $member_one->email]);
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
         $this->expectNoLogEntry();
         $expected_headers = [
@@ -577,7 +578,7 @@ class PdfController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $request = $request->withParsedBody(['email' => $member_one->email]);
 
-        $this->expectOutputRegex('/^%PDF-\d\.\d\.');
+        $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
         $expected_headers = [
             'Content-type' => ['application/pdf'],
