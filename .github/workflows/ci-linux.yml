@@ -200,7 +200,7 @@ jobs:
         env:
           CODECOV_TOKEN: 2d9dd954-bed8-4628-a267-28cd0108771b
         with:
-          file: tests/clover.xml
+          files: tests/clover.xml
         if: env.skip != 'true' && matrix.coverage == 'pcov'
 
   unsupported-dbs:
