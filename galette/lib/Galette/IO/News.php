@@ -33,6 +33,7 @@ use Analog\Analog;
 use function Safe\file_get_contents;
 use function Safe\ini_get;
 use function Safe\json_decode;
+use function Safe\realpath;
 use function Safe\simplexml_load_string;
 
 /**
@@ -212,6 +213,11 @@ class News
             $url = 'http://localhost:4000/site';
         } else {
             return $url;
+        }
+
+        if (defined('GALETTE_TESTS')) {
+            // During tests, we use a local feed file to avoid depending on external resources, if URL is not explicitly set
+            return 'file:///' . realpath(GALETTE_TESTS_PATH . '/feed.xml');
         }
 
         try {
