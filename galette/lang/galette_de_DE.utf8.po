@@ -39,13 +39,14 @@
 # Norah-14 <norah.nygard14@gmail.com>, 2025.
 # André Westphal <xells1984@users.noreply.hosted.weblate.org>, 2026.
 # Wrapty <wrapty@gmail.com>, 2026.
+# Academion <m.holzhausen@tutamail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2025-11-24 08:28+0100\n"
-"PO-Revision-Date: 2026-01-02 21:01+0000\n"
-"Last-Translator: Wrapty <wrapty@gmail.com>\n"
+"PO-Revision-Date: 2026-02-09 23:09+0000\n"
+"Last-Translator: Academion <m.holzhausen@tutamail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -53,7 +54,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.16-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Die Transaktion #%id konnte nicht geladen werden!"
@@ -147,8 +148,8 @@ msgstr "Vorgemerkte Zahlung wurde erfolgreich geändert."
 
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
-msgstr[0] "Vorgemerkte Zahlung entfernen"
-msgstr[1] "Vorgemerkte Zahlungen entfernen"
+msgstr[0] "Geplante Zahlung entfernen"
+msgstr[1] "Geplante Zahlungen entfernen"
 
 msgid "Group name is missing!"
 msgstr "Der Gruppenname fehlt!"
@@ -4021,8 +4022,8 @@ msgstr "Für die Auswahl:"
 #, php-format
 msgid "%1$s month"
 msgid_plural "%1$s months"
-msgstr[0] "Monat"
-msgstr[1] "Monate"
+msgstr[0] "%1$s Monat"
+msgstr[1] "%1$s Monate"
 
 msgid "Membership extension"
 msgstr "Mitgliedschaft verlängern"
@@ -4440,10 +4441,8 @@ msgstr "Alle leeren Benutzernamen und Passwörter füllen"
 msgid "Generate empty logins and passwords"
 msgstr "Leere Benutzernamen und Passwörter erstellen"
 
-#, fuzzy
-#| msgid "Dynamic fields configuration"
 msgid "Fix dynamic fields dates format"
-msgstr "Konfiguration für dynamische Felder"
+msgstr "Datumsformat dynamischer Felder korrigieren"
 
 msgid "Go"
 msgstr "Los"
@@ -4627,10 +4626,8 @@ msgstr "E-Mail senden"
 msgid "Admin"
 msgstr "Administrator"
 
-#, fuzzy
-#| msgid "Is a woman"
 msgid "Is a sponsor"
-msgstr "Ist eine Frau"
+msgstr "Ist ein Sponsor"
 
 msgid "Search title"
 msgstr "Suchtitel"
@@ -4656,10 +4653,8 @@ msgstr ""
 "Bei der Anzeige von den Details des Anwesenheitsblattes ist ein Fehler "
 "aufgetreten :("
 
-#, fuzzy
-#| msgid "Required"
 msgid "Required field!"
-msgstr "Benötigt"
+msgstr "Benötigt!"
 
 msgid "Some warnings has been thrown:"
 msgstr "Es gab einige Warnungen:"
@@ -4683,12 +4678,11 @@ msgstr "Beschreibungen übersetzen"
 msgid "This feature requires javascript."
 msgstr "Diese Funktion erfordert Javascript."
 
-#, fuzzy, php-format
-#| msgid "Not managed group"
+#, php-format
 msgid "%1$s managed group"
 msgid_plural "%1$s managed groups"
-msgstr[0] "Kein Gruppen"
-msgstr[1] "Kein Gruppen"
+msgstr[0] "Von %1$s verwaltete Gruppe"
+msgstr[1] "Von %1$s verwaltete Gruppen"
 
 msgid "Export all groups and their members as PDF"
 msgstr "Alle Gruppen inkl. ihrer Mitglieder als PDF exportieren"
@@ -4701,12 +4695,16 @@ msgstr "Neue Gruppe"
 
 msgid "Move an item at the top of the list to reset its parent"
 msgstr ""
+"Element an den Anfang der Liste verschieben, um Vorgänger zurückzusetzen"
 
 msgid ""
 "Some of the changes you made (highlighted in red above) are not allowed. "
 "Saving your changes in the list will only be possible if all of them are "
 "allowed."
 msgstr ""
+"Einige der von Ihnen vorgenommenen Änderungen (oben rot markiert) sind nicht "
+"erlaubt. Das Speichern der Änderungen in der Liste ist nur möglich, wenn "
+"alle Änderungen erlaubt sind."
 
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
@@ -4727,26 +4725,20 @@ msgstr "Bitte geben Sie einen Gruppennamen ein"
 msgid "Create"
 msgstr "Erstellen"
 
-#, fuzzy
-#| msgid "Export as CSV"
 msgid "Export as PDF"
-msgstr "Als CSV exportieren"
+msgstr "Als PDF exportieren"
 
 msgid "Display"
 msgstr "Anzeigen"
 
-#, fuzzy
-#| msgid "file_name"
 msgid "Filename"
 msgstr "Dateiname"
 
 msgid "Creation date"
-msgstr "Erstelldatum"
+msgstr "Erstellungsdatum"
 
-#, fuzzy
-#| msgid "Add a donation"
 msgid "Add a document"
-msgstr "Eine Spende hinzufügen"
+msgstr "Ein Dokument hinzufügen"
 
 msgid "Lost your password?"
 msgstr "Passwort vergessen?"
@@ -4874,10 +4866,8 @@ msgstr "Transaktionsbezogen"
 msgid "Switch to fee"
 msgstr "zu Gebühr wechseln"
 
-#, fuzzy
-#| msgid "New attached donation"
 msgid "Switch to donation"
-msgstr "Neue Spende verbunden"
+msgstr "Zu Spende wechseln"
 
 msgid "View transaction"
 msgstr "Transaktion anzeigen"
@@ -4888,10 +4878,8 @@ msgstr "Informationen zu verknüpften Transaktionen"
 msgid "Not dispatched amount"
 msgstr "Nicht der geschickte Betrag"
 
-#, fuzzy
-#| msgid "Select attachments"
 msgid "Scheduled payments"
-msgstr "Anhänge auswählen"
+msgstr "Geplante Zahlungen"
 
 msgid "Create a new scheduled payment"
 msgstr "Neue geplante Zahlung erstellen"
@@ -4909,6 +4897,11 @@ msgid ""
 "present form must equal the total of all the scheduled payments you will "
 "define next."
 msgstr ""
+"Wenn Sie den Typ <strong>geplante Zahlung</strong> auswählen, wird ein "
+"Beitrag hinzugefügt und Sie werden gebeten, anschließend die entsprechenden "
+"geplanten Zahlungen zu erstellen. In diesem Fall muss der Betrag des "
+"Beitrags auf dem vorliegenden Formular der Summe aller geplanten Zahlungen "
+"entsprechen, die Sie als Nächstes festlegen werden."
 
 msgid "months"
 msgstr "Monate"
@@ -4924,10 +4917,8 @@ msgstr ""
 msgid "Contribution amount should not be greater than %max"
 msgstr "Der Betrag sollte nicht größer als %max sein"
 
-#, fuzzy
-#| msgid "An error occurred displaying preview :("
 msgid "An error occurred displaying scheduled payments :("
-msgstr "Beim Anzeigen der Vorschau ist ein Fehler aufgetreten :("
+msgstr "Beim Anzeigen der geplanten Zahlungen ist ein Fehler aufgetreten :("
 
 msgid "Mailing information"
 msgstr "Informationen zur Mailkampagne"
@@ -5000,10 +4991,8 @@ msgstr ""
 msgid "Members selection"
 msgstr "Mitgliedsauswahl"
 
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "Click on a row to select a member"
-msgstr "Sie müssen einen Mitarbeiter auswählen"
+msgstr "Auf eine Zeile klicken, um ein Mitglied auszuwählen"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Wollen Sie diesen Anhang wirklich entfernen?"
@@ -5011,20 +5000,14 @@ msgstr "Wollen Sie diesen Anhang wirklich entfernen?"
 msgid "This will immediately remove attachment from disk and cannot be undone."
 msgstr "Anhang sofort entfernen, kann nicht rückgängig gemacht werden."
 
-#, fuzzy
-#| msgid "Add payment type"
 msgid "Scheduled payment"
-msgstr "Zahlungsart hinzufügen"
+msgstr "Geplante Zahlung"
 
-#, fuzzy
-#| msgid "View contributions"
 msgid "View contribution"
 msgstr "Beiträge anzeigen"
 
-#, fuzzy
-#| msgid "Related transaction information"
 msgid "Related contribution information"
-msgstr "Informationen zu verknüpften Transaktionen"
+msgstr "Informationen zu verwandten Beiträgen"
 
 msgid "Short form:"
 msgstr "Kurzform:"
@@ -5078,49 +5061,37 @@ msgstr " (Fortsetzung)"
 msgid "Postal address:"
 msgstr "Postanschrift:"
 
-#, fuzzy
-#| msgid ""
-#| "Use either the address setted below or select a staff member to retrieve "
-#| "he's address."
 msgid ""
 "Use either the address set above or select a staff member to retrieve its "
 "address."
 msgstr ""
-"Geben Sie unten eine Adresse ein oder wählen Sie einen Mitarbeiter um dessen "
-"Adresse zu nutzen."
+"Verwenden Sie entweder die oben eingestellte Adresse oder wählen Sie einen "
+"Mitarbeiter aus, um dessen Adresse abzurufen."
 
 msgid "from a staff user"
 msgstr "von einem Mitarbeiter"
 
 msgid "Staff member whose address needs to be retrieved"
-msgstr ""
+msgstr "Mitarbeiter, dessen Adresse abgerufen werden muss"
 
 msgid "-- Choose a staff member --"
 msgstr "-- Wählen Sie einen Mitarbeiter --"
 
-#, fuzzy
-#| msgid ""
-#| "Use either the address setted below or select a staff member to retrieve "
-#| "he's address."
 msgid ""
 "Either use the phone number set below or select a staff member to retrieve "
 "its phone number."
 msgstr ""
-"Geben Sie unten eine Adresse ein oder wählen Sie einen Mitarbeiter um dessen "
-"Adresse zu nutzen."
+"Verwenden Sie entweder die unten eingestellte Telefonnummer oder wählen Sie "
+"einen Mitarbeiter aus, um dessen Telefonnummer abzurufen."
 
-#, fuzzy
-#| msgid "from a staff user"
 msgid "phone from a staff user"
-msgstr "von einem Mitarbeiter"
+msgstr "Telefon eines Mitarbeiters"
 
-#, fuzzy
-#| msgid "from a staff user"
 msgid "mobile phone from a staff user"
-msgstr "von einem Mitarbeiter"
+msgstr "Mobiltelefon eines Mitarbeiters"
 
 msgid "Staff member whose phone number needs to be retrieved"
-msgstr ""
+msgstr "Mitarbeiter, dessen Telefonnummer abgerufen werden muss"
 
 msgid "Website:"
 msgstr "Website:"
@@ -5214,9 +5185,8 @@ msgstr "Quadratisch (1:1)"
 msgid "Portrait (3:4)"
 msgstr "Porträt (3:4)"
 
-#, fuzzy
 msgid "Landscape (4:3)"
-msgstr "Landschaft (4:3)"
+msgstr "Querformat (4:3)"
 
 msgid "Default membership extension:"
 msgstr "Standard Verlängerung der Mitgliedschaft:"
@@ -5256,10 +5226,8 @@ msgstr ""
 msgid "Self subscription enabled?"
 msgstr "Selbstabonnement aktiviert?"
 
-#, fuzzy
-#| msgid "Download empty adhesion form"
 msgid "Display the link to download the empty adhesion form"
-msgstr "Leeres Mitgliedsformular herunterladen"
+msgstr "Link zum herunterladen des leeren Mitgliedsformulars anzeigen"
 
 msgid "Public pages enabled?"
 msgstr "Öffentliche Seiten aktiviert?"
@@ -5268,9 +5236,11 @@ msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
 msgstr ""
+"Gilt für alle öffentlichen Seiten, die hier nicht aufgeführt sind, "
+"einschließlich Plugin-Seiten."
 
 msgid "Hidden"
-msgstr ""
+msgstr "Versteckt"
 
 msgid "Everyone"
 msgstr "Alle"
@@ -5279,66 +5249,65 @@ msgid "Admin and staff only"
 msgstr "Nur für Administratoren und Mitarbeiter"
 
 msgid "Inherit"
-msgstr ""
+msgstr "Erben"
 
 msgid "Members list"
 msgstr "Mitgliedsliste"
 
-#, fuzzy
-#| msgid "Member's name"
 msgid "Members gallery"
 msgstr "Mitgliedsname"
 
-#, fuzzy
-#| msgid "Staff members"
 msgid "Staff list"
 msgstr "Mitarbeiter"
 
-#, fuzzy
-#| msgid "Can group managers edit members?"
 msgid "Include groups managers with staff?"
-msgstr "Dürfen Gruppenmanager Mitglieder bearbeiten?"
+msgstr "Gruppenmanager mit Mitarbeitern einbeziehen?"
 
 msgid "Appearance"
-msgstr ""
+msgstr "Aussehen"
 
 msgid "Hide default background image"
-msgstr ""
+msgstr "Verstecke Standard Hintergrundbild"
 
 msgid "Apply custom colors"
-msgstr ""
+msgstr "Benutzerdefinierte Farben anwenden"
 
 msgid "Primary color"
-msgstr ""
+msgstr "Primäre Farbe"
 
 msgid ""
 "Color applied to primary buttons, checkboxes, labels, headers, borders, and "
 "menus."
 msgstr ""
+"Farbe, die auf primäre Schaltflächen, Kontrollkästchen, Beschriftungen, "
+"Kopfzeilen, Rahmen und Menüs angewendet wird."
 
 msgid "Text on primary color"
-msgstr ""
+msgstr "Text auf Primärfarbe"
 
 msgid "Color applied to text displayed over the Primary color."
 msgstr ""
+"Farbe, die auf Text angewendet wird, der über der Primärfarbe angezeigt wird."
 
 msgid "Secondary color"
-msgstr ""
+msgstr "Sekundäre Farbe"
 
 msgid ""
 "Color applied to active items in menus, paginations, and accordions views."
 msgstr ""
+"Farbe, die auf aktive Elemente in Menüs, Paginierungen und "
+"Akkordeonansichten angewendet wird."
 
 msgid "Text on secondary color"
-msgstr ""
+msgstr "Text auf Sekundärfarbe"
 
 msgid "Color applied to text displayed over the Secondary color."
 msgstr ""
+"Farbe, die auf Text angewendet wird, der über der Sekundärfarbe angezeigt "
+"wird."
 
-#, fuzzy
-#| msgid "Admin parameters"
 msgid "Advanced parameters"
-msgstr "Administratoreneinstellungen"
+msgstr "Erweiterte Einstellungen"
 
 msgid "Galette base URL"
 msgstr "Galette-Basis-URL"
@@ -5822,10 +5791,8 @@ msgstr "Entfernen?"
 msgid "Attach member"
 msgstr "Mitglied hinzufügen"
 
-#, fuzzy
-#| msgid "no member"
 msgid "Parent member"
-msgstr "kein Mitglied"
+msgstr "Übergeordnetes Mitglied"
 
 msgid "Parent of:"
 msgstr "Übergeordnetes Element von:"
@@ -5833,6 +5800,8 @@ msgstr "Übergeordnetes Element von:"
 msgid ""
 "If you'd rather not subscribe online, you can download an empty adhesion form"
 msgstr ""
+"Wenn Sie sich lieber nicht online anmelden möchten, können Sie ein leeres "
+"Beitrittsformular herunterladen"
 
 msgid "Notify member his account has been modified"
 msgstr "Das Mitglied über die Kontenänderung informieren"
@@ -5862,97 +5831,66 @@ msgstr "Gruppenauswahl verwalten"
 msgid "Member of group"
 msgstr "Mitglied der Gruppe"
 
-#, fuzzy
-#| msgid "In any of selected groups"
 msgid "Click on a row to select a group"
-msgstr "In einer der ausgewählten Gruppen"
+msgstr "Klicken Sie auf eine Zeile, um eine Gruppe auszuwählen"
 
-#, fuzzy
-#| msgid "No reminder selected"
 msgid "No entry selected"
-msgstr "Keine Erinnerung ausgewählt"
+msgstr "Kein Eintrag ausgewählt"
 
-#, fuzzy
-#| msgid ""
-#| "Please make sure to select at least one member from the list to perform "
-#| "this action."
 msgid ""
 "Please make sure to select at least one entry from the list to perform this "
 "action."
-msgstr "Bitte wählen Sie für diese Aktion mindestens ein Mitglied aus."
+msgstr "Bitte wählen Sie für diese Aktion mindestens einen Eintrag aus."
 
-#, fuzzy
-#| msgid "Late due date"
 msgid "Scheduled date"
-msgstr "Fälligkeitsdatum"
+msgstr "Geplantes Datum"
 
 #, fuzzy
-#| msgid "Show parameters"
 msgid "Show payments by"
-msgstr "Einstellungen anzeigen"
+msgstr "Zahlungen anzeigen nach"
 
-#, fuzzy
-#| msgid "Has scheduled payments"
 msgid "Paid scheduled payments:"
-msgstr "Hat geplante Zahlungen"
+msgstr "Beglichene geplante Zahlungen:"
 
-#, fuzzy
-#| msgid "Not supplied"
 msgid "Not paid"
-msgstr "Bitte auswählen"
+msgstr "Nicht bezahlt"
 
-#, fuzzy
-#| msgid "My scheduled payments"
 msgid "Show all your scheduled payments"
-msgstr "Meine geplanten Zahlungen"
+msgstr "Meine geplanten Zahlungen zeigen"
 
-#, fuzzy
-#| msgid "Has scheduled payments"
 msgid "Show all members scheduled payments"
-msgstr "Hat geplante Zahlungen"
+msgstr "Geplante Zahlungen aller Mitglieder anzeigen"
 
-#, fuzzy, php-format
-#| msgid "%count entry"
-#| msgid_plural "%count entries"
+#, php-format
 msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
-msgstr[0] "%1$s Eintrag"
-msgstr[1] "%1$s Einträge"
+msgstr[0] "%1$s geplante Zahlung"
+msgstr[1] "%1$s geplante Zahlungen"
 
 #, fuzzy, php-format
 msgid "Found total scheduled %f"
-msgstr "Insgesamt geplant %f"
+msgstr "Gesamtbetrag gefunden %f"
 
-#, fuzzy, php-format
-#| msgid "Add a membership fee"
+#, php-format
 msgid "Edit membership fee %1$s"
-msgstr "Füge Mitgliedsbeitrag hinzu"
+msgstr "Bearbeite Mitgliedsbeitrag %1$s"
 
-#, fuzzy, php-format
-#| msgid "Edit transaction #%id"
+#, php-format
 msgid "Edit donation %1$s"
-msgstr "Bearbeite Transaktion #%id"
+msgstr "Bearbeite Spende %1$s"
 
-#, fuzzy, php-format
-#| msgid "%count entry"
-#| msgid_plural "%count entries"
+#, php-format
 msgid "Show only '%1$s' scheduled payments"
-msgstr "%1$s Eintrag"
+msgstr "Zeige nur '%1$s' geplante Zahlungen"
 
-#, fuzzy
-#| msgid "Not supplied"
 msgid "Not paid and due"
-msgstr "Bitte auswählen"
+msgstr "Nicht bezahlt und fällig"
 
-#, fuzzy
-#| msgid "Delete '%s' payment type"
 msgid "Delete scheduled payment"
-msgstr "Lösche die Zahlungsart '%s'"
+msgstr "Geplante Zahlung löschen"
 
-#, fuzzy
-#| msgid "Not dispatched amount"
 msgid "No scheduled payment"
-msgstr "Nicht der geschickte Betrag"
+msgstr "Keine geplante Zahlung"
 
 msgid "Original string for name, that will be used for translations."
 msgstr ""
@@ -6012,10 +5950,8 @@ msgstr "Urheber"
 msgid "Show transactions since"
 msgstr "Zeige Transaktionen seit"
 
-#, fuzzy
-#| msgid "Show all members transactions"
 msgid "Show all your transactions"
-msgstr "Alle Transaktionen des Mitglieds zeigen"
+msgstr "Alle Ihre Transaktionen anzeigen"
 
 msgid "Show all members transactions"
 msgstr "Alle Transaktionen des Mitglieds zeigen"
@@ -6042,26 +5978,19 @@ msgstr "Liste der abgeschlossenen Transaktionen"
 msgid "Uncomplete dispatched transaction"
 msgstr "Unvollständige Transaktion"
 
-#, fuzzy
-#| msgid "View and filter contributions"
 msgid "View corresponding contributions"
-msgstr "Beiträge anzeigen und filtern"
+msgstr "Entsprechende Beiträge anzeigen"
 
-#, fuzzy, php-format
-#| msgid ""
-#| "No translation for '%s'!<br/>Please fill and submit above form to create "
-#| "it."
+#, php-format
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit the form below to create "
 "it."
 msgstr ""
-"Keine Übersetzung für '%s'!<br/>Bitte füllen Sie das oben stehende Formular "
+"Keine Übersetzung für '%s'!<br>Bitte füllen Sie das unten stehende Formular "
 "aus um sie zu erstellen."
 
-#, fuzzy
-#| msgid "Original text: '%s'"
 msgid "Original text:"
-msgstr "Quelltext: '%s'"
+msgstr "Quelltext:"
 
 msgid "Choose label to translate"
 msgstr "Beschreibungen zum Übersetzen auswählen"
@@ -6201,16 +6130,12 @@ msgstr "Linie:"
 msgid "Trace"
 msgstr "Verfolgen"
 
-#, fuzzy
-#| msgid "Payment type"
 msgid "Document type"
-msgstr "Zahlungsart"
+msgstr "Dokumenttyp"
 
-#, fuzzy
-#| msgid "Extra information displayed along with dynamic field."
 msgid "Extra information displayed along with document."
 msgstr ""
-"Zusätzliche Informationen werden zusammen mit dem dynamischen Feld angezeigt."
+"Zusätzliche Informationen, die zusammen mit dem Dokument angezeigt werden."
 
 msgid ""
 "Each selected export will be stored into a separate file in the exports "
@@ -6267,10 +6192,8 @@ msgstr ""
 msgid "Hide this panel"
 msgstr "Diesen Bereich ausblenden"
 
-#, fuzzy
-#| msgid "Activities"
 msgid "My activities"
-msgstr "Aktivitäten"
+msgstr "Meine Aktivitäten"
 
 msgid "Activities"
 msgstr "Aktivitäten"
@@ -6339,15 +6262,12 @@ msgstr ""
 msgid "Captcha"
 msgstr "Captcha"
 
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "Select a group to add selected members to"
-msgstr "Sie müssen einen Mitarbeiter auswählen"
+msgstr "Wählen Sie eine Gruppe aus, um ausgewählte Mitglieder hinzuzufügen"
 
-#, fuzzy
-#| msgid "You are about to remove %count members."
 msgid "Select a group to remove selected members from"
-msgstr "Du willst %count Mitglieder löschen."
+msgstr ""
+"Wählen Sie eine Gruppe aus, um ausgewählte Mitglieder daraus zu entfernen"
 
 msgid "Load previous members..."
 msgstr "Lade vorherige Mitglieder..."
@@ -6370,10 +6290,8 @@ msgstr "Fokusbereich"
 msgid "Center"
 msgstr "Mitte"
 
-#, fuzzy
-#| msgid "To:"
 msgid "Top"
-msgstr "An:"
+msgstr "Oben"
 
 msgid "Bottom"
 msgstr "Unten"
@@ -6381,10 +6299,8 @@ msgstr "Unten"
 msgid "Left"
 msgstr "Links"
 
-#, fuzzy
-#| msgid "Rights"
 msgid "Right"
-msgstr "Rechte"
+msgstr "Rechts"
 
 msgid ""
 "Choose the area of the original image to preserve after cropping to the "
@@ -6416,10 +6332,8 @@ msgstr "Inhalt der öffentlichen Seite"
 msgid "Ajax page content"
 msgstr "Ajax Inhaltsverzeichnis"
 
-#, fuzzy
-#| msgid "Language:"
 msgid "Language menu"
-msgstr "Sprache:"
+msgstr "Sprachmenü"
 
 msgid "Page content"
 msgstr "Seiteninhalt"
