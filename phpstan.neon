@@ -48,6 +48,7 @@ parameters:
         - GALETTE_NIGHTLY
         - GALETTE_DISPLAY_VERSION
         - _CURRENT_THEME_PATH
+        - GALETTE_TESTS_PATH
     universalObjectCratesClasses:
         - RKA\Session
     ignoreErrors:

@@ -30,6 +30,7 @@
     // Directories constants
     define('GALETTE_BASE_PATH', dirname(__FILE__, 2) . '/galette');
     define('GALETTE_ROOT', $random_val(['./', './galette']));
+    define('GALETTE_TESTS_PATH', dirname(__FILE__, 2) . '/tests');
 
     define('GALETTE_CONFIG_PATH', dirname(__FILE__, 2) . '/galette/config');
     define('GALETTE_PLUGINS_PATH', dirname(__FILE__, 2) . '/galette/plugins');
