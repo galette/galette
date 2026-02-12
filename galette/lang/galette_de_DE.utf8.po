@@ -43,8 +43,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2025-11-24 08:28+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-12 08:43+0100\n"
 "PO-Revision-Date: 2026-02-09 23:09+0000\n"
 "Last-Translator: Academion <m.holzhausen@tutamail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -784,14 +784,6 @@ msgstr "Dein Passwort wurde geändert!"
 msgid "Administration tools"
 msgstr "Administrationswerkzeuge"
 
-msgid ""
-"Some PHP modules are missing. Please install them or contact your support."
-"<br/>More information on required modules may be found in the documentation."
-msgstr ""
-"Einige php Module fehlen. Bitte installieren Sie diese oder kontaktieren Sie "
-"den Support.<br/>Weitere Informationen über die benötigten Module können Sie "
-"in der Dokumentation finden."
-
 msgid "Texts has been successfully reinitialized."
 msgstr "Die Texte wurden auf den Standard zurückgesetzt."
 
@@ -1315,6 +1307,7 @@ msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- Angebotsmonate sind nur beim Beginn der Mitgliedschaft möglich."
 
 #. TRANS: parameter is a field name
+#. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1530,12 +1523,6 @@ msgstr "- Wiederholen muss eine ganze Zahl sein!"
 
 msgid "An error occurred storing the field."
 msgstr "Beim Speichern des Feldes ist ein Fehler aufgetreten."
-
-msgid "An error occurred creating field values table"
-msgstr "Beim Erstellen der Feldwerttabelle ist ein Fehler aufgetreten"
-
-msgid "An error occurred storing dynamic field values :("
-msgstr "Fehler beim Speichern der dynamischen Feldwerte aufgetreten :("
 
 msgid "separator"
 msgstr "Trennzeichen"
@@ -3135,6 +3122,14 @@ msgstr ""
 "Das Verzeichnis %dir ist nicht mehr im Pfad vorhanden und kann nicht "
 "entfernt werden."
 
+#, php-format
+msgid "Choices for field %d have been migrated."
+msgstr ""
+
+#, php-format
+msgid "Unable to migrate choices for field %d: %s"
+msgstr ""
+
 msgid "Galette has been successfully installed!"
 msgstr "Galette wurde erfolgreich installiert!"
 
@@ -3350,6 +3345,14 @@ msgstr "Datumseinstellungen"
 
 msgid "PHP Modules"
 msgstr "PHP Module"
+
+msgid ""
+"Some PHP modules are missing. Please install them or contact your support."
+"<br/>More information on required modules may be found in the documentation."
+msgstr ""
+"Einige php Module fehlen. Bitte installieren Sie diese oder kontaktieren Sie "
+"den Support.<br/>Weitere Informationen über die benötigten Module können Sie "
+"in der Dokumentation finden."
 
 msgid "Files permissions"
 msgstr "Dateiberechtigungen"
@@ -3946,6 +3949,11 @@ msgstr ""
 
 msgid "Demonstration"
 msgstr "Vorführung"
+
+#, fuzzy
+#| msgid "Main menu"
+msgid "Maintenance"
+msgstr "Hauptmenü"
 
 msgid "No member attached"
 msgstr "Kein Mitglied hinzugefügt"
@@ -6337,6 +6345,12 @@ msgstr "Sprachmenü"
 
 msgid "Page content"
 msgstr "Seiteninhalt"
+
+#~ msgid "An error occurred creating field values table"
+#~ msgstr "Beim Erstellen der Feldwerttabelle ist ein Fehler aufgetreten"
+
+#~ msgid "An error occurred storing dynamic field values :("
+#~ msgstr "Fehler beim Speichern der dynamischen Feldwerte aufgetreten :("
 
 #~ msgid "Datapase upgrade"
 #~ msgstr "Datenbank Aktualisierung"

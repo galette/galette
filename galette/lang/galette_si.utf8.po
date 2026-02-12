@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-24 08:28+0100\n"
+"POT-Creation-Date: 2026-02-12 08:43+0100\n"
 "PO-Revision-Date: 2023-10-04 11:27+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
@@ -772,11 +772,6 @@ msgstr ""
 msgid "Administration tools"
 msgstr ""
 
-msgid ""
-"Some PHP modules are missing. Please install them or contact your support."
-"<br/>More information on required modules may be found in the documentation."
-msgstr ""
-
 msgid "Texts has been successfully reinitialized."
 msgstr ""
 
@@ -1286,6 +1281,7 @@ msgid "- Offering months is only compatible with beginning of membership."
 msgstr ""
 
 #. TRANS: parameter is a field name
+#. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1494,12 +1490,6 @@ msgid "- Repeat must be an integer!"
 msgstr ""
 
 msgid "An error occurred storing the field."
-msgstr ""
-
-msgid "An error occurred creating field values table"
-msgstr ""
-
-msgid "An error occurred storing dynamic field values :("
 msgstr ""
 
 msgid "separator"
@@ -3016,6 +3006,14 @@ msgstr ""
 msgid "Directory %dir is not in its original path and will not be moved."
 msgstr ""
 
+#, php-format
+msgid "Choices for field %d have been migrated."
+msgstr ""
+
+#, php-format
+msgid "Unable to migrate choices for field %d: %s"
+msgstr ""
+
 msgid "Galette has been successfully installed!"
 msgstr ""
 
@@ -3217,6 +3215,11 @@ msgid "Date settings"
 msgstr ""
 
 msgid "PHP Modules"
+msgstr ""
+
+msgid ""
+"Some PHP modules are missing. Please install them or contact your support."
+"<br/>More information on required modules may be found in the documentation."
 msgstr ""
 
 msgid "Files permissions"
@@ -3783,6 +3786,9 @@ msgid ""
 msgstr ""
 
 msgid "Demonstration"
+msgstr ""
+
+msgid "Maintenance"
 msgstr ""
 
 msgid "No member attached"

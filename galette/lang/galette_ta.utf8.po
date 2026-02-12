@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-24 08:28+0100\n"
+"POT-Creation-Date: 2026-02-12 08:43+0100\n"
 "PO-Revision-Date: 2025-06-27 16:28+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
@@ -750,13 +750,6 @@ msgstr "உங்கள் கடவுச்சொல் மாற்றப்�
 msgid "Administration tools"
 msgstr "நிர்வாக கருவிகள்"
 
-msgid ""
-"Some PHP modules are missing. Please install them or contact your support."
-"<br/>More information on required modules may be found in the documentation."
-msgstr ""
-"சில பிஎச்பி தொகுதிகள் காணவில்லை. தயவுசெய்து அவற்றை நிறுவவும் அல்லது உங்கள் ஆதரவைத் "
-"தொடர்பு கொள்ளவும். <br> தேவையான தொகுதிகள் பற்றிய கூடுதல் தகவல்கள் ஆவணங்களில் காணப்படலாம்."
-
 msgid "Texts has been successfully reinitialized."
 msgstr "நூல்கள் வெற்றிகரமாக மறுசீரமைக்கப்பட்டுள்ளன."
 
@@ -1288,6 +1281,7 @@ msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- மாதங்கள் வழங்குவது உறுப்பினரின் தொடக்கத்துடன் மட்டுமே ஒத்துப்போகும்."
 
 #. TRANS: parameter is a field name
+#. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1501,12 +1495,6 @@ msgstr "- மீண்டும் ஒரு முழு எண்ணாக இ
 
 msgid "An error occurred storing the field."
 msgstr "புலத்தை சேமிப்பதில் பிழை ஏற்பட்டது."
-
-msgid "An error occurred creating field values table"
-msgstr "புலம் மதிப்புகள் அட்டவணையை உருவாக்கும் பிழை ஏற்பட்டது"
-
-msgid "An error occurred storing dynamic field values :("
-msgstr "மாறும் புலம் மதிப்புகளை சேமிப்பதில் பிழை ஏற்பட்டது :("
 
 msgid "separator"
 msgstr "பிரிப்பான்"
@@ -3075,6 +3063,14 @@ msgstr "அடைவு %dir நகர்த்தப்படவில்லை
 msgid "Directory %dir is not in its original path and will not be moved."
 msgstr "அடைவு %dir அதன் அசல் பாதையில் இல்லை, நகர்த்தப்படாது."
 
+#, php-format
+msgid "Choices for field %d have been migrated."
+msgstr ""
+
+#, php-format
+msgid "Unable to migrate choices for field %d: %s"
+msgstr ""
+
 msgid "Galette has been successfully installed!"
 msgstr "கலெட் வெற்றிகரமாக நிறுவப்பட்டுள்ளது!"
 
@@ -3282,6 +3278,13 @@ msgstr "தேதி அமைப்புகள்"
 
 msgid "PHP Modules"
 msgstr "பிஎச்பி தொகுதிகள்"
+
+msgid ""
+"Some PHP modules are missing. Please install them or contact your support."
+"<br/>More information on required modules may be found in the documentation."
+msgstr ""
+"சில பிஎச்பி தொகுதிகள் காணவில்லை. தயவுசெய்து அவற்றை நிறுவவும் அல்லது உங்கள் ஆதரவைத் "
+"தொடர்பு கொள்ளவும். <br> தேவையான தொகுதிகள் பற்றிய கூடுதல் தகவல்கள் ஆவணங்களில் காணப்படலாம்."
 
 msgid "Files permissions"
 msgstr "கோப்புகள் அனுமதிகள்"
@@ -3868,6 +3871,11 @@ msgstr ""
 
 msgid "Demonstration"
 msgstr "ஆர்ப்பாட்டம்"
+
+#, fuzzy
+#| msgid "Main menu"
+msgid "Maintenance"
+msgstr "பட்டியல் விளையாடுங்கள்"
 
 msgid "No member attached"
 msgstr "எந்த உறுப்பினரும் இணைக்கப்படவில்லை"
@@ -6274,6 +6282,12 @@ msgstr "மொழி பட்டியல்"
 
 msgid "Page content"
 msgstr "பக்க உள்ளடக்கம்"
+
+#~ msgid "An error occurred creating field values table"
+#~ msgstr "புலம் மதிப்புகள் அட்டவணையை உருவாக்கும் பிழை ஏற்பட்டது"
+
+#~ msgid "An error occurred storing dynamic field values :("
+#~ msgstr "மாறும் புலம் மதிப்புகளை சேமிப்பதில் பிழை ஏற்பட்டது :("
 
 #~ msgid "Datapase upgrade"
 #~ msgstr "தரவுத்தள மேம்படுத்தல்"

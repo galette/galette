@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2025-11-24 08:28+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-12 08:43+0100\n"
 "PO-Revision-Date: 2026-01-30 09:01+0000\n"
 "Last-Translator: Laura Quintana Marín <2001lauraquintana@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -858,14 +858,6 @@ msgstr "La contrasenya ha canviat!"
 msgid "Administration tools"
 msgstr "Eines d'administració"
 
-msgid ""
-"Some PHP modules are missing. Please install them or contact your support."
-"<br/>More information on required modules may be found in the documentation."
-msgstr ""
-"Falten alguns mòduls PHP. Instal·leu-los o contacteu amb el vostre suport."
-"<br>Es pot trobar més informació sobre els mòduls requerits a la "
-"documentació."
-
 #, fuzzy
 msgid "Texts has been successfully reinitialized."
 msgstr "Els textos s'han reiniciat correctament."
@@ -1500,6 +1492,7 @@ msgstr ""
 "- Oferir mesos només és compatible amb el començament de la pertinença."
 
 #. TRANS: parameter is a field name
+#. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1763,14 +1756,6 @@ msgstr "- La quantitat ha de ser un enter!"
 #, fuzzy
 msgid "An error occurred storing the field."
 msgstr "S'ha produït un error en emmagatzemar el camp."
-
-#, fuzzy
-msgid "An error occurred creating field values table"
-msgstr "S'ha produït un error en crear la taula de valors de camp"
-
-#, fuzzy
-msgid "An error occurred storing dynamic field values :("
-msgstr "S'ha produït un error en emmagatzemar els valors de camp dinàmic ("
 
 #, fuzzy
 msgid "separator"
@@ -3682,6 +3667,14 @@ msgstr "El directori per centdir no s'ha mogut ("
 msgid "Directory %dir is not in its original path and will not be moved."
 msgstr "El directori %dir no està en el seu camí original i no es mourà."
 
+#, php-format
+msgid "Choices for field %d have been migrated."
+msgstr ""
+
+#, php-format
+msgid "Unable to migrate choices for field %d: %s"
+msgstr ""
+
 #, fuzzy
 msgid "Galette has been successfully installed!"
 msgstr "La Galette s'ha instal·lat correctament!"
@@ -3940,6 +3933,14 @@ msgstr "Paràmetres de data"
 #, fuzzy
 msgid "PHP Modules"
 msgstr "Mòduls PHP"
+
+msgid ""
+"Some PHP modules are missing. Please install them or contact your support."
+"<br/>More information on required modules may be found in the documentation."
+msgstr ""
+"Falten alguns mòduls PHP. Instal·leu-los o contacteu amb el vostre suport."
+"<br>Es pot trobar més informació sobre els mòduls requerits a la "
+"documentació."
 
 #, fuzzy
 msgid "Files permissions"
@@ -4652,6 +4653,10 @@ msgstr ""
 
 msgid "Demonstration"
 msgstr "Demostració"
+
+#, fuzzy
+msgid "Maintenance"
+msgstr "Principal"
 
 #, fuzzy
 msgid "No member attached"
@@ -7533,6 +7538,14 @@ msgstr "Llengua:"
 #, fuzzy
 msgid "Page content"
 msgstr "Contingut de la pàgina"
+
+#, fuzzy
+#~ msgid "An error occurred creating field values table"
+#~ msgstr "S'ha produït un error en crear la taula de valors de camp"
+
+#, fuzzy
+#~ msgid "An error occurred storing dynamic field values :("
+#~ msgstr "S'ha produït un error en emmagatzemar els valors de camp dinàmic ("
 
 #, fuzzy
 #~ msgid "Datapase upgrade"

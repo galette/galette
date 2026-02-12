@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-24 08:28+0100\n"
+"POT-Creation-Date: 2026-02-12 08:43+0100\n"
 "PO-Revision-Date: 2025-10-21 08:39+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -756,14 +756,6 @@ msgstr "Vòstre senhau es estat cambiat !"
 msgid "Administration tools"
 msgstr "Instruments d'administracion"
 
-msgid ""
-"Some PHP modules are missing. Please install them or contact your support."
-"<br/>More information on required modules may be found in the documentation."
-msgstr ""
-"D’unei modules PHP mancan. Saretz braves de leis installar, o avisatz lo "
-"suspòrt.<br/> Mai d’informacions sus lei modules necessaris se tròba dins la "
-"documentacion."
-
 msgid "Texts has been successfully reinitialized."
 msgstr "Lei tèxtes son estats actualizats tornar mai."
 
@@ -1295,6 +1287,7 @@ msgstr ""
 "l’exercici."
 
 #. TRANS: parameter is a field name
+#. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1510,13 +1503,6 @@ msgstr "- Repeticion deu èstre un nombre entier !"
 
 msgid "An error occurred storing the field."
 msgstr "Una error a capitat per enregistrar lo camp."
-
-msgid "An error occurred creating field values table"
-msgstr "Una error a capitat per crear la taula de valor dei camps"
-
-msgid "An error occurred storing dynamic field values :("
-msgstr ""
-"A mau capitat dau temps que s'enregistravan lei valors dau camp dinamic :("
 
 msgid "separator"
 msgstr "separador"
@@ -3114,6 +3100,14 @@ msgid "Directory %dir is not in its original path and will not be moved."
 msgstr ""
 "Lo repertòri %dir es pas a son emplaçament per defaut e serà pas desplaçat."
 
+#, php-format
+msgid "Choices for field %d have been migrated."
+msgstr ""
+
+#, php-format
+msgid "Unable to migrate choices for field %d: %s"
+msgstr ""
+
 msgid "Galette has been successfully installed!"
 msgstr "L’installacion de Galette a bèn capitat !"
 
@@ -3329,6 +3323,14 @@ msgstr "Paramètres de data"
 
 msgid "PHP Modules"
 msgstr "Modules PHP"
+
+msgid ""
+"Some PHP modules are missing. Please install them or contact your support."
+"<br/>More information on required modules may be found in the documentation."
+msgstr ""
+"D’unei modules PHP mancan. Saretz braves de leis installar, o avisatz lo "
+"suspòrt.<br/> Mai d’informacions sus lei modules necessaris se tròba dins la "
+"documentacion."
 
 msgid "Files permissions"
 msgstr "Permissions de fichiers"
@@ -3916,6 +3918,11 @@ msgstr ""
 
 msgid "Demonstration"
 msgstr "Demostracion"
+
+#, fuzzy
+#| msgid "Main menu"
+msgid "Maintenance"
+msgstr "Menú principau"
 
 msgid "No member attached"
 msgstr "Ges de membre restacat"
@@ -6284,6 +6291,13 @@ msgstr "Lenga :"
 
 msgid "Page content"
 msgstr ""
+
+#~ msgid "An error occurred creating field values table"
+#~ msgstr "Una error a capitat per crear la taula de valor dei camps"
+
+#~ msgid "An error occurred storing dynamic field values :("
+#~ msgstr ""
+#~ "A mau capitat dau temps que s'enregistravan lei valors dau camp dinamic :("
 
 #~ msgid "Datapase upgrade"
 #~ msgstr "Actualizacion de la basa de donadas"

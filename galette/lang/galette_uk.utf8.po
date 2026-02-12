@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-24 08:28+0100\n"
+"POT-Creation-Date: 2026-02-12 08:43+0100\n"
 "PO-Revision-Date: 2025-11-12 17:51+0000\n"
 "Last-Translator: Максим Горпиніч <gorpinicmaksim0@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -750,13 +750,6 @@ msgstr "Ваш пароль було змінено!"
 msgid "Administration tools"
 msgstr "Засоби адміністрування"
 
-msgid ""
-"Some PHP modules are missing. Please install them or contact your support."
-"<br/>More information on required modules may be found in the documentation."
-msgstr ""
-"Деякі модулі PHP відсутні. Установіть їх або зв’яжіться зі службою підтримки."
-"<br>Докладніше про необхідні модулі можна знайти в документації."
-
 msgid "Texts has been successfully reinitialized."
 msgstr "Тексти успішно перезапущено."
 
@@ -1267,6 +1260,7 @@ msgid "- Offering months is only compatible with beginning of membership."
 msgstr "- Пропонування місяців сумісне лише з початком членства."
 
 #. TRANS: parameter is a field name
+#. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1479,12 +1473,6 @@ msgstr "- Повтор має бути цілим!"
 
 msgid "An error occurred storing the field."
 msgstr "Під час зберігання поля сталася помилка."
-
-msgid "An error occurred creating field values table"
-msgstr "Під час створення таблиці значень полів сталася помилка"
-
-msgid "An error occurred storing dynamic field values :("
-msgstr "Під час зберігання значень динамічних полів сталася помилка :("
 
 msgid "separator"
 msgstr "роздільник"
@@ -3071,6 +3059,14 @@ msgstr "Каталог %dir не переміщено :("
 msgid "Directory %dir is not in its original path and will not be moved."
 msgstr "Каталог %dir не має вихідного шляху і не буде переміщено."
 
+#, php-format
+msgid "Choices for field %d have been migrated."
+msgstr ""
+
+#, php-format
+msgid "Unable to migrate choices for field %d: %s"
+msgstr ""
+
 msgid "Galette has been successfully installed!"
 msgstr "Galette успішно встановлено!"
 
@@ -3284,6 +3280,13 @@ msgstr "Налаштування дати"
 
 msgid "PHP Modules"
 msgstr "Модулі PHP"
+
+msgid ""
+"Some PHP modules are missing. Please install them or contact your support."
+"<br/>More information on required modules may be found in the documentation."
+msgstr ""
+"Деякі модулі PHP відсутні. Установіть їх або зв’яжіться зі службою підтримки."
+"<br>Докладніше про необхідні модулі можна знайти в документації."
 
 msgid "Files permissions"
 msgstr "Дозволи на доступ до файлів"
@@ -3869,6 +3872,11 @@ msgstr ""
 
 msgid "Demonstration"
 msgstr "Показ"
+
+#, fuzzy
+#| msgid "Main menu"
+msgid "Maintenance"
+msgstr "Головне меню"
 
 msgid "No member attached"
 msgstr "Не долучено жодного члена"
@@ -6247,6 +6255,12 @@ msgstr "Мовне меню"
 
 msgid "Page content"
 msgstr "Вміст сторінки"
+
+#~ msgid "An error occurred creating field values table"
+#~ msgstr "Під час створення таблиці значень полів сталася помилка"
+
+#~ msgid "An error occurred storing dynamic field values :("
+#~ msgstr "Під час зберігання значень динамічних полів сталася помилка :("
 
 #~ msgid "Datapase upgrade"
 #~ msgstr "Оновлення бази даних"

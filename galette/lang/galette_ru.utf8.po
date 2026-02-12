@@ -22,8 +22,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2025-11-24 08:28+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-12 08:43+0100\n"
 "PO-Revision-Date: 2026-02-02 23:48+0000\n"
 "Last-Translator: Artem <artemkozhin80@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
@@ -758,14 +758,6 @@ msgstr "Ваш пароль был изменён!"
 msgid "Administration tools"
 msgstr "Инструменты администратора"
 
-msgid ""
-"Some PHP modules are missing. Please install them or contact your support."
-"<br/>More information on required modules may be found in the documentation."
-msgstr ""
-"Какие то модули PHP не найдены. Пожалуйста скачайте их или свяжитесь с "
-"поддержкой.<br/>Больше информации по необходимым модулям можно найти в "
-"документации."
-
 msgid "Texts has been successfully reinitialized."
 msgstr "Тексты успешно реинициализированы."
 
@@ -1277,6 +1269,7 @@ msgid "- Offering months is only compatible with beginning of membership."
 msgstr ""
 
 #. TRANS: parameter is a field name
+#. TRANS: parameter is an HTML link to the field with its name
 #. TRANS: parameter is an hTML link to the field with its name
 #, php-format
 msgid "- Mandatory field %1$s empty."
@@ -1485,12 +1478,6 @@ msgid "- Repeat must be an integer!"
 msgstr ""
 
 msgid "An error occurred storing the field."
-msgstr ""
-
-msgid "An error occurred creating field values table"
-msgstr ""
-
-msgid "An error occurred storing dynamic field values :("
 msgstr ""
 
 msgid "separator"
@@ -3004,6 +2991,14 @@ msgstr ""
 msgid "Directory %dir is not in its original path and will not be moved."
 msgstr ""
 
+#, php-format
+msgid "Choices for field %d have been migrated."
+msgstr ""
+
+#, php-format
+msgid "Unable to migrate choices for field %d: %s"
+msgstr ""
+
 msgid "Galette has been successfully installed!"
 msgstr ""
 
@@ -3206,6 +3201,14 @@ msgstr ""
 
 msgid "PHP Modules"
 msgstr ""
+
+msgid ""
+"Some PHP modules are missing. Please install them or contact your support."
+"<br/>More information on required modules may be found in the documentation."
+msgstr ""
+"Какие то модули PHP не найдены. Пожалуйста скачайте их или свяжитесь с "
+"поддержкой.<br/>Больше информации по необходимым модулям можно найти в "
+"документации."
 
 msgid "Files permissions"
 msgstr ""
@@ -3767,6 +3770,9 @@ msgid ""
 msgstr ""
 
 msgid "Demonstration"
+msgstr ""
+
+msgid "Maintenance"
 msgstr ""
 
 msgid "No member attached"
