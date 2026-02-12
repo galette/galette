@@ -5,7 +5,7 @@
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020, 2025.
@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-02-12 08:43+0100\n"
-"PO-Revision-Date: 2025-11-11 08:03+0000\n"
+"PO-Revision-Date: 2026-02-12 07:48+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.15-dev\n"
+"X-Generator: Weblate 5.16-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Impossible de charger la transaction #%id !"
@@ -3113,11 +3113,11 @@ msgstr ""
 
 #, php-format
 msgid "Choices for field %d have been migrated."
-msgstr ""
+msgstr "Les choix du champ %d ont été migrés."
 
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
-msgstr ""
+msgstr "Impossible de migrer les choix du champ %d : %s"
 
 msgid "Galette has been successfully installed!"
 msgstr "Galette a été installé avec succès !"
@@ -3949,10 +3949,8 @@ msgstr ""
 msgid "Demonstration"
 msgstr "Démonstration"
 
-#, fuzzy
-#| msgid "Main menu"
 msgid "Maintenance"
-msgstr "Menu principal"
+msgstr "Maintenance"
 
 msgid "No member attached"
 msgstr "Aucun adhérent attaché"
