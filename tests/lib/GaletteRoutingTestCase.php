@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests;
 
+use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Response;
 
 /**
@@ -70,9 +71,9 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
     /**
      * Assert request has been refused from authentication middleware
      *
-     * @param Response $test_response Response to test
+     * @param Response|ResponseInterface $test_response Response to test
      */
-    protected function expectAuthMiddlewareRefused(Response $test_response): void
+    protected function expectAuthMiddlewareRefused(Response|ResponseInterface $test_response): void
     {
         $this->assertSame(
             ['Location' => [$this->routeparser->urlFor('slash')]],
@@ -90,9 +91,9 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
     /**
      * Assert request requires a logged in user
      *
-     * @param Response $test_response Response to test
+     * @param Response|ResponseInterface $test_response Response to test
      */
-    protected function expectLogin(Response $test_response): void
+    protected function expectLogin(Response|ResponseInterface $test_response): void
     {
         $this->assertSame(
             ['Location' => [$this->routeparser->urlFor('slash')]],
@@ -106,10 +107,10 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
     /**
      * Assert request has been successfully processed
      *
-     * @param Response                $test_response Response to test
-     * @param array<string, string[]> $headers       Expected headers
+     * @param Response|ResponseInterface $test_response Response to test
+     * @param array<string, string[]>    $headers       Expected headers
      */
-    protected function expectOK(Response $test_response, array $headers = []): void
+    protected function expectOK(Response|ResponseInterface $test_response, array $headers = []): void
     {
         $this->assertSame($headers, $test_response->getHeaders());
         $this->assertSame(200, $test_response->getStatusCode());

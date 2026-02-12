@@ -26,6 +26,7 @@ namespace Galette\Tests\Controllers;
 use Galette\Tests\GaletteRoutingTestCase;
 use Slim\Psr7\UploadedFile;
 
+use function Safe\copy;
 use function Safe\filesize;
 use function Safe\unlink;
 
@@ -59,7 +60,7 @@ class DocumentsController extends GaletteRoutingTestCase
      */
     private function copyFixture(): void
     {
-        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/' . $this->pdf_filename, sys_get_temp_dir() . '/' . $this->pdf_filename));
+        copy(GALETTE_TESTS_PATH . '/fixtures/' . $this->pdf_filename, sys_get_temp_dir() . '/' . $this->pdf_filename);
     }
 
     /**
@@ -273,7 +274,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->assertTrue($document->store($post, $uploaded_files));
 
         $route_name = 'editDocument';
-        $route_arguments = ['id' => $document->getId()];
+        $route_arguments = ['id' => (string)$document->getId()];
 
         $this->logSuperAdmin();
         $request = $this->createRequest($route_name, $route_arguments);
@@ -341,7 +342,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $document = $this->createStatusDocument();
 
         $route_name = 'doEditDocument';
-        $route_arguments = ['id' => $document->getId()];
+        $route_arguments = ['id' => (string)$document->getId()];
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
         $post = [
             'document_type' => $document->getType(),
@@ -379,7 +380,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->assertTrue($document->store($post, $uploaded_files));
 
         $route_name = 'removeDocument';
-        $route_arguments = ['id' => $document->getId()];
+        $route_arguments = ['id' => (string)$document->getId()];
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
@@ -398,7 +399,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $document = $this->createStatusDocument();
         $route_name = 'doRemoveDocument';
 
-        $request = $this->createRequest($route_name, ['id' => $document->getID()], 'POST');
+        $request = $this->createRequest($route_name, ['id' => (string)$document->getID()], 'POST');
         $request = $request->withParsedBody(['id' => $document->getID()]);
 
         $test_response = $this->app->handle($request);
@@ -433,7 +434,7 @@ class DocumentsController extends GaletteRoutingTestCase
 
         $this->logSuperAdmin();
         $route_name = 'getDocumentFile';
-        $route_arguments = ['id' => $document->getId()];
+        $route_arguments = ['id' => (string)$document->getId()];
         $request = $this->createRequest($route_name, $route_arguments);
 
         $test_response = $this->app->handle($request);
@@ -475,13 +476,13 @@ class DocumentsController extends GaletteRoutingTestCase
         $this->assertTrue($document->store($post, $uploaded_files));
 
         $route_name = 'getDocumentFile';
-        $route_arguments = ['id' => $document->getId()];
+        $route_arguments = ['id' => (string)$document->getId()];
         $request = $this->createRequest($route_name, $route_arguments);
 
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'A request has been made to get a document file named `' . $this->pdf_filename . '` that does not exists.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'A request has been made to get a document file named `' . $this->pdf_filename . '` that does not exists.');
         $this->expectFlashData(['error_detected' => ['The file does not exists or cannot be read :(']]);
         $this->login->logout();
     }

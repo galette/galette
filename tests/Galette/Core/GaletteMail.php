@@ -36,7 +36,7 @@ class GaletteMail extends GaletteTestCase
     /**
      * Data provider for testIsURL
      *
-     * @return array<string, bool>
+     * @return array<array{string, bool}>
      */
     public static function urlProvider(): array
     {
@@ -75,7 +75,7 @@ class GaletteMail extends GaletteTestCase
     /**
      * Data provider for testIsValidEmail
      *
-     * @return array<string, bool>
+     * @return array<array{string, bool}>
      */
     public static function emailProvider(): array
     {
@@ -128,7 +128,7 @@ class GaletteMail extends GaletteTestCase
         $this->expectNoLogEntry();
 
         $mail->setRecipients(['contact.galette.eu' => 'Contact']); //just an invalid email
-        $this->expectLogEntry(\Analog::INFO, '[Galette\Core\GaletteMail] One of recipients address is not valid.');
+        $this->expectLogEntry(\Analog\Analog::INFO, '[Galette\Core\GaletteMail] One of recipients address is not valid.');
     }
 
     /**

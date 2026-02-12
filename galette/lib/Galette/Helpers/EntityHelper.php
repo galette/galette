@@ -27,8 +27,9 @@ namespace Galette\Helpers;
  * Entity helper trait
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ *
+ * @property array<string, array<string, string|null>> $fields
  */
-
 trait EntityHelper
 {
     use DatesHelper;

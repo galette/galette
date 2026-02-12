@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Filters;
 
 use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
 
 /**
  * History filters tests class
@@ -71,7 +72,7 @@ class HistoryList extends GaletteTestCase
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
         $this->assertSame(\Galette\Enums\SQLOrder::ASC->value, $filters->getDirection());
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             sprintf(
                 '[Galette\Filters\HistoryList|Pagination] "abcde" is not a valid backing value for enum %1$s',
                 version_compare(PHP_VERSION, '8.2.0', '<') ? '"Galette\Enums\SQLOrder"' : \Galette\Enums\SQLOrder::class
@@ -86,13 +87,13 @@ class HistoryList extends GaletteTestCase
         //change direction only - deprecated way
         $filters->ordered = \Galette\Enums\SQLOrder::DESC;
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             '[Galette\Filters\HistoryList|Pagination] ordered is deprecated, use setDirection() instead'
         );
         $this->assertSame(\Galette\Filters\HistoryList::ORDERBY_USER, $filters->orderby);
         $this->assertSame(\Galette\Enums\SQLOrder::DESC->value, $filters->ordered);
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             '[Galette\Filters\HistoryList|Pagination] ordered is deprecated, use getDirection() instead'
         );
 
@@ -117,7 +118,7 @@ class HistoryList extends GaletteTestCase
             \Galette\Core\I18n::DEFAULT_LANG
         );
         $langs = $i18n->getList();
-        $filter_date = new \DateTime('2000-01-01'); //day of the bug :D
+        $filter_date = new DateTime('2000-01-01'); //day of the bug :D
 
         foreach ($langs as $lang) {
             $this->assertInstanceOf(\Galette\Core\I18n::class, $lang);

@@ -39,6 +39,7 @@ use function Safe\session_write_close;
 abstract class BaseGaletteTestCase extends TestCase
 {
     protected \Galette\Core\Db $zdb;
+    /** @var \Slim\App<\Psr\Container\ContainerInterface> */
     protected \Slim\App $app;
     protected \Galette\Core\Plugins $plugins;
     protected \Slim\Flash\Messages $flash;

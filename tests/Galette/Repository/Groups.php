@@ -25,6 +25,7 @@ namespace Galette\Tests\Repository;
 
 use Analog\Analog;
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Groups repository tests
@@ -33,15 +34,12 @@ use Galette\Tests\GaletteTestCase;
  */
 class Groups extends GaletteTestCase
 {
-    private array $parents = [];
-    private array $children = [];
-    private array $subchildren = [];
     protected int $seed = 855224771456;
 
     /**
      * Groups provider
      *
-     * @return array[]
+     * @return array<int, array{parent_name: string, children: array<string, array<string>>}>
      */
     public static function groupsProvider(): array
     {
@@ -81,18 +79,16 @@ class Groups extends GaletteTestCase
     /**
      * Create groups for tests
      *
-     * @param string $parent_name Parent name
-     * @param array  $children    Children
-     *
-     * @dataProvider groupsProvider
+     * @param string                       $parent_name Parent name
+     * @param array<string, array<string>> $children    Children
      */
+    #[DataProvider('groupsProvider')]
     public function testCreateGroups(string $parent_name, array $children): void
     {
         $group = new \Galette\Entity\Group();
         $group->setName($parent_name);
         $this->assertTrue($group->store());
         $parent_id = $group->getId();
-        $this->parents[] = $group->getId();
 
         foreach ($children as $child => $subchildren) {
             $group = new \Galette\Entity\Group();
@@ -100,14 +96,12 @@ class Groups extends GaletteTestCase
             $group->setParentGroup($parent_id);
             $this->assertTrue($group->store());
             $sub_id = $group->getId();
-            $this->children[] = $group->getId();
 
             foreach ($subchildren as $subchild) {
                 $group = new \Galette\Entity\Group();
                 $group->setName($subchild);
                 $group->setParentGroup($sub_id);
                 $this->assertTrue($group->store());
-                $this->subchildren[] = $group->getId();
             }
         }
     }

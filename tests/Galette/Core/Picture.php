@@ -25,6 +25,8 @@ namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\realpath;
+
 /**
  * Picture tests class
  *
@@ -33,6 +35,7 @@ use Galette\Tests\GaletteTestCase;
 class Picture extends GaletteTestCase
 {
     private \Galette\Core\Picture $picture;
+    /** @var string[] */
     private array $expected_badchars = [
         '.',
         '\\',
@@ -141,9 +144,9 @@ class Picture extends GaletteTestCase
             $this->assertSame($expected, $this->picture->storeFile($uploaded_file));
             if ($badchar == '.') {
                 // `.` badchar will fail on extension check
-                $this->expectLogEntry(\Analog::ERROR, 'Invalid extension for file file-with-.-char.jpg');
+                $this->expectLogEntry(\Analog\Analog::ERROR, 'Invalid extension for file file-with-.-char.jpg');
             } else {
-                $this->expectLogEntry(\Analog::ERROR, sprintf('Invalid filename `file-with-%s-char.jpg`', $badchar));
+                $this->expectLogEntry(\Analog\Analog::ERROR, sprintf('Invalid filename `file-with-%s-char.jpg`', $badchar));
             }
         }
 
@@ -166,7 +169,7 @@ class Picture extends GaletteTestCase
             );
             //Will fail on filesize, but this is OK, filenames and extensions have been checked :)
             $this->assertSame(\Galette\Core\Picture::FILE_TOO_BIG, $this->picture->storeFile($uploaded_file));
-            $this->expectLogEntry(\Analog::ERROR, 'File is too big ');
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'File is too big ');
         }
     }
 

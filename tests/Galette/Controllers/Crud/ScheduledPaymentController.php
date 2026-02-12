@@ -301,7 +301,7 @@ class ScheduledPaymentController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_name = 'addScheduledPayment';
-        $route_arguments = [\Galette\Entity\Contribution::PK => $contrib_one->id];
+        $route_arguments = [\Galette\Entity\Contribution::PK => (string)$contrib_one->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);

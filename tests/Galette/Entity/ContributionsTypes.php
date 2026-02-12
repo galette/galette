@@ -51,7 +51,10 @@ class ContributionsTypes extends GaletteTestCase
                 \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
         );
-        $this->expectLogEntry(\Analog::WARNING, 'A contribution type with label `annual fee` already exists');
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'A contribution type with label `annual fee` already exists'
+        );
 
         $this->assertTrue(
             $ctype->add(

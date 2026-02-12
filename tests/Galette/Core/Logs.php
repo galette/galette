@@ -25,6 +25,9 @@ namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\touch;
+use function Safe\strtotime;
+
 /**
  * Logs tests class
  *

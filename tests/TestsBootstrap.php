@@ -127,10 +127,12 @@ require_once GALETTE_BASE_PATH . 'includes/main.inc.php';
 //Globals... :(
 global $preferences, $emitter, $zdb;
 //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
+/** @var \DI\Container $container */
 $zdb = $container->get(\Galette\Core\Db::class);
 $preferences = $container->get(\Galette\Core\Preferences::class);
 $emitter = $container->get(\League\Event\EventDispatcher::class);
 //phpcs:enable
+/** @var \Galette\Core\I18n $i18n */
 $i18n->changeLanguage('en_US');
 
 if (

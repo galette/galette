@@ -21,15 +21,16 @@
 
 declare(strict_types=1);
 
+/** @var \Galette\Core\Plugins $this */
 $this->register(
-    'Galette Disabled Plugin',  //Name
-    'Test disabled plugin',     //Short description
-    'Johan Cwiklinski',         //Author
-    '1.0',                      //Version
-    GALETTE_COMPAT_VERSION,     //Galette compatible version
-    'plugdis',                  //routing name
-    '2016-10-19',               //Release date
-    [   //Permissions needed
+    name: 'Galette Disabled Plugin', //Name
+    desc: 'Test disabled plugin',    //Short description
+    author: 'Johan Cwiklinski',      //Author
+    version: '1.0',                  //Version
+    compver: GALETTE_COMPAT_VERSION, //Galette compatible version
+    route: 'plugdis',                //routing name
+    date: '2016-10-19',              //Release date
+    acls: [                          //Permissions needed
         'plugdis_root'  => 'admin'
     ]
 );

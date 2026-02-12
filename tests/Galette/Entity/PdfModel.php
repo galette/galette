@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use Safe\DateTime;
 use Galette\DynamicFields\DynamicField;
 use Galette\Tests\GaletteTestCase;
 
@@ -153,6 +155,8 @@ class PdfModel extends GaletteTestCase
 
     /**
      * Types provider
+     *
+     * @return array<int, array{type: int, expected: string}> Types and expected classes
      */
     public static function typesProvider(): array
     {
@@ -177,13 +181,13 @@ class PdfModel extends GaletteTestCase
     }
 
     /**
-     * Tets getTypeClass
-     * @dataProvider typesProvider
+     * Test getTypeClass
      *
      * @param int    $type     Requested type
      * @param string $expected Expected class name
      */
-    public function testGetypeClass(int $type, string $expected): void
+    #[DataProvider('typesProvider')]
+    public function testGetTypeClass(int $type, string $expected): void
     {
         $this->assertSame($expected, \Galette\Entity\PdfModel::getTypeClass($type));
     }
@@ -191,7 +195,7 @@ class PdfModel extends GaletteTestCase
     /**
      * Create dynamic field
      *
-     * @param array $field_data Field data
+     * @param array<string, string|int> $field_data Field data
      */
     private function createDynamicField(array $field_data): DynamicField
     {
@@ -285,7 +289,7 @@ class PdfModel extends GaletteTestCase
             'model_styles' => null,
             'model_parent' => \Galette\Entity\PdfModel::MAIN_MODEL
         ], \ArrayObject::ARRAY_AS_PROPS);
-        $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences, $rs);
+        $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences, $rs); //@phpstan-ignore argument.type (enough for a test)
 
         $data = $this->dataAdherentOne() + [
             'info_field_' . $adf->getId() . '_1' => 'My value (:'
@@ -344,14 +348,14 @@ class PdfModel extends GaletteTestCase
      */
     protected function createPdfContribution(DynamicField $cdf): void
     {
-        $bdate = new \DateTime(); // 2020-11-07
+        $bdate = new DateTime(); // 2020-11-07
         $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
         $bdate->add(new \DateInterval('P3D')); // 2020-06-10
 
         $edate = clone $bdate;
         $edate->add(new \DateInterval('P1Y'));
 
-        $dyndate = new \DateTime('2020-12-03 22:56:53');
+        $dyndate = new DateTime('2020-12-03 22:56:53');
 
         $data = [
             'id_adh' => $this->adh->id,

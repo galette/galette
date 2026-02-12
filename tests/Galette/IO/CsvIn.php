@@ -28,6 +28,10 @@ use Galette\Entity\Adherent;
 use Galette\DynamicFields\DynamicField;
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\filesize;
+use function Safe\file_put_contents;
+use function Safe\preg_match;
+
 /**
  * CsvIn tests class
  *
@@ -66,13 +70,13 @@ class CsvIn extends GaletteTestCase
     /**
      * Import text CSV file
      *
-     * @param array  $fields         Fields name to use at import
-     * @param string $file_name      File name
-     * @param array  $flash_messages Expected flash messages from doImport route
-     * @param array  $members_list   List of faked members data
-     * @param ?int   $count_before   Count before insertions. Defaults to 0 if null.
-     * @param ?int   $count_after    Count after insertions. Default to $count_before + count $members_list
-     * @param array  $values         Textual values for dynamic choices fields
+     * @param string[]                                           $fields         Fields name to use at import
+     * @param string                                             $file_name      File name
+     * @param array<string, string[]>                            $flash_messages Expected flash messages from doImport route
+     * @param array<string, array<string, string|int|bool|null>> $members_list   List of faked members data
+     * @param ?int                                               $count_before   Count before insertions. Defaults to 0 if null.
+     * @param ?int                                               $count_after    Count after insertions. Default to $count_before + count $members_list
+     * @param string[]                                           $values         Textual values for dynamic choices fields
      */
     private function doImportFileTest(
         array $fields,
@@ -113,7 +117,6 @@ class CsvIn extends GaletteTestCase
 
         $this->assertSame(200, $response->getStatusCode());
         $headers = $response->getHeaders();
-        $this->assertIsArray($headers);
         $this->assertSame(['text/csv'], $headers['Content-Type']);
         $this->assertSame(
             ['attachment;filename="galette_import_model.csv"'],
@@ -136,7 +139,7 @@ class CsvIn extends GaletteTestCase
         }
 
         $path = GALETTE_CACHE_DIR . $file_name;
-        $this->assertIsInt(file_put_contents($path, $contents));
+        $this->assertGreaterThan(0, file_put_contents($path, $contents));
         $uploaded_file = new \Slim\Psr7\UploadedFile(
             $path,
             $file_name,
@@ -152,6 +155,7 @@ class CsvIn extends GaletteTestCase
         ];
 
         $rfactory = new \Slim\Psr7\Factory\RequestFactory();
+        /** @var \Slim\Psr7\Request $request */
         $request = $rfactory->createRequest('GET', 'http://localhost/models/csv');
         $request = $request->withParsedBody($post);
 
@@ -244,7 +248,7 @@ class CsvIn extends GaletteTestCase
         $count_after = 10;
 
         $this->doImportFileTest($fields, $file_name, $flash_messages, $members_list, $count_before, $count_after);
-        $this->expectLogEntry(\Analog::ERROR, 'Field nom_adh is required, but missing in row 3');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Field nom_adh is required, but missing in row 3');
 
         //test status import
         $fields = ['nom_adh', 'ville_adh', 'fingerprint', \Galette\Entity\Status::PK];
@@ -266,7 +270,7 @@ class CsvIn extends GaletteTestCase
         $count_before = 10;
         $count_after = 10;
         $this->doImportFileTest($fields, $file_name, $flash_messages, $members_list, $count_before, $count_after);
-        $this->expectLogEntry(\Analog::ERROR, 'Status 42 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Status 42 does not exists!');
 
         $members_list['FAKER_STATUS'][\Galette\Entity\Status::PK] = 1; //existing status
         $file_name = 'test-import-status-ok.csv';
@@ -322,7 +326,7 @@ class CsvIn extends GaletteTestCase
         $count_before = 12;
         $count_after = 12;
         $this->doImportFileTest($fields, $file_name, $flash_messages, $members_list, $count_before, $count_after);
-        $this->expectLogEntry(\Analog::ERROR, 'Title 42 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Title 42 does not exists!');
 
         $members_list['FAKER_TITLE']['titre_adh'] = \Galette\Entity\Title::MR; //existing title
         $file_name = 'test-import-title-ok.csv';
@@ -357,7 +361,7 @@ class CsvIn extends GaletteTestCase
         $count_after = 13;
         $this->doImportFileTest($fields, $file_name, $flash_messages, $members_list, $count_before, $count_after);
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Email address mail@domain.com is already used! (from another member in import)'
         );
 
@@ -400,7 +404,7 @@ class CsvIn extends GaletteTestCase
         $count_after = 14;
         $this->doImportFileTest($fields, $file_name, $flash_messages, $members_list, $count_before, $count_after);
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Email address mail@domain.com is already used! (from member ' . $result['id_adh'] . ')'
         );
 
@@ -425,7 +429,7 @@ class CsvIn extends GaletteTestCase
         $count_after = 14;
         $this->doImportFileTest($fields, $file_name, $flash_messages, $members_list, $count_before, $count_after);
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             '[Galette\IO\CsvIn] Lang NO_EX does not exists!'
         );
 
@@ -467,7 +471,7 @@ class CsvIn extends GaletteTestCase
     /**
      * Get CSV import model
      *
-     * @param array $fields Fields list
+     * @param string[] $fields Fields list
      */
     protected function getModel(array $fields): \Galette\Entity\ImportModel
     {
@@ -580,7 +584,7 @@ class CsvIn extends GaletteTestCase
 
         $this->doImportFileTest($fields, $file_name, $flash_messages, $members_list, $count_before, $count_after);
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             '[Galette\IO\CsvIn] Field nom_adh is required, but missing in row 3'
         );
 
@@ -608,7 +612,7 @@ class CsvIn extends GaletteTestCase
 
         $this->doImportFileTest($fields, $file_name, $flash_messages, $members_list, $count_before, $count_after);
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             '[Galette\IO\CsvIn] Missing required field Dynamic text field'
         );
 
@@ -762,7 +766,7 @@ class CsvIn extends GaletteTestCase
 
         $this->doImportFileTest($fields, $file_name, $flash_messages, $members_list, $count_before, $count_after);
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             '[Galette\IO\CsvIn] - Wrong date format (Y-m-d) for Dynamic date field!'
         );
     }
@@ -790,7 +794,7 @@ class CsvIn extends GaletteTestCase
             $cin->getErrors()
         );
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             '[Galette\IO\CsvIn] File non-existing-file.csv cannot be open!'
         );
     }
@@ -814,7 +818,7 @@ class CsvIn extends GaletteTestCase
         $count_after = 0;
 
         $this->doImportFileTest($fields, $file_name, $flash_messages, $members_list, $count_before, $count_after);
-        $this->expectLogEntry(\Analog::ERROR, 'File is empty!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'File is empty!');
     }
 
     /**
@@ -841,7 +845,7 @@ class CsvIn extends GaletteTestCase
         }
 
         $path = GALETTE_CACHE_DIR . $file_name;
-        $this->assertIsInt(file_put_contents($path, $contents));
+        $this->assertGreaterThan(0, file_put_contents($path, $contents));
         $uploaded_file = new \Slim\Psr7\UploadedFile(
             $path,
             $file_name,
@@ -869,7 +873,7 @@ class CsvIn extends GaletteTestCase
             $csvin->getErrors()
         );
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             '[Galette\IO\CsvIn] Fields count mismatch... There should be 3 fields and there are 2 (row 1)'
         );
 
@@ -888,7 +892,7 @@ class CsvIn extends GaletteTestCase
         }
 
         $path = GALETTE_CACHE_DIR . $file_name;
-        $this->assertIsInt(file_put_contents($path, $contents));
+        $this->assertGreaterThan(0, file_put_contents($path, $contents));
         $uploaded_file = new \Slim\Psr7\UploadedFile(
             $path,
             $file_name,
@@ -916,13 +920,15 @@ class CsvIn extends GaletteTestCase
             $csvin->getErrors()
         );
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             '[Galette\IO\CsvIn] Fields count mismatch... There should be 3 fields and there are 2 (row 0)'
         );
     }
 
     /**
      * Get first set of member data
+     *
+     * @return array<string, array<string, string|int|bool|null>>
      */
     private function getMemberData1(): array
     {
@@ -1207,6 +1213,8 @@ class CsvIn extends GaletteTestCase
     /**
      * Get second set of member data
      * two lines without name.
+     *
+     * @return array<string, array<string, string|int|bool|null>>
      */
     private function getMemberData2(): array
     {
@@ -1488,6 +1496,8 @@ class CsvIn extends GaletteTestCase
 
     /**
      * Get second set of member data but two lines without name.
+     *
+     * @return array<string, array<string, string|int|bool|null>>
      */
     private function getMemberData2NoName(): array
     {

@@ -21,15 +21,16 @@
 
 declare(strict_types=1);
 
+/** @var \Galette\Core\Plugins $this */
 $this->register(
-    'Galette Test1 Plugin',     //Name
-    'Test one plugin',          //Short description
-    'Johan Cwiklinski',         //Author
-    '1.0',                      //Version
-    GALETTE_COMPAT_VERSION,     //Galette compatible version
-    'plugin1',                  //routing name
-    '2016-10-19',               //Release date
-    [   //Permissions needed
+    name: 'Galette Test1 Plugin',    //Name
+    desc: 'Test one plugin',         //Short description
+    author: 'Johan Cwiklinski',      //Author
+    version: '1.0',                  //Version
+    compver: GALETTE_COMPAT_VERSION, //Galette compatible version
+    route: 'plugin1',                //routing name
+    date: '2016-10-19',              //Release date
+    acls: [                          //Permissions needed
         'plugin1_root'  => 'groupmanager'
     ]
 );

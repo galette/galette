@@ -115,7 +115,7 @@ class Text extends GaletteTestCase
     /**
      * Data provider for testTextConversion
      *
-     * @return array<string, string>
+     * @return array<int, array{input: string, expected: string}>
      */
     public static function textConversionProvider(): array
     {

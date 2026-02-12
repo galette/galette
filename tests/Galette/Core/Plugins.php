@@ -32,6 +32,7 @@ use Galette\Tests\GaletteTestCase;
  */
 class Plugins extends GaletteTestCase
 {
+    /** @var array<string, mixed> */
     private array $plugin2 = [
         'root'          => 'plugin-test2',
         'name'          => 'Galette Test2 Plugin',

@@ -25,6 +25,9 @@ namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\preg_match;
+use function Safe\mb_convert_encoding;
+
 /**
  * I18n tests class
  *
@@ -143,7 +146,7 @@ class I18n extends GaletteTestCase
         $id = $this->i18n->getID();
 
         $this->assertSame(\Galette\Core\I18n::DEFAULT_LANG, $id);
-        $this->expectLogEntry(\Analog::WARNING, "Lang un_KN does not exist, switching to default.");
+        $this->expectLogEntry(\Analog\Analog::WARNING, "Lang un_KN does not exist, switching to default.");
     }
 
     /**

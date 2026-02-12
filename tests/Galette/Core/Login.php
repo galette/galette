@@ -49,7 +49,7 @@ class Login extends GaletteTestCase
         $this->assertFalse($this->login->isCron());
         $this->assertFalse($this->login->isUp2Date());
         $this->assertFalse($this->login->isImpersonated());
-        $this->assertNull($this->login->lang);
+        $this->assertNull($this->login->lang); // @phpstan-ignore method.impossibleType (__get explicitly return null)
     }
 
     /**
@@ -129,8 +129,8 @@ class Login extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(true);
 
         $this->assertFalse($login->impersonate(1));
-        $this->expectLogEntry(\Analog::WARNING, 'An error occurred: Error executing query!');
-        $this->expectLogEntry(\Analog::ERROR, 'Galette\Core\Login->impersonate()');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'An error occurred: Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Galette\Core\Login->impersonate()');
     }
 
     /**
@@ -147,7 +147,7 @@ class Login extends GaletteTestCase
 
         //We're faking, Impersonating won't work but will not throw any exception
         $this->assertFalse($login->impersonate(1));
-        $this->expectLogEntry(\Analog::WARNING, 'No entry found for id `1`');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'No entry found for id `1`');
     }
 
     /**
@@ -157,7 +157,7 @@ class Login extends GaletteTestCase
     {
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Property doesnotexists is not set!');
-        $this->assertFalse($this->login->doesnotexists);
+        $this->assertFalse($this->login->doesnotexists); // @phpstan-ignore property.notFound (class handle that)
     }
 
     /**
@@ -189,7 +189,7 @@ class Login extends GaletteTestCase
 
         $login = new \Galette\Core\Login($zdb, $this->i18n);
         $this->assertTrue($login->loginExists('doesnotexists'));
-        $this->expectLogEntry(\Analog::WARNING, 'Cannot check if login exists | Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Cannot check if login exists | Error executing query!');
     }
 
     /**
@@ -298,7 +298,7 @@ class Login extends GaletteTestCase
         $this->createUser();
         $this->assertFalse($this->login->login('doenotexists', 'empty'));
         $this->assertTrue($this->login->login($this->login_adh, $this->mdp_adh));
-        $this->expectLogEntry(\Analog::WARNING, 'No entry found for login `doenotexists`');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'No entry found for login `doenotexists`');
     }
 
     /**

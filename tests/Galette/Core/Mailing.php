@@ -91,8 +91,8 @@ class Mailing extends GaletteTestCase
         $this->assertFalse(isset($mailing->ordered)); //explicitly forbidden
         $this->assertTrue(isset($mailing->alt_message)); //explicitly allowed
         $this->assertTrue(isset($mailing->mail)); //explicitly allowed
-        $this->assertTrue(isset($mailing->current_step));
-        $this->assertFalse(isset($mailing->history_id)); //private
+        $this->assertTrue(isset($mailing->current_step)); //@phpstan-ignore isset.property,method.alreadyNarrowedType
+        $this->assertFalse(isset($mailing->history_id)); //@phpstan-ignore isset.property,method.impossibleType (private)
     }
 
     /**
@@ -118,16 +118,16 @@ class Mailing extends GaletteTestCase
         );
 
         $this->assertFalse($mailing->html);
-        $mailing->html = 'true';
-        $this->expectLogEntry(\Analog::WARNING, '[Galette\Core\Mailing] Value for field `html` should be boolean - (string)true given');
+        $mailing->html = 'true'; // @phpstan-ignore assign.propertyType
+        $this->expectLogEntry(\Analog\Analog::WARNING, '[Galette\Core\Mailing] Value for field `html` should be boolean - (string)true given');
         $mailing->html = true;
         $this->assertTrue($mailing->html);
 
         $this->assertSame(\Galette\Core\Mailing::STEP_START, $mailing->current_step);
-        $mailing->current_step = 'invalid_step';
-        $this->expectLogEntry(\Analog::WARNING, '[Galette\Core\Mailing] Value for field `current_step` should be integer and know - (string)invalid_step given');
+        $mailing->current_step = 'invalid_step'; // @phpstan-ignore assign.propertyType (explicitly forbidden)
+        $this->expectLogEntry(\Analog\Analog::WARNING, '[Galette\Core\Mailing] Value for field `current_step` should be integer and know - (string)invalid_step given');
         $mailing->current_step = 42;
-        $this->expectLogEntry(\Analog::WARNING, '[Galette\Core\Mailing] Value for field `current_step` should be integer and know - (integer)42 given');
+        $this->expectLogEntry(\Analog\Analog::WARNING, '[Galette\Core\Mailing] Value for field `current_step` should be integer and know - (integer)42 given');
         $mailing->current_step = \Galette\Core\Mailing::STEP_PREVIEW;
         $this->assertSame(\Galette\Core\Mailing::STEP_PREVIEW, $mailing->current_step);
         $this->assertSame(\Galette\Core\Mailing::STEP_PREVIEW, $mailing->step);
@@ -136,8 +136,8 @@ class Mailing extends GaletteTestCase
         $mailing->id = 42;
         $this->assertSame(42, $mailing->id);
 
-        $this->assertFalse($mailing->ordered); //explicitly forbidden
-        $this->expectLogEntry(\Analog::ERROR, '[Galette\Core\Mailing] Unable to get ordered');
+        $this->assertFalse($mailing->ordered); // @phpstan-ignore property.notFound (explicitly forbidden)
+        $this->expectLogEntry(\Analog\Analog::ERROR, '[Galette\Core\Mailing] Unable to get ordered');
 
         $this->assertSame([], $mailing->errors);
         $this->assertSame([], $mailing->recipients);

@@ -118,7 +118,7 @@ class Telemetry
     /**
      * Grab DB part information
      *
-     * @return array<string, string>
+     * @return array<string, ?string>
      */
     public function grabDbInfos(): array
     {

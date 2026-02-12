@@ -371,7 +371,7 @@ class Install extends BaseGaletteTestCase
         //db install cannot be run twice, step is still Admin
         $step = $this->install->isAdminStep();
         $this->assertTrue($step);
-        $this->expectLogEntry(\Analog::WARNING, 'It is forbidden to rerun database install!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'It is forbidden to rerun database install!');
     }
 
     /**

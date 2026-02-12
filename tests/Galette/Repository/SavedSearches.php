@@ -77,7 +77,6 @@ class SavedSearches extends GaletteTestCase
 
         $list = $searches->getList(false);
         $this->assertInstanceOf(\Laminas\Db\ResultSet\ResultSet::class, $list);
-        $this->assertNotInstanceOf(\Galette\Entity\SavedSearch::class, $list->current());
 
         //another one
         $post['name'] = 'Another search';
@@ -94,7 +93,7 @@ class SavedSearches extends GaletteTestCase
 
         $this->assertFalse($searches->remove([], $this->history));
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Asking to remove searches, but without providing an array or a single numeric value.'
         );
         $this->assertTrue($searches->remove($sid_2, $this->history));

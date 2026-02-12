@@ -10,6 +10,7 @@ parameters:
         - galette/includes/
         - galette/install/
         - galette/webroot/
+        - tests/
     scanFiles:
         - galette/includes/sys_config/paths.inc.php
         - galette/includes/sys_config/versions.inc.php
@@ -49,13 +50,22 @@ parameters:
         - GALETTE_DISPLAY_VERSION
         - _CURRENT_THEME_PATH
         - GALETTE_TESTS_PATH
+        - GALETTE_TESTS
     universalObjectCratesClasses:
         - RKA\Session
     ignoreErrors:
         - '/Instantiated class XHProfRuns_Default not found/'
         - '/Cannot access property .* on .*ArrayObject.*/'
         - '/Access to an undefined property ArrayObject.*/'
+        - '/Access to an undefined property Sabre\\VObject\\Component\\VCard.*/'
         - '/Parameter #3 \$right of class Laminas\\Db\\Sql\\Predicate\\Operator constructor expects bool\|float\|int\|string\|null, Laminas\\Db\\Sql\\Predicate\\Expression given./'
         - '/Cannot unset property .* because it might have hooks in a subclass./'
+        -
+            identifier: theCodingMachineSafe.function
+            paths:
+                - tests/config/*/galette_tcpdf_config.php
+                - tests/config/*/config.inc.php
+                - tests/config/*/local_config.inc.php
+                - tests/TestsBootstrap.php
 includes:
     - galette/vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon

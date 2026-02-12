@@ -97,6 +97,7 @@ class Document extends GaletteTestCase
         $this->assertCount(1, $list);
 
         $entry = array_pop($list);
+        $this->assertInstanceOf(\Galette\Entity\Document::class, $entry);
         $this->assertSame('status.pdf', $entry->getDocumentFilename());
         $this->assertSame(\Galette\Entity\Document::STATUS, $entry->getType());
         $this->assertSame('Status of the association', $entry->getComment());

@@ -24,6 +24,12 @@ declare(strict_types=1);
 namespace Galette\Tests\Repository;
 
 use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
+
+use function Safe\copy;
+use function Safe\file_get_contents;
+use function Safe\filesize;
+use function Safe\json_decode;
 
 /**
  * Members repository tests
@@ -33,6 +39,7 @@ use Galette\Tests\GaletteTestCase;
 class Members extends GaletteTestCase
 {
     protected int $seed = 335689;
+    /** @var int[] */
     private array $mids = [];
 
 
@@ -90,7 +97,7 @@ class Members extends GaletteTestCase
                 $first = false;
                 $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
-                $now = new \DateTime();
+                $now = new DateTime();
                 $begin_date = clone $now;
                 $begin_date->sub(new \DateInterval('P1D'));
                 $due_date = clone $begin_date;
@@ -115,8 +122,7 @@ class Members extends GaletteTestCase
                 $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
                 $url = GALETTE_ROOT . '../tests/fake_image.jpg';
 
-                $copied = copy($url, $file);
-                $this->assertTrue($copied);
+                copy($url, $file);
                 $uploaded_file = new \Slim\Psr7\UploadedFile(
                     $file,
                     'fakephoto.jpg',
@@ -125,7 +131,7 @@ class Members extends GaletteTestCase
                     UPLOAD_ERR_OK
                 );
                 $this->assertGreaterThan(0, (int)$member->picture->storeFile($uploaded_file));
-                $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for ' . $member->id);
+                $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member->id);
             }
         }
         $this->login->logOut();
@@ -309,7 +315,7 @@ class Members extends GaletteTestCase
 
         //search on contribution begin date
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $contribdate = new \DateTime();
+        $contribdate = new DateTime();
         $contribdate->modify('+2 days');
         $filters->contrib_begin_date_begin = $contribdate->format('Y-m-d');
         $members = new \Galette\Repository\Members($filters);
@@ -359,7 +365,7 @@ class Members extends GaletteTestCase
 
         //search on status
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->status = \Galette\Entity\Status::DEFAULT_STATUS;
+        $filters->status = \Galette\Entity\Status::DEFAULT_STATUS; //@phpstan-ignore assign.propertyType (class handles this case)
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -367,18 +373,18 @@ class Members extends GaletteTestCase
 
         //search on status
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->status = [(string)\Galette\Entity\Status::DEFAULT_STATUS];
+        $filters->status = [(string)\Galette\Entity\Status::DEFAULT_STATUS]; //@phpstan-ignore assign.propertyType (class handles this case)
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
         $this->assertSame(5, $list->count());
 
-        //search on non existing status
+        //search on non-existing status
         $filters = new \Galette\Filters\AdvancedMembersList();
         $filters->status = [999];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
         $this->assertSame(10, $list->count());
-        $this->expectLogEntry(\Analog::WARNING, 'Status #999 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Status #999 does not exists!');
 
         //search on status from free search
         $filters = new \Galette\Filters\AdvancedMembersList();
@@ -424,7 +430,7 @@ class Members extends GaletteTestCase
 
         //search on contribution type
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->contributions_types = 1;
+        $filters->contributions_types = [1];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -432,7 +438,7 @@ class Members extends GaletteTestCase
 
         //search on contribution type
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->contributions_types = '1';
+        $filters->contributions_types = ['1']; //@phpstan-ignore assign.propertyType (class handles this case)
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -447,24 +453,24 @@ class Members extends GaletteTestCase
 
         $this->assertSame(1, $list->count());
 
-        $filters->contributions_types = 2;
+        $filters->contributions_types = [2];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
         $this->assertSame(0, $list->count());
 
-        //search on non existing contribution type
+        //search on non-existing contribution type
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->contributions_types = 999;
+        $filters->contributions_types = [999];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
         $this->assertSame(10, $list->count());
-        $this->expectLogEntry(\Analog::WARNING, 'Contribution type #999 does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Contribution type #999 does not exists!');
 
         //search on payment type
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $filters->payments_types = \Galette\Entity\PaymentType::CASH;
+        $filters->payments_types = [\Galette\Entity\PaymentType::CASH];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -618,7 +624,9 @@ class Members extends GaletteTestCase
         );
         $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
         $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
-        $count = count($cdf->getSpecifications()->getChoices());
+        /** @var \Galette\DynamicFields\ChoiceSpecifications $specifications */
+        $specifications = $cdf->getSpecifications();
+        $count = count($specifications->getChoices());
         $this->assertSame(3, $count);
 
         //new dynamic field, of type date.
@@ -656,7 +664,7 @@ class Members extends GaletteTestCase
 
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
-        $now = new \DateTime();
+        $now = new DateTime();
         $begin_date = clone $now;
         $begin_date->sub(new \DateInterval('P1D'));
         $due_date = clone $begin_date;
@@ -683,7 +691,7 @@ class Members extends GaletteTestCase
 
         //search on contribution dynamic date field
         $filters = new \Galette\Filters\AdvancedMembersList();
-        $ddate = new \DateTime('2020-01-01');
+        $ddate = new DateTime('2020-01-01');
         $filters->contrib_dynamic = [$ddf->getId() => $ddate->format(__('Y-m-d'))];
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
@@ -930,7 +938,7 @@ class Members extends GaletteTestCase
 
         //create a close to be expired contribution
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
-        $now = new \DateTime();
+        $now = new DateTime();
         $begin_date = clone $now;
         $begin_date->add(new \DateInterval('P6D'));
         $begin_date->sub(new \DateInterval('P1Y'));
@@ -1159,10 +1167,10 @@ class Members extends GaletteTestCase
         $this->assertFalse($members->removeMembers($member->id));
         $this->assertSame(['Cannot remove a member who still have dependencies (mailings, ...)'], $members->getErrors());
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Query error: DELETE FROM ' . ($this->zdb->isPostgres() ? '"galette_adherents"' : '`galette_adherents`')
         );
-        $this->expectLogEntry(\Analog::ERROR, 'Member still have existing dependencies in the database');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Member still have existing dependencies in the database');
         $warning = new \ArrayObject([
             'Level' => 'Error',
             'Code'  => '1451',

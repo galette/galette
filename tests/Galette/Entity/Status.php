@@ -47,7 +47,7 @@ class Status extends GaletteTestCase
             -2,
             $status->add('Active member', 81)
         );
-        $this->expectLogEntry(\Analog::WARNING, 'A status with label `Active member` already exists');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'A status with label `Active member` already exists');
 
         $this->assertTrue(
             $status->add('Test status', 81)

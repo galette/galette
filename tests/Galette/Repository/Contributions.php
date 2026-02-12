@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Repository;
 
 use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
 
 /**
  * Contributions repository tests
@@ -127,7 +128,7 @@ class Contributions extends GaletteTestCase
         $this->assertCount(1, $list);
 
         //create a transaction
-        $date = new \DateTime();
+        $date = new DateTime();
         $data = [
             'id_adh' => $this->adh->id,
             'trans_date' => $date->format('Y-m-d'),
@@ -206,7 +207,10 @@ class Contributions extends GaletteTestCase
         $contributions = new \Galette\Repository\Contributions($this->zdb, $login, $filters);
         $list = $contributions->getList(true);
         $this->assertCount(0, $list);
-        $this->expectLogEntry(\Analog::WARNING, "Trying to display contributions for member #{$this->adh->id} without appropriate ACLs");
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            "Trying to display contributions for member #{$this->adh->id} without appropriate ACLs"
+        );
     }
 
     /**
@@ -292,7 +296,7 @@ class Contributions extends GaletteTestCase
 
         foreach ($order_fields as $order_field) {
             $filters = new \Galette\Filters\ContributionsList();
-            $filters->orderby = $order_field;
+            $filters->orderby = $order_field; //@phpstan-ignore assign.propertyType (class handle that)
             $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login, $filters);
             $list = $contributions->getList(true);
             $this->assertIsArray($list);

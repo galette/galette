@@ -43,9 +43,9 @@ use Galette\Helpers\EntityHelper;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int     $id
+ * @property ?int    $id
  * @property string  $date
- * @property float   $amount
+ * @property ?float  $amount
  * @property ?string $description
  * @property ?int    $member
  * @property ?int    $payment_type

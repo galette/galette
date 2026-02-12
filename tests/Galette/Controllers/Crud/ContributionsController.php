@@ -170,9 +170,9 @@ class ContributionsController extends GaletteRoutingTestCase
         );
 
         //cannot show contributions of another member
-        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => $member_two->id]);
+        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => (string)$member_two->id]);
         $test_response = $this->app->handle($request);
-        $this->expectLogEntry(\Analog::WARNING, sprintf('Trying to display contributions for member #%1$s without appropriate ACLs', $member_two->id));
+        $this->expectLogEntry(\Analog\Analog::WARNING, sprintf('Trying to display contributions for member #%1$s without appropriate ACLs', $member_two->id));
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member contribution is listed
@@ -192,7 +192,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
 
         //can show contributions of children
-        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => $child->id]);
+        $request = $this->createRequest($route_name, $route_arguments + ['option' => 'member', 'value' => (string)$child->id]);
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
@@ -221,7 +221,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
         //FIXME: should not happen
-        $this->expectLogEntry(\Analog::WARNING, sprintf('Trying to display contributions for member #%1$s without appropriate ACLs', $child->id));
+        $this->expectLogEntry(\Analog\Analog::WARNING, sprintf('Trying to display contributions for member #%1$s without appropriate ACLs', $child->id));
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         //member one contribution is not listed
@@ -532,7 +532,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
         $this->expectFlashData([]);
 
         //change preferences so managers can create contributions
@@ -582,7 +582,7 @@ class ContributionsController extends GaletteRoutingTestCase
             ],
             $check
         );
-        $this->expectLogEntry(\Analog::ERROR, 'Please select a member from a group you manage');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Please select a member from a group you manage');
         $this->session->contribution = $contrib;
 
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
@@ -663,7 +663,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->login->logout();
 
         $route_name = 'editContribution';
-        $route_arguments = ['type' => $type, 'id' => $this->contrib->id];
+        $route_arguments = ['type' => $type, 'id' => (string)$this->contrib->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments);
@@ -677,11 +677,11 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
 
         //contribution that does not exists
-        $request = $this->createRequest($route_name, ['id' => 999999] + $route_arguments);
+        $request = $this->createRequest($route_name, ['id' => '999999'] + $route_arguments);
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$this->routeparser->urlFor('contributions', ['type' => 'contributions'])]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'No contribution #999999');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'No contribution #999999');
         $this->expectFlashData(['error_detected' => ['Unable to load contribution #999999!']]);
 
         $this->login->logout();
@@ -901,7 +901,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to add contribution without appropriate ACLs');
         $this->expectFlashData([]);
 
         $result = $this->zdb->execute($count_select);
@@ -950,7 +950,7 @@ class ContributionsController extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Please select a member from a group you manage.'
         );
         $this->expectFlashData(
@@ -1003,7 +1003,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->assertTrue($member_two->store());
 
         $route_name = 'doEditContribution';
-        $route_arguments = ['type' => $type, 'id' => $this->contrib->id];
+        $route_arguments = ['type' => $type, 'id' => (string)$this->contrib->id];
 
         //login is required to access this page
         $request = $this->createRequest($route_name, $route_arguments, 'POST');
@@ -1128,7 +1128,7 @@ class ContributionsController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_name = 'removeContribution';
-        $route_arguments = ['type' => 'contributions', 'id' => $contrib_one->id];
+        $route_arguments = ['type' => 'contributions', 'id' => (string)$contrib_one->id];
 
         $request = $this->createRequest($route_name, $route_arguments);
 

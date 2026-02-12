@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Repository;
 
 use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
 
 /**
  * Scheduled payments repository tests
@@ -55,7 +56,7 @@ class ScheduledPayments extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,
@@ -158,7 +159,7 @@ class ScheduledPayments extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,
@@ -226,7 +227,7 @@ class ScheduledPayments extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,

@@ -26,6 +26,8 @@ namespace Galette\Tests\DynamicFields;
 use Galette\Tests\GaletteTestCase;
 use Galette\DynamicFields\ChoiceSpecifications;
 
+use function Safe\json_encode;
+
 /**
  * Specifications test
  *
@@ -39,7 +41,7 @@ class Specifications extends GaletteTestCase
     public function testFieldSpecificationsGeneric(): void
     {
         $spec = new ChoiceSpecifications();
-        $this->assertNull($spec->foo);
+        $this->assertNull($spec->foo); // @phpstan-ignore property.notFound (class handle that)
 
         $spec->foo = 'bar';
         $this->assertSame('bar', $spec->foo);
@@ -49,7 +51,7 @@ class Specifications extends GaletteTestCase
         $this->assertStringContainsString('"foo":"bar"', $json);
 
         $spec2 = (new ChoiceSpecifications())->fromJson($json);
-        $this->assertSame('bar', $spec2->foo);
+        $this->assertSame('bar', $spec2->foo); // @phpstan-ignore property.notFound (class handle that)
     }
 
     /**
@@ -74,6 +76,5 @@ class Specifications extends GaletteTestCase
         $spec2 = (new ChoiceSpecifications())->fromJson($json);
         $this->assertSame('Two', $spec2->getChoices()[1]);
         $this->assertIsInt(array_keys($spec2->getChoices())[0]);
-        $this->assertInstanceOf(ChoiceSpecifications::class, $spec2);
     }
 }

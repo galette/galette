@@ -81,7 +81,7 @@ abstract class FieldSpecifications implements JsonSerializable
     /**
      * Load from JSON
      */
-    public function fromJson(?string $json): self
+    public function fromJson(?string $json): static
     {
         if ($json !== null && $json !== '') {
             $data = json_decode($json, true);

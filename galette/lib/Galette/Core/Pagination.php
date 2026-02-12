@@ -36,12 +36,12 @@ use function Safe\preg_match;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
- * @property int      $current_page
- * @property string   $orderby
- * @property SQLOrder $ordered
- * @property int      $show
- * @property int      $pages
- * @property int      $counter
+ * @property int        $current_page
+ * @property int|string $orderby
+ * @property SQLOrder   $ordered
+ * @property int        $show
+ * @property int        $pages
+ * @property int        $counter
  */
 
 abstract class Pagination

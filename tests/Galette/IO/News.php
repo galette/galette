@@ -24,6 +24,14 @@ declare(strict_types=1);
 namespace Galette\Tests\IO;
 
 use Galette\Tests\BaseGaletteTestCase;
+use Safe\Exceptions\InfoException;
+
+use function Safe\filemtime;
+use function Safe\ini_get;
+use function Safe\ini_set;
+use function Safe\realpath;
+use function Safe\touch;
+use function Safe\unlink;
 
 /**
  * News tests class
@@ -49,7 +57,13 @@ class News extends BaseGaletteTestCase
     public function testLoadNews(): void
     {
         //ensure allow_url_fopen is on
-        ini_set('allow_url_fopen', true);
+        try {
+            if (!ini_get('allow_url_fopen')) {
+                ini_set('allow_url_fopen', true);
+            }
+        } catch (InfoException) {
+            $this->markTestSkipped('allow_url_fopen cannot be set to true, skipping test');
+        }
         //load news without caching
         $news = new \Galette\IO\News($this->local_url, true);
         $posts = $news->getPosts();
@@ -62,7 +76,13 @@ class News extends BaseGaletteTestCase
     public function testLoadRSSNews(): void
     {
         //ensure allow_url_fopen is on
-        ini_set('allow_url_fopen', true);
+        try {
+            if (!ini_get('allow_url_fopen')) {
+                ini_set('allow_url_fopen', true);
+            }
+        } catch (InfoException) {
+            $this->markTestSkipped('allow_url_fopen cannot be set to true, skipping test');
+        }
         //load news without caching
         $news = new \Galette\IO\News('file:///' . realpath(GALETTE_ROOT . '../tests/rss.xml'), true);
         $posts = $news->getPosts();
@@ -110,8 +130,7 @@ class News extends BaseGaletteTestCase
         $expired = $mdate->sub(
             new \DateInterval('PT25H')
         );
-        $touched = touch($file, $expired->getTimestamp());
-        $this->assertTrue($touched);
+        touch($file, $expired->getTimestamp());
 
         new \Galette\IO\News($this->local_url);
         $mnewdate = \DateTime::createFromFormat(
@@ -141,6 +160,6 @@ class News extends BaseGaletteTestCase
         $news->method('allowURLFOpen')->willReturn(false);
 
         $this->assertCount(0, $news->getPosts());
-        $this->expectLogEntry(\Analog::ERROR, 'allow_url_fopen is set to false; cannot load news.');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'allow_url_fopen is set to false; cannot load news.');
     }
 }

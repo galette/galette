@@ -23,7 +23,10 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
+use Safe\DateTime;
 use Galette\Tests\GaletteTestCase;
+
+use function Safe\base64_decode;
 
 /**
  * Password tests class
@@ -130,7 +133,7 @@ class Links extends GaletteTestCase
         $this->assertSame(1, $results->count());
 
         $update = $this->zdb->update(\Galette\Core\Links::TABLE);
-        $old_date = new \DateTime();
+        $old_date = new DateTime();
         $old_date->sub(new \DateInterval('P2W'));
         $update
             ->set(['creation_date' => $old_date->format('Y-m-d')])
@@ -145,7 +148,7 @@ class Links extends GaletteTestCase
      */
     public function testCleanExpired(): void
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $date->sub(new \DateInterval('PT48H'));
 
         $insert = $this->zdb->insert(\Galette\Core\Links::TABLE);
@@ -188,7 +191,7 @@ class Links extends GaletteTestCase
      */
     public function testDuplicateLinkTarget(): void
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $date->sub(new \DateInterval('PT48H'));
 
         $insert = $this->zdb->insert(\Galette\Core\Links::TABLE);
@@ -220,7 +223,7 @@ class Links extends GaletteTestCase
         } catch (\Exception $e) {
             $exception_trhown = true;
             $this->expectLogEntry(
-                \Analog::ERROR,
+                \Analog\Analog::ERROR,
                 $this->zdb->isPostgres()
                     ? 'duplicate key value violates unique constraint "galette_tmplinks_pkey"'
                     : "Duplicate entry '1-1' for key"
@@ -244,7 +247,7 @@ class Links extends GaletteTestCase
      */
     protected function createContribution(): void
     {
-        $now = new \DateTime(); // 2020-11-07
+        $now = new DateTime(); // 2020-11-07
         $begin_date = clone $now;
         $begin_date->sub(new \DateInterval('P1Y')); // 2019-11-07
         $begin_date->sub(new \DateInterval('P6M')); // 2019-05-07

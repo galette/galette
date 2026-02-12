@@ -28,6 +28,8 @@ use Galette\Core\GalettePlugin;
 use Galette\IO\News\Entry;
 use Galette\IO\News\Post;
 
+use function Safe\strtotime;
+
 /**
  * Galette News plugin
  *
@@ -134,7 +136,7 @@ class PluginGaletteNews extends GalettePlugin
     }
 
     /**
-     * Is the plugin fully installed (including database, extra configuration, etc)?
+     * Is the plugin fully installed (including database, extra configuration, etc.)?
      */
     public function isInstalled(): bool
     {

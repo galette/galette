@@ -25,6 +25,10 @@ namespace Galette\Tests\Core;
 
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\mb_convert_encoding;
+use function Safe\preg_match;
+use function Safe\realpath;
+
 /**
  * Galette tests class
  *
@@ -140,11 +144,9 @@ class Galette extends GaletteTestCase
         $preferences->method('showPublicPage')->willReturn(true);
 
         $menus = \Galette\Core\Galette::getMenus();
-        $this->assertIsArray($menus);
         $this->assertCount(0, $menus);
 
         $menus = \Galette\Core\Galette::getMenus(true);
-        $this->assertIsArray($menus);
         $this->assertCount(1, $menus);
         $this->assertArrayHasKey('public', $menus);
 
@@ -159,7 +161,6 @@ class Galette extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
 
         $menus = \Galette\Core\Galette::getMenus(true);
-        $this->assertIsArray($menus);
         $this->assertCount(6, $menus);
 
         $this->assertArrayHasKey('myaccount', $menus);
@@ -180,7 +181,6 @@ class Galette extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(false);
 
         $menus = \Galette\Core\Galette::getMenus(true);
-        $this->assertIsArray($menus);
         $this->assertCount(5, $menus);
 
         $this->assertArrayHasKey('myaccount', $menus);
@@ -201,7 +201,6 @@ class Galette extends GaletteTestCase
         $login->method('isSuperAdmin')->willReturn(true);
 
         $menus = \Galette\Core\Galette::getMenus(true);
-        $this->assertIsArray($menus);
         $this->assertCount(5, $menus);
 
         $this->assertArrayNotHasKey('myaccount', $menus);
@@ -230,7 +229,6 @@ class Galette extends GaletteTestCase
         $preferences->method('showPublicPage')->willReturn(true); //should not matter.
 
         $menus = \Galette\Core\Galette::getPublicMenus();
-        $this->assertIsArray($menus);
         $this->assertCount(0, $menus, print_r($menus, true));
 
         //public pages are enabled but not shown
@@ -243,7 +241,6 @@ class Galette extends GaletteTestCase
 
         //public pages are enabled and shown
         $menus = \Galette\Core\Galette::getPublicMenus();
-        $this->assertIsArray($menus);
         $this->assertCount(0, $menus, print_r($menus, true));
 
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
@@ -254,7 +251,6 @@ class Galette extends GaletteTestCase
         $preferences->method('showPublicPage')->willReturn(true);
 
         $menus = \Galette\Core\Galette::getPublicMenus();
-        $this->assertIsArray($menus);
         $this->assertCount(1, $menus);
     }
 
@@ -560,6 +556,7 @@ class Galette extends GaletteTestCase
         $this->assertCount(0, $entries);
 
         //mock plugin to mark as installed
+        /** @var class-string<\Galette\Core\GalettePlugin> $plugin_class */
         $plugin_class = $plugins->getClassName('plugin-news', true);
         $mock = $this->getMockBuilder($plugin_class)
             ->onlyMethods(['isInstalled'])

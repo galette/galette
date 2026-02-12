@@ -53,7 +53,6 @@ class SysInfos extends GaletteTestCase
         $sysinfos = new \Galette\Core\SysInfos();
         $_SERVER['HTTP_USER_AGENT'] = 'GaletteTest';
         $rdata = $sysinfos->getRawData($this->zdb, $this->preferences, $this->plugins);
-        $this->assertIsString($rdata);
         $this->assertStringContainsString('Galette version:', $rdata);
         $this->assertStringContainsString('PHP loaded modules:', $rdata);
         $this->assertStringContainsString('Plugins:', $rdata);

@@ -25,6 +25,10 @@ namespace Galette\Tests\Controllers;
 
 use Galette\Tests\GaletteRoutingTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Safe\DateTime;
+
+use function Safe\copy;
+use function Safe\filesize;
 
 /**
 * Galette controller tests
@@ -190,7 +194,7 @@ class GaletteController extends GaletteRoutingTestCase
     {
         $this->logSuperAdmin();
 
-        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png'));
+        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
         $uploaded_files = [
             'logo' => new \Slim\Psr7\UploadedFile(
                 sys_get_temp_dir() . '/galette_pro.png',
@@ -207,7 +211,7 @@ class GaletteController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for 0');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for 0');
         $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
 
         //check for new logo presence
@@ -233,7 +237,7 @@ class GaletteController extends GaletteRoutingTestCase
     {
         $this->logSuperAdmin();
 
-        $this->assertTrue(copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png'));
+        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
         $uploaded_files = [
             'card_logo' => new \Slim\Psr7\UploadedFile(
                 sys_get_temp_dir() . '/galette_pro.png',
@@ -250,7 +254,7 @@ class GaletteController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for 999999');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for 999999');
         $this->expectNoLogEntry();
         $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
 
@@ -598,7 +602,7 @@ class GaletteController extends GaletteRoutingTestCase
         $member_one = $this->getMemberOne();
         $member_two = $this->getMemberTwo();
 
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //create a close to be expired contribution
         $due_date = clone $now;
@@ -710,7 +714,7 @@ class GaletteController extends GaletteRoutingTestCase
     /**
      * Data provider for empty routes
      *
-     * @return iterable<string>
+     * @return array<string[]>
      */
     public static function emptyRoutesProvider(): iterable
     {

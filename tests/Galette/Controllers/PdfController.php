@@ -73,7 +73,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->logSuperAdmin();
         $test_response = $this->app->handle($request);
         $this->assertSame(
-            ['Location' => [$this->routeparser->urlFor('pdfModels', ['id' => $model->id])]],
+            ['Location' => [$this->routeparser->urlFor('pdfModels', ['id' => (string)$model->id])]],
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
@@ -132,7 +132,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_name = 'pdf-members-cards';
-        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $route_arguments = [\Galette\Entity\Adherent::PK => (string)$member_one->id];
 
         $request = $this->createRequest($route_name, $route_arguments);
 
@@ -179,7 +179,7 @@ class PdfController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::WARNING, 'Member ' . $member_one->id . ' is not up to date; cannot get his PDF member card');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Member ' . $member_one->id . ' is not up to date; cannot get his PDF member card');
 
         //make member up-to-date
         $this->login->logout();
@@ -206,7 +206,7 @@ class PdfController extends GaletteRoutingTestCase
         $member_one = $this->getMemberOne();
 
         $route_name = 'pdf-members-cards';
-        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $route_arguments = [\Galette\Entity\Adherent::PK => (string)$member_one->id];
         $request = $this->createRequest($route_name, $route_arguments);
 
         //test logged-in as superadmin
@@ -239,7 +239,7 @@ class PdfController extends GaletteRoutingTestCase
         $member_one = $this->getMemberOne();
 
         $route_name = 'pdf-members-labels';
-        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $route_arguments = [\Galette\Entity\Adherent::PK => (string)$member_one->id];
         $request = $this->createRequest($route_name, $route_arguments);
 
         //login is required to access this page
@@ -329,7 +329,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->assertTrue($member_two->store());
 
         $route_name = 'adhesionForm';
-        $route_arguments = [\Galette\Entity\Adherent::PK => $member_one->id];
+        $route_arguments = [\Galette\Entity\Adherent::PK => (string)$member_one->id];
         $request = $this->createRequest($route_name, $route_arguments);
 
         //login is required to access this page
@@ -451,7 +451,7 @@ class PdfController extends GaletteRoutingTestCase
         $this->login->logOut();
 
         $route_name = 'printContribution';
-        $route_arguments = ['id' => $contribution_one->id];
+        $route_arguments = ['id' => (string)$contribution_one->id];
         $request = $this->createRequest($route_name, $route_arguments);
 
         //test No rights
@@ -460,7 +460,7 @@ class PdfController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => ['/contributions']], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'No contribution #' . $contribution_one->id);
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'No contribution #' . $contribution_one->id);
         $this->expectFlashData(
             [
                 'error_detected' => [
@@ -504,7 +504,7 @@ class PdfController extends GaletteRoutingTestCase
 
         //no groups, no pdf
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog::ERROR, 'An error has occurred, unable to get groups list');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error has occurred, unable to get groups list');
         $this->expectFlashData(['error_detected' => ['Unable to get groups list.']]);
 
         $g1 = new \Galette\Entity\Group();

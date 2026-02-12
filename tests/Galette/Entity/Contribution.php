@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
+use Safe\DateTime;
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -54,6 +55,8 @@ class Contribution extends GaletteTestCase
 
     /**
      * pref_beg_membership provider
+     *
+     * @return array<array{interval: string}>
      */
     public static function begProvider(): array
     {
@@ -69,7 +72,7 @@ class Contribution extends GaletteTestCase
     public function testMembershipExtensionJustEmpty(): void
     {
         $contrib = $this->contrib;
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertNull($contrib->date);
         $this->assertNull($contrib->begin_date);
         $this->assertNull($contrib->end_date);
@@ -100,9 +103,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -116,7 +119,7 @@ class Contribution extends GaletteTestCase
     public function testBeginMembershipJustEmpty(string $interval): void
     {
         //preg_beg_membership date, some months ago
-        $beg_membership = new \DateTime();
+        $beg_membership = new DateTime();
         $beg_membership->sub(new \DateInterval($interval));
 
         global $preferences;
@@ -135,7 +138,7 @@ class Contribution extends GaletteTestCase
         $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
         $this->assertTrue($preferences->store());
 
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertNull($contrib->date);
         $this->assertNull($contrib->begin_date);
         $this->assertNull($contrib->end_date);
@@ -166,9 +169,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -183,13 +186,13 @@ class Contribution extends GaletteTestCase
             $this->login,
             ['type' => 4] //donation in kind
         );
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertEquals(date('Y-m-d'), $contrib->date);
         $this->assertEquals(date('Y-m-d'), $contrib->begin_date);
         $this->assertNull($contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals(date('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals(date('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
         $this->assertNull($contrib->raw_end_date);
         $this->assertEmpty($contrib->duration);
@@ -217,9 +220,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -232,10 +235,10 @@ class Contribution extends GaletteTestCase
     #[DataProvider("begProvider")]
     public function testBeginMembershipEmptyDonation(string $interval): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //preg_beg_membership date, some months ago
-        $beg_membership = new \DateTime();
+        $beg_membership = new DateTime();
         $beg_membership->sub(new \DateInterval($interval));
 
         global $preferences;
@@ -255,13 +258,13 @@ class Contribution extends GaletteTestCase
         $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
         $this->assertTrue($preferences->store());
 
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertEquals($now->format('Y-m-d'), $contrib->date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->begin_date);
         $this->assertNull($contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
         $this->assertNull($contrib->raw_end_date);
         $this->assertEmpty($contrib->duration);
@@ -289,9 +292,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -301,10 +304,10 @@ class Contribution extends GaletteTestCase
      */
     public function testEmptyFee(): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //expected begin date
-        $expected_begin = new \DateTime($now->format('Y-m-d'));
+        $expected_begin = new DateTime($now->format('Y-m-d'));
 
         $expected_end = clone $expected_begin;
         $expected_end->add(new \DateInterval('P1Y'));
@@ -315,15 +318,15 @@ class Contribution extends GaletteTestCase
             $this->login,
             ['type' => 1] //annual fee
         );
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertEquals($now->format('Y-m-d'), $contrib->date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->begin_date);
         $this->assertSame($expected_end->format('Y-m-d'), $contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_end_date);
         $this->assertEquals($expected_end->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
         $this->assertSame(12, $contrib->duration);
         $this->assertSame($this->preferences->pref_default_paymenttype, $contrib->payment_type);
@@ -350,9 +353,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -362,10 +365,10 @@ class Contribution extends GaletteTestCase
      */
     public function testEmptyMonthlyFee(): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //expected begin date
-        $expected_begin = new \DateTime($now->format('Y-m-d'));
+        $expected_begin = new DateTime($now->format('Y-m-d'));
 
         //create monthly fee type - 2 months extension
         $contribtype = new \Galette\Entity\ContributionsTypes($this->zdb);
@@ -380,15 +383,15 @@ class Contribution extends GaletteTestCase
             $this->login,
             ['type' => $contribtype->id] //annual fee
         );
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
         $this->assertEquals($now->format('Y-m-d'), $contrib->date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->begin_date);
         $this->assertSame($expected_end->format('Y-m-d'), $contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_end_date);
         $this->assertEquals($expected_end->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
         $this->assertSame(2, $contrib->duration);
         $this->assertSame($this->preferences->pref_default_paymenttype, $contrib->payment_type);
@@ -415,9 +418,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -430,14 +433,14 @@ class Contribution extends GaletteTestCase
     #[DataProvider("begProvider")]
     public function testBeginMembershipEmptyFee(string $interval): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //preg_beg_membership date, some months ago
-        $beg_membership = new \DateTime();
+        $beg_membership = new DateTime();
         $beg_membership->sub(new \DateInterval($interval));
 
         //expected begin date
-        $expected_begin = new \DateTime($beg_membership->format('Y-m-01'));
+        $expected_begin = new DateTime($beg_membership->format('Y-m-01'));
 
         $expected_end = clone $expected_begin;
         $expected_end->add(new \DateInterval('P1Y'));
@@ -460,18 +463,18 @@ class Contribution extends GaletteTestCase
         $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
         $this->assertTrue($preferences->store());
 
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
 
         $this->assertEquals($now->format('Y-m-d'), $contrib->date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
 
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->begin_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
 
         $this->assertSame($expected_end->format('Y-m-d'), $contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_end_date);
         $this->assertEquals($expected_end->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
 
         $this->assertSame(12, $contrib->duration);
@@ -499,9 +502,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -514,14 +517,14 @@ class Contribution extends GaletteTestCase
     #[DataProvider("begProvider")]
     public function testBeginMembershipEmptyMonthlyFee(string $interval): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //preg_beg_membership date, some months ago
-        $beg_membership = new \DateTime();
+        $beg_membership = new DateTime();
         $beg_membership->sub(new \DateInterval($interval));
 
         //expected begin date
-        $expected_begin = new \DateTime($beg_membership->format('Y-m-01'));
+        $expected_begin = new DateTime($beg_membership->format('Y-m-01'));
 
         //create monthly fee type - 2 months extension
         //extension should be ignored since we use a beg membership date in settings
@@ -549,18 +552,18 @@ class Contribution extends GaletteTestCase
         $preferences->pref_membership_ext = $this->preferences->getDefaults()['pref_membership_ext'];
         $this->assertTrue($preferences->store());
 
-        $this->assertNull($contrib->id);
+        $this->assertNull($contrib->id); //@phpstan-ignore method.impossibleType (class handle that)
 
         $this->assertEquals($now->format('Y-m-d'), $contrib->date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_date);
         $this->assertEquals($now->format('Y-m-d'), $contrib->raw_date->format('Y-m-d'));
 
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->begin_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_begin_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_begin_date);
         $this->assertEquals($expected_begin->format('Y-m-d'), $contrib->raw_begin_date->format('Y-m-d'));
 
         $this->assertSame($expected_end->format('Y-m-d'), $contrib->end_date);
-        $this->assertInstanceOf(\DateTime::class, $contrib->raw_end_date);
+        $this->assertInstanceOf(DateTime::class, $contrib->raw_end_date);
         $this->assertEquals($expected_end->format('Y-m-d'), $contrib->raw_end_date->format('Y-m-d'));
 
         $this->assertSame(12, $contrib->duration);
@@ -588,9 +591,9 @@ class Contribution extends GaletteTestCase
         $this->assertFalse($contrib->isTransactionPart());
         $this->assertFalse($contrib->isTransactionPartOf(1));
         $this->assertSame('Check', $contrib->getPaymentType());
-        $this->assertNull($contrib->unknown_property);
+        $this->assertNull($contrib->unknown_property); //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             "Unknown property 'unknown_property'"
         );
     }
@@ -611,9 +614,9 @@ class Contribution extends GaletteTestCase
         $this->assertInstanceOf('DateTime', $contrib->raw_begin_date);
         $this->assertSame('2017-06-17', $contrib->begin_date);
 
-        $contrib->amount = 'not an amount';
+        $contrib->amount = 'not an amount'; //@phpstan-ignore assign.propertyType (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Trying to set an amount with a non numeric value, or with a zero value'
         );
         $this->assertNull($contrib->amount);
@@ -621,46 +624,46 @@ class Contribution extends GaletteTestCase
         $this->assertNull($contrib->amount);
         $contrib->amount = 42;
         $this->assertSame(42.0, $contrib->amount);
-        $contrib->amount = '42';
+        $contrib->amount = '42'; //@phpstan-ignore assign.propertyType (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Trying to set an amount with a non numeric value, or with a zero value'
         );
         $this->assertSame(42.0, $contrib->amount);
 
-        $contrib->type = 156;
+        $contrib->type = 156; //@phpstan-ignore assign.propertyType (class handle that)
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Unknown ID 156'
         );
         $this->assertInstanceOf(\Galette\Entity\ContributionsTypes::class, $contrib->type);
         $this->assertFalse($contrib->type->id);
-        $contrib->type = 1;
+        $contrib->type = 1; //@phpstan-ignore assign.propertyType (class handle that)
         $this->assertInstanceOf(\Galette\Entity\ContributionsTypes::class, $contrib->type);
         $this->assertEquals(1, $contrib->type->id);
 
-        $contrib->transaction = 'not a transaction id';
+        $contrib->transaction = 'not a transaction id'; //@phpstan-ignore assign.propertyType (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Trying to set a transaction from an id that is not an integer.'
         );
         $this->assertNull($contrib->transaction);
-        $contrib->transaction = 46;
+        $contrib->transaction = 46; //@phpstan-ignore assign.propertyType (class handle that)
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Non-logged-in users cannot load transaction id `46`'
         );
         $this->assertInstanceOf(\Galette\Entity\Transaction::class, $contrib->transaction);
         $this->assertNull($contrib->transaction->id);
 
-        $contrib->member = 'not a member';
+        $contrib->member = 'not a member'; //@phpstan-ignore assign.propertyType (class handle that)
         $this->assertNull($contrib->member);
         $contrib->member = 118218;
         $this->assertSame(118218, $contrib->member);
 
-        $contrib->not_a_property = 'abcde';
+        $contrib->not_a_property = 'abcde'; //@phpstan-ignore property.notFound (class handle that)
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             '[Galette\Entity\Contribution]: Trying to set an unknown property (not_a_property)'
         );
         $this->assertFalse(property_exists($contrib, 'not_a_property'));
@@ -773,11 +776,11 @@ class Contribution extends GaletteTestCase
     {
         $this->getMemberOne();
         //create contribution for member
-        $begin_date = new \DateTime(); // 2020-11-07
+        $begin_date = new DateTime(); // 2020-11-07
         $begin_date->sub(new \DateInterval('P5M')); // 2020-06-07
         $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
-        $due_date = new \DateTime(); //fake due date; not kept for donations.
+        $due_date = new DateTime(); //fake due date; not kept for donations.
 
         $data = [
             'id_adh' => $this->adh->id,
@@ -851,7 +854,7 @@ class Contribution extends GaletteTestCase
 
         $this->getMemberOne();
         //create contribution for member
-        $begin_date = new \DateTime(); // 2020-11-07
+        $begin_date = new DateTime(); // 2020-11-07
         $begin_date->sub(new \DateInterval('P5M')); // 2020-06-07
         $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
@@ -940,16 +943,16 @@ class Contribution extends GaletteTestCase
         );
 
         // First, check for 12 months renewal
-        $due_date = new \DateTime();
+        $due_date = new DateTime();
         $due_date->add(new \DateInterval('P1Y'));
         $due_date->sub(new \DateInterval('P1D'));
         $this->assertSame($due_date->format('Y-m-d'), $contrib->end_date);
 
         // Second, test with beginning of membership date
         $preferences->pref_beg_membership = '29/05';
-        $due_date = new \DateTime();
+        $due_date = new DateTime();
         $due_date->setDate((int)date('Y'), 5, 28);
-        if ($due_date <= new \DateTime()) {
+        if ($due_date <= new DateTime()) {
             $due_date->add(new \DateInterval('P1Y'));
         }
 
@@ -961,11 +964,11 @@ class Contribution extends GaletteTestCase
         $this->assertSame($due_date->format('Y-m-d'), $contrib->end_date);
 
         // Third, test with beginning of membership date and 2 last months offered
-        $begin_date = new \DateTime();
+        $begin_date = new DateTime();
         $begin_date->add(new \DateInterval('P1M'));
         $preferences->pref_beg_membership = $begin_date->format('01/m');
         $preferences->pref_membership_offermonths = 2;
-        $due_date = new \DateTime($begin_date->format('Y-m-01'));
+        $due_date = new DateTime($begin_date->format('Y-m-01'));
         $due_date->add(new \DateInterval('P1Y'));
         $due_date->sub(new \DateInterval('P1D'));
 
@@ -1021,7 +1024,7 @@ class Contribution extends GaletteTestCase
             ['type' => $contribtype->id] //monthly fee
         );
 
-        $due_date = new \DateTime();
+        $due_date = new DateTime();
         $due_date->add(new \DateInterval('P2M'));
         $due_date->sub(new \DateInterval('P1D'));
         $this->assertSame($due_date->format('Y-m-d'), $contrib->end_date);
@@ -1061,7 +1064,7 @@ class Contribution extends GaletteTestCase
         //create first contribution for member
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
-        $now = new \DateTime();
+        $now = new DateTime();
         $due_date = clone $now;
         $due_date->add(new \DateInterval('P1Y'));
         $due_date->sub(new \DateInterval('P1D'));
@@ -1115,7 +1118,7 @@ class Contribution extends GaletteTestCase
             $check
         );
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             '- Membership period overlaps period starting at ' . $now->format('Y-m-d')
         );
 
@@ -1139,7 +1142,7 @@ class Contribution extends GaletteTestCase
             $this->contrib->getFieldLabel('date_debut_cotis')
         );
 
-        $this->contrib->type = 1;
+        $this->contrib->type = 1; //@phpstan-ignore assign.propertyType (class handle that)
         $this->assertSame(
             'Start date of membership',
             $this->contrib->getFieldLabel('date_debut_cotis')
@@ -1179,7 +1182,7 @@ class Contribution extends GaletteTestCase
 
         $this->assertFalse($contrib->load(1355522012));
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'No contribution #1355522012 (user )'
         );
     }
@@ -1197,7 +1200,7 @@ class Contribution extends GaletteTestCase
         $this->expectNoLogEntry();
         $this->assertFalse($this->contrib->remove());
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Contribution has not been removed!'
         );
     }
@@ -1271,7 +1274,7 @@ class Contribution extends GaletteTestCase
         $cid = $child->id;
 
         //contribution for child
-        $begin_date = new \DateTime(); // 2020-11-07
+        $begin_date = new DateTime(); // 2020-11-07
         $begin_date->sub(new \DateInterval('P5M')); // 2020-06-07
         $begin_date->add(new \DateInterval('P3D')); // 2020-06-10
 
@@ -1329,7 +1332,7 @@ class Contribution extends GaletteTestCase
         $preferences->pref_bool_groupsmanagers_see_contributions = true;
         $can_show = $contrib->canShow($this->login);
         $preferences->pref_bool_groupsmanagers_see_contributions = $this->preferences->getDefaults()['pref_bool_groupsmanagers_see_contributions'];
-        $this->assertTrue($can_show);
+        $this->assertTrue($can_show); //@phpstan-ignore method.impossibleType (class handle that)
     }
 
     /**
@@ -1341,7 +1344,7 @@ class Contribution extends GaletteTestCase
         $this->getMemberOne();
 
         //create contribution for member
-        $begin_date = new \DateTime(); // 2023-12-30
+        $begin_date = new DateTime(); // 2023-12-30
         $ny_begin_date = clone $begin_date; // 2023-12-30
         $end_date = clone $begin_date;
         $begin_date->sub(new \DateInterval('P1Y')); // 2022-12-30
@@ -1376,7 +1379,7 @@ class Contribution extends GaletteTestCase
         $this->getMemberOne();
 
         //create contribution for member
-        $begin_date = new \DateTime(); // 2023-12-30
+        $begin_date = new DateTime(); // 2023-12-30
         $ny_begin_date = clone $begin_date; // 2023-12-30
         $end_date = clone $begin_date;
         $due_date = clone $begin_date;
@@ -1434,7 +1437,7 @@ class Contribution extends GaletteTestCase
         $this->logSuperAdmin();
         $this->getMemberOne();
 
-        $now = new \DateTime(); // 2020-11-07
+        $now = new DateTime(); // 2020-11-07
         $begin_date = clone $now;
 
         $due_date = clone $now; //due date is before begin date
@@ -1475,7 +1478,7 @@ class Contribution extends GaletteTestCase
 
         $this->assertEquals($contrib->begin_date, $contrib_data['date_debut_cotis']);
         $this->assertNotTrue($check);
-        $this->expectLogEntry(\Analog::ERROR, '- The end date must be after the start date!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, '- The end date must be after the start date!');
         $this->assertSame(['- The end date must be after the start date!'], $check);
     }
 
@@ -1488,7 +1491,7 @@ class Contribution extends GaletteTestCase
         $this->getMemberOne();
         $this->login->logout();
 
-        $now = new \DateTime(); // 2020-11-07
+        $now = new DateTime(); // 2020-11-07
         $begin_date = clone $now;
 
         $due_date = clone $now; //due date is before begin date
@@ -1509,7 +1512,7 @@ class Contribution extends GaletteTestCase
         $check = $contrib->check($contrib_data, [], []);
         $this->assertNotTrue($check);
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Please select a member from a group you manage.'
         );
         $this->assertSame(

@@ -33,6 +33,7 @@ use Galette\Tests\GaletteTestCase;
 class ListsConfig extends GaletteTestCase
 {
     private ?\Galette\Entity\ListsConfig $lists_config = null;
+    /** @var string[]  */
     private array $default_lists = [
         'id_adh',
         'list_adh_name',

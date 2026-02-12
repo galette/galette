@@ -25,6 +25,8 @@ namespace Galette\Tests\Core;
 
 use Galette\Tests\BaseGaletteTestCase;
 
+use function Safe\realpath;
+
 /**
  * Picture tests class
  *

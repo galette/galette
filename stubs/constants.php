@@ -55,6 +55,7 @@
         define('GALETTE_CRON', $random_val([false, true]));
         define('GALETTE_INSTALLER', $random_val([false, true]));
         define('GALETTE_LOGGER_CHECKED', $random_val([false, true]));
+        define('GALETTE_TESTS', $random_val([false, true]));
     }
 
     // Other constants

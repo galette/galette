@@ -134,7 +134,7 @@ class FieldsConfig extends GaletteTestCase
     /**
      * Count categorized_fields
      *
-     * @param array $categorized Categorized fields
+     * @param array<int, array<int, array<string, mixed>>> $categorized Categorized fields
      */
     private function countCategorizedFields(array $categorized): void
     {
@@ -281,7 +281,10 @@ class FieldsConfig extends GaletteTestCase
 
         $categorized = $fields_config->getCategorizedFields();
         $this->assertSame($categorized_init, $categorized);
-        $this->expectLogEntry(\Analog::WARNING, 'Fields configuration count for `adherents` columns does not match records.');
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Fields configuration count for `adherents` columns does not match records.'
+        );
     }
 
     /**
@@ -308,7 +311,10 @@ class FieldsConfig extends GaletteTestCase
 
         $categorized = $fields_config->getCategorizedFields();
         $this->countCategorizedFields($categorized);
-        $this->expectLogEntry(\Analog::WARNING, 'Fields configuration count for `adherents` columns does not match records. Is : 0 and should be');
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Fields configuration count for `adherents` columns does not match records. Is : 0 and should be'
+        );
     }
 
     /**

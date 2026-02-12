@@ -25,6 +25,10 @@ namespace Galette\Tests\Util;
 
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\file_get_contents;
+use function Safe\ini_get;
+use function Safe\preg_replace;
+
 /**
  * Telemetry tests class
  *

@@ -239,7 +239,7 @@ class L10n extends GaletteTestCase
             $this->i18n
         );
         $this->assertFalse($l10n->addDynamicTranslation('A text that will not be added'));
-        $this->expectLogEntry(\Analog::ERROR, 'An error occurred adding dynamic translation for `A text that will not be added` | Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred adding dynamic translation for `A text that will not be added` | Error executing query!');
     }
 
     /**
@@ -269,7 +269,7 @@ class L10n extends GaletteTestCase
                 'A text that will not be updated'
             )
         );
-        $this->expectLogEntry(\Analog::ERROR, 'An error occurred updating dynamic translation for `A text that will not be updated` | Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred updating dynamic translation for `A text that will not be updated` | Error executing query!');
     }
 
     /**
@@ -293,7 +293,7 @@ class L10n extends GaletteTestCase
             $this->i18n
         );
         $this->assertFalse($l10n->deleteDynamicTranslation('A text that will not be deleted'));
-        $this->expectLogEntry(\Analog::ERROR, 'An error occurred deleting dynamic translation for `A text that will not be deleted` | Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred deleting dynamic translation for `A text that will not be deleted` | Error executing query!');
     }
 
     /**
@@ -325,7 +325,7 @@ class L10n extends GaletteTestCase
             $this->assertSame('Error executing query!', $e->getMessage());
         }
         $this->assertTrue($exception_thrown, 'No exception has been thrown');
-        $this->expectLogEntry(\Analog::WARNING, 'An error occurred retrieving l10n entry. text_orig=A text that will not be get, text_locale=en_US | Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'An error occurred retrieving l10n entry. text_orig=A text that will not be get, text_locale=en_US | Error executing query!');
     }
 
     /**
@@ -357,6 +357,6 @@ class L10n extends GaletteTestCase
             $this->assertSame('Error executing query!', $e->getMessage());
         }
         $this->assertTrue($exception_thrown, 'No exception has been thrown');
-        $this->expectLogEntry(\Analog::WARNING, 'An error occurred retrieving l10n entries. text_orig_sum=' . md5('A text that will not be get') . ' | Error executing query!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'An error occurred retrieving l10n entries. text_orig_sum=' . md5('A text that will not be get') . ' | Error executing query!');
     }
 }

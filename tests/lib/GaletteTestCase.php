@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace Galette\Tests;
 
+use Safe\DateTime;
+
 /**
  * Galette tests case main class
  *
@@ -30,7 +32,9 @@ namespace Galette\Tests;
  */
 abstract class GaletteTestCase extends BaseGaletteTestCase
 {
+    /** @var array<string,mixed> */
     protected array $members_fields;
+    /** @var array<string,mixed> */
     protected array $members_fields_cats;
     protected \Galette\Core\I18n $i18n;
     protected \Galette\Core\Preferences $preferences;
@@ -40,7 +44,9 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
 
     protected \Galette\Entity\Adherent $adh;
     protected \Galette\Entity\Contribution $contrib;
+    /** @var int[] */
     protected array $adh_ids = [];
+    /** @var int[] */
     protected array $contrib_ids = [];
     protected \Slim\Routing\RouteParser $routeparser;
     protected \Slim\Views\Twig $view;
@@ -108,13 +114,15 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
 
     /**
      * Get Faker data for one member
+     *
+     * @return array<string, string|int|bool|null>
      */
     protected function dataAdherentOne(): array
     {
-        $bdate = new \DateTime(date('Y') . '-12-26');
+        $bdate = new DateTime(date('Y') . '-12-26');
         //member is expected to be 82 years old
         $years = 82;
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($now <= $bdate) {
             ++$years;
         }
@@ -151,13 +159,15 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
 
     /**
      * Get Faker data for second member
+     *
+     * @return array<string, string|int|bool|null>
      */
     protected function dataAdherentTwo(): array
     {
-        $bdate = new \DateTime(date('Y') . '-09-13');
+        $bdate = new DateTime(date('Y') . '-09-13');
         //member is expected to be 28 years old
         $years = 28;
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($now <= $bdate) {
             ++$years;
         }
@@ -197,7 +207,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
     /**
      * Create member from data
      *
-     * @param array<string, mixed> $data Data to use to create member
+     * @param array<string, string|int|bool|null> $data Data to use to create member
      */
     public function createMember(array $data): \Galette\Entity\Adherent
     {
@@ -502,7 +512,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
      */
     protected function getContribData(): array
     {
-        $now = new \DateTime(); // 2020-11-07
+        $now = new DateTime(); // 2020-11-07
         $begin_date = clone $now;
         $begin_date->sub(new \DateInterval('P5M')); // 2020-06-08
         $begin_date->add(new \DateInterval('P3D')); // 2020-06-11

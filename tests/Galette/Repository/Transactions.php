@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Repository;
 
 use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
 
 /**
  * Transactions repository tests
@@ -58,7 +59,7 @@ class Transactions extends GaletteTestCase
      */
     private function createTransaction(): void
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $data = [
             'id_adh' => $this->adh->id,
             'trans_date' => $date->format('Y-m-d'),
@@ -116,7 +117,7 @@ class Transactions extends GaletteTestCase
         $list = $transactions->getList(true);
         $this->assertCount(1, $list);
 
-        $odate = new \DateTime($this->transaction->date);
+        $odate = new DateTime($this->transaction->date);
         $odate->modify('+10 day');
         $filters = new \Galette\Filters\TransactionsList();
         $filters->start_date_filter = $odate->format('Y-m-d');
@@ -130,7 +131,7 @@ class Transactions extends GaletteTestCase
         $list = $transactions->getList(true);
         $this->assertCount(1, $list);
 
-        $odate = new \DateTime($this->transaction->date);
+        $odate = new DateTime($this->transaction->date);
         $odate->modify('-10 day');
         $filters = new \Galette\Filters\TransactionsList();
         $filters->end_date_filter = $odate->format('Y-m-d');
@@ -180,7 +181,7 @@ class Transactions extends GaletteTestCase
         $transactions = new \Galette\Repository\Transactions($this->zdb, $login, $filters);
         $list = $transactions->getList(true);
         $this->assertCount(0, $list);
-        $this->expectLogEntry(\Analog::WARNING, "Trying to display transactions for member #{$this->adh->id} without appropriate ACLs");
+        $this->expectLogEntry(\Analog\Analog::WARNING, "Trying to display transactions for member #{$this->adh->id} without appropriate ACLs");
     }
 
     /**

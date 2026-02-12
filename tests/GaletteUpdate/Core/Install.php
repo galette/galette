@@ -250,8 +250,8 @@ class Install extends BaseGaletteTestCase
 
                 if (!in_array($key, $fail_mapping)) {
                     $this->assertSame(
-                        $constraint->getReferencedTableName() ?? '',
-                        str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getReferencedTableName() ?? ''),
+                        $constraint->getReferencedTableName() ?? '', //@phpstan-ignore nullCoalesce.expr (Laminas docs lies)
+                        str_replace($latest_prefix, PREFIX_DB, $latest_constraint->getReferencedTableName() ?? ''), //@phpstan-ignore nullCoalesce.expr (Laminas docs lies)
                         sprintf(
                             'Constraint %1$s incorrect',
                             $key
@@ -294,7 +294,7 @@ class Install extends BaseGaletteTestCase
                 $constraint->getType(),
                 str_replace($this->latest_prefix, PREFIX_DB, $constraint->getTableName()),
                 implode('|', $constraint->getColumns()),
-                str_replace($this->latest_prefix, PREFIX_DB, $constraint->getReferencedTableName() ?? ''),
+                str_replace($this->latest_prefix, PREFIX_DB, $constraint->getReferencedTableName() ?? ''), //@phpstan-ignore nullCoalesce.expr (Laminas docs lies)
                 implode('|', $constraint->getReferencedColumns())
             );
         }

@@ -270,7 +270,7 @@ class Db extends BaseGaletteTestCase
         $is_pg = $this->zdb->isPostgres();
 
         match (TYPE_DB) {
-            'pgsql' => $this->assertTrue($is_pg),
+            'pgsql' => $this->assertTrue($is_pg), // @phpstan-ignore match.alwaysTrue (TYPE_DB is a constant, not a variable)
             default => $this->assertFalse($is_pg),
         };
     }
@@ -310,7 +310,7 @@ class Db extends BaseGaletteTestCase
     public function testGetterWException(): void
     {
         $this->expectExceptionMessage('Unknown property non_existing');
-        $this->zdb->non_existing;
+        $this->zdb->non_existing; //@phpstan-ignore property.notFound,expr.resultUnused (we want to test that exception is thrown)
     }
 
     /**
@@ -498,7 +498,7 @@ class Db extends BaseGaletteTestCase
                 'nom_pref',
                 'val_pref'
             ],
-            array_values($columns)
+            $columns
         );
     }
 
@@ -571,8 +571,7 @@ class Db extends BaseGaletteTestCase
     public function testConvertToUtf(): void
     {
         $db = new \Galette\Core\Db();
-        $convert = $db->convertToUTF();
-        $this->assertNull($convert);
+        $db->convertToUTF();
     }
 
     /**
@@ -636,7 +635,7 @@ class Db extends BaseGaletteTestCase
     {
         $db = $this->zdb;
         $serialized = serialize($db);
-        $this->assertNotNull($serialized);
+        $this->assertNotEmpty($serialized);
 
         $unserialized = unserialize($serialized);
         $this->assertInstanceOf(\Galette\Core\Db::class, $unserialized);
@@ -659,7 +658,7 @@ class Db extends BaseGaletteTestCase
     {
         $this->assertTrue(isset($this->zdb->sql));
         $this->assertTrue(isset($this->zdb->query_string));
-        $this->assertTrue(isset($this->zdb->db));
+        $this->assertTrue(isset($this->zdb->db)); // @phpstan-ignore isset.property,method.alreadyNarrowedType
         $this->assertFalse(isset($this->zdb->non_existing));
     }
 

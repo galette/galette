@@ -103,7 +103,6 @@ class Group extends GaletteTestCase
 
         $group->setName('A group');
         $this->assertTrue($group->store());
-        $group->getId();
 
         //Adding another group with same name throws an exception
         $group = new \Galette\Entity\Group();
@@ -240,11 +239,11 @@ class Group extends GaletteTestCase
         $this->assertFalse($group->remove()); //still have children, not removed
 
         $this->expectLogEntry(
-            \Analog::WARNING,
+            \Analog\Analog::WARNING,
             'Group "A parent group" still have members!'
         );
         $this->expectLogEntry(
-            \Analog::ERROR,
+            \Analog\Analog::ERROR,
             'Query error: DELETE FROM ' . ($this->zdb->isPostgres() ? '"galette_groups"' : '`galette_groups`')
         );
         $warning = new \ArrayObject([

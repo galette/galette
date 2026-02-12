@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Entity;
 
+use Safe\DateTime;
 use Galette\Tests\GaletteTestCase;
 
 /**
@@ -47,7 +48,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertFalse($this->contrib->hasSchedule());
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
         $this->assertFalse($scheduledPayment->isContributionHandled($this->contrib->id));
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,
@@ -60,7 +61,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->assertTrue($this->contrib->store());
 
         $check = $scheduledPayment->check($data);
-        if (count($scheduledPayment->getErrors())) {
+        if ($scheduledPayment->getErrors() !== []) {
             var_dump($scheduledPayment->getErrors());
         }
         $this->assertTrue($check);
@@ -90,7 +91,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //no amount, will take contribution amount
         $data = [
@@ -147,7 +148,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [];
         $check = $scheduledPayment->check($data);
@@ -267,7 +268,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //no amount, will take contribution amount
         $data = [
@@ -304,7 +305,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //no amount, will take contribution amount
         $data = [
@@ -351,7 +352,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $nonfulls = $scheduledPayment->getNotFullyAllocated();
         $this->assertCount(0, $nonfulls); //no contributiopn with SCHEDULED payment type
@@ -432,7 +433,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,
@@ -475,7 +476,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,
@@ -517,7 +518,7 @@ class ScheduledPayment extends GaletteTestCase
 
         $data['amount'] = 92 - 35;
         $check = $scheduledPayment->check($data);
-        if (count($scheduledPayment->getErrors())) {
+        if ($check !== true) {
             var_dump($scheduledPayment->getErrors());
         }
         $this->assertTrue($check);
@@ -540,7 +541,7 @@ class ScheduledPayment extends GaletteTestCase
         $this->createContribution();
 
         $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $data = [
             \Galette\Entity\Contribution::PK => $this->contrib->id,

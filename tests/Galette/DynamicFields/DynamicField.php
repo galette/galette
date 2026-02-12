@@ -74,7 +74,6 @@ class DynamicField extends GaletteTestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
@@ -90,12 +89,13 @@ class DynamicField extends GaletteTestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertSame($field_data['field_name'], $df->getName());
     }
 
     /**
      * Permissions names provider
+     *
+     * @return array<array{perm: int, name: string}>
      */
     public static function permsProvider(): array
     {
@@ -156,7 +156,6 @@ class DynamicField extends GaletteTestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertSame($name, $df->getPermissionName());
     }
 
@@ -175,7 +174,7 @@ class DynamicField extends GaletteTestCase
     /**
      * Form names provider
      *
-     * @return \string[][]
+     * @return array<array{form: string, expected: string}>
      */
     public static function formNamesProvider(): array
     {
@@ -240,7 +239,6 @@ class DynamicField extends GaletteTestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
 
         $df->load($df->getId());
         $this->assertSame(['One', 'Two', 'Three'], $df->getValues());
@@ -430,7 +428,6 @@ class DynamicField extends GaletteTestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
@@ -448,7 +445,6 @@ class DynamicField extends GaletteTestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
@@ -466,7 +462,6 @@ class DynamicField extends GaletteTestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())
@@ -523,7 +518,6 @@ class DynamicField extends GaletteTestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $df_id = $df->getId();
 
 
@@ -554,7 +548,6 @@ class DynamicField extends GaletteTestCase
                 $df->getErrors() + $df->getWarnings()
             )
         );
-        $this->assertTrue($stored);
         $this->assertEquals(
             $df,
             \Galette\DynamicFields\DynamicField::loadFieldType($this->zdb, $df->getId())

@@ -212,9 +212,9 @@ class Password
     /**
      * Add personal information to check against
      *
-     * @param array<int, string> $infos Personal information
+     * @param array<int, ?string> $infos Personal information
      *
-     * @return array<int, string>
+     * @return array<int, ?string>
      */
     public function addPersonalInformation(array $infos): array
     {

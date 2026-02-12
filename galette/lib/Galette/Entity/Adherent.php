@@ -86,7 +86,7 @@ use Galette\Features\Dynamics;
  * @property      ?string           $rdue_date          Due date
  * @property      ?string           $others_infos
  * @property      ?string           $others_infos_admin
- * @property      Picture           $picture
+ * @property      ?Picture          $picture
  * @property      Group[]           $groups
  * @property      Group[]           $managed_groups
  * @property      int|Adherent|null $parent             Parent id if parent dep is not loaded, Adherent instance otherwise
@@ -112,6 +112,7 @@ use Galette\Features\Dynamics;
  * @property      string            $number             Member number
  * @property-read bool              $self_adh
  * @property      ?string           $region
+ * @property      array<int,Social> $socials
  */
 class Adherent implements AccessManagementInterface
 {
@@ -2299,7 +2300,7 @@ class Adherent implements AccessManagementInterface
     /**
      * Get QR codes associated to member
      *
-     * @return QrCode[]
+     * @return array<string, QrCode>
      */
     public function getQrCodes(): array
     {

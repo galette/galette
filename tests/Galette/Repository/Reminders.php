@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Repository;
 
 use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
 
 /**
  * Reminders repository tests
@@ -73,7 +74,7 @@ class Reminders extends GaletteTestCase
         $id = $this->adh->id;
 
         //create a contribution, just before being a close to be expired contribution
-        $now = new \DateTime();
+        $now = new DateTime();
         $due_date = clone $now;
         $due_date->add(new \DateInterval('P30D'));
         $due_date->add(new \DateInterval('P1D'));
@@ -195,7 +196,7 @@ class Reminders extends GaletteTestCase
         $this->assertSame(\Galette\Entity\Reminder::IMPENDING, $reminder->type);
 
         //add a first close to be expired contribution reminder
-        $send = new \DateTime();
+        $send = new DateTime();
         $send->sub(new \DateInterval('P30D'));
         $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
@@ -221,7 +222,7 @@ class Reminders extends GaletteTestCase
         $this->assertSame(\Galette\Entity\Reminder::IMPENDING, $reminder->type);
 
         //add a second close to be expired contribution reminder, yesterday
-        $send = new \DateTime();
+        $send = new DateTime();
         $send->sub(new \DateInterval('P1D'));
         $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
@@ -435,10 +436,10 @@ class Reminders extends GaletteTestCase
         $id = $this->adh->id;
 
         //create a contribution, just before being a close to be expired contribution
-        $now = new \DateTime();
+        $now = new DateTime();
 
         //add a first close to be expired contribution reminder - last year
-        $send = new \DateTime();
+        $send = new DateTime();
         $send->sub(new \DateInterval('P90D'))->sub(new \DateInterval('P1Y'));
         $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,
@@ -455,7 +456,7 @@ class Reminders extends GaletteTestCase
         $this->assertGreaterThan(0, $add->count());
 
         //add a second close to be expired contribution reminder - last year
-        $send = new \DateTime();
+        $send = new DateTime();
         $send->sub(new \DateInterval('P67D'))->sub(new \DateInterval('P1Y'));
         $data = [
             'reminder_type'     => \Galette\Entity\Reminder::IMPENDING,

@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Entity;
 
 use Galette\Tests\GaletteTestCase;
+use Safe\DateTime;
 
 /**
  * Adherent tests class
@@ -33,6 +34,7 @@ use Galette\Tests\GaletteTestCase;
 class Adherent extends GaletteTestCase
 {
     protected int $seed = 95842354;
+    /** @var array<string, bool> */
     private array $default_deps;
 
     /**
@@ -68,13 +70,13 @@ class Adherent extends GaletteTestCase
         $adh = $this->adh;
         $this->assertFalse($adh->isAdmin());
         $this->assertFalse($adh->admin);
-        $this->expectLogEntry(\Analog::WARNING, 'Calling property "admin" directly is discouraged.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "admin" directly is discouraged.');
         $this->assertFalse($adh->isStaff());
         $this->assertFalse($adh->staff);
-        $this->expectLogEntry(\Analog::WARNING, 'Calling property "staff" directly is discouraged.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "staff" directly is discouraged.');
         $this->assertFalse($adh->isDueFree());
         $this->assertFalse($adh->due_free);
-        $this->expectLogEntry(\Analog::WARNING, 'Calling property "due_free" directly is discouraged.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "due_free" directly is discouraged.');
         $this->assertFalse($adh->isGroupMember('any'));
         $this->assertFalse($adh->isGroupManager('any'));
         $this->assertFalse($adh->isCompany());
@@ -82,23 +84,23 @@ class Adherent extends GaletteTestCase
         $this->assertFalse($adh->isWoman());
         $this->assertTrue($adh->isActive());
         $this->assertTrue($adh->active);
-        $this->expectLogEntry(\Analog::WARNING, 'Calling property "active" directly is discouraged.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "active" directly is discouraged.');
         $this->assertFalse($adh->isUp2Date());
         $this->assertFalse($adh->appearsInMembersList());
         $this->assertFalse($adh->appears_in_list);
-        $this->expectLogEntry(\Analog::WARNING, 'Calling property "appears_in_list" directly is discouraged.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "appears_in_list" directly is discouraged.');
         $this->assertFalse($adh->duplicate);
         $this->assertFalse($adh->isDuplicate());
-        $this->expectLogEntry(\Analog::WARNING, 'Calling property "duplicate" directly is discouraged.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "duplicate" directly is discouraged.');
         $this->assertEquals([], $adh->groups);
-        $this->expectLogEntry(\Analog::WARNING, 'Calling property "groups" directly is discouraged.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "groups" directly is discouraged.');
         $this->assertEquals([], $adh->getGroups());
         $this->assertEquals([], $adh->managed_groups);
-        $this->expectLogEntry(\Analog::WARNING, 'Calling property "managed_groups" directly is discouraged.');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "managed_groups" directly is discouraged.');
         $this->assertEquals([], $adh->getManagedGroups());
 
-        $this->assertNull($adh->fake_prop);
-        $this->expectLogEntry(\Analog::WARNING, 'Unknown property \'fake_prop\'');
+        $this->assertNull($adh->fake_prop); //@phpstan-ignore property.notFound (class handles that)
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Unknown property \'fake_prop\'');
 
         $this->assertSame($this->default_deps, $adh->deps);
         $this->assertFalse($adh->sendEMail());
@@ -157,8 +159,8 @@ class Adherent extends GaletteTestCase
         $this->assertSame($expected, $adh->deps);
 
         $adh->disableDep('none')->enableDep('anothernone');
-        $this->expectLogEntry(\Analog::WARNING, 'dependency none does not exists!');
-        $this->expectLogEntry(\Analog::WARNING, 'dependency anothernone does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'dependency none does not exists!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'dependency anothernone does not exists!');
         $this->assertSame($expected, $adh->deps);
 
         $expected = [
@@ -199,7 +201,7 @@ class Adherent extends GaletteTestCase
         ];
         $this->assertSame($expected, $adh->deps);
 
-        $adh->enableAllDeps();
+        $adh->enableAllDeps(); // @phpstan-ignore method.resultUnused (no need to use result here)
         $expected = [
             'picture'   => true,
             'groups'    => true,
@@ -220,7 +222,7 @@ class Adherent extends GaletteTestCase
         $adh = $this->adh;
 
         $this->expectException('RuntimeException');
-        $adh->row_classes;
+        $adh->row_classes; //@phpstan-ignore property.private,expr.resultUnused (just throws an exception)
     }
 
     /**
@@ -287,7 +289,7 @@ class Adherent extends GaletteTestCase
 
         foreach (array_keys($this->adh->getDeprecatedProperties()) as $property) {
             $this->assertTrue(isset($this->adh->{$property}), $property);
-            $this->expectLogEntry(\Analog::WARNING, 'Calling property "' . $property . '" directly is discouraged.');
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'Calling property "' . $property . '" directly is discouraged.');
         }
 
         $this->assertFalse(isset($this->adh->fake_prop));
@@ -350,7 +352,7 @@ class Adherent extends GaletteTestCase
         $expected = ['- Wrong date format (Y-m-d) for Birth date!'];
         $check = $adh->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         $data = [
             'ddn_adh'       => '',
@@ -359,7 +361,7 @@ class Adherent extends GaletteTestCase
         $expected = ['- Wrong date format (Y-m-d) for Creation date!'];
         $check = $adh->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         //reste creation date to its default value
         $data = ['date_crea_adh' => date('Y-m-d')];
@@ -370,19 +372,19 @@ class Adherent extends GaletteTestCase
         $expected = ['- Non-valid E-Mail address! (E-Mail)'];
         $check = $adh->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         $data = ['login_adh' => 'a'];
         $expected = ['- The username must be composed of at least 2 characters!'];
         $check = $adh->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         $data = ['login_adh' => 'login@galette'];
         $expected = ['- The username cannot contain the @ character'];
         $check = $adh->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         $data = [
             'login_adh' => '',
@@ -392,13 +394,13 @@ class Adherent extends GaletteTestCase
         $expected = ['Too short (6 characters minimum, 5 found)'];
         $check = $adh->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         $data = ['mdp_adh' => 'mypassword'];
         $expected = ['- The passwords don\'t match!'];
         $check = $adh->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         $data = [
             'mdp_adh'   => 'mypassword',
@@ -407,7 +409,7 @@ class Adherent extends GaletteTestCase
         $expected = ['- The passwords don\'t match!'];
         $check = $adh->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         global $login;
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -420,7 +422,7 @@ class Adherent extends GaletteTestCase
         $expected = ['Status #256 does not exists in database.'];
         $check = $adh->check($data, [], []);
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         //tests for group managers
         //test insert failing
@@ -447,13 +449,13 @@ class Adherent extends GaletteTestCase
         $check = $adh->check($data, [], []);
         $expected = ['You have to select a group you own!'];
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         $data = ['groups_adh' => [$g2->getId()]];
         $check = $adh->check($data, [], []);
         $expected = ['You have to select a group you own!'];
         $this->assertSame($expected, $check);
-        $this->expectLogEntry(\Analog::ERROR, $expected[0]);
+        $this->expectLogEntry(\Analog\Analog::ERROR, $expected[0]);
 
         $data = ['groups_adh' => [$g1->getId()]];
         $check = $adh->check($data, [], []);
@@ -495,7 +497,7 @@ class Adherent extends GaletteTestCase
             $this->assertSame('No right to store member #', $e->getMessage());
         }
         $this->assertTrue($exception_thrown, 'No exception has been thrown');
-        $this->expectLogEntry(\Analog::CRITICAL, 'Non allowed user  attempting to change member  admin flag');
+        $this->expectLogEntry(\Analog\Analog::CRITICAL, 'Non allowed user  attempting to change member  admin flag');
     }
 
     /**
@@ -508,7 +510,7 @@ class Adherent extends GaletteTestCase
         $fakedata = new \Galette\Util\FakeData();
         $this->assertTrue($fakedata->addPhoto($this->adh));
         //Process tries to remove any existing photo
-        $this->expectLogEntry(\Analog::ERROR, 'Unable to remove picture database entry for ' . $this->adh->id);
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $this->adh->id);
 
         $this->assertTrue($this->adh->hasPicture());
 
@@ -577,9 +579,8 @@ class Adherent extends GaletteTestCase
         $this->assertFalse($adh->canEdit($login));
 
         $this->preferences->pref_bool_groupsmanagers_edit_member = true;
-        $canEdit = $adh->canEdit($login);
+        $this->assertTrue($adh->canEdit($login));
         $this->preferences->pref_bool_groupsmanagers_edit_member = false; //reset
-        $this->assertTrue($canEdit);
 
         //groups managers cannot edit members of the groups they do not own
         $adh->method('getGroups')->willReturn([$g2]);
@@ -647,9 +648,8 @@ class Adherent extends GaletteTestCase
         $this->assertFalse($adh->canDelete($login));
 
         $this->preferences->pref_bool_groupsmanagers_edit_member = true;
-        $canDelete = $adh->canDelete($login);
+        $this->assertTrue($adh->canDelete($login));
         $this->preferences->pref_bool_groupsmanagers_edit_member = false; //reset
-        $this->assertTrue($canDelete);
 
         //groups managers cannot edit members of the groups they do not own
         $adh->method('getGroups')->willReturn([$g2]);
@@ -708,7 +708,7 @@ class Adherent extends GaletteTestCase
 
         $parent->hasChildren();
         $this->assertFalse($parent->hasChildren());
-        $this->expectLogEntry(\Analog::WARNING, 'Children has not been loaded!');
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Children has not been loaded!');
 
         $parent = new \Galette\Entity\Adherent($this->zdb, $parent->id, ['children' => true]);
         $this->assertTrue($parent->hasChildren());
@@ -759,6 +759,7 @@ class Adherent extends GaletteTestCase
         $this->assertNull($child->parent);
 
         $this->assertInstanceOf(\Galette\Entity\Adherent::class, $child->setParent($parent->id));
+        $this->assertInstanceOf(\Galette\Entity\Adherent::class, $child->parent);
         $this->assertSame($parent->id, $child->parent->id);
     }
 
@@ -920,7 +921,7 @@ class Adherent extends GaletteTestCase
     /**
      * Names provider
      *
-     * @return array[]
+     * @return array<array{name: string, surname: string, title: \Galette\Entity\Title|false, id: int|false, nick: string|false, expected: string}>
      */
     public static function nameCaseProvider(): array
     {
@@ -1030,7 +1031,7 @@ class Adherent extends GaletteTestCase
     public function testGetDueStatus(): void
     {
         $this->logSuperAdmin();
-        $now = new \DateTime();
+        $now = new DateTime();
         $member = new \Galette\Entity\Adherent($this->zdb);
         $this->assertSame(\Galette\Entity\Contribution::STATUS_UNKNOWN, $member->getDueStatus());
         $this->assertMatchesRegularExpression('/^Never contributed.+/', $member->getDues());
@@ -1129,7 +1130,7 @@ class Adherent extends GaletteTestCase
      */
     public function testIsSponsor(): void
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         $member = new \Galette\Entity\Adherent($this->zdb);
         $this->assertSame(\Galette\Entity\Contribution::STATUS_UNKNOWN, $member->getDueStatus());
 
@@ -1547,7 +1548,7 @@ class Adherent extends GaletteTestCase
         $check = $adh->check($data, [], []);
         $this->assertIsArray($check);
         $this->assertContains('- Wrong date format (Y-m-d) for Dynamic date field!', $check);
-        $this->expectLogEntry(\Analog::ERROR, '- Wrong date format (Y-m-d) for Dynamic date field!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, '- Wrong date format (Y-m-d) for Dynamic date field!');
 
         //test with localized date. Will be stored as default date format (Y-m-d)
         $this->i18n->changeLanguage('fr_FR');
@@ -1677,7 +1678,7 @@ class Adherent extends GaletteTestCase
         $check = $adh->check($data, [], []);
         $this->assertIsArray($check);
         $this->assertContains('- Wrong date format (Y-m-d) for Dynamic date field!', $check);
-        $this->expectLogEntry(\Analog::ERROR, '- Wrong date format (Y-m-d) for Dynamic date field!');
+        $this->expectLogEntry(\Analog\Analog::ERROR, '- Wrong date format (Y-m-d) for Dynamic date field!');
     }
 
     /**
@@ -1783,9 +1784,7 @@ class Adherent extends GaletteTestCase
         $adh = $this->getMemberOne();
         $qrcodes = $adh->getQrCodes();
 
-        $this->assertIsArray($qrcodes);
         $this->assertCount(3, $qrcodes);
-
         $expected_keys = ['vcard', 'email', 'phone'];
         foreach ($expected_keys as $key) {
             $this->assertArrayHasKey($key, $qrcodes);
@@ -1794,7 +1793,7 @@ class Adherent extends GaletteTestCase
         }
 
         $this->assertSame('DURAND René', $qrcodes['vcard']->getLabel());
-        $this->assertSame($this->routeparser->urlFor('memberVCard', ['id' => $adh->id]), $qrcodes['vcard']->getURL());
+        $this->assertSame($this->routeparser->urlFor('memberVCard', ['id' => (string)$adh->id]), $qrcodes['vcard']->getURL());
 
         $this->assertSame('meunier.josephine95842354@ledoux.com', $qrcodes['email']->getLabel());
         $this->assertSame('mailto:meunier.josephine95842354@ledoux.com', $qrcodes['email']->getURL());

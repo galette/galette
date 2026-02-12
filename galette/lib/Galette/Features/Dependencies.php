@@ -29,6 +29,8 @@ use Analog\Analog;
  * Dependencies feature
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ *
+ * @property-read array<string, bool> $deps
  */
 
 trait Dependencies

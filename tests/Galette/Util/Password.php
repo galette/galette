@@ -36,6 +36,8 @@ class Password extends GaletteTestCase
 {
     /**
      * Passwords data provider
+     *
+     * @return array<int, array{0: int, 1: string, 2: array<int, string>}>
      */
     public static function passProvider(): array
     {
@@ -53,7 +55,7 @@ class Password extends GaletteTestCase
             [Preferences::PWD_WEAK, 'FÜKFJSLKFFSDFDSF', ['a', '1', '@']],
             [Preferences::PWD_WEAK, 'fjsfjdljfsjsjjlsj', ['A', '1', '@']],
 
-            [Preferences::PWD_MEDIUM, 'wee6eak',['A', '@']],
+            [Preferences::PWD_MEDIUM, 'wee6eak', ['A', '@']],
             [Preferences::PWD_MEDIUM, 'foobar!', ['A', '1']],
             [Preferences::PWD_MEDIUM, 'Foobar', ['1', '@']],
             [Preferences::PWD_MEDIUM, '123456!', ['nl']],
@@ -75,14 +77,14 @@ class Password extends GaletteTestCase
     /**
      * Test password validation
      *
-     * @param int    $level  Password level
-     * @param string $pass   Password
-     * @param array  $errors Errors
+     * @param int                $level  Password level
+     * @param string             $pass   Password
+     * @param array<int, string> $errors Errors
      */
     #[DataProvider('passProvider')]
     public function testValidatePassword(int $level, string $pass, array $errors): void
     {
-        //errror messages mapping
+        //error messages mapping
         foreach ($errors as &$err) {
             switch ($err) {
                 case 'nl':
@@ -113,18 +115,20 @@ class Password extends GaletteTestCase
         $this->preferences->pref_password_strength = $level;
         $password = new \Galette\Util\Password($this->preferences);
         $this->assertTrue($password->isValid($pass), implode(', ', $password->getErrors()));
-        $this->assertSame($password->getErrors(), []);
+        $this->assertSame([], $password->getErrors());
         $this->assertEquals($errors, $password->getStrenghtErrors());
     }
 
     /**
      * Blacklist password provider
+     *
+     * @return array<int, array{0: string, 1: bool}>
      */
     public static function blacklistProvider(): array
     {
         return [
             ['galette', true],
-            ['toto',  false],
+            ['toto', false],
             ['mypassisgreat', false],
             ['starwars', true],
             ['123456', true],
@@ -136,7 +140,7 @@ class Password extends GaletteTestCase
      * Test password blacklist
      *
      * @param string $pass     Password to test
-     * @param bool   $expected Excpected return
+     * @param bool   $expected Expected return
      */
     #[DataProvider('blacklistProvider')]
     public function testBlacklist(string $pass, bool $expected): void
@@ -156,10 +160,10 @@ class Password extends GaletteTestCase
     public function testPersonalInformation(): void
     {
         $infos = [
-            'login'     => 'mylogin',
-            'name'      => 'myname',
-            'surname'   => 'mysurname',
-            'nickname'  => 'mynickname'
+            'mylogin',
+            'myname',
+            'mysurname',
+            'mynickname'
         ];
 
         $this->preferences->pref_password_strength = Preferences::PWD_NONE;
@@ -167,7 +171,7 @@ class Password extends GaletteTestCase
         $password->addPersonalInformation($infos);
         foreach ($infos as $info) {
             $this->assertTrue($password->isValid($info), implode(', ', $password->getErrors()));
-            $this->assertSame($password->getErrors(), []);
+            $this->assertSame([], $password->getErrors());
         }
 
         $this->preferences->pref_password_strength = Preferences::PWD_WEAK;
@@ -176,8 +180,8 @@ class Password extends GaletteTestCase
         foreach ($infos as $info) {
             $this->assertFalse($password->isValid($info));
             $this->assertEquals(
-                $password->getErrors(),
-                ['Do not use any of your personal information as password!']
+                ['Do not use any of your personal information as password!'],
+                $password->getErrors()
             );
         }
 
@@ -197,7 +201,7 @@ class Password extends GaletteTestCase
         $adh = new \Galette\Entity\Adherent($this->zdb);
         $adh->setDependencies(
             $this->preferences,
-            $members_fields,
+            $this->members_fields,
             $history
         );
 
