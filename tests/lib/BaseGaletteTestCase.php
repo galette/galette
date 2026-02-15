@@ -90,9 +90,10 @@ abstract class BaseGaletteTestCase extends TestCase
         $plugins = new \Galette\Core\Plugins();
         $this->plugins = $plugins;
         if ($this->load_plugins) {
+            $preferences = new \Galette\Core\Preferences($this->zdb);
             $this->plugins
                 ->setDb($this->zdb)
-                ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+                ->loadModules($preferences, GALETTE_PLUGINS_PATH);
         }
 
         $gapp =  new \Galette\Core\SlimApp($this->plugins, $this->app_mode);
