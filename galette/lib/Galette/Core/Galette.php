@@ -611,8 +611,6 @@ class Galette
                 'icon' => 'address book',
                 'children' => $lists
             ];
-        } else {
-            $items = array_merge($items, $lists);
         }
 
         if (count($galleries) > 1) {
@@ -622,8 +620,6 @@ class Galette
                 'icon' => 'images',
                 'children' => $galleries
             ];
-        } else {
-            $items = array_merge($items, $galleries);
         }
 
         if ($preferences->showPublicPage($login, 'pref_publicpages_visibility_documents')) {
