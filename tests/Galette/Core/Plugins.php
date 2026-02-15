@@ -78,9 +78,6 @@ class Plugins extends GaletteTestCase
         $this->plugin2['root'] = GALETTE_PLUGINS_PATH
             . $this->plugin2['root'];
     }
-        $delete = $this->zdb->delete(\Galette\Core\Plugins::TABLE);
-        $this->zdb->execute($delete);
-
 
     /**
      * Tests plugins load
