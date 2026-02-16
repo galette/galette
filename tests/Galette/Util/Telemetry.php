@@ -41,6 +41,7 @@ class Telemetry extends GaletteTestCase
      */
     public function testGrabGaletteInfos(): void
     {
+        $this->plugins = new \Galette\Core\Plugins();
         $expected = [
             'uuid'               => 'TO BE SET',
             'version'            => GALETTE_VERSION,
