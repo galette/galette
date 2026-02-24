@@ -19,13 +19,14 @@
 # kuka <uber.mober@gmail.com>, 2025.
 # korn3r <korn3r@gmail.com>, 2025.
 # Artem <artemkozhin80@gmail.com>, 2026.
+# Marat Ismailov <klippygames@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-02-12 08:43+0100\n"
-"PO-Revision-Date: 2026-02-02 23:48+0000\n"
-"Last-Translator: Artem <artemkozhin80@gmail.com>\n"
+"PO-Revision-Date: 2026-02-25 05:52+0000\n"
+"Last-Translator: Marat Ismailov <klippygames@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -34,7 +35,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 5.16.1-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Невозможно загрузить транзакцию #%id!"
@@ -1054,90 +1055,92 @@ msgid "My information"
 msgstr "Моя информация"
 
 msgid "View my member card"
-msgstr ""
+msgstr "Открыть карту участника"
 
 msgid "Add a child member"
-msgstr ""
+msgstr "Добавить дочернего участника"
 
 msgid "Add new child member in database"
-msgstr ""
+msgstr "Добавить нового дочернего участника в базу данных"
 
 msgid "View, search into and filter member's list"
-msgstr ""
+msgstr "Просмотр, поиск и фильтрация списка участников"
 
 msgid "Perform advanced search into members list"
-msgstr ""
+msgstr "Расширенный поиск в списке участников"
 
 msgid "Add a member"
-msgstr ""
+msgstr "Добавить участника"
 
 msgid "Add new member in database"
-msgstr ""
+msgstr "Добавить нового участника в базу данных"
 
 msgid "Empty adhesion form"
-msgstr ""
+msgstr "Пустая форма участника"
 
 msgid "Download empty adhesion form"
-msgstr ""
+msgstr "Загрузить пустую форму участника"
 
 msgid "Contributions"
 msgstr "Взносы"
 
 msgid "View and filter contributions"
-msgstr ""
+msgstr "Просмотр и фильтрация вкладов"
 
 msgid "View and filter scheduled payments"
-msgstr ""
+msgstr "Просмотр и фильтрация запланированных платежей"
 
 msgid "View and filter transactions"
-msgstr ""
+msgstr "Просмотр и фильтрация транзакций"
 
 msgid "Add a membership fee"
-msgstr ""
+msgstr "Добавить взнос"
 
 msgid "Add new membership fee in database"
-msgstr ""
+msgstr "Добавить новый взнос в базу данных"
 
 msgid "Add a donation"
-msgstr ""
+msgstr "Добавить пожертвование"
 
 msgid "Add new donation in database"
-msgstr ""
+msgstr "Добавить новое пожертвование в базу данных"
 
 msgid "Add a transaction"
-msgstr ""
+msgstr "Добавить транзакцию"
 
 msgid "Add new transaction in database"
-msgstr ""
+msgstr "Добавить новую транзакцию в базу данных"
 
 msgid "Send reminders to late members"
-msgstr ""
+msgstr "Отправить напоминания участникам с задолженностью"
 
 msgid "Management"
 msgstr "Менеджмент"
 
 msgid "View and manage groups"
-msgstr ""
+msgstr "Просмотр и управление группами"
 
 msgid ""
 "Add documents to share related to your association (status, rules of "
 "procedure, ...)"
 msgstr ""
+"Добавьте документы, которые вы хотите опубликовать для вашего объединения "
+"(устав, регламент и др.)"
 
 msgid "Manage mailings that has been sent"
-msgstr ""
+msgstr "Управление рассылками"
 
 msgid "Various charts"
-msgstr ""
+msgstr "Разные диаграммы"
 
 msgid "Export some data in various formats"
-msgstr ""
+msgstr "Экспорт данных в различных форматах"
 
 msgid "Import members from CSV files"
-msgstr ""
+msgstr "Импорт участников из CSV-файлов"
 
 msgid "View application's logs"
-msgstr ""
+msgstr "Просмотреть лог-файлы приложения"
 
 msgid "Configuration"
 msgstr "Конфигурация"
@@ -1145,13 +1148,13 @@ msgstr "Конфигурация"
 msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
-msgstr ""
+msgstr "Изменить настройки (адрес, веб-сайт, конфигурация карты участника, ...)"
 
 msgid "Information about available plugins"
-msgstr ""
+msgstr "Данные о доступных плагинах"
 
 msgid "Customize lists fields and order"
-msgstr ""
+msgstr "Настройки полей списка и их порядка"
 
 msgid ""
 "Customize fields order, set which are required, and for who they're visibles"
