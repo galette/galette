@@ -345,28 +345,6 @@ class Plugins
             return;
         }
 
-        $is_installed = true; //by default, there is no way to know if a plugi is installed.
-        $plugin_class = $this->getClassName($this->id, true);
-        if (class_exists($plugin_class)) {
-            /** @var GalettePlugin $plugin */
-            $plugin = new $plugin_class();
-            $is_installed = $plugin->isInstalled();
-        }
-        if (!$is_installed || $this->needsDatabase($this->id) && !isset($this->db_existing[$this->id])) {
-            //plugin database has not been installed
-            Analog::log(
-                sprintf(
-                    'Plugin "%s" database has not been installed.',
-                    $this->modules[$this->id]['name']
-                ),
-                Analog::WARNING
-            );
-            $this->nodb_modules[$this->id] = $this->modules[$this->id];
-            unset($this->modules[$this->id]);
-            $this->setDisabled(self::DISABLED_NOT_INSTALLED);
-            return;
-        }
-
         if (
             $this->needsDatabase($this->id)
             && isset($this->db_existing[$this->id])
@@ -383,6 +361,44 @@ class Plugins
             $this->toupdate_modules[$this->id] = $this->modules[$this->id];
             unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_NOT_UP2DATE);
+        }
+    }
+
+    public function check(): void
+    {
+        $plugin_class = $this->getClassName($this->id, true);
+        if (!class_exists($plugin_class)) {
+            //plugin class must be present
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" class "%s" is missing.',
+                    $this->modules[$this->id]['name'],
+                    $plugin_class
+                ),
+                Analog::ERROR
+            );
+            unset($this->modules[$this->id]);
+            $this->setDisabled(self::DISABLED_MISS);
+            return;
+        }
+
+        /** @var GalettePlugin $plugin */
+        $plugin = new $plugin_class();
+        $is_installed = $plugin->isInstalled();
+
+        if (!$is_installed || $this->needsDatabase($this->id) && !isset($this->db_existing[$this->id])) {
+            //plugin database has not been installed
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" has not been installed.',
+                    $this->modules[$this->id]['name']
+                ),
+                Analog::WARNING
+            );
+            $this->nodb_modules[$this->id] = $this->modules[$this->id];
+            unset($this->modules[$this->id]);
+            $this->setDisabled(self::DISABLED_NOT_INSTALLED);
+            return;
         }
         }
     }
