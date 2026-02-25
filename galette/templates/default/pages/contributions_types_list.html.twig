@@ -27,14 +27,15 @@
             <thead>
                 <tr>
                     <th class="id_row collapsing">#</th>
-                    <th>{{ _T("Name") }}</th>
+                    <th class="collapsing">{{ _T("Name") }}</th>
+                    <th>{{ _T("Description") }}</th>
                     <th>{{ _T('Amount') }}</th>
                     <th>{{ _T("Membership extension") }}</th>
                     <th class="collapsing">{{ _T("Actions") }}</th>
                 </tr>
             </thead>
             <tfoot>
-                <tr>
+                <tr class="top aligned">
                     <td data-scope="row collapsing">
                         <span class="visually-hidden">
                             {{ _T("New contribution type") }}
@@ -44,6 +45,12 @@
                         <div class="required field">
                             <label for="libelle_type_cotis" class="visually-hidden">{{ _T("Name") }}</label>
                             <input size="40" type="text" name="libelle_type_cotis" id="libelle_type_cotis" required="required"/>
+                        </div>
+                    </td>
+                    <td class="left" data-col-label="{{ _T("Description") }}">
+                        <div class="field">
+                            <label for="description_new" class="visually-hidden">{{ _T("Description") }}</label>
+                            <textarea name="description" id="description_new" cols="60" rows="3"></textarea>
                         </div>
                     </td>
                     <td class="left" data-col-label="{{ _T("Amount") }}">
@@ -90,8 +97,11 @@
                     <td class="collapsing" data-scope="id">
                         {{ eid }}
                     </td>
-                    <td class="left" data-col-label="{{ _T("Name") }}">
+                    <td class="left collapsing" data-col-label="{{ _T("Name") }}">
                         {{ entry.name|escape }}
+                    </td>
+                    <td class="left" data-col-label="{{ _T("Description") }}">
+                        {{ entry.description|raw }}
                     </td>
                     <td data-col-label="{{ _T("Amount") }}">
                         {{ entry.amount }}
@@ -144,11 +154,15 @@
                 $('.modal-form form #redirect_uri').val(window.location.href);
                 $('.modal-form form').submit();
             " %}
+            {% set modal_action_onshow = "
+                activateHtmlEditor($('.modal-form #description'), true);
+            " %}
             {% include "elements/js/modal_action.js.twig" with {
                 selector: ".single-edit",
                 modal_title_twig: _T("Edit contribution type")|e("js"),
-                modal_class: "mini",
-                modal_onapprove: modal_onapprove
+                modal_class: "tiny",
+                modal_onapprove: modal_onapprove,
+                modal_action_onshow: modal_action_onshow
             } %}
 
             {% set extra_success = "
@@ -192,6 +206,8 @@
             {% include "elements/js/removal.js.twig" with {
                 single_action: "true"
             } %}
+
+            activateHtmlEditor($('#description_new'), true);
         });
     </script>
 {% endblock %}

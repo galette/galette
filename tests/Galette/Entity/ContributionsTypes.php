@@ -25,6 +25,7 @@ namespace Galette\Tests\Entity;
 
 use Galette\Tests\GaletteTestCase;
 use Laminas\Db\Adapter\Adapter;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Contributions types tests
@@ -47,6 +48,7 @@ class ContributionsTypes extends GaletteTestCase
             -2,
             $ctype->add(
                 'annual fee',
+                '',
                 10,
                 \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
@@ -59,6 +61,7 @@ class ContributionsTypes extends GaletteTestCase
         $this->assertTrue(
             $ctype->add(
                 'Test contribution type',
+                'Test contribution type description',
                 null,
                 \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
@@ -95,6 +98,7 @@ class ContributionsTypes extends GaletteTestCase
             $ctype->update(
                 42,
                 'annual fee',
+                '',
                 10,
                 \Galette\Entity\ContributionsTypes::DONATION_TYPE
             )
@@ -104,6 +108,7 @@ class ContributionsTypes extends GaletteTestCase
             $ctype->update(
                 $id,
                 'Tested contribution type',
+                'Test contribution type description',
                 42,
                 \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
             )
@@ -189,6 +194,233 @@ class ContributionsTypes extends GaletteTestCase
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $this->assertGreaterThanOrEqual(7, $result->last_value, 'Incorrect contributions types sequence ' . $result->last_value);
+        }
+    }
+
+    /**
+     * Empty description provider
+     *
+     * @return array<int, array<int, string>>
+     */
+    public static function emptyProvider(): array
+    {
+        return [
+            [''],
+            ['<br>'],
+            ['<br><br>'],
+            ['<br><br><br><br>'],
+            ['<p><br></p>'],
+            ['<p><br></p><p><br></p>'],
+            ['<p><br></p><p><br></p><p><br></p><p><br></p>'],
+            ["    \n    <p><br></p><p><br></p>\n\n<p><br></p><p><br></p>"]
+        ];
+    }
+
+    /**
+     * Test contributions types empty with description
+     */
+    #[DataProvider('emptyProvider')]
+    public function testEmptyDescription(string $description): void
+    {
+        global $i18n; // globals :(
+        $i18n = $this->i18n;
+
+        $ctype = new \Galette\Entity\ContributionsTypes($this->zdb);
+
+        $label = 'Test no description';
+        $this->assertTrue(
+            $ctype->add(
+                $label,
+                $description,
+                null,
+                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
+        );
+        $ctype_id = $ctype->id;
+
+        $test_ctype = $ctype->get($ctype_id);
+        $this->assertSame($label, $test_ctype['libelle_type_cotis']);
+        $this->assertSame('', $test_ctype['description']);
+
+        $label .= ' (modified)';
+        $this->assertTrue(
+            $ctype->update(
+                $ctype_id,
+                $label,
+                $description,
+                null,
+                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
+        );
+
+        $test_ctype = $ctype->get($ctype_id);
+        $this->assertSame($label, $test_ctype['libelle_type_cotis']);
+        $this->assertSame('', $test_ctype['description']);
+
+        $real_description = 'with description';
+        $description .= 'with description';
+        $label .= ' - ' . $real_description;
+        $this->assertTrue(
+            $ctype->update(
+                $ctype_id,
+                $label,
+                $description,
+                null,
+                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
+        );
+
+        $test_ctype = $ctype->get($ctype_id);
+        $this->assertSame($label, $test_ctype['libelle_type_cotis']);
+        $this->assertSame($real_description, $test_ctype['description']);
+
+        //now check with a real description
+        $description = $real_description;
+        $label .= ' - ' . $description;
+        $this->assertTrue(
+            $ctype->update(
+                $ctype_id,
+                $label,
+                $description,
+                null,
+                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
+        );
+
+        $test_ctype = $ctype->get($ctype_id);
+        $this->assertSame($label, $test_ctype['libelle_type_cotis']);
+        $this->assertSame($real_description, $test_ctype['description']);
+    }
+
+    /**
+     * Description provider
+     *
+     * @return array<int, array{description: string, expected: string}>
+     */
+    public static function descriptionProvider(): array
+    {
+        return [
+            [
+                'description' => 'Just a description',
+                'expected' => 'Just a description'
+            ],
+            [
+                'description' => '   Just a description with spaces and<br>line breaks   ',
+                'expected' => 'Just a description with spaces and<br />line breaks'
+            ],
+            [
+                'description' => '<p>Just a description with HTML tags</p>',
+                'expected' => '<p>Just a description with HTML tags</p>'
+            ],
+            [
+                'description' => '<p>Just a description with HTML tags and line breaks</p><p><br></p><p>Second line</p>',
+                'expected' => '<p>Just a description with HTML tags and line breaks</p><p>Second line</p>'
+            ]
+        ];
+    }
+
+    /**
+     * Test contributions types empty with description
+     */
+    #[DataProvider('descriptionProvider')]
+    public function testDescription(string $description, string $expected): void
+    {
+        global $i18n; // globals :(
+        $i18n = $this->i18n;
+
+        $ctype = new \Galette\Entity\ContributionsTypes($this->zdb);
+
+        $label = 'Test description';
+        $this->assertTrue(
+            $ctype->add(
+                $label,
+                $description,
+                null,
+                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
+        );
+        $ctype_id = $ctype->id;
+
+        $test_ctype = $ctype->get($ctype_id);
+        $this->assertSame($label, $test_ctype['libelle_type_cotis']);
+        $this->assertSame($expected, $test_ctype['description']);
+
+        $label .= ' (modified)';
+        $this->assertTrue(
+            $ctype->update(
+                $ctype_id,
+                $label,
+                $description,
+                null,
+                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
+        );
+
+        $test_ctype = $ctype->get($ctype_id);
+        $this->assertSame($label, $test_ctype['libelle_type_cotis']);
+        $this->assertSame($expected, $test_ctype['description']);
+    }
+
+    /**
+     * XSS payload provider
+     *
+     * @return array<int, array{payload: string, onlabel?: bool}>
+     */
+    public static function xssPayloadProvider(): array
+    {
+        return [
+            [
+                'payload' => '<script>alert("XSS")</script>'],
+            [
+                'payload' => '<img src=x onerror=alert("XSS")>'
+            ],
+            [
+                'payload' => '<svg/onload=alert("XSS")>'
+            ],
+            [
+                'payload' => 'javascript:alert("XSS")',
+                'onlabel' => false
+            ],
+            [
+                'payload' => '<iframe src="javascript:alert(\'XSS\')">'
+            ],
+            [
+                'payload' => '<ScRiPt>alert("XSS")</ScRiPt>'
+            ]
+        ];
+    }
+
+    /**
+     * Test XSS protection in contribution type label
+     */
+    #[DataProvider('xssPayloadProvider')]
+    public function testContributionTypeXSSProtection(string $payload, bool $onlabel = true): void
+    {
+        $this->logSuperAdmin();
+
+        $ctype = new \Galette\Entity\ContributionsTypes($this->zdb);
+        $this->assertTrue(
+            $ctype->add(
+                'Test payload ' . $payload,
+                $payload,
+                null,
+                \Galette\Entity\ContributionsTypes::DONATION_TYPE
+            )
+        );
+        $ctype_id = $ctype->id;
+        $test_ctype = $ctype->get($ctype_id);
+
+        $fields = ['description'];
+        if ($onlabel) {
+            $fields[] = 'libelle_type_cotis';
+        }
+        foreach ($fields as $field) {
+            // Check for sanitization
+            $this->assertStringNotContainsString('<script>', $test_ctype[$field], "Payload should be sanitized in $field");
+            $this->assertStringNotContainsString('onerror=', $test_ctype[$field], "Payload should be sanitized in $field");
+            $this->assertStringNotContainsString('javascript:', $test_ctype[$field], "Payload should be sanitized in $field");
+
+            $this->assertNotEquals($payload, $test_ctype[$field], "Payload should not be stored as is in $field");
         }
     }
 }

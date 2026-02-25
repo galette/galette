@@ -99,6 +99,7 @@ DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis int unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(255) NOT NULL default '',
+  description longtext NOT NULL,
   amount decimal(15,2) DEFAULT NULL,
   cotis_extension smallint NOT NULL default 0,
   PRIMARY KEY (id_type_cotis)

@@ -30,6 +30,10 @@
                 <input type="text" name="libelle_type_cotis" id="libelle_type_cotis" value="{{ entry.libelle_type_cotis }}" required="required" />
             </div>
             <div class="field inline">
+                <label for="description">{{ _T("Description:") }}</label>
+                <textarea name="description" id="description" cols="100" rows="3">{{ entry.description }}</textarea>
+            </div>
+            <div class="field inline">
                 <label for="amount">{{ _T("Amount:") }}</label>
                 <input type="text" name="amount" id="amount" value="{{ entry.amount }}"/>
             </div>
@@ -70,4 +74,12 @@
 {% endif %}
         {% include 'components/forms/csrf.html.twig' %}
     </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function() {
+            activateHtmlEditor($('#description'), true);
+        });
+    </script>
 {% endblock %}

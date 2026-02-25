@@ -76,6 +76,7 @@ class ContributionsTypesController extends CrudController
         $list = $ctypes->getCompleteList();
         $params['entries'] = $list;
 
+        $params['html_editor'] = true;
         $params['documentation'] = 'usermanual/contributions.html#contributions-types';
 
         if (count($ctypes->getErrors()) > 0) {
@@ -121,6 +122,7 @@ class ContributionsTypesController extends CrudController
         $entry = $ctype->get($id);
         $params['entry'] = $entry;
 
+        $params['html_editor'] = true;
         $params['mode'] = $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest' ? 'ajax' : '';
 
         // display page
@@ -169,6 +171,7 @@ class ContributionsTypesController extends CrudController
         $ctype = new ContributionsTypes($this->zdb);
 
         $label = trim((string)$post['libelle_type_cotis']);
+        $description = (string)($post['description'] ?? '');
         $field = (int)trim($post['cotis_extension'] ?? 0);
         $amount = null;
         if (isset($post['amount']) && $post['amount'] !== '') {
@@ -176,7 +179,7 @@ class ContributionsTypesController extends CrudController
         }
 
         if ($label != '') {
-            $ret = ($action === 'add' ? $ctype->add($label, $amount, $field) : $ctype->update($id, $label, $amount, $field));
+            $ret = ($action === 'add' ? $ctype->add($label, $description, $amount, $field) : $ctype->update($id, $label, $description, $amount, $field));
         } else {
             $ret = false;
             $error_detected[] = _T('Missing required contribution type name!');

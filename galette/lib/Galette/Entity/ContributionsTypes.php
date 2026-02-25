@@ -30,6 +30,8 @@ use Galette\Features\I18n;
 use Laminas\Db\Sql\Expression;
 use Throwable;
 
+use function Safe\preg_replace;
+
 /**
  * Contributions types handling
  *
@@ -37,6 +39,7 @@ use Throwable;
  *
  * @property int    $id
  * @property string $label
+ * @property string $description
  * @property string $libelle
  * @property ?float $amount
  * @property int    $extension
@@ -54,6 +57,7 @@ class ContributionsTypes
 
     private int $id;
     private string $label;
+    private string $description;
     private ?float $amount = null;
     private int $extension;
 
@@ -64,13 +68,13 @@ class ContributionsTypes
 
     /** @var array<int, array<string, mixed>> */
     protected static array $defaults = [
-        ['id' => 1, 'libelle' => 'annual fee', 'extension' => self::DEFAULT_TYPE],
-        ['id' => 2, 'libelle' => 'reduced annual fee', 'extension' => self::DEFAULT_TYPE],
-        ['id' => 3, 'libelle' => 'company fee', 'extension' => self::DEFAULT_TYPE],
-        ['id' => 4, 'libelle' => 'donation in kind', 'extension' => self::DONATION_TYPE],
-        ['id' => 5, 'libelle' => 'donation in money', 'extension' => self::DONATION_TYPE],
-        ['id' => 6, 'libelle' => 'partnership', 'extension' => self::DONATION_TYPE],
-        ['id' => 7, 'libelle' => 'annual fee (to be paid)', 'extension' => self::DEFAULT_TYPE]
+        ['id' => 1, 'libelle' => 'annual fee', 'description' => '', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 2, 'libelle' => 'reduced annual fee', 'description' => '', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 3, 'libelle' => 'company fee', 'description' => '', 'extension' => self::DEFAULT_TYPE],
+        ['id' => 4, 'libelle' => 'donation in kind', 'description' => '', 'extension' => self::DONATION_TYPE],
+        ['id' => 5, 'libelle' => 'donation in money', 'description' => '', 'extension' => self::DONATION_TYPE],
+        ['id' => 6, 'libelle' => 'partnership', 'description' => '', 'extension' => self::DONATION_TYPE],
+        ['id' => 7, 'libelle' => 'annual fee (to be paid)', 'description' => '', 'extension' => self::DEFAULT_TYPE]
     ];
 
     /**
@@ -137,6 +141,7 @@ class ContributionsTypes
     {
         $this->id = (int)$r->{self::PK};
         $this->label = $r->libelle_type_cotis;
+        $this->description = $r->description;
         if ($r->amount !== null) {
             $this->amount = (float)$r->amount;
         }
@@ -174,6 +179,7 @@ class ContributionsTypes
             $values = [
                 self::PK => ':id',
                 'libelle_type_cotis' => ':libelle',
+                'description' => ':description',
                 'cotis_extension' => ':extension'
             ];
 
@@ -193,7 +199,8 @@ class ContributionsTypes
                     [
                         $fnames[0]  => $d['id'],
                         $fnames[1]  => $d['libelle'],
-                        $fnames[2]  => $d['extension']
+                        $fnames[2]  => $d['description'],
+                        $fnames[3]  => $d['extension']
                     ]
                 );
             }
@@ -228,7 +235,7 @@ class ContributionsTypes
 
         try {
             $select = $this->zdb->select(self::TABLE);
-            $fields = [self::PK, 'libelle_type_cotis', 'amount', 'cotis_extension'];
+            $fields = [self::PK, 'libelle_type_cotis', 'description', 'amount', 'cotis_extension'];
             $select->quantifier('DISTINCT');
             $select->columns($fields);
             $select->order(self::PK);
@@ -244,6 +251,7 @@ class ContributionsTypes
             foreach ($results as $r) {
                 $list[$r->{self::PK}] = [
                     'label' => _T($r->libelle_type_cotis),
+                    'description' => $r->description,
                     'amount' => $r->amount,
                     'extension' => $r->cotis_extension
                 ];
@@ -283,6 +291,7 @@ class ContributionsTypes
                     $list[$r->{self::PK}] = [
                         'text_orig' => $r->libelle_type_cotis,
                         'name' => _T($r->libelle_type_cotis),
+                        'description' => $r->description,
                         'amount' => $r->amount,
                         'extra' => $r->cotis_extension
                     ];
@@ -381,16 +390,18 @@ class ContributionsTypes
     /**
      * Add a new entry
      *
-     * @param string $label     The label
-     * @param ?float $amount    The amount
-     * @param int    $extension Membership extension in months, 0 for a donation or -1 for preferences default
+     * @param string $label       The label
+     * @param string $description The description
+     * @param ?float $amount      The amount
+     * @param int    $extension   Membership extension in months, 0 for a donation or -1 for preferences default
      *
      * @return bool|int  -2 : label already exists
      */
-    public function add(string $label, ?float $amount, int $extension): bool|int
+    public function add(string $label, string $description, ?float $amount, int $extension): bool|int
     {
         // Avoid duplicates.
         $label = strip_tags($label);
+        $description = $this->formatDescription($description);
         $ret = $this->getIdByLabel($label);
 
         if ($ret !== false) {
@@ -405,6 +416,7 @@ class ContributionsTypes
             $this->zdb->beginTransaction();
             $values = [
                 'libelle_type_cotis' => $label,
+                'description' => $description,
                 'amount' => $amount ?? new Expression('NULL'),
                 'cotis_extension' => $extension
             ];
@@ -443,16 +455,18 @@ class ContributionsTypes
     /**
      * Update in database.
      *
-     * @param int    $id        Entry ID
-     * @param string $label     The label
-     * @param ?float $amount    The amount
-     * @param int    $extension Membership extension in months, 0 for a donation or -1 for preferences default
+     * @param int    $id          Entry ID
+     * @param string $label       The label
+     * @param string $description The description
+     * @param ?float $amount      The amount
+     * @param int    $extension   Membership extension in months, 0 for a donation or -1 for preferences default
      *
      * @return self::ID_NOT_EXITS|bool
      */
-    public function update(int $id, string $label, ?float $amount, int $extension): int|bool
+    public function update(int $id, string $label, string $description, ?float $amount, int $extension): int|bool
     {
         $label = strip_tags($label);
+        $description = $this->formatDescription($description);
         $ret = $this->get($id);
         if (!$ret) {
             /* get() already logged and set $this->error. */
@@ -464,6 +478,7 @@ class ContributionsTypes
             $this->zdb->beginTransaction();
             $values = [
                 'libelle_type_cotis' => $label,
+                'description' => $description,
                 'amount' => $amount ?? new Expression('NULL'),
                 'cotis_extension' => $extension
             ];
@@ -614,5 +629,34 @@ class ContributionsTypes
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    /**
+     * Format description to remove empty tags
+     */
+    private function formatDescription(string $description): string
+    {
+        global $preferences;
+
+        //If we just have empty tags, we consider that description is empty
+        if (trim(strip_tags($description)) === '') {
+            return '';
+        }
+
+        // Remove leading and trailing empty paragraphs (<p><br></p>) added by WYSIWYG editors,
+        // but preserve intentional <br> tags inside non-empty content.
+        $cleaned = preg_replace(
+            [
+                '/^(?:\s*<br\s*\/?>\s*)+/i',
+                '/(?:\s*<br\s*\/?>\s*)+$/i',
+                '/^(?:\s*<p>\s*<br\s*\/?>\s*<\/p>\s*)+/i',
+                '/(?:\s*<p>\s*<br\s*\/?>\s*<\/p>\s*)+$/i',
+                '/<p>\s*<br\s*\/?>\s*<\/p>/i'
+            ],
+            '',
+            $description
+        );
+        $cleaned = $preferences->cleanHtmlValue($cleaned);
+        return trim((string)$cleaned);
     }
 }
