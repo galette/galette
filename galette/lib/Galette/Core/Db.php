@@ -1006,6 +1006,21 @@ class Db
     }
 
     /**
+     * Check if current exception is related to a missing table or view
+     *
+     * @param Throwable $exception Exception to check
+     */
+    public function isMissingTableException(Throwable $exception): bool
+    {
+        return $exception instanceof \PDOException
+            && (
+                (!$this->isPostgres() && $exception->errorInfo[1] === 1146)
+                || ($this->isPostgres() && $exception->getCode() == '42P01')
+            )
+        ;
+    }
+
+    /**
      * Drops a table
      *
      * @param string $table   Table name, without prefix

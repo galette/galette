@@ -828,4 +828,52 @@ class Db extends BaseGaletteTestCase
         $zdb->method('isPostgres')->willReturn(false);
         $this->assertSame($expected, $zdb->willMysqlImplicitCommit($query));
     }
+
+    /**
+     * Test isMissingTableException method
+     */
+    public function testIsMissingTableException(): void
+    {
+        $exception_thrown = false;
+        try {
+            $this->zdb->execute($this->zdb->select('non_existing_table'));
+        } catch (\PDOException $e) {
+            $exception_thrown = true;
+            $this->assertTrue($this->zdb->isMissingTableException($e));
+        }
+        $this->assertTrue($exception_thrown);
+
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => 1146,
+            'Message' => "regex:/.*non_existing_table.*/i"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            "non_existing_table"
+        );
+
+        $exception_thrown = false;
+        try {
+            $select = $this->zdb->select(\Galette\Core\Preferences::TABLE);
+            $select->where(['does_not_exists' => 'does_not_exists']);
+            $this->zdb->execute($select);
+        } catch (\PDOException $e) {
+            $exception_thrown = true;
+            $this->assertFalse($this->zdb->isMissingTableException($e));
+        }
+        $this->assertTrue($exception_thrown);
+
+        $warning = new \ArrayObject([
+            'Level' => 'Error',
+            'Code'  => 1054,
+            'Message' => "regex:/.*does_not_exists.*/i"
+        ]);
+        $this->expected_mysql_warnings[] = $warning;
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            "does_not_exists"
+        );
+    }
 }
