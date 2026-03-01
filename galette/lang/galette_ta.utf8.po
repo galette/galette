@@ -4,26 +4,25 @@
 # தமிழ்நேரம் <anishprabu.t@gmail.com>, 2024.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2024, 2025.
 # Prasanna Venkadesh <prasmailme@gmail.com>, 2025.
+# தமிழ்நேரம் <tamilneram247@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-02-12 08:43+0100\n"
-"PO-Revision-Date: 2025-06-27 16:28+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
-"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/ta/"
-">\n"
+"PO-Revision-Date: 2026-03-02 20:00+0000\n"
+"Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/galette/galette/"
+"ta/>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 
-#, fuzzy
-#| msgid "Unable to load contribution #%id!"
 msgid "Unable to load transaction #%id!"
-msgstr "பங்களிப்பை ஏற்ற முடியவில்லை #%id!"
+msgstr "பரிவர்த்தனை #%idஐ ஏற்ற முடியவில்லை!"
 
 msgid "Transaction"
 msgstr "பரிவர்த்தனை"
@@ -116,7 +115,7 @@ msgstr "திட்டமிடப்பட்ட கட்டணம் வெ�
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
 msgstr[0] "திட்டமிடப்பட்ட கட்டணத்தை அகற்று"
-msgstr[1] "திட்டமிடப்பட்ட கொடுப்பனவுகளை அகற்றவும்"
+msgstr[1] "திட்டமிடப்பட்ட கட்டணங்களை அகற்று"
 
 msgid "Group name is missing!"
 msgstr "குழு பெயர் காணவில்லை!"
@@ -124,21 +123,17 @@ msgstr "குழு பெயர் காணவில்லை!"
 msgid "Groups"
 msgstr "குழுக்கள்"
 
-#, fuzzy, php-format
-#| msgid "Next page (%1$s)"
+#, php-format
 msgid "New parent is %1$s"
-msgstr "அடுத்த பக்கம் (%1$s)"
+msgstr "புதிய பெற்றோர் %1$s"
 
-#, fuzzy
-#| msgid "Parent member"
 msgid "Parent removed"
-msgstr "பெற்றோர் உறுப்பினர்"
+msgstr "பெற்றோர் அகற்றப்பட்டனர்"
 
-#, fuzzy, php-format
-#| msgid "Payment type '%1$s' has been successfully modified."
+#, php-format
 msgid ""
 "The parent of the following groups has been successfully modified : %1$s"
-msgstr "கட்டண வகை '%1$s' வெற்றிகரமாக மாற்றப்பட்டுள்ளது."
+msgstr "பின்வரும் குழுக்களின் பெற்றோர் வெற்றிகரமாக மாற்றப்பட்டுள்ளனர் : %1$s"
 
 #, php-format
 msgid "Group `%1$s` has been successfully saved."
@@ -263,12 +258,10 @@ msgid "Gallery"
 msgstr "டிராம்பினோச்கோப்"
 
 msgid "Staff"
-msgstr ""
+msgstr "பணியாளர்கள்"
 
-#, fuzzy
-#| msgid "Staff member"
 msgid "Staff gallery"
-msgstr "பணியாளர் உறுப்பினர்"
+msgstr "பணியாளர் கேலரி"
 
 msgid "List of members"
 msgstr "உறுப்பினர்களின் பட்டியல்"
@@ -310,8 +303,8 @@ msgstr "அதன் குழுக்களில் உறுப்பின�
 #, php-format
 msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
-msgstr[0] "%1$s உறுப்பினர் வெற்றிகரமாக மாற்றப்பட்டுள்ளது!"
-msgstr[1] "%1$s உறுப்பினர்கள் வெற்றிகரமாக மாற்றப்பட்டுள்ளனர்!"
+msgstr[0] "%1$s உறுப்பினர் வெற்றிகரமாக மாற்றப்பட்டார்!"
+msgstr[1] "%1$s உறுப்பினர்கள் வெற்றிகரமாக மாற்றப்பட்டனர்!"
 
 msgid "Something went wrong during mass edition!"
 msgstr "வெகுசன பதிப்பின் போது ஏதோ தவறு ஏற்பட்டது!"
@@ -485,7 +478,7 @@ msgid "Search has been saved."
 msgstr "தேடல் சேமிக்கப்பட்டுள்ளது."
 
 msgid "Saved searches"
-msgstr "சேமித்த தேடல்கள்"
+msgstr "சேமிக்கப்பட்ட தேடல்கள்"
 
 msgid "Remove saved search"
 msgstr "சேமித்த தேடலை அகற்று"
@@ -714,9 +707,9 @@ msgstr ""
 msgid "Your account (%s) do not contain any valid email address"
 msgstr "உங்கள் கணக்கில் (%s) எந்த சரியான மின்னஞ்சல் முகவரியும் இல்லை"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Mails address %s does not exist"
-msgstr "மின்னஞ்சல் முகவரி இல்லை"
+msgstr "%s மின்னஞ்சல் முகவரி இல்லை"
 
 #, php-format
 msgid "Login %s does not exist"
@@ -740,9 +733,9 @@ msgstr "உங்கள் கடவுச்சொல் மிகவும் 
 msgid "An error occurred while updating your password."
 msgstr "உங்கள் கடவுச்சொல்லைப் புதுப்பிக்கும்போது பிழை ஏற்பட்டது."
 
-#, fuzzy, php-format
+#, php-format
 msgid "Password changed for member '%s'."
-msgstr "உறுப்பினர்களுக்கான கடவுச்சொல் மாற்றம்."
+msgstr "'%s' உறுப்பினர்களுக்கான கடவுச்சொல் மாற்றம்."
 
 msgid "Your password has been changed!"
 msgstr "உங்கள் கடவுச்சொல் மாற்றப்பட்டுள்ளது!"
@@ -774,15 +767,11 @@ msgstr "உள்நுழைவுகள் மற்றும் கடவு�
 msgid "An error occurred filling empty logins and passwords :("
 msgstr "வெற்று உள்நுழைவுகள் மற்றும் கடவுச்சொற்களை நிரப்புவதில் பிழை ஏற்பட்டது :("
 
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "Dynamic dates has been fixed."
-msgstr "உறுப்பினர் கணக்கு மாற்றியமைக்கப்பட்டுள்ளது."
+msgstr "மாறும் தேதிகள் நிர்ணயிக்கப்பட்டுள்ளன."
 
-#, fuzzy
-#| msgid "An error occurred editing dynamic field :("
 msgid "An error occurred fixing dynamic dates :("
-msgstr "மாறும் புலத்தைத் திருத்துவதற்கு பிழை ஏற்பட்டது :("
+msgstr "மாறும் தேதிகளை நிர்ணயிப்பதில் பிழை ஏற்பட்டது :("
 
 msgid "Logs"
 msgstr "பதிவுகள்"
@@ -807,10 +796,8 @@ msgstr "சொருகி %1$s இயக்கப்பட்டது"
 msgid "Plugin %1$s has been disabled"
 msgstr "சொருகி %1$s முடக்கப்பட்டுள்ளது"
 
-#, fuzzy
-#| msgid "View transaction"
 msgid "Labels translation"
-msgstr "பரிவர்த்தனையைக் காண்க"
+msgstr "லேபிள்கள் மொழிபெயர்ப்பு"
 
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr "மொழி `%lang` லேபிள் `%label` சேமிக்கும் பிழை ஏற்பட்டது"
@@ -879,15 +866,13 @@ msgstr "இறக்குமதி மாதிரி சேமிக்கப�
 msgid "Emails content"
 msgstr "மின்னஞ்சல்கள் உள்ளடக்கம்"
 
-#, fuzzy, php-format
-#| msgid "Email: '%s' has not been modified!"
+#, php-format
 msgid "Email: '%1$s' has not been modified!"
-msgstr "மின்னஞ்சல்: '%1$s' மாற்றியமைக்கப்படவில்லை!"
+msgstr "மின்னஞ்சல்: '%1$s' மாற்றப்படவில்லை!"
 
-#, fuzzy, php-format
-#| msgid "Email: '%s' has been successfully modified."
+#, php-format
 msgid "Email: '%1$s' has been successfully modified."
-msgstr "மின்னஞ்சல்: '%1$ss' வெற்றிகரமாக மாற்றியமைக்கப்பட்டுள்ளது."
+msgstr "மின்னஞ்சல்: '%1$s' வெற்றிகரமாக மாற்றப்பட்டது."
 
 msgid "None"
 msgstr "எதுவுமில்லை"
@@ -1181,23 +1166,17 @@ msgstr "PDF மாதிரிகளை நிர்வகிக்கவும�
 msgid "Manage emails texts and subjects"
 msgstr "மின்னஞ்சல்கள் உரைகள் மற்றும் பாடங்களை நிர்வகிக்கவும்"
 
-#, fuzzy
-#| msgid "Translate labels"
 msgid "Manage translatable labels"
-msgstr "லேபிள்களை மொழிபெயர்க்கவும்"
+msgstr "மொழிபெயர்க்கக்கூடிய லேபிள்களை நிர்வகிக்கவும்"
 
 msgid "Various administrative tools"
 msgstr "பல்வேறு நிர்வாக கருவிகள்"
 
-#, fuzzy
-#| msgid "directory_name"
 msgid "Directories"
-msgstr "அடைவு_பெயர்"
+msgstr "கோப்பகங்கள்"
 
-#, fuzzy
-#| msgid "Gallery"
 msgid "Galleries"
-msgstr "டிராம்பினோச்கோப்"
+msgstr "காட்சியகங்கள்"
 
 msgid "View documents related to your association"
 msgstr "உங்கள் சங்கம் தொடர்பான ஆவணங்களைக் காண்க"
@@ -1241,15 +1220,11 @@ msgstr "உறுப்பினர் அட்டைகளை உருவா�
 msgid "Export as CSV"
 msgstr "காபிம ஆக ஏற்றுமதி"
 
-#, fuzzy
-#| msgid "Galette admin"
 msgid "Galette news"
-msgstr "கேலட் நிர்வாகி"
+msgstr "கேலட் செய்தி"
 
-#, fuzzy
-#| msgid "Association %s"
 msgid "Association news"
-msgstr "சங்கம் %s"
+msgstr "சங்க செய்திகள்"
 
 msgid "- You must indicate a sender name for emails!"
 msgstr "- மின்னஞ்சல்களுக்கு அனுப்புநரின் பெயரைக் குறிக்க வேண்டும்!"
@@ -1290,15 +1265,12 @@ msgstr "- கட்டாய புலம் %1$s காலியாக உள�
 msgid "Passwords mismatch"
 msgstr "கடவுச்சொற்கள் பொருந்தவில்லை"
 
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a staff member to retrieve its address"
-msgstr "நீங்கள் ஒரு ஊழியரைத் தேர்ந்தெடுக்க வேண்டும்"
+msgstr "அதன் முகவரியை மீட்டெடுக்க நீங்கள் ஒரு பணியாளரைத் தேர்ந்தெடுக்க வேண்டும்"
 
-#, fuzzy
-#| msgid "You have to select a staff member"
 msgid "You have to select a staff member to retrieve its phone number"
-msgstr "நீங்கள் ஒரு ஊழியரைத் தேர்ந்தெடுக்க வேண்டும்"
+msgstr ""
+"அதன் ஃபோன் எண்ணை மீட்டெடுக்க நீங்கள் ஒரு பணியாளரைத் தேர்ந்தெடுக்க வேண்டும்"
 
 #, php-format
 msgid "Invalid E-Mail address: %s"
@@ -1364,7 +1336,7 @@ msgid "Social networks"
 msgstr "சமூக வலைப்பின்னல்கள்"
 
 msgid "Dark mode CSS file has been reset."
-msgstr ""
+msgstr "டார்க் மோட் சிஎச்எச் கோப்பு மீட்டமைக்கப்பட்டது."
 
 msgid "Unknown lang (%lang)"
 msgstr "தெரியாத மட்டும் (%lang)"
@@ -1443,7 +1415,7 @@ msgstr "சிறப்பு எழுத்துக்கள் இல்ல�
 
 #. TRANS: see https://www.php.net/manual/datetime.format.php
 msgid "Y-m-d"
-msgstr "Y-m-d"
+msgstr "ஒய்-எம்-டி"
 
 msgid "Photo has not been stored!"
 msgstr "புகைப்படம் சேமிக்கப்படவில்லை!"
@@ -1791,15 +1763,11 @@ msgstr "உங்கள் நிறுவன முகவரி"
 msgid "with break lines"
 msgstr "இடைவெளி கோடுகளுடன்"
 
-#, fuzzy
-#| msgid "Your organisation name"
 msgid "Your organisation phone number"
-msgstr "உங்கள் நிறுவனத்தின் பெயர்"
+msgstr "உங்கள் நிறுவனத்தின் தொலைபேசி எண்"
 
-#, fuzzy
-#| msgid "Your organisation address"
 msgid "Your organisation email address"
-msgstr "உங்கள் நிறுவன முகவரி"
+msgstr "உங்கள் நிறுவனத்தின் மின்னஞ்சல் முகவரி"
 
 msgid "Your organisation website"
 msgstr "உங்கள் நிறுவன வலைத்தளம்"
@@ -1899,10 +1867,10 @@ msgid "Comment"
 msgstr "கருத்து"
 
 msgid "Begin date"
-msgstr "தொடங்கும் தேதி"
+msgstr "தொடக்க தேதி"
 
 msgid "End date"
-msgstr "இறுதி தேதி"
+msgstr "முடிவு தேதி"
 
 msgid "Contribution id"
 msgstr "பங்களிப்பு ஐடி"
@@ -1963,9 +1931,10 @@ msgid "Freed of dues"
 msgstr "நிலுவைத் தொகையிலிருந்து விடுபடுகிறது"
 
 #. TRANS: first parameter is number of late days, second is registration date
-#, fuzzy, php-format
+#, php-format
 msgid "Never contributed: Registered %1$s days ago (since %2$s)"
-msgstr "ஒருபோதும் பங்களிக்கவில்லை: பதிவுசெய்யப்பட்ட %1$s முன்பு (தேதியிலிருந்து %2$s)"
+msgstr ""
+"ஒருபோதும் பங்களிக்கவில்லை: %1$s நாட்களுக்கு முன்பு பதிவு செய்யப்பட்டது (%2$s முதல்)"
 
 msgid "Never contributed"
 msgstr "ஒருபோதும் பங்களிக்கவில்லை"
@@ -1977,14 +1946,14 @@ msgid "Late since today!"
 msgstr "இன்று முதல் தாமதமாக!"
 
 #. TRANS: first parameter is number of remaining days, second is end membership date
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s days remaining (ending on %2$s)"
-msgstr "%1$s மீதமுள்ள ( %2$s முடிவடையும்)"
+msgstr "%1$s நாட்கள் மீதமுள்ளன (%2$s அன்று முடிவடையும்)"
 
 #. TRANS: first parameter is number of late days, second is end membership date
-#, fuzzy, php-format
+#, php-format
 msgid "Late of %1$s days (since %2$s)"
-msgstr "%1$s பிற்பகுதியில் (தேதியிலிருந்து %2$s)"
+msgstr "%1$s நாட்கள் நேரந்தவறுகை (%2$s முதல்)"
 
 msgid "No longer member"
 msgstr "இனி உறுப்பினர் இல்லை"
@@ -2048,13 +2017,12 @@ msgid "Inactive"
 msgstr "செயலற்றது"
 
 msgid " (%age years old)"
-msgstr ""
+msgstr " (% அகவை ஆண்டுகள்)"
 
 #. TRANS: first parameter is member name, second his id
-#, fuzzy, php-format
-#| msgid "Duplicated from %name (%id)"
+#, php-format
 msgid "Duplicated from %1$s (%2$s)"
-msgstr "%பெயரிலிருந்து (%2$s) நகல்"
+msgstr "%1$s (%2$s) இலிருந்து நகல் எடுக்கப்பட்டது"
 
 msgid "Date:"
 msgstr "தேதி:"
@@ -2073,6 +2041,7 @@ msgstr "கட்டண வகை:"
 
 msgid "- Please select a member from a group you manage."
 msgstr ""
+"- நீங்கள் நிர்வகிக்கும் குழுவிலிருந்து ஒரு உறுப்பினரைத் தேர்ந்தெடுக்கவும்."
 
 msgid "- The amount must be an integer!"
 msgstr "- தொகை ஒரு முழு எண்ணாக இருக்க வேண்டும்!"
@@ -2131,10 +2100,8 @@ msgstr "உறுப்பினர் நீட்டிப்பு:"
 msgid "- The duration must be a positive integer!"
 msgstr "- காலம் ஒரு நேர்மறையான முழு எண்ணாக இருக்க வேண்டும்!"
 
-#, fuzzy
-#| msgid "- Birthdate must be set in the past!"
 msgid "- The end date must be after the start date!"
-msgstr "- பிறந்த தேதி கடந்த காலத்தில் அமைக்கப்பட வேண்டும்!"
+msgstr "- இறுதித் தேதி தொடக்கத் தேதிக்குப் பிறகு இருக்க வேண்டும்!"
 
 msgid "- Membership period overlaps period starting at "
 msgstr "- உறுப்பினர் காலம் ஒன்றுடன் ஒன்று தொடங்குகிறது "
@@ -2269,9 +2236,9 @@ msgid "Discord"
 msgstr "முரண்பாடு"
 
 #. TRANS: first parameter is a field name, second its maximum length
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s should be less than %2$s characters long."
-msgstr "%1$s %2$s கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
+msgstr "%1$s %2$s எழுத்துகளை விட குறைவாக இருக்க வேண்டும்."
 
 #. TRANS: parameter is a field name
 #, php-format
@@ -2312,10 +2279,10 @@ msgid "Paypal"
 msgstr "பேபால்"
 
 msgid "Stripe"
-msgstr ""
+msgstr "பட்டை"
 
 msgid "HelloAsso"
-msgstr ""
+msgstr "வணக்கம் அச்சோ"
 
 msgid "Payment schedule"
 msgstr "கட்டண அட்டவணை"
@@ -2490,7 +2457,7 @@ msgid "Y"
 msgstr "ஒய்"
 
 msgid "Y-m"
-msgstr "Y-m"
+msgstr "ஒய்-எம்"
 
 msgid "start date filter"
 msgstr "தொடக்க தேதி வடிகட்டி"
@@ -2527,10 +2494,8 @@ msgstr "உள்ளடக்கத்தைத் தவிர்க்கவ�
 msgid "Galette installation"
 msgstr "கேலட் நிறுவல்"
 
-#, fuzzy
-#| msgid "Reading the list"
 msgid "Read the manual"
-msgstr "பட்டியலைப் படித்தல்"
+msgstr "கையேட்டைப் படியுங்கள்"
 
 msgid "Version selection"
 msgstr "பதிப்பு தேர்வு"
@@ -2813,10 +2778,8 @@ msgstr "கேலட் நிர்வாகி:"
 msgid "Freed of dues:"
 msgstr "நிலுவைத் தொகையை விடுவித்தல்:"
 
-#, fuzzy
-#| msgid "Be visible in the members list:"
 msgid "Be visible on public pages:"
-msgstr "உறுப்பினர்கள் பட்டியலில் தெரியும்:"
+msgstr "பொதுப் பக்கங்களில் தெரியும்:"
 
 msgid "Due date:"
 msgstr "இரண்டு தேதிகள்:"
@@ -3046,10 +3009,9 @@ msgstr "%பாதையில் முதன்மையான டேட்ட
 msgid "Unable to create datadir in %dir!"
 msgstr "%dir இல் டேட்டாடரை உருவாக்க முடியவில்லை!"
 
-#, fuzzy, php-format
-#| msgid "File %file has not been moved :-/"
+#, php-format
 msgid "File %1$s has not been moved :-/"
-msgstr "கோப்பு %கோப்பு நகர்த்தப்படவில்லை:-/"
+msgstr "%1$s கோப்பு நகர்த்தப்படவில்லை :-/"
 
 #, php-format
 msgid "Directory %dir has been moved!"
@@ -3065,11 +3027,11 @@ msgstr "அடைவு %dir அதன் அசல் பாதையில் 
 
 #, php-format
 msgid "Choices for field %d have been migrated."
-msgstr ""
+msgstr "%d புலத்திற்கான தேர்வுகள் நகர்த்தப்பட்டன."
 
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
-msgstr ""
+msgstr "%d: %s புலத்திற்கான தேர்வுகளை நகர்த்த முடியவில்லை"
 
 msgid "Galette has been successfully installed!"
 msgstr "கலெட் வெற்றிகரமாக நிறுவப்பட்டுள்ளது!"
@@ -3305,10 +3267,10 @@ msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "யூனிக்ச்/லினக்சின் கீழ், அந்த கட்டளைகளைப் பயன்படுத்தி அனுமதிகளை நீங்கள் வழங்கலாம்"
 
 msgid "apache_user"
-msgstr "apache_user"
+msgstr "அப்பாச்சி_பயனர்"
 
 msgid "file_name"
-msgstr "file_name"
+msgstr "கோப்பு_பெயர்"
 
 msgid "directory_name"
 msgstr "அடைவு_பெயர்"
@@ -3499,10 +3461,8 @@ msgstr "அஞ்சல் உடல்"
 msgid "Only checked fields will be updated."
 msgstr "சரிபார்க்கப்பட்ட புலங்கள் மட்டுமே புதுப்பிக்கப்படும்."
 
-#, fuzzy
-#| msgid "No file selected"
 msgid "No changes selected"
-msgstr "எந்த கோப்பும் தேர்ந்தெடுக்கப்படவில்லை"
+msgstr "மாற்றங்கள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr "தேர்ந்தெடுக்கப்பட்ட உறுப்பினர்களுக்கான மாற்றங்களை நீங்கள் தொடர உள்ளீர்கள்:"
@@ -3872,10 +3832,8 @@ msgstr ""
 msgid "Demonstration"
 msgstr "ஆர்ப்பாட்டம்"
 
-#, fuzzy
-#| msgid "Main menu"
 msgid "Maintenance"
-msgstr "பட்டியல் விளையாடுங்கள்"
+msgstr "பராமரிப்பு"
 
 msgid "No member attached"
 msgstr "எந்த உறுப்பினரும் இணைக்கப்படவில்லை"
@@ -3901,15 +3859,11 @@ msgstr "புல அகலத்தை வடிவங்களுடன் ம
 msgid "Picture"
 msgstr "படம்"
 
-#, fuzzy
-#| msgid "Download document"
 msgid "Download VCard"
-msgstr "ஆவணத்தைப் பதிவிறக்கவும்"
+msgstr "VCard ஐப் பதிவிறக்கவும்"
 
-#, fuzzy
-#| msgid "Display"
 msgid "Display QR Code"
-msgstr "காட்சி"
+msgstr "QR குறியீட்டைக் காட்டு"
 
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
@@ -4090,27 +4044,24 @@ msgstr "விழிமை"
 msgid "No document"
 msgstr "ஆவணம் இல்லை"
 
-#, fuzzy, php-format
-#| msgid "No document"
+#, php-format
 msgid "%1$s document"
 msgid_plural "%1$s documents"
-msgstr[0] "ஆவணம் இல்லை"
-msgstr[1] "ஆவணம் இல்லை"
+msgstr[0] "%1$s ஆவணம்"
+msgstr[1] "%1$s ஆவணங்கள்"
 
-#, fuzzy, php-format
-#| msgid "show member"
+#, php-format
 msgid "%1$s member"
 msgid_plural "%1$s members"
-msgstr[0] "உறுப்பினரைக் காட்டு"
-msgstr[1] "உறுப்பினரைக் காட்டு"
+msgstr[0] "%1$s உறுப்பினர்"
+msgstr[1] "%1$s உறுப்பினர்கள்"
 
 msgid "No member"
 msgstr "உறுப்பினர் இல்லை"
 
-#, fuzzy, php-format
-#| msgid "Group manager"
+#, php-format
 msgid "\"%1$s\" group managers"
-msgstr "குழு மேலாளர்"
+msgstr "\"%1$s\" குழு மேலாளர்கள்"
 
 msgid "Is a company"
 msgstr "ஒரு நிறுவனம்"
@@ -4121,10 +4072,8 @@ msgstr "ஒரு மனிதன்"
 msgid "Is a woman"
 msgstr "ஒரு பெண்"
 
-#, fuzzy
-#| msgid "Managers:"
 msgid "Manages:"
-msgstr "மேலாளர்கள்:"
+msgstr "நிர்வகிக்கிறது:"
 
 msgid "Transaction details"
 msgstr "பரிவர்த்தனை விவரங்கள்"
@@ -4190,10 +4139,9 @@ msgstr "பங்களிப்பு தேர்வு"
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr "தற்போதைய பரிவர்த்தனையுடன் இணைக்க பங்களிப்பு வரிசையில் சொடுக்கு செய்க"
 
-#, fuzzy, php-format
-#| msgid "Page %1$s"
+#, php-format
 msgid "By %1$s"
-msgstr "பக்கம் %1$s"
+msgstr "%1$s மூலம்"
 
 msgid "Version:"
 msgstr "பதிப்பு:"
@@ -4232,7 +4180,7 @@ msgstr ""
 "இந்த செயலைச் செய்ய பட்டியலிலிருந்து குறைந்தது ஒரு பங்களிப்பையாவது தேர்ந்தெடுக்கவும்."
 
 msgid "ID"
-msgstr ""
+msgstr "ஐடி"
 
 msgid "Show contributions by"
 msgstr "வழங்கிய பங்களிப்புகளைக் காட்டு"
@@ -4267,12 +4215,11 @@ msgstr "அனைத்து உறுப்பினர்களின் ப�
 msgid "See member profile"
 msgstr "உறுப்பினர் சுயவிவரத்தைக் காண்க"
 
-#, fuzzy, php-format
-#| msgid "contribution"
+#, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
-msgstr[0] "பங்களிப்பு"
-msgstr[1] "பங்களிப்பு"
+msgstr[0] "%1$s பங்களிப்பு"
+msgstr[1] "%1$s பங்களிப்புகள்"
 
 #, php-format
 msgid "Found contributions total %f"
@@ -4282,15 +4229,13 @@ msgid "Edit transaction #%id"
 msgstr "பரிவர்த்தனை #%idயைத் திருத்தவும்"
 
 msgid "Amount is not fully dispatched"
-msgstr ""
+msgstr "தொகை முழுமையாக அனுப்பப்படவில்லை"
 
 msgid "View scheduled payments"
 msgstr "திட்டமிடப்பட்ட கொடுப்பனவுகளைக் காண்க"
 
-#, fuzzy
-#| msgid "List of transactions"
 msgid "Is part of a transaction"
-msgstr "பரிவர்த்தனைகளின் பட்டியல்"
+msgstr "பரிவர்த்தனையின் ஒரு பகுதியாகும்"
 
 msgid "Has scheduled payments"
 msgstr "திட்டமிட்ட கொடுப்பனவுகள்"
@@ -4330,13 +4275,11 @@ msgstr "மாற்றம்"
 msgid "Deletion"
 msgstr "நீக்குதல்"
 
-#, fuzzy
-#| msgid "User status/interactions"
 msgid "Statuses and interactions"
-msgstr "பயனர் நிலை/இடைவினைகள்"
+msgstr "நிலைகள் மற்றும் தொடர்புகள்"
 
 msgid "Filter on corresponding member"
-msgstr ""
+msgstr "தொடர்புடைய உறுப்பினரை வடிகட்டவும்"
 
 msgid ""
 "Make sure you've done a backup of the database before using any of the "
@@ -4379,10 +4322,8 @@ msgstr "அனைத்து வெற்று உள்நுழைவு ம
 msgid "Generate empty logins and passwords"
 msgstr "வெற்று உள்நுழைவுகள் மற்றும் கடவுச்சொற்களை உருவாக்கவும்"
 
-#, fuzzy
-#| msgid "Dynamic fields configuration"
 msgid "Fix dynamic fields dates format"
-msgstr "மாறும் புலங்கள் உள்ளமைவு"
+msgstr "மாறும் புலங்களின் தேதி வடிவமைப்பை சரிசெய்யவும்"
 
 msgid "Go"
 msgstr "போ"
@@ -4404,13 +4345,11 @@ msgstr "'%s' தலைப்பைத் திருத்து"
 msgid "Delete '%s' title"
 msgstr "'%s' தலைப்பை நீக்கு"
 
-#, fuzzy, php-format
-#| msgid "%1$s month"
-#| msgid_plural "%1$s months"
+#, php-format
 msgid "%1$s entry"
 msgid_plural "%1$s entries"
-msgstr[0] "%1$s மாதம்"
-msgstr[1] "%1$s மாதங்கள்"
+msgstr[0] "%1$s நுழைவு"
+msgstr[1] "%1$s உள்ளீடுகள்"
 
 msgid "IP"
 msgstr "ஐபி"
@@ -4442,10 +4381,9 @@ msgstr "மாதிரி மாற்றவும்"
 msgid "Default fields"
 msgstr "இயல்புநிலை புலங்கள்"
 
-#, fuzzy, php-format
-#| msgid "Model parameted on %date"
+#, php-format
 msgid "Model parameted on %1$s"
-msgstr "மாதிரி அளவு %1$s"
+msgstr "%1$s இல் மாதிரி அளவுருக்கள்"
 
 msgid "Field"
 msgstr "புலம்"
@@ -4620,12 +4558,11 @@ msgstr "லேபிள்களை மொழிபெயர்க்கவு�
 msgid "This feature requires javascript."
 msgstr "இந்த அம்சத்திற்கு சாவாச்கிரிப்ட் தேவைப்படுகிறது."
 
-#, fuzzy, php-format
-#| msgid "Not managed group"
+#, php-format
 msgid "%1$s managed group"
 msgid_plural "%1$s managed groups"
-msgstr[0] "நிர்வகிக்கப்பட்ட குழு அல்ல"
-msgstr[1] "நிர்வகிக்கப்பட்ட குழு அல்ல"
+msgstr[0] "%1$s நிர்வகிக்கப்படும் குழு"
+msgstr[1] "%1$s நிர்வகிக்கப்படும் குழுக்கள்"
 
 msgid "Export all groups and their members as PDF"
 msgstr "அனைத்து குழுக்களையும் அவற்றின் உறுப்பினர்களையும் PDF ஆக ஏற்றுமதி செய்யுங்கள்"
@@ -4637,13 +4574,16 @@ msgid "New group"
 msgstr "புதிய குழு"
 
 msgid "Move an item at the top of the list to reset its parent"
-msgstr ""
+msgstr "அதன் பெற்றோரை மீட்டமைக்க பட்டியலின் மேலே உள்ள உருப்படியை நகர்த்தவும்"
 
 msgid ""
 "Some of the changes you made (highlighted in red above) are not allowed. "
 "Saving your changes in the list will only be possible if all of them are "
 "allowed."
 msgstr ""
+"நீங்கள் செய்த சில மாற்றங்கள் (மேலே சிவப்பு நிறத்தில் சிறப்பிக்கப்பட்டுள்ளது) "
+"அனுமதிக்கப்படவில்லை. பட்டியலில் உங்கள் மாற்றங்களைச் சேமிப்பது அனைத்தும் அனுமதிக்கப்பட்டால் "
+"மட்டுமே சாத்தியமாகும்."
 
 msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
@@ -4663,10 +4603,8 @@ msgstr "குழு பெயரை வழங்கவும்"
 msgid "Create"
 msgstr "உருவாக்கு"
 
-#, fuzzy
-#| msgid "Export as CSV"
 msgid "Export as PDF"
-msgstr "காபிம ஆக ஏற்றுமதி"
+msgstr "PDF ஆக ஏற்றுமதி செய்யவும்"
 
 msgid "Display"
 msgstr "காட்சி"
@@ -4837,6 +4775,10 @@ msgid ""
 "present form must equal the total of all the scheduled payments you will "
 "define next."
 msgstr ""
+"<strong>திட்டமிடப்பட்ட கட்டணம்</strong> வகையைத் தேர்ந்தெடுக்கும் போது, ஒரு பங்களிப்பு "
+"சேர்க்கப்படும், பின்னர் தொடர்புடைய திட்டமிடப்பட்ட கட்டணங்களை உருவாக்கும்படி கேட்கப்படுவீர்கள். "
+"அப்படியானால், தற்போதைய படிவத்தில் உள்ள பங்களிப்பின் அளவு, நீங்கள் அடுத்து வரையறுக்கும் அனைத்து "
+"திட்டமிடப்பட்ட கட்டணங்களின் மொத்தத்திற்கு சமமாக இருக்க வேண்டும்."
 
 msgid "months"
 msgstr "மாதங்கள்"
@@ -4993,49 +4935,37 @@ msgstr " (தொடர்ச்சி)"
 msgid "Postal address:"
 msgstr "அஞ்சல் முகவரி:"
 
-#, fuzzy
-#| msgid ""
-#| "Use either the address setted below or select a staff member to retrieve "
-#| "he's address."
 msgid ""
 "Use either the address set above or select a staff member to retrieve its "
 "address."
 msgstr ""
-"கீழே குடியேறிய முகவரியைப் பயன்படுத்தவும் அல்லது ஒரு ஊழியரை அவர் முகவரியை மீட்டெடுக்க "
-"தேர்ந்தெடுக்கவும்."
+"மேலே அமைக்கப்பட்டுள்ள முகவரியைப் பயன்படுத்தவும் அல்லது அதன் முகவரியைப் பெற பணியாளர் "
+"ஒருவரைத் தேர்ந்தெடுக்கவும்."
 
 msgid "from a staff user"
 msgstr "ஒரு பணியாளர் பயனரிடமிருந்து"
 
 msgid "Staff member whose address needs to be retrieved"
-msgstr ""
+msgstr "முகவரி மீட்டெடுக்கப்பட வேண்டிய பணியாளர்"
 
 msgid "-- Choose a staff member --"
 msgstr "-ஒரு பணியாளர் உறுப்பினரைத் தேர்வுசெய்க-"
 
-#, fuzzy
-#| msgid ""
-#| "Use either the address setted below or select a staff member to retrieve "
-#| "he's address."
 msgid ""
 "Either use the phone number set below or select a staff member to retrieve "
 "its phone number."
 msgstr ""
-"கீழே குடியேறிய முகவரியைப் பயன்படுத்தவும் அல்லது ஒரு ஊழியரை அவர் முகவரியை மீட்டெடுக்க "
-"தேர்ந்தெடுக்கவும்."
+"கீழே அமைக்கப்பட்டுள்ள ஃபோன் எண்ணைப் பயன்படுத்தவும் அல்லது அதன் ஃபோன் எண்ணைப் பெற, பணியாளர் "
+"ஒருவரைத் தேர்ந்தெடுக்கவும்."
 
-#, fuzzy
-#| msgid "from a staff user"
 msgid "phone from a staff user"
-msgstr "ஒரு பணியாளர் பயனரிடமிருந்து"
+msgstr "பணியாளர் ஒருவரிடமிருந்து தொலைபேசி"
 
-#, fuzzy
-#| msgid "from a staff user"
 msgid "mobile phone from a staff user"
-msgstr "ஒரு பணியாளர் பயனரிடமிருந்து"
+msgstr "பணியாளர் ஒருவரிடமிருந்து மொபைல் போன்"
 
 msgid "Staff member whose phone number needs to be retrieved"
-msgstr ""
+msgstr "தொலைபேசி எண்ணை மீட்டெடுக்க வேண்டிய பணியாளர்"
 
 msgid "Website:"
 msgstr "வலைத்தளம்:"
@@ -5169,10 +5099,8 @@ msgstr ""
 msgid "Self subscription enabled?"
 msgstr "தன்வய சந்தா இயக்கப்பட்டதா?"
 
-#, fuzzy
-#| msgid "Download empty adhesion form"
 msgid "Display the link to download the empty adhesion form"
-msgstr "வெற்று ஒட்டுதல் படிவத்தைப் பதிவிறக்கவும்"
+msgstr "வெற்று ஒட்டுதல் படிவத்தைப் பதிவிறக்க இணைப்பைக் காண்பி"
 
 msgid "Public pages enabled?"
 msgstr "பொது பக்கங்கள் இயக்கப்பட்டதா?"
@@ -5181,9 +5109,10 @@ msgid ""
 "Will apply for all public pages that are not listed here, including plugin "
 "ones."
 msgstr ""
+"செருகுநிரல்கள் உட்பட, இங்கே பட்டியலிடப்படாத அனைத்து பொதுப் பக்கங்களுக்கும் பொருந்தும்."
 
 msgid "Hidden"
-msgstr ""
+msgstr "மறைக்கப்பட்டது"
 
 msgid "Everyone"
 msgstr "எல்லோரும்"
@@ -5192,66 +5121,63 @@ msgid "Admin and staff only"
 msgstr "நிர்வாகி மற்றும் ஊழியர்கள் மட்டுமே"
 
 msgid "Inherit"
-msgstr ""
+msgstr "மரபுரிமை"
 
 msgid "Members list"
 msgstr "உறுப்பினர்கள் பட்டியல்"
 
-#, fuzzy
-#| msgid "Member's Cards"
 msgid "Members gallery"
-msgstr "உறுப்பினரின் அட்டைகள்"
+msgstr "உறுப்பினர்கள் கேலரி"
 
-#, fuzzy
-#| msgid "Staff members"
 msgid "Staff list"
-msgstr "பணியாளர்கள்"
+msgstr "பணியாளர்கள் பட்டியல்"
 
-#, fuzzy
-#| msgid "Can group managers edit members?"
 msgid "Include groups managers with staff?"
-msgstr "குழு மேலாளர்கள் உறுப்பினர்களைத் திருத்த முடியுமா?"
+msgstr "பணியாளர்களுடன் குழு மேலாளர்களைச் சேர்க்கவா?"
 
 msgid "Appearance"
-msgstr ""
+msgstr "தோற்றம்"
 
 msgid "Hide default background image"
-msgstr ""
+msgstr "இயல்புநிலை பின்னணி படத்தை மறை"
 
 msgid "Apply custom colors"
-msgstr ""
+msgstr "தனிப்பயன் வண்ணங்களைப் பயன்படுத்துங்கள்"
 
 msgid "Primary color"
-msgstr ""
+msgstr "முதன்மை நிறம்"
 
 msgid ""
 "Color applied to primary buttons, checkboxes, labels, headers, borders, and "
 "menus."
 msgstr ""
+"முதன்மை பொத்தான்கள், தேர்வுப்பெட்டிகள், லேபிள்கள், தலைப்புகள், பார்டர்கள் மற்றும் மெனுக்களுக்கு "
+"வண்ணம் பயன்படுத்தப்பட்டது."
 
 msgid "Text on primary color"
-msgstr ""
+msgstr "முதன்மை வண்ணத்தில் உரை"
 
 msgid "Color applied to text displayed over the Primary color."
-msgstr ""
+msgstr "முதன்மை வண்ணத்தின் மேல் காட்டப்படும் உரைக்கு வண்ணம் பயன்படுத்தப்பட்டது."
 
 msgid "Secondary color"
-msgstr ""
+msgstr "இரண்டாம் நிலை நிறம்"
 
 msgid ""
 "Color applied to active items in menus, paginations, and accordions views."
 msgstr ""
+"மெனுக்கள், பேசினேசன் மற்றும் துருத்திக் காட்சிகளில் செயலில் உள்ள உருப்படிகளுக்கு வண்ணம் "
+"பயன்படுத்தப்படுகிறது."
 
 msgid "Text on secondary color"
-msgstr ""
+msgstr "இரண்டாம் வண்ணத்தில் உரை"
 
 msgid "Color applied to text displayed over the Secondary color."
 msgstr ""
+"இரண்டாம்நிலை வண்ணத்தின் மேல் காட்டப்படும் உரைக்கு வண்ணம் பயன்படுத்தப்பட்டது."
 
-#, fuzzy
-#| msgid "Admin parameters"
 msgid "Advanced parameters"
-msgstr "நிர்வாக அளவுருக்கள்"
+msgstr "மேம்பட்ட அளவுருக்கள்"
 
 msgid "Galette base URL"
 msgstr "கேலட் அடிப்படை முகவரி"
@@ -5693,12 +5619,11 @@ msgid ""
 msgstr ""
 "கடைசி புலத்தை நீக்குவது சாத்தியமில்லை. பட்டியலில் குறைந்தது ஒரு புலம் இருக்க வேண்டும்."
 
-#, fuzzy, php-format
-#| msgid "no search"
+#, php-format
 msgid "%1$s search"
 msgid_plural "%1$s searches"
-msgstr[0] "தேடல் இல்லை"
-msgstr[1] "தேடல் இல்லை"
+msgstr[0] "%1$s தேடல்"
+msgstr[1] "%1$s தேடல்கள்"
 
 msgid "Search parameters"
 msgstr "அளவுருக்களைத் தேடுங்கள்"
@@ -5730,6 +5655,7 @@ msgstr "பெற்றோர்:"
 msgid ""
 "If you'd rather not subscribe online, you can download an empty adhesion form"
 msgstr ""
+"நீங்கள் ஆன்லைனில் குழுசேர விரும்பவில்லை என்றால், வெற்று ஒட்டுதல் படிவத்தைப் பதிவிறக்கலாம்"
 
 msgid "Notify member his account has been modified"
 msgstr "உறுப்பினருக்கு அறிவிக்கவும் அவரது கணக்கு மாற்றியமைக்கப்பட்டுள்ளது"
@@ -5776,58 +5702,42 @@ msgstr "திட்டமிடப்பட்ட தேதி"
 msgid "Show payments by"
 msgstr "மூலம் கொடுப்பனவுகளைக் காட்டு"
 
-#, fuzzy
-#| msgid "Has scheduled payments"
 msgid "Paid scheduled payments:"
-msgstr "திட்டமிட்ட கொடுப்பனவுகள்"
+msgstr "செலுத்தப்பட்ட திட்டமிடப்பட்ட கொடுப்பனவுகள்:"
 
-#, fuzzy
-#| msgid "Not supplied"
 msgid "Not paid"
-msgstr "வழங்கப்படவில்லை"
+msgstr "செலுத்தப்படவில்லை"
 
-#, fuzzy
-#| msgid "My scheduled payments"
 msgid "Show all your scheduled payments"
-msgstr "எனது திட்டமிடப்பட்ட கொடுப்பனவுகள்"
+msgstr "திட்டமிடப்பட்ட அனைத்து கட்டணங்களையும் காட்டு"
 
-#, fuzzy
-#| msgid "Has scheduled payments"
 msgid "Show all members scheduled payments"
-msgstr "திட்டமிட்ட கொடுப்பனவுகள்"
+msgstr "அனைத்து உறுப்பினர்களுக்கும் திட்டமிடப்பட்ட கட்டணங்களைக் காட்டு"
 
-#, fuzzy, php-format
-#| msgid "%count scheduled payment"
-#| msgid_plural "%count scheduled payments"
+#, php-format
 msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
-msgstr[0] "திட்டமிடப்பட்ட கட்டணத்தை எண்ணுங்கள்"
-msgstr[1] "திட்டமிடப்பட்ட கொடுப்பனவுகளை எண்ணுங்கள்"
+msgstr[0] "%1$s திட்டமிடப்பட்ட கட்டணம்"
+msgstr[1] "%1$s திட்டமிடப்பட்ட கட்டணங்கள்"
 
 #, php-format
 msgid "Found total scheduled %f"
 msgstr "மொத்த திட்டமிடப்பட்ட %f"
 
-#, fuzzy, php-format
-#| msgid "Add a membership fee"
+#, php-format
 msgid "Edit membership fee %1$s"
-msgstr "உறுப்பினர் கட்டணத்தைச் சேர்க்கவும்"
+msgstr "உறுப்பினர் கட்டணத்தை %1$s திருத்தவும்"
 
-#, fuzzy, php-format
-#| msgid "Edit transaction #%id"
+#, php-format
 msgid "Edit donation %1$s"
-msgstr "பரிவர்த்தனை #%1$sயைத் திருத்தவும்"
+msgstr "%1$s நன்கொடையைத் திருத்தவும்"
 
-#, fuzzy, php-format
-#| msgid "%count scheduled payment"
-#| msgid_plural "%count scheduled payments"
+#, php-format
 msgid "Show only '%1$s' scheduled payments"
-msgstr "திட்டமிடப்பட்ட கட்டணத்தை எண்ணுங்கள்"
+msgstr "'%1$s' திட்டமிடப்பட்ட கட்டணங்களை மட்டும் காட்டு"
 
-#, fuzzy
-#| msgid "Not supplied"
 msgid "Not paid and due"
-msgstr "வழங்கப்படவில்லை"
+msgstr "செலுத்தப்படவில்லை மற்றும் செலுத்தப்படவில்லை"
 
 msgid "Delete scheduled payment"
 msgstr "திட்டமிடப்பட்ட கட்டணத்தை நீக்கு"
@@ -5900,12 +5810,11 @@ msgstr "உங்கள் அனைத்து பரிவர்த்தன�
 msgid "Show all members transactions"
 msgstr "அனைத்து உறுப்பினர்களின் பரிவர்த்தனைகளையும் காட்டு"
 
-#, fuzzy, php-format
-#| msgid "transaction"
+#, php-format
 msgid "%1$s transaction"
 msgid_plural "%1$s transactions"
-msgstr[0] "பரிவர்த்தனை"
-msgstr[1] "பரிவர்த்தனை"
+msgstr[0] "%1$s பரிவர்த்தனை"
+msgstr[1] "%1$s பரிவர்த்தனைகள்"
 
 #, php-format
 msgid "Show only '%1$s' transactions"
@@ -5923,26 +5832,19 @@ msgstr "முற்றிலும் அனுப்பப்பட்ட ப�
 msgid "Uncomplete dispatched transaction"
 msgstr "முழுமையான அனுப்பப்பட்ட பரிவர்த்தனை"
 
-#, fuzzy
-#| msgid "View and filter contributions"
 msgid "View corresponding contributions"
-msgstr "பங்களிப்புகளைக் காணவும் வடிகட்டவும்"
+msgstr "தொடர்புடைய பங்களிப்புகளைப் பார்க்கவும்"
 
-#, fuzzy, php-format
-#| msgid ""
-#| "No translation for '%s'!<br/>Please fill and submit above form to create "
-#| "it."
+#, php-format
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit the form below to create "
 "it."
 msgstr ""
-"'%s' என்பதற்கு எந்த மொழிபெயர்ப்பும் இல்லை! <br> தயவுசெய்து அதை உருவாக்க மேலே படிவத்தை "
-"நிறைவு செய்து சமர்ப்பிக்கவும்."
+"'%s'க்கு மொழிபெயர்ப்பு இல்லை!<br>அதை உருவாக்க கீழே உள்ள படிவத்தை நிறைவு செய்து "
+"சமர்ப்பிக்கவும்."
 
-#, fuzzy
-#| msgid "Original text: '%s'"
 msgid "Original text:"
-msgstr "அசல் உரை: '%s'"
+msgstr "அசல் உரை:"
 
 msgid "Choose label to translate"
 msgstr "மொழிபெயர்க்க லேபிளைத் தேர்வுசெய்க"
@@ -6146,7 +6048,7 @@ msgid "My activities"
 msgstr "எனது நடவடிக்கைகள்"
 
 msgid "Activities"
-msgstr "நடவடிக்கைகள்"
+msgstr "செயல்பாடுகள்"
 
 msgid "Show dashboard on login"
 msgstr "உள்நுழைவில் டாச்போர்டைக் காட்டு"
