@@ -721,6 +721,9 @@ class Install
                 }
 
                 $queries_results[] = $ret;
+                if ($fatal_error) {
+                    break;
+                }
             }
         }
 

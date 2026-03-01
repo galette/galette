@@ -329,6 +329,14 @@ class Install extends AbstractCommand
         $io->info('Installing database, please wait...');
         $installed = $install->executeScripts($zdb);
         if (!$installed) {
+            $report = $install->getDbInstallReport();
+            $install_messages = [];
+            foreach ($report as $entry) {
+                if ($entry['res'] !== true) {
+                    $install_messages[] = '<error>❌ ' . $entry['debug'] . ' (' . $entry['message'] . ')' . '</error>';
+                }
+            }
+            $io->listing($install_messages);
             $io->error('Database has not been installed');
             return Command::FAILURE;
         }
