@@ -516,9 +516,14 @@ class Db
      * Does a given table exists?
      *
      * @param string $name Table name
+     * @deprecated 1.2.2: performances are terrible.
      */
     public function tableExists(string $name): bool
     {
+        Analog::log(
+            __METHOD__ . ' should not be used because of very poor performances.',
+            Analog::WARNING
+        );
         $metadata = Factory::createSourceFromAdapter($this->db);
         try {
             $metadata->getTable(PREFIX_DB . $name);
