@@ -580,6 +580,10 @@ class Db extends BaseGaletteTestCase
     {
         $db = new \Galette\Core\Db();
         $db->convertToUTF();
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Upgrading from 0.6 will soon be discontinued.'
+        );
     }
 
     /**

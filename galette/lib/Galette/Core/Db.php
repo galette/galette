@@ -556,9 +556,14 @@ class Db
      *
      * @param ?string $prefix       Specified table prefix
      * @param bool    $content_only Proceed only content (no table conversion)
+     * @deprecated 1.2.2 upgrading from 0.6 will be discontinued.
      */
     public function convertToUTF(?string $prefix = null, bool $content_only = false): void
     {
+        Analog::log(
+            'Upgrading from 0.6 will soon be discontinued.',
+            Analog::WARNING
+        );
         if ($this->isPostgres()) {
             Analog::log(
                 'Cannot change encoding on PostgreSQL database',
@@ -613,10 +618,10 @@ class Db
      *
      * @param string $prefix Specified table prefix
      * @param string $table  the table we want to convert datas from
+     * @deprecated 1.2.2
      */
     private function convertContentToUTF(string $prefix, string $table): void
     {
-
         try {
             $query = 'SET NAMES latin1';
             $this->db->query(
