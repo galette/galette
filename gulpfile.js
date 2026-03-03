@@ -106,7 +106,8 @@ var paths = {
   extras: [
     {
       src: './node_modules/summernote/dist/font/*',
-      dest: 'webfonts/'
+      dest: 'webfonts/',
+      encoding: false
     }, {
       src: './node_modules/summernote/dist/lang/*.min.js',
       dest: 'js/lang/'
@@ -242,7 +243,9 @@ function scripts() {
 
 function movefiles() {
   extras = paths.extras.map(function (extra) {
-    return gulp.src(extra.src)
+    const srcOptions = extra.encoding === false ? { encoding: false } : {};
+
+    return gulp.src(extra.src, srcOptions)
       .pipe(gulp.dest(paths.assets.public + extra.dest))
       .pipe(browserSync.stream());
     }
