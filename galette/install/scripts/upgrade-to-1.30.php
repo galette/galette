@@ -18,13 +18,13 @@ use Throwable;
 use function Safe\json_encode;
 
 /**
- * Galette 1.2.2 upgrade script
+ * Galette 1.3.0 upgrade script
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class UpgradeTo122 extends AbstractUpdater
+class UpgradeTo130 extends AbstractUpdater
 {
-    protected ?string $db_version = '1.22';
+    protected ?string $db_version = '1.30';
 
     /**
      * Main constructor

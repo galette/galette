@@ -383,4 +383,4 @@ CREATE TABLE galette_database (
   version decimal NOT NULL
 );
 
-INSERT INTO galette_database (version) VALUES(1.220);
+INSERT INTO galette_database (version) VALUES(1.300);
