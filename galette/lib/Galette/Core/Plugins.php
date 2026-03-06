@@ -286,7 +286,7 @@ class Plugins
             //plugin compatibility missing!
             Analog::log(
                 sprintf(
-                    'Plugin "%s" does not contains mandatory version compatibility information. Please contact the author.',
+                    'Plugin "%s" does not contain mandatory version compatibility information. Please contact the author.',
                     $name
                 ),
                 Analog::ERROR
@@ -299,7 +299,7 @@ class Plugins
             //plugin is not compatible with that version of galette.
             Analog::log(
                 sprintf(
-                    'Plugin "%s" is known to be compatible with Galette %s only, but you current installation require a plugin compatible with at least %s',
+                    'Plugin "%s" is known to be compatible with Galette %s only, but you current installation requires a plugin compatible with at least %s',
                     $name,
                     $compver,
                     GALETTE_COMPAT_VERSION
@@ -385,6 +385,7 @@ class Plugins
             );
             unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_MISS);
+            return;
         }
 
         /** @var GalettePlugin $plugin */
@@ -403,7 +404,6 @@ class Plugins
             $this->nodb_modules[$this->id] = $this->modules[$this->id];
             unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_NOT_INSTALLED);
-            return;
         }
     }
 

@@ -128,10 +128,10 @@ class Plugins extends GaletteTestCase
             [
                 'module' => 'plugin-noclass',
                 'cause' =>  \Galette\Core\Plugins::DISABLED_MISS
-            ], 
+            ],
             [
                 'module' => 'plugin-db-noversion',
-                'cause' => \Galette\Core\Plugins::DISABLED_MISS
+                'cause' => \Galette\Core\Plugins::DISABLED_DBVERSION
             ]
         ];
     }
