@@ -171,7 +171,8 @@ abstract class GalettePlugin implements Plugins\InstallableInterface
     /**
      * Is the plugin fully installed (including database, extra configuration, etc.)?
      */
-    public function isInstalled(): bool;
+    public function isInstalled(): bool
+    {
         Analog::log(
             static::class . '::isInstalled() is deprecated, please implement InstallableInterface',
             Analog::WARNING
