@@ -745,7 +745,7 @@ class Plugins
             $d = $this->modules[$id]['root'] . '/scripts/';
             return file_exists($d);
         } else {
-            throw new Exception(sprintf("Module %s does not exists!", $id));
+            throw new Exception(sprintf('Module "%s" does not exist!', $id));
         }
     }
 

@@ -96,7 +96,7 @@ class PluginInstall extends Install
                 default:
                     throw new \RuntimeException(
                         sprintf(
-                            'Cannot install plugin "' . $id . '", wrong disabled cause %s.',
+                            'Cannot install plugin %s, wrong disabled cause %s.',
                             $id,
                             $plugins->getDisabledModule($id)['cause']
                         )
