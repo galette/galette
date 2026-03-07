@@ -552,6 +552,15 @@ class Galette extends GaletteTestCase
         global $plugins, $container;
         $plugins = $this->plugins;
 
+        //mock plugin to mark as not installed
+        /** @var class-string<\Galette\Core\GalettePlugin> $plugin_class */
+        $plugin_class = $plugins->getClassName('plugin-news', true);
+        $mock = $this->getMockBuilder($plugin_class)
+            ->onlyMethods(['isInstalled'])
+            ->getMock();
+        $mock->method('isInstalled')->willReturn(false);
+        $container->set($plugin_class, $mock);
+
         //we got asso and plugin news
         $entries = \Galette\Core\Galette::getNews();
 
