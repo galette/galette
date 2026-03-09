@@ -218,7 +218,7 @@ class Plugins extends GaletteTestCase
         $this->assertFalse($this->plugins->needsDatabase('plugin-test2'));
 
         $plugins = $this->getPlugins();
-        $this->expectExceptionMessage('Module nonexistant does not exists!');
+        $this->expectExceptionMessage('Module "nonexistant" does not exist!');
         $plugins->needsDatabase('nonexistant');
     }
 }
