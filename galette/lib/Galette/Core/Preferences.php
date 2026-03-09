@@ -1572,7 +1572,20 @@ class Preferences
             mkdir($cache_dir, 0o755, true);
         }
         $config->set('Cache.SerializerPath', $cache_dir);
+        $config->set('URI.AllowedSchemes', [
+            'http' => true,
+            'https' => true,
+            'mailto' => true,
+            'ftp' => true,
+        ]);
         $purifier = new \HTMLPurifier($config);
+
+        // Remove all dangerous schemes
+        $value = preg_replace(
+            '/\b(?:javascript|data|vbscript):\s*/i',
+            '',
+            $value
+        );
         return $purifier->purify($value);
     }
 
