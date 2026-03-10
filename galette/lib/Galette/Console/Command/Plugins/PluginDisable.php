@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command\Plugins;
 
+use Galette\Core\Plugins;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,6 +34,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Plugins deactivation console command
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @phpstan-import-type Modules from Plugins
  */
 
 #[AsCommand(
@@ -63,10 +65,10 @@ class PluginDisable extends AbstractPlugins
     /**
      * Get relevant plugins (enabled ones) for current command
      *
-     * @return array<string, array<string, string>>
+     * @return Modules
      */
     protected function getRelevantPlugins(SymfonyStyle $io): array
     {
-        return $this->plugins->getModules();
+        return $this->plugins->getActiveModules();
     }
 }

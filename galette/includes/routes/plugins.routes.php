@@ -37,7 +37,7 @@ $app->group(
     function (\Slim\Routing\RouteCollectorProxy $app) use ($authenticate): void {
         /** @var \DI\Container $container */
         $container = $app->getContainer();
-        $modules = $container->get(Plugins::class)->getModules();
+        $modules = $container->get(Plugins::class)->getActiveModules();
 
         //Global route to access plugin resources (CSS, JS, images, ...)
         $app->get(
