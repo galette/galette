@@ -28,8 +28,13 @@ use Exception;
 use Analog\Analog;
 use Galette\Common\ClassLoader;
 use League\Event\EventDispatcher;
+use LogicException;
+use PDOException;
+use Psr\Container\ContainerInterface;
+use RuntimeException;
 use Safe\Exceptions\DirException;
 use Safe\Exceptions\FilesystemException;
+use Throwable;
 
 use function Safe\dir;
 use function Safe\file_put_contents;
@@ -39,6 +44,20 @@ use function Safe\realpath;
  * Plugins class for galette
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @phpstan-type ModuleId string
+ * @phpstan-type Module array{
+ *      root: string,
+ *      name: string,
+ *      desc: string,
+ *      author: string,
+ *      version: string,
+ *      acls: ?array<string,string>,
+ *      date: ?string,
+ *      priority: int,
+ *      route: ?string,
+ *      dbversion: ?float
+ *  }
+ * @phpstan-type Modules array<ModuleId, Module>
  */
 
 class Plugins
@@ -54,57 +73,15 @@ class Plugins
 
     /** @var array<string> */
     protected array $path;
-    /** @var array<string, array{
-     *     root: string,
-     *     name: string,
-     *     desc: string,
-     *     author: string,
-     *     version: string,
-     *     acls: ?array<string,string>,
-     *     date: ?string,
-     *     priority: int,
-     *     route: ?string,
-     *     dbversion: ?float
-     * }>
-     */
+    /** @var Modules */
     protected array $modules = [];
-    /** @var array<string, array{
-     *     root: string,
-     *     name: string,
-     *     desc: string,
-     *     author: string,
-     *     version: string,
-     *     acls: ?array<string,string>,
-     *     date: ?string,
-     *     priority: int,
-     *     route: ?string,
-     *     dbversion: float
-     * }>
-     */
-    protected array $nodb_modules = [];
-    /** @var array<string, array{
-     *     root: string,
-     *     name: string,
-     *     desc: string,
-     *     author: string,
-     *     version: string,
-     *     acls: ?array<string,string>,
-     *     date: ?string,
-     *     priority: int,
-     *     route: ?string,
-     *     dbversion: float
-     * }>
-     */
-    protected array $toupdate_modules = [];
-    /** @var array<string, array{
-     *     root: string,
-     *     cause: int
-     * }>
-     */
+    /** @var array<ModuleId, self::DISABLED_*> */
     protected array $disabled = [];
-    /** @var array{plugin_id?: string, version?: ?float} */
+    /** @var array<ModuleId, int> */
+    protected array $incompatible = [];
+    /** @var array<ModuleId, ?float> */
     protected array $db_existing = [];
-    /** @var array<string> */
+    /** @var string[] */
     protected array $csrf_exclusions = [];
 
     protected ?string $id = null;
@@ -122,6 +99,8 @@ class Plugins
 
     #[Inject]
     protected Db $zdb;
+
+    private ContainerInterface $container;
 
     /**
      * Register autoloader for all plugins
@@ -146,7 +125,7 @@ class Plugins
             foreach ($results as $result) {
                 $this->db_existing[$result['plugin_id']] = $result['version'] !== null ? (float)$result['version'] : null;
             }
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             //table probably does not exist yet (old database version for example, before an upgrade)
             Analog::log(
                 'Cannot load plugins from database: ' . $e->getMessage(),
@@ -187,16 +166,38 @@ class Plugins
                                     . 'files that are required.', $entry),
                                 Analog::WARNING
                             );
+                            // Ensure plugin appears in modules list even if required files are missing.
+                            if (!isset($this->modules[$entry])) {
+                                $this->modules[$entry] = [
+                                    'name'      => $entry,
+                                    'desc'      => '',
+                                    'author'    => '',
+                                    'version'   => '',
+                                    'date'      => '',
+                                    'priority'  => 0,
+                                    'root'      => $full_entry,
+                                    'route'     => null,
+                                    'dbversion' => null,
+                                ];
+                            }
                             $this->setDisabled(self::DISABLED_MISS);
-                        } elseif ($this->isExplicitlyDisabled()) {
-                            Analog::log(
-                                sprintf('Plugin "%s" is explicitly disabled', $entry),
-                                Analog::INFO
-                            );
-                            $this->setDisabled(self::DISABLED_EXPLICIT);
                         } else {
+                            //Will call $this->register()
                             include $full_entry . '/_define.php';
                             if ($this->moduleExists($entry)) {
+                                if ($this->isExplicitlyDisabled()) {
+                                    Analog::log(
+                                        sprintf('Plugin "%s" is explicitly disabled', $entry),
+                                        Analog::INFO
+                                    );
+                                    $this->setDisabled(self::DISABLED_EXPLICIT);
+                                    continue;
+                                }
+                                $this->postRegistrationChecks();
+
+                                if ($this->isDisabled($entry)) {
+                                    continue;
+                                }
                                 if (file_exists($full_entry . '/lib')) {
                                     //set autoloader to PluginName.
                                     $varname = $entry . 'Loader';
@@ -206,7 +207,16 @@ class Plugins
                                     );
                                     ${$varname}->register();
                                 }
+                                if (file_exists($full_entry . '/_config.inc.php')) {
+                                    //include plugin configuration file if exists; it often declares constants that may be used in self::check()
+                                    require_once $full_entry . '/_config.inc.php';
+                                }
                                 $this->check();
+                            } else {
+                                Analog::log(
+                                    sprintf('Plugin "%s" is not loaded', $entry),
+                                    Analog::ERROR
+                                );
                             }
                             $this->id = null;
                             $this->mroot = null;
@@ -238,7 +248,7 @@ class Plugins
         uasort($this->modules, $this->sortModules(...));
 
         // Load translation, _prepend and ns_file
-        foreach (array_keys($this->modules) as $id) {
+        foreach (array_keys($this->getActiveModules()) as $id) {
             if ($lang !== null) {
                 $this->loadModuleL10N($id, $lang);
             }
@@ -281,6 +291,20 @@ class Plugins
         ?int $priority = 1000,
         ?float $dbver = null
     ): void {
+        //store module information
+        $this->modules[$this->id] = [
+            'root'          => $this->mroot,
+            'name'          => $name,
+            'desc'          => $desc,
+            'author'        => $author,
+            'version'       => $version,
+            'acls'          => $acls,
+            'date'          => $date,
+            'priority'      => $priority ?? 1000,
+            'route'         => $route,
+            'dbversion'     => $dbver
+        ];
+
         //check compatibility
         if ($compver === null) {
             //plugin compatibility missing!
@@ -307,23 +331,7 @@ class Plugins
                 Analog::WARNING
             );
             $this->setDisabled(self::DISABLED_COMPAT);
-            return;
         }
-
-        //register module
-        $this->modules[$this->id] = [
-            'root'          => $this->mroot,
-            'name'          => $name,
-            'desc'          => $desc,
-            'author'        => $author,
-            'version'       => $version,
-            'acls'          => $acls,
-            'date'          => $date,
-            'priority'      => $priority ?? 1000,
-            'route'         => $route,
-            'dbversion'     => $dbver
-        ];
-        $this->postRegistrationChecks();
     }
 
     /**
@@ -331,6 +339,10 @@ class Plugins
      */
     private function postRegistrationChecks(): void
     {
+        if ($this->isDisabled($this->id)) {
+            //already disabled; ignore
+            return;
+        }
         if (!$this->modules[$this->id]['dbversion'] && $this->needsDatabase($this->id)) {
             //plugin needs a database but no version is provided
             Analog::log(
@@ -340,7 +352,6 @@ class Plugins
                 ),
                 Analog::ERROR
             );
-            unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_DBVERSION);
             return;
         }
@@ -358,9 +369,7 @@ class Plugins
                 ),
                 Analog::WARNING
             );
-            $this->toupdate_modules[$this->id] = $this->modules[$this->id];
-            unset($this->modules[$this->id]);
-            $this->setDisabled(self::DISABLED_NOT_UP2DATE);
+            $this->markToUpdate();
         }
     }
 
@@ -383,16 +392,16 @@ class Plugins
                 ),
                 Analog::ERROR
             );
-            unset($this->modules[$this->id]);
             $this->setDisabled(self::DISABLED_MISS);
             return;
         }
 
         /** @var GalettePlugin $plugin */
-        $plugin = new $plugin_class();
+        $plugin = $this->container->get($plugin_class);
         $is_installed = $plugin->isInstalled();
 
-        if (!$is_installed || $this->needsDatabase($this->id) && !isset($this->db_existing[$this->id])) {
+        if (!$is_installed) {
+            //FIXME: plugin may not be installed again if it's just missing in db_existing, creation script may remove existing tables!
             //plugin database has not been installed
             Analog::log(
                 sprintf(
@@ -401,9 +410,9 @@ class Plugins
                 ),
                 Analog::WARNING
             );
-            $this->nodb_modules[$this->id] = $this->modules[$this->id];
-            unset($this->modules[$this->id]);
-            $this->setDisabled(self::DISABLED_NOT_INSTALLED);
+            $this->markDbMissing();
+        } elseif ($this->needsDatabase($this->id) && !array_key_exists($this->id, $this->db_existing)) {
+            $this->autoMigratePluginVersion();
         }
     }
 
@@ -460,7 +469,8 @@ class Plugins
      */
     protected function removeDisabledFile(string $id): void
     {
-        $legacy_file = $this->disabled[$id]['root'] . '/_disabled';
+        $module = $this->getModule($id);
+        $legacy_file = $module['root'] . '/_disabled';
         //try to remove the old file
         if (file_exists($legacy_file) && @unlink($legacy_file) === false) { //@phpstan-ignore theCodingMachineSafe.function
             Analog::log(
@@ -554,76 +564,106 @@ class Plugins
     /**
      * Returns requested module
      *
-     * @param string $id  Module ID
-     * @param bool   $all Include modules that are not installed or not up to date
+     * @param string $id Module ID
      *
-     * @return array<string, mixed>
+     * @return Module
      */
-    public function getModule(string $id, bool $all = false): array
+    public function getModule(string $id): array
     {
         if (isset($this->modules[$id])) {
             return $this->modules[$id];
         }
-        if ($all && isset($this->nodb_modules[$id])) {
-            return $this->nodb_modules[$id];
-        }
-        if ($all && isset($this->toupdate_modules[$id])) {
-            return $this->toupdate_modules[$id];
-        }
 
-        throw new \RuntimeException(
+        throw new RuntimeException(
             sprintf('Module "%s" does not exist!', $id)
         );
     }
 
     /**
-     * Returns all modules associative array or only one module if <var>$id</var>
-     * is present.
+     * List of all modules
      *
-     * @param ?string $id Optional module ID
-     *
-     * @return array<string, mixed>
+     * @return Modules
      */
-    public function getModules(?string $id = null): array
+    public function getModules(): array
     {
-        if ($id && isset($this->modules[$id])) {
-            return $this->modules[$id];
-        }
         return $this->modules;
     }
 
     /**
-     * Returns true if the module with ID <var>$id</var> exists.
+     * List of all active modules
+     *
+     * @return Modules
+     */
+    public function getActiveModules(): array
+    {
+        $active_modules = $this->modules;
+        foreach (array_keys($active_modules) as $id) {
+            if ($this->isDisabled($id)) {
+                unset($active_modules[$id]);
+            }
+        }
+
+        return $active_modules;
+    }
+
+    /**
+     * Check if a module exists
      *
      * @param string $id Module ID
      */
     public function moduleExists(string $id): bool
     {
-        return isset($this->modules[$id]) || isset($this->nodb_modules[$id]) || isset($this->toupdate_modules[$id]);
+        return isset($this->modules[$id]);
     }
 
     /**
-     * Returns all disabled modules in an array
+     * List of all disabled modules
      *
-     * @return array<string, array<string, mixed>>
+     * @return Modules
      */
     public function getDisabledModules(): array
     {
-        return $this->disabled;
+        return array_filter($this->modules, $this->isDisabled(...), ARRAY_FILTER_USE_KEY);
     }
 
     /**
      * Returns one disabled module
      *
-     * @return array<string, mixed>
+     * @return Module
      */
     public function getDisabledModule(string $id): array
+    {
+        if (!$this->moduleExists($id)) {
+            throw new LogicException(sprintf('Module "%s" does not exist!', $id));
+        }
+        if (!isset($this->disabled[$id])) {
+            throw new \LogicException(
+                sprintf('Module "%s" is not disabled!', $id)
+            );
+        }
+        return $this->modules[$id];
+    }
+
+    /**
+     * Get cause for a plugin to be disabled
+     */
+    public function getDisabledCause(string $id): int
     {
         return $this->disabled[$id];
     }
 
     /**
-     * Returns root path for module with ID <var>$id</var>.
+     * Is module disabled
+     *
+     * @param string $id Module ID
+     */
+    public function isDisabled(string $id): bool
+    {
+        return isset($this->disabled[$id]);
+    }
+
+    /**
+     * Get a module root path
      *
      * @param string $id Module ID
      */
@@ -654,7 +694,7 @@ class Plugins
     }
 
     /**
-     * Sort modules
+     * Sort modules by priority, then name
      *
      * @param array<string, mixed> $a A module
      * @param array<string, mixed> $b Another module
@@ -691,8 +731,7 @@ class Plugins
      */
     public function getTemplatesPathFromName(string $name): string
     {
-        foreach (array_keys($this->getModules()) as $r) {
-            $mod = $this->getModules($r);
+        foreach ($this->getActiveModules() as $r => $mod) {
             if ($mod['name'] === $name) {
                 return $this->getTemplatesPath($r);
             }
@@ -708,7 +747,7 @@ class Plugins
     public function getTplHeaders(): array
     {
         $_headers = [];
-        foreach (array_keys($this->modules) as $key) {
+        foreach (array_keys($this->getActiveModules()) as $key) {
             $headers_path = $this->getTemplatesPath($key) . '/headers.html.twig';
             if (file_exists($headers_path)) {
                 $_headers[$key] = sprintf('@%s/%s.html.twig', $this->getClassName($key), 'headers');
@@ -725,7 +764,7 @@ class Plugins
     public function getTplScripts(): array
     {
         $_scripts = [];
-        foreach (array_keys($this->modules) as $key) {
+        foreach (array_keys($this->getActiveModules()) as $key) {
             $scripts_path = $this->getTemplatesPath($key) . '/scripts.html.twig';
             if (file_exists($scripts_path)) {
                 $_scripts[$key] = sprintf('@%s/%s.html.twig', $this->getClassName($key), 'scripts');
@@ -741,11 +780,11 @@ class Plugins
      */
     public function needsDatabase(string $id): bool
     {
-        if (isset($this->modules[$id])) {
+        if ($this->moduleExists($id)) {
             $d = $this->modules[$id]['root'] . '/scripts/';
             return file_exists($d);
         } else {
-            throw new Exception(sprintf('Module "%s" does not exist!', $id));
+            throw new LogicException(sprintf('Module "%s" does not exist!', $id));
         }
     }
 
@@ -772,6 +811,35 @@ class Plugins
     }
 
     /**
+     * Automatically migrate plugin version to core table; sets version to plugin version.
+     */
+    private function autoMigratePluginVersion(): void
+    {
+        try {
+            $module = $this->getModule($this->id);
+            $insert = $this->zdb->insert(self::TABLE);
+            $insert->values([
+                'plugin_id' => $this->id,
+                'version' => $module['dbversion'],
+            ]);
+            $this->zdb->execute($insert);
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" automatically migrated to core table.',
+                    $this->modules[$this->id]['name']
+                ),
+                Analog::INFO
+            );
+            $this->db_existing[$this->id] = $module['dbversion'];
+        } catch (Throwable $e) {
+            if (!$this->zdb->isMissingTableException($e)) {
+                //plugins table may be missing while updating
+                throw $e;
+            }
+        }
+    }
+
+    /**
      * Get plugins routes ACLs
      *
      * @return array<string>
@@ -779,7 +847,7 @@ class Plugins
     public function getAcls(): array
     {
         $acls = [];
-        foreach ($this->modules as $module) {
+        foreach ($this->getActiveModules() as $module) {
             $acls = array_merge($acls, $module['acls'] ?? []);
         }
         return $acls;
@@ -793,31 +861,48 @@ class Plugins
      */
     public function getFile(string $id, string $path): string
     {
-        if (isset($this->modules[$id])) {
-            $file = $this->modules[$id]['root'] . '/webroot/' . $path;
-            if (file_exists($file)) {
-                return $file;
-            } else {
-                throw new \RuntimeException(_T("File not found!"));
-            }
+        if (!$this->moduleExists($id)) {
+            throw new LogicException(sprintf('Module "%s" does not exist!', $id));
+        }
+
+        if ($this->isDisabled($id)) {
+            throw new RuntimeException(
+                sprintf('Trying to access file "%s" from module "%s" that is disabled.', $path, $id)
+            );
+        }
+
+        $file = $this->modules[$id]['root'] . '/webroot/' . $path;
+        if (file_exists($file)) {
+            return $file;
         } else {
-            throw new Exception(_T("Module does not exists!"));
+            throw new RuntimeException(_T("File not found!"));
         }
     }
 
     /**
      * Set a module as disabled
      *
-     * @param int $cause Cause (one of Plugins::DISABLED_* constants)
+     * @param self::DISABLED_* $cause Disabling cause
      */
     private function setDisabled(int $cause): void
     {
-        $this->disabled[$this->id] = [
-            'root'  => $this->mroot,
-            'cause' => $cause
-        ];
-        $this->id = null;
-        $this->mroot = null;
+        $this->disabled[$this->id] = $cause;
+    }
+
+    /**
+     * Mark a module as needing an update
+     */
+    private function markToUpdate(): void
+    {
+        $this->setDisabled(self::DISABLED_NOT_UP2DATE);
+    }
+
+    /**
+     * Mark a module as not installed
+     */
+    private function markDbMissing(): void
+    {
+        $this->setDisabled(self::DISABLED_NOT_INSTALLED);
     }
 
     /**
@@ -846,7 +931,7 @@ class Plugins
     }
 
     /**
-     * Set CRSF excluded routes for one plugin
+     * Set CSRF excluded routes for one plugin
      *
      * @param array<string> $exclusions Array of regular expressions patterns to be excluded
      */
@@ -892,8 +977,8 @@ class Plugins
                         Analog::WARNING
                     );
                 }
-            } catch (\Exception) {
-                //emtpy catch
+            } catch (Exception) {
+                //empty catch
             }
 
             return true;
@@ -935,6 +1020,21 @@ class Plugins
     public function setEventDispatcher(EventDispatcher $dispatcher): self
     {
         $this->event_dispatcher = $dispatcher;
+        return $this;
+    }
+
+    /**
+     * Set container, and required dependencies
+     *
+     * Automatic injection is not possible since Plugins must be initialized
+     * before the dependency injection.
+     */
+    public function setContainer(ContainerInterface $container): self
+    {
+        $this->container = $container;
+        $this->setTranslator($container->get(Translator::class));
+        $this->setEventDispatcher($container->get(EventDispatcher::class));
+        $this->setDb($container->get(Db::class));
         return $this;
     }
 

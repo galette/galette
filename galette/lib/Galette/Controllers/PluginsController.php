@@ -49,7 +49,7 @@ class PluginsController extends AbstractController
     {
         $plugins = $this->plugins;
 
-        $plugins_list = $plugins->getModules();
+        $plugins_list = $plugins->getActiveModules();
         $disabled_plugins = $plugins->getDisabledModules();
 
         // display page
@@ -142,7 +142,7 @@ class PluginsController extends AbstractController
             return $response->withStatus(404);
         }
 
-        $plugin = $this->plugins->getModule($plugid, true);
+        $plugin = $this->plugins->getModule($plugid);
 
         $mdplugin = md5((string)$plugin['root']);
         if (

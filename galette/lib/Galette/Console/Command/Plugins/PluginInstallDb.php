@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command\Plugins;
 
+use Galette\Core\Plugins;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,6 +34,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Plugins database install console command
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
+ * @phpstan-import-type Modules from Plugins
  */
 #[AsCommand(
     name: 'galette:plugins:install-db',
@@ -70,16 +72,16 @@ class PluginInstallDb extends AbstractPlugins
     }
 
     /**
-     * Get relevant plugins (actives, with database) for current command
+     * Get relevant plugins (inactives that require a database) for current command
      *
-     * @return array<string, array<string, string>>
+     * @return Modules
      */
     protected function getRelevantPlugins(SymfonyStyle $io): array
     {
-        $enabled_plugins = $this->plugins->getModules();
+        $plugins = $this->plugins->getDisabledModules();
 
         $relevant_plugins = [];
-        foreach ($enabled_plugins as $module_id => $module) {
+        foreach ($plugins as $module_id => $module) {
             if ($this->plugins->needsDatabase($module_id)) {
                 $relevant_plugins[$module_id] = $module;
             } else {
@@ -99,7 +101,7 @@ class PluginInstallDb extends AbstractPlugins
      * @param SymfonyStyle $io        Output interface
      * @param string[]     $requested Requested modules
      *
-     * @return array<string, array<string, string>>
+     * @return Modules
      */
     protected function getSelectedModules(SymfonyStyle $io, array $requested): array
     {

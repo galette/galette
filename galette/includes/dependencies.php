@@ -54,7 +54,7 @@ $container->set(
 $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
 
     $templates = ['__main__' => GALETTE_TPL_THEME_DIR];
-    foreach ($c->get(\Galette\Core\Plugins::class)->getModules() as $module_id => $module) {
+    foreach ($c->get(\Galette\Core\Plugins::class)->getActiveModules() as $module_id => $module) {
         $dir = $module['root'] . '/templates/' . $c->get(\Galette\Core\Preferences::class)->pref_theme;
         if (!is_dir($dir)) {
             continue;
@@ -142,9 +142,7 @@ $container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) us
         && !defined('GALETTE_INSTALLER'))
     ) {
         $plugins
-            ->setTranslator($c->get(\Galette\Core\Translator::class))
-            ->setEventDispatcher($c->get(\League\Event\EventDispatcher::class))
-        ->setDb($c->get(\Galette\Core\Db::class))
+            ->setContainer($c)
             ->loadModules(
                 $c->get(\Galette\Core\Preferences::class),
                 GALETTE_PLUGINS_PATH,
@@ -189,7 +187,7 @@ $container->set('acls', function (ContainerInterface $c) {
     /** @var array<string, string> $core_acls */
     $acls = $core_acls;
 
-    foreach ($c->get(\Galette\Core\Plugins::class)->getModules() as $plugin) {
+    foreach ($c->get(\Galette\Core\Plugins::class)->getActiveModules() as $plugin) {
         $acls[$plugin['route'] . 'Info'] = 'member';
     }
 

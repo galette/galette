@@ -33,6 +33,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class Plugins extends GaletteTestCase
 {
+    private int $count_modules = 9;
+    private int $active_modules = 3;
+
     /** @var array<string, mixed> */
     private array $plugin2 = [
         'root'          => 'plugin-test2',
@@ -57,7 +60,7 @@ class Plugins extends GaletteTestCase
     {
         $plugins = new \Galette\Core\Plugins();
         $plugins
-            ->setDb($this->zdb)
+            ->setContainer($this->container)
             ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         return $plugins;
     }
@@ -68,12 +71,6 @@ class Plugins extends GaletteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $insert = $this->zdb->insert(\Galette\Core\Plugins::TABLE);
-        $insert->values([
-            'plugin_id'     => 'plugin-db',
-            'version'       => 0.1
-        ]);
-        $this->zdb->execute($insert);
         $this->plugins = $this->getPlugins();
         $this->plugin2['root'] = GALETTE_PLUGINS_PATH
             . $this->plugin2['root'];
@@ -85,9 +82,38 @@ class Plugins extends GaletteTestCase
     public function testLoadModules(): void
     {
         $this->getPlugins();
-        $this->assertCount(3, $this->plugins->getModules());
+        $modules = $this->plugins->getModules();
+        $this->assertCount($this->count_modules, $modules);
 
-        $loaded_plugin = $this->plugins->getModules('plugin-test2');
+        //all plugins are present, but only 3 are active
+        $this->assertEquals(
+            [
+                'plugin-db-noversion',
+                'plugin-db',
+                'plugin-disabled',
+                'plugin-news',
+                'plugin-noclass',
+                'plugin-oldversion',
+                'plugin-test1',
+                'plugin-test2',
+                'plugin-unversionned'
+            ],
+            array_keys($modules)
+        );
+
+        $active_modules = $this->plugins->getActiveModules();
+        $this->assertCount($this->active_modules, $active_modules);
+
+        $this->assertEquals(
+            [
+                'plugin-db',
+                'plugin-test1',
+                'plugin-test2'
+            ],
+            array_keys($active_modules)
+        );
+
+        $loaded_plugin = $this->plugins->getModule('plugin-test2');
         $loaded_plugin['date'] = $this->plugin2['date'];
 
         $this->assertSame($this->plugin2, $loaded_plugin);
@@ -99,7 +125,8 @@ class Plugins extends GaletteTestCase
     public function testModuleExists(): void
     {
         $this->assertTrue($this->plugins->moduleExists('plugin-test2'));
-        $this->assertFalse($this->plugins->moduleExists('plugin-disabled'));
+        $this->assertTrue($this->plugins->moduleExists('plugin-disabled'));
+        $this->assertFalse($this->plugins->moduleExists('plugin-notaplugin'));
     }
 
     /**
@@ -144,7 +171,7 @@ class Plugins extends GaletteTestCase
     {
         $disabled_modules = $this->plugins->getDisabledModules();
         $this->assertTrue(isset($disabled_modules[$module]));
-        $this->assertSame($cause, $disabled_modules[$module]['cause']);
+        $this->assertSame($cause, $this->plugins->getDisabledCause($module));
         $this->assertTrue(isset($disabled_modules['plugin-db-noversion']));
     }
 
@@ -172,21 +199,20 @@ class Plugins extends GaletteTestCase
     public function testModuleActivation(): void
     {
         $plugins = $this->getPlugins();
-        $modules = $plugins->getModules();
-        $this->assertCount(3, $modules);
-        $this->assertTrue(isset($modules['plugin-test2']));
+        $active_modules = $plugins->getActiveModules();
+        $this->assertTrue(isset($active_modules['plugin-test2']));
         $plugins->deactivateModule('plugin-test2');
 
         $plugins = $this->getPlugins();
-        $modules = $plugins->getModules();
-        $this->assertCount(2, $modules);
-        $this->assertFalse(isset($modules['plugin-test2']));
+        $active_modules = $plugins->getActiveModules();
+        $this->assertCount($this->active_modules - 1, $plugins->getActiveModules());
+        $this->assertFalse(isset($active_modules['plugin-test2']));
         $plugins->activateModule('plugin-test2');
 
         $plugins = $this->getPlugins();
-        $modules = $plugins->getModules();
-        $this->assertCount(3, $modules);
-        $this->assertTrue(isset($modules['plugin-test2']));
+        $active_modules = $plugins->getActiveModules();
+        $this->assertCount($this->active_modules, $active_modules);
+        $this->assertTrue(isset($active_modules['plugin-test2']));
     }
 
     /**

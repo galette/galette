@@ -539,12 +539,13 @@ class Galette extends GaletteTestCase
 
         $this->plugins
             ->setDb($this->zdb)
-             ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+            ->setContainer($this->container)
+            ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $this->plugins->activateModule('plugin-news');
 
         $this->plugins = new \Galette\Core\Plugins();
         $this->plugins
-            ->setDb($this->zdb)
+            ->setContainer($this->container)
             ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
 
         $this->assertArrayNotHasKey('plugin-news', $this->plugins->getDisabledModules());

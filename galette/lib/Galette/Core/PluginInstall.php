@@ -69,9 +69,9 @@ class PluginInstall extends Install
      */
     public function setPluginInstalled(Db $zdb, Plugins $plugins, string $id): self
     {
-        $module = $plugins->getModule($id, true);
+        $module = $plugins->getModule($id);
         if (isset($module['dbversion'])) {
-            switch ($plugins->getDisabledModule($id)['cause']) {
+            switch ($plugins->getDisabledCause($id)) {
                 case $plugins::DISABLED_NOT_INSTALLED:
                     //add plugin in db
                     $insert = $zdb->insert($plugins::TABLE);
@@ -98,7 +98,7 @@ class PluginInstall extends Install
                         sprintf(
                             'Cannot install plugin %s, wrong disabled cause %s.',
                             $id,
-                            $plugins->getDisabledModule($id)['cause']
+                            $plugins->getDisabledCause($id)
                         )
                     );
             }

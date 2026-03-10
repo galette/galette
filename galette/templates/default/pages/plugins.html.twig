@@ -20,6 +20,95 @@
 #}
 {% extends 'page.html.twig' %}
 
+{% macro showPluginEntry(name, plugin) %}
+    {% set is_enabled = not plugins.isDisabled(name) %}
+    {% set show_db_button = false %}
+    {% set show_activate = false %}
+    {% if not is_enabled %}
+        {% set cause = plugins.getDisabledCause(name) %}
+        {% set disabled_cause -%}
+            {% if cause == constant('Galette\\Core\\Plugins::DISABLED_MISS') %}
+                {{ _T('A required file is missing') }}
+            {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_COMPAT') %}
+                {{ _T('Incompatible with current version') }}
+            {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_DBVERSION') %}
+                {{ _T('Database version missing') }}
+            {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_NOT_INSTALLED') %}
+                {{ _T('Not installed') }}
+                {% set show_db_button = true %}
+            {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_NOT_UP2DATE') %}
+                {{ _T('Need update') }}
+                {% set show_db_button = true %}
+            {% elseif cause == constant('Galette\\Core\\Plugins::DISABLED_EXPLICIT') %}
+                {{ _T('Explicitly disabled') }}
+                {% set show_activate = true %}
+            {% else %}
+                {{ _T('Unknown') }}
+                {% set show_activate = true %}
+            {% endif %}
+        {%- endset %}
+    {% endif %}
+    <tr>
+        <td data-scope="row">
+            <span class="ui icon"{% if not is_enabled %} data-tooltip="{{ disabled_cause }}"{% endif %}>
+                <i class="{% if is_enabled %}check circle green{% else %}exclamation circle orange{% endif %} icon"></i>
+            </span>
+            {% if is_enabled %}
+                <a href="{{ url_for(plugin.route ~ "Info", {"plugin": name}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a>
+            {% else %}
+                {{ plugin.name }} ({{ name }})
+
+            {% endif %}
+        </td>
+        <td data-col-label="{{ _T('Description') }}">{{ plugin.desc }}</td>
+        <td data-col-label="{{ _T('Author') }}">{{ plugin.author }}</td>
+        <td class="collapsing" data-col-label="{{ _T('Version') }}">{{ plugin.version }}</td>
+        <td class="collapsing" data-col-label="{{ _T('Release date') }}">{{ plugin.date }}</td>
+        <td class="actions_row collapsing">
+            {% if is_enabled %}
+                <a
+                        href="{{ url_for("pluginsActivation", {"action": "deactivate", "module_id": name}) }}"
+                        class="toggleActivation use"
+                >
+                    <i class="ui toggle on red icon tooltip" aria-hidden="true"></i>
+                    <span class="ui special popup">{{ _T("Click here to deactivate plugin '%1$s'")|format(plugin.name) }}</span>
+                </a>
+                {% if plugins.needsDatabase(name) %}
+                    <a
+                            href="{{ url_for("pluginInitDb", {"id": name}) }}"
+                            id="initdb_{{ name }}"
+                            class="initdb action"
+                    >
+                        <i class="ui database blue icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Initialize '%1$s' database")|format(plugin.name) }}</span>
+                    </a>
+                {% endif %}
+            {% else %}
+                {% if show_db_button %}
+                    <a
+                            href="{{ url_for("pluginInitDb", {"id": name}) }}"
+                            id="initdb_{{ name }}"
+                            class="initdb action"
+                    >
+                        <i class="ui database blue icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Initialize '%1$s' database")|format(name) }}</span>
+                    </a>
+                {% endif %}
+
+                {%  if show_activate %}
+                    <a
+                            href="{{ url_for("pluginsActivation", {"action": "activate", "module_id": name}) }}"
+                            class="toggleActivation delete"
+                    >
+                        <i class="ui toggle off grey icon tooltip" aria-hidden="true"></i>
+                        <span class="ui special popup">{{ _T("Activate plugin '%1$s'")|format(name) }}</span>
+                    </a>
+                {% endif %}
+            {% endif %}
+        </td>
+    </tr>
+{% endmacro %}
+
 {% block content %}
     <table class="listing ui celled striped table">
         <thead>
@@ -37,32 +126,7 @@
                 <th colspan="6" class="center aligned"><strong>{{ _T('Active plugins') }}</strong></th>
             </tr>
 {% for name, plugin in plugins_list %}
-            <tr>
-                <td data-scope="row"><a href="{{ url_for(plugin.route ~ "Info", {"plugin": name}) }}" class="info-plugin">{{ plugin.name }} ({{ name }})</a></td>
-                <td data-col-label="{{ _T('Description') }}">{{ plugin.desc }}</td>
-                <td data-col-label="{{ _T('Author') }}">{{ plugin.author }}</td>
-                <td class="collapsing" data-col-label="{{ _T('Version') }}">{{ plugin.version }}</td>
-                <td class="collapsing" data-col-label="{{ _T('Release date') }}">{{ plugin.date }}</td>
-                <td class="actions_row collapsing">
-                    <a
-                        href="{{ url_for("pluginsActivation", {"action": "deactivate", "module_id": name}) }}"
-                        class="toggleActivation use"
-                    >
-                        <i class="ui toggle on red icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Click here to deactivate plugin '%1$s'")|format(plugin.name) }}</span>
-                    </a>
-    {% if plugins.needsDatabase(name) %}
-                    <a
-                        href="{{ url_for("pluginInitDb", {"id": name}) }}"
-                        id="initdb_{{ name }}"
-                        class="initdb action"
-                    >
-                        <i class="ui database blue icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Initialize '%1$s' database")|format(plugin.name) }}</span>
-                    </a>
-    {% endif %}
-                </td>
-            </tr>
+            {{ _self.showPluginEntry(name, plugin) }}
 {% else %}
             <tr>
                 <td colspan="6">{{ _T('No active plugin.') }}</td>
@@ -71,62 +135,8 @@
             <tr class="with-headers inactives plugins">
                 <th colspan="6" class="center aligned"><strong>{{ _T('Inactive plugins') }}</strong></th>
             </tr>
-            <thead>
-            <tr>
-                <th class="listing">{{ _T('Name') }}</th>
-                <th class="listing" colspan="4">{{ _T('Cause') }}</th>
-                <th class="listing actions_row collapsing"></th>
-            </tr>
-            </thead>
 {% for name, plugin in plugins_disabled_list %}
-    {% set show_db_button = false %}
-    {% set show_activate = false %}
-            <tr>
-                <td data-scope="row">{{ name }}</td>
-                <td data-col-label="{{ _T('Cause') }}" colspan="4">
-                    {% if plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_MISS') %}
-                        {{ _T('A required file is missing') }}
-                    {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_COMPAT') %}
-                        {{ _T('Incompatible with current version') }}
-                    {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_DBVERSION') %}
-                        {{ _T('Database version missing') }}
-                    {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_NOT_INSTALLED') %}
-                        {{ _T('Not installed') }}
-                        {% set show_db_button = true %}
-                    {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_NOT_UP2DATE') %}
-                        {{ _T('Need update') }}
-                        {% set show_db_button = true %}
-                    {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_EXPLICIT') %}
-                        {{ _T('Explicitly disabled') }}
-                        {% set show_activate = true %}
-                    {% else %}
-                        {{ _T('Unknown') }}
-                        {% set show_activate = true %}
-                    {% endif %}
-                </td>
-                <td class="actions_row collapsing">
-                    {% if show_db_button %}
-                        <a
-                                href="{{ url_for("pluginInitDb", {"id": name}) }}"
-                                id="initdb_{{ name }}"
-                                class="initdb action"
-                        >
-                            <i class="ui database blue icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Initialize '%1$s' database")|format(name) }}</span>
-                        </a>
-                    {% endif %}
-
-                    {%  if show_activate %}
-                        <a
-                            href="{{ url_for("pluginsActivation", {"action": "activate", "module_id": name}) }}"
-                            class="toggleActivation delete"
-                        >
-                            <i class="ui toggle off grey icon tooltip" aria-hidden="true"></i>
-                            <span class="ui special popup">{{ _T("Activate plugin '%1$s'")|format(name) }}</span>
-                        </a>
-                    {% endif %}
-                </td>
-            </tr>
+            {{ _self.showPluginEntry(name, plugin) }}
 {% else %}
             <tr>
                 <td colspan="6">{{ _T('No inactive plugin.') }}</td>

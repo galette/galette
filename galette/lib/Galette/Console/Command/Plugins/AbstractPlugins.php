@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace Galette\Console\Command\Plugins;
 
 use Galette\Console\Command\AbstractCommand;
+use Galette\Core\Plugins;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,9 +40,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 abstract class AbstractPlugins extends AbstractCommand
 {
+    use DisplayCause;
+
     public const ALL = '*';
 
-    protected \Galette\Core\Plugins $plugins;
+    protected Plugins $plugins;
 
     /**
      * Default constructor
@@ -53,7 +56,7 @@ abstract class AbstractPlugins extends AbstractCommand
         global $container;
 
         parent::__construct($basepath);
-        $this->plugins = $container->get(\Galette\Core\Plugins::class);
+        $this->plugins = $container->get(Plugins::class);
     }
 
     /**
@@ -152,7 +155,7 @@ abstract class AbstractPlugins extends AbstractCommand
      */
     protected function getActivePlugins(): array
     {
-        return array_keys($this->plugins->getModules());
+        return array_keys($this->plugins->getActiveModules());
     }
 
     /**
