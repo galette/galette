@@ -28,7 +28,6 @@ use Galette\Core\Plugins;
 /**
  * Display cause trait
  *
- *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 trait DisplayCause

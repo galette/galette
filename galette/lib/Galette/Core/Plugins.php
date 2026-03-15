@@ -29,7 +29,6 @@ use Analog\Analog;
 use Galette\Common\ClassLoader;
 use Galette\Exception\MissingPluginException;
 use League\Event\EventDispatcher;
-use LogicException;
 use PDOException;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
