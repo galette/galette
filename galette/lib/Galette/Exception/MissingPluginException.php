@@ -33,7 +33,11 @@ use Throwable;
  */
 class MissingPluginException extends LogicException
 {
-    public function __construct(string $id,int $code = 0, ?Throwable $previous = null) {
+    /**
+     * Construct the exception
+     */
+    public function __construct(string $id, int $code = 0, ?Throwable $previous = null)
+    {
         parent::__construct(
             sprintf(
                 'Module "%s" does not exist!',
