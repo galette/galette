@@ -647,6 +647,14 @@ class Plugins
      */
     public function getDisabledCause(string $id): int
     {
+        if (!$this->moduleExists($id)) {
+            throw new MissingPluginException($id);
+        }
+        if (!isset($this->disabled[$id])) {
+            throw new \LogicException(
+                sprintf('Module "%s" is not disabled!', $id)
+            );
+        }
         return $this->disabled[$id];
     }
 
