@@ -144,6 +144,37 @@ class PluginsController extends AbstractController
 
         $plugin = $this->plugins->getModule($plugid);
 
+        // Reject plugins that cannot be installed or updated due to missing files
+        // or incompatibility. Only plugins that are installable/upgradable should
+        // reach the database initialization step.
+        if (
+            isset($plugin['disabled'])
+            && in_array($plugin['disabled'], ['DISABLED_MISS', 'DISABLED_COMPAT'], true)
+        ) {
+            Analog::log(
+                'Plugin `' . $plugid . '` is disabled and cannot be initialized (reason: '
+                . $plugin['disabled'] . ').',
+                Analog::WARNING
+            );
+
+            return $response->withStatus(404);
+        }
+
+        // If available, ensure the plugin actually uses a database before offering
+        // database initialization.
+        if (
+            method_exists($this->plugins, 'needsDatabase')
+            && !$this->plugins->needsDatabase($plugid)
+        ) {
+            Analog::log(
+                'Database initialization requested for plugin `' . $plugid
+                . '` that does not require a database.',
+                Analog::WARNING
+            );
+
+            return $response->withStatus(400);
+        }
+
         $mdplugin = md5((string)$plugin['root']);
         if (
             isset($this->session->$mdplugin)
