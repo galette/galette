@@ -78,8 +78,6 @@ class Plugins
     protected array $modules = [];
     /** @var array<ModuleId, self::DISABLED_*> */
     protected array $disabled = [];
-    /** @var array<ModuleId, int> */
-    protected array $incompatible = [];
     /** @var array<ModuleId, ?float> */
     protected array $db_existing = [];
     /** @var string[] */
