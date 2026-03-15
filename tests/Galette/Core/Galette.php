@@ -538,7 +538,6 @@ class Galette extends GaletteTestCase
         $this->assertCount(1, $entries);
 
         $this->plugins
-            ->setDb($this->zdb)
             ->setContainer($this->container)
             ->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $this->plugins->activateModule('plugin-news');
