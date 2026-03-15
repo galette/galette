@@ -82,14 +82,36 @@ class PluginInstallDb extends AbstractPlugins
 
         $relevant_plugins = [];
         foreach ($plugins as $module_id => $module) {
-            if ($this->plugins->needsDatabase($module_id)) {
-                $relevant_plugins[$module_id] = $module;
-            } else {
+            if (!$this->plugins->needsDatabase($module_id)) {
                 $io->writeln(
                     sprintf('Plugin "%s" does not use a database', $module_id),
                     OutputInterface::VERBOSITY_VERBOSE
                 );
+                continue;
             }
+
+            // Only consider plugins that are disabled because they are not installed
+            // or not up to date. Other disabled causes (e.g. incompatibility, missing
+            // files) are not suitable for running installation scripts.
+            $disabled_cause = $module['disabled'] ?? null;
+            $allowed_causes = [
+                Plugins::DISABLED_NOT_INSTALLED,
+                Plugins::DISABLED_NOT_UP2DATE,
+            ];
+
+            if (!in_array($disabled_cause, $allowed_causes, true)) {
+                $io->writeln(
+                    sprintf(
+                        'Plugin "%s" is disabled (%s); skipping database installation',
+                        $module_id,
+                        (string)$disabled_cause
+                    ),
+                    OutputInterface::VERBOSITY_VERBOSE
+                );
+                continue;
+            }
+
+            $relevant_plugins[$module_id] = $module;
         }
 
         return $relevant_plugins;
