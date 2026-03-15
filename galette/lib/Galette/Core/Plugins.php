@@ -27,6 +27,7 @@ use DI\Attribute\Inject;
 use Exception;
 use Analog\Analog;
 use Galette\Common\ClassLoader;
+use Galette\Exception\MissingPluginException;
 use League\Event\EventDispatcher;
 use LogicException;
 use PDOException;
@@ -573,10 +574,7 @@ class Plugins
         if (isset($this->modules[$id])) {
             return $this->modules[$id];
         }
-
-        throw new RuntimeException(
-            sprintf('Module "%s" does not exist!', $id)
-        );
+        throw new MissingPluginException($id);
     }
 
     /**
@@ -634,7 +632,7 @@ class Plugins
     public function getDisabledModule(string $id): array
     {
         if (!$this->moduleExists($id)) {
-            throw new LogicException(sprintf('Module "%s" does not exist!', $id));
+            throw new MissingPluginException($id);
         }
         if (!isset($this->disabled[$id])) {
             throw new \LogicException(
@@ -784,7 +782,7 @@ class Plugins
             $d = $this->modules[$id]['root'] . '/scripts/';
             return file_exists($d);
         } else {
-            throw new LogicException(sprintf('Module "%s" does not exist!', $id));
+            throw new MissingPluginException($id);
         }
     }
 
@@ -862,7 +860,7 @@ class Plugins
     public function getFile(string $id, string $path): string
     {
         if (!$this->moduleExists($id)) {
-            throw new LogicException(sprintf('Module "%s" does not exist!', $id));
+            throw new MissingPluginException($id);
         }
 
         if ($this->isDisabled($id)) {
