@@ -24,10 +24,10 @@ declare(strict_types=1);
 namespace Galette\Console\Command\Plugins;
 
 use Galette\Core\Plugins;
-use RuntimeException;
 
 /**
  * Display cause trait
+ *
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -45,7 +45,7 @@ trait DisplayCause
             Plugins::DISABLED_DBVERSION => 'Database version missing',
             Plugins::DISABLED_NOT_INSTALLED => 'Not installed',
             Plugins::DISABLED_NOT_UP2DATE => 'Need update',
-            default => throw new RuntimeException('Unknown cause: ' . $cause),
+            default => 'Unknown cause (' . $cause . ')',
         };
     }
 }
