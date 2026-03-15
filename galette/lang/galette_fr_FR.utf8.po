@@ -4073,7 +4073,7 @@ msgstr "Un fichier requis est manquant"
 msgid "Incompatible with current version"
 msgstr "Incompatible avec la version courante"
 
-msgid "Explicitely disabled"
+msgid "Explicitly disabled"
 msgstr "Désactivé explicitement"
 
 msgid "Unknown"

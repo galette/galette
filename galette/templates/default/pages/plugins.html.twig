@@ -89,7 +89,7 @@
                     {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_COMPAT') %}
                         {{ _T('Incompatible with current version') }}
                     {% elseif plugin.cause == constant('Galette\\Core\\Plugins::DISABLED_EXPLICIT') %}
-                        {{ _T('Explicitely disabled') }}
+                        {{ _T('Explicitly disabled') }}
                     {% else %}
                         {{ _T('Unknown') }}
                     {% endif %}

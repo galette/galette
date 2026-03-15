@@ -3998,7 +3998,7 @@ msgstr "Необхідний файл відсутній"
 msgid "Incompatible with current version"
 msgstr "Несумісно з поточною версією"
 
-msgid "Explicitely disabled"
+msgid "Explicitly disabled"
 msgstr "Явно вимкнено"
 
 msgid "Unknown"

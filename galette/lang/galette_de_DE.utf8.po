@@ -4074,7 +4074,7 @@ msgstr "Eine benötigte Datei fehlt"
 msgid "Incompatible with current version"
 msgstr "Nicht mit der aktuellen Version kompatibel"
 
-msgid "Explicitely disabled"
+msgid "Explicitly disabled"
 msgstr "Ausdrücklich deaktiviert"
 
 msgid "Unknown"

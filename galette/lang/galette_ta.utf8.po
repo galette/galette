@@ -3954,7 +3954,7 @@ msgstr "தேவையான கோப்பு இல்லை"
 msgid "Incompatible with current version"
 msgstr "தற்போதைய பதிப்போடு பொருந்தாது"
 
-msgid "Explicitely disabled"
+msgid "Explicitly disabled"
 msgstr "வெளிப்படையாக முடக்கப்பட்டது"
 
 msgid "Unknown"

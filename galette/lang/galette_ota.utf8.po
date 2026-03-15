@@ -3840,7 +3840,7 @@ msgstr ""
 msgid "Incompatible with current version"
 msgstr ""
 
-msgid "Explicitely disabled"
+msgid "Explicitly disabled"
 msgstr ""
 
 msgid "Unknown"

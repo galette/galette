@@ -4798,7 +4798,7 @@ msgid "Incompatible with current version"
 msgstr "Incompatible amb la versió actual"
 
 #, fuzzy
-msgid "Explicitely disabled"
+msgid "Explicitly disabled"
 msgstr "Explícitament desactivat"
 
 #, fuzzy

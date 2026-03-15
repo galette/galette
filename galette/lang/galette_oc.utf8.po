@@ -4049,7 +4049,7 @@ msgstr "Un fichier reclamat manca"
 msgid "Incompatible with current version"
 msgstr "Incompatible amb la version correnta"
 
-msgid "Explicitely disabled"
+msgid "Explicitly disabled"
 msgstr "Explicitament desactivat"
 
 msgid "Unknown"

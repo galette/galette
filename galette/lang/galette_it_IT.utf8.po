@@ -4063,7 +4063,7 @@ msgstr "Manca un file richiesto"
 msgid "Incompatible with current version"
 msgstr "Incompatibile con la versione attuale"
 
-msgid "Explicitely disabled"
+msgid "Explicitly disabled"
 msgstr "Disabilitati esplicitamente"
 
 msgid "Unknown"
