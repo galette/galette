@@ -70,8 +70,19 @@ class PluginInstall extends Install
     public function setPluginInstalled(Db $zdb, Plugins $plugins, string $id): self
     {
         $module = $plugins->getModule($id);
+
+        if (!$plugins->isDisabled($id)) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Cannot install plugin %s, plugin is not disabled.',
+                    $id
+                )
+            );
+        }
+
         if (isset($module['dbversion'])) {
-            switch ($plugins->getDisabledCause($id)) {
+            $disabledCause = $plugins->getDisabledCause($id);
+            switch ($disabledCause) {
                 case $plugins::DISABLED_NOT_INSTALLED:
                     //add plugin in db
                     $insert = $zdb->insert($plugins::TABLE);
@@ -98,7 +109,7 @@ class PluginInstall extends Install
                         sprintf(
                             'Cannot install plugin %s, wrong disabled cause %s.',
                             $id,
-                            $plugins->getDisabledCause($id)
+                            $disabledCause
                         )
                     );
             }
