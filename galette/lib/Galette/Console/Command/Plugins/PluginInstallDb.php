@@ -126,17 +126,10 @@ class PluginInstallDb extends AbstractPlugins
      */
     protected function getSelectedModules(SymfonyStyle $io, array $requested): array
     {
-        //TODO: can maybe be simplified
         $relevant = $this->getRelevantPlugins($io);
-        $selected = [];
-        foreach ($requested as $module_id) {
-            if (isset($relevant[$module_id]) && $this->plugins->needsDatabase($module_id)) {
-                $selected[$module_id] = $relevant[$module_id];
-            } else {
-                $io->warning(sprintf('Invalid command for plugin "%s". Check its state.', $module_id));
-            }
+        foreach (array_diff($requested, array_keys($relevant)) as $module_id) {
+            $io->warning(sprintf('Invalid command for plugin "%s". Check its state.', $module_id));
         }
-
-        return $selected;
+        return array_intersect_key($relevant, array_flip($requested));
     }
 }
