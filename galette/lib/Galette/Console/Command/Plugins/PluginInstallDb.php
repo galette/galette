@@ -91,9 +91,8 @@ class PluginInstallDb extends AbstractPlugins
             }
 
             // Only consider plugins that are disabled because they are not installed
-            // or not up to date. Other disabled causes (e.g. incompatibility, missing
-            // files) are not suitable for running installation scripts.
-            $disabled_cause = $module['disabled'] ?? null;
+            // or not up to date. Other disabled causes are not suitable for running installation scripts.
+            $disabled_cause = $this->plugins->getDisabledCause($module_id);
             $allowed_causes = [
                 Plugins::DISABLED_NOT_INSTALLED,
                 Plugins::DISABLED_NOT_UP2DATE,
@@ -104,7 +103,7 @@ class PluginInstallDb extends AbstractPlugins
                     sprintf(
                         'Plugin "%s" is disabled (%s); skipping database installation',
                         $module_id,
-                        (string)$disabled_cause
+                        $this->getDisplayCause($disabled_cause)
                     ),
                     OutputInterface::VERBOSITY_VERBOSE
                 );
@@ -127,13 +126,14 @@ class PluginInstallDb extends AbstractPlugins
      */
     protected function getSelectedModules(SymfonyStyle $io, array $requested): array
     {
+        //TODO: can maybe be simplified
         $relevant = $this->getRelevantPlugins($io);
         $selected = [];
         foreach ($requested as $module_id) {
             if (isset($relevant[$module_id]) && $this->plugins->needsDatabase($module_id)) {
                 $selected[$module_id] = $relevant[$module_id];
             } else {
-                $io->warning(sprintf('Plugin "%s" is not relevant for this command', $module_id));
+                $io->warning(sprintf('Invalid command for plugin "%s". Check its state.', $module_id));
             }
         }
 
