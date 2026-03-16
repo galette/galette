@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Core\Plugins;
 use Throwable;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -148,12 +149,12 @@ class PluginsController extends AbstractController
         // or incompatibility. Only plugins that are installable/upgradable should
         // reach the database initialization step.
         if (
-            isset($plugin['disabled'])
-            && in_array($plugin['disabled'], ['DISABLED_MISS', 'DISABLED_COMPAT'], true)
+            $this->plugins->isDisabled($plugid)
+            && in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_MISS, Plugins::DISABLED_COMPAT], true)
         ) {
             Analog::log(
                 'Plugin `' . $plugid . '` is disabled and cannot be initialized (reason: '
-                . $plugin['disabled'] . ').',
+                . $this->plugins->getDisabledCause($plugid) . ').',
                 Analog::WARNING
             );
 
@@ -162,10 +163,7 @@ class PluginsController extends AbstractController
 
         // If available, ensure the plugin actually uses a database before offering
         // database initialization.
-        if (
-            method_exists($this->plugins, 'needsDatabase')
-            && !$this->plugins->needsDatabase($plugid)
-        ) {
+        if (!$this->plugins->needsDatabase($plugid)) {
             Analog::log(
                 'Database initialization requested for plugin `' . $plugid
                 . '` that does not require a database.',

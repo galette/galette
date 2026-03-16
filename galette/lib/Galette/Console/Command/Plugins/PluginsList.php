@@ -138,10 +138,10 @@ class PluginsList extends AbstractCommand
         array $module,
         array &$definitions
     ): void {
-        $name = $module['name'] ?? $module_id;
-        $desc = $module['desc'] ?? '';
-        $version = $module['version'] ?? 'N/A';
-        $author = $module['author'] ?? '';
+        $name = $module['name'];
+        $desc = $module['desc'];
+        $version = $module['version'];
+        $author = $module['author'];
         $date = $module['date'] ?? 'N/A';
 
         $tag = $this->plugins->isDisabled($module_id) ? 'error' : 'info';
