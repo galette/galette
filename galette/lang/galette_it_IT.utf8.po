@@ -27,19 +27,20 @@
 # Marco Ciampa <ciampix@posteo.net>, 2024, 2025.
 # Roberto Resoli <roberto@resolutions.it>, 2024.
 # Ilario Quinson <ilario.quinson@e.email>, 2024.
+# Fuurio Williams <yellbilly@gmail.com>, 2026.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-03-15 14:53+0100\n"
-"PO-Revision-Date: 2025-11-12 17:51+0000\n"
-"Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
+"PO-Revision-Date: 2026-03-17 15:09+0000\n"
+"Last-Translator: Fuurio Williams <yellbilly@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 
 msgid "Unable to load transaction #%id!"
 msgstr "Impossibile caricare la transazione #%id!"
@@ -3110,11 +3111,11 @@ msgstr ""
 
 #, php-format
 msgid "Choices for field %d have been migrated."
-msgstr ""
+msgstr "Le scelte per il campo %d sono state migrate."
 
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
-msgstr ""
+msgstr "Non è stato possibile migrare le scelte per il campo %d: %s"
 
 msgid "Galette has been successfully installed!"
 msgstr "Galette è stato installato con successo!"
@@ -3939,10 +3940,8 @@ msgstr ""
 msgid "Demonstration"
 msgstr "Dimostrazione"
 
-#, fuzzy
-#| msgid "Main menu"
 msgid "Maintenance"
-msgstr "Menù principale"
+msgstr "Manutenzione"
 
 msgid "No member attached"
 msgstr "Nessun membro collegato"
