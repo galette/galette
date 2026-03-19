@@ -24,11 +24,10 @@ if ($db_installed === false) {
     }
     echo '<p class="ui red message">' . $msg . '</p>';
 } else {
-    $msg = _T("Database has been installed :)");
-    if ($install->isUpgrade()) {
-        $msg = _T("Database has been upgraded :)");
-    }
-    echo '<p class="ui green message">' . $msg . '</p>';
+    // early bypass
+    //FIXME: breaks regular installer
+    echo 'install_dbwrite_ok';
+    return;
 }
 ?>
     <ul class="leaders">

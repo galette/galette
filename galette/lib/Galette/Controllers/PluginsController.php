@@ -238,18 +238,48 @@ class PluginsController extends AbstractController
                 include_once GALETTE_ROOT . '/install/steps/db_checks.php';
                 $params['results'] = ob_get_contents();
                 ob_end_clean();
-                break;
+                if ($params['results'] !== 'install_dbperms_ok') {
+                    break;
+                }
+
+                if ($install->isInstall()) {
+                    $install->atDbInstallStep();
+                } elseif ($install->isUpgrade()) {
+                    $install->atVersionSelection();
+                }
+
+                $istep = $post['install_type'] === PluginInstall::INSTALL ? 4 : 3;
+                if ($post['install_type'] == PluginInstall::INSTALL) {
+                    $step = 'i' . $istep;
+                } elseif ($post['install_type'] == PluginInstall::UPDATE) {
+                    $step = 'u' . $istep;
+                }
+                $post['install_dbperms_ok'] = 1;
+                //nobreak when permissions are ok, we can go to next step
             case 'u3':
-                $update_scripts = Install::getUpdateScripts($plugin['root'], TYPE_DB);
-                $params['update_scripts'] = $update_scripts;
-                break;
+                if ($step == 'u3') {
+                    $update_scripts = Install::getUpdateScripts($plugin['root'], TYPE_DB);
+                    $params['update_scripts'] = $update_scripts;
+                    break;
+                }
             case 'i4':
             case 'u4':
-                $install->setDbType(TYPE_DB, $error_detected);
-                $install->setTablesPrefix(PREFIX_DB);
-                $install->setInstalledVersion($post['previous_version'] ?? null);
-                $install->executeScripts($this->zdb, $plugin['root']);
-                break;
+                if ($install->setDbType(TYPE_DB, $error_detected)
+                    ->setTablesPrefix(PREFIX_DB)
+                    ->setInstalledVersion($post['previous_version'] ?? null)
+                    ->executeScripts($this->zdb, $plugin['root'])
+                ) {
+                    $install->atEndStep();
+                    $istep = 5;
+                    if ($post['install_type'] == PluginInstall::INSTALL) {
+                        $step = 'i' . $istep;
+                    } elseif ($post['install_type'] == PluginInstall::UPDATE) {
+                        $step = 'u' . $istep;
+                    }
+                    $post['install_dbwrite_ok'] = 1;
+                } else{
+                    break;
+                }
             case 'i5':
             case 'u5':
                 $install->setPluginInstalled($this->zdb, $this->plugins, $plugid);
