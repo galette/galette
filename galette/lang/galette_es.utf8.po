@@ -39,13 +39,13 @@
 # gallegonovato <fran-carro@hotmail.es>, 2022, 2023, 2024.
 # Kamborio <Kamborio15@users.noreply.hosted.weblate.org>, 2024.
 # Marco Moreno <hibarioath@proton.me>, 2025.
-# Francisco Serrador <fserrador@gmail.com>, 2025.
+# Francisco Serrador <fserrador@gmail.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-03-15 14:53+0100\n"
-"PO-Revision-Date: 2025-11-27 05:01+0000\n"
+"PO-Revision-Date: 2026-03-19 10:10+0000\n"
 "Last-Translator: Francisco Serrador <fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -54,10 +54,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 
 msgid "Unable to load transaction #%id!"
-msgstr "¡No se ha podido cargar la transacción #%id!"
+msgstr "¡No se ha podido cargar la transacción nº %id!"
 
 msgid "Transaction"
 msgstr "Transacción"
@@ -72,19 +72,19 @@ msgid "An error occurred while storing the transaction."
 msgstr "Se ha producido un error al almacenar la transacción."
 
 msgid "Transaction has been successfully stored"
-msgstr "Se ha almacenado con éxito la transacción"
+msgstr "Se ha almacenado correctamente la transacción"
 
 msgid "Contribution has been successfully attached to current transaction"
-msgstr "Se ha adjuntado con éxito la contribución a la transacción actual"
+msgstr "Se ha adjuntado correctamente la contribución a la transacción actual"
 
 msgid "Unable to attach contribution to transaction"
 msgstr "No se ha podido adjuntar la contribución a la transacción"
 
 msgid "Contribution has been successfully detached from current transaction"
-msgstr "Se ha separado con éxito la contribución de la transacción actual"
+msgstr "Se ha separado correctamente la contribución de la transacción actual"
 
 msgid "Unable to detach contribution from transaction"
-msgstr "No se ha podido desadjuntar la contribución de la transacción"
+msgstr "No se ha podido separar la contribución de la transacción"
 
 msgid "Payment types"
 msgstr "Tipos de pagos"
@@ -109,47 +109,47 @@ msgstr "Se ha añadido con éxito el tipo de pago '%1$s'."
 
 #, php-format
 msgid "Payment type '%1$s' has been successfully modified."
-msgstr "Se ha modificado con éxito el tipo de pago '%1$s'."
+msgstr "Se ha modificado correctamente el tipo de pago '%1$s'."
 
 #, php-format
 msgid "Remove payment type %1$s"
 msgstr "Quitar tipo de pago %1$s"
 
 msgid "Contribution is fully scheduled!"
-msgstr "¡Contribución totalmente programada!"
+msgstr "¡Contribución totalmente planificada!"
 
 msgid "Add scheduled payment"
-msgstr "Añadir pago programado"
+msgstr "Añadir pago planificado"
 
 msgid "List of scheduled payments"
-msgstr "Lista de pagos programados"
+msgstr "Lista de pagos planificados"
 
 msgid "- Unknown payment type!"
 msgstr "- ¡Tipo de pago desconocido!"
 
 msgid "No scheduled payment was selected, please check at least one."
 msgstr ""
-"No se ha seleccionado ningún pago programado, por favor marca uno al menos."
+"No se ha seleccionado ningún pago planificado, por favor marca uno al menos."
 
 msgid "Edit scheduled payment"
-msgstr "Editar pago programado"
+msgstr "Editar pago planificado"
 
 msgid "Scheduled payment has not been added!"
-msgstr "¡No se ha añadido el pago programado!"
+msgstr "¡No se ha añadido el pago planificado!"
 
 msgid "Scheduled payment has not been modified!"
-msgstr "¡No se ha modificado el pago programado!"
+msgstr "¡No se ha modificado el pago planificado!"
 
 msgid "Scheduled payment has been successfully added."
-msgstr "Se ha añadido con éxito un pago programado."
+msgstr "Se ha añadido con éxito un pago planificado."
 
 msgid "Scheduled payment has been successfully modified."
-msgstr "Se ha modificado con éxito el pago programado."
+msgstr "Se ha modificado correctamente el pago planificado."
 
 msgid "Remove scheduled payment"
 msgid_plural "Remove scheduled payments"
-msgstr[0] "Pago programado eliminado"
-msgstr[1] "Pagos programados eliminados"
+msgstr[0] "Pago planificado eliminado"
+msgstr[1] "Pagos planificados eliminados"
 
 msgid "Group name is missing!"
 msgstr "¡Falta el nombre del grupo!"
@@ -1078,10 +1078,10 @@ msgid "View and filter all my contributions"
 msgstr "Mostrar y filtrar todas mis contribuciones"
 
 msgid "My scheduled payments"
-msgstr "Mis pagos programados"
+msgstr "Mis pagos planificados"
 
 msgid "View and filter all my scheduled payments"
-msgstr "Ver y filtrar todos mis pagos programados"
+msgstr "Ver y filtrar todos mis pagos planificados"
 
 msgid "My transactions"
 msgstr "Mis transacciones"
@@ -1126,7 +1126,7 @@ msgid "View and filter contributions"
 msgstr "Ver y filtrar contribuciones"
 
 msgid "View and filter scheduled payments"
-msgstr "Ver y filtrar los pagos programados"
+msgstr "Ver y filtrar los pagos planificados"
 
 msgid "View and filter transactions"
 msgstr "Ver y filtrar transacciones"
@@ -1448,7 +1448,7 @@ msgid "Searches deleted (%list)"
 msgstr "Búsquedas eliminadas (%list)"
 
 msgid "Scheduled payments deleted (%list)"
-msgstr "Pagos programados eliminados (%list)"
+msgstr "Pagos planificados eliminados (%list)"
 
 msgid "Contributions deleted (%list)"
 msgstr "Contribuciones eliminadas (%list)"
@@ -1569,7 +1569,6 @@ msgstr "Miembros por grupos"
 msgid "Generated by Galette"
 msgstr "Generado por Galette"
 
-#, fuzzy
 msgid "Managers:"
 msgstr "Gestores:"
 
@@ -1944,7 +1943,7 @@ msgid "End date"
 msgstr "Fecha de finalización"
 
 msgid "Contribution id"
-msgstr "ID de contribucion"
+msgstr "Id de contribución"
 
 msgid "Payment type"
 msgstr "Tipo de pago"
@@ -2203,7 +2202,7 @@ msgid "Membership"
 msgstr "Membresía"
 
 msgid "Cannot change payment type if there is an attached scheduled payment"
-msgstr "No se puede cambiar el tipo de pago si hay un pago programado adjunto"
+msgstr "No se puede cambiar el tipo de pago si hay un pago planificado adjunto"
 
 msgid "Association status"
 msgstr "Estado de la organización"
@@ -2257,13 +2256,13 @@ msgid "Amount cannot be greater than non allocated amount"
 msgstr "El importe no puede ser mayor que el importe no asignado"
 
 msgid "Payment type for contribution must be set to scheduled"
-msgstr "El tipo de pago para la contribución debe ser establecido a programado"
+msgstr "El tipo de pago para la contribución debe ser establecido a planificado"
 
 msgid "Payment type is required"
 msgstr "El tipo de pago es obligatorio"
 
 msgid "Cannot schedule a scheduled payment!"
-msgstr "¡No se puede programar un pago programado!"
+msgstr "¡No se puede planificar un pago planificado!"
 
 msgid "Scheduled date is required"
 msgstr "La fecha programada es obligatoria"
@@ -2272,7 +2271,7 @@ msgid "Unable to load payment type"
 msgstr "No se pudo cargar el tipo de pago"
 
 msgid "Scheduled payment ID"
-msgstr "Identificador de pago programado"
+msgstr "Identificador de pago planificado"
 
 msgid "Contribution ID"
 msgstr "Identificador de contribución"
@@ -2366,7 +2365,7 @@ msgid "HelloAsso"
 msgstr "HelloAsso"
 
 msgid "Payment schedule"
-msgstr "Pago programado"
+msgstr "Pago planificado"
 
 msgid "You cannot delete default status!"
 msgstr "¡No puedes borrar el estado por defecto!"
@@ -2572,7 +2571,7 @@ msgid "No database name"
 msgstr "Sin nombre de BdD"
 
 msgid "The username cannot contain the @ character"
-msgstr "El ID usuario no puede contener el carácter @"
+msgstr "El nombre del usuario no puede contener el carácter @"
 
 msgid "Galette Installation"
 msgstr "Instalación de Galette"
@@ -2790,7 +2789,7 @@ msgid "Failed CSRF check!"
 msgstr "¡Comprobación CSRF fallida!"
 
 msgid "Member id:"
-msgstr "ID de miembro:"
+msgstr "Id de miembro:"
 
 msgid "Status:"
 msgstr "Estado:"
@@ -3136,11 +3135,11 @@ msgstr ""
 
 #, php-format
 msgid "Choices for field %d have been migrated."
-msgstr ""
+msgstr "Las elecciones para el campo %d han sido migradas."
 
 #, php-format
 msgid "Unable to migrate choices for field %d: %s"
-msgstr ""
+msgstr "No es capaz de migrar elecciones para el campo %d: %s"
 
 msgid "Galette has been successfully installed!"
 msgstr "¡Galette ha sido instalado correctamente!"
@@ -3960,10 +3959,8 @@ msgstr ""
 msgid "Demonstration"
 msgstr "Demostración"
 
-#, fuzzy
-#| msgid "Main menu"
 msgid "Maintenance"
-msgstr "Menú principal"
+msgstr "Mantenimiento"
 
 msgid "No member attached"
 msgstr "Ningún miembro adjunto"
@@ -4209,9 +4206,8 @@ msgstr "Es un hombre"
 msgid "Is a woman"
 msgstr "Es una mujer"
 
-#, fuzzy
 msgid "Manages:"
-msgstr "Gestores:"
+msgstr "Gestiones:"
 
 msgid "Transaction details"
 msgstr "Detalles de transacción"
@@ -4373,13 +4369,13 @@ msgid "Amount is not fully dispatched"
 msgstr "La cantidad no está despachada completamente"
 
 msgid "View scheduled payments"
-msgstr "Ver pagos programados"
+msgstr "Ver pagos planificados"
 
 msgid "Is part of a transaction"
 msgstr "Es parte de una transacción"
 
 msgid "Has scheduled payments"
-msgstr "Tiene pagos programados"
+msgstr "Tiene pagos planificados"
 
 #, php-format
 msgid "Show only '%1$s' contributions"
@@ -4907,10 +4903,10 @@ msgid "Not dispatched amount"
 msgstr "Cantidad no enviada"
 
 msgid "Scheduled payments"
-msgstr "Pagos programados"
+msgstr "Pagos planificados"
 
 msgid "Create a new scheduled payment"
-msgstr "Crear un nuevo pago programado"
+msgstr "Crear un nuevo pago planificado"
 
 msgid "Details of membership fee"
 msgstr "Detalles de la tarifa de membresía"
@@ -4925,11 +4921,11 @@ msgid ""
 "present form must equal the total of all the scheduled payments you will "
 "define next."
 msgstr ""
-"Al seleccionar el tipo de pago programado, se añadirá una contribución y se "
-"le solicitará que cree los pagos programados correspondientes "
-"posteriormente. En ese caso, el importe de la contribución en este "
-"formulario debe ser igual al total de todos los pagos programados que "
-"definirá a continuación."
+"Al seleccionar el tipo de pago <strong>planificado</strong>, se añadirá una "
+"contribución y se le solicitará que cree los pagos planificados "
+"correspondientes posteriormente. En ese caso, el importe de la contribución "
+"en este formulario debe ser igual al total de todos los pagos planificados "
+"que definirá a continuación."
 
 msgid "months"
 msgstr "meses"
@@ -4946,7 +4942,7 @@ msgid "Contribution amount should not be greater than %max"
 msgstr "La cantidad de contribución no debería ser superior a %max"
 
 msgid "An error occurred displaying scheduled payments :("
-msgstr "Se ha producido un error al mostrar los pagos programados :("
+msgstr "Se ha producido un error al mostrar los pagos planificados :("
 
 msgid "Mailing information"
 msgstr "Información de correspondencia"
@@ -5031,7 +5027,7 @@ msgstr ""
 "deshacerse."
 
 msgid "Scheduled payment"
-msgstr "Pago programado"
+msgstr "Pago planificado"
 
 msgid "View contribution"
 msgstr "Ver contribución"
@@ -5889,12 +5885,12 @@ msgstr "Muestra todos los miembros de pagos planificados"
 #, php-format
 msgid "%1$s scheduled payment"
 msgid_plural "%1$s scheduled payments"
-msgstr[0] "%1$s pago programado"
-msgstr[1] "%1$s pagos programados"
+msgstr[0] "%1$s pago planificado"
+msgstr[1] "%1$s pagos planificados"
 
 #, php-format
 msgid "Found total scheduled %f"
-msgstr "Se ha encontrado el total programado %f"
+msgstr "Se ha encontrado el total planificado %f"
 
 #, php-format
 msgid "Edit membership fee %1$s"
@@ -5912,10 +5908,10 @@ msgid "Not paid and due"
 msgstr "No pagado y debe"
 
 msgid "Delete scheduled payment"
-msgstr "Eliminar pago programado"
+msgstr "Eliminar pago planificado"
 
 msgid "No scheduled payment"
-msgstr "No hay ningún pago programado"
+msgstr "No hay ningún pago planificado"
 
 msgid "Original string for name, that will be used for translations."
 msgstr ""
