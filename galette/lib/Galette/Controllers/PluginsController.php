@@ -173,6 +173,23 @@ class PluginsController extends AbstractController
             return $response->withStatus(400);
         }
 
+        // At this point, only plugins that *can* use a database are allowed.
+        // We must further restrict initialization to plugins that are currently
+        // disabled because they are either not installed yet or not up to date.
+        if (
+            !$this->plugins->isDisabled($plugid)
+            || !in_array($this->plugins->getDisabledCause($plugid), [Plugins::NOT_INSTALLED, Plugins::NOT_UP2DATE], true)
+        ) {
+            Analog::log(
+                'Database initialization requested for plugin `' . $plugid
+                . '` that is not in an installable/upgradable state (cause: '
+                . $this->plugins->getDisabledCause($plugid) . ').',
+                Analog::WARNING
+            );
+
+            return $response->withStatus(400);
+        }
+
         $mdplugin = md5((string)$plugin['root']);
         if (
             isset($this->session->$mdplugin)
