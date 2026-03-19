@@ -150,7 +150,7 @@ class PluginsController extends AbstractController
         // reach the database initialization step.
         if (
             $this->plugins->isDisabled($plugid)
-            && in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_MISS, Plugins::DISABLED_COMPAT], true)
+            && !in_array($this->plugins->getDisabledCause($plugid), [Plugins::DISABLED_NOT_INSTALLED, Plugins::DISABLED_NOT_UP2DATE], true)
         ) {
             Analog::log(
                 'Plugin `' . $plugid . '` is disabled and cannot be initialized (reason: '
@@ -167,23 +167,6 @@ class PluginsController extends AbstractController
             Analog::log(
                 'Database initialization requested for plugin `' . $plugid
                 . '` that does not require a database.',
-                Analog::WARNING
-            );
-
-            return $response->withStatus(400);
-        }
-
-        // At this point, only plugins that *can* use a database are allowed.
-        // We must further restrict initialization to plugins that are currently
-        // disabled because they are either not installed yet or not up to date.
-        if (
-            !$this->plugins->isDisabled($plugid)
-            || !in_array($this->plugins->getDisabledCause($plugid), [Plugins::NOT_INSTALLED, Plugins::NOT_UP2DATE], true)
-        ) {
-            Analog::log(
-                'Database initialization requested for plugin `' . $plugid
-                . '` that is not in an installable/upgradable state (cause: '
-                . $this->plugins->getDisabledCause($plugid) . ').',
                 Analog::WARNING
             );
 

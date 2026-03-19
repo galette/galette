@@ -57,6 +57,7 @@ class PluginInstall extends Install
      */
     public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
+        //TODO: plugins should be able to add objects to initialize
         return false;
     }
 
@@ -71,17 +72,20 @@ class PluginInstall extends Install
     {
         $module = $plugins->getModule($id);
 
-        if (!$plugins->isDisabled($id)) {
+        /*if (!$plugins->isDisabled($id)) {
             throw new \RuntimeException(
                 sprintf(
                     'Cannot install plugin %s, plugin is not disabled.',
                     $id
                 )
             );
-        }
+        }*/
 
         if (isset($module['dbversion'])) {
-            $disabledCause = $plugins->getDisabledCause($id);
+            $disabledCause = null;
+            if ($plugins->isDisabled($id)) {
+                $disabledCause = $plugins->getDisabledCause($id);
+            }
             switch ($disabledCause) {
                 case $plugins::DISABLED_NOT_INSTALLED:
                     //add plugin in db
@@ -95,6 +99,7 @@ class PluginInstall extends Install
                     $zdb->execute($insert);
                     break;
                 case $plugins::DISABLED_NOT_UP2DATE:
+                case null:
                     //update plugin in db
                     //set database version
                     $update = $zdb->update($plugins::TABLE);
