@@ -164,6 +164,16 @@ $app->add(Language::class);
 //Telemetry update middleware
 $app->add(Telemetry::class);
 
+//CORS requests
+//FIXME/ configure!
+$app->add(function ($request, $handler) {
+    $response = $handler->handle($request);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', 'https://votre-frontend.com')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+});
+
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
@@ -193,6 +203,9 @@ $app->add(function (Request $request, RequestHandler $handler) use ($container) 
 
     return $handler->handle($request);
 });
+
+// Parsing middleware for JSON API
+$app->addBodyParsingMiddleware();
 
 // Add Routing Middleware - required for ACLs to work
 $app->addRoutingMiddleware();

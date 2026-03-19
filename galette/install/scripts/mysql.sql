@@ -386,6 +386,34 @@ CREATE TABLE galette_payments_schedules (
   FOREIGN KEY (id_paymenttype) REFERENCES galette_paymenttypes (type_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
+-- table for refresh tokens (persistent sessions by User/Client)
+DROP TABLE IF EXISTS galette_api_clients;
+CREATE TABLE galette_api_clients (
+  client_id varchar(40) NOT NULL,
+  client_secret varchar(100) NOT NULL,
+  client_name varchar(100) NOT NULL,
+  redirect_uri varchar(255) NOT NULL,
+  is_trusted tinyint(1) DEFAULT 0,
+  created_at datetime NOT NULL,
+  PRIMARY KEY (client_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- table for API clients (3rd party appsApplications tierces, Forums, Mobiles Apps)
+DROP TABLE IF EXISTS galette_api_tokens;
+CREATE TABLE galette_api_tokens (
+  token_id int unsigned NOT NULL auto_increment,
+  id_adh int unsigned NOT NULL,
+  client_id varchar(40) NOT NULL,
+  token_hash varchar(255) NOT NULL,
+  expires_at datetime NOT NULL,
+  is_revoked tinyint(1) DEFAULT 0,
+  allowed_scope longtext,
+  created_at datetime NOT NULL,
+  PRIMARY KEY (token_id),
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents(id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (client_id) REFERENCES galette_api_clients (client_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (

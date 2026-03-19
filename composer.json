@@ -77,7 +77,11 @@
         "league/html-to-markdown": "^5.1",
         "php-di/php-di": "^7.1",
         "psr/http-server-handler": "^1.0",
-        "thecodingmachine/safe": "^3.3"
+        "thecodingmachine/safe": "^3.3",
+        "firebase/php-jwt": "^7.0",
+        "paragonie/sodium_compat": "^2.5",
+        "respect/validation": "^2.4",
+        "zircote/swagger-php": "^6.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^4.0",
