@@ -835,6 +835,14 @@ class Install
     }
 
     /**
+     * Check if a configuration file already exists
+     */
+    public function configurationFileExists(): bool
+    {
+        return file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
+    }
+
+    /**
      * Load existing config
      *
      * @param array<string, string> $post_data      Data posted
@@ -842,7 +850,7 @@ class Install
      */
     public function loadExistingConfig(array $post_data, array &$error_detected): void
     {
-        if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
+        if ($this->configurationFileExists()) {
             $existing = $this->loadExistingConfigFile($post_data);
 
             if ($existing['db_type'] !== null) {

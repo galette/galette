@@ -48,11 +48,39 @@ echo '<p>' . _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT
 if ($install->isUpgrade()) {
     echo '<div class="ui orange message"><p>' . _T("Enter connection data for the existing database.") . '</p></div>';
     $install->loadExistingConfig($_POST, $error_detected);
-} elseif (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
+} elseif ($install->configurationFileExists()) {
     echo '<div class="ui orange message"><p>' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . '</p></div>';
-    $install->loadExistingConfig($_POST, $error_detected);
 }
 ?>
+<?php
+if ($install->configurationFileExists()) {
+    ?>
+        <div class="ui top attached stackable pointing inverted menu">
+            <a class="item active" data-tab="existing"><?php echo _T("Existing configuration file") ?></a>
+            <a class="item" data-tab="new"><?php echo _T("Enter your configuration") ?></a>
+        </div>
+        <div class="ui bottom attached tab segment active" data-tab="existing">
+            <div class="ui blue message">
+                <p><?php echo _T("Use your superadmin credentials to retrieve database connection values from existing configuration file."); ?></p>
+            </div>
+            <div class="field">
+                <div class="ui left icon input">
+                    <i class="user icon" aria-hidden="true"></i><label for="login" class="visually-hidden"><?php echo _T("Username:"); ?></label>
+                    <input type="text" name="login" id="login" autofocus placeholder="<?php echo _T("Username:"); ?>"/>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui left icon input">
+                    <i class="lock icon" aria-hidden="true"></i><label for="password" class="visually-hidden"><?php echo _T("Password:"); ?></label>
+                    <input type="password" name="password" id="password" placeholder="<?php echo _T("Password:"); ?>"/>
+                </div>
+            </div>
+            <input type="hidden" name="ident" value="1" />
+        </div>
+    <?php
+}
+?>
+        <div class="ui bottom attached tab segment" data-tab="new">
         <div class="inline required field">
             <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
             <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen">
@@ -92,6 +120,7 @@ if ($install->isUpgrade()) {
 }
 ?>
             </div>
+        </div>
         </div>
         <div class="ui section divider"></div>
         <div class="ui mobile reversed tablet reversed computer reversed equal width grid">
