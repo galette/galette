@@ -25,6 +25,7 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use DateInterval;
+use Galette\Entity\Attributes\Column;
 use Safe\DateTime;
 use Galette\Events\GaletteEvent;
 use Galette\Features\HasEvent;
@@ -91,11 +92,17 @@ class Contribution implements AccessManagementInterface
     public const STATUS_LATE = 4;
     public const STATUS_OLD = 5;
 
+    #[Column(name: 'id_cotis', insertable: false, updatable: false)]
     private int $id;
+    #[Column(name: 'date_enreg')]
     private ?string $date = null;
+    #[Column(name: 'id_adh')]
     private ?int $member = null;
+    #[Column(name: 'id_type_cotis')]
     private ?ContributionsTypes $type = null;
+    #[Column(name: 'montant_cotis')]
     private ?float $amount = null;
+    #[Column(name: 'type_paiement_cotis')]
     private ?int $payment_type;
     private ?float $orig_amount = null;
     private ?string $info = null;

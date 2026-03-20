@@ -69,3 +69,9 @@ parameters:
                 - tests/TestsBootstrap.php
 includes:
     - galette/vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
+
+services:
+    -
+        class: Galette\Tests\PHPStan\RequireEntityConstantRule
+        tags:
+            - phpstan.rules.rule
