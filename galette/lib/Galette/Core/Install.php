@@ -900,10 +900,10 @@ class Install
 
         if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
             try {
-                $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
+                $conf = php_strip_whitespace(GALETTE_CONFIG_PATH . 'config.inc.php');
                 if (!isset($post_data['install_dbtype'])) {
                     preg_match(
-                        '/TYPE_DB["\'], ["\'](.*)["\']\);/',
+                        '/TYPE_DB["\'], ["\'](.[^"\']+)["\']\);/',
                         $conf,
                         $matches
                     );
@@ -913,7 +913,7 @@ class Install
                 }
                 if (!isset($post_data['install_dbhost'])) {
                     preg_match(
-                        '/HOST_DB["\'], ["\'](.*)["\']\);/',
+                        '/HOST_DB["\'], ["\'](.[^"\']+)["\']\);/',
                         $conf,
                         $matches
                     );
@@ -923,7 +923,7 @@ class Install
                 }
                 if (!isset($post_data['install_dbport'])) {
                     preg_match(
-                        '/PORT_DB["\'], ["\'](.*)["\']\);/',
+                        '/PORT_DB["\'], ["\'](.[^"\']+)["\']\);/',
                         $conf,
                         $matches
                     );
@@ -933,7 +933,7 @@ class Install
                 }
                 if (!isset($post_data['install_dbuser'])) {
                     preg_match(
-                        '/USER_DB["\'], ["\'](.*)["\']\);/',
+                        '/USER_DB["\'], ["\'](.[^"\']+)["\']\);/',
                         $conf,
                         $matches
                     );
@@ -943,7 +943,7 @@ class Install
                 }
                 if (!isset($post_data['install_dbname'])) {
                     preg_match(
-                        '/NAME_DB["\'], ["\'](.*)["\']\);/',
+                        '/NAME_DB["\'], ["\'](.[^"\']+)["\']\);/',
                         $conf,
                         $matches
                     );
@@ -955,7 +955,7 @@ class Install
 
                 if (!isset($post_data['install_dbprefix'])) {
                     preg_match(
-                        '/PREFIX_DB["\'], ["\'](.*)["\']\);/',
+                        '/PREFIX_DB["\'], ["\'](.[^"\']+)["\']\);/',
                         $conf,
                         $matches
                     );
@@ -966,7 +966,7 @@ class Install
 
                 if ($pass === true) {
                     preg_match(
-                        '/PWD_DB["\'], ["\'](.*)["\']\);/',
+                        '/PWD_DB["\'], ["\'](.[^"\']+)["\']\);/',
                         $conf,
                         $matches
                     );
