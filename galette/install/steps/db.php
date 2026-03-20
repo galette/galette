@@ -120,7 +120,7 @@ if ($install->configurationFileExists()) {
                 <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo $install->getTablesPrefix() ?? 'galette_'; ?>" required/>
 <?php
 if ($install->isUpgrade()) {
-    echo '<div class="ui compact floating orange message"><p>'
+    echo '<div class="ui orange label"><p>'
         . _T("(Indicate the CURRENT prefix of your Galette tables)")
         . '</p></div>';
 }
