@@ -252,13 +252,13 @@ $(function() {
     }
 });
 
-/* Buttons on db install */
-$('.ui.button.existing')
+/* Checkboxes on db install */
+$('.ui.existing_config')
   .on('click', function() {
     $.tab('change tab', 'existing');
   })
 ;
-$('.ui.button.new')
+$('.ui.new_config')
   .on('click', function() {
     $.tab('change tab', 'new');
   })

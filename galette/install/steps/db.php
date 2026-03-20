@@ -55,8 +55,16 @@ if ($install->isUpgrade()) {
 <?php
 if ($install->configurationFileExists()) {
     ?>
-        <div class="ui button existing"><?php echo _T("Existing configuration file") ?></div>
-        <div class="ui button new"><?php echo _T("Enter your configuration") ?></div>
+        <div class="grouped fields">
+            <div class="ui compact invisible checkbox existing_config">
+                <input type="radio" id="existing_config" name="config_choice">
+                <label for="existing_config" class="ui teal segment"><?php echo _T("Existing configuration file") ?></label>
+            </div>
+            <div class="ui compact invisible checkbox new_config">
+                <input type="radio" id="new_config" name="config_choice">
+                <label for="new_config" class="ui teal segment "><?php echo _T("Enter your configuration") ?></label>
+            </div>
+        </div>
         <div class="ui tab basic fitted segment" data-tab="existing">
             <div class="ui blue message">
                 <p><?php echo _T("Use your superadmin credentials to retrieve database connection values from existing configuration file."); ?></p>
