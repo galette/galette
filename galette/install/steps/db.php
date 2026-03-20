@@ -57,11 +57,11 @@ if ($install->configurationFileExists()) {
     ?>
         <div class="grouped fields">
             <div class="ui compact invisible checkbox existing_config">
-                <input type="radio" id="existing_config" name="config_choice" required="required">
+                <input type="radio" id="existing_config" value="existing_config" name="config_choice" required="required">
                 <label for="existing_config" class="ui teal segment"><?php echo _T("Existing configuration file") ?></label>
             </div>
             <div class="ui compact invisible checkbox new_config">
-                <input type="radio" id="new_config" name="config_choice" required="required">
+                <input type="radio" id="new_config" value="new_config" name="config_choice" required="required">
                 <label for="new_config" class="ui teal segment "><?php echo _T("Enter your configuration") ?></label>
             </div>
         </div>
