@@ -55,11 +55,9 @@ if ($install->isUpgrade()) {
 <?php
 if ($install->configurationFileExists()) {
     ?>
-        <div class="ui top attached stackable pointing inverted menu">
-            <a class="item active" data-tab="existing"><?php echo _T("Existing configuration file") ?></a>
-            <a class="item" data-tab="new"><?php echo _T("Enter your configuration") ?></a>
-        </div>
-        <div class="ui bottom attached tab segment active" data-tab="existing">
+        <div class="ui button existing"><?php echo _T("Existing configuration file") ?></div>
+        <div class="ui button new"><?php echo _T("Enter your configuration") ?></div>
+        <div class="ui tab basic fitted segment" data-tab="existing">
             <div class="ui blue message">
                 <p><?php echo _T("Use your superadmin credentials to retrieve database connection values from existing configuration file."); ?></p>
             </div>
@@ -80,7 +78,7 @@ if ($install->configurationFileExists()) {
     <?php
 }
 ?>
-        <div class="ui bottom attached tab segment" data-tab="new">
+        <div class="ui tab basic fitted segment" data-tab="new">
         <div class="inline required field">
             <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
             <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen">

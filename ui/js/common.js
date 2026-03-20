@@ -143,25 +143,29 @@ var _bindFomanticComponents = function() {
 var _keyboardNavigation = function() {
     // Accordion menus
     var _folds = document.querySelectorAll('[data-fold^="fold-"]');
-    _folds.forEach(item => {
-        item.addEventListener('keydown', event => {
-            if (event.keyCode == 13) {
-                event.target.click();
-            }
-        })
-    });
+    if (_folds) {
+        _folds.forEach(item => {
+            item.addEventListener('keydown', event => {
+                if (event.keyCode == 13) {
+                    event.target.click();
+                }
+            })
+        });
+    }
     // Mobile menu trigger
     var _mobile_menu_trigger = document.querySelector('#top-navbar a.toc.item');
-    _mobile_menu_trigger.addEventListener('keydown', event => {
-        if (event.keyCode == 13) {
-            // Open mobile menu
-            event.target.click();
-            // Jump to mobile menu
-            var url = location.href;
-            location.href = "#sidebarmenu";
-            history.replaceState(null,null,url);
-        }
-    });
+    if (_mobile_menu_trigger) {
+        _mobile_menu_trigger.addEventListener('keydown', event => {
+            if (event.keyCode == 13) {
+                // Open mobile menu
+                event.target.click();
+                // Jump to mobile menu
+                var url = location.href;
+                location.href = "#sidebarmenu";
+                history.replaceState(null,null,url);
+            }
+        });
+    }
 }
 
 /* Required for keyboard accessibility on simple dropdowns with autosubmit.
@@ -232,16 +236,30 @@ $(function() {
     _keyboardNavigation();
 
     var _back2Top = document.getElementById("back2top");
-    document.body.addEventListener('scroll', function() {
-        if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
-            _back2Top.style.display = "block";
-        } else {
-            _back2Top.style.display = "none";
+    if (_back2Top) {
+        document.body.addEventListener('scroll', function() {
+            if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+                _back2Top.style.display = "block";
+            } else {
+                _back2Top.style.display = "none";
+            }
+        });
+        _back2Top.onclick = function(event){
+            event.preventDefault();
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
         }
-    });
-    _back2Top.onclick = function(event){
-        event.preventDefault();
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
     }
 });
+
+/* Buttons on db install */
+$('.ui.button.existing')
+  .on('click', function() {
+    $.tab('change tab', 'existing');
+  })
+;
+$('.ui.button.new')
+  .on('click', function() {
+    $.tab('change tab', 'new');
+  })
+;
