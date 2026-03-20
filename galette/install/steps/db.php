@@ -89,7 +89,7 @@ if ($install->configurationFileExists()) {
         <div class="ui tab basic fitted segment" data-tab="new">
         <div class="inline required field">
             <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
-            <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen">
+            <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen"<?php if($install->isUpgrade()) {?> disabled="disabled"<?php } ?>>
                 <option value="mysql"<?php echo $install->getDbType() === GaletteDb::MYSQL ? ' selected="selected"' : ''; ?>>Mysql</option>
                 <option value="pgsql"<?php echo $install->getDbType() === GaletteDb::PGSQL ? ' selected="selected"' : ''; ?>>Postgresql</option>
             </select>
@@ -117,7 +117,7 @@ if ($install->configurationFileExists()) {
             </div>
             <div class="inline required field info">
                 <label for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
-                <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo $install->getTablesPrefix() ?? 'galette_'; ?>" required/>
+                <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo $install->getTablesPrefix() ?? 'galette_'; ?>" required<?php if($install->isUpgrade()) {?> disabled="disabled"<?php } ?>/>
 <?php
 if ($install->isUpgrade()) {
     echo '<div class="ui orange label"><p>'
