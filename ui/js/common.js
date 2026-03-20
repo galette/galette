@@ -252,14 +252,31 @@ $(function() {
     }
 });
 
-/* Checkboxes on db install */
-$('.ui.existing_config')
-  .on('click', function() {
-    $.tab('change tab', 'existing');
-  })
-;
-$('.ui.new_config')
-  .on('click', function() {
-    $.tab('change tab', 'new');
-  })
-;
+/* Checkboxes on db install, Manage required fields */
+const _existing_config = $('.ui.existing_config');
+const _new_config = $('.ui.new_config');
+if (_existing_config.length > 0 || _new_config.length > 0) {
+    let _current_tab = 'new'; // Onglet par défaut
+
+    const _toggleRequiredFields = function (active_tab) {
+        const inactive_tab = active_tab === 'existing' ? 'new' : 'existing';
+        $('.ui.tab[data-tab="' + active_tab + '"] input').prop('required', true);
+        $('.ui.tab[data-tab="' + active_tab + '"] input, .ui.tab[data-tab="' + active_tab + '"] select').prop('required', true);
+        $('.ui.tab[data-tab="' + inactive_tab + '"] input, .ui.tab[data-tab="' + inactive_tab + '"] select').prop('required', false);
+        _current_tab = active_tab;
+    };
+
+    _existing_config
+        .on('click', function() {
+            $.tab('change tab', 'existing');
+            _toggleRequiredFields('existing');
+        })
+    ;
+
+    _new_config
+        .on('click', function() {
+            $.tab('change tab', 'new');
+            _toggleRequiredFields('new');
+        })
+    ;
+}

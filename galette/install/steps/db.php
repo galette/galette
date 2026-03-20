@@ -57,11 +57,11 @@ if ($install->configurationFileExists()) {
     ?>
         <div class="grouped fields">
             <div class="ui compact invisible checkbox existing_config">
-                <input type="radio" id="existing_config" name="config_choice">
+                <input type="radio" id="existing_config" name="config_choice" required="required">
                 <label for="existing_config" class="ui teal segment"><?php echo _T("Existing configuration file") ?></label>
             </div>
             <div class="ui compact invisible checkbox new_config">
-                <input type="radio" id="new_config" name="config_choice">
+                <input type="radio" id="new_config" name="config_choice" required="required">
                 <label for="new_config" class="ui teal segment "><?php echo _T("Enter your configuration") ?></label>
             </div>
         </div>
@@ -72,13 +72,13 @@ if ($install->configurationFileExists()) {
             <div class="field">
                 <div class="ui left icon input">
                     <i class="user icon" aria-hidden="true"></i><label for="login" class="visually-hidden"><?php echo _T("Username:"); ?></label>
-                    <input type="text" name="login" id="login" autofocus placeholder="<?php echo _T("Username:"); ?>"/>
+                    <input type="text" name="login" id="login" autofocus placeholder="<?php echo _T("Username:"); ?>" required="required"/>
                 </div>
             </div>
             <div class="field">
                 <div class="ui left icon input">
                     <i class="lock icon" aria-hidden="true"></i><label for="password" class="visually-hidden"><?php echo _T("Password:"); ?></label>
-                    <input type="password" name="password" id="password" placeholder="<?php echo _T("Password:"); ?>"/>
+                    <input type="password" name="password" id="password" placeholder="<?php echo _T("Password:"); ?>" required="required"/>
                 </div>
             </div>
             <input type="hidden" name="ident" value="1" />
