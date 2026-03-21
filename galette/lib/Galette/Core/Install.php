@@ -32,7 +32,6 @@ use Laminas\Db\Adapter\Adapter;
 
 use function Safe\define;
 use function Safe\fclose;
-use function Safe\file_get_contents;
 use function Safe\fopen;
 use function Safe\fwrite;
 use function Safe\opendir;
