@@ -46,7 +46,7 @@ if ($install->isUpgrade()) {
 $default_dbport = $install->getDbType() === GaletteDb::PGSQL ? GaletteDb::PGSQL_DEFAULT_PORT : GaletteDb::MYSQL_DEFAULT_PORT;
 ?>
 <?php
-if ($install->configurationFileExists()) {
+if ($install->configurationFileExists() && $install->isUpgrade()) {
     ?>
         <div class="grouped fields">
             <div class="ui compact invisible checkbox existing_config">
@@ -79,7 +79,7 @@ if ($install->configurationFileExists()) {
     <?php
 }
 ?>
-        <div class="ui tab basic fitted segment<?php echo ($_POST['config_choice'] ?? '') === 'new_config' ? ' active' : ''; ?>" data-tab="new">
+        <div class="ui tab basic fitted segment<?php echo ($_POST['config_choice'] ?? '') === 'new_config' || !$install->isUpgrade() ? ' active' : ''; ?>" data-tab="new">
         <div class="inline required field">
             <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
             <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen"<?php echo $install->isUpgrade() ? ' disabled="disabled"' : ''; ?>>
