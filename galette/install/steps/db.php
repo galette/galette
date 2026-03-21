@@ -28,8 +28,6 @@ use Galette\Core\Db as GaletteDb;
  * @var GaletteInstall $install
  * @var \Galette\Core\I18n $i18n
  */
-
-$error_detected = [];
 ?>
     <form action="installer.php" method="post" class="ui form">
 <?php
@@ -92,15 +90,15 @@ if ($install->configurationFileExists()) {
             <div id="install_dbconfig">
             <div class="inline required field">
                 <label for="install_dbhost"><?php echo _T("Host:"); ?></label>
-                <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo $_POST['install_dbhost'] ?? $install->getDbHost() ?? $install->isUpgrade() ? '' : 'localhost'; ?>" placeholder="localhost" required/>
+                <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo htmlspecialchars($_POST['install_dbhost'] ?? $install->getDbHost() ?? $install->isUpgrade() ? '' : 'localhost', ENT_QUOTES, 'UTF-8'); ?>" placeholder="localhost" required/>
             </div>
             <div class="inline required field">
                 <label for="install_dbport"><?php echo _T("Port:"); ?></label>
-                <input type="text" name="install_dbport" id="install_dbport" value="<?php echo $_POST['install_dbport'] ?? $install->getDbPort() ?? $install->isUpgrade() ? '' :$default_dbport; ?>" placeholder="<?php echo $default_dbport; ?>" required/>
+                <input type="text" name="install_dbport" id="install_dbport" value="<?php echo (int)($_POST['install_dbport'] ?? $install->getDbPort() ?? $install->isUpgrade() ? '' : $default_dbport); ?>" placeholder="<?php echo $default_dbport; ?>" required/>
             </div>
             <div class="inline required field">
                 <label for="install_dbuser"><?php echo _T("User:"); ?></label>
-                <input type="text" name="install_dbuser" id="install_dbuser" value="<?php echo $_POST['install_dbuser'] ?? $install->getDbUser(); ?>" required/>
+                <input type="text" name="install_dbuser" id="install_dbuser" value="<?php echo htmlspecialchars($_POST['install_dbuser'] ?? $install->getDbUser(), ENT_QUOTES, 'UTF-8'); ?>" required/>
             </div>
             <div class="inline required field">
                 <label for="install_dbpass"><?php echo _T("Password:"); ?></label>
@@ -108,7 +106,7 @@ if ($install->configurationFileExists()) {
             </div>
             <div class="inline required field">
                 <label for="install_dbname"><?php echo _T("Database:"); ?></label>
-                <input type="text" name="install_dbname" id="install_dbname" value="<?php echo $_POST['install_dbname'] ?? $install->getDbName(); ?>" required/>
+                <input type="text" name="install_dbname" id="install_dbname" value="<?php echo htmlspecialchars($_POST['install_dbname'] ?? $install->getDbName(), ENT_QUOTES, 'UTF-8'); ?>" required/>
             </div>
             <div class="inline required field info">
                 <label for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
