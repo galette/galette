@@ -190,7 +190,7 @@ class PluginsController extends AbstractController
             $install->atPreviousStep();
         } elseif (isset($post['install_prefs_ok'])) {
             $install->atEndStep();
-        } elseif(isset($post['install_dbwrite_ok'])) {
+        } elseif (isset($post['install_dbwrite_ok'])) {
             $install->atEndStep();
         } elseif (isset($post['previous_version'])) {
             $install->setInstalledVersion($post['previous_version']);

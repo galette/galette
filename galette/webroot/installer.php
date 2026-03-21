@@ -122,7 +122,7 @@ if (isset($_POST['stepback_btn'])) {
         // sans instancier Preferences (évite les effets de bord)
         try {
             $select = $db_tmp->sql->select(
-            $install->getTablesPrefix() . Preferences::TABLE
+                $install->getTablesPrefix() . Preferences::TABLE
             );
             $select
                 ->columns(['nom_pref', 'val_pref'])
@@ -145,7 +145,7 @@ if (isset($_POST['stepback_btn'])) {
                 $error_detected[] = _T("Authentication failed");
             } else {
                 $pw_superadmin = password_verify(
-                        (string)$_POST['password'],
+                    (string)$_POST['password'],
                     $admin_pass
                 );
 
@@ -160,8 +160,8 @@ if (isset($_POST['stepback_btn'])) {
             }
         } catch (Throwable $e) {
             Analog::log(
-        'Unable to check superadmin credentials: ' . $e->getMessage(),
-            Analog::ERROR
+                'Unable to check superadmin credentials: ' . $e->getMessage(),
+                Analog::ERROR
             );
             $error_detected[] = _T("Unable to connect to database");
         }
@@ -186,14 +186,14 @@ if (isset($_POST['stepback_btn'])) {
 
         if (count($error_detected) == 0) {
             $install->setDsn(
-                    $_POST['install_dbhost'],
-                    $_POST['install_dbport'],
-                    $_POST['install_dbname'],
-                    $_POST['install_dbuser'],
-                    $_POST['install_dbpass']
+                $_POST['install_dbhost'],
+                $_POST['install_dbport'],
+                $_POST['install_dbname'],
+                $_POST['install_dbuser'],
+                $_POST['install_dbpass']
             );
             $install->setTablesPrefix(
-                    $_POST['install_dbprefix']
+                $_POST['install_dbprefix']
             );
         }
     }
