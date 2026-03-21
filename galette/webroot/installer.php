@@ -166,7 +166,7 @@ if (isset($_POST['stepback_btn'])) {
             $error_detected[] = _T("Unable to connect to database");
         }
     } else {
-        $install->setDbType($_POST['install_dbtype'], $error_detected);
+        $install->loadExistingConfig([], $error_detected);
 
         if (empty($_POST['install_dbhost'])) {
             $error_detected[] = _T("No host");
@@ -182,6 +182,10 @@ if (isset($_POST['stepback_btn'])) {
         }
         if (empty($_POST['install_dbname'])) {
             $error_detected[] = _T("No database name");
+        }
+
+        if (!$install->checkAgainstExistingConfig($_POST, $error_detected)) {
+            $error_detected[] = _T('Provided parameters does not match current database configuration.');
         }
 
         if (count($error_detected) == 0) {

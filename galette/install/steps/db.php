@@ -43,7 +43,6 @@ if ($install->isUpgrade()) {
 } elseif ($install->configurationFileExists()) {
     echo '<div class="ui orange message"><p>' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . '</p></div>';
 }
-$install->loadExistingConfig($_POST, $error_detected);
 
 //define default database port
 $default_dbport = $install->getDbType() === GaletteDb::PGSQL ? GaletteDb::PGSQL_DEFAULT_PORT : GaletteDb::MYSQL_DEFAULT_PORT;
@@ -53,15 +52,15 @@ if ($install->configurationFileExists()) {
     ?>
         <div class="grouped fields">
             <div class="ui compact invisible checkbox existing_config">
-                <input type="radio" id="existing_config" value="existing_config" name="config_choice" required="required">
+                <input type="radio" id="existing_config" value="existing_config" name="config_choice" required="required"<?php echo ($_POST['config_choice'] ?? '') === 'existing_config' ? ' checked="checked"' : ''; ?>>
                 <label for="existing_config" class="ui teal segment"><?php echo _T("Existing configuration file") ?></label>
             </div>
             <div class="ui compact invisible checkbox new_config">
-                <input type="radio" id="new_config" value="new_config" name="config_choice" required="required">
+                <input type="radio" id="new_config" value="new_config" name="config_choice" required="required"<?php echo ($_POST['config_choice'] ?? '') === 'new_config' ? ' checked="checked"' : ''; ?>>
                 <label for="new_config" class="ui teal segment "><?php echo _T("Enter your configuration") ?></label>
             </div>
         </div>
-        <div class="ui tab basic fitted segment" data-tab="existing">
+        <div class="ui tab basic fitted segment<?php echo ($_POST['config_choice'] ?? '') === 'existing_config' ? ' active' : ''; ?>" data-tab="existing">
             <div class="ui blue message">
                 <p><?php echo _T("Use your superadmin credentials to retrieve database connection values from existing configuration file."); ?></p>
             </div>
@@ -82,7 +81,7 @@ if ($install->configurationFileExists()) {
     <?php
 }
 ?>
-        <div class="ui tab basic fitted segment" data-tab="new">
+        <div class="ui tab basic fitted segment<?php echo ($_POST['config_choice'] ?? '') === 'new_config' ? ' active' : ''; ?>" data-tab="new">
         <div class="inline required field">
             <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
             <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen"<?php echo $install->isUpgrade() ? ' disabled="disabled"' : ''; ?>>
@@ -90,18 +89,18 @@ if ($install->configurationFileExists()) {
                 <option value="pgsql"<?php echo $install->getDbType() === GaletteDb::PGSQL ? ' selected="selected"' : ''; ?>>Postgresql</option>
             </select>
         </div>
-        <div id="install_dbconfig">
+            <div id="install_dbconfig">
             <div class="inline required field">
                 <label for="install_dbhost"><?php echo _T("Host:"); ?></label>
-                <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo $install->getDbHost() ?? 'localhost'; ?>" required/>
+                <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo $_POST['install_dbhost'] ?? $install->getDbHost() ?? $install->isUpgrade() ? '' : 'localhost'; ?>" placeholder="localhost" required/>
             </div>
             <div class="inline required field">
                 <label for="install_dbport"><?php echo _T("Port:"); ?></label>
-                <input type="text" name="install_dbport" id="install_dbport" value="<?php echo $install->getDbPort() ?? $default_dbport; ?>" required/>
+                <input type="text" name="install_dbport" id="install_dbport" value="<?php echo $_POST['install_dbport'] ?? $install->getDbPort() ?? $install->isUpgrade() ? '' :$default_dbport; ?>" placeholder="<?php echo $default_dbport; ?>" required/>
             </div>
             <div class="inline required field">
                 <label for="install_dbuser"><?php echo _T("User:"); ?></label>
-                <input type="text" name="install_dbuser" id="install_dbuser" value="<?php echo $install->getDbUser(); ?>" required/>
+                <input type="text" name="install_dbuser" id="install_dbuser" value="<?php echo $_POST['install_dbuser'] ?? $install->getDbUser(); ?>" required/>
             </div>
             <div class="inline required field">
                 <label for="install_dbpass"><?php echo _T("Password:"); ?></label>
@@ -109,7 +108,7 @@ if ($install->configurationFileExists()) {
             </div>
             <div class="inline required field">
                 <label for="install_dbname"><?php echo _T("Database:"); ?></label>
-                <input type="text" name="install_dbname" id="install_dbname" value="<?php echo $install->getDbName(); ?>" required/>
+                <input type="text" name="install_dbname" id="install_dbname" value="<?php echo $_POST['install_dbname'] ?? $install->getDbName(); ?>" required/>
             </div>
             <div class="inline required field info">
                 <label for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>

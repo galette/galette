@@ -886,12 +886,35 @@ class Install
     }
 
     /**
+     * Check entered values are the same as stored ones
+     *
+     * @param array<string, string|int|null> $values
+     * @param array<int, string>             $error_detected Errors array
+     */
+    public function checkAgainstExistingConfig(array $values, array &$error_detected): bool
+    {
+        if ($this->configurationFileExists()) {
+            $existing = $this->loadExistingConfigFile([], true);
+            return $existing['db_host'] == $values['install_dbhost']
+                && $existing['db_port'] == $values['install_dbport']
+                && $existing['db_name'] == $values['install_dbname']
+                && $existing['db_user'] == $values['install_dbuser']
+                && $existing['db_pass'] == $values['install_dbpass']
+                && $existing['db_prefix'] == $values['install_dbprefix'];
+        } else {
+            $error_detected[] = _T("Configuration file not found!");
+        }
+
+        return false;
+    }
+
+    /**
      * Load contents from existing config file
      *
      * @param array<string, string> $post_data Data posted
      * @param bool                  $pass      Retrieve password
      *
-     * @return array<string, ?string>
+     * @return array<string, string|int|null>
      */
     private function loadExistingConfigFile(array $post_data = [], bool $pass = false): array
     {
