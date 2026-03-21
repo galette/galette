@@ -98,7 +98,7 @@ if ($install->configurationFileExists()) {
             </div>
             <div class="inline required field">
                 <label for="install_dbuser"><?php echo _T("User:"); ?></label>
-                <input type="text" name="install_dbuser" id="install_dbuser" value="<?php echo htmlspecialchars($_POST['install_dbuser'] ?? $install->getDbUser(), ENT_QUOTES, 'UTF-8'); ?>" required/>
+                <input type="text" name="install_dbuser" id="install_dbuser" value="<?php echo htmlspecialchars($_POST['install_dbuser'] ?? $install->getDbUser() ?? '', ENT_QUOTES, 'UTF-8'); ?>" required/>
             </div>
             <div class="inline required field">
                 <label for="install_dbpass"><?php echo _T("Password:"); ?></label>
@@ -106,7 +106,7 @@ if ($install->configurationFileExists()) {
             </div>
             <div class="inline required field">
                 <label for="install_dbname"><?php echo _T("Database:"); ?></label>
-                <input type="text" name="install_dbname" id="install_dbname" value="<?php echo htmlspecialchars($_POST['install_dbname'] ?? $install->getDbName(), ENT_QUOTES, 'UTF-8'); ?>" required/>
+                <input type="text" name="install_dbname" id="install_dbname" value="<?php echo htmlspecialchars($_POST['install_dbname'] ?? $install->getDbName() ?? '', ENT_QUOTES, 'UTF-8'); ?>" required/>
             </div>
             <div class="inline required field info">
                 <label for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
