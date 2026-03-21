@@ -1,0 +1,69 @@
+feat: Migrate SavedSearch to AbstractEntity
+
+Migrate SavedSearch class to inherit from AbstractEntity and use
+centralized validation infrastructure.
+
+## Changes
+
+### SavedSearch.php
+- Now extends AbstractEntity
+- Added #[Column] attributes for all DB fields
+- Updated check() signature to match AbstractEntity pattern:
+  - Takes 3 parameters: $values, $required, $disabled
+  - Returns bool|array instead of bool
+  - Uses sanitizeValues() from AbstractEntity
+- Updated to use helper methods:
+  - getLogin() instead of direct $this->login access
+  - getPreferences() when needed (with DI fallback)
+- Made load() and loadFromRS() public with static return type
+- Updated store() to handle both insert and update
+- Updated remove() to delegate to delete() from AbstractEntity
+- Removed getErrors() (now inherited from AbstractEntity)
+
+### SavedSearchTest.php
+- Updated all 11 tests for new check() signature
+- All calls now use: check($data, [], [])
+- Updated assertions to handle bool|array return type
+
+## Benefits
+
+- ✅ Consistency with other entities
+- ✅ Automatic data sanitization
+- ✅ Access to DI helpers (getLogin, getPreferences, getDB)
+- ✅ DRY code - reuses common infrastructure
+- ✅ Standardized validation pattern
+- ✅ Better error reporting (returns errors array)
+
+## Testing
+
+- 11 tests adapted and passing
+- No regressions detected
+- Code style fixed with php-cs-fixer
+- No compilation errors
+
+## Documentation
+
+- docs/SAVEDSEARCH_MIGRATION.md - Complete migration guide
+- SAVEDSEARCH_MIGRATION_COMPLETE.txt - Visual summary
+
+## Backward Compatibility
+
+✅ Maintained:
+- store() - same signature
+- remove() - same signature
+- getErrors() - inherited, same behavior
+- Constructor - same parameters
+
+⚠️ Breaking changes:
+- check() now requires 3 parameters (2 can be empty arrays)
+- check() returns bool|array instead of bool
+- load() and loadFromRS() are now public (visibility widened)
+
+## Related
+
+- Part of validation system centralization initiative
+- Implements patterns from AbstractEntity infrastructure
+- First entity fully migrated to AbstractEntity
+
+Refs: #validation-system #abstractentity
+

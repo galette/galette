@@ -48,7 +48,7 @@ class SavedSearchTest extends GaletteTestCase
     public function testCheckValid(): void
     {
         $search = new SavedSearch($this->zdb, $this->login);
-        
+
         $data = [
             'name' => 'Test Search',
             'form' => 'Adherent',
@@ -57,8 +57,8 @@ class SavedSearchTest extends GaletteTestCase
                 'surname' => 'user'
             ]
         ];
-        
-        $result = $search->check($data);
+
+        $result = $search->check($data, [], []);
         $this->assertTrue($result);
         $this->assertCount(0, $search->getErrors());
     }
@@ -69,16 +69,16 @@ class SavedSearchTest extends GaletteTestCase
     public function testCheckMissingForm(): void
     {
         $search = new SavedSearch($this->zdb, $this->login);
-        
+
         $data = [
             'name' => 'Test Search',
             'parameters' => [
                 'name' => 'test'
             ]
         ];
-        
-        $result = $search->check($data);
-        $this->assertFalse($result);
+
+        $result = $search->check($data, [], []);
+        $this->assertIsArray($result);
         $errors = $search->getErrors();
         $this->assertGreaterThan(0, count($errors));
         $this->assertStringContainsString('mandatory', strtolower($errors[0]));
@@ -90,15 +90,15 @@ class SavedSearchTest extends GaletteTestCase
     public function testCheckEmptyForm(): void
     {
         $search = new SavedSearch($this->zdb, $this->login);
-        
+
         $data = [
             'name' => 'Test Search',
             'form' => '',
             'parameters' => []
         ];
-        
-        $result = $search->check($data);
-        $this->assertFalse($result);
+
+        $result = $search->check($data, [], []);
+        $this->assertIsArray($result);
         $this->assertGreaterThan(0, count($search->getErrors()));
     }
 
@@ -108,15 +108,15 @@ class SavedSearchTest extends GaletteTestCase
     public function testCheckInvalidForm(): void
     {
         $search = new SavedSearch($this->zdb, $this->login);
-        
+
         $data = [
             'name' => 'Test Search',
             'form' => 'InvalidForm',
             'parameters' => []
         ];
-        
-        $result = $search->check($data);
-        $this->assertFalse($result);
+
+        $result = $search->check($data, [], []);
+        $this->assertIsArray($result);
         $errors = $search->getErrors();
         $this->assertGreaterThan(0, count($errors));
     }
@@ -128,16 +128,16 @@ class SavedSearchTest extends GaletteTestCase
     {
         // Login as regular user
         $this->login->login('test_adh', 'pass_adh');
-        
+
         $search = new SavedSearch($this->zdb, $this->login);
-        
+
         $data = [
             'name' => 'Test Search',
             'form' => 'Adherent',
             'parameters' => []
         ];
-        
-        $result = $search->check($data);
+
+        $result = $search->check($data, [], []);
         $this->assertTrue($result);
         $this->assertEquals($this->login->id, $search->author_id);
     }
@@ -148,7 +148,7 @@ class SavedSearchTest extends GaletteTestCase
     public function testStore(): void
     {
         $search = new SavedSearch($this->zdb, $this->login);
-        
+
         $data = [
             'name' => 'Test Search Store',
             'form' => 'Adherent',
@@ -157,14 +157,14 @@ class SavedSearchTest extends GaletteTestCase
                 'active' => true
             ]
         ];
-        
-        $check = $search->check($data);
+
+        $check = $search->check($data, [], []);
         $this->assertTrue($check);
-        
+
         $store = $search->store();
         $this->assertTrue($store);
         $this->assertGreaterThan(0, $search->id);
-        
+
         // Clean up
         $search->remove();
     }
@@ -175,19 +175,19 @@ class SavedSearchTest extends GaletteTestCase
     public function testRemove(): void
     {
         $search = new SavedSearch($this->zdb, $this->login);
-        
+
         $data = [
             'name' => 'Test Search Remove',
             'form' => 'Adherent',
             'parameters' => []
         ];
-        
-        $search->check($data);
+
+        $search->check($data, [], []);
         $search->store();
         $id = $search->id;
-        
+
         $this->assertGreaterThan(0, $id);
-        
+
         $remove = $search->remove();
         $this->assertTrue($remove);
     }

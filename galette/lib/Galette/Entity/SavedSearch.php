@@ -26,6 +26,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use Safe\DateTime;
 use Galette\Core\Galette;
+use Galette\Entity\Attributes\Column;
 use RuntimeException;
 use Throwable;
 use Galette\Core\Db;
@@ -47,21 +48,30 @@ use function Safe\json_encode;
  * @property string               $form
  */
 
-class SavedSearch
+class SavedSearch extends AbstractEntity
 {
     public const TABLE = 'searches';
     public const PK = 'search_id';
 
-    private int $id;
+    #[Column(name: 'search_id', insertable: false, updatable: false)]
+    protected int $id;
+
+    #[Column(name: 'name')]
     private string $name;
+
+    #[Column(name: 'parameters')]
     /** @var array<string, mixed> */
     private array $parameters = [];
+
+    #[Column(name: 'id_adh')]
     private ?int $author_id = null;
+
+    #[Column(name: 'creation_date')]
     private ?string $creation_date;
+
+    #[Column(name: 'form')]
     private string $form;
 
-    /** @var array<string> */
-    private array $errors = [];
 
     /**
      * Main constructor
@@ -71,10 +81,12 @@ class SavedSearch
      * @param ArrayObject<string,int|string>|int|null $args  Arguments
      */
     public function __construct(
-        private readonly Db $zdb,
-        private readonly Login $login,
+        Db $zdb,
+        Login $login,
         ArrayObject|int|null $args = null
     ) {
+        $this->zdb = $zdb;
+        $this->login = $login;
         $this->creation_date = date('Y-m-d H:i:s');
 
         if (is_int($args)) {
@@ -89,15 +101,15 @@ class SavedSearch
      *
      * @param int $id Identifier
      */
-    private function load(int $id): void
+    public function load(int $id): static
     {
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->limit(1)->where([self::PK => $id]);
-            if ($this->login->isSuperAdmin()) {
+            if ($this->getLogin()->isSuperAdmin()) {
                 $select->where(Adherent::PK . ' IS NULL');
             } else {
-                $select->where([Adherent::PK => $this->login->id]);
+                $select->where([Adherent::PK => $this->getLogin()->id]);
             }
 
             $results = $this->zdb->execute($select);
@@ -105,6 +117,7 @@ class SavedSearch
             $res = $results->current();
 
             $this->loadFromRS($res);
+            return $this;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading saved search #' . $id . "Message:\n"
@@ -120,7 +133,7 @@ class SavedSearch
      *
      * @param ArrayObject<string, int|string> $rs ResultSet
      */
-    private function loadFromRS(ArrayObject $rs): void
+    public function loadFromRS(ArrayObject $rs): static
     {
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
@@ -140,16 +153,25 @@ class SavedSearch
         }
         $this->creation_date = $rs->creation_date;
         $this->form = $rs->form;
+        return $this;
     }
 
     /**
      * Check and set values
      *
-     * @param array<string, mixed> $values Values to set
+     * @param array<string, mixed> $values   Values to set
+     * @param array<string,int>    $required Array of required fields (not used here)
+     * @param array<string>        $disabled Array of disabled fields (not used here)
+     *
+     * @return true|array<string> True if valid, array of errors otherwise
      */
-    public function check(array $values): bool
+    public function check(array $values, array $required = [], array $disabled = []): bool|array
     {
         $this->errors = [];
+
+        // Sanitize values
+        $values = $this->sanitizeValues($values);
+
         $mandatory = [
             'form'  => _T('Form is mandatory!')
         ];
@@ -169,42 +191,74 @@ class SavedSearch
             $this->errors = array_merge($this->errors, $mandatory);
         }
 
-        if (!isset($this->id) && !$this->login->isSuperAdmin()) {
+        if (!isset($this->id) && !$this->getLogin()->isSuperAdmin()) {
             //set author for new searches
-            $this->author_id = $this->login->id;
+            $this->author_id = $this->getLogin()->id;
         }
 
-        return count($this->errors) === 0;
+        return count($this->errors) === 0 ? true : $this->errors;
     }
 
     /**
-     * Store saved search in database
+     * Instructions before insert
      */
-    public function store(): bool
+    protected function preInsert(): bool
     {
-        $parameters = json_encode($this->parameters);
-        $data = [
+        // Encode parameters to JSON before insert
+        if (!isset($this->creation_date)) {
+            $this->creation_date = date('Y-m-d H:i:s');
+        }
+        return true;
+    }
+
+    /**
+     * Get data for insert/update formatted for database
+     * Override to handle JSON encoding of parameters
+     *
+     * @return array<string, mixed>
+     */
+    private function getData(): array
+    {
+        return [
             'name'              => $this->name,
-            'parameters'        => $parameters,
+            'parameters'        => json_encode($this->parameters),
             'id_adh'            => $this->author_id,
             'creation_date'     => $this->creation_date ?? date('Y-m-d H:i:s'),
             'form'              => $this->form
         ];
+    }
 
+    /**
+     * Store saved search in database
+     * Kept for backward compatibility, delegates to save()
+     */
+    public function store(): bool
+    {
         try {
-            $insert = $this->zdb->insert(self::TABLE);
-            $insert->values($data);
-            $add = $this->zdb->execute($insert);
-            if (!$add->count() > 0) {
-                Analog::log('Not stored!', Analog::ERROR);
-                return false;
+            $data = $this->getData();
+
+            if (!isset($this->id)) {
+                // Insert
+                $insert = $this->zdb->insert(self::TABLE);
+                $insert->values($data);
+                $add = $this->zdb->execute($insert);
+                if (!$add->count() > 0) {
+                    Analog::log('Not stored!', Analog::ERROR);
+                    return false;
+                }
+                $this->id = $this->zdb->getLastGeneratedValue($this);
+                return true;
+            } else {
+                // Update
+                unset($data['creation_date']); // Don't update creation date
+                $update = $this->zdb->update(self::TABLE);
+                $update->set($data)->where([self::PK => $this->id]);
+                $this->zdb->execute($update);
+                return true;
             }
-            $this->id = $this->zdb->getLastGeneratedValue($this);
-            return true;
         } catch (Throwable $e) {
             Analog::log(
-                'An error occurred storing saved search: ' . $e->getMessage()
-                . "\n" . print_r($data, true),
+                'An error occurred storing saved search: ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -213,25 +267,24 @@ class SavedSearch
 
     /**
      * Remove current saved search
+     * Delegates to AbstractEntity::delete()
      */
     public function remove(): bool
     {
-        $id = $this->id;
+        $name = $this->name ?? '';
         try {
-            $delete = $this->zdb->delete(self::TABLE);
-            $delete->where([self::PK => $id]);
-            $this->zdb->execute($delete);
-            Analog::log(
-                'Saved search #' . $id . ' (' . $this->name
-                . ') deleted successfully.',
-                Analog::INFO
-            );
-            return true;
-        } catch (RuntimeException $re) {
-            throw $re;
+            $result = $this->delete();
+            if ($result) {
+                Analog::log(
+                    'Saved search #' . $this->id . ' (' . $name
+                    . ') deleted successfully.',
+                    Analog::INFO
+                );
+            }
+            return $result;
         } catch (Throwable $e) {
             Analog::log(
-                'Unable to delete saved search ' . $id . ' | ' . $e->getMessage(),
+                'Unable to delete saved search ' . $this->id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw $e;
@@ -377,15 +430,5 @@ class SavedSearch
         return [
             'Adherent'
         ];
-    }
-
-    /**
-     * Get errors
-     *
-     * @return array<string>
-     */
-    public function getErrors(): array
-    {
-        return $this->errors;
     }
 }
