@@ -106,36 +106,98 @@ if (isset($_POST['stepback_btn'])) {
 } elseif (isset($_POST['install_type'])) {
     $install->setMode($_POST['install_type']);
     $install->atDbStep();
-} elseif (isset($_POST['install_dbtype'])) {
-    $install->setDbType($_POST['install_dbtype'], $error_detected);
+} elseif (isset($_POST['config_choice'])) {
+    if ($_POST['config_choice'] === 'existing_config') {
+        $install->loadExistingConfig([], $error_detected, true);
+        $db_tmp = new \Galette\Core\Db([
+            'TYPE_DB' => $install->getDbType(),
+            'HOST_DB' => $install->getDbHost(),
+            'PORT_DB' => $install->getDbPort(),
+            'USER_DB' => $install->getDbUser(),
+            'PWD_DB' => $install->getDbPass(),
+            'NAME_DB' => $install->getDbName()
+        ]);
 
-    if (empty($_POST['install_dbhost'])) {
-        $error_detected[] = _T("No host");
-    }
-    if (empty($_POST['install_dbport'])) {
-        $error_detected[] = _T("No port");
-    }
-    if (empty($_POST['install_dbuser'])) {
-        $error_detected[] = _T("No user name");
-    }
-    if (empty($_POST['install_dbpass'])) {
-        $error_detected[] = _T("No password");
-    }
-    if (empty($_POST['install_dbname'])) {
-        $error_detected[] = _T("No database name");
-    }
+        // Récupérer les credentials superadmin via requête SQL directe
+        // sans instancier Preferences (évite les effets de bord)
+        try {
+            $select = $db_tmp->sql->select(
+            $install->getTablesPrefix() . Preferences::TABLE
+            );
+            $select
+                ->columns(['nom_pref', 'val_pref'])
+                ->where->in('nom_pref', ['pref_admin_login', 'pref_admin_pass'])
+            ;
+            $results = $db_tmp->execute($select);
 
+            $admin_login = null;
+            $admin_pass = null;
+
+            foreach ($results as $row) {
+                if ($row->nom_pref === 'pref_admin_login') {
+                    $admin_login = $row->val_pref;
+                } elseif ($row->nom_pref === 'pref_admin_pass') {
+                    $admin_pass = (string)$row->val_pref;
+                }
+            }
+
+            if ($admin_login !== $_POST['login']) {
+                $error_detected[] = _T("Authentication failed");
+            } else {
+                $pw_superadmin = password_verify(
+                        (string)$_POST['password'],
+                    $admin_pass
+                );
+
+                // Support de l'ancien format MD5 si nécessaire
+                if (!$pw_superadmin) {
+                    $pw_superadmin = (md5($_POST['password']) === $admin_pass);
+                }
+
+                if (!$pw_superadmin) {
+                    $error_detected[] = _T("Authentication failed");
+                }
+            }
+        } catch (Throwable $e) {
+            Analog::log(
+        'Unable to check superadmin credentials: ' . $e->getMessage(),
+            Analog::ERROR
+            );
+            $error_detected[] = _T("Unable to connect to database");
+        }
+    } else {
+        $install->setDbType($_POST['install_dbtype'], $error_detected);
+
+        if (empty($_POST['install_dbhost'])) {
+            $error_detected[] = _T("No host");
+        }
+        if (empty($_POST['install_dbport'])) {
+            $error_detected[] = _T("No port");
+        }
+        if (empty($_POST['install_dbuser'])) {
+            $error_detected[] = _T("No user name");
+        }
+        if (empty($_POST['install_dbpass'])) {
+            $error_detected[] = _T("No password");
+        }
+        if (empty($_POST['install_dbname'])) {
+            $error_detected[] = _T("No database name");
+        }
+
+        if (count($error_detected) == 0) {
+            $install->setDsn(
+                    $_POST['install_dbhost'],
+                    $_POST['install_dbport'],
+                    $_POST['install_dbname'],
+                    $_POST['install_dbuser'],
+                    $_POST['install_dbpass']
+            );
+            $install->setTablesPrefix(
+                    $_POST['install_dbprefix']
+            );
+        }
+    }
     if (count($error_detected) == 0) {
-        $install->setDsn(
-            $_POST['install_dbhost'],
-            $_POST['install_dbport'],
-            $_POST['install_dbname'],
-            $_POST['install_dbuser'],
-            $_POST['install_dbpass']
-        );
-        $install->setTablesPrefix(
-            $_POST['install_dbprefix']
-        );
         $install->atDbCheckStep();
         $install->initDbConstants();
     }

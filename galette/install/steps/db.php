@@ -30,13 +30,6 @@ use Galette\Core\Db as GaletteDb;
  */
 
 $error_detected = [];
-//define default database port
-$default_dbport = GaletteDb::MYSQL_DEFAULT_PORT;
-if (!isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql') {
-    $default_dbport = GaletteDb::MYSQL_DEFAULT_PORT;
-} elseif ($_POST['install_dbtype'] == 'pgsql') {
-    $default_dbport = GaletteDb::PGSQL_DEFAULT_PORT;
-}
 ?>
     <form action="installer.php" method="post" class="ui form">
 <?php
@@ -47,10 +40,13 @@ if ($install->getMode() === GaletteInstall::INSTALL) {
 echo '<p>' . _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT.") . '</p></div>';
 if ($install->isUpgrade()) {
     echo '<div class="ui orange message"><p>' . _T("Enter connection data for the existing database.") . '</p></div>';
-    $install->loadExistingConfig($_POST, $error_detected);
 } elseif ($install->configurationFileExists()) {
     echo '<div class="ui orange message"><p>' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . '</p></div>';
 }
+$install->loadExistingConfig($_POST, $error_detected);
+
+//define default database port
+$default_dbport = $install->getDbType() === GaletteDb::PGSQL ? GaletteDb::PGSQL_DEFAULT_PORT : GaletteDb::MYSQL_DEFAULT_PORT;
 ?>
 <?php
 if ($install->configurationFileExists()) {

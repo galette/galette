@@ -847,8 +847,9 @@ class Install
      *
      * @param array<string, string> $post_data      Data posted
      * @param array<int, string>    $error_detected Errors array
+     * @param bool                  $full           Load full configuration (once superadmin))
      */
-    public function loadExistingConfig(array $post_data, array &$error_detected): void
+    public function loadExistingConfig(array $post_data, array &$error_detected, bool $full = false): void
     {
         if ($this->configurationFileExists()) {
             $existing = $this->loadExistingConfigFile($post_data);
@@ -857,23 +858,28 @@ class Install
                 $this->setDbType($existing['db_type'], $error_detected);
             }
 
+            if ($existing['prefix'] !== null) {
+                $this->setTablesPrefix(
+                    $existing['prefix']
+                );
+            }
+
+            if (!$full) {
+                return;
+            }
+
             if (
                 $existing['db_host'] !== null
                 || $existing['db_user'] !== null
                 || $existing['db_name'] !== null
+                || $existing['db_pass'] !== null
             ) {
                 $this->setDsn(
                     $existing['db_host'],
                     $existing['db_port'],
                     $existing['db_name'],
                     $existing['db_user'],
-                    null
-                );
-            }
-
-            if ($existing['prefix'] !== null) {
-                $this->setTablesPrefix(
-                    $existing['prefix']
+                    $existing['db_pass'],
                 );
             }
         }
@@ -894,6 +900,7 @@ class Install
             'db_host'   => null,
             'db_port'   => null,
             'db_user'   => null,
+            'db_pass'   => null,
             'db_name'   => null,
             'prefix'    => null
         ];
@@ -939,6 +946,16 @@ class Install
                     );
                     if (isset($matches[1])) {
                         $existing['db_user'] = $matches[1];
+                    }
+                }
+                if (!isset($post_data['install_dbpass'])) {
+                    preg_match(
+                        '/PWD_DB["\'], ["\'](.[^"\']+)["\']\);/',
+                        $conf,
+                        $matches
+                    );
+                    if (isset($matches[1])) {
+                        $existing['db_pass'] = $matches[1];
                     }
                 }
                 if (!isset($post_data['install_dbname'])) {
