@@ -1824,4 +1824,203 @@ class Adherent extends GaletteTestCase
 
         $this->login->logOut();
     }
+
+    /**
+     * Test check() with missing required fields
+     */
+    public function testCheckMissingRequired(): void
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+        $adh->setDependencies($this->preferences, $this->members_fields, $this->history);
+        
+        $data = [
+            'nom_adh' => 'TestName'
+            // Missing prenom_adh and other required fields
+        ];
+        
+        $required = [
+            'nom_adh' => 1,
+            'prenom_adh' => 1
+        ];
+        
+        $result = $adh->check($data, $required, []);
+        $this->assertIsArray($result);
+        $this->assertGreaterThan(0, count($result));
+    }
+
+    /**
+     * Test check() with invalid email
+     */
+    public function testCheckInvalidEmail(): void
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+        $adh->setDependencies($this->preferences, $this->members_fields, $this->history);
+        
+        $data = [
+            'nom_adh' => 'TestName',
+            'prenom_adh' => 'TestSurname',
+            'email_adh' => 'invalid-email'
+        ];
+        
+        $result = $adh->check($data, [], []);
+        $this->assertIsArray($result);
+        $this->assertGreaterThan(0, count($result));
+        
+        // Check for email error
+        $has_email_error = false;
+        foreach ($result as $error) {
+            if (str_contains(strtolower($error), 'email') || str_contains(strtolower($error), 'e-mail')) {
+                $has_email_error = true;
+                break;
+            }
+        }
+        $this->assertTrue($has_email_error);
+    }
+
+    /**
+     * Test check() with duplicate login
+     */
+    public function testCheckDuplicateLogin(): void
+    {
+        $this->logSuperAdmin();
+        
+        // Create first member
+        $adh1 = $this->getMemberOne();
+        $this->assertTrue($adh1->store());
+        
+        // Try to create second member with same login
+        $adh2 = new \Galette\Entity\Adherent($this->zdb);
+        $adh2->setDependencies($this->preferences, $this->members_fields, $this->history);
+        
+        $data = $this->dataAdherentTwo();
+        $data['login_adh'] = $adh1->login; // Same login
+        
+        $result = $adh2->check($data, [], []);
+        $this->assertIsArray($result);
+        $this->assertGreaterThan(0, count($result));
+        
+        $this->login->logOut();
+    }
+
+    /**
+     * Test check() with duplicate email
+     */
+    public function testCheckDuplicateEmail(): void
+    {
+        $this->logSuperAdmin();
+        
+        // Create first member
+        $adh1 = $this->getMemberOne();
+        $this->assertTrue($adh1->store());
+        
+        // Try to create second member with same email
+        $adh2 = new \Galette\Entity\Adherent($this->zdb);
+        $adh2->setDependencies($this->preferences, $this->members_fields, $this->history);
+        
+        $data = $this->dataAdherentTwo();
+        $data['email_adh'] = $adh1->email; // Same email
+        
+        $result = $adh2->check($data, [], []);
+        $this->assertIsArray($result);
+        $this->assertGreaterThan(0, count($result));
+        
+        $this->login->logOut();
+    }
+
+    /**
+     * Test check() with password mismatch
+     */
+    public function testCheckPasswordMismatch(): void
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+        $adh->setDependencies($this->preferences, $this->members_fields, $this->history);
+        
+        $data = [
+            'nom_adh' => 'TestName',
+            'prenom_adh' => 'TestSurname',
+            'email_adh' => 'test' . $this->seed . '@example.com',
+            'login_adh' => 'testuser' . $this->seed,
+            'mdp_adh' => 'Password123',
+            'mdp_adh2' => 'DifferentPassword'
+        ];
+        
+        $result = $adh->check($data, [], []);
+        $this->assertIsArray($result);
+        $this->assertGreaterThan(0, count($result));
+    }
+
+    /**
+     * Test check() with invalid birthdate (future date)
+     */
+    public function testCheckFutureBirthdate(): void
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+        $adh->setDependencies($this->preferences, $this->members_fields, $this->history);
+        
+        $data = [
+            'nom_adh' => 'TestName',
+            'prenom_adh' => 'TestSurname',
+            'ddn_adh' => date('Y-m-d', strtotime('+1 day')) // Future date
+        ];
+        
+        $result = $adh->check($data, [], []);
+        $this->assertIsArray($result);
+        $this->assertGreaterThan(0, count($result));
+    }
+
+    /**
+     * Test check() with too short login
+     */
+    public function testCheckTooShortLogin(): void
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+        $adh->setDependencies($this->preferences, $this->members_fields, $this->history);
+        
+        $data = [
+            'nom_adh' => 'TestName',
+            'prenom_adh' => 'TestSurname',
+            'login_adh' => 'a' // Only 1 character
+        ];
+        
+        $result = $adh->check($data, [], []);
+        $this->assertIsArray($result);
+        $this->assertGreaterThan(0, count($result));
+    }
+
+    /**
+     * Test check() with login containing @
+     */
+    public function testCheckLoginWithAt(): void
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+        $adh->setDependencies($this->preferences, $this->members_fields, $this->history);
+        
+        $data = [
+            'nom_adh' => 'TestName',
+            'prenom_adh' => 'TestSurname',
+            'login_adh' => 'test@login'
+        ];
+        
+        $result = $adh->check($data, [], []);
+        $this->assertIsArray($result);
+        $this->assertGreaterThan(0, count($result));
+    }
+
+    /**
+     * Test check() with valid data returns true
+     */
+    public function testCheckValidDataReturnsTrue(): void
+    {
+        $this->logSuperAdmin();
+        
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+        $adh->setDependencies($this->preferences, $this->members_fields, $this->history);
+        
+        $data = $this->dataAdherentOne();
+        
+        $result = $adh->check($data, [], []);
+        $this->assertTrue($result);
+        
+        $this->login->logOut();
+    }
 }

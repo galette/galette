@@ -1527,4 +1527,69 @@ class Contribution extends GaletteTestCase
         $this->assertTrue($check);
         $this->expectNoLogEntry();
     }
+
+    /**
+     * Test check() with missing required fields
+     */
+    public function testCheckMissingRequired(): void
+    {
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        
+        $data = [
+            'id_adh' => $this->adh->id,
+            'date_enreg' => date('Y-m-d')
+            // Missing id_type_cotis, montant_cotis, etc.
+        ];
+        
+        $required = [
+            'id_type_cotis' => 1,
+            'id_adh' => 1,
+            'montant_cotis' => 1
+        ];
+        
+        $result = $contrib->check($data, $required, []);
+        $this->assertIsArray($result);
+        $this->assertGreaterThan(0, count($result));
+    }
+
+    /**
+     * Test check() with invalid amount
+     */
+    public function testCheckInvalidAmount(): void
+    {
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        
+        $data = [
+            'id_type_cotis' => 1,
+            'id_adh' => $this->adh->id,
+            'date_enreg' => date('Y-m-d'),
+            'date_debut_cotis' => date('Y-m-d'),
+            'montant_cotis' => 'invalid_amount'
+        ];
+        
+        $result = $contrib->check($data, [], []);
+        $this->assertIsArray($result);
+        $this->assertGreaterThan(0, count($result));
+    }
+
+    /**
+     * Test check() with valid data returns true
+     */
+    public function testCheckValidReturnsTrue(): void
+    {
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        
+        $data = [
+            'id_type_cotis' => 1,
+            'id_adh' => $this->adh->id,
+            'date_enreg' => date('Y-m-d'),
+            'date_debut_cotis' => date('Y-m-d'),
+            'date_fin_cotis' => date('Y-m-d', strtotime('+1 year')),
+            'montant_cotis' => '50.00',
+            'type_paiement_cotis' => 1
+        ];
+        
+        $result = $contrib->check($data, [], []);
+        $this->assertTrue($result);
+    }
 }

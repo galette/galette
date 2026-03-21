@@ -27,6 +27,8 @@ use Analog\Analog;
 use ArrayObject;
 use DI\Attribute\Inject;
 use Galette\Core\Db;
+use Galette\Core\Login;
+use Galette\Core\Preferences;
 use Galette\Entity\Attributes\Column;
 use Galette\Entity\DTO\ColumnMapping;
 use Galette\Exception\EntityException;
@@ -58,6 +60,15 @@ abstract class AbstractEntity
 
     #[Inject]
     protected Db $zdb;
+
+    #[Inject]
+    protected ?Preferences $preferences = null;
+
+    #[Inject]
+    protected ?Login $login = null;
+
+    /** @var array<string> */
+    protected array $errors = [];
 
     /**
      * Get id
@@ -148,6 +159,11 @@ abstract class AbstractEntity
                 Analog::log('preInsert failed!', Analog::ERROR);
                 return false;
             }
+            /*if (!$this->veriryData()) {
+                $zdb->rollBack();
+                Analog::log('preInsert failed!', Analog::ERROR);
+                return false;
+            }*/
 
             unset($data['id'], $data[static::PK]);
 
@@ -462,5 +478,77 @@ abstract class AbstractEntity
             $this->zdb = $zdb;
         }
         return $this->zdb;
+    }
+
+    /**
+     * Get Preferences instance
+     * Fix until everything is loaded from the DI and injection works
+     */
+    protected function getPreferences(): Preferences
+    {
+        if (!isset($this->preferences)) {
+            global $preferences;
+            $this->preferences = $preferences;
+        }
+        return $this->preferences;
+    }
+
+    /**
+     * Get Login instance
+     * Fix until everything is loaded from the DI and injection works
+     */
+    protected function getLogin(): Login
+    {
+        if (!isset($this->login)) {
+            global $login;
+            $this->login = $login;
+        }
+        return $this->login;
+    }
+
+    /**
+     * Get validation errors
+     *
+     * @return array<string>
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+
+    /**
+     * Sanitize input values
+     * Strips tags and trims strings in the provided array
+     *
+     * @param array<string,mixed> $values Values to sanitize
+     * @return array<string,mixed> Sanitized values
+     */
+    protected function sanitizeValues(array $values): array
+    {
+        foreach ($values as &$rawvalue) {
+            if (is_string($rawvalue)) {
+                $rawvalue = strip_tags($rawvalue);
+                $rawvalue = trim($rawvalue);
+            }
+        }
+        return $values;
+    }
+
+    /**
+     * Check posted values validity
+     * This method should be overridden in child classes that need validation
+     *
+     * @param array<string,mixed> $values   All values to check, basically the $_POST array
+     * @param array<string,int>   $required Array of required fields
+     * @param array<string>       $disabled Array of disabled fields
+     *
+     * @return true|array<string> True if valid, array of errors otherwise
+     */
+    public function check(array $values, array $required, array $disabled): bool|array
+    {
+        // Default implementation: no validation
+        // Child classes should override this method to implement their specific validation logic
+        $this->errors = [];
+        return true;
     }
 }
