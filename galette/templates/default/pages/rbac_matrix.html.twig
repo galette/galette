@@ -1,0 +1,69 @@
+{#
+/**
+ * Copyright © 2003-2024 The Galette Team
+ *
+ * This file is part of Galette (https://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ */
+#}
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <form action="{{ url_for('save_rbac_matrix') }}" method="post" class="ui form">
+        <div class="ui basic fitted segment loader_selector large-table-wrapper">
+            {% include "components/forms/csrf.html.twig" %}
+
+            <table class="listing ui compact celled table">
+                <thead>
+                    <tr>
+                        <th class="four wide">{{ _T('Permission') }}</th>
+                        {% for role in roles %}
+                            <th class="ui center aligned">{{ role.nom_role }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for domain, perms in grouped_permissions %}
+                        <tr class="active">
+                            <th colspan="{{ roles|length + 1 }}">
+                                <i class="folder icon"></i> {{ domain|capitalize }}
+                            </th>
+                        </tr>
+                        {% for perm in perms %}
+                            <tr>
+                                <td>
+                                    <strong>{{ perm.nom_perm }}</strong><br>
+                                    <small class="ui grey text">{{ perm.description_perm }}</small>
+                                </td>
+                                {% for role in roles %}
+                                    <td class="ui center aligned">
+                                        <input type="checkbox" name="matrix[{{ role.id_role }}][{{ perm.id_perm }}]" value="1"
+                                            {% if role_perms[role.id_role] is defined and perm.id_perm in role_perms[role.id_role] %}checked{% endif %}>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="ui basic center aligned fitted segment">
+                <button type="submit" class="ui primary button">
+                    <i class="save icon"></i> {{ _T('Save Permissions') }}
+                </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

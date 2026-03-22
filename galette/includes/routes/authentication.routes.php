@@ -129,3 +129,9 @@ $app->post(
     '/authentication-attempts',
     [AuthController::class, 'doAuthAttempts']
 )->setName('doAuthAttempts')->add(Authenticate::class);
+
+// API Login
+$app->post(
+    '/api/login',
+    [AuthController::class, 'apiLogin']
+)->setName('api_login');
