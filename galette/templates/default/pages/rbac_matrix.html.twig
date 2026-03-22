@@ -1,0 +1,47 @@
+{% extends 'page.html.twig' %}
+
+{% block content %}
+<div class="ui container">
+    <h1 class="ui header">{{ page_title }}</h1>
+
+    <div class="ui segment">
+        <form action="{{ url_for('save_rbac_matrix') }}" method="post" class="ui form">
+            <input type="hidden" name="{{ csrf.keys.name }}" value="{{ csrf.name }}">
+            <input type="hidden" name="{{ csrf.keys.value }}" value="{{ csrf.value }}">
+            
+            <table class="ui compact celled table">
+                <thead>
+                    <tr>
+                        <th class="four wide">{{ _T('Permission') }}</th>
+                        {% for role in roles %}
+                            <th class="ui center aligned">{{ role.nom_role }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for perm in permissions %}
+                        <tr>
+                            <td>
+                                <strong>{{ perm.nom_perm }}</strong><br>
+                                <small class="ui grey text">{{ perm.description_perm }}</small>
+                            </td>
+                            {% for role in roles %}
+                                <td class="ui center aligned">
+                                    <input type="checkbox" name="matrix[{{ role.id_role }}][{{ perm.id_perm }}]" value="1"
+                                        {% if role_perms[role.id_role] is defined and perm.id_perm in role_perms[role.id_role] %}checked{% endif %}>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="ui divider"></div>
+            
+            <button type="submit" class="ui primary button">
+                <i class="save icon"></i> {{ _T('Save Permissions') }}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

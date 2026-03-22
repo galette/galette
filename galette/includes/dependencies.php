@@ -181,6 +181,15 @@ $container->set(\Galette\Core\PrintLogo::class, DI\autowire());
 
 $container->set(\Galette\Core\History::class, \DI\autowire());
 
+$container->set(\Galette\Core\AccessControl::class, function (ContainerInterface $c) {
+    $ac = new \Galette\Core\AccessControl($c->get(\Galette\Core\Db::class));
+    $ac->addVoter(new \Galette\Core\Voters\SubscriptionVoter());
+    $ac->addVoter(new \Galette\Core\Voters\GroupVoter());
+    return $ac;
+});
+
+$container->set(\Galette\Middleware\ApiRbacMiddleware::class, \DI\autowire());
+
 $container->set('acls', function (ContainerInterface $c) {
     include GALETTE_ROOT . 'includes/core_acls.php';
     /** @var array<string, string> $core_acls */
