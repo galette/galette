@@ -1,0 +1,34 @@
+# Fichiers créés pour la refonte du système d'installation
+# Date: 2026-03-23
+## Infrastructure (Phase 1)
+galette/lib/Galette/Core/Installation/StepStatus.php
+galette/lib/Galette/Core/Installation/StepResult.php
+galette/lib/Galette/Core/Installation/StepInterface.php
+galette/lib/Galette/Core/Installation/AbstractStep.php
+galette/lib/Galette/Core/Installation/Workflow.php
+## Steps (Phase 1)
+galette/lib/Galette/Core/Installation/Step/CheckStep.php
+galette/lib/Galette/Core/Installation/Step/TypeStep.php
+galette/lib/Galette/Core/Installation/Step/DatabaseStep.php
+galette/lib/Galette/Core/Installation/Step/DatabaseCheckStep.php
+galette/lib/Galette/Core/Installation/Step/VersionSelectionStep.php
+galette/lib/Galette/Core/Installation/Step/DatabaseInstallStep.php
+galette/lib/Galette/Core/Installation/Step/AdminStep.php
+galette/lib/Galette/Core/Installation/Step/TelemetryStep.php
+galette/lib/Galette/Core/Installation/Step/InitializationStep.php
+galette/lib/Galette/Core/Installation/Step/EndStep.php
+## Tests (Phase 1)
+tests/Galette/Core/Installation/StepStatusTest.php
+tests/Galette/Core/Installation/StepResultTest.php
+tests/Galette/Core/Installation/WorkflowTest.php
+## Helpers de vue (Phase 2)
+galette/install/views/components.php
+galette/install/views/helpers.php
+galette/install/steps/check_refactored.php
+## Documentation
+galette/lib/Galette/Core/Installation/README.md
+plan-refonteSystemeInstallation.prompt.md
+INSTALLATION_REFACTOR_STATUS.md
+IMPLEMENTATION_SUMMARY.md
+FILES_CREATED.txt
+TOTAL: 25 fichiers
