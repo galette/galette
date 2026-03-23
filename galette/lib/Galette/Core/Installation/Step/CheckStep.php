@@ -60,26 +60,55 @@ class CheckStep extends AbstractStep
         $allPassed = true;
         $messages = [];
         $report = [];
+        $critical_failures = [];
 
         foreach ($checks as $checkName => $checkResult) {
+            $report[$checkName] = $checkResult;
+            
             if (!$checkResult['passed']) {
                 $allPassed = false;
-                $messages[] = $checkResult['message'];
+                
+                // Build detailed error message
+                $error_msg = $checkResult['message'];
+                if (isset($checkResult['details']) && is_string($checkResult['details'])) {
+                    $error_msg .= ': ' . $checkResult['details'];
+                }
+                
+                $messages[] = $error_msg;
+                $critical_failures[] = $checkName;
             }
-            $report[$checkName] = $checkResult;
         }
 
         if ($allPassed) {
             return StepResult::success(
                 [_T("Galette requirements are met :)")],
-                false, // Don't display, auto-advance
-                $report
+                false, // Don't display, auto-advance to next step
+                $report,
+                ['checks_passed' => true] // Data for next steps
+            );
+        }
+
+        // Add helpful context to error messages
+        if (in_array('php_version', $critical_failures)) {
+            $messages[] = _T("Please upgrade your PHP installation.");
+        }
+        
+        if (in_array('modules', $critical_failures)) {
+            $messages[] = _T("Some PHP modules are missing. Please install them or contact your support.");
+        }
+        
+        if (in_array('permissions', $critical_failures)) {
+            $install_mode = $this->install->isInstall() ? 'install' : 'upgrade';
+            $messages[] = sprintf(
+                _T("Galette needs write permission on some directories to %s."),
+                $install_mode === 'install' ? _T("work as expected") : _T("be updated")
             );
         }
 
         return StepResult::error(
             $messages,
-            $report
+            $report,
+            ['failed_checks' => $critical_failures]
         );
     }
 

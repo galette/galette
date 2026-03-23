@@ -89,10 +89,8 @@ $all_ok = $php_ok && $date_ok && $modules_ok && $perms_ok;
 // Overall status message
 if ($all_ok) {
     renderMessageBox('success', _T("Galette requirements are met :)"));
-}
-
-if (!$date_ok) {
-    renderMessageBox('error', _T("Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?"));
+} else {
+    renderMessageBox('error', _T("Something went wrong. Please review all verifications below."));
 }
 ?>
 
