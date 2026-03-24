@@ -323,82 +323,7 @@ if (count($error_detected) > 0) {
 ?>
                     <div class="ui mobile reversed stackable two column grid">
                         <div class="four wide column">
-                            <div class="ui stackable mini vertical steps fluid">
-                                <div class="step<?php echo $install->isCheckStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_CHECK) ? ' disabled' : ''); ?>">
-                                    <i class="tasks icon<?php echo $install->isStepPassed(GaletteInstall::STEP_CHECK) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Checks"); ?></div>
-                                    </div>
-                                </div>
-                                <div class="step<?php echo $install->isTypeStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_TYPE) ? ' disabled' : ''); ?>">
-                                    <i class="question icon<?php echo $install->isStepPassed(GaletteInstall::STEP_TYPE) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Installation mode"); ?></div>
-                                    </div>
-                                </div>
-                                <div class="step<?php echo $install->isDbStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_DB) ? ' disabled' : ''); ?>">
-                                    <i class="database icon<?php echo $install->isStepPassed(GaletteInstall::STEP_DB) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Database"); ?></div>
-                                    </div>
-                                </div>
-                                <div class="step<?php echo $install->isDbCheckStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_DB_CHECKS) ? ' disabled' : ''); ?>">
-                                    <i class="key icon<?php echo $install->isStepPassed(GaletteInstall::STEP_DB_CHECKS) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Database access and permissions"); ?></div>
-                                    </div>
-                                </div>
-<?php
-if ($install->isUpgrade()) {
-    ?>
-                                <div class="step<?php echo $install->isVersionSelectionStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_VERSION) ? ' disabled' : ''); ?>">
-                                    <i class="tag icon<?php echo $install->isStepPassed(GaletteInstall::STEP_VERSION) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Version selection"); ?></div>
-                                    </div>
-                                </div>
-                                <div class="step<?php echo $install->isDbUpgradeStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_DB_UPGRADE) ? ' disabled' : ''); ?>">
-                                    <i class="sync alt icon<?php echo $install->isStepPassed(GaletteInstall::STEP_DB_UPGRADE) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Database upgrade"); ?></div>
-                                    </div>
-                                </div>
-    <?php
-} else {
-    ?>
-                                <div class="step<?php echo $install->isDbinstallStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_DB_INSTALL) ? ' disabled' : ''); ?>">
-                                    <i class="spinner icon<?php echo $install->isStepPassed(GaletteInstall::STEP_DB_INSTALL) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Database installation"); ?></div>
-                                    </div>
-                                </div>
-    <?php
-}
-
-if (!$install->isUpgrade()) {
-    ?>
-                                <div class="step<?php echo $install->isAdminStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_ADMIN) ? ' disabled' : ''); ?>">
-                                    <i class="user icon<?php echo $install->isStepPassed(GaletteInstall::STEP_ADMIN) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Admin parameters"); ?></div>
-                                    </div>
-                                </div>
-    <?php
-}
-?>
-                                <div class="step<?php echo $install->isTelemetryStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_TELEMETRY) ? ' disabled' : ''); ?>">
-                                    <i class="chart bar icon<?php echo $install->isStepPassed(GaletteInstall::STEP_TELEMETRY) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("Telemetry"); ?></div>
-                                    </div>
-                                </div>
-                                <div class="step<?php echo $install->isEndStep() ? ' active' : (!$install->isStepPassed(GaletteInstall::STEP_END) ? ' disabled' : ''); ?>">
-                                    <i class="flag checkered icon<?php echo $install->isStepPassed(GaletteInstall::STEP_END) ? ' green' : ''; ?>"></i>
-                                    <div class="content">
-                                        <div class="title"><?php echo _T("End!"); ?></div>
-                                    </div>
-                                </div>
-                            </div>
+<?php renderStepProgress($install, $i18n); ?>
                         </div>
                         <div class="twelve wide column">
 <?php
@@ -417,7 +342,7 @@ if ($stepResult !== null && !$stepResult->requiresDisplay()) {
             echo $install->isInstall()
                 ? _T("Database has been installed :)")
                 : _T("Database has been upgraded :)");
-            ?>
+        ?>
         </div>
         
         <!-- Modal will show detailed report -->
