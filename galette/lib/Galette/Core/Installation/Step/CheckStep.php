@@ -64,16 +64,16 @@ class CheckStep extends AbstractStep
 
         foreach ($checks as $checkName => $checkResult) {
             $report[$checkName] = $checkResult;
-            
+
             if (!$checkResult['passed']) {
                 $allPassed = false;
-                
+
                 // Build detailed error message
                 $error_msg = $checkResult['message'];
                 if (isset($checkResult['details']) && is_string($checkResult['details'])) {
                     $error_msg .= ': ' . $checkResult['details'];
                 }
-                
+
                 $messages[] = $error_msg;
                 $critical_failures[] = $checkName;
             }
@@ -92,11 +92,11 @@ class CheckStep extends AbstractStep
         if (in_array('php_version', $critical_failures)) {
             $messages[] = _T("Please upgrade your PHP installation.");
         }
-        
+
         if (in_array('modules', $critical_failures)) {
             $messages[] = _T("Some PHP modules are missing. Please install them or contact your support.");
         }
-        
+
         if (in_array('permissions', $critical_failures)) {
             $install_mode = $this->install->isInstall() ? 'install' : 'upgrade';
             $messages[] = sprintf(

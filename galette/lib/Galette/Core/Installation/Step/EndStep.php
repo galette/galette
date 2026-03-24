@@ -38,10 +38,14 @@ class EndStep extends AbstractStep
 
     public function execute(array $data = []): StepResult
     {
-        // TODO: Implement in Phase 5
+        // This step always displays the success message and home button
+        $message = $this->install->isInstall()
+            ? _T("Galette has been successfully installed!")
+            : _T("Galette has been successfully updated!");
+
         return StepResult::success(
-            [_T("Installation completed successfully!")],
-            true
+            [$message],
+            requiresDisplay: true
         );
     }
 

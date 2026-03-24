@@ -38,8 +38,12 @@ class TelemetryStep extends AbstractStep
 
     public function execute(array $data = []): StepResult
     {
-        // TODO: Implement in Phase 5
-        return StepResult::success([], true);
+        // This step requires display (form with telemetry opt-in checkbox)
+        // User choice is saved when form is submitted
+        return StepResult::success(
+            [],
+            requiresDisplay: true
+        );
     }
 
     public function requiresUserInput(): bool

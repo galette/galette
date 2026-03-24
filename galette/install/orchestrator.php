@@ -42,9 +42,9 @@ use Galette\Core\Installation\StepResult;
  * - Handles auto-advancement if requiresDisplay is false
  * - Returns the StepResult for rendering
  *
- * @param string $stepClassName Fully qualified step class name
- * @param array<string, mixed> $data Data to pass to the step
- * @param \Galette\Core\Install $install Install instance for state management
+ * @param string                $stepClassName Fully qualified step class name
+ * @param array<string, mixed>  $data          Data to pass to the step
+ * @param \Galette\Core\Install $install       Install instance for state management
  * @return StepResult|null Returns StepResult if display needed, null if auto-advanced
  */
 function executeStep(string $stepClassName, array $data, \Galette\Core\Install $install): ?StepResult
@@ -72,9 +72,9 @@ function executeStep(string $stepClassName, array $data, \Galette\Core\Install $
  * Generates a page that shows a brief notification and then
  * automatically submits a form to advance to the next step.
  *
- * @param StepResult $result The step result
- * @param string $nextStepAction The POST parameter to trigger next step
- * @param array<string, mixed> $hiddenData Additional data to pass to next step
+ * @param StepResult           $result         The step result
+ * @param string               $nextStepAction The POST parameter to trigger next step
+ * @param array<string, mixed> $hiddenData     Additional data to pass to next step
  * @return void Outputs HTML directly
  */
 function renderAutoAdvance(StepResult $result, string $nextStepAction, array $hiddenData = []): void
@@ -127,17 +127,25 @@ function renderAutoAdvance(StepResult $result, string $nextStepAction, array $hi
  * Check if we should use new Step system for current step
  *
  * Returns true if the step has been refactored to use new system.
- * This allows progressive migration.
+ * All steps are now refactored.
  *
  * @param \Galette\Core\Install $install Install instance
  * @return bool True if should use new system
  */
 function shouldUseNewSystem(\Galette\Core\Install $install): bool
 {
-    // Check if current step has been refactored
-    return $install->isCheckStep() 
-        || $install->isDbCheckStep() 
-        || $install->isDbinstallStep();
+    // All steps have been refactored to use the new system
+    return $install->isCheckStep()
+        || $install->isTypeStep()
+        || $install->isDbStep()
+        || $install->isDbCheckStep()
+        || $install->isVersionSelectionStep()
+        || $install->isDbinstallStep()
+        || $install->isDbUpgradeStep()
+        || $install->isAdminStep()
+        || $install->isTelemetryStep()
+        || $install->isGaletteInitStep()
+        || $install->isEndStep();
 }
 
 /**
@@ -146,18 +154,32 @@ function shouldUseNewSystem(\Galette\Core\Install $install): bool
  * Maps old system step constants to new Step classes
  *
  * @param \Galette\Core\Install $install Install instance
- * @return string|null Fully qualified class name or null if not refactored
+ * @return string|null Fully qualified class name or null if not a valid step
  */
 function getStepClassName(\Galette\Core\Install $install): ?string
 {
     if ($install->isCheckStep()) {
         return \Galette\Core\Installation\Step\CheckStep::class;
+    } elseif ($install->isTypeStep()) {
+        return \Galette\Core\Installation\Step\TypeStep::class;
+    } elseif ($install->isDbStep()) {
+        return \Galette\Core\Installation\Step\DatabaseStep::class;
     } elseif ($install->isDbCheckStep()) {
         return \Galette\Core\Installation\Step\DatabaseCheckStep::class;
-    } elseif ($install->isDbinstallStep()) {
+    } elseif ($install->isVersionSelectionStep()) {
+        return \Galette\Core\Installation\Step\VersionSelectionStep::class;
+    } elseif ($install->isDbinstallStep() || $install->isDbUpgradeStep()) {
         return \Galette\Core\Installation\Step\DatabaseInstallStep::class;
+    } elseif ($install->isAdminStep()) {
+        return \Galette\Core\Installation\Step\AdminStep::class;
+    } elseif ($install->isTelemetryStep()) {
+        return \Galette\Core\Installation\Step\TelemetryStep::class;
+    } elseif ($install->isGaletteInitStep()) {
+        return \Galette\Core\Installation\Step\InitializationStep::class;
+    } elseif ($install->isEndStep()) {
+        return \Galette\Core\Installation\Step\EndStep::class;
     }
-    
+
     return null;
 }
 
@@ -171,12 +193,24 @@ function getNextStepAction(\Galette\Core\Install $install): string
 {
     if ($install->isCheckStep()) {
         return 'install_permsok';
+    } elseif ($install->isTypeStep()) {
+        return 'install_type';
+    } elseif ($install->isDbStep()) {
+        return 'install_dbtype';
     } elseif ($install->isDbCheckStep()) {
         return 'install_dbperms_ok';
+    } elseif ($install->isVersionSelectionStep()) {
+        return 'previous_version';
     } elseif ($install->isDbinstallStep() || $install->isDbUpgradeStep()) {
         return 'install_dbwrite_ok';
+    } elseif ($install->isAdminStep()) {
+        return 'install_adminlogin';
+    } elseif ($install->isTelemetryStep()) {
+        return 'install_telemetry_ok';
+    } elseif ($install->isGaletteInitStep()) {
+        return 'install_prefs_ok';
     }
-    
+
     return 'next_step';
 }
 
@@ -184,7 +218,7 @@ function getNextStepAction(\Galette\Core\Install $install): string
  * Get additional data to pass when auto-advancing
  *
  * @param \Galette\Core\Install $install Install instance
- * @param StepResult $result Step result
+ * @param StepResult            $result  Step result
  * @return array<string, mixed> Hidden form data
  */
 function getAutoAdvanceData(\Galette\Core\Install $install, StepResult $result): array
@@ -204,9 +238,3 @@ function getAutoAdvanceData(\Galette\Core\Install $install, StepResult $result):
 
     return $data;
 }
-
-
-
-
-
-

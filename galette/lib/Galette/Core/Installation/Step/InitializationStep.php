@@ -38,8 +38,13 @@ class InitializationStep extends AbstractStep
 
     public function execute(array $data = []): StepResult
     {
-        // TODO: Implement in Phase 5
-        return StepResult::success([], true);
+        // This step always displays results (config file creation, data initialization)
+        // The actual work is done by Install::writeConfFile() and Install::initObjects()
+        // which are called from the view file galette.php
+        return StepResult::success(
+            [],
+            requiresDisplay: true
+        );
     }
 
     public function canSkipDisplay(): bool

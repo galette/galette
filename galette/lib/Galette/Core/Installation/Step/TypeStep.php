@@ -45,11 +45,11 @@ class TypeStep extends AbstractStep
      */
     public function execute(array $data = []): StepResult
     {
-        // TODO: Implement in Phase 5
-        // For now, delegate to existing Install class
+        // This step always requires display (form with radio buttons)
+        // Mode is set when form is submitted
         return StepResult::success(
             [],
-            true // Must display the form
+            requiresDisplay: true
         );
     }
 

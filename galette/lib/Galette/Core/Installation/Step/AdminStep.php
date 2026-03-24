@@ -39,8 +39,12 @@ class AdminStep extends AbstractStep
 
     public function execute(array $data = []): StepResult
     {
-        // TODO: Implement in Phase 5
-        return StepResult::success([], true);
+        // This step requires display (form with admin credentials)
+        // Credentials are saved when form is submitted
+        return StepResult::success(
+            [],
+            requiresDisplay: true
+        );
     }
 
     public function isApplicable(string $mode): bool

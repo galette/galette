@@ -38,8 +38,12 @@ class DatabaseStep extends AbstractStep
 
     public function execute(array $data = []): StepResult
     {
-        // TODO: Implement in Phase 5
-        return StepResult::success([], true);
+        // This step always requires display (form with DB connection details)
+        // Configuration is saved when form is submitted
+        return StepResult::success(
+            [],
+            requiresDisplay: true
+        );
     }
 
     public function requiresUserInput(): bool

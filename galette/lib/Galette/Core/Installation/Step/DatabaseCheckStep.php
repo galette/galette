@@ -25,7 +25,6 @@ namespace Galette\Core\Installation\Step;
 
 use Galette\Core\Installation\AbstractStep;
 use Galette\Core\Installation\StepResult;
-use Galette\Core\Install;
 
 /**
  * Database connection and permissions check step
@@ -58,7 +57,7 @@ class DatabaseCheckStep extends AbstractStep
 
         // Connection successful, now check database engine and permissions
         $zdb = new \Galette\Core\Db();
-        
+
         // Check if database engine is supported
         if (!$zdb->isEngineSUpported()) {
             return StepResult::error(
@@ -73,7 +72,7 @@ class DatabaseCheckStep extends AbstractStep
         // Check permissions
         $zdb->dropTestTable(); // Clean up if exists
         $perms_results = $zdb->grantCheck($this->install->getMode());
-        
+
         $required_perms = ['create', 'insert', 'select', 'update', 'delete', 'drop'];
         if ($this->install->isUpgrade()) {
             $required_perms[] = 'alter';
@@ -81,7 +80,7 @@ class DatabaseCheckStep extends AbstractStep
 
         $all_perms_ok = true;
         $perm_checks = [];
-        
+
         foreach ($required_perms as $perm) {
             if (isset($perms_results[$perm])) {
                 if ($perms_results[$perm] instanceof \Exception) {
@@ -121,7 +120,7 @@ class DatabaseCheckStep extends AbstractStep
         return StepResult::error(
             [$error_msg],
             $perm_checks,
-            ['permission_failures' => array_filter($required_perms, function($perm) use ($perms_results) {
+            ['permission_failures' => array_filter($required_perms, function ($perm) use ($perms_results) {
                 return $perms_results[$perm] instanceof \Exception;
             })]
         );
