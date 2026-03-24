@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command\Plugins;
 
+use Galette\Core\Installation\Step\DatabaseCheckStep;
+use Galette\Core\Installation\Step\DatabaseInstallStep;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -60,12 +62,30 @@ class PluginInstallDb extends AbstractPlugins
             ->setTablesPrefix(PREFIX_DB)
         ;
 
-        foreach ($selected as $module_id => $module) {
-            $install->executeScripts($zdb, $module['root']);
-            $io->success(sprintf('Database for plugin "%s" installed', $module_id));
+        // Database permission check (once for all plugins)
+        $dbCheckStep = new DatabaseCheckStep($install);
+        $dbCheckResult = $dbCheckStep->execute();
+        $this->displayStepResult($io, $dbCheckResult);
+        if (!$dbCheckResult->isSuccess()) {
+            $io->error('Database permission check failed.');
+            return Command::FAILURE;
         }
 
-        return Command::SUCCESS;
+        $exitCode = Command::SUCCESS;
+        foreach ($selected as $module_id => $module) {
+            $io->section(sprintf('Installing database for plugin "%s"', $module_id));
+            $dbInstallStep = new DatabaseInstallStep($install);
+            $result = $dbInstallStep->execute(['zdb' => $zdb, 'scripts_path' => $module['root']]);
+            $this->displayStepResult($io, $result);
+            if ($result->isSuccess()) {
+                $io->success(sprintf('Database for plugin "%s" installed', $module_id));
+            } else {
+                $io->error(sprintf('Database for plugin "%s" could not be installed', $module_id));
+                $exitCode = Command::FAILURE;
+            }
+        }
+
+        return $exitCode;
     }
 
     /**

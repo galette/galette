@@ -57,7 +57,9 @@ class DatabaseInstallStep extends AbstractStep
         }
 
         // Execute installation/upgrade scripts
-        $success = $this->install->executeScripts($zdb);
+        // scripts_path allows plugins to pass their own scripts directory
+        $scriptsPath = $data['scripts_path'] ?? null;
+        $success = $this->install->executeScripts($zdb, $scriptsPath);
         $report = $this->install->getDbInstallReport();
 
         if ($success) {
