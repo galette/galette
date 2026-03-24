@@ -212,9 +212,9 @@ if (shouldUseNewSystem($install)) {
             // Gather data for step execution
             $stepData = [];
             
-            // For DatabaseCheckStep, we need db connection info
-            if ($install->isDbCheckStep() && isset($zdb)) {
-                $stepData['db'] = $zdb;
+            // For DatabaseCheckStep and DatabaseInstallStep, we need db connection
+            if (($install->isDbCheckStep() || $install->isDbinstallStep() || $install->isDbUpgradeStep()) && isset($zdb)) {
+                $stepData['zdb'] = $zdb;
             }
             
             // Execute the step
@@ -407,10 +407,49 @@ if (!$install->isUpgrade()) {
 <?php
 // Check if we need to render auto-advance
 if ($stepResult !== null && !$stepResult->requiresDisplay()) {
-    // Auto-advance: show notification and redirect
-    $nextAction = getNextStepAction($install);
-    $autoAdvanceData = getAutoAdvanceData($install, $stepResult);
-    renderAutoAdvance($stepResult, $nextAction, $autoAdvanceData);
+    // Check if this is DatabaseInstallStep that needs a modal
+    $stepData = $stepResult->getData();
+    if (isset($stepData['show_report_modal']) && $stepData['show_report_modal'] === true) {
+        // Special case: show modal with report
+        $report = $stepResult->getReport();
+        $nextAction = getNextStepAction($install);
+        ?>
+        <div class="ui success message">
+            <i class="database icon"></i>
+            <?php 
+            echo $install->isInstall() 
+                ? _T("Database has been installed :)")
+                : _T("Database has been upgraded :)"); 
+            ?>
+        </div>
+        
+        <!-- Modal will show detailed report -->
+        <?php
+        require_once __DIR__ . '/../install/views/components.php';
+        renderDbReportModal($report, $install, $i18n, true);
+        ?>
+        
+        <!-- Hidden form for advancing to next step -->
+        <form id="install-continue-form" method="POST" action="installer.php" style="display: none;">
+            <input type="hidden" name="<?php echo htmlspecialchars($nextAction); ?>" value="1"/>
+        </form>
+        
+        <noscript>
+            <!-- Fallback without JavaScript -->
+            <form method="POST" action="installer.php">
+                <input type="hidden" name="<?php echo htmlspecialchars($nextAction); ?>" value="1"/>
+                <button type="submit" class="ui primary button">
+                    <?php echo _T("Continue"); ?>
+                </button>
+            </form>
+        </noscript>
+        <?php
+    } else {
+        // Normal auto-advance: show notification and redirect
+        $nextAction = getNextStepAction($install);
+        $autoAdvanceData = getAutoAdvanceData($install, $stepResult);
+        renderAutoAdvance($stepResult, $nextAction, $autoAdvanceData);
+    }
 } elseif ($install->isCheckStep()) {
     // New system step with display OR old system if not refactored
     if (shouldUseNewSystem($install) && $stepResult !== null) {

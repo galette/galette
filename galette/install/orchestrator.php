@@ -173,7 +173,7 @@ function getNextStepAction(\Galette\Core\Install $install): string
         return 'install_permsok';
     } elseif ($install->isDbCheckStep()) {
         return 'install_dbperms_ok';
-    } elseif ($install->isDbinstallStep()) {
+    } elseif ($install->isDbinstallStep() || $install->isDbUpgradeStep()) {
         return 'install_dbwrite_ok';
     }
     
