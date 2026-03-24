@@ -54,15 +54,8 @@ function executeStep(string $stepClassName, array $data, \Galette\Core\Install $
     }
 
     /** @var AbstractStep $step */
-    $step = new $stepClassName();
+    $step = new $stepClassName($install);
     $result = $step->execute($data);
-
-    // Handle step state based on result
-    if ($result->isSuccess()) {
-        // Mark step as passed in old system
-        // We'll need to add a method to Install to mark specific steps as passed
-        // For now, we'll let the old POST handlers do this
-    }
 
     // Auto-advancement logic
     if (!$result->requiresDisplay()) {
@@ -141,15 +134,10 @@ function renderAutoAdvance(StepResult $result, string $nextStepAction, array $hi
  */
 function shouldUseNewSystem(\Galette\Core\Install $install): bool
 {
-    // List of steps that have been refactored
-    $refactoredSteps = [
-        \Galette\Core\Install::STEP_CHECK,
-        \Galette\Core\Install::STEP_DB_CHECKS,
-        \Galette\Core\Install::STEP_DB_INSTALL,
-    ];
-
-    $currentStep = $install->getStep();
-    return in_array($currentStep, $refactoredSteps);
+    // Check if current step has been refactored
+    return $install->isCheckStep() 
+        || $install->isDbCheckStep() 
+        || $install->isDbinstallStep();
 }
 
 /**
@@ -162,15 +150,15 @@ function shouldUseNewSystem(\Galette\Core\Install $install): bool
  */
 function getStepClassName(\Galette\Core\Install $install): ?string
 {
-    $stepMap = [
-        \Galette\Core\Install::STEP_CHECK => \Galette\Core\Installation\Step\CheckStep::class,
-        \Galette\Core\Install::STEP_DB_CHECKS => \Galette\Core\Installation\Step\DatabaseCheckStep::class,
-        \Galette\Core\Install::STEP_DB_INSTALL => \Galette\Core\Installation\Step\DatabaseInstallStep::class,
-        // Add more as they are refactored
-    ];
-
-    $currentStep = $install->getStep();
-    return $stepMap[$currentStep] ?? null;
+    if ($install->isCheckStep()) {
+        return \Galette\Core\Installation\Step\CheckStep::class;
+    } elseif ($install->isDbCheckStep()) {
+        return \Galette\Core\Installation\Step\DatabaseCheckStep::class;
+    } elseif ($install->isDbinstallStep()) {
+        return \Galette\Core\Installation\Step\DatabaseInstallStep::class;
+    }
+    
+    return null;
 }
 
 /**
@@ -181,14 +169,15 @@ function getStepClassName(\Galette\Core\Install $install): ?string
  */
 function getNextStepAction(\Galette\Core\Install $install): string
 {
-    $actionMap = [
-        \Galette\Core\Install::STEP_CHECK => 'install_permsok',
-        \Galette\Core\Install::STEP_DB_CHECKS => 'install_dbperms_ok',
-        \Galette\Core\Install::STEP_DB_INSTALL => 'install_dbwrite_ok',
-    ];
-
-    $currentStep = $install->getStep();
-    return $actionMap[$currentStep] ?? 'next_step';
+    if ($install->isCheckStep()) {
+        return 'install_permsok';
+    } elseif ($install->isDbCheckStep()) {
+        return 'install_dbperms_ok';
+    } elseif ($install->isDbinstallStep()) {
+        return 'install_dbwrite_ok';
+    }
+    
+    return 'next_step';
 }
 
 /**
@@ -215,4 +204,9 @@ function getAutoAdvanceData(\Galette\Core\Install $install, StepResult $result):
 
     return $data;
 }
+
+
+
+
+
 

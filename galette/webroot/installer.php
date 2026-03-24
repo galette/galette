@@ -50,6 +50,7 @@ $logfile = 'galette_install';
 define('GALETTE_BASE_PATH', '../'); //@phpstan-ignore theCodingMachineSafe.function
 
 require_once __DIR__ . '/../includes/galette.inc.php';
+require_once __DIR__ . '/../install/orchestrator.php';
 /** @var Plugins $plugins */
 
 session_start(); //@phpstan-ignore theCodingMachineSafe.function
@@ -74,6 +75,7 @@ if (isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz'])) {
 }
 
 $error_detected = [];
+$stepResult = null; // Will hold StepResult for new system steps
 
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', true); //@phpstan-ignore theCodingMachineSafe.function
@@ -200,6 +202,49 @@ if (isset($_POST['stepback_btn'])) {
     $install->atGaletteInitStep();
 } elseif (isset($_POST['install_prefs_ok'])) {
     $install->atEndStep();
+}
+
+// Execute new system steps if applicable
+if (shouldUseNewSystem($install)) {
+    $stepClassName = getStepClassName($install);
+    if ($stepClassName !== null) {
+        try {
+            // Gather data for step execution
+            $stepData = [];
+            
+            // For DatabaseCheckStep, we need db connection info
+            if ($install->isDbCheckStep() && isset($zdb)) {
+                $stepData['db'] = $zdb;
+            }
+            
+            // Execute the step
+            $result = executeStep($stepClassName, $stepData, $install);
+            
+            // Check if auto-advance is needed
+            if ($result === null || !$result->requiresDisplay()) {
+                // Step doesn't need display - prepare auto-advance
+                if ($result !== null) {
+                    $stepResult = $result; // Store for auto-advance rendering
+                } else {
+                    // Create a default success result
+                    $stepResult = \Galette\Core\Installation\StepResult::success(
+                        [_T("Step completed successfully")],
+                        false
+                    );
+                }
+            } else {
+                // Step needs display - store result for view
+                $stepResult = $result;
+            }
+        } catch (\Exception $e) {
+            // Handle step execution errors
+            \Analog\Analog::log(
+                'Error executing step: ' . $e->getMessage(),
+                \Analog\Analog::ERROR
+            );
+            $error_detected[] = _T("An error occurred during installation: ") . $e->getMessage();
+        }
+    }
 }
 
 /** @var \Galette\Core\I18n $i18n */
@@ -360,18 +405,40 @@ if (!$install->isUpgrade()) {
                         </div>
                         <div class="twelve wide column">
 <?php
-if ($install->isCheckStep()) {
-    include_once __DIR__ . '/../install/steps/check.php';
+// Check if we need to render auto-advance
+if ($stepResult !== null && !$stepResult->requiresDisplay()) {
+    // Auto-advance: show notification and redirect
+    $nextAction = getNextStepAction($install);
+    $autoAdvanceData = getAutoAdvanceData($install, $stepResult);
+    renderAutoAdvance($stepResult, $nextAction, $autoAdvanceData);
+} elseif ($install->isCheckStep()) {
+    // New system step with display OR old system if not refactored
+    if (shouldUseNewSystem($install) && $stepResult !== null) {
+        // Pass StepResult to view
+        include_once __DIR__ . '/../install/steps/check.php';
+    } else {
+        // Old system fallback
+        include_once __DIR__ . '/../install/steps/check.php';
+    }
 } elseif ($install->isTypeStep()) {
     include_once __DIR__ . '/../install/steps/type.php';
 } elseif ($install->isDbStep()) {
     include_once __DIR__ . '/../install/steps/db.php';
 } elseif ($install->isDbCheckStep()) {
-    include_once __DIR__ . '/../install/steps/db_checks.php';
+    if (shouldUseNewSystem($install) && $stepResult !== null) {
+        // Check for auto-advance was already handled above
+        include_once __DIR__ . '/../install/steps/db_checks.php';
+    } else {
+        include_once __DIR__ . '/../install/steps/db_checks.php';
+    }
 } elseif ($install->isVersionSelectionStep()) {
     include_once __DIR__ . '/../install/steps/db_select_version.php';
 } elseif ($install->isDbinstallStep() || $install->isDbUpgradeStep()) {
-    include_once __DIR__ . '/../install/steps/db_install.php';
+    if (shouldUseNewSystem($install) && $stepResult !== null) {
+        include_once __DIR__ . '/../install/steps/db_install.php';
+    } else {
+        include_once __DIR__ . '/../install/steps/db_install.php';
+    }
 } elseif ($install->isAdminStep()) {
     include_once __DIR__ . '/../install/steps/admin.php';
 } elseif ($install->isTelemetryStep()) {
