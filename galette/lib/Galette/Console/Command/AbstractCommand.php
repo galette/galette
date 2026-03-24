@@ -23,7 +23,9 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command;
 
+use Galette\Core\Installation\StepResult;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Console abstract command
@@ -40,5 +42,35 @@ abstract class AbstractCommand extends Command
     public function __construct(protected string $basepath)
     {
         parent::__construct();
+    }
+
+    /**
+     * Display step result messages and report in CLI format
+     */
+    protected function displayStepResult(SymfonyStyle $io, StepResult $result): void
+    {
+        $messages = $result->getMessages();
+        if (!empty($messages)) {
+            $items = array_map(
+                fn($m) => $result->isSuccess() ? '<info>✔ ' . $m . '</info>' : '<error>✗ ' . $m . '</error>',
+                $messages
+            );
+            $io->listing($items);
+        }
+
+        $report = $result->getReport();
+        if (!empty($report)) {
+            $items = [];
+            foreach ($report as $entry) {
+                $ok = $entry['res'] ?? false;
+                $icon = $ok ? '<info>✔</info>' : '<error>✗</error>';
+                $msg = $icon . ' ' . ($entry['message'] ?? '');
+                if (!$ok && isset($entry['debug'])) {
+                    $msg .= ' (' . $entry['debug'] . ')';
+                }
+                $items[] = $msg;
+            }
+            $io->listing($items);
+        }
     }
 }
