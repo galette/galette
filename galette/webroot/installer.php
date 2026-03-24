@@ -51,6 +51,8 @@ define('GALETTE_BASE_PATH', '../'); //@phpstan-ignore theCodingMachineSafe.funct
 
 require_once __DIR__ . '/../includes/galette.inc.php';
 require_once __DIR__ . '/../install/orchestrator.php';
+require_once __DIR__ . '/../install/views/components.php';
+require_once __DIR__ . '/../install/views/helpers.php';
 /** @var Plugins $plugins */
 
 session_start(); //@phpstan-ignore theCodingMachineSafe.function

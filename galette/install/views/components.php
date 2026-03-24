@@ -146,27 +146,56 @@ function renderDbReportModal(array $report, \Galette\Core\Install $install, \Gal
         </div>
     </div>
     <script>
-        $(document).ready(function() {
-            var modal = $('#<?php echo $modalId; ?>');
-            
-            modal.modal({
-                closable: <?php echo $success ? 'true' : 'false'; ?>,
-                onHidden: function() {
-                    <?php if ($success) { ?>
-                    // Auto-submit form to proceed to next step
-                    var form = document.getElementById('install-continue-form');
-                    if (form) {
-                        form.submit();
-                    }
-                    <?php } ?>
+        (function() {
+            // Use IIFE to avoid conflicts and ensure execution
+            var showModal = function() {
+                var modal = $('#<?php echo $modalId; ?>');
+                
+                if (modal.length === 0) {
+                    console.error('Modal element not found: <?php echo $modalId; ?>');
+                    return;
                 }
-            }).modal('show');
+                
+                console.log('Initializing modal...');
+                
+                modal.modal({
+                    closable: <?php echo $success ? 'true' : 'false'; ?>,
+                    onHidden: function() {
+                        <?php if ($success) { ?>
+                        // Auto-submit form to proceed to next step
+                        var form = document.getElementById('install-continue-form');
+                        if (form) {
+                            console.log('Submitting form to continue...');
+                            form.submit();
+                        }
+                        <?php } ?>
+                    }
+                });
+                
+                // Show modal immediately
+                console.log('Showing modal...');
+                modal.modal('show');
+            };
             
             // Close button handler
             $('#modal-ok-btn').on('click', function() {
-                modal.modal('hide');
+                console.log('OK button clicked');
+                $('#<?php echo $modalId; ?>').modal('hide');
             });
-        });
+            
+            // Execute immediately if jQuery is ready, otherwise wait
+            if (typeof jQuery !== 'undefined') {
+                if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                    // DOM already loaded
+                    setTimeout(showModal, 100);
+                } else {
+                    // Wait for DOM to load
+                    $(document).ready(showModal);
+                }
+            } else {
+                console.error('jQuery not loaded!');
+            }
+        })();
     </script>
     <?php
 }
