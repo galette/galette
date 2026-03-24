@@ -36,6 +36,9 @@ use Analog\Analog;
  */
 class Workflow
 {
+    public const CONTEXT_CORE = 'core';
+    public const CONTEXT_PLUGIN = 'plugin';
+
     /** @var array<int, StepInterface> */
     private array $steps = [];
 
@@ -65,29 +68,48 @@ class Workflow
     }
 
     /**
+     * Get the step classes for a given context
+     *
+     * This is the single source of truth for step sequences.
+     *
+     * @return array<int, class-string<StepInterface>>
+     */
+    public static function getStepClasses(string $context = self::CONTEXT_CORE): array
+    {
+        return match ($context) {
+            self::CONTEXT_PLUGIN => [
+                Step\TypeStep::class,
+                Step\DatabaseCheckStep::class,
+                Step\VersionSelectionStep::class,
+                Step\DatabaseInstallStep::class,
+                Step\EndStep::class,
+            ],
+            default => [
+                Step\CheckStep::class,
+                Step\TypeStep::class,
+                Step\DatabaseStep::class,
+                Step\DatabaseCheckStep::class,
+                Step\VersionSelectionStep::class,
+                Step\DatabaseInstallStep::class,
+                Step\AdminStep::class,
+                Step\TelemetryStep::class,
+                Step\EndStep::class,
+            ],
+        };
+    }
+
+    /**
      * Build steps for the current installation mode
      *
      * Creates and registers all applicable steps based on installation mode.
+     *
+     * @param string $context Installation context (CONTEXT_CORE or CONTEXT_PLUGIN)
      */
-    public function buildSteps(): self
+    public function buildSteps(string $context = self::CONTEXT_CORE): self
     {
         $mode = $this->install->getMode() ?? Install::INSTALL;
 
-        // Order matters! Steps will be executed in this sequence
-        $stepClasses = [
-            Step\CheckStep::class,
-            Step\TypeStep::class,
-            Step\DatabaseStep::class,
-            Step\DatabaseCheckStep::class,
-            Step\VersionSelectionStep::class,
-            Step\DatabaseInstallStep::class,
-            Step\AdminStep::class,
-            Step\TelemetryStep::class,
-            Step\InitializationStep::class,
-            Step\EndStep::class,
-        ];
-
-        foreach ($stepClasses as $stepClass) {
+        foreach (self::getStepClasses($context) as $stepClass) {
             if (class_exists($stepClass)) {
                 $step = new $stepClass($this->install);
                 if ($step->isApplicable($mode)) {
@@ -97,9 +119,7 @@ class Workflow
         }
 
         // Sort by order
-        usort($this->steps, function (StepInterface $a, StepInterface $b) {
-            return $a->getOrder() <=> $b->getOrder();
-        });
+        usort($this->steps, fn(StepInterface $a, StepInterface $b) => $a->getOrder() <=> $b->getOrder());
 
         return $this;
     }

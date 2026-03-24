@@ -29,10 +29,9 @@ use Slim\Psr7\Response;
 use Galette\Core\Galette;
 use Galette\Core\Install;
 use Galette\Core\PluginInstall;
+use Galette\Core\Installation\Step\DatabaseCheckStep;
+use Galette\Core\Installation\Step\DatabaseInstallStep;
 use Analog\Analog;
-
-use function Safe\ob_end_clean;
-use function Safe\ob_start;
 
 /**
  * Galette plugins controller
@@ -213,12 +212,12 @@ class PluginsController extends AbstractController
                 break;
             case 'i2':
             case 'u2':
-                $install_plugin = true; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but from include
-                $zdb = $this->zdb; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- not used here, but from include
-                ob_start();
-                include_once GALETTE_ROOT . '/install/steps/db_checks.php';
-                $params['results'] = ob_get_contents();
-                ob_end_clean();
+                $dbCheckStep = new DatabaseCheckStep($install);
+                $dbCheckResult = $dbCheckStep->execute();
+                $params['step_result'] = $dbCheckResult;
+                if (!$dbCheckResult->isSuccess()) {
+                    $error_detected[] = _T("Database access and permissions check failed");
+                }
                 break;
             case 'u3':
                 $update_scripts = Install::getUpdateScripts($plugin['root'], TYPE_DB);
@@ -229,7 +228,15 @@ class PluginsController extends AbstractController
                 $install->setDbType(TYPE_DB, $error_detected);
                 $install->setTablesPrefix(PREFIX_DB);
                 $install->setInstalledVersion($post['previous_version'] ?? null);
-                $install->executeScripts($this->zdb, $plugin['root']);
+                $dbInstallStep = new DatabaseInstallStep($install);
+                $dbInstallResult = $dbInstallStep->execute([
+                    'zdb' => $this->zdb,
+                    'scripts_path' => $plugin['root'],
+                ]);
+                $params['step_result'] = $dbInstallResult;
+                if (!$dbInstallResult->isSuccess()) {
+                    $error_detected[] = _T("Database has not been installed!");
+                }
                 break;
         }
 

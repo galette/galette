@@ -80,7 +80,31 @@
 
 
     {% if step == 'i2' or step == 'u2' %}
-        {{ results|raw }}
+        {% if step_result is defined %}
+            {% if step_result.success %}
+                <div class="ui positive message">
+                    {% for msg in step_result.messages %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="ui negative message">
+                    {% for msg in step_result.messages %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if step_result.report is not empty %}
+                <ul class="leaders">
+                {% for entry in step_result.report %}
+                    <li>
+                        <span>{{ entry.message }}</span>
+                        <span>{{ install.getValidationImage(entry.res)|raw }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endif %}
     {% endif %}
     {% if step == 'u3' %}
             <h3>{{ _T("You current %1$s version is...")|format(plugin.name) }}</h3>
@@ -110,17 +134,31 @@
             </ul>
     {% endif %}
     {% if step == 'i4' or step == 'u4' %}
-            <p>{{ _T("(Errors on DROP and RENAME operations can be ignored)") }}</p>
-        {% if error_detected|length > 0 %}
-            <p id="errorbox">
-            {% if step == 'i3' %}
-                {{ _T("The tables are not totally created, it may be a permission problem.") }}
+        {% if step_result is defined %}
+            {% if step_result.success %}
+                <div class="ui positive message">
+                    {% for msg in step_result.messages %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
+                </div>
             {% else %}
-                {{ _T("The tables have not been totally created, it may be a permission problem.") }}
-                <br/>
-                {{ _T("Your database is maybe not usable, try to restore the older version.") }}
+                <div class="ui negative message">
+                    {% for msg in step_result.messages %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
+                </div>
             {% endif %}
-            </p>
+            {% if step_result.report is not empty %}
+                <p>{{ _T("(Errors on DROP and RENAME operations can be ignored)") }}</p>
+                <ul class="leaders">
+                {% for entry in step_result.report %}
+                    <li>
+                        <span>{{ entry.message }}</span>
+                        <span>{{ install.getValidationImage(entry.res)|raw }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
         {% endif %}
     {% endif %}
     {% if step == 'i5' or step == 'u5' %}
