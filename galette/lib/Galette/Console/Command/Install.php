@@ -23,10 +23,12 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command;
 
-use Exception;
+use Galette\Core\Installation\Step\CheckStep;
+use Galette\Core\Installation\Step\DatabaseCheckStep;
+use Galette\Core\Installation\Step\DatabaseInstallStep;
+use Galette\Core\Installation\StepResult;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -79,15 +81,18 @@ class Install extends AbstractCommand
     {
         global $installer;
 
+        //set a flag saying we work from installer
+        //that way, in galette.inc.php, we'll only include relevant parts
+        $installer = true;
+        if (!defined('GALETTE_INSTALLER')) {
+            define('GALETTE_INSTALLER', true);
+        }
+
         $output->writeln([
             '<info>Welcome to <href=https://galette.eu>Galette</> installer!</info>',
             '<info>=============================</info>',
             ''
         ]);
-
-        //set a flag saying we work from installer
-        //that way, in galette.inc.php, we'll only include relevant parts
-        $installer = true;
 
         $io = new SymfonyStyle($input, $output);
 
@@ -223,7 +228,7 @@ class Install extends AbstractCommand
             ['Port' => $db_port],
             ['User' => $db_user],
             ['Password' => $displayed_db_pass],
-            new TableSeparator(),
+            new \Symfony\Component\Console\Helper\TableSeparator(),
             'Superadmin information',
             ['Name' => $galette_sa],
             ['Password' => $displayed_sa_pass]
@@ -249,99 +254,40 @@ class Install extends AbstractCommand
             ->setDsn($db_host, $db_port, $db_name, $db_user, $db_pass)
             ->setTablesPrefix($db_prefix)
         ;
+        $install->initDbConstants();
 
-        if (!$install->testDbConnexion()) {
-            throw new \RuntimeException('Database connection failed');
+        // System requirements check
+        $io->section('System requirements check');
+        $checkStep = new CheckStep($install);
+        $checkResult = $checkStep->execute();
+        $this->displayStepResult($io, $checkResult);
+        if (!$checkResult->isSuccess()) {
+            $io->error('System requirements check failed.');
+            return Command::FAILURE;
+        }
+
+        // Database access and permissions check
+        $io->section('Database access and permissions');
+        $dbCheckStep = new DatabaseCheckStep($install);
+        $dbCheckResult = $dbCheckStep->execute();
+        $this->displayStepResult($io, $dbCheckResult);
+        if (!$dbCheckResult->isSuccess()) {
+            $io->error('Database permission check failed.');
+            return Command::FAILURE;
         }
 
         global $zdb;
-        $zdb = new \Galette\Core\Db(
-            [
-                'TYPE_DB' => $db_type,
-                'HOST_DB' => $db_host,
-                'PORT_DB' => $db_port,
-                'USER_DB' => $db_user,
-                'PWD_DB' => $db_pass,
-                'NAME_DB' => $db_name,
-                'PREFIX_DB' => $db_prefix
-            ]
-        );
+        $zdb = new \Galette\Core\Db();
 
-        /** When tables already exists and DROP not allowed at this time
-         * the showed error is about CREATE, whenever CREATE is allowed */
-        //We delete the table if exists, no error at this time
-        $zdb->dropTestTable();
-
-        $results = $zdb->grantCheck($install->getMode());
-        $sql_messages = [];
-        $sql_error = false;
-
-        //test returned values
-        if ($results['create'] instanceof Exception) {
-            $sql_messages[] = '<error>❌ CREATE operation not allowed</error>';
-            $sql_error = true;
-        } elseif ($results['create'] != '') {
-            $sql_messages[] = '<info>✔️ CREATE operation allowed</info>';
-        }
-
-        if ($results['insert'] instanceof Exception) {
-            $sql_messages[] = '<error>❌ INSERT operation not allowed</error>';
-            $sql_error = true;
-        } elseif ($results['insert'] != '') {
-            $sql_messages[] = '<info>✔️ INSERT operation allowed</info>';
-        }
-
-        if ($results['update'] instanceof Exception) {
-            $sql_messages[] = '<error>❌ UPDATE operation not allowed</error>';
-            $sql_error = true;
-        } elseif ($results['update'] != '') {
-            $sql_messages[] = '<info>✔️ UPDATE operation allowed</info>';
-        }
-
-        if ($results['select'] instanceof Exception) {
-            $sql_messages[] = '<error>❌ SELECT operation not allowed</error>';
-            $sql_error = true;
-        } elseif ($results['select'] != '') {
-            $sql_messages[] = '<info>✔️ SELECT operation allowed</info>';
-        }
-
-        if ($results['delete'] instanceof Exception) {
-            $sql_messages[] = '<error>❌ DELETE operation not allowed</error>';
-            $sql_error = true;
-        } elseif ($results['delete'] != '') {
-            $sql_messages[] = '<info>✔️ DELETE operation allowed</info>';
-        }
-
-        if ($results['drop'] instanceof Exception) {
-            $sql_messages[] = '<error>❌ DROP operation not allowed</error>';
-            $sql_error = true;
-        } elseif ($results['drop'] != '') {
-            $sql_messages[] = '<info>✔️ DROP operation allowed</info>';
-        }
-
-        $io->listing($sql_messages);
-
-        if ($sql_error) {
-            $io->error('SQL operations check failed :/');
+        // Database installation
+        $io->section('Database installation');
+        $dbInstallStep = new DatabaseInstallStep($install);
+        $dbInstallResult = $dbInstallStep->execute(['zdb' => $zdb]);
+        $this->displayStepResult($io, $dbInstallResult);
+        if (!$dbInstallResult->isSuccess()) {
+            $io->error('Database installation failed.');
             return Command::FAILURE;
         }
-
-        $io->info('Installing database, please wait...');
-        $installed = $install->executeScripts($zdb);
-        if (!$installed) {
-            $report = $install->getDbInstallReport();
-            $install_messages = [];
-            foreach ($report as $entry) {
-                if ($entry['res'] !== true) {
-                    $install_messages[] = '<error>❌ ' . $entry['debug'] . ' (' . $entry['message'] . ')' . '</error>';
-                }
-            }
-            $io->listing($install_messages);
-            $io->error('Database has not been installed');
-            return Command::FAILURE;
-        }
-
-        $install->initDbConstants();
 
         if ($input->getOption('write-config')) {
             $io->info('Writing configuration, please wait...');
@@ -356,9 +302,6 @@ class Install extends AbstractCommand
         $install->setAdminInfos($galette_sa, $galette_sa_pass);
 
         $io->info('Initializing data, please wait...');
-        if (!defined('GALETTE_INSTALLER')) {
-            define('GALETTE_INSTALLER', true);
-        }
         $i18n = new \Galette\Core\I18n();
         $init_ok = $install->initObjects(
             $i18n,
@@ -371,5 +314,35 @@ class Install extends AbstractCommand
 
         $io->success('Galette installation is complete!');
         return Command::SUCCESS;
+    }
+
+    /**
+     * Display step result messages and report in CLI format
+     */
+    private function displayStepResult(SymfonyStyle $io, StepResult $result): void
+    {
+        $messages = $result->getMessages();
+        if (!empty($messages)) {
+            $items = array_map(
+                fn($m) => $result->isSuccess() ? '<info>✔ ' . $m . '</info>' : '<error>✗ ' . $m . '</error>',
+                $messages
+            );
+            $io->listing($items);
+        }
+
+        $report = $result->getReport();
+        if (!empty($report)) {
+            $items = [];
+            foreach ($report as $entry) {
+                $ok = $entry['res'] ?? false;
+                $icon = $ok ? '<info>✔</info>' : '<error>✗</error>';
+                $msg = $icon . ' ' . ($entry['message'] ?? '');
+                if (!$ok && isset($entry['debug'])) {
+                    $msg .= ' (' . $entry['debug'] . ')';
+                }
+                $items[] = $msg;
+            }
+            $io->listing($items);
+        }
     }
 }
