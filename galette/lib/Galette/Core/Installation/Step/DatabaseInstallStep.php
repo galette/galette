@@ -41,12 +41,51 @@ class DatabaseInstallStep extends AbstractStep
 
     public function execute(array $data = []): StepResult
     {
-        // TODO: Full implementation in Phase 4
-        // Report should be available even on success (shown in modal)
-        return StepResult::success(
-            [],
-            false, // Auto-advance
-            [] // Report will go here
+        // Get database instance
+        if (!isset($data['zdb']) || !($data['zdb'] instanceof \Galette\Core\Db)) {
+            // Try to create it from Install constants
+            try {
+                $zdb = new \Galette\Core\Db();
+            } catch (\Throwable $e) {
+                return StepResult::error(
+                    [_T("Unable to initialize database connection")],
+                    ['error' => $e->getMessage()]
+                );
+            }
+        } else {
+            $zdb = $data['zdb'];
+        }
+
+        // Execute installation/upgrade scripts
+        $success = $this->install->executeScripts($zdb);
+        $report = $this->install->getDbInstallReport();
+
+        if ($success) {
+            $msg = $this->install->isInstall()
+                ? _T("Database has been installed :)")
+                : _T("Database has been upgraded :)");
+
+            // Success - show report in modal, then auto-advance
+            return StepResult::success(
+                [$msg],
+                false, // Don't display full page
+                $report,
+                [
+                    'db_installed' => true,
+                    'show_report_modal' => true // Flag to show modal in view
+                ]
+            );
+        }
+
+        // Failure - show full page with report
+        $msg = $this->install->isInstall()
+            ? _T("Database has not been installed!")
+            : _T("Database has not been upgraded!");
+
+        return StepResult::error(
+            [$msg],
+            $report,
+            ['db_installed' => false]
         );
     }
 

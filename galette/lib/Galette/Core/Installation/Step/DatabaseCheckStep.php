@@ -42,11 +42,88 @@ class DatabaseCheckStep extends AbstractStep
 
     public function execute(array $data = []): StepResult
     {
-        // TODO: Full implementation in Phase 3
-        // For now, delegate to existing Install class
-        return StepResult::success(
-            [_T("Database connection and permissions validated")],
-            false // Auto-advance on success!
+        // Test database connection first
+        try {
+            $db_connected = $this->install->testDbConnexion();
+        } catch (\Throwable $e) {
+            return StepResult::error(
+                [
+                    _T("Unable to connect to the database"),
+                    $e->getMessage(),
+                    _T("Database can't be reached. Please go back to enter the connection parameters again.")
+                ],
+                ['connection_error' => $e->getMessage()]
+            );
+        }
+
+        // Connection successful, now check database engine and permissions
+        $zdb = new \Galette\Core\Db();
+        
+        // Check if database engine is supported
+        if (!$zdb->isEngineSUpported()) {
+            return StepResult::error(
+                [
+                    _T("Incompatible database version."),
+                    $zdb->getUnsupportedMessage()
+                ],
+                ['unsupported_engine' => true]
+            );
+        }
+
+        // Check permissions
+        $zdb->dropTestTable(); // Clean up if exists
+        $perms_results = $zdb->grantCheck($this->install->getMode());
+        
+        $required_perms = ['create', 'insert', 'select', 'update', 'delete', 'drop'];
+        if ($this->install->isUpgrade()) {
+            $required_perms[] = 'alter';
+        }
+
+        $all_perms_ok = true;
+        $perm_checks = [];
+        
+        foreach ($required_perms as $perm) {
+            if (isset($perms_results[$perm])) {
+                if ($perms_results[$perm] instanceof \Exception) {
+                    $all_perms_ok = false;
+                    $perm_checks[] = [
+                        'message' => sprintf(_T("%s operation not allowed"), strtoupper($perm)),
+                        'res' => false,
+                        'debug' => $perms_results[$perm]->getMessage()
+                    ];
+                } elseif ($perms_results[$perm] === true) {
+                    $perm_checks[] = [
+                        'message' => sprintf(_T("%s operation allowed"), strtoupper($perm)),
+                        'res' => true
+                    ];
+                }
+            }
+        }
+
+        if ($all_perms_ok) {
+            // Success - auto-advance without displaying page
+            return StepResult::success(
+                [
+                    _T("Connection to database successful"),
+                    _T("Permissions to database are OK.")
+                ],
+                false, // requiresDisplay = false -> auto-advance!
+                $perm_checks,
+                ['db_ready' => true]
+            );
+        }
+
+        // Permissions issues - must display error page
+        $error_msg = $this->install->isInstall()
+            ? _T("GALETTE hasn't got enough permissions on the database to continue the installation.")
+            : _T("GALETTE hasn't got enough permissions on the database to continue the update.");
+
+        return StepResult::error(
+            [$error_msg],
+            $perm_checks,
+            ['permission_failures' => array_filter($required_perms, function($perm) use ($perms_results) {
+                return $perms_results[$perm] instanceof \Exception;
+            })]
         );
     }
 

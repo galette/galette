@@ -110,29 +110,36 @@ function renderMessageBox(string $type, string|array $messages, bool $icon = tru
  */
 function renderDbReportModal(array $report, \Galette\Core\Install $install, \Galette\Core\I18n $i18n, bool $success = true): void
 {
+    $modalId = 'db-install-report';
+    $title = $install->isInstall() ? _T("Database installation report") : _T("Database upgrade report");
+    $successMsg = $install->isInstall() ? _T("Database has been installed :)") : _T("Database has been upgraded :)");
+    $failMsg = $install->isInstall() ? _T("Database has not been installed!") : _T("Database has not been upgraded!");
     ?>
-    <div class="ui modal" id="db-install-report">
+    <div class="ui modal" id="<?php echo $modalId; ?>">
         <div class="header">
             <i class="database icon"></i>
-            <?php echo $install->isInstall() ? _T("Database installation report") : _T("Database upgrade report"); ?>
+            <?php echo $title; ?>
         </div>
         <div class="scrolling content">
             <?php if ($success) { ?>
                 <div class="ui green message">
                     <i class="check circle icon"></i>
-                    <?php echo $install->isInstall() ? _T("Database has been installed :)") : _T("Database has been upgraded :)"); ?>
+                    <?php echo $successMsg; ?>
                 </div>
             <?php } else { ?>
                 <div class="ui red message">
                     <i class="times circle icon"></i>
-                    <?php echo $install->isInstall() ? _T("Database has not been installed!") : _T("Database has not been upgraded!"); ?>
+                    <?php echo $failMsg; ?>
                 </div>
             <?php } ?>
 
-            <?php renderValidationList($report, $install); ?>
+            <?php if (count($report) > 0) { ?>
+                <h4><?php echo _T("Execution details:"); ?></h4>
+                <?php renderValidationList($report, $install); ?>
+            <?php } ?>
         </div>
         <div class="actions">
-            <div class="ui positive right labeled icon button">
+            <div class="ui positive right labeled icon button" id="modal-ok-btn">
                 <?php echo _T("OK"); ?>
                 <i class="checkmark icon"></i>
             </div>
@@ -140,15 +147,25 @@ function renderDbReportModal(array $report, \Galette\Core\Install $install, \Gal
     </div>
     <script>
         $(document).ready(function() {
-            $('#db-install-report').modal({
-                closable: true,
+            var modal = $('#<?php echo $modalId; ?>');
+            
+            modal.modal({
+                closable: <?php echo $success ? 'true' : 'false'; ?>,
                 onHidden: function() {
-                    // Auto-advance to next step after modal is closed
                     <?php if ($success) { ?>
-                    window.location.href = 'installer.php';
+                    // Auto-submit form to proceed to next step
+                    var form = document.getElementById('install-continue-form');
+                    if (form) {
+                        form.submit();
+                    }
                     <?php } ?>
                 }
             }).modal('show');
+            
+            // Close button handler
+            $('#modal-ok-btn').on('click', function() {
+                modal.modal('hide');
+            });
         });
     </script>
     <?php
