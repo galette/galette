@@ -177,7 +177,7 @@ class AccessControlTest extends GaletteTestCase
      */
     public function testGroupVoter(): void
     {
-        $this->accessControl->addVoter(new GroupVoter());
+        $this->accessControl->addVoter(new GroupVoter($this->accessControl));
         
         $this->logSuperAdmin();
         // 1. Create a group
@@ -201,10 +201,16 @@ class AccessControlTest extends GaletteTestCase
         
         // 4. Make manager... manager of group
         $this->zdb->db->query("INSERT INTO galette_groups_managers (id_group, id_adh) VALUES ($groupId, {$manager->id})", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+
+        // 5. Assign GroupManager role to manager
+        $this->zdb->db->query("INSERT INTO galette_roles (nom_role) VALUES ('GroupManager')", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        $roleId = (int)$this->zdb->db->getDriver()->getLastGeneratedValue();
+        $this->zdb->db->query("INSERT INTO galette_adherent_roles (id_adh, id_role) VALUES ({$manager->id}, $roleId)", \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+
         $this->login->logOut();
         
-        // 5. Login as manager and check access to member
+        // 6. Login as manager and check access to member
         $this->assertTrue($this->login->login($manager->login, 'J^B-()f'));
-        $this->assertTrue($this->accessControl->can('any:perm', $member, $this->login));
+        $this->assertTrue($this->accessControl->can('member:read', $member, $this->login));
     }
 }

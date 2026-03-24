@@ -84,6 +84,14 @@ class AccessControl
             return true;
         }
 
+        // Support for wildcards (domain:*)
+        if (str_contains($permission, ':')) {
+            [$domain, $action] = explode(':', $permission, 2);
+            if ($this->hasPermissionInRoles($user->id, $domain . ':*')) {
+                return true;
+            }
+        }
+
         // Priority 4: Voters (dynamic rules)
         foreach ($this->voters as $voter) {
             $vote = $voter->vote($user, $permission, $subject);
@@ -128,6 +136,80 @@ class AccessControl
         } catch (\Throwable $e) {
             Analog::log('RBAC check failed: ' . $e->getMessage(), Analog::ERROR);
             return false;
+        }
+    }
+
+    /**
+     * Check if user has a specific role
+     *
+     * @param int    $userId   User ID
+     * @param string $roleName Role name
+     */
+    public function hasRole(int $userId, string $roleName): bool
+    {
+        return in_array($roleName, $this->getUserRoles($userId));
+    }
+
+    /**
+     * Get user roles
+     *
+     * @param int $userId User ID
+     *
+     * @return string[]
+     */
+    public function getUserRoles(int $userId): array
+    {
+        try {
+            $select = $this->zdb->select('adherent_roles', 'ar');
+            $select->join(
+                ['r' => PREFIX_DB . 'roles'],
+                'ar.id_role = r.id_role',
+                ['nom_role']
+            )->where(['ar.id_adh' => $userId]);
+
+            $results = $this->zdb->execute($select);
+            $roles = [];
+            foreach ($results as $row) {
+                $roles[] = $row->nom_role;
+            }
+            return $roles;
+        } catch (\Throwable $e) {
+            Analog::log('Failed to fetch user roles: ' . $e->getMessage(), Analog::ERROR);
+            return [];
+        }
+    }
+
+    /**
+     * Get all permissions for a user
+     *
+     * @param int $userId User ID
+     *
+     * @return string[]
+     */
+    public function getUserPermissions(int $userId): array
+    {
+        try {
+            $prefix = PREFIX_DB;
+            $select = $this->zdb->select(['ar' => $prefix . 'adherent_roles']);
+            $select->join(
+                ['rp' => $prefix . 'role_permissions'],
+                'ar.id_role = rp.id_role',
+                []
+            )->join(
+                ['p' => $prefix . 'permissions'],
+                'rp.id_perm = p.id_perm',
+                ['nom_perm']
+            )->where(['ar.id_adh' => $userId]);
+
+            $results = $this->zdb->execute($select);
+            $perms = [];
+            foreach ($results as $row) {
+                $perms[] = $row->nom_perm;
+            }
+            return array_unique($perms);
+        } catch (\Throwable $e) {
+            Analog::log('Failed to fetch user permissions: ' . $e->getMessage(), Analog::ERROR);
+            return [];
         }
     }
 }

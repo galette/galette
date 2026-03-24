@@ -43,14 +43,25 @@ CREATE TABLE IF NOT EXISTS galette_adherent_roles (
 
 -- Initial data
 INSERT IGNORE INTO galette_permissions (nom_perm, description_perm) VALUES 
-('member:read', 'Voir les adhérents'),
-('member:write', 'Créer ou modifier les adhérents'),
-('member:delete', 'Supprimer les adhérents'),
-('contribution:read', 'Voir les cotisations et transactions'),
-('contribution:write', 'Gérer les cotisations et transactions'),
-('group:read', 'Voir les groupes'),
-('group:write', 'Gérer les groupes'),
-('configuration:all', 'Toute la configuration');
+('member:list', 'Lister les adhérents'),
+('member:add', 'Ajouter un adhérent'),
+('member:read', 'Voir un adhérent'),
+('member:edit', 'Modifier un adhérent'),
+('member:delete', 'Supprimer un adhérent'),
+('member:export', 'Exporter les adhérents'),
+('group:list', 'Lister les groupes'),
+('group:manage', 'Gérer les groupes (nom, hiérarchie)'),
+('group:assign', 'Affecter des membres aux groupes'),
+('contribution:list', 'Lister les cotisations'),
+('contribution:read', 'Voir une cotisation'),
+('contribution:add', 'Ajouter une cotisation'),
+('contribution:edit', 'Modifier une cotisation'),
+('contribution:stats', 'Voir les statistiques de cotisations'),
+('config:read', 'Lire la configuration'),
+('config:write', 'Modifier la configuration'),
+('system:update', 'Mettre à jour Galette'),
+('system:logs', 'Voir les journaux système'),
+('system:backup', 'Gérer les sauvegardes');
 
 INSERT IGNORE INTO galette_roles (nom_role) VALUES 
 ('Administrateur'), 
@@ -63,12 +74,12 @@ INSERT IGNORE INTO galette_role_permissions (id_role, id_perm)
 SELECT r.id_role, p.id_perm FROM galette_roles r, galette_permissions p 
 WHERE r.nom_role = 'Administrateur';
 
--- Assign member:read, member:write to Secrétaire
+-- Assign member:* to Secrétaire
 INSERT IGNORE INTO galette_role_permissions (id_role, id_perm)
 SELECT r.id_role, p.id_perm FROM galette_roles r, galette_permissions p
-WHERE r.nom_role = 'Secrétaire' AND p.nom_perm IN ('member:read', 'member:write');
+WHERE r.nom_role = 'Secrétaire' AND p.nom_perm LIKE 'member:%';
 
--- Assign contribution:read, contribution:write to Trésorier
+-- Assign contribution:* to Trésorier
 INSERT IGNORE INTO galette_role_permissions (id_role, id_perm)
 SELECT r.id_role, p.id_perm FROM galette_roles r, galette_permissions p
-WHERE r.nom_role = 'Trésorier' AND p.nom_perm IN ('contribution:read', 'contribution:write');
+WHERE r.nom_role = 'Trésorier' AND p.nom_perm LIKE 'contribution:%';

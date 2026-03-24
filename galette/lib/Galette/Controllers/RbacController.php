@@ -64,12 +64,21 @@ class RbacController extends AbstractController
             $role_perms[(int)$m['id_role']][] = (int)$m['id_perm'];
         }
 
+        $grouped_perms = [];
+        foreach ($perms as $p) {
+            $domain = 'other';
+            if (str_contains($p['nom_perm'], ':')) {
+                [$domain, $action] = explode(':', $p['nom_perm'], 2);
+            }
+            $grouped_perms[$domain][] = $p;
+        }
+
         return $this->view->render(
             $response,
             'pages/rbac_matrix.html.twig',
             [
                 'page_title' => _T('Permissions Management'),
-                'permissions' => $perms,
+                'grouped_permissions' => $grouped_perms,
                 'roles'       => $roles,
                 'role_perms'  => $role_perms
             ]

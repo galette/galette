@@ -184,7 +184,7 @@ $container->set(\Galette\Core\History::class, \DI\autowire());
 $container->set(\Galette\Core\AccessControl::class, function (ContainerInterface $c) {
     $ac = new \Galette\Core\AccessControl($c->get(\Galette\Core\Db::class));
     $ac->addVoter(new \Galette\Core\Voters\SubscriptionVoter());
-    $ac->addVoter(new \Galette\Core\Voters\GroupVoter());
+    $ac->addVoter(new \Galette\Core\Voters\GroupVoter($ac));
     return $ac;
 });
 

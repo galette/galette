@@ -19,19 +19,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for perm in permissions %}
-                        <tr>
-                            <td>
-                                <strong>{{ perm.nom_perm }}</strong><br>
-                                <small class="ui grey text">{{ perm.description_perm }}</small>
-                            </td>
-                            {% for role in roles %}
-                                <td class="ui center aligned">
-                                    <input type="checkbox" name="matrix[{{ role.id_role }}][{{ perm.id_perm }}]" value="1"
-                                        {% if role_perms[role.id_role] is defined and perm.id_perm in role_perms[role.id_role] %}checked{% endif %}>
-                                </td>
-                            {% endfor %}
+                    {% for domain, perms in grouped_permissions %}
+                        <tr class="active">
+                            <th colspan="{{ roles|length + 1 }}">
+                                <i class="folder icon"></i> {{ _T('Domain:') }} {{ domain|capitalize }}
+                            </th>
                         </tr>
+                        {% for perm in perms %}
+                            <tr>
+                                <td>
+                                    <strong>{{ perm.nom_perm }}</strong><br>
+                                    <small class="ui grey text">{{ perm.description_perm }}</small>
+                                </td>
+                                {% for role in roles %}
+                                    <td class="ui center aligned">
+                                        <input type="checkbox" name="matrix[{{ role.id_role }}][{{ perm.id_perm }}]" value="1"
+                                            {% if role_perms[role.id_role] is defined and perm.id_perm in role_perms[role.id_role] %}checked{% endif %}>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
                     {% endfor %}
                 </tbody>
             </table>

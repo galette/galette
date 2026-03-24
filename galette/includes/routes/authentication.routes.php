@@ -83,3 +83,9 @@ $app->post(
     '/password-recovery',
     [AuthController::class, 'doRecoverPassword']
 )->setName('do-password-recovery');
+
+// API Login
+$app->post(
+    '/api/login',
+    [AuthController::class, 'apiLogin']
+)->setName('api_login');

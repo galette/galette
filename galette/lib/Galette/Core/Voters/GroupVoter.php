@@ -27,6 +27,7 @@ use Galette\Interfaces\VoterInterface;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Repository\Groups;
+use Galette\Core\AccessControl;
 
 /**
  * Voter that checks if a group manager is acting on a member of his group
@@ -36,23 +37,52 @@ use Galette\Repository\Groups;
 class GroupVoter implements VoterInterface
 {
     /**
+     * Constructor
+     *
+     * @param AccessControl $accessControl AccessControl instance
+     */
+    public function __construct(private readonly AccessControl $accessControl)
+    {
+    }
+
+    /**
      * @inheritDoc
      */
     public function vote(Login $login, string $permission, mixed $subject = null): int
     {
-        // Only applies if user is a group manager
-        if (!$login->isGroupManager()) {
+        // Only applies to member and group domains
+        if (
+            !str_starts_with($permission, 'member:') &&
+            !str_starts_with($permission, 'group:')
+        ) {
             return self::ACCESS_ABSTAIN;
         }
 
-        // If the subject is a member, check if he belongs to a managed group
-        if ($subject instanceof Adherent) {
-            $managedGroups = $login->getManagedGroups();
-            // loadGroups returns array<int, Group|int>
-            $memberGroups = Groups::loadGroups($subject->id, false, false);
+        $roles = $this->accessControl->getUserRoles($login->id);
 
-            foreach ($memberGroups as $groupId) {
-                if (in_array($groupId, $managedGroups)) {
+        // Admins can do everything on groups/members
+        if (in_array('Admin', $roles)) {
+            return self::ACCESS_GRANTED;
+        }
+
+        // Group Managers have restricted access
+        if (in_array('GroupManager', $roles)) {
+            $managedGroups = $login->getManagedGroups();
+
+            // If the subject is a member, check if he belongs to a managed group
+            if ($subject instanceof Adherent) {
+                $memberGroups = Groups::loadGroups($subject->id, false, false);
+
+                foreach ($memberGroups as $groupId) {
+                    if (in_array($groupId, $managedGroups)) {
+                        return self::ACCESS_GRANTED;
+                    }
+                }
+            }
+
+            // If the subject is a group, check if it is managed
+            if ($subject instanceof \Galette\Entity\Group) {
+                if (in_array($subject->id, $managedGroups)) {
                     return self::ACCESS_GRANTED;
                 }
             }

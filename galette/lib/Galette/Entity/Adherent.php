@@ -507,6 +507,19 @@ class Adherent implements AccessManagementInterface
     }
 
     /**
+     * Get managed group IDs
+     *
+     * @return int[]
+     */
+    public function getManagedGroupIds(): array
+    {
+        if (!$this->isDepEnabled('groups')) {
+            $this->loadGroups();
+        }
+        return array_keys($this->managed_groups);
+    }
+
+    /**
      * Load member social network/contact information
      */
     public function loadSocials(): void
